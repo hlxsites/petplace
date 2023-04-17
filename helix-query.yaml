@@ -1,0 +1,38 @@
+indices:
+  articles:
+    include:
+      - '/article/*'
+    target: /article/query-index.xlsx
+    properties:
+      author:
+        select: head > meta[name="author"]
+        value: |
+          attribute(el, 'content')
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      date:
+        select: head > meta[name="publication-date"]
+        value: |
+          parseTimestamp(attribute(el, 'content'), 'MM/DD/YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      category:
+        select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      tags:
+        select: head > meta[property="article:tag"]
+        values: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
