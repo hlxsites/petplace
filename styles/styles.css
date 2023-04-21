@@ -53,6 +53,10 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-size: var(--body-font-size-m);
   margin: 0;
@@ -61,6 +65,7 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
+
 }
 
 body.appear {
