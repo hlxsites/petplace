@@ -4,16 +4,23 @@
     display: none;
 }
 
+.section.tiles-container {
+    background: #f2f6fc;
+    display: flex;
+    flex-direction: column;
+}
+
+
 .tile {
     display: flex;
     overflow: hidden;
-    margin-bottom: 1.5rem;
+    margin: 1rem;
 }
 
 .tile .img-container {
     position: relative;
-    min-width: 200px;
-    height: 200px;
+    min-width: 120px;
+    height: 120px;
     border-radius: 6px;
 }
 
@@ -31,7 +38,18 @@
 }
 
 .tile .category-link-btn {
-
+    border: none;
+    color: #6f69a8;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding-left: 0;
+    padding-right: 0;
+    line-height: 1.2rem;
+    display: inline-block;
+    border-radius: 15px;
+    font-family: Raleway,sans-serif;
+    font-weight: 800;
+    font-size: .875rem;
 }
 
 .tile .tile-contents {
@@ -39,14 +57,35 @@
     padding-left: 1.5rem;
 }
 
+.tile .tile-contents h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    line-height: 1;
+    font-weight: 800;
+}
+
+.tile .tile-contents .date-author-container {
+    font-size: .875rem;
+    font-weight: 400;
+    color: #28061e;
+    line-height: 1.4;
+    font-family: libre-franklin, sans-serif;
+}
+
 .tile.tile-0 {
-    display: block;
+    display: flex;
     position: relative;
     min-height: min-content;
+    flex-direction: column;
 }
 
 .tile.tile-0 .img-container {
     height: auto;
+}
+
+.tile.tile-0 .img-container .img-padding {
+    width:100%;
+    padding-bottom: 75%;
 }
 
 .tile.tile-0 .tile-contents{
@@ -67,11 +106,10 @@
 
 .tile.tile-0 .category-link-btn {
     position: absolute;
-    top: 1rem;
+    top: -15px;
     left: 2rem;
     background: #5773a8;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
-    display: inline;
     border-radius: 15px;
     font-family: Raleway,sans-serif;
     font-weight: 800;
@@ -81,6 +119,12 @@
     height: 30px;
     padding-left: 14px;
     padding-right: 14px;
+    display: none;
+}
+
+.tile.tile-0 .category-link-btn.category-link-btn-mobile {
+    display: inline;
+    top: 1rem
 }
 
 .tile.tile-0 .tile-contents h4 {
@@ -101,3 +145,50 @@
     line-height: 1.4;
 }
 
+
+
+@media screen and (min-width: 768px) {
+    .tile .img-container {
+        min-width: 146px;
+        height: 146px;
+    }
+
+    .tile.tile-0 .img-container .img-padding {
+        padding-bottom: 56.25%;
+    }
+
+    .tile.tile-0 .category-link-btn {
+        display: inline;
+    }
+
+    .tile.tile-0 .category-link-btn.category-link-btn-mobile {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .tiles-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .tile.tile-0 {
+        flex-grow: 1;
+        margin-right: 20px;
+    }
+
+    .small-tiles-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 41.6667%;
+
+    }
+}
+
+@media screen and (min-width: 1216px) {
+    .tile .img-container {
+        min-width: 200px;
+        height: 200px;
+    }
+}

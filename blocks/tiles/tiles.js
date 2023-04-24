@@ -39,7 +39,7 @@ export default function decorate(block) {
     const imgPadding = document.createElement('div');
     if (index === 0) {
       tile.classList.add('tile-0');
-      imgPadding.setAttribute('style', 'width:100%;padding-bottom:75%');
+      imgPadding.classList.add('img-padding');
     }
 
     const imgContainer = document.createElement('div');
@@ -58,6 +58,9 @@ export default function decorate(block) {
     categoryLink.setAttribute('href', dta.category);
     categoryLink.innerHTML = dta.category;
 
+    const categoryLinkMobile = categoryLink.cloneNode(true);
+    categoryLinkMobile.classList.add('category-link-btn-mobile');
+
     const title = document.createElement('h4');
     title.innerHTML = dta.title;
 
@@ -73,16 +76,32 @@ export default function decorate(block) {
 
     imgContainer.append(imgPadding);
     imgContainer.append(img);
+    content.append(categoryLink);
     content.append(title);
     content.append(dateAuthorContainer);
 
     tile.append(imgContainer);
-    tile.append(categoryLink);
+    if (index === 0) {
+      tile.append(categoryLinkMobile);
+    }
     tile.append(content);
 
     tileContainer.append(tile);
   });
-  // ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
+
+  // Check if there are enough child nodes in tileContainer
+  if (tileContainer.children.length >= 3) {
+    const smallTilesWrapper = document.createElement('div');
+    smallTilesWrapper.className = 'small-tiles-wrapper';
+    // Move the second and third child nodes into the smallTilesWrapper
+    // Not a mistake using index 1 two times.  When we appended smallTilesWrapper with the first child
+    // then that child is removed... leaving us with just two.
+    smallTilesWrapper.append(tileContainer.children[1]);
+    smallTilesWrapper.append(tileContainer.children[1]);
+    // Replace the second and third child nodes in tileContainer with the smallTilesWrapper
+    tileContainer.append(smallTilesWrapper);
+  }
+
   block.textContent = '';
   block.append(tileContainer);
 }
