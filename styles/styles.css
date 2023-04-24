@@ -323,6 +323,10 @@ main .centered {
 }
 
 @media (min-width: 600px) {
+  .home-page .hero h1 {
+    font-size: 2.667em;
+  }
+
   .home-page h2 {
     font-size: 1.75em;
   }
@@ -334,12 +338,20 @@ main .centered {
     margin: auto;
   }
 
+  .home-page .hero h1 {
+    font-size: 3.222em;
+  }
+
   .home-page h2 {
     font-size: 2em;
   }
 }
 
 @media (min-width: 1200px) {
+  .home-page .hero h1 {
+    font-size: 3.667em;
+  }
+
   .home-page h2 {
     font-size: 2.25em;
   }
