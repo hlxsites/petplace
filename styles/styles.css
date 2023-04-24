@@ -334,7 +334,6 @@ main .centered {
 
 @media (min-width: 900px) {
   .section > div {
-    max-width: 1352px;
     margin: auto;
   }
 
@@ -348,6 +347,10 @@ main .centered {
 }
 
 @media (min-width: 1200px) {
+  .section > div {
+    max-width: 1344px;
+  }
+
   .home-page .hero h1 {
     font-size: 3.667em;
   }
