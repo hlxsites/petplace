@@ -25,8 +25,8 @@
   --color-blue: #639af9;
 
   /* fonts */
-  --body-font-family: 'Libre Franklin', sans-serif;
-  --heading-font-family: 'Raleway', sans-serif;
+  --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
+  --heading-font-family: 'Raleway', 'Raleway Fallback', sans-serif;
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
@@ -48,6 +48,18 @@
   /* nav height */
   --nav-height: 68px;
 
+}
+
+@font-face {
+  font-family: 'Libre Franklin Fallback';
+  size-adjust: 104.1%;
+  src: local('Arial');
+}
+
+@font-face {
+  font-family: 'Raleway Fallback';
+  size-adjust: 106.37%;
+  src: local('Arial');
 }
 
 @media (min-width: 600px) {
