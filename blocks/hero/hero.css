@@ -21,7 +21,6 @@ main .hero > div > div {
 
 main .hero h1 {
   margin: 0 0 2rem;
-  max-width: 1200px;
   color: var(--text-color);
 }
 
@@ -40,6 +39,7 @@ main .hero img {
 @media (min-width: 900px) {
   main .hero h1 {
     color: var(--text-color-inverted);
+    font-size: var(--heading-font-size-xxxl);
   }
 
   main .hero picture {
