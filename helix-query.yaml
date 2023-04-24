@@ -3,7 +3,7 @@ version: 1
 indices:
   articles:
     include:
-      - '/article/*'
+      - '/article/**'
     target: /article/query-index.xlsx
     properties:
       author:
