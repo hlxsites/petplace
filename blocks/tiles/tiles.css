@@ -182,7 +182,20 @@
         flex-direction: column;
         justify-content: space-between;
         width: 41.6667%;
+    }
 
+    .small-tiles-wrapper .category-link-btn {
+        background: #5773a8;
+        box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
+        border-radius: 15px;
+        font-family: Raleway,sans-serif;
+        font-weight: 800;
+        font-size: .875rem;
+        color: #fff;
+        line-height: 30px;
+        height: 30px;
+        padding-left: 14px;
+        padding-right: 14px;
     }
 }
 
