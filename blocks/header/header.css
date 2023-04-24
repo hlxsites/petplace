@@ -30,6 +30,10 @@ header nav[aria-expanded="true"] {
   min-height: 100vh;
 }
 
+header .header a {
+  text-decoration: none;
+}
+
 @media (min-width: 600px) {
   header nav {
     padding: 0 2rem;
