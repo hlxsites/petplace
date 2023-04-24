@@ -26,6 +26,10 @@ indices:
         select: head > meta[name="category"]
         value: |
           attribute(el, 'content')
+      type:
+        select: head > meta[name="type"]
+        value: |
+          attribute(el, 'content')
       tags:
         select: head > meta[property="article:tag"]
         values: |
