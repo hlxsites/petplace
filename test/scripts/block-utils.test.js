@@ -28,23 +28,21 @@ describe('Utils methods', () => {
 
   it('Loads CSS', async () => {
     // loads a css file and calls callback
-    const load = await new Promise((resolve) => {
-      blockUtils.loadCSS('/test/scripts/test.css', (e) => resolve(e));
-    });
+    const load = await blockUtils.loadCSS('/test/scripts/test.css');
     expect(load).to.equal('load');
     expect(getComputedStyle(document.body).color).to.equal('rgb(255, 0, 0)');
 
     // does nothing if css already loaded
-    const noop = await new Promise((resolve) => {
-      blockUtils.loadCSS('/test/scripts/test.css', (e) => resolve(e));
-    });
+    const noop = await blockUtils.loadCSS('/test/scripts/test.css');
     expect(noop).to.equal('noop');
 
     // calls callback in case of error
-    const error = await new Promise((resolve) => {
-      blockUtils.loadCSS('/test/scripts/nope.css', (e) => resolve(e));
-    });
-    expect(error).to.equal('error');
+    try {
+      await blockUtils.loadCSS('/test/scripts/nope.css');
+      throw new Error('should not run');
+    } catch (err) {
+      expect(err.type).to.equal('error');
+    }
   });
 
   it('Collects RUM data', async () => {
