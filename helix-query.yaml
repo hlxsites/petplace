@@ -1,7 +1,9 @@
+version: 1
+
 indices:
   articles:
     include:
-      - '/article/*'
+      - '/article/**'
     target: /article/query-index.xlsx
     properties:
       author:
@@ -22,6 +24,10 @@ indices:
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       category:
         select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      type:
+        select: head > meta[name="type"]
         value: |
           attribute(el, 'content')
       tags:
