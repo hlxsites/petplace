@@ -20,7 +20,7 @@
   --text-color: #000;
 
   /* fonts */
-  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
+  --body-font-family: raleway, sans-serif;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
@@ -233,13 +233,13 @@ main .section {
     padding: 64px 32px;
   }
 }
-
-@media (min-width: 900px) {
-  .section > div {
-    max-width: 1200px;
-    margin: auto;
-  }
-}
+/*Maybe put this into a template. it interferes with the home page*/
+/*@media (min-width: 900px) {*/
+/*  .section > div {*/
+/*    max-width: 1200px;*/
+/*    margin: auto;*/
+/*  }*/
+/*}*/
 
 /* section metadata */
 main .section.highlight {
