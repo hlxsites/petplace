@@ -56,6 +56,9 @@
 * {
   box-sizing: border-box;
 }
+html {
+  text-rendering: optimizeLegibility;
+}
 
 body {
   font-size: var(--body-font-size-m);
@@ -126,14 +129,10 @@ main pre {
   white-space: pre;
 }
 
-a:any-link {
-  color: var(--link-color);
+a {
+  color: #678fda;
+  cursor: pointer;
   text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-  color: var(--link-hover-color);
 }
 
 /* buttons */
