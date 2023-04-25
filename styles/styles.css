@@ -90,7 +90,7 @@ body {
   font-size: var(--body-font-size-default);
   margin: 0;
   font-family: var(--body-font-family);
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
