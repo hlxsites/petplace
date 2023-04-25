@@ -280,6 +280,22 @@ main .default-content-wrapper ~ .default-content-wrapper {
   margin-top: 3.75rem;
 }
 
+[data-align="left"] {
+  text-align: left;
+}
+
+[data-align="center"] {
+  text-align: center;
+}
+
+[data-align="right"] {
+  text-align: right;
+}
+
+[aria-hidden="true"] {
+  display: none;
+}
+
 /* Utility classes */
 
 main .centered {
