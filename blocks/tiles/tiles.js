@@ -1,55 +1,34 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
-const data = [
-  {
-    author: 'Victoria Brown',
-    title: 'Best Ways to Make a Pet First Aid Kit - PetPlace',
-    date: 1682446241904,
-    image: '/article/general/pet-care/media_186661bf169bb626335c2ff1cf0486ebbe4488ce4.png?width=1200&format=pjpg&optimize=medium',
-    category: 'Pet Care',
-    type: '',
-    tags: [],
-    description: 'Accidents can happen anywhere, and having a first aid kit for your pet can help you feel more prepared in an emergency.',
-    lastModified: 1682354664,
-  },
-  {
-    author: 'Dr. Debra Primovic – DVM',
-    title: 'The Ultimate Guide to What Cats Cannot Eat - PetPlace',
-    date: 1681344000,
-    image: '/article/cats/pet-health/cat-health/cat-diet-nutrition/media_1928f88006579dadfc31dc22e258aeaef2ce840e8.png?width=1200&format=pjpg&optimize=medium',
-    category: 'Cat Diet Nutrition',
-    type: '',
-    tags: [],
-    description: "Some human foods can be safe for cats, while others are dangerous, life-threatening, and potentially fatal when ingested. Here's what cats can't eat.",
-    lastModified: 1682355689,
-  },
-  {
-    author: 'PetPlace Staff',
-    title: 'The Ultimate Guide to Dog Obedience - PetPlace',
-    date: 1680134400,
-    image: '/article/dogs/pet-behavior-training/media_19aed72998fc723ce2c816c30c6591e2922020e70.png?width=1200&format=pjpg&optimize=medium',
-    category: 'Behavior Training',
-    type: '',
-    tags: [],
-    description: 'Teaching a pet to be obedient requires patience, persistence & positivity. We review basic commands and list general dog training rules to keep in mind.',
-    lastModified: 1682371908,
-  },
-];
-
-export default function decorate(block) {
+export default async function decorate(block) {
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-container';
 
-  [...block.children].forEach(async (row, index) => {
-    // const path = new URL(row.firstElementChild.firstElementChild.text).pathname;
-    // console.log(path);
-    // const res = await fetch(`https://admin.hlx.page/index/hlxsites/petplace/main/${path}`);
-    // const json = await res.json();
-    //
-    // console.log(json?.results[0]?.record);
+  const data = await new Promise(async (resolve, reject) => {
+    const urls = [...block.children].map((row) => {
+       const path = new URL(row.firstElementChild.firstElementChild.text).pathname;
+       return `https://admin.hlx.page/index/hlxsites/petplace/main/${path}`
+    });
 
-    const dta = data[index];
+    return await Promise.all(urls.map((u) => fetch(u)))
+        .then((responses) => {
+          return Promise.all(responses.map((res) => res.json()));
+        }).then((data) => {
+          resolve(data.map( dta => {
+            return  {
+              ...dta?.results[0]?.record,
+              path: dta.webPath
+            };
+          }));
+        })
+        .catch(err => {
+          reject(err)
+        })
+  });
+
+
+  data.forEach((dta, index) => {
     // Create tile div for each individual tile
     const tile = document.createElement('div');
     tile.classList.add('tile');
@@ -64,8 +43,18 @@ export default function decorate(block) {
     imgContainer.className = 'img-container';
 
     // Create Image tag.. future will be <picture> tag
-    const img = document.createElement('img');
-    img.src = dta.image;
+    let img;
+    if (index === 0) {
+      img = document.createElement('img');
+      img.src = dta.image;
+    } else {
+      img = document.createElement('a');
+      img.href = dta.path;
+      const imgTag = document.createElement('img')
+      imgTag.src = dta.image;
+      img.append(imgTag);
+    }
+
 
     // Create content div.  This contains title, author, date etc..
     const content = document.createElement('div');
@@ -73,15 +62,17 @@ export default function decorate(block) {
 
     const categoryLink = document.createElement('a');
     categoryLink.className = 'category-link-btn';
-    categoryLink.setAttribute('href', dta.category);
+    categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf("/"))
     categoryLink.innerHTML = dta.category;
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');
 
-    const title = document.createElement('h4');
-    title.innerHTML = dta.title;
-
+    const title = document.createElement('a');
+    title.href = dta.path;
+    const titleHeader = document.createElement('h4');
+    titleHeader.innerHTML = dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'));
+    title.append(titleHeader)
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');
 
