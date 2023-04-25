@@ -4,6 +4,10 @@
     display: none;
 }
 
+.tiles-wrapper {
+    width:100%;
+}
+
 .section.tiles-container {
     background: #f2f6fc;
     display: flex;

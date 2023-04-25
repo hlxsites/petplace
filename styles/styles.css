@@ -233,13 +233,13 @@ main .section {
     padding: 64px 32px;
   }
 }
-/*Maybe put this into a template. it interferes with the home page*/
-/*@media (min-width: 900px) {*/
-/*  .section > div {*/
-/*    max-width: 1200px;*/
-/*    margin: auto;*/
-/*  }*/
-/*}*/
+@media (min-width: 900px) {
+  .section > div {
+    max-width: 1300px;
+    width: 100%;
+    margin: auto;
+  }
+}
 
 /* section metadata */
 main .section.highlight {
