@@ -76,7 +76,7 @@ export default async function decorate(block) {
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');
 
-    const date = new Date(dta.date);
+    const date = new Date(dta.date * 1000);
     const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
     const formattedDate = date.toLocaleDateString('en-US', dateOptions);
 

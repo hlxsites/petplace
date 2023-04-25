@@ -10,6 +10,29 @@
     flex-direction: column;
 }
 
+.section.tiles-container h2 {
+    border-bottom: 2px solid #8f8f8f;
+    margin-bottom: 2rem;
+    padding-bottom: 6px;
+    font-size: calc(1.375rem + 1.5vw);
+    line-height: 1.1;
+    font-weight: 800;
+    color: #28061e;
+}
+
+.section.tiles-container h2::after {
+    content: "";
+    display: block;
+    border-bottom: 2px solid #ff7d5a;
+    margin-top: 8px;
+    margin-bottom: -8px;
+    max-width: 200px;
+}
+
+.section.tiles-container h2:first-child {
+    margin-top: 0;
+}
+
 
 .tile {
     display: flex;
@@ -210,7 +233,7 @@
     .tile .tile-contents h4 {
         font-size: 1.375rem;
     }
-    
+
     .tile .img-container {
         min-width: 200px;
         height: 200px;
