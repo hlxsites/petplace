@@ -2,27 +2,38 @@ import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 const data = [
   {
-    title: 'Best Ways to Make a Pet First Aid Kit',
-    category: 'Pet Care',
-    img: 'https://www.petplace.com/static/eb4551c6490d1ce6c22a7f271b3b56bb/c2d8e/first-aid-header-1.webp',
-    date: '2023-04-05T06:00:00.000Z',
     author: 'Victoria Brown',
+    title: 'Best Ways to Make a Pet First Aid Kit - PetPlace',
+    date: 1682446241904,
+    image: '/article/general/pet-care/media_186661bf169bb626335c2ff1cf0486ebbe4488ce4.png?width=1200&format=pjpg&optimize=medium',
+    category: 'Pet Care',
+    type: '',
+    tags: [],
+    description: 'Accidents can happen anywhere, and having a first aid kit for your pet can help you feel more prepared in an emergency.',
+    lastModified: 1682354664,
   },
   {
-    title: 'The Ultimate Guide to What Cats Cannot Eat',
-    category: 'Cat Diet & Nutrition',
-    img: 'https://www.petplace.com/static/72e9901bf82ce584171b78a27767b643/1a9f5/shutterstock_1033889674-1.webp',
-    date: '2023-04-13T06:00:00.000Z',
-    author: 'Dr. Debra Primovic - DVM',
+    author: 'Dr. Debra Primovic – DVM',
+    title: 'The Ultimate Guide to What Cats Cannot Eat - PetPlace',
+    date: 1681344000,
+    image: '/article/cats/pet-health/cat-health/cat-diet-nutrition/media_1928f88006579dadfc31dc22e258aeaef2ce840e8.png?width=1200&format=pjpg&optimize=medium',
+    category: 'Cat Diet Nutrition',
+    type: '',
+    tags: [],
+    description: "Some human foods can be safe for cats, while others are dangerous, life-threatening, and potentially fatal when ingested. Here's what cats can't eat.",
+    lastModified: 1682355689,
   },
   {
-    title: 'The Ultimate Guide to Dog Obedience',
-    category: 'Behavior & Training',
-    img: 'https://www.petplace.com/static/90a2517f4ae2ccfba999ac79a5773884/1a9f5/shutterstock_610385162.webp',
-    date: '2023-03-30T06:00:00.000Z',
     author: 'PetPlace Staff',
+    title: 'The Ultimate Guide to Dog Obedience - PetPlace',
+    date: 1680134400,
+    image: '/article/dogs/pet-behavior-training/media_19aed72998fc723ce2c816c30c6591e2922020e70.png?width=1200&format=pjpg&optimize=medium',
+    category: 'Behavior Training',
+    type: '',
+    tags: [],
+    description: 'Teaching a pet to be obedient requires patience, persistence & positivity. We review basic commands and list general dog training rules to keep in mind.',
+    lastModified: 1682371908,
   },
-
 ];
 
 export default function decorate(block) {
@@ -31,6 +42,13 @@ export default function decorate(block) {
   tileContainer.className = 'tiles-container';
 
   [...block.children].forEach(async (row, index) => {
+    // const path = new URL(row.firstElementChild.firstElementChild.text).pathname;
+    // console.log(path);
+    // const res = await fetch(`https://admin.hlx.page/index/hlxsites/petplace/main/${path}`);
+    // const json = await res.json();
+    //
+    // console.log(json?.results[0]?.record);
+
     const dta = data[index];
     // Create tile div for each individual tile
     const tile = document.createElement('div');
@@ -47,7 +65,7 @@ export default function decorate(block) {
 
     // Create Image tag.. future will be <picture> tag
     const img = document.createElement('img');
-    img.src = dta.img;
+    img.src = dta.image;
 
     // Create content div.  This contains title, author, date etc..
     const content = document.createElement('div');
