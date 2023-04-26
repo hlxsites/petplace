@@ -71,7 +71,7 @@
     border-radius: 15px;
     font-family: var(--heading-font-family);
     font-weight: 800;
-    font-size: .875rem;
+    font-size: var(--heading-font-size-xs);
 }
 
 .tile .tile-contents {
