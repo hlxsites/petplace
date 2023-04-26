@@ -1,0 +1,141 @@
+main .slideshow-container {
+    padding: 0;
+    position: relative;
+
+    --tab-bar-height: 30px;
+}
+
+.controls-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+    background: #e3e6ee;
+}
+
+.slides-container {
+    display: flex;
+    transition: transform 200ms;
+}
+
+.slides-container img {
+    display: block;
+}
+
+.slides-container > div {
+    width: 100vw;
+    flex-shrink: 0;
+}
+
+.control-button {
+    background: none;
+    pointer-events: initial;
+}
+
+.control-button:hover {
+    background: none;
+}
+
+.control-button:focus {
+    background: none;
+}
+
+.control-button svg {
+    width: 32px;
+    height: 32px;
+}
+
+.tab-bar-container > ol svg {
+    width: 8px;
+    height: 8px;
+}
+
+.control-button:hover svg {
+    color: #7f7f7f;
+}
+
+.tab-bar-container {
+    background-color: var(--brand-red);
+    height: var(--tab-bar-height);
+    position: relative;
+}
+
+.tab-bar-container > ol {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -28px;
+    left: 10px;
+}
+
+.tab-bar-container > ol button {
+    padding: 8px;
+    margin: 0;
+}
+
+.tab-bar-container::before {
+    background-color: var(--brand-green);
+    height: calc(var(--tab-bar-height) / 2);
+    width: 100%;
+    display: block;
+    content: "";
+}
+
+.slideshow-wrapper {
+    max-width: unset;
+}
+
+.social-links {
+    display: flex;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.social-links img {
+    display: block;
+    height: calc(var(--tab-bar-height) - 2px);
+    width: auto;
+}
+
+.social-links p {
+    margin: 0 14px 0 0;
+}
+
+.slides-container > div > div {
+    display: flex;
+    justify-content: center;
+}
+
+/* desktop styles */
+@media (min-width: 900px) {
+    main .slideshow-container {
+        --tab-bar-height: 24px;
+    }
+
+    .section > div.slideshow-wrapper {
+        max-width: unset;
+    }
+
+    .social-links p {
+        margin: 0 4px 0 0;
+    }
+
+    .tab-bar-container > ol {
+        top: -10px;
+        left: 50%;
+        margin: 0 0 0 -40px;
+    }
+
+    .tab-bar-container > ol button {
+        padding: 0;
+    }
+}
