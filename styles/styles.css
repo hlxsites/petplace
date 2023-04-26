@@ -23,6 +23,7 @@
   --text-color-alt: #363636;
   --color-gray: #8f8f8f;
   --color-blue: #639af9;
+  --color-blue-dark: #5870A2;
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
@@ -31,9 +32,9 @@
 
   /* body sizes */
   --body-font-size-default: 16px;
-  --body-font-size-m: 22px;
-  --body-font-size-s: 18px;
-  --body-font-size-xs: 16px;
+  --body-font-size-m: var(--body-font-size-default);
+  --body-font-size-s: 14px;
+  --body-font-size-xs: 13px;
   --body-font-size-xxs: 13px;
 
   /* heading sizes */
@@ -53,6 +54,9 @@
 @media (min-width: 600px) {
   :root {
     --body-font-size-default: 18px;
+    --body-font-size-s: 16px;
+    --body-font-size-xs: 14px;
+    --body-font-size-xxs: 13px;
     --heading-font-size-xxl: 2.25em;
   }
 }
@@ -65,7 +69,6 @@
 }
 
 /* Font fallbacks to limit CLS */
-
 @font-face {
   font-family: 'Libre Franklin Fallback';
   size-adjust: 103.331%;
@@ -105,10 +108,6 @@ body.appear {
 
 header {
   height: var(--nav-height);
-}
-
-footer {
-  background-color: var(--background-color-dark);
 }
 
 h1, h2, h3,
@@ -333,12 +332,12 @@ a.sr-focusable:focus {
 }
 
 .sr-only:not(:focus, :active) {
-  clip: rect(0 0 0 0); 
+  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
   overflow: hidden;
   position: absolute;
-  white-space: nowrap; 
+  white-space: nowrap;
   width: 1px;
 }
 
@@ -346,6 +345,7 @@ a.sr-focusable:focus {
 
 @media (min-width: 900px) {
   .section > div {
+    width: 100%;
     margin: auto;
   }
 }
@@ -387,6 +387,13 @@ a.sr-focusable:focus {
 
 .home-page .centered h2::after {
   display: none;
+}
+
+.home-page h4 {
+  font-weight: 800;
+  margin: 0;
+  padding-bottom: 10px;
+  line-height: 1;
 }
 
 @media (min-width: 600px) {
