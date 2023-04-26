@@ -64,7 +64,7 @@ export default async function decorate(block) {
 
     const title = document.createElement('a');
     title.href = dta.path;
-    const titleHeader = document.createElement('h4');
+    const titleHeader = document.createElement('h3');
     titleHeader.innerHTML = dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'));
     title.append(titleHeader);
     const dateAuthorContainer = document.createElement('div');
