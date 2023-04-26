@@ -16,6 +16,52 @@ import {
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
+async function loadScript(path, options = {}) {
+  const script = document.createElement('script');
+  if (options.async) {
+    script.async = true;
+  }
+  if (options.defer) {
+    script.defer = true;
+  }
+  script.src = path;
+  document.head.appendChild(script);
+  return new Promise((resolve, reject) => {
+    script.onload = () => resolve();
+    script.onerror = (err) => reject(err);
+  });
+}
+
+async function loadAccessibeWidget() {
+  await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', { async: true });
+  const HIGHLIGHT_COLOR = '#FF7D5A';
+  window.acsbJS.init({
+    statementLink: '',
+    footerHtml: '',
+    hideMobile: false,
+    hideTrigger: false,
+    language: 'en',
+    position: 'right',
+    leadColor: HIGHLIGHT_COLOR,
+    triggerColor: HIGHLIGHT_COLOR,
+    triggerRadius: '50%',
+    triggerPositionX: 'right',
+    triggerPositionY: 'bottom',
+    triggerIcon: 'wheels',
+    triggerSize: 'medium',
+    triggerOffsetX: 20,
+    triggerOffsetY: 20,
+    mobile: {
+      triggerSize: 'small',
+      triggerPositionX: 'right',
+      triggerPositionY: 'bottom',
+      triggerOffsetX: 10,
+      triggerOffsetY: 10,
+      triggerRadius: '50%',
+    },
+  });
+}
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -110,6 +156,9 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  if (window.location.hostname === 'www.petplace.com') {
+    loadAccessibeWidget();
+  }
 }
 
 /**
