@@ -20,6 +20,27 @@ export default async function decorate(block) {
     footer.innerHTML = html;
 
     decorateIcons(footer);
-    block.append(footer);
+
+    const sections = ['nav', 'legal'];
+    [...footer.children].forEach((child, i) => {
+      const container = document.createElement('div');
+      container.classList.add(sections[i] ? `footer-${sections[i]}` : '');
+      container.append(child);
+      decorateIcons(container);
+      block.append(container);
+    });
+
+    block.querySelector('.footer-nav ul:first-of-type').classList.add('footer-social');
+    block.querySelectorAll('.footer-social a').forEach((a) => {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+      a.setAttribute('aria-label', `Open our ${a.firstElementChild.classList[1].substring(5)} page in a new tab.`);
+    });
+
+    const nav = document.createElement('nav');
+    nav.setAttribute('aria-label', 'Footer Navigation');
+    const links = block.querySelector('.footer-nav ul ~ ul');
+    links.replaceWith(nav);
+    nav.append(links);
   }
 }

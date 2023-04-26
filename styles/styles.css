@@ -23,6 +23,7 @@
   --text-color-alt: #363636;
   --color-gray: #8f8f8f;
   --color-blue: #639af9;
+  --color-blue-dark: #5870A2;
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
@@ -31,9 +32,9 @@
 
   /* body sizes */
   --body-font-size-default: 16px;
-  --body-font-size-m: 22px;
-  --body-font-size-s: 18px;
-  --body-font-size-xs: 16px;
+  --body-font-size-m: var(--body-font-size-default);
+  --body-font-size-s: 14px;
+  --body-font-size-xs: 13px;
   --body-font-size-xxs: 13px;
 
   /* heading sizes */
@@ -53,6 +54,9 @@
 @media (min-width: 600px) {
   :root {
     --body-font-size-default: 18px;
+    --body-font-size-s: 16px;
+    --body-font-size-xs: 14px;
+    --body-font-size-xxs: 13px;
     --heading-font-size-xxl: 2.25em;
   }
 }
@@ -105,10 +109,6 @@ body.appear {
 
 header {
   height: var(--nav-height);
-}
-
-footer {
-  background-color: var(--background-color-dark);
 }
 
 h1, h2, h3,
