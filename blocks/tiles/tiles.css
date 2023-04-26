@@ -68,9 +68,9 @@
     line-height: 1.2rem;
     display: inline-block;
     border-radius: 15px;
-    font-family: Raleway,sans-serif;
+    font-family: var(--heading-font-family);
     font-weight: 800;
-    font-size: .875rem;
+    font-size: var(--heading-font-size-xs);
 }
 
 .tile .tile-contents {
