@@ -47,7 +47,7 @@
 }
 
 .footer-nav li {
-  color: var(--color-blue-light);
+  color: var(--color-blue-dark);
   font-family: var(--heading-font-family);
   font-size: var(--body-font-size-m);
   line-height: 1;
