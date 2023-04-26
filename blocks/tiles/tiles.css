@@ -203,7 +203,7 @@
 
     .tile.tile-0 {
         flex-grow: 1;
-        margin-right: 20px;
+        margin-left: 0;
     }
 
     .small-tiles-wrapper {

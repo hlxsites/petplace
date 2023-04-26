@@ -56,8 +56,9 @@
 * {
   box-sizing: border-box;
 }
+
 html {
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
 }
 
 body {
@@ -233,9 +234,10 @@ main .section {
     padding: 64px 32px;
   }
 }
+
 @media (min-width: 900px) {
   .section > div {
-    max-width: 1300px;
+    max-width: 1344px;
     width: 100%;
     margin: auto;
   }
