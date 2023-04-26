@@ -1,3 +1,7 @@
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
 export default async function decorate(block) {
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
@@ -67,8 +71,8 @@ export default async function decorate(block) {
     dateAuthorContainer.classList.add('date-author-container');
 
     const date = new Date(dta.date * 1000);
-    const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
-    const formattedDate = date.toLocaleDateString('en-US', dateOptions);
+    date.setHours(date.getHours() + (date.getTimezoneOffset() / 60));
+    const formattedDate = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 
     dateAuthorContainer.append(`${formattedDate} · `);
     dateAuthorContainer.append(dta.author);
