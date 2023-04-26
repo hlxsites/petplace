@@ -82,16 +82,11 @@
     margin-bottom: 0.5rem;
     font-size: 1rem;
     line-height: 1;
-    font-weight: 800;
     color: #28061e;
 }
 
 .tile .tile-contents .date-author-container {
     font-size: .875rem;
-    font-weight: 400;
-    color: #28061e;
-    line-height: 1.4;
-    font-family: libre-franklin, sans-serif;
 }
 
 .tile.tile-0 {
