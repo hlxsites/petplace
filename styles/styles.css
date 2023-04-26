@@ -69,7 +69,6 @@
 }
 
 /* Font fallbacks to limit CLS */
-
 @font-face {
   font-family: 'Libre Franklin Fallback';
   size-adjust: 103.331%;
@@ -333,12 +332,12 @@ a.sr-focusable:focus {
 }
 
 .sr-only:not(:focus, :active) {
-  clip: rect(0 0 0 0); 
+  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
   overflow: hidden;
   position: absolute;
-  white-space: nowrap; 
+  white-space: nowrap;
   width: 1px;
 }
 
@@ -346,6 +345,7 @@ a.sr-focusable:focus {
 
 @media (min-width: 900px) {
   .section > div {
+    width: 100%;
     margin: auto;
   }
 }
@@ -387,6 +387,13 @@ a.sr-focusable:focus {
 
 .home-page .centered h2::after {
   display: none;
+}
+
+.home-page h4 {
+  font-weight: 800;
+  margin: 0;
+  padding-bottom: 10px;
+  line-height: 1;
 }
 
 @media (min-width: 600px) {

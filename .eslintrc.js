@@ -17,5 +17,6 @@ module.exports = {
     'import/extensions': ['error', {
       js: 'always',
     }],
+    'max-length': 'off',
   },
 };
