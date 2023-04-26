@@ -24,7 +24,7 @@
     display: block;
     border-bottom: 2px solid #ff7d5a;
     margin-top: 8px;
-    margin-bottom: -8px;
+    margin-bottom: 0;
     max-width: 200px;
 }
 
