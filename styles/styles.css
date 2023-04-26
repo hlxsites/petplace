@@ -68,14 +68,6 @@
   }
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  text-rendering: optimizelegibility;
-}
-
 /* Font fallbacks to limit CLS */
 @font-face {
   font-family: 'Libre Franklin Fallback';
@@ -340,12 +332,12 @@ a.sr-focusable:focus {
 }
 
 .sr-only:not(:focus, :active) {
-  clip: rect(0 0 0 0); 
+  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
   overflow: hidden;
   position: absolute;
-  white-space: nowrap; 
+  white-space: nowrap;
   width: 1px;
 }
 
@@ -353,7 +345,6 @@ a.sr-focusable:focus {
 
 @media (min-width: 900px) {
   .section > div {
-    max-width: 1344px;
     width: 100%;
     margin: auto;
   }

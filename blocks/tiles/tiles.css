@@ -4,7 +4,6 @@
 }
 
 .section.tiles-container {
-    background: #f2f6fc;
     display: flex;
     flex-direction: column;
 }
@@ -115,8 +114,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background: #5773a8!important;
-    background: rgb(70 92 134 / 60%)!important;
+    background: rgb(70 92 134 / 60%);
     color: white;
     padding: 1.5rem 2rem 1rem;
     border-bottom-left-radius: 6px;
@@ -125,6 +123,7 @@
     justify-content: center;
     flex-direction: column;
     max-width: 100%;
+    box-sizing: border-box;
 }
 
 .tile.tile-0 .category-link-btn {
@@ -139,7 +138,7 @@
     font-size: .875rem;
     color: #fff;
     line-height: 30px;
-    height: 30px;
+    height: 2rem;
     padding-left: 14px;
     padding-right: 14px;
     display: none;
@@ -151,7 +150,7 @@
 }
 
 .tile.tile-0 .tile-contents h4 {
-    font-size: calc(1.325rem + .9vw);
+    font-size: 1.5rem;
     color: #fff;
     margin: 0;
     padding-bottom: 10px;
@@ -170,7 +169,7 @@
 
 @media screen and (min-width: 461px) {
     .tile .tile-contents h4 {
-        font-size: calc(1.2625rem + .15vw);
+        font-size: 1.25rem;
         line-height: 1.1;
     }
 }
@@ -196,7 +195,7 @@
 }
 
 @media screen and (min-width: 1024px) {
-    .tiles-container {
+    .tiles-block-container {
         display: flex;
         justify-content: space-between;
     }
@@ -217,7 +216,6 @@
         background: #5773a8;
         box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
         border-radius: 15px;
-        font-family: Raleway,sans-serif;
         font-weight: 800;
         font-size: .875rem;
         color: #fff;

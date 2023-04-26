@@ -1,26 +1,23 @@
 export default async function decorate(block) {
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
-  tileContainer.className = 'tiles-container';
+  tileContainer.className = 'tiles-block-container';
 
-  const data = await new Promise((resolve, reject) => {
-    const urls = [...block.children].map((row) => {
-      const path = new URL(row.firstElementChild.firstElementChild.text).pathname;
-      return `https://admin.hlx.page/index/hlxsites/petplace/main/${path}`;
-    });
-
-    // eslint-disable-next-line no-promise-executor-return
-    return Promise.all(urls.map((u) => fetch(u)))
-      .then((responses) => Promise.all(responses.map((res) => res.json()))).then((res) => {
-        resolve(res.map((dta) => ({
-          ...dta?.results[0]?.record,
-          path: dta.webPath,
-        })));
-      })
-      .catch((err) => {
-        reject(err);
-      });
+  const urls = [...block.children].map((row) => {
+    const path = new URL(row.firstElementChild.firstElementChild.text).pathname;
+    return `https://admin.hlx.page/index/hlxsites/petplace/main${path}`;
   });
+  // eslint-disable-next-line no-promise-executor-return
+  const data = await Promise.all(urls.map((u) => fetch(u)))
+    .then((responses) => Promise.all(responses.map((res) => res.json())))
+    .then((res) => res.map((dta) => ({
+      ...dta?.results[0]?.record,
+      path: dta.webPath,
+    })))
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.log('error', err);
+    });
 
   data.forEach((dta, index) => {
     // Create tile div for each individual tile
