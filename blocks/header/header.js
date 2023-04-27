@@ -103,12 +103,18 @@ export default async function decorate(block) {
     nav.id = 'nav';
     nav.innerHTML = html;
 
-    const classes = ['brand', 'sections', 'tools'];
+    const classes = ['hamburger', 'brand', 'sections', 'tools'];
     classes.forEach((c, i) => {
       const section = nav.children[i];
       if (section) section.classList.add(`nav-${c}`);
     });
 
+    const navHamburger = nav.querySelector('.nav-hamburger');
+    navHamburger.innerHTML = `
+      <button type="button" aria-controls="nav" aria-label="Open navigation">
+        ${navHamburger.innerHTML}
+      </button>`;
+    navHamburger.querySelector('button').addEventListener('click', () => console.log('TODO'));
     const navSections = nav.querySelector('.nav-sections');
     if (navSections) {
       navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {
@@ -123,14 +129,6 @@ export default async function decorate(block) {
       });
     }
 
-    // hamburger for mobile
-    const hamburger = document.createElement('div');
-    hamburger.classList.add('nav-hamburger');
-    hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-        <span class="nav-hamburger-icon"></span>
-      </button>`;
-    hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-    nav.prepend(hamburger);
     nav.setAttribute('aria-expanded', 'false');
     // prevent mobile nav behavior on window resize
     toggleMenu(nav, navSections, isDesktop.matches);
