@@ -144,7 +144,7 @@ export default async function decorate(block) {
     navTools.append(searchForm);
 
     // nav.setAttribute('aria-expanded', 'false');
-    // // prevent mobile nav behavior on window resize
+    // prevent mobile nav behavior on window resize
     // toggleMenu(nav, navSections, isDesktop.matches);
     // isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
 
