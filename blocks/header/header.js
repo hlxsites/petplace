@@ -129,6 +129,18 @@ export default async function decorate(block) {
       });
     }
 
+    const navTools = nav.querySelector('.nav-tools');
+    const searchField = document.createElement('input');
+    searchField.name = 'query';
+    searchField.type = 'search';
+    searchField.placeholder = navTools.textContent;
+    const searchForm = document.createElement('form');
+    searchForm.action = 'search';
+    searchForm.method = 'get';
+    searchForm.append(searchField);
+    navTools.innerHTML = '';
+    navTools.append(searchForm);
+
     nav.setAttribute('aria-expanded', 'false');
     // prevent mobile nav behavior on window resize
     toggleMenu(nav, navSections, isDesktop.matches);
