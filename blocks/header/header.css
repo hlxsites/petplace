@@ -8,6 +8,10 @@
   justify-content: space-between;
 }
 
+.nav-wrapper p {
+  margin: 0;
+}
+
 .nav-hamburger {
   flex: 0;
 }
