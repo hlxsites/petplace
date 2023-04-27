@@ -61,61 +61,44 @@ export default async function decorate($block) {
     $slide.setAttribute('aria-roledescription', 'slide');
     $slide.setAttribute('aria-label', `Slide ${i + 1} of ${numChildren}`);
     $slide.setAttribute('aria-hidden', (i !== 0).toString());
-    if (i !== 0) disableChildLinks($slide);
+    $slide.classList.add('slide');
+
+    const textDiv = $slide.children[1];
+    textDiv.classList.add('text-div');
 
     // Make the picture be the link
-    const $anchor = $slide.querySelector('a');
-    const $picture = $slide.querySelector('picture');
-    $anchor.innerHTML = $picture.outerHTML;
-    $picture.remove();
+    const $pictures = $slide.querySelectorAll('picture');
+
+    $pictures.forEach((picture, index) => {
+      if (index !== 2) {
+        picture.remove();
+      }
+    });
   });
 
-  // create controls
-  const $controlsContainer = document.createElement('div');
-  $controlsContainer.classList.add('controls-container');
-  $controlsContainer.innerHTML = `
-    <button name="prev" aria-label="Previous Slide" class="control-button"><span class="icon icon-chevron-left" /></button>
-    <button name="next" aria-label="Next Slide" class="control-button"><span class="icon icon-chevron-right" /></button>
-  `;
-  $block.append($controlsContainer);
-  decorateIcons($controlsContainer);
-
-  const nextButton = $controlsContainer.querySelector('button[name="next"]');
-  const prevButton = $controlsContainer.querySelector('button[name="prev"]');
-
-  nextButton.addEventListener('click', () => {
-    const currentIndex = getCurrentSlideIndex($slidesContainer);
-    updateSlide((currentIndex + 1) % numChildren, $block);
-  });
-
-  prevButton.addEventListener('click', () => {
-    const currentIndex = getCurrentSlideIndex($slidesContainer);
-    updateSlide((((currentIndex - 1) % numChildren) + numChildren) % numChildren, $block);
-  });
-
-  // create tab bar
-  const $tabBar = document.createElement('div');
-  $tabBar.classList.add('tab-bar-container');
-  $tabBar.innerHTML = '<ol role="tablist"></ol>';
+  // create slider nav bar
+  const $sliderNavBar = document.createElement('div');
+  $sliderNavBar.classList.add('tab-bar-container');
+  $sliderNavBar.innerHTML = '<ol role="tablist"></ol>';
   [...$slidesContainer.children].forEach(($slide, i) => {
-    const $tabBarButton = document.createElement('li');
+    const $sliderNavBarButton = document.createElement('li');
 
     // set a11y properties
-    $tabBarButton.setAttribute('role', 'tab');
-    $tabBarButton.setAttribute('aria-selected', (i === 0).toString());
+    $sliderNavBarButton.setAttribute('role', 'tab');
+    $sliderNavBarButton.setAttribute('aria-selected', (i === 0).toString());
 
     // add interactivity
-    $tabBarButton.innerHTML = `<button class="control-button" aria-label="Go to slide ${i + 1} of ${numChildren}"><span class="icon icon-circle${i === 0 ? '-fill' : ''}" /></button>`;
-    $tabBar.querySelector('ol').append($tabBarButton);
-    $tabBarButton.querySelector('button').addEventListener('click', () => {
+    $sliderNavBarButton.innerHTML = `<button class="control-button" aria-label="Go to slide ${i + 1} of ${numChildren}"><span class="icon icon-circle${i === 0 ? '-fill' : ''}" /></button>`;
+    $sliderNavBar.querySelector('ol').append($sliderNavBarButton);
+    $sliderNavBarButton.querySelector('button').addEventListener('click', () => {
       updateSlide(i, $block);
     });
   });
-  $block.append($tabBar);
-  decorateIcons($tabBar);
+  $block.append($sliderNavBar);
+  decorateIcons($sliderNavBar);
 
   // auto-play
-  const autoplayTimer = new ResumableInterval(7000, () => {
+  const autoplayTimer = new ResumableInterval(70000000, () => {
     const currentIndex = getCurrentSlideIndex($slidesContainer);
     updateSlide((currentIndex + 1) % numChildren, $block);
   });

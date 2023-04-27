@@ -57,13 +57,20 @@
     --body-font-size-s: 16px;
     --body-font-size-xs: 14px;
     --body-font-size-xxs: 13px;
-    --heading-font-size-xxl: 2.25em;
+    --heading-font-size-xxl: 2.75rem;
   }
 }
 
 @media (min-width: 900px) {
   :root {
-    --heading-font-size-xxl: 2.5em;
+    --heading-font-size-xxl: 3.125rem;
+    --heading-font-size-xl: 2em;
+  }
+}
+
+@media (min-width: 1216px) {
+  :root {
+    --heading-font-size-xxl: 4.125rem;
     --heading-font-size-xl: 2em;
   }
 }
@@ -131,7 +138,12 @@ h4 { font-size: var(--heading-font-size-m) }
 h5 { font-size: var(--heading-font-size-s) }
 h6 { font-size: var(--heading-font-size-xs) }
 
-:is(h1, h2, h3, h4, h5, h6) em {
+h1 {
+  color: #fff;
+  line-height: 1.1;
+}
+
+:is(h2, h3, h4, h5, h6) em {
   color: var(--highlight-color);
   font-style: normal;
 }
