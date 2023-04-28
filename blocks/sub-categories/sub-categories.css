@@ -1,0 +1,23 @@
+.sub-categories a {
+  display: block;
+  padding: 0 1rem;
+  margin-bottom: .75rem;
+  border-radius: 1.1em;
+  color: var(--text-color-inverted);
+  font-family: var(--heading-font-family);
+  line-height: 2.2;
+  text-align: center;
+}
+
+.sub-categories a.has-children::after {
+  display: inline-block;
+  margin-left: 0.5rem;
+  width: 20px;
+  height: 1em;
+  background: #fff;
+  content: '';
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
+  mask: url('../../icons/arrow.svg');
+  vertical-align: middle;
+}
