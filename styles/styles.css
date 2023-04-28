@@ -22,6 +22,7 @@
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
   --color-gray: #8f8f8f;
+  --color-gray-dark: #4a4a4a;
   --color-blue: #639af9;
   --color-blue-dark: #5870A2;
 
@@ -358,8 +359,8 @@ a.sr-focusable:focus {
 
 @media (min-width: 900px) {
   .section > div {
+    margin: 0 auto;
     width: 100%;
-    margin: auto;
   }
 }
 
@@ -375,7 +376,7 @@ a.sr-focusable:focus {
   background: var(--background-color-light);
 }
 
-.home-page h2 {
+.home-page main h2 {
   position: relative;
   font-size: 1.7rem;
   padding-bottom: .2em;
@@ -383,7 +384,7 @@ a.sr-focusable:focus {
   border-bottom: 2px solid var(--color-gray);
 }
 
-.home-page h2::after {
+.home-page main h2::after {
   position: absolute;
   content: '';
   display: block;
@@ -414,7 +415,7 @@ a.sr-focusable:focus {
     font-size: 2.667em;
   }
 
-  .home-page h2 {
+  .home-page main h2 {
     font-size: 1.75em;
   }
 }
@@ -424,7 +425,7 @@ a.sr-focusable:focus {
     font-size: 3.222em;
   }
 
-  .home-page h2 {
+  .home-page main h2 {
     font-size: 2em;
   }
 }
@@ -434,7 +435,7 @@ a.sr-focusable:focus {
     font-size: 3.667em;
   }
 
-  .home-page h2 {
+  .home-page main h2 {
     font-size: 2.25em;
   }
 }
@@ -443,15 +444,15 @@ a.sr-focusable:focus {
   background: var(--background-color-light);
 }
 
-.article-page p {
+.article-page main p {
   margin-bottom: .75em;
 }
 
-.article-page ul {
+.article-page main ul {
   margin: 1.25rem 0 1.5rem;
   padding-left: 1.25rem;
 }
 
-.article-page li {
+.article-page main li {
   margin-bottom: .25rem;
 }
