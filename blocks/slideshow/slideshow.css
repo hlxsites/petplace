@@ -8,7 +8,7 @@ main .slideshow-container {
 
 .slides-container {
     display: flex;
-    transition: transform 200ms;
+    transition: transform 600ms;
 }
 
 .slides-container img {
@@ -96,6 +96,11 @@ main .slideshow-container {
     .slide .text-div {
         align-items: flex-start;
         margin-left: 25px;
+    }
+    
+    .slide .text-div h1 {
+        max-width: 768px;
+        text-align: left;
     }
 }
 

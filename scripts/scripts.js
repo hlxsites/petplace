@@ -21,6 +21,14 @@ window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information 
  * @param {Element} main The container element
  */
 function buildHeroBlock(main) {
+  const excludedPages = ['home-page'];
+  const bodyClass = document.querySelector('body').className;
+  // check the page's body class to see if it matched the list
+  // of excluded page for auto-blocking the hero
+  const pageIsExcluded = excludedPages.some((page) => bodyClass.includes(page));
+  if (pageIsExcluded) {
+    return;
+  }
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise

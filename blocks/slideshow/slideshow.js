@@ -95,7 +95,7 @@ export default async function decorate($block) {
   decorateIcons($sliderNavBar);
 
   // auto-play
-  const autoplayTimer = new ResumableInterval(70000000, () => {
+  const autoplayTimer = new ResumableInterval(5000, () => {
     const currentIndex = getCurrentSlideIndex($slidesContainer);
     updateSlide((currentIndex + 1) % numChildren, $block);
   });
