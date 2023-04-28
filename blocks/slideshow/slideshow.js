@@ -1,4 +1,6 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { decorateResponsiveImages } from '../../scripts/scripts.js';
+
 import ResumableInterval from './ResumeableInterval.js';
 
 function getCurrentSlideIndex($block) {
@@ -63,17 +65,12 @@ export default async function decorate($block) {
     $slide.setAttribute('aria-hidden', (i !== 0).toString());
     $slide.classList.add('slide');
 
+    const imgDiv = $slide.children[0];
+    imgDiv.classList.add('img-div');
     const textDiv = $slide.children[1];
     textDiv.classList.add('text-div');
 
-    // Make the picture be the link
-    const $pictures = $slide.querySelectorAll('picture');
-
-    $pictures.forEach((picture, index) => {
-      if (index !== 2) {
-        picture.remove();
-      }
-    });
+    decorateResponsiveImages(imgDiv);
   });
 
   // create slider nav bar

@@ -14,26 +14,31 @@ main .slideshow-container {
 .slides-container img {
     display: block;
     filter: brightness(80%);
+    height: auto;
+    width: 100vw;
 }
 
-.slides-container > div {
+.slides-container .slide {
     width: 100vw;
     flex-shrink: 0;
+    position: relative;
 }
 
 .slides-container [aria-hidden="true"] {
     display: block;
 }
-.slide {
-    position: relative;
-}
+
+
 .slide .text-div {
     position: absolute;
-    left: 75px;
-    top: 100px;
-    max-width: 500px;
+    left: 0;
+    top: 0;
     display: flex;
+    justify-content: center;
     flex-direction: column;
+    bottom: 0;
+    right: 0;
+    text-align: center;
 }
 
 .control-button {
@@ -64,66 +69,38 @@ main .slideshow-container {
 }
 
 .tab-bar-container {
-    background-color: gray;
     height: var(--tab-bar-height);
-    position: relative;
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .tab-bar-container > ol {
     display: flex;
     list-style: none;
     padding: 0;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: -28px;
-    left: 10px;
 }
 
 .tab-bar-container > ol button {
-    padding: 8px;
+    padding: 2px;
     margin: 0;
-}
-
-.tab-bar-container::before {
-    background-color: var(--brand-green);
-    height: calc(var(--tab-bar-height) / 2);
-    width: 100%;
-    display: block;
-    content: "";
 }
 
 .slideshow-wrapper {
     max-width: unset;
 }
 
-
-.slides-container > div > div {
-    display: flex;
-    justify-content: center;
+@media (min-width: 768px) {
+    .slide .text-div {
+        align-items: flex-start;
+        margin-left: 25px;
+    }
 }
 
-/* desktop styles */
-@media (min-width: 900px) {
-    main .slideshow-container {
-        --tab-bar-height: 24px;
-    }
-
+@media (min-width: 1200px) {
     .section > div.slideshow-wrapper {
-        max-width: unset;
-    }
-
-    .social-links p {
-        margin: 0 4px 0 0;
-    }
-
-    .tab-bar-container > ol {
-        top: -10px;
-        left: 50%;
-        margin: 0 0 0 -40px;
-    }
-
-    .tab-bar-container > ol button {
-        padding: 0;
+        max-width: 100%;
     }
 }

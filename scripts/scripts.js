@@ -122,6 +122,38 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+function createResponsiveImage(pictures, breakpoint = [440, 768]) {
+  pictures.sort((p1, p2) => {
+    const img1 = p1.querySelector('img');
+    const img2 = p2.querySelector('img');
+    return img1.width - img2.width;
+  });
+
+  const responsivePicture = document.createElement('picture');
+  const defaultImage = pictures[0].querySelector('img');
+  responsivePicture.append(defaultImage);
+  pictures.forEach((picture, index) => {
+    const srcElem = picture.querySelector('source:not([media])');
+    const srcElemBackup = srcElem.cloneNode();
+    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.type = 'img/png';
+
+    if (index > 0) {
+      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+    }
+    responsivePicture.prepend(srcElemBackup);
+    responsivePicture.prepend(srcElem);
+  });
+
+  return responsivePicture;
+}
+
+export function decorateResponsiveImages(container) {
+  const responsiveImage = createResponsiveImage([...container.querySelectorAll('picture')]);
+  container.innerHTML = responsiveImage.outerHTML;
+}
+
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
