@@ -24,7 +24,7 @@ function isMobile() {
   return window.innerWidth < 1200;
 }
 
-function decorateCategorySidebar() {
+function buildCategorySidebar() {
   const section = document.createElement('div');
   section.classList.add('sidebar');
   section.setAttribute('role', 'complementary');
@@ -85,10 +85,6 @@ function buildHeroBlock(main) {
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
   }
-
-  if (document.body.classList.contains('category-index')) {
-    main.insertBefore(decorateCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
-  }
 }
 
 /**
@@ -98,6 +94,10 @@ function buildHeroBlock(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+
+    if (document.body.classList.contains('category-index')) {
+      main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
