@@ -130,7 +130,7 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
-function createResponsiveImage(pictures, breakpoint = [440, 768]) {
+function createResponsiveImage(pictures, breakpoint) {
   pictures.sort((p1, p2) => {
     const img1 = p1.querySelector('img');
     const img2 = p2.querySelector('img');
@@ -157,9 +157,16 @@ function createResponsiveImage(pictures, breakpoint = [440, 768]) {
   return responsivePicture;
 }
 
-export function decorateResponsiveImages(container) {
-  const responsiveImage = createResponsiveImage([...container.querySelectorAll('picture')]);
-  container.innerHTML = responsiveImage.outerHTML;
+/**
+ *
+ * @param container - HTML parent element that contains the multiple <picture>
+ *     tags to be used in building responsive image
+ * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
+ */
+export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
+  const responsiveImage = createResponsiveImage([...container.querySelectorAll('picture')], breakpoints);
+  container.innerHTML = '';
+  container.append(responsiveImage);
 }
 
 async function loadPage() {
