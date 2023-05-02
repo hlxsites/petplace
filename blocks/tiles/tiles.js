@@ -7,10 +7,10 @@ export default async function decorate(block) {
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-block-container';
 
-  const res = await fetch('/article/query-index.json');
+  const res = await fetch('/article/query-index.json?sheet=article');
   const queryData = await res.json();
 
-  const articles = queryData?.article?.data;
+  const articles = queryData?.data;
 
   const data = [...block.children].map((row) => {
     const path = new URL(row.firstElementChild.firstElementChild.href).pathname;
