@@ -28,6 +28,10 @@ main .slideshow-container {
     display: block;
 }
 
+.slides-container [aria-hidden="true"] .text-div {
+    display: none;
+}
+
 
 .slide .text-div {
     position: absolute;
@@ -39,6 +43,7 @@ main .slideshow-container {
     bottom: 0;
     right: 0;
     text-align: center;
+    margin: 0 auto;
 }
 
 .control-button {
@@ -92,7 +97,7 @@ main .slideshow-container {
 @media (min-width: 768px) {
     .slide .text-div {
         align-items: flex-start;
-        margin-left: 25px;
+        padding-left: 25px;
     }
 
     .slide .text-div h1 {
@@ -102,6 +107,11 @@ main .slideshow-container {
 }
 
 @media (min-width: 1200px) {
+    .slide .text-div {
+        margin: 0 auto;
+        max-width: 1344px;
+    }
+
     .section > div.slideshow-wrapper {
         max-width: 100%;
     }
