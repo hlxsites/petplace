@@ -20,6 +20,8 @@ export default async function decorate(block) {
         return articles[i];
       }
     }
+    // eslint-disable-next-line no-console
+    console.error(`No article in index found for ${path}`);
     return null;
   }).filter((item) => item); // filter out null values returned from the for loop
 
