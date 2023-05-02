@@ -77,19 +77,18 @@ export function sampleRUM(checkpoint, data = {}) {
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
  */
-export function loadCSS(href, callback) {
-  if (!document.querySelector(`head > link[href="${href}"]`)) {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', href);
-    if (typeof callback === 'function') {
-      link.onload = (e) => callback(e.type);
-      link.onerror = (e) => callback(e.type);
-    }
-    document.head.appendChild(link);
-  } else if (typeof callback === 'function') {
-    callback('noop');
+export async function loadCSS(href) {
+  if (document.querySelector(`head > link[href="${href}"]`)) {
+    return Promise.resolve('noop');
   }
+  const link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  return new Promise((resolve, reject) => {
+    link.onload = (e) => resolve(e.type);
+    link.onerror = (e) => reject(e);
+    link.setAttribute('href', href);
+    document.head.appendChild(link);
+  });
 }
 
 /**
@@ -175,7 +174,7 @@ export async function decorateIcons(element) {
   svgSprite.innerHTML += symbols;
 
   icons.forEach((span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).split('-')[1];
+    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
     // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
     if (ICONS_CACHE[iconName].styled) {
@@ -390,9 +389,7 @@ export async function loadBlock(block) {
     block.dataset.blockStatus = 'loading';
     const { blockName } = block.dataset;
     try {
-      const cssLoaded = new Promise((resolve) => {
-        loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`, resolve);
-      });
+      const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`);
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {

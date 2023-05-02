@@ -10,24 +10,22 @@ main .hero-container {
   
 main .hero {
   position: relative;
-  padding: 32px;
+  padding: 1rem 1.5rem;
   min-height: 300px;
 }
 
+main .hero > div > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 main .hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: white;
+  margin: 0 0 2rem;
+  color: var(--text-color);
 }
 
 main .hero picture {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  margin: 0 -1.5rem;
   object-fit: cover;
   box-sizing: border-box;
 }
@@ -36,4 +34,22 @@ main .hero img {
   object-fit: cover;
   width: 100%;
   height: 100%;
+}
+
+@media (min-width: 900px) {
+  main .hero h1 {
+    color: var(--text-color-inverted);
+    font-size: var(--heading-font-size-xxxl);
+  }
+
+  main .hero picture {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    object-fit: cover;
+    box-sizing: border-box;
+  }
 }
