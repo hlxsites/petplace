@@ -123,12 +123,20 @@ export default async function decorate($block) {
     updateSlide((currentIndex + 1) % numChildren, $block);
   });
   autoplayTimer.start();
+  let slideShowInteracted = false;
 
   $block.addEventListener('mouseenter', () => {
     autoplayTimer.pause();
   });
 
   $block.addEventListener('mouseleave', () => {
-    autoplayTimer.resume();
+    if (!slideShowInteracted) {
+      autoplayTimer.resume();
+    }
+  });
+
+  $block.addEventListener('click', () => {
+    slideShowInteracted = true;
+    autoplayTimer.pause();
   });
 }
