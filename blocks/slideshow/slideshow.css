@@ -28,11 +28,6 @@ main .slideshow-container {
     display: block;
 }
 
-.slides-container [aria-hidden="true"] .text-div {
-    display: none;
-}
-
-
 .slide .text-div {
     position: absolute;
     left: 0;
@@ -44,6 +39,10 @@ main .slideshow-container {
     right: 0;
     text-align: center;
     margin: 0 auto;
+}
+
+.slides-container [aria-hidden="true"] .text-div {
+    display: none;
 }
 
 .control-button {
