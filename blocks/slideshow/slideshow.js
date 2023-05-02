@@ -1,7 +1,30 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages } from '../../scripts/scripts.js';
 
-import ResumableInterval from './ResumeableInterval.js';
+class ResumableInterval {
+  constructor(intervalTime, callback) {
+    this.interval = null;
+    this.intervalTime = intervalTime;
+    this.callback = callback;
+  }
+
+  start() {
+    this.interval = setInterval(() => {
+      this.callback();
+    }, this.intervalTime);
+  }
+
+  pause() {
+    clearInterval(this.interval);
+  }
+
+  resume() {
+    clearInterval(this.interval);
+    this.interval = setInterval(() => {
+      this.callback();
+    }, this.intervalTime);
+  }
+}
 
 function getCurrentSlideIndex($block) {
   return [...$block.children].findIndex(($child) => $child.getAttribute('active') === 'true');

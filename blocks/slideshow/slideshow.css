@@ -57,15 +57,12 @@ main .slideshow-container {
 .control-button svg {
     width: 32px;
     height: 32px;
+    color: #FF7D5A;
 }
 
 .tab-bar-container > ol svg {
     width: 20px;
     height: 20px;
-}
-
-.control-button:hover svg {
-    color: #7f7f7f;
 }
 
 .tab-bar-container {
@@ -97,7 +94,7 @@ main .slideshow-container {
         align-items: flex-start;
         margin-left: 25px;
     }
-    
+
     .slide .text-div h1 {
         max-width: 768px;
         text-align: left;
