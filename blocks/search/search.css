@@ -1,0 +1,97 @@
+.section.search-container {
+    overflow: visible;
+}
+
+.section.search-container .default-content-wrapper {
+    max-width: 726px;
+}
+
+.section.search-container h2 {
+    display: inline-block;
+    top: -60px;
+    background-color: var(--text-color-inverted);
+    padding: 40px 30px 0;
+    margin: 0 ;
+    bottom: 60px;
+}
+
+.section.search-container h2::before,
+.section.search-container h2::after {
+    content: " ";
+    position: absolute;
+    width: 60px;
+    height: 36px;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIxIiBoZWlnaHQ9IjM2IiB2aWV3Qm94PSIwIDAgMTIxIDM2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik05Mi44MDgyIDE5LjQ3OTRDODYuNzM3NSA3Ljg5MDQgNzQuNTk1OSAtMS4yNDgwNGUtMDUgNjAuNDU4NCAtMS4wMTE1MWUtMDVDNDYuNDA0MSAtNy43NjM3M2UtMDYgMzQuMTc5NCA3Ljg5MDQxIDI4LjEwODYgMTkuNDc5NUMyMi43MDMxIDI5Ljc1MzQgMTEuNzI1OCAzNiA2LjU3ODA3ZS0wNiAzNkw2MC41IDM2TDEyMSAzNkMxMDkuMjc0IDM2IDk4LjIxMzcgMjkuNzUzNCA5Mi44MDgyIDE5LjQ3OTRaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==");
+    top: 0;
+    z-index: 10;
+    left: -60px
+}
+
+.section.search-container h2::after {
+    display: block !important;
+    background-position: 100%;
+    right: -60px;
+    left: initial;
+    border-bottom: none;
+}
+
+
+.home-page .section.search-container p {
+    margin-top: -40px;
+    max-width: 726px;
+}
+
+
+.search-box-wrapper {
+    position: relative;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.search-box-wrapper .search-input{
+    font-size: 1.125rem;
+    outline: none;
+    background: hsl(0deg 0% 100% / 78%);
+    border-radius: 70px;
+    margin-bottom: 1rem;
+    width: 100%;
+    border: 1px solid hsl(0deg 0% 100% / 78%);
+    display: inline-block;
+    height: 44px;
+    padding-left: 30px;
+    padding-right: 10px;
+    box-shadow: 5px 5px 50px rgb(0 0 0 / 10%);
+}
+
+.search-box-wrapper .search-button {
+    width: 100%;
+    outline: none;
+    border-radius: 50px;
+    height: 40px;
+    background: var(--highlight-color);
+    color: var(--background-color);
+    text-transform: uppercase;
+    border: 1px solid hsl(0deg 0% 100% / 78%);
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-family: var(--heading-font-family);
+
+}
+
+@media (min-width: 461px) {
+    .search-box-wrapper .search-input{
+        height: 50px;
+        max-width: 700px;
+        padding-left: 30px;
+        padding-right: 260px;
+    }
+
+    .search-box-wrapper .search-button{
+        position: absolute;
+        top: -12px;
+        right: 4px;
+        height: 42px;
+        width: 250px;
+        margin-left: -254px;
+    }
+}
