@@ -4,6 +4,7 @@
 
 .section.search-container .default-content-wrapper {
     max-width: 726px;
+    margin: 0 auto;
 }
 
 .section.search-container h2 {
@@ -13,13 +14,14 @@
     padding: 40px 30px 0;
     margin: 0 ;
     bottom: 60px;
+    width: 60%;
 }
 
 .section.search-container h2::before,
 .section.search-container h2::after {
     content: " ";
     position: absolute;
-    width: 60px;
+    width: 61px;
     height: 36px;
     background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIxIiBoZWlnaHQ9IjM2IiB2aWV3Qm94PSIwIDAgMTIxIDM2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik05Mi44MDgyIDE5LjQ3OTRDODYuNzM3NSA3Ljg5MDQgNzQuNTk1OSAtMS4yNDgwNGUtMDUgNjAuNDU4NCAtMS4wMTE1MWUtMDVDNDYuNDA0MSAtNy43NjM3M2UtMDYgMzQuMTc5NCA3Ljg5MDQxIDI4LjEwODYgMTkuNDc5NUMyMi43MDMxIDI5Ljc1MzQgMTEuNzI1OCAzNiA2LjU3ODA3ZS0wNiAzNkw2MC41IDM2TDEyMSAzNkMxMDkuMjc0IDM2IDk4LjIxMzcgMjkuNzUzNCA5Mi44MDgyIDE5LjQ3OTRaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==");
     top: 0;
@@ -28,7 +30,7 @@
 }
 
 .section.search-container h2::after {
-    display: block !important;
+    display: block;
     background-position: 100%;
     right: -60px;
     left: initial;
@@ -78,7 +80,11 @@
 
 }
 
-@media (min-width: 461px) {
+@media (min-width: 600px) {
+    .section.search-container h2 {
+        width: 80%;
+    }
+
     .search-box-wrapper .search-input{
         height: 50px;
         max-width: 700px;
@@ -93,5 +99,11 @@
         height: 42px;
         width: 250px;
         margin-left: -254px;
+    }
+}
+
+@media (min-width: 768px) {
+    .section.search-container h2 {
+        width: initial;
     }
 }

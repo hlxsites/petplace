@@ -1,10 +1,6 @@
 export default async function decorate(block) {
-  let searchPlaceholder = 'Search for Posts...';
-  let searchButtonText = 'Search';
-  if (document.querySelector('body').classList.contains('search-page')) {
-    searchPlaceholder = 'Search...';
-    searchButtonText = 'Submit';
-  }
+  const searchPlaceholder = block.firstElementChild.children[0].textContent || 'Search…';
+  const searchButtonText = block.firstElementChild.children[1].textContent || 'Submit';
 
   const form = document.createElement('form');
   form.className = 'search-box-wrapper';
@@ -12,7 +8,7 @@ export default async function decorate(block) {
 
   const input = document.createElement('input');
   input.className = 'search-input';
-  input.type = 'text';
+  input.type = 'search';
   input.name = 'query';
   input.placeholder = searchPlaceholder;
 
@@ -21,13 +17,9 @@ export default async function decorate(block) {
   const button = document.createElement('button');
   button.type = 'submit';
   button.className = 'search-button';
-  button.innerHTML = searchButtonText;
+  button.textContent = searchButtonText;
 
   form.append(button);
-  block.textContent = '';
+  block.innerHTML = '';
   block.append(form);
-
-  // button.addEventListener('click', (e) => {
-  //   window.location.href = `/search?q=${input.value}`;
-  // });
 }
