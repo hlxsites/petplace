@@ -40,28 +40,12 @@ function buildHeroBlock(main) {
 }
 
 /**
- * Builds TOC block and prepends to main in a new section.
- * @param {Element} main The container element
- */
-function buildTOCBlock(main) {
-  const h2 = main.querySelector('h2');
-  const ol = main.querySelector('ol'); 
-  // eslint-disable-next-line no-bitwise  
-  if (h2 && ol && (h2.compareDocumentPosition(ol) & Node.DOCUMENT_POSITION_FOLLOWING)) {    
-    const section = document.createElement('div');     
-    section.append(buildBlock('toc', { elems: [h2, ol] }));
-    main.prepend(section);
-  }
-}
-
-/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    buildTOCBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
