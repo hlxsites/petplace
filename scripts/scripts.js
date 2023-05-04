@@ -73,6 +73,10 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  const template = document.head.querySelector('meta[name="template"]')?.getAttribute('content');
+  if (template) {
+    await loadCSS(`/templates/${template}.css`);
+  }
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
