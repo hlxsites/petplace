@@ -1,4 +1,6 @@
 import { getMetadata, decorateIcons } from '../../scripts/lib-franklin.js';
+import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
+import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 
 // // media query match that indicates mobile/tablet width
 // const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -95,63 +97,96 @@ export default async function decorate(block) {
   // fetch nav content
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta).pathname : '/nav';
-  const resp = await fetch(`${navPath}.plain.html`);
-
-  if (resp.ok) {
-    const html = await resp.text();
-
-    // decorate nav DOM
-    const nav = document.createElement('nav');
-    nav.id = 'nav';
-    nav.innerHTML = html;
-
-    const classes = ['hamburger', 'brand', 'sections', 'tools'];
-    classes.forEach((c, i) => {
-      const section = nav.children[i];
-      if (section) section.classList.add(`nav-${c}`);
-    });
-
-    const navHamburger = nav.querySelector('.nav-hamburger');
-    navHamburger.innerHTML = `
-      <button type="button" aria-controls="nav" aria-label="Open navigation">
-        ${navHamburger.innerHTML}
-      </button>`;
-    navHamburger.querySelector('button').addEventListener('click', () => console.log('TODO'));
-    // const navSections = nav.querySelector('.nav-sections');
-    // if (navSections) {
-    //   navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {
-    //     if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-    //     navSection.addEventListener('click', () => {
-    //       if (isDesktop.matches) {
-    //         const expanded = navSection.getAttribute('aria-expanded') === 'true';
-    //         toggleAllNavSections(navSections);
-    //         navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    //       }
-    //     });
-    //   });
-    // }
-
-    const navTools = nav.querySelector('.nav-tools');
-    const searchField = document.createElement('input');
-    searchField.name = 'query';
-    searchField.type = 'search';
-    searchField.placeholder = navTools.textContent;
-    const searchForm = document.createElement('form');
-    searchForm.action = 'search';
-    searchForm.method = 'get';
-    searchForm.append(searchField);
-    navTools.innerHTML = '';
-    navTools.append(searchForm);
-
-    // nav.setAttribute('aria-expanded', 'false');
-    // prevent mobile nav behavior on window resize
-    // toggleMenu(nav, navSections, isDesktop.matches);
-    // isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
-
-    decorateIcons(nav);
-    const navWrapper = document.createElement('div');
-    navWrapper.className = 'nav-wrapper';
-    navWrapper.append(nav);
-    block.append(navWrapper);
+  let resp = await fetch(`${navPath}.plain.html`);
+  if (!resp.ok) {
+    return;
   }
+
+  let html = await resp.text();
+
+  // decorate nav DOM
+  const nav = document.createElement('nav');
+  nav.id = 'nav';
+  nav.innerHTML = html;
+
+  const classes = ['hamburger', 'brand', 'sections', 'tools'];
+  classes.forEach((c, i) => {
+    const section = nav.children[i];
+    if (section) section.classList.add(`nav-${c}`);
+  });
+
+  const navHamburger = nav.querySelector('.nav-hamburger');
+  navHamburger.innerHTML = `
+    <button type="button" aria-controls="nav" aria-label="Open navigation">
+      ${navHamburger.innerHTML}
+    </button>`;
+  navHamburger.querySelector('button').addEventListener('click', () => console.log('TODO'));
+  // const navSections = nav.querySelector('.nav-sections');
+  // if (navSections) {
+  //   navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {
+  //     if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
+  //     navSection.addEventListener('click', () => {
+  //       if (isDesktop.matches) {
+  //         const expanded = navSection.getAttribute('aria-expanded') === 'true';
+  //         toggleAllNavSections(navSections);
+  //         navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+  //       }
+  //     });
+  //   });
+  // }
+
+  const navTools = nav.querySelector('.nav-tools');
+  const searchField = document.createElement('input');
+  searchField.name = 'query';
+  searchField.type = 'search';
+  searchField.placeholder = navTools.textContent;
+  const searchForm = document.createElement('form');
+  searchForm.action = 'search';
+  searchForm.method = 'get';
+  searchForm.append(searchField);
+  navTools.innerHTML = '';
+  navTools.append(searchForm);
+
+  // nav.setAttribute('aria-expanded', 'false');
+  // prevent mobile nav behavior on window resize
+  // toggleMenu(nav, navSections, isDesktop.matches);
+  // isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+
+  decorateIcons(nav);
+  const navWrapper = document.createElement('div');
+  navWrapper.className = 'nav-wrapper';
+  navWrapper.append(nav);
+  block.append(navWrapper);
+
+
+
+
+  const navSidebar = document.createElement('div');
+  navSidebar.classList.add('nav-sidebar');
+  resp = await fetch('/sidenav.plain.html');
+  if (!resp.ok) {
+    return;
+  }
+
+  html = await resp.text();
+
+  const ariaDialog = document.createElement(AriaDialog.tagName);
+  ariaDialog.setAttribute('modal', true);
+
+  ariaDialog.append(nav.querySelector('.nav-hamburger span').cloneNode(true));
+
+  const dialogContent = document.createElement('div');
+  dialogContent.innerHTML = html;
+
+  const ariaTreeView = document.createElement(AriaTreeView.tagName);
+  ariaTreeView.innerHTML = dialogContent.querySelector('ul').parentElement.innerHTML;
+  dialogContent.querySelector('ul').parentElement.replaceWith(ariaTreeView);
+  ariaDialog.append(dialogContent);
+
+  navSidebar.append(ariaDialog);
+  nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
+
+  const close = ariaDialog.querySelector('[role="dialog"] button');
+  close.setAttribute('aria-label', 'Close side bar');
+  close.innerHTML = '<span class="icon icon-close"></span>';
 }

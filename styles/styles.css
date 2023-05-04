@@ -292,7 +292,8 @@ main .default-content-wrapper ~ .default-content-wrapper {
   text-align: right;
 }
 
-[aria-hidden="true"] {
+[aria-hidden="true"],
+[aria-expanded="false"] ~ [role="group"] {
   display: none;
 }
 
