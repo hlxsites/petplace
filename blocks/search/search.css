@@ -23,7 +23,7 @@
     position: absolute;
     width: 61px;
     height: 36px;
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIxIiBoZWlnaHQ9IjM2IiB2aWV3Qm94PSIwIDAgMTIxIDM2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik05Mi44MDgyIDE5LjQ3OTRDODYuNzM3NSA3Ljg5MDQgNzQuNTk1OSAtMS4yNDgwNGUtMDUgNjAuNDU4NCAtMS4wMTE1MWUtMDVDNDYuNDA0MSAtNy43NjM3M2UtMDYgMzQuMTc5NCA3Ljg5MDQxIDI4LjEwODYgMTkuNDc5NUMyMi43MDMxIDI5Ljc1MzQgMTEuNzI1OCAzNiA2LjU3ODA3ZS0wNiAzNkw2MC41IDM2TDEyMSAzNkMxMDkuMjc0IDM2IDk4LjIxMzcgMjkuNzUzNCA5Mi44MDgyIDE5LjQ3OTRaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==");
+    background-image: url("../../icons/bezier.svg");
     top: 0;
     z-index: 10;
     left: -60px
