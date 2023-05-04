@@ -79,6 +79,7 @@ export class AriaTreeView extends HTMLElement {
     const root = this.querySelector('ul,ol');
     root.setAttribute('role', 'tree');
     root.setAttribute('aria-label', this.attributes.getNamedItem('label')?.value || '');
+    root.setAttribute('aria-multiselectable', 'false');
     root.querySelectorAll('li').forEach((li) => {
       li.setAttribute('role', 'none');
     });
@@ -108,7 +109,6 @@ export class AriaTreeView extends HTMLElement {
     initialItem.setAttribute('tabindex', 0);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   focusItem(item) {
     if (!item) {
       return;
@@ -118,12 +118,19 @@ export class AriaTreeView extends HTMLElement {
       oldItem.setAttribute('tabIndex', -1);
       oldItem.removeAttribute('aria-selected');
     }
+    let group = item.closest('[role="group"]');
+    while (group) {
+      const parentItem = this.querySelector(`[aria-owns="${group.id}"`);
+      if (parentItem.getAttribute('aria-expanded') === 'false') {
+        this.open(parentItem);
+      }
+      group = parentItem.closest('[role="group"]');
+    }
     item.setAttribute('tabIndex', 0);
     item.setAttribute('aria-selected', true);
     item.focus();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   close(item) {
     const toggle = this.querySelector(`[aria-controls="${item.id}"]`);
     if (toggle) {
@@ -132,7 +139,6 @@ export class AriaTreeView extends HTMLElement {
     item.setAttribute('aria-expanded', 'false');
   }
 
-  // eslint-disable-next-line class-methods-use-this
   open(item) {
     const toggle = this.querySelector(`[aria-controls="${item.id}"]`);
     if (toggle) {
