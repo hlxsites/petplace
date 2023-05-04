@@ -10,7 +10,7 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
+  loadCSS, getMetadata,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -22,7 +22,7 @@ window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information 
  */
 function buildHeroBlock(main) {
   const excludedPages = ['home-page'];
-  const bodyClass = document.querySelector('body').className;
+  const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
   const pageIsExcluded = excludedPages.some((page) => bodyClass.includes(page));
@@ -34,9 +34,30 @@ function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+
+    if (bodyClass.includes('breed-page')) {
+      section.append(buildBlock('hero', { elems: [picture] }));
+    } else {
+      section.append(buildBlock('hero', { elems: [picture, h1] }));
+    }
     main.prepend(section);
   }
+}
+
+async function buildBreedPage(main) {
+  const author = getMetadata('author');
+  const h1 = main.querySelector('h1');
+
+  const icon = document.createElement('span');
+  icon.className = 'icon icon-user';
+
+  const p = document.createElement('p');
+  p.className = 'author-wrapper';
+
+  p.innerText = author;
+  p.prepend(icon);
+  await decorateIcons(p);
+  h1.insertAdjacentHTML('afterend', p.outerHTML);
 }
 
 /**
@@ -44,8 +65,13 @@ function buildHeroBlock(main) {
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
+  const bodyClass = [...document.body.classList];
+
   try {
     buildHeroBlock(main);
+    if (bodyClass.includes('breed-page')) {
+      buildBreedPage(main);
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

@@ -456,3 +456,18 @@ a.sr-focusable:focus {
 .article-page main li {
   margin-bottom: .25rem;
 }
+
+.icon-user {
+  color: #5773A9;
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+
+.icon-user circle{
+  color: #5773A9;
+}
+
+.icon-user path{
+  color: #C5D2E9;
+}
