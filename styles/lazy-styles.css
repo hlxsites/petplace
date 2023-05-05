@@ -42,7 +42,6 @@
   unicode-range: U+0100-02AF, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-
 .nav-sidebar [role="dialog"] {
   position: fixed;
   inset: 0 auto 0 0;
@@ -60,7 +59,7 @@
   content: '';
   position: fixed;
   inset: 0;
-  background: rgb(255 255 255 / 30%);
+  background: rgb(255 255 255 / 50%);
   z-index: -1;
 }
 
@@ -68,6 +67,7 @@
   position: absolute;
   height: 100%;
   background: var(--background-color-dark);
+  transition: transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 }
 
 .nav-sidebar [role="dialog"] > div > button {

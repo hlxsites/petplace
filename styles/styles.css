@@ -111,7 +111,7 @@ body {
 }
 
 body.appear {
-  display: unset;
+  display: block;
 }
 
 header {

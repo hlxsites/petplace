@@ -81,23 +81,44 @@ export class AriaDialog extends HTMLElement {
 
   async close() {
     const dialog = this.querySelector('[role="dialog"]');
-    dialog.setAttribute('aria-hidden', true);
-    if (dialog.getAttribute('aria-modal') === 'true') {
-      document.body.style.overflow = '';
+    function handleClose() {
+      if (dialog.getAttribute('aria-modal') === 'true') {
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      }
+      this.firstElementChild.focus();
     }
-    this.firstElementChild.focus();
+    return (this.onToggle ? this.onToggle(false) : Promise.resolve())
+      .then(() => {
+        handleClose.call(this);
+        dialog.setAttribute('aria-hidden', true);
+      });
   }
 
   async open() {
     const dialog = this.querySelector('[role="dialog"]');
     dialog.setAttribute('aria-hidden', false);
-    if (dialog.getAttribute('aria-modal') === 'true') {
-      document.body.style.overflow = 'hidden';
+    function handleOpen() {
+      if (dialog.getAttribute('aria-modal') === 'true') {
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = '15px';
+      }
+      const [, el] = this.getFocusables();
+      if (el) {
+        el.focus();
+      }
     }
-    const [, el] = this.getFocusables();
-    if (el) {
-      el.focus();
+    if (this.onToggle) {
+      return new Promise((resolve) => {
+        window.requestAnimationFrame(() => {
+          this.onToggle(true)
+            .then(handleOpen.bind(this))
+            .then(resolve);
+        });
+      });
     }
+    handleOpen.call(this);
+    return Promise.resolve();
   }
 }
 
