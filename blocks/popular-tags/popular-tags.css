@@ -15,4 +15,10 @@
   font-size: 1rem;
   line-height: 2rem;
   text-decoration: underline;
+  transition: all .35s ease;
+}
+
+.popular-tags a:hover {
+  color: var(--highlight-color);
+  text-decoration: underline;
 }
