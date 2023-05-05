@@ -7,21 +7,23 @@ export default async function decorate(block) {
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-block-container';
 
-  const urls = [...block.children].map((row) => {
-    const path = new URL(row.firstElementChild.firstElementChild.text).pathname;
-    return `https://admin.hlx.page/index/hlxsites/petplace/main${path}`;
-  });
-  // eslint-disable-next-line no-promise-executor-return
-  const data = await Promise.all(urls.map((u) => fetch(u)))
-    .then((responses) => Promise.all(responses.map((res) => res.json())))
-    .then((res) => res.map((dta) => ({
-      ...dta?.results[0]?.record,
-      path: dta.webPath,
-    })))
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log('error', err);
-    });
+  const res = await fetch('/article/query-index.json?sheet=article');
+  const queryData = await res.json();
+
+  const articles = queryData?.data;
+
+  const data = [...block.children].map((row) => {
+    const path = new URL(row.firstElementChild.firstElementChild.href).pathname;
+
+    for (let i = 0; i < articles.length; i += 1) {
+      if (articles[i].path === path) {
+        return articles[i];
+      }
+    }
+    // eslint-disable-next-line no-console
+    console.error(`No article in index found for ${path}`);
+    return null;
+  }).filter((item) => item); // filter out null values returned from the for loop
 
   data.forEach((dta, index) => {
     // Create tile div for each individual tile
