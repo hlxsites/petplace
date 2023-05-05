@@ -16,6 +16,62 @@ import {
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
+function getId() {
+  return Math.random().toString(32).substring(2);
+}
+
+function isMobile() {
+  return window.innerWidth < 1200;
+}
+
+function buildCategorySidebar() {
+  const section = document.createElement('div');
+  section.classList.add('sidebar');
+  section.setAttribute('role', 'complementary');
+
+  const id1 = getId();
+  const id2 = getId();
+  const filterToggle = document.createElement('button');
+  filterToggle.disabled = !isMobile();
+  filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
+  filterToggle.textContent = 'Filters';
+  section.append(filterToggle);
+
+  const subCategories = buildBlock('sub-categories', { elems: [] });
+  subCategories.id = id1;
+  subCategories.setAttribute('aria-hidden', isMobile());
+  section.append(subCategories);
+
+  const popularTags = buildBlock('popular-tags', { elems: [] });
+  popularTags.id = id2;
+  popularTags.setAttribute('aria-hidden', isMobile());
+  section.append(popularTags);
+
+  filterToggle.addEventListener('click', () => {
+    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
+    if (!isVisible) {
+      filterToggle.dataset.mobileVisible = true;
+    }
+    subCategories.setAttribute('aria-hidden', isVisible);
+    popularTags.setAttribute('aria-hidden', isVisible);
+  });
+
+  window.addEventListener('resize', () => {
+    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
+    if (!isVisible && !isMobile()) {
+      filterToggle.disabled = true;
+      subCategories.setAttribute('aria-hidden', false);
+      popularTags.setAttribute('aria-hidden', false);
+    } else if (isVisible && isMobile() && !filterToggle.dataset.mobileVisible) {
+      filterToggle.disabled = false;
+      subCategories.setAttribute('aria-hidden', true);
+      popularTags.setAttribute('aria-hidden', true);
+    }
+  }, { passive: true });
+
+  return section;
+}
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -71,6 +127,9 @@ function buildAutoBlocks(main) {
     buildHeroBlock(main);
     if (bodyClass.includes('breed-page')) {
       buildBreedPage(main);
+    }
+    if (bodyClass.includes('category-index')) {
+      main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
     }
   } catch (error) {
     // eslint-disable-next-line no-console
