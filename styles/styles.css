@@ -177,6 +177,22 @@ pre {
   overflow: scroll;
 }
 
+ol {
+  display: block;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-family: var(--body-font-family);
+}
+
+li {
+  list-style: inherit;
+  list-style-position: outside;
+  padding-left: 0.5rem;
+  font-size: var(--body-font-size-default);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
 main pre {
   background-color: var(--background-color-light);
   padding: 1em;
@@ -368,6 +384,10 @@ a.sr-focusable:focus {
   .section > div {
     max-width: 1344px;
   }
+
+  li {
+    margin-bottom: 0.25rem;
+  }
 }
 
 /* Template overrides */
@@ -455,60 +475,4 @@ a.sr-focusable:focus {
 
 .article-page main li {
   margin-bottom: .25rem;
-}
-
-@media (min-width: 600px) {
-  main .section.toc > div > h2 {  
-    font-size: calc(1.375rem + 1.5vw);
-    line-height: 1.1;  
-    margin-block-start: 0.83em;
-    margin-block-end: 0.83em;
-    margin-inline-start: 0;
-    margin-inline-end: 0;  
-  }
-  
-  main .section.toc > div > ol {
-    display: block;
-    list-style-type: decimal;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0;
-    margin-inline-end: 0;
-    padding-inline-start: 40px;
-    padding-left: 1.5rem;
-    margin-bottom: 1.5rem;
-    font-family: var(--body-font-family);
-  }
-  
-  main .section.toc > div > ol > li {
-    list-style: inherit;
-    list-style-position: outside;
-    padding-left: 0.5rem;
-    font-size: 1.125rem;
-    line-height: 1.5;
-    font-weight: 400;
-  }
-}
-
-@media (min-width: 900px) {
-  main .section.toc > div > h2 {  
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    font-size: calc(1.375rem + 1.5vw);
-    line-height: 1.1;
-  }   
-}
-
-@media (min-width: 1200px) {
-  main .section.toc > div > h2 {  
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
-    line-height: 1.1;
-    font-weight: 800;
-  }       
-
-  main .section.toc > div > ol > li {
-    margin-bottom: 0.25rem;
-  }
 }
