@@ -11,6 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  getMetadata,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -106,7 +107,7 @@ function buildTOCBlock(main) {
   const tocList = document.createElement('ol');
   tocHeader.innerText = 'Table of Contents';
   tocDiv.appendChild(tocHeader);
-  if (allH2s.length > 1) {
+  if (allH2s.length > 1 && getMetadata('template') === 'Article Page') {
     for (let index = 0; index < allH2s.length; index += 1) {
       const tagname = 'h'.concat(index);
       allH2s[index].id = tagname;
