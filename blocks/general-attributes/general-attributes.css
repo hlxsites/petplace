@@ -1,6 +1,10 @@
 .general-attributes-container {
     background-color: #f2f6fc;
     padding: 45px 1.5rem;
+
+}
+
+.general-attributes-sub-container {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -90,5 +94,12 @@
     .general-attributes-container .general-attributes {
         width: 750px;
         margin: 0;
+    }
+}
+
+@media (min-width: 1230px) {
+    .general-attributes-sub-container {
+        max-width: 1334px;
+        margin: 0 auto;
     }
 }

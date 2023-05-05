@@ -114,6 +114,21 @@ async function buildBreedPage(main) {
   p.prepend(icon);
   await decorateIcons(p);
   h1.insertAdjacentHTML('afterend', p.outerHTML);
+  const generalAttributesContainer = document.querySelector('.general-attributes-container');
+  const children = [...generalAttributesContainer.children];
+  const fragment = document.createDocumentFragment();
+
+  // Append the new children to the fragment
+  children.forEach((child) => {
+    fragment.appendChild(child);
+  });
+
+  const subContainer = document.createElement('div');
+  subContainer.className = 'general-attributes-sub-container';
+
+  subContainer.append(fragment);
+
+  generalAttributesContainer.append(subContainer);
 }
 
 /**
