@@ -77,6 +77,9 @@ export class AriaTreeView extends HTMLElement {
 
   async decorate() {
     const root = this.querySelector('ul,ol');
+    if (root.getAttribute('role') === 'tree') {
+      return;
+    }
     root.setAttribute('role', 'tree');
     root.setAttribute('aria-label', this.attributes.getNamedItem('label')?.value || '');
     root.setAttribute('aria-multiselectable', 'false');
@@ -84,19 +87,17 @@ export class AriaTreeView extends HTMLElement {
       li.setAttribute('role', 'none');
     });
     root.querySelectorAll('a').forEach((a) => {
-      a.id = AriaTreeView.getId();
+      a.id = `treeitem-${AriaTreeView.getId()}`;
       a.setAttribute('role', 'treeitem');
       a.setAttribute('tabindex', -1);
-      const id = AriaTreeView.getId();
+      const id = `group-${AriaTreeView.getId()}`;
       if (a.nextElementSibling && ['UL', 'OL'].includes(a.nextElementSibling.tagName)) {
         a.setAttribute('aria-expanded', 'false');
         a.setAttribute('aria-owns', id);
         a.nextElementSibling.id = id;
         const toggle = document.createElement('button');
         toggle.setAttribute('aria-controls', a.id);
-        toggle.setAttribute('aria-label', `Opens the ${a.textContent} item`);
         toggle.setAttribute('tabindex', -1);
-        toggle.textContent = 'x';
         a.insertAdjacentElement('afterend', toggle);
       }
     });
@@ -131,19 +132,13 @@ export class AriaTreeView extends HTMLElement {
     item.focus();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   close(item) {
-    const toggle = this.querySelector(`[aria-controls="${item.id}"]`);
-    if (toggle) {
-      toggle.setAttribute('aria-label', `Opens the ${item.textContent} item`);
-    }
     item.setAttribute('aria-expanded', 'false');
   }
 
+  // eslint-disable-next-line class-methods-use-this
   open(item) {
-    const toggle = this.querySelector(`[aria-controls="${item.id}"]`);
-    if (toggle) {
-      toggle.setAttribute('aria-label', `Closes the ${item.textContent} item`);
-    }
     item.setAttribute('aria-expanded', 'true');
   }
 }

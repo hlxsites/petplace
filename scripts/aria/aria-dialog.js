@@ -52,7 +52,7 @@ export class AriaDialog extends HTMLElement {
 
   getFocusables() {
     return this.querySelector('[role="dialog"]')
-      .querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      .querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
   }
 
   async decorate() {

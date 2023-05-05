@@ -109,7 +109,7 @@ export default async function decorate(block) {
   nav.id = 'nav';
   nav.innerHTML = html;
 
-  const classes = ['hamburger', 'brand', 'sections', 'tools'];
+  let classes = ['hamburger', 'brand', 'sections', 'tools'];
   classes.forEach((c, i) => {
     const section = nav.children[i];
     if (section) section.classList.add(`nav-${c}`);
@@ -152,14 +152,10 @@ export default async function decorate(block) {
   // toggleMenu(nav, navSections, isDesktop.matches);
   // isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
 
-  decorateIcons(nav);
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
-
-
-
 
   const navSidebar = document.createElement('div');
   navSidebar.classList.add('nav-sidebar');
@@ -179,9 +175,20 @@ export default async function decorate(block) {
   dialogContent.innerHTML = html;
 
   const ariaTreeView = document.createElement(AriaTreeView.tagName);
+  ariaTreeView.setAttribute('label', 'Secondary Navigation');
   ariaTreeView.innerHTML = dialogContent.querySelector('ul').parentElement.innerHTML;
   dialogContent.querySelector('ul').parentElement.replaceWith(ariaTreeView);
   ariaDialog.append(dialogContent);
+
+  const sidebarSearch = document.createElement('div');
+  sidebarSearch.append(searchForm.cloneNode(true));
+  dialogContent.insertBefore(sidebarSearch, dialogContent.childNodes[4]);
+
+  classes = ['header', 'links', 'search', 'misc', 'social'];
+  classes.forEach((c, i) => {
+    const section = dialogContent.children[i];
+    if (section) section.classList.add(`nav-sidebar-${c}`);
+  });
 
   navSidebar.append(ariaDialog);
   nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
@@ -189,4 +196,23 @@ export default async function decorate(block) {
   const close = ariaDialog.querySelector('[role="dialog"] button');
   close.setAttribute('aria-label', 'Close side bar');
   close.innerHTML = '<span class="icon icon-close"></span>';
+
+  navSidebar.querySelectorAll('[role="tree"] button[aria-controls]').forEach((toggle) => {
+    const item = navSidebar.querySelector(`#${toggle.getAttribute('aria-controls')}`);
+    toggle.setAttribute('aria-label', `Opens the ${item.textContent} item`);
+  });
+  const observer = new MutationObserver((entries) => {
+    const { attributeName, target } = entries.pop();
+    if (attributeName !== 'aria-expanded') {
+      return;
+    }
+    const toggle = navSidebar.querySelector(`button[aria-controls="${target.id}"]`);
+    const isExpanded = target.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-label', `${isExpanded ? 'Closes' : 'Opens'} the ${target.textContent} item`);
+  });
+  navSidebar.querySelectorAll('[role="tree"] [role="treeitem"]').forEach((item) => {
+    observer.observe(item, { attributes: true });
+  });
+
+  decorateIcons(nav);
 }

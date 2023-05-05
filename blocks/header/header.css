@@ -47,15 +47,6 @@
   display: none;
 }
 
-.nav-sidebar [role="dialog"] {
-  position: fixed;
-  inset: 0 auto 0 0;
-  z-index: 9999;
-  max-height: 100%;
-  overflow-y: auto;
-  background: #fff;
-}
-
 @media (min-width: 1024px) {
   .nav-wrapper nav {
     margin: 0 auto;
@@ -138,6 +129,12 @@
 
   .nav-tools input::-webkit-search-cancel-button {
     appearance: none;
+    width: .75rem;
+    height: .75rem;
+    background: var(--text-color-inverted);
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-mask: url('../../icons/close.svg') no-repeat;
+    mask: url('../../icons/close.svg') no-repeat;
   }
 
   .nav-tools input::after {
