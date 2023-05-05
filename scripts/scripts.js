@@ -10,7 +10,7 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
+  loadCSS, getMetadata,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -78,7 +78,7 @@ function buildCategorySidebar() {
  */
 function buildHeroBlock(main) {
   const excludedPages = ['home-page'];
-  const bodyClass = document.querySelector('body').className;
+  const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
   const pageIsExcluded = excludedPages.some((page) => bodyClass.includes(page));
@@ -90,9 +90,45 @@ function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+
+    if (bodyClass.includes('breed-page')) {
+      section.append(buildBlock('hero', { elems: [picture] }));
+    } else {
+      section.append(buildBlock('hero', { elems: [picture, h1] }));
+    }
     main.prepend(section);
   }
+}
+
+async function buildBreedPage(main) {
+  const author = getMetadata('author');
+  const h1 = main.querySelector('h1');
+
+  const icon = document.createElement('span');
+  icon.className = 'icon icon-user';
+
+  const p = document.createElement('p');
+  p.className = 'author-wrapper';
+
+  p.innerText = author;
+  p.prepend(icon);
+  await decorateIcons(p);
+  h1.insertAdjacentHTML('afterend', p.outerHTML);
+  const generalAttributesContainer = document.querySelector('.general-attributes-container');
+  const children = [...generalAttributesContainer.children];
+  const fragment = document.createDocumentFragment();
+
+  // Append the new children to the fragment
+  children.forEach((child) => {
+    fragment.appendChild(child);
+  });
+
+  const subContainer = document.createElement('div');
+  subContainer.className = 'general-attributes-sub-container';
+
+  subContainer.append(fragment);
+
+  generalAttributesContainer.append(subContainer);
 }
 
 /**
@@ -127,12 +163,18 @@ function buildTOCBlock(main) {
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
+  const bodyClass = [...document.body.classList];
+
   try {
     buildHeroBlock(main);
-    if (document.body.classList.contains('article-page')) {
+
+    if (bodyClass.includes('breed-page')) {
+      buildBreedPage(main);
+    }
+    if (bodyClass.includes('article-page')) {
       buildTOCBlock(main);
     }
-    if (document.body.classList.contains('category-index')) {
+    if (bodyClass.includes('category-index')) {
       main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
     }
   } catch (error) {
