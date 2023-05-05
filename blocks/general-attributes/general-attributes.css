@@ -76,6 +76,7 @@
         width: 100%;
     }
 }
+
 @media (min-width: 1024px) {
     .general-attributes-container h1{
         font-size: 2.875rem;
@@ -85,6 +86,7 @@
         display: flex;
         width: fit-content;
     }
+
     .general-attributes-container .general-attributes {
         width: 750px;
         margin: 0;
