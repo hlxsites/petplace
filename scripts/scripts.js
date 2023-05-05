@@ -133,7 +133,6 @@ function buildAutoBlocks(main) {
     if (document.body.classList.contains('category-index')) {
       main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
     }
-
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
