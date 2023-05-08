@@ -3,7 +3,7 @@ import {
 } from '../../scripts/lib-franklin.js';
 
 function createTemplateBlock(main, blockName, gridName) {
-  let gridNameValue = gridName || blockName;
+  const gridNameValue = gridName || blockName;
   const section = document.createElement('div');
   section.className = `article-template-autoblock article-template-grid-${gridNameValue}`;
 

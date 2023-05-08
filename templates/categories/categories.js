@@ -1,3 +1,3 @@
-export default function loadCategoryTemplate(main) {
+export default function loadCategoryTemplate() {
   return false;
 }

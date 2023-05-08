@@ -1,3 +1,3 @@
-export default function loadBioTemplate(main) {
+export default function loadBioTemplate() {
   return false;
 }
