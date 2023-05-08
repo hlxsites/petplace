@@ -7,13 +7,13 @@ export default async function decorate(block) {
   col2.className = 'col col2';
 
   [...block.children].forEach((child, i) => {
-    child.setAttribute('tab-index', i);
+    child.setAttribute('tabindex', '0');
     const label = child.children[0].textContent;
     const activeCount = Number(child.children[1].textContent);
     const meterLength = 4;
     const meter = document.createElement('div');
     meter.className = 'meter';
-    meter.setAttribute('role', 'progressbar');
+    meter.setAttribute('role', 'meter');
     meter.setAttribute('aria-valuemin', '0');
     meter.setAttribute('aria-valuemax', '5');
     meter.setAttribute('aria-valuenow', activeCount.toString());
