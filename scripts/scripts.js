@@ -12,9 +12,26 @@ import {
   loadBlocks,
   loadCSS,
 } from './lib-franklin.js';
+import article from '../templates/article/article.js';
+import bio from '../templates/bio/bio.js';
+import categories from '../templates/categories/categories.js';
+
+const TEMPLATES = {
+  article,
+  bio,
+  categories,
+};
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
+
+/**
+ * Retrieves the name of the template as specified in the page's metadata.
+ * @returns {string} The name of the page's template, or undefined if none specified.
+ */
+function getTemplateName() {
+  return document.head.querySelector('meta[name="template"]')?.getAttribute('content');
+}
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -40,12 +57,29 @@ function buildHeroBlock(main) {
 }
 
 /**
+ * Builds template block and adds to main as sections.
+ * @param {Element} main The container element.
+ * @returns {Promise} Resolves when the template block(s) have
+ *  been loaded.
+ */
+async function buildTemplateBlock(main) {
+  const template = getTemplateName();
+  if (template) {
+    const templateLoader = TEMPLATES[template];
+    if (templateLoader) {
+      await templateLoader(main);
+    }
+  }
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+    buildTemplateBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -73,9 +107,9 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  const template = document.head.querySelector('meta[name="template"]')?.getAttribute('content');
+  const template = getTemplateName();
   if (template) {
-    await loadCSS(`/templates/${template}.css`);
+    await loadCSS(`/templates/${template}/${template}.css`);
   }
   const main = doc.querySelector('main');
   if (main) {

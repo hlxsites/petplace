@@ -1,0 +1,97 @@
+main .hero-container .hero h1 {
+  font-size: calc(1.4875rem + 2.85vw);
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+main {
+  display: grid;
+  grid-template:
+    "navigation"
+    "hero"
+    "author"
+    "insurance"
+    "social"
+    "article"
+    "insurance-after"
+    "paws-up-count"
+    "paws-up"
+    "social-after"
+    "popular"
+    "article-navigation";
+}
+
+main .section {
+  padding: 0rem;
+}
+
+main .hero-container .hero {
+  margin-bottom: 2rem;
+}
+
+main .hero-container .hero picture {
+  height: calc(100vw / 2);
+}
+
+main .hero-container {
+  grid-area: hero;
+}
+
+main .section:not(.hero-container):not(.article-template-autoblock) {
+  grid-area: article;
+  padding: 0 1rem;
+}
+
+.article-template-grid-navigation {
+  grid-area: navigation;
+}
+
+.article-template-grid-article-author {
+  grid-area: author;
+}
+
+.article-template-grid-pet-insurance-quote {
+  grid-area: insurance;
+}
+
+.article-template-grid-social-links {
+  grid-area: social;
+}
+
+.article-template-grid-pet-insurance-quote-after {
+  grid-area: insurance-after;
+}
+
+.article-template-grid-paws-up-count {
+  grid-area: paws-up-count;
+}
+
+.article-template-grid-paws-up {
+  grid-area: paws-up;
+}
+
+.article-template-grid-social-links-after {
+  grid-area: social-after;
+}
+
+.article-template-grid-popular-articles {
+  grid-area: popular;
+}
+
+.article-template-grid-article-navigation {
+ grid-area: article-navigation;
+}
+
+.default-content-wrapper {
+  padding: 0 15%;
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.footer-nav {
+  display: none;
+}

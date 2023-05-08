@@ -1,3 +1,5 @@
-export default function decorate() {
-  // Nothing here yet
+export default function decorate(block) {
+  const container = document.createElement('div');
+  container.innerText = 'pet-insurance-quote placeholder';
+  block.append(container);
 }
