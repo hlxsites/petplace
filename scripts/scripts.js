@@ -10,7 +10,7 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
+  loadCSS, getMetadata,
 } from './lib-franklin.js';
 import article from '../templates/article/article.js';
 import bio from '../templates/bio/bio.js';
@@ -24,6 +24,62 @@ const TEMPLATES = {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
+
+function getId() {
+  return Math.random().toString(32).substring(2);
+}
+
+function isMobile() {
+  return window.innerWidth < 1200;
+}
+
+function buildCategorySidebar() {
+  const section = document.createElement('div');
+  section.classList.add('sidebar');
+  section.setAttribute('role', 'complementary');
+
+  const id1 = getId();
+  const id2 = getId();
+  const filterToggle = document.createElement('button');
+  filterToggle.disabled = !isMobile();
+  filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
+  filterToggle.textContent = 'Filters';
+  section.append(filterToggle);
+
+  const subCategories = buildBlock('sub-categories', { elems: [] });
+  subCategories.id = id1;
+  subCategories.setAttribute('aria-hidden', isMobile());
+  section.append(subCategories);
+
+  const popularTags = buildBlock('popular-tags', { elems: [] });
+  popularTags.id = id2;
+  popularTags.setAttribute('aria-hidden', isMobile());
+  section.append(popularTags);
+
+  filterToggle.addEventListener('click', () => {
+    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
+    if (!isVisible) {
+      filterToggle.dataset.mobileVisible = true;
+    }
+    subCategories.setAttribute('aria-hidden', isVisible);
+    popularTags.setAttribute('aria-hidden', isVisible);
+  });
+
+  window.addEventListener('resize', () => {
+    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
+    if (!isVisible && !isMobile()) {
+      filterToggle.disabled = true;
+      subCategories.setAttribute('aria-hidden', false);
+      popularTags.setAttribute('aria-hidden', false);
+    } else if (isVisible && isMobile() && !filterToggle.dataset.mobileVisible) {
+      filterToggle.disabled = false;
+      subCategories.setAttribute('aria-hidden', true);
+      popularTags.setAttribute('aria-hidden', true);
+    }
+  }, { passive: true });
+
+  return section;
+}
 
 /**
  * Retrieves the name of the template as specified in the page's metadata.
@@ -39,7 +95,7 @@ function getTemplateName() {
  */
 function buildHeroBlock(main) {
   const excludedPages = ['home-page'];
-  const bodyClass = document.querySelector('body').className;
+  const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
   const pageIsExcluded = excludedPages.some((page) => bodyClass.includes(page));
@@ -51,8 +107,71 @@ function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+
+    if (bodyClass.includes('breed-page')) {
+      section.append(buildBlock('hero', { elems: [picture] }));
+    } else {
+      section.append(buildBlock('hero', { elems: [picture, h1] }));
+    }
     main.prepend(section);
+  }
+}
+
+async function buildBreedPage(main) {
+  const author = getMetadata('author');
+  const h1 = main.querySelector('h1');
+
+  const icon = document.createElement('span');
+  icon.className = 'icon icon-user';
+
+  const p = document.createElement('p');
+  p.className = 'author-wrapper';
+
+  p.innerText = author;
+  p.prepend(icon);
+  await decorateIcons(p);
+  h1.insertAdjacentHTML('afterend', p.outerHTML);
+  const generalAttributesContainer = document.querySelector('.general-attributes-container');
+  const children = [...generalAttributesContainer.children];
+  const fragment = document.createDocumentFragment();
+
+  // Append the new children to the fragment
+  children.forEach((child) => {
+    fragment.appendChild(child);
+  });
+
+  const subContainer = document.createElement('div');
+  subContainer.className = 'general-attributes-sub-container';
+
+  subContainer.append(fragment);
+
+  generalAttributesContainer.append(subContainer);
+}
+
+/**
+ * Builds toc autoblock and prepends to first H2 in the document.
+ * @param {Element} main The container element
+ */
+function buildTOCBlock(main) {
+  const tocDiv = document.createElement('div');
+  const allH2s = main.getElementsByTagName('h2');
+  const tocHeader = document.createElement('h2');
+  const tocList = document.createElement('ol');
+  tocHeader.innerText = 'Table of Contents';
+  tocDiv.appendChild(tocHeader);
+  if (allH2s.length > 1) {
+    for (let index = 0; index < allH2s.length; index += 1) {
+      const tagname = 'h'.concat(index);
+      allH2s[index].id = tagname;
+      const tocListItem = document.createElement('li');
+      const tocEntry = document.createElement('a');
+      tocEntry.setAttribute('href', '#'.concat(tagname));
+      tocEntry.innerText = allH2s[index].innerText;
+      tocListItem.appendChild(tocEntry);
+      tocList.appendChild(tocListItem);
+    }
+    tocDiv.appendChild(tocList);
+    allH2s[0].parentNode.insertBefore(tocDiv, allH2s[0]);
   }
 }
 
@@ -77,9 +196,21 @@ async function buildTemplateBlock(main) {
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
+  const bodyClass = [...document.body.classList];
+
   try {
     buildHeroBlock(main);
     buildTemplateBlock(main);
+
+    if (bodyClass.includes('breed-page')) {
+      buildBreedPage(main);
+    }
+    if (bodyClass.includes('article-page')) {
+      buildTOCBlock(main);
+    }
+    if (bodyClass.includes('category-index')) {
+      main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
