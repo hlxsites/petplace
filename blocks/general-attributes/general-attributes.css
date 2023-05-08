@@ -1,0 +1,105 @@
+.general-attributes-container {
+    background-color: #f2f6fc;
+    padding: 45px 1.5rem;
+
+}
+
+.general-attributes-sub-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.general-attributes-container h1{
+    color: var(--text-color);
+    margin-top: 0;
+    font-size: 1.875rem;
+}
+
+.general-attributes-container .author-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.general-attributes-container .default-content-wrapper{
+    max-width: 400px;
+}
+
+.general-attributes-container .general-attributes-wrapper {
+   width: 100%;
+}
+
+.general-attributes-container .general-attributes{
+    display: flex;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.general-attributes-container .general-attributes > div{
+    width: 50%;
+    margin: 10px 0;
+}
+
+.general-attributes-container .general-attributes strong {
+    display: block;
+    position: relative;
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+    font-family: var(--heading-font-family);
+    font-weight: 800;
+}
+
+.general-attributes-container .general-attributes strong::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    background: #c4c4c4;
+    bottom: -10px;
+    left: 0;
+    height: 1px;
+}
+
+@media (min-width: 769px) {
+    .general-attributes-container .general-attributes > div{
+        margin: 0 5px;
+        width: auto;
+    }
+}
+
+@media (min-width: 900px) {
+    .general-attributes-container .default-content-wrapper,
+    .general-attributes-container .general-attributes-wrapper{
+        margin:initial;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .general-attributes-container h1{
+        font-size: 2.875rem;
+    }
+
+    .general-attributes-container .general-attributes-wrapper {
+        display: flex;
+        width: fit-content;
+    }
+
+    .general-attributes-container .general-attributes {
+        width: 750px;
+        margin: 0;
+    }
+}
+
+@media (min-width: 1230px) {
+    .general-attributes-sub-container {
+        max-width: 1334px;
+        margin: 0 auto;
+    }
+}
