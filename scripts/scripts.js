@@ -10,17 +10,9 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS, getMetadata,
+  loadCSS,
+  getMetadata,
 } from './lib-franklin.js';
-import article from '../templates/article/article.js';
-import bio from '../templates/bio/bio.js';
-import categories from '../templates/categories/categories.js';
-
-const TEMPLATES = {
-  article,
-  bio,
-  categories,
-};
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
@@ -86,7 +78,7 @@ function buildCategorySidebar() {
  * @returns {string} The name of the page's template, or undefined if none specified.
  */
 function getTemplateName() {
-  return document.head.querySelector('meta[name="template"]')?.getAttribute('content');
+  return getMetadata('template');
 }
 
 /**
@@ -183,11 +175,14 @@ function buildTOCBlock(main) {
  */
 async function buildTemplateBlock(main) {
   const template = getTemplateName();
-  if (template) {
-    const templateLoader = TEMPLATES[template];
-    if (templateLoader) {
-      await templateLoader(main);
-    }
+  if (!template) {
+    return;
+  }
+  try {
+    const templateLoader = await import(`../templates/${template}/${template}.js`);
+    await templateLoader.default(main);
+  } catch (e) {
+    console.error('Unable to load and apply template block', e);
   }
 }
 
