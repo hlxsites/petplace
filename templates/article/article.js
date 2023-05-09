@@ -7,7 +7,10 @@ function createTemplateBlock(main, blockName, gridName) {
   const section = document.createElement('div');
   section.className = `article-template-autoblock article-template-grid-${gridNameValue}`;
 
-  const block = buildBlock(blockName, { elems: [] });
+  const placeholder = document.createElement('div');
+  placeholder.innerText = `${blockName} placeholder`;
+
+  const block = buildBlock(blockName, { elems: [placeholder] });
   section.append(block);
   main.append(section);
 }
