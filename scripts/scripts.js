@@ -74,14 +74,6 @@ function buildCategorySidebar() {
 }
 
 /**
- * Retrieves the name of the template as specified in the page's metadata.
- * @returns {string} The name of the page's template, or undefined if none specified.
- */
-function getTemplateName() {
-  return getMetadata('template');
-}
-
-/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -174,11 +166,12 @@ function buildTOCBlock(main) {
  *  been loaded.
  */
 async function buildTemplateBlock(main) {
-  const template = getTemplateName();
+  const template = getMetadata('template');
   if (!template) {
     return;
   }
   try {
+    await loadCSS(`/templates/${template}/${template}.css`);
     const templateLoader = await import(`../templates/${template}/${template}.js`);
     await templateLoader.default(main);
   } catch (e) {
@@ -233,10 +226,6 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  const template = getTemplateName();
-  if (template) {
-    await loadCSS(`/templates/${template}/${template}.css`);
-  }
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
