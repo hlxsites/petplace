@@ -249,7 +249,9 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  buildVideoEmbeds(main);
+  if (document.body.classList.contains('article-page')) {
+    buildVideoEmbeds(main);
+  }
   await loadBlocks(main);
 
   const { hash } = window.location;
