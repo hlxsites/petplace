@@ -175,6 +175,7 @@ async function buildTemplateBlock(main) {
     const templateLoader = await import(`../templates/${template}/${template}.js`);
     await templateLoader.default(main);
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error('Unable to load and apply template block', e);
   }
 }
