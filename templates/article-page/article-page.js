@@ -15,7 +15,7 @@ function createTemplateBlock(main, blockName, gridName) {
   main.append(section);
 }
 
-export default function loadArticleTemplate(main) {
+export function buildTemplateBlock(main) {
   createTemplateBlock(main, 'navigation');
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');

@@ -1,3 +1,3 @@
-export default function loadCategoryTemplate() {
+export function buildTemplateBlock() {
   return false;
 }

@@ -14,6 +14,14 @@ import {
   getMetadata,
 } from './lib-franklin.js';
 
+/**
+ * @typedef TemplateLoader
+ * @property {function} createTemplateBlock Accepts a single argument, a target element, that will add blocks
+ *  specific to a given template.
+ * @property {function} [buildHeroBlock] Accepts 3 arguments: a target element, the hero picture, and the
+ *  hero text. The function will add blocks required for the template's hero section.
+ */
+
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
@@ -76,8 +84,9 @@ function buildCategorySidebar() {
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
+ * @param {TemplateLoader} templateLoader Will be used to load the template's hero block.
  */
-function buildHeroBlock(main) {
+function buildHeroBlock(main, templateLoader) {
   const excludedPages = ['home-page'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
@@ -92,44 +101,16 @@ function buildHeroBlock(main) {
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
 
-    if (bodyClass.includes('breed-page')) {
-      section.append(buildBlock('hero', { elems: [picture] }));
-    } else {
+    let templateBuilt = false;
+    if (templateLoader && templateLoader.buildHeroBlock) {
+      templateBuilt = true;
+      templateLoader.buildHeroBlock(section, picture, h1);
+    }
+    if (!templateBuilt) {
       section.append(buildBlock('hero', { elems: [picture, h1] }));
     }
     main.prepend(section);
   }
-}
-
-async function buildBreedPage(main) {
-  const author = getMetadata('author');
-  const h1 = main.querySelector('h1');
-
-  const icon = document.createElement('span');
-  icon.className = 'icon icon-user';
-
-  const p = document.createElement('p');
-  p.className = 'author-wrapper';
-
-  p.innerText = author;
-  p.prepend(icon);
-  await decorateIcons(p);
-  h1.insertAdjacentHTML('afterend', p.outerHTML);
-  const generalAttributesContainer = document.querySelector('.general-attributes-container');
-  const children = [...generalAttributesContainer.children];
-  const fragment = document.createDocumentFragment();
-
-  // Append the new children to the fragment
-  children.forEach((child) => {
-    fragment.appendChild(child);
-  });
-
-  const subContainer = document.createElement('div');
-  subContainer.className = 'general-attributes-sub-container';
-
-  subContainer.append(fragment);
-
-  generalAttributesContainer.append(subContainer);
 }
 
 /**
@@ -174,20 +155,38 @@ function buildVideoEmbeds(container) {
 }
 
 /**
+ * Retrieves the template applicable to the current page, if there is a template.
+ * @returns {TemplateLoader} Loader for providing various functionality for interacting with a template.
+ *  May be undefined if there is no valid template specified.
+ */
+async function getTemplateLoader() {
+  const template = getMetadata('template');
+  if (!template) {
+    return;
+  }
+  try {
+    await import(`../templates/${template}/${template}.js`);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(`Unable to find template ${template}`, e);
+  }
+}
+
+/**
  * Builds template block and adds to main as sections.
  * @param {Element} main The container element.
+ * @param {TemplateLoader} templateLoader Will be used to load the template's blocks.
  * @returns {Promise} Resolves when the template block(s) have
  *  been loaded.
  */
-async function buildTemplateBlock(main) {
+async function buildTemplateBlock(main, templateLoader) {
   const template = getMetadata('template');
   if (!template) {
     return;
   }
   try {
     await loadCSS(`/templates/${template}/${template}.css`);
-    const templateLoader = await import(`../templates/${template}/${template}.js`);
-    await templateLoader.default(main);
+    await templateLoader.createTemplateBlock(main);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error('Unable to load and apply template block', e);
@@ -198,16 +197,14 @@ async function buildTemplateBlock(main) {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks(main) {
+async function buildAutoBlocks(main) {
   const bodyClass = [...document.body.classList];
 
   try {
-    buildHeroBlock(main);
-    buildTemplateBlock(main);
+    const templateLoader = await getTemplateLoader();
+    buildHeroBlock(main, templateLoader);
+    buildTemplateBlock(main, templateLoader);
 
-    if (bodyClass.includes('breed-page')) {
-      buildBreedPage(main);
-    }
     if (bodyClass.includes('article-page')) {
       buildTOCBlock(main);
     }
