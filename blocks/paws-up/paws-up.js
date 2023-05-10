@@ -1,3 +1,3 @@
-export default function decorate() {
-  // Nothing here yet
+export default function decorate(block) {
+  block.innerHTML = '[Paws Up Placeholder]';
 }

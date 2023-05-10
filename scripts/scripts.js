@@ -13,6 +13,17 @@ import {
   loadCSS,
   getMetadata,
 } from './lib-franklin.js';
+import * as article from '../templates/article-page/article-page.js';
+import * as breed from '../templates/breed-page/breed-page.js';
+import * as categories from '../templates/categories-page/categories-page.js';
+import * as home from '../templates/home-page/home-page.js';
+
+const TEMPLATES = {
+  'article-page': article,
+  'breed-page': breed,
+  'categories-page': categories,
+  'home-page': home,
+};
 
 /**
  * @typedef TemplateLoader
@@ -84,9 +95,8 @@ function buildCategorySidebar() {
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
- * @param {TemplateLoader} templateLoader Will be used to load the template's hero block.
  */
-function buildHeroBlock(main, templateLoader) {
+function buildHeroBlock(main) {
   const excludedPages = ['home-page'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
@@ -102,6 +112,7 @@ function buildHeroBlock(main, templateLoader) {
     const section = document.createElement('div');
 
     let templateBuilt = false;
+    const templateLoader = getTemplateLoader();
     if (templateLoader && templateLoader.buildHeroBlock) {
       templateBuilt = true;
       templateLoader.buildHeroBlock(section, picture, h1);
@@ -110,33 +121,6 @@ function buildHeroBlock(main, templateLoader) {
       section.append(buildBlock('hero', { elems: [picture, h1] }));
     }
     main.prepend(section);
-  }
-}
-
-/**
- * Builds toc autoblock and prepends to first H2 in the document.
- * @param {Element} main The container element
- */
-function buildTOCBlock(main) {
-  const tocDiv = document.createElement('div');
-  const allH2s = main.getElementsByTagName('h2');
-  const tocHeader = document.createElement('h2');
-  const tocList = document.createElement('ol');
-  tocHeader.innerText = 'Table of Contents';
-  tocDiv.appendChild(tocHeader);
-  if (allH2s.length > 1) {
-    for (let index = 0; index < allH2s.length; index += 1) {
-      const tagname = 'h'.concat(index);
-      allH2s[index].id = tagname;
-      const tocListItem = document.createElement('li');
-      const tocEntry = document.createElement('a');
-      tocEntry.setAttribute('href', '#'.concat(tagname));
-      tocEntry.innerText = allH2s[index].innerText;
-      tocListItem.appendChild(tocEntry);
-      tocList.appendChild(tocListItem);
-    }
-    tocDiv.appendChild(tocList);
-    allH2s[0].parentNode.insertBefore(tocDiv, allH2s[0]);
   }
 }
 
@@ -155,43 +139,55 @@ function buildVideoEmbeds(container) {
 }
 
 /**
+ * Retrieves the name of the template being used by the current page.
+ * @returns {string} Template name, or undefined if none.
+ */
+function getTemplateName() {
+  return getMetadata('template')?.toLowerCase();
+}
+
+/**
  * Retrieves the template applicable to the current page, if there is a template.
  * @returns {TemplateLoader} Loader for providing various functionality for interacting with a template.
  *  May be undefined if there is no valid template specified.
  */
-async function getTemplateLoader() {
-  const template = getMetadata('template');
+function getTemplateLoader() {
+  const template = getTemplateName();
   if (!template) {
     return;
   }
-  let templateLoader;
-  try {
-    templateLoader = await import(`../templates/${template}/${template}.js`);
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(`Unable to find template ${template}`, e);
+  if (!TEMPLATES[template]) {
+    return;
   }
-  return templateLoader;
+  return TEMPLATES[template];
 }
 
 /**
  * Builds template block and adds to main as sections.
  * @param {Element} main The container element.
- * @param {TemplateLoader} templateLoader Will be used to load the template's blocks.
  * @returns {Promise} Resolves when the template block(s) have
  *  been loaded.
  */
-async function buildTemplateBlock(main, templateLoader) {
+async function buildTemplateBlock(main) {
   const template = getMetadata('template');
   if (!template) {
     return;
   }
+  const templateLoader = getTemplateLoader();
+  if (!templateLoader) {
+    return;
+  }
   try {
-    await loadCSS(`/templates/${template}/${template}.css`);
-    await templateLoader.buildTemplateBlock(main);
+    templateLoader.buildTemplateBlock(main);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error('Unable to load and apply template block', e);
+  }
+  try {
+    await loadCSS(`/templates/${template}/${template}.css`);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(`Unable to load CSS for template ${template}`, e);
   }
 }
 
@@ -199,17 +195,13 @@ async function buildTemplateBlock(main, templateLoader) {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-async function buildAutoBlocks(main) {
+function buildAutoBlocks(main) {
   const bodyClass = [...document.body.classList];
 
   try {
-    const templateLoader = await getTemplateLoader();
-    buildHeroBlock(main, templateLoader);
-    buildTemplateBlock(main, templateLoader);
+    buildHeroBlock(main);
+    buildTemplateBlock(main);
 
-    if (bodyClass.includes('article-page')) {
-      buildTOCBlock(main);
-    }
     if (bodyClass.includes('category-index')) {
       main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
     }
