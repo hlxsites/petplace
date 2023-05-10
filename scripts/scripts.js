@@ -158,6 +158,20 @@ function buildTOCBlock(main) {
   }
 }
 
+function buildVideoEmbeds(container) {
+  container.querySelectorAll('a[href*="youtube.com/embed"]').forEach((a) => {
+    a.parentElement.innerHTML = `
+      <iframe
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        frameborder="0"
+        loading="lazy"
+        height="360"
+        width="640"
+        src="${a.href}"></iframe>`;
+  });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -235,6 +249,9 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  if (document.body.classList.contains('article-page')) {
+    buildVideoEmbeds(main);
+  }
   await loadBlocks(main);
 
   const { hash } = window.location;
