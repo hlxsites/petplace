@@ -10,7 +10,8 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS, getMetadata,
+  loadCSS,
+  getMetadata,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -173,6 +174,27 @@ function buildVideoEmbeds(container) {
 }
 
 /**
+ * Builds template block and adds to main as sections.
+ * @param {Element} main The container element.
+ * @returns {Promise} Resolves when the template block(s) have
+ *  been loaded.
+ */
+async function buildTemplateBlock(main) {
+  const template = getMetadata('template');
+  if (!template) {
+    return;
+  }
+  try {
+    await loadCSS(`/templates/${template}/${template}.css`);
+    const templateLoader = await import(`../templates/${template}/${template}.js`);
+    await templateLoader.default(main);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error('Unable to load and apply template block', e);
+  }
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -181,6 +203,7 @@ function buildAutoBlocks(main) {
 
   try {
     buildHeroBlock(main);
+    buildTemplateBlock(main);
 
     if (bodyClass.includes('breed-page')) {
       buildBreedPage(main);
