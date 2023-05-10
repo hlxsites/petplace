@@ -16,7 +16,7 @@ import {
 
 /**
  * @typedef TemplateLoader
- * @property {function} createTemplateBlock Accepts a single argument, a target element, that will add blocks
+ * @property {function} buildTemplateBlock Accepts a single argument, a target element, that will add blocks
  *  specific to a given template.
  * @property {function} [buildHeroBlock] Accepts 3 arguments: a target element, the hero picture, and the
  *  hero text. The function will add blocks required for the template's hero section.
@@ -164,12 +164,14 @@ async function getTemplateLoader() {
   if (!template) {
     return;
   }
+  let templateLoader;
   try {
-    await import(`../templates/${template}/${template}.js`);
+    templateLoader = await import(`../templates/${template}/${template}.js`);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(`Unable to find template ${template}`, e);
   }
+  return templateLoader;
 }
 
 /**
@@ -186,7 +188,7 @@ async function buildTemplateBlock(main, templateLoader) {
   }
   try {
     await loadCSS(`/templates/${template}/${template}.css`);
-    await templateLoader.createTemplateBlock(main);
+    await templateLoader.buildTemplateBlock(main);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error('Unable to load and apply template block', e);
