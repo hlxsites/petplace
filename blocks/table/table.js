@@ -17,8 +17,12 @@ export default function decorate(block) {
     [...firstRow.children].forEach((td) => {
       const th = document.createElement('th');
       th.innerHTML = td.firstElementChild.innerHTML;
-      th.setAttribute('colspan', td.getAttribute('colspan') || '');
-      th.setAttribute('rowspan', td.getAttribute('rowspan') || '');
+      if (td.getAttribute('colspan')) {
+        th.setAttribute('colspan', td.getAttribute('colspan'));
+      }
+      if (td.getAttribute('rowspan')) {
+        th.setAttribute('rowspan', td.getAttribute('rowspan'));
+      }
       td.replaceWith(th);
     });
     const thead = document.createElement('thead');
