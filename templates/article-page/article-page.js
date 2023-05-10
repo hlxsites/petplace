@@ -12,6 +12,7 @@ function createTemplateBlock(main, blockName, gridName) {
   main.append(section);
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export function buildTemplateBlock(main) {
   createTemplateBlock(main, 'navigation');
   createTemplateBlock(main, 'article-author');

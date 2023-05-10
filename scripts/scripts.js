@@ -27,10 +27,10 @@ const TEMPLATES = {
 
 /**
  * @typedef TemplateLoader
- * @property {function} buildTemplateBlock Accepts a single argument, a target element, that will add blocks
- *  specific to a given template.
- * @property {function} [buildHeroBlock] Accepts 3 arguments: a target element, the hero picture, and the
- *  hero text. The function will add blocks required for the template's hero section.
+ * @property {function} buildTemplateBlock Accepts a single argument, a target element, that will
+ *  add blocks specific to a given template.
+ * @property {function} [buildHeroBlock] Accepts 3 arguments: a target element, the hero picture,
+ *  and the hero text. The function will add blocks required for the template's hero section.
  */
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -93,6 +93,30 @@ function buildCategorySidebar() {
 }
 
 /**
+ * Retrieves the name of the template being used by the current page.
+ * @returns {string} Template name, or undefined if none.
+ */
+function getTemplateName() {
+  return getMetadata('template')?.toLowerCase();
+}
+
+/**
+ * Retrieves the template applicable to the current page, if there is a template.
+ * @returns {TemplateLoader} Loader for providing various functionality for interacting with
+ *  a template. May be undefined if there is no valid template specified.
+ */
+function getTemplateLoader() {
+  const template = getTemplateName();
+  if (!template) {
+    return undefined;
+  }
+  if (!TEMPLATES[template]) {
+    return undefined;
+  }
+  return TEMPLATES[template];
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -136,30 +160,6 @@ function buildVideoEmbeds(container) {
         width="640"
         src="${a.href}"></iframe>`;
   });
-}
-
-/**
- * Retrieves the name of the template being used by the current page.
- * @returns {string} Template name, or undefined if none.
- */
-function getTemplateName() {
-  return getMetadata('template')?.toLowerCase();
-}
-
-/**
- * Retrieves the template applicable to the current page, if there is a template.
- * @returns {TemplateLoader} Loader for providing various functionality for interacting with a template.
- *  May be undefined if there is no valid template specified.
- */
-function getTemplateLoader() {
-  const template = getTemplateName();
-  if (!template) {
-    return;
-  }
-  if (!TEMPLATES[template]) {
-    return;
-  }
-  return TEMPLATES[template];
 }
 
 /**

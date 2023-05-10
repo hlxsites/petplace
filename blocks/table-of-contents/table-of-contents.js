@@ -1,4 +1,4 @@
-export default function decorate(block) {
+export default function decorate() {
   const main = document.body.querySelector('main');
   const tocDiv = document.createElement('div');
   const allH2s = main ? main.getElementsByTagName('h2') : [];
