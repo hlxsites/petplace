@@ -82,6 +82,7 @@ export default async function decorate(block) {
   const buttonPrev = document.createElement('button');
   buttonPrev.setAttribute('type', 'button');
   buttonPrev.setAttribute('data-role', 'none');
+  buttonPrev.setAttribute('aria-label', 'View previous slide.');
   buttonPrev.classList.add('slick-arrow', 'slick-prev');
   buttonPrev.addEventListener('click', () => {
     slide('prev', block);
@@ -89,6 +90,7 @@ export default async function decorate(block) {
   const buttonNext = document.createElement('button');
   buttonNext.setAttribute('type', 'button');
   buttonNext.setAttribute('data-role', 'none');
+  buttonNext.setAttribute('aria-label', 'View next slide.');
   buttonNext.classList.add('slick-arrow', 'slick-next');
   buttonNext.addEventListener('click', () => {
     slide('next', block);
