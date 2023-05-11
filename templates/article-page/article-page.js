@@ -12,6 +12,10 @@ function createTemplateBlock(main, blockName, gridName) {
   main.append(section);
 }
 
+/**
+ * Adds all blocks specific to the template to a page.
+ * @param {Element} main Element to which template blocks will be added.
+ */
 // eslint-disable-next-line import/prefer-default-export
 export function buildTemplateBlock(main) {
   createTemplateBlock(main, 'breadcrumb');
@@ -19,8 +23,8 @@ export function buildTemplateBlock(main) {
   createTemplateBlock(main, 'pet-insurance-quote');
   createTemplateBlock(main, 'social-links');
   createTemplateBlock(main, 'table-of-contents');
+  createTemplateBlock(main, 'article-footer');
   createTemplateBlock(main, 'pet-insurance-quote', 'pet-insurance-quote-after');
-  createTemplateBlock(main, 'paws-up-count');
   createTemplateBlock(main, 'paws-up');
   createTemplateBlock(main, 'social-links', 'social-links-after');
   createTemplateBlock(main, 'popular-articles');
