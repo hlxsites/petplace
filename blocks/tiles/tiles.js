@@ -27,6 +27,17 @@ export default async function decorate(block) {
     return null;
   }).filter((item) => item); // filter out null values returned from the for loop
 
+  const categories = await Promise.all(data.map(async (dta) => {
+    if (dta.category && dta.category !== '0') {
+      return dta.category;
+    } else {
+      const category = await getCategory(dta.path.split('/').slice(-2).shift());
+      if (category) {
+        return category.Category;
+      }
+    }
+  }));
+
   data.forEach((dta, index) => {
     // Create tile div for each individual tile
     const tile = document.createElement('div');
@@ -61,14 +72,7 @@ export default async function decorate(block) {
     const categoryLink = document.createElement('a');
     categoryLink.className = 'category-link-btn';
     categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf('/'));
-    if (dta.category && dta.category !== '0') {
-      categoryLink.innerHTML = dta.category;
-    } else {
-      const category = getCategory(dta.path.split('/').slice(-2).shift());
-      if (category) {
-        categoryLink.innerHTML = category.Category;
-      }
-    }
+    categoryLink.innerHTML = categories[index];
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');
