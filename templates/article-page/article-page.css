@@ -22,10 +22,6 @@
   padding: 0;
 }
 
-.article-page .default-content-wrapper {
-  padding: 0 15%;
-}
-
 .article-page p {
   font-size: 1rem;
   font-weight: 400;
@@ -44,11 +40,11 @@
 
 .article-page .hero-container .hero {
   margin-bottom: 2rem;
+  overflow: hidden;
 }
 
 .article-page .hero-container .hero picture {
   height: calc(100vw / 2);
-  width: 100vw;
 }
 
 .article-page .hero-container {
@@ -58,6 +54,10 @@
 .article-page .section:not(.hero-container):not(.article-template-autoblock) {
   grid-area: article;
   padding: 0 1rem;
+}
+
+.article-page .section:not(.hero-container):not(.article-template-autoblock) > div {
+  padding: 0 15%;
 }
 
 .article-page .hero-container ~ .section:nth-of-type(2n+1) {
@@ -75,10 +75,6 @@
 
 .article-page main li {
   margin-bottom: .25rem;
-}
-
-.article-template-grid-navigation {
-  grid-area: navigation;
 }
 
 .article-template-grid-article-author {
@@ -109,11 +105,28 @@
  grid-area: article-navigation;
 }
 
+p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.footer-nav {
+  display: none;
+}
+
+.article-page main div,.section,.article-template-autoblock {
+  background-color: var(--background-color);
+}
+
+.article-page main .default-content-wrapper ~ .default-content-wrapper {
+  margin-top: 0;
+}
+
 @media (min-width: 768px) {
   .article-page main {
     column-gap: 1rem;
     grid-template:
-      "navigation navigation" auto
       "hero hero" auto
       "article author" auto
       "article insurance" auto
@@ -132,6 +145,10 @@
   }
 
   .article-page .section:not(.hero-container):not(.article-template-autoblock) {
+    padding: 0;
+  }
+
+  .article-page .section:not(.hero-container):not(.article-template-autoblock) > div {
     padding: 0;
   }
 
@@ -155,10 +172,6 @@
     display: none;
   }
 
-  .default-content-wrapper {
-    padding: 0;
-  }
-
   .article-page h2 {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
@@ -170,8 +183,59 @@
   .article-page .hero-container .hero {
     margin-bottom: .5rem;
   }
+}
 
-  .article-page .default-content-wrapper {
+@media (min-width: 1024px) {
+  .article-page main {
     padding: 0;
+    column-gap: 4rem;
+    grid-template:
+      "hero hero hero hero" auto
+      ". article author ." auto
+      ". article insurance ." auto
+      ". article paws-up ." auto
+      ". article social ." 1fr
+      "popular popular popular popular" auto
+      "article-navigation article-navigation article-navigation article-navigation" auto
+      / 1fr minmax(300px, 720px) 300px 1fr;
+  }
+
+  .article-page main h2 {
+    font-size: 2.5rem;
+  }
+
+  .article-page main .hero-container {
+    margin: 0 0 3rem;
+  }
+
+  .article-page main .hero-container .hero {
+    display: flex;
+    margin: 0;
+    height: 29vw;
+  }
+
+  .article-page main .hero-container .hero picture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    object-position: center center;
+  }
+
+  .article-template-breadcrumb {
+    z-index: 1;
+  }
+
+  .article-page main .hero-container .hero h1 {
+    margin-bottom: 1rem;
+    font-weight: 800;
+    color: var(--text-color-inverted);
+    font-size: 3.625rem;
+    z-index: 1;
+  }
+
+  .article-page main .hero-container .hero > div {
+    align-self: flex-end;
   }
 }
