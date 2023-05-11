@@ -36,6 +36,44 @@ function isMobile() {
   return window.innerWidth < 1200;
 }
 
+let categoriesPromise = null;
+async function loadCategories() {
+  if (categoriesPromise) {
+    return categoriesPromise;
+  }
+  if (!window.sessionStorage.getItem('categories')) {
+    categoriesPromise = fetch('/categories.json')
+      .then((res) => res.json())
+      .then((json) => {
+        window.sessionStorage.setItem('categories', JSON.stringify(json));
+      })
+      .catch((err) => {
+        window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch categories.', err);
+      });
+    return categoriesPromise;
+  }
+  return Promise.resolve();
+}
+
+export async function getCategories() {
+  try {
+    await loadCategories();
+    return JSON.parse(window.sessionStorage.getItem('categories'));
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getCategory(name) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c.Slug === name);
+}
+
 function buildCategorySidebar() {
   const section = document.createElement('div');
   section.classList.add('sidebar');
@@ -214,6 +252,7 @@ async function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export async function decorateMain(main) {
+  loadCategories(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
   await decorateIcons(main);
