@@ -1,0 +1,96 @@
+.hero-container,
+.general-attributes-container,
+.attributes-container,
+.accordion-container {
+    display: none;
+    padding: 0;
+}
+
+.section.facts-container {
+    background-color: var(--background-color-light);
+    padding: 0;
+    position: relative;
+}
+
+.section.facts-container  h2{
+    text-align: center;
+}
+
+.facts-wrapper {
+    transform: translate(-000vw);
+    transition: transform .7s;
+}
+
+
+
+.facts ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+.fact-card {
+    background-color: var(--background-color);
+    color: #4a4a4a;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 300px;
+    margin: 10px 45px 100px;
+    flex-shrink: 0;
+    width: calc(100vw - 90px);
+    padding: 0 30px 30px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.fact-card h4 {
+    padding-top: 36px;
+    font-size: 80px;
+    position: relative;
+    font-family: Raleway,sans-serif;
+    font-weight: 800;
+    margin-bottom: 20px;
+
+}
+
+.fact-card h4::before {
+    content: "";
+    width: 16px;
+    height: 64px;
+    position: absolute;
+    left: -30px;
+    bottom: 10px;
+}
+
+.fact-card.breed-purple h4 {
+    color: var(--color-dark-maroon);
+    filter: brightness(1.5);
+}
+
+.fact-card.breed-purple h4::before {
+    background: var(--color-dark-maroon);
+}
+
+.fact-card.breed-blue h4 {
+    color : var(--color-blue-dark)
+}
+
+.fact-card.breed-blue h4::before {
+    background : var(--color-blue-dark)
+}
+
+.fact-card.breed-red h4 {
+    color: var(--highlight-color);
+    filter: brightness(.8) contrast(175%);
+}
+
+.fact-card.breed-red h4::before {
+    background : var(--highlight-color);
+}
+
+.facts-container .slick-arrow {
+    bottom: 10px;
+}
