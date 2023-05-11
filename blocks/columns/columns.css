@@ -10,6 +10,7 @@
 
 .columns > div > div {
   order: 1;
+  margin-bottom: 2rem;
 }
 
 .columns > div > .columns-img-col {
@@ -30,5 +31,6 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+    margin-bottom: 0;
   }
 }
