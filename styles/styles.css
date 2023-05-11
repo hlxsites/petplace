@@ -472,12 +472,12 @@ a.sr-focusable:focus {
   flex: 1.5;
 }
 
-.home-page footer::before {
+/* .home-page footer::before {
   display: block;
   content: '';
   height: 6rem;
   background-color: var(--background-color-dark);
-}
+} */
 
 @media (min-width: 600px) {
   .home-page .hero h1 {
