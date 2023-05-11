@@ -1,3 +1,5 @@
+import { getCategory } from '../../scripts/scripts.js';
+
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
@@ -59,7 +61,14 @@ export default async function decorate(block) {
     const categoryLink = document.createElement('a');
     categoryLink.className = 'category-link-btn';
     categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf('/'));
-    categoryLink.innerHTML = dta.category;
+    if (dta.category && dta.category !== '0') {
+      categoryLink.innerHTML = dta.category;
+    } else {
+      const category = getCategory(dta.path.split('/').slice(-2).shift());
+      if (category) {
+        categoryLink.innerHTML = category.Category;
+      }
+    }
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');
@@ -67,7 +76,9 @@ export default async function decorate(block) {
     const title = document.createElement('a');
     title.href = dta.path;
     const titleHeader = document.createElement('h3');
-    titleHeader.innerHTML = dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'));
+    titleHeader.innerHTML = dta.title.endsWith(' - PetPlace')
+      ? dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'))
+      : dta.title;
     title.append(titleHeader);
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');

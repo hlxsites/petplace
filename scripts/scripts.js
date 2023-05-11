@@ -25,6 +25,22 @@ function isMobile() {
   return window.innerWidth < 1200;
 }
 
+export function getCategories() {
+  try {
+    return JSON.parse(window.sessionStorage.getItem('categories'));
+  } catch (err) {
+    return null;
+  }
+}
+
+export function getCategory(name) {
+  const categories = getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c.Slug === name);
+}
+
 function buildCategorySidebar() {
   const section = document.createElement('div');
   section.classList.add('sidebar');
@@ -225,7 +241,18 @@ function buildAutoBlocks(main) {
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
-export function decorateMain(main) {
+export async function decorateMain(main) {
+  if (!window.sessionStorage.getItem('categories')) {
+    try {
+      const res = await fetch('/categories.json');
+      const json = await res.json();
+      window.sessionStorage.setItem('categories', JSON.stringify(json));
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to fetch categories.', err);
+    }
+  }
+
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
