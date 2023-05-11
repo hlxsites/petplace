@@ -89,8 +89,8 @@ export default async function decorate(block) {
   navSidebar.append(ariaDialog);
   nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
 
-  const toggle = ariaDialog.querySelector('button');
-  toggle.setAttribute('aria-label', 'Open side bar');
+  const sidebarToggle = ariaDialog.querySelector('button');
+  sidebarToggle.setAttribute('aria-label', 'Open side bar');
   const close = ariaDialog.querySelector('[role="dialog"] button');
   close.setAttribute('aria-label', 'Close side bar');
   close.innerHTML = '<span class="icon icon-close"></span>';
