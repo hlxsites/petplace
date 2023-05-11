@@ -1,6 +1,6 @@
 .attributes {
     margin: 0;
-    background: #3b082bcc;
+    background: var(--color-dark-maroon);
     padding: 44px 12px;
     border-radius: 8px;
     box-shadow: 4px 4px 20px 0 rgb(0 0 0 / 10%);
