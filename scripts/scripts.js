@@ -92,7 +92,11 @@ async function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    if (bodyClass.includes('breed-page')) {
+      section.append(buildBlock('hero', { elems: [picture] }));
+    } else {
+      section.append(buildBlock('hero', { elems: [picture, h1] }));
+    }
     if (bodyClass.includes('article-page')) {
       const breadcrumb = document.querySelector('.breadcrumb');
       breadcrumb.parentElement.remove();
