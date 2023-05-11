@@ -396,7 +396,7 @@ a.sr-focusable:focus {
 
 /* Template overrides */
 
-.home-page .hero-container ~ .section:nth-of-type(2n) {
+.home-page .section:nth-of-type(2n+1) {
   background: var(--background-color-light);
 }
 
@@ -571,6 +571,7 @@ a.sr-focusable:focus {
   background: var(--background-color-light);
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .article-page main p {
   margin-bottom: .75em;
 }
@@ -595,6 +596,6 @@ a.sr-focusable:focus {
   color: #5773A9;
 }
 
-.icon-user path{
+.icon-user path {
   color: #C5D2E9;
 }
