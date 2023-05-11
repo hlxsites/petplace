@@ -1,5 +1,5 @@
 .care-tabs-container.section {
-    background-color: #f2f6fc;
+    background-color: var(--background-color-light);
     text-align: center;
     padding: 0;
     position: relative;
@@ -39,11 +39,11 @@
     align-items: center;
     width: 220px;
     height: 320px;
-    border: 1px solid #e4e4e4;
+    border: 1px solid var(--color-gray-light-alt);
     border-radius: 6px;
     margin: 0 auto 100px;
     cursor: pointer;
-    background: #fff;
+    background: var(--background-color);
 }
 
 .care-tabs .card:hover {
@@ -56,11 +56,10 @@
 
 .care-tabs .card p:last-child {
     padding: 0;
-    color: #28061e;
+    color: var(--text-color);
     line-height: 1.5;
     font-size: 1.375rem;
-    font-family: Raleway,sans-serif;
-    font-weight: 800;
+    font-family: var(--heading-font-family);
     position: relative;
     margin: 0 10px;
     text-align: center;
@@ -72,10 +71,8 @@
     width: 16px;
     height: 1px;
     background: #cb3627;
-    margin-top: 12px;
     display: block;
-    margin-left: calc(50% - 8px);
-    margin-bottom: 5px;
+    margin: 12px auto 5px;
 }
 
 .care-tabs .details {
@@ -97,7 +94,7 @@
     border: none;
     color: white;
     outline: none;
-    background: #dfe3e9;
+    background: var(--color-gray-light-alt);
     height: 48px;
     width: 48px;
     top: 442px;
@@ -108,7 +105,6 @@
 .slick-prev {
     left: calc(50% - 80px);
     right: 50%;
-    z-index: 99;
 }
 
 .slick-prev::before {
@@ -116,11 +112,11 @@
     display: inline-block;
     width: 20px;
     height: 1em;
-    background: #fff;
+    background: var(--background-color);
     content: '';
     /* stylelint-disable-next-line property-no-vendor-prefix */
     -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
-    mask: url('../../icons/arrow.svg');
+    mask: url('../../icons/arrow.svg') center / 100% 100%;
     vertical-align: middle;
     transform: rotate(180deg);
 }
@@ -158,6 +154,7 @@
     }
 
     .care-tabs-wrapper {
+        /* !important is necessary to overrule the inline style properties set from the mobile slideshow if toggled. */
         transform: translateX(0) !important;
     }
 
