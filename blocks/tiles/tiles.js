@@ -30,11 +30,10 @@ export default async function decorate(block) {
   const categories = await Promise.all(data.map(async (dta) => {
     if (dta.category && dta.category !== '0') {
       return dta.category;
-    } else {
-      const category = await getCategory(dta.path.split('/').slice(-2).shift());
-      if (category) {
-        return category.Category;
-      }
+    }
+    const category = await getCategory(dta.path.split('/').slice(-2).shift());
+    if (category) {
+      return category.Category;
     }
   }));
 
