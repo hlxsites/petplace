@@ -12,7 +12,18 @@ import {
   loadBlocks,
   loadCSS,
   getMetadata,
+  toClassName,
 } from './lib-franklin.js';
+
+const TEMPLATES = {};
+
+/**
+ * @typedef TemplateLoader
+ * @property {function} buildTemplateBlock Accepts a single argument, a target element, that will
+ *  add blocks specific to a given template.
+ * @property {function} [buildHeroBlock] Accepts 3 arguments: a target element, the hero picture,
+ *  and the hero text. The function will add blocks required for the template's hero section.
+ */
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
@@ -23,6 +34,20 @@ function getId() {
 
 function isMobile() {
   return window.innerWidth < 1200;
+}
+
+async function loadCategories() {
+  if (!window.sessionStorage.getItem('categories')) {
+    try {
+      const res = await fetch('/categories.json');
+      const json = await res.json();
+      window.sessionStorage.setItem('categories', JSON.stringify(json));
+    } catch (err) {
+      window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
+      // eslint-disable-next-line no-console
+      console.error('Failed to fetch categories.', err);
+    }
+  }
 }
 
 export function getCategories() {
@@ -90,10 +115,39 @@ function buildCategorySidebar() {
 }
 
 /**
+ * Retrieves the name of the template being used by the current page.
+ * @returns {string} Template name, or undefined if none.
+ */
+function getTemplateName() {
+  return toClassName(getMetadata('template'));
+}
+
+/**
+ * Retrieves the template applicable to the current page, if there is a template.
+ * @returns {TemplateLoader} Loader for providing various functionality for interacting with
+ *  a template. May be undefined if there is no valid template specified.
+ */
+async function getTemplateLoader() {
+  const template = getTemplateName();
+  if (!template) {
+    return null;
+  }
+  if (!TEMPLATES[template]) {
+    try {
+      TEMPLATES[template] = await import(`../templates/${template}/${template}.js`);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(`Unable to load javascript for template ${template}`);
+    }
+  }
+  return TEMPLATES[template];
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-function buildHeroBlock(main) {
+async function buildHeroBlock(main) {
   const excludedPages = ['home-page'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
@@ -108,70 +162,16 @@ function buildHeroBlock(main) {
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
 
-    if (bodyClass.includes('breed-page')) {
-      section.append(buildBlock('hero', { elems: [picture] }));
-    } else {
+    let templateBuilt = false;
+    const templateLoader = await getTemplateLoader();
+    if (templateLoader && templateLoader.buildHeroBlock) {
+      templateBuilt = true;
+      templateLoader.buildHeroBlock(section, picture, h1);
+    }
+    if (!templateBuilt) {
       section.append(buildBlock('hero', { elems: [picture, h1] }));
     }
     main.prepend(section);
-  }
-}
-
-async function buildBreedPage(main) {
-  const author = getMetadata('author');
-  const h1 = main.querySelector('h1');
-
-  const icon = document.createElement('span');
-  icon.className = 'icon icon-user';
-
-  const p = document.createElement('p');
-  p.className = 'author-wrapper';
-
-  p.innerText = author;
-  p.prepend(icon);
-  await decorateIcons(p);
-  h1.insertAdjacentHTML('afterend', p.outerHTML);
-  const generalAttributesContainer = document.querySelector('.general-attributes-container');
-  const children = [...generalAttributesContainer.children];
-  const fragment = document.createDocumentFragment();
-
-  // Append the new children to the fragment
-  children.forEach((child) => {
-    fragment.appendChild(child);
-  });
-
-  const subContainer = document.createElement('div');
-  subContainer.className = 'general-attributes-sub-container';
-
-  subContainer.append(fragment);
-
-  generalAttributesContainer.append(subContainer);
-}
-
-/**
- * Builds toc autoblock and prepends to first H2 in the document.
- * @param {Element} main The container element
- */
-function buildTOCBlock(main) {
-  const tocDiv = document.createElement('div');
-  const allH2s = main.getElementsByTagName('h2');
-  const tocHeader = document.createElement('h2');
-  const tocList = document.createElement('ol');
-  tocHeader.innerText = 'Table of Contents';
-  tocDiv.appendChild(tocHeader);
-  if (allH2s.length > 1) {
-    for (let index = 0; index < allH2s.length; index += 1) {
-      const tagname = 'h'.concat(index);
-      allH2s[index].id = tagname;
-      const tocListItem = document.createElement('li');
-      const tocEntry = document.createElement('a');
-      tocEntry.setAttribute('href', '#'.concat(tagname));
-      tocEntry.innerText = allH2s[index].innerText;
-      tocListItem.appendChild(tocEntry);
-      tocList.appendChild(tocListItem);
-    }
-    tocDiv.appendChild(tocList);
-    allH2s[0].parentNode.insertBefore(tocDiv, allH2s[0]);
   }
 }
 
@@ -200,13 +200,21 @@ async function buildTemplateBlock(main) {
   if (!template) {
     return;
   }
+  const templateLoader = await getTemplateLoader();
+  if (!templateLoader) {
+    return;
+  }
   try {
-    await loadCSS(`/templates/${template}/${template}.css`);
-    const templateLoader = await import(`../templates/${template}/${template}.js`);
-    await templateLoader.default(main);
+    templateLoader.buildTemplateBlock(main);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error('Unable to load and apply template block', e);
+  }
+  try {
+    await loadCSS(`/templates/${template}/${template}.css`);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(`Unable to load CSS for template ${template}`, e);
   }
 }
 
@@ -214,19 +222,13 @@ async function buildTemplateBlock(main) {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks(main) {
+async function buildAutoBlocks(main) {
   const bodyClass = [...document.body.classList];
 
   try {
-    buildHeroBlock(main);
-    buildTemplateBlock(main);
+    await buildHeroBlock(main);
+    await buildTemplateBlock(main);
 
-    if (bodyClass.includes('breed-page')) {
-      buildBreedPage(main);
-    }
-    if (bodyClass.includes('article-page')) {
-      buildTOCBlock(main);
-    }
     if (bodyClass.includes('category-index')) {
       main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
     }
@@ -242,21 +244,11 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export async function decorateMain(main) {
-  if (!window.sessionStorage.getItem('categories')) {
-    try {
-      const res = await fetch('/categories.json');
-      const json = await res.json();
-      window.sessionStorage.setItem('categories', JSON.stringify(json));
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch categories.', err);
-    }
-  }
-
+  loadCategories(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
-  decorateIcons(main);
-  buildAutoBlocks(main);
+  await decorateIcons(main);
+  await buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
 }
@@ -270,7 +262,7 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    decorateMain(main);
+    await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }

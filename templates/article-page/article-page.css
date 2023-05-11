@@ -12,6 +12,7 @@ main {
     "author"
     "insurance"
     "social"
+    "toc"
     "article"
     "insurance-after"
     "paws-up-count"
@@ -58,6 +59,10 @@ main .section:not(.hero-container):not(.article-template-autoblock) {
   grid-area: social;
 }
 
+.article-template-grid-table-of-contents {
+  grid-area: toc;
+}
+
 .article-template-grid-pet-insurance-quote-after {
   grid-area: insurance-after;
 }
@@ -94,4 +99,8 @@ p {
 
 .footer-nav {
   display: none;
+}
+
+.article-page main div,.section,.article-template-autoblock {
+  background-color: #fff;
 }

@@ -5,21 +5,20 @@ import {
 function createTemplateBlock(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
   const section = document.createElement('div');
-  section.className = `article-template-autoblock article-template-grid-${gridNameValue}`;
+  section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
 
-  const placeholder = document.createElement('div');
-  placeholder.innerText = `${blockName} placeholder`;
-
-  const block = buildBlock(blockName, { elems: [placeholder] });
+  const block = buildBlock(blockName, { elems: [] });
   section.append(block);
   main.append(section);
 }
 
-export default function loadArticleTemplate(main) {
+// eslint-disable-next-line import/prefer-default-export
+export function buildTemplateBlock(main) {
   createTemplateBlock(main, 'navigation');
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
   createTemplateBlock(main, 'social-links');
+  createTemplateBlock(main, 'table-of-contents');
   createTemplateBlock(main, 'pet-insurance-quote', 'pet-insurance-quote-after');
   createTemplateBlock(main, 'paws-up-count');
   createTemplateBlock(main, 'paws-up');
