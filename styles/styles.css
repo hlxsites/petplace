@@ -324,10 +324,11 @@ main .section.well h2 {
 }
 
 main .section.well li {
-  text-align: left;
+  margin-bottom: 1rem;
   font-family: var(--heading-font-family);
   font-size: 1.25rem;
   color: #353534;
+  text-align: left;
 }
 
 main .section.well li::marker {
@@ -338,6 +339,12 @@ main .section.well .default-content-wrapper {
   box-sizing: border-box;
   padding: 3.75rem 1.25rem;
   background: var(--background-color);
+}
+
+main .section.well .default-content-wrapper > * {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
 }
 
 [data-align="left"] {

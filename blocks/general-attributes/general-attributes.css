@@ -18,7 +18,7 @@ main .general-attributes-container {
 .general-attributes-container .author-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 10px 0;
 }
 
 .general-attributes-container .default-content-wrapper{
