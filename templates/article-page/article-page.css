@@ -110,7 +110,7 @@
 }
 
 @media (min-width: 768px) {
-  main {
+  .article-page main {
     column-gap: 1rem;
     grid-template:
       "navigation navigation" auto
@@ -122,7 +122,8 @@
       "popular popular" auto
       "article-navigation article-navigation" auto
       / 1fr 300px;
-  }
+      padding: 0 1rem;
+    }
 
   .article-page main p {
     font-size: 1.125rem;
@@ -130,24 +131,20 @@
     margin-bottom: 0.75rem;
   }
 
-  main .section:not(.hero-container):not(.article-template-autoblock) {
+  .article-page .section:not(.hero-container):not(.article-template-autoblock) {
     padding: 0;
   }
 
-  main {
-    padding: 0 1rem;
-  }
-
-  main .hero-container {
+  .article-page .hero-container {
     margin: 0 -1rem;
   }
 
-  main .hero-container .hero picture {
+  .article-page .hero-container .hero picture {
     position: relative;
     z-index: 0;
   }
 
-  main .hero-container .hero h1 {
+  .article-page .hero-container .hero h1 {
     font-weight: 800;
     color: var(--text-color);
     font-size: 3.11rem;
@@ -162,7 +159,7 @@
     padding: 0;
   }
 
-  main h2 {
+  .article-page h2 {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
     line-height: 1.1;
@@ -170,7 +167,11 @@
     font-weight: 800;
   }
 
-  main .hero-container .hero {
+  .article-page .hero-container .hero {
     margin-bottom: .5rem;
+  }
+
+  .article-page .default-content-wrapper {
+    padding: 0;
   }
 }
