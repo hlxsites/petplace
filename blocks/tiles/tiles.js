@@ -35,6 +35,7 @@ export default async function decorate(block) {
     if (category) {
       return category.Category;
     }
+    return null;
   }));
 
   data.forEach((dta, index) => {
