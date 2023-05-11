@@ -416,7 +416,7 @@ a.sr-focusable:focus {
   width: 15%;
   min-width: 100px;
   max-width: 200px;
-  border-bottom: 2px solid #ff7d5a;
+  border-bottom: 2px solid var(--highlight-color);
 }
 
 .home-page .centered h2 {
