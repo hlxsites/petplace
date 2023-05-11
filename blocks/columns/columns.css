@@ -4,7 +4,8 @@
 }
 
 .columns img {
-  width: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
 }
 
 .columns > div > div {
@@ -21,7 +22,7 @@
 
 @media (min-width: 900px) {
   .columns > div {
-    align-items: center;
+    align-items: start;
     flex-direction: unset;
     gap: 32px;
   }
