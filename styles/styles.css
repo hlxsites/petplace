@@ -15,6 +15,8 @@
   --highlight-color: #ff7d5a;
   --link-color: var(--highlight-color);
   --link-hover-color: var(--highlight-color);
+  --link-color-alt: #678fda;
+  --link-hover-color-alt: var(--text-color-alt);
   --background-color: #fff;
   --background-color-light: #f2f6fc;
   --background-color-dark: #3b092c;
@@ -23,6 +25,7 @@
   --text-color-alt: #363636;
   --color-gray: #8f8f8f;
   --color-gray-light: #b9c2cc;
+  --color-gray-light-alt: #e4e4e4;
   --color-gray-dark: #4a4a4a;
   --color-blue: #639af9;
   --color-blue-dark: #5870A2;
