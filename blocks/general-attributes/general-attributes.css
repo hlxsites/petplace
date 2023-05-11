@@ -1,5 +1,4 @@
 .general-attributes-container {
-    background-color: #f2f6fc;
     padding: 45px 1.5rem;
 
 }
@@ -66,7 +65,7 @@
     height: 1px;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
     .general-attributes-container .general-attributes > div{
         margin: 0 5px;
         width: auto;

@@ -59,7 +59,7 @@
     border-bottom-right-radius: 5px;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
     .attributes {
         display: flex;
         justify-content: space-around;
@@ -67,7 +67,16 @@
 }
 
 @media (min-width: 1024px) {
+    .attributes {
+        padding: 4.375rem .75rem;
+    }
+
     .attributes strong {
-        font-size: var(--heading-font-size-xl);
+        font-size: 2rem;
+        line-height: 1.5;
+    }
+
+    .attributes .meter span {
+        padding-bottom: 12px;
     }
 }
