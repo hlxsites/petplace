@@ -95,11 +95,11 @@
 }
 
 @media (min-width: 1024px) {
-    .care-tabs-container h2 span:first-child{
+    .care-tabs-container h2 span:first-child {
         display: none;
     }
 
-    .care-tabs-container h2 span:last-child{
+    .care-tabs-container h2 span:last-child {
         display: initial;
     }
 
@@ -140,11 +140,11 @@
         display: block;
     }
 
-    .care-tabs-container .desktop-details-container .details{
+    .care-tabs-container .desktop-details-container .details {
         padding: 1.5rem;
     }
 
-    .care-tabs-container .desktop-details-container .details h3{
+    .care-tabs-container .desktop-details-container .details h3 {
         font-size: 2.75rem;
     }
 }

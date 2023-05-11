@@ -61,8 +61,9 @@ export class AriaDialog extends HTMLElement {
     const button = document.createElement('button');
     button.id = id1;
     button.setAttribute('aria-controls', id2);
-    button.innerHTML = this.firstElementChild.outerHTML;
-    this.firstElementChild.replaceWith(button);
+    button.innerHTML = '';
+    button.append(this.firstElementChild);
+    this.prepend(button);
 
     const close = document.createElement('button');
     close.setAttribute('aria-controls', id2);
@@ -74,9 +75,10 @@ export class AriaDialog extends HTMLElement {
     dialog.setAttribute('aria-labelledby', id1);
     dialog.setAttribute('aria-modal', this.attributes.getNamedItem('modal')
       && this.attributes.getNamedItem('modal').value === 'true');
-    dialog.innerHTML = this.firstElementChild.nextElementSibling.outerHTML;
+    dialog.innerHTML = '';
+    dialog.append(button.nextElementSibling);
     dialog.firstElementChild.prepend(close);
-    this.firstElementChild.nextElementSibling.replaceWith(dialog);
+    this.append(dialog);
   }
 
   async close() {

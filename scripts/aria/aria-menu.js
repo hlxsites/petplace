@@ -114,7 +114,8 @@ export class AriaMenu extends HTMLElement {
 
   async decorate() {
     const button = document.createElement('button');
-    button.innerHTML = this.firstElementChild.outerHTML;
+    button.innerHTML = '';
+    button.append(this.firstElementChild);
     button.setAttribute('aria-expanded', false);
     button.setAttribute('aria-haspopup', true);
     this.firstElementChild.replaceWith(button);
