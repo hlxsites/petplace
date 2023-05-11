@@ -17,5 +17,5 @@ export async function buildTemplateBlock(main) {
   p.innerText = author;
   p.prepend(icon);
   await decorateIcons(p);
-  h1.insertAdjacentHTML('afterend', p.outerHTML);
+  h1.insertAdjacentElement('afterend', p);
 }
