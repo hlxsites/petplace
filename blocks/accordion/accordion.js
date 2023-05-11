@@ -9,7 +9,6 @@ export default async function decorate(block) {
   });
 
   const element = document.createElement(constants.tagName);
-  element.setAttribute(constants.withControls, block.classList.contains('with-controls'));
   element.innerHTML = block.innerHTML;
   block.innerHTML = '';
   block.append(element);
