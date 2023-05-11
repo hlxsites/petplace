@@ -1,4 +1,7 @@
 .care-tabs-container.section {
+    background-color: var(--background-color-light);
+    text-align: center;
+    padding: 0;
     position: relative;
 }
 
@@ -38,13 +41,12 @@
     height: 320px;
     border: 1px solid var(--color-gray-light-alt);
     border-radius: 6px;
+    margin: 0 auto 100px;
     cursor: pointer;
     background: var(--background-color);
 }
 
-.care-tabs .card.active,
 .care-tabs .card:hover {
-    background: var(--background-color);
     box-shadow: 5px 5px 50px 0 rgb(0 0 0 / 10%);
 }
 
@@ -81,6 +83,8 @@
 .care-tabs .details h3{
     display: none;
 }
+
+
 
 .slick-arrow {
     position: absolute;
@@ -156,14 +160,13 @@
 
     .care-tabs {
         flex-wrap: wrap;
-        justify-content: stretch;
-        gap: 1.5rem;
     }
 
     .care-tabs > div {
         width: inherit;
         display: block;
         flex: 1 1 0;
+        padding: 0.75rem;
     }
 
     .care-tabs .details {
@@ -173,7 +176,6 @@
     .care-tabs .card {
         background-color: transparent;
         margin-bottom: 1.25rem;
-        width: 100%;
     }
 
     .care-tabs .card.active {
@@ -189,7 +191,7 @@
     }
 
     .care-tabs-container .desktop-details-container .details{
-        padding: 1.5rem 0;
+        padding: 1.5rem;
     }
 
     .care-tabs-container .desktop-details-container .details h3{
