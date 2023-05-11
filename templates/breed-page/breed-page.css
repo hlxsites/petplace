@@ -1,3 +1,5 @@
+/* stylelint-disable property-no-vendor-prefix */
+
 main .hero-container {
   padding: 0;
   margin: 0;
@@ -30,7 +32,6 @@ main .hero-container .hero picture {
 main .section {
   padding: 5rem 1.5rem;
 }
-
 
 main .section:nth-of-type(2n) {
   background: var(--background-color-light);
@@ -67,7 +68,6 @@ main .section.centered p {
   height: 1em;
   background: var(--background-color);
   content: '';
-  /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
   mask: url('../../icons/arrow.svg') center / 100% 100%;
   vertical-align: middle;
@@ -86,7 +86,6 @@ main .section.centered p {
   height: 1em;
   background: #fff;
   content: '';
-  /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
   mask: url('../../icons/arrow.svg');
   vertical-align: middle;
