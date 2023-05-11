@@ -1,0 +1,31 @@
+main .hero-container {
+  padding: 0;
+  margin: 0;
+}
+
+main .hero-container .hero {
+  padding: 0;
+  margin: 0;
+}
+
+main .general-attributes-container h1 {
+  line-height: 1.1;
+  margin: 0;
+}
+
+main .hero-container .hero picture img {
+  width: 100vw;
+  height: calc(100vw * .75);
+  object-fit: cover;
+  object-position: center center;
+}
+
+main .hero-container .hero picture {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+p {
+  color: #4a4a4a;
+}
