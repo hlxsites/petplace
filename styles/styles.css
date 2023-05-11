@@ -472,13 +472,6 @@ a.sr-focusable:focus {
   flex: 1.5;
 }
 
-/* .home-page footer::before {
-  display: block;
-  content: '';
-  height: 6rem;
-  background-color: var(--background-color-dark);
-} */
-
 @media (min-width: 600px) {
   .home-page .hero h1 {
     font-size: 2.667em;
