@@ -1,5 +1,5 @@
 export default function decorate(block) {
-  const generalAttributesContainer = document.querySelector('.general-attributes-container');
+  const generalAttributesContainer = block.closest('.section');
   const children = [...generalAttributesContainer.children];
   const fragment = document.createDocumentFragment();
 
