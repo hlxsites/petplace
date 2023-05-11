@@ -36,30 +36,38 @@ function isMobile() {
   return window.innerWidth < 1200;
 }
 
+let categoriesPromise = null;
 async function loadCategories() {
-  if (!window.sessionStorage.getItem('categories')) {
-    try {
-      const res = await fetch('/categories.json');
-      const json = await res.json();
-      window.sessionStorage.setItem('categories', JSON.stringify(json));
-    } catch (err) {
-      window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch categories.', err);
-    }
+  if (categoriesPromise) {
+    return categoriesPromise;
   }
+  if (!window.sessionStorage.getItem('categories')) {
+    categoriesPromise = fetch('/categories.json')
+      .then((res) => res.json())
+      .then((json) => {
+        window.sessionStorage.setItem('categories', JSON.stringify(json));
+      })
+      .catch((err) => {
+        window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch categories.', err);
+      });
+    return categoriesPromise;
+  }
+  return Promise.resolve();
 }
 
-export function getCategories() {
+export async function getCategories() {
   try {
+    await loadCategories();
     return JSON.parse(window.sessionStorage.getItem('categories'));
   } catch (err) {
     return null;
   }
 }
 
-export function getCategory(name) {
-  const categories = getCategories();
+export async function getCategory(name) {
+  const categories = await getCategories();
   if (!categories) {
     return null;
   }
