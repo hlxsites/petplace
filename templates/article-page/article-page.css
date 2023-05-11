@@ -12,7 +12,6 @@ main {
     "author"
     "insurance"
     "social"
-    "toc"
     "article"
     "paws-up"
     "social-after"
@@ -56,10 +55,6 @@ main .section:not(.hero-container):not(.article-template-autoblock) {
 
 .article-template-grid-social-links {
   grid-area: social;
-}
-
-.article-template-grid-table-of-contents {
-  grid-area: toc;
 }
 
 .article-template-grid-paws-up {
@@ -142,10 +137,6 @@ p {
   }
 
   .article-template-grid-social-links-after {
-    display: none;
-  }
-
-  .article-template-grid-table-of-contents {
     display: none;
   }
 
