@@ -7,7 +7,6 @@ main .hero-container .hero h1 {
 main {
   display: grid;
   grid-template:
-    "navigation"
     "hero"
     "author"
     "insurance"

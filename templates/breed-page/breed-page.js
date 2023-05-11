@@ -1,9 +1,9 @@
 import {
-  buildBlock,
   getMetadata,
   decorateIcons,
 } from '../../scripts/lib-franklin.js';
 
+// eslint-disable-next-line import/prefer-default-export
 export async function buildTemplateBlock(main) {
   const author = getMetadata('author');
   const h1 = main.querySelector('h1');
@@ -35,6 +35,3 @@ export async function buildTemplateBlock(main) {
   generalAttributesContainer.append(subContainer);
 }
 
-export async function buildHeroBlock(section, picture) {
-  section.append(buildBlock('hero', { elems: [picture] }));
-}

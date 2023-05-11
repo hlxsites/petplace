@@ -15,14 +15,6 @@ import {
   toClassName,
 } from './lib-franklin.js';
 
-/**
- * @typedef TemplateLoader
- * @property {function} buildTemplateBlock Accepts a single argument, a target element, that will
- *  add blocks specific to a given template.
- * @property {function} [buildHeroBlock] Accepts 3 arguments: a target element, the hero picture,
- *  and the hero text. The function will add blocks required for the template's hero section.
- */
-
 const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
@@ -100,15 +92,11 @@ async function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-
-    let templateBuilt = false;
-    const templateLoader = await getTemplateLoader();
-    if (templateLoader && templateLoader.buildHeroBlock) {
-      templateBuilt = true;
-      templateLoader.buildHeroBlock(section, picture, h1);
-    }
-    if (!templateBuilt) {
-      section.append(buildBlock('hero', { elems: [picture, h1] }));
+    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    if (bodyClass.includes('article-page')) {
+      const breadcrumb = document.querySelector('.breadcrumb');
+      breadcrumb.parentElement.remove();
+      section.append(breadcrumb);
     }
     main.prepend(section);
   }
@@ -149,7 +137,7 @@ async function decorateTemplate(main) {
           if (mod.default) {
             await mod.default(main);
           } else if (mod.buildTemplateBlock) {
-            await mod.default(main);
+            await mod.buildTemplateBlock(main);
           }
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -206,8 +194,8 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
-  await decorateTemplate(main);
   if (main) {
+    await decorateTemplate(main);
     await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
