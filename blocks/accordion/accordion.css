@@ -20,13 +20,17 @@
     font-weight: 800;
     text-align: left;
     border-radius: 8px;
-    padding: 40px 50px 40px 30px;
+    padding: 27px 40px;
     margin: 0;
     font-family: var(--heading-font-family);
     position: relative;
     transition: all .5s;
     white-space: normal;
     min-height: 100px;
+}
+
+.accordion-section h3 button .header {
+    padding-right: 1.25rem;
 }
 
 .accordion-section h3 button strong{
