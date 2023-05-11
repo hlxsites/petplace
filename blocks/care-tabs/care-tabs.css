@@ -145,6 +145,10 @@
 }
 
 @media (min-width: 1024px) {
+    .care-tabs-container.section {
+        padding: 5rem 1.5rem;
+    }
+
     .care-tabs-container h2 span:first-child{
         display: none;
     }

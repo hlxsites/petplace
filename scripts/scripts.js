@@ -15,17 +15,7 @@ import {
   toClassName,
 } from './lib-franklin.js';
 
-const TEMPLATES = {};
-
-/**
- * @typedef TemplateLoader
- * @property {function} buildTemplateBlock Accepts a single argument, a target element, that will
- *  add blocks specific to a given template.
- * @property {function} [buildHeroBlock] Accepts 3 arguments: a target element, the hero picture,
- *  and the hero text. The function will add blocks required for the template's hero section.
- */
-
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 function getId() {
@@ -123,35 +113,6 @@ function buildCategorySidebar() {
 }
 
 /**
- * Retrieves the name of the template being used by the current page.
- * @returns {string} Template name, or undefined if none.
- */
-function getTemplateName() {
-  return toClassName(getMetadata('template'));
-}
-
-/**
- * Retrieves the template applicable to the current page, if there is a template.
- * @returns {TemplateLoader} Loader for providing various functionality for interacting with
- *  a template. May be undefined if there is no valid template specified.
- */
-async function getTemplateLoader() {
-  const template = getTemplateName();
-  if (!template) {
-    return null;
-  }
-  if (!TEMPLATES[template]) {
-    try {
-      TEMPLATES[template] = await import(`../templates/${template}/${template}.js`);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(`Unable to load javascript for template ${template}`);
-    }
-  }
-  return TEMPLATES[template];
-}
-
-/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -169,15 +130,15 @@ async function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-
-    let templateBuilt = false;
-    const templateLoader = await getTemplateLoader();
-    if (templateLoader && templateLoader.buildHeroBlock) {
-      templateBuilt = true;
-      templateLoader.buildHeroBlock(section, picture, h1);
-    }
-    if (!templateBuilt) {
+    if (bodyClass.includes('breed-page')) {
+      section.append(buildBlock('hero', { elems: [picture] }));
+    } else {
       section.append(buildBlock('hero', { elems: [picture, h1] }));
+    }
+    if (bodyClass.includes('article-page')) {
+      const breadcrumb = document.querySelector('.breadcrumb');
+      breadcrumb.parentElement.remove();
+      section.append(breadcrumb);
     }
     main.prepend(section);
   }
@@ -203,26 +164,34 @@ function buildVideoEmbeds(container) {
  * @returns {Promise} Resolves when the template block(s) have
  *  been loaded.
  */
-async function buildTemplateBlock(main) {
-  const template = getMetadata('template');
+async function decorateTemplate(main) {
+  const template = toClassName(getMetadata('template'));
   if (!template) {
     return;
   }
-  const templateLoader = await getTemplateLoader();
-  if (!templateLoader) {
-    return;
-  }
+
   try {
-    templateLoader.buildTemplateBlock(main);
-  } catch (e) {
+    const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
+    const decorationComplete = new Promise((resolve) => {
+      (async () => {
+        try {
+          const mod = await import(`../templates/${template}/${template}.js`);
+          if (mod.default) {
+            await mod.default(main);
+          } else if (mod.buildTemplateBlock) {
+            await mod.buildTemplateBlock(main);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load template for ${template}`, error);
+        }
+        resolve();
+      })();
+    });
+    await Promise.all([cssLoaded, decorationComplete]);
+  } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Unable to load and apply template block', e);
-  }
-  try {
-    await loadCSS(`/templates/${template}/${template}.css`);
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(`Unable to load CSS for template ${template}`, e);
+    console.log(`failed to load template ${template}`, error);
   }
 }
 
@@ -235,7 +204,6 @@ async function buildAutoBlocks(main) {
 
   try {
     await buildHeroBlock(main);
-    await buildTemplateBlock(main);
 
     if (bodyClass.includes('category-index')) {
       main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
@@ -270,6 +238,7 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    await decorateTemplate(main);
     await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);

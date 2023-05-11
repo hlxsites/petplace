@@ -4,15 +4,17 @@ const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
+let articles;
 export default async function decorate(block) {
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-block-container';
 
-  const res = await fetch('/article/query-index.json?sheet=article');
-  const queryData = await res.json();
-
-  const articles = queryData?.data;
+  if (!articles) {
+    const res = await fetch('/article/query-index.json?sheet=article');
+    const queryData = await res.json();
+    articles = queryData?.data;
+  }
 
   const data = [...block.children].map((row) => {
     const path = new URL(row.firstElementChild.firstElementChild.href).pathname;
