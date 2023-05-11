@@ -1,11 +1,3 @@
-.hero-container,
-.general-attributes-container,
-.attributes-container,
-.accordion-container {
-    display: none;
-    padding: 0;
-}
-
 .section.facts-container {
     background-color: var(--background-color-light);
     padding: 0;
@@ -17,7 +9,7 @@
 }
 
 .facts-wrapper {
-    transform: translate(-000vw);
+    transform: translate(0);
     transition: transform .7s;
 }
 
@@ -93,4 +85,23 @@
 
 .facts-container .slick-arrow {
     bottom: 10px;
+}
+
+
+@media (min-width: 1024px) {
+    .facts-wrapper {
+        /* !important; is necessary to overwrite inline style set dynamically. */
+        transform: translateX(0)!important;
+    }
+
+    .fact-card {
+        width: initial;
+        flex: 1;
+        margin: 10px 15px 100px;
+
+    }
+
+    .facts-container .slick-arrow {
+        display: none;
+    }
 }

@@ -1,31 +1,4 @@
-function getActiveSlide(block) {
-  return {
-    index: [...block.children].findIndex((child) => child.getAttribute('active') === 'true'),
-    element: block.querySelector('[active="true"]'),
-    totalSlides: [...block.children].length,
-  };
-}
-
-function slide(slideDirection, block) {
-  const slideWrapper = block.parentElement;
-  const currentActive = getActiveSlide(block);
-  currentActive.element.removeAttribute('active');
-  let newIndex;
-  if (slideDirection === 'next') {
-    if (currentActive.index === currentActive.totalSlides - 1) {
-      newIndex = 0;
-    } else {
-      newIndex = currentActive.index + 1;
-    }
-  } else if (currentActive.index === 0) {
-    newIndex = currentActive.totalSlides - 1;
-  } else {
-    newIndex = currentActive.index - 1;
-  }
-  block.children[newIndex].setAttribute('active', true);
-
-  slideWrapper.setAttribute('style', `transform:translateX(-${newIndex}00vw)`);
-}
+import { slide } from '../../templates/breed-page/breed-page.js';
 
 function setActiveCard(card, details) {
   document.querySelector('.care-tabs-wrapper .card.active').classList.remove('active');
@@ -84,14 +57,14 @@ export default async function decorate(block) {
   buttonPrev.setAttribute('data-role', 'none');
   buttonPrev.classList.add('slick-arrow', 'slick-prev');
   buttonPrev.addEventListener('click', () => {
-    slide('prev', block);
+    slide('prev', block, block.parentElement);
   });
   const buttonNext = document.createElement('button');
   buttonNext.setAttribute('type', 'button');
   buttonNext.setAttribute('data-role', 'none');
   buttonNext.classList.add('slick-arrow', 'slick-next');
   buttonNext.addEventListener('click', () => {
-    slide('next', block);
+    slide('next', block, block.parentElement);
   });
   // Add the button to the DOM
   block.parentElement.parentElement.append(buttonPrev);

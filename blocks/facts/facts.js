@@ -1,30 +1,4 @@
-function getActiveSlide(block) {
-  return {
-    index: [...block.children].findIndex((child) => child.getAttribute('active') === 'true'),
-    element: block.querySelector('[active="true"]'),
-    totalSlides: [...block.children].length,
-  };
-}
-
-function slide(slideDirection, block, slideWrapper) {
-  const currentActive = getActiveSlide(block);
-  currentActive.element.removeAttribute('active');
-  let newIndex;
-  if (slideDirection === 'next') {
-    if (currentActive.index === currentActive.totalSlides - 1) {
-      newIndex = 0;
-    } else {
-      newIndex = currentActive.index + 1;
-    }
-  } else if (currentActive.index === 0) {
-    newIndex = currentActive.totalSlides - 1;
-  } else {
-    newIndex = currentActive.index - 1;
-  }
-  block.children[newIndex].setAttribute('active', true);
-
-  slideWrapper.setAttribute('style', `transform:translateX(-${newIndex}00vw)`);
-}
+import { slide } from '../../templates/breed-page/breed-page.js';
 
 export default async function decorate(block) {
   const list = block.querySelector('ul');
