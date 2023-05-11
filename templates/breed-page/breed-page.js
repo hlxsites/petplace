@@ -9,10 +9,10 @@ export async function buildTemplateBlock(main) {
   const h1 = main.querySelector('h1');
 
   const icon = document.createElement('span');
-  icon.className = 'icon icon-user';
+  icon.classList.add('icon', 'icon-user');
 
   const p = document.createElement('p');
-  p.className = 'author-wrapper';
+  p.classList.add('author-wrapper');
 
   p.innerText = author;
   p.prepend(icon);
@@ -28,7 +28,7 @@ export async function buildTemplateBlock(main) {
   });
 
   const subContainer = document.createElement('div');
-  subContainer.className = 'general-attributes-sub-container';
+  subContainer.classList.add('general-attributes-sub-container');
 
   subContainer.append(fragment);
 

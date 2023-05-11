@@ -5,7 +5,7 @@ import {
 function createTemplateBlock(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
   const section = document.createElement('div');
-  section.className = `section article-template-autoblock article-template-grid-${gridNameValue}`;
+  section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
 
   const block = buildBlock(blockName, { elems: [] });
   section.append(block);
