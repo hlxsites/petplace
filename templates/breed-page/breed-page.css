@@ -4,8 +4,10 @@ main .hero-container {
 }
 
 main .hero-container .hero {
-  padding: 0;
+  padding: 0 0 31.8182%;
   margin: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 main .general-attributes-container h1 {
@@ -15,7 +17,6 @@ main .general-attributes-container h1 {
 
 main .hero-container .hero picture img {
   width: 100vw;
-  height: calc(100vw * .75);
   object-fit: cover;
   object-position: center center;
 }

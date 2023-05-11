@@ -14,7 +14,7 @@ function createTemplateBlock(main, blockName, gridName) {
 
 // eslint-disable-next-line import/prefer-default-export
 export function buildTemplateBlock(main) {
-  createTemplateBlock(main, 'navigation');
+  createTemplateBlock(main, 'breadcrumb');
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
   createTemplateBlock(main, 'social-links');

@@ -7,7 +7,6 @@
 .article-page main {
   display: grid;
   grid-template:
-    "navigation"
     "hero"
     "author"
     "insurance"
