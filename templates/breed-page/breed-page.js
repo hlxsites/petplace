@@ -34,4 +34,3 @@ export async function buildTemplateBlock(main) {
 
   generalAttributesContainer.append(subContainer);
 }
-
