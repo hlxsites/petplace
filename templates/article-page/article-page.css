@@ -56,7 +56,7 @@
   padding-left: 1.25rem;
 }
 
-.article-page li {
+.article-page main li {
   margin-bottom: .25rem;
 }
 
@@ -147,6 +147,14 @@
   .article-page .hero-container .hero h1 {
     font-size: 2.75rem;
   }
+
+  .article-page .hero-container + .section > .default-content-wrapper:first-child > h2:first-child {
+    margin-top: 0;
+  }
+
+  .article-page .article-author-container {
+    padding-top: 0;
+  }
 }
 
 @media (min-width: 900px) {
@@ -164,6 +172,7 @@
     justify-content: end;
     overflow: hidden;
     padding-bottom: 1.5rem;
+    margin-bottom: 0;
   }
 
   .article-page .hero-container .hero::before {
@@ -189,7 +198,7 @@
     font-weight: 800;
     color: var(--text-color-inverted);
     font-size: 3rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     object-fit: cover;
   }
 
