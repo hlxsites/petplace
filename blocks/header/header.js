@@ -34,6 +34,8 @@ export default async function decorate(block) {
       ${navHamburger.innerHTML}
     </button>`;
 
+  nav.querySelector('.nav-brand a').setAttribute('aria-label', 'Navigate to homepage');
+
   const navTools = nav.querySelector('.nav-tools');
   const searchField = document.createElement('input');
   searchField.name = 'query';
@@ -87,6 +89,8 @@ export default async function decorate(block) {
   navSidebar.append(ariaDialog);
   nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
 
+  const sidebarToggle = ariaDialog.querySelector('button');
+  sidebarToggle.setAttribute('aria-label', 'Open side bar');
   const close = ariaDialog.querySelector('[role="dialog"] button');
   close.setAttribute('aria-label', 'Close side bar');
   close.innerHTML = '<span class="icon icon-close"></span>';

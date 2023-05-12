@@ -1,6 +1,5 @@
-.general-attributes-container {
-    padding: 45px 1.5rem;
-
+main .general-attributes-container {
+    padding: 2rem 1.5rem;
 }
 
 .general-attributes-sub-container {
@@ -19,7 +18,7 @@
 .general-attributes-container .author-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 10px 0;
 }
 
 .general-attributes-container .default-content-wrapper{

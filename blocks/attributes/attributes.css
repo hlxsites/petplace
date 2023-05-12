@@ -1,3 +1,7 @@
+.attributes-wrapper {
+    padding: 3rem 0;
+}
+
 .attributes {
     margin: 0;
     background: var(--color-dark-maroon);

@@ -1,5 +1,9 @@
 /* stylelint-disable property-no-vendor-prefix */
 
+main p {
+  margin-bottom: 1.25rem;
+}
+
 main .hero-container {
   padding: 0;
   margin: 0;
@@ -39,57 +43,6 @@ main .section:nth-of-type(2n) {
 
 main .section.centered p {
   text-align: left;
-}
-
-
-.slick-arrow {
-  position: absolute;
-  padding: 0;
-  cursor: pointer;
-  border: none;
-  color: white;
-  outline: none;
-  background: var(--color-gray-light-alt);
-  height: 48px;
-  width: 48px;
-  border-radius: 24px;
-  display: block;
-}
-
-.slick-prev {
-  left: calc(50% - 80px);
-  right: 50%;
-}
-
-.slick-prev::before {
-  font-size: 17px;
-  display: inline-block;
-  width: 20px;
-  height: 1em;
-  background: var(--background-color);
-  content: '';
-  -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
-  mask: url('../../icons/arrow.svg') center / 100% 100%;
-  vertical-align: middle;
-  transform: rotate(180deg);
-}
-
-.slick-next {
-  right: calc(50% - 80px);
-  z-index: 99;
-}
-
-.slick-next::before {
-  font-size: 17px;
-  display: inline-block;
-  width: 20px;
-  height: 1em;
-  background: #fff;
-  content: '';
-  -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
-  mask: url('../../icons/arrow.svg');
-  vertical-align: middle;
-
 }
 
 @media (min-width: 1024px) {

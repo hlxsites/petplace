@@ -13,6 +13,7 @@ import {
   loadCSS,
   getMetadata,
   toClassName,
+  createOptimizedPicture,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
@@ -23,7 +24,7 @@ function getId() {
 }
 
 function isMobile() {
-  return window.innerWidth < 1200;
+  return window.innerWidth < 1024;
 }
 
 let categoriesPromise = null;
@@ -129,16 +130,21 @@ async function buildHeroBlock(main) {
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+    const img = picture.querySelector('img');
+    const optimized = createOptimizedPicture(img.src, img.alt, true, [
+      { width: Math.ceil(window.innerWidth / 100) * 100 },
+    ]);
+    picture.replaceWith(optimized);
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page')) {
-      section.append(buildBlock('hero', { elems: [picture] }));
+      section.append(buildBlock('hero', { elems: [optimized] }));
+    } else if (bodyClass.includes('article-page')) {
+      const breadcrumb = document.createElement('div');
+      breadcrumb.classList.add('article-template-breadcrumb');
+      breadcrumb.innerText = '[Breadcrumb Placeholder]';
+      section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
     } else {
-      section.append(buildBlock('hero', { elems: [picture, h1] }));
-    }
-    if (bodyClass.includes('article-page')) {
-      const breadcrumb = document.querySelector('.breadcrumb');
-      breadcrumb.parentElement.remove();
-      section.append(breadcrumb);
+      section.append(buildBlock('hero', { elems: [optimized, h1] }));
     }
     main.prepend(section);
   }

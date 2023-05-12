@@ -95,6 +95,9 @@
 }
 
 @media (min-width: 1024px) {
+    .care-tabs-container.section {
+        padding: 5rem 1.5rem;
+    }
     .care-tabs-container h2 span:first-child {
         display: none;
     }
@@ -140,11 +143,11 @@
         display: block;
     }
 
-    .care-tabs-container .desktop-details-container .details {
+    .care-tabs-container .desktop-details-container .details{
         padding: 1.5rem;
     }
 
-    .care-tabs-container .desktop-details-container .details h3 {
+    .care-tabs-container .desktop-details-container .details h3{
         font-size: 2.75rem;
     }
 }

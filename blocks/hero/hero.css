@@ -14,6 +14,13 @@ main .hero {
   min-height: 300px;
 }
 
+main .hero > div {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1344px;
+  width: 100%;
+}
+
 main .hero > div > div {
   display: flex;
   flex-direction: column-reverse;
