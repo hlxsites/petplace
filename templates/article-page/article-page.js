@@ -63,8 +63,8 @@ export function buildTemplateBlock(main) {
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
   createTemplateBlock(main, 'social-links');
+  createTemplateBlock(main, 'article-footer');
   createTemplateBlock(main, 'paws-up');
-  createTemplateBlock(main, 'social-links', 'social-links-after');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
