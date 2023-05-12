@@ -1,4 +1,4 @@
-import { slide } from '../../templates/breed-page/breed-page.js';
+import { slide, initializeTouch } from '../../templates/breed-page/breed-page.js';
 
 export default async function decorate(block) {
   const breedColorClasses = ['breed-purple', 'breed-red', 'breed-blue'];
@@ -10,6 +10,11 @@ export default async function decorate(block) {
       const factNumber = document.createElement('h4');
       factNumber.innerText = i + 1;
       child.prepend(factNumber);
+    }
+
+    if (block.classList.contains('media')) {
+      child.children[0].classList.add('media-container');
+      child.children[0].append(child.querySelector('.button-container'));
     }
 
     child.classList.add('slide-card', breedColorClasses[i]);
@@ -33,4 +38,6 @@ export default async function decorate(block) {
   // Add the button to the DOM
   block.parentElement.parentElement.append(buttonPrev);
   block.parentElement.parentElement.append(buttonNext);
+
+  initializeTouch(block, block.parentElement);
 }

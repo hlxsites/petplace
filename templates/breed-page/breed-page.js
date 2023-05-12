@@ -47,3 +47,31 @@ export function slide(slideDirection, block, slideWrapper) {
 
   slideWrapper.setAttribute('style', `transform:translateX(-${newIndex}00vw)`);
 }
+
+export function initializeTouch(block, slideWrapper) {
+  const slideContainer = block.closest('.slide-cards-container');
+  let startX; let currentX; let diffX = 0;
+
+  slideContainer.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+  });
+
+  slideContainer.addEventListener('touchmove', (e) => {
+    currentX = e.touches[0].pageX;
+    diffX = currentX - startX;
+
+    const { index } = getActiveSlide(block);
+    slideWrapper.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
+  });
+
+  slideContainer.addEventListener('touchend', () => {
+    if (diffX > 50) {
+      slide('prev', block, slideWrapper);
+    } else if (diffX < -50) {
+      slide('next', block, slideWrapper);
+    } else {
+      const { index } = getActiveSlide(block);
+      slideWrapper.setAttribute('style', `transform:translateX(-${index}00vw)`);
+    }
+  });
+}
