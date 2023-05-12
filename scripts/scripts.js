@@ -24,7 +24,7 @@ function getId() {
 }
 
 function isMobile() {
-  return window.innerWidth < 1200;
+  return window.innerWidth < 1024;
 }
 
 let categoriesPromise = null;
