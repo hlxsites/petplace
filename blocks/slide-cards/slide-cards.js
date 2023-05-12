@@ -1,16 +1,18 @@
 import { slide } from '../../templates/breed-page/breed-page.js';
 
 export default async function decorate(block) {
-  const list = block.querySelector('ul');
   const breedColorClasses = ['breed-purple', 'breed-red', 'breed-blue'];
 
-  [...list.children].forEach((listItem, i) => {
-    if (i === 0) listItem.setAttribute('active', true);
+  [...block.children].forEach((child, i) => {
+    if (i === 0) child.setAttribute('active', true);
 
-    const factNumber = document.createElement('h4');
-    factNumber.innerText = i + 1;
-    listItem.prepend(factNumber);
-    listItem.classList.add('fact-card', `fact-card-${i + 1}`, breedColorClasses[i]);
+    if (block.classList.contains('numbered')) {
+      const factNumber = document.createElement('h4');
+      factNumber.innerText = i + 1;
+      child.prepend(factNumber);
+    }
+
+    child.classList.add('slide-card', breedColorClasses[i]);
   });
 
   // Create the Toggle button elements
@@ -19,14 +21,14 @@ export default async function decorate(block) {
   buttonPrev.setAttribute('data-role', 'none');
   buttonPrev.classList.add('slick-arrow', 'slick-prev');
   buttonPrev.addEventListener('click', () => {
-    slide('prev', block.querySelector('ul'), block.parentElement);
+    slide('prev', block, block.parentElement);
   });
   const buttonNext = document.createElement('button');
   buttonNext.setAttribute('type', 'button');
   buttonNext.setAttribute('data-role', 'none');
   buttonNext.classList.add('slick-arrow', 'slick-next');
   buttonNext.addEventListener('click', () => {
-    slide('next', block.querySelector('ul'), block.parentElement);
+    slide('next', block, block.parentElement);
   });
   // Add the button to the DOM
   block.parentElement.parentElement.append(buttonPrev);
