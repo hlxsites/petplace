@@ -1,1 +1,23 @@
-/* Nothing here yet */
+.social-links ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 1rem;
+}
+
+.social-links li {
+  margin: 0;
+  padding: 0;
+}
+
+.social-links .icon {
+  width: 36px;
+  height: 36px;
+}
+
+@media (min-width: 768px) {
+  .social-links ul {
+    width: 100%;
+  }
+}
