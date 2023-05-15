@@ -1,6 +1,7 @@
 import {
-  buildBlock,
+  buildBlock, decorateIcons,
 } from '../../scripts/lib-franklin.js';
+import { getCategory } from '../../scripts/scripts.js';
 
 function createTemplateBlock(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
@@ -55,6 +56,37 @@ function createArticleFooter(main) {
 }
 
 /**
+ * Loops through an array of paths and fetches metadata.
+ * @param paths - Array of paths
+ * @returns {Promise<*[]>}
+ */
+async function getBreadcrumbs(paths) {
+  const breadcrumbs = [];
+  for (const path of paths) {
+    const category = await getCategory(path);
+    if (category) {
+      breadcrumbs.push({
+        color: category.Color,
+        url: category.Path,
+        path,
+      });
+    }
+  }
+  return breadcrumbs;
+}
+
+/**
+ * Convert snake case to title case
+ * @param str
+ * @returns {*}
+ */
+function convertToTitleCase(str) {
+  const words = str.split('-');
+  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+  return capitalizedWords.join(' ');
+}
+
+/**
  * Adds all blocks specific to the template to a page.
  * @param {Element} main Element to which template blocks will be added.
  */
@@ -69,4 +101,35 @@ export function loadEager(main) {
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
   createArticleFooter(main);
+}
+
+export async function loadLazy(main) {
+  const breadCrumbs = main.querySelector('.article-template-breadcrumb');
+  let { pathname } = window.location;
+  // remove none category initial paths.
+  pathname = pathname.split('/').slice(3);
+
+  const crumbData = await getBreadcrumbs(pathname);
+
+  const homeLink = document.createElement('a');
+  homeLink.classList.add('home');
+  homeLink.href = '/';
+  homeLink.innerHTML = '<span class="icon icon-home"></span>';
+  breadCrumbs.append(homeLink);
+
+  crumbData.forEach((crumb, i) => {
+    if (i > 0) {
+      const chevron = document.createElement('span');
+      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      breadCrumbs.append(chevron);
+    }
+    const linkButton = document.createElement('a');
+    linkButton.href = crumb.url;
+    linkButton.innerText = convertToTitleCase(crumb.path);
+    linkButton.classList.add('category-link-btn');
+    // linkButton.setAttribute('style', `border-color: ${crumb.color}`);
+    breadCrumbs.append(linkButton);
+  });
+
+  decorateIcons(breadCrumbs);
 }

@@ -161,7 +161,6 @@ async function buildHeroBlock(main) {
     } else if (bodyClass.includes('article-page')) {
       const breadcrumb = document.createElement('div');
       breadcrumb.classList.add('article-template-breadcrumb');
-      breadcrumb.innerText = '[Breadcrumb Placeholder]';
       section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
     } else {
       section.append(buildBlock('hero', { elems: [optimized, h1] }));
@@ -202,7 +201,7 @@ async function decorateTemplate(main) {
       (async () => {
         try {
           templateModule = await import(`../templates/${template}/${template}.js`);
-          if (templateModule.loadEager) {
+          if (templateModule?.loadEager) {
             await templateModule.loadEager(main);
           }
         } catch (error) {
@@ -291,7 +290,7 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  if (templateModule.loadLazy) {
+  if (templateModule?.loadLazy) {
     templateModule.loadLazy(doc);
   }
   const main = doc.querySelector('main');
@@ -322,7 +321,7 @@ function loadDelayed(doc) {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
-  if (templateModule.loadDelayed) {
+  if (templateModule?.loadDelayed) {
     templateModule.loadDelayed(doc);
   }
 }
