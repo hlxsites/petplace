@@ -1,4 +1,4 @@
-import { getCategory } from '../../scripts/scripts.js';
+import { getCategory, hexToRgb } from '../../scripts/scripts.js';
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
@@ -30,12 +30,9 @@ export default async function decorate(block) {
   }).filter((item) => item); // filter out null values returned from the for loop
 
   const categories = await Promise.all(data.map(async (dta) => {
-    if (dta.category && dta.category !== '0') {
-      return dta.category;
-    }
     const category = await getCategory(dta.path.split('/').slice(-2).shift());
     if (category) {
-      return category.Category;
+      return category;
     }
     return null;
   }));
@@ -70,11 +67,16 @@ export default async function decorate(block) {
     // Create content div.  This contains title, author, date etc..
     const content = document.createElement('div');
     content.className = 'tile-contents';
+    if (index === 0) {
+      const color = hexToRgb(categories[index].Color);
+      content.setAttribute('style', `background-color: rgb( ${color} / 60%)`);
+    }
 
     const categoryLink = document.createElement('a');
     categoryLink.className = 'category-link-btn';
     categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf('/'));
-    categoryLink.innerHTML = categories[index];
+    categoryLink.innerHTML = categories[index].Category;
+    categoryLink.setAttribute('style', `background: ${categories[index].Color}`);
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');

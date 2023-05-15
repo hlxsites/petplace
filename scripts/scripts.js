@@ -17,6 +17,7 @@ import {
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 function getId() {
@@ -63,6 +64,25 @@ export async function getCategory(name) {
     return null;
   }
   return categories.data.find((c) => c.Slug === name);
+}
+
+/**
+ * Conversts hex css to rgb.
+ * @param hex - example #f7f7f7
+ * @returns string
+ */
+export function hexToRgb(hex) {
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+  if (result) {
+    return `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`;
+  }
+  console.error('Error converting hex to rgb.');
+  return hex;
 }
 
 function buildCategorySidebar() {
@@ -181,11 +201,9 @@ async function decorateTemplate(main) {
     const decorationComplete = new Promise((resolve) => {
       (async () => {
         try {
-          const mod = await import(`../templates/${template}/${template}.js`);
-          if (mod.default) {
-            await mod.default(main);
-          } else if (mod.buildTemplateBlock) {
-            await mod.buildTemplateBlock(main);
+          templateModule = await import(`../templates/${template}/${template}.js`);
+          if (templateModule.loadEager) {
+            await templateModule.loadEager(main);
           }
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -273,6 +291,9 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  if (templateModule.loadLazy) {
+    templateModule.loadLazy(doc);
+  }
   const main = doc.querySelector('main');
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
@@ -297,10 +318,13 @@ async function loadLazy(doc) {
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed() {
+function loadDelayed(doc) {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+  if (templateModule.loadDelayed) {
+    templateModule.loadDelayed(doc);
+  }
 }
 
 function createResponsiveImage(pictures, breakpoint) {
@@ -345,7 +369,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
-  loadDelayed();
+  loadDelayed(document);
 }
 
 loadPage();

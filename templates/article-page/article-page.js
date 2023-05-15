@@ -59,7 +59,7 @@ function createArticleFooter(main) {
  * @param {Element} main Element to which template blocks will be added.
  */
 // eslint-disable-next-line import/prefer-default-export
-export function buildTemplateBlock(main) {
+export function loadEager(main) {
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
   createTemplateBlock(main, 'social-links');
