@@ -121,14 +121,11 @@
 }
 
 .article-page .category-link-btn {
-  border: 1px solid #6f69a8;
-  color: #6f69a8;
   border-radius: 50px;
   font-size: .65rem;
   text-align: center;
   line-height: 1.1;
   padding: 0.3rem 0.6rem;
-  background-color: var(--text-color-inverted);
   text-overflow: ellipsis;
   overflow: hidden;
 }

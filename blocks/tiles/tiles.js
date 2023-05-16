@@ -68,15 +68,17 @@ export default async function decorate(block) {
     const content = document.createElement('div');
     content.className = 'tile-contents';
     if (index === 0) {
-      const color = hexToRgb(categories[index].Color);
-      content.setAttribute('style', `background-color: rgb( ${color} / 60%)`);
+      content.classList.add(`${categories[index].Color}-transparent`);
     }
 
     const categoryLink = document.createElement('a');
-    categoryLink.className = 'category-link-btn';
+    categoryLink.classList.add('category-link-btn', categories[index].Color);
     categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf('/'));
     categoryLink.innerHTML = categories[index].Category;
-    categoryLink.setAttribute('style', `background: ${categories[index].Color}`);
+
+    if (index !== 0) {
+      categoryLink.classList.add('category-link-btn-transparent');
+    }
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');

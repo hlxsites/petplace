@@ -126,8 +126,7 @@ export async function loadLazy(main) {
     const linkButton = document.createElement('a');
     linkButton.href = crumb.url;
     linkButton.innerText = convertToTitleCase(crumb.path);
-    linkButton.classList.add('category-link-btn');
-    // linkButton.setAttribute('style', `border-color: ${crumb.color}`);
+    linkButton.classList.add('category-link-btn', crumb.color);
     breadCrumbs.append(linkButton);
   });
 
