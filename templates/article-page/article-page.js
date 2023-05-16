@@ -1,7 +1,7 @@
 import {
   buildBlock,
   getMetadata,
-  decorateIcons
+  decorateIcons,
 } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
