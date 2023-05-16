@@ -187,6 +187,7 @@
         background-color: transparent;
     }
 }
+
 @media screen and (min-width: 1024px) {
     .tiles-block-container {
         display: flex;

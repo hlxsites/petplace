@@ -66,25 +66,6 @@ export async function getCategory(name) {
   return categories.data.find((c) => c.Slug === name);
 }
 
-/**
- * Conversts hex css to rgb.
- * @param hex - example #f7f7f7
- * @returns string
- */
-export function hexToRgb(hex) {
-  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-  if (result) {
-    return `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`;
-  }
-  console.error('Error converting hex to rgb.');
-  return hex;
-}
-
 function buildCategorySidebar() {
   const section = document.createElement('div');
   section.classList.add('sidebar');

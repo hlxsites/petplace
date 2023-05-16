@@ -62,7 +62,7 @@ function createArticleFooter(main) {
  */
 async function getBreadcrumbs(paths) {
   const breadcrumbs = [];
-  for (const path of paths) {
+  await Promise.all(paths.map(async (path) => {
     const category = await getCategory(path);
     if (category) {
       breadcrumbs.push({
@@ -71,7 +71,7 @@ async function getBreadcrumbs(paths) {
         path,
       });
     }
-  }
+  }));
   return breadcrumbs;
 }
 

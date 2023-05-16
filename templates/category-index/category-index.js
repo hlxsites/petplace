@@ -1,6 +1,7 @@
-import { getCategory, hexToRgb } from '../../scripts/scripts.js';
+import { getCategory } from '../../scripts/scripts.js';
 
-export async function loadLazy(main) {
+// eslint-disable-next-line import/prefer-default-export
+export async function loadLazy() {
   const heroColorDiv = document.querySelector('.category-index .hero > div');
   const path = window.location.pathname;
   const pathSplit = path.split('/').filter((val) => val !== '');

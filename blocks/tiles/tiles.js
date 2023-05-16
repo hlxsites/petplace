@@ -1,4 +1,4 @@
-import { getCategory, hexToRgb } from '../../scripts/scripts.js';
+import { getCategory } from '../../scripts/scripts.js';
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
