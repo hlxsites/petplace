@@ -110,6 +110,8 @@ export async function loadLazy(main) {
   pathname = pathname.split('/').slice(3);
 
   const crumbData = await getBreadcrumbs(pathname);
+  // Use the last item in the list's color
+  const { color } = crumbData[crumbData.length - 1];
 
   const homeLink = document.createElement('a');
   homeLink.classList.add('home');
@@ -126,7 +128,13 @@ export async function loadLazy(main) {
     const linkButton = document.createElement('a');
     linkButton.href = crumb.url;
     linkButton.innerText = convertToTitleCase(crumb.path);
-    linkButton.classList.add('category-link-btn', crumb.color);
+    linkButton.classList.add('category-link-btn');
+    if (i === crumbData.length - 1) {
+      linkButton.classList.add(`${color}`);
+    } else {
+      linkButton.classList.add(`${color}-border`, `${color}-color`);
+    }
+
     breadCrumbs.append(linkButton);
   });
 

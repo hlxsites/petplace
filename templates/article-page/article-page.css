@@ -130,6 +130,15 @@
   overflow: hidden;
 }
 
+.article-page .category-link-btn:not(:last-child) {
+  background-color: var(--text-color-inverted);
+}
+
+.article-page .category-link-btn:last-child {
+  color: var(--text-color-inverted);
+}
+
+
 @media (min-width: 768px) {
   .article-page main {
     grid-template:
