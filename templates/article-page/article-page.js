@@ -1,5 +1,7 @@
 import {
-  buildBlock, decorateIcons,
+  buildBlock,
+  getMetadata,
+  decorateIcons
 } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
@@ -18,6 +20,10 @@ function createTemplateBlock(main, blockName, gridName) {
  * @param {Element} main Element to which table of contents will be added.
  */
 function createTableOfContents(main) {
+  const hasToc = getMetadata('has-toc');
+  if (!hasToc) {
+    return;
+  }
   const tocDiv = document.createElement('div');
   const allH2s = main ? main.getElementsByTagName('h2') : [];
   const tocHeader = document.createElement('h2');
