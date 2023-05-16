@@ -109,10 +109,11 @@
 
 .article-page .article-template-breadcrumb > span {
   display: inline-flex;
+  width: 20px;
 }
 
 .article-page .article-template-breadcrumb > span svg {
-  fill: var(--highlight-color)
+  fill: var(--highlight-color);
 }
 
 .article-page .article-template-breadcrumb .icon-chevron {
