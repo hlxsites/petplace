@@ -62,10 +62,10 @@ main .section.centered p {
 
 .slick-prev {
   left: calc(50% - 80px);
-  right: 50%;
 }
 
-.slick-prev::before {
+.slick-prev::before,
+.slick-next::before{
   font-size: 17px;
   display: inline-block;
   width: 20px;
@@ -75,6 +75,9 @@ main .section.centered p {
   -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
   mask: url('../../icons/arrow.svg') center / 100% 100%;
   vertical-align: middle;
+}
+
+.slick-prev::before {
   transform: rotate(180deg);
 }
 
@@ -83,18 +86,7 @@ main .section.centered p {
   z-index: 99;
 }
 
-.slick-next::before {
-  font-size: 17px;
-  display: inline-block;
-  width: 20px;
-  height: 1em;
-  background: #fff;
-  content: '';
-  -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
-  mask: url('../../icons/arrow.svg');
-  vertical-align: middle;
 
-}
 
 @media (min-width: 1024px) {
   main .hero-container .hero {

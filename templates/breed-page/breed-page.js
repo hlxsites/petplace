@@ -20,7 +20,7 @@ export async function buildTemplateBlock(main) {
   h1.insertAdjacentElement('afterend', p);
 }
 
-export function getActiveSlide(block) {
+function getActiveSlide(block) {
   return {
     index: [...block.children].findIndex((child) => child.getAttribute('active') === 'true'),
     element: block.querySelector('[active="true"]'),
