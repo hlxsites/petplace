@@ -14,26 +14,33 @@ function createArticleDetails(block, key, categoryInfo, article) {
   thumbnail.classList.add('article-navigation-thumbnail', `article-navigation-${key}-thumbnail`);
   const a = document.createElement('a');
   a.href = article.path;
-  a.append(createOptimizedPicture(article.image, article.title, false, [{ width: 180 }]));
+  a.append(createOptimizedPicture(article.image, article.title, false, [
+    { media: '(min-width: 1024px)', width: 250 },
+    { width: 180 }
+  ]));
   thumbnail.append(a);
 
   // category name of the article, which will link to that category's page
   const { category: categoryName } = article;
   const categoryHref = categoryInfo ? categoryInfo.Path : '#';
   const category = document.createElement('div');
-  category.classList.add('article-navigation-category', `article-navigation-${key}-category`);
+  category.classList.add('article-navigation-category');
   category.innerHTML = `<a href="${categoryHref}">${categoryName}</a>`;
 
   // title of the article, which will link to the article's page
   const title = document.createElement('div');
-  title.classList.add('article-navigation-title', `article-navigation-${key}-title`);
+  title.classList.add('article-navigation-title');
   title.innerHTML = `
     <a href="${article.path}">${article.title}</a>
   `;
 
+  const sectionContainer = document.createElement('div');
+  sectionContainer.classList.add('article-navigation-details', `article-navigation-${key}-details`);
+  sectionContainer.append(category);
+  sectionContainer.append(title);
+
   block.append(thumbnail);
-  block.append(category);
-  block.append(title);
+  block.append(sectionContainer);
 }
 
 export default async function decorate(block) {
