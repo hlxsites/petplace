@@ -300,11 +300,13 @@ async function loadLazy(doc) {
  */
 function loadDelayed(doc) {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
-  if (templateModule?.loadDelayed) {
-    templateModule.loadDelayed(doc);
-  }
+  window.setTimeout(() => {
+    if (templateModule?.loadDelayed) {
+      templateModule.loadDelayed(doc);
+    }
+    return import('./delayed.js');
+  }, 3000);
 }
 
 function createResponsiveImage(pictures, breakpoint) {
