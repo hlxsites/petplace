@@ -19,7 +19,10 @@
 }
 
 .category-index .hero > div {
+  --bg-color: inherit;
+
   max-width: none;
+  background: var(--bg-color);
 }
 
 .category-index .hero > div > div {

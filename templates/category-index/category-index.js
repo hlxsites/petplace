@@ -7,5 +7,5 @@ export async function loadLazy() {
   const pathSplit = path.split('/').filter((val) => val !== '');
   const category = pathSplit[pathSplit.length - 1];
   const { Color } = await getCategory(category);
-  heroColorDiv.classList.add(`${Color}-transparent`);
+  heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
 }

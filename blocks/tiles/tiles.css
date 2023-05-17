@@ -58,6 +58,9 @@
 }
 
 .tile .category-link-btn {
+    --bg-color: inherit;
+
+    background-color: var(--bg-color);
     margin-top: 5px;
     color: var(--color-purple);
     margin-bottom: 10px;
@@ -72,6 +75,9 @@
 }
 
 .tile .tile-contents {
+    --bg-color: inherit;
+
+    background-color: var(--bg-color);
     width: 100%;
     padding-left: 1.5rem;
 }

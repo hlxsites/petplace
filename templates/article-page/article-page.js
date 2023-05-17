@@ -136,9 +136,15 @@ export async function loadLazy(main) {
     linkButton.innerText = convertToTitleCase(crumb.path);
     linkButton.classList.add('category-link-btn');
     if (i === crumbData.length - 1) {
-      linkButton.classList.add(`${color}`);
+      // linkButton.classList.add(`${color}`);
+      linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--border-color', 'inherit');
+      linkButton.style.setProperty('--text-color', 'inherit');
     } else {
-      linkButton.classList.add(`${color}-border`, `${color}-color`);
+      // linkButton.classList.add(`${color}-border`, `${color}-color`);
+      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', `var(--color-${color})`);
     }
 
     breadCrumbs.append(linkButton);
