@@ -1,1 +1,103 @@
-/* Nothing here yet */
+.article-navigation {
+  display: grid;
+  gap: .75rem;
+  grid-template:
+    "combined-header combined-header combined-header combined-header" auto
+    "previous next-thumbnail next-category next" auto
+    "previous next-thumbnail next-title next" 1fr
+    / 1fr auto auto 1fr;
+}
+
+.article-navigation svg {
+  width: 19px;
+  height: 47px;
+}
+
+.article-navigation-combined-header, .article-navigation-next-header, .article-navigation-previous-header {
+  font-size: 1.125rem;
+  font-weight: 800;
+  font-family: var(--heading-font-family);
+}
+
+.article-navigation-combined-header {
+  grid-area: combined-header;
+  text-align: center;
+}
+
+.article-navigation-next-header {
+  display: none;
+  grid-area: next-header;
+}
+
+.article-navigation-previous-header {
+  display: none;
+  grid-area: next-header;
+}
+
+.article-navigation-previous {
+  grid-area: previous;
+  align-self: center;
+  justify-self: right;
+}
+
+.article-navigation-next-thumbnail {
+  grid-area: next-thumbnail;
+}
+
+.article-navigation-previous-thumbnail {
+  display: none;
+  grid-area: previous-thumbnail;
+}
+
+.article-navigation-thumbnail img {
+  width: 90px;
+  height: 78.67px;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 6px;
+}
+
+.article-navigation-category a {
+  color: var(--text-color);
+}
+
+.article-navigation-category {
+  font-weight: 800;
+  font-size: .75rem;
+  font-family: var(--heading-font-family);
+  line-height: 1.4;
+}
+
+.article-navigation-next-category {
+  grid-area: next-category;
+}
+
+.article-navigation-previous-category {
+  display: none;
+  grid-area: previous-category;
+}
+
+.article-navigation-title a {
+  color: var(--text-color);
+}
+
+.article-navigation-next-title {
+  grid-area: next-title;
+}
+
+.article-navigation-previous-title {
+  grid-area: previous-title;
+  display: none;
+}
+
+.article-navigation-title {
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: var(--heading-font-family);
+  line-height: 1;
+}
+
+.article-navigation-next {
+  grid-area: next;
+  align-self: center;
+}
