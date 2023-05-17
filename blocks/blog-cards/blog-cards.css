@@ -2,35 +2,35 @@ main a {
     color: #4a4a4a;
     
 }
+@media (min-width: 400px) {
 
 .blog-cards > ul {
     list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 317px);
-    grid-gap: 16px;   
-    margin-bottom: 1rem;        
+    margin: 0;                    
     font-size: 1em;
     font-weight: 400;
     line-height: 1.5;
+    display: block;
+    padding-inline-start: 0;
+    
   }
   
   .blog-cards > ul > li {     
     border: 1px solid #c4d1e9;
     border-radius: 6px;
     padding: 0;
+    margin-bottom: 1.5rem;     
   }
   
   .blog-cards .blogs-card-body {
-    margin: 16px;
+    padding: 24px;
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
     -ms-flex-pack: justify;
-    justify-content: space-between;
-    min-height: 220px;
-    
+    justify-content: space-between;    
+    background-color: transparent;
+     min-height: 220px;  
   } 
   
   .blog-cards .blogs-card-image {
@@ -39,22 +39,55 @@ main a {
     display: block;
     
   }
-  
-  .blog-cards .cards-card-body > *:first-child {
-    margin-top: 0;
-  }
-  
-  .blog-cards > ul > li img {
    
+  .blog-cards > ul > li img {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
     aspect-ratio: 4 / 3;
-    object-fit: cover;
+    width: 100%;
   }
   
   .blog-cards .blogs-card-body .h3{
     font-size: var(--body-font-size-l);
     margin-bottom: 10px;    
+    font-family: var(--heading-font-family);
+    font-weight: 800;
+    color: #28061e;
   }
 
   .blog-cards .blogs-card-body >span{
-    font-size: var(--body-font-size-m);
+    font-size: var(--body-font-size-s);
+  }
+
+  .blog-cards .blogs-card-category{
+    font-family: Raleway,sans-serif;
+    font-weight: 800;
+    position: absolute;
+    line-height: 1.7;
+    top: 10px;
+    left: 20px;
+    border-radius: 14px;
+    display: inline-block;
+    padding: 0 14px;    
+    color: #fff;
+    max-width: calc(100% - 2rem);
+  }    
+}
+
+
+  @media (min-width: 900px) {
+    .blog-cards > ul {      
+      display: grid;
+      grid-template-columns: repeat(3, 31.33%);
+      grid-gap: 24px;   
+      margin-bottom: 1rem;             
+    }    
+  }
+
+  @media (min-width: 1200px) {
+    .blog-cards > ul {
+      grid-template-columns: repeat(3, 31.20%);
+      grid-gap: 16px;   
+      
+    }    
   }

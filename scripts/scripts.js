@@ -354,10 +354,10 @@ async function loadPage() {
  * Fetch blog data from query-index.json
  * @param category - Blog Category i.e. cat-care, cat-adoption
  */
-export async function lookupBlogData(category) {
+export async function lookupBlogData(categoryList) {
   const resp = await fetch(`${window.hlx.codeBasePath}/article/query-index.json?sheet=article`);
   const json = await resp.json();
-  const blogArticles = json.data.filter((e) => e.category === category);
+  const blogArticles = json.data.filter((e) => categoryList.includes(e.category));
   blogArticles.sort((a, b) => {
     if (a.lastModified > b.lastModified) return -1;
     if (a.lastModified < b.lastModified) return 1;
