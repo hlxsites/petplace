@@ -85,58 +85,8 @@
 }
 
 
-
-.slick-arrow {
-    position: absolute;
-    padding: 0;
-    transform: translateY(-50%);
-    cursor: pointer;
-    border: none;
-    color: white;
-    outline: none;
-    background: var(--color-gray-light-alt);
-    height: 48px;
-    width: 48px;
-    top: 442px;
-    border-radius: 24px;
-    display: block;
-}
-
-.slick-prev {
-    left: calc(50% - 80px);
-    right: 50%;
-}
-
-.slick-prev::before {
-    font-size: 17px;
-    display: inline-block;
-    width: 20px;
-    height: 1em;
-    background: var(--background-color);
-    content: '';
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
-    mask: url('../../icons/arrow.svg') center / 100% 100%;
-    vertical-align: middle;
-    transform: rotate(180deg);
-}
-
-.slick-next {
-    right: calc(50% - 80px);
-    z-index: 99;
-}
-
-.slick-next::before {
-    font-size: 17px;
-    display: inline-block;
-    width: 20px;
-    height: 1em;
-    background: #fff;
-    content: '';
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
-    mask: url('../../icons/arrow.svg');
-    vertical-align: middle;
+.care-tabs-container .slick-arrow {
+    top: 410px;
 }
 
 .desktop-details-container {
@@ -149,11 +99,11 @@
         padding: 5rem 1.5rem;
     }
 
-    .care-tabs-container h2 span:first-child{
+    .care-tabs-container h2 span:first-child {
         display: none;
     }
 
-    .care-tabs-container h2 span:last-child{
+    .care-tabs-container h2 span:last-child {
         display: initial;
     }
 
