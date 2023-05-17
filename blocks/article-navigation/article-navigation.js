@@ -16,7 +16,7 @@ function createArticleDetails(block, key, categoryInfo, article) {
   a.href = article.path;
   a.append(createOptimizedPicture(article.image, article.title, false, [
     { media: '(min-width: 1024px)', width: 250 },
-    { width: 180 }
+    { width: 180 },
   ]));
   thumbnail.append(a);
 
@@ -73,7 +73,7 @@ export default async function decorate(block) {
         // fall back on name if dates are the same
         return a.title < b.title ? -1 : 1;
       }
-      return date1 < date2 ? -1 : 1
+      return date1 < date2 ? -1 : 1;
     });
 
   // need at least 3 articles: current article, previous, and next
@@ -137,5 +137,5 @@ export default async function decorate(block) {
   `;
   block.append(rightNav);
 
-  return decorateIcons(block);
+  await decorateIcons(block);
 }
