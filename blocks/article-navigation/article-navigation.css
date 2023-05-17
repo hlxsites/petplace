@@ -7,6 +7,10 @@
     / 1fr auto auto 1fr;
 }
 
+.article-navigation-hidden {
+  display: none;
+}
+
 .article-navigation svg {
   width: 19px;
   height: 47px;

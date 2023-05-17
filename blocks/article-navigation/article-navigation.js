@@ -43,16 +43,16 @@ function createArticleDetails(block, key, categoryInfo, article) {
   block.append(sectionContainer);
 }
 
-export default async function decorate(block) {
+async function createNavigation(block) {
   const category = getMetadata('category');
   if (!category) {
-    return;
+    return false;
   }
 
   // get full category info so we have the path of the category
   const categoryInfo = await getCategoryByName(category);
   if (!categoryInfo) {
-    return;
+    return false;
   }
 
   // get the current page's category
@@ -78,13 +78,13 @@ export default async function decorate(block) {
 
   // need at least 3 articles: current article, previous, and next
   if (similarArticles.length < 2) {
-    return;
+    return false;
   }
 
   const currentIndex = similarArticles.findIndex((article) => article.path === url.pathname);
   if (currentIndex < 0) {
     // current article not found
-    return;
+    return false;
   }
 
   // get the previous/next articles, wrapping around the list if needed
@@ -138,4 +138,18 @@ export default async function decorate(block) {
   block.append(rightNav);
 
   await decorateIcons(block);
+  return true;
+}
+
+export default async function decorate(block) {
+  const isVisible = await createNavigation(block);
+  if (!isVisible) {
+    // ensure the extra spacing for the block isn't present if
+    // nothing was rendered
+    const container = document.querySelector('.article-navigation-container');
+    if (!container) {
+      return;
+    }
+    container.classList.add('article-navigation-hidden');
+  }
 }
