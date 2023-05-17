@@ -124,12 +124,20 @@
     border-radius: 6px;
   }
 
+  .article-navigation-previous-title-text {
+    min-width: 200px;
+  }
+
+  .article-navigation-previous-title-text, .article-navigation-next-title-text {
+    max-width: 280px;
+  }
+
   .article-navigation {
     gap: 1.5rem;
     grid-template:
       ". previous previous-header previous-details next-header next-details next ." auto
       ". previous previous-thumbnail previous-details next-thumbnail next-details next ." 1fr
-      / 1fr auto auto auto auto auto auto 1fr;
+      / auto auto auto 1fr auto auto auto auto;
   }
 
   .article-navigation-details {

@@ -31,7 +31,7 @@ function createArticleDetails(block, key, categoryInfo, article) {
   const title = document.createElement('div');
   title.classList.add('article-navigation-title');
   title.innerHTML = `
-    <a href="${article.path}">${article.title}</a>
+    <a href="${article.path}"><div class="article-navigation-${key}-title-text">${article.title}</div></a>
   `;
 
   const sectionContainer = document.createElement('div');
@@ -106,7 +106,7 @@ export default async function decorate(block) {
   // next-only label for non-mobile
   const nextHeader = document.createElement('div');
   nextHeader.classList.add('article-navigation-next-header');
-  nextHeader.innerText = 'Previous Article';
+  nextHeader.innerText = 'Next Article';
   block.append(nextHeader);
 
   const nextArticle = similarArticles[nextIndex];
