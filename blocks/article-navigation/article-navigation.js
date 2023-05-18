@@ -4,6 +4,7 @@ import {
   createOptimizedPicture,
 } from '../../scripts/lib-franklin.js';
 import {
+  getCategory,
   getCategoryByName,
 } from '../../scripts/scripts.js';
 
@@ -44,7 +45,11 @@ function createArticleDetails(block, key, categoryInfo, article) {
 }
 
 async function createNavigation(block) {
-  const category = getMetadata('category');
+  let category = getMetadata('category');
+  if (!category) {
+    // fall back on URL of a category hasn't been defined in the page's metadata
+    category = await getCategory(window.location.pathname.split('/').slice(-2).shift());
+  }
   if (!category) {
     return false;
   }
