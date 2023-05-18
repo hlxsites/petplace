@@ -15,6 +15,8 @@
   --highlight-color: #ff7d5a;
   --link-color: var(--highlight-color);
   --link-hover-color: var(--highlight-color);
+  --link-color-alt: #678fda;
+  --link-hover-color-alt: var(--text-color-alt);
   --background-color: #fff;
   --background-color-light: #f2f6fc;
   --background-color-dark: #3b092c;
@@ -25,10 +27,26 @@
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
   --color-gray-dark: #4a4a4a;
-  --color-blue: #639af9;
-  --color-blue-dark: #5870A2;
-  --color-purple: #978ce0;
+  --color-blue: #678fda;
+  --color-blue-dark: #5773a8;
+  --color-purple: #6f69a8;
+  --color-puple-light: #978ce0;
   --color-dark-maroon: #5d3450;
+  --color-red: #ff6662;
+  --color-gold: #d8c46c;
+  --color-green: #97baa7;
+  --color-magenta: #bc6da6;
+  --color-mauve: #8c4877;
+  --color-orange-transparent: rgb(255 85 39 / 60%);
+  --color-blue-transparent: rgb(62 113 208 / 60%);
+  --color-blue-dark-transparent: rgb(70 92 134 / 60%);
+  --color-purple-transparent: rgb(87 81 141 / 60%);
+  --color-purple-light-transparent: rgb(115 100 213 / 60%);
+  --color-red-transparent: rgb(255 52 47 / 60%);
+  --color-gold-transparent: rgb(205 180 68 / 60%);
+  --color-green-transparent: rgb(120 166 141 / 60%);
+  --color-magenta-transparent: rgb(169 77 143 / 60%);
+  --color-mauve-transparent: rgb(106 55 90 / 60%);
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
@@ -345,137 +363,6 @@ main .section.well .default-content-wrapper > * {
   margin-left: auto;
   margin-right: auto;
   max-width: 1000px;
-}
-
-
-.orange {
-  border: 1px solid var(--highlight-color);
-  color: var(--highlight-color)
-}
-
-.orange:last-child {
-  background: var(--highlight-color)
-}
-
-.blue {
-  border: 1px solid #678fda;
-  color: #678fda
-}
-
-.blue:last-child {
-  background: #678fda
-}
-
-.purple {
-  border: 1px solid #6f69a8;
-  color: #6f69a8
-}
-
-.purple:last-child {
-  background: #6f69a8
-}
-
-.purple-light {
-  border: 1px solid #978ce0;
-  color: #978ce0
-}
-
-.purple-light:last-child {
-  background: #978ce0
-}
-
-.red {
-  border: 1px solid #ff6662;
-  color: #ff6662
-}
-
-.red:last-child {
-  background: #ff6662
-}
-
-.gold {
-  border: 1px solid #d8c46c;
-  color: #d8c46c
-}
-
-.gold:last-child {
-  background: #d8c46c
-}
-
-.green {
-  border: 1px solid #97baa7;
-  color: #97baa7
-}
-
-.green:last-child {
-  background: #97baa7
-}
-
-.magenta {
-  border: 1px solid #bc6da6;
-  color: #bc6da6
-}
-
-.magenta:last-child {
-  background: #bc6da6
-}
-
-.mauve {
-  border: 1px solid #8c4877;
-  color: #8c4877
-}
-
-.mauve:last-child {
-  background: #8c4877
-}
-
-.blue-dark {
-  border: 1px solid #5773a8;
-  color: #5773a8
-}
-
-.blue-dark:last-child {
-  background: #5773a8
-}
-
-.orange-transparent {
-  background: rgb(255 85 39 / 60%)
-}
-
-.blue-transparent {
-  background: rgb(62 113 208 / 60%)
-}
-
-.blue-dark-transparent {
-  background: rgb(70 92 134 / 60%)
-}
-
-.purple-transparent {
-  background: rgb(87 81 141 / 60%)
-}
-
-.purple-light-transparent {
-  background: rgb(115 100 213 / 60%)
-}
-
-.red-transparent {
-  background: rgb(255 52 47 / 60%)
-}
-
-.gold-transparent {
-  background: rgb(205 180 68 / 60%)
-}
-
-.green-transparent {
-  background: rgb(120 166 141 / 60%)
-}
-
-.magenta-transparent {
-  background: rgb(169 77 143 / 60%)
-}
-
-.mauve-transparent {
-  background: rgb(106 55 90 / 60%)
 }
 
 [data-align="left"] {

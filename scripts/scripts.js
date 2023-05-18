@@ -17,6 +17,7 @@ import {
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 function getId() {
@@ -145,7 +146,6 @@ async function buildHeroBlock(main) {
     } else if (bodyClass.includes('article-page')) {
       const breadcrumb = document.createElement('div');
       breadcrumb.classList.add('article-template-breadcrumb');
-      breadcrumb.innerText = '[Breadcrumb Placeholder]';
       section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
     } else if (bodyClass.includes('author-page')) {
       const breadcrumb = document.createElement('div');
@@ -195,11 +195,9 @@ async function decorateTemplate(main) {
     const decorationComplete = new Promise((resolve) => {
       (async () => {
         try {
-          const mod = await import(`../templates/${template}/${template}.js`);
-          if (mod.default) {
-            await mod.default(main);
-          } else if (mod.buildTemplateBlock) {
-            await mod.buildTemplateBlock(main);
+          templateModule = await import(`../templates/${template}/${template}.js`);
+          if (templateModule?.loadEager) {
+            await templateModule.loadEager(main);
           }
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -287,6 +285,9 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  if (templateModule?.loadLazy) {
+    templateModule.loadLazy(doc);
+  }
   const main = doc.querySelector('main');
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
@@ -311,10 +312,15 @@ async function loadLazy(doc) {
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed() {
+function loadDelayed(doc) {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+  window.setTimeout(() => {
+    if (templateModule?.loadDelayed) {
+      templateModule.loadDelayed(doc);
+    }
+    return import('./delayed.js');
+  }, 3000);
 }
 
 function createResponsiveImage(pictures, breakpoint) {
@@ -359,7 +365,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
-  loadDelayed();
+  loadDelayed(document);
 }
 
 loadPage();
