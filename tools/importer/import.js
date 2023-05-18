@@ -124,6 +124,7 @@ function transformBreedPage(document) {
     ];
     const table = WebImporter.DOMUtils.createTable(cells, document);
     generalAttributes.replaceWith(table);
+    table.after(document.createElement('hr'));
   }
 
   const breedMainSection = document.querySelector('.breed-main-section');
@@ -156,6 +157,7 @@ function transformBreedPage(document) {
     ];
     const table = WebImporter.DOMUtils.createTable(cells, document);
     historyWrapper.replaceWith(table);
+    table.after(document.createElement('hr'));
   }
 
   const careSection = document.querySelector('.is-hidden-desktop .care-section');
@@ -225,9 +227,10 @@ function transformBreedPage(document) {
     let cells = [
       ['Slide Cards (media)'],
       ...[...breedsToExploreSection.querySelectorAll('.breeds_to_explore-content')].map((slide) => {
-        const title = slide.querySelector('.breeds_to_explore-title');
+        const title = slide.querySelector('.breeds_to_explore-title').textContent;
+        console.log(213, title);
         const anchor = document.createElement('a');
-        anchor.href = title.textContent.startsWith('Choosing')
+        anchor.href = title.startsWith('Choosing')
           ? `/article/dogs/breeds/${toClassName(title)}`
           : `/article/breed/${toClassName(title)}`;
         anchor.append(title);
