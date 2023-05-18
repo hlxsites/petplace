@@ -473,8 +473,8 @@ a.sr-focusable:focus {
     height: 1em;
     background: var(--background-color);
     content: '';
-    -webkit-mask: url('../../icons/arrow.svg') center / 100% 100%;
-    mask: url('../../icons/arrow.svg') center / 100% 100%;
+    -webkit-mask: url('../icons/arrow.svg') center / 100% 100%;
+    mask: url('../icons/arrow.svg') center / 100% 100%;
     vertical-align: middle;
 }
 
