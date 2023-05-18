@@ -107,7 +107,7 @@ function transformArticlePage(document) {
 
 function transformBreedPage(document) {
   // TODO: add base64 images and section dividers
-  const main = document.getElementById('___gatsby');
+  const main = document.querySelector('#___gatsby > div');
 
   const meta = getDefaultMetadata(document);
   meta.Author = document.querySelector('.author-name').textContent;
@@ -176,6 +176,7 @@ function transformBreedPage(document) {
     ];
     table = WebImporter.DOMUtils.createTable(cells, document);
     document.querySelector('.is-hidden-touch .care-section').append(table);
+    table.after(document.createElement('hr'));
   }
 
   const breedStandardsSection = document.querySelector('.breed-standards-section');
@@ -196,6 +197,7 @@ function transformBreedPage(document) {
     ];
     table = WebImporter.DOMUtils.createTable(cells, document);
     breedStandardsSection.append(table);
+    table.after(document.createElement('hr'));
   }
 
   const factsSection = document.querySelector('.facts-section');
@@ -215,6 +217,7 @@ function transformBreedPage(document) {
     ];
     table = WebImporter.DOMUtils.createTable(cells, document);
     factsSection.append(table);
+    table.after(document.createElement('hr'));
   }
 
   const breedsToExploreSection = document.querySelector('.breeds-to-explore-section');
@@ -243,6 +246,7 @@ function transformBreedPage(document) {
     ];
     table = WebImporter.DOMUtils.createTable(cells, document);
     breedsToExploreSection.append(table);
+    table.after(document.createElement('hr'));
   }
 
   const cells = [
