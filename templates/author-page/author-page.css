@@ -1,7 +1,12 @@
+.author-page .hero-container {
+  overflow: hidden;
+}
+
 .author-page div.hero {
   padding: 0;
   min-height: unset;
-  overflow: hidden;
+  overflow: visible;
+  margin-bottom: 4rem;
 }
 
 .author-page .hero > div > div > picture {
@@ -39,8 +44,8 @@
 }
 
 .author-page main .section:not(.hero-container):not(.author-template-autoblock) {
-  padding-top: 6rem;
   padding-bottom: 0rem;
+  padding-top: 1rem;
 }
 
 .author-page main .section p {
@@ -57,16 +62,12 @@
 
 .author-page main hr {
   margin: 1.5rem;
-  height: 2px;
+  border-bottom: 2px solid var(--background-color-light);
 }
 
 @media (min-width: 768px) {
   .author-page main .section p {
     line-height: 1.5;
-  }
-
-  .author-page main .section:not(.hero-container):not(.author-template-autoblock) {
-    padding-top: 5rem;
   }
 }
 
