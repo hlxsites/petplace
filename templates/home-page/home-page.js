@@ -1,4 +1,4 @@
 // eslint-disable-next-line import/prefer-default-export
-export function buildTemplateBlock() {
+export function loadEager() {
   return false;
 }
