@@ -22,11 +22,6 @@
 
 .slide-card {
     background-color: var(--background-color);
-    color: var(--color-gray-dark);
-    font-size: 1em;
-    font-weight: 400;
-    line-height: 1.5;
-    user-select: none;
     -webkit-tap-highlight-color: transparent;
     min-height: 300px;
     margin: 10px 45px 100px;
