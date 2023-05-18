@@ -1,0 +1,59 @@
+.author-page div.hero {
+  padding: 0;
+  min-height: unset;
+  overflow: hidden;
+}
+
+.author-page .hero > div > div > picture {
+  position: relative;
+  z-index: 1;
+  height: 50vw;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.author-page .hero .author-page-avatar {
+  position: absolute;
+  left: 3rem;
+  bottom: -70px;
+  z-index: 2;
+  border: .5rem solid white;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.author-page .footer {
+  margin: none;
+  border: none;
+}
+
+.author-page main h1 {
+  font-size: 2rem;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  margin-top: 0;
+}
+
+.author-page main .section:not(.hero-container):not(.author-template-autoblock) {
+  padding-top: 6rem;
+  padding-bottom: 0rem;
+}
+
+.author-page main .section p {
+  line-height: 1.4;
+}
+
+.author-page main .section p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.author-page main .social-links-container {
+  padding-top: 0;
+}
+
+.author-page main hr {
+  margin: 1.5rem;
+  height: 2px;
+}

@@ -130,10 +130,14 @@ async function buildHeroBlock(main) {
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+    let breakpoints;
+    if (!bodyClass.includes('author-page')) {
+      breakpoints = [
+        { width: Math.ceil(window.innerWidth / 100) * 100 },
+      ];
+    }
     const img = picture.querySelector('img');
-    const optimized = createOptimizedPicture(img.src, img.alt, true, [
-      { width: Math.ceil(window.innerWidth / 100) * 100 },
-    ]);
+    const optimized = createOptimizedPicture(img.src, img.alt, true, breakpoints);
     picture.replaceWith(optimized);
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page')) {
@@ -143,6 +147,16 @@ async function buildHeroBlock(main) {
       breadcrumb.classList.add('article-template-breadcrumb');
       breadcrumb.innerText = '[Breadcrumb Placeholder]';
       section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
+    } else if (bodyClass.includes('author-page')) {
+      const breadcrumb = document.createElement('div');
+      breadcrumb.classList.add('author-template-breadcrumb');
+      breadcrumb.innerText = '[Breadcrumb Placeholder]';
+      const avatar = getMetadata('avatar');
+      const optimizedAvatar = createOptimizedPicture(avatar, getMetadata('title'), true, [
+        { width: 200 },
+      ]);
+      optimizedAvatar.classList.add('author-page-avatar');
+      section.append(buildBlock('hero', { elems: [optimized, optimizedAvatar, breadcrumb] }));
     } else {
       section.append(buildBlock('hero', { elems: [optimized, h1] }));
     }
