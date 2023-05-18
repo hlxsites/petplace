@@ -26,7 +26,7 @@
 .hero-wrapper .text-div {
     position: absolute;
     left: 25px;
-    top: 25px;
+    top: 50px;
     display: flex;
     flex-direction: column;
     bottom: 0;
@@ -48,14 +48,14 @@
 
 @media screen and (min-width: 768px) {
     .hero-wrapper .text-div {
-        top: 50px
+        top: 60px
     }
 }
 
 @media (min-width: 1200px) {
     .hero-wrapper .img-div {
         position: relative;
-        padding-bottom: 33%;
+        padding-bottom: 30.2083%;
     }
 
     .section .hero-wrapper {
