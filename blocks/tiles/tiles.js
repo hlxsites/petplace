@@ -30,12 +30,9 @@ export default async function decorate(block) {
   }).filter((item) => item); // filter out null values returned from the for loop
 
   const categories = await Promise.all(data.map(async (dta) => {
-    if (dta.category && dta.category !== '0') {
-      return dta.category;
-    }
     const category = await getCategory(dta.path.split('/').slice(-2).shift());
     if (category) {
-      return category.Category;
+      return category;
     }
     return null;
   }));
@@ -70,11 +67,19 @@ export default async function decorate(block) {
     // Create content div.  This contains title, author, date etc..
     const content = document.createElement('div');
     content.className = 'tile-contents';
+    if (index === 0) {
+      content.style.setProperty('--bg-color', `var(--color-${categories[index].Color}-transparent)`);
+    }
 
     const categoryLink = document.createElement('a');
-    categoryLink.className = 'category-link-btn';
+    categoryLink.classList.add('category-link-btn');
     categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf('/'));
-    categoryLink.innerHTML = categories[index];
+    categoryLink.innerHTML = categories[index].Category;
+    categoryLink.style.setProperty('--bg-color', `var(--color-${categories[index].Color})`);
+
+    if (index !== 0) {
+      categoryLink.classList.add('category-link-btn-transparent');
+    }
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');
