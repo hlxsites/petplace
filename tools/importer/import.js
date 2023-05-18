@@ -12,6 +12,12 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
+function toClassName(name) {
+  return typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+    : '';
+}
+
 const getDefaultMetadata = (document) => {
   const meta = {};
 
@@ -99,6 +105,169 @@ function transformArticlePage(document) {
   return main;
 }
 
+function transformBreedPage(document) {
+  // TODO: add base64 images and section dividers
+  const main = document.getElementById('___gatsby');
+
+  const meta = getDefaultMetadata(document);
+  meta.Author = document.querySelector('.author-name').textContent;
+  meta.Type = [...document.querySelectorAll('.general-attributes')].find((attr) => attr.firstElementChild.textContent === 'Type').children[1].textContent;
+
+  const generalAttributes = document.querySelector('.general-attributes-wrapper');
+  if (generalAttributes) {
+    const cells = [
+      ['General Attributes'],
+      ...[...generalAttributes.children].map((attr) => ([
+        attr.children[0],
+        attr.children[1],
+      ])),
+    ];
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    generalAttributes.replaceWith(table);
+  }
+
+  const breedMainSection = document.querySelector('.breed-main-section');
+  if (breedMainSection) {
+    const cells = [
+      ['Blade'],
+      [...breedMainSection.querySelectorAll('.column')],
+    ];
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    breedMainSection.replaceWith(table);
+  }
+
+  const attributesSection = document.querySelector('.is-hidden-touch .attributes-wrapper');
+  if (attributesSection) {
+    const cells = [
+      ['Attributes'],
+      ...[...attributesSection.querySelectorAll('.attribute')].map((attr) => ([
+        attr.children[0],
+      ])),
+    ];
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    attributesSection.replaceWith(table);
+  }
+
+  const historyWrapper = document.querySelector('.is-hidden-touch .history-wrapper');
+  if (historyWrapper) {
+    const cells = [
+      ['Blade'],
+      [...historyWrapper.querySelectorAll('.column')],
+    ];
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    historyWrapper.replaceWith(table);
+  }
+
+  const careSection = document.querySelector('.is-hidden-desktop .care-section');
+  if (careSection) {
+    let cells = [
+      ['Care Tabs'],
+      ...[...careSection.querySelectorAll('.slick-slide:not(.slick-cloned) .care-slider')].map((slider) => ([
+        slider.children[0],
+        slider.children[1],
+      ])),
+    ];
+    let table = WebImporter.DOMUtils.createTable(cells, document);
+    document.querySelector('.is-hidden-touch .care-section').querySelector('.care-columns').replaceWith(table);
+
+    cells = [
+      ['Section Metadata'],
+      ...Object.entries({ Style: 'Centered' }).map(([key, value]) => [key, value]),
+    ];
+    table = WebImporter.DOMUtils.createTable(cells, document);
+    document.querySelector('.is-hidden-touch .care-section').append(table);
+  }
+
+  const breedStandardsSection = document.querySelector('.breed-standards-section');
+  if (breedStandardsSection) {
+    let cells = [
+      ['Accordion'],
+      ...[...breedStandardsSection.querySelectorAll('.breed-standard-accordion > div')].map((accordion) => ([
+        accordion.children[0],
+        accordion.children[1],
+      ])),
+    ];
+    let table = WebImporter.DOMUtils.createTable(cells, document);
+    breedStandardsSection.querySelector('.breed-standard-accordion').replaceWith(table);
+
+    cells = [
+      ['Section Metadata'],
+      ...Object.entries({ Style: 'Centered' }).map(([key, value]) => [key, value]),
+    ];
+    table = WebImporter.DOMUtils.createTable(cells, document);
+    breedStandardsSection.append(table);
+  }
+
+  const factsSection = document.querySelector('.facts-section');
+  if (factsSection) {
+    let cells = [
+      ['Slide Cards (numbered)'],
+      ...[...factsSection.querySelectorAll('.slick-slide:not(.slick-cloned) .fact-slide-content p')].map((slide) => ([
+        slide,
+      ])),
+    ];
+    let table = WebImporter.DOMUtils.createTable(cells, document);
+    factsSection.querySelector('.slick-slider').replaceWith(table);
+
+    cells = [
+      ['Section Metadata'],
+      ...Object.entries({ Style: 'Centered' }).map(([key, value]) => [key, value]),
+    ];
+    table = WebImporter.DOMUtils.createTable(cells, document);
+    factsSection.append(table);
+  }
+
+  const breedsToExploreSection = document.querySelector('.breeds-to-explore-section');
+  if (breedsToExploreSection) {
+    let cells = [
+      ['Slide Cards (media)'],
+      ...[...breedsToExploreSection.querySelectorAll('.breeds_to_explore-content')].map((slide) => {
+        const title = slide.querySelector('.breeds_to_explore-title');
+        const anchor = document.createElement('a');
+        anchor.href = title.textContent.startsWith('Choosing')
+          ? `/article/dogs/breeds/${toClassName(title)}`
+          : `/article/breed/${toClassName(title)}`;
+        anchor.append(title);
+        return [
+          slide.querySelector('picture'),
+          anchor,
+        ];
+      }),
+    ];
+    let table = WebImporter.DOMUtils.createTable(cells, document);
+    breedsToExploreSection.querySelector('.slick-slider').replaceWith(table);
+
+    cells = [
+      ['Section Metadata'],
+      ...Object.entries({ Style: 'Centered' }).map(([key, value]) => [key, value]),
+    ];
+    table = WebImporter.DOMUtils.createTable(cells, document);
+    breedsToExploreSection.append(table);
+  }
+
+  const cells = [
+    ['Section Metadata'],
+    ...Object.entries({ Style: 'Centered, Well' }).map(([key, value]) => [key, value]),
+  ];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  main.append(table);
+
+  const block = WebImporter.Blocks.getMetadataBlock(document, meta);
+  main.append(block);
+
+  // use helper method to remove header, footer, etc.
+  WebImporter.DOMUtils.remove(main, [
+    'header',
+    'footer',
+    '.is-hidden-desktop',
+    '.author-name',
+    '.care-content',
+    '.cat-footer',
+  ]);
+
+  return main;
+}
+
 function cleanupUrls(main) {
   main.querySelectorAll('[href],[src]').forEach((el) => {
     if (el.href && el.href.startsWith('https://petplace.uat.petpartners.com/')) {
@@ -134,6 +303,7 @@ export default {
         main = transformArticlePage(document);
         break;
       case 'breed-page':
+        main = transformBreedPage(document);
         break;
       default:
         main = document.body;
