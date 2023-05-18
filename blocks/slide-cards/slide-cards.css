@@ -1,0 +1,169 @@
+.section.slide-cards-container {
+    padding: 0;
+    position: relative;
+}
+
+.section.slide-cards-container  h2{
+    text-align: center;
+}
+
+.slide-cards-wrapper {
+    transform: translate(0);
+    transition: transform .7s;
+}
+
+
+
+.slide-cards {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+.slide-card {
+    background-color: var(--background-color);
+    -webkit-tap-highlight-color: transparent;
+    min-height: 300px;
+    margin: 10px 45px 100px;
+    flex-shrink: 0;
+    width: calc(100vw - 90px);
+    box-sizing: border-box;
+    text-align: left;
+    position: relative;
+}
+
+.slide-cards-container .slick-arrow {
+    bottom: 10px;
+}
+
+.numbered .slide-card {
+    padding: 0 30px 30px;
+}
+
+.numbered .slide-card h4 {
+    padding-top: 36px;
+    font-size: 80px;
+    position: relative;
+    font-family: var(--heading-font-family);
+    font-weight: 800;
+    margin-bottom: 20px;
+
+}
+
+.numbered .slide-card h4::before {
+    content: "";
+    width: 16px;
+    height: 64px;
+    position: absolute;
+    left: -30px;
+    bottom: 10px;
+}
+
+.numbered .slide-card.breed-purple h4 {
+    color: var(--color-dark-maroon);
+    filter: brightness(1.5);
+}
+
+.numbered .slide-card.breed-purple h4::before {
+    background: var(--color-dark-maroon);
+}
+
+.numbered .slide-card.breed-blue h4 {
+    color : var(--color-blue-dark)
+}
+
+.numbered .slide-card.breed-blue h4::before {
+    background : var(--color-blue-dark)
+}
+
+.numbered .slide-card.breed-red h4 {
+    color: var(--highlight-color);
+    filter: brightness(.8) contrast(175%);
+}
+
+.numbered .slide-card.breed-red h4::before {
+    background : var(--highlight-color);
+}
+
+
+
+.media .slide-card .media-container {
+    position: relative;
+}
+
+.media .slide-card .media-container picture {
+    padding-bottom: 100%;
+    display: block;
+}
+
+.media .slide-card .media-container img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    opacity: 1;
+    transition: opacity 500ms ease 0s;
+}
+
+.media .slide-card .button-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    height: 100px;
+    max-height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.media .slide-card .button-container a{
+    background-color: transparent;
+    font-size: 1.5rem;
+    font-family: var(--heading-font-family);
+    white-space: normal;
+    text-align: left;
+
+}
+
+.media .slide-card.breed-purple .button-container {
+    background: rgb(140 72 119 / 60%);
+}
+
+.media .slide-card.breed-red .button-container {
+    background: rgb(255 102 98 / 60%);
+}
+
+.media .slide-card.breed-blue .button-container {
+    background: rgb(87 115 168 / 60%);
+}
+
+@media (min-width: 1024px) {
+    .slide-cards-wrapper {
+        /* !important; is necessary to overwrite inline style set dynamically. */
+        transform: translateX(0)!important;
+    }
+
+    .slide-card {
+        width: initial;
+        flex: 1;
+        margin: 10px 15px 100px;
+
+    }
+
+    .slide-cards-container .slick-arrow {
+        display: none;
+    }
+
+    .media .slide-card .button-container a {
+        font-size: 1.75rem;
+    }
+}
+
+@media (min-width: 1230px) {
+    .media .slide-card .button-container a {
+        font-size: 2rem;
+    }
+}
