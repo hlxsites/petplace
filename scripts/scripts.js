@@ -320,7 +320,12 @@ function createResponsiveImage(pictures, breakpoint) {
   const defaultImage = pictures[0].querySelector('img');
   responsivePicture.append(defaultImage);
   pictures.forEach((picture, index) => {
-    const srcElem = picture.querySelector('source:not([media])');
+    let srcElem;
+    if (index === 0) {
+      srcElem = picture.querySelector('source:not([media])');
+    } else {
+      srcElem = picture.querySelector('source[media]');
+    }
     const srcElemBackup = srcElem.cloneNode();
     srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
     srcElemBackup.type = 'img/png';
