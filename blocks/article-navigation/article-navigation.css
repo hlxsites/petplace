@@ -11,14 +11,13 @@
   display: none;
 }
 
-.article-navigation svg {
+.article-navigation .icon {
   width: 19px;
   height: 47px;
 }
 
 .article-navigation-combined-header, .article-navigation-next-header, .article-navigation-previous-header {
   font-size: 1.125rem;
-  font-weight: 800;
   font-family: var(--heading-font-family);
 }
 
@@ -65,7 +64,6 @@
 }
 
 .article-navigation-category {
-  font-weight: 800;
   font-size: .75rem;
   font-family: var(--heading-font-family);
   line-height: 1.4;
@@ -114,7 +112,6 @@
   .article-navigation-category {
     font-size: .875rem;
     line-height: 1.5;
-    font-weight: 400;
     font-family: unset;
   }
 
@@ -128,20 +125,12 @@
     border-radius: 6px;
   }
 
-  .article-navigation-previous-title-text {
-    min-width: 200px;
-  }
-
-  .article-navigation-previous-title-text, .article-navigation-next-title-text {
-    max-width: 280px;
-  }
-
   .article-navigation {
     gap: 1.5rem;
     grid-template:
-      ". previous previous-header previous-details next-header next-details next ." auto
-      ". previous previous-thumbnail previous-details next-thumbnail next-details next ." 1fr
-      / auto auto auto 1fr auto auto auto auto;
+      ". previous previous-header previous-details .. next-header next-details next ." auto
+      ". previous previous-thumbnail previous-details .. next-thumbnail next-details next ." 1fr
+      / auto auto auto auto 1fr auto auto auto auto;
   }
 
   .article-navigation-details {

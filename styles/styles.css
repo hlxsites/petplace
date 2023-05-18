@@ -69,6 +69,7 @@
   --heading-font-size-m: 1.125em;
   --heading-font-size-s: 1em;
   --heading-font-size-xs: .875em;
+  --heading-font-size-xxs: .75em;
 
   /* nav height */
   --nav-height: 68px;

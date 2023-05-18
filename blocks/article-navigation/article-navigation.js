@@ -65,16 +65,7 @@ async function createNavigation(block) {
 
   // find articles in the same category, sorting by creation date ascending
   const similarArticles = articles
-    .filter((article) => article.category === category)
-    .sort((a, b) => {
-      const date1 = parseInt(a.date, 10);
-      const date2 = parseInt(b.date, 10);
-      if (date1 === date2) {
-        // fall back on name if dates are the same
-        return a.title < b.title ? -1 : 1;
-      }
-      return date1 < date2 ? -1 : 1;
-    });
+    .filter((article) => article.category === category);
 
   // need at least 3 articles: current article, previous, and next
   if (similarArticles.length < 2) {
