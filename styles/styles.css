@@ -27,10 +27,26 @@
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
   --color-gray-dark: #4a4a4a;
-  --color-blue: #639af9;
-  --color-blue-dark: #5870A2;
-  --color-purple: #978ce0;
+  --color-blue: #678fda;
+  --color-blue-dark: #5773a8;
+  --color-purple: #6f69a8;
+  --color-puple-light: #978ce0;
   --color-dark-maroon: #5d3450;
+  --color-red: #ff6662;
+  --color-gold: #d8c46c;
+  --color-green: #97baa7;
+  --color-magenta: #bc6da6;
+  --color-mauve: #8c4877;
+  --color-orange-transparent: rgb(255 85 39 / 60%);
+  --color-blue-transparent: rgb(62 113 208 / 60%);
+  --color-blue-dark-transparent: rgb(70 92 134 / 60%);
+  --color-purple-transparent: rgb(87 81 141 / 60%);
+  --color-purple-light-transparent: rgb(115 100 213 / 60%);
+  --color-red-transparent: rgb(255 52 47 / 60%);
+  --color-gold-transparent: rgb(205 180 68 / 60%);
+  --color-green-transparent: rgb(120 166 141 / 60%);
+  --color-magenta-transparent: rgb(169 77 143 / 60%);
+  --color-mauve-transparent: rgb(106 55 90 / 60%);
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
