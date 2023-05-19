@@ -80,7 +80,7 @@ export default async function decorate(block) {
   block.innerHTML = `
       <div class="type-filter">
         <div class="filter-btn"><span>Filters</span></div>
-        <div class="category-filters search-filters ">
+        <div class="category-filters">
           <h3>
             Type <span class="icon icon-chevron"></span>
           </h3>
@@ -108,15 +108,15 @@ export default async function decorate(block) {
   block.querySelector('.filter-btn').addEventListener('click', () => {
     const categoryFilters = block.querySelector('.category-filters');
 
-    if (categoryFilters.clientHeight === 0) {
-      block.querySelector('.category-filters').style.removeProperty('max-height');
+    if (categoryFilters.classList.contains('is-active')) {
+      categoryFilters.classList.remove('is-active');
     } else {
-      block.querySelector('.category-filters').style.setProperty('max-height', '0');
+      categoryFilters.classList.add('is-active');
     }
   });
 
-  const chevron = block.querySelector('.icon-chevron');
   // Add click listener for the category  filter chevron button
+  const chevron = block.querySelector('.icon-chevron');
   chevron.addEventListener('click', () => {
     const filterType = block.querySelector('.filter-type');
 

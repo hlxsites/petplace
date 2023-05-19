@@ -35,6 +35,10 @@
     overflow: hidden;
     transition: all .35s ease;
     display: block;
+    max-height: 0;
+}
+
+.category-filters.is-active {
     max-height: 650px;
 }
 
@@ -209,6 +213,10 @@
     .type-filter {
         min-width: 25%;
         background-color: transparent;
+    }
+
+    .category-filters {
+        max-height: 650px !important;
     }
 
     .category-filters h3 {
