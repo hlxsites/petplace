@@ -153,7 +153,7 @@
       ". article .. social ." 1fr
       ". popular popular popular ." min-content
       "article-navigation article-navigation article-navigation article-navigation article-navigation" min-content
-      / auto minmax(420px, 720px) minmax(16px, 64px) 300px auto;
+      / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 300px minmax(1rem, 1fr);
   }
 
   .article-page main p {
