@@ -72,11 +72,13 @@ export default async function decorate(block) {
         </div>
       </div>
       <div class="card-container">
-       
+        <div class="card-grid"></div>
+         <div class="pagination"><div class="pagination-buttons">Page: 1 of 12<button></button></div></div>
       </div>
+
 `;
 
-  block.querySelector('.filter-btn').addEventListener('click', (ev) => {
+  block.querySelector('.filter-btn').addEventListener('click', () => {
     const categoryFilters = block.querySelector('.category-filters');
 
     if (categoryFilters.clientHeight === 0) {
@@ -87,7 +89,7 @@ export default async function decorate(block) {
   });
 
   const chevron = block.querySelector('.icon-chevron');
-  chevron.addEventListener('click', (ev) => {
+  chevron.addEventListener('click', () => {
     const filterType = block.querySelector('.filter-type');
 
     if (filterType.classList.contains('is-active')) {
@@ -99,7 +101,7 @@ export default async function decorate(block) {
     }
   });
 
-  const cardContainer = block.querySelector('.card-container');
+  const cardGrid = block.querySelector('.card-grid');
 
   dogData.forEach((data) => {
     const item = `<div class="grid-item">
@@ -108,7 +110,7 @@ export default async function decorate(block) {
             </div>
             <h3>${data.title}</h3>
           </div>`;
-    cardContainer.innerHTML += item;
+    cardGrid.innerHTML += item;
   });
   decorateIcons(block);
 }
