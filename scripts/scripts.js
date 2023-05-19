@@ -342,7 +342,6 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
   container.append(responsiveImage);
 }
 
-
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
@@ -350,7 +349,7 @@ async function loadPage() {
 }
 
 /**
- * 
+ *
  * Fetch blog data from query-index.json
  * @param category - Blog Category i.e. cat-care, cat-adoption
  */
