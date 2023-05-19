@@ -98,6 +98,11 @@
     max-height: 400px;
 }
 
+.card-container {
+    width: 100%;
+
+}
+
 .card-grid {
     display: grid;
     gap: 30px;
@@ -105,6 +110,8 @@
     width: 100%;
     padding: 60px 20px;
     box-sizing: border-box;
+    min-height: 820px;
+    align-items: start;
 }
 
 .grid-item {
@@ -176,6 +183,10 @@
     -webkit-mask: url("../../icons/chevron-wide.svg") center / 100% 100%;
 }
 
+.pagination button.prev::after {
+   transform: rotate(180deg);
+}
+
 @media (min-width: 768px) {
     .card-grid {
         grid-template-columns:repeat(3, 1fr);
@@ -210,6 +221,6 @@
     }
 
     .card-grid {
-        padding: 20px 0;
+        padding: 20px 0 0 20px;
     }
 }
