@@ -7,7 +7,7 @@
     ". hr ." auto
     ". social ." auto
     ". popular ." auto
-    / 1fr auto 1fr;
+    / 1fr minmax(auto, 1344px) 1fr;
 }
 
 .author-page .hero-container {
