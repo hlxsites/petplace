@@ -1,4 +1,4 @@
-import { slide } from '../../templates/breed-page/breed-page.js';
+import { slide } from '../../scripts/scripts.js';
 
 function setActiveCard(card, details) {
   document.querySelector('.care-tabs-wrapper .card.active').classList.remove('active');
