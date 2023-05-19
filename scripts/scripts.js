@@ -66,6 +66,14 @@ export async function getCategory(name) {
   return categories.data.find((c) => c.Slug === name);
 }
 
+export async function getCategoryByName(categoryName) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c.Category === categoryName);
+}
+
 function buildCategorySidebar() {
   const section = document.createElement('div');
   section.classList.add('sidebar');

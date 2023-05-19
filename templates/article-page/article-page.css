@@ -76,10 +76,6 @@
   grid-area: paws-up;
 }
 
-.article-footer-container {
-  grid-area: article-footer;
-}
-
 .article-template-grid-social-links-after {
   grid-area: social-after;
 }
@@ -153,10 +149,9 @@
       ". article .. author ." min-content
       ". article .. insurance ." min-content
       ". article .. paws-up ." min-content
-      ". article .. social ." min-content
-      ". article-footer .. social ." 1fr
+      ". article .. social ." 1fr
       ". popular popular popular ." min-content
-      ". article-navigation article-navigation article-navigation ." min-content
+      "article-navigation article-navigation article-navigation article-navigation article-navigation" min-content
       / auto minmax(420px, 720px) minmax(16px, 64px) 300px auto;
   }
 

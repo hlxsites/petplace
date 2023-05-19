@@ -47,21 +47,6 @@ function createTableOfContents(main) {
 }
 
 /**
- * Adds a footer to the article div.
- * @param {Element} main Element to which footer will be added.
- */
-function createArticleFooter(main) {
-  if (main.children.length) {
-    const article = main.children[main.children.length - 1];
-
-    const footerDiv = document.createElement('div');
-    footerDiv.classList.add('article-footer');
-    footerDiv.innerText = '[Article Footer (Insurance Ad, Paw Count) placeholder]';
-    article.appendChild(footerDiv);
-  }
-}
-
-/**
  * Loops through an array of paths and fetches metadata.
  * @param paths - Array of paths
  * @returns {Promise<*[]>}
@@ -101,12 +86,10 @@ export function loadEager(main) {
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
   createTemplateBlock(main, 'social-links');
-  createTemplateBlock(main, 'article-footer');
   createTemplateBlock(main, 'paws-up');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
-  createArticleFooter(main);
 }
 
 export async function loadLazy(main) {
