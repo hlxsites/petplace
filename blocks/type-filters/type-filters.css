@@ -15,7 +15,7 @@
 .type-filter .filter-btn {
     cursor: pointer;
     text-align: center;
-    color: #ff7d5a;
+    color: var(--highlight-color);
     font-size: 1.25rem;
     font-weight: 600;
     padding: 1rem 0;
@@ -30,10 +30,10 @@
 }
 
 .category-filters {
-    color: #28061e;
+    color: var(--text-color);
     box-sizing: inherit;
     overflow: hidden;
-    transition: all .35s ease;
+    transition: all .35s;
     display: block;
     max-height: 0;
 }
@@ -61,7 +61,7 @@
     width: 100px;
 }
 
-.category-filters h3 .icon{
+.category-filters h3 .icon {
     position: absolute;
     transition: all .5s;
     right: 0;
