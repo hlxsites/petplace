@@ -1,9 +1,30 @@
+.author-page main {
+  display: grid;
+  grid-template:
+    "breadcrumb" auto
+    "hero" auto
+    "bio" 1fr
+    "hr" auto
+    "social" auto
+    "popular" auto;
+}
+
 .author-page .hero-container {
   overflow: hidden;
+  grid-area: hero;
 }
 
 .author-page .author-template-breadcrumb {
-  margin: 2rem 1.5rem;
+  grid-area: breadcrumb;
+  margin: 0;
+}
+
+.author-page .author-template-grid-social-links {
+  grid-area: social;
+}
+
+.author-page .author-template-grid-popular-articles {
+  grid-area: popular;
 }
 
 .author-page div.hero {
@@ -50,6 +71,7 @@
 .author-page main .section:not(.hero-container):not(.author-template-autoblock) {
   padding-bottom: 0rem;
   padding-top: 1rem;
+  grid-area: bio;
 }
 
 .author-page main .section p {
@@ -67,20 +89,34 @@
 .author-page main hr {
   margin: 1.5rem;
   border-bottom: 2px solid var(--background-color-light);
+  grid-area: hr;
 }
 
 @media (min-width: 768px) {
   .author-page main .section p {
     line-height: 1.5;
   }
+
+  .author-page .author-template-breadcrumb {
+    margin-bottom: .5rem;
+  }
 }
 
 @media (min-width: 1024px) {
+  .author-page .hero > div > div {
+    height: 22vw;
+  }
+
   .author-page .hero > div > div > picture {
+    position: absolute;
     height: unset;
     object-fit: unset;
     object-position: unset;
     margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 
   .author-page .hero .author-page-avatar {

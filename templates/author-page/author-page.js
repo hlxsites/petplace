@@ -16,6 +16,9 @@ function createTemplateBlock(main, blockName, gridName) {
 // eslint-disable-next-line import/prefer-default-export
 export function loadEager(main) {
   main.append(document.createElement('hr'));
+  const breadcrumb = document.createElement('div');
+  breadcrumb.classList.add('breadcrumb', 'author-template-breadcrumb', 'author-template-autoblock');
+  main.append(breadcrumb);
   createTemplateBlock(main, 'social-links');
   createTemplateBlock(main, 'popular-articles');
 }

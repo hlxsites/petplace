@@ -148,14 +148,12 @@ async function buildHeroBlock(main) {
       breadcrumb.classList.add('breadcrumb', 'article-template-breadcrumb');
       section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
     } else if (bodyClass.includes('author-page')) {
-      const breadcrumb = document.createElement('div');
-      breadcrumb.classList.add('breadcrumb', 'author-template-breadcrumb');
       const avatar = getMetadata('avatar');
       const optimizedAvatar = createOptimizedPicture(avatar, getMetadata('title'), true, [
         { width: 200 },
       ]);
       optimizedAvatar.classList.add('author-page-avatar');
-      section.append(buildBlock('hero', { elems: [optimized, optimizedAvatar, breadcrumb] }));
+      section.append(buildBlock('hero', { elems: [optimized, optimizedAvatar] }));
     } else {
       section.append(buildBlock('hero', { elems: [optimized, h1] }));
     }
