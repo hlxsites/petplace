@@ -1,7 +1,7 @@
 import {
   buildBlock,
   getMetadata,
-  decorateIcons,
+  buildBreadCrumbs,
 } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
@@ -82,17 +82,6 @@ async function getBreadcrumbs(paths) {
 }
 
 /**
- * Convert snake case to title case
- * @param str
- * @returns {*}
- */
-function convertToTitleCase(str) {
-  const words = str.split('-');
-  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
-  return capitalizedWords.join(' ');
-}
-
-/**
  * Adds all blocks specific to the template to a page.
  * @param {Element} main Element to which template blocks will be added.
  */
@@ -116,39 +105,5 @@ export async function loadLazy(main) {
   pathname = pathname.split('/').slice(3);
 
   const crumbData = await getBreadcrumbs(pathname);
-  // Use the last item in the list's color
-  const { color } = crumbData[crumbData.length - 1];
-
-  const homeLink = document.createElement('a');
-  homeLink.classList.add('home');
-  homeLink.href = '/';
-  homeLink.innerHTML = '<span class="icon icon-home"></span>';
-  breadCrumbs.append(homeLink);
-
-  crumbData.forEach((crumb, i) => {
-    if (i > 0) {
-      const chevron = document.createElement('span');
-      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
-      breadCrumbs.append(chevron);
-    }
-    const linkButton = document.createElement('a');
-    linkButton.href = crumb.url;
-    linkButton.innerText = convertToTitleCase(crumb.path);
-    linkButton.classList.add('category-link-btn');
-    if (i === crumbData.length - 1) {
-      // linkButton.classList.add(`${color}`);
-      linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--border-color', 'inherit');
-      linkButton.style.setProperty('--text-color', 'inherit');
-    } else {
-      // linkButton.classList.add(`${color}-border`, `${color}-color`);
-      linkButton.style.setProperty('--bg-color', 'inherit');
-      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--text-color', `var(--color-${color})`);
-    }
-
-    breadCrumbs.append(linkButton);
-  });
-
-  decorateIcons(breadCrumbs);
+  buildBreadCrumbs(breadCrumbs, crumbData);
 }

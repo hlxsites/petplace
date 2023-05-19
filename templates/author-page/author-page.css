@@ -2,6 +2,10 @@
   overflow: hidden;
 }
 
+.author-page .author-template-breadcrumb {
+  margin: 2rem 1.5rem;
+}
+
 .author-page div.hero {
   padding: 0;
   min-height: unset;

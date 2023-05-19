@@ -1,5 +1,6 @@
 import {
   buildBlock,
+  buildBreadCrumbs,
 } from '../../scripts/lib-franklin.js';
 
 function createTemplateBlock(main, blockName, gridName) {
@@ -13,8 +14,24 @@ function createTemplateBlock(main, blockName, gridName) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function buildTemplateBlock(main) {
+export function loadEager(main) {
   main.append(document.createElement('hr'));
   createTemplateBlock(main, 'social-links');
   createTemplateBlock(main, 'popular-articles');
+}
+
+
+export async function loadLazy(main) {
+  const heading = main.querySelector('h1');
+  const breadCrumbs = main.querySelector('.author-template-breadcrumb');
+
+  buildBreadCrumbs(breadCrumbs, [{
+    url: '/authors',
+    path: 'Authors',
+    color: 'blue-dark',
+  }, {
+    url: window.location,
+    path: heading.innerText,
+    color: 'purple',
+  }]);
 }

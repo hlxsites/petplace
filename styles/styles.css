@@ -60,6 +60,7 @@
   --body-font-size-s: 14px;
   --body-font-size-xs: 13px;
   --body-font-size-xxs: 13px;
+  --body-font-size-xxxs: 12px;
 
   /* heading sizes */
   --heading-font-size-xxxl: 3.222em;
@@ -443,6 +444,55 @@ a.sr-focusable:focus {
   width: 1px;
 }
 
+main .breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+main .breadcrumb .home {
+  margin-right: 10px;
+  display: inline-flex;
+}
+
+main .breadcrumb > span {
+  display: inline-flex;
+  width: 20px;
+}
+
+main .breadcrumb > span svg {
+  fill: var(--highlight-color);
+}
+
+main .breadcrumb .icon-chevron {
+  transform: rotate(270deg);
+}
+
+main .breadcrumb .category-link-btn {
+  --bg-color: inherit;
+  --border-color: inherit;
+  --text-color: inherit;
+
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 50px;
+  font-size: .65rem;
+  text-align: center;
+  line-height: 1.1;
+  padding: 0.3rem 0.6rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+main .breadcrumb .category-link-btn:not(:last-child) {
+  background-color: var(--text-color-inverted);
+}
+
+main .breadcrumb .category-link-btn:last-child {
+  color: var(--text-color-inverted);
+}
+
 /* Responsive overrides */
 
 @media (min-width: 900px) {
@@ -459,6 +509,10 @@ a.sr-focusable:focus {
 
   li {
     margin-bottom: 0.25rem;
+  }
+
+  main .breadcrumb .category-link-btn {
+    font-size: var(--body-font-size-xxxs);
   }
 }
 

@@ -145,12 +145,11 @@ async function buildHeroBlock(main) {
       section.append(buildBlock('hero', { elems: [optimized] }));
     } else if (bodyClass.includes('article-page')) {
       const breadcrumb = document.createElement('div');
-      breadcrumb.classList.add('article-template-breadcrumb');
+      breadcrumb.classList.add('breadcrumb', 'article-template-breadcrumb');
       section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
     } else if (bodyClass.includes('author-page')) {
       const breadcrumb = document.createElement('div');
-      breadcrumb.classList.add('author-template-breadcrumb');
-      breadcrumb.innerText = '[Breadcrumb Placeholder]';
+      breadcrumb.classList.add('breadcrumb', 'author-template-breadcrumb');
       const avatar = getMetadata('avatar');
       const optimizedAvatar = createOptimizedPicture(avatar, getMetadata('title'), true, [
         { width: 200 },
