@@ -312,6 +312,22 @@ function rewrapDataTables(main) {
   });
 }
 
+function transformLongLists(main) {
+  [...main.querySelectorAll('ul,ol')]
+    .filter((list) => list.childElementCount > 20)
+    .forEach((list) => {
+      list.outerHTML = `
+        <table>
+          <tr><th>Column List (Four)</th></tr>
+          <tr>
+            <td>
+              ${list.outerHTML}
+            </td>
+          </tr>
+        </table>`;
+    });
+}
+
 export default {
   /**
    * Apply DOM operations to the provided document and return
@@ -327,6 +343,7 @@ export default {
     document, url, html, params,
   }) => {
     rewrapDataTables(document);
+    transformLongLists(document);
     let main;
     const template = getTemplate(url);
     switch (template) {
