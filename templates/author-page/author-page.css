@@ -1,12 +1,13 @@
 .author-page main {
   display: grid;
   grid-template:
-    "breadcrumb" auto
-    "hero" auto
-    "bio" 1fr
-    "hr" auto
-    "social" auto
-    "popular" auto;
+    ". breadcrumb ." auto
+    "hero hero hero" auto
+    ". bio ." 1fr
+    ". hr ." auto
+    ". social ." auto
+    ". popular ." auto
+    / 1fr auto 1fr;
 }
 
 .author-page .hero-container {
@@ -120,6 +121,7 @@
   }
 
   .author-page .hero .author-page-avatar {
+    position: relative;
     left: 1rem;
     border: .65rem solid white;
   }
