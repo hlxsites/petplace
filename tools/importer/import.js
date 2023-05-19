@@ -60,11 +60,19 @@ function getTemplate(url) {
 
 function transformArticlePage(document) {
   const main = document.querySelector('.single-post');
+  main.prepend(main.querySelector('.gatsby-image-wrapper'));
+
+  const toc = [...document.querySelectorAll('h2')].find((h2) => toClassName(h2.textContent) === 'table-of-contents');
 
   const meta = getDefaultMetadata(document);
   meta.Author = document.querySelector('.author-name').textContent;
   meta['Publication Date'] = new Date(document.querySelector('.post-date').textContent).toISOString().substring(0, 10);
   meta.Category = [...document.querySelectorAll('.category-link')].pop().textContent;
+  if (toc) {
+    meta['Has TOC'] = true;
+    toc.nextElementSibling.remove();
+    toc.remove();
+  }
 
   const petInsuranceQuote = document.querySelector('.gift-pet-insurance-cta');
   if (petInsuranceQuote) {
@@ -289,6 +297,21 @@ function cleanupUrls(main) {
   });
 }
 
+function rewrapDataTables(main) {
+  main.querySelectorAll('table').forEach((table) => {
+    const caption = table.nextElementSibling?.querySelector('small');
+    table.innerHTML = `
+      <tr><th>Table</th></tr>
+      <tr>
+        <td>
+          ${table.outerHTML}
+          ${caption ? `<p>${caption.outerHTML}</p>` : ''}
+        </td>
+      </tr>`;
+    caption?.parentElement.remove();
+  });
+}
+
 export default {
   /**
    * Apply DOM operations to the provided document and return
@@ -303,6 +326,7 @@ export default {
     // eslint-disable-next-line no-unused-vars
     document, url, html, params,
   }) => {
+    rewrapDataTables(document);
     let main;
     const template = getTemplate(url);
     switch (template) {
