@@ -58,6 +58,7 @@
 
 .article-page main li {
   margin-bottom: .25rem;
+  padding: 0;
 }
 
 .article-template-grid-article-author {
