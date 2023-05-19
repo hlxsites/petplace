@@ -61,7 +61,7 @@
   --body-font-size-m: var(--body-font-size-default);
   --body-font-size-s: 14px;
   --body-font-size-xs: 13px;
-  --body-font-size-xxs: 13px;
+  --body-font-size-xxs: 10px;
 
   /* heading sizes */
   --heading-font-size-xxxl: 3.222em;
@@ -83,7 +83,7 @@
     --body-font-size-default: 18px;
     --body-font-size-s: 16px;
     --body-font-size-xs: 14px;
-    --body-font-size-xxs: 13px;
+    --body-font-size-xxs: 12px;
     --heading-font-size-xxl: 2.75rem;
   }
 }

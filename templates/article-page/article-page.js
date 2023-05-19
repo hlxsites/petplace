@@ -121,7 +121,7 @@ export async function loadLazy(main) {
     if (i === crumbData.length - 1) {
       // linkButton.classList.add(`${color}`);
       linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--border-color', 'inherit');
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', 'inherit');
     } else {
       // linkButton.classList.add(`${color}-border`, `${color}-color`);
