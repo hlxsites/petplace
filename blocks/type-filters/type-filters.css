@@ -216,7 +216,7 @@
     }
 
     .category-filters {
-        max-height: 650px !important;
+        max-height: 650px;
     }
 
     .category-filters h3 {
