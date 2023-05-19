@@ -1,3 +1,5 @@
+/* stylelint-disable property-no-vendor-prefix */
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -442,6 +444,48 @@ a.sr-focusable:focus {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+
+
+.slick-arrow {
+    position: absolute;
+    padding: 0;
+    cursor: pointer;
+    border: none;
+    color: white;
+    outline: none;
+    background: var(--color-gray-light-alt);
+    height: 48px;
+    width: 48px;
+    border-radius: 24px;
+    display: block;
+}
+
+.slick-prev {
+    left: calc(50% - 80px);
+}
+
+.slick-prev::before,
+.slick-next::before{
+    font-size: 17px;
+    display: inline-block;
+    width: 20px;
+    height: 1em;
+    background: var(--background-color);
+    content: '';
+    -webkit-mask: url('../icons/arrow.svg') center / 100% 100%;
+    mask: url('../icons/arrow.svg') center / 100% 100%;
+    vertical-align: middle;
+}
+
+.slick-prev::before {
+    transform: rotate(180deg);
+}
+
+.slick-next {
+    right: calc(50% - 80px);
+    z-index: 99;
 }
 
 /* Responsive overrides */

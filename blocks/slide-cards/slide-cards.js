@@ -1,4 +1,4 @@
-import { slide, initializeTouch } from '../../templates/breed-page/breed-page.js';
+import { slide, initializeTouch } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const breedColorClasses = ['breed-purple', 'breed-red', 'breed-blue'];
