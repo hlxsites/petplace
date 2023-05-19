@@ -1,137 +1,6 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 
-const dogData = [
-  {
-    title: 'Bernese Mountain Dog',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: 'https://www.petplace.com/static/13f543f6b95f2721e69c5837a93e8d2a/5f007/shutterstock_553932688.jpg',
-    type: 'Working',
-  },
-  {
-    title: 'German Shepherd',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: 'https://www.petplace.com/static/d9ef35df99413fbc95fa70fb5e2cb4a5/8c6c5/Image00077-2.jpg',
-    type: 'Herding',
-  },
-  {
-    title: 'Cane Corso',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: 'https://www.petplace.com/static/86340b3745ad87353e5d34cd6f7948d9/0979f/Image00879.jpg',
-    type: 'Working',
-  },
-  {
-    title: 'Pembroke Welsh Corgi',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '/article/breed/media_13321bf0df5f5617215deec61f85105d21537b228.png?width=1200&format=pjpg&optimize=medium',
-    type: 'Herding',
-  },
-  {
-    title: 'Beauceron',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: 'https://www.petplace.com/static/6f41898a93761b510f45cf2951594f84/5f007/shutterstock_1561634782.jpg',
-    type: 'Herding',
-  },
-  {
-    title: 'Jindo',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: 'https://www.petplace.com/static/5e1e255b1f8b3d67089f9a4202630e5c/5f007/shutterstock_757757533.jpg',
-    type: 'N/A',
-  },
-  {
-    title: 'Labradoodle',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Sporting',
-  },
-  {
-    title: 'Bloodhound - Sporting',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Sporting',
-  },
-  {
-    title: 'Bloodhound2 - Terrier',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Terrier',
-  }, {
-    title: 'Bloodhound3 - Non-Sporting',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Non-Sporting',
-  }, {
-    title: 'Bloodhound4 - Toy',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Toy',
-  }, {
-    title: 'Bloodhound5 - Herding',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Herding',
-  }, {
-    title: 'Bloodhound6 - Working',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Working',
-  }, {
-    title: 'Bloodhound7 - N/A',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'N/A',
-  }, {
-    title: 'Bloodhound8 - Sporting',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Sporting',
-  }, {
-    title: 'Bloodhound9 - Hound',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Hound',
-  }, {
-    title: 'Bloodhound10 - Terrier',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Terrier',
-  }, {
-    title: 'Bloodhound11 - Non-Sporting',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Non-Sporting',
-  }, {
-    title: 'Bloodhound12 - Toy',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Toy',
-  }, {
-    title: 'Bloodhound13 - Herding',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Herding',
-  }, {
-    title: 'Bloodhound14 - Working',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Working',
-  }, {
-    title: 'Bloodhound15 - N/A',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'N/A',
-  }, {
-    title: 'Bloodhound16 - Toy',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Toy',
-  }, {
-    title: 'Bloodhound17 - Sporting',
-    path: '/article/breed/pembroke-welsh-corgi',
-    image: '',
-    type: 'Hound',
-  },
-];
-const filteredData = [];
+let dogData;
 const excludedTypes = [];
 const pageLimit = 6;
 let pageIndex = 0;
@@ -157,7 +26,7 @@ function buildCards(block) {
           </div>`;
       cardGrid.innerHTML += item;
     });
-
+  // eslint-disable-next-line no-use-before-define
   buildPagination(block);
 }
 
@@ -193,6 +62,21 @@ function buildPagination(block) {
 }
 
 export default async function decorate(block) {
+  if (!dogData) {
+    const res = await fetch('/article/query-index.json?sheet=breed');
+    const queryData = await res.json();
+
+    if (queryData?.data) {
+      queryData.data.map((item) => {
+        item.title = item.title.endsWith(' - PetPlace')
+          ? item.title.substring(0, item.title.lastIndexOf(' - PetPlace'))
+          : item.title;
+        return item;
+      });
+    }
+    dogData = queryData.data;
+  }
+
   block.innerHTML = `
       <div class="type-filter">
         <div class="filter-btn"><span>Filters</span></div>
