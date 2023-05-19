@@ -23,7 +23,6 @@ export function loadEager(main) {
   createTemplateBlock(main, 'popular-articles');
 }
 
-
 export async function loadLazy(main) {
   const heading = main.querySelector('h1');
   const breadCrumbs = main.querySelector('.author-template-breadcrumb');
