@@ -126,6 +126,7 @@
 body {
   font-size: var(--body-font-size-default);
   margin: 0;
+  min-width: 300px;
   font-family: var(--body-font-family);
   line-height: 1.5;
   color: var(--text-color);
