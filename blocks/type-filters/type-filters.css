@@ -111,7 +111,7 @@
     padding: 60px 20px;
     box-sizing: border-box;
     min-height: 820px;
-    align-items: start;
+    align-content: flex-start;
 }
 
 .grid-item {
