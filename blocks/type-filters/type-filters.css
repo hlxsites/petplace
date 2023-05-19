@@ -118,6 +118,10 @@
     align-content: flex-start;
 }
 
+.card-grid a {
+    color: var(--text-color)
+}
+
 .grid-item {
     border: 1px solid #ccc;
     border-radius: 8px;

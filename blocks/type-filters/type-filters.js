@@ -18,12 +18,12 @@ function buildCards(block) {
     })
 
     .forEach((data) => {
-      const item = `<div class="grid-item">
+      const item = `<a href="${data.path}"><div class="grid-item">
             <div class="img-container">
                 <img src="${data.image}" alt="Dog 1">
             </div>
             <h3>${data.title}</h3>
-          </div>`;
+          </div></a>`;
       cardGrid.innerHTML += item;
     });
   // eslint-disable-next-line no-use-before-define
