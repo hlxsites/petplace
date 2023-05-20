@@ -215,7 +215,7 @@
   .article-page .hero-container .hero {
     position: relative;
     box-sizing: border-box;
-    height: 474px;
+    height: 31.8182vw;
     isolation: isolate;
     display: flex;
     flex-direction: column;

@@ -313,7 +313,12 @@ main img {
   max-width: 100%;
   width: auto;
   height: auto;
-  aspect-ratio: auto;
+}
+
+main iframe[src*="youtube.com"] {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
 
 .icon {
