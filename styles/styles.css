@@ -39,6 +39,7 @@
   --color-green: #97baa7;
   --color-magenta: #bc6da6;
   --color-mauve: #8c4877;
+  --color-orange: var(--highlight-color);
   --color-orange-transparent: rgb(255 85 39 / 60%);
   --color-blue-transparent: rgb(62 113 208 / 60%);
   --color-blue-dark-transparent: rgb(70 92 134 / 60%);
