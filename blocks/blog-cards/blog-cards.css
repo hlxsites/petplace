@@ -7,7 +7,7 @@ main a {
 @media (min-width: 400px) {
 
   main .blog-cards-wrapper{
-    min-height: 150vh;
+    min-height: 800px;
   }
 .blog-cards > ul {
     list-style: none;
