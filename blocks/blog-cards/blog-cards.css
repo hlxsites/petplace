@@ -1,9 +1,14 @@
 main a {
-    color: #4a4a4a;
-    
+    color: #4a4a4a;    
 }
 
+
+
 @media (min-width: 400px) {
+
+  main .blog-cards{
+    min-height: 500px;
+  }
 .blog-cards > ul {
     list-style: none;
     margin: 0;                    
