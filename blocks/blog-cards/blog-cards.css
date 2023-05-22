@@ -2,11 +2,7 @@ main a {
     color: #4a4a4a;    
 }
 
-
-
 @media (min-width: 400px) {
-
-
 .blog-cards > ul {
     list-style: none;
     margin: 0;                    
@@ -137,10 +133,8 @@ main a {
 }
 }
 
-
-  @media (min-width: 900px) {
-    
-    .blog-cards > ul {      
+@media (min-width: 900px) {
+   .blog-cards > ul {      
       display: grid;
       grid-template-columns: repeat(3, 31.33%);
       grid-gap: 24px;   
