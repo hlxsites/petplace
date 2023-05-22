@@ -41,6 +41,7 @@ main a {
     line-height: 0;
     position: relative;
     display: block;
+    min-height: 250px;
     
   }
    
