@@ -55,7 +55,6 @@
     opacity: 1;
     transition: opacity 500ms ease 0s;
     border-radius: 6px;
-    aspect-ratio: 1;
 }
 
 .tile .category-link-btn {
