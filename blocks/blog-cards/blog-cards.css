@@ -6,9 +6,7 @@ main a {
 
 @media (min-width: 400px) {
 
-  main .blog-cards-wrapper{
-    min-height: 800px;
-  }
+
 .blog-cards > ul {
     list-style: none;
     margin: 0;                    
@@ -17,14 +15,14 @@ main a {
     line-height: 1.5;
     display: block;
     padding-inline-start: 0;
-    
+    min-height: 100vh;
   }
   
   .blog-cards > ul > li {     
     border: 1px solid #c4d1e9;
     border-radius: 6px;
     padding: 0;
-    margin-bottom: 1.5rem;     
+    margin-bottom: 1.5rem;    
   }
   
   .blog-cards .blogs-card-body {
@@ -34,14 +32,14 @@ main a {
     -ms-flex-pack: justify;
     justify-content: space-between;    
     background-color: transparent;
-     min-height: 220px;  
+    min-height: 220px;  
   } 
   
   .blog-cards .blogs-card-image {
     line-height: 0;
     position: relative;
     display: block;
-    min-height: 250px;
+   
     
   }
    
@@ -49,7 +47,7 @@ main a {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     aspect-ratio: 4 / 3;
-    width: 100%;
+    max-width: 100%;
   }
   
   .blog-cards .blogs-card-body .h3{
@@ -87,6 +85,7 @@ main a {
     display: flex;
     -ms-flex-preferred-size: 100%;
     flex-basis: 100%;
+    
   }
 
   .blog-cards .pagination .pagination-btn {
@@ -140,6 +139,7 @@ main a {
 
 
   @media (min-width: 900px) {
+    
     .blog-cards > ul {      
       display: grid;
       grid-template-columns: repeat(3, 31.33%);
