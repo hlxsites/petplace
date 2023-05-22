@@ -1,4 +1,4 @@
-import { slide } from '../../scripts/scripts.js';
+import { initializeTouch, slide } from '../../scripts/scripts.js';
 
 function setActiveCard(card, details) {
   document.querySelector('.care-tabs-wrapper .card.active').classList.remove('active');
@@ -77,4 +77,6 @@ export default async function decorate(block) {
   desktopDetailsContainer.classList.add('desktop-details-container');
   desktopDetailsContainer.append(block.querySelector('.details').cloneNode(true));
   block.parentElement.parentElement.append(desktopDetailsContainer);
+
+  initializeTouch(block, block.parentElement);
 }
