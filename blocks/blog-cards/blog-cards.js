@@ -70,7 +70,7 @@ async function buildBlogFeed(ul, pageNum, pagesElem) {
     li.append(buildPost(post, i < 1, categoriesData));
     newUl.append(li);
     i += 1;
-  } 
+  }
   pagesElem.innerHTML = `
       <ul class="pagination">
         <li class="prev"><a data-page="${pageNum - 1}" href="${window.location.pathname}?page=${pageNum}"><span class="icon icon-previous"><span class="sr-only">Previous Page</span></a></li>
