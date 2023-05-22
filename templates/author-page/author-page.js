@@ -1,5 +1,7 @@
 import {
   buildBlock,
+  getMetadata,
+  createOptimizedPicture,
 } from '../../scripts/lib-franklin.js';
 import { createBreadCrumbs } from '../../scripts/scripts.js';
 
@@ -29,4 +31,14 @@ export async function loadEager(main) {
   createTemplateBlock(main, 'breadcrumb', 'breadcrumb', [breadcrumbData]);
   createTemplateBlock(main, 'social-links');
   createTemplateBlock(main, 'popular-articles');
+}
+
+export async function loadLazy(page) {
+  const hero = page.querySelector('.hero > div > div');
+  const avatar = getMetadata('avatar');
+  const optimizedAvatar = createOptimizedPicture(avatar, getMetadata('title'), true, [
+    { width: 200 },
+  ]);
+  optimizedAvatar.classList.add('author-page-avatar');
+  hero.append(optimizedAvatar);
 }

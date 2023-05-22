@@ -6,11 +6,9 @@ import {
   decorateButtons,
   decorateIcons,
   decorateSections,
-  decorateBlock,
   decorateBlocks,
   decorateTemplateAndTheme,
   waitForLCP,
-  loadBlock,
   loadBlocks,
   loadCSS,
   getMetadata,
@@ -151,15 +149,8 @@ async function buildHeroBlock(main) {
     const optimized = createOptimizedPicture(img.src, img.alt, true, breakpoints);
     picture.replaceWith(optimized);
     const section = document.createElement('div');
-    if (bodyClass.includes('breed-page')) {
+    if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [optimized] }));
-    } else if (bodyClass.includes('author-page')) {
-      const avatar = getMetadata('avatar');
-      const optimizedAvatar = createOptimizedPicture(avatar, getMetadata('title'), true, [
-        { width: 200 },
-      ]);
-      optimizedAvatar.classList.add('author-page-avatar');
-      section.append(buildBlock('hero', { elems: [optimized, optimizedAvatar] }));
     } else {
       section.append(buildBlock('hero', { elems: [optimized, h1] }));
     }
@@ -429,17 +420,6 @@ export function initializeTouch(block, slideWrapper) {
 }
 
 /**
- * Convert snake case to title case
- * @param str
- * @returns {*}
- */
-function convertToTitleCase(str) {
-  const words = str.split('-');
-  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
-  return capitalizedWords.join(' ');
-}
-
-/**
  * @typedef CrumbData
  * @property {string} url Full URL to which clicking the crumb will redirect.
  * @property {string} path Name of the crumb as it will appear on its label.
@@ -471,7 +451,7 @@ export async function createBreadCrumbs(crumbData) {
     }
     const linkButton = document.createElement('a');
     linkButton.href = crumb.url;
-    linkButton.innerText = convertToTitleCase(crumb.path);
+    linkButton.innerText = crumb.path;
     linkButton.classList.add('category-link-btn');
     if (i === crumbData.length - 1) {
       // linkButton.classList.add(`${color}`);

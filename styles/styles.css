@@ -63,7 +63,6 @@
   --body-font-size-s: 14px;
   --body-font-size-xs: 13px;
   --body-font-size-xxs: 10px;
-  --body-font-size-xxxs: 12px;
 
   /* heading sizes */
   --heading-font-size-xxxl: 3.222em;
@@ -453,6 +452,8 @@ a.sr-focusable:focus {
   white-space: nowrap;
   width: 1px;
 }
+
+
 
 .slick-arrow {
     position: absolute;

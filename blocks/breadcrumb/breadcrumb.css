@@ -55,6 +55,6 @@
 
 @media (min-width: 1200px) {
   .breadcrumb .category-link-btn {
-    font-size: var(--body-font-size-xxxs);
+    font-size: var(--body-font-size-xxs);
   }
 }

@@ -51,6 +51,17 @@ function createTableOfContents(main) {
 }
 
 /**
+ * Convert snake case to title case
+ * @param str
+ * @returns {*}
+ */
+function convertToTitleCase(str) {
+  const words = str.split('-');
+  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+  return capitalizedWords.join(' ');
+}
+
+/**
  * Loops through an array of paths and fetches metadata.
  * @param paths - Array of paths
  * @returns {Promise<*[]>}
@@ -63,7 +74,7 @@ async function getBreadcrumbs(paths) {
       breadcrumbs.push({
         color: category.Color,
         url: category.Path,
-        path,
+        path: convertToTitleCase(path),
       });
     }
   }));
