@@ -390,7 +390,7 @@ export function slide(slideDirection, block, slideWrapper) {
 }
 
 export function initializeTouch(block, slideWrapper) {
-  const slideContainer = block.closest('.slide-cards-container');
+  const slideContainer = block.closest('[class*="-container"]');
   let startX;
   let currentX;
   let diffX = 0;
