@@ -70,7 +70,39 @@ main a {
     padding: 0 14px;    
     color: #fff;
     max-width: calc(100% - 2rem);
-  }    
+  }
+
+  .blog-cards .pagination{
+    margin-top: 2rem;
+    font-size: 1.125rem;
+    line-height: 32px;      
+    justify-content: flex-end;
+    padding: 0 0.75rem;    
+    display: flex;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+  }
+
+  .blog-cards .pagination .pagination-btn {
+    display: flex;
+  }
+
+  .blog-cards .pagination > li {
+    display: flex;
+  }
+
+  .blog-cards .pagination >li .prev {
+    position: relative;
+    width: 7px;
+    height: 32px;
+    margin-right: 1rem;
+}
+  .blog-cards .pagination >li .next{
+    position: relative;
+    width: 7px;
+    height: 32px;
+    margin-left: 1rem;
+  } 
 }
 
 
@@ -80,7 +112,30 @@ main a {
       grid-template-columns: repeat(3, 31.33%);
       grid-gap: 24px;   
       margin-bottom: 1rem;             
-    }    
+    }
+
+    
+.acsb-sr-only {
+  display: block !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  margin: -1px 0 0 -1px !important;
+  padding: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  font-weight: normal !important;
+  font-size: 15px !important;
+  line-height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+  outline: 0 !important;
+  cursor: text !important;
+  text-transform: capitalize !important;
+  color: #000 !important;
+  background: #fff !important;
+}
   }
 
   @media (min-width: 1200px) {
