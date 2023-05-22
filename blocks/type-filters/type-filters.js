@@ -76,6 +76,7 @@ export default async function decorate(block) {
     }
     dogData = queryData.data;
   }
+  const breeds = ['Sporting', 'Hound', 'Terrier', 'Non-Sporting', 'Toy', 'Herding', 'Working', 'N/A'];
 
   block.innerHTML = `
       <div class="type-filter">
@@ -85,14 +86,7 @@ export default async function decorate(block) {
             Type <span class="icon icon-chevron"></span>
           </h3>
           <div class="filter-type is-active">
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="Sporting"><span><label for="Sporting">Sporting</label></span></div>
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="Hound"><span><label for="Hound">Hound</label></span></div>
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="Terrier"><span><label for="Terrier">Terrier</label></span></div>
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="Non-Sporting"><span><label for="Non-Sporting">Non-Sporting</label></span></div>
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="Toy"><span><label for="Toy">Toy</label></span></div>
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="Herding"><span><label for="Herding">Herding</label></span></div>
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="Working"><span><label for="Working">Working</label></span></div>
-            <div class="checkbox-wrapper"><input type="checkbox" checked="" name="N/A"><span><label for="N/A">N/A</label></span></div>
+            ${breeds.map((breed) => `<div class="checkbox-wrapper"><input type="checkbox" checked="" name="${breed}"><span><label for="${breed}">${breed}</label></span></div>`).join('')}
           </div>
         </div>
       </div>
