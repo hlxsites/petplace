@@ -5,6 +5,14 @@ let excludedTypes = [];
 const pageLimit = 6;
 let pageIndex = 0;
 
+function updateUrlParams(key, value) {
+  const searchParams = new URLSearchParams(window.location.search);
+
+  searchParams.set(key, value);
+  // eslint-disable-next-line no-restricted-globals
+  history.pushState(null, '', `?${searchParams.toString()}`);
+}
+
 function buildCards(block) {
   const cardGrid = block.querySelector('.card-grid');
   cardGrid.innerHTML = '';
@@ -63,16 +71,9 @@ function buildPagination(block) {
   });
 }
 
-function updateUrlParams(key, value) {
-  const searchParams = new URLSearchParams(window.location.search);
-
-  searchParams.set(key, value);
-  history.pushState(null, '', `?${searchParams.toString()}`);
-}
-
 export default async function decorate(block) {
   const searchParams = new URLSearchParams(window.location.search);
-  pageIndex = searchParams.has('pageIndex') ? parseInt(searchParams.get('pageIndex')) : 0;
+  pageIndex = searchParams.has('pageIndex') ? parseInt(searchParams.get('pageIndex'), 10) : 0;
 
   if (searchParams.has('excluded')) {
     excludedTypes = searchParams.get('excluded').split(',');
