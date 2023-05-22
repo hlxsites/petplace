@@ -8,6 +8,7 @@ export default async function decorate(block) {
 
   [...block.children].forEach((child, i) => {
     child.setAttribute('tabindex', '0');
+    child.children[0].setAttribute('role', 'presentation');
     const label = child.children[0].textContent;
     const activeCount = Number(child.children[1].textContent);
     const meterLength = 4;
@@ -17,7 +18,7 @@ export default async function decorate(block) {
     meter.setAttribute('aria-valuemin', '0');
     meter.setAttribute('aria-valuemax', '5');
     meter.setAttribute('aria-valuenow', activeCount.toString());
-    meter.setAttribute('aria-label', `${label} : ${activeCount} out of 5`);
+    meter.setAttribute('aria-label', `${label}: ${activeCount} out of 5`);
 
     for (let j = 0; j <= meterLength; j += 1) {
       const span = document.createElement('span');
