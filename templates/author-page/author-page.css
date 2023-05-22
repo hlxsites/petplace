@@ -15,9 +15,13 @@
   grid-area: hero;
 }
 
-.author-page .author-template-breadcrumb {
+.author-page .author-template-grid-breadcrumb {
   grid-area: breadcrumb;
   margin: 0;
+}
+
+.author-page .breadcrumb > div > div > div {
+  margin-bottom: 0;
 }
 
 .author-page .author-template-grid-social-links {
@@ -98,7 +102,7 @@
     line-height: 1.5;
   }
 
-  .author-page .author-template-breadcrumb {
+  .author-page .breadcrumb {
     margin-bottom: .5rem;
   }
 }

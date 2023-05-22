@@ -202,12 +202,12 @@
     object-fit: cover;
   }
 
-  .article-page .hero-container .hero .article-template-breadcrumb {
-    margin-bottom: 2rem;
+  .article-page .hero-container .hero .breadcrumb {
+    margin-bottom: 1rem;
     color: var(--text-color-inverted);
   }
 
-  .article-page .article-template-breadcrumb > span svg {
+  .article-page .breadcrumb > div > div > div > span svg {
     fill: var(--text-color-inverted)
   }
 

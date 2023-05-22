@@ -1,9 +1,13 @@
 import {
   buildBlock,
+  decorateBlock,
+  loadBlock,
   getMetadata,
-  buildBreadCrumbs,
 } from '../../scripts/lib-franklin.js';
-import { getCategory } from '../../scripts/scripts.js';
+import {
+  getCategory,
+  createBreadCrumbs,
+} from '../../scripts/scripts.js';
 
 function createTemplateBlock(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
@@ -82,11 +86,16 @@ export function loadEager(main) {
 }
 
 export async function loadLazy(main) {
-  const breadCrumbs = main.querySelector('.article-template-breadcrumb');
+  const breadCrumbs = main.querySelector('.hero > div > div');
   let { pathname } = window.location;
   // remove none category initial paths.
   pathname = pathname.split('/').slice(3);
 
   const crumbData = await getBreadcrumbs(pathname);
-  buildBreadCrumbs(breadCrumbs, crumbData);
+
+  const breadcrumbContainer = await createBreadCrumbs(crumbData);
+  const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
+  breadCrumbs.append(breadcrumb);
+  decorateBlock(breadcrumb);
+  return loadBlock(breadcrumb);
 }

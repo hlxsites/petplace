@@ -454,55 +454,6 @@ a.sr-focusable:focus {
   width: 1px;
 }
 
-main .breadcrumb {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-main .breadcrumb .home {
-  margin-right: 10px;
-  display: inline-flex;
-}
-
-main .breadcrumb > span {
-  display: inline-flex;
-  width: 20px;
-}
-
-main .breadcrumb > span svg {
-  fill: var(--highlight-color);
-}
-
-main .breadcrumb .icon-chevron {
-  transform: rotate(270deg);
-}
-
-main .breadcrumb .category-link-btn {
-  --bg-color: inherit;
-  --border-color: inherit;
-  --text-color: inherit;
-
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  border-radius: 50px;
-  font-size: .65rem;
-  text-align: center;
-  line-height: 1.1;
-  padding: 0.3rem 0.6rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-main .breadcrumb .category-link-btn:not(:last-child) {
-  background-color: var(--text-color-inverted);
-}
-
-main .breadcrumb .category-link-btn:last-child {
-  color: var(--text-color-inverted);
-}
-
 .slick-arrow {
     position: absolute;
     padding: 0;
@@ -559,10 +510,6 @@ main .breadcrumb .category-link-btn:last-child {
 
   li {
     margin-bottom: 0.25rem;
-  }
-
-  main .breadcrumb .category-link-btn {
-    font-size: var(--body-font-size-xxxs);
   }
 }
 

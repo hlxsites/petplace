@@ -1,33 +1,23 @@
 import {
   buildBlock,
-  buildBreadCrumbs,
 } from '../../scripts/lib-franklin.js';
+import { createBreadCrumbs } from '../../scripts/scripts.js';
 
-function createTemplateBlock(main, blockName, gridName) {
+function createTemplateBlock(main, blockName, gridName, elems = []) {
   const gridNameValue = gridName || blockName;
   const section = document.createElement('div');
   section.classList.add('author-template-autoblock', `author-template-grid-${gridNameValue}`);
 
-  const block = buildBlock(blockName, { elems: [] });
+  const block = buildBlock(blockName, { elems });
   section.append(block);
   main.append(section);
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function loadEager(main) {
-  main.append(document.createElement('hr'));
-  const breadcrumb = document.createElement('div');
-  breadcrumb.classList.add('breadcrumb', 'author-template-breadcrumb', 'author-template-autoblock');
-  main.append(breadcrumb);
-  createTemplateBlock(main, 'social-links');
-  createTemplateBlock(main, 'popular-articles');
-}
-
-export async function loadLazy(main) {
+export async function loadEager(main) {
   const heading = main.querySelector('h1');
-  const breadCrumbs = main.querySelector('.author-template-breadcrumb');
-
-  buildBreadCrumbs(breadCrumbs, [{
+  main.append(document.createElement('hr'));
+  const breadcrumbData = await createBreadCrumbs([{
     url: '/authors',
     path: 'Authors',
     color: 'blue-dark',
@@ -36,4 +26,7 @@ export async function loadLazy(main) {
     path: heading.innerText,
     color: 'purple',
   }]);
+  createTemplateBlock(main, 'breadcrumb', 'breadcrumb', [breadcrumbData]);
+  createTemplateBlock(main, 'social-links');
+  createTemplateBlock(main, 'popular-articles');
 }
