@@ -1,7 +1,7 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 
 let dogData;
-const excludedTypes = [];
+let excludedTypes = [];
 const pageLimit = 6;
 let pageIndex = 0;
 
@@ -56,12 +56,28 @@ function buildPagination(block) {
       } else {
         pageIndex -= 1;
       }
+      updateUrlParams('pageIndex', pageIndex);
+
       buildCards(block);
     });
   });
 }
 
+function updateUrlParams(key, value) {
+  const searchParams = new URLSearchParams(window.location.search);
+
+  searchParams.set(key, value);
+  history.pushState(null, '', `?${searchParams.toString()}`);
+}
+
 export default async function decorate(block) {
+  const searchParams = new URLSearchParams(window.location.search);
+  pageIndex = searchParams.has('pageIndex') ? parseInt(searchParams.get('pageIndex')) : 0;
+
+  if (searchParams.has('excluded')) {
+    excludedTypes = searchParams.get('excluded').split(',');
+  }
+  // excludedTypes = searchParams.get('excluded');
   if (!dogData) {
     const res = await fetch('/article/query-index.json?sheet=breed');
     const queryData = await res.json();
@@ -86,7 +102,7 @@ export default async function decorate(block) {
             Type <span class="icon icon-chevron"></span>
           </h3>
           <div class="filter-type is-active">
-            ${breeds.map((breed) => `<div class="checkbox-wrapper"><input type="checkbox" checked="" name="${breed}"><span><label for="${breed}">${breed}</label></span></div>`).join('')}
+            ${breeds.map((breed) => `<div class="checkbox-wrapper"><input type="checkbox" ${excludedTypes.includes(breed) ? '' : 'checked'} name="${breed}"><span><label for="${breed}">${breed}</label></span></div>`).join('')}
           </div>
         </div>
       </div>
@@ -136,6 +152,8 @@ export default async function decorate(block) {
       } else {
         excludedTypes.push(name);
       }
+
+      updateUrlParams('excluded', excludedTypes.join(','));
 
       buildCards(block);
     });
