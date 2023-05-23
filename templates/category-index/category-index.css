@@ -100,14 +100,11 @@
 
   .category-index .sidebar {
     grid-area: sidebar;
+    background: unset;
   }
 
   .category-index .posts-container {
     grid-area: content;
-  }
-
-  .category-index .sidebar {
-    background: unset;
   }
 
   .category-index .sidebar h2 {

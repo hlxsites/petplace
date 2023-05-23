@@ -42,7 +42,7 @@
   margin: 0 0 1rem;
 }
 
-.article-page .section:not(.hero-container):not(.article-template-autoblock) {
+.article-page .section:not(.hero-container, .article-template-autoblock) {
   grid-area: article;
   padding: 0 1rem;
 }
@@ -57,8 +57,11 @@
 }
 
 .article-page main li {
-  margin-bottom: .25rem;
-  padding: 0;
+  margin-bottom: .5rem;
+}
+
+.article-page main .default-content-wrapper li {
+  padding-left: .5rem;
 }
 
 .article-template-grid-article-author {
@@ -166,7 +169,7 @@
     padding-right: 0;
   }
 
-  .article-page .section:not(.hero-container):not(.article-template-autoblock) {
+  .article-page .section:not(.hero-container, .article-template-autoblock) {
     padding: 0;
   }
 
