@@ -13,17 +13,15 @@
 .author-page .hero-container {
   overflow: hidden;
   grid-area: hero;
-  margin-top: 5.5rem;
 }
 
 .author-page .author-template-grid-breadcrumb {
   grid-area: breadcrumb;
-  margin: 0;
-  position: absolute;
+  margin-bottom: 1.5rem;
 }
 
-.author-page .breadcrumb > div > div > div {
-  margin-bottom: 0;
+.author-page .breadcrumb {
+  position: absolute;
 }
 
 .author-page .author-template-grid-social-links {
@@ -100,16 +98,12 @@
 }
 
 @media (min-width: 768px) {
-  .author-page .hero-container {
-    margin-top: 6rem;
-  }
-
   .author-page main .section p {
     line-height: 1.5;
   }
 
-  .author-page .breadcrumb {
-    margin-bottom: .5rem;
+  .author-page .author-template-grid-breadcrumb {
+    margin-bottom: 2rem;
   }
 }
 
