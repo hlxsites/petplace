@@ -114,11 +114,10 @@ function transformArticlePage(document) {
 }
 
 function transformBreedPage(document) {
-  // TODO: add base64 images and section dividers
   const main = document.querySelector('#___gatsby > div');
 
   const meta = getDefaultMetadata(document);
-  meta.Author = document.querySelector('.author-name').textContent;
+  meta.Author = document.querySelector('.author-name').innerHTML.replace(/<svg[\s\S]*\/svg>/, '');
   meta.Type = [...document.querySelectorAll('.general-attributes')].find((attr) => attr.firstElementChild.textContent === 'Type').children[1].textContent;
 
   const generalAttributes = document.querySelector('.general-attributes-wrapper');
@@ -151,6 +150,7 @@ function transformBreedPage(document) {
       ['Attributes'],
       ...[...attributesSection.querySelectorAll('.attribute')].map((attr) => ([
         attr.children[0],
+        attr.children[1].querySelectorAll('path[fill="#FF7D5A"]').length,
       ])),
     ];
     const table = WebImporter.DOMUtils.createTable(cells, document);
@@ -236,7 +236,6 @@ function transformBreedPage(document) {
       ['Slide Cards (media)'],
       ...[...breedsToExploreSection.querySelectorAll('.breeds_to_explore-content')].map((slide) => {
         const title = slide.querySelector('.breeds_to_explore-title').textContent;
-        console.log(213, title);
         const anchor = document.createElement('a');
         anchor.href = title.startsWith('Choosing')
           ? `/article/dogs/breeds/${toClassName(title)}`
@@ -328,7 +327,35 @@ function transformLongLists(main) {
     });
 }
 
+function dataURLtoFile(dataurl) {
+  const base64Str = window.atob(dataurl.split(',')[1]);
+  const bytesArray = new Array(base64Str.length);
+  for (let i = 0; i < base64Str.length; i += 1) {
+    bytesArray[i] = base64Str.charCodeAt(i);
+  }
+  return new Blob([new Uint8Array(bytesArray)], { type: dataurl.split(';')[0].split(':')[1] });
+}
+
 export default {
+  /**
+   * Convert the base64 images so the importer can pick those up.
+   */
+  preprocess: ({ document }) => {
+    document.querySelectorAll('img').forEach(async (img) => {
+      if (img.src.indexOf('data:image/png;base64') > -1) {
+        const file = dataURLtoFile(img.src, 'img.png');
+        const imgNew = document.createElement('img');
+        imgNew.src = URL.createObjectURL(file);
+        img.replaceWith(imgNew);
+      } else if (img.src.indexOf('data:image/svg+xml;base64') > -1) {
+        const svg = window.atob(img.src.split(',')[1]);
+        const container = document.createElement('div');
+        container.innerHTML = svg;
+        img.replaceWith(container.firstElementChild);
+      }
+    });
+  },
+
   /**
    * Apply DOM operations to the provided document and return
    * the root element to be then transformed to Markdown.
@@ -375,5 +402,5 @@ export default {
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
     document, url, html, params,
-  }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '')),
+  }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\/$/, '')),
 };
