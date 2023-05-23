@@ -69,9 +69,26 @@ function fixHeading(block, tag, tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
   });
 }
 
+function fixLists(block) {
+  block.querySelectorAll('li').forEach((li) => {
+    if (!['OL', 'UL'].includes(li.parentElement.nodeName)) {
+      const cleanedLi = li.cloneNode(true);
+      cleanedLi.querySelectorAll('p,h1,h2,h3,h4,h5,h6').forEach((el) => el.remove());
+      if (['OL', 'UL'].includes(li.previousElementSibling.nodeName)) {
+        li.previousElementSibling.innerHTML += cleanedLi.outerHTML;
+      } else {
+        li.outerHTML = `<ul>${cleanedLi.outerHTML}</ul>`;
+      }
+      [...li.querySelectorAll('p,h1,h2,h3,h4,h5,h6')].reverse().forEach((el) => li.after(el));
+      li.remove();
+    }
+  });
+}
+
 function transformArticlePage(document) {
   const main = document.querySelector('.single-post');
   main.prepend(main.querySelector('.gatsby-image-wrapper'));
+  fixLists(main);
 
   const toc = [...document.querySelectorAll('h2')].find((h2) => toClassName(h2.textContent) === 'table-of-contents');
 
@@ -92,7 +109,7 @@ function transformArticlePage(document) {
       [''],
     ];
     const table = WebImporter.DOMUtils.createTable(cells, document);
-    main.append(table);
+    petInsuranceQuote.replaceWith(table);
   }
 
   const disclosure = document.querySelector('.petpartners-disclosure');
@@ -102,7 +119,7 @@ function transformArticlePage(document) {
       [''],
     ];
     const table = WebImporter.DOMUtils.createTable(cells, document);
-    main.append(table);
+    disclosure.replaceWith(table);
   }
 
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
@@ -111,6 +128,7 @@ function transformArticlePage(document) {
   // use helper method to remove header, footer, etc.
   WebImporter.DOMUtils.remove(main, [
     '.is-hidden-desktop',
+    '.gatsby-image-wrapper img:is([src*="data:"],[src*="blob:"])',
     '.breadcrumbs',
     '.single-post-sidebar',
     '.counter-wrapper',
@@ -443,6 +461,7 @@ export default {
           'footer',
           '.is-hidden-desktop',
           '.is-hidden-tablet',
+          '.gatsby-image-wrapper img',
         ]);
         const meta = getDefaultMetadata(document);
         const block = WebImporter.Blocks.getMetadataBlock(document, meta);

@@ -35,7 +35,7 @@ function createTableOfContents(main) {
       tocList.appendChild(tocListItem);
     }
     tocDiv.appendChild(tocList);
-    allH2s[0].parentElement.insertBefore(tocDiv, allH2s[0]);
+    main.querySelector('h1').after(tocDiv);
   }
 }
 
