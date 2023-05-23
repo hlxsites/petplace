@@ -59,6 +59,7 @@
 
 .tile .category-link-btn {
     --bg-color: inherit;
+
     background-color: var(--bg-color);
     margin-top: 5px;
     color: var(--color-purple);
