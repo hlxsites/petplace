@@ -1,0 +1,9 @@
+.disclosure {
+  margin-bottom: .75rem;
+}
+
+.block.disclosure p,
+.block.disclosure a {
+  color: var(--color-mauve);
+  font-size: var(--body-font-size-xs);
+}
