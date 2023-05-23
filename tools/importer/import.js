@@ -194,7 +194,7 @@ function transformBreedPage(document) {
     let cells = [
       ['Accordion'],
       ...[...breedStandardsSection.querySelectorAll('.breed-standard-accordion > div')].map((accordion) => ([
-        accordion.children[0],
+        accordion.children[0].textContent,
         accordion.children[1],
       ])),
     ];
@@ -336,6 +336,38 @@ function dataURLtoFile(dataurl) {
   return new Blob([new Uint8Array(bytesArray)], { type: dataurl.split(';')[0].split(':')[1] });
 }
 
+function replaceHighlights(main) {
+  main.querySelectorAll('.highlight').forEach((el) => {
+    const em = document.createElement('em');
+    em.innerHTML = el.innerHTML;
+    el.outerHTML = em.outerHTML;
+  });
+}
+
+function replaceForms(main) {
+  main.querySelectorAll('form').forEach((form) => {
+    form.outerHTML = `
+      <table>
+        <tr><th>Form</th></tr>
+        <tr>
+          <td>
+          </td>
+        </tr>
+      </table>`;
+  });
+}
+
+function inlineBackgroundImages(main) {
+  main.querySelectorAll('[style*="background-image"]').forEach((el) => {
+    if (el.style.backgroundImage === 'none') {
+      return;
+    }
+    const img = document.createElement('img');
+    img.src = el.style.backgroundImage.replace(/url\((.*)\)/, '$1');
+    el.innerHTML += img.outerHTML;
+  });
+}
+
 export default {
   /**
    * Convert the base64 images so the importer can pick those up.
@@ -348,10 +380,10 @@ export default {
         imgNew.src = URL.createObjectURL(file);
         img.replaceWith(imgNew);
       } else if (img.src.indexOf('data:image/svg+xml;base64') > -1) {
+        const parser = new DOMParser();
         const svg = window.atob(img.src.split(',')[1]);
-        const container = document.createElement('div');
-        container.innerHTML = svg;
-        img.replaceWith(container.firstElementChild);
+        const doc = parser.parseFromString(svg, 'image/svg+xml');
+        img.replaceWith(doc.documentElement);
       }
     });
   },
@@ -371,6 +403,8 @@ export default {
   }) => {
     rewrapDataTables(document);
     transformLongLists(document);
+    replaceHighlights(document);
+    inlineBackgroundImages(document);
     let main;
     const template = getTemplate(url);
     switch (template) {
@@ -380,9 +414,20 @@ export default {
       case 'breed-page':
         main = transformBreedPage(document);
         break;
-      default:
-        main = document.body;
+      default: {
+        main = document.querySelector('#___gatsby > div');
+        replaceForms(main);
+        WebImporter.DOMUtils.remove(main, [
+          'header',
+          'footer',
+          '.is-hidden-desktop',
+          '.is-hidden-tablet',
+        ]);
+        const meta = getDefaultMetadata(document);
+        const block = WebImporter.Blocks.getMetadataBlock(document, meta);
+        main.append(block);
         break;
+      }
     }
 
     cleanupUrls(main);
