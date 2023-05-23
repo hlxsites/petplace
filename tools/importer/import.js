@@ -58,6 +58,17 @@ function getTemplate(url) {
   return 'default-page';
 }
 
+function fixHeading(block, tag, tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
+  block.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach((el) => {
+    if (!tags.includes(el.nodeName.toLowerCase())) {
+      return;
+    }
+    const heading = document.createElement(tag);
+    heading.innerHTML = el.innerHTML;
+    el.outerHTML = heading.outerHTML;
+  });
+}
+
 function transformArticlePage(document) {
   const main = document.querySelector('.single-post');
   main.prepend(main.querySelector('.gatsby-image-wrapper'));
@@ -115,6 +126,7 @@ function transformArticlePage(document) {
 
 function transformBreedPage(document) {
   const main = document.querySelector('#___gatsby > div');
+  fixHeading(main, 'h2', ['h3', 'h4']);
 
   const meta = getDefaultMetadata(document);
   meta.Author = document.querySelector('.author-name').innerHTML.replace(/<svg[\s\S]*\/svg>/, '');
@@ -148,10 +160,14 @@ function transformBreedPage(document) {
   if (attributesSection) {
     const cells = [
       ['Attributes'],
-      ...[...attributesSection.querySelectorAll('.attribute')].map((attr) => ([
-        attr.children[0],
-        attr.children[1].querySelectorAll('path[fill="#FF7D5A"]').length,
-      ])),
+      ...[...attributesSection.querySelectorAll('.attribute')].map((attr) => {
+        const strong = document.createElement('strong');
+        strong.append(attr.children[0]);
+        return [
+          strong,
+          attr.children[0].querySelectorAll('path[fill="#FF7D5A"]').length,
+        ];
+      }),
     ];
     const table = WebImporter.DOMUtils.createTable(cells, document);
     attributesSection.replaceWith(table);
@@ -172,10 +188,15 @@ function transformBreedPage(document) {
   if (careSection) {
     let cells = [
       ['Care Tabs'],
-      ...[...careSection.querySelectorAll('.slick-slide:not(.slick-cloned) .care-slider')].map((slider) => ([
-        slider.children[0],
-        slider.children[1],
-      ])),
+      ...[...careSection.querySelectorAll('.slick-slide:not(.slick-cloned) .care-slider')].map((slider) => {
+        const heading = document.createElement('h3');
+        heading.textContent = slider.children[0].textContent;
+        slider.children[1].prepend(heading);
+        return [
+          slider.children[0],
+          slider.children[1],
+        ];
+      }),
     ];
     let table = WebImporter.DOMUtils.createTable(cells, document);
     document.querySelector('.is-hidden-touch .care-section').querySelector('.care-columns').replaceWith(table);
