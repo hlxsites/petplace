@@ -22,7 +22,7 @@ function buildPost(post, eager, childCategories) {
   postCard.classList.add('blog-cards');
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
-  const postDateStr = postDate.toLocaleString('default', { month: 'long' }).concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
+  const postDateStr = postDate.getMonth().toString().concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
   childCategories.forEach((item) => {
     if (item.Category === post.category) {
       category = item.Category;
@@ -39,11 +39,16 @@ function buildPost(post, eager, childCategories) {
         <a href="${post.path}">
         <div class="blogs-card-body">
         <h3>${post.title}</h3>
-        <p><span class="card-date">${postDateStr.concat(' · ', post.author)}</span></p>
+        <p><span class="card-date"> <time datetime="${postDateStr}">${postDateStr}</time> · ${post.author}</span></p>
       </div></a>          
       </div>
     </a>
   `;
+  setTimeout(() => {
+    window.requestAnimationFrame(() => {
+      postCard.querySelector('time').textContent = postDate.toLocaleString('default', { month: 'long' }).concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
+    });
+  });
   return postCard;
 }
 
@@ -98,7 +103,7 @@ async function buildBlogFeed(ul, pageNum, pagesElem) {
   window.scrollTo({
     top: 0,
     behavior: 'smooth',
-  });
+  });  
 }
 
 export default function decorate(block) {

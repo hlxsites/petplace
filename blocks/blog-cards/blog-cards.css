@@ -11,7 +11,7 @@ main a {
     line-height: 1.5;
     display: block;
     padding-inline-start: 0;
-    min-height: 100vh;
+    
   }
   
   .blog-cards > ul > li {     
@@ -22,10 +22,9 @@ main a {
   }
   
   .blog-cards .blogs-card-body {
-    padding: 24px;
+    padding: 1.5rem;
     display: flex;    
-    flex-direction: column;
-    -ms-flex-pack: justify;
+    flex-direction: column;    
     justify-content: space-between;    
     background-color: transparent;
     min-height: 220px;  
@@ -44,6 +43,7 @@ main a {
     border-top-right-radius: 6px;
     aspect-ratio: 4 / 3;
     max-width: 100%;
+    object-fit: cover
   }
   
   .blog-cards .blogs-card-body .h3{
