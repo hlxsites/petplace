@@ -9,7 +9,7 @@ main .hero-container {
 }
 
 main .hero-container .hero {
-  padding: 0 0 31.8182%;
+  padding: 0;
   margin: 0;
   min-height: 0;
   overflow: hidden;
@@ -21,7 +21,7 @@ main .general-attributes-container h1 {
 }
 
 main .hero-container .hero picture img {
-  width: 100vw;
+  width: 100%;
   object-fit: cover;
   object-position: center center;
 }
@@ -45,11 +45,13 @@ main .section.centered p {
 }
 
 
-@media (min-width: 1024px) {
+@media (min-width: 900px) {
   main .hero-container .hero {
     padding: 0 0 31.8182%;
   }
+}
 
+@media (min-width: 1024px) {
   main h2 {
     font-size: 2.5rem;
   }
