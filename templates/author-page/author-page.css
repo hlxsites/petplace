@@ -13,11 +13,13 @@
 .author-page .hero-container {
   overflow: hidden;
   grid-area: hero;
+  margin-top: 5.5rem;
 }
 
 .author-page .author-template-grid-breadcrumb {
   grid-area: breadcrumb;
   margin: 0;
+  position: absolute;
 }
 
 .author-page .breadcrumb > div > div > div {
@@ -98,6 +100,10 @@
 }
 
 @media (min-width: 768px) {
+  .author-page .hero-container {
+    margin-top: 6rem;
+  }
+
   .author-page main .section p {
     line-height: 1.5;
   }
