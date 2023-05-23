@@ -1,10 +1,9 @@
 .author-page main {
   display: grid;
   grid-template:
-    ". breadcrumb ." auto
+    ". breadcrumb ." 5.5rem
     "hero hero hero" auto
     ". bio ." 1fr
-    ". hr ." auto
     ". social ." auto
     ". popular ." auto
     / 1fr minmax(auto, 1344px) 1fr;
@@ -17,15 +16,18 @@
 
 .author-page .author-template-grid-breadcrumb {
   grid-area: breadcrumb;
-  margin-bottom: 1.5rem;
-}
-
-.author-page .breadcrumb {
-  position: absolute;
+  overflow: hidden;
 }
 
 .author-page .author-template-grid-social-links {
   grid-area: social;
+  margin-top: 1.5rem;
+}
+
+.author-page .social-links-wrapper {
+  box-sizing: border-box;
+  border-top: 2px solid var(--background-color-light);
+  padding-top: 1.5rem;
 }
 
 .author-page .author-template-grid-popular-articles {
@@ -91,19 +93,20 @@
   padding-top: 0;
 }
 
-.author-page main hr {
-  margin: 1.5rem;
-  border-bottom: 2px solid var(--background-color-light);
-  grid-area: hr;
-}
-
 @media (min-width: 768px) {
-  .author-page main .section p {
-    line-height: 1.5;
+  .author-page main {
+    display: grid;
+    grid-template:
+      ". breadcrumb ." 6rem
+      "hero hero hero" auto
+      ". bio ." 1fr
+      ". social ." auto
+      ". popular ." auto
+      / 1fr minmax(auto, 1344px) 1fr;
   }
 
-  .author-page .author-template-grid-breadcrumb {
-    margin-bottom: 2rem;
+  .author-page main .section p {
+    line-height: 1.5;
   }
 }
 

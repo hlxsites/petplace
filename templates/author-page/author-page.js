@@ -18,7 +18,6 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
 // eslint-disable-next-line import/prefer-default-export
 export async function loadEager(main) {
   const heading = main.querySelector('h1');
-  main.append(document.createElement('hr'));
   const breadcrumbData = await createBreadCrumbs([{
     url: '/authors',
     path: 'Authors',
