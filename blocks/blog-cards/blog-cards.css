@@ -139,7 +139,7 @@ main a {
       grid-template-columns: repeat(3, 31.33%);
       grid-gap: 24px;   
       margin-bottom: 1rem;    
-      min-height: 500px;         
+      min-height: 0;         
     }
 
     
