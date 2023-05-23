@@ -4,7 +4,7 @@ import {
 } from '../../scripts/lib-franklin.js';
 
 // eslint-disable-next-line import/prefer-default-export
-export async function buildTemplateBlock(main) {
+export async function loadEager(main) {
   const author = getMetadata('author');
   const h1 = main.querySelector('h1');
 

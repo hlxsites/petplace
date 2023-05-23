@@ -17,6 +17,7 @@ import {
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 function getId() {
@@ -63,6 +64,14 @@ export async function getCategory(name) {
     return null;
   }
   return categories.data.find((c) => c.Slug === name);
+}
+
+export async function getCategoryByName(categoryName) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c.Category === categoryName);
 }
 
 function buildCategorySidebar() {
@@ -118,7 +127,7 @@ function buildCategorySidebar() {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page'];
+  const excludedPages = ['home-page', 'breed-index'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -141,7 +150,6 @@ async function buildHeroBlock(main) {
     } else if (bodyClass.includes('article-page')) {
       const breadcrumb = document.createElement('div');
       breadcrumb.classList.add('article-template-breadcrumb');
-      breadcrumb.innerText = '[Breadcrumb Placeholder]';
       section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
     } else {
       section.append(buildBlock('hero', { elems: [optimized, h1] }));
@@ -181,11 +189,9 @@ async function decorateTemplate(main) {
     const decorationComplete = new Promise((resolve) => {
       (async () => {
         try {
-          const mod = await import(`../templates/${template}/${template}.js`);
-          if (mod.default) {
-            await mod.default(main);
-          } else if (mod.buildTemplateBlock) {
-            await mod.buildTemplateBlock(main);
+          templateModule = await import(`../templates/${template}/${template}.js`);
+          if (templateModule?.loadEager) {
+            await templateModule.loadEager(main);
           }
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -273,6 +279,9 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  if (templateModule?.loadLazy) {
+    templateModule.loadLazy(doc);
+  }
   const main = doc.querySelector('main');
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
@@ -297,10 +306,15 @@ async function loadLazy(doc) {
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed() {
+function loadDelayed(doc) {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+  window.setTimeout(() => {
+    if (templateModule?.loadDelayed) {
+      templateModule.loadDelayed(doc);
+    }
+    return import('./delayed.js');
+  }, 3000);
 }
 
 function createResponsiveImage(pictures, breakpoint) {
@@ -314,7 +328,12 @@ function createResponsiveImage(pictures, breakpoint) {
   const defaultImage = pictures[0].querySelector('img');
   responsivePicture.append(defaultImage);
   pictures.forEach((picture, index) => {
-    const srcElem = picture.querySelector('source:not([media])');
+    let srcElem;
+    if (index === 0) {
+      srcElem = picture.querySelector('source:not([media])');
+    } else {
+      srcElem = picture.querySelector('source[media]');
+    }
     const srcElemBackup = srcElem.cloneNode();
     srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
     srcElemBackup.type = 'img/png';
@@ -342,10 +361,68 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
   container.append(responsiveImage);
 }
 
+function getActiveSlide(block) {
+  return {
+    index: [...block.children].findIndex((child) => child.getAttribute('active') === 'true'),
+    element: block.querySelector('[active="true"]'),
+    totalSlides: [...block.children].length,
+  };
+}
+
+export function slide(slideDirection, block, slideWrapper) {
+  const currentActive = getActiveSlide(block);
+  currentActive.element.removeAttribute('active');
+  let newIndex;
+  if (slideDirection === 'next') {
+    if (currentActive.index === currentActive.totalSlides - 1) {
+      newIndex = 0;
+    } else {
+      newIndex = currentActive.index + 1;
+    }
+  } else if (currentActive.index === 0) {
+    newIndex = currentActive.totalSlides - 1;
+  } else {
+    newIndex = currentActive.index - 1;
+  }
+  block.children[newIndex].setAttribute('active', true);
+
+  slideWrapper.setAttribute('style', `transform:translateX(-${newIndex}00vw)`);
+}
+
+export function initializeTouch(block, slideWrapper) {
+  const slideContainer = block.closest('[class*="-container"]');
+  let startX;
+  let currentX;
+  let diffX = 0;
+
+  slideContainer.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+  });
+
+  slideContainer.addEventListener('touchmove', (e) => {
+    currentX = e.touches[0].pageX;
+    diffX = currentX - startX;
+
+    const { index } = getActiveSlide(block);
+    slideWrapper.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
+  });
+
+  slideContainer.addEventListener('touchend', () => {
+    if (diffX > 50) {
+      slide('prev', block, slideWrapper);
+    } else if (diffX < -50) {
+      slide('next', block, slideWrapper);
+    } else {
+      const { index } = getActiveSlide(block);
+      slideWrapper.setAttribute('style', `transform:translateX(-${index}00vw)`);
+    }
+  });
+}
+
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
-  loadDelayed();
+  loadDelayed(document);
 }
 
 loadPage();

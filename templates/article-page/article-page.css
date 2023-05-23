@@ -80,10 +80,6 @@
   grid-area: paws-up;
 }
 
-.article-footer-container {
-  grid-area: article-footer;
-}
-
 .article-template-grid-social-links-after {
   grid-area: social-after;
 }
@@ -100,6 +96,56 @@
   margin-top: 0;
 }
 
+.article-page .article-template-breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.article-page .article-template-breadcrumb .home {
+  margin-right: 10px;
+  display: inline-flex;
+}
+
+.article-page .article-template-breadcrumb > span {
+  display: inline-flex;
+  width: 20px;
+}
+
+.article-page .article-template-breadcrumb > span svg {
+  fill: var(--highlight-color);
+}
+
+.article-page .article-template-breadcrumb .icon-chevron {
+  transform: rotate(270deg);
+}
+
+.article-page .category-link-btn {
+  --bg-color: inherit;
+  --border-color: inherit;
+  --text-color: inherit;
+
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 50px;
+  font-size: var(--body-font-size-xxs);
+  text-align: center;
+  line-height: 1.1;
+  padding: 0.3rem 0.6rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.article-page .category-link-btn:not(:last-child) {
+  background-color: var(--text-color-inverted);
+}
+
+.article-page .category-link-btn:last-child {
+  color: var(--text-color-inverted);
+}
+
+
 @media (min-width: 768px) {
   .article-page main {
     grid-template:
@@ -107,11 +153,10 @@
       ". article .. author ." min-content
       ". article .. insurance ." min-content
       ". article .. paws-up ." min-content
-      ". article .. social ." min-content
-      ". article-footer .. social ." 1fr
+      ". article .. social ." 1fr
       ". popular popular popular ." min-content
-      ". article-navigation article-navigation article-navigation ." min-content
-      / auto minmax(420px, 720px) minmax(16px, 64px) 300px auto;
+      "article-navigation article-navigation article-navigation article-navigation article-navigation" min-content
+      / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 300px minmax(1rem, 1fr);
   }
 
   .article-page main p {
@@ -145,7 +190,7 @@
   }
 
   .article-page main .hero-container {
-    margin: 0 0 3rem;
+    margin: 0 0 2rem;
   }
 
   .article-page .hero-container .hero h1 {
@@ -157,7 +202,11 @@
   }
 
   .article-page .article-author-container {
-    padding-top: 0;
+    padding-top: 1rem;
+  }
+
+  .article-page .category-link-btn {
+    padding: .3rem .7rem;
   }
 }
 
@@ -207,7 +256,12 @@
   }
 
   .article-page .hero-container .hero .article-template-breadcrumb {
+    margin-bottom: 2rem;
     color: var(--text-color-inverted);
+  }
+
+  .article-page .article-template-breadcrumb > span svg {
+    fill: var(--text-color-inverted)
   }
 
 }

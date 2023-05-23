@@ -16,6 +16,7 @@ main .slideshow-container {
     filter: brightness(80%);
     height: auto;
     width: 100vw;
+    aspect-ratio: auto;
 }
 
 .slides-container .slide {
