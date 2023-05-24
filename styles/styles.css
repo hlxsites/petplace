@@ -1,3 +1,5 @@
+/* stylelint-disable property-no-vendor-prefix */
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -15,6 +17,8 @@
   --highlight-color: #ff7d5a;
   --link-color: var(--highlight-color);
   --link-hover-color: var(--highlight-color);
+  --link-color-alt: #678fda;
+  --link-hover-color-alt: var(--text-color-alt);
   --background-color: #fff;
   --background-color-light: #f2f6fc;
   --background-color-dark: #3b092c;
@@ -25,10 +29,27 @@
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
   --color-gray-dark: #4a4a4a;
-  --color-blue: #639af9;
-  --color-blue-dark: #5870A2;
-  --color-purple: #978ce0;
+  --color-blue: #678fda;
+  --color-blue-dark: #5773a8;
+  --color-purple: #6f69a8;
+  --color-puple-light: #978ce0;
   --color-dark-maroon: #5d3450;
+  --color-red: #ff6662;
+  --color-gold: #d8c46c;
+  --color-green: #97baa7;
+  --color-magenta: #bc6da6;
+  --color-mauve: #8c4877;
+  --color-orange: var(--highlight-color);
+  --color-orange-transparent: rgb(255 85 39 / 60%);
+  --color-blue-transparent: rgb(62 113 208 / 60%);
+  --color-blue-dark-transparent: rgb(70 92 134 / 60%);
+  --color-purple-transparent: rgb(87 81 141 / 60%);
+  --color-purple-light-transparent: rgb(115 100 213 / 60%);
+  --color-red-transparent: rgb(255 52 47 / 60%);
+  --color-gold-transparent: rgb(205 180 68 / 60%);
+  --color-green-transparent: rgb(120 166 141 / 60%);
+  --color-magenta-transparent: rgb(169 77 143 / 60%);
+  --color-mauve-transparent: rgb(106 55 90 / 60%);
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
@@ -41,7 +62,7 @@
   --body-font-size-m: var(--body-font-size-default);
   --body-font-size-s: 14px;
   --body-font-size-xs: 13px;
-  --body-font-size-xxs: 13px;
+  --body-font-size-xxs: 10px;
 
   /* heading sizes */
   --heading-font-size-xxxl: 3.222em;
@@ -51,6 +72,7 @@
   --heading-font-size-m: 1.125em;
   --heading-font-size-s: 1em;
   --heading-font-size-xs: .875em;
+  --heading-font-size-xxs: .75em;
 
   /* nav height */
   --nav-height: 68px;
@@ -62,7 +84,7 @@
     --body-font-size-default: 18px;
     --body-font-size-s: 16px;
     --body-font-size-xs: 14px;
-    --body-font-size-xxs: 13px;
+    --body-font-size-xxs: 12px;
     --heading-font-size-xxl: 2.75rem;
   }
 }
@@ -105,6 +127,7 @@
 body {
   font-size: var(--body-font-size-default);
   margin: 0;
+  min-width: 300px;
   font-family: var(--body-font-family);
   line-height: 1.5;
   color: var(--text-color);
@@ -291,7 +314,12 @@ main img {
   max-width: 100%;
   width: auto;
   height: auto;
-  aspect-ratio: auto;
+}
+
+main iframe[src*="youtube.com"] {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
 
 .icon {
@@ -554,6 +582,48 @@ a.sr-focusable:focus {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+
+
+.slick-arrow {
+    position: absolute;
+    padding: 0;
+    cursor: pointer;
+    border: none;
+    color: white;
+    outline: none;
+    background: var(--color-gray-light-alt);
+    height: 48px;
+    width: 48px;
+    border-radius: 24px;
+    display: block;
+}
+
+.slick-prev {
+    left: calc(50% - 80px);
+}
+
+.slick-prev::before,
+.slick-next::before{
+    font-size: 17px;
+    display: inline-block;
+    width: 20px;
+    height: 1em;
+    background: var(--background-color);
+    content: '';
+    -webkit-mask: url('../icons/arrow.svg') center / 100% 100%;
+    mask: url('../icons/arrow.svg') center / 100% 100%;
+    vertical-align: middle;
+}
+
+.slick-prev::before {
+    transform: rotate(180deg);
+}
+
+.slick-next {
+    right: calc(50% - 80px);
+    z-index: 99;
 }
 
 /* Responsive overrides */

@@ -1,6 +1,9 @@
 import {
   buildBlock,
+  getMetadata,
+  decorateIcons,
 } from '../../scripts/lib-franklin.js';
+import { getCategory } from '../../scripts/scripts.js';
 
 function createTemplateBlock(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
@@ -17,6 +20,10 @@ function createTemplateBlock(main, blockName, gridName) {
  * @param {Element} main Element to which table of contents will be added.
  */
 function createTableOfContents(main) {
+  const hasToc = getMetadata('has-toc');
+  if (!hasToc) {
+    return;
+  }
   const tocDiv = document.createElement('div');
   const allH2s = main ? main.getElementsByTagName('h2') : [];
   const tocHeader = document.createElement('h2');
@@ -35,23 +42,39 @@ function createTableOfContents(main) {
       tocList.appendChild(tocListItem);
     }
     tocDiv.appendChild(tocList);
-    allH2s[0].parentElement.insertBefore(tocDiv, allH2s[0]);
+    main.querySelector('h1').after(tocDiv);
   }
 }
 
 /**
- * Adds a footer to the article div.
- * @param {Element} main Element to which footer will be added.
+ * Loops through an array of paths and fetches metadata.
+ * @param paths - Array of paths
+ * @returns {Promise<*[]>}
  */
-function createArticleFooter(main) {
-  if (main.children.length) {
-    const article = main.children[main.children.length - 1];
+async function getBreadcrumbs(paths) {
+  const breadcrumbs = [];
+  await Promise.all(paths.map(async (path) => {
+    const category = await getCategory(path);
+    if (category) {
+      breadcrumbs.push({
+        color: category.Color,
+        url: category.Path,
+        path,
+      });
+    }
+  }));
+  return breadcrumbs;
+}
 
-    const footerDiv = document.createElement('div');
-    footerDiv.classList.add('article-footer');
-    footerDiv.innerText = '[Article Footer (Insurance Ad, Paw Count) placeholder]';
-    article.appendChild(footerDiv);
-  }
+/**
+ * Convert snake case to title case
+ * @param str
+ * @returns {*}
+ */
+function convertToTitleCase(str) {
+  const words = str.split('-');
+  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+  return capitalizedWords.join(' ');
 }
 
 /**
@@ -59,14 +82,56 @@ function createArticleFooter(main) {
  * @param {Element} main Element to which template blocks will be added.
  */
 // eslint-disable-next-line import/prefer-default-export
-export function buildTemplateBlock(main) {
+export function loadEager(main) {
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
-  createTemplateBlock(main, 'social-links');
-  createTemplateBlock(main, 'article-footer');
+  createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'paws-up');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
-  createArticleFooter(main);
+}
+
+export async function loadLazy(main) {
+  const breadCrumbs = main.querySelector('.article-template-breadcrumb');
+  let { pathname } = window.location;
+  // remove none category initial paths.
+  pathname = pathname.split('/').slice(3);
+
+  const crumbData = await getBreadcrumbs(pathname);
+  // Use the last item in the list's color
+  const { color } = crumbData[crumbData.length - 1];
+
+  const homeLink = document.createElement('a');
+  homeLink.classList.add('home');
+  homeLink.href = '/';
+  homeLink.innerHTML = '<span class="icon icon-home"></span>';
+  breadCrumbs.append(homeLink);
+
+  crumbData.forEach((crumb, i) => {
+    if (i > 0) {
+      const chevron = document.createElement('span');
+      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      breadCrumbs.append(chevron);
+    }
+    const linkButton = document.createElement('a');
+    linkButton.href = crumb.url;
+    linkButton.innerText = convertToTitleCase(crumb.path);
+    linkButton.classList.add('category-link-btn');
+    if (i === crumbData.length - 1) {
+      // linkButton.classList.add(`${color}`);
+      linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', 'inherit');
+    } else {
+      // linkButton.classList.add(`${color}-border`, `${color}-color`);
+      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', `var(--color-${color})`);
+    }
+
+    breadCrumbs.append(linkButton);
+  });
+
+  decorateIcons(breadCrumbs);
 }
