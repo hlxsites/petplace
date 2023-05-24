@@ -32,7 +32,7 @@
 
 .like-post-container p {
     margin: 15px 0 0;
-    font-family: Libre Franklin,sans-serif;
+    font-family: var(--body-font-family);
     font-size: .75rem;
     color: #ff7d5a;
     text-align: center;
