@@ -1,7 +1,7 @@
 .author-page main {
   display: grid;
   grid-template:
-    ". breadcrumb ." 5.5rem
+    ". breadcrumb ." 5.25rem
     "hero hero hero" auto
     ". bio ." 1fr
     ". social ." auto
