@@ -1,5 +1,5 @@
 import { buildBlock } from '../../scripts/lib-franklin.js';
-import { getCategory, getId, isMobile } from '../../scripts/scripts.js';
+import { getCategoryForUrl, getId, isMobile } from '../../scripts/scripts.js';
 
 function buildSidebar() {
   const section = document.createElement('div');
@@ -63,10 +63,7 @@ export function loadEager(main) {
 }
 
 export async function loadLazy() {
+  const { Color } = await getCategoryForUrl();
   const heroColorDiv = document.querySelector('.category-index .hero > div');
-  const path = window.location.pathname;
-  const pathSplit = path.split('/').filter((val) => val !== '');
-  const category = pathSplit[pathSplit.length - 1];
-  const { Color } = await getCategory(category);
   heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
 }
