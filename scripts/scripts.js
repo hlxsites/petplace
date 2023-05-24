@@ -139,14 +139,10 @@ async function buildHeroBlock(main) {
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    let breakpoints;
-    if (!bodyClass.includes('author-page')) {
-      breakpoints = [
-        { width: Math.ceil(window.innerWidth / 100) * 100 },
-      ];
-    }
     const img = picture.querySelector('img');
-    const optimized = createOptimizedPicture(img.src, img.alt, true, breakpoints);
+    const optimized = createOptimizedPicture(img.src, img.alt, true, [
+      { width: Math.ceil(window.innerWidth / 100) * 100 },
+    ]);
     picture.replaceWith(optimized);
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
