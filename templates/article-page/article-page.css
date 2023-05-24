@@ -96,56 +96,6 @@
   margin-top: 0;
 }
 
-.article-page .article-template-breadcrumb {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.article-page .article-template-breadcrumb .home {
-  margin-right: 10px;
-  display: inline-flex;
-}
-
-.article-page .article-template-breadcrumb > span {
-  display: inline-flex;
-  width: 20px;
-}
-
-.article-page .article-template-breadcrumb > span svg {
-  fill: var(--highlight-color);
-}
-
-.article-page .article-template-breadcrumb .icon-chevron {
-  transform: rotate(270deg);
-}
-
-.article-page .category-link-btn {
-  --bg-color: inherit;
-  --border-color: inherit;
-  --text-color: inherit;
-
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  border-radius: 50px;
-  font-size: var(--body-font-size-xxs);
-  text-align: center;
-  line-height: 1.1;
-  padding: 0.3rem 0.6rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.article-page .category-link-btn:not(:last-child) {
-  background-color: var(--text-color-inverted);
-}
-
-.article-page .category-link-btn:last-child {
-  color: var(--text-color-inverted);
-}
-
-
 @media (min-width: 768px) {
   .article-page main {
     grid-template:
@@ -255,12 +205,12 @@
     object-fit: cover;
   }
 
-  .article-page .hero-container .hero .article-template-breadcrumb {
-    margin-bottom: 2rem;
+  .article-page .hero-container .hero .breadcrumb {
+    margin-bottom: 1rem;
     color: var(--text-color-inverted);
   }
 
-  .article-page .article-template-breadcrumb > span svg {
+  .article-page .breadcrumb > div > div > div > span svg {
     fill: var(--text-color-inverted)
   }
 
