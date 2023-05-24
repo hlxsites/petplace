@@ -1,9 +1,13 @@
 import {
   buildBlock,
+  decorateBlock,
+  loadBlock,
   getMetadata,
-  decorateIcons,
 } from '../../scripts/lib-franklin.js';
-import { getCategory } from '../../scripts/scripts.js';
+import {
+  getCategory,
+  createBreadCrumbs,
+} from '../../scripts/scripts.js';
 
 function createTemplateBlock(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
@@ -47,6 +51,17 @@ function createTableOfContents(main) {
 }
 
 /**
+ * Convert snake case to title case
+ * @param str
+ * @returns {*}
+ */
+function convertToTitleCase(str) {
+  const words = str.split('-');
+  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+  return capitalizedWords.join(' ');
+}
+
+/**
  * Loops through an array of paths and fetches metadata.
  * @param paths - Array of paths
  * @returns {Promise<*[]>}
@@ -59,22 +74,11 @@ async function getBreadcrumbs(paths) {
       breadcrumbs.push({
         color: category.Color,
         url: category.Path,
-        path,
+        path: convertToTitleCase(path),
       });
     }
   }));
   return breadcrumbs;
-}
-
-/**
- * Convert snake case to title case
- * @param str
- * @returns {*}
- */
-function convertToTitleCase(str) {
-  const words = str.split('-');
-  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
-  return capitalizedWords.join(' ');
 }
 
 /**
@@ -93,45 +97,16 @@ export function loadEager(main) {
 }
 
 export async function loadLazy(main) {
-  const breadCrumbs = main.querySelector('.article-template-breadcrumb');
+  const breadCrumbs = main.querySelector('.hero > div > div');
   let { pathname } = window.location;
   // remove none category initial paths.
   pathname = pathname.split('/').slice(3);
 
   const crumbData = await getBreadcrumbs(pathname);
-  // Use the last item in the list's color
-  const { color } = crumbData[crumbData.length - 1];
 
-  const homeLink = document.createElement('a');
-  homeLink.classList.add('home');
-  homeLink.href = '/';
-  homeLink.innerHTML = '<span class="icon icon-home"></span>';
-  breadCrumbs.append(homeLink);
-
-  crumbData.forEach((crumb, i) => {
-    if (i > 0) {
-      const chevron = document.createElement('span');
-      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
-      breadCrumbs.append(chevron);
-    }
-    const linkButton = document.createElement('a');
-    linkButton.href = crumb.url;
-    linkButton.innerText = convertToTitleCase(crumb.path);
-    linkButton.classList.add('category-link-btn');
-    if (i === crumbData.length - 1) {
-      // linkButton.classList.add(`${color}`);
-      linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--text-color', 'inherit');
-    } else {
-      // linkButton.classList.add(`${color}-border`, `${color}-color`);
-      linkButton.style.setProperty('--bg-color', 'inherit');
-      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--text-color', `var(--color-${color})`);
-    }
-
-    breadCrumbs.append(linkButton);
-  });
-
-  decorateIcons(breadCrumbs);
+  const breadcrumbContainer = await createBreadCrumbs(crumbData);
+  const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
+  breadCrumbs.append(breadcrumb);
+  decorateBlock(breadcrumb);
+  return loadBlock(breadcrumb);
 }
