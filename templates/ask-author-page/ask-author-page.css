@@ -1,0 +1,95 @@
+.ask-author-page main {
+  display: grid;
+  grid-template:
+    'hero'
+    'author'
+    'social'
+    'content'
+    'popular';
+}
+
+.ask-author-page .hero {
+  box-sizing: border-box;
+  height: 62.5vw;
+  min-height: 0;
+  max-height: 326px;
+  padding: 0;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.ask-author-page .hero img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  object-fit: cover;
+}
+
+.ask-author-page .hero > div {
+  --bg-color: var(--background-color-light);
+
+  max-width: none;
+  background: var(--bg-color);
+}
+
+.ask-author-page .hero > div > div {
+  max-width: 1392px;
+  margin: 0 auto;
+}
+
+.ask-author-page .hero h1 {
+  margin: 0;
+  padding: 2rem 1.5rem;
+  color: var(--text-color-inverted);
+  text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
+}
+
+.ask-author-page .footer {
+  border-top: none;
+}
+
+.ask-author-page .hero-container {
+  grid-area: hero;
+}
+
+.ask-author-page .author-info-container {
+  grid-area: author;
+  padding-top: 1rem;
+  padding-bottom: 0;
+  margin: 0;
+}
+
+.ask-author-page .social-share-container {
+  grid-area: social;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+}
+
+.ask-author-page .popular-tags-container {
+  grid-area: popular;
+}
+
+.ask-author-page .section:not(.hero-container, .author-info-container, .popular-tags-container, .social-share-container) {
+  padding-top: 0;
+  margin-top: 0;
+  grid-area: content;
+}
+
+@media (min-width: 1024px) {
+  .ask-author-page main {
+    display: grid;
+    grid-template:
+      'hero hero hero hero' min-content
+      '. author content .' min-content
+      '. social content .' min-content
+      '. popular content .' 1fr / 1fr minmax(250px, 342px) minmax(750px, 1026px) 1fr;
+    gap: 0 1.5rem;
+  }
+
+  .ask-author-page .author-info-container {
+    padding-bottom: 1rem;
+  }
+}
