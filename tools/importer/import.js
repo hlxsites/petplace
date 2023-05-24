@@ -74,7 +74,7 @@ function fixLists(block) {
     if (!['OL', 'UL'].includes(li.parentElement.nodeName)) {
       const cleanedLi = li.cloneNode(true);
       cleanedLi.querySelectorAll('p,h1,h2,h3,h4,h5,h6').forEach((el) => el.remove());
-      if (['OL', 'UL'].includes(li.previousElementSibling.nodeName)) {
+      if (['OL', 'UL'].includes(li.previousElementSibling?.nodeName)) {
         li.previousElementSibling.innerHTML += cleanedLi.outerHTML;
       } else {
         li.outerHTML = `<ul>${cleanedLi.outerHTML}</ul>`;
@@ -324,13 +324,13 @@ function transformBreedPage(document) {
 function cleanupUrls(main) {
   main.querySelectorAll('[href],[src]').forEach((el) => {
     if (el.href && el.href.startsWith('https://petplace.uat.petpartners.com/')) {
-      el.href.replace('https://petplace.uat.petpartners.com/', '/');
+      el.href = el.href.replace('https://petplace.uat.petpartners.com/', '/');
     } else if (el.href && el.href.startsWith('http://localhost:3001/')) {
-      el.href.replace('http://localhost:3001/', '/');
+      el.href = el.href.replace('http://localhost:3001/', '/');
     } else if (el.src && el.src.startsWith('https://petplace.uat.petpartners.com/')) {
-      el.src.replace('https://petplace.uat.petpartners.com/', '/');
+      el.href = el.src.replace('https://petplace.uat.petpartners.com/', '/');
     } else if (el.src && el.src.startsWith('http://localhost:3001/')) {
-      el.src.replace('http://localhost:3001/', '/');
+      el.href = el.src.replace('http://localhost:3001/', '/');
     }
   });
 }
