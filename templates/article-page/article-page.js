@@ -46,7 +46,7 @@ function createTableOfContents(main) {
       tocList.appendChild(tocListItem);
     }
     tocDiv.appendChild(tocList);
-    allH2s[0].parentElement.insertBefore(tocDiv, allH2s[0]);
+    main.querySelector('h1').after(tocDiv);
   }
 }
 
@@ -89,7 +89,7 @@ async function getBreadcrumbs(paths) {
 export function loadEager(main) {
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
-  createTemplateBlock(main, 'social-links');
+  createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'paws-up');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');

@@ -1,6 +1,8 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages } from '../../scripts/scripts.js';
 
+let slideShowInteracted = false;
+
 class ResumableInterval {
   constructor(intervalTime, callback) {
     this.interval = null;
@@ -65,6 +67,51 @@ function updateSlide(nextIndex, $block) {
   $slidesContainer.style.transform = `translateX(-${nextIndex * 100}vw)`;
 }
 
+function initializeTouch($block) {
+  const $slidesContainer = $block.querySelector('.slides-container');
+
+  let startX;
+  let currentX;
+  let diffX = 0;
+
+  $block.addEventListener('touchstart', (e) => {
+    const { tagName } = e.target;
+    if (tagName === 'A' || tagName === 'use') return;
+
+    startX = e.touches[0].pageX;
+  });
+
+  $block.addEventListener('touchmove', (e) => {
+    const { tagName } = e.target;
+    if (tagName === 'A' || tagName === 'use') return;
+
+    slideShowInteracted = true;
+
+    currentX = e.touches[0].pageX;
+    diffX = currentX - startX;
+
+    const index = getCurrentSlideIndex($slidesContainer);
+    $slidesContainer.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
+  });
+
+  $block.addEventListener('touchend', (e) => {
+    const { tagName } = e.target;
+    if (tagName === 'A' || tagName === 'use') return;
+
+    const index = getCurrentSlideIndex($slidesContainer);
+
+    if (diffX > 50) {
+      const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
+      updateSlide(nextIndex, $block);
+    } else if (diffX < -50) {
+      const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
+      updateSlide(nextIndex, $block);
+    } else {
+      $slidesContainer.setAttribute('style', `transform:translateX(-${index}00vw)`);
+    }
+  });
+}
+
 export default async function decorate($block) {
   const numChildren = $block.children.length;
   $block.children[0].setAttribute('active', true);
@@ -120,23 +167,24 @@ export default async function decorate($block) {
   // auto-play
   const autoplayTimer = new ResumableInterval(5000, () => {
     const currentIndex = getCurrentSlideIndex($slidesContainer);
-    updateSlide((currentIndex + 1) % numChildren, $block);
+    if (!slideShowInteracted) {
+      updateSlide((currentIndex + 1) % numChildren, $block);
+    }
   });
   autoplayTimer.start();
-  let slideShowInteracted = false;
 
   $block.addEventListener('mouseenter', () => {
     autoplayTimer.pause();
   });
 
   $block.addEventListener('mouseleave', () => {
-    if (!slideShowInteracted) {
-      autoplayTimer.resume();
-    }
+    autoplayTimer.resume();
   });
 
   $block.addEventListener('click', () => {
     slideShowInteracted = true;
     autoplayTimer.pause();
   });
+
+  initializeTouch($block);
 }
