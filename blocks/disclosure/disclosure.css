@@ -1,6 +1,6 @@
 .disclosure {
   margin-bottom: .75rem;
-  /* min-height: 55px; */
+  min-height: 55px;
 }
 
 .block.disclosure p,
@@ -11,6 +11,6 @@
 
 @media (min-width: 600px) {
   .disclosure {
-    /* min-height: 42px; */
+    min-height: 42px;
   }
 }
