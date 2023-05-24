@@ -166,8 +166,6 @@ async function decorateTemplate(main) {
  * @param {Element} main The container element
  */
 async function buildAutoBlocks(main) {
-  const bodyClass = [...document.body.classList];
-
   try {
     await buildHeroBlock(main);
   } catch (error) {
