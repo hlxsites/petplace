@@ -89,7 +89,6 @@ async function buildHeroBlock(main) {
   }
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
-  const parent = h1.parentElement;
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const img = picture.querySelector('img');
@@ -104,7 +103,6 @@ async function buildHeroBlock(main) {
       section.append(buildBlock('hero', { elems: [optimized, h1] }));
     }
     main.prepend(section);
-    parent.remove();
   }
 }
 
