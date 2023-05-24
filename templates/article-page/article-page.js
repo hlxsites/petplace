@@ -85,7 +85,7 @@ function convertToTitleCase(str) {
 export function loadEager(main) {
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'pet-insurance-quote');
-  createTemplateBlock(main, 'social-links');
+  createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'paws-up');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
