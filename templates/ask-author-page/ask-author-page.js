@@ -12,6 +12,7 @@ function createTemplateBlock(main, blockName, elems = []) {
   main.append(section);
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export function loadEager(main) {
   const avatarUrl = getMetadata('avatar');
   const authorName = getMetadata('author-name');
