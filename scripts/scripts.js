@@ -98,7 +98,7 @@ export async function getCategoryByName(categoryName) {
  *  in the authored document.
  */
 function getResponsiveHeroPictures(main, h1) {
-  let heroPics = {
+  const heroPics = {
     pictures: [],
     breakpoints: [],
   };
@@ -133,6 +133,33 @@ function getResponsiveHeroPictures(main, h1) {
   return heroPics;
 }
 
+function createResponsiveImage(pictures, breakpoint) {
+  const responsivePicture = document.createElement('picture');
+  const defaultImage = pictures[0].querySelector('img');
+  responsivePicture.append(defaultImage);
+  pictures.forEach((picture, index) => {
+    let srcElem;
+    if (index !== 0) {
+      srcElem = picture.querySelector('source[media]');
+    }
+    if (!srcElem) {
+      srcElem = picture.querySelector('source:not([media])');
+    }
+    const srcElemBackup = srcElem.cloneNode();
+    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.type = 'img/png';
+
+    if (index > 0) {
+      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+    }
+    responsivePicture.prepend(srcElemBackup);
+    responsivePicture.prepend(srcElem);
+  });
+
+  return responsivePicture;
+}
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -157,7 +184,6 @@ async function buildHeroBlock(main) {
       return;
     }
     const responsive = createResponsiveImage(pictures, breakpoints);
-    const img = responsive.querySelector('img');
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [responsive] }));
@@ -319,33 +345,6 @@ function loadDelayed(doc) {
     }
     return import('./delayed.js');
   }, 3000);
-}
-
-function createResponsiveImage(pictures, breakpoint) {
-  const responsivePicture = document.createElement('picture');
-  const defaultImage = pictures[0].querySelector('img');
-  responsivePicture.append(defaultImage);
-  pictures.forEach((picture, index) => {
-    let srcElem;
-    if (index !== 0) {
-      srcElem = picture.querySelector('source[media]');
-    }
-    if (!srcElem) {
-      srcElem = picture.querySelector('source:not([media])');
-    }
-    const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
-    srcElemBackup.type = 'img/png';
-
-    if (index > 0) {
-      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
-      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
-    }
-    responsivePicture.prepend(srcElemBackup);
-    responsivePicture.prepend(srcElem);
-  });
-
-  return responsivePicture;
 }
 
 /**
