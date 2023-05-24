@@ -147,7 +147,6 @@ async function buildHeroBlock(main) {
     return;
   }
   const h1 = main.querySelector('h1');
-  const parent = h1.parentElement;
   // eslint-disable-next-line no-bitwise
   if (h1) {
     const {
@@ -166,7 +165,6 @@ async function buildHeroBlock(main) {
       section.append(buildBlock('hero', { elems: [responsive, h1] }));
     }
     main.prepend(section);
-    parent.remove();
   }
 }
 
