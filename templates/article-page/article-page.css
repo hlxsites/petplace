@@ -72,7 +72,7 @@
   grid-area: insurance;
 }
 
-.article-template-grid-social-links {
+.article-template-grid-social-share {
   grid-area: social;
 }
 
@@ -80,7 +80,7 @@
   grid-area: paws-up;
 }
 
-.article-template-grid-social-links-after {
+.article-template-grid-social-share-after {
   grid-area: social-after;
 }
 
