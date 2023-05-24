@@ -66,6 +66,12 @@ export async function getCategory(name) {
   return categories.data.find((c) => c.Slug === name);
 }
 
+export async function getCategoryForUrl() {
+  const { pathname } = window.location;
+  const [category] = pathname.split('/').splice(-2, 1);
+  return getCategory(category);
+}
+
 export async function getCategoryByName(categoryName) {
   const categories = await getCategories();
   if (!categories) {
@@ -309,10 +315,10 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  if (templateModule?.loadLazy) {
-    templateModule.loadLazy(doc);
-  }
   const main = doc.querySelector('main');
+  if (templateModule?.loadLazy) {
+    templateModule.loadLazy(main);
+  }
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
   }
