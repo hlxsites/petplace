@@ -4,6 +4,9 @@
 
 .author-info picture {
   width: 62px;
+  height: 62px;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .author-info > div > div {
@@ -15,6 +18,7 @@
 @media (min-width: 1024px) {
   .author-info picture {
     width: 200px;
+    height: 200px;
   }
 
   .author-info > div > div {
