@@ -145,12 +145,8 @@ async function buildHeroBlock(main) {
     ]);
     picture.replaceWith(optimized);
     const section = document.createElement('div');
-    if (bodyClass.includes('breed-page')) {
+    if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [optimized] }));
-    } else if (bodyClass.includes('article-page')) {
-      const breadcrumb = document.createElement('div');
-      breadcrumb.classList.add('article-template-breadcrumb');
-      section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
     } else {
       section.append(buildBlock('hero', { elems: [optimized, h1] }));
     }
@@ -417,6 +413,59 @@ export function initializeTouch(block, slideWrapper) {
       slideWrapper.setAttribute('style', `transform:translateX(-${index}00vw)`);
     }
   });
+}
+
+/**
+ * @typedef CrumbData
+ * @property {string} url Full URL to which clicking the crumb will redirect.
+ * @property {string} path Name of the crumb as it will appear on its label.
+ * @property {string} color Name of the color in which the breadcrumb should
+ *  be rendered.
+ */
+
+/**
+ * Creates an element that contains the structure for a given list of crumb information.
+ * @param {Array<CrumbData>} crumbData Information about the crumbs to add.
+ * @returns {Promise<Element>} Resolves with the crumb element.
+ */
+export async function createBreadCrumbs(crumbData) {
+  const breadcrumbContainer = document.createElement('div');
+  // Use the last item in the list's color
+  const { color } = crumbData[crumbData.length - 1];
+
+  const homeLink = document.createElement('a');
+  homeLink.classList.add('home');
+  homeLink.href = '/';
+  homeLink.innerHTML = '<span class="icon icon-home"></span>';
+  breadcrumbContainer.append(homeLink);
+
+  crumbData.forEach((crumb, i) => {
+    if (i > 0) {
+      const chevron = document.createElement('span');
+      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      breadcrumbContainer.append(chevron);
+    }
+    const linkButton = document.createElement('a');
+    linkButton.href = crumb.url;
+    linkButton.innerText = crumb.path;
+    linkButton.classList.add('category-link-btn');
+    if (i === crumbData.length - 1) {
+      // linkButton.classList.add(`${color}`);
+      linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', 'inherit');
+    } else {
+      // linkButton.classList.add(`${color}-border`, `${color}-color`);
+      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', `var(--color-${color})`);
+    }
+
+    breadcrumbContainer.append(linkButton);
+  });
+
+  await decorateIcons(breadcrumbContainer);
+  return breadcrumbContainer;
 }
 
 async function loadPage() {
