@@ -2,9 +2,9 @@
   display: grid;
   grid-template:
     "hero"
-    "author" minmax(181px, min-content)
+    "author"
     "insurance"
-    "social" minmax(115px, min-content)
+    "social"
     "article"
     "article-footer"
     "paws-up"
