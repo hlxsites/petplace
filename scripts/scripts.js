@@ -75,6 +75,92 @@ export async function getCategoryByName(categoryName) {
 }
 
 /**
+ * @typedef ResponsiveHeroPictures
+ * @property {Array<Element>} pictures Picture elements that make up the various resolutions
+ *  of images provided for the hero image.
+ * @property {Array<number>} breakpoints List of breakpoint widths where each hero image
+ *  resolution will be used. This array will always be one less than the picture array.
+ */
+
+/**
+ * Retrieves information about all of the hero images that were included in the authored
+ * document. The images are assumed to appear in order of smallest resolution to largest,
+ * and the breakpoints for each will be determined by the number of resolutions.
+ *
+ * For example, if there is only one picture, it will be used for all resolutions. If
+ * there are two pictures, the first will be used for mobile and tablet, and the last
+ * will be used for desktop. If there are 3, the first will be mobile, second will be
+ * tablet, and third will be desktop.
+ * @param {Element} main The current document's main element.
+ * @param {Element} h1 The first heading in the document, assumed to be the title of
+ *  the page.
+ * @returns {ResponsiveHeroPictures} Information about the different hero image resolutions provided
+ *  in the authored document.
+ */
+function getResponsiveHeroPictures(main, h1) {
+  const heroPics = {
+    pictures: [],
+    breakpoints: [],
+  };
+  const pictures = main.querySelectorAll('picture');
+  for (let i = 0; i < pictures.length; i += 1) {
+    const picture = pictures[i];
+
+    // eslint-disable-next-line no-bitwise
+    if (i > 2 || !(h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+      break;
+    }
+
+    // create an optimized version of the image based on screen width
+    const img = picture.querySelector('img');
+    const optimized = createOptimizedPicture(img.src, img.alt, true, [
+      { width: Math.ceil(window.innerWidth / 100) * 100 },
+    ]);
+    heroPics.pictures.push(optimized);
+    picture.remove();
+  }
+  if (heroPics.pictures.length) {
+    if (heroPics.pictures.length === 2) {
+      // if there are two pictures, use the first for both mobile and tablet
+      heroPics.breakpoints.push(1024);
+    } else if (heroPics.pictures.length === 3) {
+      // if there are three pictures, use the first for mobile, second for tablet
+      heroPics.breakpoints.push(768);
+      heroPics.breakpoints.push(1024);
+    }
+  }
+
+  return heroPics;
+}
+
+function createResponsiveImage(pictures, breakpoint) {
+  const responsivePicture = document.createElement('picture');
+  const defaultImage = pictures[0].querySelector('img');
+  responsivePicture.append(defaultImage);
+  pictures.forEach((picture, index) => {
+    let srcElem;
+    if (index !== 0) {
+      srcElem = picture.querySelector('source[media]');
+    }
+    if (!srcElem) {
+      srcElem = picture.querySelector('source:not([media])');
+    }
+    const srcElemBackup = srcElem.cloneNode();
+    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.type = 'img/png';
+
+    if (index > 0) {
+      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+    }
+    responsivePicture.prepend(srcElemBackup);
+    responsivePicture.prepend(srcElem);
+  });
+
+  return responsivePicture;
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -88,19 +174,21 @@ async function buildHeroBlock(main) {
     return;
   }
   const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const img = picture.querySelector('img');
-    const optimized = createOptimizedPicture(img.src, img.alt, true, [
-      { width: Math.ceil(window.innerWidth / 100) * 100 },
-    ]);
-    picture.replaceWith(optimized);
+  if (h1) {
+    const {
+      pictures,
+      breakpoints,
+    } = getResponsiveHeroPictures(main, h1);
+    if (!pictures.length) {
+      return;
+    }
+    const responsive = createResponsiveImage(pictures, breakpoints);
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
-      section.append(buildBlock('hero', { elems: [optimized] }));
+      section.append(buildBlock('hero', { elems: [responsive] }));
     } else {
-      section.append(buildBlock('hero', { elems: [optimized, h1] }));
+      section.append(buildBlock('hero', { elems: [responsive, h1] }));
     }
     main.prepend(section);
   }
@@ -259,38 +347,6 @@ function loadDelayed(doc) {
   }, 3000);
 }
 
-function createResponsiveImage(pictures, breakpoint) {
-  pictures.sort((p1, p2) => {
-    const img1 = p1.querySelector('img');
-    const img2 = p2.querySelector('img');
-    return img1.width - img2.width;
-  });
-
-  const responsivePicture = document.createElement('picture');
-  const defaultImage = pictures[0].querySelector('img');
-  responsivePicture.append(defaultImage);
-  pictures.forEach((picture, index) => {
-    let srcElem;
-    if (index === 0) {
-      srcElem = picture.querySelector('source:not([media])');
-    } else {
-      srcElem = picture.querySelector('source[media]');
-    }
-    const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
-    srcElemBackup.type = 'img/png';
-
-    if (index > 0) {
-      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
-      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
-    }
-    responsivePicture.prepend(srcElemBackup);
-    responsivePicture.prepend(srcElem);
-  });
-
-  return responsivePicture;
-}
-
 /**
  *
  * @param container - HTML parent element that contains the multiple <picture>
@@ -298,7 +354,13 @@ function createResponsiveImage(pictures, breakpoint) {
  * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
  */
 export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
-  const responsiveImage = createResponsiveImage([...container.querySelectorAll('picture')], breakpoints);
+  const pictures = [...container.querySelectorAll('picture')];
+  pictures.sort((p1, p2) => {
+    const img1 = p1.querySelector('img');
+    const img2 = p2.querySelector('img');
+    return img1.width - img2.width;
+  });
+  const responsiveImage = createResponsiveImage(pictures, breakpoints);
   container.innerHTML = '';
   container.append(responsiveImage);
 }
