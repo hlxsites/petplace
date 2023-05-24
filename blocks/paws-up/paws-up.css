@@ -1,1 +1,138 @@
-/* Nothing here yet */
+.like-post-container {
+    border: 1px solid #4f4f4f;
+    background-color: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 7px;
+    font-family: Raleway,sans-serif;
+    max-width: 290px;
+    margin: 32px 0;
+}
+
+.counter {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 8px 16px;
+    background: #fff;
+    box-sizing: border-box;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    margin-bottom: 30px;
+}
+
+.counter .icon {
+    margin-right: 10px;
+}
+
+.counter .icon svg {
+    color: var(--highlight-color)
+}
+
+.like-post-container p {
+    margin: 15px 0 0;
+    font-family: Libre Franklin,sans-serif;
+    font-size: .75rem;
+    color: #ff7d5a;
+    text-align: center;
+}
+
+.like-post-container .counter p {
+    margin: 0;
+    padding: 0;
+    font-size: 1.125rem;
+    color: #828282;
+}
+
+.like-post-container span {
+    color: #828282;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.like-post-container span:first-of-type {
+    max-width: 230px;
+}
+
+.like-post-container .paw-btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.like-post-container .paw-btn {
+    cursor: pointer;
+    width: 100px;
+    height: 90px;
+    mask-clip: stroke-box;
+    background: url('../../icons/paw-border.svg')  center / 100% 100%;
+    color: grey;
+    margin: 20px 0;
+    transition: all .3s ease;
+    box-sizing: border-box;
+    padding-top: 50px;
+    position: relative;
+}
+
+.like-post-container .paw-btn:hover {
+    color: orange;
+    background: url('../../icons/paw-big-filled.svg')  center / 100% 100%;
+}
+
+.sign-up-wrapper {
+    background: #3b092c;
+    padding: 20px 10px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.like-post-container .sign-up-wrapper p {
+    font-size: 1rem;
+}
+
+.like-post-container .sign-up-wrapper p:first-of-type {
+    color: #fff;
+    font-size: 1.125rem;
+    line-height: 24px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.like-post-container .form-container {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+
+}
+
+.like-post-container .form-container textarea {
+    margin-top: 22px;
+    padding: 16px;
+    height: 173px;
+    width: 100%;
+    border-radius: 7px;
+    background: #fff;
+    border-color: #dbdee7;
+    resize: none;
+    font-size: .875rem;
+    box-sizing: border-box;
+}
+
+.like-post-container .form-container button {
+    background: transparent;
+    color: #58304c;
+    font-size: 1.25rem;
+    max-width: 180px;
+    display: block;
+    margin: 16px auto 38px;
+    border-color: #58304c;
+    border-width: 2px;
+    width: 100%;
+    height: 40px;
+    font-family: Raleway,sans-serif;
+    font-weight: 800;
+}
