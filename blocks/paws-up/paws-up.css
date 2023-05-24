@@ -1,13 +1,13 @@
 .like-post-container {
-    border: 1px solid #4f4f4f;
-    background-color: #f4f6f8;
+    border: 1px solid var(--color-gray-light);
+    background-color: var(--background-color-light);
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 7px;
-    font-family: Raleway,sans-serif;
+    font-family: var(--heading-font-family);
     max-width: 290px;
-    margin: 32px 0;
+    margin: 0 auto;
 }
 
 .counter {
@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: row;
     padding: 8px 16px;
-    background: #fff;
+    background: var(--text-color-inverted);
     box-sizing: border-box;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
@@ -42,11 +42,11 @@
     margin: 0;
     padding: 0;
     font-size: 1.125rem;
-    color: #828282;
+    color: var(--color-gray)
 }
 
 .like-post-container span {
-    color: #828282;
+    color:var(--color-gray);
     font-size: 1.25rem;
     font-weight: 800;
     text-align: center;
@@ -68,7 +68,7 @@
     height: 90px;
     mask-clip: stroke-box;
     background: url('../../icons/paw-border.svg')  center / 100% 100%;
-    color: grey;
+    color: var(--color-gray);
     margin: 20px 0;
     transition: all .3s ease;
     box-sizing: border-box;
@@ -77,12 +77,12 @@
 }
 
 .like-post-container .paw-btn:hover {
-    color: orange;
+    color: var(--highlight-color);
     background: url('../../icons/paw-big-filled.svg')  center / 100% 100%;
 }
 
 .sign-up-wrapper {
-    background: #3b092c;
+    background: var(--background-color-dark);
     padding: 20px 10px;
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
@@ -93,7 +93,7 @@
 }
 
 .like-post-container .sign-up-wrapper p:first-of-type {
-    color: #fff;
+    color: var(--text-color-inverted);
     font-size: 1.125rem;
     line-height: 24px;
     margin-top: 0;
@@ -115,24 +115,29 @@
     height: 173px;
     width: 100%;
     border-radius: 7px;
-    background: #fff;
-    border-color: #dbdee7;
+    background: var(--text-color-inverted);
+    border-color: var(--color-gray-light);
     resize: none;
     font-size: .875rem;
     box-sizing: border-box;
+    font-family: var(--body-font-family);
 }
 
 .like-post-container .form-container button {
     background: transparent;
-    color: #58304c;
+    color: var(--color-dark-maroon);
     font-size: 1.25rem;
     max-width: 180px;
     display: block;
     margin: 16px auto 38px;
-    border-color: #58304c;
+    border-color: var(--color-dark-maroon);
     border-width: 2px;
     width: 100%;
     height: 40px;
-    font-family: Raleway,sans-serif;
+    font-family: var(--heading-font-family);
     font-weight: 800;
+}
+
+.email-pets {
+    margin-top: 20px;
 }
