@@ -441,7 +441,9 @@ export default {
     document, url, html, params,
   }) => {
     rewrapDataTables(document);
-    transformLongLists(document);
+    if ([].includes(new URL(url).pathname)) {
+      transformLongLists(document);
+    }
     replaceHighlights(document);
     inlineBackgroundImages(document);
     let main;
