@@ -19,13 +19,3 @@ export async function loadEager(main) {
   await decorateIcons(p);
   h1.insertAdjacentElement('afterend', p);
 }
-
-export function loadLazy() {
-  const catFooter = document.createElement('div');
-  catFooter.classList.add('cat-footer');
-
-  const picture = createOptimizedPicture('/images/cat_footer.png', 'cute kitten face');
-
-  catFooter.append(picture);
-  document.querySelector('main').append(catFooter);
-}
