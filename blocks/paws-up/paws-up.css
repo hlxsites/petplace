@@ -34,7 +34,7 @@
     margin: 15px 0 0;
     font-family: var(--body-font-family);
     font-size: .75rem;
-    color: #ff7d5a;
+    color: var(--highlight-color);
     text-align: center;
 }
 
@@ -138,6 +138,6 @@
     font-weight: 800;
 }
 
-.email-pets {
-    margin-top: 20px;
+.email-pets{
+    margin: 20px 0 -8px;
 }

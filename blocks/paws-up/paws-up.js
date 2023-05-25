@@ -1,4 +1,4 @@
-import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, decorateIcons } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
   const count = 0;
@@ -22,13 +22,16 @@ export default function decorate(block) {
         <span class="paw-btn btn-yes">Yes</span>
         <span class="paw-btn btn-no">No</span>
       </div>
-      <img class="email-pets" src="/images/cat-dog.png" alt="email">
+      <span class="email-pets"></span>
       <div class="sign-up-wrapper">
         <p>Get the best of PetPlace straight to your inbox.</p>
         <p>By signing up, you agree to our Terms of Service and Privacy Policy.</p>
       </div>
     </div> 
     `;
+  const optimizedPic = createOptimizedPicture('/images/cat-dog.png', 'email');
+  block.querySelector('.email-pets').innerHTML = optimizedPic.outerHTML;
+
   block.querySelector('.btn-yes').addEventListener('click', () => {
     // Todo - Add logic
   });
