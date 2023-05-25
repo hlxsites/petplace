@@ -2,7 +2,7 @@ import {
   buildBlock,
   getMetadata,
   createOptimizedPicture,
-  decorateIcons
+  decorateIcons,
 } from '../../scripts/lib-franklin.js';
 
 function createTemplateBlock(main, blockName, elems = []) {
