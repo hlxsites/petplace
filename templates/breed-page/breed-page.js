@@ -24,7 +24,7 @@ export function loadLazy(main) {
   const catFooter = document.createElement('div');
   catFooter.classList.add('cat-footer');
 
-  const picture = createOptimizedPicture('/images/cat_footer.png');
+  const picture = createOptimizedPicture('/images/cat_footer.png', 'cute kitten face');
 
   catFooter.append(picture);
   document.querySelector('main').append(catFooter);
