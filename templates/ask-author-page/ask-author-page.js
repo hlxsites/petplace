@@ -2,6 +2,7 @@ import {
   buildBlock,
   getMetadata,
   createOptimizedPicture,
+  decorateIcons
 } from '../../scripts/lib-franklin.js';
 
 function createTemplateBlock(main, blockName, elems = []) {
@@ -32,12 +33,20 @@ export function loadLazy(main) {
     hero.append(h3);
   }
 
+  const arrow = document.createElement('span');
+  arrow.classList.add('icon', 'icon-arrow');
+
+  const text = document.createElement('span');
+  text.innerText = 'Ask Now';
+
   const autoBlockDiv = document.createElement('div');
   autoBlockDiv.classList.add('ask-author-page-hero-auto-block');
   const askNow = document.createElement('a');
+  askNow.append(arrow);
+  askNow.append(text);
   askNow.href = 'mailto:info@petplace.com';
-  askNow.innerText = 'Ask Now';
   autoBlockDiv.append(askNow);
+  decorateIcons(askNow);
 
   const firstName = getMetadata('author-first-name');
   const finePrint1 = document.createElement('p');
