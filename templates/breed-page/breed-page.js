@@ -20,7 +20,7 @@ export async function loadEager(main) {
   h1.insertAdjacentElement('afterend', p);
 }
 
-export function loadLazy(main) {
+export function loadLazy() {
   const catFooter = document.createElement('div');
   catFooter.classList.add('cat-footer');
 
