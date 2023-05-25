@@ -38,6 +38,9 @@ export default async function decorate(block) {
   }));
 
   data.forEach((dta, index) => {
+    const tileTitle = dta.title.endsWith(' - PetPlace')
+      ? dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'))
+      : dta.title;
     // Create tile div for each individual tile
     const tile = document.createElement('div');
     tile.classList.add('tile');
@@ -56,11 +59,13 @@ export default async function decorate(block) {
     if (index === 0) {
       img = document.createElement('img');
       img.src = dta.image;
+      img.alt = dta?.imageAlt || tileTitle;
     } else {
       img = document.createElement('a');
       img.href = dta.path;
       const imgTag = document.createElement('img');
       imgTag.src = dta.image;
+      imgTag.alt = dta?.imageAlt || tileTitle;
       img.append(imgTag);
     }
 
@@ -87,9 +92,7 @@ export default async function decorate(block) {
     const title = document.createElement('a');
     title.href = dta.path;
     const titleHeader = document.createElement('h3');
-    titleHeader.innerHTML = dta.title.endsWith(' - PetPlace')
-      ? dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'))
-      : dta.title;
+    titleHeader.innerHTML = tileTitle;
     title.append(titleHeader);
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');

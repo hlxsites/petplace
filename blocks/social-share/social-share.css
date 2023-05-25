@@ -1,0 +1,23 @@
+.social-share ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 1rem;
+}
+
+.social-share li {
+  margin: 0;
+  padding: 0;
+}
+
+.social-share .icon {
+  width: 36px;
+  height: 36px;
+}
+
+@media (min-width: 768px) {
+  .social-share ul {
+    width: 100%;
+  }
+}

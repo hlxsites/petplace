@@ -89,8 +89,9 @@
   .category-index main {
     display: grid;
     grid-template:
-      'hero hero hero hero'
-      '. sidebar content .' / 1fr minmax(250px, 342px) minmax(750px, 1026px) 1fr;
+      'hero hero hero hero' min-content
+      '. sidebar content .' 1fr
+      '. sidebar pagination .' min-content / 1fr minmax(250px, 342px) minmax(750px, 1026px) 1fr;
     gap: 0 1.5rem;
   }
 
@@ -100,14 +101,16 @@
 
   .category-index .sidebar {
     grid-area: sidebar;
-  }
-
-  .category-index .posts-container {
-    grid-area: content;
-  }
-
-  .category-index .sidebar {
     background: unset;
+  }
+
+  .category-index .pagination-container {
+    grid-area: pagination;
+  }
+
+  .category-index .cards-container,
+  .category-index .blog-cards-container {
+    grid-area: content;
   }
 
   .category-index .sidebar h2 {
