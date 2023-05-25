@@ -50,6 +50,7 @@
   --color-green-transparent: rgb(120 166 141 / 60%);
   --color-magenta-transparent: rgb(169 77 143 / 60%);
   --color-mauve-transparent: rgb(106 55 90 / 60%);
+  --color-light-blue: #c4d1e9; 
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
