@@ -10,7 +10,7 @@ export default function decorate(block) {
   decorateIcons(block);
   setTimeout(() => {
     window.requestAnimationFrame(() => {
-      block.querySelector('time').textContent = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(Date.now());
+      block.querySelector('time').textContent = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(new Date(date));
     });
   });
 }

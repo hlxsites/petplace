@@ -20,11 +20,11 @@ const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
-function getId() {
+export function getId() {
   return Math.random().toString(32).substring(2);
 }
 
-function isMobile() {
+export function isMobile() {
   return window.innerWidth < 1024;
 }
 
@@ -66,6 +66,12 @@ export async function getCategory(name) {
   return categories.data.find((c) => c.Slug === name);
 }
 
+export async function getCategoryForUrl() {
+  const { pathname } = window.location;
+  const [category] = pathname.split('/').splice(-2, 1);
+  return getCategory(category);
+}
+
 export async function getCategoryByName(categoryName) {
   const categories = await getCategories();
   if (!categories) {
@@ -74,52 +80,90 @@ export async function getCategoryByName(categoryName) {
   return categories.data.find((c) => c.Category === categoryName);
 }
 
-function buildCategorySidebar() {
-  const section = document.createElement('div');
-  section.classList.add('sidebar');
-  section.setAttribute('role', 'complementary');
+/**
+ * @typedef ResponsiveHeroPictures
+ * @property {Array<Element>} pictures Picture elements that make up the various resolutions
+ *  of images provided for the hero image.
+ * @property {Array<number>} breakpoints List of breakpoint widths where each hero image
+ *  resolution will be used. This array will always be one less than the picture array.
+ */
 
-  const id1 = getId();
-  const id2 = getId();
-  const filterToggle = document.createElement('button');
-  filterToggle.disabled = !isMobile();
-  filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
-  filterToggle.textContent = 'Filters';
-  section.append(filterToggle);
+/**
+ * Retrieves information about all of the hero images that were included in the authored
+ * document. The images are assumed to appear in order of smallest resolution to largest,
+ * and the breakpoints for each will be determined by the number of resolutions.
+ *
+ * For example, if there is only one picture, it will be used for all resolutions. If
+ * there are two pictures, the first will be used for mobile and tablet, and the last
+ * will be used for desktop. If there are 3, the first will be mobile, second will be
+ * tablet, and third will be desktop.
+ * @param {Element} main The current document's main element.
+ * @param {Element} h1 The first heading in the document, assumed to be the title of
+ *  the page.
+ * @returns {ResponsiveHeroPictures} Information about the different hero image resolutions provided
+ *  in the authored document.
+ */
+function getResponsiveHeroPictures(main, h1) {
+  const heroPics = {
+    pictures: [],
+    breakpoints: [],
+  };
+  const pictures = main.querySelectorAll('picture');
+  for (let i = 0; i < pictures.length; i += 1) {
+    const picture = pictures[i];
 
-  const subCategories = buildBlock('sub-categories', { elems: [] });
-  subCategories.id = id1;
-  subCategories.setAttribute('aria-hidden', isMobile());
-  section.append(subCategories);
-
-  const popularTags = buildBlock('popular-tags', { elems: [] });
-  popularTags.id = id2;
-  popularTags.setAttribute('aria-hidden', isMobile());
-  section.append(popularTags);
-
-  filterToggle.addEventListener('click', () => {
-    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
-    if (!isVisible) {
-      filterToggle.dataset.mobileVisible = true;
+    // eslint-disable-next-line no-bitwise
+    if (i > 2 || !(h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+      break;
     }
-    subCategories.setAttribute('aria-hidden', isVisible);
-    popularTags.setAttribute('aria-hidden', isVisible);
+
+    // create an optimized version of the image based on screen width
+    const img = picture.querySelector('img');
+    const optimized = createOptimizedPicture(img.src, img.alt, true, [
+      { width: Math.ceil(window.innerWidth / 100) * 100 },
+    ]);
+    heroPics.pictures.push(optimized);
+    picture.remove();
+  }
+  if (heroPics.pictures.length) {
+    if (heroPics.pictures.length === 2) {
+      // if there are two pictures, use the first for both mobile and tablet
+      heroPics.breakpoints.push(1024);
+    } else if (heroPics.pictures.length === 3) {
+      // if there are three pictures, use the first for mobile, second for tablet
+      heroPics.breakpoints.push(768);
+      heroPics.breakpoints.push(1024);
+    }
+  }
+
+  return heroPics;
+}
+
+function createResponsiveImage(pictures, breakpoint) {
+  const responsivePicture = document.createElement('picture');
+  const defaultImage = pictures[0].querySelector('img');
+  responsivePicture.append(defaultImage);
+  pictures.forEach((picture, index) => {
+    let srcElem;
+    if (index !== 0) {
+      srcElem = picture.querySelector('source[media]');
+    }
+    if (!srcElem) {
+      srcElem = picture.querySelector('source:not([media])');
+    }
+    const srcElemBackup = srcElem.cloneNode();
+    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.type = 'img/png';
+
+    if (index > 0) {
+      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+    }
+    responsivePicture.prepend(srcElemBackup);
+    responsivePicture.prepend(srcElem);
   });
 
-  window.addEventListener('resize', () => {
-    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
-    if (!isVisible && !isMobile()) {
-      filterToggle.disabled = true;
-      subCategories.setAttribute('aria-hidden', false);
-      popularTags.setAttribute('aria-hidden', false);
-    } else if (isVisible && isMobile() && !filterToggle.dataset.mobileVisible) {
-      filterToggle.disabled = false;
-      subCategories.setAttribute('aria-hidden', true);
-      popularTags.setAttribute('aria-hidden', true);
-    }
-  }, { passive: true });
-
-  return section;
+  return responsivePicture;
 }
 
 /**
@@ -136,23 +180,21 @@ async function buildHeroBlock(main) {
     return;
   }
   const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const img = picture.querySelector('img');
-    const optimized = createOptimizedPicture(img.src, img.alt, true, [
-      { width: Math.ceil(window.innerWidth / 100) * 100 },
-    ]);
-    picture.replaceWith(optimized);
+  if (h1) {
+    const {
+      pictures,
+      breakpoints,
+    } = getResponsiveHeroPictures(main, h1);
+    if (!pictures.length) {
+      return;
+    }
+    const responsive = createResponsiveImage(pictures, breakpoints);
     const section = document.createElement('div');
-    if (bodyClass.includes('breed-page')) {
-      section.append(buildBlock('hero', { elems: [optimized] }));
-    } else if (bodyClass.includes('article-page')) {
-      const breadcrumb = document.createElement('div');
-      breadcrumb.classList.add('article-template-breadcrumb');
-      section.append(buildBlock('hero', { elems: [optimized, h1, breadcrumb] }));
+    if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
+      section.append(buildBlock('hero', { elems: [responsive] }));
     } else {
-      section.append(buildBlock('hero', { elems: [optimized, h1] }));
+      section.append(buildBlock('hero', { elems: [responsive, h1] }));
     }
     main.prepend(section);
   }
@@ -212,14 +254,8 @@ async function decorateTemplate(main) {
  * @param {Element} main The container element
  */
 async function buildAutoBlocks(main) {
-  const bodyClass = [...document.body.classList];
-
   try {
     await buildHeroBlock(main);
-
-    if (bodyClass.includes('category-index')) {
-      main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
-    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -279,10 +315,10 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  if (templateModule?.loadLazy) {
-    templateModule.loadLazy(doc);
-  }
   const main = doc.querySelector('main');
+  if (templateModule?.loadLazy) {
+    templateModule.loadLazy(main);
+  }
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
   }
@@ -317,38 +353,6 @@ function loadDelayed(doc) {
   }, 3000);
 }
 
-function createResponsiveImage(pictures, breakpoint) {
-  pictures.sort((p1, p2) => {
-    const img1 = p1.querySelector('img');
-    const img2 = p2.querySelector('img');
-    return img1.width - img2.width;
-  });
-
-  const responsivePicture = document.createElement('picture');
-  const defaultImage = pictures[0].querySelector('img');
-  responsivePicture.append(defaultImage);
-  pictures.forEach((picture, index) => {
-    let srcElem;
-    if (index === 0) {
-      srcElem = picture.querySelector('source:not([media])');
-    } else {
-      srcElem = picture.querySelector('source[media]');
-    }
-    const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
-    srcElemBackup.type = 'img/png';
-
-    if (index > 0) {
-      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
-      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
-    }
-    responsivePicture.prepend(srcElemBackup);
-    responsivePicture.prepend(srcElem);
-  });
-
-  return responsivePicture;
-}
-
 /**
  *
  * @param container - HTML parent element that contains the multiple <picture>
@@ -356,7 +360,13 @@ function createResponsiveImage(pictures, breakpoint) {
  * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
  */
 export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
-  const responsiveImage = createResponsiveImage([...container.querySelectorAll('picture')], breakpoints);
+  const pictures = [...container.querySelectorAll('picture')];
+  pictures.sort((p1, p2) => {
+    const img1 = p1.querySelector('img');
+    const img2 = p2.querySelector('img');
+    return img1.width - img2.width;
+  });
+  const responsiveImage = createResponsiveImage(pictures, breakpoints);
   container.innerHTML = '';
   container.append(responsiveImage);
 }
@@ -417,6 +427,59 @@ export function initializeTouch(block, slideWrapper) {
       slideWrapper.setAttribute('style', `transform:translateX(-${index}00vw)`);
     }
   });
+}
+
+/**
+ * @typedef CrumbData
+ * @property {string} url Full URL to which clicking the crumb will redirect.
+ * @property {string} path Name of the crumb as it will appear on its label.
+ * @property {string} color Name of the color in which the breadcrumb should
+ *  be rendered.
+ */
+
+/**
+ * Creates an element that contains the structure for a given list of crumb information.
+ * @param {Array<CrumbData>} crumbData Information about the crumbs to add.
+ * @returns {Promise<Element>} Resolves with the crumb element.
+ */
+export async function createBreadCrumbs(crumbData) {
+  const breadcrumbContainer = document.createElement('div');
+  // Use the last item in the list's color
+  const { color } = crumbData[crumbData.length - 1];
+
+  const homeLink = document.createElement('a');
+  homeLink.classList.add('home');
+  homeLink.href = '/';
+  homeLink.innerHTML = '<span class="icon icon-home"></span>';
+  breadcrumbContainer.append(homeLink);
+
+  crumbData.forEach((crumb, i) => {
+    if (i > 0) {
+      const chevron = document.createElement('span');
+      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      breadcrumbContainer.append(chevron);
+    }
+    const linkButton = document.createElement('a');
+    linkButton.href = crumb.url;
+    linkButton.innerText = crumb.path;
+    linkButton.classList.add('category-link-btn');
+    if (i === crumbData.length - 1) {
+      // linkButton.classList.add(`${color}`);
+      linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', 'inherit');
+    } else {
+      // linkButton.classList.add(`${color}-border`, `${color}-color`);
+      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', `var(--color-${color})`);
+    }
+
+    breadcrumbContainer.append(linkButton);
+  });
+
+  await decorateIcons(breadcrumbContainer);
+  return breadcrumbContainer;
 }
 
 async function loadPage() {
