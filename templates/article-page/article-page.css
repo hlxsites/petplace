@@ -13,6 +13,10 @@
     "article-navigation";
 }
 
+.article-page .section {
+  overflow-x: unset;
+}
+
 .article-page p {
   font-size: 1rem;
   font-weight: 400;
