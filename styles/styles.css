@@ -51,6 +51,7 @@
   --color-magenta-transparent: rgb(169 77 143 / 60%);
   --color-mauve-transparent: rgb(106 55 90 / 60%);
   --color-light-blue: #c4d1e9; 
+  
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
   --heading-font-family: 'Raleway', 'Raleway Fallback', sans-serif;
@@ -515,6 +516,7 @@ a.sr-focusable:focus {
 }
 
 /* Template overrides */
+
 .orange {
   border: 1px solid var(--highlight-color);
   color: var(--highlight-color)
