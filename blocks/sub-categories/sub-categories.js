@@ -26,7 +26,7 @@ export default async function decorate(block) {
     }
     link.textContent = c.Category;
     link.href = c.Path;
-    link.style.backgroundColor = c.Color;
+    link.style.backgroundColor = `var(--color-${c.Color || 'purple'})`;
     p.append(link);
     block.append(p);
   });

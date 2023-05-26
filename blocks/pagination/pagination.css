@@ -1,0 +1,19 @@
+.pagination ul,
+.pagination a {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.pagination ul {
+  gap: 1rem;
+}
+
+.pagination li {
+  margin: 0;
+  padding: 0;
+}
+
+.pagination a:not([aria-current])::before {
+  content: attr(aria-label);
+}
