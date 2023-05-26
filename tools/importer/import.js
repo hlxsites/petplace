@@ -351,8 +351,7 @@ function rewrapDataTables(main) {
 }
 
 function transformLongLists(main) {
-  [...main.querySelectorAll('ul,ol')]
-    .filter((list) => list.childElementCount > 20)
+  main.querySelectorAll('.four-column-list')
     .forEach((list) => {
       list.outerHTML = `
         <table>
@@ -441,9 +440,7 @@ export default {
     document, url, html, params,
   }) => {
     rewrapDataTables(document);
-    if ([].includes(new URL(url).pathname)) {
-      transformLongLists(document);
-    }
+    transformLongLists(document);
     replaceHighlights(document);
     inlineBackgroundImages(document);
     let main;
