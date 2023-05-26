@@ -166,12 +166,19 @@ h1 {
   color: var(--text-color-inverted);
   line-height: 1.1;
 }
-h2 { font-size: var(--heading-font-size-xl) }
-h3 { font-size: var(--heading-font-size-l) }
-h4 { font-size: var(--heading-font-size-m) }
-h5 { font-size: var(--heading-font-size-s) }
-h6 { font-size: var(--heading-font-size-xs) }
 
+h2 { font-size: var(--heading-font-size-xl) }
+
+h3 {
+  font-size: var(--heading-font-size-l);
+  color: var(--text-color-alt);
+}
+
+h4 { font-size: var(--heading-font-size-m) }
+
+h5 { font-size: var(--heading-font-size-s) }
+
+h6 { font-size: var(--heading-font-size-xs) }
 
 :is(h2, h3, h4, h5, h6) em {
   color: var(--highlight-color);
@@ -274,6 +281,10 @@ a.button.secondary, button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
   color: var(--text-color)
+}
+
+main ul ul {
+  list-style-type: disc;
 }
 
 main input {
