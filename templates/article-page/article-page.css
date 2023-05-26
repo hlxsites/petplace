@@ -104,7 +104,7 @@
       ". article .. insurance ." min-content
       ". article .. paws-up ." min-content
       ". article .. social ." 1fr
-      ". popular popular popular ." min-content
+      "popular popular popular popular popular" min-content
       "article-navigation article-navigation article-navigation article-navigation article-navigation" min-content
       / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 300px minmax(1rem, 1fr);
   }
