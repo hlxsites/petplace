@@ -35,7 +35,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    margin: 1rem;
+    margin: 1rem 0;
 }
 
 .tile .img-container {
@@ -61,11 +61,9 @@
     --bg-color: inherit;
 
     background-color: var(--bg-color);
-    margin-top: 5px;
+    margin: 0;
+    padding: .5rem 0;
     color: var(--color-purple);
-    margin-bottom: 10px;
-    padding-left: 0;
-    padding-right: 0;
     line-height: 1.2rem;
     display: inline-block;
     border-radius: 15px;
@@ -100,7 +98,7 @@
 }
 
 .tile.tile-0 .img-container {
-    height: auto;
+    height: 100%;
 }
 
 .tile.tile-0 .img-container .img-padding {
@@ -160,19 +158,13 @@
     line-height: 1.4;
 }
 
-@media (min-width: 360px) {
-    .tile.tile-0 .tile-contents{
-        padding: 1.5rem 2rem 1rem;
-    }
-
-    .tile.tile-0 .tile-contents h3 {
-        font-size: 1.5rem;
-    }
-}
-
-@media screen and (min-width: 461px) {
+@media (min-width: 400px) {
     .tile {
         flex-direction: unset;
+    }
+
+    .tile .category-link-btn {
+        margin-top: 0;
     }
 
     .tile .tile-contents {
@@ -182,6 +174,14 @@
     .tile .tile-contents h3 {
         font-size: 1.25rem;
         line-height: 1.1;
+    }
+
+    .tile.tile-0 .tile-contents {
+        padding: 1.5rem 2rem 1rem;
+    }
+
+    .tile.tile-0 .tile-contents h3 {
+        font-size: 1.5rem;
     }
 }
 
@@ -215,6 +215,11 @@
     .tiles-block-container {
         display: flex;
         justify-content: space-between;
+        gap: 1.5rem;
+    }
+
+    .tile {
+        margin: 0;
     }
 
     .tile.tile-0 {
@@ -225,20 +230,23 @@
     .small-tiles-wrapper {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: start;
         width: 41.6667%;
+        gap: 1.5rem;
+    }
+
+    .tile .category-link-btn {
+        padding: 0 14px;
+        margin-bottom: .5rem;
     }
 
     .small-tiles-wrapper .category-link-btn {
-        box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
         border-radius: 15px;
         font-weight: 800;
         font-size: .875rem;
         color: #fff;
         line-height: 30px;
         height: 30px;
-        padding-left: 14px;
-        padding-right: 14px;
     }
 }
 

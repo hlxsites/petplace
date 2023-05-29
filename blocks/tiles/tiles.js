@@ -1,3 +1,4 @@
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -69,18 +70,30 @@ export default async function decorate(block) {
     imgContainer.className = 'img-container';
 
     // Create Image tag.. future will be <picture> tag
+    let picture;
     let img;
     if (index === 0) {
-      img = document.createElement('img');
-      img.src = dta.image;
-      img.alt = dta?.imageAlt || tileTitle;
+      picture = createOptimizedPicture(
+        dta.image,
+        dta?.imageAlt || tileTitle,
+        false,
+        [{ width: 768 }],
+      );
+      img = picture.querySelector('img');
+      img.width = 768;
+      img.height = 432;
     } else {
-      img = document.createElement('a');
-      img.href = dta.path;
-      const imgTag = document.createElement('img');
-      imgTag.src = dta.image;
-      imgTag.alt = dta?.imageAlt || tileTitle;
-      img.append(imgTag);
+      picture = document.createElement('a');
+      picture.href = dta.path;
+      picture.append(createOptimizedPicture(
+        dta.image,
+        dta?.imageAlt || tileTitle,
+        false,
+        [{ width: 500 }],
+      ));
+      img = picture.querySelector('img');
+      img.width = 200;
+      img.height = 200;
     }
 
     // Create content div.  This contains title, author, date etc..
@@ -119,7 +132,7 @@ export default async function decorate(block) {
     dateAuthorContainer.append(dta.author);
 
     imgContainer.append(imgPadding);
-    imgContainer.append(img);
+    imgContainer.append(picture);
     content.append(categoryLink);
     content.append(title);
     content.append(dateAuthorContainer);
