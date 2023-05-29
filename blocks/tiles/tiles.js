@@ -1,3 +1,4 @@
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -5,18 +6,19 @@ const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
 ];
 
 let articles;
+let breed;
 export default async function decorate(block) {
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-block-container';
 
   if (!articles) {
-    const res = await fetch('/article/query-index.json?sheet=article');
+    const res = await fetch('/article/query-index.json?sheet=article&limit=2000');
     const queryData = await res.json();
     articles = queryData?.data;
   }
 
-  const data = [...block.children].map((row) => {
+  const data = (await Promise.all([...block.children].map(async (row) => {
     const path = new URL(row.firstElementChild.firstElementChild.href).pathname;
 
     for (let i = 0; i < articles.length; i += 1) {
@@ -24,10 +26,23 @@ export default async function decorate(block) {
         return articles[i];
       }
     }
+
+    if (!breed) {
+      const res = await fetch('/article/query-index.json?sheet=breed');
+      const queryData = await res.json();
+      breed = queryData?.data;
+    }
+
+    for (let i = 0; i < breed.length; i += 1) {
+      if (breed[i].path === path) {
+        return breed[i];
+      }
+    }
+
     // eslint-disable-next-line no-console
     console.error(`No article in index found for ${path}`);
     return null;
-  }).filter((item) => item); // filter out null values returned from the for loop
+  }))).filter((item) => item); // filter out null values returned from the for loop
 
   const categories = await Promise.all(data.map(async (dta) => {
     const category = await getCategory(dta.path.split('/').slice(-2).shift());
@@ -55,32 +70,44 @@ export default async function decorate(block) {
     imgContainer.className = 'img-container';
 
     // Create Image tag.. future will be <picture> tag
+    let picture;
     let img;
     if (index === 0) {
-      img = document.createElement('img');
-      img.src = dta.image;
-      img.alt = dta?.imageAlt || tileTitle;
+      picture = createOptimizedPicture(
+        dta.image,
+        dta?.imageAlt || tileTitle,
+        false,
+        [{ width: 768 }],
+      );
+      img = picture.querySelector('img');
+      img.width = 768;
+      img.height = 432;
     } else {
-      img = document.createElement('a');
-      img.href = dta.path;
-      const imgTag = document.createElement('img');
-      imgTag.src = dta.image;
-      imgTag.alt = dta?.imageAlt || tileTitle;
-      img.append(imgTag);
+      picture = document.createElement('a');
+      picture.href = dta.path;
+      picture.append(createOptimizedPicture(
+        dta.image,
+        dta?.imageAlt || tileTitle,
+        false,
+        [{ width: 500 }],
+      ));
+      img = picture.querySelector('img');
+      img.width = 200;
+      img.height = 200;
     }
 
     // Create content div.  This contains title, author, date etc..
     const content = document.createElement('div');
     content.className = 'tile-contents';
     if (index === 0) {
-      content.style.setProperty('--bg-color', `var(--color-${categories[index].Color}-transparent)`);
+      content.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color}-transparent)`);
     }
 
     const categoryLink = document.createElement('a');
     categoryLink.classList.add('category-link-btn');
     categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf('/'));
-    categoryLink.innerHTML = categories[index].Category;
-    categoryLink.style.setProperty('--bg-color', `var(--color-${categories[index].Color})`);
+    categoryLink.innerHTML = categories[index]?.Category;
+    categoryLink.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color})`);
 
     if (index !== 0) {
       categoryLink.classList.add('category-link-btn-transparent');
@@ -105,7 +132,7 @@ export default async function decorate(block) {
     dateAuthorContainer.append(dta.author);
 
     imgContainer.append(imgPadding);
-    imgContainer.append(img);
+    imgContainer.append(picture);
     content.append(categoryLink);
     content.append(title);
     content.append(dateAuthorContainer);
