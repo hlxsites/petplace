@@ -57,6 +57,7 @@ export default async function decorate(block) {
 
     // Create Image tag.. future will be <picture> tag
     let picture;
+    let img;
     if (index === 0) {
       picture = createOptimizedPicture(
         dta.image,
@@ -64,6 +65,9 @@ export default async function decorate(block) {
         false,
         [{ width: 768 }],
       );
+      img = picture.querySelector('img');
+      img.width = 768;
+      img.height = 432;
     } else {
       picture = document.createElement('a');
       picture.href = dta.path;
@@ -73,6 +77,9 @@ export default async function decorate(block) {
         false,
         [{ width: 200 }],
       ));
+      img = picture.querySelector('img');
+      img.width = 200;
+      img.height = 200;
     }
 
     // Create content div.  This contains title, author, date etc..
