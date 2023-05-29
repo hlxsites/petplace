@@ -54,10 +54,6 @@
   font-size: var(--body-font-size-m);
 }
 
-.footer-nav nav li:not(:last-child) {
-  margin-bottom: .5rem;
-}
-
 .footer-nav a {
   color: var(--text-color);
   font-family: var(--body-font-family);
@@ -99,6 +95,10 @@
 
 .footer-legal a {
   color: var(--text-color-inverted);
+}
+
+.footer-nav ul ul li:not(:last-child) {
+  margin-bottom: .5rem;
 }
 
 @media (min-width: 900px) {
@@ -172,6 +172,10 @@
 
   .footer-nav nav > ul > li {
     flex: 1 1 0;
+  }
+
+  .footer-nav nav ul ul {
+    margin-bottom: 0;
   }
 
   .footer .footer-social {
