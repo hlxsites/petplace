@@ -11,6 +11,10 @@
   justify-content: end;
 }
 
+.category-index .hero picture {
+  margin: 0;
+}
+
 .category-index .hero img {
   position: absolute;
   inset: 0;
@@ -91,7 +95,7 @@
     grid-template:
       'hero hero hero hero' min-content
       '. sidebar content .' 1fr
-      '. sidebar pagination .' min-content / 1fr minmax(250px, 342px) minmax(750px, 1026px) 1fr;
+      '. sidebar pagination .' min-content / 1fr minmax(250px, 318px) minmax(750px, 1026px) 1fr;
     gap: 0 1.5rem;
   }
 
@@ -102,6 +106,7 @@
   .category-index .sidebar {
     grid-area: sidebar;
     background: unset;
+    padding: 1rem 0;
   }
 
   .category-index .pagination-container {

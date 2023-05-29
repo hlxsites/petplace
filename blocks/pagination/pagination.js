@@ -14,7 +14,7 @@ function renderContent(block) {
     <nav aria-label="pagination">
       <ul>
         ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="Previous page"><span class="icon icon-chevron"></span></a></li>` : ''}
-        <li><a href="#" aria-current="page">Page: ${page}${total ? ` of ${total}` : ''}</a></li>
+        <li><a href="#" aria-current="page" tabindex="-1">Page: ${page}${total ? ` of ${total}` : ''}</a></li>
         ${cards?.childElementCount === limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="Next page"><span class="icon icon-chevron"></span></a></li>` : ''}
       </ul>
     </nav>`;

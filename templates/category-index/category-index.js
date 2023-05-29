@@ -1,5 +1,5 @@
 import ffetch from '../../scripts/ffetch.js';
-import { buildBlock, toClassName } from '../../scripts/lib-franklin.js';
+import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import {
   getCategories,
   getCategoryForUrl,
@@ -94,13 +94,17 @@ function createTemplateBlock(main, blockName) {
 }
 
 async function updateMetadata() {
-  const { Category, Color } = await getCategoryForUrl();
+  const { Category, Color, Image } = await getCategoryForUrl();
   document.title = document.title.replace(/<Category>/, Category);
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
   document.querySelector('h1').textContent = Category;
   const heroColorDiv = document.querySelector('.category-index .hero > div');
   heroColorDiv?.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
+  if (Image && heroColorDiv) {
+    const picture = document.querySelector('.category-index .hero picture');
+    picture.replaceWith(createOptimizedPicture(picture.querySelector('img').src, '', true, [{ width: 1600 }]));
+  }
 }
 
 export async function loadEager(main) {
