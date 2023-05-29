@@ -9,11 +9,12 @@ function renderContent(block) {
   usp.set('page', page + 1);
   const nextParams = usp.toString();
 
+  const total = block.getAttribute('data-total');
   block.innerHTML = `
     <nav aria-label="pagination">
       <ul>
         ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="Previous page"><span class="icon icon-chevron"></span></a></li>` : ''}
-        <li><a href="#" aria-current="page" aria-label="Page ${page}">${page}</a></li>
+        <li><a href="#" aria-current="page">Page: ${page}${total ? ` of ${total}` : ''}</a></li>
         ${cards?.childElementCount === limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="Next page"><span class="icon icon-chevron"></span></a></li>` : ''}
       </ul>
     </nav>`;

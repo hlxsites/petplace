@@ -1,24 +1,20 @@
-export default async function decorate(block) {
-  const resp = await fetch('/categories.json');
-  if (!resp.ok) {
-    block.remove();
-    return;
-  }
+import { getCategories } from '../../scripts/scripts.js';
 
-  const categories = await resp.json();
-  const childCategories = categories.data.filter((c) => c['Parent Path'] === window.location.pathname);
-  if (!childCategories.length) {
-    block.remove();
-    return;
-  }
-
+export function render(block, categories) {
   block.innerHTML = '';
+
+  const childCategories = categories.filter((c) => c['Parent Path'] === window.location.pathname);
+  if (!childCategories.length) {
+    block.style.display = 'none';
+    return;
+  }
+  block.style.display = '';
 
   const heading = document.createElement('h2');
   heading.textContent = 'Sub categories';
   block.append(heading);
   childCategories.forEach((c) => {
-    const hasDescendants = categories.data.find((d) => d['Parent Path'] === c.Path);
+    const hasDescendants = categories.find((d) => d['Parent Path'] === c.Path);
     const p = document.createElement('p');
     const link = document.createElement('a');
     if (hasDescendants) {
@@ -30,4 +26,9 @@ export default async function decorate(block) {
     p.append(link);
     block.append(p);
   });
+}
+
+export default async function decorate(block) {
+  const categories = await getCategories();
+  render(block, categories.data);
 }
