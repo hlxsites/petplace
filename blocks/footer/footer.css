@@ -54,12 +54,20 @@
   font-size: var(--body-font-size-m);
 }
 
+.footer-nav nav li:not(:last-child) {
+  margin-bottom: .5rem;
+}
+
 .footer-nav a {
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   line-height: 1.75;
   padding: .5rem 0;
+}
+
+.footer-social li {
+  margin: 0;
 }
 
 .footer-legal {
