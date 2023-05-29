@@ -89,7 +89,7 @@ export default async function decorate(block) {
         dta.image,
         dta?.imageAlt || tileTitle,
         false,
-        [{ width: 200 }],
+        [{ width: 500 }],
       ));
       img = picture.querySelector('img');
       img.width = 200;
