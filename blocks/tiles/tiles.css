@@ -61,10 +61,9 @@
     --bg-color: inherit;
 
     background-color: var(--bg-color);
-    margin: .5rem 0;
+    margin: 0;
+    padding: .5rem 0;
     color: var(--color-purple);
-    padding-left: 0;
-    padding-right: 0;
     line-height: 1.2rem;
     display: inline-block;
     border-radius: 15px;
@@ -231,21 +230,23 @@
     .small-tiles-wrapper {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: start;
         width: 41.6667%;
         gap: 1.5rem;
     }
 
+    .tile .category-link-btn {
+        padding: 0 14px;
+        margin-bottom: .5rem;
+    }
+
     .small-tiles-wrapper .category-link-btn {
-        box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
         border-radius: 15px;
         font-weight: 800;
         font-size: .875rem;
         color: #fff;
         line-height: 30px;
         height: 30px;
-        padding-left: 14px;
-        padding-right: 14px;
     }
 }
 
