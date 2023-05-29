@@ -7,7 +7,7 @@ export default async function decorate(block) {
     if (i === 0) child.setAttribute('active', true);
 
     if (block.classList.contains('numbered')) {
-      const factNumber = document.createElement('h4');
+      const factNumber = document.createElement('h3');
       factNumber.innerText = i + 1;
       child.prepend(factNumber);
     }
