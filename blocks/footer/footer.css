@@ -52,7 +52,6 @@
   color: var(--color-blue-dark);
   font-family: var(--heading-font-family);
   font-size: var(--body-font-size-m);
-  line-height: 1;
 }
 
 .footer-nav a {
@@ -60,6 +59,11 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   line-height: 1.75;
+  padding: .5rem 0;
+}
+
+.footer-social li {
+  margin: 0;
 }
 
 .footer-legal {
@@ -91,6 +95,10 @@
 
 .footer-legal a {
   color: var(--text-color-inverted);
+}
+
+.footer-nav ul ul li:not(:last-child) {
+  margin-bottom: .5rem;
 }
 
 @media (min-width: 900px) {
@@ -164,6 +172,10 @@
 
   .footer-nav nav > ul > li {
     flex: 1 1 0;
+  }
+
+  .footer-nav nav ul ul {
+    margin-bottom: 0;
   }
 
   .footer .footer-social {
