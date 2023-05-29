@@ -3,7 +3,7 @@
     position: relative;
 }
 
-.section.slide-cards-container  h2{
+.section.slide-cards-container h2{
     text-align: center;
 }
 
@@ -40,7 +40,7 @@
     padding: 0 30px 30px;
 }
 
-.numbered .slide-card h4 {
+.numbered .slide-card :is(h3, h4, h5, h6) {
     padding-top: 36px;
     font-size: 80px;
     position: relative;
@@ -50,7 +50,7 @@
 
 }
 
-.numbered .slide-card h4::before {
+.numbered .slide-card :is(h3, h4, h5, h6)::before {
     content: "";
     width: 16px;
     height: 64px;
@@ -59,33 +59,31 @@
     bottom: 10px;
 }
 
-.numbered .slide-card.breed-purple h4 {
+.numbered .slide-card.breed-purple :is(h3, h4, h5, h6) {
     color: var(--color-dark-maroon);
     filter: brightness(1.5);
 }
 
-.numbered .slide-card.breed-purple h4::before {
+.numbered .slide-card.breed-purple :is(h3, h4, h5, h6)::before {
     background: var(--color-dark-maroon);
 }
 
-.numbered .slide-card.breed-blue h4 {
+.numbered .slide-card.breed-blue :is(h3, h4, h5, h6) {
     color : var(--color-blue-dark)
 }
 
-.numbered .slide-card.breed-blue h4::before {
+.numbered .slide-card.breed-blue :is(h3, h4, h5, h6)::before {
     background : var(--color-blue-dark)
 }
 
-.numbered .slide-card.breed-red h4 {
+.numbered .slide-card.breed-red :is(h3, h4, h5, h6) {
     color: var(--highlight-color);
     filter: brightness(.8) contrast(175%);
 }
 
-.numbered .slide-card.breed-red h4::before {
+.numbered .slide-card.breed-red :is(h3, h4, h5, h6)::before {
     background : var(--highlight-color);
 }
-
-
 
 .media .slide-card .media-container {
     position: relative;
