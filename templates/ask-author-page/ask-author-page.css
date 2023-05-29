@@ -64,15 +64,8 @@
   font-size: 1.25rem;
 }
 
-.ask-author-page main .hero .ask-author-page-hero-auto-block a::before {
-  content: url(/icons/arrow.svg);
-  width: 24px;
-  height: 24px;
+.ask-author-page main .hero .ask-author-page-hero-auto-block .icon {
   margin-right: .5rem;
-}
-
-.ask-author-page main .hero .ask-author-page-hero-auto-block a::before svg {
-  color: white;
 }
 
 .ask-author-page main .hero .ask-author-page-hero-auto-block p {
