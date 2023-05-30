@@ -24,10 +24,11 @@ function buildPost(post, eager, childCategories) {
       categorycolor = item.Color;
     }
   });
+  const style = `--bg-color: var(--color-${categorycolor}); --border-color: var(--color-${categorycolor}); `;
   postCard.innerHTML = `
       <div class="blogs-card-image">
         <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, eager).outerHTML}</a>
-        <a class="blogs-card-category ${categorycolor}" href="${categorypath}">${category}</a>
+        <a class="blogs-card-category" href=${categorypath} style ="${style}">${category}</a>
       </div>
       <div>              
         <a href="${post.path}">
