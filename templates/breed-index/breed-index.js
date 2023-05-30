@@ -17,7 +17,7 @@ async function renderArticles(articles) {
 
 async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
-  const type = usp.get('type').split(',');
+  const type = usp.get('type')?.split(',') || [];
   const limit = usp.get('limit') || 6;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/article/query-index.json')
