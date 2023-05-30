@@ -55,4 +55,11 @@ main .section.centered p {
   main h2 {
     font-size: 2.5rem;
   }
+
+  .footer-wrapper {
+    margin-top: 40px;
+    padding-top: 245px;
+    background: url('/images/cat_footer.png') no-repeat top center;
+    background-size: 600px;
+  }
 }
