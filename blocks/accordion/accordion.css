@@ -1,4 +1,7 @@
 /* stylelint-disable property-no-vendor-prefix */
+.accordion-container h2 {
+    margin-top: 0;
+}
 
 .accordion-section {
     background-color: #8e8199;
@@ -43,7 +46,7 @@
 
 .accordion-section > div {
     transition: max-height .6s ease;
-    max-height: 168px;
+    max-height: 350px;
 }
 
 .accordion-section > div[aria-hidden="true"] {

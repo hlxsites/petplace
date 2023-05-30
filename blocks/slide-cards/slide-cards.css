@@ -24,9 +24,9 @@
     background-color: var(--background-color);
     -webkit-tap-highlight-color: transparent;
     min-height: 300px;
-    margin: 10px 45px 100px;
+    margin: 10px 25px 100px;
     flex-shrink: 0;
-    width: calc(100vw - 90px);
+    width: calc(100vw - 50px);
     box-sizing: border-box;
     text-align: left;
     position: relative;

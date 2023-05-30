@@ -368,6 +368,7 @@ main .section.well li {
   font-size: 1.25rem;
   color: #353534;
   text-align: left;
+  overflow: hidden;
 }
 
 main .section.well li::marker {
