@@ -45,7 +45,6 @@
   flex-direction: column;    
   justify-content: space-between;    
   background-color: transparent;
-  min-height: 220px;  
 } 
 
 .cards .blogs-card-image {
