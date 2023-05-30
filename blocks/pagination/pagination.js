@@ -1,3 +1,5 @@
+import { decorateIcons } from '../../scripts/lib-franklin.js';
+
 function renderContent(block) {
   const usp = new URLSearchParams(window.location.search);
   const limit = Number(usp.get('limit') || 25);
@@ -13,11 +15,13 @@ function renderContent(block) {
   block.innerHTML = `
     <nav aria-label="pagination">
       <ul>
-        ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="Previous page"><span class="icon icon-chevron"></span></a></li>` : ''}
+        ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="Previous page"><span class="icon icon-previous"></span></a></li>` : ''}
         <li><a href="#" aria-current="page" tabindex="-1">Page: ${page}${total ? ` of ${total}` : ''}</a></li>
-        ${cards?.childElementCount === limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="Next page"><span class="icon icon-chevron"></span></a></li>` : ''}
+        ${cards?.childElementCount === limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="Next page"><span class="icon icon-next"></span></a></li>` : ''}
       </ul>
     </nav>`;
+
+  decorateIcons(block);
 }
 
 export default async function decorate(block) {

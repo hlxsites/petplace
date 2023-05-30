@@ -1,3 +1,27 @@
+.pagination {
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  line-height: 32px;      
+  justify-content: flex-end;
+  padding: 0 0.75rem;    
+  display: flex;    
+  flex-basis: 100%;
+  
+}
+
+.pagination li {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li.prev, li.next {
+  position: relative;
+  width: 7px;
+  height: 32px;
+  margin-right: 1rem;
+}
+
 .pagination ul,
 .pagination a {
   display: flex;
@@ -7,13 +31,4 @@
 
 .pagination ul {
   gap: 1rem;
-}
-
-.pagination li {
-  margin: 0;
-  padding: 0;
-}
-
-.pagination a:not([aria-current])::before {
-  content: attr(aria-label);
 }

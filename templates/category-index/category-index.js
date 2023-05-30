@@ -16,6 +16,7 @@ async function renderArticles(articles) {
   for await (const article of res) {
     const div = document.createElement('div');
     div.textContent = article.path;
+    div.dataset.json = JSON.stringify(article);
     block.append(div);
   }
 }
