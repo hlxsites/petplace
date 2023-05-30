@@ -75,13 +75,13 @@ async function createCard(row) {
 
 export default function decorate(block) {
   const ul = document.createElement('ul');
-  block.innerHTML = '';
-  block.append(ul);
   [...block.children].forEach(async (row) => {
     if (row.textContent.trim()) {
       ul.append(await createCard(row));
     }
   });
+  block.innerHTML = '';
+  block.append(ul);
   // if (block.classList.contains('article')) {
   //   // artcile cards block
   //   block.append(ul);
