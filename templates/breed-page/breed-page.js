@@ -1,6 +1,6 @@
 import {
   getMetadata,
-  decorateIcons, createOptimizedPicture,
+  decorateIcons,
 } from '../../scripts/lib-franklin.js';
 
 // eslint-disable-next-line import/prefer-default-export
