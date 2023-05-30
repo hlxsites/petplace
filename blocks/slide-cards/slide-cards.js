@@ -7,7 +7,7 @@ export default async function decorate(block) {
     if (i === 0) child.setAttribute('active', true);
 
     if (block.classList.contains('numbered')) {
-      const factNumber = document.createElement('h4');
+      const factNumber = document.createElement('h3');
       factNumber.innerText = i + 1;
       child.prepend(factNumber);
     }
@@ -24,6 +24,7 @@ export default async function decorate(block) {
   const buttonPrev = document.createElement('button');
   buttonPrev.setAttribute('type', 'button');
   buttonPrev.setAttribute('data-role', 'none');
+  buttonPrev.setAttribute('aria-label', 'View previous slide.');
   buttonPrev.classList.add('slick-arrow', 'slick-prev');
   buttonPrev.addEventListener('click', () => {
     slide('prev', block, block.parentElement);
@@ -31,6 +32,7 @@ export default async function decorate(block) {
   const buttonNext = document.createElement('button');
   buttonNext.setAttribute('type', 'button');
   buttonNext.setAttribute('data-role', 'none');
+  buttonNext.setAttribute('aria-label', 'View next slide.');
   buttonNext.classList.add('slick-arrow', 'slick-next');
   buttonNext.addEventListener('click', () => {
     slide('next', block, block.parentElement);

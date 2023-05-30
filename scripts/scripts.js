@@ -407,7 +407,7 @@ export function initializeTouch(block, slideWrapper) {
 
   slideContainer.addEventListener('touchstart', (e) => {
     startX = e.touches[0].pageX;
-  });
+  }, { passive: true });
 
   slideContainer.addEventListener('touchmove', (e) => {
     currentX = e.touches[0].pageX;
@@ -415,7 +415,7 @@ export function initializeTouch(block, slideWrapper) {
 
     const { index } = getActiveSlide(block);
     slideWrapper.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
-  });
+  }, { passive: true });
 
   slideContainer.addEventListener('touchend', () => {
     if (diffX > 50) {
@@ -426,7 +426,7 @@ export function initializeTouch(block, slideWrapper) {
       const { index } = getActiveSlide(block);
       slideWrapper.setAttribute('style', `transform:translateX(-${index}00vw)`);
     }
-  });
+  }, { passive: true });
 }
 
 /**
@@ -451,6 +451,7 @@ export async function createBreadCrumbs(crumbData) {
   homeLink.classList.add('home');
   homeLink.href = '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
+  homeLink.setAttribute('aria-label', 'Go to our Homepage');
   breadcrumbContainer.append(homeLink);
 
   crumbData.forEach((crumb, i) => {

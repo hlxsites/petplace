@@ -1,5 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
+const IMAGE_WIDTH = 450;
 export default function decorate(block) {
   [...block.children].forEach((row) => {
     [...row.children].forEach((div) => {
@@ -7,10 +8,10 @@ export default function decorate(block) {
         div.className = 'blade-image';
         const img = div.querySelector('img');
         const { width, height } = img;
-        img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]));
+        img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: IMAGE_WIDTH }]));
         const optimizedImg = div.querySelector('img');
-        optimizedImg.setAttribute('width', 750);
-        optimizedImg.setAttribute('height', Math.round((750 / width) * height));
+        optimizedImg.setAttribute('width', IMAGE_WIDTH);
+        optimizedImg.setAttribute('height', Math.round((IMAGE_WIDTH / width) * height));
       } else {
         div.className = 'blade-body';
       }

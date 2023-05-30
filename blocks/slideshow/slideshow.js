@@ -79,7 +79,7 @@ function initializeTouch($block) {
     if (tagName === 'A' || tagName === 'use') return;
 
     startX = e.touches[0].pageX;
-  });
+  }, { passive: true });
 
   $block.addEventListener('touchmove', (e) => {
     const { tagName } = e.target;
@@ -92,7 +92,7 @@ function initializeTouch($block) {
 
     const index = getCurrentSlideIndex($slidesContainer);
     $slidesContainer.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
-  });
+  }, { passive: true });
 
   $block.addEventListener('touchend', (e) => {
     const { tagName } = e.target;
@@ -109,7 +109,7 @@ function initializeTouch($block) {
     } else {
       $slidesContainer.setAttribute('style', `transform:translateX(-${index}00vw)`);
     }
-  });
+  }, { passive: true });
 }
 
 export default async function decorate($block) {
