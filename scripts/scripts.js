@@ -81,6 +81,31 @@ export async function getCategoryByName(categoryName) {
 }
 
 /**
+ * Queries the colum and finds the matching image else uses default image.
+ * @param path
+ * @returns {Promise<HTMLPictureElement>}
+ */
+export async function getCategoryImage(path) {
+  const res = await fetch('/article/category/category-images');
+  const htmlText = await res.text();
+  const html = document.createElement('html');
+  html.innerHTML = htmlText;
+
+  const column = html.querySelector('.columns');
+  const defaultPicture = column.querySelector('picture');
+
+  const rows = [...column.children];
+  let matchingPicture;
+  for (let i = 0; i < rows.length; i += 1) {
+    if (rows[i].children[0].textContent.trim() === path) {
+      matchingPicture = rows[i].children[1].children[0];
+      break;
+    }
+  }
+
+  return matchingPicture || defaultPicture;
+}
+/**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions
  *  of images provided for the hero image.

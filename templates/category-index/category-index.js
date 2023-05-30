@@ -2,7 +2,7 @@ import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import {
   getCategories,
-  getCategoryForUrl,
+  getCategoryForUrl, getCategoryImage,
   getId,
   isMobile,
 } from '../../scripts/scripts.js';
@@ -111,6 +111,8 @@ export async function loadEager(main) {
   updateMetadata();
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
+  const heroImg = await getCategoryImage(location.pathname);
+  main.querySelector('picture').outerHTML = heroImg.outerHTML;
 }
 
 export async function loadLazy() {
