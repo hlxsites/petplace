@@ -346,7 +346,6 @@ main iframe[src*="youtube.com"] {
 
 main .section {
   padding: 2rem 1.5rem;
-  overflow-x: hidden;
 }
 
 main .default-content-wrapper ~ .default-content-wrapper {
