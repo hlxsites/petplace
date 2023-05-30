@@ -27,7 +27,6 @@ async function getArticles() {
     .slice(offset, offset + limit);
 }
 
-
 function buildSidebar() {
   const section = document.createElement('div');
   section.classList.add('sidebar');
