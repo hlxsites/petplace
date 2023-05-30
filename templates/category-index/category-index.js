@@ -1,5 +1,41 @@
-import { buildBlock } from '../../scripts/lib-franklin.js';
-import { getCategoryForUrl, getId, isMobile } from '../../scripts/scripts.js';
+import ffetch from '../../scripts/ffetch.js';
+import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import {
+  getCategories,
+  getCategoryForUrl,
+  getId,
+  isMobile,
+} from '../../scripts/scripts.js';
+import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
+
+async function renderArticles(articles) {
+  const block = document.querySelector('.cards');
+  block.querySelectorAll('li').forEach((li) => li.remove());
+  const res = await articles;
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const article of res) {
+    const div = document.createElement('div');
+    div.textContent = article.path;
+    block.append(div);
+  }
+}
+
+async function getArticles() {
+  const { data } = await getCategories();
+  const applicableCategories = data.filter((c) => c.Path === window.location.pathname
+    || c['Parent Path'].startsWith(window.location.pathname));
+  const usp = new URLSearchParams(window.location.search);
+  const limit = usp.get('limit') || 25;
+  const offset = (Number(usp.get('page') || 1) - 1) * limit;
+  return ffetch('/article/query-index.json')
+    .sheet('article')
+    .filter((article) => {
+      const articleCategories = article.category.split(',').map((c) => c.trim().toLowerCase());
+      return applicableCategories.some((c) => articleCategories.includes(c.Category.toLowerCase())
+        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
+    })
+    .slice(offset, offset + limit);
+}
 
 function buildSidebar() {
   const section = document.createElement('div');
@@ -57,7 +93,22 @@ function createTemplateBlock(main, blockName) {
   main.append(section);
 }
 
-export function loadEager(main) {
+async function updateMetadata() {
+  const { Category, Color, Image } = await getCategoryForUrl();
+  document.title = document.title.replace(/<Category>/, Category);
+  document.head.querySelector('meta[property="og:title"]').content = document.title;
+  document.head.querySelector('meta[name="twitter:title"]').content = document.title;
+  document.querySelector('h1').textContent = Category;
+  const heroColorDiv = document.querySelector('.category-index .hero > div');
+  heroColorDiv?.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
+  if (Image && heroColorDiv) {
+    const picture = document.querySelector('.category-index .hero picture');
+    picture.replaceWith(createOptimizedPicture(picture.querySelector('img').src, '', true, [{ width: 1600 }]));
+  }
+}
+
+export async function loadEager(main) {
+  updateMetadata();
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
 }
@@ -66,4 +117,29 @@ export async function loadLazy() {
   const { Color } = await getCategoryForUrl();
   const heroColorDiv = document.querySelector('.category-index .hero > div');
   heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
+
+  renderArticles(getArticles());
+
+  // Softnav progressive enhancement for browsers that support it
+  if (window.navigation) {
+    const { data } = await getCategories();
+    const subCategories = document.querySelector('.sub-categories');
+    window.addEventListener('popstate', () => {
+      updateMetadata();
+      renderCategories(subCategories, data);
+      renderArticles(getArticles());
+    });
+
+    subCategories.addEventListener('click', (ev) => {
+      const link = ev.target.closest('a');
+      if (!link) {
+        return;
+      }
+      ev.preventDefault();
+      window.history.pushState({}, '', link.href);
+      updateMetadata();
+      renderCategories(subCategories, data);
+      renderArticles(getArticles());
+    });
+  }
 }
