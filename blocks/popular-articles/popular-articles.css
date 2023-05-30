@@ -5,9 +5,10 @@
 .popular-articles-container h2{
     text-align: center;
     margin-top: -20px;
+    margin-bottom: 2rem;
 }
 
-.popular-posts-wrapper {
+.popular-posts-card {
     display: flex;
 }
 
@@ -66,7 +67,7 @@
         padding-right: 20px;
     }
 
-    .popular-posts-wrapper {
+    .popular-posts-card {
         width: 33.3%;
     }
 

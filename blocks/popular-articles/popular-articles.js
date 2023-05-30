@@ -1,17 +1,9 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
-async function getPopularPosts() {
-  const res = await fetch('/popular-posts');
-  const html = await res.text();
-  const tempElement = document.createElement('div');
-  tempElement.innerHTML = html;
-
-  // Get the content within the <main> tag
-  const popularPosts = tempElement.querySelector('.popularposts');
-  const foo = [...popularPosts.children].map(async (child) => {
-    const url = new URL(child.textContent.trim());
-    const res = await fetch(url.pathname);
+async function fetchArticleData(paths) {
+  const PromiseArray = paths.map(async (path) => {
+    const res = await fetch(path);
     const html = await res.text();
 
     // Create a temporary element to extract the content within the <main> tag
@@ -24,14 +16,31 @@ async function getPopularPosts() {
     return {
       image: tempElement.querySelector('meta[property="og:image"]').content,
       imageAlt: tempElement.querySelector('meta[property="og:image:alt"]').content,
-      path: url.pathname,
+      path,
       title: tempElement.querySelector('h1').textContent,
       category: catData.Category,
       categoryPath: catData.Path,
     };
   });
 
-  return await Promise.all(foo);
+  return await Promise.all(PromiseArray);
+}
+
+async function getPopularPosts() {
+  const res = await fetch('/popular-posts');
+  const html = await res.text();
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = html;
+
+  // Get the content within the <main> tag
+  const popularPosts = tempElement.querySelector('.popularposts');
+
+  if (!popularPosts) {
+    return;
+  }
+  const paths = [...popularPosts.children].map((child) => new URL(child.textContent.trim()).pathname);
+
+  return await fetchArticleData(paths);
 }
 
 async function getTopPostsFromSlideshow() {
@@ -44,35 +53,25 @@ async function getTopPostsFromSlideshow() {
 
   // Get the content within the <main> tag
   const slideShow = tempElement.querySelector('.slideshow');
+  const paths = [...slideShow.children].map((child) => new URL(child.querySelector('a').href).pathname);
+  paths.splice(3, paths.length);
 
-  const data = [...slideShow.children].map((child) => ({
-    image: child.querySelector('picture').outerHTML,
-    imageAlt: 'foo',
-    path: child.querySelector('a').href,
-    title: child.querySelector('h1').textContent,
-    category: '[Placeholder]',
-    categoryPath: catData.Path,
-  }));
-
-  data.splice(3, data.length);
-
-  return data;
+  return await fetchArticleData(paths);
 }
 
 export default async function decorate(block) {
   block.innerHTML = '<h2>Popular Posts</h2>';
-
   let PopularPostsData = await getPopularPosts();
   if (!PopularPostsData) {
-    PopularPostsData = await getTopPostsFromSlideshow;
+    PopularPostsData = await getTopPostsFromSlideshow();
   }
 
   const cardWrapper = document.createElement('div');
   cardWrapper.classList.add('popular-cards-wrapper');
 
   PopularPostsData.forEach((post) => {
-    const foo = `
-      <div class="popular-posts-wrapper">
+    const popularPostsWrapper = `
+      <div class="popular-posts-card">
         <a href=" ${post.path}">
             <div class="img-div">${createOptimizedPicture(post.image, post.imageAlt).outerHTML}</div>
         </a>
@@ -81,9 +80,9 @@ export default async function decorate(block) {
             <a href=" ${post.path}"><h3>${post.title}</h3></a>
         </div>
       </div>          
-`;
+    `;
 
-    cardWrapper.innerHTML += foo;
+    cardWrapper.innerHTML += popularPostsWrapper;
   });
 
   block.append(cardWrapper);
