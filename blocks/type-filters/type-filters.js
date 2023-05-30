@@ -3,7 +3,7 @@ import { decorateIcons } from '../../scripts/lib-franklin.js';
 export default async function decorate(block) {
   const breeds = ['Sporting', 'Hound', 'Terrier', 'Non-Sporting', 'Toy', 'Herding', 'Working', 'N/A'];
   const usp = new URLSearchParams(window.location.search);
-  const type = usp.get('type').split(',');
+  const type = usp.get('type')?.split(',') || [];
   block.innerHTML = `
     <div class="type-filter">
       <div class="category-filters">
