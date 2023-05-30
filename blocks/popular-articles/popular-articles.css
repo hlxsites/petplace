@@ -7,6 +7,10 @@
     margin-top: -20px;
 }
 
+.popular-posts-wrapper {
+    display: flex;
+}
+
 .popular-cards-wrapper {
     display: flex;
     justify-content: space-between;
@@ -46,10 +50,24 @@
     margin-right: 10px;
 }
 
+.title-div a {
+    color: var(--text-color);
+    font-size: .875rem;
+    line-height: 1;
+}
+
+.title-div a:first-child {
+    margin-bottom: 5px;
+}
+
 @media (min-width: 768px) {
     .article-page .section {
         padding-left: 20px;
         padding-right: 20px;
+    }
+
+    .popular-posts-wrapper {
+        width: 33.3%;
     }
 
     .popular-cards-wrapper {
@@ -58,6 +76,5 @@
 
     .popular-cards-wrapper a {
         display: flex;
-        max-width: 33.3%;
     }
 }
