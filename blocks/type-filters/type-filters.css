@@ -1,9 +1,4 @@
-.type-filters-container.section {
-    padding: 0;
-    background-color: var(--background-color-light);
-}
-
-.type-filters.block {
+.type-filters[aria-hidden="false"].block {
     display: flex;
     flex-direction: column;
 }
@@ -35,11 +30,6 @@
     overflow: hidden;
     transition: all .35s;
     display: block;
-    max-height: 0;
-}
-
-.category-filters.is-active {
-    max-height: 650px;
 }
 
 .category-filters h3 {
@@ -72,15 +62,12 @@
     transform: rotateX(180deg);
 }
 
-.category-filters .checkbox-wrapper {
+.category-filters .checkbox-wrapper label {
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 46px;
-}
-
-.category-filters .checkbox-wrapper span {
-    margin-left: 20px;
+    gap: 20px;
     font-family: var(--heading-font-family);
     color: var(--text-color-inverted);
     font-size: .9rem;
@@ -160,42 +147,6 @@
     margin: 20px 20px 40px;
 }
 
-.pagination {
-    display: flex;
-    justify-content: end;
-    padding: 20px;
-}
-
-.pagination-buttons {
-    display: flex;
-    align-items: center;
-}
-
-.pagination button {
-    position: relative;
-    width: 7px;
-    height: 32px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.pagination button::after {
-    position: absolute;
-    right: 0;
-    top: 0;
-    content: "";
-    width: 100%;
-    height: 100%;
-    background: #ef8363;
-    mask: url("../../icons/chevron-wide.svg") center / 100% 100%;
-    -webkit-mask: url("../../icons/chevron-wide.svg") center / 100% 100%;
-}
-
-.pagination button.prev::after {
-   transform: rotate(180deg);
-}
-
 @media (min-width: 768px) {
     .card-grid {
         grid-template-columns:repeat(3, 1fr);
@@ -229,7 +180,7 @@
         margin-top: 15px;
     }
 
-    .category-filters .checkbox-wrapper span {
+    .category-filters .checkbox-wrapper label {
         color: var(--text-color);
     }
 

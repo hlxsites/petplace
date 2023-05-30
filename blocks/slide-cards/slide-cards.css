@@ -1,6 +1,7 @@
 .section.slide-cards-container {
     padding: 0;
     position: relative;
+    overflow-x: hidden;
 }
 
 .section.slide-cards-container h2{

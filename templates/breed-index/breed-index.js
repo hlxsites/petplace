@@ -1,5 +1,31 @@
+import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, getId, isMobile } from '../../scripts/scripts.js';
+
+async function renderArticles(articles) {
+  const block = document.querySelector('.cards');
+  block.querySelectorAll('li').forEach((li) => li.remove());
+  const res = await articles;
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const article of res) {
+    const div = document.createElement('div');
+    div.textContent = article.path;
+    div.dataset.json = JSON.stringify(article);
+    block.append(div);
+  }
+}
+
+async function getArticles() {
+  const usp = new URLSearchParams(window.location.search);
+  const type = usp.get('type').split(',');
+  const limit = usp.get('limit') || 6;
+  const offset = (Number(usp.get('page') || 1) - 1) * limit;
+  return ffetch('/article/query-index.json')
+    .sheet('breed')
+    .filter((article) => article.path.startsWith('/article/breed')
+      && (!type.length || (type.length === 1 && type[0] === '') || type.includes(article.type)))
+    .slice(offset, offset + limit);
+}
 
 function buildSidebar() {
   const section = document.createElement('div');
@@ -40,21 +66,22 @@ function buildSidebar() {
   return section;
 }
 
-function createTemplateBlock(main, blockName, before) {
+function createTemplateBlock(main, blockName) {
   const section = document.createElement('div');
 
   const block = buildBlock(blockName, { elems: [] });
   section.append(block);
-  if (before) {
-    main.insertBefore(section, before);
-  } else {
-    main.append(section);
-  }
+  main.append(section);
+  return block;
 }
 
 export function loadEager(main) {
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
-  createTemplateBlock(main, 'pagination', main.lastElementChild);
+  const cards = createTemplateBlock(main, 'cards');
+  cards.classList.add('breed');
+  cards.dataset.limit = 6;
+  const pagination = createTemplateBlock(main, 'pagination');
+  pagination.dataset.limit = 6;
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -84,4 +111,31 @@ export async function loadLazy(main) {
   decorateResponsiveImages(imgDiv, ['461']);
 
   defaultContentWrapper.outerHTML = hero.outerHTML;
+
+  renderArticles(getArticles());
+
+  // Softnav progressive enhancement for browsers that support it
+  if (window.navigation) {
+    const typeFilters = document.querySelector('.type-filters');
+    window.addEventListener('popstate', () => {
+      renderArticles(getArticles());
+    });
+
+    typeFilters.addEventListener('click', (ev) => {
+      const label = ev.target.closest('label');
+      if (!label) {
+        return;
+      }
+      ev.stopPropagation();
+      // eslint-disable-next-line no-shadow
+      const usp = new URLSearchParams(window.location.search);
+      // eslint-disable-next-line no-shadow
+      const type = [...typeFilters.querySelectorAll('[type="checkbox"]')]
+        .filter((input) => input.checked)
+        .map((input) => input.value);
+      usp.set('type', type);
+      window.history.pushState({}, '', `${window.location.pathname}?${usp.toString()}`);
+      renderArticles(getArticles());
+    });
+  }
 }

@@ -1,130 +1,25 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 
-let dogData;
-let excludedTypes = [];
-const pageLimit = 6;
-let pageIndex = 0;
-
-function updateUrlParams(key, value) {
-  const searchParams = new URLSearchParams(window.location.search);
-
-  searchParams.set(key, value);
-  // eslint-disable-next-line no-restricted-globals
-  history.pushState(null, '', `?${searchParams.toString()}`);
-}
-
-function buildCards(block) {
-  const cardGrid = block.querySelector('.card-grid');
-  cardGrid.innerHTML = '';
-
-  dogData
-    .filter((data) => !excludedTypes.includes(data.type))
-    .filter((data, i) => {
-      const startingPoint = pageIndex * pageLimit;
-
-      return i >= startingPoint && i < (startingPoint + pageLimit);
-    })
-
-    .forEach((data) => {
-      const item = `<a href="${data.path}"><div class="grid-item">
-            <div class="img-container">
-                <img src="${data.image}" alt="Dog 1">
-            </div>
-            <h3>${data.title}</h3>
-          </div></a>`;
-      cardGrid.innerHTML += item;
-    });
-  // eslint-disable-next-line no-use-before-define
-  buildPagination(block);
-}
-
-function buildPagination(block) {
-  const breedFilteredData = dogData.filter((data) => !excludedTypes.includes(data.type));
-  const paginationParent = block.querySelector('.pagination');
-  paginationParent.innerHTML = '';
-
-  const paginationButtons = document.createElement('div');
-  paginationButtons.classList.add('pagination-buttons');
-
-  if (pageIndex > 0) {
-    paginationButtons.innerHTML += '<button class="prev"></button>';
-  }
-  paginationButtons.innerHTML += `Page: ${pageIndex + 1} of ${Math.ceil(breedFilteredData.length / pageLimit)}`;
-
-  if (pageIndex * pageLimit < breedFilteredData.length - pageLimit) {
-    paginationButtons.innerHTML += '<button class="next"></button>';
-  }
-
-  paginationParent.append(paginationButtons);
-
-  [...block.querySelectorAll('.pagination-buttons button')].forEach((elem) => {
-    elem.addEventListener('click', (ev) => {
-      if (ev.target.classList.contains('next')) {
-        pageIndex += 1;
-      } else {
-        pageIndex -= 1;
-      }
-      updateUrlParams('pageIndex', pageIndex);
-
-      buildCards(block);
-    });
-  });
-}
-
 export default async function decorate(block) {
-  const searchParams = new URLSearchParams(window.location.search);
-  pageIndex = searchParams.has('pageIndex') ? parseInt(searchParams.get('pageIndex'), 10) : 0;
-
-  if (searchParams.has('excluded')) {
-    excludedTypes = searchParams.get('excluded').split(',');
-  }
-  // excludedTypes = searchParams.get('excluded');
-  if (!dogData) {
-    const res = await fetch('/article/query-index.json?sheet=breed');
-    const queryData = await res.json();
-
-    if (queryData?.data) {
-      queryData.data.map((item) => {
-        item.title = item.title.endsWith(' - PetPlace')
-          ? item.title.substring(0, item.title.lastIndexOf(' - PetPlace'))
-          : item.title;
-        return item;
-      });
-    }
-    dogData = queryData.data;
-  }
   const breeds = ['Sporting', 'Hound', 'Terrier', 'Non-Sporting', 'Toy', 'Herding', 'Working', 'N/A'];
-
+  const usp = new URLSearchParams(window.location.search);
+  const type = usp.get('type').split(',');
   block.innerHTML = `
-      <div class="type-filter">
-        <div class="filter-btn"><span>Filters</span></div>
-        <div class="category-filters">
-          <h3>
-            Type <span class="icon icon-chevron"></span>
-          </h3>
-          <div class="filter-type is-active">
-            ${breeds.map((breed) => `<div class="checkbox-wrapper"><input type="checkbox" ${excludedTypes.includes(breed) ? '' : 'checked'} name="${breed}"><span><label for="${breed}">${breed}</label></span></div>`).join('')}
-          </div>
+    <div class="type-filter">
+      <div class="category-filters">
+        <h3>
+          Type <span class="icon icon-chevron"></span>
+        </h3>
+        <div class="filter-type is-active">
+          ${breeds.map((breed) => `
+            <div class="checkbox-wrapper">
+              <label>
+                <input type="checkbox" name="type" ${!type.length || type.includes(breed) ? 'checked' : ''} value="${breed}"> ${breed}
+              </label>
+            </div>`).join('')}
         </div>
       </div>
-      <div class="card-container">
-        <div class="card-grid"></div>
-        <div class="pagination"></div>
-       </div>
-      </div>
-
-`;
-
-  // Add click listener for the mobile filter button
-  block.querySelector('.filter-btn').addEventListener('click', () => {
-    const categoryFilters = block.querySelector('.category-filters');
-
-    if (categoryFilters.classList.contains('is-active')) {
-      categoryFilters.classList.remove('is-active');
-    } else {
-      categoryFilters.classList.add('is-active');
-    }
-  });
+    </div>`;
 
   // Add click listener for the category  filter chevron button
   const chevron = block.querySelector('.icon-chevron');
@@ -141,25 +36,20 @@ export default async function decorate(block) {
   });
 
   // Add click listener for all the filter checkboxes.
-  [...block.querySelectorAll('.filter-type input')].forEach((elem) => {
-    elem.addEventListener('click', (ev) => {
-      const { target } = ev;
-      const { name } = ev.target;
-      if (target.checked) {
-        const i = excludedTypes.indexOf(name);
-        if (i > -1) {
-          excludedTypes.splice(i, 1);
-        }
-      } else {
-        excludedTypes.push(name);
-      }
-
-      updateUrlParams('excluded', excludedTypes.join(','));
-
-      buildCards(block);
-    });
+  block.parentElement.addEventListener('click', (ev) => {
+    const label = ev.target.closest('label');
+    if (!label) {
+      return;
+    }
+    // eslint-disable-next-line no-shadow
+    const usp = new URLSearchParams(window.location.search);
+    // eslint-disable-next-line no-shadow
+    const type = [...block.querySelectorAll('[type="checkbox"]')]
+      .filter((input) => input.checked)
+      .map((input) => input.value);
+    usp.set('type', type);
+    window.location.assign(`${window.location.pathname}?${usp.toString()}`);
   });
 
-  buildCards(block);
   decorateIcons(block);
 }
