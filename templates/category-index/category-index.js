@@ -31,7 +31,9 @@ async function getArticles() {
   return ffetch('/article/query-index.json')
     .sheet('article')
     .filter((article) => {
-      const articleCategories = article.category.split(',').map((c) => c.trim().toLowerCase());
+      const articleCategories = article.category !== '0'
+        ? article.category.split(',').map((c) => c.trim().toLowerCase())
+        : article.path.split('/').splice(-2, 1);
       return applicableCategories.some((c) => articleCategories.includes(c.Category.toLowerCase())
         || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
     })
