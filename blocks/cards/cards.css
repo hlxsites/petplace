@@ -105,32 +105,6 @@
     max-width: calc(100% - 2 * var(--offset-left));
   }
 
-  .cards.article .pagination{
-    margin-top: 2rem;
-    font-size: 1.125rem;
-    line-height: 32px;      
-    justify-content: flex-end;
-    padding: 0 0.75rem;    
-    display: flex;    
-    flex-basis: 100%;
-    
-  }
-
-  .cards.article .pagination .pagination-btn {
-    display: flex;
-  }
-
-  .cards.article .pagination > li {
-    display: flex;
-  }
-
-  .cards.article .pagination >li.prev, li.next {
-    position: relative;
-    width: 7px;
-    height: 32px;
-    margin-right: 1rem;
-}
-
 .cards.article .blogs-card-body .card-date{
   color: var(--text-color);
 }
