@@ -112,7 +112,9 @@ export async function loadEager(main) {
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
   const heroImg = await getCategoryImage(location.pathname);
-  main.querySelector('picture').outerHTML = heroImg.outerHTML;
+  if (heroImg) {
+    main.querySelector('picture').outerHTML = heroImg.outerHTML;
+  }
 }
 
 export async function loadLazy() {

@@ -83,7 +83,7 @@ export async function getCategoryByName(categoryName) {
 /**
  * Queries the colum and finds the matching image else uses default image.
  * @param path
- * @returns {Promise<HTMLPictureElement>}
+ * @returns {Promise<HTMLPictureElement || undefined>}
  */
 export async function getCategoryImage(path) {
   const res = await fetch('/article/category/category-images');
@@ -92,7 +92,6 @@ export async function getCategoryImage(path) {
   html.innerHTML = htmlText;
 
   const column = html.querySelector('.columns');
-  const defaultPicture = column.querySelector('picture');
 
   const rows = [...column.children];
   let matchingPicture;
@@ -103,7 +102,7 @@ export async function getCategoryImage(path) {
     }
   }
 
-  return matchingPicture || defaultPicture;
+  return matchingPicture;
 }
 /**
  * @typedef ResponsiveHeroPictures
