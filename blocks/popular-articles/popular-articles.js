@@ -59,12 +59,12 @@ async function getPopularPosts(block) {
     paths = [...popularPostsElem.children].map((child) => new URL(child.textContent.trim()).pathname);
   }
   // if popularPostsElem is not found or there is less than three paths
-  if (paths.length !== 3) {
+  if (paths.length < 3) {
     paths.push(...await getPathsFromSlideshow());
-    paths.splice(3, paths.length);
   }
+  paths.splice(3, paths.length);
 
-  return await fetchArticleData(paths);
+  return fetchArticleData(paths);
 }
 
 export default async function decorate(block) {
@@ -73,11 +73,11 @@ export default async function decorate(block) {
   const cardWrapper = document.createElement('div');
   cardWrapper.classList.add('popular-cards-wrapper');
 
-  PopularPostsData.forEach((post) => {
+  PopularPostsData.forEach((post, i) => {
     const popularPostsWrapper = `
       <div class="popular-posts-card">
         <a href=" ${post.path}">
-            <div class="img-div">${createOptimizedPicture(post.image, post.imageAlt).outerHTML}</div>
+            <div class="img-div"></div>
         </a>
         <div class="title-div">
             <a href="${post.categoryPath}">${post.category}</a>
@@ -85,8 +85,8 @@ export default async function decorate(block) {
         </div>
       </div>          
     `;
-
     cardWrapper.innerHTML += popularPostsWrapper;
+    cardWrapper.querySelectorAll('.img-div')[i].append(createOptimizedPicture(post.image, post.imageAlt));
   });
 
   block.append(cardWrapper);
