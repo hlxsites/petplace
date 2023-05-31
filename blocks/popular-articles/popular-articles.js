@@ -86,7 +86,7 @@ export default async function decorate(block) {
       </div>          
     `;
     cardWrapper.innerHTML += popularPostsWrapper;
-    cardWrapper.querySelectorAll('.img-div')[i].append(createOptimizedPicture(post.image, post.imageAlt));
+    cardWrapper.querySelectorAll('.img-div')[i].append(createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '300' }]));
   });
 
   block.append(cardWrapper);
