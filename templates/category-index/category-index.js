@@ -111,6 +111,7 @@ export async function loadEager(main) {
   updateMetadata();
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
+  // eslint-disable-next-line no-restricted-globals
   const heroImg = await getCategoryImage(location.pathname);
   if (heroImg) {
     main.querySelector('picture').outerHTML = heroImg.outerHTML;

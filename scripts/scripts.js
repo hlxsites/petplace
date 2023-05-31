@@ -97,6 +97,7 @@ export async function getCategoryImage(path) {
   let matchingPicture;
   for (let i = 0; i < rows.length; i += 1) {
     if (rows[i].children[0].textContent.trim() === path) {
+      // eslint-disable-next-line prefer-destructuring
       matchingPicture = rows[i].children[1].children[0];
       break;
     }
