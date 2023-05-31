@@ -62,11 +62,6 @@
 }
 
 @media (min-width: 768px) {
-    .article-page .section {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
     .popular-posts-card {
         width: 33.3%;
     }
