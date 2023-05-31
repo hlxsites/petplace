@@ -42,13 +42,16 @@ async function getPathsFromSlideshow() {
   return paths;
 }
 
-async function getPopularPosts() {
+async function getPopularPosts(block) {
   const res = await fetch('/popular-posts');
   const text = await res.text();
   const html = document.createElement('div');
   let paths = [];
   html.innerHTML = text;
   // Get the content within the <main> tag
+  const heading = html.querySelector('h2');
+  block.innerHTML = heading.outerHTML;
+
   const popularPostsElem = html.querySelector('.popularposts');
 
   if (popularPostsElem) {
@@ -65,8 +68,7 @@ async function getPopularPosts() {
 }
 
 export default async function decorate(block) {
-  block.innerHTML = '<h2>Popular Posts</h2>';
-  const PopularPostsData = await getPopularPosts();
+  const PopularPostsData = await getPopularPosts(block);
 
   const cardWrapper = document.createElement('div');
   cardWrapper.classList.add('popular-cards-wrapper');
