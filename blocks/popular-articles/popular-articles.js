@@ -58,7 +58,7 @@ async function getPopularPosts(block) {
     // eslint-disable-next-line max-len
     paths = [...popularPostsElem.children].map((child) => new URL(child.textContent.trim()).pathname);
   }
-  // if
+  // if popularPostsElem is not found or there is less than three paths
   if (paths.length !== 3) {
     paths.push(...await getPathsFromSlideshow());
     paths.splice(3, paths.length);
