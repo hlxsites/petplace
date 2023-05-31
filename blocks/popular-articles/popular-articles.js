@@ -38,6 +38,7 @@ async function getPopularPosts() {
   if (!popularPosts) {
     return;
   }
+  // eslint-disable-next-line max-len
   const paths = [...popularPosts.children].map((child) => new URL(child.textContent.trim()).pathname);
   // eslint-disable-next-line consistent-return
   return await fetchArticleData(paths);
