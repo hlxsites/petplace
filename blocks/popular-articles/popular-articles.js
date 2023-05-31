@@ -4,20 +4,20 @@ import { getCategory } from '../../scripts/scripts.js';
 async function fetchArticleData(paths) {
   const PromiseArray = paths.map(async (path) => {
     const res = await fetch(path);
-    const html = await res.text();
+    const text = await res.text();
 
     // Create a temporary element to extract the content within the <main> tag
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = html;
+    const html = document.createElement('div');
+    html.innerHTML = text;
 
-    const catSlug = tempElement.querySelector('meta[name="category"]').content;
+    const catSlug = html.querySelector('meta[name="category"]').content;
     const catData = await getCategory(toClassName(catSlug));
 
     return {
-      image: tempElement.querySelector('meta[property="og:image"]').content,
-      imageAlt: tempElement.querySelector('meta[property="og:image:alt"]').content,
+      image: html.querySelector('meta[property="og:image"]').content,
+      imageAlt: html.querySelector('meta[property="og:image:alt"]').content,
       path,
-      title: tempElement.querySelector('h1').textContent,
+      title: html.querySelector('h1').textContent,
       category: catData.Category,
       categoryPath: catData.Path,
     };
@@ -26,25 +26,7 @@ async function fetchArticleData(paths) {
   return Promise.all(PromiseArray);
 }
 
-async function getPopularPosts() {
-  const res = await fetch('/popular-posts');
-  const text = await res.text();
-  const html = document.createElement('div');
-  html.innerHTML = text;
-
-  // Get the content within the <main> tag
-  const popularPosts = html.querySelector('.popularposts');
-
-  if (!popularPosts) {
-    return;
-  }
-  // eslint-disable-next-line max-len
-  const paths = [...popularPosts.children].map((child) => new URL(child.textContent.trim()).pathname);
-  // eslint-disable-next-line consistent-return
-  return await fetchArticleData(paths);
-}
-
-async function getTopPostsFromSlideshow() {
+async function getPathsFromSlideshow() {
   const res = await fetch('/');
   const html = await res.text();
 
@@ -57,15 +39,34 @@ async function getTopPostsFromSlideshow() {
   const paths = [...slideShow.children].map((child) => new URL(child.querySelector('a').href).pathname);
   paths.splice(3, paths.length);
 
+  return paths;
+}
+
+async function getPopularPosts() {
+  const res = await fetch('/popular-posts');
+  const text = await res.text();
+  const html = document.createElement('div');
+  let paths = [];
+  html.innerHTML = text;
+  // Get the content within the <main> tag
+  const popularPostsElem = html.querySelector('.popularposts');
+
+  if (popularPostsElem) {
+    // eslint-disable-next-line max-len
+    paths = [...popularPostsElem.children].map((child) => new URL(child.textContent.trim()).pathname);
+  }
+  // if
+  if (paths.length !== 3) {
+    paths.push(...await getPathsFromSlideshow());
+    paths.splice(3, paths.length);
+  }
+
   return await fetchArticleData(paths);
 }
 
 export default async function decorate(block) {
   block.innerHTML = '<h2>Popular Posts</h2>';
-  let PopularPostsData = await getPopularPosts();
-  if (!PopularPostsData) {
-    PopularPostsData = await getTopPostsFromSlideshow();
-  }
+  const PopularPostsData = await getPopularPosts();
 
   const cardWrapper = document.createElement('div');
   cardWrapper.classList.add('popular-cards-wrapper');
