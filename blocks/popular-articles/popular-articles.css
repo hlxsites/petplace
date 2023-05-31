@@ -23,7 +23,7 @@
     margin-bottom: 20px;
 }
 
-.img-div {
+.popular-cards-wrapper .img-div {
     border-radius: 6px;
     min-width: 120px;
     min-height: 120px;
@@ -33,7 +33,7 @@
     margin-right: 20px;
 }
 
-.img-div img{
+.popular-cards-wrapper .img-div img{
     position: absolute;
     top: 0;
     left: 0;
@@ -46,18 +46,18 @@
 
 }
 
-.title-div {
+.popular-cards-wrapper .title-div {
     color: var(--text-color);
     margin-right: 10px;
 }
 
-.title-div a {
+.popular-cards-wrapper .title-div a {
     color: var(--text-color);
     font-size: .875rem;
     line-height: 1;
 }
 
-.title-div a:first-child {
+.popular-cards-wrapper .title-div a:first-child {
     margin-bottom: 5px;
 }
 

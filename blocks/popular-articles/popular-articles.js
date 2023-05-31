@@ -23,17 +23,17 @@ async function fetchArticleData(paths) {
     };
   });
 
-  return await Promise.all(PromiseArray);
+  return Promise.all(PromiseArray);
 }
 
 async function getPopularPosts() {
   const res = await fetch('/popular-posts');
-  const html = await res.text();
-  const tempElement = document.createElement('div');
-  tempElement.innerHTML = html;
+  const text = await res.text();
+  const html = document.createElement('div');
+  html.innerHTML = text;
 
   // Get the content within the <main> tag
-  const popularPosts = tempElement.querySelector('.popularposts');
+  const popularPosts = html.querySelector('.popularposts');
 
   if (!popularPosts) {
     return;
