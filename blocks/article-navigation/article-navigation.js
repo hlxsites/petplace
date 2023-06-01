@@ -11,7 +11,6 @@ import {
   getCategoryByName,
 } from '../../scripts/scripts.js';
 
-
 function createArticleDetails(block, key, categoryInfo, article) {
   // the article's thumbnail, which will link to the article's page
   const thumbnail = document.createElement('div');
