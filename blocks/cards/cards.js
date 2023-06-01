@@ -18,7 +18,7 @@ async function buildPost(post) {
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, false).outerHTML}</a>
+        <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, false, [{ width: 800 }]).outerHTML}</a>
         ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}">${category.Category}</a>` : ''}
       </div>
       <div>              
