@@ -77,9 +77,29 @@ export async function getCategoryByName(categoryName) {
   if (!categories) {
     return null;
   }
-  return categories.data.find((c) => c.Category === categoryName);
+  return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
 }
 
+export async function getCategoriesPath(path) {
+  const categories = await getCategories();
+  return categories.data.filter((c) => c.Path === path || c['Parent Path'].startsWith(path));
+}
+
+/**
+ * Queries the colum and finds the matching image else uses default image.
+ * @param path
+ * @returns {Promise<HTMLPictureElement || undefined>}
+ */
+export async function getCategoryImage(path) {
+  const res = await fetch('/article/category/category-images.plain.html');
+  const htmlText = await res.text();
+  const div = document.createElement('div');
+  div.innerHTML = htmlText;
+
+  const column = div.querySelector('.columns');
+  // eslint-disable-next-line max-len
+  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
+}
 /**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions
