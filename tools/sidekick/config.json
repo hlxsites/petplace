@@ -1,0 +1,14 @@
+{
+  "project": "petplace",
+  "plugins": [
+    {
+      "id": "library",
+      "title": "Library",
+      "environments": [ "edit" ],
+      "isPalette": true,
+      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 398px; width: 360px;",
+      "url": "https://hlx.live/tools/sidekick/library?base=https://main--petplace--hlxsites.hlx.page/tools/sidekick/library.json",
+      "includePaths": [ "**.docx**" ]
+    }
+  ]
+}

@@ -1,1 +1,81 @@
-/* Nothing here yet */
+.popular-articles-container {
+    background-color: var(--background-color-light);
+}
+
+.popular-articles-container h2{
+    text-align: center;
+    margin-top: -20px;
+    margin-bottom: 2rem;
+}
+
+.popular-posts-card {
+    display: flex;
+}
+
+.popular-cards-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.popular-cards-wrapper a {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.popular-cards-wrapper .img-div {
+    border-radius: 6px;
+    min-width: 120px;
+    min-height: 120px;
+    max-height: 120px;
+    position: relative;
+    overflow: hidden;
+    margin-right: 20px;
+}
+
+.popular-cards-wrapper .img-div img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    opacity: 1;
+    transition: opacity 500ms ease 0s;
+
+}
+
+.popular-cards-wrapper .title-div {
+    color: var(--text-color);
+    margin-right: 10px;
+}
+
+.popular-cards-wrapper .title-div a {
+    color: var(--text-color);
+    font-size: .875rem;
+    line-height: 1;
+}
+
+.popular-cards-wrapper .title-div a:first-child {
+    margin-bottom: 5px;
+}
+
+@media (min-width: 768px) {
+    .popular-articles-container.section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .popular-posts-card {
+        width: 33.3%;
+    }
+
+    .popular-cards-wrapper {
+        flex-direction: row;
+    }
+
+    .popular-cards-wrapper a {
+        display: flex;
+    }
+}

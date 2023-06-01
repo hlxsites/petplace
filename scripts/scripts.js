@@ -86,6 +86,21 @@ export async function getCategoriesPath(path) {
 }
 
 /**
+ * Queries the colum and finds the matching image else uses default image.
+ * @param path
+ * @returns {Promise<HTMLPictureElement || undefined>}
+ */
+export async function getCategoryImage(path) {
+  const res = await fetch('/article/category/category-images.plain.html');
+  const htmlText = await res.text();
+  const div = document.createElement('div');
+  div.innerHTML = htmlText;
+
+  const column = div.querySelector('.columns');
+  // eslint-disable-next-line max-len
+  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
+}
+/**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions
  *  of images provided for the hero image.
