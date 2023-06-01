@@ -77,7 +77,12 @@ export async function getCategoryByName(categoryName) {
   if (!categories) {
     return null;
   }
-  return categories.data.find((c) => c.Category === categoryName);
+  return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
+}
+
+export async function getCategoriesPath(path) {
+  const categories = await getCategories();
+  return categories.data.filter((c) => c.Path === path || c['Parent Path'].startsWith(path));
 }
 
 /**

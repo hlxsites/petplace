@@ -1,14 +1,16 @@
+import ffetch from '../../scripts/ffetch.js';
 import {
   decorateIcons,
   getMetadata,
   createOptimizedPicture,
+  toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
+  getCategoriesPath,
   getCategory,
   getCategoryByName,
 } from '../../scripts/scripts.js';
 
-let articles;
 function createArticleDetails(block, key, categoryInfo, article) {
   // the article's thumbnail, which will link to the article's page
   const thumbnail = document.createElement('div');
@@ -22,11 +24,10 @@ function createArticleDetails(block, key, categoryInfo, article) {
   thumbnail.append(a);
 
   // category name of the article, which will link to that category's page
-  const { category: categoryName } = article;
   const categoryHref = categoryInfo ? categoryInfo.Path : '#';
   const category = document.createElement('div');
   category.classList.add('article-navigation-category');
-  category.innerHTML = `<a href="${categoryHref}">${categoryName}</a>`;
+  category.innerHTML = `<a href="${categoryHref}">${categoryInfo.Category}</a>`;
 
   // title of the article, which will link to the article's page
   const title = document.createElement('div');
@@ -59,33 +60,34 @@ async function createNavigation(block) {
   if (!categoryInfo) {
     return false;
   }
+  const categories = await getCategoriesPath(categoryInfo.Path);
 
-  // get the current page's category
-  const url = new URL(window.location.href);
-  if (!articles) {
-    const res = await fetch('/article/query-index.json?sheet=article');
-    const queryData = await res.json();
-    articles = queryData?.data;
+  // Get all articles in that category
+  const articles = ffetch('/article/query-index.json')
+    .sheet('article')
+    .filter((article) => {
+      const articleCategories = article.category !== '0'
+        ? article.category.split(',').map((c) => c.trim().toLowerCase())
+        : article.path.split('/').splice(-2, 1);
+      return categories.some((c) => articleCategories.includes(c.Category.toLowerCase())
+        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
+    });
+
+  let previousArticle = null;
+  let nextArticle = null;
+  let found = false;
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const article of articles) {
+    if (found) {
+      nextArticle = article;
+      break;
+    }
+    if (article.path === window.location.pathname) {
+      found = true;
+    } else {
+      previousArticle = article;
+    }
   }
-
-  // find articles in the same category, sorting by creation date ascending
-  const similarArticles = articles
-    .filter((article) => article.category === category);
-
-  // need at least 3 articles: current article, previous, and next
-  if (similarArticles.length < 2) {
-    return false;
-  }
-
-  const currentIndex = similarArticles.findIndex((article) => article.path === url.pathname);
-  if (currentIndex < 0) {
-    // current article not found
-    return false;
-  }
-
-  // get the previous/next articles, wrapping around the list if needed
-  const prevIndex = currentIndex === 0 ? similarArticles.length - 1 : currentIndex - 1;
-  const nextIndex = currentIndex === similarArticles.length - 1 ? 0 : currentIndex + 1;
 
   // combined previous/next label for mobile view
   const combinedHeader = document.createElement('div');
@@ -104,9 +106,6 @@ async function createNavigation(block) {
   nextHeader.classList.add('article-navigation-next-header');
   nextHeader.innerText = 'Next Article';
   block.append(nextHeader);
-
-  const nextArticle = similarArticles[nextIndex];
-  const previousArticle = similarArticles[prevIndex];
 
   // left arrow
   const leftNav = document.createElement('div');
