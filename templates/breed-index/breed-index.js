@@ -13,6 +13,7 @@ async function renderArticles(articles) {
     div.dataset.json = JSON.stringify(article);
     block.append(div);
   }
+  document.querySelector('.pagination').dataset.total = res.total();
 }
 
 async function getArticles() {
@@ -22,6 +23,7 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/article/query-index.json')
     .sheet('breed')
+    .withTotal(true)
     .filter((article) => article.path.startsWith('/article/breed')
       && (!type.length || (type.length === 1 && type[0] === '') || type.includes(article.type)))
     .slice(offset, offset + limit);

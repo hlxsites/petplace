@@ -19,6 +19,9 @@ async function* request(url, context) {
     if (resp.ok) {
       const json = await resp.json();
       total = json.total;
+      if (context.computeTotal) {
+        context.total = total;
+      }
       for (const entry of json.data) yield entry;
     } else {
       return;
@@ -38,6 +41,11 @@ function withHtmlParser(upstream, context, parseHtml) {
   return upstream;
 }
 
+function withTotal(upstream, context, computeTotal) {
+  context.computeTotal = computeTotal;
+  return upstream;
+}
+
 function chunks(upstream, context, chunks) {
   context.chunks = chunks;
   return upstream;
@@ -46,6 +54,10 @@ function chunks(upstream, context, chunks) {
 function sheet(upstream, context, sheet) {
   context.sheet = sheet;
   return upstream;
+}
+
+function total(upstream, context) {
+  return context.filtered || context.total;
 }
 
 async function* skip(upstream, context, skip) {
@@ -62,9 +74,10 @@ async function* skip(upstream, context, skip) {
 async function* limit(upstream, context, limit) {
   let yielded = 0;
   for await (const entry of upstream) {
-    yield entry;
-    yielded += 1;
-    if (yielded === limit) {
+    if (yielded < limit) {
+      yield entry;
+      yielded += 1;
+    } else if (!context.computeTotal) {
       return;
     }
   }
@@ -89,8 +102,11 @@ async function* map(upstream, context, fn, maxInFlight = 5) {
 }
 
 async function* filter(upstream, context, fn) {
+  let i = 0;
   for await (const entry of upstream) {
     if (fn(entry)) {
+      i++;
+      context.filtered = i;
       yield entry;
     }
   }
@@ -154,7 +170,9 @@ function assignOperations(generator, context) {
     first: first.bind(null, generator, context),
     withFetch: withFetch.bind(null, generator, context),
     withHtmlParser: withHtmlParser.bind(null, generator, context),
+    withTotal: withTotal.bind(null, generator, context),
     sheet: sheet.bind(null, generator, context),
+    total: total.bind(null, generator, context),
   };
 
   return Object.assign(generator, operations, functions);
@@ -172,8 +190,7 @@ export default function ffetch(url) {
     }
   } catch (e) { /* ignore */ }
 
-  const context = { chunks, fetch, parseHtml };
+  const context = { chunks, fetch, parseHtml, total: Infinity };
   const generator = request(url, context);
-
   return assignOperations(generator, context);
 }
