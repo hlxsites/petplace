@@ -92,6 +92,7 @@ export async function getCategoryImage(path) {
   div.innerHTML = htmlText;
 
   const column = div.querySelector('.columns');
+  // eslint-disable-next-line max-len
   return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
 }
 /**
