@@ -86,24 +86,13 @@ export async function getCategoryByName(categoryName) {
  * @returns {Promise<HTMLPictureElement || undefined>}
  */
 export async function getCategoryImage(path) {
-  const res = await fetch('/article/category/category-images');
+  const res = await fetch('/article/category/category-images.plain.html');
   const htmlText = await res.text();
-  const html = document.createElement('html');
-  html.innerHTML = htmlText;
+  const div = document.createElement('div');
+  div.innerHTML = htmlText;
 
-  const column = html.querySelector('.columns');
-
-  const rows = [...column.children];
-  let matchingPicture;
-  for (let i = 0; i < rows.length; i += 1) {
-    if (rows[i].children[0].textContent.trim() === path) {
-      // eslint-disable-next-line prefer-destructuring
-      matchingPicture = rows[i].children[1].children[0];
-      break;
-    }
-  }
-
-  return matchingPicture;
+  const column = div.querySelector('.columns');
+  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
 }
 /**
  * @typedef ResponsiveHeroPictures

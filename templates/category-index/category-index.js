@@ -114,7 +114,7 @@ export async function loadEager(main) {
   // eslint-disable-next-line no-restricted-globals
   const heroImg = await getCategoryImage(location.pathname);
   if (heroImg) {
-    main.querySelector('picture').outerHTML = heroImg.outerHTML;
+    main.querySelector('picture').replaceWith(heroImg);
   }
 }
 
