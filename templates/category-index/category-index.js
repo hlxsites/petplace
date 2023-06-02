@@ -16,8 +16,10 @@ async function renderArticles(articles) {
   for await (const article of res) {
     const div = document.createElement('div');
     div.textContent = article.path;
+    div.dataset.json = JSON.stringify(article);
     block.append(div);
   }
+  document.querySelector('.pagination').dataset.total = res.total();
 }
 
 async function getArticles() {
@@ -29,8 +31,11 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/article/query-index.json')
     .sheet('article')
+    .withTotal(true)
     .filter((article) => {
-      const articleCategories = article.category.split(',').map((c) => c.trim().toLowerCase());
+      const articleCategories = article.category !== '0'
+        ? article.category.split(',').map((c) => c.trim().toLowerCase())
+        : article.path.split('/').splice(-2, 1);
       return applicableCategories.some((c) => articleCategories.includes(c.Category.toLowerCase())
         || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
     })

@@ -19,7 +19,7 @@ export function loadEager(main) {
   const authorName = getMetadata('author-name');
   const p = document.createElement('p');
   p.innerText = authorName;
-  const avatar = createOptimizedPicture(avatarUrl, authorName, false);
+  const avatar = createOptimizedPicture(avatarUrl, authorName, false, [{ width: 200 }]);
 
   createTemplateBlock(main, 'author-info', [avatar, p]);
   createTemplateBlock(main, 'social-share');

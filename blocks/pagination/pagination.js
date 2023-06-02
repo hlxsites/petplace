@@ -11,7 +11,7 @@ function renderContent(block) {
   usp.set('page', page + 1);
   const nextParams = usp.toString();
 
-  const total = block.getAttribute('data-total');
+  const total = Math.ceil(Number(block.getAttribute('data-total')) / limit);
   block.innerHTML = `
     <nav aria-label="pagination">
       <ul>
@@ -37,7 +37,16 @@ export default async function decorate(block) {
     window.location.assign(a.href);
   });
 
-  const observer = new MutationObserver(() => {
+  let observer = new MutationObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.attributeName === 'data-total') {
+        renderContent(block);
+      }
+    });
+  });
+  observer.observe(block, { attributes: true });
+
+  observer = new MutationObserver(() => {
     renderContent(block);
   });
   observer.observe(document.querySelector('.cards ul'), { childList: true });

@@ -30,7 +30,7 @@
   --color-gray-light-alt: #e4e4e4;
   --color-gray-dark: #4a4a4a;
   --color-blue: #678fda;
-  --color-blue-light: #c4d1e9;
+  --color-blue-light: #c4d1e9; 
   --color-blue-dark: #5773a8;
   --color-purple: #6f69a8;
   --color-purple-light: #978ce0;
@@ -51,7 +51,7 @@
   --color-green-transparent: rgb(120 166 141 / 60%);
   --color-magenta-transparent: rgb(169 77 143 / 60%);
   --color-mauve-transparent: rgb(106 55 90 / 60%);
-
+    
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
   --heading-font-family: 'Raleway', 'Raleway Fallback', sans-serif;
@@ -526,4 +526,4 @@ a.sr-focusable:focus {
   }
 }
 
-/* Template overrides */
+
