@@ -4,11 +4,13 @@
 }
 
 .columns img {
-  width: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
 }
 
 .columns > div > div {
   order: 1;
+  margin-bottom: 2rem;
 }
 
 .columns > div > .columns-img-col {
@@ -21,7 +23,7 @@
 
 @media (min-width: 900px) {
   .columns > div {
-    align-items: center;
+    align-items: start;
     flex-direction: unset;
     gap: 32px;
   }
@@ -29,5 +31,6 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+    margin-bottom: 0;
   }
 }

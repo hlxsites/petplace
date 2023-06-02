@@ -1,0 +1,237 @@
+.article-page main {
+  display: grid;
+  grid-template:
+    "hero"
+    "author" minmax(181px, min-content)
+    "insurance"
+    "social" minmax(115px, min-content)
+    "article"
+    "article-footer"
+    "paws-up"
+    "social-after"
+    "popular"
+    "article-navigation";
+}
+
+.article-page .section {
+  overflow-x: unset;
+}
+
+.article-page p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.article-page .footer {
+  border-top: none;
+}
+
+.article-page .footer-nav {
+  display: none;
+}
+
+.article-page .hero-container {
+  grid-area: hero;
+}
+
+.article-page .hero-container .hero {
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.article-page .hero-container .hero h1 {
+  font-size: 2rem;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.article-page .section:not(.hero-container, .article-template-autoblock) {
+  grid-area: article;
+  padding: 0 1rem;
+}
+
+.article-page .default-content-wrapper p {
+  margin-bottom: .75em;
+}
+
+.article-page ul {
+  margin: 1.25rem 0 1.5rem;
+  padding-left: 1.25rem;
+}
+
+.article-page main li {
+  margin-bottom: .5rem;
+}
+
+.article-page main .default-content-wrapper li {
+  padding-left: .5rem;
+}
+
+.article-template-grid-article-author {
+  grid-area: author;
+}
+
+.article-template-grid-pet-insurance-quote {
+  grid-area: insurance;
+}
+
+.article-template-grid-social-share {
+  grid-area: social;
+}
+
+.article-template-grid-paws-up {
+  grid-area: paws-up;
+}
+
+.article-template-grid-social-share-after {
+  grid-area: social-after;
+}
+
+.article-template-grid-popular-articles {
+  grid-area: popular;
+}
+
+.article-template-grid-article-navigation {
+ grid-area: article-navigation;
+}
+
+.article-page main .default-content-wrapper ~ .default-content-wrapper {
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .article-page main {
+    grid-template:
+      "hero hero hero hero hero" min-content
+      ". article .. author ." min-content
+      ". article .. insurance ." min-content
+      ". article .. paws-up ." min-content
+      ". article .. social ." 1fr
+      "popular popular popular popular popular" min-content
+      "article-navigation article-navigation article-navigation article-navigation article-navigation" min-content
+      / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 300px minmax(1rem, 1fr);
+  }
+
+  .article-page main p {
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
+  .article-page .section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .article-page .section:not(.hero-container, .article-template-autoblock) {
+    padding: 0;
+  }
+
+  .article-template-grid-social-share-after {
+    display: none;
+  }
+
+  .article-page h2 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+    font-size: 2rem;
+    font-weight: 800;
+  }
+
+  .article-page main h2 {
+    font-size: 2.5rem;
+  }
+
+  .article-page main .hero-container {
+    margin: 0 0 2rem;
+  }
+
+  .article-page .hero-container .hero h1 {
+    font-size: 2.75rem;
+  }
+
+  .article-page .hero-container + .section > .default-content-wrapper:first-child > h2:first-child {
+    margin-top: 0;
+  }
+
+  .article-page .article-author-container {
+    padding-top: 1rem;
+  }
+
+  .article-page .category-link-btn {
+    padding: .3rem .7rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .article-page .hero-container {
+    margin: 0 -1rem;
+  }
+
+  .article-page .hero-container .hero {
+    position: relative;
+    box-sizing: border-box;
+    height: 31.8182vw;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    overflow: hidden;
+    padding-bottom: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .article-page .hero-container .hero::before {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: linear-gradient(180deg,transparent 45.95%,rgb(0 0 0 / 25%) 62.19%,#000 126.16%);
+    z-index: -1;
+  }
+
+  .article-page .hero-container .hero picture {
+    position: absolute;
+    z-index: -2;
+  }
+
+  .article-page .hero-container .hero img {
+    vertical-align: bottom;
+  }
+
+  .article-page .hero-container .hero h1 {
+    position: relative;
+    background: none;
+    font-weight: 800;
+    color: var(--text-color-inverted);
+    font-size: 3rem;
+    margin-bottom: 2.5rem;
+    object-fit: cover;
+  }
+
+  .article-page .hero-container .hero .breadcrumb {
+    margin-bottom: 1rem;
+    color: var(--text-color-inverted);
+  }
+
+  .article-page .breadcrumb > div > div > div > span svg {
+    fill: var(--text-color-inverted)
+  }
+
+}
+
+@media (min-width: 1024px) {
+  .article-page h2 {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .article-page h2 {
+    font-size: 2.5rem;
+  }
+
+  .article-page .hero-container .hero h1 {
+    font-size: 3.625rem;
+  }
+}

@@ -1,0 +1,94 @@
+/* stylelint-disable property-no-vendor-prefix */
+.accordion-container h2 {
+    margin-top: 0;
+}
+
+.accordion-section {
+    background-color: #8e8199;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.accordion-section h3 {
+   color: transparent;
+    margin-bottom: 0;
+}
+
+.accordion-section h3 button{
+    background-color: var(--color-dark-maroon);
+    color: var(--text-color-inverted);
+    width: 100%;
+    font-size: 1.125rem;
+    font-weight: 800;
+    text-align: left;
+    border-radius: 8px;
+    padding: 27px 40px;
+    margin: 0;
+    font-family: var(--heading-font-family);
+    position: relative;
+    transition: all .5s;
+    white-space: normal;
+    min-height: 100px;
+}
+
+.accordion-section h3 button .header {
+    padding-right: 1.25rem;
+}
+
+.accordion-section h3 button strong{
+    color: var(--text-color-inverted);
+}
+
+.accordion-section .text {
+    padding: 30px;
+    color: var(--text-color-inverted);
+}
+
+.accordion-section > div {
+    transition: max-height .6s ease;
+    max-height: 350px;
+}
+
+.accordion-section > div[aria-hidden="true"] {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+
+}
+
+.accordion button[aria-expanded="true"] {
+    background-color: #ef8363;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.accordion button[aria-expanded]::after {
+    content: '';
+    -webkit-mask: url("../../icons/plus.svg") center / 100% 100%;
+    mask: url("../../icons/plus.svg") center / 100% 100%;
+    height: 30px;
+    width: 30px;
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 15px);
+    background: #ef8363;
+
+}
+
+.accordion button[aria-expanded="true"]::after {
+    -webkit-mask: url("../../icons/minus.svg") center / 100% 100%;
+    mask: url("../../icons/minus.svg") center / 100% 100%;
+    background: var(--color-dark-maroon);
+
+}
+
+@media (min-width: 1024px) {
+    .accordion-section h3 button{
+        font-size: 2rem;
+    }
+
+    .accordion-section .text {
+        font-size: 1.25rem;
+    }
+}

@@ -1,0 +1,154 @@
+.care-tabs-container.section {
+    background-color: var(--background-color-light);
+    text-align: center;
+    padding: 0;
+    position: relative;
+}
+
+.care-tabs-container h2 span:last-child{
+    display: none;
+}
+
+.care-tabs-container a {
+    color: var(--link-color-alt);
+}
+
+.care-tabs a:hover {
+    color: var(--link-hover-color-alt);
+}
+
+.care-tabs-wrapper {
+    transform: translateX(0);
+    transition: transform .7s;
+}
+
+.care-tabs {
+    display: flex;
+    margin-bottom: 1.25rem;
+}
+
+.care-tabs > div{
+    flex-shrink: 0;
+    width: 100vw;
+}
+
+.care-tabs .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 220px;
+    height: 320px;
+    border: 1px solid var(--color-gray-light-alt);
+    border-radius: 6px;
+    margin: 0 auto 100px;
+    cursor: pointer;
+    background: var(--background-color);
+}
+
+.care-tabs .card:hover {
+    box-shadow: 5px 5px 50px 0 rgb(0 0 0 / 10%);
+}
+
+.care-tabs .card p:first-child {
+    margin: 20px;
+}
+
+.care-tabs .card p:last-child {
+    padding: 0;
+    color: var(--text-color);
+    line-height: 1.5;
+    font-size: 1.375rem;
+    font-family: var(--heading-font-family);
+    position: relative;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.care-tabs .card p:last-child::after {
+    content: "";
+    position: relative;
+    width: 16px;
+    height: 1px;
+    background: #cb3627;
+    display: block;
+    margin: 12px auto 5px;
+}
+
+.care-tabs .details {
+    text-align: left;
+    padding: 0 20px;
+}
+
+.care-tabs .details h3{
+    display: none;
+}
+
+
+.care-tabs-container .slick-arrow {
+    top: 410px;
+}
+
+.desktop-details-container {
+    text-align: left;
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .care-tabs-container.section {
+        padding: 5rem 1.5rem;
+    }
+
+    .care-tabs-container h2 span:first-child {
+        display: none;
+    }
+
+    .care-tabs-container h2 span:last-child {
+        display: initial;
+    }
+
+    .care-tabs-wrapper {
+        /* !important is necessary to overrule the inline style properties set from the mobile slideshow if toggled. */
+        transform: translateX(0) !important;
+    }
+
+    .care-tabs {
+        flex-wrap: wrap;
+    }
+
+    .care-tabs > div {
+        width: inherit;
+        display: block;
+        flex: 1 1 0;
+        padding: 0.75rem;
+    }
+
+    .care-tabs .details {
+        display: none;
+    }
+
+    .care-tabs .card {
+        background-color: transparent;
+        margin-bottom: 1.25rem;
+    }
+
+    .care-tabs .card.active {
+        background-color: var(--text-color-inverted);
+    }
+
+    .care-tabs-container .slick-arrow {
+        display: none;
+    }
+
+    .care-tabs-container .desktop-details-container {
+        display: block;
+    }
+
+    .care-tabs-container .desktop-details-container .details{
+        padding: 1.5rem;
+    }
+
+    .care-tabs-container .desktop-details-container .details h3{
+        font-size: 2.75rem;
+    }
+}

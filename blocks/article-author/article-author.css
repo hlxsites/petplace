@@ -1,0 +1,15 @@
+.article-author .icon {
+  width: 60px;
+  height: 60px;
+}
+
+.article-author p {
+  margin: 0;
+}
+
+.article-author time {
+  display: block;
+  margin-bottom: .5rem;
+  color: #c4d1e9;
+  font-size: var(--body-font-size-xs);
+}

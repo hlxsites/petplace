@@ -11,9 +11,13 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  getMetadata,
+  toClassName,
+  createOptimizedPicture,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 async function loadScript(path, options = {}) {
@@ -62,69 +66,179 @@ async function loadAccessibeWidget() {
   });
 }
 
-function getId() {
+export function getId() {
   return Math.random().toString(32).substring(2);
 }
 
-function isMobile() {
-  return window.innerWidth < 1200;
+export function isMobile() {
+  return window.innerWidth < 1024;
 }
 
-function buildCategorySidebar() {
-  const section = document.createElement('div');
-  section.classList.add('sidebar');
-  section.setAttribute('role', 'complementary');
+let categoriesPromise = null;
+async function loadCategories() {
+  if (categoriesPromise) {
+    return categoriesPromise;
+  }
+  if (!window.sessionStorage.getItem('categories')) {
+    categoriesPromise = fetch('/categories.json')
+      .then((res) => res.json())
+      .then((json) => {
+        window.sessionStorage.setItem('categories', JSON.stringify(json));
+      })
+      .catch((err) => {
+        window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch categories.', err);
+      });
+    return categoriesPromise;
+  }
+  return Promise.resolve();
+}
 
-  const id1 = getId();
-  const id2 = getId();
-  const filterToggle = document.createElement('button');
-  filterToggle.disabled = !isMobile();
-  filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
-  filterToggle.textContent = 'Filters';
-  section.append(filterToggle);
+export async function getCategories() {
+  try {
+    await loadCategories();
+    return JSON.parse(window.sessionStorage.getItem('categories'));
+  } catch (err) {
+    return null;
+  }
+}
 
-  const subCategories = buildBlock('sub-categories', { elems: [] });
-  subCategories.id = id1;
-  subCategories.setAttribute('aria-hidden', isMobile());
-  section.append(subCategories);
+export async function getCategory(name) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c.Slug === name);
+}
 
-  const popularTags = buildBlock('popular-tags', { elems: [] });
-  popularTags.id = id2;
-  popularTags.setAttribute('aria-hidden', isMobile());
-  section.append(popularTags);
+export async function getCategoryForUrl() {
+  const { pathname } = window.location;
+  const [category] = pathname.split('/').splice(-2, 1);
+  return getCategory(category);
+}
 
-  filterToggle.addEventListener('click', () => {
-    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
-    if (!isVisible) {
-      filterToggle.dataset.mobileVisible = true;
+export async function getCategoryByName(categoryName) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
+}
+
+export async function getCategoriesPath(path) {
+  const categories = await getCategories();
+  return categories.data.filter((c) => c.Path === path || c['Parent Path'].startsWith(path));
+}
+
+/**
+ * Queries the colum and finds the matching image else uses default image.
+ * @param path
+ * @returns {Promise<HTMLPictureElement || undefined>}
+ */
+export async function getCategoryImage(path) {
+  const res = await fetch('/article/category/category-images.plain.html');
+  const htmlText = await res.text();
+  const div = document.createElement('div');
+  div.innerHTML = htmlText;
+
+  const column = div.querySelector('.columns');
+  // eslint-disable-next-line max-len
+  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
+}
+/**
+ * @typedef ResponsiveHeroPictures
+ * @property {Array<Element>} pictures Picture elements that make up the various resolutions
+ *  of images provided for the hero image.
+ * @property {Array<number>} breakpoints List of breakpoint widths where each hero image
+ *  resolution will be used. This array will always be one less than the picture array.
+ */
+
+/**
+ * Retrieves information about all of the hero images that were included in the authored
+ * document. The images are assumed to appear in order of smallest resolution to largest,
+ * and the breakpoints for each will be determined by the number of resolutions.
+ *
+ * For example, if there is only one picture, it will be used for all resolutions. If
+ * there are two pictures, the first will be used for mobile and tablet, and the last
+ * will be used for desktop. If there are 3, the first will be mobile, second will be
+ * tablet, and third will be desktop.
+ * @param {Element} main The current document's main element.
+ * @param {Element} h1 The first heading in the document, assumed to be the title of
+ *  the page.
+ * @returns {ResponsiveHeroPictures} Information about the different hero image resolutions provided
+ *  in the authored document.
+ */
+function getResponsiveHeroPictures(main, h1) {
+  const heroPics = {
+    pictures: [],
+    breakpoints: [],
+  };
+  const pictures = main.querySelectorAll('picture');
+  for (let i = 0; i < pictures.length; i += 1) {
+    const picture = pictures[i];
+
+    // eslint-disable-next-line no-bitwise
+    if (i > 2 || !(h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+      break;
     }
-    subCategories.setAttribute('aria-hidden', isVisible);
-    popularTags.setAttribute('aria-hidden', isVisible);
+
+    // create an optimized version of the image based on screen width
+    const img = picture.querySelector('img');
+    const optimized = createOptimizedPicture(img.src, img.alt, true, [
+      { width: Math.ceil(window.innerWidth / 100) * 100 },
+    ]);
+    heroPics.pictures.push(optimized);
+    picture.remove();
+  }
+  if (heroPics.pictures.length) {
+    if (heroPics.pictures.length === 2) {
+      // if there are two pictures, use the first for both mobile and tablet
+      heroPics.breakpoints.push(1024);
+    } else if (heroPics.pictures.length === 3) {
+      // if there are three pictures, use the first for mobile, second for tablet
+      heroPics.breakpoints.push(768);
+      heroPics.breakpoints.push(1024);
+    }
+  }
+
+  return heroPics;
+}
+
+function createResponsiveImage(pictures, breakpoint) {
+  const responsivePicture = document.createElement('picture');
+  const defaultImage = pictures[0].querySelector('img');
+  responsivePicture.append(defaultImage);
+  pictures.forEach((picture, index) => {
+    let srcElem;
+    if (index !== 0) {
+      srcElem = picture.querySelector('source[media]');
+    }
+    if (!srcElem) {
+      srcElem = picture.querySelector('source:not([media])');
+    }
+    const srcElemBackup = srcElem.cloneNode();
+    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.type = 'img/png';
+
+    if (index > 0) {
+      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+    }
+    responsivePicture.prepend(srcElemBackup);
+    responsivePicture.prepend(srcElem);
   });
 
-  window.addEventListener('resize', () => {
-    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
-    if (!isVisible && !isMobile()) {
-      filterToggle.disabled = true;
-      subCategories.setAttribute('aria-hidden', false);
-      popularTags.setAttribute('aria-hidden', false);
-    } else if (isVisible && isMobile() && !filterToggle.dataset.mobileVisible) {
-      filterToggle.disabled = false;
-      subCategories.setAttribute('aria-hidden', true);
-      popularTags.setAttribute('aria-hidden', true);
-    }
-  }, { passive: true });
-
-  return section;
+  return responsivePicture;
 }
 
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-function buildHeroBlock(main) {
-  const excludedPages = ['home-page'];
-  const bodyClass = document.querySelector('body').className;
+async function buildHeroBlock(main) {
+  const excludedPages = ['home-page', 'breed-index'];
+  const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
   const pageIsExcluded = excludedPages.some((page) => bodyClass.includes(page));
@@ -132,12 +246,72 @@ function buildHeroBlock(main) {
     return;
   }
   const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+  if (h1) {
+    const {
+      pictures,
+      breakpoints,
+    } = getResponsiveHeroPictures(main, h1);
+    if (!pictures.length) {
+      return;
+    }
+    const responsive = createResponsiveImage(pictures, breakpoints);
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
+      section.append(buildBlock('hero', { elems: [responsive] }));
+    } else {
+      section.append(buildBlock('hero', { elems: [responsive, h1] }));
+    }
     main.prepend(section);
+  }
+}
+
+function buildVideoEmbeds(container) {
+  container.querySelectorAll('a[href*="youtube.com/embed"]').forEach((a) => {
+    a.parentElement.innerHTML = `
+      <iframe
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        frameborder="0"
+        loading="lazy"
+        height="360"
+        width="640"
+        src="${a.href}"></iframe>`;
+  });
+}
+
+/**
+ * Builds template block and adds to main as sections.
+ * @param {Element} main The container element.
+ * @returns {Promise} Resolves when the template block(s) have
+ *  been loaded.
+ */
+async function decorateTemplate(main) {
+  const template = toClassName(getMetadata('template'));
+  if (!template) {
+    return;
+  }
+
+  try {
+    const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
+    const decorationComplete = new Promise((resolve) => {
+      (async () => {
+        try {
+          templateModule = await import(`../templates/${template}/${template}.js`);
+          if (templateModule?.loadEager) {
+            await templateModule.loadEager(main);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load template for ${template}`, error);
+        }
+        resolve();
+      })();
+    });
+    await Promise.all([cssLoaded, decorationComplete]);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`failed to load template ${template}`, error);
   }
 }
 
@@ -145,13 +319,9 @@ function buildHeroBlock(main) {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks(main) {
+async function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
-
-    if (document.body.classList.contains('category-index')) {
-      main.insertBefore(buildCategorySidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
-    }
+    await buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -163,11 +333,12 @@ function buildAutoBlocks(main) {
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
-export function decorateMain(main) {
+export async function decorateMain(main) {
+  loadCategories(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
-  decorateIcons(main);
-  buildAutoBlocks(main);
+  await decorateIcons(main);
+  await buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
 }
@@ -181,7 +352,8 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    decorateMain(main);
+    await decorateTemplate(main);
+    await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
@@ -210,6 +382,12 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  if (templateModule?.loadLazy) {
+    templateModule.loadLazy(main);
+  }
+  if (document.body.classList.contains('article-page')) {
+    buildVideoEmbeds(main);
+  }
   await loadBlocks(main);
 
   const { hash } = window.location;
@@ -234,37 +412,15 @@ async function loadLazy(doc) {
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed() {
+function loadDelayed(doc) {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
-}
-
-function createResponsiveImage(pictures, breakpoint) {
-  pictures.sort((p1, p2) => {
-    const img1 = p1.querySelector('img');
-    const img2 = p2.querySelector('img');
-    return img1.width - img2.width;
-  });
-
-  const responsivePicture = document.createElement('picture');
-  const defaultImage = pictures[0].querySelector('img');
-  responsivePicture.append(defaultImage);
-  pictures.forEach((picture, index) => {
-    const srcElem = picture.querySelector('source:not([media])');
-    const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
-    srcElemBackup.type = 'img/png';
-
-    if (index > 0) {
-      srcElem.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
-      srcElemBackup.setAttribute('media', `(min-width: ${breakpoint[index - 1]}px)`);
+  window.setTimeout(() => {
+    if (templateModule?.loadDelayed) {
+      templateModule.loadDelayed(doc);
     }
-    responsivePicture.prepend(srcElemBackup);
-    responsivePicture.prepend(srcElem);
-  });
-
-  return responsivePicture;
+    return import('./delayed.js');
+  }, 3000);
 }
 
 /**
@@ -274,15 +430,133 @@ function createResponsiveImage(pictures, breakpoint) {
  * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
  */
 export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
-  const responsiveImage = createResponsiveImage([...container.querySelectorAll('picture')], breakpoints);
+  const pictures = [...container.querySelectorAll('picture')];
+  pictures.sort((p1, p2) => {
+    const img1 = p1.querySelector('img');
+    const img2 = p2.querySelector('img');
+    return img1.width - img2.width;
+  });
+  const responsiveImage = createResponsiveImage(pictures, breakpoints);
   container.innerHTML = '';
   container.append(responsiveImage);
+}
+
+function getActiveSlide(block) {
+  return {
+    index: [...block.children].findIndex((child) => child.getAttribute('active') === 'true'),
+    element: block.querySelector('[active="true"]'),
+    totalSlides: [...block.children].length,
+  };
+}
+
+export function slide(slideDirection, block, slideWrapper) {
+  const currentActive = getActiveSlide(block);
+  currentActive.element.removeAttribute('active');
+  let newIndex;
+  if (slideDirection === 'next') {
+    if (currentActive.index === currentActive.totalSlides - 1) {
+      newIndex = 0;
+    } else {
+      newIndex = currentActive.index + 1;
+    }
+  } else if (currentActive.index === 0) {
+    newIndex = currentActive.totalSlides - 1;
+  } else {
+    newIndex = currentActive.index - 1;
+  }
+  block.children[newIndex].setAttribute('active', true);
+
+  slideWrapper.setAttribute('style', `transform:translateX(-${newIndex}00vw)`);
+}
+
+export function initializeTouch(block, slideWrapper) {
+  const slideContainer = block.closest('[class*="-container"]');
+  let startX;
+  let currentX;
+  let diffX = 0;
+
+  slideContainer.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+  }, { passive: true });
+
+  slideContainer.addEventListener('touchmove', (e) => {
+    currentX = e.touches[0].pageX;
+    diffX = currentX - startX;
+
+    const { index } = getActiveSlide(block);
+    slideWrapper.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
+  }, { passive: true });
+
+  slideContainer.addEventListener('touchend', () => {
+    if (diffX > 50) {
+      slide('prev', block, slideWrapper);
+    } else if (diffX < -50) {
+      slide('next', block, slideWrapper);
+    } else {
+      const { index } = getActiveSlide(block);
+      slideWrapper.setAttribute('style', `transform:translateX(-${index}00vw)`);
+    }
+  }, { passive: true });
+}
+
+/**
+ * @typedef CrumbData
+ * @property {string} url Full URL to which clicking the crumb will redirect.
+ * @property {string} path Name of the crumb as it will appear on its label.
+ * @property {string} color Name of the color in which the breadcrumb should
+ *  be rendered.
+ */
+
+/**
+ * Creates an element that contains the structure for a given list of crumb information.
+ * @param {Array<CrumbData>} crumbData Information about the crumbs to add.
+ * @returns {Promise<Element>} Resolves with the crumb element.
+ */
+export async function createBreadCrumbs(crumbData) {
+  const breadcrumbContainer = document.createElement('div');
+  // Use the last item in the list's color
+  const { color } = crumbData[crumbData.length - 1];
+
+  const homeLink = document.createElement('a');
+  homeLink.classList.add('home');
+  homeLink.href = '/';
+  homeLink.innerHTML = '<span class="icon icon-home"></span>';
+  homeLink.setAttribute('aria-label', 'Go to our Homepage');
+  breadcrumbContainer.append(homeLink);
+
+  crumbData.forEach((crumb, i) => {
+    if (i > 0) {
+      const chevron = document.createElement('span');
+      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      breadcrumbContainer.append(chevron);
+    }
+    const linkButton = document.createElement('a');
+    linkButton.href = crumb.url;
+    linkButton.innerText = crumb.path;
+    linkButton.classList.add('category-link-btn');
+    if (i === crumbData.length - 1) {
+      // linkButton.classList.add(`${color}`);
+      linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', 'inherit');
+    } else {
+      // linkButton.classList.add(`${color}-border`, `${color}-color`);
+      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--border-color', `var(--color-${color})`);
+      linkButton.style.setProperty('--text-color', `var(--color-${color})`);
+    }
+
+    breadcrumbContainer.append(linkButton);
+  });
+
+  await decorateIcons(breadcrumbContainer);
+  return breadcrumbContainer;
 }
 
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
-  loadDelayed();
+  loadDelayed(document);
 }
 
 loadPage();

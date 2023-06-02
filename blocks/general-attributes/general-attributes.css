@@ -1,0 +1,129 @@
+main .general-attributes-container {
+    padding: 2rem 1.5rem;
+}
+
+.general-attributes-sub-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.general-attributes-container h1 {
+    color: var(--text-color);
+    margin-top: 0;
+    font-size: 1.875rem;
+}
+
+.general-attributes-container .author-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.general-attributes-container .default-content-wrapper {
+    max-width: 400px;
+}
+
+.general-attributes-container .general-attributes-wrapper {
+   width: 100%;
+}
+
+.general-attributes-container .general-attributes {
+    display: flex;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.general-attributes-container .general-attributes dl {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-auto-flow: dense;
+    gap: 20px 1rem;
+    width: 100%;
+}
+
+.general-attributes-container .general-attributes dt {
+    position: relative;
+    font-family: var(--heading-font-family);
+    font-size: 1.25rem;
+    color: var(--color-gray-dark);
+}
+
+.general-attributes-container .general-attributes dt:nth-of-type(2n+1) {
+    grid-column-start: 1;
+}
+
+.general-attributes-container .general-attributes dt::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    background: #c4c4c4;
+    bottom: -10px;
+    left: 0;
+    height: 1px;
+}
+
+.general-attributes-container .general-attributes dd {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.general-attributes-container .general-attributes dd:nth-of-type(2n+1) {
+    grid-column-start: 1;
+}
+
+@media (min-width: 768px) {
+    .general-attributes-container .general-attributes dl {
+        grid-template-columns: repeat(5, auto);
+        gap: 20px 1rem;
+    }
+
+    .general-attributes-container .general-attributes dt {
+        grid-row-start: 1;
+    }
+
+    .general-attributes-container .general-attributes dt:nth-of-type(2n+1) {
+        grid-column-start: unset;
+    }
+
+    .general-attributes-container .general-attributes dd:nth-of-type(2n+1) {
+        grid-column-start: unset;
+    }
+}
+
+@media (min-width: 900px) {
+    .general-attributes-container .default-content-wrapper,
+    .general-attributes-container .general-attributes-wrapper{
+        margin:initial;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .general-attributes-container h1 {
+        font-size: 2.875rem;
+    }
+
+    .general-attributes-container .general-attributes-wrapper {
+        display: flex;
+        width: fit-content;
+    }
+
+    .general-attributes-container .general-attributes {
+        width: 750px;
+        margin: 0;
+    }
+}
+
+@media (min-width: 1230px) {
+    .general-attributes-sub-container {
+        max-width: 1334px;
+        margin: 0 auto;
+    }
+}
