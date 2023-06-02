@@ -1,32 +1,9 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages } from '../../scripts/scripts.js';
-
-let slideShowInteracted = false;
-
-class ResumableInterval {
-  constructor(intervalTime, callback) {
-    this.interval = null;
-    this.intervalTime = intervalTime;
-    this.callback = callback;
-  }
-
-  start() {
-    this.interval = setInterval(() => {
-      this.callback();
-    }, this.intervalTime);
-  }
-
-  pause() {
-    clearInterval(this.interval);
-  }
-
-  resume() {
-    clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      this.callback();
-    }, this.intervalTime);
-  }
-}
+import {
+  decorateSlideshowAria,
+  changeSlide,
+} from './aria-slideshow.js';
 
 function getCurrentSlideIndex($block) {
   return [...$block.children].findIndex(($child) => $child.getAttribute('active') === 'true');
@@ -44,22 +21,13 @@ function enableChildLinks($slide) {
   });
 }
 
-function updateSlide(nextIndex, $block) {
+function updateSlide(currentIndex, nextIndex, $block) {
   const $slidesContainer = $block.querySelector('.slides-container');
   const $tabBar = $block.querySelector('.tab-bar-container');
 
-  const currentIndex = getCurrentSlideIndex($slidesContainer);
-
-  $slidesContainer.children[currentIndex].removeAttribute('active');
-  $slidesContainer.children[currentIndex].setAttribute('aria-hidden', true);
-  $slidesContainer.children[currentIndex].setAttribute('disabled', true);
   disableChildLinks($slidesContainer.children[currentIndex]);
-  $slidesContainer.children[nextIndex].setAttribute('active', true);
-  $slidesContainer.children[nextIndex].setAttribute('aria-hidden', false);
   enableChildLinks($slidesContainer.children[nextIndex]);
 
-  $tabBar.querySelector('ol').children[currentIndex].setAttribute('aria-selected', false);
-  $tabBar.querySelector('ol').children[nextIndex].setAttribute('aria-selected', true);
   $tabBar.querySelector('ol').children[currentIndex].querySelector('span').className = 'icon icon-circle';
   $tabBar.querySelector('ol').children[nextIndex].querySelector('span').className = 'icon icon-circle-fill';
   decorateIcons($tabBar.querySelector('ol'));
@@ -67,7 +35,7 @@ function updateSlide(nextIndex, $block) {
   $slidesContainer.style.transform = `translateX(-${nextIndex * 100}vw)`;
 }
 
-function initializeTouch($block) {
+function initializeTouch($block, slideshowInfo) {
   const $slidesContainer = $block.querySelector('.slides-container');
 
   let startX;
@@ -85,8 +53,6 @@ function initializeTouch($block) {
     const { tagName } = e.target;
     if (tagName === 'A' || tagName === 'use') return;
 
-    slideShowInteracted = true;
-
     currentX = e.touches[0].pageX;
     diffX = currentX - startX;
 
@@ -102,10 +68,10 @@ function initializeTouch($block) {
 
     if (diffX > 50) {
       const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
-      updateSlide(nextIndex, $block);
+      changeSlide(slideshowInfo, index, nextIndex);
     } else if (diffX < -50) {
       const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
-      updateSlide(nextIndex, $block);
+      changeSlide(slideshowInfo, index, nextIndex);
     } else {
       $slidesContainer.setAttribute('style', `transform:translateX(-${index}00vw)`);
     }
@@ -113,12 +79,7 @@ function initializeTouch($block) {
 }
 
 export default async function decorate($block) {
-  const numChildren = $block.children.length;
   $block.children[0].setAttribute('active', true);
-
-  // set a11y properties
-  $block.setAttribute('role', 'group');
-  $block.setAttribute('aria-roledescription', 'carousel');
 
   // move slides into slides wrapper
   const $slidesContainer = document.createElement('div');
@@ -127,12 +88,8 @@ export default async function decorate($block) {
   $block.prepend($slidesContainer);
   $slidesContainer.classList.add('slides-container');
 
-  [...$slidesContainer.children].forEach(($slide, i) => {
-    // set slide a11y properties
-    $slide.setAttribute('role', 'tabpanel');
-    $slide.setAttribute('aria-roledescription', 'slide');
-    $slide.setAttribute('aria-label', `Slide ${i + 1} of ${numChildren}`);
-    $slide.setAttribute('aria-hidden', (i !== 0).toString());
+  const slides = [...$slidesContainer.children];
+  slides.forEach(($slide, i) => {
     $slide.classList.add('slide');
 
     const imgDiv = $slide.children[0];
@@ -146,45 +103,27 @@ export default async function decorate($block) {
   // create slider nav bar
   const $sliderNavBar = document.createElement('div');
   $sliderNavBar.classList.add('tab-bar-container');
-  $sliderNavBar.innerHTML = '<ol role="tablist"></ol>';
+  $sliderNavBar.innerHTML = '<ol></ol>';
+  const tabList = $sliderNavBar.querySelector('ol');
   [...$slidesContainer.children].forEach(($slide, i) => {
     const $sliderNavBarButton = document.createElement('li');
 
-    // set a11y properties
-    $sliderNavBarButton.setAttribute('role', 'tab');
-    $sliderNavBarButton.setAttribute('aria-selected', (i === 0).toString());
-
     // add interactivity
-    $sliderNavBarButton.innerHTML = `<button class="control-button" aria-label="Go to slide ${i + 1} of ${numChildren}"><span class="icon icon-circle${i === 0 ? '-fill' : ''}" /></button>`;
-    $sliderNavBar.querySelector('ol').append($sliderNavBarButton);
-    $sliderNavBarButton.querySelector('button').addEventListener('click', () => {
-      updateSlide(i, $block);
-    });
+    $sliderNavBarButton.innerHTML = `<button class="control-button"><span class="icon icon-circle${i === 0 ? '-fill' : ''}" /></button>`;
+    tabList.append($sliderNavBarButton);
   });
   $block.append($sliderNavBar);
+  $block.addEventListener('hlx-slideshow-slide-changed', function (e) {
+    updateSlide(e.detail.currentIndex, e.detail.newIndex, $block);
+  });
+
+  const slideshowInfo = {
+    slideshow: $block,
+    slides,
+    tabList,
+  };
+  decorateSlideshowAria(slideshowInfo);
   decorateIcons($sliderNavBar);
 
-  // auto-play
-  const autoplayTimer = new ResumableInterval(5000, () => {
-    const currentIndex = getCurrentSlideIndex($slidesContainer);
-    if (!slideShowInteracted) {
-      updateSlide((currentIndex + 1) % numChildren, $block);
-    }
-  });
-  autoplayTimer.start();
-
-  $block.addEventListener('mouseenter', () => {
-    autoplayTimer.pause();
-  });
-
-  $block.addEventListener('mouseleave', () => {
-    autoplayTimer.resume();
-  });
-
-  $block.addEventListener('click', () => {
-    slideShowInteracted = true;
-    autoplayTimer.pause();
-  });
-
-  initializeTouch($block);
+  initializeTouch($block, slideshowInfo);
 }
