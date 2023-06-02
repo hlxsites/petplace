@@ -129,6 +129,9 @@ export async function loadLazy(main) {
         return;
       }
       ev.stopPropagation();
+      if (ev.target.nodeName !== 'INPUT') {
+        return;
+      }
       // eslint-disable-next-line no-shadow
       const usp = new URLSearchParams(window.location.search);
       // eslint-disable-next-line no-shadow
