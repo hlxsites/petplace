@@ -1,3 +1,7 @@
+export const Events = {
+  SLIDE_CHANGED: 'hlx-slideshow-slide-changed',
+};
+
 class ResumableInterval {
   constructor(intervalTime, callback) {
     this.interval = null;
@@ -41,6 +45,12 @@ class ResumableInterval {
  */
 
 /**
+ * @typedef Slide
+ * @property {string} name The user-friendly name of a slide.
+ * @property {string} id The ID of a slide.
+ */
+
+/**
  * Sets the currently active slide to a new index in the slideshow's
  * list of slides.
  * @param {Slideshow} slideshowInfo Information about the slideshow being
@@ -68,16 +78,40 @@ export function changeSlide(slideshowInfo, currentIndex, newIndex) {
   if (tabList) {
     const tabs = tabList.querySelectorAll('[role="tab"]');
     tabs[currentIndex].setAttribute('aria-selected', false);
+    tabs[currentIndex].querySelector('button').setAttribute('tabindex', -1);
     tabs[newIndex].setAttribute('aria-selected', true);
+    tabs[newIndex].querySelector('button').setAttribute('tabindex', 0);
   }
 
-  const event = new CustomEvent('hlx-slideshow-slide-changed', {
+  const event = new CustomEvent(Events.SLIDE_CHANGED, {
     detail: {
       currentIndex,
       newIndex,
     },
   });
   slideshow.dispatchEvent(event);
+}
+
+/**
+ * Sets the currently active slide to a new index in the slideshow's
+ * list of slides, and sets the tab at the new index as the newly
+ * focused tab.
+ * @param {Slideshow} slideshowInfo Information about the slideshow being
+ *  decorated.
+ * @param {function} getNewIndex Will be invoked with the current index
+ *  as the first argument, and should return the new index to focus.
+ */
+function focusNewSlide(slideshowInfo, getNewIndex) {
+  const currentIndex = getCurrentSlideIndex(slideshowInfo.slides);
+  const newIndex = getNewIndex(currentIndex);
+  changeSlide(slideshowInfo, currentIndex, newIndex);
+
+  const tabs = slideshowInfo.tabList.querySelectorAll('[role="tab"]');
+  if (!tabs || tabs.length < newIndex) {
+    return;
+  }
+  const newFocus = tabs[newIndex];
+  newFocus.querySelector('button').focus();
 }
 
 /**
@@ -113,26 +147,45 @@ function decorateSlideshow(slideshow) {
 }
 
 /**
+ * Given an HTML element, retrieves the ID set on it, or generates a new
+ * one and assigns it as the element's id.
+ * @param {HTMLElement} element Element whose ID should be retrieved.
+ * @returns The ID of an element.
+ */
+function getOrGenerateId(element) {
+  if (!element.id) {
+    element.id = Math.random().toString(32).substring(2);
+  }
+  return element.id;
+}
+
+/**
  * Decorates slide elements within a slideshow with the required attributes
  * and functionality for making the slideshow fully accessible.
  * @param {Array<HTMLElement>} slides Individual slide elements that make up the
  *  slideshow.
- * @returns {Array<string>} The names of each slide.
+ * @returns {Array<Slide>} Information about the slides.
  */
 function decorateSlides(slides) {
-  const slideNames = [];
+  const slideInfos = [];
   const numChildren = slides.length;
   slides.forEach(($slide, i) => {
+    // ensure each slide has an ID so that corresponding tabs can
+    // reference it
+    getOrGenerateId($slide);
     const title = $slide.querySelector('h1');
     const label = title !== null ? `"${title.innerText}"` : `${i + 1} of ${numChildren}`;
-    slideNames.push(label);
+    slideInfos.push({
+      name: label,
+      id: $slide.id,
+    });
 
     $slide.setAttribute('role', 'tabpanel');
     $slide.setAttribute('aria-roledescription', 'slide');
     $slide.setAttribute('aria-label', `Slide ${label}`);
     $slide.setAttribute('aria-hidden', (i !== 0).toString());
   });
-  return slideNames;
+  return slideInfos;
 }
 
 /**
@@ -149,26 +202,54 @@ function getCurrentSlideIndex(slides) {
  * Decorates the slideshow's tab list with attributes and functionality required
  * to make it fully accessible.
  * @param {Slideshow} slideshow Information about the slideshow being decorated.
- * @param {Array<string>} slideNames Display names of each of the slides in the
+ * @param {Array<Slide>} slideInfos Information about the slides present in the
  *  slideshow.
  */
-function decorateTabList(slideshowInfo, slideNames) {
+function decorateTabList(slideshowInfo, slideInfos) {
   const {
     slideshow,
     slides,
     tabList,
   } = slideshowInfo;
   tabList.setAttribute('role', 'tablist');
+  tabList.setAttribute('aria-label', 'Slideshow slide selector');
 
   const listItems = tabList.querySelectorAll('li');
   listItems.forEach((listItem, i) => {
+    const tabId = getOrGenerateId(listItem);
+    slides[i].setAttribute('aria-labelledby', tabId);
     listItem.setAttribute('role', 'tab');
     listItem.setAttribute('aria-selected', (i === 0).toString());
-    listItem.setAttribute('aria-label', `Go to slide ${slideNames[i]}`);
+    listItem.setAttribute('aria-label', `Go to slide ${slideInfos[i].name}`);
+    listItem.setAttribute('aria-controls', slides[i].id);
+    listItem.querySelector('button').setAttribute('tabindex', -1);
     listItem.addEventListener('click', () => {
       const currentIndex = getCurrentSlideIndex(slides);
       setSlideshowInteracted(slideshow, true);
       changeSlide(slideshowInfo, currentIndex, i);
+    });
+    listItem.addEventListener('keydown', (ev) => {
+      switch (ev.key) {
+        case 'Home':
+          ev.preventDefault();
+          focusNewSlide(slideshowInfo, () => 0);
+          // this.focusItem(0);
+          break;
+        case 'ArrowLeft':
+          ev.preventDefault();
+          focusNewSlide(slideshowInfo, (currIndex) => (currIndex || slides.length) - 1);
+          break;
+        case 'ArrowRight':
+          ev.preventDefault();
+          focusNewSlide(slideshowInfo, (currIndex) => (currIndex + 1) % slides.length);
+          break;
+        case 'End':
+          ev.preventDefault();
+          focusNewSlide(slideshowInfo, () => slides.length - 1);
+          break;
+        default:
+          break;
+      }
     });
   });
 }
@@ -227,9 +308,9 @@ function applyAutoRotate(slideshowInfo) {
  */
 export async function decorateSlideshowAria(slideshowInfo) {
   decorateSlideshow(slideshowInfo.slideshow);
-  const slideNames = decorateSlides(slideshowInfo.slides);
+  const slides = decorateSlides(slideshowInfo.slides);
   if (slideshowInfo.tabList) {
-    decorateTabList(slideshowInfo, slideNames);
+    decorateTabList(slideshowInfo, slides);
   }
   applyAutoRotate(slideshowInfo);
 }

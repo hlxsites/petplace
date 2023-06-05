@@ -1,6 +1,7 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages } from '../../scripts/scripts.js';
 import {
+  Events,
   decorateSlideshowAria,
   changeSlide,
 } from './aria-slideshow.js';
@@ -112,8 +113,8 @@ export default async function decorate($block) {
     $sliderNavBarButton.innerHTML = `<button class="control-button"><span class="icon icon-circle${i === 0 ? '-fill' : ''}" /></button>`;
     tabList.append($sliderNavBarButton);
   });
-  $block.append($sliderNavBar);
-  $block.addEventListener('hlx-slideshow-slide-changed', function (e) {
+  $block.prepend($sliderNavBar);
+  $block.addEventListener(Events.SLIDE_CHANGED, function (e) {
     updateSlide(e.detail.currentIndex, e.detail.newIndex, $block);
   });
 
