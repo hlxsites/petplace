@@ -319,7 +319,10 @@ function applyAutoRotate(slideshowInfo) {
  *    and callers of the decorate method should listen for this event
  *    and visibly change the active slide. The event may be fired in
  *    multiple scenarios, including auto rotations, keyboard interactions,
- *    or mouse interactions.
+ *    or mouse interactions. The event data will include a "detail" property
+ *    containing a "currentIndex" and "nextIndex" property. These correspond
+ *    to the index of the currently visible slide and the index of the slide
+ *    that should be the newly displayed slide, respectively.
  * 2. Callers of the decorate method can actively change the current slide
  *    using the changeSlide() method. For example, the decoration doesn't
  *    include touch-related interactions, so if the caller needs to support
