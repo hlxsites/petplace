@@ -283,6 +283,33 @@ async function buildAutoBlocks(main) {
 }
 
 /**
+ * Creates hidden screen reader content for improving the website's screen
+ * reader compatibility. The method will look for all "a" tags in the given
+ * container, and replace content between square brackets with a span whose
+ * class is "sr-only". For example, the following element:
+ *
+ * <a href="...">Read more [about The Best Gifts for Dog Moms]</a>
+ *
+ * Will be replaced with:
+ *
+ * <a href="...">
+ *  Read more
+ *  <span class="sr-only">about The Best Gifts for Dog Moms</span>
+ * </a>
+ * @param {HTMLElement} container Element whose descendent "a" tags will
+ *  be modified.
+ */
+export function decorateScreenReaderOnly(container) {
+  const srOnly = /\[(.*?)\]/g;
+  [...container.querySelectorAll('a')]
+    .forEach((el) => {
+      if (el.innerHTML.match(srOnly)) {
+        el.innerHTML = el.innerHTML.replace(srOnly, (text) => `<span class="sr-only">${text.slice(1, -1)}</span>`);
+      }
+    });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -295,6 +322,7 @@ export async function decorateMain(main) {
   await buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateScreenReaderOnly(main);
 }
 
 /**
