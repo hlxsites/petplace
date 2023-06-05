@@ -299,10 +299,33 @@ function applyAutoRotate(slideshowInfo) {
  * Decorates a slideshow with aria and other accessibility-related attributes
  * to ensure the slideshow meets accessibility requirements. The decoration
  * will include:
+ *
  * * Adding required aria properties.
  * * Providing auto-rotation functionality, if specified.
  * * Adding mouse and keyboard interactivity to the slideshow's tab list, if
  *   specified.
+ *
+ * Note that the decoration does _not_ include functionality for visibly
+ * changing the active slide, since individual slideshow implementations
+ * may differ in their construction. The scope of the decoration only
+ * includes updating a slide's aria attributes to indicate that it is
+ * currently the active slide.
+ *
+ * There are two ways to interact with the decorator's active slide
+ * functionality:
+ *
+ * 1. Listen for the event "hlx-slideshow-slide-changed" from the slideshow
+ *    element. This event is sent whenever the active slide has changed,
+ *    and callers of the decorate method should listen for this event
+ *    and visibly change the active slide. The event may be fired in
+ *    multiple scenarios, including auto rotations, keyboard interactions,
+ *    or mouse interactions.
+ * 2. Callers of the decorate method can actively change the current slide
+ *    using the changeSlide() method. For example, the decoration doesn't
+ *    include touch-related interactions, so if the caller needs to support
+ *    touch interactions, they can implement the required functionality and
+ *    call changeSlide() to update the active slide. Note that calling this
+ *    method will ultimately emit the event from item #1.
  * @param {Slideshow} slideshowInfo Information about the slideshow that
  *  should be decorated with accessibility functionality.
  * @returns {Promise} Resolves when all decoration is complete.
