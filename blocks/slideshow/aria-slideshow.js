@@ -27,19 +27,19 @@ class ResumableInterval {
     return !this.inputs.mouse && !this.inputs.keyboard;
   }
 
-  pause(slideshow, inputs = {}) {
+  pause(slideshowContainer, inputs = {}) {
     this.setInputs(inputs);
-    slideshow.setAttribute('aria-live', 'polite');
+    slideshowContainer.setAttribute('aria-live', 'polite');
     clearInterval(this.interval);
   }
 
-  resume(slideshow, inputs = {}) {
+  resume(slideshowContainer, inputs = {}) {
     this.setInputs(inputs);
     clearInterval(this.interval);
     // ensure that neither mouse nor keyboard has paused
     // the interval
     if (this.areInputsCleared()) {
-      slideshow.setAttribute('aria-live', 'off');
+      slideshowContainer.setAttribute('aria-live', 'off');
       this.interval = setInterval(() => {
         this.callback();
       }, this.intervalTime);
@@ -49,8 +49,8 @@ class ResumableInterval {
 
 /**
  * @typedef Slideshow
- * @property {HTMLElement} slideshow The container representing the slideshow
- *  itself.
+ * @property {HTMLElement} slideshowContainer The container representing the
+ *  slideshow itself.
  * @property {Array<HTMLElement>} slides Elements containing the slides that
  *  are in the slideshow. If there is an h1 element in a slide, its value
  *  will be used as the slide's name in aria attributes.
@@ -84,7 +84,7 @@ export function changeSlide(slideshowInfo, currentIndex, newIndex) {
     return;
   }
   const {
-    slideshow,
+    slideshowContainer,
     slides,
     tabList,
   } = slideshowInfo;
@@ -109,7 +109,7 @@ export function changeSlide(slideshowInfo, currentIndex, newIndex) {
       newIndex,
     },
   });
-  slideshow.dispatchEvent(event);
+  slideshowContainer.dispatchEvent(event);
 }
 
 /**
@@ -147,12 +147,12 @@ function focusNewSlide(slideshowInfo, getNewIndex) {
 /**
  * Decorates the element containing the slideshow itself with required
  * accessibility attributes.
- * @param {HTMLElement} slideshow Element to decorate.
+ * @param {HTMLElement} slideshowContainer Element to decorate.
  */
-function decorateSlideshow(slideshow) {
-  slideshow.setAttribute('role', 'group');
-  slideshow.setAttribute('aria-roledescription', 'carousel');
-  slideshow.setAttribute('aria-label', 'Slideshow of popular articles');
+function decorateSlideshow(slideshowContainer) {
+  slideshowContainer.setAttribute('role', 'group');
+  slideshowContainer.setAttribute('aria-roledescription', 'carousel');
+  slideshowContainer.setAttribute('aria-label', 'Slideshow of popular articles');
 }
 
 /**
@@ -199,7 +199,8 @@ function decorateSlides(slides) {
 /**
  * Decorates the slideshow's tab list with attributes and functionality required
  * to make it fully accessible.
- * @param {Slideshow} slideshow Information about the slideshow being decorated.
+ * @param {SlideshowInfo} slideshowInfo Information about the slideshow being
+ *  decorated.
  * @param {Array<Slide>} slideInfos Information about the slides present in the
  *  slideshow.
  */
@@ -254,7 +255,7 @@ function decorateTabList(slideshowInfo, slideInfos) {
  */
 function applyAutoRotate(slideshowInfo) {
   const {
-    slideshow,
+    slideshowContainer,
     slides,
     rotateDelay = 5000,
   } = slideshowInfo;
@@ -264,8 +265,8 @@ function applyAutoRotate(slideshowInfo) {
     return;
   }
 
-  slideshow.setAttribute('aria-atomic', false);
-  slideshow.setAttribute('aria-live', 'off');
+  slideshowContainer.setAttribute('aria-atomic', false);
+  slideshowContainer.setAttribute('aria-live', 'off');
 
   // auto-play
   const autoplayTimer = new ResumableInterval(rotateDelay, () => {
@@ -274,24 +275,24 @@ function applyAutoRotate(slideshowInfo) {
   });
   autoplayTimer.start();
 
-  slideshow.addEventListener('mouseenter', () => {
-    autoplayTimer.pause(slideshow, { mouse: true });
+  slideshowContainer.addEventListener('mouseenter', () => {
+    autoplayTimer.pause(slideshowContainer, { mouse: true });
   });
 
-  slideshow.addEventListener('mouseleave', () => {
-    autoplayTimer.resume(slideshow, { mouse: false });
+  slideshowContainer.addEventListener('mouseleave', () => {
+    autoplayTimer.resume(slideshowContainer, { mouse: false });
   });
 
-  slideshow.addEventListener('focusin', () => {
-    autoplayTimer.pause(slideshow, { keyboard: true });
+  slideshowContainer.addEventListener('focusin', () => {
+    autoplayTimer.pause(slideshowContainer, { keyboard: true });
   });
 
-  slideshow.addEventListener('focusout', () => {
-    autoplayTimer.resume(slideshow, { keyboard: false });
+  slideshowContainer.addEventListener('focusout', () => {
+    autoplayTimer.resume(slideshowContainer, { keyboard: false });
   });
 
-  slideshow.addEventListener('click', () => {
-    autoplayTimer.pause(slideshow, { mouse: true });
+  slideshowContainer.addEventListener('click', () => {
+    autoplayTimer.pause(slideshowContainer, { mouse: true });
   });
 }
 
@@ -334,7 +335,7 @@ function applyAutoRotate(slideshowInfo) {
  * @returns {Promise} Resolves when all decoration is complete.
  */
 export async function decorateSlideshowAria(slideshowInfo) {
-  decorateSlideshow(slideshowInfo.slideshow);
+  decorateSlideshow(slideshowInfo.slideshowContainer);
   const slides = decorateSlides(slideshowInfo.slides);
   if (slideshowInfo.tabList) {
     decorateTabList(slideshowInfo, slides);

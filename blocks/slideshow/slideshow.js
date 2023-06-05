@@ -119,7 +119,7 @@ export default async function decorate($block) {
   });
 
   const slideshowInfo = {
-    slideshow: $block,
+    slideshowContainer: $block,
     slides,
     tabList,
   };
