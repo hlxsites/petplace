@@ -7,6 +7,7 @@ class ResumableInterval {
     this.interval = null;
     this.intervalTime = intervalTime;
     this.callback = callback;
+    this.inputs = {};
   }
 
   start() {
@@ -15,15 +16,32 @@ class ResumableInterval {
     }, this.intervalTime);
   }
 
-  pause() {
+  setInputs(inputs) {
+    this.inputs = {
+      ...this.inputs,
+      ...inputs,
+    };
+  }
+
+  areInputsCleared() {
+    return !this.inputs.mouse && !this.inputs.keyboard;
+  }
+
+  pause(inputs = {}) {
+    this.setInputs(inputs);
     clearInterval(this.interval);
   }
 
-  resume() {
+  resume(inputs = {}) {
+    this.setInputs(inputs);
     clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      this.callback();
-    }, this.intervalTime);
+    // ensure that neither mouse nor keyboard has paused
+    // the interval
+    if (this.areInputsCleared()) {
+      this.interval = setInterval(() => {
+        this.callback();
+      }, this.intervalTime);
+    }
   }
 }
 
@@ -115,28 +133,6 @@ function focusNewSlide(slideshowInfo, getNewIndex) {
 }
 
 /**
- * Retrieves a value indicating whether the user has interacted with the slideshow
- * in any way (such as clicking one of its tabs, or using the keyboard).
- * @param {HTMLElement} slideshow Container element for the slideshow as a whole.
- * @returns {boolean} True if the user has manually interacted with the slideshow,
- *  false otherwise.
- */
-function isSlideshowInteracted(slideshow) {
-  return !!slideshow.dataset.interacted;
-}
-
-/**
- * Sets the value that specifies whether the user has manually interacted with
- * the slideshow in some way.
- * @param {HTMLElement} slideshow Container element for the slideshow as a whole.
- * @param {boolean} isInteracted Indicates whether the user has interacted with the
- *  slideshow or not.
- */
-function setSlideshowInteracted(slideshow, isInteracted) {
-  slideshow.dataset.interacted = isInteracted;
-}
-
-/**
  * Decorates the element containing the slideshow itself with required
  * accessibility attributes.
  * @param {HTMLElement} slideshow Element to decorate.
@@ -207,7 +203,6 @@ function getCurrentSlideIndex(slides) {
  */
 function decorateTabList(slideshowInfo, slideInfos) {
   const {
-    slideshow,
     slides,
     tabList,
   } = slideshowInfo;
@@ -222,10 +217,9 @@ function decorateTabList(slideshowInfo, slideInfos) {
     listItem.setAttribute('aria-selected', (i === 0).toString());
     listItem.setAttribute('aria-label', `Go to slide ${slideInfos[i].name}`);
     listItem.setAttribute('aria-controls', slides[i].id);
-    listItem.querySelector('button').setAttribute('tabindex', -1);
+    listItem.querySelector('button').setAttribute('tabindex', i === 0 ? 0 : -1);
     listItem.addEventListener('click', () => {
       const currentIndex = getCurrentSlideIndex(slides);
-      setSlideshowInteracted(slideshow, true);
       changeSlide(slideshowInfo, currentIndex, i);
     });
     listItem.addEventListener('keydown', (ev) => {
@@ -233,7 +227,6 @@ function decorateTabList(slideshowInfo, slideInfos) {
         case 'Home':
           ev.preventDefault();
           focusNewSlide(slideshowInfo, () => 0);
-          // this.focusItem(0);
           break;
         case 'ArrowLeft':
           ev.preventDefault();
@@ -264,6 +257,7 @@ function applyAutoRotate(slideshowInfo) {
     slideshow,
     slides,
     rotateDelay = 5000,
+    tabList,
   } = slideshowInfo;
   const numChildren = slides.length;
 
@@ -274,23 +268,28 @@ function applyAutoRotate(slideshowInfo) {
   // auto-play
   const autoplayTimer = new ResumableInterval(rotateDelay, () => {
     const currentIndex = getCurrentSlideIndex(slides);
-    if (!isSlideshowInteracted(slideshow)) {
-      changeSlide(slideshowInfo, currentIndex, (currentIndex + 1) % numChildren);
-    }
+    changeSlide(slideshowInfo, currentIndex, (currentIndex + 1) % numChildren);
   });
   autoplayTimer.start();
 
   slideshow.addEventListener('mouseenter', () => {
-    autoplayTimer.pause();
+    autoplayTimer.pause({ mouse: true });
   });
 
   slideshow.addEventListener('mouseleave', () => {
-    autoplayTimer.resume();
+    autoplayTimer.resume({ mouse: false });
+  });
+
+  slideshow.addEventListener('focusin', () => {
+    autoplayTimer.pause({ keyboard: true });
+  });
+
+  slideshow.addEventListener('focusout', () => {
+    autoplayTimer.resume({ keyboard: false });
   });
 
   slideshow.addEventListener('click', () => {
-    setSlideshowInteracted(slideshow, true);
-    autoplayTimer.pause();
+    autoplayTimer.pause({ mouse: true });
   });
 }
 
