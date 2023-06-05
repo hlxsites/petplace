@@ -27,17 +27,19 @@ class ResumableInterval {
     return !this.inputs.mouse && !this.inputs.keyboard;
   }
 
-  pause(inputs = {}) {
+  pause(slideshow, inputs = {}) {
     this.setInputs(inputs);
+    slideshow.setAttribute('aria-live', 'polite');
     clearInterval(this.interval);
   }
 
-  resume(inputs = {}) {
+  resume(slideshow, inputs = {}) {
     this.setInputs(inputs);
     clearInterval(this.interval);
     // ensure that neither mouse nor keyboard has paused
     // the interval
     if (this.areInputsCleared()) {
+      slideshow.setAttribute('aria-live', 'off');
       this.interval = setInterval(() => {
         this.callback();
       }, this.intervalTime);
@@ -150,6 +152,7 @@ function focusNewSlide(slideshowInfo, getNewIndex) {
 function decorateSlideshow(slideshow) {
   slideshow.setAttribute('role', 'group');
   slideshow.setAttribute('aria-roledescription', 'carousel');
+  slideshow.setAttribute('aria-label', 'Slideshow of popular articles');
 }
 
 /**
@@ -180,15 +183,14 @@ function decorateSlides(slides) {
     // reference it
     getOrGenerateId($slide);
     const title = $slide.querySelector('h1');
-    const label = title !== null ? `"${title.innerText}"` : `${i + 1} of ${numChildren}`;
+    const label = title !== null ? title.innerText : `${i + 1} of ${numChildren}`;
     slideInfos.push({
       name: label,
       id: $slide.id,
     });
 
     $slide.setAttribute('role', 'tabpanel');
-    $slide.setAttribute('aria-roledescription', 'slide');
-    $slide.setAttribute('aria-label', `Slide ${label}`);
+    $slide.setAttribute('aria-label', `Slide "${label}"`);
     $slide.setAttribute('aria-hidden', (i !== 0).toString());
   });
   return slideInfos;
@@ -207,15 +209,13 @@ function decorateTabList(slideshowInfo, slideInfos) {
     tabList,
   } = slideshowInfo;
   tabList.setAttribute('role', 'tablist');
-  tabList.setAttribute('aria-label', 'Slideshow slide selector');
+  tabList.setAttribute('aria-label', 'Choose slide to display');
 
   const listItems = tabList.querySelectorAll('li');
   listItems.forEach((listItem, i) => {
-    const tabId = getOrGenerateId(listItem);
-    slides[i].setAttribute('aria-labelledby', tabId);
     listItem.setAttribute('role', 'tab');
     listItem.setAttribute('aria-selected', (i === 0).toString());
-    listItem.setAttribute('aria-label', `Go to slide ${slideInfos[i].name}`);
+    listItem.setAttribute('aria-label', `Select slide "${slideInfos[i].name}"`);
     listItem.setAttribute('aria-controls', slides[i].id);
     listItem.querySelector('button').setAttribute('tabindex', i === 0 ? 0 : -1);
     listItem.addEventListener('click', () => {
@@ -264,6 +264,9 @@ function applyAutoRotate(slideshowInfo) {
     return;
   }
 
+  slideshow.setAttribute('aria-atomic', false);
+  slideshow.setAttribute('aria-live', 'off');
+
   // auto-play
   const autoplayTimer = new ResumableInterval(rotateDelay, () => {
     const currentIndex = getCurrentSlideIndex(slides);
@@ -272,23 +275,23 @@ function applyAutoRotate(slideshowInfo) {
   autoplayTimer.start();
 
   slideshow.addEventListener('mouseenter', () => {
-    autoplayTimer.pause({ mouse: true });
+    autoplayTimer.pause(slideshow, { mouse: true });
   });
 
   slideshow.addEventListener('mouseleave', () => {
-    autoplayTimer.resume({ mouse: false });
+    autoplayTimer.resume(slideshow, { mouse: false });
   });
 
   slideshow.addEventListener('focusin', () => {
-    autoplayTimer.pause({ keyboard: true });
+    autoplayTimer.pause(slideshow, { keyboard: true });
   });
 
   slideshow.addEventListener('focusout', () => {
-    autoplayTimer.resume({ keyboard: false });
+    autoplayTimer.resume(slideshow, { keyboard: false });
   });
 
   slideshow.addEventListener('click', () => {
-    autoplayTimer.pause({ mouse: true });
+    autoplayTimer.pause(slideshow, { mouse: true });
   });
 }
 
