@@ -111,6 +111,16 @@ export function changeSlide(slideshowInfo, currentIndex, newIndex) {
 }
 
 /**
+ * Gets the index of the slide that is currently the active slide of the
+ * slideshow.
+ * @param {Array<HTMLElement>} slides The slides making up the slideshow.
+ * @returns {number} Index of the active slide.
+ */
+function getCurrentSlideIndex(slides) {
+  return slides.findIndex(($child) => $child.getAttribute('active') === 'true');
+}
+
+/**
  * Sets the currently active slide to a new index in the slideshow's
  * list of slides, and sets the tab at the new index as the newly
  * focused tab.
@@ -185,16 +195,6 @@ function decorateSlides(slides) {
 }
 
 /**
- * Gets the index of the slide that is currently the active slide of the
- * slideshow.
- * @param {Array<HTMLElement>} slides The slides making up the slideshow.
- * @returns {number} Index of the active slide.
- */
-function getCurrentSlideIndex(slides) {
-  return slides.findIndex(($child) => $child.getAttribute('active') === 'true');
-}
-
-/**
  * Decorates the slideshow's tab list with attributes and functionality required
  * to make it fully accessible.
  * @param {Slideshow} slideshow Information about the slideshow being decorated.
@@ -257,7 +257,6 @@ function applyAutoRotate(slideshowInfo) {
     slideshow,
     slides,
     rotateDelay = 5000,
-    tabList,
   } = slideshowInfo;
   const numChildren = slides.length;
 

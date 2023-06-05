@@ -90,7 +90,7 @@ export default async function decorate($block) {
   $slidesContainer.classList.add('slides-container');
 
   const slides = [...$slidesContainer.children];
-  slides.forEach(($slide, i) => {
+  slides.forEach(($slide) => {
     $slide.classList.add('slide');
 
     const imgDiv = $slide.children[0];
@@ -114,7 +114,7 @@ export default async function decorate($block) {
     tabList.append($sliderNavBarButton);
   });
   $block.prepend($sliderNavBar);
-  $block.addEventListener(Events.SLIDE_CHANGED, function (e) {
+  $block.addEventListener(Events.SLIDE_CHANGED, (e) => {
     updateSlide(e.detail.currentIndex, e.detail.newIndex, $block);
   });
 
