@@ -50,8 +50,7 @@ main .embed {
   }
   
   main .embed.embed-tiktok {
-    max-height: unset;
-    min-width: 325px;
+    max-height: unset;    
   }
   
   main .embed.embed-twitter .twitter-tweet-rendered {
