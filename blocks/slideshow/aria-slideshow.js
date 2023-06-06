@@ -214,11 +214,15 @@ function decorateTabList(slideshowInfo, slideInfos) {
 
   const listItems = tabList.querySelectorAll('li');
   listItems.forEach((listItem, i) => {
+    const tabLabel = `Select slide "${slideInfos[i].name}"`;
     listItem.setAttribute('role', 'tab');
     listItem.setAttribute('aria-selected', (i === 0).toString());
-    listItem.setAttribute('aria-label', `Select slide "${slideInfos[i].name}"`);
+    listItem.setAttribute('aria-label', tabLabel);
     listItem.setAttribute('aria-controls', slides[i].id);
-    listItem.querySelector('button').setAttribute('tabindex', i === 0 ? 0 : -1);
+
+    const tabButton = listItem.querySelector('button');
+    tabButton.setAttribute('tabindex', i === 0 ? 0 : -1);
+    tabButton.setAttribute('aria-label', tabLabel);
     listItem.addEventListener('click', () => {
       const currentIndex = getCurrentSlideIndex(slides);
       changeSlide(slideshowInfo, currentIndex, i);
