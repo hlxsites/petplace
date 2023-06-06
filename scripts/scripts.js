@@ -471,41 +471,48 @@ export function initializeTouch(block, slideWrapper) {
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
 export async function createBreadCrumbs(crumbData) {
-  const breadcrumbContainer = document.createElement('div');
-  // Use the last item in the list's color
   const { color } = crumbData[crumbData.length - 1];
+  const breadcrumbContainer = document.createElement('nav');
+  breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
 
+  const ol = document.createElement('ol');
+  ol.setAttribute('role', 'list');
+  ol.setAttribute('aria-breadcrumb', 'true');
+
+  const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
-  homeLink.classList.add('home');
   homeLink.href = '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
   homeLink.setAttribute('aria-label', 'Go to our Homepage');
-  breadcrumbContainer.append(homeLink);
+  homeLi.append(homeLink);
+  ol.append(homeLi);
 
   crumbData.forEach((crumb, i) => {
+    const li = document.createElement('li');
     if (i > 0) {
       const chevron = document.createElement('span');
       chevron.innerHTML = '<span class="icon icon-chevron"></span>';
-      breadcrumbContainer.append(chevron);
+      li.append(chevron);
     }
     const linkButton = document.createElement('a');
     linkButton.href = crumb.url;
     linkButton.innerText = crumb.label;
     linkButton.classList.add('category-link-btn');
     if (i === crumbData.length - 1) {
-      // linkButton.classList.add(`${color}`);
+      linkButton.setAttribute('aria-current', 'page');
       linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', 'inherit');
     } else {
-      // linkButton.classList.add(`${color}-border`, `${color}-color`);
       linkButton.style.setProperty('--bg-color', 'inherit');
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', `var(--color-${color})`);
     }
-
-    breadcrumbContainer.append(linkButton);
+    li.append(linkButton);
+    ol.append(li);
   });
+
+  breadcrumbContainer.append(ol);
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
