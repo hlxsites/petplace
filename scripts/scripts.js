@@ -80,6 +80,14 @@ export async function getCategoryByName(categoryName) {
   return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
 }
 
+export async function getCategoryByKey(key, value) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c[key].toLowerCase() === value.toLowerCase());
+}
+
 export async function getCategoriesPath(path) {
   const categories = await getCategories();
   return categories.data.filter((c) => c.Path === path || c['Parent Path'].startsWith(path));
@@ -482,7 +490,7 @@ export async function createBreadCrumbs(crumbData) {
     }
     const linkButton = document.createElement('a');
     linkButton.href = crumb.url;
-    linkButton.innerText = crumb.path;
+    linkButton.innerText = crumb.label;
     linkButton.classList.add('category-link-btn');
     if (i === crumbData.length - 1) {
       // linkButton.classList.add(`${color}`);
