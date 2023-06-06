@@ -472,18 +472,15 @@ export async function createBreadCrumbs(crumbData) {
   ol.setAttribute('aria-breadcrumb', 'true');
 
   const homeLi = document.createElement('li');
-  homeLi.setAttribute('role', 'listitem');
   const homeLink = document.createElement('a');
   homeLink.href = '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
   homeLink.setAttribute('aria-label', 'Go to our Homepage');
-  homeLink.setAttribute('aria-current', 'page');
   homeLi.append(homeLink);
   ol.append(homeLi);
 
   crumbData.forEach((crumb, i) => {
     const li = document.createElement('li');
-    li.setAttribute('role', 'listitem');
     if (i > 0) {
       const chevron = document.createElement('span');
       chevron.innerHTML = '<span class="icon icon-chevron"></span>';
