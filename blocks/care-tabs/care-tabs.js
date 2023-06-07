@@ -69,8 +69,8 @@ export default async function decorate(block) {
     slide('next', block, block.parentElement);
   });
   // Add the button to the DOM
-  block.parentElement.parentElement.append(buttonPrev);
-  block.parentElement.parentElement.append(buttonNext);
+  block.parentElement.parentElement.prepend(buttonNext);
+  block.parentElement.parentElement.prepend(buttonPrev);
 
   // Inject details into desktop details
   const desktopDetailsContainer = document.createElement('div');

@@ -3,6 +3,7 @@
     text-align: center;
     padding: 0;
     position: relative;
+    overflow: hidden;
 }
 
 .care-tabs-container h2 span:last-child{
@@ -27,9 +28,13 @@
     margin-bottom: 1.25rem;
 }
 
-.care-tabs > div{
+.care-tabs > div {
     flex-shrink: 0;
     width: 100vw;
+}
+
+.care-tabs > div:not([active="true"]) .details {
+    visibility: hidden;
 }
 
 .care-tabs .card {
