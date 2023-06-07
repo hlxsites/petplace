@@ -94,10 +94,9 @@ const loadEmbed = (block, link) => {
   const url = new URL(link);
   if (config) {
     block.innerHTML = config.embed(url);
-    block.classList = `block embed embed-${config.match[0]}`;
+    block.classList.add(`embed-${config.match[0]}`);
   } else {
     block.innerHTML = getDefaultEmbed(url);
-    block.classList = 'block embed';
   }
   block.classList.add('embed-is-loaded');
 };
@@ -130,11 +129,12 @@ export default function decorate(block) {
             throw Error(`Invalid payload type (${typeof data}): `, data);
           }
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.error('[Embed] Error parsing data: ', e);
           return;
         }
         if (data.id !== conf.id) return;
-
+        // eslint-disable-next-line no-console
         console.debug(`[Embed/${conf.id}] message: `, data);
         if (data.height) {
           parent.style.height = `${data.height}px`;
