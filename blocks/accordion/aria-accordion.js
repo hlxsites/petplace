@@ -71,7 +71,6 @@ export class AriaAccordion extends HTMLElement {
       button.id = idBtn;
       button.setAttribute('aria-expanded', false);
       button.setAttribute('aria-controls', idPnl);
-      button.setAttribute('tabindex', i === this.selectedIndex ? 0 : -1);
       if (el.firstElementChild.matches(HEADINGS_SELECTOR)) {
         button.append = el.firstElementChild.innerHTML;
         el.firstElementChild.innerHTML = '';
@@ -144,9 +143,7 @@ export class AriaAccordion extends HTMLElement {
       rotationIndex = 0;
     }
     const buttons = this.querySelectorAll('button[aria-expanded]');
-    buttons[this.selectedIndex].setAttribute('tabindex', -1);
     this.selectedIndex = rotationIndex;
-    buttons[this.selectedIndex].setAttribute('tabindex', 0);
     buttons[this.selectedIndex].focus();
   }
 }

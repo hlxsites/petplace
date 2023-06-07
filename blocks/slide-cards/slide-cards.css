@@ -137,6 +137,10 @@
     background: rgb(87 115 168 / 60%);
 }
 
+.media > div:not([active="true"]) .button-container a{
+    visibility: hidden;
+}
+
 @media (min-width: 1024px) {
     .slide-cards-wrapper {
         /* !important; is necessary to overwrite inline style set dynamically. */

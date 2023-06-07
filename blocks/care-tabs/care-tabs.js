@@ -7,6 +7,21 @@ function setActiveCard(card, details) {
   desktopDetailsContainer.innerHTML = '';
   desktopDetailsContainer.append(details.cloneNode(true));
 }
+
+function setResponsiveAttributes(block, size) {
+  if (size < 1024) {
+    [...block.children].forEach((child, i) => {
+      const card = child.children[0];
+      card.removeAttribute('tabindex');
+    });
+  } else {
+    [...block.children].forEach((child, i) => {
+      const card = child.children[0];
+      card.setAttribute('tabindex', '0');
+    });
+  }
+}
+
 export default async function decorate(block) {
   [...block.children].forEach((child, i) => {
     if (i === 0) child.setAttribute('active', true);
@@ -17,6 +32,12 @@ export default async function decorate(block) {
     details.classList.add('details');
     card.addEventListener('click', () => {
       setActiveCard(card, details);
+    });
+    card.addEventListener('keypress', (event) => {
+      if (event.code === 'Space' || event.code === 'Enter') {
+        event.preventDefault();
+        setActiveCard(card, details);
+      }
     });
 
     // If children are not wrapped in p tags.  Wrap them
@@ -77,6 +98,11 @@ export default async function decorate(block) {
   desktopDetailsContainer.classList.add('desktop-details-container');
   desktopDetailsContainer.append(block.querySelector('.details').cloneNode(true));
   block.parentElement.parentElement.append(desktopDetailsContainer);
+
+  window.addEventListener('resize', (ev) => {
+    setResponsiveAttributes(block, ev.target.innerWidth);
+  });
+  window.dispatchEvent(new Event('resize'));
 
   initializeTouch(block, block.parentElement);
 }
