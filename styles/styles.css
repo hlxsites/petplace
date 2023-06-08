@@ -474,18 +474,19 @@ a.sr-focusable:focus {
   bottom: 0;
   right: 0;
   z-index: -1;
-  background-color: transparent;
+  background: transparent;
 }
 
 .a11y-quicknav:focus-within {
   z-index: 1000;
-  background-color: rgba(0, 0, 0, .2);
+  background: rgb(0 0 0 / 20%);
 }
 
-.a11y-quicknav > button:focus {
-  opacity: 1;
-  top: 20px;
-  z-index: 1001;
+.a11y-quicknav > button {
+  top: 40px;
+  z-index: 1000;
+  transition: top .22s ease;
+  opacity: 0;
 }
 
 .a11y-quicknav > button, .a11y-quicknav > button:focus {
@@ -494,9 +495,9 @@ a.sr-focusable:focus {
   border-radius: 50px;
   background-color: var(--background-color);
   line-height: 1;
-  border: solid 3px rgba(19,110,248,.8);
+  border: solid 3px rgb(19 110 248 / 80%);
   outline: solid 0 #639af9;
-  box-shadow: 0 0 0 5px rgba(19,110,248,.3);
+  box-shadow: 0 0 0 5px rgb(19 110 248 / 30%);
   display: flex;
   gap: 2rem;
   align-items: center;
@@ -509,11 +510,10 @@ a.sr-focusable:focus {
   text-transform: unset;
 }
 
-.a11y-quicknav > button {
-  top: 40px;
-  z-index: 1000;
-  transition: top .22s ease;
-  opacity: 0;
+.a11y-quicknav > button:focus {
+  opacity: 1;
+  top: 20px;
+  z-index: 1001;
 }
 
 .a11y-quicknav > button .a11y-quicknav-button {

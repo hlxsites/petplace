@@ -317,6 +317,27 @@ export function decorateScreenReaderOnly(container) {
     });
 }
 
+function createA11yQuickNav(links = []) {
+  const nav = document.createElement('nav');
+  nav.setAttribute('aria-label', 'Skip to specific locations on the page');
+  nav.classList.add('a11y-quicknav', 'sr-focusable');
+  links.forEach((l) => {
+    const button = document.createElement('button');
+    button.setAttribute('aria-label', l.label);
+    button.href = `#${l.id}`;
+    button.innerHTML = `<span>${l.label}</span><span><span class="a11y-quicknav-button"><span class="a11y-quicknav-symbol">↵</span><span>ENTER</span></span></span>`;
+    button.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const el = document.getElementById(ev.currentTarget.href.split('#')[1]);
+      el.setAttribute('tabindex', 0);
+      el.focus();
+      el.addEventListener('focusout', () => { el.setAttribute('tabindex', -1); }, { once: true });
+    });
+    nav.append(button);
+  });
+  document.body.prepend(nav);
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -438,27 +459,6 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
   const responsiveImage = createResponsiveImage(pictures, breakpoints);
   container.innerHTML = '';
   container.append(responsiveImage);
-}
-
-function createA11yQuickNav(links = []) {
-  const nav = document.createElement('nav');
-  nav.setAttribute('aria-label', 'Skip to specific locations on the page');
-  nav.classList.add('a11y-quicknav', 'sr-focusable');
-  links.forEach((l) => {
-    const button = document.createElement('button');
-    button.setAttribute('aria-label', l.label);
-    button.href = `#${l.id}`;
-    button.innerHTML = `<span>${l.label}</span><span><span class="a11y-quicknav-button"><span class="a11y-quicknav-symbol">↵</span><span>ENTER</span></span></span>`;
-    button.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      const el = document.getElementById(ev.currentTarget.href.split('#')[1]);
-      el.setAttribute('tabindex', 0);
-      el.focus();
-      el.addEventListener('focusout', () => { el.setAttribute('tabindex', -1); }, { once: true });
-    });
-    nav.append(button);
-  });
-  document.body.prepend(nav);
 }
 
 function getActiveSlide(block) {
