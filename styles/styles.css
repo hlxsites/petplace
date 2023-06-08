@@ -465,7 +465,77 @@ a.sr-focusable:focus {
   width: 1px;
 }
 
+.a11y-quicknav {
+  position: fixed;
+  margin: 0;
+  padding: 30px 0 0 20px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  background-color: transparent;
+}
 
+.a11y-quicknav:focus-within {
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, .2);
+}
+
+.a11y-quicknav > button:focus {
+  opacity: 1;
+  top: 20px;
+  z-index: 1001;
+}
+
+.a11y-quicknav > button, .a11y-quicknav > button:focus {
+  position: absolute;
+  padding: 13px 20px;
+  border-radius: 50px;
+  background-color: var(--background-color);
+  line-height: 1;
+  border: solid 3px rgba(19,110,248,.8);
+  outline: solid 0 #639af9;
+  box-shadow: 0 0 0 5px rgba(19,110,248,.3);
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 #27272d;
+  text-decoration: none;
+  color: #1f2533;
+  font-size: var(--body-font-size-default);
+  transform: none;
+  text-transform: unset;
+}
+
+.a11y-quicknav > button {
+  top: 40px;
+  z-index: 1000;
+  transition: top .22s ease;
+  opacity: 0;
+}
+
+.a11y-quicknav > button .a11y-quicknav-button {
+  font-size: var(--body-font-size-xxs);
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: .9;
+  border-radius: 50px;
+  background-color: #146ff8;
+  padding: 5px 10px;
+  color: var(--background-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.a11y-quicknav > button .a11y-quicknav-button .a11y-quicknav-symbol {
+  font-size: var(--body-font-size-default);
+  margin-right: .3rem;
+}
 
 .slick-arrow {
     position: absolute;
