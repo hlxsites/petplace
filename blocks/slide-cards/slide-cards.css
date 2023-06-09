@@ -137,7 +137,7 @@
     background: rgb(87 115 168 / 60%);
 }
 
-.media > div:not([active="true"]) .button-container a{
+.media > div:not([active="true"]) .button-container a {
     visibility: hidden;
 }
 
@@ -160,6 +160,10 @@
 
     .media .slide-card .button-container a {
         font-size: 1.75rem;
+    }
+
+    .media > div:not([active="true"]) .button-container a {
+        visibility: visible;
     }
 }
 
