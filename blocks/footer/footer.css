@@ -49,9 +49,9 @@
 
 .footer-nav li {
   padding: 0;
-  color: black;
+  color: var(--color-blue-dark);
   font-family: var(--heading-font-family);
-  font-size: var(--body-font-size-l);
+  font-size: var(--body-font-size-m);
 }
 
 .footer-nav a {
@@ -153,7 +153,7 @@
   }
 
   .footer-nav li {
-    font-size: var(--body-font-size-l);
+    font-size: var(--body-font-size-s);
   }
 
   .footer-nav a {
