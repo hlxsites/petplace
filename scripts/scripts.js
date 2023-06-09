@@ -367,6 +367,70 @@ export function addFavIcon(href) {
 }
 
 /**
+ * Loads a script src and provides a callback that fires after
+ * the script has loaded.
+ * @param {string} url Full value to use as the script's src attribute.
+ * @param {function} callback Will be invoked once the script has loaded.
+ * @param {*} attributes Simple object containing attribute keys and values
+ *  to add to the script tag.
+ * @returns Script tag representing the script.
+ */
+export function loadScript(url, callback, attributes) {
+  const head = document.querySelector('head');
+  if (!head.querySelector(`script[src="${url}"]`)) {
+    const script = document.createElement('script');
+    script.src = url;
+
+    if (attributes) {
+      Object.keys(attributes).forEach((key) => {
+        script.setAttribute(key, attributes[key]);
+      });
+    }
+
+    head.append(script);
+    script.onload = callback;
+    return script;
+  }
+  return head.querySelector(`script[src="${url}"]`);
+}
+
+export function loadGoogleAds() {
+  return new Promise((res) => {
+    const ads = [];
+    document.querySelectorAll('.ad.block').forEach((ad) => {
+      if (ad.dataset.adpath && ad.id) {
+        ads.push(ad);
+      }
+    });
+    if (!ads.length) {
+      // no ads on page - return immediately
+      res();
+    }
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {
+      window.googletag = window.googletag || {cmd: []};
+
+      googletag.cmd.push(() => {
+        ads.forEach((ad) => {
+          googletag
+            .defineSlot(ad.dataset.adpath, [250, 250], ad.id)
+            .addService(googletag.pubads());
+        });
+
+        // Enable SRA and services.
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+      });
+      ads.forEach((ad) => {
+        googletag.cmd.push(() => {
+          googletag.display(ad.id);
+        });
+      });
+      res();
+    }, { 'async': '' });
+  });
+}
+
+/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
@@ -392,6 +456,7 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  loadGoogleAds();
 }
 
 /**

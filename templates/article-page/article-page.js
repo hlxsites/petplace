@@ -8,12 +8,12 @@ import {
   createBreadCrumbs, getCategoryByKey,
 } from '../../scripts/scripts.js';
 
-function createTemplateBlock(main, blockName, gridName) {
+function createTemplateBlock(main, blockName, gridName, elems = []) {
   const gridNameValue = gridName || blockName;
   const section = document.createElement('div');
   section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
 
-  const block = buildBlock(blockName, { elems: [] });
+  const block = buildBlock(blockName, { elems });
   section.append(block);
   main.append(section);
 }
@@ -93,7 +93,10 @@ async function getBreadcrumbs(categorySlug) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function loadEager(main) {
+  const ad = document.createElement('div');
+  ad.innerText = '/6355419/Travel/Europe/France';
   createTemplateBlock(main, 'article-author');
+  createTemplateBlock(main, 'ad', 'ad', [ad]);
   createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
