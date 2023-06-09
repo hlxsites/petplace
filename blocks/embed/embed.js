@@ -58,7 +58,7 @@ const embedTiktok = (url) => {
     const response = await fetch(fetchUrl);
     const json = await response.json();
     const tiktok = document.getElementById('tiktok');
-    tiktok.outerHTML = json.html;
+    tiktok.innerHTML = json.html;
   };
   tiktokBuild(`https://www.tiktok.com/oembed?url=${url}`);
 
