@@ -10,12 +10,12 @@ function setActiveCard(card, details) {
 
 function setResponsiveAttributes(block, size) {
   if (size < 1024) {
-    [...block.children].forEach((child, i) => {
+    [...block.children].forEach((child) => {
       const card = child.children[0];
       card.removeAttribute('tabindex');
     });
   } else {
-    [...block.children].forEach((child, i) => {
+    [...block.children].forEach((child) => {
       const card = child.children[0];
       card.setAttribute('tabindex', '0');
     });

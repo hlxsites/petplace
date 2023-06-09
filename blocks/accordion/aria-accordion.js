@@ -63,7 +63,7 @@ export class AriaAccordion extends HTMLElement {
     const headingLevel = previousHeadings.length
       ? Number(previousHeadings.pop().tagName.substring(1)) + 1
       : 1;
-    [...this.children].forEach((el, i) => {
+    [...this.children].forEach((el) => {
       idBtn = Math.random().toString(32).substring(2);
       idPnl = Math.random().toString(32).substring(2);
 

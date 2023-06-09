@@ -33,9 +33,7 @@
     width: 100vw;
 }
 
-.care-tabs > div:not([active="true"]) .details {
-    visibility: hidden;
-}
+
 
 .care-tabs .card {
     display: flex;
@@ -83,6 +81,10 @@
 .care-tabs .details {
     text-align: left;
     padding: 0 20px;
+}
+
+.care-tabs > div:not([active="true"]) .details {
+    visibility: hidden;
 }
 
 .care-tabs .details h3{
