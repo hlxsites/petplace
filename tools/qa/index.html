@@ -3,16 +3,18 @@
     const FRANKLIN_DOMAIN = 'https://main--petplace--hlxsites.hlx.live';
     function bulkOperation(urls, fn, options = {}) {
       const overview = document.querySelector('.results-overview');
+      overview.innerHTML = '<ul></ul>';
       const details = document.querySelector('.results-details');
+      details.innerHTML = '<ul></ul>';
       return urls.reduce(async (promise, urlString, i) => {
         const results = await promise;
         const url = new URL(urlString);
         const li = document.createElement('li');
-        const details = document.createElement('details');
+        const det = document.createElement('details');
         const summary = document.createElement('summary');
         const div = document.createElement('div');
         summary.textContent = urlString;
-        details.prepend(summary);
+        det.prepend(summary);
         try {
           const result = await fn(url);
           results.push({ url: url.href, result });
@@ -26,6 +28,7 @@
           div.append(JSON.stringify(err));
         } finally {
           overview.append(li);
+          details.append(det);
         }
 
         // Sleep for 1s before continuing
