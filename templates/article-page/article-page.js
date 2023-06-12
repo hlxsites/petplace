@@ -2,11 +2,10 @@ import {
   buildBlock,
   decorateBlock,
   loadBlock,
-  getMetadata,
+  getMetadata, toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
-  getCategory,
-  createBreadCrumbs,
+  createBreadCrumbs, getCategoryByKey,
 } from '../../scripts/scripts.js';
 
 function createTemplateBlock(main, blockName, gridName) {
@@ -62,23 +61,30 @@ function convertToTitleCase(str) {
 }
 
 /**
- * Loops through an array of paths and fetches metadata.
- * @param paths - Array of paths
+ * Fetches page category.  If parent path exists, recursively fetches parent data and so on.
  * @returns {Promise<*[]>}
+ * @param categorySlug snake case value of category
  */
-async function getBreadcrumbs(paths) {
+async function getBreadcrumbs(categorySlug) {
   const breadcrumbs = [];
-  await Promise.all(paths.map(async (path) => {
-    const category = await getCategory(path);
-    if (category) {
-      breadcrumbs.push({
-        color: category.Color,
-        url: category.Path,
-        path: convertToTitleCase(path),
-      });
+
+  async function fetchSegmentData(slug) {
+    const categoryData = await getCategoryByKey('Slug', slug);
+    breadcrumbs.push({
+      color: categoryData.Color,
+      url: categoryData.Path,
+      label: convertToTitleCase(categoryData.Slug),
+    });
+
+    if (categoryData['Parent Path'] !== '/article/category/') {
+      const { Slug } = await getCategoryByKey('Path', categoryData['Parent Path']);
+      await fetchSegmentData(Slug);
     }
-  }));
-  return breadcrumbs;
+  }
+
+  await fetchSegmentData(categorySlug);
+
+  return breadcrumbs.reverse();
 }
 
 /**
@@ -96,11 +102,8 @@ export function loadEager(main) {
 
 export async function loadLazy(main) {
   const breadCrumbs = main.querySelector('.hero > div > div');
-  let { pathname } = window.location;
-  // remove none category initial paths.
-  pathname = pathname.split('/').slice(3);
-
-  const crumbData = await getBreadcrumbs(pathname);
+  const categorySlug = toClassName(getMetadata('category'));
+  const crumbData = await getBreadcrumbs(categorySlug);
 
   const breadcrumbContainer = await createBreadCrumbs(crumbData);
   const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });

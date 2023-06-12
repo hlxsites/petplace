@@ -1,25 +1,26 @@
-.breadcrumb > div > div > div {
+.breadcrumb ol {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  list-style-type: none;
+  padding: 0;
 }
 
-.breadcrumb .home {
+.breadcrumb ol li{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb ol li:first-child {
   margin-right: 10px;
-  display: inline-flex;
-}
-
-.breadcrumb > div > div > div > span {
-  display: inline-flex;
-  width: 20px;
-}
-
-.breadcrumb > div > div > div > span svg {
-  fill: var(--highlight-color);
 }
 
 .breadcrumb .icon-chevron {
   transform: rotate(270deg);
+  fill: var(--text-color-inverted);
+  width: 20px;
+  margin-top: 6px
 }
 
 .breadcrumb .category-link-btn {

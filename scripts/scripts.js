@@ -80,6 +80,14 @@ export async function getCategoryByName(categoryName) {
   return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
 }
 
+export async function getCategoryByKey(key, value) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c[key].toLowerCase() === value.toLowerCase());
+}
+
 export async function getCategoriesPath(path) {
   const categories = await getCategories();
   return categories.data.filter((c) => c.Path === path || c['Parent Path'].startsWith(path));
@@ -283,6 +291,33 @@ async function buildAutoBlocks(main) {
 }
 
 /**
+ * Creates hidden screen reader content for improving the website's screen
+ * reader compatibility. The method will look for all "a" tags in the given
+ * container, and replace content between square brackets with a span whose
+ * class is "sr-only". For example, the following element:
+ *
+ * <a href="...">Read more [about The Best Gifts for Dog Moms]</a>
+ *
+ * Will be replaced with:
+ *
+ * <a href="...">
+ *  Read more
+ *  <span class="sr-only">about The Best Gifts for Dog Moms</span>
+ * </a>
+ * @param {HTMLElement} container Element whose descendent "a" tags will
+ *  be modified.
+ */
+export function decorateScreenReaderOnly(container) {
+  const srOnly = /\[(.*?)\]/g;
+  [...container.querySelectorAll('a')]
+    .forEach((el) => {
+      if (el.innerHTML.match(srOnly)) {
+        el.innerHTML = el.innerHTML.replace(srOnly, (text) => `<span class="sr-only">${text.slice(1, -1)}</span>`);
+      }
+    });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -295,6 +330,7 @@ export async function decorateMain(main) {
   await buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateScreenReaderOnly(main);
 }
 
 /**
@@ -463,41 +499,48 @@ export function initializeTouch(block, slideWrapper) {
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
 export async function createBreadCrumbs(crumbData) {
-  const breadcrumbContainer = document.createElement('div');
-  // Use the last item in the list's color
   const { color } = crumbData[crumbData.length - 1];
+  const breadcrumbContainer = document.createElement('nav');
+  breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
 
+  const ol = document.createElement('ol');
+  ol.setAttribute('role', 'list');
+  ol.setAttribute('aria-breadcrumb', 'true');
+
+  const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
-  homeLink.classList.add('home');
   homeLink.href = '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
   homeLink.setAttribute('aria-label', 'Go to our Homepage');
-  breadcrumbContainer.append(homeLink);
+  homeLi.append(homeLink);
+  ol.append(homeLi);
 
   crumbData.forEach((crumb, i) => {
+    const li = document.createElement('li');
     if (i > 0) {
       const chevron = document.createElement('span');
       chevron.innerHTML = '<span class="icon icon-chevron"></span>';
-      breadcrumbContainer.append(chevron);
+      li.append(chevron);
     }
     const linkButton = document.createElement('a');
     linkButton.href = crumb.url;
-    linkButton.innerText = crumb.path;
+    linkButton.innerText = crumb.label;
     linkButton.classList.add('category-link-btn');
     if (i === crumbData.length - 1) {
-      // linkButton.classList.add(`${color}`);
+      linkButton.setAttribute('aria-current', 'page');
       linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', 'inherit');
     } else {
-      // linkButton.classList.add(`${color}-border`, `${color}-color`);
       linkButton.style.setProperty('--bg-color', 'inherit');
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', `var(--color-${color})`);
     }
-
-    breadcrumbContainer.append(linkButton);
+    li.append(linkButton);
+    ol.append(li);
   });
+
+  breadcrumbContainer.append(ol);
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
