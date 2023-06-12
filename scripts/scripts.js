@@ -339,6 +339,17 @@ export async function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+  if (window.location.hostname === 'localhost') {
+    import('https://unpkg.com/web-vitals@3?module')
+      .then(({ onCLS, onFID, onLCP, onINP, onTTFB }) => {
+        onCLS(console.log);
+        onFID(console.log);
+        onLCP(console.log);
+        onTTFB(console.log);
+        onINP(console.log, { reportAllChanges: true });
+      });
+  }
+
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
