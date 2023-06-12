@@ -1,0 +1,61 @@
+body {
+  margin: 1rem;
+}
+
+main {
+  display: grid;
+  grid-template:
+    "pages operation"
+    "results results";
+  gap: 1rem;
+}
+
+.pages { grid-area: pages; }
+
+.pages textarea {
+  width: 100%;
+}
+
+.operation { grid-area: operation; }
+
+.results { grid-area: results; }
+
+.results-overview ul {
+  display: flex;
+  margin: 0;
+  gap: .5rem;
+  list-style: none;
+}
+
+.results-overview li::after {
+  content: '';
+  display: inline-block;
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  border: 1px solid gray;
+}
+
+.results-overview .success::after {
+  background-color: green;
+  border-color: green;
+}
+
+.results-overview :is(.failure, .error)::after {
+  background-color: red;
+  border-color: red;
+}
+
+.results-details details {
+  border-left: 4px solid;
+  padding-left: .5rem;
+  margin-bottom: .5rem;
+}
+
+.results-details .success {
+  border-color: green;
+}
+
+.results-details :is(.failure, .error) {
+  border-color: red;
+}
