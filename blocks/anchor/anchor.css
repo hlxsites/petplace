@@ -1,0 +1,98 @@
+.anchor-container {
+  padding: 60px, 16px;
+}
+
+.anchor {
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.anchor ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+  gap: 0 1rem;
+  list-style: none;
+}
+
+.anchor a {
+  color: var(--color-purple-gray);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 2rem;
+  transition: all .35s ease;
+}
+
+.anchor-tags a:hover {
+  color: var(--highlight-color);
+  text-decoration: underline;
+}
+
+
+.city-anchor a:not(:last-child)::after {
+  content: "";
+  position: relative;
+  width: 0.1px;
+  height: 100%;
+  top: 0;
+  right: -8px;
+  border: 0.2px solid #ff7d5a;
+}
+
+.city-anchor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+  align-items: center;
+  justify-content: center;
+}
+
+.anchor-container h1 {
+  display: block;
+  font-family: Raleway, sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 35.2px;
+  color: rgb(59, 9, 44);
+
+  text-align: center;
+  text-rendering: optimizelegibility;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+
+  margin: 0;
+  margin-bottom: 40px;
+
+  padding: 0;
+}
+
+.anchor-container p {
+  box-sizing: border-box;
+  display: block;
+  font-family: "Libre Franklin", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  text-rendering: optimizelegibility;
+  text-size-adjust: 100%;
+  color: rgb(40, 6, 30);
+
+  margin: 0px;
+  margin-block-end: 12px;
+  margin-block-start: 0px;
+  margin-bottom: 12px;
+  margin-inline-end: 0px;
+  margin-inline-start: 0px;
+
+  padding: 0px;
+
+}
+
+.separator::after {
+  content: "";
+  display: block;
+  clear: both;
+}

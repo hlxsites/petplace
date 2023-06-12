@@ -1,0 +1,126 @@
+/* .traveling-page .section:nth-of-type(2n+1) {
+  background: var(--background-color-light);
+}
+
+h1 {
+  color: rgb(59, 9, 44);
+  display: block;
+  font-family: Raleway, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+}
+
+h1+p {
+  color: rgb(40, 6, 30);
+  font-family: Libre Franklin, sans-serif;
+  font-size: 16px;
+  font-weight: 400px;
+  text-align: center;
+
+  line-height: 24px;
+  margin-block-end: 12px;
+  margin-block-start: 0px;
+  margin-bottom: 12px;
+  -webkit-font-smoothing: antialiased;
+
+} */
+
+.traveling-page .hero {
+  box-sizing: border-box;
+  height: 62.5vw;
+  min-height: 0;
+  max-height: 326px;
+  padding: 0;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.traveling-page .hero picture {
+  margin: 0;
+}
+
+.traveling-page .hero img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  object-fit: cover;
+}
+
+.traveling-page .hero>div {
+  max-width: none;
+  background: rgba(87, 81, 141, .6);
+}
+
+.traveling-page .hero>div>div {
+  max-width: 1392px;
+  margin: 0 auto;
+}
+
+.traveling-page .hero h1 {
+  margin: 0;
+  padding: 2rem 1.5rem;
+  color: var(--text-color-inverted);
+  text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
+  text-align: left;
+}
+
+/* .traveling-page .hero h1 {
+  box-sizing: border-box;
+  display: block;
+
+  font-family: Raleway, sans-serif;
+  font-size: 58px;
+  font-weight: 800;
+  line-height: 63.8px;
+  color: rgb(255, 255, 255);
+
+  text-rendering: optimizelegibility;
+  text-shadow: rgba(0, 0, 0, 0.5) 2px 3px 5px;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+
+  padding: 0 24px;
+  margin: 0;
+} */
+
+.columns-container {
+  box-sizing: border-box;
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--color-gray-dark);
+  text-size-adjust: 100%;
+  padding: 70px 16px 50px;
+}
+
+.traveling-page .blade .blade-image img {
+  border-radius: 0px;
+}
+
+.traveling-page .blade-body h3 {
+  /* font-family: "Raleway", sans-serif; */
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-purple-gray);
+}
+
+.traveling-page .blade-body p {
+  text-align: left;
+}
+
+
+.traveling-page h2 {
+  box-sizing: border-box;
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 26.4px;
+  color: var(--color-purple-gray);
+  text-align: center;
+  margin: 32px 0;
+  padding: 0;
+}

@@ -1,0 +1,195 @@
+.city-container {
+  position: relative;
+}
+
+.city-wrapper {
+  display: flex;
+}
+
+.city p {
+  padding-bottom: 12px;
+}
+
+.city a {
+  text-decoration: underline;
+  color: rgb(103, 143, 218);
+  cursor: pointer;
+}
+
+.city-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 1px;
+  width: 90%;
+  background: #ff7d5a;
+}
+
+/* styling for icon-type-list */
+.city .icon-type-list {
+  justify-content: left;
+  padding: 0px;
+  margin-bottom: 30px;
+}
+
+.city .icon-type-list div {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  justify-content: left;
+  margin-right: 25px;
+  width: 160px;
+  height: 35px;
+}
+
+.city .icon-type-list li {
+  padding: 0px;
+}
+
+
+.city .icon-type-list div img {
+  width: 35px;
+  height: 40px;
+  padding-right: 4px;
+}
+
+.city .icon-type-list div span {
+  margin-top: 0px;
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  margin-right: 20px
+}
+
+.city-wrapper .img {
+  max-width: 100%;
+}
+
+.city-wrapper .city h3 {
+  box-sizing: border-box;
+  color: rgb(59, 9, 44);
+  font-size: 1.6em;
+  font-weight: 800;
+  height: 27.1797px;
+  line-height: 27.181px;
+  margin: 30px 0px;
+  width: 358px;
+}
+
+
+/* Stlying our-favs-for */
+.our-faves-for-div {
+  padding: 30px 16px;
+  background-color: var(--color-gray-lighter);
+  list-style: none;
+  margin-bottom: 30px;
+}
+
+.our-faves-for-div ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.our-faves-for-div li {
+  margin-left: 0;
+  margin-bottom: 10px;
+  padding: 0px;
+}
+
+.our-faves-for-div h4 {
+  font-size: 24px;
+  padding-bottom: 24px;
+  color: var(--color-purple-gray);
+  font-weight: 800;
+
+}
+
+.our-faves-for-div a {
+  text-decoration: underline;
+  color: rgb(0, 155, 216);
+  cursor: pointer;
+}
+
+.our-faves-for-div a:hover {
+  text-decoration: none;
+}
+
+.our-faves-for-div a[target="_blank"]::after {
+  content: "\2197";
+  margin-left: 0.2em;
+}
+
+.our-faves-for-div span {
+  font-size: 16px;
+  font-weight: 400;
+
+}
+
+/* Styling for img */
+
+@media(max-width:600px) {
+  picture:first-of-type {
+    background-position: 30% center;
+  }
+}
+
+/* tips */
+
+/* for city tips */
+.tips-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background-color: var(--color-gray-lighter);
+  border-radius: 50px;
+  font-style: normal;
+  column-gap: 16px;
+  line-height: 24px;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.tips-icon {
+  display: flex;
+  /* position: relative; */
+  align-items: center;
+}
+
+.tips-icon img {
+  height: 40px;
+  width: 40px;
+  object-fit: scale-down;
+  padding-right: 1em;
+}
+
+/* .tips-divider::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  border: 0.5px solid rgb(208, 151, 27);
+} */
+
+
+.tips-text {
+  width: 100%;
+  justify-content: flex-start;
+  display: inline;
+  overflow-wrap: break-word;
+  border-left: 1px solid #ff7d5a;
+  padding-left: 1em;
+}
+
+.tips-text strong {
+  color: var(--color-purple-gray);
+}
+
+/* .tips-text strong::before {
+  content: '';
+  width: 1px;
+  height: fit-content;
+  border: 0.5px solid rgb(208, 151, 27);
+} */

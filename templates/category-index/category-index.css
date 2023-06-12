@@ -1,4 +1,3 @@
-
 .category-index .hero {
   box-sizing: border-box;
   height: 62.5vw;
@@ -22,14 +21,14 @@
   object-fit: cover;
 }
 
-.category-index .hero > div {
+.category-index .hero>div {
   --bg-color: inherit;
 
   max-width: none;
   background: var(--bg-color);
 }
 
-.category-index .hero > div > div {
+.category-index .hero>div>div {
   max-width: 1392px;
   margin: 0 auto;
 }
@@ -46,7 +45,7 @@
   background-color: var(--background-color-dark);
 }
 
-.category-index .sidebar > .default-content-wrapper:first-child {
+.category-index .sidebar>.default-content-wrapper:first-child {
   text-align: center;
 }
 
@@ -89,6 +88,33 @@
   border-top: none;
 }
 
+.category-index .hero-container {
+  grid-area: hero;
+}
+
+.category-index .sidebar {
+  grid-area: sidebar;
+  background: unset;
+  padding: 1rem 0;
+}
+
+.category-index .pagination-container {
+  grid-area: pagination;
+}
+
+.category-index .cards-container,
+.category-index .blog-cards-container {
+  grid-area: content;
+}
+
+.category-index .sidebar h2 {
+  color: unset;
+}
+
+.category-index .sidebar button[aria-controls] {
+  display: none;
+}
+
 @media (min-width: 1024px) {
   .category-index main {
     display: grid;
@@ -99,30 +125,4 @@
     gap: 0 1.5rem;
   }
 
-  .category-index .hero-container {
-    grid-area: hero;
-  }
-
-  .category-index .sidebar {
-    grid-area: sidebar;
-    background: unset;
-    padding: 1rem 0;
-  }
-
-  .category-index .pagination-container {
-    grid-area: pagination;
-  }
-
-  .category-index .cards-container,
-  .category-index .blog-cards-container {
-    grid-area: content;
-  }
-
-  .category-index .sidebar h2 {
-    color: unset;
-  }
-
-  .category-index .sidebar button[aria-controls] {
-    display: none;
-  }
 }
