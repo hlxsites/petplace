@@ -34,14 +34,15 @@
     }
     async function diff(url) {
       const { pathname } = new URL(url);
+      const parseHtml = (html) => new window.DOMParser().parseFromString(html, 'text/html');
 
       let response = await fetch(url);
-      const original = new JSDOM((await response.text()).replace(/<style(\s|>).*?<\/style>/gi, ''));
+      const original = parseHtml((await response.text()).replace(/<style(\s|>).*?<\/style>/gi, ''));
       const originalContent = sanitizeOriginalPage(original.window.document.querySelector('#gatsby-focus-wrapper'));
       const originalText = getSanitizedTextContent(original.window, originalContent);
 
       response = await fetch(`${FRANKLIN_DOMAIN}${pathname.replace(/\/$/, '')}`);
-      const franklin = new JSDOM(await response.text());
+      const franklin = parseHtml(await response.text());
       const franklinContent = sanitizeFranklinPage(franklin.window.document.querySelector('main'));
       const franklinText = getSanitizedTextContent(franklin.window, franklinContent);
       return originalText === franklinText;
