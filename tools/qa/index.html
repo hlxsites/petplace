@@ -32,6 +32,41 @@
         return results;
       }, Promise.resolve([]));
     }
+    function textNodesUnder(window, el) {
+      const a = [];
+      const walk = window.document.createTreeWalker(el, window.NodeFilter.SHOW_TEXT, null, false);
+      let n;
+      // eslint-disable-next-line no-cond-assign
+      while (n = walk.nextNode()) {
+        a.push(n);
+      }
+      return a;
+    }
+
+    function sanitizeOriginalPage(container) {
+      container.querySelectorAll(':scope > :is(header, footer), .is-hidden-desktop, .single-post-sidebar, .breadcrumbs, .counter-wrapper, .similar-post-section, .next-prev-post-section, .share-icons-horizontal, .gift-pet-insurance-cta, .petpartners-disclosure').forEach((el) => el.remove());
+      container.querySelectorAll('blockquote, iframe').forEach((el) => el.remove());
+      const toc = [...container.querySelectorAll('h2')].find((el) => el.textContent.toLowerCase().startsWith('table of contents'));
+      if (toc) {
+        toc.nextElementSibling.remove();
+        toc.remove();
+      }
+      return container;
+    }
+
+    function sanitizeFranklinPage(container) {
+      container.querySelectorAll('.embed').forEach((el) => el.remove());
+      return container;
+    }
+
+    function getSanitizedTextContent(window, el) {
+      return textNodesUnder(window, el)
+        .map((n) => n.textContent.trim())
+        .join(' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
     async function diff(url) {
       const { pathname } = new URL(url);
       const parseHtml = (html) => new window.DOMParser().parseFromString(html, 'text/html');
