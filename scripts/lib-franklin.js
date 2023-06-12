@@ -450,8 +450,9 @@ export function getOrigin() {
 export function getHref() {
   if (window.location.href !== 'about:srcdoc') return window.location.href;
 
-  const urlParams = new URLSearchParams(window.parent.location.search);
-  return `${window.parent.location.origin}${urlParams.get('path')}`;
+  const { location: parentLocation } = window.parent;
+  const urlParams = new URLSearchParams(parentLocation.search);
+  return `${parentLocation.origin}${urlParams.get('path')}`;
 }
 
 /**
