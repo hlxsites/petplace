@@ -470,6 +470,30 @@ function inlineBackgroundImages(main) {
   });
 }
 
+function decorateEmbeds(main) {
+  main.querySelectorAll('.tiktok-embed,.instagram-media,iframe[src*=youtu]').forEach((embed) => {
+    let url;
+    let type;
+    if (embed.classList.contains('tiktok-embed')) {
+      url = embed.getAttribute('cite');
+      type = 'TikTok';
+    } else if (embed.classList.contains('instagram-media')) {
+      url = embed.dataset.instgrmPermalink;
+      type = 'Instagram';
+    } else if (embed.src.includes('youtu')) {
+      url = embed.src;
+      type = 'Youtube';
+    }
+    embed.outerHTML = `
+      <table>
+        <tr><th>Embed${type ? ` (${type})` : ''}</th></tr>
+        <tr>
+          <td>${url}</td>
+        </tr>
+      </table>`;
+  });
+}
+
 export default {
   /**
    * Convert the base64 images so the importer can pick those up.
@@ -507,6 +531,7 @@ export default {
     params,
   }) => {
     rewrapDataTables(document);
+    decorateEmbeds(document);
     transformLongLists(document);
     replaceHighlights(document);
     inlineBackgroundImages(document);
