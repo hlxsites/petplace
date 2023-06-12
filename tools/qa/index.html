@@ -32,9 +32,9 @@
         return results;
       }, Promise.resolve([]));
     }
-    function textNodesUnder(window, el) {
+    function textNodesUnder(el) {
       const a = [];
-      const walk = window.document.createTreeWalker(el, window.NodeFilter.SHOW_TEXT, null, false);
+      const walk = document.createTreeWalker(el, window.NodeFilter.SHOW_TEXT, null, false);
       let n;
       // eslint-disable-next-line no-cond-assign
       while (n = walk.nextNode()) {
@@ -59,8 +59,8 @@
       return container;
     }
 
-    function getSanitizedTextContent(window, el) {
-      return textNodesUnder(window, el)
+    function getSanitizedTextContent(el) {
+      return textNodesUnder(el)
         .map((n) => n.textContent.trim())
         .join(' ')
         .replace(/\s+/g, ' ')
@@ -73,13 +73,13 @@
 
       let response = await fetch(url);
       const original = parseHtml((await response.text()).replace(/<style(\s|>).*?<\/style>/gi, ''));
-      const originalContent = sanitizeOriginalPage(original.window.document.querySelector('#gatsby-focus-wrapper'));
-      const originalText = getSanitizedTextContent(original.window, originalContent);
+      const originalContent = sanitizeOriginalPage(original.querySelector('#gatsby-focus-wrapper'));
+      const originalText = getSanitizedTextContent(originalContent);
 
       response = await fetch(`${FRANKLIN_DOMAIN}${pathname.replace(/\/$/, '')}`);
       const franklin = parseHtml(await response.text());
-      const franklinContent = sanitizeFranklinPage(franklin.window.document.querySelector('main'));
-      const franklinText = getSanitizedTextContent(franklin.window, franklinContent);
+      const franklinContent = sanitizeFranklinPage(franklin.querySelector('main'));
+      const franklinText = getSanitizedTextContent(franklinContent);
       return originalText === franklinText;
     }
     async function run() {
