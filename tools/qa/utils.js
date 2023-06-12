@@ -20,15 +20,17 @@ export default async function bulkOperation(csvPath, fn, options = {}) {
     const url = new URL(urlString);
     try {
       const result = await fn(url);
-      if (result) {
-        results.push(result);
-      }
+      results.push({ url: url.href, result });
 
       if (options.logProgress) {
         process.stdout.write(result ? '●' : '○');
         if (i && (i + 1) % 100 === 0) {
           // eslint-disable-next-line no-console
           console.log(`${i + 1} / ${urls.length}`);
+        }
+        if (i === urls.length - 1) {
+          // eslint-disable-next-line no-console
+          console.log();
         }
       }
     } catch (err) {

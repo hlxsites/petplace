@@ -1,0 +1,69 @@
+<html>
+  <script>
+    function bulkOperation(urls, fn, options = {}) {
+      const overview = document.querySelector('.results-overview');
+      const details = document.querySelector('.results-details');
+      return urls.reduce(async (promise, urlString, i) => {
+        const results = await promise;
+        const url = new URL(urlString);
+        const li = document.createElement('li');
+        const details = document.createElement('details');
+        const summary = document.createElement('summary');
+        const div = document.createElement('div');
+        summary.textContent = urlString;
+        details.prepend(summary);
+        try {
+          const result = await fn(url);
+          results.push({ url: url.href, result });
+          div.append(JSON.stringify(result));
+
+          const li = document.createElement('li');
+          li.textContent = result ? '●' : '○';
+        } catch (err) {
+          li.textContent = 'x';
+          console.error(err);
+          div.append(JSON.stringify(err));
+        } finally {
+          overview.append(li);
+        }
+
+        // Sleep for 1s before continuing
+        await new Promise((resolve) => { setTimeout(resolve, options.sleep || 500); });
+        return results;
+      }, Promise.resolve([]));
+    }
+    async function diff(url) {
+      const { pathname } = new URL(url);
+
+      let response = await fetch(url);
+      const original = new JSDOM((await response.text()).replace(/<style(\s|>).*?<\/style>/gi, ''));
+      const originalContent = sanitizeOriginalPage(original.window.document.querySelector('#gatsby-focus-wrapper'));
+      const originalText = getSanitizedTextContent(original.window, originalContent);
+
+      response = await fetch(`${FRANKLIN_DOMAIN}${pathname.replace(/\/$/, '')}`);
+      const franklin = new JSDOM(await response.text());
+      const franklinContent = sanitizeFranklinPage(franklin.window.document.querySelector('main'));
+      const franklinText = getSanitizedTextContent(franklin.window, franklinContent);
+      return originalText === franklinText;
+    }
+    async function run() {
+      const urls = document.querySelector('#urls').value.split('\n');
+      const action = document.querySelector('#action').value;
+      console.log(urls, action);
+      await bulkOperation(urls, window[action]);
+    }
+  </script>
+<body>
+  <textarea name="urls" id="urls" cols="30" rows="10"></textarea>
+  <select name="action" id="action">
+    <option value="diff">Diff</option>
+  </select>
+  <button onclick="javascript:run()">Run</button>
+  <div class="results-overview">
+    <ul></ul>
+  </div>
+  <div class="results-details">
+    <ul></ul>
+  </div>
+</body>
+</html>
