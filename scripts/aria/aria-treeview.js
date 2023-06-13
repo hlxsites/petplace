@@ -9,7 +9,10 @@ export class AriaTreeView extends HTMLElement {
 
   connectedCallback() {
     this.decorate();
-    this.attachListeners();
+    if (!this.hasListeners) {
+      this.attachListeners();
+    }
+    this.hasListeners = true;
   }
 
   attachListeners() {
