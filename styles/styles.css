@@ -23,7 +23,6 @@
   --background-color-light: #f2f6fc;
   --background-color-dark: #3b092c;
   --text-color: #28061e;
-  --va: #dbdbdb;
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
   --color-gray: #8f8f8f;
@@ -470,7 +469,31 @@ a.sr-focusable:focus {
 
 @media (prefers-contrast: more) {
   :root {
-    --highlight-color: #ab2400;
+    --high-contrast-color: #ab2400;
+    --high-contrast-bgcolor: #ab2400aa;
+    --highlight-color: var(--high-contrast-color);
+    --color-blue: var(--high-contrast-color);
+    --color-blue-light: var(--high-contrast-color); 
+    --color-blue-dark: var(--high-contrast-color);
+    --color-purple: var(--high-contrast-color);
+    --color-purple-light: var(--high-contrast-color);
+    --color-dark-maroon: var(--high-contrast-color);
+    --color-red: var(--high-contrast-color);
+    --color-gold: var(--high-contrast-color);
+    --color-green: var(--high-contrast-color);
+    --color-magenta: var(--high-contrast-color);
+    --color-mauve: var(--high-contrast-color);
+    --color-orange: var(--highlight-color);
+    --color-orange-transparent: var(--high-contrast-bgcolor);
+    --color-blue-transparent: var(--high-contrast-bgcolor);
+    --color-blue-dark-transparent: var(--high-contrast-bgcolor);
+    --color-purple-transparent: var(--high-contrast-bgcolor);
+    --color-purple-light-transparent: var(--high-contrast-bgcolor);
+    --color-red-transparent: var(--high-contrast-bgcolor);
+    --color-gold-transparent: var(--high-contrast-bgcolor);
+    --color-green-transparent: var(--high-contrast-bgcolor);
+    --color-magenta-transparent: var(--high-contrast-bgcolor);
+    --color-mauve-transparent: var(--high-contrast-bgcolor);
   }
 
   .default-content-wrapper a {

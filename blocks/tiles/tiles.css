@@ -15,13 +15,13 @@
     font-size: calc(1.375rem + 1.5vw);
     line-height: 1.1;
     font-weight: 800;
-    color: #28061e;
+    color: var(--text-color);
 }
 
 .section.tiles-container h2::after {
     content: "";
     display: block;
-    border-bottom: 2px solid #ff7d5a;
+    border-bottom: 2px solid var(--highlight-color);
     margin-top: 8px;
     margin-bottom: 0;
     max-width: 200px;
@@ -84,7 +84,7 @@
     margin-bottom: 0.5rem;
     font-size: 1rem;
     line-height: 1;
-    color: #28061e;
+    color: var(--text-color);
 }
 
 .tile .tile-contents .date-author-container {
@@ -131,7 +131,7 @@
     font-family: Raleway,sans-serif;
     font-weight: 800;
     font-size: .875rem;
-    color: #fff;
+    color: var(--text-color-inverted);
     line-height: 2rem;
     height: 2rem;
     padding-left: 14px;
@@ -146,13 +146,13 @@
 
 .tile.tile-0 .tile-contents h3 {
     font-size: 1rem;
-    color: #fff;
+    color: var(--text-color-inverted);
     text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
     text-overflow: ellipsis;
 }
 
 .tile.tile-0 .tile-contents .date-author-container {
-    color: #fff;
+    color: var(--text-color-inverted);
     text-shadow: 1px 1px 3px rgb(0 0 0 / 70%);
     font-size: var(--body-font-size-xs);
     font-weight: 400;
@@ -245,7 +245,7 @@
         border-radius: 15px;
         font-weight: 800;
         font-size: .875rem;
-        color: #fff;
+        color: var(--text-color-inverted);
         line-height: 30px;
         height: 30px;
     }

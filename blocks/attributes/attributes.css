@@ -27,7 +27,7 @@
 
 .attributes strong {
     margin: 0;
-    color: #fff;
+    color: var(--text-color-inverted);
     font-size: 1.25rem;
     font-family: var(--heading-font-family);
     font-weight: 800;
