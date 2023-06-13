@@ -36,12 +36,12 @@
 }
 
 .article-page .hero-container .hero {
-  margin-bottom: 2rem;
   overflow: hidden;
 }
 
 .article-page .hero-container .hero h1 {
   font-size: 2rem;
+  font-weight: 800;
   line-height: 1.1;
   margin: 0 0 1rem;
 }
