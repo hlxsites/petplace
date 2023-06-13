@@ -118,7 +118,7 @@
     width: 214px;
     padding-left: 20px;
     padding-right: 40px;
-    background: #ff7d5a;
+    background: var(--highlight-color);
     border: none;
     border-radius: 50px;
     color: white;

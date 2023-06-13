@@ -23,6 +23,7 @@
   --background-color-light: #f2f6fc;
   --background-color-dark: #3b092c;
   --text-color: #28061e;
+  --va: #dbdbdb;
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
   --color-gray: #8f8f8f;
@@ -399,11 +400,6 @@ main .section.well .default-content-wrapper > * {
   text-align: right;
 }
 
-[aria-hidden="true"],
-[aria-expanded="false"] ~ [role="group"] {
-  display: none;
-}
-
 .icon-user {
   color: #5773A9;
   height: 30px;
@@ -423,6 +419,13 @@ main .section.well .default-content-wrapper > * {
 
 main .centered {
   text-align: center;
+}
+
+/* Accessibility styles */
+
+[aria-hidden="true"],
+[aria-expanded="false"] ~ [role="group"] {
+  display: none;
 }
 
 .sr-focusable {
@@ -465,7 +468,15 @@ a.sr-focusable:focus {
   width: 1px;
 }
 
+@media (prefers-contrast: more) {
+  :root {
+    --highlight-color: #ab2400;
+  }
 
+  .default-content-wrapper a {
+    text-decoration: underline;
+  }
+}
 
 .slick-arrow {
     position: absolute;
