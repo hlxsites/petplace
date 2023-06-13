@@ -394,39 +394,32 @@ export function loadScript(url, callback, attributes) {
   return head.querySelector(`script[src="${url}"]`);
 }
 
-export function loadGoogleAds() {
-  return new Promise((res) => {
-    const ads = [];
-    document.querySelectorAll('.ad.block').forEach((ad) => {
-      if (ad.dataset.adpath && ad.id) {
-        ads.push(ad);
-      }
+export async function loadGoogleAds() {
+  const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adpath && el.id);
+  if (!ads.length) {
+    return Promise.resolve();
+  }
+
+  window.googletag = window.googletag || { cmd: [] };
+
+  window.googletag.cmd.push(() => {
+    ads.forEach((ad) => {
+      ad.adSlot = window.googletag
+        .defineSlot(ad.dataset.adpath, [728, 90], ad.id)
+        .addService(window.googletag.pubads());
     });
-    if (!ads.length) {
-      // no ads on page - return immediately
-      res();
-    }
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {
-      window.googletag = window.googletag || {cmd: []};
 
-      googletag.cmd.push(() => {
-        ads.forEach((ad) => {
-          googletag
-            .defineSlot(ad.dataset.adpath, [250, 250], ad.id)
-            .addService(googletag.pubads());
-        });
-
-        // Enable SRA and services.
-        googletag.pubads().enableSingleRequest();
-        googletag.enableServices();
-      });
-      ads.forEach((ad) => {
-        googletag.cmd.push(() => {
-          googletag.display(ad.id);
-        });
-      });
-      res();
-    }, { 'async': '' });
+    // Enable SRA and services.
+    window.googletag.pubads().enableSingleRequest();
+    window.googletag.enableServices();
+  });
+  ads.forEach((ad) => {
+    window.googletag.cmd.push(() => {
+      window.googletag.display(ad.adSlot);
+    });
+  });
+  return new Promise((res) => {
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', res, { async: '' });
   });
 }
 
@@ -448,6 +441,7 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
+  loadGoogleAds();
   await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   await loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
@@ -456,7 +450,6 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
-  loadGoogleAds();
 }
 
 /**

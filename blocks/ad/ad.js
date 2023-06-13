@@ -4,7 +4,7 @@
  */
 export default function decorate(block) {
   if (!block.id) {
-    block.id = Math.random().toString(32).substring(2);
+    block.id = `ad-${Math.random().toString(32).substring(2)}`;
   }
   [...block.children].forEach((row, index) => {
     if (index === 0) {
