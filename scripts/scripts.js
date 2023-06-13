@@ -516,7 +516,6 @@ export async function createBreadCrumbs(crumbData) {
 
   const ol = document.createElement('ol');
   ol.setAttribute('role', 'list');
-  ol.setAttribute('aria-breadcrumb', 'true');
 
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
