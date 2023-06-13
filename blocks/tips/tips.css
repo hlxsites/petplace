@@ -1,0 +1,51 @@
+/* tips */
+
+/* for city tips */
+.tips-wrapper {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background-color: var(--color-gray-lighter);
+    /* background-color: green; */
+    border-radius: 50px;
+    font-style: normal;
+    column-gap: 16px;
+    line-height: 24px;
+    padding: 20px;
+    font-size: 16px;
+  }
+  
+  .tips-icon {
+    display: flex;
+    /* position: relative; */
+    align-items: center;
+  }
+  
+  .tips-icon img {
+    height: 40px;
+    width: 40px;
+    object-fit: scale-down;
+    padding-right: 1em;
+  }
+  
+  /* .tips-divider::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    border: 0.5px solid rgb(208, 151, 27);
+  } */
+  
+  
+  .tip {
+    width: 100%;
+    justify-content: flex-start;
+    display: inline;
+    overflow-wrap: break-word;
+    border-left: 1px solid #ff7d5a;
+    padding-left: 1em;
+  }
+  
+  .tip strong {
+    color: var(--color-purple-gray);
+  } 

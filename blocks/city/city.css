@@ -1,4 +1,4 @@
-.city-container {
+/* .city-container {
   position: relative;
 }
 
@@ -185,7 +185,7 @@
 
 .tips-text strong {
   color: var(--color-purple-gray);
-}
+} 
 
 /* .tips-text strong::before {
   content: '';
