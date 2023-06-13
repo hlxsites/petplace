@@ -118,8 +118,8 @@ async function createNavigation(block) {
     const leftNav = document.createElement('div');
     leftNav.classList.add('article-navigation-previous');
     leftNav.innerHTML = `
-      <a href="${previousArticle.path}">
-        <span class="icon icon-less-than" aria-label="${previousArticle.title}"></span>
+      <a href="${previousArticle.path}" aria-label="${previousArticle.title}">
+        <span class="icon icon-less-than"></span>
       </a>
     `;
     block.append(leftNav);
@@ -136,8 +136,8 @@ async function createNavigation(block) {
     const rightNav = document.createElement('div');
     rightNav.classList.add('article-navigation-next');
     rightNav.innerHTML = `
-      <a href="${nextArticle.path}">
-        <span class="icon icon-greater-than" aria-label="${nextArticle.title}"></span>
+      <a href="${nextArticle.path}" aria-label="${nextArticle.title}">
+        <span class="icon icon-greater-than"></span>
       </a>
     `;
     block.append(rightNav);
