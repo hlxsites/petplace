@@ -41,9 +41,14 @@ main .hero img {
   object-fit: cover;
   width: 100%;
   height: 100%;
+  aspect-ratio: 2 / 1;
 }
 
 @media (min-width: 900px) {
+  main .hero img {
+    aspect-ratio: unset;
+  }
+
   main .hero h1 {
     color: var(--text-color-inverted);
     font-size: var(--heading-font-size-xxxl);
