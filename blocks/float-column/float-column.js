@@ -1,3 +1,4 @@
+import { decorateResponsiveImages } from '../../scripts/scripts.js';
 const isPicture = (block) =>{
     return block.querySelector('picture') !== null;
 }
@@ -13,6 +14,9 @@ export default function decorate(block) {
             if(isPicture(value)){
                 const direction = (i % 2 === 0 )? "left":"right";
                 value.classList.add(`float-column-image-${direction}`);
+                // let imageClass = value.querySelector('img').classList;
+                // console.log(imageClass);
+                decorateResponsiveImages(value);
             } else {
                 value.classList.add("text");
             }
@@ -32,4 +36,15 @@ export default function decorate(block) {
         })
     })
 }
+
+// const slides = [...$slidesContainer.children];
+//   slides.forEach(($slide) => {
+//     $slide.classList.add('slide');
+
+//     const imgDiv = $slide.children[0];
+//     imgDiv.classList.add('img-div');
+//     const textDiv = $slide.children[1];
+//     textDiv.classList.add('text-div');
+
+//     decorateResponsiveImages(imgDiv);
   
