@@ -58,8 +58,7 @@
 }
 
 .popular-cards-wrapper .title-div a:first-child {
-    margin-bottom: 0;
-    padding: .5rem 0;
+    margin-bottom: .5rem;
 }
 
 @media (min-width: 768px) {
