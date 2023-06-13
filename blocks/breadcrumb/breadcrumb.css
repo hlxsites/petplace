@@ -50,7 +50,7 @@
 }
 
 .breadcrumb .category-link-btn:last-child {
-  color: var(--text-color-inverted);
+  color: var(--text-color);
 }
 
 @media (min-width: 768px) {
