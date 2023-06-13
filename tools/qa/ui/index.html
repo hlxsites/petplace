@@ -12,7 +12,17 @@
       <label>
         Operation:
         <select name="action" id="action">
-          <option value="diff">Diff</option>
+          <optgroup label="Checks">
+            <option value="diff">Content Diff</option>
+          </optgroup>
+          <optgroup label="Filter Pages">
+            <option value="embeds">Social Embeds</option>
+            <option value="uat">UAT Urls</option>
+          </optgroup>
+          <optgroup label="Workflow">
+            <option value="preview">Preview</option>
+            <option value="publish">Publish</option>
+          </optgroup>
         </select>
       </label>
       <button>Run</button>

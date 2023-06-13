@@ -1,43 +1,20 @@
 const FRANKLIN_DOMAIN = 'https://main--petplace--hlxsites.hlx.live';
-function bulkOperation(urls, fn, options = {}) {
-  const overview = document.querySelector('.results-overview ul');
-  overview.innerHTML = '';
-  urls.forEach(() => {
-    const li = document.createElement('li');
-    overview.append(li);
-  });
-  const details = document.querySelector('.results-details');
-  details.innerHTML = '';
-  return urls.reduce(async (promise, urlString, i) => {
-    const results = await promise;
-    const det = document.createElement('details');
-    const summary = document.createElement('summary');
-    const div = document.createElement('div');
-    summary.textContent = urlString;
-    det.prepend(summary);
-    det.append(div);
+const FRANKLIN_ADMIN_API = 'https://admin.hlx.page';
+
+async function* bulkOperation(urls, fn, options = {}) {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const url of urls) {
     try {
-      const url = new URL(urlString);
-      const result = await fn(url);
-      results.push({ url: url.href, result });
-      div.append(JSON.stringify(result));
-
-      overview.children[i].classList.add(result ? 'success' : 'failure');
-      det.classList.add(result ? 'success' : 'failure');
+      // eslint-disable-next-line no-await-in-loop
+      yield await fn(new URL(url));
     } catch (err) {
-      overview.children[i].classList.add('error');
-      det.classList.add('error');
-      console.error(err);
-      div.append(JSON.stringify(err));
-    } finally {
-      details.append(det);
+      yield err;
     }
-
-    // Sleep for 1s before continuing
+    // eslint-disable-next-line no-await-in-loop
     await new Promise((resolve) => { setTimeout(resolve, options.sleep || 500); });
-    return results;
-  }, Promise.resolve([]));
+  }
 }
+
 function textNodesUnder(el) {
   const a = [];
   const walk = document.createTreeWalker(el, window.NodeFilter.SHOW_TEXT, null, false);
@@ -89,11 +66,65 @@ async function diff(url) {
   return originalText === franklinText;
 }
 
+async function adminOperation(url, op) {
+  const [ref, repo, org] = new URL(FRANKLIN_DOMAIN).hostname.split('.')[0].split('--');
+  const orgRepoRef = `/${org}/${repo}/${ref}`;
+
+  const { pathname } = new URL(url.href);
+  const response = await fetch(
+    `${FRANKLIN_ADMIN_API}/${op}${orgRepoRef}${pathname.replace(/\/$/, '')}`,
+    { method: 'POST' },
+  );
+  return response.ok && response.text();
+}
+
+async function preview(url) {
+  return adminOperation(url, 'preview');
+}
+
+async function publish(url) {
+  return adminOperation(url, 'live');
+}
+
+function reportProgress(index, url, result) {
+  const overview = document.querySelector('.results-overview ul');
+  const details = document.querySelector('.results-details');
+  const disclosure = document.createElement('details');
+  const summary = document.createElement('summary');
+  const div = document.createElement('div');
+  summary.textContent = url;
+  disclosure.prepend(summary);
+  disclosure.append(div);
+  details.append(disclosure);
+  if (result instanceof Error) {
+    overview.children[index].classList.add('error');
+    details.children[index].classList.add('error');
+    details.children[index].children[1].append(result.stack);
+  } else {
+    overview.children[index].classList.add(result ? 'success' : 'failure');
+    details.children[index].classList.add(result ? 'success' : 'failure');
+  }
+  details.children[index].children[1].append(JSON.stringify(result));
+}
+
 async function run() {
   const urls = document.querySelector('#urls').value.split('\n');
   const action = document.querySelector('#action').value;
   window.localStorage.setItem('franklin-qa-urls', JSON.stringify(urls));
-  await bulkOperation(urls, window[action]);
+
+  const overview = document.querySelector('.results-overview ul');
+  overview.innerHTML = '';
+  urls.forEach(() => {
+    const li = document.createElement('li');
+    overview.append(li);
+  });
+
+  let index = 0;
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const result of bulkOperation(urls, window[action])) {
+    reportProgress(index, urls[index], result);
+    index += 1;
+  }
 }
 
 document.querySelector('button').addEventListener('click', () => {
