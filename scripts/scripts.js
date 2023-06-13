@@ -339,17 +339,6 @@ export async function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  if (window.location.hostname === 'localhost') {
-    import('https://unpkg.com/web-vitals@3?module')
-      .then(({ onCLS, onFID, onLCP, onINP, onTTFB }) => {
-        onCLS(console.log);
-        onFID(console.log);
-        onLCP(console.log);
-        onTTFB(console.log);
-        onINP(console.log, { reportAllChanges: true });
-      });
-  }
-
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
@@ -540,9 +529,9 @@ export async function createBreadCrumbs(crumbData) {
       linkButton.setAttribute('aria-current', 'page');
       linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--text-color', 'inherit');
+      linkButton.style.setProperty('--text-color', 'var(--text-color-inverted)');
     } else {
-      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--bg-color', 'var(--background-color)');
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', `var(--color-${color})`);
     }
