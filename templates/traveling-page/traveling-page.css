@@ -65,6 +65,7 @@ h1+p {
   color: var(--text-color-inverted);
   text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
   text-align: left;
+  font-size: calc(1.4875rem + 2.85vw);
 }
 
 /* .traveling-page .hero h1 {
@@ -116,11 +117,24 @@ h1+p {
 .traveling-page h2 {
   box-sizing: border-box;
   display: block;
-  font-size: 24px;
+  font-size: 1.25rem;
   font-weight: 800;
   line-height: 26.4px;
   color: var(--color-purple-gray);
   text-align: center;
-  margin: 32px 0;
+  margin: 1.5rem 0;
   padding: 0;
+}
+
+@media screen and(min-width:769px) {
+  .traveling-page h2 {
+    font-size: 1.5rem;
+    margin: 1.75rem 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .traveling-page h2 {
+    margin: 2rem 0;
+  }
 }

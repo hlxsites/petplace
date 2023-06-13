@@ -30,7 +30,7 @@
 }
 
 
-.city-anchor a:not(:last-child)::after {
+.anchor-list a:not(:last-child)::after {
   content: "";
   position: relative;
   width: 0.1px;
@@ -40,7 +40,7 @@
   border: 0.2px solid #ff7d5a;
 }
 
-.city-anchor {
+.anchor-list {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -52,7 +52,7 @@
 .anchor-container h1 {
   display: block;
   font-family: Raleway, sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 800;
   line-height: 35.2px;
   color: rgb(59, 9, 44);
@@ -91,8 +91,6 @@
 
 }
 
-.separator::after {
-  content: "";
-  display: block;
-  clear: both;
+.anchor>div>div {
+  display: none;
 }
