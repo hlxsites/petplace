@@ -1,6 +1,8 @@
 const FRANKLIN_DOMAIN = 'https://main--petplace--hlxsites.hlx.live';
 const FRANKLIN_ADMIN_API = 'https://admin.hlx.page';
 
+const parseHtml = (html) => new window.DOMParser().parseFromString(html, 'text/html');
+
 async function* bulkOperation(urls, fn, options = {}) {
   // eslint-disable-next-line no-restricted-syntax
   for (const url of urls) {
@@ -50,9 +52,27 @@ function getSanitizedTextContent(el) {
     .trim();
 }
 
+async function adminOperation(url, op) {
+  const [ref, repo, org] = new URL(FRANKLIN_DOMAIN).hostname.split('.')[0].split('--');
+  const orgRepoRef = `/${org}/${repo}/${ref}`;
+
+  const { pathname } = new URL(url.href);
+  const response = await fetch(
+    `${FRANKLIN_ADMIN_API}/${op}${orgRepoRef}${pathname.replace(/\/$/, '')}`,
+    { method: 'POST' },
+  );
+  return response.ok && response.text();
+}
+
+async function querySourceDocument(url, selector) {
+  const response = await fetch(url);
+  const document = parseHtml((await response.text()).replace(/<style(\s|>).*?<\/style>/gi, ''));
+  const result = document.querySelectorAll(selector);
+  return result.length ? result : false;
+}
+
 async function diff(url) {
   const { pathname } = new URL(url);
-  const parseHtml = (html) => new window.DOMParser().parseFromString(html, 'text/html');
 
   let response = await fetch(url);
   const original = parseHtml((await response.text()).replace(/<style(\s|>).*?<\/style>/gi, ''));
@@ -66,16 +86,12 @@ async function diff(url) {
   return originalText === franklinText;
 }
 
-async function adminOperation(url, op) {
-  const [ref, repo, org] = new URL(FRANKLIN_DOMAIN).hostname.split('.')[0].split('--');
-  const orgRepoRef = `/${org}/${repo}/${ref}`;
+async function embeds(url) {
+  return querySourceDocument(url, 'blockquote,iframe:is([src*="youtu"])');
+}
 
-  const { pathname } = new URL(url.href);
-  const response = await fetch(
-    `${FRANKLIN_ADMIN_API}/${op}${orgRepoRef}${pathname.replace(/\/$/, '')}`,
-    { method: 'POST' },
-  );
-  return response.ok && response.text();
+async function uat(url) {
+  return querySourceDocument(url, '[href*="https://petplace.uat.petpartners.com/"],[src*="https://petplace.uat.petpartners.com/"]');
 }
 
 async function preview(url) {
