@@ -2,7 +2,8 @@ import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import {
   getCategories,
-  getCategoryForUrl, getCategoryImage,
+  getCategoryForUrl,
+  getCategoryImage,
   getId,
   isMobile,
 } from '../../scripts/scripts.js';
@@ -99,6 +100,10 @@ function createTemplateBlock(main, blockName) {
 }
 
 async function updateMetadata() {
+  const category = await getCategoryForUrl();
+  if (!category) {
+    throw new Error(404);
+  }
   const { Category, Color, Image } = await getCategoryForUrl();
   document.title = document.title.replace(/<Category>/, Category);
   document.head.querySelector('meta[property="og:title"]').content = document.title;
@@ -113,7 +118,7 @@ async function updateMetadata() {
 }
 
 export async function loadEager(main) {
-  updateMetadata();
+  await updateMetadata();
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
   // eslint-disable-next-line no-restricted-globals
