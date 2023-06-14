@@ -20,7 +20,6 @@ const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
-
 /**
  * Loads a script src and provides a callback that fires after
  * the script has loaded.
@@ -451,6 +450,7 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
+    // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
 }
