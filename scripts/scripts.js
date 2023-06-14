@@ -68,7 +68,7 @@ export async function getCategory(name) {
 
 export async function getCategoryForUrl() {
   const { pathname } = window.location;
-  const [category] = pathname.split('/').splice(-2, 1);
+  const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
   return getCategory(category);
 }
 
