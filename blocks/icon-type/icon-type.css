@@ -42,7 +42,7 @@ main .section.icon-type-container {
   text-size-adjust: 30%;
   text-align: center;
   color: #736aa4;
-  font-size: 2.1em;
+  font-size: 0.65rem;
   font-weight: 800;
   align-self: center;
   margin-top: auto;
@@ -65,8 +65,9 @@ main .section.icon-type-container {
     width: 180px;
     height: 150px;
   }
+
   .icon-type-list li div span {
-    font-size: 3em;
+    font-size: 1rem;
   }
 
 }
@@ -80,10 +81,11 @@ main .section.icon-type-container {
   }
 
   .icon-type-list li div span {
-    font-size: 3.5em;
+    font-size: 1.2rem;
   }
 
 }
+
 /* 
 @media(min-width:1216px) {
 
