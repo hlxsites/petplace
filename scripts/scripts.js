@@ -20,6 +20,35 @@ const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
+
+/**
+ * Loads a script src and provides a callback that fires after
+ * the script has loaded.
+ * @param {string} url Full value to use as the script's src attribute.
+ * @param {function} callback Will be invoked once the script has loaded.
+ * @param {*} attributes Simple object containing attribute keys and values
+ *  to add to the script tag.
+ * @returns Script tag representing the script.
+ */
+export function loadScript(url, callback, attributes) {
+  const head = document.querySelector('head');
+  if (!head.querySelector(`script[src="${url}"]`)) {
+    const script = document.createElement('script');
+    script.src = url;
+
+    if (attributes) {
+      Object.keys(attributes).forEach((key) => {
+        script.setAttribute(key, attributes[key]);
+      });
+    }
+
+    head.append(script);
+    script.onload = callback;
+    return script;
+  }
+  return head.querySelector(`script[src="${url}"]`);
+}
+
 export function getId() {
   return Math.random().toString(32).substring(2);
 }
@@ -405,6 +434,18 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  window.PushlySDK = window.PushlySDK || [];
+  function pushly(...args) {
+    window.PushlySDK.push(args);
+  }
+  pushly('load', {
+    domainKey: 'cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq',
+  });
+  loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', null, { async: true });
+  loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-5V3N739', null, { async: true });
+  loadScript('https://cdn.taboola.com/libtrc/unip/1336909/tfa.js', null, { async: true });
+  loadScript('https://script.crazyegg.com/pages/scripts/0104/0422.js', null, { async: true });
 }
 
 /**
