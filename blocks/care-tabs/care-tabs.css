@@ -23,12 +23,12 @@
     transition: transform .7s;
 }
 
-.care-tabs {
+hlx-aria-care-tabs {
     display: flex;
     margin-bottom: 1.25rem;
 }
 
-.care-tabs > div {
+.care-tabs .care-tabs-card-wrapper {
     flex-shrink: 0;
     width: 100vw;
 }
@@ -83,9 +83,6 @@
     padding: 0 20px;
 }
 
-.care-tabs > div:not([active="true"]) .details {
-    visibility: hidden;
-}
 
 .care-tabs .details h3{
     display: none;
@@ -119,11 +116,11 @@
         transform: translateX(0) !important;
     }
 
-    .care-tabs {
+    hlx-aria-care-tabs {
         flex-wrap: wrap;
     }
 
-    .care-tabs > div {
+    .care-tabs .care-tabs-card-wrapper {
         width: inherit;
         display: block;
         flex: 1 1 0;
