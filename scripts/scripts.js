@@ -435,14 +435,6 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  window.PushlySDK = window.PushlySDK || [];
-  function pushly(...args) {
-    window.PushlySDK.push(args);
-  }
-  pushly('load', {
-    domainKey: 'cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq',
-  });
-  loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', null, { async: true });
   loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-5V3N739', null, { async: true });
   loadScript('https://cdn.taboola.com/libtrc/unip/1336909/tfa.js', null, { async: true });
   loadScript('https://script.crazyegg.com/pages/scripts/0104/0422.js', null, { async: true });
