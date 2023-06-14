@@ -24,15 +24,6 @@ export class AriaTabs extends HTMLElement {
         this.setActiveCard(buttons.indexOf(ev.currentTarget));
       });
 
-      // card.addEventListener('click', () => {
-      //   setActiveCard(card, details);
-      // });
-      // card.addEventListener('keypress', (event) => {
-      //   if (event.code === 'Space' || event.code === 'Enter') {
-      //     event.preventDefault();
-      //     setActiveCard(card, details);
-      //   }
-      // });
       tab.addEventListener('keydown', (ev) => {
         switch (ev.key) {
           case 'Home':
@@ -85,19 +76,20 @@ export class AriaTabs extends HTMLElement {
     this.setAttribute('role', 'tablist');
     this.setAttribute('aria-orientation', 'horizontal');
 
-    [...this.children].forEach((child, i) => {
+    [...this.children].forEach((careTabsCardWrapper, i) => {
       const id1 = AriaTabs.getId();
       const id2 = AriaTabs.getId();
-      child.id = id1;
-      child.setAttribute('role', 'tab');
-      child.setAttribute('tabindex', i === this.selectedIndex ? 0 : -1);
-      child.setAttribute('aria-selected', i === this.selectedIndex);
-      child.setAttribute('aria-controls', id2);
+      careTabsCardWrapper.classList.add('care-tabs-card-wrapper');
 
-      child.classList.add('care-tabs-card-wrapper');
-      if (i === 0) child.setAttribute('active', true);
-      const card = child.children[0];
-      const details = child.children[1];
+      careTabsCardWrapper.id = id1;
+      careTabsCardWrapper.setAttribute('role', 'tab');
+      careTabsCardWrapper.setAttribute('tabindex', i === this.selectedIndex ? 0 : -1);
+      careTabsCardWrapper.setAttribute('aria-selected', i === this.selectedIndex);
+      careTabsCardWrapper.setAttribute('aria-controls', id2);
+
+      if (i === 0) careTabsCardWrapper.setAttribute('active', true);
+      const card = careTabsCardWrapper.children[0];
+      const details = careTabsCardWrapper.children[1];
       details.classList.add('details');
       card.classList.add('card');
       if (i === 0) card.classList.add('active');
