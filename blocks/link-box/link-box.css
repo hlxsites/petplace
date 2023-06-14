@@ -1,7 +1,6 @@
 .link-box {
     padding: 30px 16px;
-    /* background-color: var(--color-gray-lighter); */
-    background-color: green;
+    background-color: var(--color-gray-lighter);
     list-style: none;
     margin-bottom: 30px;
   }
@@ -20,7 +19,7 @@
   
   .link-box h4 {
     font-size: 24px;
-    padding-bottom: 24px;
+    margin-bottom:32px;
     color: var(--color-purple-gray);
     font-weight: 800;
   

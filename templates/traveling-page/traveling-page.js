@@ -1,5 +1,7 @@
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 export async function loadEager(main) {
   
+
   console.log("traveling eager");
   console.log(main);
 

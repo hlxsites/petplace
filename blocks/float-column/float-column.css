@@ -1,8 +1,7 @@
-main .section.float-column-container {
+.float-column-container {
   /* display: flex;
   flex-direction: column; */
-  background-color: rgb(247, 247, 247);
-  padding: 70px 16px 70px 16px;
+  padding: 40px 16px 40px 16px;
   /* gap: 1.5rem; */
 }
 
@@ -42,7 +41,7 @@ main .section.float-column-container {
 .float-column h3 {
   color: #736aa4;
   font-size: 1.5rem;
-  /* margin-top: 32px; */
+  margin-top: 32px;
   margin-bottom: 1rem;
   font-weight: 800
 }

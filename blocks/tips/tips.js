@@ -1,22 +1,17 @@
 export default function decorate(block) {
-  // tip icon
-  var iconTextDiv = block.querySelector(".tips.block > div > div");
-  iconTextDiv.classList.add("tip");
+    var iconTextDiv = block.querySelector(".tips.block > div > div");
+    iconTextDiv.classList.add("tip");
   
-  const strongElement = iconTextDiv.querySelector("strong");
-  const divElement = document.createElement("div");
-  divElement.classList.add("tips-icon");
+    const divElement = document.createElement("div");
+    divElement.classList.add("tips-icon");
+    
+    divElement.innerHTML = `<img src="/icons/tips-star.svg" alt="Tips Star Image">`;
   
-  divElement.innerHTML = `<img src="/icons/tips-star.svg" alt="Tips Star Image">`;
+    // Get the parent element.
+    const parentElement = block.querySelector(".tips.block > div");
   
-
-  iconTextDiv.parentNode.insertBefore(divElement, iconTextDiv);
-
-
-//   if (strongElement) {
-//     paragraph.innerHTML = replacedContent;
-//     paragraph.classList.add("tips-text");
-//   }
-
-
-}
+    // Insert the 'tips-icon' at the beginning of the parent element.
+    parentElement.insertBefore(divElement, parentElement.firstChild);
+  }
+  
+  

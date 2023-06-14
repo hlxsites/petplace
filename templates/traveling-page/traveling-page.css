@@ -86,7 +86,9 @@ h1+p {
   padding: 0 24px;
   margin: 0;
 } */
-
+.section.float-column-container{
+  background-color: rgb(247,247,247);
+}
 .columns-container {
   box-sizing: border-box;
   display: block;
@@ -117,7 +119,7 @@ h1+p {
 .traveling-page h2 {
   box-sizing: border-box;
   display: block;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 800;
   line-height: 26.4px;
   color: var(--color-purple-gray);
@@ -125,6 +127,41 @@ h1+p {
   margin: 1.5rem 0;
   padding: 0;
 }
+
+.section.city{
+  display:grid;
+  position:relative;
+  padding-top:40px;
+  background-color: #fff;
+}
+
+.section.city::before{
+  content: "";
+  position: absolute;
+  left: 5%; /* To center the line, use half of the remaining width (100% - 90% = 10%, divided by 2 = 5%). */
+  width: 90%;
+  border-top: 1px solid #ff7d5a;
+}
+
+.section.city h3{
+  font-size: calc(1.325rem + .9vw);
+  line-height: 1.1;
+  color: #3b092c;
+  margin-bottom: 30px;
+  font-weight: 800;
+  background-color: #fff;
+}
+
+.section.city .float-column-image-left,
+.section.city .float-column-image-right{
+  flex-wrap: nowrap;
+  margin-bottom:20px;
+}
+
+.section.city .text{
+  clear:both;
+}
+
 
 @media screen and(min-width:769px) {
   .traveling-page h2 {

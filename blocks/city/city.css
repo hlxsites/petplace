@@ -139,7 +139,7 @@
 /* tips */
 
 /* for city tips */
-.tips-container {
+/* .tips-container {
   display: flex;
   gap: 16px;
   align-items: center;
@@ -150,7 +150,7 @@
   line-height: 24px;
   padding: 20px;
   font-size: 16px;
-}
+} */
 
 .tips-icon {
   display: flex;
