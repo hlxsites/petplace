@@ -478,46 +478,43 @@ a.sr-focusable:focus {
 }
 
 .a11y-quicknav:focus-within {
-  z-index: 1000;
+  z-index: 100;
   background: rgb(0 0 0 / 20%);
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .a11y-quicknav > button {
-  top: 40px;
-  z-index: 1000;
+  top: 30px;
+  z-index: 100;
   transition: top .22s ease;
   opacity: 0;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .a11y-quicknav > button, .a11y-quicknav > button:focus {
   position: absolute;
-  padding: 13px 20px;
+  padding: 18px 20px;
   border-radius: 50px;
   background-color: var(--background-color);
   line-height: 1;
   border: solid 3px rgb(19 110 248 / 80%);
   outline: solid 0 #639af9;
   box-shadow: 0 0 0 5px rgb(19 110 248 / 30%);
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  justify-content: center;
-  text-shadow: 0 0 #27272d;
   text-decoration: none;
-  color: #1f2533;
-  font-size: var(--body-font-size-default);
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
   transform: none;
   text-transform: unset;
 }
 
 .a11y-quicknav > button:focus {
   opacity: 1;
-  top: 20px;
-  z-index: 1001;
+  top: 10px;
+  z-index: 101;
 }
 
-.a11y-quicknav > button .a11y-quicknav-button {
-  font-size: var(--body-font-size-xxs);
+.a11y-quicknav button::after {
+  content: '↵ Enter';
   font-weight: 100;
   text-transform: uppercase;
   text-align: center;
@@ -526,15 +523,8 @@ a.sr-focusable:focus {
   background-color: #146ff8;
   padding: 5px 10px;
   color: var(--background-color);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.a11y-quicknav > button .a11y-quicknav-button .a11y-quicknav-symbol {
-  font-size: var(--body-font-size-default);
-  margin-right: .3rem;
+  margin: 0 0 0 1rem;
+  font-size: var(--body-font-size-xxs);
 }
 
 .slick-arrow {
