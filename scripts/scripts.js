@@ -539,7 +539,6 @@ export async function createBreadCrumbs(crumbData) {
 
   const ol = document.createElement('ol');
   ol.setAttribute('role', 'list');
-  ol.setAttribute('aria-breadcrumb', 'true');
 
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
@@ -564,9 +563,9 @@ export async function createBreadCrumbs(crumbData) {
       linkButton.setAttribute('aria-current', 'page');
       linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--text-color', 'inherit');
+      linkButton.style.setProperty('--text-color', 'var(--text-color-inverted)');
     } else {
-      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--bg-color', 'var(--background-color)');
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', `var(--color-${color})`);
     }
