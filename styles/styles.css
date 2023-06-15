@@ -248,8 +248,14 @@ main a:hover {
 }
 
 /* buttons */
+.button-container {
+  display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
+}
+
 a.button:any-link, button {
-  font-family: var(--body-font-family);
+  font-family: var(--heading-font-family);
   display: inline-block;
   box-sizing: border-box;
   text-decoration: none;
@@ -257,7 +263,7 @@ a.button:any-link, button {
   padding: 5px 30px;
   text-align: center;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
   color: var(--background-color);
   background-color: var(--link-color);
@@ -422,9 +428,10 @@ main .section.well .default-content-wrapper > * {
 
 /* Generic template styles */
 
-.generic :is(h3, h4, h5, h6) {
+.generic :is(h1, h2, h3, h4, h5, h6) {
   margin-top: 1.5rem;
   font-weight: 800;
+  color: inherit;
 }
 
 .generic main p {
@@ -439,10 +446,48 @@ main .section.well .default-content-wrapper > * {
   padding-left: rem;
 }
 
+.generic a.button {
+  margin-top: 0;
+}
+
+.generic .columns > div {
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 600px) {
+  .generic h1 {
+    font-size: 2.667em;
+  }
+
+  .generic main h2 {
+    font-size: 1.75em;
+  }
+}
+
+@media (min-width: 900px) {
+  .generic h1 {
+    font-size: 3.222em;
+  }
+
+  .generic main h2 {
+    font-size: 2em;
+  }
+}
+
 /* Utility classes */
 
 main .centered {
   text-align: center;
+}
+
+main .section.highlight {
+  background: var(--background-color-light);
+}
+
+main .section.highlight.strong {
+  background: var(--background-color-dark);
+  color: var(--text-color-inverted);
 }
 
 .sr-focusable {
