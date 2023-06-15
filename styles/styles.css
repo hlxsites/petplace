@@ -34,6 +34,7 @@
   --color-blue-dark: #5773a8;
   --color-purple: #6f69a8;
   --color-purple-light: #978ce0;
+  --color-purple-light-alt: #8e8199;
   --color-dark-maroon: #5d3450;
   --color-red: #ff6662;
   --color-gold: #d8c46c;
@@ -595,34 +596,41 @@ a.sr-focusable:focus {
 @media (prefers-contrast: more) {
   :root {
     --high-contrast-color: #ab2400;
-    --high-contrast-bgcolor: #ab2400aa;
-    --highlight-color: var(--high-contrast-color);
-    --color-blue: var(--high-contrast-color);
-    --color-blue-light: var(--high-contrast-color); 
-    --color-blue-dark: var(--high-contrast-color);
-    --color-purple: var(--high-contrast-color);
-    --color-purple-light: var(--high-contrast-color);
-    --color-dark-maroon: var(--high-contrast-color);
-    --color-red: var(--high-contrast-color);
-    --color-gold: var(--high-contrast-color);
-    --color-green: var(--high-contrast-color);
-    --color-magenta: var(--high-contrast-color);
-    --color-mauve: var(--high-contrast-color);
-    --color-orange: var(--highlight-color);
-    --color-orange-transparent: var(--high-contrast-bgcolor);
-    --color-blue-transparent: var(--high-contrast-bgcolor);
-    --color-blue-dark-transparent: var(--high-contrast-bgcolor);
-    --color-purple-transparent: var(--high-contrast-bgcolor);
-    --color-purple-light-transparent: var(--high-contrast-bgcolor);
-    --color-red-transparent: var(--high-contrast-bgcolor);
-    --color-gold-transparent: var(--high-contrast-bgcolor);
-    --color-green-transparent: var(--high-contrast-bgcolor);
-    --color-magenta-transparent: var(--high-contrast-bgcolor);
-    --color-mauve-transparent: var(--high-contrast-bgcolor);
+    --highlight-color: #ab2400;
+    --color-blue: var(--color-purple);
+    --color-blue-light: var(--color-purple); 
+    --color-blue-dark: var(--color-purple);
+    --color-purple-light: var(--color-purple);
+    --color-dark-maroon: var(--color-purple);
+    --color-red: var(--color-purple);
+    --color-gold: var(--color-purple);
+    --color-green: var(--color-purple);
+    --color-magenta: var(--color-purple);
+    --color-mauve: var(--color-purple);
+    --color-orange: var(--color-purple);
+    --color-purple-light-alt: var(--color-purple);
+    --color-orange-transparent: var(--color-purple-transparent);
+    --color-blue-transparent: var(--color-purple-transparent);
+    --color-blue-dark-transparent: var(--color-purple-transparent);
+    --color-purple-light-transparent: var(--color-purple-transparent);
+    --color-red-transparent: var(--color-purple-transparent);
+    --color-gold-transparent: var(--color-purple-transparent);
+    --color-green-transparent: var(--color-purple-transparent);
+    --color-magenta-transparent: var(--color-purple-transparent);
+    --color-mauve-transparent: var(--color-purple-transparent);
   }
 
   .default-content-wrapper a {
     text-decoration: underline;
+  }
+
+  .nav-sidebar a,
+  .nav-sidebar-links button[aria-controls]::before {
+    --highlight-color: var(--text-color-inverted);
+  }
+
+  .popular-tags a {
+    --link-color: var(--highlight-color);
   }
 }
 

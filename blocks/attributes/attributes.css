@@ -45,7 +45,7 @@
 .attributes .meter span {
     width: 19%;
     padding-bottom: 2.2%;
-    background-color: #8e8199;
+    background-color: var(--color-purple-light-alt);
     margin-right: .9%
 }
 
