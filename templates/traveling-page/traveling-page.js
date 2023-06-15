@@ -43,8 +43,9 @@ export function loadLazy() {
       section.appendChild(cityIntro);
     }
 
-    // add tips block to the second div of column p3
+    // add tips block to the second div of column city-footer
     const tips = document.querySelector(".section.city .tips-wrapper");
+    console.log("tips", tips);
     document.querySelector(".columns.city-footer.block>div>div:nth-child(2)").appendChild(tips);
   });
 }

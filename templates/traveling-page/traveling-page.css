@@ -218,13 +218,18 @@ h1+p {
     margin: 0 auto;
     max-width: 1344px;
     display: grid;
-    gap: 10px;
+    column-gap: 50px;
+    row-gap:30px;
     grid-template-areas:
       "img1 img1 img1 img1 intro intro intro intro intro intro"
       "fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1"
       "fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2"
     ;
   }
+
+  .section.city p {
+    padding-bottom:12px;
+   }
 
   .section.city>.city-intro {
     grid-area: intro;
@@ -250,11 +255,16 @@ h1+p {
   .section.city .columns.city-footer>div {
     display: grid;
     grid-template-columns: 3fr 7fr;
+    position: relative;
   }
 
   .section.city .tips-wrapper {
     position: absolute;
     bottom: 0;
+  }
+
+  .columns.footer.block {
+    position: relative;
   }
 }
 
