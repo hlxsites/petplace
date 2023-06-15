@@ -28,6 +28,16 @@ export function isMobile() {
   return window.innerWidth < 1024;
 }
 
+async function render404() {
+  const response = await fetch('/404.html');
+  const html = await response.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  document.head.append(doc.querySelector('head>style'));
+  const main = document.querySelector('main');
+  main.innerHTML = doc.querySelector('main').innerHTML;
+  main.classList.add('error');
+}
+
 let categoriesPromise = null;
 async function loadCategories() {
   if (categoriesPromise) {
@@ -68,7 +78,7 @@ export async function getCategory(name) {
 
 export async function getCategoryForUrl() {
   const { pathname } = window.location;
-  const [category] = pathname.split('/').splice(-2, 1);
+  const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
   return getCategory(category);
 }
 
@@ -250,7 +260,7 @@ function buildVideoEmbeds(container) {
  */
 async function decorateTemplate(main) {
   const template = toClassName(getMetadata('template'));
-  if (!template) {
+  if (!template || template === 'generic') {
     return;
   }
 
@@ -264,6 +274,9 @@ async function decorateTemplate(main) {
             await templateModule.loadEager(main);
           }
         } catch (error) {
+          if (error.message === '404') {
+            await render404();
+          }
           // eslint-disable-next-line no-console
           console.log(`failed to load template for ${template}`, error);
         }
@@ -317,12 +330,34 @@ export function decorateScreenReaderOnly(container) {
     });
 }
 
+function createA11yQuickNav(links = []) {
+  const nav = document.createElement('nav');
+  nav.setAttribute('aria-label', 'Skip to specific locations on the page');
+  nav.classList.add('a11y-quicknav', 'sr-focusable');
+  links.forEach((l) => {
+    const button = document.createElement('button');
+    button.setAttribute('aria-label', l.label);
+    button.href = `#${l.id}`;
+    button.innerHTML = l.label;
+    button.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const el = document.getElementById(ev.currentTarget.href.split('#')[1]);
+      el.setAttribute('tabindex', 0);
+      el.focus();
+      el.addEventListener('focusout', () => { el.setAttribute('tabindex', -1); }, { once: true });
+    });
+    nav.append(button);
+  });
+  document.body.prepend(nav);
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
 export async function decorateMain(main) {
+  main.id = 'main';
   loadCategories(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
@@ -386,7 +421,19 @@ async function loadLazy(doc) {
 
   await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   await loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  const footer = doc.querySelector('footer');
+  footer.id = 'footer';
+  loadFooter(footer);
+
+  // identify the first item in the menu
+  const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
+  firstMenu.id = 'menu';
+
+  createA11yQuickNav([
+    { id: 'main', label: 'Skip to Content' },
+    { id: 'menu', label: 'Skip to Menu' },
+    { id: 'footer', label: 'Skip to Footer' },
+  ]);
 
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
