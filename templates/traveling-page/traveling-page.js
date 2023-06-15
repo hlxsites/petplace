@@ -1,8 +1,15 @@
+import { decorateResponsiveImages } from '../../scripts/scripts.js';
 export async function loadEager(main) {
   const links = document.querySelectorAll("a");
   for (let i = 0; i < links.length; i++) {
     links[i].setAttribute("target", "_blank");
   }
+
+  // let picDivs = document.querySelectorAll('.section.city .columns-multi-img-col');
+  // picDivs.forEach((div) => {
+  //   console.log('Element found:', div);
+  //   decorateResponsiveImages(div, [600, 900]);
+  // });
 
   return false;
 }
@@ -45,7 +52,37 @@ export function loadLazy() {
 
     // add tips block to the second div of column city-footer
     const tips = document.querySelector(".section.city .tips-wrapper");
-    console.log("tips", tips);
     document.querySelector(".columns.city-footer.block>div>div:nth-child(2)").appendChild(tips);
+
+
+  //   let picDivs = document.querySelectorAll('div[data-valign="middle"]');
+  //   console.log("picDivs", [...picDivs]);
+  //   // Check if the number of picture children is 2 or more
+  //   picDivs.forEach(function(div) {
+  //     // Check if the number of picture children is 2 or more
+  //     let pictures = div.querySelectorAll('picture');
+  //     if (pictures.length >= 2) {
+  //         // Call function a()
+  //         a();
+  //     }
+  // });
+   
+
   });
+  // let picDivs = document.querySelectorAll('.section.city .columns-multi-img-col');
+  // picDivs.forEach((div) => {
+  //   console.log('Element found:', div);
+  //   decorateResponsiveImages(div, [600, 900]);
+  // });
+
+}
+
+export function loadDelayed() {
+  console.log("traveling load delayed");
+  let picDivs = document.querySelectorAll('.section.city .columns-multi-img-col');
+  picDivs.forEach((div) => {
+    console.log('Element found:', div);
+    decorateResponsiveImages(div, [600, 900]);
+  });
+  
 }

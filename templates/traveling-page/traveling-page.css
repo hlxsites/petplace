@@ -243,14 +243,16 @@ h1+p {
     display: grid;
 }
 
-.columns-img-col {
+.columns-img-col, 
+.columns-multi-img-col {
   position: relative;
-
     height: 100%;
     width: 100%;
 }
 
-.section.city .columns-img-col img {
+.section.city .columns-img-col img, 
+.section.city .columns-multi-img-col img 
+{
     object-fit: fill;
     height: 100%;
     width: 100%;
