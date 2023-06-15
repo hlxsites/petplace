@@ -1,7 +1,7 @@
 /* TODO: padding and magin needed to be adjusted */
 /* Responsive on icons */
 main .section.icon-type-container {
-  padding: 60px 16px;
+  padding: 60px 0px 60px 0px;
 }
 
 .icon-type-list {
@@ -42,7 +42,7 @@ main .section.icon-type-container {
   text-size-adjust: 30%;
   text-align: center;
   color: #736aa4;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 800;
   align-self: center;
   margin-top: auto;
@@ -59,7 +59,7 @@ main .section.icon-type-container {
   border: 0.2px solid #ff7d5a;
 }
 
-@media(min-width:600px) {
+@media(min-width:768px) {
 
   .icon-type-list li div {
     width: 180px;
@@ -73,7 +73,7 @@ main .section.icon-type-container {
 }
 
 
-@media(min-width:900px) {
+@media(min-width:1024px) {
 
   .icon-type-list li div {
     width: 180px;

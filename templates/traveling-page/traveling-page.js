@@ -16,18 +16,18 @@ export function loadLazy() {
   citySections.forEach((section) => {
 
     // remove column wrapper 
-    const column1 = document.querySelector(".columns.p1");
+    const column1 = document.querySelector(".float-column.city-header");
     column1.parentNode.replaceWith(column1);
-    const column2 = document.querySelector(".columns.p2");
+    const column2 = document.querySelector(".float-column.city-middle");
     column2.parentNode.replaceWith(column2);
-    const column3 = document.querySelector(".columns.p3");
+    const column3 = document.querySelector(".float-column.city-footer");
     column3.parentNode.replaceWith(column3);
 
     // combine city name, tags, favors, and txt1 into one div
     const cityName = section.querySelector(".default-content-wrapper");
     const cityTags = section.querySelector(".icon-type-wrapper");
     const cityFavors = section.querySelector(".link-box-wrapper");
-    const cityTxt1 = section.querySelector(".columns.p1.block>div>div:nth-child(2)");
+    const cityTxt1 = section.querySelector(".float-column.city-header.block>div>div:nth-child(2)");
 
     let cityIntro = document.createElement("div");
     cityIntro.classList.add("city-intro");
@@ -45,7 +45,7 @@ export function loadLazy() {
 
     // add tips block to the second div of column p3
     const tips = document.querySelector(".section.city .tips-wrapper");
-    document.querySelector(".columns.p3.block>div>div:nth-child(2)").appendChild(tips);
+    document.querySelector(".float-column.city-footer.block>div>div:nth-child(2)").appendChild(tips);
   });
 
 
