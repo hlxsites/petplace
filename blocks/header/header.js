@@ -38,6 +38,7 @@ export default async function decorate(block) {
 
   const navTools = nav.querySelector('.nav-tools');
   const searchField = document.createElement('input');
+  searchField.setAttribute('aria-label', navTools.textContent);
   searchField.name = 'query';
   searchField.type = 'search';
   searchField.placeholder = navTools.textContent;
