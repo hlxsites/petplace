@@ -235,10 +235,27 @@ h1+p {
     grid-area: intro;
   }
 
+ 
   .section.city .columns.city-header {
     grid-area: img1;
-  }
+    height: 100%;
+    display: grid;
+}
 
+.columns-img-col {
+  position: relative;
+
+    height: 100%;
+    width: 100%;
+}
+
+.columns-img-col img {
+    object-fit: fill;
+    height: 100%;
+    width: 100%;
+}
+  
+  
   .section.city .columns.city-middle {
     grid-area: fcol1;
   }
