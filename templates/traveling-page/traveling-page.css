@@ -132,7 +132,7 @@ h1+p {
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-top: 40px;
+  padding-top: 70px;
   background-color: #fff;
 }
 
@@ -213,7 +213,7 @@ h1+p {
   margin-left: 0.2em;
 }
 
-@media (min-width:1024px) {
+@media (min-width:1200px) {
   .section.city {
     margin: 0 auto;
     max-width: 1344px;
@@ -233,6 +233,7 @@ h1+p {
 
   .section.city>.city-intro {
     grid-area: intro;
+    padding-top:0;
   }
 
  
@@ -249,7 +250,7 @@ h1+p {
     width: 100%;
 }
 
-.columns-img-col img {
+.section.city .columns-img-col img {
     object-fit: fill;
     height: 100%;
     width: 100%;
@@ -285,14 +286,20 @@ h1+p {
   }
 }
 
-@media screen and(min-width:769px) {
+@media screen and(min-width:900px) {
+  main .section.city.icon-type-container.link-box-container.columns-container.tips-container{
+    padding:1rem;
+  }
   .traveling-page h2 {
     font-size: 1.5rem;
     margin: 1.75rem 0;
   }
+  .city-intro {
+    padding-top: 4.5rem;
+}
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 600px) {
   .traveling-page h2 {
     margin: 2rem 0;
   }

@@ -1,6 +1,6 @@
 /* TODO: padding and magin needed to be adjusted */
 /* Responsive on icons */
-main .section.icon-type-container {
+.icon-type-container {
   padding: 60px 0px 60px 0px;
 }
 
@@ -39,8 +39,6 @@ main .section.icon-type-container {
 }
 
 .icon-type-list span {
-  text-size-adjust: 30%;
-  text-align: center;
   color: #736aa4;
   font-size: 0.6rem;
   font-weight: 800;
