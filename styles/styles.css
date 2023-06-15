@@ -155,6 +155,7 @@ h4, h5, h6 {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
   scroll-margin: calc(var(--nav-height) + 1em);
+  text-wrap: balance;
 }
 
 h3, h4, h5, h6 {
@@ -419,6 +420,25 @@ main .section.well .default-content-wrapper > * {
   color: #C5D2E9;
 }
 
+/* Generic template styles */
+
+.generic :is(h3, h4, h5, h6) {
+  margin-top: 1.5rem;
+  font-weight: 800;
+}
+
+.generic main p {
+  margin: 1rem 0;
+}
+
+.generic main a {
+  color: var(--link-color-alt);
+}
+
+.generic main ul {
+  padding-left: rem;
+}
+
 /* Utility classes */
 
 main .centered {
@@ -464,7 +484,6 @@ a.sr-focusable:focus {
   white-space: nowrap;
   width: 1px;
 }
-
 
 
 .slick-arrow {

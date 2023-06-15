@@ -260,7 +260,7 @@ function buildVideoEmbeds(container) {
  */
 async function decorateTemplate(main) {
   const template = toClassName(getMetadata('template'));
-  if (!template) {
+  if (!template || template === 'generic') {
     return;
   }
 
