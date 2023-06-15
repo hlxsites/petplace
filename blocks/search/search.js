@@ -7,6 +7,7 @@ export default async function decorate(block) {
   form.action = '/search';
 
   const input = document.createElement('input');
+  input.setAttribute('aria-label', searchPlaceholder);
   input.className = 'search-input';
   input.type = 'search';
   input.name = 'query';
