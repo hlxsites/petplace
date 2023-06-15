@@ -28,6 +28,16 @@ export function isMobile() {
   return window.innerWidth < 1024;
 }
 
+async function render404() {
+  const response = await fetch('/404.html');
+  const html = await response.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  document.head.append(doc.querySelector('head>style'));
+  const main = document.querySelector('main');
+  main.innerHTML = doc.querySelector('main').innerHTML;
+  main.classList.add('error');
+}
+
 let categoriesPromise = null;
 async function loadCategories() {
   if (categoriesPromise) {
@@ -68,7 +78,7 @@ export async function getCategory(name) {
 
 export async function getCategoryForUrl() {
   const { pathname } = window.location;
-  const [category] = pathname.split('/').splice(-2, 1);
+  const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
   return getCategory(category);
 }
 
@@ -250,7 +260,7 @@ function buildVideoEmbeds(container) {
  */
 async function decorateTemplate(main) {
   const template = toClassName(getMetadata('template'));
-  if (!template) {
+  if (!template || template === 'generic') {
     return;
   }
 
@@ -264,6 +274,9 @@ async function decorateTemplate(main) {
             await templateModule.loadEager(main);
           }
         } catch (error) {
+          if (error.message === '404') {
+            await render404();
+          }
           // eslint-disable-next-line no-console
           console.log(`failed to load template for ${template}`, error);
         }
