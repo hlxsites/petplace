@@ -7,27 +7,27 @@ export async function loadEager(main) {
   return false;
 }
 
+
 export function loadLazy() {
   console.log("traveling load lazy");
-
 
 
   let citySections = document.querySelectorAll('.section.city');
   citySections.forEach((section) => {
 
     // remove column wrapper 
-    const column1 = document.querySelector(".float-column.city-header");
+    const column1 = document.querySelector(".columns.city-header");
     column1.parentNode.replaceWith(column1);
-    const column2 = document.querySelector(".float-column.city-middle");
+    const column2 = document.querySelector(".columns.city-middle");
     column2.parentNode.replaceWith(column2);
-    const column3 = document.querySelector(".float-column.city-footer");
+    const column3 = document.querySelector(".columns.city-footer");
     column3.parentNode.replaceWith(column3);
 
     // combine city name, tags, favors, and txt1 into one div
     const cityName = section.querySelector(".default-content-wrapper");
     const cityTags = section.querySelector(".icon-type-wrapper");
     const cityFavors = section.querySelector(".link-box-wrapper");
-    const cityTxt1 = section.querySelector(".float-column.city-header.block>div>div:nth-child(2)");
+    const cityTxt1 = section.querySelector(".columns.city-header.block>div>div:nth-child(2)");
 
     let cityIntro = document.createElement("div");
     cityIntro.classList.add("city-intro");
@@ -45,33 +45,6 @@ export function loadLazy() {
 
     // add tips block to the second div of column p3
     const tips = document.querySelector(".section.city .tips-wrapper");
-    document.querySelector(".float-column.city-footer.block>div>div:nth-child(2)").appendChild(tips);
+    document.querySelector(".columns.city-footer.block>div>div:nth-child(2)").appendChild(tips);
   });
-
-
-  
-  
-  // Select all h3 elements
-  // const cities = document.querySelectorAll(".city-wrapper h3");
-
-  // const container = document.getElementsByClassName("anchor block")[0];
-
-  // cities.forEach((city) => {
-  //   // Create a new anchor element
-  //   // <a href="#${city.id}">innerText</a>
-  //   const newAnchor = document.createElement('a');
-
-  //   //console.log("xinyi city node is " + city);
-    
-  //   // Set the properties
-  //   newAnchor.href = `#${city.id}`;
-  //   //newAnchor.id = `city2${index}`;
-  //   newAnchor.innerText = city.innerText;
-    
-    
-  //   // Append the city to the anchor
-  //   //newAnchor.appendChild(city.cloneNode(true));
-    
-  //   container.appendChild(newAnchor);
-  // });
 }
