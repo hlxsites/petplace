@@ -338,7 +338,7 @@ function createA11yQuickNav(links = []) {
     const button = document.createElement('button');
     button.setAttribute('aria-label', l.label);
     button.href = `#${l.id}`;
-    button.innerHTML = `${l.label}`;
+    button.innerHTML = l.label;
     button.addEventListener('click', (ev) => {
       ev.preventDefault();
       const el = document.getElementById(ev.currentTarget.href.split('#')[1]);
