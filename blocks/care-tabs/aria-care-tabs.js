@@ -52,27 +52,19 @@ export class AriaTabs extends HTMLElement {
       });
     });
 
-    // if (
-    //   this.attributes.getNamedItem(constants.withControls)
-    //     && this.attributes.getNamedItem(constants.withControls).value === 'true'
-    // ) {
-    //   const [prev, next] = this.querySelectorAll('[role="tablist"] + div > button');
-    //   prev.addEventListener('click', () => {
-    //     this.focusItem(this.selectedIndex - 1);
-    //     this.selectItem(this.querySelectorAll('[role="tab"')[this.selectedIndex]);
-    //     prev.focus();
-    //   });
-    //   next.addEventListener('click', () => {
-    //     this.focusItem(this.selectedIndex + 1);
-    //     this.selectItem(this.querySelectorAll('[role="tab"')[this.selectedIndex]);
-    //     next.focus();
-    //   });
-    // }
+    this.querySelector('.slick-prev').addEventListener('click', () => {
+      slide('prev', this, this.parentElement.parentElement);
+    });
+
+    this.querySelector('.slick-next').addEventListener('click', () => {
+      slide('next', this, this.parentElement.parentElement);
+    });
   }
 
   async decorate() {
     const careTabContainer = this.closest('.care-tabs-container');
-    this.id = AriaTabs.getId();
+    const id = AriaTabs.getId();
+    this.id = id;
     this.setAttribute('role', 'tablist');
     this.setAttribute('aria-orientation', 'horizontal');
 
@@ -118,18 +110,16 @@ export class AriaTabs extends HTMLElement {
     buttonPrev.setAttribute('type', 'button');
     buttonPrev.setAttribute('data-role', 'none');
     buttonPrev.setAttribute('aria-label', 'View previous slide.');
+    buttonPrev.setAttribute('aria-controls', id);
     buttonPrev.classList.add('slick-arrow', 'slick-prev');
-    buttonPrev.addEventListener('click', () => {
-      slide('prev', this, this.parentElement.parentElement);
-    });
+
     const buttonNext = document.createElement('button');
     buttonNext.setAttribute('type', 'button');
     buttonNext.setAttribute('data-role', 'none');
     buttonNext.setAttribute('aria-label', 'View next slide.');
+    buttonPrev.setAttribute('aria-controls', id);
     buttonNext.classList.add('slick-arrow', 'slick-next');
-    buttonNext.addEventListener('click', () => {
-      slide('next', this, this.parentElement.parentElement);
-    });
+
     // Add the button to the DOM
     careTabContainer.prepend(buttonNext);
     careTabContainer.prepend(buttonPrev);
