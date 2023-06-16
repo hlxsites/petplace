@@ -109,7 +109,7 @@ export function getMetadata(name) {
  */
 export function toClassName(name) {
   return typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+    ? name.toLowerCase().replace(/[^0-9a-z]/g, '-').replace(/^-|-$/g, '').replace(/-+/g, '-')
     : '';
 }
 

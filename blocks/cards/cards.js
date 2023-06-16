@@ -1,6 +1,8 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import { getCategories, meterCalls } from '../../scripts/scripts.js';
 
+const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
 async function buildPost(post) {
   const categories = await getCategories();
   const category = categories.data.find((c) => {
@@ -32,7 +34,7 @@ async function buildPost(post) {
   `;
   if (category.Category !== 'Breeds') {
     meterCalls(() => {
-      postCard.querySelector('time').textContent = postDate.toLocaleString('default', { month: 'long' }).concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
+      postCard.querySelector('time').innerHTML = dateFormatter.format(postDate);
     });
   }
   return postCard;
