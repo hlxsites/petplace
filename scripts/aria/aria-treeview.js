@@ -109,10 +109,10 @@ export class AriaTreeView extends HTMLElement {
         list.setAttribute('role', 'group');
         list.setAttribute('aria-labelledby', root.querySelector(`[aria-owns="${list.id}"]`).id);
       });
+      const initialItem = root.querySelector('[role="treeitem"]');
+      initialItem.setAttribute('aria-selected', true);
+      initialItem.setAttribute('tabindex', 0);
     });
-    const initialItem = root.querySelector('[role="treeitem"]');
-    initialItem.setAttribute('aria-selected', true);
-    initialItem.setAttribute('tabindex', 0);
   }
 
   focusItem(item) {
