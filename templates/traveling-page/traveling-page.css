@@ -268,16 +268,12 @@ h1+p {
   .section.city .columns.city-footer>div {
     display: grid;
     grid-template-columns: 3fr 7fr;
-    position: relative;
+    align-items: stretch;
   }
 
-  .section.city .tips-wrapper {
-    position: absolute;
-    bottom: 0;
-  }
-
-  .columns.footer.block {
-    position: relative;
+  .section.city .columns.city-footer .city-footer-text-tip {
+    flex-direction: column;
+    justify-content: space-between;
   }
 }
 
