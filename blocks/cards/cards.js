@@ -45,7 +45,9 @@ export default function decorate(block) {
   const ul = document.createElement('ul');
   [...block.children].forEach(async (row) => {
     if (row.textContent.trim()) {
-      ul.append(await createCard(row));
+      window.requestAnimationFrame(async () => {
+        ul.append(await createCard(row));
+      });
     }
   });
   block.innerHTML = '';
@@ -53,8 +55,10 @@ export default function decorate(block) {
   const observer = new MutationObserver((entries) => {
     entries.forEach((entry) => {
       entry.addedNodes.forEach(async (div) => {
-        ul.append(await createCard(div));
-        div.remove();
+        window.requestAnimationFrame(async () => {
+          ul.append(await createCard(div));
+          div.remove();
+        });
       });
     });
   });
