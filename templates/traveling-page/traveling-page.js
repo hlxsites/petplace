@@ -23,11 +23,11 @@ export function loadLazy() {
   citySections.forEach((section) => {
 
     // remove column wrapper 
-    const column1 = document.querySelector(".columns.city-header");
+    const column1 = section.querySelector(".columns.city-header");
     column1.parentNode.replaceWith(column1);
-    const column2 = document.querySelector(".columns.city-middle");
+    const column2 = section.querySelector(".columns.city-middle");
     column2.parentNode.replaceWith(column2);
-    const column3 = document.querySelector(".columns.city-footer");
+    const column3 = section.querySelector(".columns.city-footer");
     column3.parentNode.replaceWith(column3);
 
     // combine city name, tags, favors, and txt1 into one div
@@ -35,13 +35,14 @@ export function loadLazy() {
     const cityTags = section.querySelector(".icon-type-wrapper");
     const cityFavors = section.querySelector(".link-box-wrapper");
     const cityTxt1 = section.querySelector(".columns.city-header.block>div>div:nth-child(2)");
+    cityTxt1.classList.add("city-txt1");
 
     let cityIntro = document.createElement("div");
     cityIntro.classList.add("city-intro");
     cityIntro.appendChild(cityName);
     cityIntro.appendChild(cityTags);
     cityIntro.appendChild(cityFavors);
-    cityIntro.appendChild(cityTxt1);
+    cityIntro.appendChild(cityTxt1.cloneNode(true));
 
     // insert to the top of the section
     if (section.firstChild) {
@@ -51,8 +52,18 @@ export function loadLazy() {
     }
 
     // add tips block to the second div of column city-footer
-    const tips = document.querySelector(".section.city .tips-wrapper");
-    document.querySelector(".columns.city-footer.block>div>div:nth-child(2)").appendChild(tips);
+    const tips = section.querySelector(".section.city .tips-wrapper");
+    const cityTxt3Wrapper = section.querySelector(".columns.city-footer.block>div>div:nth-child(2)");
+    cityTxt3Wrapper.classList.add("city-footer-text-tips");
+    // const paragraphsWrapper = document.createElement('div');
+    // const paragraphs = cityTxt3Wrapper.getElementsByTagName('p');
+    // console.log(paragraphs);
+    // for (let i = paragraphs.length - 1; i >= 0; i--) {
+    //   console.log(paragraphs[i]);
+    //   paragraphsWrapper.insertBefore(paragraphs[i], paragraphsWrapper.firstChild);
+    // }
+    // cityTxt3Wrapper.appendChild(paragraphsWrapper);
+    cityTxt3Wrapper.appendChild(tips);
 
 
   //   let picDivs = document.querySelectorAll('div[data-valign="middle"]');
@@ -77,12 +88,12 @@ export function loadLazy() {
 
 }
 
-export function loadDelayed() {
-  console.log("traveling load delayed");
-  let picDivs = document.querySelectorAll('.section.city .columns-multi-img-col');
-  picDivs.forEach((div) => {
-    console.log('Element found:', div);
-    decorateResponsiveImages(div, [600, 900]);
-  });
+// export function loadDelayed() {
+//   console.log("traveling load delayed");
+//   let picDivs = document.querySelectorAll('.section.city .columns-multi-img-col');
+//   picDivs.forEach((div) => {
+//     console.log('Element found:', div);
+//     decorateResponsiveImages(div, [600, 900]);
+//   });
   
-}
+// }

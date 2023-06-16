@@ -1,4 +1,5 @@
 .float-column-container {
+  background-color: rgb(247, 247, 247);
   padding: 40px 16px;
 }
 
@@ -36,6 +37,7 @@
     float: left;
     margin-right: 52px;
   }
+
   .float-column-image-right {
     max-width: 400px;
     float: right;
@@ -49,6 +51,7 @@
     float: left;
     margin-right: 52px;
   }
+
   .float-column-image-right {
     max-width: 300px;
     float: right;
