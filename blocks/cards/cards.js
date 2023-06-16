@@ -1,5 +1,5 @@
-import { getCategories } from '../../scripts/scripts.js';
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import { getCategories, meterCalls } from '../../scripts/scripts.js';
 
 async function buildPost(post) {
   const categories = await getCategories();
@@ -31,10 +31,8 @@ async function buildPost(post) {
     </a>
   `;
   if (category.Category !== 'Breeds') {
-    setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        postCard.querySelector('time').textContent = postDate.toLocaleString('default', { month: 'long' }).concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
-      });
+    meterCalls(() => {
+      postCard.querySelector('time').textContent = postDate.toLocaleString('default', { month: 'long' }).concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
     });
   }
   return postCard;
