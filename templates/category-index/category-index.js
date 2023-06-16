@@ -122,6 +122,11 @@ async function updateMetadata() {
 
 export async function loadEager(main) {
   await updateMetadata();
+  const h2 = document.createElement('h2');
+  h2.classList.add('sr-only');
+  h2.textContent = 'Articles';
+  const h1 = main.querySelector('h1');
+  h1.after(h2);
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
   // eslint-disable-next-line no-restricted-globals
