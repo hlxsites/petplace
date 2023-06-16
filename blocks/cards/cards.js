@@ -16,7 +16,6 @@ async function buildPost(post) {
   postCard.classList.add('blog-cards');
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
-  const postDateStr = postDate.getMonth().toString().concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
       <div class="blogs-card-image">
@@ -27,7 +26,7 @@ async function buildPost(post) {
         <a href="${post.path}">
         <div class="blogs-card-body">
         <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
-        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDateStr}">${postDateStr}</time> · ${post.author}</span></p>` : ''}
+        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDate.toISOString().substring(0, 10)}">${postDate.toLocaleDateString()}</time> · ${post.author}</span></p>` : ''}
       </div></a>          
       </div>
     </a>
@@ -35,7 +34,7 @@ async function buildPost(post) {
   if (category.Category !== 'Breeds') {
     meterCalls(() => {
       postCard.querySelector('time').innerHTML = dateFormatter.format(postDate);
-    });
+    }, 1000, 25);
   }
   return postCard;
 }
