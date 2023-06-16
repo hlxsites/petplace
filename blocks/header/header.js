@@ -89,7 +89,9 @@ export default async function decorate(block) {
   });
 
   navSidebar.append(ariaDialog);
-  nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
+  window.requestAnimationFrame(() => {
+    nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
+  });
 
   const sidebarToggle = ariaDialog.querySelector('button');
   sidebarToggle.setAttribute('aria-label', 'Open side bar');
