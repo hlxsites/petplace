@@ -20,6 +20,22 @@ const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
+const queue = [];
+let interval;
+export async function meterCalls(fn, wait = 200, max = 5) {
+  if (!interval) {
+    setTimeout(() => fn.call(null));
+    interval = window.setInterval(() => {
+      queue.splice(0, max).forEach((item) => window.requestAnimationFrame(() => item.call(null)));
+      if (!queue.length) {
+        window.clearInterval(interval);
+      }
+    }, wait);
+  } else {
+    queue.push(fn);
+  }
+}
+
 export function getId() {
   return Math.random().toString(32).substring(2);
 }
@@ -48,6 +64,8 @@ async function loadCategories() {
       .then((res) => res.json())
       .then((json) => {
         window.sessionStorage.setItem('categories', JSON.stringify(json));
+        window.hlx.data = window.hlx.data || [];
+        window.hlx.data.categories = json;
       })
       .catch((err) => {
         window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
@@ -61,8 +79,15 @@ async function loadCategories() {
 
 export async function getCategories() {
   try {
+    if (window.hlx?.data?.categories) {
+      return window.hlx.data.categories;
+    }
+    const categories = window.sessionStorage.getItem('categories');
+    if (categories) {
+      return JSON.parse(categories);
+    }
     await loadCategories();
-    return JSON.parse(window.sessionStorage.getItem('categories'));
+    return window.hlx.data.categories;
   } catch (err) {
     return null;
   }
