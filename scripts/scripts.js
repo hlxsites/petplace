@@ -20,6 +20,22 @@ const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
+const queue = [];
+let interval;
+export async function meterCalls(fn, wait = 200, max = 5) {
+  if (!interval) {
+    setTimeout(() => fn.call(null));
+    interval = window.setInterval(() => {
+      queue.splice(0, max).forEach((item) => window.requestAnimationFrame(() => item.call(null)));
+      if (!queue.length) {
+        window.clearInterval(interval);
+      }
+    }, wait);
+  } else {
+    queue.push(fn);
+  }
+}
+
 export function getId() {
   return Math.random().toString(32).substring(2);
 }
