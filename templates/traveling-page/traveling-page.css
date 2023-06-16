@@ -208,8 +208,10 @@ h1+p {
     display: grid;
     column-gap: 50px;
     row-gap: 30px;
+
+    align-items: stretch;
     grid-template-areas:
-      "img1 img1 img1 img1 intro intro intro intro intro intro"
+      "img1 img1 img1 img1 img1 intro intro intro intro intro"
       "fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1 fcol1"
       "fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2 fcol2"
     ;
@@ -239,18 +241,6 @@ h1+p {
     display: none;
   }
 
-  .columns-img-col {
-    position: relative;
-    height: 100%;
-    width: 100%;
-  }
-
-  .section.city .columns-img-col img {
-    object-fit: fill;
-    height: 100%;
-    width: 100%;
-  }
-
 
   .section.city .columns.city-middle {
     grid-area: fcol1;
@@ -260,9 +250,14 @@ h1+p {
     grid-area: fcol2;
   }
 
+  .section.city .columns.city-header>div {
+    align-items: stretch;
+  }
+
   .section.city .columns.city-middle>div {
     display: grid;
     grid-template-columns: 7fr 3fr;
+    align-items: stretch;
   }
 
   .section.city .columns.city-footer>div {

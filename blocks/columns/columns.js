@@ -10,11 +10,6 @@ export default function decorate(block) {
       const pic = col.querySelector('picture');
       if (pic) {
         const picWrapper = pic.closest('div');
-
-        // if mulitple pictures found, choose the most suitable one
-        if (picWrapper && picWrapper.children.length > 1) {
-          decorateResponsiveImages(picWrapper, [600, 900]);
-        }
         if (picWrapper && picWrapper.children.length === 1) {
           picWrapper.classList.add('columns-img-col');
         }
