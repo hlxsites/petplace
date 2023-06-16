@@ -86,7 +86,7 @@ export class AriaTreeView extends HTMLElement {
     root.setAttribute('role', 'tree');
     root.setAttribute('aria-label', this.attributes.getNamedItem('label')?.value || '');
     root.setAttribute('aria-multiselectable', 'false');
-    window.requestAnimationFrame(() => {
+    window.setTimeout(() => {
       root.querySelectorAll('li').forEach((li) => {
         li.setAttribute('role', 'none');
       });
