@@ -1,5 +1,5 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
-import { getCategories, meterCalls } from '../../scripts/scripts.js';
+import { getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -26,16 +26,11 @@ async function buildPost(post) {
         <a href="${post.path}">
         <div class="blogs-card-body">
         <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
-        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDate.toISOString().substring(0, 10)}">${postDate.toLocaleDateString()}</time> · ${post.author}</span></p>` : ''}
+        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · ${post.author}</span></p>` : ''}
       </div></a>          
       </div>
     </a>
   `;
-  if (category.Category !== 'Breeds') {
-    meterCalls(() => {
-      postCard.querySelector('time').innerHTML = dateFormatter.format(postDate);
-    }, 1000, 25);
-  }
   return postCard;
 }
 
