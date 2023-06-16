@@ -71,10 +71,11 @@ export default async function decorate(block) {
   const dialogContent = document.createElement('div');
   dialogContent.innerHTML = html;
 
+  const treeViewWrapper = dialogContent.querySelector('ul').parentElement;
   const ariaTreeView = document.createElement(AriaTreeView.tagName);
   ariaTreeView.setAttribute('label', 'Secondary Navigation');
-  ariaTreeView.innerHTML = dialogContent.querySelector('ul').parentElement.innerHTML;
-  dialogContent.querySelector('ul').parentElement.replaceWith(ariaTreeView);
+  ariaTreeView.append(dialogContent.querySelector('ul'));
+  treeViewWrapper.replaceWith(ariaTreeView);
   ariaDialog.append(dialogContent);
 
   const sidebarSearch = document.createElement('div');
