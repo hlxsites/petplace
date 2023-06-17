@@ -23,23 +23,24 @@ export default function decorate(block) {
       })
       .then(function (svgContent) {
        // Create a new <div> element to contain the image and the text
-       const divElement = document.createElement("div");
+       const iconItem = document.createElement("icon-item");
         // Create a new <img> element with the SVG content
         const imgElement = document.createElement("img");
         imgElement.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
           svgContent
         )}`;
+        // createOptimizedPicture(imgElement.src, imgElement.alt, false, [{ width: IMAGE_WIDTH }]);
         const pElement = document.createElement("span");
         pElement.textContent = textContent;
 
         // Replace the text content with the loaded SVG
         // liElement.textContent = "";
         // liElement.appendChild(imgElement);
-        divElement.appendChild(imgElement);
-        divElement.appendChild(pElement);
+        iconItem.appendChild(imgElement);
+        iconItem.appendChild(pElement);
 
         liElement.textContent = "";
-        liElement.appendChild(divElement);
+        liElement.appendChild(iconItem);
       })
       .catch(function (error) {
         console.error("Error loading SVG file:", error);

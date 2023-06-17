@@ -11,7 +11,7 @@ export default function decorate(block) {
         if(isPicture(item)){
             const direction = (index % 2 === 0 )? "left":"right";
             item.classList.add(`float-column-image-${direction}`);
-            decorateResponsiveImages(item);
+            decorateResponsiveImages(item, [600, 900]);
         } else {
             item.classList.add("text");
         }

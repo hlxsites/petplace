@@ -1,4 +1,5 @@
 .float-column-container {
+  display: flex;
   background-color: rgb(247, 247, 247);
   padding: 40px 16px;
 }
@@ -18,15 +19,14 @@
 
 .float-column .text p {
   text-align: left;
-  line-height: 25.2px;
-  font-size: 18px;
-  margin-bottom: 12px;
+  line-height: 1.5;
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
 }
 
 .float-column h3 {
   color: #736aa4;
   font-size: 1.5rem;
-  margin-top: 32px;
   margin-bottom: 1rem;
   font-weight: 800;
 }

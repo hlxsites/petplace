@@ -34,54 +34,37 @@ export function loadLazy() {
     const cityName = section.querySelector(".default-content-wrapper");
     const cityTags = section.querySelector(".icon-type-wrapper");
     const cityFavors = section.querySelector(".link-box-wrapper");
+    const cityImg1 = section.querySelector(".columns.city-header.block>div>div:nth-child(1)");
+    cityImg1.classList.add("city-header-img");
     const cityTxt1 = section.querySelector(".columns.city-header.block>div>div:nth-child(2)");
-    cityTxt1.classList.add("city-txt1");
-
-    let cityIntro = document.createElement("div");
-    cityIntro.classList.add("city-intro");
-    cityIntro.appendChild(cityName);
-    cityIntro.appendChild(cityTags);
-    cityIntro.appendChild(cityFavors);
-    cityIntro.appendChild(cityTxt1.cloneNode(true));
-
-    // insert to the top of the section
-    if (section.firstChild) {
-      section.insertBefore(cityIntro, section.firstChild);
-    } else {
-      section.appendChild(cityIntro);
-    }
-
-    // wrap tips-wrapper and city-txt3-wrapper into one div
+    cityTxt1.classList.add("city-header-txt");
+    const cityTxt2 = section.querySelector(".columns.city-middle.block>div>div:nth-child(1)");
+    cityTxt2.classList.add("city-middle-txt");
+    const cityImg2 = section.querySelector(".columns.city-middle.block>div>div:nth-child(2)");
+    cityImg2.classList.add("city-middle-img");
+    const cityImg3 = section.querySelector(".columns.city-footer.block>div>div:nth-child(1)");
+    cityImg3.classList.add("city-footer-img");
+    const cityTxt3 = section.querySelector(".columns.city-footer.block>div>div:nth-child(2)"); 
+    cityTxt3.classList.add("city-footer-txt");
     const tips = section.querySelector(".section.city .tips-wrapper");
-    const cityTxt3Wrapper = section.querySelector(".columns.city-footer.block>div>div:nth-child(2)");
-    cityTxt3Wrapper.classList.add("city-footer-text");
-    const cityTxt3TipsWrapper = document.createElement('div');
-    cityTxt3TipsWrapper.classList.add("city-footer-text-tips");
-    cityTxt3TipsWrapper.appendChild(cityTxt3Wrapper);
-    cityTxt3TipsWrapper.appendChild(tips);
-    section.querySelector(".columns.city-footer.block>div").appendChild(cityTxt3TipsWrapper);
+
+    let arrangedCitySection = document.createElement("div");
+    arrangedCitySection.classList.add("section", "city");
 
 
-  //   let picDivs = document.querySelectorAll('div[data-valign="middle"]');
-  //   console.log("picDivs", [...picDivs]);
-  //   // Check if the number of picture children is 2 or more
-  //   picDivs.forEach(function(div) {
-  //     // Check if the number of picture children is 2 or more
-  //     let pictures = div.querySelectorAll('picture');
-  //     if (pictures.length >= 2) {
-  //         // Call function a()
-  //         a();
-  //     }
-  // });
-   
+    arrangedCitySection.appendChild(cityName);
+    arrangedCitySection.appendChild(cityTags);
+    arrangedCitySection.appendChild(cityFavors);
+    arrangedCitySection.appendChild(cityTxt1);
+    arrangedCitySection.appendChild(cityTxt2);
+    arrangedCitySection.appendChild(cityTxt3);
+    arrangedCitySection.appendChild(cityImg1);
+    arrangedCitySection.appendChild(cityImg2);
+    arrangedCitySection.appendChild(cityImg3);
+    arrangedCitySection.appendChild(tips);
 
+    section.replaceWith(arrangedCitySection);
   });
-  // let picDivs = document.querySelectorAll('.section.city .columns-multi-img-col');
-  // picDivs.forEach((div) => {
-  //   console.log('Element found:', div);
-  //   decorateResponsiveImages(div, [600, 900]);
-  // });
-
 }
 
 // export function loadDelayed() {
