@@ -17,7 +17,7 @@
   --highlight-color: #ff7d5a;
   --link-color: var(--highlight-color);
   --link-hover-color: var(--highlight-color);
-  --link-color-alt: #678fda;
+  --link-color-alt: var(--color-blue);
   --link-hover-color-alt: var(--text-color-alt);
   --background-color: #fff;
   --background-color-light: #f2f6fc;
@@ -481,7 +481,7 @@ main .section.well .default-content-wrapper>* {
   margin-top: 0;
 }
 
-.generic .columns > div {
+.generic .columns>div {
   align-items: center;
   gap: 1.5rem;
 }
@@ -576,7 +576,7 @@ a.sr-focusable:focus {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.a11y-quicknav > button {
+.a11y-quicknav>button {
   top: 30px;
   z-index: 100;
   transition: top .22s ease;
@@ -584,7 +584,8 @@ a.sr-focusable:focus {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.a11y-quicknav > button, .a11y-quicknav > button:focus {
+.a11y-quicknav>button,
+.a11y-quicknav>button:focus {
   position: absolute;
   padding: 18px 20px;
   border-radius: 50px;
@@ -600,7 +601,7 @@ a.sr-focusable:focus {
   text-transform: unset;
 }
 
-.a11y-quicknav > button:focus {
+.a11y-quicknav>button:focus {
   opacity: 1;
   top: 10px;
   z-index: 101;

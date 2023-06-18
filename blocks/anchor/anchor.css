@@ -1,25 +1,25 @@
-.anchor-container {
-  padding: 60px, 16px;
+.section.anchor-container {
+  padding: 3.5rem 1rem;
 }
 
 .anchor {
-  margin-bottom: 1rem;
   justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .anchor ul {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  padding: 0;
+  flex-wrap: wrap;
   gap: 0 1rem;
   list-style: none;
+  padding: 0;
 }
 
 .anchor a {
   color: var(--color-purple-gray);
-  font-weight: 800;
   font-size: 1rem;
+  font-weight: 800;
   line-height: 2rem;
   transition: all .35s ease;
 }
@@ -29,66 +29,57 @@
   text-decoration: underline;
 }
 
+.anchor-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
 
 .anchor-list a:not(:last-child)::after {
   content: "";
   position: relative;
+  border: 0.1px solid #ff7d5a;
   width: 0.1px;
   height: 100%;
   top: 0;
   right: -8px;
-  border: 0.2px solid #ff7d5a;
 }
 
-.anchor-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 28px;
-  align-items: center;
-  justify-content: center;
-}
-
-.anchor-container h1 {
+.anchor-container h1,
+.anchor-container p {
   display: block;
-  font-family: Raleway, sans-serif;
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: 35.2px;
-  color: rgb(59, 9, 44);
-
   text-align: center;
   text-rendering: optimizelegibility;
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
-
   margin: 0;
-  margin-bottom: 24px;
-
   padding: 0;
+}
+
+.anchor-container h1 {
+  font-family: Raleway, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 2.2rem;
+  color: rgb(59, 9, 44);
+  margin-bottom: 24px;
 }
 
 .anchor-container p {
   box-sizing: border-box;
-  display: block;
   font-family: "Libre Franklin", sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 24px;
-  text-align: center;
-  text-rendering: optimizelegibility;
-  text-size-adjust: 100%;
+  line-height: 1.5rem;
   color: rgb(40, 6, 30);
-
-  margin: 0px;
-  margin-block-end: 12px;
+  margin-block-end: 0.75rem;
   margin-block-start: 0px;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
   margin-inline-end: 0px;
   margin-inline-start: 0px;
-
-  padding: 0px;
-
 }
 
 .anchor>div>div {

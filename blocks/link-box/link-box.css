@@ -1,33 +1,33 @@
 .link-box {
-  padding: 2.8rem 2rem;
-  background-color: var(--color-gray-lighter);
   list-style: none;
+  padding: 2.8rem 1.25rem;
   margin-bottom: 1.8rem;
+  background-color: var(--color-gray-lighter);
 }
 
 .link-box ul {
-  list-style: none;
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 .link-box li {
   margin-left: 0;
   margin-bottom: 0.8rem;
-  padding: 0px;
+  padding: 0;
+  font-size: 1rem;
 }
 
 .link-box h4 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color: var(--color-purple-gray);
+  font-size: 1.5rem;
   font-weight: 800;
-
+  color: var(--color-purple-gray);
+  margin-bottom: 2rem;
 }
 
 .link-box a {
+  color: var(--link-color-alt);
   text-decoration: underline;
-  color: rgb(0, 155, 216);
   cursor: pointer;
 }
 
@@ -43,5 +43,4 @@
 .link-box span {
   font-size: 1rem;
   font-weight: 400;
-
 }
