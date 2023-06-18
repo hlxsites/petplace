@@ -7,7 +7,7 @@
     font-size: 16px;
 }
 
-.tips.block > div {
+.tips.block>div {
     display: flex;
     align-items: center;
 }

@@ -184,6 +184,7 @@
 }
 
 .section.city .tips-wrapper {
+  width: 95%;
   grid-area: tips;
 }
 
@@ -197,35 +198,102 @@
   margin-bottom: 1.8rem;
 }
 
-.section.city {
+.section.city,
+.section.city.backup-layout {
   display: grid;
   margin: auto;
   grid-template-areas:
-    "name name"
-    "icons icons"
-    "links links"
-    "img1 img1"
-    "txt1 txt1"
-    "txt2 txt2"
-    "img2 img3"
-    "txt3 txt3"
-    "tips tips";
+    "name"
+    "icons"
+    "links"
+    "img1"
+    "txt1"
+    "txt2"
+    "img2"
+    "img3"
+    "txt3"
+    "tips";
 }
 
-.section.city .city-header-img img,
-.section.city .city-middle-img img,
+.section.city .city-header-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section.city .city-middle-img img {
+  width: 100%;
+}
+
 .section.city .city-footer-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-@media (min-width:1200px) {
+.section.city p:not(:last-child) {
+  margin-bottom: 0.4rem;
+
+}
+
+
+@media (min-width:600px) {
+
   .section.city {
+    grid-template-areas:
+      "name name"
+      "icons icons"
+      "links links"
+      "img1 img1"
+      "txt1 txt1"
+      "txt2 txt2"
+      "img2 img3"
+      "txt3 txt3"
+      "tips tips";
+  }
+
+  .section.city.backup-layout {
+    column-gap: 2.2rem;
+    grid-template-areas:
+      "name name name name name name name name name name"
+      "icons icons icons icons icons icons icons icons icons icons"
+      "links links links links links links links links links links"
+      "img1 img1 img1 img1 img1 img1 img1 img1 img1 img1"
+      "txt1 txt1 txt1 txt1 txt1 txt1 txt1 txt1 txt1 txt1"
+      "txt2 txt2 txt2 txt2 txt2 txt2 txt2 txt2 txt2 txt2 "
+      "img2 img2 img2 img2 txt3 txt3 txt3 txt3 txt3 txt3"
+      "img3 img3 img3 img3 txt3 txt3 txt3 txt3 txt3 txt3"
+      "tips tips tips tips tips tips tips tips tips tips";
+  }
+
+  .traveling-page h2 {
+    font-size: 1.5rem;
+    margin: 1.75rem 0;
+  }
+
+  .city .icon-type-list icon-item {
+    height: 2.1rem;
+  }
+
+  .section.city .city-header-img {
+    width: 100%;
+    height: 40vh;
+  }
+
+  .section.city .city-middle-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (min-width:1200px) {
+
+  .section.city,
+  .section.city.backup-layout {
     max-width: 1344px;
     padding-top: 4.5rem;
     padding-bottom: 4.5rem;
-    display: grid;
     column-gap: 4rem;
     grid-template-areas:
       "img1 img1 img1 img1 img1 name name name name name name name"
@@ -253,15 +321,9 @@
   .city .icon-type-list icon-item {
     height: 35px;
   }
-}
 
-@media (min-width:600px) {
-  .traveling-page h2 {
-    font-size: 1.5rem;
-    margin: 1.75rem 0;
-  }
-
-  .city .icon-type-list icon-item {
-    height: 2.1rem;
+  .section.city .city-header-img {
+    min-height: 95%;
+    object-fit: cover;
   }
 }

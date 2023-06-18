@@ -30,7 +30,7 @@ export function loadLazy() {
     const column3 = section.querySelector(".columns.city-footer");
     column3.parentNode.replaceWith(column3);
 
-    // combine city name, tags, favors, and txt1 into one div
+    // get all esstential elements
     const cityName = section.querySelector(".default-content-wrapper");
     const cityTags = section.querySelector(".icon-type-wrapper");
     const cityFavors = section.querySelector(".link-box-wrapper");
@@ -48,22 +48,33 @@ export function loadLazy() {
     cityTxt3.classList.add("city-footer-txt");
     const tips = section.querySelector(".section.city .tips-wrapper");
 
+
+    // rearrange the elements under section city
     let arrangedCitySection = document.createElement("div");
     arrangedCitySection.classList.add("section", "city");
-
 
     arrangedCitySection.appendChild(cityName);
     arrangedCitySection.appendChild(cityTags);
     arrangedCitySection.appendChild(cityFavors);
+    arrangedCitySection.appendChild(cityImg1);
     arrangedCitySection.appendChild(cityTxt1);
     arrangedCitySection.appendChild(cityTxt2);
-    arrangedCitySection.appendChild(cityTxt3);
-    arrangedCitySection.appendChild(cityImg1);
     arrangedCitySection.appendChild(cityImg2);
     arrangedCitySection.appendChild(cityImg3);
+    arrangedCitySection.appendChild(cityTxt3);
     arrangedCitySection.appendChild(tips);
 
     section.replaceWith(arrangedCitySection);
+
+    // pick the best grid area layout by image2 wdith/height
+    const img2 = cityImg2.querySelector("img");
+    const width = img2.getAttribute("width");
+    const height = img2.getAttribute("height");
+    if (width / height > 2) {
+      console.log(cityName);
+      arrangedCitySection.classList.add("backup-layout");
+    }
+    
   });
 }
 
