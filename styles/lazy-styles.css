@@ -62,6 +62,7 @@
   font-size: var(--body-font-size-s);
   line-height: 1.5rem;
   isolation: isolate;
+  scrollbar-gutter: stable;
 }
 
 .nav-sidebar [role="dialog"][aria-hidden="false"]::before {
