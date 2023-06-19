@@ -32,6 +32,9 @@
 }
 
 @media (min-width: 600px) {
+  .float-column h3 {
+    margin-top: 0;
+  }
 
   .float-column-image-left,
   .float-column-image-right {
@@ -39,13 +42,12 @@
     float: left;
     margin-right: 3.25rem;
   }
-
-  .float-column h3 {
-    margin-top: 0;
-  }
 }
 
 @media (min-width: 900px) {
+  .float-column h3 {
+    margin-top: 0;
+  }
 
   .float-column-image-left,
   .float-column-image-right {

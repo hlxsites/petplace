@@ -1,2 +1,3 @@
-export default function decroate(block){
-  }
+export default function decroate() {
+
+}
