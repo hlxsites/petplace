@@ -16,7 +16,7 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
