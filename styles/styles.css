@@ -646,6 +646,7 @@ a.sr-focusable:focus {
     width: 48px;
     border-radius: 24px;
     display: block;
+    z-index: 99;
 }
 
 .slick-prev {
@@ -671,7 +672,6 @@ a.sr-focusable:focus {
 
 .slick-next {
     right: calc(50% - 80px);
-    z-index: 99;
 }
 
 /* Responsive overrides */
