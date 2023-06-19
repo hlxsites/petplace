@@ -34,6 +34,8 @@ export default function decorate(block) {
         imgElement.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
           svgContent,
         )}`;
+        // Add the alt attribute to the imgElement
+        imgElement.alt = textContent;
         // createOptimizedPicture(imgElement.src, imgElement.alt, false, [{ width: IMAGE_WIDTH }]);
         const pElement = document.createElement('span');
         pElement.textContent = textContent;
