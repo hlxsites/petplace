@@ -3,6 +3,7 @@
     text-align: center;
     padding: 0;
     position: relative;
+    overflow: hidden;
 }
 
 .care-tabs-container h2 span:last-child{
@@ -22,15 +23,17 @@
     transition: transform .7s;
 }
 
-.care-tabs {
+hlx-aria-care-tabs {
     display: flex;
     margin-bottom: 1.25rem;
 }
 
-.care-tabs > div{
+.care-tabs .care-tabs-card-wrapper {
     flex-shrink: 0;
     width: 100vw;
 }
+
+
 
 .care-tabs .card {
     display: flex;
@@ -80,6 +83,7 @@
     padding: 0 20px;
 }
 
+
 .care-tabs .details h3{
     display: none;
 }
@@ -112,11 +116,11 @@
         transform: translateX(0) !important;
     }
 
-    .care-tabs {
+    hlx-aria-care-tabs {
         flex-wrap: wrap;
     }
 
-    .care-tabs > div {
+    .care-tabs .care-tabs-card-wrapper {
         width: inherit;
         display: block;
         flex: 1 1 0;

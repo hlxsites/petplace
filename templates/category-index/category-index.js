@@ -6,6 +6,7 @@ import {
   getCategoryImage,
   getId,
   isMobile,
+  meterCalls,
 } from '../../scripts/scripts.js';
 import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
@@ -18,15 +19,17 @@ async function renderArticles(articles) {
     const div = document.createElement('div');
     div.textContent = article.path;
     div.dataset.json = JSON.stringify(article);
-    block.append(div);
+    meterCalls(() => block.append(div));
   }
   document.querySelector('.pagination').dataset.total = res.total();
 }
 
 async function getArticles() {
   const { data } = await getCategories();
-  const applicableCategories = data.filter((c) => c.Path === window.location.pathname
-    || c['Parent Path'].startsWith(window.location.pathname));
+  const applicableCategories = data
+    .filter((c) => c.Path === window.location.pathname
+      || c['Parent Path'].startsWith(window.location.pathname))
+    .map((c) => ({ id: c.Slug, name: toClassName(c.Category) }));
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
@@ -35,10 +38,10 @@ async function getArticles() {
     .withTotal(true)
     .filter((article) => {
       const articleCategories = article.category !== '0'
-        ? article.category.split(',').map((c) => c.trim().toLowerCase())
+        ? article.category.split(',').map((c) => toClassName(c))
         : article.path.split('/').splice(-2, 1);
-      return applicableCategories.some((c) => articleCategories.includes(c.Category.toLowerCase())
-        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
+      return applicableCategories.some((c) => articleCategories.includes(c.name)
+        || articleCategories.includes(c.id));
     })
     .slice(offset, offset + limit);
 }
@@ -119,6 +122,11 @@ async function updateMetadata() {
 
 export async function loadEager(main) {
   await updateMetadata();
+  const h2 = document.createElement('h2');
+  h2.classList.add('sr-only');
+  h2.textContent = 'Articles';
+  const h1 = main.querySelector('h1');
+  h1.after(h2);
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
   // eslint-disable-next-line no-restricted-globals
