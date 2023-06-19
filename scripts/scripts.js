@@ -17,6 +17,7 @@ import {
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
@@ -426,6 +427,9 @@ export async function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
+  const gtmFallback = document.createElement('noscript');
+  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+  doc.body.prepend(gtmFallback);
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
@@ -493,7 +497,7 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-5V3N739', null, { async: true });
+  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
 }
 
 /**
@@ -653,5 +657,12 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed(document);
 }
+
+// Initialize the data layer and mark the Google Tag Manager start event
+window.dataLayer ||= [];
+window.dataLayer.push({
+  'gtm.start': Date.now(),
+  event: 'gtm.js',
+});
 
 loadPage();
