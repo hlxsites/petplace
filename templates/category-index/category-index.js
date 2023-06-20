@@ -13,13 +13,17 @@ import { render as renderCategories } from '../../blocks/sub-categories/sub-cate
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
+  for (let i = 0; i < 25; i += 1) {
+    const div = document.createElement('div');
+    div.classList.add('skeleton');
+    block.append(div);
+  }
   const res = await articles;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = document.createElement('div');
-    div.textContent = article.path;
     div.dataset.json = JSON.stringify(article);
-    meterCalls(() => block.append(div));
+    meterCalls(() => block.append(div), 10000, 1);
   }
   document.querySelector('.pagination').dataset.total = res.total();
 }

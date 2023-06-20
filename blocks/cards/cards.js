@@ -36,15 +36,23 @@ async function buildPost(post) {
 
 async function createCard(row) {
   const li = document.createElement('li');
-  const post = JSON.parse(row.dataset.json);
-  li.append(await buildPost(post));
+  if (row.dataset.json) {
+    const post = JSON.parse(row.dataset.json);
+    li.append(await buildPost(post));
+  } else {
+    li.append(row);
+  }
   return li;
 }
 
 export default function decorate(block) {
   const ul = document.createElement('ul');
   [...block.children].forEach(async (row) => {
-    if (row.textContent.trim()) {
+    if (row.classList.contains('skeleton')) {
+      ul.append(await createCard(row));
+    } else if (ul.querySelector('.skeleton')) {
+      ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(row));
+    } else if (row.textContent.trim()) {
       ul.append(await createCard(row));
     }
   });
@@ -53,7 +61,13 @@ export default function decorate(block) {
   const observer = new MutationObserver((entries) => {
     entries.forEach((entry) => {
       entry.addedNodes.forEach(async (div) => {
-        ul.append(await createCard(div));
+        if (div.classList.contains('skeleton')) {
+          ul.append(await createCard(div));
+        } else if (ul.querySelector('.skeleton')) {
+          ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div));
+        } else if (div.textContent.trim()) {
+          ul.append(await createCard(div));
+        }
         div.remove();
       });
     });
