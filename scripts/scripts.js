@@ -16,7 +16,7 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
@@ -625,7 +625,7 @@ export async function createBreadCrumbs(crumbData) {
     const li = document.createElement('li');
     if (i > 0) {
       const chevron = document.createElement('span');
-      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      chevron.classList.add('icon', 'icon-chevron');
       li.append(chevron);
     }
     const linkButton = document.createElement('a');
