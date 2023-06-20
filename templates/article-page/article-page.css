@@ -36,6 +36,7 @@
 }
 
 .article-page .hero-container .hero {
+  padding-top: 4rem;
   overflow: hidden;
 }
 
@@ -44,6 +45,16 @@
   font-weight: 800;
   line-height: 1.1;
   margin: 0 0 1rem;
+}
+
+.article-page .breadcrumb {
+  position: absolute;
+  top: 1rem;
+}
+
+.article-page .breadcrumb .icon-chevron {
+  fill: var(--text-color);
+  margin: 0;
 }
 
 .article-page .section:not(.hero-container, .article-template-autoblock) {
@@ -153,6 +164,15 @@
 
   .article-page .hero-container + .section > .default-content-wrapper:first-child > h2:first-child {
     margin-top: 0;
+  }
+
+  .article-page .breadcrumb {
+    position: relative;
+    top: unset;
+  }
+
+  .article-page .breadcrumb .icon-chevron {
+    fill: var(--text-color-inverted);
   }
 
   .article-page .article-author-container {

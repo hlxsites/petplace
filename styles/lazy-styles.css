@@ -205,7 +205,7 @@
   height: 20px;
   top: 10px;
   right: 1rem;
-  background: #fff;
+  background: var(--background-color);
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-mask: center / contain no-repeat url('../../icons/search.svg');
   mask: center / contain no-repeat url('../../icons/search.svg');
@@ -216,7 +216,7 @@
   width: 100%;
   padding-left: 1rem;
   padding-right: 40px;
-  background: #ff7d5a;
+  background: var(--highlight-color);
   border: none;
   border-radius: 50px;
   color: white;
@@ -235,4 +235,10 @@
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-mask: url('../icons/close.svg') no-repeat;
   mask: url('../icons/close.svg') no-repeat;
+}
+
+@media (prefers-contrast: more) {
+  .nav-sidebar a {
+    color: var(--text-color-inverted);
+  }
 }

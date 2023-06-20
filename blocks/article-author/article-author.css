@@ -10,6 +10,6 @@
 .article-author time {
   display: block;
   margin-bottom: .5rem;
-  color: #c4d1e9;
+  color: var(--color-blue-light);
   font-size: var(--body-font-size-xs);
 }

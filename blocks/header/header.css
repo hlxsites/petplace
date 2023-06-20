@@ -107,7 +107,7 @@
     height: 20px;
     top: 10px;
     right: 10px;
-    background: #fff;
+    background: var(--background-color);
     /* stylelint-disable-next-line property-no-vendor-prefix */
     -webkit-mask: center / contain no-repeat url('../../icons/search.svg');
     mask: center / contain no-repeat url('../../icons/search.svg');
@@ -118,7 +118,7 @@
     width: 214px;
     padding-left: 20px;
     padding-right: 40px;
-    background: #ff7d5a;
+    background: var(--highlight-color);
     border: none;
     border-radius: 50px;
     color: white;
@@ -137,10 +137,6 @@
     /* stylelint-disable-next-line property-no-vendor-prefix */
     -webkit-mask: url('../../icons/close.svg') no-repeat;
     mask: url('../../icons/close.svg') no-repeat;
-  }
-
-  .nav-tools input::after {
-    content: 'a';
   }
 
   .home-page .nav-tools {
