@@ -108,12 +108,12 @@
     linear-gradient(90deg, transparent 0, white 50%, transparent 100%),
     radial-gradient(circle 16px, white 99%, transparent 0),
     radial-gradient(circle 16px, white 99%, transparent 0),
-    linear-gradient(white 32px, transparent 0),
-    linear-gradient(#eee 231px, transparent 0),
-    linear-gradient(#eee 20px, transparent 0),
-    linear-gradient(#eee 20px, transparent 0),
-    linear-gradient(#eee 50px, transparent 0),
-    linear-gradient(#eee 50px, transparent 0);
+    linear-gradient(var(--background-color) 32px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 231px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 20px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 20px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 50px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 50px, transparent 0);
   background-size:
     200px 100%,
     32px 32px,
