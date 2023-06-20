@@ -1,8 +1,12 @@
-import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { decorateIcons, getMetadata } from '../../scripts/lib-franklin.js';
 
 function renderContent(block) {
+  const template = getMetadata('template');
+  let maxcontent = 25;
+  if ('searchresults' === template)
+    maxcontent = 16;
   const usp = new URLSearchParams(window.location.search);
-  const limit = Number(usp.get('limit') || block.dataset.limit || 25);
+  const limit = Number(usp.get('limit') || block.dataset.limit || maxcontent);
   const page = Number(usp.get('page') || 1);
   const cards = document.querySelector('.cards ul');
 
