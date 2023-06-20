@@ -467,10 +467,10 @@ async function loadLazy(doc) {
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
   }
+  await loadBlocks(main);
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
   }
-  await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
