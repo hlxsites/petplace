@@ -1,10 +1,8 @@
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
 import {
-  getCategories,
-  getCategoryImage
+  getCategoryImage,
 } from '../../scripts/scripts.js';
-
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
@@ -20,7 +18,7 @@ async function renderArticles(articles) {
   document.querySelector('.pagination').dataset.total = res.total();
 }
 
-async function getArticles() {  
+async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 16;
   const query = usp.get('query');
@@ -32,7 +30,6 @@ async function getArticles() {
     .slice(offset, offset + limit);
 }
 
-
 function createTemplateBlock(main, blockName) {
   const section = document.createElement('div');
 
@@ -42,7 +39,6 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(main) {
- 
   createTemplateBlock(main, 'pagination');
   // eslint-disable-next-line no-restricted-globals
   const heroImg = await getCategoryImage(location.pathname);
@@ -52,14 +48,11 @@ export async function loadEager(main) {
 }
 
 export async function loadLazy() {
-
   renderArticles(getArticles());
-
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
-    const { data } = await getCategories();    
-    window.addEventListener('popstate', () => {      
+    window.addEventListener('popstate', () => {
       renderArticles(getArticles());
-    });  
+    });
   }
 }
