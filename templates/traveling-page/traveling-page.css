@@ -1,4 +1,9 @@
 /*Style hero image*/
+
+.hidden {
+  display: none !important;
+}
+
 .traveling-page .hero {
   box-sizing: border-box;
   display: flex;
@@ -152,7 +157,7 @@
 .section.city {
   display: grid;
   margin: auto;
-  padding-top: 4.rem;
+  padding-top: 4rem;
   grid-template-areas:
     "name name"
     "icons icons"

@@ -8,7 +8,7 @@ export default function decorate(block) {
   const path = '/icons/tips-star.svg';
   const alt = 'Tips Star Image';
 
-  divElement.innerHTML = `<img src=${path} alt=${alt}>`;
+  divElement.innerHTML = `<img src=${path} alt=${alt} width='69' height ='69'>`;
 
   // Get the parent element.
   const parentElement = block.querySelector('.tips.block > div');
