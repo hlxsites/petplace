@@ -23,10 +23,13 @@ async function renderArticles(articles) {
   for await (const article of res) {
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(article);
-    meterCalls(() => block.append(div));
+    meterCalls(() => block.append(div)).then(() => {
+      window.requestAnimationFrame(() => {
+        block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+      });
+    });
   }
   document.querySelector('.pagination').dataset.total = res.total();
-  block.querySelectorAll('.skeleton').forEach((sk) => sk.remove());
 }
 
 async function getArticles() {
