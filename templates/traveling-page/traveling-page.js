@@ -134,5 +134,5 @@ export function loadEager() {
 
 export function loadLazy() {
   const citySections = document.querySelectorAll('.section.city');
-  citySections.forEach((section) => meterCalls(() => updateSection(section), 100, 1));
+  citySections.forEach((section) => meterCalls(() => updateSection(section), 1000, 1));
 }
