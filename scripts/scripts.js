@@ -10,6 +10,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  loadHeader,
   getMetadata,
   toClassName,
   createOptimizedPicture,
@@ -480,7 +481,7 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  // await loadHeader(doc.querySelector('header'));
+  await loadHeader(doc.querySelector('header'));
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
   loadFooter(footer);
