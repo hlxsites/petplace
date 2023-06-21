@@ -1,4 +1,6 @@
 .popular-tags {
+  --link-color: var(--color-gray-light);
+
   margin-bottom: 1rem;
 }
 
@@ -11,7 +13,6 @@
 }
 
 .popular-tags a {
-  color: var(--color-gray-light);
   font-size: 1rem;
   line-height: 2rem;
   text-decoration: underline;

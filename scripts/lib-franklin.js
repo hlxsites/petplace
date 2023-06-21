@@ -109,7 +109,7 @@ export function getMetadata(name) {
  */
 export function toClassName(name) {
   return typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+    ? name.toLowerCase().replace(/[^0-9a-z]/g, '-').replace(/^-|-$/g, '').replace(/-+/g, '-')
     : '';
 }
 
@@ -433,6 +433,29 @@ export async function loadBlocks(main) {
 }
 
 /**
+ * Returns the true origin of the current page in the browser.
+ * If the page is running in a iframe with srcdoc, the ancestor origin is returned.
+ * @returns {String} The true origin
+ */
+export function getOrigin() {
+  return window.location.href === 'about:srcdoc' ? window.parent.location.origin : window.location.origin;
+}
+
+/**
+ * Returns the true of the current page in the browser.mac
+ * If the page is running in a iframe with srcdoc,
+ * the ancestor origin + the path query param is returned.
+ * @returns {String} The href of the current page or the href of the block running in the library
+ */
+export function getHref() {
+  if (window.location.href !== 'about:srcdoc') return window.location.href;
+
+  const { location: parentLocation } = window.parent;
+  const urlParams = new URLSearchParams(parentLocation.search);
+  return `${parentLocation.origin}${urlParams.get('path')}`;
+}
+
+/**
  * Returns a picture element with webp and fallbacks
  * @param {string} src The image URL
  * @param {string} [alt] The image alternative text
@@ -440,8 +463,8 @@ export async function loadBlocks(main) {
  * @param {Array} [breakpoints] Breakpoints and corresponding params (eg. width)
  * @returns {Element} The picture element
  */
-export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
-  const url = new URL(src, window.location.href);
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }], quality = 'medium') {
+  const url = new URL(src, getHref());
   const picture = document.createElement('picture');
   const { pathname } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
@@ -451,7 +474,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     const source = document.createElement('source');
     if (br.media) source.setAttribute('media', br.media);
     source.setAttribute('type', 'image/webp');
-    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
+    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=${quality}`);
     picture.appendChild(source);
   });
 
@@ -460,14 +483,14 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
-      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=${quality}`);
       picture.appendChild(source);
     } else {
       const img = document.createElement('img');
       img.setAttribute('loading', eager ? 'eager' : 'lazy');
       img.setAttribute('alt', alt);
       picture.appendChild(img);
-      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=${quality}`);
     }
   });
 
@@ -541,6 +564,13 @@ export function decorateButtons(element) {
           && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
+        }
+        // If we have several primary buttons after one other
+        // then just add them to the same container
+        if (up.previousElementSibling
+          && up.previousElementSibling.classList.contains('button-container')) {
+          up.previousElementSibling.append(a);
+          up.remove();
         }
       }
     }

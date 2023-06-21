@@ -2,11 +2,10 @@ import {
   buildBlock,
   decorateBlock,
   loadBlock,
-  getMetadata,
+  getMetadata, toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
-  getCategory,
-  createBreadCrumbs,
+  createBreadCrumbs, getCategoryByKey,
 } from '../../scripts/scripts.js';
 
 function createTemplateBlock(main, blockName, gridName) {
@@ -29,25 +28,8 @@ function createTableOfContents(main) {
     return;
   }
   const tocDiv = document.createElement('div');
-  const allH2s = main ? main.getElementsByTagName('h2') : [];
-  const tocHeader = document.createElement('h2');
-  const tocList = document.createElement('ol');
-  tocHeader.innerText = 'Table of Contents';
-  tocDiv.appendChild(tocHeader);
-  if (allH2s.length > 1) {
-    for (let index = 0; index < allH2s.length; index += 1) {
-      const tagname = 'h'.concat(index);
-      allH2s[index].id = tagname;
-      const tocListItem = document.createElement('li');
-      const tocEntry = document.createElement('a');
-      tocEntry.setAttribute('href', '#'.concat(tagname));
-      tocEntry.innerText = allH2s[index].innerText;
-      tocListItem.appendChild(tocEntry);
-      tocList.appendChild(tocListItem);
-    }
-    tocDiv.appendChild(tocList);
-    main.querySelector('h1').after(tocDiv);
-  }
+  tocDiv.classList.add('toc');
+  main.querySelector('h1').after(tocDiv);
 }
 
 /**
@@ -62,23 +44,30 @@ function convertToTitleCase(str) {
 }
 
 /**
- * Loops through an array of paths and fetches metadata.
- * @param paths - Array of paths
+ * Fetches page category.  If parent path exists, recursively fetches parent data and so on.
  * @returns {Promise<*[]>}
+ * @param categorySlug snake case value of category
  */
-async function getBreadcrumbs(paths) {
+async function getBreadcrumbs(categorySlug) {
   const breadcrumbs = [];
-  await Promise.all(paths.map(async (path) => {
-    const category = await getCategory(path);
-    if (category) {
-      breadcrumbs.push({
-        color: category.Color,
-        url: category.Path,
-        path: convertToTitleCase(path),
-      });
+
+  async function fetchSegmentData(slug) {
+    const categoryData = await getCategoryByKey('Slug', slug);
+    breadcrumbs.push({
+      color: categoryData.Color,
+      url: categoryData.Path,
+      label: convertToTitleCase(categoryData.Slug),
+    });
+
+    if (categoryData['Parent Path'] !== '/article/category/') {
+      const { Slug } = await getCategoryByKey('Path', categoryData['Parent Path']);
+      await fetchSegmentData(Slug);
     }
-  }));
-  return breadcrumbs;
+  }
+
+  await fetchSegmentData(categorySlug);
+
+  return breadcrumbs.reverse();
 }
 
 /**
@@ -96,15 +85,15 @@ export function loadEager(main) {
 
 export async function loadLazy(main) {
   const breadCrumbs = main.querySelector('.hero > div > div');
-  let { pathname } = window.location;
-  // remove none category initial paths.
-  pathname = pathname.split('/').slice(3);
-
-  const crumbData = await getBreadcrumbs(pathname);
+  const categorySlug = toClassName(getMetadata('category'));
+  const crumbData = await getBreadcrumbs(categorySlug);
 
   const breadcrumbContainer = await createBreadCrumbs(crumbData);
   const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
+  breadCrumbs.style.visibility = 'hidden';
   breadCrumbs.append(breadcrumb);
   decorateBlock(breadcrumb);
-  return loadBlock(breadcrumb);
+  return loadBlock(breadcrumb).then(() => {
+    breadCrumbs.style.visibility = '';
+  });
 }

@@ -16,53 +16,86 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
+const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
-async function loadScript(path, options = {}) {
-  const script = document.createElement('script');
-  if (options.async) {
-    script.async = true;
+/**
+ * Loads a script src and provides a callback that fires after
+ * the script has loaded.
+ * @param {string} url Full value to use as the script's src attribute.
+ * @param {function} callback Will be invoked once the script has loaded.
+ * @param {*} attributes Simple object containing attribute keys and values
+ *  to add to the script tag.
+ * @returns Script tag representing the script.
+ */
+export function loadScript(url, callback, attributes) {
+  const head = document.querySelector('head');
+  if (!head.querySelector(`script[src="${url}"]`)) {
+    const script = document.createElement('script');
+    script.src = url;
+
+    if (attributes) {
+      Object.keys(attributes).forEach((key) => {
+        script.setAttribute(key, attributes[key]);
+      });
+    }
+
+    head.append(script);
+    script.onload = callback;
+    return script;
   }
-  if (options.defer) {
-    script.defer = true;
-  }
-  script.src = path;
-  document.head.appendChild(script);
-  return new Promise((resolve, reject) => {
-    script.onload = () => resolve();
-    script.onerror = (err) => reject(err);
-  });
+  return head.querySelector(`script[src="${url}"]`);
 }
 
 async function loadAccessibeWidget() {
-  await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', { async: true });
-  const HIGHLIGHT_COLOR = '#FF7D5A';
-  window.acsbJS.init({
-    statementLink: '',
-    footerHtml: '',
-    hideMobile: false,
-    hideTrigger: false,
-    language: 'en',
-    position: 'right',
-    leadColor: HIGHLIGHT_COLOR,
-    triggerColor: HIGHLIGHT_COLOR,
-    triggerRadius: '50%',
-    triggerPositionX: 'right',
-    triggerPositionY: 'bottom',
-    triggerIcon: 'wheels',
-    triggerSize: 'medium',
-    triggerOffsetX: 20,
-    triggerOffsetY: 20,
-    mobile: {
-      triggerSize: 'small',
+  await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', () => {
+    const HIGHLIGHT_COLOR = '#FF7D5A';
+    window.acsbJS.init({
+      statementLink: '',
+      footerHtml: '',
+      hideMobile: false,
+      hideTrigger: false,
+      language: 'en',
+      position: 'right',
+      leadColor: HIGHLIGHT_COLOR,
+      triggerColor: HIGHLIGHT_COLOR,
+      triggerRadius: '50%',
       triggerPositionX: 'right',
       triggerPositionY: 'bottom',
-      triggerOffsetX: 10,
-      triggerOffsetY: 10,
-      triggerRadius: '50%',
-    },
+      triggerIcon: 'wheels',
+      triggerSize: 'medium',
+      triggerOffsetX: 20,
+      triggerOffsetY: 20,
+      mobile: {
+        triggerSize: 'small',
+        triggerPositionX: 'right',
+        triggerPositionY: 'bottom',
+        triggerOffsetX: 10,
+        triggerOffsetY: 10,
+        triggerRadius: '50%',
+      },
+    });
+  },{ async: true });
+}
+
+const queue = [];
+let interval;
+export async function meterCalls(fn, wait = 200, max = 5) {
+  return new Promise((res) => {
+    if (!interval) {
+      setTimeout(() => fn.call(null));
+      interval = window.setInterval(() => {
+        queue.splice(0, max).forEach((item) => window.requestAnimationFrame(() => item.call(null)));
+        if (!queue.length) {
+          res();
+          window.clearInterval(interval);
+        }
+      }, wait);
+    } else {
+      queue.push(fn);
+    }
   });
 }
 
@@ -72,6 +105,16 @@ export function getId() {
 
 export function isMobile() {
   return window.innerWidth < 1024;
+}
+
+async function render404() {
+  const response = await fetch('/404.html');
+  const html = await response.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  document.head.append(doc.querySelector('head>style'));
+  const main = document.querySelector('main');
+  main.innerHTML = doc.querySelector('main').innerHTML;
+  main.classList.add('error');
 }
 
 let categoriesPromise = null;
@@ -84,6 +127,8 @@ async function loadCategories() {
       .then((res) => res.json())
       .then((json) => {
         window.sessionStorage.setItem('categories', JSON.stringify(json));
+        window.hlx.data = window.hlx.data || [];
+        window.hlx.data.categories = json;
       })
       .catch((err) => {
         window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
@@ -97,8 +142,15 @@ async function loadCategories() {
 
 export async function getCategories() {
   try {
+    if (window.hlx?.data?.categories) {
+      return window.hlx.data.categories;
+    }
+    const categories = window.sessionStorage.getItem('categories');
+    if (categories) {
+      return JSON.parse(categories);
+    }
     await loadCategories();
-    return JSON.parse(window.sessionStorage.getItem('categories'));
+    return window.hlx.data.categories;
   } catch (err) {
     return null;
   }
@@ -114,7 +166,7 @@ export async function getCategory(name) {
 
 export async function getCategoryForUrl() {
   const { pathname } = window.location;
-  const [category] = pathname.split('/').splice(-2, 1);
+  const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
   return getCategory(category);
 }
 
@@ -124,6 +176,14 @@ export async function getCategoryByName(categoryName) {
     return null;
   }
   return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
+}
+
+export async function getCategoryByKey(key, value) {
+  const categories = await getCategories();
+  if (!categories) {
+    return null;
+  }
+  return categories.data.find((c) => c[key].toLowerCase() === value.toLowerCase());
 }
 
 export async function getCategoriesPath(path) {
@@ -187,7 +247,7 @@ function getResponsiveHeroPictures(main, h1) {
     const img = picture.querySelector('img');
     const optimized = createOptimizedPicture(img.src, img.alt, true, [
       { width: Math.ceil(window.innerWidth / 100) * 100 },
-    ]);
+    ], 'low');
     heroPics.pictures.push(optimized);
     picture.remove();
   }
@@ -205,7 +265,7 @@ function getResponsiveHeroPictures(main, h1) {
   return heroPics;
 }
 
-function createResponsiveImage(pictures, breakpoint) {
+function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
   const responsivePicture = document.createElement('picture');
   const defaultImage = pictures[0].querySelector('img');
   responsivePicture.append(defaultImage);
@@ -218,7 +278,9 @@ function createResponsiveImage(pictures, breakpoint) {
       srcElem = picture.querySelector('source:not([media])');
     }
     const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.srcset = srcElemBackup.srcset
+      .replace('format=webply', 'format=png')
+      .replace('quality=medium', `quality=${quality}`);
     srcElemBackup.type = 'img/png';
 
     if (index > 0) {
@@ -255,7 +317,7 @@ async function buildHeroBlock(main) {
     if (!pictures.length) {
       return;
     }
-    const responsive = createResponsiveImage(pictures, breakpoints);
+    const responsive = createResponsiveImage(pictures, breakpoints, 'low');
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [responsive] }));
@@ -288,7 +350,7 @@ function buildVideoEmbeds(container) {
  */
 async function decorateTemplate(main) {
   const template = toClassName(getMetadata('template'));
-  if (!template) {
+  if (!template || template === 'generic') {
     return;
   }
 
@@ -302,6 +364,9 @@ async function decorateTemplate(main) {
             await templateModule.loadEager(main);
           }
         } catch (error) {
+          if (error.message === '404') {
+            await render404();
+          }
           // eslint-disable-next-line no-console
           console.log(`failed to load template for ${template}`, error);
         }
@@ -329,11 +394,60 @@ async function buildAutoBlocks(main) {
 }
 
 /**
+ * Creates hidden screen reader content for improving the website's screen
+ * reader compatibility. The method will look for all "a" tags in the given
+ * container, and replace content between square brackets with a span whose
+ * class is "sr-only". For example, the following element:
+ *
+ * <a href="...">Read more [about The Best Gifts for Dog Moms]</a>
+ *
+ * Will be replaced with:
+ *
+ * <a href="...">
+ *  Read more
+ *  <span class="sr-only">about The Best Gifts for Dog Moms</span>
+ * </a>
+ * @param {HTMLElement} container Element whose descendent "a" tags will
+ *  be modified.
+ */
+export function decorateScreenReaderOnly(container) {
+  const srOnly = /\[(.*?)\]/g;
+  [...container.querySelectorAll('a')]
+    .forEach((el) => {
+      if (el.innerHTML.match(srOnly)) {
+        el.innerHTML = el.innerHTML.replace(srOnly, (text) => `<span class="sr-only">${text.slice(1, -1)}</span>`);
+      }
+    });
+}
+
+function createA11yQuickNav(links = []) {
+  const nav = document.createElement('nav');
+  nav.setAttribute('aria-label', 'Skip to specific locations on the page');
+  nav.classList.add('a11y-quicknav', 'sr-focusable');
+  links.forEach((l) => {
+    const button = document.createElement('button');
+    button.setAttribute('aria-label', l.label);
+    button.href = `#${l.id}`;
+    button.innerHTML = l.label;
+    button.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const el = document.getElementById(ev.currentTarget.href.split('#')[1]);
+      el.setAttribute('tabindex', 0);
+      el.focus();
+      el.addEventListener('focusout', () => { el.setAttribute('tabindex', -1); }, { once: true });
+    });
+    nav.append(button);
+  });
+  document.body.prepend(nav);
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
 export async function decorateMain(main) {
+  main.id = 'main';
   loadCategories(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
@@ -341,6 +455,7 @@ export async function decorateMain(main) {
   await buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateScreenReaderOnly(main);
 }
 
 /**
@@ -348,6 +463,9 @@ export async function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
+  const gtmFallback = document.createElement('noscript');
+  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+  doc.body.prepend(gtmFallback);
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
@@ -385,10 +503,10 @@ async function loadLazy(doc) {
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
   }
+  await loadBlocks(main);
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
   }
-  await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -396,16 +514,31 @@ async function loadLazy(doc) {
 
   await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   await loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  const footer = doc.querySelector('footer');
+  footer.id = 'footer';
+  loadFooter(footer);
+
+  // identify the first item in the menu
+  const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
+  firstMenu.id = 'menu';
+
+  createA11yQuickNav([
+    { id: 'main', label: 'Skip to Content' },
+    { id: 'menu', label: 'Skip to Menu' },
+    { id: 'footer', label: 'Skip to Footer' },
+  ]);
 
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
   if (window.location.hostname === 'www.petplace.com'
     || window.location.hostname.startsWith('main--petplace--hlxsites.hlx.')) {
     loadAccessibeWidget();
   }
+
+  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
 }
 
 /**
@@ -419,6 +552,7 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
+    // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
 }
@@ -513,41 +647,47 @@ export function initializeTouch(block, slideWrapper) {
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
 export async function createBreadCrumbs(crumbData) {
-  const breadcrumbContainer = document.createElement('div');
-  // Use the last item in the list's color
   const { color } = crumbData[crumbData.length - 1];
+  const breadcrumbContainer = document.createElement('nav');
+  breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
 
+  const ol = document.createElement('ol');
+  ol.setAttribute('role', 'list');
+
+  const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
-  homeLink.classList.add('home');
   homeLink.href = '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
   homeLink.setAttribute('aria-label', 'Go to our Homepage');
-  breadcrumbContainer.append(homeLink);
+  homeLi.append(homeLink);
+  ol.append(homeLi);
 
   crumbData.forEach((crumb, i) => {
+    const li = document.createElement('li');
     if (i > 0) {
       const chevron = document.createElement('span');
-      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
-      breadcrumbContainer.append(chevron);
+      chevron.classList.add('icon', 'icon-chevron');
+      li.append(chevron);
     }
     const linkButton = document.createElement('a');
     linkButton.href = crumb.url;
-    linkButton.innerText = crumb.path;
+    linkButton.innerText = crumb.label;
     linkButton.classList.add('category-link-btn');
     if (i === crumbData.length - 1) {
-      // linkButton.classList.add(`${color}`);
+      linkButton.setAttribute('aria-current', 'page');
       linkButton.style.setProperty('--bg-color', `var(--color-${color})`);
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
-      linkButton.style.setProperty('--text-color', 'inherit');
+      linkButton.style.setProperty('--text-color', 'var(--text-color-inverted)');
     } else {
-      // linkButton.classList.add(`${color}-border`, `${color}-color`);
-      linkButton.style.setProperty('--bg-color', 'inherit');
+      linkButton.style.setProperty('--bg-color', 'var(--background-color)');
       linkButton.style.setProperty('--border-color', `var(--color-${color})`);
       linkButton.style.setProperty('--text-color', `var(--color-${color})`);
     }
-
-    breadcrumbContainer.append(linkButton);
+    li.append(linkButton);
+    ol.append(li);
   });
+
+  breadcrumbContainer.append(ol);
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
@@ -558,5 +698,12 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed(document);
 }
+
+// Initialize the data layer and mark the Google Tag Manager start event
+window.dataLayer ||= [];
+window.dataLayer.push({
+  'gtm.start': Date.now(),
+  event: 'gtm.js',
+});
 
 loadPage();

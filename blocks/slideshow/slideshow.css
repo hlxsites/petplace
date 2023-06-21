@@ -1,6 +1,7 @@
 main .slideshow-container {
     padding: 0;
     position: relative;
+    overflow: hidden;
 
     --tab-bar-height: 30px;
 }
@@ -68,7 +69,7 @@ main .slideshow-container {
 .control-button svg {
     width: 32px;
     height: 32px;
-    color: #FF7D5A;
+    color: var(--highlight-color);
 }
 
 .tab-bar-container > ol svg {
@@ -83,6 +84,7 @@ main .slideshow-container {
     width: 100%;
     display: flex;
     justify-content: center;
+    z-index: 1;
 }
 
 .tab-bar-container > ol {

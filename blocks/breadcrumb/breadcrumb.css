@@ -1,25 +1,31 @@
-.breadcrumb > div > div > div {
+.breadcrumb ol {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  list-style-type: none;
+  padding: 0;
+  margin: .75rem 0;
 }
 
-.breadcrumb .home {
-  margin-right: 10px;
-  display: inline-flex;
+.breadcrumb ol li {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
 }
 
-.breadcrumb > div > div > div > span {
-  display: inline-flex;
-  width: 20px;
+.breadcrumb .icon {
+  vertical-align: middle;
 }
 
-.breadcrumb > div > div > div > span svg {
-  fill: var(--highlight-color);
+.breadcrumb ol li:first-child {
+  margin-right: .5rem;
 }
 
 .breadcrumb .icon-chevron {
   transform: rotate(270deg);
+  fill: var(--text-color-inverted);
+  width: 20px;
+  margin-top: 6px
 }
 
 .breadcrumb .category-link-btn {
@@ -44,7 +50,7 @@
 }
 
 .breadcrumb .category-link-btn:last-child {
-  color: var(--text-color-inverted);
+  color: var(--text-color);
 }
 
 @media (min-width: 768px) {
