@@ -516,7 +516,14 @@ export async function getAd(adId) {
   return ads.data.find((c) => c.ID === adId);
 }
 
+function loadGoogleAdScript() {
+  return new Promise((res) => {
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', res, { async: '' });
+  });
+}
+
 export async function loadGoogleAds() {
+  await loadGoogleAdScript();
   const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adid && el.id);
   if (!ads.length) {
     return Promise.resolve();
@@ -545,9 +552,6 @@ export async function loadGoogleAds() {
     window.googletag.cmd.push(() => {
       window.googletag.display(currAdData.adSlot);
     });
-  });
-  return new Promise((res) => {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', res, { async: '' });
   });
 }
 
