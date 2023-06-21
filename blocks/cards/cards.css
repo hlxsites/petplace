@@ -98,4 +98,16 @@
       min-height: 0;         
     } 
 
-  }
+    .cards.search > ul {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .cards.search > ul > li img {
+      min-height: 320px;
+    }
+    
+    .cards.search .blogs-card-body {
+     min-height: 200px;
+    } 
+}
+
