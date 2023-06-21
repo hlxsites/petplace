@@ -89,48 +89,59 @@ async function createNavigation(block) {
     }
   }
 
-  // combined previous/next label for mobile view
-  const combinedHeader = document.createElement('div');
-  combinedHeader.classList.add('article-navigation-combined-header');
-  combinedHeader.innerText = 'Previous / Next Article';
-  block.append(combinedHeader);
+  if (previousArticle || nextArticle) {
+    // combined previous/next label for mobile view
+    const combinedHeader = document.createElement('div');
+    combinedHeader.classList.add('article-navigation-combined-header');
+    combinedHeader.innerText = 'Previous / Next Article';
+    block.append(combinedHeader);
+  }
 
-  // previous-only label for non-mobile
-  const previousHeader = document.createElement('div');
-  previousHeader.classList.add('article-navigation-previous-header');
-  previousHeader.innerText = 'Previous Article';
-  block.append(previousHeader);
+  if (previousArticle) {
+    // previous-only label for non-mobile
+    const previousHeader = document.createElement('div');
+    previousHeader.classList.add('article-navigation-previous-header');
+    previousHeader.innerText = 'Previous Article';
+    block.append(previousHeader);
+  }
 
-  // next-only label for non-mobile
-  const nextHeader = document.createElement('div');
-  nextHeader.classList.add('article-navigation-next-header');
-  nextHeader.innerText = 'Next Article';
-  block.append(nextHeader);
+  if (nextArticle) {
+    // next-only label for non-mobile
+    const nextHeader = document.createElement('div');
+    nextHeader.classList.add('article-navigation-next-header');
+    nextHeader.innerText = 'Next Article';
+    block.append(nextHeader);
+  }
 
-  // left arrow
-  const leftNav = document.createElement('div');
-  leftNav.classList.add('article-navigation-previous');
-  leftNav.innerHTML = `
-    <a href="${previousArticle.path}">
-      <span class="icon icon-less-than"></span>
-    </a>
-  `;
-  block.append(leftNav);
+  if (previousArticle) {
+    // left arrow
+    const leftNav = document.createElement('div');
+    leftNav.classList.add('article-navigation-previous');
+    leftNav.innerHTML = `
+      <a href="${previousArticle.path}" aria-label="${previousArticle.title}">
+        <span class="icon icon-less-than"></span>
+      </a>
+    `;
+    block.append(leftNav);
 
-  // previous article
-  createArticleDetails(block, 'previous', categoryInfo, previousArticle);
-  // next article
-  createArticleDetails(block, 'next', categoryInfo, nextArticle);
+    // previous article
+    createArticleDetails(block, 'previous', categoryInfo, previousArticle);
+  }
 
-  // right arrow
-  const rightNav = document.createElement('div');
-  rightNav.classList.add('article-navigation-next');
-  rightNav.innerHTML = `
-    <a href="${nextArticle.path}">
-      <span class="icon icon-greater-than"></span>
-    </a>
-  `;
-  block.append(rightNav);
+  if (nextArticle) {
+    // next article
+    createArticleDetails(block, 'next', categoryInfo, nextArticle);
+
+    // right arrow
+    const rightNav = document.createElement('div');
+    rightNav.classList.add('article-navigation-next');
+    rightNav.innerHTML = `
+      <a href="${nextArticle.path}" aria-label="${nextArticle.title}">
+        <span class="icon icon-greater-than"></span>
+      </a>
+    `;
+    block.append(rightNav);
+  }
 
   await decorateIcons(block);
   return true;

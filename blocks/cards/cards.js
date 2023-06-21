@@ -1,5 +1,7 @@
-import { getCategories } from '../../scripts/scripts.js';
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import { getCategories } from '../../scripts/scripts.js';
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
 async function buildPost(post) {
   const categories = await getCategories();
@@ -14,7 +16,6 @@ async function buildPost(post) {
   postCard.classList.add('blog-cards');
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
-  const postDateStr = postDate.getMonth().toString().concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
       <div class="blogs-card-image">
@@ -25,18 +26,11 @@ async function buildPost(post) {
         <a href="${post.path}">
         <div class="blogs-card-body">
         <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
-        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDateStr}">${postDateStr}</time> · ${post.author}</span></p>` : ''}
+        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · ${post.author}</span></p>` : ''}
       </div></a>          
       </div>
     </a>
   `;
-  if (category.Category !== 'Breeds') {
-    setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        postCard.querySelector('time').textContent = postDate.toLocaleString('default', { month: 'long' }).concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
-      });
-    });
-  }
   return postCard;
 }
 
