@@ -85,7 +85,6 @@ async function getBreadcrumbs(categorySlug) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function loadEager(main) {
-  const ad = document.createElement('div');
   createTemplateBlock(main, 'article-author');
   createAutoBlockSection(main, 'ad', 'ad');
   createTemplateBlock(main, 'social-share');

@@ -563,8 +563,9 @@ function getAdTargets(ad) {
 }
 
 /**
- * Loads all Google ads into the page by adding the google ad 
- * @returns 
+ * Loads all Google ads into the page by adding the google ad API script
+ * and displaying ads in all ad blocks defined on the page.
+ * @returns {Promise} Resolves when all ads are loaded.
  */
 export async function loadGoogleAds() {
   const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adid && el.id);
@@ -576,7 +577,7 @@ export async function loadGoogleAds() {
     .filter((ad) => !!ad.data);
 
   if (!adData.length) {
-    Promise.resolve();
+    return Promise.resolve();
   }
 
   await loadGoogleAdScript();
@@ -592,10 +593,10 @@ export async function loadGoogleAds() {
         ], ad.id)
         .addService(window.googletag.pubads());
 
-        const targets = getAdTargets(data);
-        if (targets) {
-          adSlot.setTargeting(...targets);
-        }
+      const targets = getAdTargets(data);
+      if (targets) {
+        adSlot.setTargeting(...targets);
+      }
     });
 
     // Enable SRA and services.
@@ -607,6 +608,7 @@ export async function loadGoogleAds() {
       window.googletag.display(currAdData.ad.id);
     });
   });
+  return Promise.resolve();
 }
 
 /**
