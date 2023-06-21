@@ -16,7 +16,7 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = ['slideshow']; // add your LCP blocks to the list
+const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
@@ -216,7 +216,7 @@ function getResponsiveHeroPictures(main, h1) {
     const img = picture.querySelector('img');
     const optimized = createOptimizedPicture(img.src, img.alt, true, [
       { width: Math.ceil(window.innerWidth / 100) * 100 },
-    ]);
+    ], 'low');
     heroPics.pictures.push(optimized);
     picture.remove();
   }
@@ -234,7 +234,7 @@ function getResponsiveHeroPictures(main, h1) {
   return heroPics;
 }
 
-function createResponsiveImage(pictures, breakpoint) {
+function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
   const responsivePicture = document.createElement('picture');
   const defaultImage = pictures[0].querySelector('img');
   responsivePicture.append(defaultImage);
@@ -247,7 +247,9 @@ function createResponsiveImage(pictures, breakpoint) {
       srcElem = picture.querySelector('source:not([media])');
     }
     const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.srcset = srcElemBackup.srcset
+      .replace('format=webply', 'format=png')
+      .replace('quality=medium', `quality=${quality}`);
     srcElemBackup.type = 'img/png';
 
     if (index > 0) {
@@ -284,7 +286,7 @@ async function buildHeroBlock(main) {
     if (!pictures.length) {
       return;
     }
-    const responsive = createResponsiveImage(pictures, breakpoints);
+    const responsive = createResponsiveImage(pictures, breakpoints, 'low');
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [responsive] }));
@@ -470,10 +472,10 @@ async function loadLazy(doc) {
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
   }
+  await loadBlocks(main);
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
   }
-  await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -628,7 +630,7 @@ export async function createBreadCrumbs(crumbData) {
     const li = document.createElement('li');
     if (i > 0) {
       const chevron = document.createElement('span');
-      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      chevron.classList.add('icon', 'icon-chevron');
       li.append(chevron);
     }
     const linkButton = document.createElement('a');
