@@ -20,16 +20,64 @@ async function getArticles() {
   const limit = usp.get('limit') || 16;
   const query = usp.get('query');
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
+  const sortorder = usp.get('sort');
+  let sheet = 'article';
+  if (sortorder === 'titleasc') {
+    sheet = 'article-by-title-asc';
+  } else if (sortorder === 'titledesc') {
+    sheet = 'article-by-title-desc';
+  } else if (sortorder === 'dateasc') {
+    sheet = 'article-by-date-asc';
+  }
   return ffetch('/article/query-index.json')
-    .sheet('article')
+    .sheet(sheet)
     .withTotal(true)
     .filter((article) => `${article.description} ${article.title}`.toLowerCase().includes(query.toLowerCase()))
     .slice(offset, offset + limit);
 }
 
+function sortselection() {
+  const sortParams = new URLSearchParams(window.location.search);
+  if (document.getElementById('orderby').value === 'sortby') {
+    sortParams.delete('sort');
+    sortParams.set('page', 1);
+    window.location.search = sortParams.toString();
+  } else {
+    sortParams.set('sort', document.getElementById('orderby').value);
+    sortParams.set('page', 1);
+    window.location.search = sortParams.toString();
+  }
+}
+
+function buildSortBtn() {
+  const div = document.createElement('div');
+  div.classList.add('sortbtn');
+  const h2 = document.createElement('h2');
+  h2.innerText = 'Search Results';
+  div.append(h2);
+  const select = document.createElement('select');
+  select.classList.add('search-select');
+  select.id = 'orderby';
+  select.options[0] = new Option('Sort By', 'sortby');
+  select.options[1] = new Option('title A-Z', 'titleasc');
+  select.options[2] = new Option('title Z-A', 'titledesc');
+  select.options[3] = new Option('date ASC', 'dateasc');
+  select.options[4] = new Option('date DSC', 'datedesc');
+  const usp = new URLSearchParams(window.location.search);
+  if (usp.get('sort') !== null) {
+    select.value = usp.get('sort');
+  }
+  select.addEventListener(
+    'change',
+    sortselection,
+    false,
+  );
+  div.append(select);
+  return div;
+}
+
 function createTemplateBlock(main, blockName) {
   const section = document.createElement('div');
-
   const block = buildBlock(blockName, { elems: [] });
   block.dataset.limit = 16;
   section.append(block);
@@ -37,6 +85,7 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(main) {
+  main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(1)'));
   createTemplateBlock(main, 'pagination');
 }
 
