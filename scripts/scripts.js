@@ -548,11 +548,13 @@ export async function loadGoogleAds() {
     window.googletag.pubads().enableSingleRequest();
     window.googletag.enableServices();
   });
-  adData.forEach((currAdData) => {
-    window.googletag.cmd.push(() => {
-      window.googletag.display(currAdData.adSlot);
+  setTimeout(() => {
+    adData.forEach((currAdData) => {
+      window.googletag.cmd.push(() => {
+        window.googletag.display(currAdData.adSlot);
+      });
     });
-  });
+  }, 1000);
 }
 
 /**
