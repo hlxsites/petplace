@@ -2,20 +2,29 @@ import {
   buildBlock,
   decorateBlock,
   loadBlock,
-  getMetadata, toClassName,
+  getMetadata,
+  toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
-  createBreadCrumbs, getCategoryByKey,
+  createBreadCrumbs,
+  getCategoryByKey,
+  getCategoryAd,
 } from '../../scripts/scripts.js';
 
-function createTemplateBlock(main, blockName, gridName, elems = []) {
+function createAutoBlockSection(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
   const section = document.createElement('div');
   section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
 
+  main.append(section);
+  return section;
+}
+
+function createTemplateBlock(main, blockName, gridName, elems = []) {
+  const section = createAutoBlockSection(main, blockName, gridName);
+
   const block = buildBlock(blockName, { elems });
   section.append(block);
-  main.append(section);
 }
 
 /**
@@ -77,9 +86,8 @@ async function getBreadcrumbs(categorySlug) {
 // eslint-disable-next-line import/prefer-default-export
 export function loadEager(main) {
   const ad = document.createElement('div');
-  ad.innerText = 'pet-health-skyscraper';
   createTemplateBlock(main, 'article-author');
-  createTemplateBlock(main, 'ad', 'ad', [ad]);
+  createAutoBlockSection(main, 'ad', 'ad');
   createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
@@ -96,7 +104,14 @@ export async function loadLazy(main) {
   breadCrumbs.style.visibility = 'hidden';
   breadCrumbs.append(breadcrumb);
   decorateBlock(breadcrumb);
-  return loadBlock(breadcrumb).then(() => {
-    breadCrumbs.style.visibility = '';
-  });
+  await loadBlock(breadcrumb);
+  breadCrumbs.style.visibility = '';
+
+  const ad = main.querySelector('.article-template-grid-ad');
+  const adId = document.createElement('div');
+  adId.innerText = await getCategoryAd(categorySlug);
+  const adBlock = buildBlock('ad', { elems: [adId] });
+  ad.append(adBlock);
+  decorateBlock(adBlock);
+  loadBlock(adBlock);
 }

@@ -516,14 +516,54 @@ export async function getAd(adId) {
   return ads.data.find((c) => c.ID === adId);
 }
 
+async function getRawCategoryAd(category) {
+  if (!category) {
+    return null;
+  }
+  if (category.Ad) {
+    return category.Ad;
+  }
+  if (!category['Parent Path']) {
+    return null;
+  }
+  const parent = await getCategoryByKey('Path', category['Parent Path']);
+  return getRawCategoryAd(parent);
+}
+
+/**
+ * Retrieves the ID of the ad to show for a category. This will be determined
+ * by the "Ad" column in the categories spreadsheet. The method will check
+ * the ad column for the given category, and for all of that category's parents.
+ *
+ * If no ad is specified, the method will return a default ad.
+ * @param {string} categorySlug Slug of the category whose ad should be
+ *  retrieved.
+ * @returns {Promise<string>} ID of an ad from the ads spreadsheet.
+ */
+export async function getCategoryAd(categorySlug) {
+  const category = await getCategory(categorySlug);
+  const categoryAd = await getRawCategoryAd(category);
+  return categoryAd || 'article-default-rail';
+}
+
 function loadGoogleAdScript() {
   return new Promise((res) => {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', res, { async: '' });
   });
 }
 
+function getAdTargets(ad) {
+  if (ad.Targeting) {
+    return String(ad.Targeting).split(',').map((target) => String(target).trim());
+  }
+  return null;
+}
+
+/**
+ * Loads all Google ads into the page by adding the google ad 
+ * @returns 
+ */
 export async function loadGoogleAds() {
-  await loadGoogleAdScript();
   const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adid && el.id);
   if (!ads.length) {
     return Promise.resolve();
@@ -532,29 +572,38 @@ export async function loadGoogleAds() {
     .map((ad, index) => ({ ad: ads[index], data: ad }))
     .filter((ad) => !!ad.data);
 
+  if (!adData.length) {
+    Promise.resolve();
+  }
+
+  await loadGoogleAdScript();
+
   window.googletag = window.googletag || { cmd: [] };
 
   window.googletag.cmd.push(() => {
     adData.forEach((currAdData) => {
       const { ad, data } = currAdData;
-      ad.style.width = `${data.Width}px`;
-      ad.style.height = `${data.Height}px`;
-      currAdData.adSlot = window.googletag
-        .defineSlot(data.Path, [data.Width, data.Height], ad.id)
+      const adSlot = window.googletag
+        .defineSlot(data.Path, [
+          [parseInt(data.Width, 10), parseInt(data.Height, 10)],
+        ], ad.id)
         .addService(window.googletag.pubads());
+
+        const targets = getAdTargets(data);
+        if (targets) {
+          adSlot.setTargeting(...targets);
+        }
     });
 
     // Enable SRA and services.
     window.googletag.pubads().enableSingleRequest();
     window.googletag.enableServices();
   });
-  setTimeout(() => {
-    adData.forEach((currAdData) => {
-      window.googletag.cmd.push(() => {
-        window.googletag.display(currAdData.adSlot);
-      });
+  adData.forEach((currAdData) => {
+    window.googletag.cmd.push(() => {
+      window.googletag.display(currAdData.ad.id);
     });
-  }, 1000);
+  });
 }
 
 /**
