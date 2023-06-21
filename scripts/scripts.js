@@ -77,7 +77,7 @@ async function loadAccessibeWidget() {
         triggerRadius: '50%',
       },
     });
-  },{ async: true });
+  }, { async: true });
 }
 
 const queue = [];
