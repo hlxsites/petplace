@@ -4,7 +4,7 @@ export default async function decorate(block) {
 
   const form = document.createElement('form');
   form.className = 'search-box-wrapper';
-  form.action = `${window.location.origin}/search`;
+  form.action = '/search';
 
   const input = document.createElement('input');
   input.className = 'search-input';

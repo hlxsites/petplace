@@ -41,7 +41,15 @@
   }
   
   @media (min-width: 1024px) {    
-  
+    .category-index main {
+      display: grid;
+      grid-template:
+        'hero hero hero hero' min-content
+        '. content .' 1fr
+        '. pagination .' min-content / 1fr minmax(250px, 318px) minmax(750px, 1026px) 1fr;
+      gap: 0 1.5rem;
+    }
+
     .searchresults .hero-container {
       grid-area: hero;
     }

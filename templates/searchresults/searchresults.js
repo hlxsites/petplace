@@ -1,8 +1,5 @@
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
-import {
-  getCategoryImage,
-} from '../../scripts/scripts.js';
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
@@ -34,17 +31,13 @@ function createTemplateBlock(main, blockName) {
   const section = document.createElement('div');
 
   const block = buildBlock(blockName, { elems: [] });
+  block.dataset.limit = 16;
   section.append(block);
   main.append(section);
 }
 
 export async function loadEager(main) {
   createTemplateBlock(main, 'pagination');
-  // eslint-disable-next-line no-restricted-globals
-  const heroImg = await getCategoryImage(location.pathname);
-  if (heroImg) {
-    main.querySelector('picture').replaceWith(heroImg);
-  }
 }
 
 export async function loadLazy() {
