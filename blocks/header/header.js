@@ -133,5 +133,11 @@ export default async function decorate(block) {
     observer.observe(item, { attributes: true });
   });
 
+  block.querySelectorAll('.nav-sidebar-social a').forEach((a) => {
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
+    a.setAttribute('aria-label', `Open our ${a.firstElementChild.classList[1].substring(5)} page in a new tab.`);
+  });
+
   decorateIcons(nav);
 }

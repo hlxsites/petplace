@@ -2,6 +2,8 @@ import { slide, initializeTouch } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const breedColorClasses = ['breed-purple', 'breed-red', 'breed-blue'];
+  const id = Math.random().toString(32).substring(2);
+  block.id = id;
 
   [...block.children].forEach((child, i) => {
     if (i === 0) child.setAttribute('active', true);
@@ -25,6 +27,7 @@ export default async function decorate(block) {
   buttonPrev.setAttribute('type', 'button');
   buttonPrev.setAttribute('data-role', 'none');
   buttonPrev.setAttribute('aria-label', 'View previous slide.');
+  buttonPrev.setAttribute('aria-controls', id);
   buttonPrev.classList.add('slick-arrow', 'slick-prev');
   buttonPrev.addEventListener('click', () => {
     slide('prev', block, block.parentElement);
@@ -33,6 +36,7 @@ export default async function decorate(block) {
   buttonNext.setAttribute('type', 'button');
   buttonNext.setAttribute('data-role', 'none');
   buttonNext.setAttribute('aria-label', 'View next slide.');
+  buttonNext.setAttribute('aria-controls', id);
   buttonNext.classList.add('slick-arrow', 'slick-next');
   buttonNext.addEventListener('click', () => {
     slide('next', block, block.parentElement);

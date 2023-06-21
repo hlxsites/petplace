@@ -17,8 +17,37 @@ import {
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
+const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
+
+/**
+ * Loads a script src and provides a callback that fires after
+ * the script has loaded.
+ * @param {string} url Full value to use as the script's src attribute.
+ * @param {function} callback Will be invoked once the script has loaded.
+ * @param {*} attributes Simple object containing attribute keys and values
+ *  to add to the script tag.
+ * @returns Script tag representing the script.
+ */
+export function loadScript(url, callback, attributes) {
+  const head = document.querySelector('head');
+  if (!head.querySelector(`script[src="${url}"]`)) {
+    const script = document.createElement('script');
+    script.src = url;
+
+    if (attributes) {
+      Object.keys(attributes).forEach((key) => {
+        script.setAttribute(key, attributes[key]);
+      });
+    }
+
+    head.append(script);
+    script.onload = callback;
+    return script;
+  }
+  return head.querySelector(`script[src="${url}"]`);
+}
 
 const queue = [];
 let interval;
@@ -398,6 +427,9 @@ export async function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
+  const gtmFallback = document.createElement('noscript');
+  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+  doc.body.prepend(gtmFallback);
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
@@ -435,10 +467,10 @@ async function loadLazy(doc) {
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
   }
+  await loadBlocks(main);
   if (document.body.classList.contains('article-page')) {
     buildVideoEmbeds(main);
   }
-  await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -464,6 +496,8 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
 }
 
 /**
@@ -477,6 +511,7 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
+    // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
 }
@@ -590,7 +625,7 @@ export async function createBreadCrumbs(crumbData) {
     const li = document.createElement('li');
     if (i > 0) {
       const chevron = document.createElement('span');
-      chevron.innerHTML = '<span class="icon icon-chevron"></span>';
+      chevron.classList.add('icon', 'icon-chevron');
       li.append(chevron);
     }
     const linkButton = document.createElement('a');
@@ -622,5 +657,12 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed(document);
 }
+
+// Initialize the data layer and mark the Google Tag Manager start event
+window.dataLayer ||= [];
+window.dataLayer.push({
+  'gtm.start': Date.now(),
+  event: 'gtm.js',
+});
 
 loadPage();
