@@ -460,46 +460,80 @@ export function addFavIcon(href) {
   }
 }
 
-/**
- * Loads a script src and provides a callback that fires after
- * the script has loaded.
- * @param {string} url Full value to use as the script's src attribute.
- * @param {function} callback Will be invoked once the script has loaded.
- * @param {*} attributes Simple object containing attribute keys and values
- *  to add to the script tag.
- * @returns Script tag representing the script.
- */
-export function loadScript(url, callback, attributes) {
-  const head = document.querySelector('head');
-  if (!head.querySelector(`script[src="${url}"]`)) {
-    const script = document.createElement('script');
-    script.src = url;
-
-    if (attributes) {
-      Object.keys(attributes).forEach((key) => {
-        script.setAttribute(key, attributes[key]);
-      });
-    }
-
-    head.append(script);
-    script.onload = callback;
-    return script;
+let adsPromise = null;
+async function loadAds() {
+  if (adsPromise) {
+    return adsPromise;
   }
-  return head.querySelector(`script[src="${url}"]`);
+  if (!window.sessionStorage.getItem('ads')) {
+    adsPromise = fetch('/ads.json')
+      .then((res) => res.json())
+      .then((json) => {
+        window.sessionStorage.setItem('ads', JSON.stringify(json));
+        window.hlx.data = window.hlx.data || [];
+        window.hlx.data.ads = json;
+      })
+      .catch((err) => {
+        window.sessionStorage.setItem('ads', JSON.stringify({ data: [] }));
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch ads.', err);
+      });
+    return adsPromise;
+  }
+  return Promise.resolve();
+}
+
+async function getAds() {
+  try {
+    if (window.hlx?.data?.ads) {
+      return window.hlx.data.ads;
+    }
+    const ads = window.sessionStorage.getItem('ads');
+    if (ads) {
+      return JSON.parse(ads);
+    }
+    await loadAds();
+    return window.hlx.data.ads;
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
+ * Retrieves information about the sites ads, which will ultimately be pulled
+ * from the "ads" spreadsheet at the root of the project. There is some caching
+ * in place to ensure fast subsequent retrieval of the ad data in the same
+ * session.
+ * @param {string} adId ID of the ad from the spreadsheet.
+ * @returns Simple object containing all the ad's information, or falsy
+ *  if the ad could not be found.
+ */
+export async function getAd(adId) {
+  const ads = await getAds();
+  if (!ads) {
+    return null;
+  }
+  return ads.data.find((c) => c.ID === adId);
 }
 
 export async function loadGoogleAds() {
-  const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adpath && el.id);
+  const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adid && el.id);
   if (!ads.length) {
     return Promise.resolve();
   }
+  const adData = (await Promise.all(ads.map((ad) => getAd(ad.dataset.adid))))
+    .map((ad, index) => ({ ad: ads[index], data: ad }))
+    .filter((ad) => !!ad.data);
 
   window.googletag = window.googletag || { cmd: [] };
 
   window.googletag.cmd.push(() => {
-    ads.forEach((ad) => {
-      ad.adSlot = window.googletag
-        .defineSlot(ad.dataset.adpath, [728, 90], ad.id)
+    adData.forEach((currAdData) => {
+      const { ad, data } = currAdData;
+      ad.style.width = `${data.Width}px`;
+      ad.style.height = `${data.Height}px`;
+      currAdData.adSlot = window.googletag
+        .defineSlot(data.Path, [data.Width, data.Height], ad.id)
         .addService(window.googletag.pubads());
     });
 
@@ -507,9 +541,9 @@ export async function loadGoogleAds() {
     window.googletag.pubads().enableSingleRequest();
     window.googletag.enableServices();
   });
-  ads.forEach((ad) => {
+  adData.forEach((currAdData) => {
     window.googletag.cmd.push(() => {
-      window.googletag.display(ad.adSlot);
+      window.googletag.display(currAdData.adSlot);
     });
   });
   return new Promise((res) => {

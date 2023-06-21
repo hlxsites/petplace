@@ -116,11 +116,6 @@
   margin-top: 0;
 }
 
-#banner-ad-1 {
-  height: 250px;
-  width: 250px;
-}
-
 .article-page .embed a {
   display: inline-block;
   max-width: calc(100vw - 32px);

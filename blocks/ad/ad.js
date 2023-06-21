@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @param {HTMLElement} block Ad block to decorate.
  */
 export default function decorate(block) {
@@ -8,7 +8,7 @@ export default function decorate(block) {
   }
   [...block.children].forEach((row, index) => {
     if (index === 0) {
-      block.dataset.adpath = String(row.innerText).trim();
+      block.dataset.adid = String(row.innerText).trim();
     }
     row.remove();
   });

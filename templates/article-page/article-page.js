@@ -77,7 +77,7 @@ async function getBreadcrumbs(categorySlug) {
 // eslint-disable-next-line import/prefer-default-export
 export function loadEager(main) {
   const ad = document.createElement('div');
-  ad.innerText = '/6355419/Travel/Europe/France';
+  ad.innerText = 'pet-health-skyscraper';
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'ad', 'ad', [ad]);
   createTemplateBlock(main, 'social-share');
