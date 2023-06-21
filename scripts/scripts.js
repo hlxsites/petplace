@@ -213,7 +213,7 @@ function getResponsiveHeroPictures(main, h1) {
     const img = picture.querySelector('img');
     const optimized = createOptimizedPicture(img.src, img.alt, true, [
       { width: Math.ceil(window.innerWidth / 100) * 100 },
-    ]);
+    ], 'low');
     heroPics.pictures.push(optimized);
     picture.remove();
   }
@@ -231,7 +231,7 @@ function getResponsiveHeroPictures(main, h1) {
   return heroPics;
 }
 
-function createResponsiveImage(pictures, breakpoint) {
+function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
   const responsivePicture = document.createElement('picture');
   const defaultImage = pictures[0].querySelector('img');
   responsivePicture.append(defaultImage);
@@ -244,7 +244,9 @@ function createResponsiveImage(pictures, breakpoint) {
       srcElem = picture.querySelector('source:not([media])');
     }
     const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.srcset = srcElemBackup.srcset
+      .replace('format=webply', 'format=png')
+      .replace('quality=medium', `quality=${quality}`);
     srcElemBackup.type = 'img/png';
 
     if (index > 0) {
@@ -281,7 +283,7 @@ async function buildHeroBlock(main) {
     if (!pictures.length) {
       return;
     }
-    const responsive = createResponsiveImage(pictures, breakpoints);
+    const responsive = createResponsiveImage(pictures, breakpoints, 'low');
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [responsive] }));
