@@ -292,6 +292,13 @@ button:disabled, button:disabled:hover {
 }
 
 
+a.button.cta, button.cta {
+  padding: .75rem 3rem;
+  border: 5px solid var(--background-color);
+  box-shadow: 0 4px 30px rgb(0 0 0 / 10%);
+  font-size: var(--heading-font-size-m);
+}
+
 a.button.secondary, button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
@@ -382,15 +389,6 @@ main .section.well h2 {
 
 main .section.well.dark h2 {
   color: inherit;
-}
-
-main .section.well.dark h2::after {
-  content: '';
-  display: block;
-  width: 1.5rem;
-  height: 2px;
-  background: var(--highlight-color);
-  margin: 1rem auto;
 }
 
 main .section.well li {
@@ -497,6 +495,15 @@ main .section[data-background] .section-background {
 
 .generic main .section {
   margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.generic main .hero-container {
+  padding: 0;
+}
+
+.generic main .hero {
+  min-height: 350px;
 }
 
 .generic main p {
@@ -518,6 +525,10 @@ main .section[data-background] .section-background {
 
 .generic a.button {
   margin-top: 0;
+}
+
+.generic .columns {
+  margin: 60px auto;
 }
 
 .generic .columns > div {
@@ -557,6 +568,20 @@ main .section[data-background] .section-background {
   display: none;
 }
 
+.generic main .section.well.dark h2::after,
+.generic main .section.highlight .columns h3::after {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background: var(--highlight-color);
+  margin: 1rem auto;
+}
+
+.generic main .section.highlight .columns h3 {
+  font-size: 2rem;
+}
+
 @media (min-width: 600px) {
   .generic h1 {
     font-size: 2.667em;
@@ -572,7 +597,12 @@ main .section[data-background] .section-background {
     font-size: 3.222em;
   }
 
-  .generic main h2 {
+  .generic main .centered h2 {
+    font-size: 2.5em;
+    margin-bottom: 60px;
+  }
+
+  .generic main .columns h2 {
     font-size: 2em;
   }
 }
