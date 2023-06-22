@@ -526,6 +526,12 @@ export async function getCategoryAd(categorySlug) {
   return categoryAd || 'article-default-rail';
 }
 
+function loadGoogleAdScript() {
+  return new Promise((res) => {
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', res, { async: '' });
+  });
+}
+
 function getAdTargets(ad) {
   if (ad.Targeting) {
     return String(ad.Targeting).split(',').map((target) => String(target).trim());
@@ -550,6 +556,8 @@ export async function loadGoogleAds() {
   if (!adData.length) {
     return Promise.resolve();
   }
+
+  await loadGoogleAdScript();
 
   window.googletag = window.googletag || { cmd: [] };
 
