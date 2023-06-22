@@ -43,7 +43,7 @@ export default async function decorate(block) {
   searchField.type = 'search';
   searchField.placeholder = navTools.textContent;
   const searchForm = document.createElement('form');
-  searchForm.action = 'search';
+  searchForm.action = '/search';
   searchForm.method = 'get';
   searchForm.append(searchField);
   navTools.innerHTML = '';
@@ -131,6 +131,12 @@ export default async function decorate(block) {
   });
   navSidebar.querySelectorAll('[role="tree"] [role="treeitem"]').forEach((item) => {
     observer.observe(item, { attributes: true });
+  });
+
+  block.querySelectorAll('.nav-sidebar-social a').forEach((a) => {
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
+    a.setAttribute('aria-label', `Open our ${a.firstElementChild.classList[1].substring(5)} page in a new tab.`);
   });
 
   decorateIcons(nav);

@@ -105,7 +105,7 @@ export default async function decorate(block) {
 
     const categoryLink = document.createElement('a');
     categoryLink.classList.add('category-link-btn');
-    categoryLink.href = dta.path.substring(0, dta.path.lastIndexOf('/'));
+    categoryLink.href = categories[index]?.Path;
     categoryLink.innerHTML = categories[index]?.Category;
     categoryLink.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color})`);
 

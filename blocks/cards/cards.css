@@ -91,11 +91,76 @@
 
 @media (min-width: 900px) {
   .cards > ul {      
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 24px;   
-      margin-bottom: 1rem;    
-      min-height: 0;         
-    } 
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 24px;   
+    margin-bottom: 1rem;    
+    min-height: 0;         
+  } 
 
+  .cards.search > ul {
+    grid-template-columns: repeat(4, 1fr);
   }
+  
+  .cards.search > ul > li img {
+    min-height: 320px;
+  }
+
+  .cards.search .blogs-card-body {
+    min-height: 200px;
+  } 
+}
+
+/* Skeleton loading styles */
+.cards .skeleton {
+  position: relative;
+  min-height: 393px;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle 16px, white 99%, transparent 0),
+    radial-gradient(circle 16px, white 99%, transparent 0),
+    linear-gradient(var(--background-color) 32px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 231px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 20px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 20px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 50px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 50px, transparent 0);
+  background-size:
+    32px 32px,
+    32px 32px,
+    100px 32px,
+    100% 231px,
+    calc(100% - 2*24px) 20px,
+    calc(100% - 2*24px) 20px,
+    calc(100% - 4*24px) 20px,
+    calc(100% - 4*24px) 20px;
+  background-position:
+    20px 10px,
+    120px 10px,
+    36px 10px,
+    0 0,
+    24px 255px,
+    24px 280px,
+    24px 320px,
+    24px 345px;
+  overflow: hidden;
+}
+
+.cards .skeleton::after {
+  position: absolute;
+  content: '';
+  inset: 0;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(90deg, transparent 0, white 50%, transparent 100%);
+  background-size: 100px 100%;
+  background-position: -100px 0;
+  animation: loading 1.5s infinite;
+  transform: rotate(30deg);
+  scale: 2;
+}
+
+@keyframes loading {
+  to {
+    background-position: calc(100% + 100px) 0;
+  }
+}
