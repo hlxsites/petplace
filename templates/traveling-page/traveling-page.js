@@ -133,6 +133,16 @@ export function loadEager() {
 }
 
 export function loadLazy() {
-  const citySections = document.querySelectorAll('.section.city');
-  citySections.forEach((section) => meterCalls(() => updateSection(section), 100, 1));
+  const citySections = Array.from(document.querySelectorAll('.section.city'));
+  citySections.reduce(
+    (promiseChain, section) => promiseChain.then(() => new Promise((resolve) => {
+      setTimeout(() => {
+        window.requestAnimationFrame(() => {
+          updateSection(section);
+          resolve();
+        });
+      }, 200);
+    })),
+    Promise.resolve(),
+  );
 }
