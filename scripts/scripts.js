@@ -606,7 +606,6 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  // loadGoogleAds();
   await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   await loadHeader(doc.querySelector('header'));
   const footer = doc.querySelector('footer');
