@@ -422,6 +422,14 @@ export async function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
+
+  main.querySelectorAll('.section[data-background]').forEach((el) => {
+    el.style.backgroundImage = `url(${
+      isMobile()
+        ? el.dataset.background
+        : el.dataset.background.replace('width=750', 'width=1600')
+    })`;
+  });
 }
 
 /**
@@ -470,9 +478,7 @@ async function loadLazy(doc) {
     templateModule.loadLazy(main);
   }
   await loadBlocks(main);
-  if (document.body.classList.contains('article-page')) {
-    buildVideoEmbeds(main);
-  }
+  buildVideoEmbeds(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
