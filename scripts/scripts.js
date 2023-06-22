@@ -432,11 +432,14 @@ export async function decorateMain(main) {
   decorateScreenReaderOnly(main);
 
   main.querySelectorAll('.section[data-background]').forEach((el) => {
-    el.style.backgroundImage = `url(${
+    const div = document.createElement('div');
+    div.classList.add('section-background');
+    div.style.backgroundImage = `url(${
       isMobile()
         ? el.dataset.background
         : el.dataset.background.replace('width=750', 'width=1600')
     })`;
+    el.prepend(div);
   });
 }
 
