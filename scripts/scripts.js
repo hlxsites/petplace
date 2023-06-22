@@ -86,43 +86,59 @@ async function render404() {
   main.classList.add('error');
 }
 
-let categoriesPromise = null;
-async function loadCategories() {
-  if (categoriesPromise) {
-    return categoriesPromise;
+const loadPromises = {};
+/**
+ * Loads JSON from a specified URL, and caches the result in session storage.
+ * @param {string} jsonUrl URL from which JSON should be retrieved. As implied, the response
+ *  from the URL is expected to be in JSON format.
+ * @param {string} cacheKey The key under which the requested JSON will be cached in session
+ *  storage.
+ * @returns {Promise} Will be resolved after the JSON has been requested and cached.
+ */
+async function loadJson(jsonUrl, cacheKey) {
+  if (loadPromises[cacheKey]) {
+    return loadPromises[cacheKey];
   }
-  if (!window.sessionStorage.getItem('categories')) {
-    categoriesPromise = fetch('/categories.json')
+  if (!window.sessionStorage.getItem(cacheKey)) {
+    loadPromises[cacheKey] = fetch(jsonUrl)
       .then((res) => res.json())
       .then((json) => {
-        window.sessionStorage.setItem('categories', JSON.stringify(json));
+        window.sessionStorage.setItem(cacheKey, JSON.stringify(json));
         window.hlx.data = window.hlx.data || [];
-        window.hlx.data.categories = json;
+        window.hlx.data[cacheKey] = json;
       })
       .catch((err) => {
-        window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
+        window.sessionStorage.setItem(cacheKey, JSON.stringify({ data: [] }));
         // eslint-disable-next-line no-console
-        console.error('Failed to fetch categories.', err);
+        console.error(`Failed to fetch ${cacheKey}.`, err);
       });
-    return categoriesPromise;
+    return loadPromises[cacheKey];
   }
   return Promise.resolve();
 }
 
-export async function getCategories() {
+async function getJson(jsonUrl, cacheKey) {
   try {
-    if (window.hlx?.data?.categories) {
-      return window.hlx.data.categories;
+    if (window.hlx?.data && window.hlx.data[cacheKey]) {
+      return window.hlx.data[cacheKey];
     }
-    const categories = window.sessionStorage.getItem('categories');
-    if (categories) {
-      return JSON.parse(categories);
+    const json = window.sessionStorage.getItem(cacheKey);
+    if (json) {
+      return JSON.parse(json);
     }
-    await loadCategories();
-    return window.hlx.data.categories;
+    await loadJson(jsonUrl, cacheKey);
+    return window.hlx.data[cacheKey];
   } catch (err) {
     return null;
   }
+}
+
+function loadCategories() {
+  return loadJson('/categories.json', 'categories');
+}
+
+export async function getCategories() {
+  return getJson('/categories.json', 'categories');
 }
 
 export async function getCategory(name) {
@@ -463,45 +479,6 @@ export function addFavIcon(href) {
   }
 }
 
-let adsPromise = null;
-async function loadAds() {
-  if (adsPromise) {
-    return adsPromise;
-  }
-  if (!window.sessionStorage.getItem('ads')) {
-    adsPromise = fetch('/ads.json')
-      .then((res) => res.json())
-      .then((json) => {
-        window.sessionStorage.setItem('ads', JSON.stringify(json));
-        window.hlx.data = window.hlx.data || [];
-        window.hlx.data.ads = json;
-      })
-      .catch((err) => {
-        window.sessionStorage.setItem('ads', JSON.stringify({ data: [] }));
-        // eslint-disable-next-line no-console
-        console.error('Failed to fetch ads.', err);
-      });
-    return adsPromise;
-  }
-  return Promise.resolve();
-}
-
-async function getAds() {
-  try {
-    if (window.hlx?.data?.ads) {
-      return window.hlx.data.ads;
-    }
-    const ads = window.sessionStorage.getItem('ads');
-    if (ads) {
-      return JSON.parse(ads);
-    }
-    await loadAds();
-    return window.hlx.data.ads;
-  } catch (err) {
-    return null;
-  }
-}
-
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled
  * from the "ads" spreadsheet at the root of the project. There is some caching
@@ -512,7 +489,7 @@ async function getAds() {
  *  if the ad could not be found.
  */
 export async function getAd(adId) {
-  const ads = await getAds();
+  const ads = await getJson('/ads.json', 'ads');
   if (!ads) {
     return null;
   }
