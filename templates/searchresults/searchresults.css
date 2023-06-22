@@ -40,12 +40,6 @@
     text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
   }
 
-  .searchresults .sortbtn div {
-    display: flex;   
-  }
-  .searchresults .sortbtn h2{
-    width: 75%;
-  }
   .searchresults .sortbtn .search-select {
     margin-top: 30px;
     padding: 1px 12px 2px 20px;        
@@ -55,13 +49,26 @@
     background-size: 11px 6px;
     background-color: var( --background-color);
     border-radius: 20px;
-    width: 25%;
+    width: 100%;
     height: 40px;
     font-size: 1rem;
     font-weight: 900;
-    border-color: var(--color-gray-light-alt);    
+    border-color: var(--color-gray-light-alt);
+    appearance: none;    
 }
-  
+
+  @media (min-width: 768px) {
+    .searchresults .sortbtn div {
+      display: flex;   
+    }
+    .searchresults .sortbtn h2{
+      width: 75%;
+    }
+    .searchresults .sortbtn .search-select {
+      width: 25%;
+    }
+  }
+
   @media (min-width: 1024px) {    
     .category-index main {
       display: grid;
@@ -84,4 +91,6 @@
     .searchresults .blog-cards-container {
       grid-area: content;
     }
+
+
 }
