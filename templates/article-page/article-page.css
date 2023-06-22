@@ -86,6 +86,7 @@
 
 .article-template-grid-ad {
   grid-area: ad;
+  min-height: 250px;
 }
 
 .article-template-grid-pet-insurance-quote {
