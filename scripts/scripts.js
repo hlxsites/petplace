@@ -433,13 +433,24 @@ export async function decorateMain(main) {
 
   main.querySelectorAll('.section[data-background]').forEach((el) => {
     const div = document.createElement('div');
+    const desktopImage = el.dataset.background;
+    const desktopImageHighRes = desktopImage.replace('width=750', `width=${window.innerWidth}`);
+    const mobileImage = el.dataset.mobileBackground;
     div.classList.add('section-background');
+    div.isMobile = window.innerWidth < 900;
     div.style.backgroundImage = `url(${
-      isMobile()
-        ? el.dataset.background
-        : el.dataset.background.replace('width=750', 'width=1600')
+      div.isMobile ? (mobileImage || desktopImage) : desktopImageHighRes
     })`;
-    el.prepend(div);
+    el.append(div);
+    window.addEventListener('resize', () => {
+      if (div.isMobile === window.innerWidth < 900) {
+        return;
+      }
+      div.isMobile = window.innerWidth < 900;
+      div.style.backgroundImage = `url(${
+        div.isMobile ? (mobileImage || desktopImage) : desktopImageHighRes
+      })`;
+    }, { passive: true });
   });
 }
 

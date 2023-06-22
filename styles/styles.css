@@ -457,12 +457,48 @@ main .section[data-background] {
   position: relative;
 }
 
+main .section.highlight[data-background] {
+  mix-blend-mode: darken;
+}
+
+main .section.columns-container[data-background] .columns {
+  margin-bottom: 0;
+}
+
 main .section[data-background] .section-background {
-  background-position: bottom right;
+  position: relative;
+  width: calc(100% + 2*24px);
   background-repeat: no-repeat;
-  background-size: 150% auto;
-  width: 100%;
-  height: 100%;
+  background-size: cover;
+  aspect-ratio: 2 / 1;
+  margin: 0 -24px -61px;
+  background-position: center;
+}
+
+main .section.well.small[data-background] .section-background {
+  width: calc(100% + 2*61px);
+  margin: 0 -61px -61px;
+}
+
+@media (min-width: 900px) {
+  main .section[data-background] .section-background {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100vw;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    z-index: -1;
+    translate: -50%;
+    background-size: 1920px auto;
+    background-position: bottom;
+  }
+
+  main .section.well.small[data-background] .section-background {
+    width: 100vw;
+    margin: 0;
+  }
 }
 
 [data-align="left"] {
