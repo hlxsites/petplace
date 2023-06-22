@@ -713,6 +713,7 @@ a.sr-focusable:focus {
   text-transform: unset;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .a11y-quicknav > button:focus {
   opacity: 1;
   top: 10px;
