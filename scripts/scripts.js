@@ -1,7 +1,6 @@
 import {
   sampleRUM,
   buildBlock,
-  loadHeader,
   loadFooter,
   decorateButtons,
   decorateIcons,
@@ -11,6 +10,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  loadHeader,
   getMetadata,
   toClassName,
   createOptimizedPicture,
@@ -49,20 +49,24 @@ export function loadScript(url, callback, attributes) {
   return head.querySelector(`script[src="${url}"]`);
 }
 
-const queue = [];
 let interval;
+const queue = [];
 export async function meterCalls(fn, wait = 200, max = 5) {
-  if (!interval) {
-    setTimeout(() => fn.call(null));
-    interval = window.setInterval(() => {
-      queue.splice(0, max).forEach((item) => window.requestAnimationFrame(() => item.call(null)));
-      if (!queue.length) {
-        window.clearInterval(interval);
-      }
-    }, wait);
-  } else {
-    queue.push(fn);
-  }
+  return new Promise((res) => {
+    if (!interval) {
+      setTimeout(() => fn.call(null));
+      interval = window.setInterval(() => {
+        queue.splice(0, max).forEach((item) => window.requestAnimationFrame(() => item.call(null)));
+        if (!queue.length) {
+          res();
+          window.clearInterval(interval);
+          interval = null; // reset the interval
+        }
+      }, wait);
+    } else {
+      queue.push(fn);
+    }
+  });
 }
 
 export function getId() {
