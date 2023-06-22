@@ -60,7 +60,6 @@ export async function meterCalls(fn, wait = 200, max = 5) {
         if (!queue.length) {
           res();
           window.clearInterval(interval);
-          interval = null; // reset the interval
         }
       }, wait);
     } else {
@@ -217,7 +216,7 @@ function getResponsiveHeroPictures(main, h1) {
     const img = picture.querySelector('img');
     const optimized = createOptimizedPicture(img.src, img.alt, true, [
       { width: Math.ceil(window.innerWidth / 100) * 100 },
-    ]);
+    ], 'low');
     heroPics.pictures.push(optimized);
     picture.remove();
   }
@@ -235,7 +234,7 @@ function getResponsiveHeroPictures(main, h1) {
   return heroPics;
 }
 
-function createResponsiveImage(pictures, breakpoint) {
+function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
   const responsivePicture = document.createElement('picture');
   const defaultImage = pictures[0].querySelector('img');
   responsivePicture.append(defaultImage);
@@ -248,7 +247,9 @@ function createResponsiveImage(pictures, breakpoint) {
       srcElem = picture.querySelector('source:not([media])');
     }
     const srcElemBackup = srcElem.cloneNode();
-    srcElemBackup.srcset = srcElemBackup.srcset.replace('format=webply', 'format=png');
+    srcElemBackup.srcset = srcElemBackup.srcset
+      .replace('format=webply', 'format=png')
+      .replace('quality=medium', `quality=${quality}`);
     srcElemBackup.type = 'img/png';
 
     if (index > 0) {
@@ -285,7 +286,7 @@ async function buildHeroBlock(main) {
     if (!pictures.length) {
       return;
     }
-    const responsive = createResponsiveImage(pictures, breakpoints);
+    const responsive = createResponsiveImage(pictures, breakpoints, 'low');
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [responsive] }));
@@ -297,16 +298,21 @@ async function buildHeroBlock(main) {
 }
 
 function buildVideoEmbeds(container) {
-  container.querySelectorAll('a[href*="youtube.com/embed"]').forEach((a) => {
-    a.parentElement.innerHTML = `
-      <iframe
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        frameborder="0"
-        loading="lazy"
-        height="360"
-        width="640"
-        src="${a.href}"></iframe>`;
+  const ytVideos = container.querySelectorAll('a[href*="youtube.com/embed"]');
+  if (!ytVideos.length) {
+    return;
+  }
+  loadCSS('/scripts/lite-yt-embed/lite-yt-embed.css');
+  loadScript('/scripts/lite-yt-embed/lite-yt-embed.js');
+
+  ytVideos.forEach((a) => {
+    const litePlayer = document.createElement('lite-youtube');
+    const videoId = a.href.split('/').pop();
+    litePlayer.setAttribute('videoid', videoId);
+    litePlayer.style.backgroundImage = `url('https://i.ytimg.com/vi/${videoId}/hqdefault.jpg')`;
+    const parent = a.parentElement;
+    parent.innerHTML = '';
+    parent.append(litePlayer);
   });
 }
 
@@ -424,6 +430,14 @@ export async function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
+
+  main.querySelectorAll('.section[data-background]').forEach((el) => {
+    el.style.backgroundImage = `url(${
+      isMobile()
+        ? el.dataset.background
+        : el.dataset.background.replace('width=750', 'width=1600')
+    })`;
+  });
 }
 
 /**
@@ -472,9 +486,7 @@ async function loadLazy(doc) {
     templateModule.loadLazy(main);
   }
   await loadBlocks(main);
-  if (document.body.classList.contains('article-page')) {
-    buildVideoEmbeds(main);
-  }
+  buildVideoEmbeds(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;

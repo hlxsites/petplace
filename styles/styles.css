@@ -426,6 +426,12 @@ main .section.well .default-content-wrapper>* {
   max-width: 1000px;
 }
 
+main .section[data-background] {
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-size: 150% auto;
+}
+
 [data-align="left"] {
   text-align: left;
 }
@@ -461,6 +467,10 @@ main .section.well .default-content-wrapper>* {
   color: inherit;
 }
 
+.generic main .section {
+  margin: 3.75rem auto;
+}
+
 .generic main p {
   margin: 1rem 0;
 }
@@ -473,6 +483,11 @@ main .section.well .default-content-wrapper>* {
   padding-left: rem;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
+.generic main li::marker {
+  color: var(--highlight-color);
+}
+
 .generic a.button {
   margin-top: 0;
 }
@@ -480,6 +495,28 @@ main .section.well .default-content-wrapper>* {
 .generic .columns>div {
   align-items: center;
   gap: 1.5rem;
+}
+
+.generic .blade {
+  gap: 3.5rem;
+}
+
+.generic .blade > div {
+  gap: 3rem;
+}
+
+.generic .blade .blade-body :is(h3, h4){
+  font-family: var(--heading-font-family);
+  font-size: 2rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.generic main a .icon {
+  color: var(--highlight-color);
+  height: 2.5rem;
+  width: 2.5rem;
+  margin-right: .5rem;
 }
 
 @media (min-width: 600px) {
@@ -510,11 +547,11 @@ main .centered {
 
 
 main .section.highlight {
-  background: var(--background-color-light);
+  background-color: var(--background-color-light);
 }
 
 main .section.highlight.strong {
-  background: var(--background-color-dark);
+  background-color: var(--background-color-dark);
   color: var(--text-color-inverted);
 }
 
@@ -707,6 +744,13 @@ a.sr-focusable:focus {
 }
 
 /* Responsive overrides */
+
+@media (min-width: 600px) {
+  main .section[data-background] {
+    background-position: bottom;
+    background-size: 100% auto;
+  }
+}
 
 @media (min-width: 900px) {
   .section>div {

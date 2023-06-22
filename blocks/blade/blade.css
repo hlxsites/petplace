@@ -1,3 +1,8 @@
+.blade {
+    display: flex;
+    flex-direction: column;
+}
+
 .blade h2 {
     margin-top: 0;
 }  
@@ -63,7 +68,12 @@
         gap: 5rem;
     }
 
+    .blade .blade-body {
+        flex-basis: 66%;
+    }
+
     .blade .blade-image {
+        flex-basis: 33%;
         max-width: 446px;
     }
 
