@@ -1,13 +1,10 @@
-import {
-  meterCalls,
-} from '../../scripts/scripts.js';
-
 async function updateSection(section) {
   // remove column wrapper
   ['city-header', 'city-middle', 'city-footer'].forEach((className) => {
     const column = section.querySelector(`.columns.${className}`);
     column.parentNode.replaceWith(column);
   });
+
   // get all essential elements
   const elements = [
     '.default-content-wrapper',
@@ -28,16 +25,19 @@ async function updateSection(section) {
     }
     return section.querySelector(e);
   });
+
   // rearrange the elements under section city
   const arrangedCitySection = document.createElement('div');
   arrangedCitySection.classList.add('arranged', 'section', 'city');
   elements.forEach((e) => arrangedCitySection.appendChild(e));
-  // clean reduntant childs
-  // append arragned city section under orignal city section
+
+  // clean redundant childs
+  // append arranged city section under original city section
   while (section.firstChild) {
     section.removeChild(section.firstChild);
   }
   section.appendChild(arrangedCitySection);
+
   // pick the best grid area layout by image2 width/height
   const img2 = elements[6].querySelector('img');
   const width = img2.getAttribute('width');
