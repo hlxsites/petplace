@@ -19,7 +19,7 @@ addPrefetch('preconnect', 'https://www.googletagservices.com');
 
 window.setTimeout(() => {
   loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '', defer: '' });
-}, 3000);
+}, 2000);
 
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled
