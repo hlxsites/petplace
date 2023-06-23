@@ -89,6 +89,10 @@
   min-height: 250px;
 }
 
+.article-template-grid-ad .ad {
+  text-align: center;
+}
+
 .article-template-grid-pet-insurance-quote {
   grid-area: insurance;
 }

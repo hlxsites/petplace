@@ -674,12 +674,24 @@ a.sr-focusable:focus {
     right: calc(50% - 80px);
 }
 
+main .section.search-container.ad-container .ad-wrapper .ad {
+  height: 100%;
+}
+
+main .section.search-container.ad-container .ad-wrapper {
+  min-height: 250px;
+}
+
 /* Responsive overrides */
 
 @media (min-width: 900px) {
   .section > div {
     margin: 0 auto;
     width: 100%;
+  }
+
+  main .section.search-container.ad-container .ad-wrapper {
+    min-height: 90px;
   }
 }
 
@@ -690,6 +702,10 @@ a.sr-focusable:focus {
 
   li {
     margin-bottom: 0.25rem;
+  }
+
+  main .section.search-container.ad-container .ad-wrapper {
+    min-height: 250px;
   }
 }
 

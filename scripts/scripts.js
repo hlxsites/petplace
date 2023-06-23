@@ -539,6 +539,29 @@ function getAdTargets(ad) {
   return null;
 }
 
+function parseAdSizes(rawSizes) {
+  if (rawSizes) {
+    return String(rawSizes).split(',')
+      .map((size) => parseInt(String(size).trim(), 10));
+  }
+  return null;
+}
+
+function getAdSizes(ad) {
+  if (!ad) {
+    return [];
+  }
+  const widths = parseAdSizes(ad.Width);
+  const heights = parseAdSizes(ad.Height);
+  const sizes = [];
+  widths.forEach((width, i) => {
+    if (heights.length > i) {
+      sizes.push([width, heights[i]]);
+    }
+  });
+  return sizes;
+}
+
 /**
  * Loads all Google ads into the page by adding the google ad API script
  * and displaying ads in all ad blocks defined on the page.
@@ -550,8 +573,8 @@ export async function loadGoogleAds() {
     return Promise.resolve();
   }
   const adData = (await Promise.all(ads.map((ad) => getAd(ad.dataset.adid))))
-    .map((ad, index) => ({ ad: ads[index], data: ad }))
-    .filter((ad) => !!ad.data);
+    .map((ad, index) => ({ ad: ads[index], data: ad, sizes: getAdSizes(ad) }))
+    .filter((ad) => !!ad.data && !!ad.sizes.length);
 
   if (!adData.length) {
     return Promise.resolve();
@@ -563,11 +586,9 @@ export async function loadGoogleAds() {
 
   window.googletag.cmd.push(() => {
     adData.forEach((currAdData) => {
-      const { ad, data } = currAdData;
+      const { ad, data, sizes } = currAdData;
       const adSlot = window.googletag
-        .defineSlot(data.Path, [
-          [parseInt(data.Width, 10), parseInt(data.Height, 10)],
-        ], ad.id)
+        .defineSlot(data.Path, sizes, ad.id)
         .addService(window.googletag.pubads());
 
       const targets = getAdTargets(data);

@@ -1,10 +1,12 @@
 .ad {
   height: 100%;
+  min-height: inherit;
 }
 
 .ad .skeleton {
   position: relative;
   height: 100%;
+  min-height: inherit;
   background-repeat: no-repeat;
   background-image:
     radial-gradient(circle 16px, white 99%, transparent 0),
@@ -25,6 +27,7 @@
     right 36px top 10px,
     0 0;
   overflow: hidden;
+  border-radius: 10px;
 }
 
 .ad .skeleton::after {
@@ -33,7 +36,7 @@
   inset: 0;
   background-repeat: no-repeat;
   background-image: linear-gradient(90deg, transparent 0, white 50%, transparent 100%);
-  background-size: 100px 100%;
+  background-size: 40% 100%;
   background-position: -100px 0;
   animation: loading 1.5s infinite;
   scale: 2;
