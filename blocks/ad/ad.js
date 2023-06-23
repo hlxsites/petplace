@@ -12,4 +12,7 @@ export default function decorate(block) {
     }
     row.remove();
   });
+  const skeleton = document.createElement('div');
+  skeleton.classList.add('skeleton');
+  block.append(skeleton);
 }
