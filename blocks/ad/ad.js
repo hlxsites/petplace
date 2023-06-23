@@ -1,4 +1,4 @@
-import { getJson } from '../../scripts/scripts.js';
+import { getJson, loadScript } from '../../scripts/scripts.js';
 
 function addPrefetch(kind, url, as) {
   const linkEl = document.createElement('link');
@@ -16,6 +16,13 @@ addPrefetch('preconnect', 'https://adservice.google.com');
 addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
 addPrefetch('preconnect', 'https://www.googletagservices.com');
 addPrefetch('preconnect', 'https://www.googletagservices.com');
+
+const gtmFallback = document.createElement('noscript');
+gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+document.body.prepend(gtmFallback);
+window.setTimeout(() => {
+  loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '', defer: '' });
+}, 3000);
 
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled

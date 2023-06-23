@@ -542,11 +542,6 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
   loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
-
-  const gtmFallback = document.createElement('noscript');
-  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
-  doc.body.prepend(gtmFallback);
-  loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '', defer: '' });
 }
 
 /**
