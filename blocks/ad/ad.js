@@ -17,10 +17,6 @@ addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
 addPrefetch('preconnect', 'https://www.googletagservices.com');
 addPrefetch('preconnect', 'https://www.googletagservices.com');
 
-window.setTimeout(() => {
-  loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '', defer: '' });
-}, 2000);
-
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled
  * from the "ads" spreadsheet at the root of the project. There is some caching
