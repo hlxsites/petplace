@@ -30,34 +30,87 @@
   border-right: 1px solid var(--highlight-color);
 }
 
-.icon-type-list li:last-child icon-item {
+.icon-type .icon-type-list li:last-child icon-item,
+.icon-type.inline .icon-type-list li:last-child icon-item {
   border-right: none;
 }
 
-.icon-type-list li icon-item img {
+.icon-type-list li icon-item svg {
+  color: var(--color-purple-gray);
   width: 100%;
   height: 65%;
 }
 
 .icon-type-list span {
-  color:  var(--color-purple-gray);
+  color: var(--color-purple-gray);
   font-size: 0.8rem;
   font-weight: 800;
   margin-top: auto;
   white-space: nowrap;
 }
 
+/* Icon-type(inline) */
+
+.icon-type.inline .icon-type-list {
+  justify-content: left;
+  row-gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.icon-type.inline .icon-type-list li {
+  padding-left: 0.25em;
+  margin-bottom: 1rem;
+  height: 1rem;
+  flex: 0 0 10rem;
+}
+
+.icon-type.inline .icon-type-list icon-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  width: 100%;
+  height: 150%;
+  border-right: 1px solid var(--highlight-color);
+}
+
+.icon-type.inline .icon-type-list icon-item svg {
+  width: 2rem;
+  height: 2rem;
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.icon-type.inline .icon-type-list icon-item span {
+  margin-top: 0;
+  font-size: 0.875rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+
 @media(min-width:600px) {
   .icon-type-list li {
-    min-width: 170px;
-    max-width: 192px;
-    width: 120px;
-    height: 100px;
+    min-width: 9.5rem;
+    max-width: 12rem;
+    width: 7.5rem;
+    height: 6.25rem;
   }
 
   .icon-type-list span {
     font-size: 1rem;
   }
+
+  /* Icon-type(inline) */
+
+  .icon-type.inline .icon-type-list li {
+    min-height: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .icon-type.inline .icon-type-list icon-item {
+    height: 2.1rem;
+  }
+
 
 }
 
@@ -82,8 +135,8 @@
   }
 
   .icon-type-list li {
-    height: 150px;
-    flex-basis: 170px;
+    height: 9.3rem;
+    flex-basis: 9.5rem;
   }
 
   .icon-type-list li icon-item {
@@ -94,4 +147,16 @@
   .icon-type-list span {
     font-size: 1rem;
   }
+
+  /* Icon-type(inline) */
+
+  .icon-type.inline .icon-type-list li {
+    min-height: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .icon-type.inline .icon-type-list icon-item {
+    height: 2.2rem;
+  }
+
 }

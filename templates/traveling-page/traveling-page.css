@@ -94,44 +94,8 @@
   background-color: var(--background-color);
 }
 
-.arranged.section.city .icon-type-list {
-  justify-content: left;
-  row-gap: 1rem;
-  flex-wrap: wrap;
-}
-
 .arranged.section.city .icon-type-wrapper {
   margin-bottom: 1rem;
-}
-
-.arranged.section.city .icon-type-list li {
-  padding-left: 0.25em;
-  margin-bottom: 1rem;
-  height: 1rem;
-  flex: 0 0 10rem;
-}
-
-.arranged.section.city .icon-type-list icon-item {
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  width: 100%;
-  height: 150%;
-  border-right: 1px solid #ff7d5a;
-}
-
-.arranged.section.city .icon-type-list icon-item img {
-  width: 2rem;
-  height: 2rem;
-  padding-right: 4px;
-  padding-left: 4px;
-}
-
-.arranged.section.city .icon-type-list icon-item span {
-  margin-top: 0;
-  font-size: 0.875rem;
-  text-align: left;
-  white-space: nowrap;
 }
 
 .arranged.section.city a {
@@ -282,15 +246,6 @@
       "tips tips tips tips tips tips tips tips tips tips";
   }
 
-  .arranged.section.city .icon-type-list li {
-    min-height: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .arranged.section.city .icon-type-list icon-item {
-    height: 2.1rem;
-  }
-
   .arranged.section.city .city-header-img {
     width: 100%;
     height: 30vh;
@@ -329,15 +284,6 @@
   .arranged.section.city h2,
   .arranged.section.city h3 {
     font-size: 2rem;
-  }
-
-  .arranged.section.city .icon-type-list li {
-    min-height: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .arranged.section.city .icon-type-list icon-item {
-    height: 35px;
   }
 
   .arranged.section.city .city-header-img {

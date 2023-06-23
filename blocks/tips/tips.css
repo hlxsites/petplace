@@ -3,8 +3,8 @@
     align-items: center;
     background-color: var(--color-gray-lighter);
     border-radius: 50px;
-    padding: 20px;
-    font-size: 16px;
+    padding: 1.25rem;
+    font-size: 1rem;
 }
 
 .tips.block>div {
@@ -12,23 +12,36 @@
     align-items: center;
 }
 
-
-.tips-icon img {
-    height: 40px;
-    min-width: 40px;
-    max-width: 40px;
-    object-fit: contain;
-    padding-right: 12px;
-    flex-shrink: 0;
-}
-
-.tip {
-    border-left: 1px solid #ff7d5a;
-    padding-left: 1em;
+.tips.block>div>div {
+    padding-left: 4rem;
     overflow-wrap: break-word;
+    position: relative;
 }
 
-.tip strong {
+.tips.block>div>div::after {
+    content: '';
+    position: absolute;
+    left: 2.8rem;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid var(--highlight-color);
+    width: 0;
+}
+
+.tips.block>div>div::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    background-image: url('/icons/tips-star.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.tips.block>div>div strong {
     color: var(--color-purple-gray);
     display: inline;
 }

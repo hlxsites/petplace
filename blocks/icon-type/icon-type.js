@@ -1,11 +1,4 @@
-// Function to transform the text content
-function transformTextContent(textContent) {
-  const regex = /[/\s]/;
-  const lowercaseText = textContent.toLowerCase();
-  const firstWord = lowercaseText.split(regex)[0].replace('offleash', 'off-leash');
-  const transformedText = `city-${firstWord}`;
-  return transformedText;
-}
+import { toClassName } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
   const iconList = block.querySelector('ul');
@@ -18,30 +11,17 @@ export default function decorate(block) {
   // Iterate over each li element
   liElements.forEach((liElement) => {
     const textContent = liElement.textContent.trim();
-    const a = transformTextContent(textContent);
+    const icon = 'city-' + toClassName(textContent);
     // Fetch the SVG file from the 'icons' folder
-    const svgFilePath = `/icons/${a}.svg`;
+    const svgFilePath = `/icons/${icon}.svg`;
     fetch(svgFilePath)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to fetch SVG file: ${response.status}`);
-        }
-        return response.text();
-      })
+      .then((response) => response.text())
       .then((svgContent) => {
         const iconItem = document.createElement('icon-item');
-        const imgElement = document.createElement('img');
-        imgElement.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
-          svgContent,
-        )}`;
-        // Add the alt attribute to the imgElement
-        imgElement.alt = textContent;
-        // createOptimizedPicture(imgElement.src, imgElement.alt, false, [{ width: IMAGE_WIDTH }]);
         const pElement = document.createElement('span');
         pElement.textContent = textContent;
 
-        // Replace the text content with the loaded SVG
-        iconItem.appendChild(imgElement);
+        iconItem.innerHTML = svgContent;
         iconItem.appendChild(pElement);
 
         liElement.textContent = '';
