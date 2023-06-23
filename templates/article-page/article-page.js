@@ -7,9 +7,39 @@ import {
 } from '../../scripts/lib-franklin.js';
 import {
   createBreadCrumbs,
+  getCategory,
   getCategoryByKey,
-  getCategoryAd,
 } from '../../scripts/scripts.js';
+
+async function getRawCategoryAd(category) {
+  if (!category) {
+    return null;
+  }
+  if (category.Ad) {
+    return category.Ad;
+  }
+  if (!category['Parent Path']) {
+    return null;
+  }
+  const parent = await getCategoryByKey('Path', category['Parent Path']);
+  return getRawCategoryAd(parent);
+}
+
+/**
+ * Retrieves the ID of the ad to show for a category. This will be determined
+ * by the "Ad" column in the categories spreadsheet. The method will check
+ * the ad column for the given category, and for all of that category's parents.
+ *
+ * If no ad is specified, the method will return a default ad.
+ * @param {string} categorySlug Slug of the category whose ad should be
+ *  retrieved.
+ * @returns {Promise<string>} ID of an ad from the ads spreadsheet.
+ */
+export async function getCategoryAd(categorySlug) {
+  const category = await getCategory(categorySlug);
+  const categoryAd = await getRawCategoryAd(category);
+  return categoryAd || 'article-default-rail';
+}
 
 function createAutoBlockSection(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
