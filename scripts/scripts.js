@@ -315,16 +315,21 @@ async function buildHeroBlock(main) {
 }
 
 function buildVideoEmbeds(container) {
-  container.querySelectorAll('a[href*="youtube.com/embed"]').forEach((a) => {
-    a.parentElement.innerHTML = `
-      <iframe
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        frameborder="0"
-        loading="lazy"
-        height="360"
-        width="640"
-        src="${a.href}"></iframe>`;
+  const ytVideos = container.querySelectorAll('a[href*="youtube.com/embed"]');
+  if (!ytVideos.length) {
+    return;
+  }
+  loadCSS('/scripts/lite-yt-embed/lite-yt-embed.css');
+  loadScript('/scripts/lite-yt-embed/lite-yt-embed.js');
+
+  ytVideos.forEach((a) => {
+    const litePlayer = document.createElement('lite-youtube');
+    const videoId = a.href.split('/').pop();
+    litePlayer.setAttribute('videoid', videoId);
+    litePlayer.style.backgroundImage = `url('https://i.ytimg.com/vi/${videoId}/hqdefault.jpg')`;
+    const parent = a.parentElement;
+    parent.innerHTML = '';
+    parent.append(litePlayer);
   });
 }
 
@@ -442,6 +447,28 @@ export async function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
+
+  main.querySelectorAll('.section[data-background]').forEach((el) => {
+    const div = document.createElement('div');
+    const desktopImage = el.dataset.background;
+    const desktopImageHighRes = desktopImage.replace('width=750', `width=${window.innerWidth}`);
+    const mobileImage = el.dataset.mobileBackground;
+    div.classList.add('section-background');
+    div.isMobile = window.innerWidth < 900;
+    div.style.backgroundImage = `url(${
+      div.isMobile ? (mobileImage || desktopImage) : desktopImageHighRes
+    })`;
+    el.append(div);
+    window.addEventListener('resize', () => {
+      if (div.isMobile === window.innerWidth < 900) {
+        return;
+      }
+      div.isMobile = window.innerWidth < 900;
+      div.style.backgroundImage = `url(${
+        div.isMobile ? (mobileImage || desktopImage) : desktopImageHighRes
+      })`;
+    }, { passive: true });
+  });
 }
 
 /**
@@ -487,9 +514,7 @@ async function loadLazy(doc) {
     templateModule.loadLazy(main);
   }
   await loadBlocks(main);
-  if (document.body.classList.contains('article-page')) {
-    buildVideoEmbeds(main);
-  }
+  buildVideoEmbeds(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -635,7 +660,6 @@ export async function createBreadCrumbs(crumbData) {
   breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
 
   const ol = document.createElement('ol');
-  ol.setAttribute('role', 'list');
 
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
