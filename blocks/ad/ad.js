@@ -1,4 +1,21 @@
-import { getJson, loadScript } from '../../scripts/scripts.js';
+import { getJson } from '../../scripts/scripts.js';
+
+function addPrefetch(kind, url, as) {
+  const linkEl = document.createElement('link');
+  linkEl.rel = kind;
+  linkEl.href = url;
+  if (as) {
+    linkEl.as = as;
+  }
+  document.head.append(linkEl);
+}
+
+addPrefetch('preconnect', 'https://securepubads.g.doubleclick.net');
+addPrefetch('preconnect', 'https://pagead2.googlesyndication.com');
+addPrefetch('preconnect', 'https://adservice.google.com');
+addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
+addPrefetch('preconnect', 'https://www.googletagservices.com');
+addPrefetch('preconnect', 'https://www.googletagservices.com');
 
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled
@@ -60,6 +77,7 @@ export default async function decorate(block) {
   // Enable SRA and services.
   window.googletag.cmd.push(() => {
     window.googletag.pubads().enableSingleRequest();
+    window.googletag.pubads().enableLazyLoad();
     window.googletag.enableServices();
   });
 
