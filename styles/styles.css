@@ -461,6 +461,10 @@ main .section.highlight[data-background] {
   mix-blend-mode: darken;
 }
 
+.generic .columns {
+  margin: 60px auto;
+}
+
 main .section.columns-container[data-background] .columns {
   margin-bottom: 0;
 }
@@ -568,10 +572,6 @@ main .section.well.small[data-background] .section-background {
 
 .generic a.button {
   margin-top: 0;
-}
-
-.generic .columns {
-  margin: 60px auto;
 }
 
 .generic .columns > div {
