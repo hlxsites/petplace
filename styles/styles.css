@@ -570,6 +570,7 @@ main .section.well.small[data-background] .section-background {
   margin-top: 0;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .generic .columns {
   margin: 60px auto;
 }
