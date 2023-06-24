@@ -415,22 +415,7 @@ function createA11yQuickNav(links = []) {
   document.body.prepend(nav);
 }
 
-/**
- * Decorates the main element.
- * @param {Element} main The main element
- */
-// eslint-disable-next-line import/prefer-default-export
-export async function decorateMain(main) {
-  main.id = 'main';
-  loadCategories(main);
-  // hopefully forward compatible button decoration
-  decorateButtons(main);
-  await decorateIcons(main);
-  await buildAutoBlocks(main);
-  decorateSections(main);
-  decorateBlocks(main);
-  decorateScreenReaderOnly(main);
-
+function decorateSectionsWithBackgroundImage(main) {
   main.querySelectorAll('.section[data-background]').forEach((el) => {
     const div = document.createElement('div');
     const desktopImage = el.dataset.background;
@@ -452,6 +437,40 @@ export async function decorateMain(main) {
       })`;
     }, { passive: true });
   });
+}
+
+function standardizeLinkNavigation() {
+  document.querySelectorAll('a[href]').forEach((a) => {
+    const url = new URL(a.href);
+    // External links always open in a new tab
+    if (url.hostname !== window.location.hostname) {
+      a.setAttribute('target', '_blank');
+      return;
+    }
+    // Links in the article bodies should also open in a new tab
+    if (document.body.classList.contains('article-page') && a.closest('main')) {
+      a.setAttribute('target', '_blank');
+    }
+  });
+}
+
+/**
+ * Decorates the main element.
+ * @param {Element} main The main element
+ */
+// eslint-disable-next-line import/prefer-default-export
+export async function decorateMain(main) {
+  main.id = 'main';
+  loadCategories(main);
+  // hopefully forward compatible button decoration
+  decorateButtons(main);
+  await decorateIcons(main);
+  await buildAutoBlocks(main);
+  decorateSections(main);
+  decorateBlocks(main);
+  decorateScreenReaderOnly(main);
+  decorateSectionsWithBackgroundImage(main);
+  standardizeLinkNavigation();
 }
 
 /**
