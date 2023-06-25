@@ -1,15 +1,18 @@
 async function updateSection(section) {
-  // remove column wrapper
-  ['city-header', 'city-middle', 'city-footer'].forEach((className) => {
-    const column = section.querySelector(`.columns.${className}`);
-    column.parentNode.replaceWith(column);
-  });
+  // make all links open in new tab
+  section.querySelectorAll('a').forEach((link) => link.setAttribute('target', '_blank'));
 
   // get all essential elements
   const elements = [
     '.default-content-wrapper',
     '.icon-type-wrapper',
     '.link-box-wrapper',
+    // ['.columns.city-header .columns-img-col', 'city-header-img'],
+    // ['.columns.city-header .columns-txt-col', 'city-header-txt'],
+    // ['.columns.city-middle .columns-txt-col', 'city-middle-txt'],
+    // ['.columns.city-middle .columns-img-col', 'city-middle-img'],
+    // ['.columns.city-footer .columns-img-col', 'city-footer-img'],
+    // ['.columns.city-footer .columns-txt-col', 'city-footer-txt'],
     ['.columns.city-header.block>div>div:nth-child(1)', 'city-header-img'],
     ['.columns.city-header.block>div>div:nth-child(2)', 'city-header-txt'],
     ['.columns.city-middle.block>div>div:nth-child(1)', 'city-middle-txt'],
@@ -27,32 +30,30 @@ async function updateSection(section) {
   });
 
   // rearrange the elements under section city
-  const arrangedCitySection = document.createElement('div');
-  arrangedCitySection.classList.add('arranged', 'section', 'city');
-  elements.forEach((e) => arrangedCitySection.appendChild(e));
+  const updatedCitySection = document.createElement('div');
+  updatedCitySection.classList.add('updated-city-section');
+  elements.forEach((e) => updatedCitySection.appendChild(e));
 
   // clean redundant childs
-  // append arranged city section under original city section
   while (section.firstChild) {
     section.removeChild(section.firstChild);
   }
-  section.appendChild(arrangedCitySection);
+  // append arranged city section under original city section
+  section.appendChild(updatedCitySection);
 
-  // pick the best grid area layout by image2 width/height
-  const img2 = elements[6].querySelector('img');
-  const width = img2.getAttribute('width');
-  const height = img2.getAttribute('height');
-  if (width / height > 1.9) {
-    arrangedCitySection.classList.add('backup-layout');
+  // use backup layout if the middle image is vertical
+  const cityMiddleImg = elements[6];
+  if (cityMiddleImg.classList.contains('vertical')) {
+    updatedCitySection.classList.add('backup-layout');
   }
 }
 
 export function loadEager() {
-  const links = document.querySelectorAll('a');
-  links.forEach((link) => link.setAttribute('target', '_blank'));
+  return false;
 }
 
 export function loadLazy() {
+  // (TODO): decoreate columns block first 
   const citySections = Array.from(document.querySelectorAll('.section.city'));
   citySections.reduce(
     (promiseChain, section) => promiseChain.then(() => new Promise((resolve) => {

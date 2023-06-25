@@ -10,6 +10,20 @@ export default function decorate(block) {
         const picWrapper = pic.closest('div');
         if (picWrapper && picWrapper.children.length === 1) {
           picWrapper.classList.add('columns-img-col');
+
+          const img = pic.querySelector('img');
+          const width = img.getAttribute('width');
+          const height = img.getAttribute('height');
+          if (width / height > 1.9) {
+            picWrapper.classList.add('vertical');
+          } else {
+            picWrapper.classList.add('horizontal');
+          }
+        }
+      } else {
+        const txtWrapper = col.closest('div');
+        if (txtWrapper) {
+          txtWrapper.classList.add('columns-txt-col');
         }
       }
     });

@@ -69,23 +69,24 @@
   padding: 4.3rem 1rem 3rem 1rem;
 }
 
-.arranged.section.city .icon-type-container {
+.updated-city-section .icon-type-container {
   padding: 1.875rem 1rem;
 }
 
 
 /* Styling city section */
-.arranged.section.city {
+.updated-city-section {
+  max-width: 95%;
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-top: 2.5rem;
+
   margin: 1.25rem;
   background-color: var(--background-color);
   border-top: 1px solid var(--highlight-color);
 }
 
-.arranged.section.city h3 {
+.updated-city-section h3 {
   font-size: calc(1.325rem + .9vw);
   line-height: 1.1;
   color: var(--background-color-dark);
@@ -94,38 +95,38 @@
   background-color: var(--background-color);
 }
 
-.arranged.section.city .icon-type-wrapper {
+.updated-city-section .icon-type-wrapper {
   margin-bottom: 1rem;
 }
 
-.arranged.section.city a {
+.updated-city-section a {
   text-decoration: underline;
   color: var(--link-color-alt);
   cursor: pointer;
 }
 
-.arranged.section.city a:hover {
+.updated-city-section a:hover {
   text-decoration: none;
 }
 
-.arranged.section.city a[target="_blank"]::after {
+.updated-city-section a[target="_blank"]::after {
   content: "";
   margin-left: 0.2em;
 }
 
-.arranged.section.city p:not(:last-child) {
+.updated-city-section p:not(:last-child) {
   margin-bottom: 1.25rem;
 }
 
 /* Designate areas */
-.arranged.section.city {
+.updated-city-section {
   display: grid;
   margin: auto;
   padding-top: 4rem;
   grid-template-areas:
     "name name"
-    "icons icons"
-    "links links"
+    "tags tags"
+    "link link"
     "img1 img1"
     "txt1 txt1"
     "txt2 txt2"
@@ -134,14 +135,14 @@
     "tips tips";
 }
 
-.arranged.section.city.backup-layout {
+.updated-city-section.backup-layout {
   display: grid;
   margin: auto;
   padding-top: 4rem;
   grid-template-areas:
     "name name"
-    "icons icons"
-    "links links"
+    "tags tags"
+    "link link"
     "img1 img1"
     "txt1 txt1"
     "txt2 txt2"
@@ -151,66 +152,76 @@
     "tips tips";
 }
 
-.arranged.section.city .default-content-wrapper {
+.updated-city-section .default-content-wrapper {
   grid-area: name;
 }
 
-.arranged.section.city .icon-type-wrapper {
-  grid-area: icons;
+.updated-city-section .icon-type-wrapper {
+  grid-area: tags;
 }
 
-.arranged.section.city .link-box-wrapper {
-  grid-area: links;
+.updated-city-section .link-box-wrapper {
+  grid-area: link;
 }
 
-.arranged.section.city .city-header-txt {
+.updated-city-section .city-header-txt {
   grid-area: txt1;
 }
 
-.arranged.section.city .city-header-img {
+.updated-city-section .city-header-img {
   grid-area: img1;
   height: 250px;
 }
 
-.arranged.section.city .city-middle-txt {
+.updated-city-section .city-middle-txt {
   grid-area: txt2;
 }
 
-.arranged.section.city .city-middle-img {
+.updated-city-section .city-middle-img {
   grid-area: img2;
 }
 
-.arranged.section.city .city-footer-txt {
+.updated-city-section .city-footer-txt {
   grid-area: txt3;
 }
 
-.arranged.section.city .city-footer-img {
+.updated-city-section .city-footer-img {
   grid-area: img3;
 }
 
-.arranged.section.city .tips-wrapper {
+.updated-city-section .tips-wrapper {
   grid-area: tips;
   width: 95%;
 }
 
-.arranged.section.city .city-header-txt,
-.arranged.section.city .city-middle-txt,
-.arranged.section.city .city-footer-txt,
-.arranged.section.city .city-header-img,
-.arranged.section.city .city-middle-img,
-.arranged.section.city .city-footer-img,
-.arranged.section.city .tips-wrapper {
+.updated-city-section .city-header-txt,
+.updated-city-section .city-middle-txt,
+.updated-city-section .city-footer-txt,
+.updated-city-section .city-header-img,
+.updated-city-section .city-middle-img,
+.updated-city-section .city-footer-img,
+.updated-city-section .tips-wrapper {
   margin-bottom: 1.8rem;
 }
 
-.arranged.section.city .city-middle-img img,
-.arranged.section.city .city-header-img img,
-.arranged.section.city .city-footer-img img {
+.updated-city-section .city-header-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+.updated-city-section .city-middle-img img,
+.updated-city-section .city-footer-img img {
+  width: 95%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.updated-city-section.backup-layout .city-middle-img img,
+.updated-city-section.backup-layout .city-footer-img img {
+  width: 100%;
+  object-fit: cover;
+}
 
 @media (min-width:600px) {
 
@@ -224,32 +235,33 @@
     margin: 1.75rem 0;
   }
 
-  .arranged.section.city {
+  .updated-city-section {
     padding-top: 4rem;
   }
 
-  .arranged.section.city .icon-type-container {
+  .updated-city-section .icon-type-container {
     padding: 3rem 1rem;
   }
 
-  .arranged.section.city.backup-layout {
+  .updated-city-section.backup-layout {
     column-gap: 2.2rem;
     grid-template-areas:
-      "name name name name name name name name name name"
-      "icons icons icons icons icons icons icons icons icons icons"
-      "links links links links links links links links links links"
-      "img1 img1 img1 img1 img1 img1 img1 img1 img1 img1"
-      "txt1 txt1 txt1 txt1 txt1 txt1 txt1 txt1 txt1 txt1"
-      "txt2 txt2 txt2 txt2 txt2 txt2 txt2 txt2 txt2 txt2 "
-      "img2 img2 img2 img2 txt3 txt3 txt3 txt3 txt3 txt3"
-      "img3 img3 img3 img3 txt3 txt3 txt3 txt3 txt3 txt3"
-      "tips tips tips tips tips tips tips tips tips tips";
+      "name name"
+      "tags tags"
+      "link link"
+      "img1 img1"
+      "txt1 txt1"
+      "txt2 txt2"
+      "img2 txt3"
+      "img3 txt3"
+      "tips tips";
+    grid-template-columns: 2fr 3fr;
   }
 
-  .arranged.section.city .city-header-img {
+  .updated-city-section .city-header-img {
     width: 100%;
-    height: 30vh;
-    /* height: min(100%, 40vh); */
+    /* max-height: 40vh; */
+    min-height: min(100%, 40vh);
   }
 
 }
@@ -260,20 +272,21 @@
     padding: 4rem 1rem;
   }
 
-  .arranged.section.city,
-  .arranged.section.city.backup-layout {
-    max-width: 1344px;
+  .updated-city-section,
+  .updated-city-section.backup-layout {
+    max-width: min(95%, 1344px);
     padding-top: 4.5rem;
     padding-bottom: 4.5rem;
     column-gap: 4rem;
     grid-template-areas:
-      "img1 img1 img1 img1 img1 name name name name name name name"
-      "img1 img1 img1 img1 img1 icons icons icons icons icons icons icons"
-      "img1 img1 img1 img1 img1 links links links links links links links"
-      "img1 img1 img1 img1 img1 txt1 txt1 txt1 txt1 txt1 txt1 txt1"
-      "txt2 txt2 txt2 txt2 txt2 txt2 txt2 txt2 img2 img2 img2 img2"
-      "img3 img3 img3 img3 txt3 txt3 txt3 txt3 txt3 txt3 txt3 txt3"
-      "img3 img3 img3 img3 tips tips tips tips tips tips tips tips";
+      "img1 img1 name name"
+      "img1 img1 tags tags"
+      "img1 img1 link link"
+      "img1 img1 txt1 txt1"
+      "txt2 txt2 txt2 img2"
+      "img3 txt3 txt3 txt3"
+      "img3 tips tips tips";
+    grid-template-columns: 4fr 1fr 1fr 4fr;
   }
 
   .section .default-content-wrapper h1 {
@@ -281,18 +294,18 @@
     margin-bottom: 2.5rem;
   }
 
-  .arranged.section.city h2,
-  .arranged.section.city h3 {
+  .updated-city-section h2,
+  .updated-city-section h3 {
     font-size: 2rem;
   }
 
-  .arranged.section.city .city-header-img {
+  .updated-city-section .city-header-img {
     min-height: 95%;
     object-fit: cover;
     height: min(90%, 30vh);
   }
 
-  .arranged.section.city .city-middle-img img {
+  .updated-city-section .city-middle-img img {
     height: auto;
   }
 }
