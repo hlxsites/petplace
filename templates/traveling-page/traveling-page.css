@@ -43,7 +43,7 @@
   color: var(--text-color-inverted);
   text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
   text-align: left;
-  font-size: calc(1.4875rem + 2.85vw);
+  font-size: var(--heading-font-size-xxl);
 }
 
 /* Stying h2,float-column and icon-type-container */
