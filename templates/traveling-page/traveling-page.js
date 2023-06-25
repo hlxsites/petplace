@@ -1,3 +1,5 @@
+import { sequenceCalls } from '../../scripts/scripts.js';
+
 async function updateSection(section) {
   // make all links open in new tab
   section.querySelectorAll('a').forEach((link) => link.setAttribute('target', '_blank'));
@@ -55,15 +57,16 @@ export function loadEager() {
 export function loadLazy() {
   // (TODO): decoreate columns block first 
   const citySections = Array.from(document.querySelectorAll('.section.city'));
-  citySections.reduce(
-    (promiseChain, section) => promiseChain.then(() => new Promise((resolve) => {
-      setTimeout(() => {
-        window.requestAnimationFrame(() => {
-          updateSection(section);
-          resolve();
-        });
-      }, 200);
-    })),
-    Promise.resolve(),
-  );
+  // citySections.reduce(
+  //   (promiseChain, section) => promiseChain.then(() => new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       window.requestAnimationFrame(() => {
+  //         updateSection(section);
+  //         resolve();
+  //       });
+  //     }, 200);
+  //   })),
+  //   Promise.resolve(),
+  // );
+  sequenceCalls(citySections, updateSection);
 }

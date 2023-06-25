@@ -68,6 +68,20 @@ export async function meterCalls(fn, wait = 200, max = 5) {
   });
 }
 
+export async function sequenceCalls(elements, fn, wait = 200) {
+  elements.reduce(
+    (promiseChain, element) => promiseChain.then(() => new Promise((resolve) => {
+      setTimeout(() => {
+        window.requestAnimationFrame(() => {
+          fn(element);
+          resolve();
+        });
+      }, wait);
+    })),
+    Promise.resolve(),
+  );
+}
+
 export function getId() {
   return Math.random().toString(32).substring(2);
 }
@@ -432,11 +446,10 @@ export async function decorateMain(main) {
   decorateScreenReaderOnly(main);
 
   main.querySelectorAll('.section[data-background]').forEach((el) => {
-    el.style.backgroundImage = `url(${
-      isMobile()
-        ? el.dataset.background
-        : el.dataset.background.replace('width=750', 'width=1600')
-    })`;
+    el.style.backgroundImage = `url(${isMobile()
+      ? el.dataset.background
+      : el.dataset.background.replace('width=750', 'width=1600')
+      })`;
   });
 }
 
