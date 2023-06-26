@@ -47,6 +47,9 @@
 }
 
 /* Stying h2,float-column and icon-type-container */
+.traveling-page .toc-container {
+  text-align: center;
+}
 
 .traveling-page .default-content-wrapper h1 {
   font-size: 1.5rem;
@@ -68,11 +71,6 @@
 .section.float-column-container {
   padding: 4.3rem 1rem 3rem 1rem;
 }
-
-.updated-city-section .icon-type-container {
-  padding: 1.875rem 1rem;
-}
-
 
 /* Styling city section */
 .updated-city-section {
@@ -103,10 +101,6 @@
   text-decoration: underline;
   color: var(--link-color-alt);
   cursor: pointer;
-}
-
-.updated-city-section a:hover {
-  text-decoration: none;
 }
 
 .updated-city-section a[target="_blank"]::after {
@@ -245,7 +239,7 @@
 
   .updated-city-section.backup-layout {
     column-gap: 2.2rem;
-    grid-template-areas:
+    grid-template:
       "name name"
       "tags tags"
       "link link"
@@ -254,8 +248,7 @@
       "txt2 txt2"
       "img2 txt3"
       "img3 txt3"
-      "tips tips";
-    grid-template-columns: 2fr 3fr;
+      "tips tips" / 2fr 3fr;
   }
 
   .updated-city-section .city-header-img {
@@ -278,15 +271,14 @@
     padding-top: 4.5rem;
     padding-bottom: 4.5rem;
     column-gap: 4rem;
-    grid-template-areas:
+    grid-template:
       "img1 img1 name name"
       "img1 img1 tags tags"
       "img1 img1 link link"
       "img1 img1 txt1 txt1"
       "txt2 txt2 txt2 img2"
       "img3 txt3 txt3 txt3"
-      "img3 tips tips tips";
-    grid-template-columns: 4fr 1fr 1fr 4fr;
+      "img3 tips tips tips" / 4fr 1fr 1fr 4fr;
   }
 
   .section .default-content-wrapper h1 {

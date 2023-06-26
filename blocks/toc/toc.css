@@ -2,7 +2,6 @@
 .toc-container h1,
 .toc-container p {
   display: block;
-  text-align: center;
   margin: 0;
   padding: 0;
 }
@@ -34,15 +33,6 @@
 .toc.inline {
   justify-content: center;
   margin-bottom: 1rem;
-}
-
-.toc.inline ul {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0 1rem;
-  list-style: none;
-  padding: 0;
 }
 
 .toc.inline a {

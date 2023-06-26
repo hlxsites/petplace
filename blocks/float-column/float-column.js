@@ -12,7 +12,7 @@ export default function decorate(block) {
       const direction = index % 2 === 0 ? 'left' : 'right';
       item.classList.add(`float-column-image-${direction}`);
       decorateResponsiveImages(item, [600, 900]);
-    } else{
+    } else {
       item.classList.add('text');
     }
 

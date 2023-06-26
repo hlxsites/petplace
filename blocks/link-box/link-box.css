@@ -31,16 +31,7 @@
   cursor: pointer;
 }
 
-.link-box a:hover {
-  text-decoration: none;
-}
-
 .link-box a[target="_blank"]::after {
   content: "";
   margin-left: 0.2em;
-}
-
-.link-box span {
-  font-size: 1rem;
-  font-weight: 400;
 }

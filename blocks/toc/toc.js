@@ -1,13 +1,12 @@
 export default async function decorate(block) {
   const title = document.head.querySelector('title').textContent;
-  console.log(title);
   if (title.includes('Traveling with a Pet')) {
-    const newDiv = document.createElement('div');
-    newDiv.classList.add('toc-list');
+    const tocList = document.createElement('div');
+    tocList.classList.add('toc-list');
     const citiesNames = document.querySelectorAll('.city h3');
-    appendItems(citiesNames, newDiv);
+    appendItems(citiesNames, tocList);
     block.innerHTML = '';
-    block.appendChild(newDiv);
+    block.appendChild(tocList);
   } else {
     const main = document.querySelector('main');
     const allH2s = main.querySelectorAll('main h2');

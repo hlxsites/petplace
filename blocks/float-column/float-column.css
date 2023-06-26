@@ -11,9 +11,9 @@
 }
 
 .float-column-image-right {
-  max-width: 300px;
+  max-width: 18.75rem;
   float: right;
-  margin: 0 52px 0 auto;
+  margin: 0 3.25rem 0 auto;
 }
 
 .float-column .text p {
@@ -38,7 +38,7 @@
 
   .float-column-image-left,
   .float-column-image-right {
-    max-width: 300px;
+    max-width: 18.75rem;
     float: left;
     margin-right: 3.25rem;
   }
@@ -51,7 +51,7 @@
 
   .float-column-image-left,
   .float-column-image-right {
-    max-width: 400px;
+    max-width: 25rem;
     margin-right: 3.25rem;
   }
 }
