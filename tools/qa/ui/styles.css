@@ -22,6 +22,7 @@ main {
 
 .results-overview ul {
   display: flex;
+  flex-wrap: wrap;
   padding: 0;
   margin: 0;
   gap: .5rem;
@@ -42,9 +43,14 @@ main {
   border-color: green;
 }
 
-.results-overview :is(.failure, .error)::after {
+.results-overview .failure::after {
   background-color: red;
   border-color: red;
+}
+
+.results-overview .error::after {
+  background-color: black;
+  border-color: black;
 }
 
 .results-details details {
@@ -57,6 +63,10 @@ main {
   border-color: green;
 }
 
-.results-details :is(.failure, .error) {
+.results-details .failure {
   border-color: red;
+}
+
+.results-details .error {
+  border-color: black;
 }

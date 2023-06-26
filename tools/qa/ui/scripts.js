@@ -94,6 +94,10 @@ async function uat(url) {
   return querySourceDocument(url, '[href*="https://petplace.uat.petpartners.com/"],[src*="https://petplace.uat.petpartners.com/"]');
 }
 
+async function azure(url) {
+  return querySourceDocument(url, 'img[src*="web.core.windows.net"]');
+}
+
 async function preview(url) {
   return adminOperation(url, 'preview');
 }
