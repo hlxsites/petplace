@@ -41,7 +41,7 @@ export async function loadEager(main) {
   createTemplateBlock(main, 'pagination');
 }
 
-export async function loadLazy() {
+export async function loadLazy(main) {
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const contentDiv = document.createElement('div');
