@@ -34,6 +34,7 @@
   --color-blue-dark: #5773a8;
   --color-purple: #6f69a8;
   --color-purple-light: #978ce0;
+  --color-purple-light-alt: #8e8199;
   --color-dark-maroon: #5d3450;
   --color-red: #ff6662;
   --color-gold: #d8c46c;
@@ -59,6 +60,7 @@
 
   /* body sizes */
   --body-font-size-default: 16px;
+  --body-font-size-xl: 22px;
   --body-font-size-l: 20px;
   --body-font-size-m: var(--body-font-size-default);
   --body-font-size-s: 14px;
@@ -155,6 +157,7 @@ h4, h5, h6 {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
   scroll-margin: calc(var(--nav-height) + 1em);
+  text-wrap: balance;
 }
 
 h3, h4, h5, h6 {
@@ -183,6 +186,13 @@ h6 { font-size: var(--heading-font-size-xs) }
 :is(h2, h3, h4, h5, h6) em {
   color: var(--highlight-color);
   font-style: normal;
+}
+
+@media (min-width: 600px) {
+  h1, h2, h3,
+  h4, h5, h6 {
+    text-wrap: unset;
+  }
 }
 
 p, dl, ol, ul, pre, blockquote {
@@ -247,8 +257,14 @@ main a:hover {
 }
 
 /* buttons */
+.button-container {
+  display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
+}
+
 a.button:any-link, button {
-  font-family: var(--body-font-family);
+  font-family: var(--heading-font-family);
   display: inline-block;
   box-sizing: border-box;
   text-decoration: none;
@@ -256,7 +272,7 @@ a.button:any-link, button {
   padding: 5px 30px;
   text-align: center;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
   color: var(--background-color);
   background-color: var(--link-color);
@@ -275,6 +291,19 @@ a.button:hover, a.button:focus, button:hover, button:focus  {
 button:disabled, button:disabled:hover {
   background-color: var(--background-color-light);
   cursor: unset;
+}
+
+.dark button:disabled,
+.dark button:disabled:hover {
+  background-color: var(--color-gray);
+}
+
+
+a.button.cta, button.cta {
+  padding: .75rem 3rem;
+  border: 5px solid var(--background-color);
+  box-shadow: 0 4px 30px rgb(0 0 0 / 10%);
+  font-size: var(--heading-font-size-m);
 }
 
 a.button.secondary, button.secondary {
@@ -354,12 +383,19 @@ main .default-content-wrapper ~ .default-content-wrapper {
 }
 
 main .section.well {
+  display: flex;
+  flex-direction: column;
   background: var(--background-color);
+  gap: 44px;
 }
 
 main .section.well h2 {
   margin: 0 0 1.25rem;
   color: var(--highlight-color);
+}
+
+main .section.well.dark h2 {
+  color: inherit;
 }
 
 main .section.well li {
@@ -381,10 +417,88 @@ main .section.well .default-content-wrapper {
   background: var(--background-color);
 }
 
+main .section.well.dark .default-content-wrapper {
+  padding: 0;
+  background-color: inherit;
+}
+
 main .section.well .default-content-wrapper > * {
   margin-left: auto;
   margin-right: auto;
   max-width: 1000px;
+}
+
+main .section.well .default-content-wrapper ~ .default-content-wrapper {
+  margin-top: 0;
+}
+
+main .section.well.small {
+  box-sizing: border-box;
+  background-color: var(--background-color-light);
+  max-width: 650px;
+  padding: 60px;
+  border-radius: .5rem;
+}
+
+main .section.well.dark {
+  color: var(--text-color-inverted);
+}
+
+main .section.well.dark.small {
+  background-color: var(--background-color-dark);
+}
+
+main .section.well.dark .icon{
+  margin: 0 .5rem;
+  color: var(--text-color-inverted);
+}
+
+main .section[data-background] {
+  position: relative;
+}
+
+main .section.highlight[data-background] {
+  mix-blend-mode: darken;
+}
+
+main .section.columns-container[data-background] .columns {
+  margin-bottom: 0;
+}
+
+main .section[data-background] .section-background {
+  position: relative;
+  width: calc(100% + 2*24px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  aspect-ratio: 2 / 1;
+  margin: 0 -24px -61px;
+  background-position: center;
+}
+
+main .section.well.small[data-background] .section-background {
+  width: calc(100% + 2*61px);
+  margin: 0 -61px -61px;
+}
+
+@media (min-width: 900px) {
+  main .section[data-background] .section-background {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100vw;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    z-index: -1;
+    translate: -50%;
+    background-size: 1920px auto;
+    background-position: bottom;
+  }
+
+  main .section.well.small[data-background] .section-background {
+    width: 100vw;
+    margin: 0;
+  }
 }
 
 [data-align="left"] {
@@ -397,11 +511,6 @@ main .section.well .default-content-wrapper > * {
 
 [data-align="right"] {
   text-align: right;
-}
-
-[aria-hidden="true"],
-[aria-expanded="false"] ~ [role="group"] {
-  display: none;
 }
 
 .icon-user {
@@ -419,10 +528,154 @@ main .section.well .default-content-wrapper > * {
   color: #C5D2E9;
 }
 
+/* Generic template styles */
+
+.generic :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 1.5rem;
+  font-weight: 800;
+  color: inherit;
+}
+
+.generic main .section {
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.generic main .hero-container {
+  padding: 0;
+}
+
+.generic main .hero {
+  min-height: 350px;
+}
+
+.generic main p {
+  margin: 1rem 0;
+}
+
+.generic main a {
+  color: var(--link-color-alt);
+}
+
+.generic main ul {
+  padding-left: rem;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.generic main li::marker {
+  color: var(--highlight-color);
+}
+
+.generic a.button {
+  margin-top: 0;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.generic .columns {
+  margin: 60px auto;
+}
+
+.generic .columns > div {
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.generic .blade {
+  gap: 3.5rem;
+}
+
+.generic .blade > div {
+  gap: 3rem;
+}
+
+.generic .blade .blade-body :is(h3, h4){
+  font-family: var(--heading-font-family);
+  font-size: 2rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.generic main a .icon {
+  color: var(--highlight-color);
+  height: 2.5rem;
+  width: 2.5rem;
+  margin-right: .5rem;
+}
+
+.generic main .well {
+  margin: 3.75rem auto;
+  font-size: var(--body-font-size-xl);
+}
+
+.generic main .form label {
+  display: none;
+}
+
+.generic main .section.well.dark h2::after,
+.generic main .section.highlight .columns h3::after {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background: var(--highlight-color);
+  margin: 1rem auto;
+}
+
+.generic main .section.highlight .columns h3 {
+  font-size: 2rem;
+}
+
+@media (min-width: 600px) {
+  .generic h1 {
+    font-size: 2.667em;
+  }
+
+  .generic main h2 {
+    font-size: 1.75em;
+  }
+}
+
+@media (min-width: 900px) {
+  .generic h1 {
+    font-size: 3.222em;
+  }
+
+  .generic main .centered h2 {
+    font-size: 2.5em;
+    margin-bottom: 60px;
+  }
+
+  .generic main .columns h2 {
+    font-size: 2em;
+  }
+}
+
 /* Utility classes */
 
 main .centered {
   text-align: center;
+}
+
+main .centered .button-container {
+  justify-content: center;
+}
+
+main .section.highlight {
+  margin: 0 auto;
+  background-color: var(--background-color-light);
+}
+
+main .section.highlight.strong {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-inverted);
+}
+
+/* Accessibility styles */
+
+[aria-hidden="true"],
+[aria-expanded="false"] ~ [role="group"] {
+  display: none;
 }
 
 .sr-focusable {
@@ -465,7 +718,106 @@ a.sr-focusable:focus {
   width: 1px;
 }
 
+.a11y-quicknav {
+  position: fixed;
+  margin: 0;
+  padding: 30px 0 0 20px;
+  inset: 0;
+  z-index: -1;
+  background: transparent;
+}
 
+.a11y-quicknav:focus-within {
+  z-index: 100;
+  background: rgb(0 0 0 / 20%);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.a11y-quicknav > button {
+  top: 30px;
+  z-index: 100;
+  transition: top .22s ease;
+  opacity: 0;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.a11y-quicknav > button, .a11y-quicknav > button:focus {
+  position: absolute;
+  padding: 18px 20px;
+  border-radius: 50px;
+  background-color: var(--background-color);
+  line-height: 1;
+  border: solid 3px rgb(19 110 248 / 80%);
+  outline: solid 0 #639af9;
+  box-shadow: 0 0 0 5px rgb(19 110 248 / 30%);
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
+  transform: none;
+  text-transform: unset;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.a11y-quicknav > button:focus {
+  opacity: 1;
+  top: 10px;
+  z-index: 101;
+}
+
+.a11y-quicknav button::after {
+  content: '↵ Enter';
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: .9;
+  border-radius: 50px;
+  background-color: #146ff8;
+  padding: 5px 10px;
+  color: var(--background-color);
+  margin: 0 0 0 1rem;
+  font-size: var(--body-font-size-xxs);
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --high-contrast-color: #ab2400;
+    --highlight-color: #ab2400;
+    --color-blue: var(--color-purple);
+    --color-blue-light: var(--color-purple); 
+    --color-blue-dark: var(--color-purple);
+    --color-purple-light: var(--color-purple);
+    --color-dark-maroon: var(--color-purple);
+    --color-red: var(--color-purple);
+    --color-gold: var(--color-purple);
+    --color-green: var(--color-purple);
+    --color-magenta: var(--color-purple);
+    --color-mauve: var(--color-purple);
+    --color-orange: var(--color-purple);
+    --color-purple-light-alt: var(--color-purple);
+    --color-orange-transparent: var(--color-purple-transparent);
+    --color-blue-transparent: var(--color-purple-transparent);
+    --color-blue-dark-transparent: var(--color-purple-transparent);
+    --color-purple-light-transparent: var(--color-purple-transparent);
+    --color-red-transparent: var(--color-purple-transparent);
+    --color-gold-transparent: var(--color-purple-transparent);
+    --color-green-transparent: var(--color-purple-transparent);
+    --color-magenta-transparent: var(--color-purple-transparent);
+    --color-mauve-transparent: var(--color-purple-transparent);
+  }
+
+  .default-content-wrapper a {
+    text-decoration: underline;
+  }
+
+  .nav-sidebar a,
+  .nav-sidebar-links button[aria-controls]::before {
+    --highlight-color: var(--text-color-inverted);
+  }
+
+  .popular-tags a {
+    --link-color: var(--highlight-color);
+  }
+}
 
 .slick-arrow {
     position: absolute;
@@ -479,6 +831,7 @@ a.sr-focusable:focus {
     width: 48px;
     border-radius: 24px;
     display: block;
+    z-index: 99;
 }
 
 .slick-prev {
@@ -504,10 +857,16 @@ a.sr-focusable:focus {
 
 .slick-next {
     right: calc(50% - 80px);
-    z-index: 99;
 }
 
 /* Responsive overrides */
+
+@media (min-width: 600px) {
+  main .section[data-background] {
+    background-position: bottom;
+    background-size: 100% auto;
+  }
+}
 
 @media (min-width: 900px) {
   .section > div {

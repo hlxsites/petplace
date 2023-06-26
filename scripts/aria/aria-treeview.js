@@ -9,7 +9,10 @@ export class AriaTreeView extends HTMLElement {
 
   connectedCallback() {
     this.decorate();
-    this.attachListeners();
+    if (!this.hasListeners) {
+      this.attachListeners();
+    }
+    this.hasListeners = true;
   }
 
   attachListeners() {
@@ -83,31 +86,33 @@ export class AriaTreeView extends HTMLElement {
     root.setAttribute('role', 'tree');
     root.setAttribute('aria-label', this.attributes.getNamedItem('label')?.value || '');
     root.setAttribute('aria-multiselectable', 'false');
-    root.querySelectorAll('li').forEach((li) => {
-      li.setAttribute('role', 'none');
+    window.setTimeout(() => {
+      root.querySelectorAll('li').forEach((li) => {
+        li.setAttribute('role', 'none');
+      });
+      root.querySelectorAll('a').forEach((a) => {
+        a.id = `treeitem-${AriaTreeView.getId()}`;
+        a.setAttribute('role', 'treeitem');
+        a.setAttribute('tabindex', -1);
+        const id = `group-${AriaTreeView.getId()}`;
+        if (a.nextElementSibling && ['UL', 'OL'].includes(a.nextElementSibling.tagName)) {
+          a.setAttribute('aria-expanded', 'false');
+          a.setAttribute('aria-owns', id);
+          a.nextElementSibling.id = id;
+          const toggle = document.createElement('button');
+          toggle.setAttribute('aria-controls', a.id);
+          toggle.setAttribute('tabindex', -1);
+          a.insertAdjacentElement('afterend', toggle);
+        }
+      });
+      root.querySelectorAll('ul,ol').forEach((list) => {
+        list.setAttribute('role', 'group');
+        list.setAttribute('aria-labelledby', root.querySelector(`[aria-owns="${list.id}"]`).id);
+      });
+      const initialItem = root.querySelector('[role="treeitem"]');
+      initialItem.setAttribute('aria-selected', true);
+      initialItem.setAttribute('tabindex', 0);
     });
-    root.querySelectorAll('a').forEach((a) => {
-      a.id = `treeitem-${AriaTreeView.getId()}`;
-      a.setAttribute('role', 'treeitem');
-      a.setAttribute('tabindex', -1);
-      const id = `group-${AriaTreeView.getId()}`;
-      if (a.nextElementSibling && ['UL', 'OL'].includes(a.nextElementSibling.tagName)) {
-        a.setAttribute('aria-expanded', 'false');
-        a.setAttribute('aria-owns', id);
-        a.nextElementSibling.id = id;
-        const toggle = document.createElement('button');
-        toggle.setAttribute('aria-controls', a.id);
-        toggle.setAttribute('tabindex', -1);
-        a.insertAdjacentElement('afterend', toggle);
-      }
-    });
-    root.querySelectorAll('ul,ol').forEach((list) => {
-      list.setAttribute('role', 'group');
-      list.setAttribute('aria-labelledby', root.querySelector(`[aria-owns="${list.id}"]`).id);
-    });
-    const initialItem = root.querySelector('[role="treeitem"]');
-    initialItem.setAttribute('aria-selected', true);
-    initialItem.setAttribute('tabindex', 0);
   }
 
   focusItem(item) {

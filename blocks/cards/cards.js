@@ -1,5 +1,7 @@
-import { getCategories } from '../../scripts/scripts.js';
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import { getCategories } from '../../scripts/scripts.js';
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
 async function buildPost(post) {
   const categories = await getCategories();
@@ -14,7 +16,6 @@ async function buildPost(post) {
   postCard.classList.add('blog-cards');
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
-  const postDateStr = postDate.getMonth().toString().concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
       <div class="blogs-card-image">
@@ -25,32 +26,33 @@ async function buildPost(post) {
         <a href="${post.path}">
         <div class="blogs-card-body">
         <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
-        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDateStr}">${postDateStr}</time> · ${post.author}</span></p>` : ''}
+        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · ${post.author}</span></p>` : ''}
       </div></a>          
       </div>
     </a>
   `;
-  if (category.Category !== 'Breeds') {
-    setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        postCard.querySelector('time').textContent = postDate.toLocaleString('default', { month: 'long' }).concat(' ', postDate.getDate(), ', ', postDate.getFullYear());
-      });
-    });
-  }
   return postCard;
 }
 
 async function createCard(row) {
   const li = document.createElement('li');
-  const post = JSON.parse(row.dataset.json);
-  li.append(await buildPost(post));
+  if (row.dataset.json) {
+    const post = JSON.parse(row.dataset.json);
+    li.append(await buildPost(post));
+  } else {
+    li.append(row);
+  }
   return li;
 }
 
 export default function decorate(block) {
   const ul = document.createElement('ul');
   [...block.children].forEach(async (row) => {
-    if (row.textContent.trim()) {
+    if (row.classList.contains('skeleton')) {
+      ul.append(await createCard(row));
+    } else if (ul.querySelector('.skeleton')) {
+      ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(row));
+    } else if (row.textContent.trim()) {
       ul.append(await createCard(row));
     }
   });
@@ -59,7 +61,13 @@ export default function decorate(block) {
   const observer = new MutationObserver((entries) => {
     entries.forEach((entry) => {
       entry.addedNodes.forEach(async (div) => {
-        ul.append(await createCard(div));
+        if (div.classList.contains('skeleton')) {
+          ul.append(await createCard(div));
+        } else if (ul.querySelector('.skeleton')) {
+          ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div));
+        } else if (div.textContent.trim()) {
+          ul.append(await createCard(div));
+        }
         div.remove();
       });
     });

@@ -28,25 +28,8 @@ function createTableOfContents(main) {
     return;
   }
   const tocDiv = document.createElement('div');
-  const allH2s = main ? main.getElementsByTagName('h2') : [];
-  const tocHeader = document.createElement('h2');
-  const tocList = document.createElement('ol');
-  tocHeader.innerText = 'Table of Contents';
-  tocDiv.appendChild(tocHeader);
-  if (allH2s.length > 1) {
-    for (let index = 0; index < allH2s.length; index += 1) {
-      const tagname = 'h'.concat(index);
-      allH2s[index].id = tagname;
-      const tocListItem = document.createElement('li');
-      const tocEntry = document.createElement('a');
-      tocEntry.setAttribute('href', '#'.concat(tagname));
-      tocEntry.innerText = allH2s[index].innerText;
-      tocListItem.appendChild(tocEntry);
-      tocList.appendChild(tocListItem);
-    }
-    tocDiv.appendChild(tocList);
-    main.querySelector('h1').after(tocDiv);
-  }
+  tocDiv.classList.add('toc');
+  main.querySelector('h1').after(tocDiv);
 }
 
 /**
@@ -107,7 +90,10 @@ export async function loadLazy(main) {
 
   const breadcrumbContainer = await createBreadCrumbs(crumbData);
   const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
+  breadCrumbs.style.visibility = 'hidden';
   breadCrumbs.append(breadcrumb);
   decorateBlock(breadcrumb);
-  return loadBlock(breadcrumb);
+  return loadBlock(breadcrumb).then(() => {
+    breadCrumbs.style.visibility = '';
+  });
 }

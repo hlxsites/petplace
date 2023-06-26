@@ -2,30 +2,42 @@ import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import {
   getCategories,
-  getCategoryForUrl, getCategoryImage,
+  getCategoryForUrl,
+  getCategoryImage,
   getId,
   isMobile,
+  meterCalls,
 } from '../../scripts/scripts.js';
 import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
+  for (let i = 0; i < 25; i += 1) {
+    const div = document.createElement('div');
+    div.classList.add('skeleton');
+    block.append(div);
+  }
   const res = await articles;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = document.createElement('div');
-    div.textContent = article.path;
     div.dataset.json = JSON.stringify(article);
-    block.append(div);
+    meterCalls(() => block.append(div)).then(() => {
+      window.requestAnimationFrame(() => {
+        block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+      });
+    });
   }
   document.querySelector('.pagination').dataset.total = res.total();
 }
 
 async function getArticles() {
   const { data } = await getCategories();
-  const applicableCategories = data.filter((c) => c.Path === window.location.pathname
-    || c['Parent Path'].startsWith(window.location.pathname));
+  const applicableCategories = data
+    .filter((c) => c.Path === window.location.pathname
+      || c['Parent Path'].startsWith(window.location.pathname))
+    .map((c) => ({ id: c.Slug, name: toClassName(c.Category) }));
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
@@ -34,10 +46,10 @@ async function getArticles() {
     .withTotal(true)
     .filter((article) => {
       const articleCategories = article.category !== '0'
-        ? article.category.split(',').map((c) => c.trim().toLowerCase())
+        ? article.category.split(',').map((c) => toClassName(c))
         : article.path.split('/').splice(-2, 1);
-      return applicableCategories.some((c) => articleCategories.includes(c.Category.toLowerCase())
-        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
+      return applicableCategories.some((c) => articleCategories.includes(c.name)
+        || articleCategories.includes(c.id));
     })
     .slice(offset, offset + limit);
 }
@@ -99,6 +111,10 @@ function createTemplateBlock(main, blockName) {
 }
 
 async function updateMetadata() {
+  const category = await getCategoryForUrl();
+  if (!category) {
+    throw new Error(404);
+  }
   const { Category, Color, Image } = await getCategoryForUrl();
   document.title = document.title.replace(/<Category>/, Category);
   document.head.querySelector('meta[property="og:title"]').content = document.title;
@@ -113,7 +129,12 @@ async function updateMetadata() {
 }
 
 export async function loadEager(main) {
-  updateMetadata();
+  await updateMetadata();
+  const h2 = document.createElement('h2');
+  h2.classList.add('sr-only');
+  h2.textContent = 'Articles';
+  const h1 = main.querySelector('h1');
+  h1.after(h2);
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   createTemplateBlock(main, 'pagination');
   // eslint-disable-next-line no-restricted-globals
