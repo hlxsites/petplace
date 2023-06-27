@@ -549,15 +549,25 @@ export function decorateButtons(element) {
     a.title = a.title || a.textContent;
     if (a.href !== a.textContent) {
       const up = a.parentElement;
+      const down = a.firstElementChild;
       const twoup = a.parentElement.parentElement;
       if (!a.querySelector('img')) {
         if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button primary'; // default
+          a.className = 'button'; // default
           up.classList.add('button-container');
+          if (a.childElementCount === 1 && down.tagName === 'STRONG') {
+            a.classList.add('cta');
+            a.innerHTML = down.innerHTML;
+          } else if (a.childElementCount === 1 && down.tagName === 'EM') {
+            a.classList.add('secondary');
+            a.innerHTML = down.innerHTML;
+          } else {
+            a.classList.add('primary');
+          }
         }
         if (up.childNodes.length === 1 && up.tagName === 'STRONG'
           && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
-          a.className = 'button primary';
+          a.className = 'button cta';
           twoup.classList.add('button-container');
         }
         if (up.childNodes.length === 1 && up.tagName === 'EM'

@@ -282,7 +282,7 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -429,6 +429,45 @@ function createA11yQuickNav(links = []) {
   document.body.prepend(nav);
 }
 
+function decorateSectionsWithBackgroundImage(main) {
+  main.querySelectorAll('.section[data-background]').forEach((el) => {
+    const div = document.createElement('div');
+    const desktopImage = el.dataset.background;
+    const desktopImageHighRes = desktopImage.replace('width=750', `width=${window.innerWidth}`);
+    const mobileImage = el.dataset.mobileBackground;
+    div.classList.add('section-background');
+    div.isMobile = window.innerWidth < 900;
+    div.style.backgroundImage = `url(${
+      div.isMobile ? (mobileImage || desktopImage) : desktopImageHighRes
+    })`;
+    el.append(div);
+    window.addEventListener('resize', () => {
+      if (div.isMobile === window.innerWidth < 900) {
+        return;
+      }
+      div.isMobile = window.innerWidth < 900;
+      div.style.backgroundImage = `url(${
+        div.isMobile ? (mobileImage || desktopImage) : desktopImageHighRes
+      })`;
+    }, { passive: true });
+  });
+}
+
+function standardizeLinkNavigation() {
+  document.querySelectorAll('a[href]').forEach((a) => {
+    const url = new URL(a.href);
+    // External links always open in a new tab
+    if (url.hostname !== window.location.hostname) {
+      a.setAttribute('target', '_blank');
+      return;
+    }
+    // Links in the article bodies should also open in a new tab
+    if (document.body.classList.contains('article-page') && a.closest('main')) {
+      a.setAttribute('target', '_blank');
+    }
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -444,13 +483,8 @@ export async function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
-
-  main.querySelectorAll('.section[data-background]').forEach((el) => {
-    el.style.backgroundImage = `url(${isMobile()
-      ? el.dataset.background
-      : el.dataset.background.replace('width=750', 'width=1600')
-    })`;
-  });
+  decorateSectionsWithBackgroundImage(main);
+  standardizeLinkNavigation();
 }
 
 /**
@@ -640,7 +674,6 @@ export async function createBreadCrumbs(crumbData) {
   breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
 
   const ol = document.createElement('ol');
-  ol.setAttribute('role', 'list');
 
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
