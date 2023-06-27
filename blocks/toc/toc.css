@@ -1,12 +1,17 @@
 /* Styling for ToC */
-.toc-container h1,
-.toc-container p {
+.toc {
+  margin-bottom: 1.5rem;
+}
+
+/* Styling for ToC inline*/
+.toc-container:has(.inline) h1,
+.toc-container:has(.inline) p {
   display: block;
   margin: 0;
   padding: 0;
 }
 
-.toc-container h1 {
+.toc-container:has(.inline) h1 {
   font-family: var(--heading-font-family);
   font-size: 1.5rem;
   font-weight: 800;
@@ -15,7 +20,7 @@
   margin-bottom: 1.5rem;
 }
 
-.toc-container p {
+.toc-container:has(.inline) p {
   box-sizing: border-box;
   font-family: var(--body-font-family);
   font-size: 1rem;
@@ -25,11 +30,6 @@
   margin: 0.75rem 0;
 }
 
-.toc {
-  margin-bottom: 1.5rem;
-}
-
-/* Styling for ToC inline*/
 .toc.inline {
   justify-content: center;
   margin-bottom: 1rem;

@@ -28,4 +28,6 @@ export default function decorate(block) {
       }
     });
   });
+  const event = new Event('decorationDone', { bubbles: true });
+  block.dispatchEvent(event);
 }

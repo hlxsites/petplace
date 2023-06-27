@@ -1,3 +1,4 @@
+
 .category-index .hero {
   box-sizing: border-box;
   height: 62.5vw;
@@ -21,14 +22,14 @@
   object-fit: cover;
 }
 
-.category-index .hero>div {
+.category-index .hero > div {
   --bg-color: inherit;
 
   max-width: none;
   background: var(--bg-color);
 }
 
-.category-index .hero>div>div {
+.category-index .hero > div > div {
   max-width: 1392px;
   margin: 0 auto;
 }
@@ -45,7 +46,7 @@
   background-color: var(--background-color-dark);
 }
 
-.category-index .sidebar>.default-content-wrapper:first-child {
+.category-index .sidebar > .default-content-wrapper:first-child {
   text-align: center;
 }
 

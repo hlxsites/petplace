@@ -1,4 +1,4 @@
-.section.city.icon-type-container.link-box-container.columns-container.tips-container {
+.traveling-page .section.city {
   padding: 0px;
   margin: 0px;
 }
@@ -134,16 +134,16 @@
   margin: auto;
   padding-top: 4rem;
   grid-template-areas:
-    "name name"
-    "tags tags"
-    "link link"
-    "img1 img1"
-    "txt1 txt1"
-    "txt2 txt2"
-    "img2 img2"
-    "img3 img3"
-    "txt3 txt3"
-    "tips tips";
+    "name"
+    "tags"
+    "link"
+    "img1"
+    "txt1"
+    "txt2"
+    "img2"
+    "img3"
+    "txt3"
+    "tips";
 }
 
 .updated-city-section .default-content-wrapper {

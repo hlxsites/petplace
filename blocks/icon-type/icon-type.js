@@ -1,4 +1,4 @@
-import { toClassName } from '../../scripts/lib-franklin.js';
+import { decorateIcons, toClassName } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
   const iconList = block.querySelector('ul');
@@ -11,21 +11,20 @@ export default function decorate(block) {
   // Iterate over each li element
   liElements.forEach((liElement) => {
     const textContent = liElement.textContent.trim();
-    const icon = 'city-' + toClassName(textContent);
-    // Fetch the SVG file from the 'icons' folder
-    const svgFilePath = `/icons/${icon}.svg`;
-    fetch(svgFilePath)
-      .then((response) => response.text())
-      .then((svgContent) => {
-        const iconItem = document.createElement('icon-item');
-        const pElement = document.createElement('span');
-        pElement.textContent = textContent;
-
-        iconItem.innerHTML = svgContent;
-        iconItem.appendChild(pElement);
-
-        liElement.textContent = '';
-        liElement.appendChild(iconItem);
-      });
+    const iconName = 'icon-city-' + toClassName(textContent);
+    const iconItem = document.createElement('icon-item');
+    // append svg span
+    const element = document.createElement('span');
+    element.classList.add('icon',`${iconName}`);
+    iconItem.appendChild(element);
+    // append text span
+    const pElement = document.createElement('span');
+    pElement.textContent = textContent;
+    iconItem.appendChild(pElement);
+    // add icon-item to li element
+    liElement.textContent = '';
+    liElement.appendChild(iconItem);
+    // decorate icons
+    decorateIcons(liElement);
   });
 }

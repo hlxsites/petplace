@@ -50,5 +50,8 @@ export function loadEager() {
 
 export function loadLazy() {
   const citySections = Array.from(document.querySelectorAll('.section.city'));
-  setTimeout(() => sequenceCalls(citySections, updateSection), 200);
+  
+  citySections.forEach((section) => {
+    section.addEventListener('decorationDone', () => {sequenceCalls([section], updateSection)});
+ });
 }

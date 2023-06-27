@@ -35,10 +35,15 @@
   border-right: none;
 }
 
-.icon-type-list li icon-item svg {
+.icon-type .icon-type-list icon-item .icon {
+  height: 3.5rem;
+  width: 3.75rem;
+}
+
+.icon-type-list li icon-item span svg {
   color: var(--color-purple-gray);
   width: 100%;
-  height: 65%;
+  height: 100%;
 }
 
 .icon-type-list span {
@@ -73,11 +78,10 @@
   border-right: 1px solid var(--highlight-color);
 }
 
-.icon-type.inline .icon-type-list icon-item svg {
-  min-width: 2rem;
-  min-height: 2rem;
-  max-width: 2.5rem;
-  margin-right: 0.5rem;
+.icon-type.inline .icon-type-list icon-item .icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-right: 0.25em;
 }
 
 .icon-type.inline .icon-type-list icon-item span {
@@ -96,6 +100,11 @@
     height: 6.25rem;
   }
 
+  .icon-type .icon-type-list icon-item .icon {
+    height: 4rem;
+    width: 4.25rem;
+  }
+
   .icon-type-list span {
     font-size: 1rem;
   }
@@ -111,7 +120,11 @@
     height: 2.1rem;
   }
 
-
+  .icon-type.inline .icon-type-list icon-item .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 0.25em;
+  }
 }
 
 @media(min-width:900px) {
@@ -126,6 +139,12 @@
   .icon-type-list li icon-item {
     width: 100%;
     height: 100%;
+  }
+
+  .icon-type.inline .icon-type-list icon-item .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 0.25em;
   }
 }
 
@@ -144,6 +163,11 @@
     height: 100%;
   }
 
+  .icon-type .icon-type-list icon-item .icon {
+    height: 6rem;
+    width: 6.25rem;
+  }
+
   .icon-type-list span {
     font-size: 1rem;
   }
@@ -153,8 +177,13 @@
     height: 2.2rem;
   }
 
+  .icon-type.inline .icon-type-list icon-item .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 0.25em;
+  }
+
   .inline .icon-type-list {
     row-gap: 1.2rem;
   }
-
 }

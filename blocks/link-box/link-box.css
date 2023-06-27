@@ -29,9 +29,5 @@
   color: var(--link-color-alt);
   text-decoration: underline;
   cursor: pointer;
-}
-
-.link-box a[target="_blank"]::after {
-  content: "";
   margin-left: 0.2em;
 }
