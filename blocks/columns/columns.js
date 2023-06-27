@@ -2,6 +2,10 @@ export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
 
+  let rowIndex = 0;
+  const cityPrefix = ['city-header', 'city-middle', 'city-footer'];
+  const isCityBlock = block.classList.contains('city');
+
   // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
@@ -10,6 +14,9 @@ export default function decorate(block) {
         const picWrapper = pic.closest('div');
         if (picWrapper && picWrapper.children.length === 1) {
           picWrapper.classList.add('columns-img-col');
+          if (isCityBlock) {
+            picWrapper.classList.add(`${cityPrefix[rowIndex]}-img`);
+          }
 
           const img = pic.querySelector('img');
           const width = img.getAttribute('width');
@@ -24,9 +31,13 @@ export default function decorate(block) {
         const txtWrapper = col.closest('div');
         if (txtWrapper) {
           txtWrapper.classList.add('columns-txt-col');
+          if (isCityBlock) {
+            txtWrapper.classList.add(`${cityPrefix[rowIndex]}-txt`);
+          }
         }
       }
     });
+    rowIndex += 1;
   });
   const event = new Event('decorationDone', { bubbles: true });
   block.dispatchEvent(event);

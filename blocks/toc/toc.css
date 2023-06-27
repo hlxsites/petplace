@@ -4,30 +4,15 @@
 }
 
 /* Styling for ToC inline*/
-.toc-container:has(.inline) h1,
-.toc-container:has(.inline) p {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-
 .toc-container:has(.inline) h1 {
-  font-family: var(--heading-font-family);
-  font-size: 1.5rem;
   font-weight: 800;
   line-height: 2.2rem;
-  color: var(--background-color-dark);
   margin-bottom: 1.5rem;
+  color: var(--background-color-dark);
 }
 
 .toc-container:has(.inline) p {
-  box-sizing: border-box;
-  font-family: var(--body-font-family);
   font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5rem;
-  color: var(--text-color-alt);
-  margin: 0.75rem 0;
 }
 
 .toc.inline {

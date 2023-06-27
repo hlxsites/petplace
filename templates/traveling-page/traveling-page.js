@@ -1,5 +1,3 @@
-import { sequenceCalls } from '../../scripts/scripts.js';
-
 async function updateSection(section) {
   // make all links open in new tab
   section.querySelectorAll('a').forEach((link) => link.setAttribute('target', '_blank'));
@@ -9,21 +7,14 @@ async function updateSection(section) {
     '.default-content-wrapper',
     '.icon-type-wrapper',
     '.link-box-wrapper',
-    ['.columns.city-header .columns-img-col', 'city-header-img'],
-    ['.columns.city-header .columns-txt-col', 'city-header-txt'],
-    ['.columns.city-middle .columns-txt-col', 'city-middle-txt'],
-    ['.columns.city-middle .columns-img-col', 'city-middle-img'],
-    ['.columns.city-footer .columns-img-col', 'city-footer-img'],
-    ['.columns.city-footer .columns-txt-col', 'city-footer-txt'],
+    '.city-header-img',
+    '.city-header-txt',
+    '.city-middle-txt',
+    '.city-middle-img',
+    '.city-footer-img',
+    '.city-footer-txt',
     '.section.city .tips-wrapper',
-  ].map((e) => {
-    if (Array.isArray(e)) {
-      const el = section.querySelector(e[0]);
-      el.classList.add(e[1]);
-      return el;
-    }
-    return section.querySelector(e);
-  });
+  ].map((e) => section.querySelector(e));
 
   // rearrange the elements under section city
   const updatedCitySection = document.createElement('div');
@@ -50,8 +41,8 @@ export function loadEager() {
 
 export function loadLazy() {
   const citySections = Array.from(document.querySelectorAll('.section.city'));
-  
+
   citySections.forEach((section) => {
-    section.addEventListener('decorationDone', () => {sequenceCalls([section], updateSection)});
- });
+    section.addEventListener('decorationDone', () => updateSection(section));
+  });
 }

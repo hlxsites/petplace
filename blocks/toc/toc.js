@@ -1,6 +1,5 @@
 export default async function decorate(block) {
-  const title = document.head.querySelector('title').textContent;
-  if (title.includes('Traveling with a Pet')) {
+  if (block.classList.contains('inline')) {
     const tocList = document.createElement('div');
     tocList.classList.add('toc-list');
     const citiesNames = document.querySelectorAll('.city h3');
