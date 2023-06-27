@@ -6,7 +6,7 @@ const orgRepoRef = '/hlxsites/petplace/main';
 
 const op = process.argv[2];
 
-const results = await bulkOperation(process.argv[3], async ({ pathname }) => {
+await bulkOperation(process.argv[3], async ({ pathname }) => {
   try {
     const response = await fetch(`${FRANKLIN_ADMIN_API}${op}${orgRepoRef}${pathname.replace(/\/$/, '')}`, {
       method: 'POST',

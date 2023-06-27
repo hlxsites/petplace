@@ -71,6 +71,7 @@ async function querySourceDocument(url, selector) {
   return result.length ? [...result] : false;
 }
 
+// eslint-disable-next-line no-unused-vars
 async function diff(url) {
   const { pathname } = new URL(url);
 
@@ -86,22 +87,27 @@ async function diff(url) {
   return originalText === franklinText;
 }
 
+// eslint-disable-next-line no-unused-vars
 async function embeds(url) {
   return querySourceDocument(url, 'blockquote,iframe:is([src*="youtu"])');
 }
 
+// eslint-disable-next-line no-unused-vars
 async function uat(url) {
   return querySourceDocument(url, '[href*="https://petplace.uat.petpartners.com/"],[src*="https://petplace.uat.petpartners.com/"]');
 }
 
+// eslint-disable-next-line no-unused-vars
 async function azure(url) {
   return querySourceDocument(url, 'img[src*="web.core.windows.net"]');
 }
 
+// eslint-disable-next-line no-unused-vars
 async function preview(url) {
   return adminOperation(url, 'preview');
 }
 
+// eslint-disable-next-line no-unused-vars
 async function publish(url) {
   return adminOperation(url, 'live');
 }
