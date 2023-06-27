@@ -68,7 +68,7 @@ async function querySourceDocument(url, selector) {
   const response = await fetch(url);
   const document = parseHtml((await response.text()).replace(/<style(\s|>).*?<\/style>/gi, ''));
   const result = document.querySelectorAll(selector);
-  return result.length ? result : false;
+  return result.length ? [...result] : false;
 }
 
 async function diff(url) {
@@ -107,24 +107,28 @@ async function publish(url) {
 }
 
 function reportProgress(index, url, result) {
+  const [showSuccess, showFailure, showError] = [...document.querySelectorAll('input[name="filter"]')]
+    .map((el) => el.checked);
   const overview = document.querySelector('.results-overview ul');
   const details = document.querySelector('.results-details');
   const disclosure = document.createElement('details');
   const summary = document.createElement('summary');
   const div = document.createElement('div');
-  summary.textContent = url;
+  summary.innerHTML = `<a href="${url}">${url}</a>`;
   disclosure.prepend(summary);
   disclosure.append(div);
   details.append(disclosure);
   if (result instanceof Error) {
     overview.children[index].classList.add('error');
-    details.children[index].classList.add('error');
-    details.children[index].children[1].append(result.stack);
+    disclosure.classList.add('error');
+    disclosure.children[1].append(result.stack);
+    disclosure.style.display = showError ? 'block' : 'none';
   } else {
     overview.children[index].classList.add(result ? 'success' : 'failure');
-    details.children[index].classList.add(result ? 'success' : 'failure');
+    disclosure.classList.add(result ? 'success' : 'failure');
+    disclosure.style.display = showSuccess || showFailure ? 'block' : 'none';
   }
-  details.children[index].children[1].append(JSON.stringify(result));
+  disclosure.children[1].append(JSON.stringify(result));
 }
 
 async function run() {
@@ -139,6 +143,9 @@ async function run() {
     overview.append(li);
   });
 
+  const details = document.querySelector('.results-details');
+  details.innerHTML = '';
+
   let index = 0;
   // eslint-disable-next-line no-restricted-syntax
   for await (const result of bulkOperation(urls, window[action])) {
@@ -149,6 +156,18 @@ async function run() {
 
 document.querySelector('button').addEventListener('click', () => {
   run();
+});
+
+document.querySelectorAll('input[name="filter"]').forEach((input) => {
+  input.addEventListener('click', (ev) => {
+    if (ev.target.nodeName === 'INPUT') {
+      const status = ev.target.value;
+      const isChecked = ev.target.checked;
+      document.querySelectorAll(`.results-details .${status}`).forEach((el) => {
+        el.style.display = isChecked ? 'block' : 'none';
+      });
+    }
+  });
 });
 
 const urls = window.localStorage.getItem('franklin-qa-urls');

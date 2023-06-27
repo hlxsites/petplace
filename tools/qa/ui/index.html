@@ -5,13 +5,13 @@
     <h1>QA Configuration</h1>
     <div class="pages">
       <label>
-        Pages:
+        Pages:<br/>
         <textarea name="urls" id="urls" cols="30" rows="10"></textarea>
       </label>
     </div>
     <div class="operation">
       <label>
-        Operation:
+        Operation:<br/>
         <select name="action" id="action">
           <optgroup label="Checks">
             <option value="diff">Content Diff</option>
@@ -37,6 +37,20 @@
       </div>
       <hr/>
       <h2>Details</h2>
+      <div class="filters">
+        <label>
+          <input type="checkbox" name="filter" value="success" checked/>
+          Show Success
+        </label>
+        <label>
+          <input type="checkbox" name="filter" value="failure" checked/>
+          Show Failures
+        </label>
+        <label>
+          <input type="checkbox" name="filter" value="error" checked/>
+          Show Errors
+        </label>
+      </div>
       <div class="results-details">
       </div>
     </div>

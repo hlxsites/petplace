@@ -1,14 +1,51 @@
+html {
+  color-scheme: dark light;
+}
+
 body {
   margin: 1rem;
+  font-family: system-ui;
 }
 
 main {
   display: grid;
   grid-template:
+    "hero hero"
     "pages operation"
     "results results";
   gap: 1rem;
 }
+
+textarea,
+input,
+select,
+button {
+  padding: .5rem;
+  border-radius: .5rem;
+  margin: 1rem 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  textarea,
+  input,
+  select,
+  button {
+    border: 1px solid gray;
+    background-color: #222;
+    color: white;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  textarea,
+  input,
+  select,
+  button {
+    border: 1px solid black;
+  }
+}
+
+h1 { grid-area: hero; }
 
 .pages { grid-area: pages; }
 
