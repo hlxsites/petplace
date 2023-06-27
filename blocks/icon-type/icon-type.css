@@ -119,12 +119,6 @@
   .icon-type.inline .icon-type-list icon-item {
     height: 2.1rem;
   }
-
-  .icon-type.inline .icon-type-list icon-item .icon {
-    width: 1.8rem;
-    height: 1.8rem;
-    margin-right: 0.25em;
-  }
 }
 
 @media(min-width:900px) {
@@ -139,12 +133,6 @@
   .icon-type-list li icon-item {
     width: 100%;
     height: 100%;
-  }
-
-  .icon-type.inline .icon-type-list icon-item .icon {
-    width: 1.8rem;
-    height: 1.8rem;
-    margin-right: 0.25em;
   }
 }
 
@@ -175,12 +163,6 @@
   /* Icon-type(inline) */
   .icon-type.inline .icon-type-list icon-item {
     height: 2.2rem;
-  }
-
-  .icon-type.inline .icon-type-list icon-item .icon {
-    width: 1.8rem;
-    height: 1.8rem;
-    margin-right: 0.25em;
   }
 
   .inline .icon-type-list {
