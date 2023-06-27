@@ -39,9 +39,7 @@ main iframe {
 
 
 @media (min-width: 600px) {
- 
-
-  .embed.embed-instagram iframe.instagram-media {
+ .embed.embed-instagram iframe.instagram-media {
     display: block;
     max-width: 540px;    
   }
