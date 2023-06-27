@@ -1,4 +1,4 @@
-import { readBlockConfig } from '../../scripts/scripts.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -35,9 +35,9 @@ const embedInstagram = (url) => {
   const endingSlash = url.pathname.endsWith('/') ? '' : '/';
   const location = window.location.href.endsWith('.html') ? window.location.href : `${window.location.href}.html`;
   const src = `${url.origin}${url.pathname}${endingSlash}embed/?cr=1&amp;v=13&amp;wp=1316&amp;rd=${location}`;
-  const embedHTML = `<div style="width: 100%; position: relative; display: flex; justify-content: center">
+  const embedHTML = `<div style="width: 100%; overflow: hidden; position: relative; display: flex; justify-content: center;">
       <iframe class="instagram-media instagram-media-rendered" id="instagram-embed-0" src="${src}"
-        allowtransparency="true" allowfullscreen="true" frameborder="0" loading="lazy" scrolling ="no">
+        allowtransparency="true" scrolling ="yes" allowfullscreen="true" frameborder="0" loading="lazy" >
       </iframe>
     </div>`;
   return embedHTML;
@@ -106,14 +106,13 @@ const loadEmbed = (block, link) => {
  */
 export default function decorate(block) {
   const link = block.querySelector('a').href;
-  const conf = readBlockConfig(block);
-  const isParticle = block.classList.contains('particle');
+  const conf = readBlockConfig(block);  
 
   block.textContent = '';
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
       loadEmbed(block, link);
-      if (!isParticle || !conf.id) return;
+      if (!conf.id) return;
 
       const frame = block.querySelector('iframe');
       if (!frame) return;
