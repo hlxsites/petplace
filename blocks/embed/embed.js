@@ -106,7 +106,7 @@ const loadEmbed = (block, link) => {
  */
 export default function decorate(block) {
   const link = block.querySelector('a').href;
-  const conf = readBlockConfig(block);  
+  const conf = readBlockConfig(block);
 
   block.textContent = '';
   const observer = new IntersectionObserver((entries) => {
