@@ -30,6 +30,16 @@
   border-right: 1px solid var(--highlight-color);
 }
 
+.icon-type.inline .icon-type-list icon-item {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-start;
+  height: 150%;
+  padding-right: 0.5rem;
+  border-right: 1px solid var(--highlight-color);
+}
+
 .icon-type .icon-type-list li:last-child icon-item,
 .icon-type.inline .icon-type-list li:last-child icon-item {
   border-right: none;
@@ -66,16 +76,6 @@
   height: 1rem;
   flex: 0 0 10rem;
   justify-content: left;
-}
-
-.icon-type.inline .icon-type-list icon-item {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: flex-start;
-  height: 150%;
-  padding-right: 0.5rem;
-  border-right: 1px solid var(--highlight-color);
 }
 
 .icon-type.inline .icon-type-list icon-item .icon {

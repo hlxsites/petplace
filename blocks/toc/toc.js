@@ -1,3 +1,12 @@
+function appendItems(items, container) {
+  items.forEach((item) => {
+    const newTOC = document.createElement('a');
+    newTOC.href = `#${item.id}`;
+    newTOC.innerText = item.innerText;
+    container.appendChild(newTOC);
+  });
+}
+
 export default async function decorate(block) {
   if (block.classList.contains('inline')) {
     const tocList = document.createElement('div');
@@ -27,13 +36,4 @@ export default async function decorate(block) {
       block.appendChild(tocList);
     }
   }
-}
-
-function appendItems(items, container) {
-  items.forEach((item) => {
-    const newTOC = document.createElement('a');
-    newTOC.href = `#${item.id}`;
-    newTOC.innerText = item.innerText;
-    container.appendChild(newTOC);
-  });
 }

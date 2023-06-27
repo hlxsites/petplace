@@ -3,7 +3,7 @@
   margin-bottom: 1.5rem;
 }
 
-/* Styling for ToC inline*/
+/* Styling for ToC inline */
 .toc-container:has(.inline) h1 {
   font-weight: 800;
   line-height: 2.2rem;

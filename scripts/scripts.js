@@ -449,7 +449,7 @@ export async function decorateMain(main) {
     el.style.backgroundImage = `url(${isMobile()
       ? el.dataset.background
       : el.dataset.background.replace('width=750', 'width=1600')
-      })`;
+    })`;
   });
 }
 
