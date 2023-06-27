@@ -268,7 +268,7 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
