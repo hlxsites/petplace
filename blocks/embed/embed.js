@@ -73,8 +73,9 @@ const loadEmbed = async (block, url) => {
       block.innerHTML = await config.embed(url);
     } catch (err) {
       block.style.display = 'none';
+    } finally {
+      block.classList.toggle('skeleton', false);
     }
-    // block.classList.toggle('skeleton', false);
   } catch (err) {
     block.style.maxHeight = '0px';
   }
@@ -106,9 +107,21 @@ window.addEventListener('message', (ev) => {
  * @param {HTMLDivElement} block
  */
 export default function decorate(block) {
-  const link = block.querySelector('a').href;
+  const url = new URL(block.querySelector('a').href.replace(/%5C%5C_/, '_'));
 
   block.textContent = '';
-  console.log(link);
-  loadEmbed(block, new URL(link.replace(/%5C%5C_/, '_')));
+  const config = EMBEDS_CONFIG.find((cfg) => cfg.match.some((host) => url.hostname.includes(host)));
+  if (config?.match[0] !== 'tiktok') {
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) {
+        return;
+      }
+
+      loadEmbed(block, url);
+      observer.unobserve(block);
+    });
+    observer.observe(block);
+  } else {
+    loadEmbed(block, url);
+  }
 }
