@@ -4,14 +4,14 @@
 }
 
 /* Styling for ToC inline */
-.toc-container:has(.inline) h1 {
+.toc-container.is-inline h1 {
   font-weight: 800;
   line-height: 2.2rem;
   margin-bottom: 1.5rem;
   color: var(--background-color-dark);
 }
 
-.toc-container:has(.inline) p {
+.toc-container.is-inline p {
   font-size: 1rem;
 }
 

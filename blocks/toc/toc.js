@@ -9,6 +9,8 @@ function appendItems(items, container) {
 
 export default async function decorate(block) {
   if (block.classList.contains('inline')) {
+    const parent = block.closest('.toc-container');
+    parent.classList.add('is-inline');
     const tocList = document.createElement('div');
     tocList.classList.add('toc-list');
     const citiesNames = document.querySelectorAll('.city h3');

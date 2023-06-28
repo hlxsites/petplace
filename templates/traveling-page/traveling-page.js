@@ -1,4 +1,4 @@
-async function updateSection(section) {
+function updateSection(section) {
   // make all links open in new tab
   section.querySelectorAll('a').forEach((link) => link.setAttribute('target', '_blank'));
 
@@ -35,6 +35,23 @@ async function updateSection(section) {
   }
 }
 
+function observeSection(section) {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName !== 'class') {
+        return;
+      }
+      if (mutation.target.classList.contains('city-footer-txt')) {
+        // if the footer text is loaded, the whole columns block is loaded
+        updateSection(section);
+      }
+    });
+  });
+
+  // Start observing the section for changes in its class attribute
+  observer.observe(section, { attributes: true, subtree: true });
+}
+
 export function loadEager() {
   return false;
 }
@@ -42,7 +59,5 @@ export function loadEager() {
 export function loadLazy() {
   const citySections = Array.from(document.querySelectorAll('.section.city'));
 
-  citySections.forEach((section) => {
-    section.addEventListener('decorationDone', () => updateSection(section));
-  });
+  citySections.forEach(observeSection);
 }

@@ -39,6 +39,4 @@ export default function decorate(block) {
     });
     rowIndex += 1;
   });
-  const event = new Event('decorationDone', { bubbles: true });
-  block.dispatchEvent(event);
 }
