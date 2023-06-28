@@ -3,7 +3,7 @@ import { loadScript } from '../../scripts/scripts.js';
 
 const getDefaultEmbed = (url) => `<iframe src="${url.href}" allowfullscreen allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy"></iframe>`;
 
-const embedYoutube = (url) => {
+const embedYoutubeFacade = (url) => {
   loadCSS('/blocks/embed/lite-yt-embed/lite-yt-embed.css');
   loadScript('/blocks/embed/lite-yt-embed/lite-yt-embed.js');
 
@@ -31,16 +31,16 @@ const embedTwitter = (url) => {
   return embedHTML;
 };
 
-const embedTiktok = async (url) => {
+const embedTiktokFacade = async (url) => {
   loadScript('/blocks/embed/lite-tiktok/lite-tiktok.js', () => {}, { async: true, type: 'module' });
   return `<lite-tiktok videoid="${url.pathname.split('/').pop()}"></lite-tiktok>`;
 };
 
 const EMBEDS_CONFIG = {
   instagram: embedInstagram,
-  tiktok: embedTiktok,
+  tiktok: embedTiktokFacade,
   twitter: embedTwitter,
-  youtube: embedYoutube,
+  youtube: embedYoutubeFacade,
 };
 
 function getPlatform(url) {
