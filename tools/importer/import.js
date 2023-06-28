@@ -41,7 +41,7 @@ const getDefaultMetadata = (document) => {
   return meta;
 };
 
-function getTemplate(url) {
+function getTemplate(url, document) {
   const { pathname } = new URL(url);
   if (pathname === '/') {
     return 'home-page';
@@ -52,7 +52,7 @@ function getTemplate(url) {
   if (pathname.startsWith('/article/category/')) {
     return 'category-index';
   }
-  if (pathname.startsWith('/article/')) {
+  if (pathname.startsWith('/article/') && document.querySelector('.single-post')) {
     return 'article-page';
   }
   return 'default-page';
@@ -120,6 +120,19 @@ function transformArticlePage(document) {
     ];
     const table = WebImporter.DOMUtils.createTable(cells, document);
     disclosure.replaceWith(table);
+  }
+
+  const disclosureAlt = document.querySelector('.single-post-content > div > p:last-child > em > small');
+  if (disclosureAlt) {
+    disclosureAlt.closest('p').outerHTML = `
+    <table>
+      <tr><th>Disclosure</th></tr>
+      <tr>
+        <td>
+          ${disclosureAlt.textContent}
+        </td>
+      </tr>
+    </table>`;
   }
 
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
@@ -321,6 +334,32 @@ function transformBreedPage(document) {
   return main;
 }
 
+function transformDiaryPage(document) {
+  const main = document.querySelector('.puppy-diary-page');
+
+  document.querySelectorAll('.diary-wrapper').forEach((el) => {
+    const cells = [
+      ['Blade'],
+      [...el.children],
+    ];
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    el.replaceWith(table);
+  });
+
+  // use helper method to remove header, footer, etc.
+  WebImporter.DOMUtils.remove(main, [
+    'header',
+    'footer',
+    '.is-hidden-desktop',
+    '.author-name',
+    '.care-content',
+    '.cat-footer',
+    '.gatsby-image-wrapper > img',
+  ]);
+
+  return main;
+}
+
 function cleanupUrls(main) {
   main.querySelectorAll('[href],[src]').forEach((el) => {
     if (el.href && el.href.startsWith('https://petplace.uat.petpartners.com/')) {
@@ -469,7 +508,7 @@ export default {
     replaceHighlights(document);
     inlineBackgroundImages(document);
     let main;
-    const template = getTemplate(url);
+    const template = getTemplate(url, document);
     switch (template) {
       case 'article-page':
         main = transformArticlePage(document);
@@ -480,12 +519,22 @@ export default {
       default: {
         main = document.querySelector('#___gatsby > div');
         replaceForms(main);
+
+        document.querySelectorAll('.diary-wrapper').forEach((el) => {
+          const cells = [
+            ['Blade'],
+            [...el.children],
+          ];
+          const table = WebImporter.DOMUtils.createTable(cells, document);
+          el.replaceWith(table);
+        });
+
         WebImporter.DOMUtils.remove(main, [
           'header',
           'footer',
           '.is-hidden-desktop',
           '.is-hidden-tablet',
-          '.gatsby-image-wrapper img',
+          '.gatsby-image-wrapper > img',
         ]);
         const meta = getDefaultMetadata(document);
         const block = WebImporter.Blocks.getMetadataBlock(document, meta);
