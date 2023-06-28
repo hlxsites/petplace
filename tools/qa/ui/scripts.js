@@ -132,7 +132,11 @@ function reportProgress(index, url, result) {
   } else {
     overview.children[index].classList.add(result ? 'success' : 'failure');
     disclosure.classList.add(result ? 'success' : 'failure');
-    disclosure.style.display = showSuccess || showFailure ? 'block' : 'none';
+    if (result) {
+      disclosure.style.display = showSuccess ? 'block' : 'none';
+    } else {
+      disclosure.style.display = showFailure ? 'block' : 'none';
+    }
   }
   disclosure.children[1].append(JSON.stringify(result));
 }
