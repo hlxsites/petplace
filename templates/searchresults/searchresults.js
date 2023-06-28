@@ -1,16 +1,26 @@
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
+import { meterCalls } from '../../scripts/scripts.js';
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
+  for (let i = 0; i < 25; i += 1) {
+    const div = document.createElement('div');
+    div.classList.add('skeleton');
+    block.append(div);
+  }
   const res = await articles;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = document.createElement('div');
     div.textContent = article.path;
     div.dataset.json = JSON.stringify(article);
-    block.append(div);
+    meterCalls(() => block.append(div)).then(() => {
+      window.requestAnimationFrame(() => {
+        block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+      });
+    });
   }
   document.querySelector('.pagination').dataset.total = res.total();
 }
@@ -85,7 +95,7 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(main) {
-  main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(1)'));
+  main.insertBefore(buildSortBtn(), main.firstElementChild);
   createTemplateBlock(main, 'pagination');
 }
 
