@@ -4,8 +4,8 @@ import { loadScript } from '../../scripts/scripts.js';
 const getDefaultEmbed = (url) => `<iframe src="${url.href}" allowfullscreen allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy"></iframe>`;
 
 const embedYoutube = (url) => {
-  loadCSS('/scripts/lite-yt-embed/lite-yt-embed.css');
-  loadScript('/scripts/lite-yt-embed/lite-yt-embed.js');
+  loadCSS('/blocks/embed/lite-yt-embed/lite-yt-embed.css');
+  loadScript('/blocks/embed/lite-yt-embed/lite-yt-embed.js');
 
   const usp = new URLSearchParams(url.search);
   let videoId = usp.get('v');
@@ -32,10 +32,8 @@ const embedTwitter = (url) => {
 };
 
 const embedTiktok = async (url) => {
-  const response = await fetch(`https://www.tiktok.com/oembed?url=${url}`);
-  const json = await response.json();
-  loadScript('https://www.tiktok.com/embed.js', () => {}, { async: true });
-  return json.html;
+  loadScript('/blocks/embed/lite-tiktok/lite-tiktok.js', () => {}, { async: true, type: 'module' });
+  return `<lite-tiktok videoid="${url.pathname.split('/').pop()}" autoload></lite-tiktok>`;
 };
 
 const EMBEDS_CONFIG = [

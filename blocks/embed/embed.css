@@ -34,7 +34,10 @@
 
 .embed.tiktok {
   width: 325px;
-  min-height: 739px;
+}
+
+.embed.tiktok lite-tiktok {
+  height: 738px;
 }
 
 .embed.instagram {
