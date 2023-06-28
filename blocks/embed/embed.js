@@ -36,39 +36,35 @@ const embedTiktok = async (url) => {
   return `<lite-tiktok videoid="${url.pathname.split('/').pop()}" autoload></lite-tiktok>`;
 };
 
-const EMBEDS_CONFIG = [
-  {
-    match: ['youtube', 'youtu.be'],
-    embed: embedYoutube,
-  },
-  {
-    match: ['instagram'],
-    embed: embedInstagram,
-  },
-  {
-    match: ['twitter'],
-    embed: embedTwitter,
-  },
-  {
-    match: ['tiktok'],
-    embed: embedTiktok,
-  },
-];
+const EMBEDS_CONFIG = {
+  instagram: embedInstagram,
+  tiktok: embedTiktok,
+  twitter: embedTwitter,
+  youtube: embedYoutube,
+};
 
-const loadEmbed = async (block, url) => {
+function getPlatform(url) {
+  const [service] = url.hostname.split('.').slice(-2, -1);
+  if (service === 'youtu') {
+    return 'youtube';
+  }
+  return service;
+}
+
+const loadEmbed = async (block, service, url) => {
   block.classList.toggle('skeleton', true);
 
-  const config = EMBEDS_CONFIG.find((cfg) => cfg.match.some((host) => url.hostname.includes(host)));
-  if (!config) {
+  const embed = EMBEDS_CONFIG[service];
+  if (!embed) {
     block.classList.toggle('generic', true);
     block.innerHTML = getDefaultEmbed(url);
     return;
   }
 
   try {
-    block.classList.toggle(config.match[0], true);
+    block.classList.toggle(service, true);
     try {
-      block.innerHTML = await config.embed(url);
+      block.innerHTML = await embed(url);
     } catch (err) {
       block.style.display = 'none';
     } finally {
@@ -108,18 +104,19 @@ export default function decorate(block) {
   const url = new URL(block.querySelector('a').href.replace(/%5C%5C_/, '_'));
 
   block.textContent = '';
-  const config = EMBEDS_CONFIG.find((cfg) => cfg.match.some((host) => url.hostname.includes(host)));
-  if (config?.match[0] !== 'tiktok') {
+  const service = getPlatform(url);
+  // Both Youtube and TikTok use an optimized lib that already leverages the intersection observer
+  if (service !== 'tiktok' && service !== 'youtube') {
     const observer = new IntersectionObserver((entries) => {
       if (!entries.some((e) => e.isIntersecting)) {
         return;
       }
 
-      loadEmbed(block, url);
+      loadEmbed(block, service, url);
       observer.unobserve(block);
     });
     observer.observe(block);
   } else {
-    loadEmbed(block, url);
+    loadEmbed(block, service, url);
   }
 }
