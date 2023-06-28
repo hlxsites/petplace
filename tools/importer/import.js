@@ -52,7 +52,7 @@ function getTemplate(url) {
   if (pathname.startsWith('/article/category/')) {
     return 'category-index';
   }
-  if (pathname.startsWith('/article/')) {
+  if (pathname.startsWith('/article/') && document.querySelector('.single-post')) {
     return 'article-page';
   }
   return 'default-page';
