@@ -111,13 +111,6 @@
   margin-top: 0;
 }
 
-.article-page .embed a {
-  display: inline-block;
-  max-width: calc(100vw - 32px);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 @media (min-width: 768px) {
   .article-page main {
     grid-template:
@@ -188,10 +181,6 @@
 
   .article-page .category-link-btn {
     padding: .3rem .7rem;
-  }
-
-  .article-page .embed a {
-    max-width: 100%;
   }
 }
 
