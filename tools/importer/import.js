@@ -334,32 +334,6 @@ function transformBreedPage(document) {
   return main;
 }
 
-function transformDiaryPage(document) {
-  const main = document.querySelector('.puppy-diary-page');
-
-  document.querySelectorAll('.diary-wrapper').forEach((el) => {
-    const cells = [
-      ['Blade'],
-      [...el.children],
-    ];
-    const table = WebImporter.DOMUtils.createTable(cells, document);
-    el.replaceWith(table);
-  });
-
-  // use helper method to remove header, footer, etc.
-  WebImporter.DOMUtils.remove(main, [
-    'header',
-    'footer',
-    '.is-hidden-desktop',
-    '.author-name',
-    '.care-content',
-    '.cat-footer',
-    '.gatsby-image-wrapper > img',
-  ]);
-
-  return main;
-}
-
 function cleanupUrls(main) {
   main.querySelectorAll('[href],[src]').forEach((el) => {
     if (el.href && el.href.startsWith('https://petplace.uat.petpartners.com/')) {
