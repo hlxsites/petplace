@@ -1,6 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
-import { buildBlock } from '../../scripts/lib-franklin.js';
+import { buildBlock } from '../../scripts/lib-franklin.js;
 import { meterCalls } from '../../scripts/scripts.js';
+
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
@@ -99,7 +100,34 @@ export async function loadEager(main) {
   createTemplateBlock(main, 'pagination');
 }
 
-export async function loadLazy() {
+export async function loadLazy(main) {
+  const hero = document.createElement('div');
+  const imgDiv = document.createElement('div');
+  const contentDiv = document.createElement('div');
+  const defaultContentWrapper = main.querySelector('.default-content-wrapper');
+
+  defaultContentWrapper.parentElement.classList.add('hero-container');
+  hero.className = 'hero-wrapper';
+  imgDiv.className = 'img-div';
+  contentDiv.classList = 'text-div';
+
+  [...defaultContentWrapper.querySelectorAll('picture')].forEach((el) => {
+    imgDiv.append(el);
+  });
+  hero.append(imgDiv);
+  contentDiv.append(document.querySelector('h1'));
+
+  [...defaultContentWrapper.querySelectorAll('p')].forEach((el) => {
+    if (el.innerText.trim() !== '') {
+      contentDiv.append(el);
+    }
+  });
+  contentDiv.append(document.querySelector('.search-wrapper'));
+  hero.append(contentDiv);
+  decorateResponsiveImages(imgDiv, ['461']);
+
+  defaultContentWrapper.outerHTML = hero.outerHTML;
+
   renderArticles(getArticles());
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {

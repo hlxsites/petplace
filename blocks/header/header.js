@@ -43,6 +43,7 @@ export default async function decorate(block) {
   searchField.type = 'search';
   searchField.placeholder = navTools.textContent;
   const searchForm = document.createElement('form');
+  searchForm.setAttribute('role', 'search');
   searchForm.action = '/search';
   searchForm.method = 'get';
   searchForm.append(searchField);
