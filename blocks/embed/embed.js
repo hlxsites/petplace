@@ -33,7 +33,7 @@ const embedTwitter = (url) => {
 
 const embedTiktok = async (url) => {
   loadScript('/blocks/embed/lite-tiktok/lite-tiktok.js', () => {}, { async: true, type: 'module' });
-  return `<lite-tiktok videoid="${url.pathname.split('/').pop()}" autoload></lite-tiktok>`;
+  return `<lite-tiktok videoid="${url.pathname.split('/').pop()}"></lite-tiktok>`;
 };
 
 const EMBEDS_CONFIG = {
