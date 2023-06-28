@@ -22,7 +22,7 @@ const embedYoutube = (url) => {
 const embedInstagram = (url) => {
   const endingSlash = url.pathname.endsWith('/') ? '' : '/';
   const location = window.location.href.endsWith('.html') ? window.location.href : `${window.location.href}.html`;
-  const src = `${url.origin}${url.pathname}${endingSlash}embed/?cr=1&amp;v=13&amp;wp=1316&amp;rd=${location}`;
+  const src = `${url.origin}${url.pathname}${endingSlash}embed/captioned?rd=${location}`;
   const embedHTML = `
       <iframe src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy">
       </iframe>`;
@@ -66,7 +66,7 @@ const EMBEDS_CONFIG = [
 ];
 
 const loadEmbed = async (block, url) => {
-  block.classList.add('skeleton');
+  block.classList.toggle('skeleton', true);
 
   const config = EMBEDS_CONFIG.find((cfg) => cfg.match.some((host) => url.hostname.includes(host)));
   if (!config) {
@@ -78,6 +78,7 @@ const loadEmbed = async (block, url) => {
   try {
     block.classList.toggle(config.match[0], true);
     block.innerHTML = await config.embed(url);
+    // block.classList.toggle('skeleton', false);
   } catch (err) {
     block.style.maxHeight = '0px';
   }
@@ -112,5 +113,6 @@ export default function decorate(block) {
   const link = block.querySelector('a').href;
 
   block.textContent = '';
-  loadEmbed(block, new URL(link));
+  console.log(link);
+  loadEmbed(block, new URL(link.replace(/%5C%5C_/, '_')));
 }
