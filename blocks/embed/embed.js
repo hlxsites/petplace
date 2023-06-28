@@ -1,9 +1,7 @@
 import { loadCSS } from '../../scripts/lib-franklin.js';
 import { loadScript } from '../../scripts/scripts.js';
 
-const getDefaultEmbed = (url) => `
-    <iframe src="${url.href}" allowfullscreen allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
-    </iframe>`;
+const getDefaultEmbed = (url) => `<iframe src="${url.href}" allowfullscreen allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy"></iframe>`;
 
 const embedYoutube = (url) => {
   loadCSS('/scripts/lite-yt-embed/lite-yt-embed.css');
@@ -23,9 +21,7 @@ const embedInstagram = (url) => {
   const endingSlash = url.pathname.endsWith('/') ? '' : '/';
   const location = window.location.href.endsWith('.html') ? window.location.href : `${window.location.href}.html`;
   const src = `${url.origin}${url.pathname}${endingSlash}embed/captioned?rd=${location}`;
-  const embedHTML = `
-      <iframe src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy">
-      </iframe>`;
+  const embedHTML = `<iframe src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy"></iframe>`;
   return embedHTML;
 };
 
@@ -36,14 +32,10 @@ const embedTwitter = (url) => {
 };
 
 const embedTiktok = async (url) => {
-  try {
-    const response = await fetch(`https://www.tiktok.com/oembed?url=${url}`);
-    const json = await response.json();
-    loadScript('https://www.tiktok.com/embed.js', () => {}, { async: true });
-    return json.html;
-  } catch (err) {
-    return null;
-  }
+  const response = await fetch(`https://www.tiktok.com/oembed?url=${url}`);
+  const json = await response.json();
+  loadScript('https://www.tiktok.com/embed.js', () => {}, { async: true });
+  return json.html;
 };
 
 const EMBEDS_CONFIG = [
@@ -77,7 +69,11 @@ const loadEmbed = async (block, url) => {
 
   try {
     block.classList.toggle(config.match[0], true);
-    block.innerHTML = await config.embed(url);
+    try {
+      block.innerHTML = await config.embed(url);
+    } catch (err) {
+      block.style.display = 'none';
+    }
     // block.classList.toggle('skeleton', false);
   } catch (err) {
     block.style.maxHeight = '0px';
