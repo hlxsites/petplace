@@ -115,9 +115,9 @@ export class LiteTTEmbed extends HTMLElement {
       <div id="fake">
         <picture>
           <source id="jpegPlaceholder" type="image/jpeg">
-          <img id="fallbackPlaceholder" referrerpolicy="origin" loading="lazy">
+          <img id="fallbackPlaceholder" referrerpolicy="origin" loading="lazy" alt="Video placeholder image">
         </picture>
-        <button id="playButton"></button>
+        <button id="playButton" aria-label="Play"></button>
         <svg id="logo" xmlns="http://www.w3.org/2000/svg"><path d="M19.8 19.8v-1.6L18 18a12.1 12.1 0 0 0-7 22 12 12 0 0 1 8.6-20.3Z" fill="#25F4EE"/><path d="M20 37.4c3 0 5.5-2.4 5.6-5.3V5.7h4.8L30.3 4h-6.6v26.4a5.5 5.5 0 0 1-8.1 4.7c1 1.4 2.6 2.3 4.4 2.3Zm19.4-22.7v-1.5c-1.8 0-3.5-.6-5-1.5a9 9 0 0 0 5 3Z" fill="#25F4EE"/><path d="M34.4 11.7a9.1 9.1 0 0 1-2.2-6h-1.8c.4 2.5 2 4.6 4 6ZM18.1 24.6c-3 0-5.6 2.5-5.6 5.6 0 2.1 1.3 4 3 4.9a5.5 5.5 0 0 1 6.2-8.5v-6.7l-1.7-.2h-.2v5.1l-1.7-.2Z" fill="#FE2C55"/><path d="M39.4 14.6v5.1c-3.4 0-6.6-1.1-9.2-3v13.5a12 12 0 0 1-19 10 12.1 12.1 0 0 0 21-8.3V18.5a16 16 0 0 0 9.1 3v-6.7c-.6 0-1.3 0-1.9-.2Z" fill="#FE2C55"/><path d="M30.3 30.2V16.8a15 15 0 0 0 9.1 3v-5.2c-2-.4-3.7-1.4-5-3a9.2 9.2 0 0 1-4-6h-4.8v26.5a5.5 5.5 0 0 1-10 3 5.5 5.5 0 0 1 4.2-10.2v-5.2a12.1 12.1 0 0 0-8.6 20.4 12 12 0 0 0 19-9.9Z" fill="#fff"/></svg>
       </div>
     </div>
