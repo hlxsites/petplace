@@ -5,6 +5,7 @@ import {
   decorateButtons,
   decorateIcons,
   decorateSections,
+  decorateBlock,
   decorateBlocks,
   decorateTemplateAndTheme,
   waitForLCP,
@@ -311,25 +312,6 @@ async function buildHeroBlock(main) {
   }
 }
 
-function buildVideoEmbeds(container) {
-  const ytVideos = container.querySelectorAll('a[href*="youtube.com/embed"]');
-  if (!ytVideos.length) {
-    return;
-  }
-  loadCSS('/scripts/lite-yt-embed/lite-yt-embed.css');
-  loadScript('/scripts/lite-yt-embed/lite-yt-embed.js');
-
-  ytVideos.forEach((a) => {
-    const litePlayer = document.createElement('lite-youtube');
-    const videoId = a.href.split('/').pop();
-    litePlayer.setAttribute('videoid', videoId);
-    litePlayer.style.backgroundImage = `url('https://i.ytimg.com/vi/${videoId}/hqdefault.jpg')`;
-    const parent = a.parentElement;
-    parent.innerHTML = '';
-    parent.append(litePlayer);
-  });
-}
-
 /**
  * Builds template block and adds to main as sections.
  * @param {Element} main The container element.
@@ -369,12 +351,32 @@ async function decorateTemplate(main) {
 }
 
 /**
+ * Builds embed block for inline links to known social platforms.
+ * @param {Element} main The container element
+ */
+function buildEmbedBlocks(main) {
+  const HOSTNAMES = [
+    'youtube',
+    'youtu',
+  ];
+  [...main.querySelectorAll(':is(p, div) > a[href]:only-child')]
+    .filter((a) => HOSTNAMES.includes(new URL(a.href).hostname.split('.').slice(-2, -1).pop()))
+    .forEach((a) => {
+      const parent = a.parentElement;
+      const block = buildBlock('embed', { elems: [a] });
+      parent.replaceWith(block);
+      decorateBlock(block);
+    });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 async function buildAutoBlocks(main) {
   try {
     await buildHeroBlock(main);
+    await buildEmbedBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -533,7 +535,6 @@ async function loadLazy(doc) {
     templateModule.loadLazy(main);
   }
   await loadBlocks(main);
-  buildVideoEmbeds(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
