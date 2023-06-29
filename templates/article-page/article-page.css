@@ -24,7 +24,7 @@
   line-height: 1.4;
 }
 
-.article-page img {
+.article-page .default-content-wrapper img {
   max-width: 485px;
 }
 
