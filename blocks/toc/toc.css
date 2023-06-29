@@ -1,3 +1,44 @@
+/* Styling for ToC */
 .toc {
   margin-bottom: 1.5rem;
+}
+
+/* Styling for ToC inline */
+.toc-container.is-inline h1 {
+  font-weight: 800;
+  line-height: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--background-color-dark);
+}
+
+.toc-container.is-inline p {
+  font-size: 1rem;
+}
+
+.toc.inline {
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.toc.inline a {
+  color: var(--color-purple-gray);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 2rem;
+}
+
+.inline .toc-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.inline .toc-list a:not(:last-child)::after {
+  content: "";
+  position: relative;
+  border: 1px solid var(--highlight-color);
+  right: -8px;
 }

@@ -14,7 +14,8 @@
 }
 
 .article-page .section {
-  overflow-x: unset;
+  max-width: 100%;
+  overflow-x: scroll;
 }
 
 .article-page p {
@@ -111,13 +112,6 @@
   margin-top: 0;
 }
 
-.article-page .embed a {
-  display: inline-block;
-  max-width: calc(100vw - 32px);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 @media (min-width: 768px) {
   .article-page main {
     grid-template:
@@ -139,6 +133,7 @@
   .article-page .section {
     padding-left: 0;
     padding-right: 0;
+    overflow-x: unset;
   }
 
   .article-page .section:not(.hero-container, .article-template-autoblock) {
@@ -188,10 +183,6 @@
 
   .article-page .category-link-btn {
     padding: .3rem .7rem;
-  }
-
-  .article-page .embed a {
-    max-width: 100%;
   }
 }
 
