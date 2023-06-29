@@ -105,7 +105,9 @@ export default async function decorate(block) {
 
     block.append(cardWrapper);
   } else {
-    const array = [];
+    const slideCardMedia = document.createElement('div');
+    slideCardMedia.classList.add('slide-cards');
+    slideCardMedia.classList.add('media');
 
     PopularPostsData.forEach((post) => {
       const row = `<div>
@@ -118,19 +120,11 @@ export default async function decorate(block) {
             </div>
           </div>`;
 
-      array.push(row);
+      slideCardMedia.innerHTML += row;
     });
-    const slideCardBlock = buildBlock('slide-cards', { elems: [array[0], array[1], array[2]] });
-    const contentDiv = slideCardBlock.children[0].children[0].children;
-    slideCardBlock.innerHTML = '';
 
-    [...contentDiv].forEach((el) => {
-      slideCardBlock.append(el);
-    });
-    slideCardBlock.classList.add('media');
-
-    block.append(slideCardBlock);
-    decorateBlock(slideCardBlock);
-    return loadBlock(slideCardBlock);
+    block.append(slideCardMedia);
+    decorateBlock(slideCardMedia);
+    return loadBlock(slideCardMedia);
   }
 }
