@@ -217,10 +217,6 @@ code, pre, samp {
   font-size: var(--body-font-size-s);
 }
 
-code, samp {
-  padding: .125em;
-}
-
 pre {
   overflow: scroll;
 }
@@ -245,7 +241,7 @@ main pre {
   background-color: var(--background-color-light);
   padding: 1em;
   border-radius: .25em;
-  overflow-x: auto;
+  overflow: auto;
   white-space: pre;
 }
 
