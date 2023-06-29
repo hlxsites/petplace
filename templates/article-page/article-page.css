@@ -24,6 +24,10 @@
   line-height: 1.4;
 }
 
+.article-page img {
+  max-width: 485px;
+}
+
 .article-page .footer {
   border-top: none;
 }
