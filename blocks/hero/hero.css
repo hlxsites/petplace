@@ -52,6 +52,7 @@ main .hero img {
 
   main .hero img {
     aspect-ratio: unset;
+    max-height: unset;
   }
 
   main .hero h1 {
