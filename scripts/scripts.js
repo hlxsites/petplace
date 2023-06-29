@@ -1,7 +1,6 @@
 import {
   sampleRUM,
   buildBlock,
-  loadHeader,
   loadFooter,
   decorateButtons,
   decorateIcons,
@@ -12,6 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  loadHeader,
   getMetadata,
   toClassName,
   createOptimizedPicture,
@@ -50,8 +50,8 @@ export function loadScript(url, callback, attributes) {
   return head.querySelector(`script[src="${url}"]`);
 }
 
-const queue = [];
 let interval;
+const queue = [];
 export async function meterCalls(fn, wait = 200, max = 5) {
   return new Promise((res) => {
     if (!interval) {
@@ -67,6 +67,20 @@ export async function meterCalls(fn, wait = 200, max = 5) {
       queue.push(fn);
     }
   });
+}
+
+export async function sequenceCalls(elements, fn, wait = 200) {
+  elements.reduce(
+    (promiseChain, element) => promiseChain.then(() => new Promise((resolve) => {
+      setTimeout(() => {
+        window.requestAnimationFrame(() => {
+          fn(element);
+          resolve();
+        });
+      }, wait);
+    })),
+    Promise.resolve(),
+  );
 }
 
 export function getId() {
