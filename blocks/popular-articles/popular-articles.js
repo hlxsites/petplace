@@ -1,5 +1,5 @@
 import {
-  buildBlock, createOptimizedPicture, decorateBlock, loadBlock, toClassName,
+  createOptimizedPicture, decorateBlock, loadBlock, toClassName,
 } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
@@ -103,14 +103,14 @@ export default async function decorate(block) {
       cardWrapper.querySelectorAll('.img-div')[i].append(createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '300' }]));
     });
 
-    block.append(cardWrapper);
-  } else {
-    const slideCardMedia = document.createElement('div');
-    slideCardMedia.classList.add('slide-cards');
-    slideCardMedia.classList.add('media');
+    return block.append(cardWrapper);
+  }
+  const slideCardMedia = document.createElement('div');
+  slideCardMedia.classList.add('slide-cards');
+  slideCardMedia.classList.add('media');
 
-    PopularPostsData.forEach((post) => {
-      const row = `<div>
+  PopularPostsData.forEach((post) => {
+    const row = `<div>
             <div>
               ${createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '768' }]).outerHTML}
             </div>
@@ -120,11 +120,10 @@ export default async function decorate(block) {
             </div>
           </div>`;
 
-      slideCardMedia.innerHTML += row;
-    });
+    slideCardMedia.innerHTML += row;
+  });
 
-    block.append(slideCardMedia);
-    decorateBlock(slideCardMedia);
-    return loadBlock(slideCardMedia);
-  }
+  block.append(slideCardMedia);
+  decorateBlock(slideCardMedia);
+  return loadBlock(slideCardMedia);
 }
