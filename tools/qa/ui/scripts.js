@@ -112,7 +112,19 @@ async function publish(url) {
   return adminOperation(url, 'live');
 }
 
-function reportProgress(index, url, result) {
+const times = [];
+function reportProgress(index, urls, result, time) {
+  const position = document.querySelector('.position');
+  position.textContent = index + 1;
+
+  times.push(time);
+  const recent = times.slice(-100);
+  const average = recent.reduce((total, i) => total + i, 0) / recent.length;
+  const eta = Math.ceil(((urls.length - index) * average) / 1000);
+  const remaining = document.querySelector('.time');
+  remaining.textContent = `${new Date(eta * 1000).toISOString().substring(11, 16)}m`;
+
+  const url = urls[index];
   const [showSuccess, showFailure, showError] = [...document.querySelectorAll('input[name="filter"]')]
     .map((el) => el.checked);
   const overview = document.querySelector('.results-overview ul');
@@ -156,11 +168,17 @@ async function run() {
   const details = document.querySelector('.results-details');
   details.innerHTML = '';
 
+  const total = document.querySelector('.total');
+  total.textContent = urls.length;
+
   let index = 0;
+  let t0 = window.performance.now();
   // eslint-disable-next-line no-restricted-syntax
   for await (const result of bulkOperation(urls, window[action])) {
-    reportProgress(index, urls[index], result);
+    const t1 = window.performance.now();
+    reportProgress(index, urls, result, t1 - t0 + 500);
     index += 1;
+    t0 = t1;
   }
 }
 
