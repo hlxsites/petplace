@@ -1,7 +1,6 @@
 import ffetch from '../../scripts/ffetch.js';
-import { buildBlock } from '../../scripts/lib-franklin.js;
-import { meterCalls } from '../../scripts/scripts.js';
-
+import { buildBlock } from '../../scripts/lib-franklin.js';
+import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
@@ -89,6 +88,7 @@ function buildSortBtn() {
 
 function createTemplateBlock(main, blockName) {
   const section = document.createElement('div');
+
   const block = buildBlock(blockName, { elems: [] });
   block.dataset.limit = 16;
   section.append(block);
@@ -96,8 +96,8 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(main) {
-  main.insertBefore(buildSortBtn(), main.firstElementChild);
   createTemplateBlock(main, 'pagination');
+  main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
 }
 
 export async function loadLazy(main) {
@@ -125,9 +125,7 @@ export async function loadLazy(main) {
   contentDiv.append(document.querySelector('.search-wrapper'));
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
-
   defaultContentWrapper.outerHTML = hero.outerHTML;
-
   renderArticles(getArticles());
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
