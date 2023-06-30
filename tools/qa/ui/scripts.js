@@ -88,6 +88,40 @@ async function diff(url) {
 }
 
 // eslint-disable-next-line no-unused-vars
+async function links(url) {
+  const { pathname } = url;
+  const response = await fetch(`${FRANKLIN_DOMAIN}${pathname.replace(/\/$/, '')}`, { method: 'POST' });
+  const document = parseHtml(await response.text());
+
+  const array404 = await Promise.all([...document.querySelectorAll('main a[href]')].map(async (a) => {
+    if (!a.href.startsWith('http://') && !a.href.startsWith('https://')) {
+      return null;
+    }
+
+    // Timeout the requests after 3s
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      try {
+        controller.abort();
+      } catch (err) {
+        // nothing to do
+      }
+    }, 5000);
+
+    try {
+      const resp = await fetch(`${a.href.startsWith('/') ? `${FRANKLIN_DOMAIN}${a.href}` : a.href}`, { method: 'HEAD', signal: controller.signal });
+      return resp.status >= 400 ? `${a.href} (status: ${resp.status})` : null;
+    } catch (err) {
+      return `${a.href} (${err.message.substring(0, 100)})`;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }));
+  const urlsToCheck = array404.filter((res) => !!res);
+  return urlsToCheck.length ? urlsToCheck : null;
+}
+
+// eslint-disable-next-line no-unused-vars
 async function embeds(url) {
   return querySourceDocument(url, 'blockquote,iframe:is([src*="youtu"])');
 }
