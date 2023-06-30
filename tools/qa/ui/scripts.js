@@ -90,7 +90,7 @@ async function diff(url) {
 // eslint-disable-next-line no-unused-vars
 async function links(url) {
   const { pathname } = url;
-  const response = await fetch(`${FRANKLIN_DOMAIN}${pathname.replace(/\/$/, '')}`, { method: 'POST' });
+  const response = await fetch(`${FRANKLIN_DOMAIN}${pathname.replace(/\/$/, '')}`);
   const document = parseHtml(await response.text());
 
   const array404 = await Promise.all([...document.querySelectorAll('main a[href]')].map(async (a) => {
