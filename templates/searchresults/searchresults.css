@@ -1,98 +1,3 @@
-
-.searchresults .hero {
-  box-sizing: border-box;
-  height: 62.5vw;
-  min-height: 0;
-  max-height: 326px;
-  padding: 0;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-}
-
-.searchresults .hero picture {
-  margin: 0;
-}
-
-.searchresults .hero img {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  object-fit: cover;
-}
-
-.searchresults .hero > div {
-  --bg-color: inherit;
-
-  max-width: none;
-  background: var(--bg-color);
-}
-
-.searchresults .hero > div > div {
-  max-width: 1392px;
-  margin: 0 auto;
-}
-
-.searchresults .hero h1 {
-  margin: 0;
-  padding: 2rem 1.5rem;
-  color: var(--text-color-inverted);
-  text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
-}
-
-.searchresults .sortbtn .search-select {
-  margin-top: 30px;
-  padding: 1px 12px 2px 20px;        
-  background-image: url(../../icons/down-chevron.svg);
-  background-position: calc(100% - 13px) 50%;
-  background-repeat: no-repeat;
-  background-size: 20px;  
-  border-radius: 20px;
-  width: 100%;
-  height: 40px;
-  font-size: 1rem;
-  font-weight: 900;
-  border-color: var(--color-gray-light-alt);
-  appearance: none;    
-}
-
-@media (min-width: 768px) {
-  .searchresults .sortbtn div {
-    display: flex;   
-  }
-  .searchresults .sortbtn h2{
-    width: 75%;
-  }
-  .searchresults .sortbtn .search-select {
-    width: 25%;
-  }
-}
-
-@media (min-width: 1024px) {    
-  .category-index main {
-    display: grid;
-    grid-template:
-      'hero hero hero hero' min-content
-      '. content .' 1fr
-      '. pagination .' min-content / 1fr minmax(250px, 318px) minmax(750px, 1026px) 1fr;
-    gap: 0 1.5rem;
-  }
-
-  .searchresults .hero-container {
-    grid-area: hero;
-  }
- 
-  .searchresults .pagination-container {
-    grid-area: pagination;
-  }
-
-  .searchresults .cards-container,
-  .searchresults .blog-cards-container {
-    grid-area: content;
-  }
-}
-=======
 .section.hero-container {
   padding: 0;
 }
@@ -121,14 +26,14 @@
 
 .hero-wrapper .text-div {
   position: absolute;
-  left: 25px;
-  top: 0;
+  inset: 0 1.5rem;
   display: flex;
   flex-direction: column;
-  bottom: 0;
-  right: 0;
-  margin: 0 auto;
   color: var(--text-color-inverted)
+}
+
+.hero-wrapper .text-div h1 {
+  font-weight: 800;
 }
 
 .hero-wrapper .search-wrapper {
@@ -149,15 +54,13 @@
 }
 
 @media (min-width: 1024px) {
-  .category-index main {
-    display: grid;
-    grid-template:
-      'hero hero hero hero' min-content
-      '. content .' 1fr
-      '. pagination .' min-content / 1fr minmax(250px, 318px) minmax(750px, 1026px) 1fr;
-    gap: 0 1.5rem;
+  .hero-wrapper .text-div h1 {
+    font-size: var(--heading-font-size-xxxl);
   }
 
+  .hero-wrapper .text-div p {
+    max-width: 700px;
+  }
 
   .searchresults .pagination-container {
     grid-area: pagination;

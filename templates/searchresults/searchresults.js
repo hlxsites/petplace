@@ -42,7 +42,7 @@ async function getArticles() {
   return ffetch('/article/query-index.json')
     .sheet(sheet)
     .withTotal(true)
-    .filter((article) => `${article.description} ${article.title}`.toLowerCase().includes(query.toLowerCase()))
+    .filter((article) => !query || `${article.description} ${article.title}`.toLowerCase().includes(query.toLowerCase()))
     .slice(offset, offset + limit);
 }
 
