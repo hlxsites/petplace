@@ -14,13 +14,18 @@
 }
 
 .article-page .section {
-  overflow-x: unset;
+  max-width: 100%;
+  overflow-x: scroll;
 }
 
 .article-page p {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.4;
+}
+
+.article-page .default-content-wrapper img {
+  max-width: 485px;
 }
 
 .article-page .footer {
@@ -132,6 +137,7 @@
   .article-page .section {
     padding-left: 0;
     padding-right: 0;
+    overflow-x: unset;
   }
 
   .article-page .section:not(.hero-container, .article-template-autoblock) {
