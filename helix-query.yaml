@@ -2,7 +2,7 @@ version: 1
 
 indices:
   sitemap:
-    target: /query-index.json
+    target: /query-index.xlsx
     exclude:
       - 'article/category/default'
       - 'drafts/**'
