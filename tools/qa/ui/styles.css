@@ -12,7 +12,7 @@ main {
   grid-template:
     "hero hero"
     "pages operation"
-    "results results";
+    "results results" / 1fr min-content;
   gap: 1rem;
 }
 
@@ -23,6 +23,7 @@ table {
 }
 
 th {
+  text-align: left;
   text-transform: uppercase;
 }
 
@@ -38,6 +39,16 @@ button {
   padding: .5rem;
   border-radius: .5rem;
   margin: 1rem 0;
+}
+
+button {
+  display: block;
+  padding: .5rem 2rem;
+  width: 100%;
+  background: green;
+  font-weight: bold;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
 }
 
 @media (prefers-color-scheme: dark) {
