@@ -11,6 +11,8 @@ const embedYoutubeFacade = (url) => {
   let videoId = usp.get('v');
   if (url.origin.includes('youtu.be')) {
     videoId = url.pathname.substring(1);
+  } else {
+    videoId = url.pathname.split('/').pop();
   }
   const litePlayer = document.createElement('lite-youtube');
   litePlayer.setAttribute('videoid', videoId);
