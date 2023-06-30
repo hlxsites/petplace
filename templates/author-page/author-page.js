@@ -29,7 +29,7 @@ export async function loadEager(main) {
   }]);
   createTemplateBlock(main, 'breadcrumb', 'breadcrumb', [breadcrumbData]);
   createTemplateBlock(main, 'social-links');
-  createTemplateBlock(main, 'popular-articles');
+  createTemplateBlock(main, 'popular-articles', undefined, ['<h1 class="author-popular-posts"></h1>']);
 }
 
 export async function loadLazy(page) {
