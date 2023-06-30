@@ -94,7 +94,7 @@ async function links(url) {
   const document = parseHtml(await response.text());
 
   const array404 = await Promise.all([...document.querySelectorAll('main a[href]')].map(async (a) => {
-    if (!a.href.startsWith('http://') && !a.href.startsWith('https://')) {
+    if (!a.href.startsWith('http://') && !a.href.startsWith('https://') && !a.href.startsWith('file://')) {
       return null;
     }
 
@@ -108,8 +108,14 @@ async function links(url) {
       }
     }, 5000);
 
+    let link = a.href;
+    if (a.href.startsWith('/')) {
+      link = `${FRANKLIN_DOMAIN}${link}`;
+    } else if (a.href.startsWith('file://')) {
+      link = link.replace('file://', '/');
+    }
     try {
-      const resp = await fetch(`${a.href.startsWith('/') ? `${FRANKLIN_DOMAIN}${a.href}` : a.href}`, { method: 'HEAD', signal: controller.signal });
+      const resp = await fetch(link, { method: 'HEAD', signal: controller.signal });
       return resp.status >= 400 ? `${a.href} (status: ${resp.status})` : null;
     } catch (err) {
       return `${a.href} (${err.message.substring(0, 100)})`;
