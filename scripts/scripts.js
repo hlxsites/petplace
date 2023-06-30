@@ -485,7 +485,14 @@ function decorateSectionsWithBackgroundImage(main) {
 
 function standardizeLinkNavigation() {
   document.querySelectorAll('a[href]').forEach((a) => {
-    const url = new URL(a.href);
+    let url;
+    try {
+      url = new URL(a.href);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Invalid link', err);
+      return;
+    }
     // External links always open in a new tab
     if (url.hostname !== window.location.hostname) {
       a.setAttribute('target', '_blank');
