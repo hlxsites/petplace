@@ -3,6 +3,7 @@ export default async function decorate(block) {
   const searchButtonText = block.firstElementChild.children[1].textContent || 'Submit';
 
   const form = document.createElement('form');
+  form.setAttribute('role', 'search');
   form.className = 'search-box-wrapper';
   form.action = '/search';
 

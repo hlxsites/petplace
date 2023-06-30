@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /?utm
+Sitemap: https://www.petplace.com/sitemap.xml
+Host: https://www.petplace.com
