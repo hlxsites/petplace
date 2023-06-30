@@ -81,7 +81,6 @@ async function loadAccessibeWidget() {
   }, { async: true });
 }
 
-const queue = [];
 let interval;
 const queue = [];
 export async function meterCalls(fn, wait = 200, max = 5) {
