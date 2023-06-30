@@ -3,6 +3,39 @@ const FRANKLIN_ADMIN_API = 'https://admin.hlx.page';
 
 const parseHtml = (html) => new window.DOMParser().parseFromString(html, 'text/html');
 
+const toHtmlTable = (obj) => {
+  const objects = Array.isArray(obj) ? obj : [obj];
+  const headers = objects.reduce((set, o) => {
+    Object.keys(o).forEach((key) => set.add(key));
+    return set;
+  }, new Set());
+
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  let tr = document.createElement('tr');
+  headers.forEach((h) => {
+    const th = document.createElement('th');
+    th.textContent = h;
+    tr.append(th);
+  });
+  thead.append(tr);
+  table.append(thead);
+
+  const tbody = document.createElement('tbody');
+  objects.forEach((o) => {
+    tr = document.createElement('tr');
+    headers.forEach((h) => {
+      const td = document.createElement('td');
+      td.textContent = o[h] || '';
+      tr.append(td);
+    });
+    tbody.append(tr);
+  });
+  table.append(tbody);
+
+  return table;
+};
+
 async function* bulkOperation(urls, fn, options = {}) {
   // eslint-disable-next-line no-restricted-syntax
   for (const url of urls) {
@@ -112,13 +145,13 @@ async function links(url) {
     if (a.href.startsWith('/')) {
       link = `${FRANKLIN_DOMAIN}${link}`;
     } else if (a.href.startsWith('file://')) {
-      link = link.replace('file://', '/');
+      link = link.replace('file://', FRANKLIN_DOMAIN);
     }
     try {
       const resp = await fetch(link, { method: 'HEAD', signal: controller.signal });
-      return resp.status >= 400 ? `${a.href} (status: ${resp.status})` : null;
+      return resp.status >= 400 ? { url: link, error: resp.status } : null;
     } catch (err) {
-      return `${a.href} (${err.message.substring(0, 100)})`;
+      return { url: link, error: err.message.substring(0, 100) };
     } finally {
       clearTimeout(timeoutId);
     }
@@ -190,7 +223,7 @@ function reportProgress(index, urls, result, time) {
       disclosure.style.display = showFailure ? 'block' : 'none';
     }
   }
-  disclosure.children[1].append(JSON.stringify(result));
+  disclosure.children[1].append(result ? toHtmlTable(result) : '');
 }
 
 async function run() {

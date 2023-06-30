@@ -16,6 +16,21 @@ main {
   gap: 1rem;
 }
 
+table {
+  margin: 1rem 0 2rem;
+  border-collapse: collapse;
+  border: 1px solid;
+}
+
+th {
+  text-transform: uppercase;
+}
+
+th,
+td {
+    padding: .5rem;
+}
+
 textarea,
 input,
 select,
@@ -26,6 +41,11 @@ button {
 }
 
 @media (prefers-color-scheme: dark) {
+  thead tr,
+  tr:nth-of-type(2n) {
+    background: rgb(255 255 255 / 10%)
+  }
+
   textarea,
   input,
   select,
@@ -37,6 +57,11 @@ button {
 }
 
 @media (prefers-color-scheme: light) {
+  thead tr,
+  tr:nth-of-type(2n) {
+    background: rgb(0 0 0 / 10%)
+  }
+
   textarea,
   input,
   select,
