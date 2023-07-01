@@ -29,7 +29,14 @@ function createTableOfContents(main) {
   }
   const tocDiv = document.createElement('div');
   tocDiv.classList.add('toc');
-  main.querySelector('h1').after(tocDiv);
+
+  // if there is a disclosure, add the toc after it, otherwise add it after the h1
+  const disclosure = main.querySelector('.disclosure');
+  if (disclosure) {
+    disclosure.after(tocDiv);
+  } else {
+    main.querySelector('h1').after(tocDiv);
+  }
 }
 
 /**
