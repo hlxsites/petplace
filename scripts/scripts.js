@@ -159,7 +159,8 @@ export async function getCategoryByName(categoryName) {
   if (!categories) {
     return null;
   }
-  return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
+  const categorySlug = categoryName.toLowerCase().replace(/ /g, '-');
+  return categories.data.find((c) => c.Slug === categorySlug);
 }
 
 export async function getCategoryByKey(key, value) {
