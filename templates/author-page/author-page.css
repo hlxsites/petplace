@@ -19,6 +19,10 @@
   overflow: hidden;
 }
 
+.author-page .breadcrumb ol li:first-child {
+  margin-right: 0;
+}
+
 .author-page .breadcrumb .icon-chevron {
   fill:var(--highlight-color);
   margin: 0;

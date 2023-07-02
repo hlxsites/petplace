@@ -28,7 +28,7 @@ export async function loadEager(main) {
     path: heading.innerText,
     color: 'purple',
     label: heading.innerText,
-  }]);
+  }], true);
   createTemplateBlock(main, 'breadcrumb', 'breadcrumb', [breadcrumbData]);
   createTemplateBlock(main, 'social-links');
   createTemplateBlock(main, 'popular-articles', undefined, ['<h1 class="author-popular-posts"></h1>']);
