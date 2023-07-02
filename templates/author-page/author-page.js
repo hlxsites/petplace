@@ -22,10 +22,12 @@ export async function loadEager(main) {
     url: '/authors',
     path: 'Authors',
     color: 'blue-dark',
+    label: 'Authors',
   }, {
     url: window.location,
     path: heading.innerText,
     color: 'purple',
+    label: heading.innerText,
   }]);
   createTemplateBlock(main, 'breadcrumb', 'breadcrumb', [breadcrumbData]);
   createTemplateBlock(main, 'social-links');
