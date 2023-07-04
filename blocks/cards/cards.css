@@ -74,7 +74,7 @@
   font-family: var(--heading-font-family);    
   position: absolute;
   line-height: 1.7;
-  inset: 10px 20px auto 20px;
+  inset: 10px auto auto 20px;
   border-radius: 14px;
   display: inline-block;
   padding: 0 14px;
