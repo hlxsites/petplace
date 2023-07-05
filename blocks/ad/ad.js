@@ -40,6 +40,29 @@ function getAdTargets(ad) {
   return null;
 }
 
+function parseAdSizes(rawSizes) {
+  if (rawSizes) {
+    return String(rawSizes).split(',')
+      .map((size) => parseInt(String(size).trim(), 10));
+  }
+  return null;
+}
+
+function getAdSizes(ad) {
+  if (!ad) {
+    return [];
+  }
+  const widths = parseAdSizes(ad.Width);
+  const heights = parseAdSizes(ad.Height);
+  const sizes = [];
+  widths.forEach((width, i) => {
+    if (heights.length > i) {
+      sizes.push([width, heights[i]]);
+    }
+  });
+  return sizes;
+}
+
 const loadedObserver = new MutationObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.attributeName !== 'data-google-query-id') {
@@ -69,14 +92,13 @@ export default async function decorate(block) {
 
   const { id } = block;
   const data = await getAd(block.dataset.adid);
-  const width = parseInt(data.Width, 10);
-  const height = parseInt(data.Height, 10);
+  const sizes = getAdSizes(data);
   block.classList.add('skeleton');
-  block.style.width = `${width}px`;
-  block.style.minHeight = `${height}px`;
+  block.style.width = `${sizes[0][0]}px`;
+  block.style.minHeight = `${sizes[0][1]}px`;
   window.googletag.cmd.push(() => {
     const adSlot = window.googletag
-      .defineSlot(data.Path, [[width, height]], id)
+      .defineSlot(data.Path, sizes, id)
       .addService(window.googletag.pubads());
 
     const targets = getAdTargets(data);
