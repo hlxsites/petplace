@@ -386,6 +386,33 @@ function buildEmbedBlocks(main) {
 }
 
 /**
+ * Builds hyperlinked images from picture tags followed by a link.
+ * @param {Element} main The container element
+ */
+function buildHyperlinkedImages(main) {
+  [...main.querySelectorAll('picture')]
+    .filter((picture) => {
+      const parent = picture.parentElement;
+      const a = parent.nextElementSibling?.querySelector('a[href]');
+      try {
+        return parent.childElementCount === 1 && a
+          && new URL(a.href).pathname === new URL(a.textContent).pathname;
+      } catch (err) {
+        return false;
+      }
+    })
+    .forEach((picture) => {
+      const parent = picture.parentElement;
+      const a = parent.nextElementSibling.querySelector('a[href]');
+      a.className = '';
+      a.innerHTML = '';
+      a.append(picture);
+      a.parentElement.classList.toggle('button-container', false);
+      parent.remove();
+    });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -393,6 +420,7 @@ async function buildAutoBlocks(main) {
   try {
     await buildHeroBlock(main);
     await buildEmbedBlocks(main);
+    await buildHyperlinkedImages(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -473,7 +501,14 @@ function decorateSectionsWithBackgroundImage(main) {
 
 function standardizeLinkNavigation() {
   document.querySelectorAll('a[href]').forEach((a) => {
-    const url = new URL(a.href);
+    let url;
+    try {
+      url = new URL(a.href);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Invalid link', err);
+      return;
+    }
     // External links always open in a new tab
     if (url.hostname !== window.location.hostname) {
       a.setAttribute('target', '_blank');

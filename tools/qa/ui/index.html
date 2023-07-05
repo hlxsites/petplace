@@ -1,0 +1,62 @@
+<html>
+  <link rel="stylesheet" href="styles.css"></style>
+<body>
+  <main>
+    <h1>QA Configuration</h1>
+    <div class="pages">
+      <label>
+        Pages:<br/>
+        <textarea name="urls" id="urls" cols="30" rows="10"></textarea>
+      </label>
+    </div>
+    <div class="operation">
+      <label>
+        Operation:<br/>
+        <select name="action" id="action">
+          <optgroup label="Checks">
+            <option value="diff">Content Diff</option>
+            <option value="links">Page Links</option>
+          </optgroup>
+          <optgroup label="Filter Pages">
+            <option value="embeds">Social Embeds</option>
+            <option value="uat">UAT Urls</option>
+            <option value="azure">Azure Images</option>
+          </optgroup>
+          <optgroup label="Workflow">
+            <option value="preview">Preview</option>
+            <option value="publish">Publish</option>
+          </optgroup>
+        </select>
+      </label>
+      <button>Run</button>
+    </div>
+    <div class="results">
+      <hr/>
+      <h2>Overview</h2>
+      <small><span class="position">n/a</span> out of <span class="total">n/a</span> (ETA: <span class="time">n/a</span>)</small>
+      <div class="results-overview">
+        <ul></ul>
+      </div>
+      <hr/>
+      <h2>Details</h2>
+      <div class="filters">
+        <label>
+          <input type="checkbox" name="filter" value="success" checked/>
+          Show Success
+        </label>
+        <label>
+          <input type="checkbox" name="filter" value="failure" checked/>
+          Show Failures
+        </label>
+        <label>
+          <input type="checkbox" name="filter" value="error" checked/>
+          Show Errors
+        </label>
+      </div>
+      <div class="results-details">
+      </div>
+    </div>
+  </main>
+  <script src="scripts.js"></script>
+</body>
+</html>

@@ -254,6 +254,10 @@ main a:hover {
   text-decoration: none;
 }
 
+main a strong {
+  color: inherit;
+}
+
 /* buttons */
 .button-container {
   display: flex;
