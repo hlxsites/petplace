@@ -58,7 +58,7 @@
 }
 
 .article-page .breadcrumb .icon-chevron {
-  fill: var(--text-color);
+  fill: var(--highlight-color);
   margin: 0;
 }
 
@@ -177,10 +177,6 @@
     top: unset;
   }
 
-  .article-page .breadcrumb .icon-chevron {
-    fill: var(--text-color-inverted);
-  }
-
   .article-page .article-author-container {
     padding-top: 1rem;
   }
@@ -237,13 +233,11 @@
 
   .article-page .hero-container .hero .breadcrumb {
     margin-bottom: 1rem;
-    color: var(--text-color-inverted);
   }
 
-  .article-page .breadcrumb > div > div > div > span svg {
-    fill: var(--text-color-inverted)
+  .article-page .hero-container .hero .breadcrumb .icon-chevron {
+    fill: var(--text-color-inverted);
   }
-
 }
 
 @media (min-width: 1024px) {

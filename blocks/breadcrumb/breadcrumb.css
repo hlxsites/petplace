@@ -14,7 +14,7 @@
 }
 
 .breadcrumb .icon {
-  vertical-align: middle;
+  display:flex;
 }
 
 .breadcrumb ol li:first-child {
