@@ -116,6 +116,10 @@
   margin-top: 0;
 }
 
+.article-page .popular-articles-container {
+  margin-top: 3rem;
+}
+
 @media (min-width: 768px) {
   .article-page main {
     grid-template:
