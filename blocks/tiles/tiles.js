@@ -39,6 +39,21 @@ export default async function decorate(block) {
       }
     }
 
+    const res = await fetch(path);
+    if (res.ok) {
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      return {
+        path,
+        title: doc.querySelector('head > title').textContent,
+        description: doc.querySelector('head > meta[name="description"]').content,
+        image: doc.querySelector('head > meta[property="og:image"]').content,
+        imageAlt: doc.querySelector('head > meta[property="og:image:alt"]').content,
+        author: doc.querySelector('head > meta[property="og:image:alt"]').content,
+        date: new Date(doc.querySelector('head > meta[name="publication-date"]').content).getTime(),
+      };
+    }
+
     // eslint-disable-next-line no-console
     console.error(`No article in index found for ${path}`);
     return null;
