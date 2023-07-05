@@ -94,6 +94,26 @@
   .home-page main h2 {
     font-size: 2em;
   }
+
+  .home-page .ad-container.tiles-container .skeleton {
+    margin-top: 2rem;
+  }
+
+  .home-page .ad-container.columns-container {
+    display: flex;
+    max-width: 1344px;
+    margin: 0 auto;
+  }
+
+  .home-page .ad-container.columns-container .columns-wrapper {
+    flex-basis: 75%;
+    max-width: 1008px;
+  }
+
+  .home-page .ad-container.columns-container .ad-wrapper {
+    flex-basis: 25%;
+    max-width: 336px;
+  }
 }
 
 @media (min-width: 1200px) {

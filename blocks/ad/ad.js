@@ -62,8 +62,9 @@ export default async function decorate(block) {
   const data = await getAd(block.dataset.adid);
   const width = parseInt(data.Width, 10);
   const height = parseInt(data.Height, 10);
+  block.classList.add('skeleton');
   block.style.width = `${width}px`;
-  block.style.height = `${height}px`;
+  block.style.minHeight = `${height}px`;
   window.googletag.cmd.push(() => {
     const adSlot = window.googletag
       .defineSlot(data.Path, [[width, height]], id)
@@ -84,4 +85,8 @@ export default async function decorate(block) {
   window.googletag.cmd.push(() => {
     window.googletag.display(block.id);
   });
+  window.setTimeout(() => {
+    block.classList.remove('skeleton');
+    block.style.minHeight = 0;
+  }, 60000);
 }
