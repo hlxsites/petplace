@@ -47,6 +47,7 @@ export function loadScript(url, callback, attributes) {
     script.onload = callback;
     return script;
   }
+  callback();
   return head.querySelector(`script[src="${url}"]`);
 }
 
@@ -132,7 +133,7 @@ async function loadJson(jsonUrl, cacheKey) {
   return Promise.resolve();
 }
 
-async function getJson(jsonUrl, cacheKey) {
+export async function getJson(jsonUrl, cacheKey) {
   try {
     if (window.hlx?.data && window.hlx.data[cacheKey]) {
       return window.hlx.data[cacheKey];
@@ -545,9 +546,6 @@ export async function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  const gtmFallback = document.createElement('noscript');
-  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
-  doc.body.prepend(gtmFallback);
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
@@ -574,23 +572,6 @@ export function addFavIcon(href) {
   } else {
     document.getElementsByTagName('head')[0].appendChild(link);
   }
-}
-
-/**
- * Retrieves information about the sites ads, which will ultimately be pulled
- * from the "ads" spreadsheet at the root of the project. There is some caching
- * in place to ensure fast subsequent retrieval of the ad data in the same
- * session.
- * @param {string} adId ID of the ad from the spreadsheet.
- * @returns Simple object containing all the ad's information, or falsy
- *  if the ad could not be found.
- */
-export async function getAd(adId) {
-  const ads = await getJson('/ads.json', 'ads');
-  if (!ads) {
-    return null;
-  }
-  return ads.data.find((c) => c.ID === adId);
 }
 
 async function getRawCategoryAd(category) {
@@ -621,89 +602,6 @@ export async function getCategoryAd(categorySlug) {
   const category = await getCategory(categorySlug);
   const categoryAd = await getRawCategoryAd(category);
   return categoryAd || 'article-default-rail';
-}
-
-function loadGoogleAdScript() {
-  return new Promise((res) => {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', res, { async: '' });
-  });
-}
-
-function getAdTargets(ad) {
-  if (ad.Targeting) {
-    return String(ad.Targeting).split(',').map((target) => String(target).trim());
-  }
-  return null;
-}
-
-function parseAdSizes(rawSizes) {
-  if (rawSizes) {
-    return String(rawSizes).split(',')
-      .map((size) => parseInt(String(size).trim(), 10));
-  }
-  return null;
-}
-
-function getAdSizes(ad) {
-  if (!ad) {
-    return [];
-  }
-  const widths = parseAdSizes(ad.Width);
-  const heights = parseAdSizes(ad.Height);
-  const sizes = [];
-  widths.forEach((width, i) => {
-    if (heights.length > i) {
-      sizes.push([width, heights[i]]);
-    }
-  });
-  return sizes;
-}
-
-/**
- * Loads all Google ads into the page by adding the google ad API script
- * and displaying ads in all ad blocks defined on the page.
- * @returns {Promise} Resolves when all ads are loaded.
- */
-export async function loadGoogleAds() {
-  const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adid && el.id);
-  if (!ads.length) {
-    return Promise.resolve();
-  }
-  const adData = (await Promise.all(ads.map((ad) => getAd(ad.dataset.adid))))
-    .map((ad, index) => ({ ad: ads[index], data: ad, sizes: getAdSizes(ad) }))
-    .filter((ad) => !!ad.data && !!ad.sizes.length);
-
-  if (!adData.length) {
-    return Promise.resolve();
-  }
-
-  await loadGoogleAdScript();
-
-  window.googletag = window.googletag || { cmd: [] };
-
-  window.googletag.cmd.push(() => {
-    adData.forEach((currAdData) => {
-      const { ad, data, sizes } = currAdData;
-      const adSlot = window.googletag
-        .defineSlot(data.Path, sizes, ad.id)
-        .addService(window.googletag.pubads());
-
-      const targets = getAdTargets(data);
-      if (targets) {
-        adSlot.setTargeting(...targets);
-      }
-    });
-
-    // Enable SRA and services.
-    window.googletag.pubads().enableSingleRequest();
-    window.googletag.enableServices();
-  });
-  adData.forEach((currAdData) => {
-    window.googletag.cmd.push(() => {
-      window.googletag.display(currAdData.ad.id);
-    });
-  });
-  return Promise.resolve();
 }
 
 /**
@@ -742,6 +640,9 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
+  const gtmFallback = document.createElement('noscript');
+  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+  document.body.prepend(gtmFallback);
   loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
 }
 
