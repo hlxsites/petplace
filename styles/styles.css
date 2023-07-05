@@ -12,12 +12,12 @@
  * governing permissions and limitations under the License.
  */
 
- :root {
+:root {
   /* colors */
   --highlight-color: #ff7d5a;
   --link-color: var(--highlight-color);
   --link-hover-color: var(--highlight-color);
-  --link-color-alt: #678fda;
+  --link-color-alt: var(--color-blue);
   --link-hover-color-alt: var(--text-color-alt);
   --background-color: #fff;
   --background-color-light: #f2f6fc;
@@ -25,15 +25,17 @@
   --text-color: #28061e;
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
-  --color-gray: #8f8f8f;
+  --color-gray: #8f8f8f;  
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
+  --color-gray-lighter: #f7f7f7;
   --color-gray-dark: #4a4a4a;
   --color-blue: #678fda;
-  --color-blue-light: #c4d1e9; 
+  --color-blue-light: #c4d1e9;
   --color-blue-dark: #5773a8;
   --color-purple: #6f69a8;
   --color-purple-light: #978ce0;
+  --color-purple-gray: #736aa4;
   --color-purple-light-alt: #8e8199;
   --color-dark-maroon: #5d3450;
   --color-red: #ff6662;
@@ -52,7 +54,7 @@
   --color-green-transparent: rgb(120 166 141 / 60%);
   --color-magenta-transparent: rgb(169 77 143 / 60%);
   --color-mauve-transparent: rgb(106 55 90 / 60%);
-    
+
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
   --heading-font-family: 'Raleway', 'Raleway Fallback', sans-serif;
@@ -215,10 +217,6 @@ code, pre, samp {
   font-size: var(--body-font-size-s);
 }
 
-code, samp {
-  padding: .125em;
-}
-
 pre {
   overflow: scroll;
 }
@@ -243,7 +241,7 @@ main pre {
   background-color: var(--background-color-light);
   padding: 1em;
   border-radius: .25em;
-  overflow-x: auto;
+  overflow: auto;
   white-space: pre;
 }
 
@@ -254,6 +252,10 @@ main a {
 
 main a:hover {
   text-decoration: none;
+}
+
+main a strong {
+  color: inherit;
 }
 
 /* buttons */
@@ -570,6 +572,7 @@ main .section.well.small[data-background] .section-background {
   margin-top: 0;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .generic .columns {
   margin: 60px auto;
 }
@@ -883,5 +886,3 @@ a.sr-focusable:focus {
     margin-bottom: 0.25rem;
   }
 }
-
-

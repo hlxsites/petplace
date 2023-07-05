@@ -1,16 +1,17 @@
 import {
   sampleRUM,
   buildBlock,
-  loadHeader,
   loadFooter,
   decorateButtons,
   decorateIcons,
   decorateSections,
+  decorateBlock,
   decorateBlocks,
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
   loadCSS,
+  loadHeader,
   getMetadata,
   toClassName,
   createOptimizedPicture,
@@ -50,8 +51,8 @@ export function loadScript(url, callback, attributes) {
   return head.querySelector(`script[src="${url}"]`);
 }
 
-const queue = [];
 let interval;
+const queue = [];
 export async function meterCalls(fn, wait = 200, max = 5) {
   return new Promise((res) => {
     if (!interval) {
@@ -67,6 +68,20 @@ export async function meterCalls(fn, wait = 200, max = 5) {
       queue.push(fn);
     }
   });
+}
+
+export async function sequenceCalls(elements, fn, wait = 200) {
+  elements.reduce(
+    (promiseChain, element) => promiseChain.then(() => new Promise((resolve) => {
+      setTimeout(() => {
+        window.requestAnimationFrame(() => {
+          fn(element);
+          resolve();
+        });
+      }, wait);
+    })),
+    Promise.resolve(),
+  );
 }
 
 export function getId() {
@@ -285,7 +300,7 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -312,25 +327,6 @@ async function buildHeroBlock(main) {
     }
     main.prepend(section);
   }
-}
-
-function buildVideoEmbeds(container) {
-  const ytVideos = container.querySelectorAll('a[href*="youtube.com/embed"]');
-  if (!ytVideos.length) {
-    return;
-  }
-  loadCSS('/scripts/lite-yt-embed/lite-yt-embed.css');
-  loadScript('/scripts/lite-yt-embed/lite-yt-embed.js');
-
-  ytVideos.forEach((a) => {
-    const litePlayer = document.createElement('lite-youtube');
-    const videoId = a.href.split('/').pop();
-    litePlayer.setAttribute('videoid', videoId);
-    litePlayer.style.backgroundImage = `url('https://i.ytimg.com/vi/${videoId}/hqdefault.jpg')`;
-    const parent = a.parentElement;
-    parent.innerHTML = '';
-    parent.append(litePlayer);
-  });
 }
 
 /**
@@ -372,12 +368,60 @@ async function decorateTemplate(main) {
 }
 
 /**
+ * Builds embed block for inline links to known social platforms.
+ * @param {Element} main The container element
+ */
+function buildEmbedBlocks(main) {
+  const HOSTNAMES = [
+    'youtube',
+    'youtu',
+  ];
+  [...main.querySelectorAll(':is(p, div) > a[href]:only-child')]
+    .filter((a) => HOSTNAMES.includes(new URL(a.href).hostname.split('.').slice(-2, -1).pop()))
+    .forEach((a) => {
+      const parent = a.parentElement;
+      const block = buildBlock('embed', { elems: [a] });
+      parent.replaceWith(block);
+      decorateBlock(block);
+    });
+}
+
+/**
+ * Builds hyperlinked images from picture tags followed by a link.
+ * @param {Element} main The container element
+ */
+function buildHyperlinkedImages(main) {
+  [...main.querySelectorAll('picture')]
+    .filter((picture) => {
+      const parent = picture.parentElement;
+      const a = parent.nextElementSibling?.querySelector('a[href]');
+      try {
+        return parent.childElementCount === 1 && a
+          && new URL(a.href).pathname === new URL(a.textContent).pathname;
+      } catch (err) {
+        return false;
+      }
+    })
+    .forEach((picture) => {
+      const parent = picture.parentElement;
+      const a = parent.nextElementSibling.querySelector('a[href]');
+      a.className = '';
+      a.innerHTML = '';
+      a.append(picture);
+      a.parentElement.classList.toggle('button-container', false);
+      parent.remove();
+    });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 async function buildAutoBlocks(main) {
   try {
     await buildHeroBlock(main);
+    await buildEmbedBlocks(main);
+    await buildHyperlinkedImages(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -432,22 +476,7 @@ function createA11yQuickNav(links = []) {
   document.body.prepend(nav);
 }
 
-/**
- * Decorates the main element.
- * @param {Element} main The main element
- */
-// eslint-disable-next-line import/prefer-default-export
-export async function decorateMain(main) {
-  main.id = 'main';
-  loadCategories(main);
-  // hopefully forward compatible button decoration
-  decorateButtons(main);
-  await decorateIcons(main);
-  await buildAutoBlocks(main);
-  decorateSections(main);
-  decorateBlocks(main);
-  decorateScreenReaderOnly(main);
-
+function decorateSectionsWithBackgroundImage(main) {
   main.querySelectorAll('.section[data-background]').forEach((el) => {
     const div = document.createElement('div');
     const desktopImage = el.dataset.background;
@@ -469,6 +498,47 @@ export async function decorateMain(main) {
       })`;
     }, { passive: true });
   });
+}
+
+function standardizeLinkNavigation() {
+  document.querySelectorAll('a[href]').forEach((a) => {
+    let url;
+    try {
+      url = new URL(a.href);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Invalid link', err);
+      return;
+    }
+    // External links always open in a new tab
+    if (url.hostname !== window.location.hostname) {
+      a.setAttribute('target', '_blank');
+      return;
+    }
+    // Links in the article bodies should also open in a new tab
+    if (document.body.classList.contains('article-page') && a.closest('main')) {
+      a.setAttribute('target', '_blank');
+    }
+  });
+}
+
+/**
+ * Decorates the main element.
+ * @param {Element} main The main element
+ */
+// eslint-disable-next-line import/prefer-default-export
+export async function decorateMain(main) {
+  main.id = 'main';
+  loadCategories(main);
+  // hopefully forward compatible button decoration
+  decorateButtons(main);
+  await decorateIcons(main);
+  await buildAutoBlocks(main);
+  decorateSections(main);
+  decorateBlocks(main);
+  decorateScreenReaderOnly(main);
+  decorateSectionsWithBackgroundImage(main);
+  standardizeLinkNavigation();
 }
 
 /**
@@ -514,7 +584,6 @@ async function loadLazy(doc) {
     templateModule.loadLazy(main);
   }
   await loadBlocks(main);
-  buildVideoEmbeds(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
