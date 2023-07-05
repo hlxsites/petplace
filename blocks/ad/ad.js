@@ -41,6 +41,16 @@ function getAdTargets(ad) {
   return null;
 }
 
+const loadedObserver = new MutationObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.attributeName !== 'data-google-query-id') {
+      return;
+    }
+    entry.target.classList.remove('skeleton');
+    entry.target.style.minHeight = 0;
+  });
+});
+
 /**
  *
  * @param {HTMLElement} block Ad block to decorate.
@@ -85,8 +95,6 @@ export default async function decorate(block) {
   window.googletag.cmd.push(() => {
     window.googletag.display(block.id);
   });
-  window.setTimeout(() => {
-    block.classList.remove('skeleton');
-    block.style.minHeight = 0;
-  }, 3000);
+
+  loadedObserver.observe(block, { attributes: true });
 }
