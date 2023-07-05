@@ -575,6 +575,136 @@ export function addFavIcon(href) {
 }
 
 /**
+ * Retrieves information about the sites ads, which will ultimately be pulled
+ * from the "ads" spreadsheet at the root of the project. There is some caching
+ * in place to ensure fast subsequent retrieval of the ad data in the same
+ * session.
+ * @param {string} adId ID of the ad from the spreadsheet.
+ * @returns Simple object containing all the ad's information, or falsy
+ *  if the ad could not be found.
+ */
+export async function getAd(adId) {
+  const ads = await getJson('/ads.json', 'ads');
+  if (!ads) {
+    return null;
+  }
+  return ads.data.find((c) => c.ID === adId);
+}
+
+async function getRawCategoryAd(category) {
+  if (!category) {
+    return null;
+  }
+  if (category.Ad) {
+    return category.Ad;
+  }
+  if (!category['Parent Path']) {
+    return null;
+  }
+  const parent = await getCategoryByKey('Path', category['Parent Path']);
+  return getRawCategoryAd(parent);
+}
+
+/**
+ * Retrieves the ID of the ad to show for a category. This will be determined
+ * by the "Ad" column in the categories spreadsheet. The method will check
+ * the ad column for the given category, and for all of that category's parents.
+ *
+ * If no ad is specified, the method will return a default ad.
+ * @param {string} categorySlug Slug of the category whose ad should be
+ *  retrieved.
+ * @returns {Promise<string>} ID of an ad from the ads spreadsheet.
+ */
+export async function getCategoryAd(categorySlug) {
+  const category = await getCategory(categorySlug);
+  const categoryAd = await getRawCategoryAd(category);
+  return categoryAd || 'article-default-rail';
+}
+
+function loadGoogleAdScript() {
+  return new Promise((res) => {
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', res, { async: '' });
+  });
+}
+
+function getAdTargets(ad) {
+  if (ad.Targeting) {
+    return String(ad.Targeting).split(',').map((target) => String(target).trim());
+  }
+  return null;
+}
+
+function parseAdSizes(rawSizes) {
+  if (rawSizes) {
+    return String(rawSizes).split(',')
+      .map((size) => parseInt(String(size).trim(), 10));
+  }
+  return null;
+}
+
+function getAdSizes(ad) {
+  if (!ad) {
+    return [];
+  }
+  const widths = parseAdSizes(ad.Width);
+  const heights = parseAdSizes(ad.Height);
+  const sizes = [];
+  widths.forEach((width, i) => {
+    if (heights.length > i) {
+      sizes.push([width, heights[i]]);
+    }
+  });
+  return sizes;
+}
+
+/**
+ * Loads all Google ads into the page by adding the google ad API script
+ * and displaying ads in all ad blocks defined on the page.
+ * @returns {Promise} Resolves when all ads are loaded.
+ */
+export async function loadGoogleAds() {
+  const ads = [...document.querySelectorAll('.ad.block')].filter((el) => el.dataset.adid && el.id);
+  if (!ads.length) {
+    return Promise.resolve();
+  }
+  const adData = (await Promise.all(ads.map((ad) => getAd(ad.dataset.adid))))
+    .map((ad, index) => ({ ad: ads[index], data: ad, sizes: getAdSizes(ad) }))
+    .filter((ad) => !!ad.data && !!ad.sizes.length);
+
+  if (!adData.length) {
+    return Promise.resolve();
+  }
+
+  await loadGoogleAdScript();
+
+  window.googletag = window.googletag || { cmd: [] };
+
+  window.googletag.cmd.push(() => {
+    adData.forEach((currAdData) => {
+      const { ad, data, sizes } = currAdData;
+      const adSlot = window.googletag
+        .defineSlot(data.Path, sizes, ad.id)
+        .addService(window.googletag.pubads());
+
+      const targets = getAdTargets(data);
+      if (targets) {
+        adSlot.setTargeting(...targets);
+      }
+    });
+
+    // Enable SRA and services.
+    window.googletag.pubads().enableSingleRequest();
+    window.googletag.enableServices();
+  });
+  adData.forEach((currAdData) => {
+    window.googletag.cmd.push(() => {
+      window.googletag.display(currAdData.ad.id);
+    });
+  });
+  return Promise.resolve();
+}
+
+/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
