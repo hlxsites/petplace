@@ -1,4 +1,4 @@
-import { getJson, loadScript } from '../../scripts/scripts.js';
+import { getJson } from '../../scripts/scripts.js';
 
 function addPrefetch(kind, url, as) {
   const linkEl = document.createElement('link');
@@ -14,7 +14,6 @@ addPrefetch('preconnect', 'https://securepubads.g.doubleclick.net');
 addPrefetch('preconnect', 'https://pagead2.googlesyndication.com');
 addPrefetch('preconnect', 'https://adservice.google.com');
 addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
-addPrefetch('preconnect', 'https://www.googletagservices.com');
 addPrefetch('preconnect', 'https://www.googletagservices.com');
 
 /**
@@ -46,10 +45,8 @@ const loadedObserver = new MutationObserver((entries) => {
     if (entry.attributeName !== 'data-google-query-id') {
       return;
     }
-    // setTimeout(() => {
-    //   entry.target.classList.remove('skeleton');
-    //   entry.target.style.minHeight = 0;
-    // }, 60000);
+    entry.target.classList.remove('skeleton');
+    entry.target.style.minHeight = 0;
   });
 });
 
