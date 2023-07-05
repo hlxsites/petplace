@@ -101,37 +101,23 @@ async function render404() {
   main.classList.add('error');
 }
 
-let categoriesPromise = null;
 async function loadCategories() {
-  if (categoriesPromise) {
-    return categoriesPromise;
-  }
-  if (!window.sessionStorage.getItem('categories')) {
-    categoriesPromise = fetch('/categories.json')
-      .then((res) => res.json())
-      .then((json) => {
-        window.sessionStorage.setItem('categories', JSON.stringify(json));
-        window.hlx.data = window.hlx.data || [];
-        window.hlx.data.categories = json;
-      })
-      .catch((err) => {
-        window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
-        // eslint-disable-next-line no-console
-        console.error('Failed to fetch categories.', err);
-      });
-    return categoriesPromise;
-  }
-  return Promise.resolve();
+  return fetch('/categories.json')
+    .then((res) => res.json())
+    .then((json) => {
+      window.hlx.data = window.hlx.data || [];
+      window.hlx.data.categories = json;
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to fetch categories.', err);
+    });
 }
 
 export async function getCategories() {
   try {
     if (window.hlx?.data?.categories) {
       return window.hlx.data.categories;
-    }
-    const categories = window.sessionStorage.getItem('categories');
-    if (categories) {
-      return JSON.parse(categories);
     }
     await loadCategories();
     return window.hlx.data.categories;
@@ -752,7 +738,20 @@ export async function createBreadCrumbs(crumbData) {
 
 async function loadPage() {
   if (navigator && navigator.serviceWorker) {
-    navigator.serviceWorker.register('/scripts/sw.js');
+    try {
+      const registration = await navigator.serviceWorker.register('/sw.js', {
+        scope: '/',
+      });
+      if (registration.installing) {
+        console.log('Service worker installing');
+      } else if (registration.waiting) {
+        console.log('Service worker installed');
+      } else if (registration.active) {
+        console.log('Service worker active');
+      }
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+    }
   }
   await loadEager(document);
   await loadLazy(document);

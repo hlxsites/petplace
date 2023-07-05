@@ -1,5 +1,16 @@
 const CACHE_NAME = 'petplace.com';
 
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll([
+        '/categories.json',
+        '/article/query-index.json?sheet=article&limit=2000',
+        '/article/query-index.json?sheet=breed',
+      ])),
+  );
+});
+
 // Cache and update with stale-while-revalidate policy.
 self.addEventListener('fetch', (event) => {
   const { request } = event;
