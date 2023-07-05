@@ -46,8 +46,10 @@ const loadedObserver = new MutationObserver((entries) => {
     if (entry.attributeName !== 'data-google-query-id') {
       return;
     }
-    entry.target.classList.remove('skeleton');
-    entry.target.style.minHeight = 0;
+    setTimeout(() => {
+      entry.target.classList.remove('skeleton');
+      entry.target.style.minHeight = 0;
+    }, 60000);
   });
 });
 

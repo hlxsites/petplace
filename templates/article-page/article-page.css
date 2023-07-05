@@ -84,9 +84,9 @@
   grid-area: author;
 }
 
-.article-template-grid-ad {
+.article-page .article-template-grid-ad {
   grid-area: ad;
-  min-height: 250px;
+  padding: 0;
 }
 
 .article-template-grid-pet-insurance-quote {
