@@ -33,11 +33,14 @@
   </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
+    body {
+      display: none; /* FIXME: remove if redirect is removed. */
+    }
+
     main.error {
       min-height: calc(100vh - var(--nav-height));
       display: flex;
       align-items: center;
-      display: none; /* FIXME: remove if redirect is removed. */
     }
 
     main.error .error-number {
