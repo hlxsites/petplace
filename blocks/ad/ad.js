@@ -88,5 +88,5 @@ export default async function decorate(block) {
   window.setTimeout(() => {
     block.classList.remove('skeleton');
     block.style.minHeight = 0;
-  }, 60000);
+  }, 3000);
 }
