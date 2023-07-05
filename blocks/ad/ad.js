@@ -1,4 +1,4 @@
-import { getJson } from '../../scripts/scripts.js';
+import { getId, getJson } from '../../scripts/scripts.js';
 
 function addPrefetch(kind, url, as) {
   const linkEl = document.createElement('link');
@@ -81,7 +81,7 @@ export default async function decorate(block) {
   window.googletag = window.googletag || { cmd: [] };
 
   if (!block.id) {
-    block.id = `ad-${Math.random().toString(32).substring(2)}`;
+    block.id = getId('ad');
   }
   [...block.children].forEach((row, index) => {
     if (index === 0) {

@@ -84,8 +84,8 @@ export async function sequenceCalls(elements, fn, wait = 200) {
   );
 }
 
-export function getId() {
-  return Math.random().toString(32).substring(2);
+export function getId(prefix = 'hlx') {
+  return `${prefix}-${Math.random().toString(32).substring(2)}`;
 }
 
 export function isMobile() {
