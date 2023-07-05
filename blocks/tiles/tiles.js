@@ -92,7 +92,10 @@ export default async function decorate(block) {
         dta.image,
         dta?.imageAlt || tileTitle,
         false,
-        [{ width: 768 }],
+        [
+          { media: '(min-width: 600px)', width: 1200 },
+          { width: 900 },
+        ],
       );
       img = picture.querySelector('img');
       img.width = 768;
@@ -104,7 +107,10 @@ export default async function decorate(block) {
         dta.image,
         dta?.imageAlt || tileTitle,
         false,
-        [{ width: 500 }],
+        [
+          { media: '(min-width: 768px)', width: 500 },
+          { width: 300 },
+        ],
       ));
       img = picture.querySelector('img');
       img.width = 200;
