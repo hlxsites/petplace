@@ -252,6 +252,11 @@ function getResponsiveHeroPictures(main, h1) {
 function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
   const responsivePicture = document.createElement('picture');
   const defaultImage = pictures[0].querySelector('img');
+  const width = Number(defaultImage.getAttribute('width'));
+  if (width < window.innerWidth) {
+    defaultImage.setAttribute('width', window.innerWidth);
+    defaultImage.setAttribute('height', (Number(defaultImage.getAttribute('height')) * window.innerWidth) / width);
+  }
   responsivePicture.append(defaultImage);
   pictures.forEach((picture, index) => {
     let srcElem;
@@ -260,11 +265,6 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
     }
     if (!srcElem) {
       srcElem = picture.querySelector('source:not([media])');
-      const width = Number(srcElem.getAttribute('width'));
-      if (width < window.innerWidth) {
-        srcElem.setAttribute('width', window.innerWidth);
-        srcElem.setAttribute('height', (Number(srcElem.getAttribute('height')) * window.innerWidth) / width);
-      }
     }
     const srcElemBackup = srcElem.cloneNode();
     srcElemBackup.srcset = srcElemBackup.srcset
