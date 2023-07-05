@@ -260,6 +260,11 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
     }
     if (!srcElem) {
       srcElem = picture.querySelector('source:not([media])');
+      const width = Number(srcElem.getAttribute('width'));
+      if (width < window.innerWidth) {
+        srcElem.setAttribute('width', window.innerWidth);
+        srcElem.setAttribute('height', (Number(srcElem.getAttribute('height')) * window.innerWidth) / width);
+      }
     }
     const srcElemBackup = srcElem.cloneNode();
     srcElemBackup.srcset = srcElemBackup.srcset
