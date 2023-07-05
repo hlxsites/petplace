@@ -751,6 +751,9 @@ export async function createBreadCrumbs(crumbData) {
 }
 
 async function loadPage() {
+  if (navigator && navigator.serviceWorker) {
+    navigator.serviceWorker.register('/scripts/sw.js');
+  }
   await loadEager(document);
   await loadLazy(document);
   loadDelayed(document);

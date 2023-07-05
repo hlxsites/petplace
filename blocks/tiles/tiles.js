@@ -1,22 +1,21 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
+const responses = (await Promise.all([
+  fetch('/article/query-index.json?sheet=article&limit=2000'),
+  fetch('/article/query-index.json?sheet=breed'),
+]));
+const jsons = await Promise.all(responses.map((res) => res.json()));
+const [articles, breed] = jsons.map((json) => json.data);
+
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
-let articles;
-let breed;
 export default async function decorate(block) {
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-block-container';
-
-  if (!articles) {
-    const res = await fetch('/article/query-index.json?sheet=article&limit=2000');
-    const queryData = await res.json();
-    articles = queryData?.data;
-  }
 
   const data = (await Promise.all([...block.children].map(async (row) => {
     const path = new URL(row.firstElementChild.firstElementChild.href).pathname;
@@ -25,12 +24,6 @@ export default async function decorate(block) {
       if (articles[i].path === path) {
         return articles[i];
       }
-    }
-
-    if (!breed) {
-      const res = await fetch('/article/query-index.json?sheet=breed');
-      const queryData = await res.json();
-      breed = queryData?.data;
     }
 
     for (let i = 0; i < breed.length; i += 1) {
