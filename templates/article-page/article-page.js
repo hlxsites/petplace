@@ -31,11 +31,12 @@ function createTableOfContents(main) {
   tocDiv.classList.add('toc');
 
   // if there is a disclosure, add the toc after it, otherwise add it after the h1
+  const title = main.querySelector('h1');
   const disclosure = main.querySelector('.disclosure');
-  if (disclosure) {
+  if (title.nextElementSibling === disclosure) {
     disclosure.after(tocDiv);
   } else {
-    main.querySelector('h1').after(tocDiv);
+    title.after(tocDiv);
   }
 }
 
