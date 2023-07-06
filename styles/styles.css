@@ -865,6 +865,10 @@ a.sr-focusable:focus {
     right: calc(50% - 80px);
 }
 
+main .section.search-container.ad-container .ad-wrapper .ad {
+  height: 100%;
+}
+
 /* Responsive overrides */
 
 @media (min-width: 600px) {

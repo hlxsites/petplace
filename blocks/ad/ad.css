@@ -1,1 +1,57 @@
-/* Nothing here yet */
+.ad {
+  margin: 0 auto;
+  max-width: 100%;
+  transition: min-height .3s ease;
+}
+
+.ad.skeleton {
+  position: relative;
+  height: 100%;
+  min-height: inherit;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle 16px, white 99%, transparent 0),
+    radial-gradient(circle 16px, white 99%, transparent 0),
+    linear-gradient(var(--background-color) 32px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 100%, transparent 0);
+  background-size:
+    32px 32px,
+    32px 32px,
+    calc(100% - 72px) 32px,
+    100% 100%;
+  background-position:
+    left 20px top 10px,
+    right 20px top 10px,
+    left 36px top 10px,
+    0 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.ad.skeleton::before {
+  display: inline-block;
+  padding: 1rem 2rem;
+  content: 'Advertisment loading…';
+  font-size: smaller;
+  color: var(--color-gray-light);
+}
+
+.ad.skeleton::after {
+  position: absolute;
+  content: '';
+  inset: 0;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(-90deg, transparent 0, transparent 25%, white 50%, transparent 75%, transparent 100%);
+  background-size: 40% 100%;
+  background-position: 0 0;
+  animation: loading 1.5s infinite;
+  rotate: 5deg;
+  scale: 2;
+  will-change: translate;
+}
+
+@keyframes loading {
+  to {
+    translate: 150%;
+  }
+}
