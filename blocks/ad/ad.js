@@ -12,6 +12,8 @@ function addPrefetch(kind, url, as) {
 
 addPrefetch('preconnect', 'https://securepubads.g.doubleclick.net');
 addPrefetch('preconnect', 'https://pagead2.googlesyndication.com');
+addPrefetch('preconnect', 'https://adservice.google.com');
+addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
 
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled
