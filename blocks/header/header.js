@@ -10,17 +10,15 @@ export default async function decorate(block) {
   // fetch nav content
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta).pathname : '/nav';
-  let resp = await fetch(`${navPath}.plain.html`);
-  if (!resp.ok) {
-    return;
-  }
-
-  let html = await resp.text();
+  const [mainnav, sidenav] = await Promise.all([
+    fetch(`${navPath}.plain.html`),
+    fetch('/sidenav.plain.html'),
+  ].map((fetch) => fetch.then((res) => res.text())));
 
   // decorate nav DOM
   const nav = document.createElement('nav');
   nav.id = 'nav';
-  nav.innerHTML = html;
+  nav.innerHTML = mainnav;
 
   let classes = ['hamburger', 'brand', 'sections', 'tools'];
   classes.forEach((c, i) => {
@@ -57,12 +55,6 @@ export default async function decorate(block) {
 
   const navSidebar = document.createElement('div');
   navSidebar.classList.add('nav-sidebar');
-  resp = await fetch('/sidenav.plain.html');
-  if (!resp.ok) {
-    return;
-  }
-
-  html = await resp.text();
 
   const ariaDialog = document.createElement(AriaDialog.tagName);
   ariaDialog.setAttribute('modal', true);
@@ -70,7 +62,7 @@ export default async function decorate(block) {
   ariaDialog.append(nav.querySelector('.nav-hamburger span').cloneNode(true));
 
   const dialogContent = document.createElement('div');
-  dialogContent.innerHTML = html;
+  dialogContent.innerHTML = sidenav;
 
   const treeViewWrapper = dialogContent.querySelector('ul').parentElement;
   const ariaTreeView = document.createElement(AriaTreeView.tagName);
