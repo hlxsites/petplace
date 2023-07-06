@@ -543,7 +543,7 @@ function animateSkeletons(main) {
           .forEach((el) => {
             observer.observe(el);
           });
-      } else {
+      } else if (entry.target.classList?.contains('skeleton')) {
         observer.observe(entry.target);
       }
     });
