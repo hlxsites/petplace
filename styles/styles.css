@@ -905,7 +905,7 @@ main .section.search-container.ad-container .ad-wrapper .ad {
   border-radius: 10px;
 }
 
-.skeleton::after {
+.skeleton.is-animated::after {
   --width: 300px;
 
   position: absolute;
