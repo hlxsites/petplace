@@ -70,7 +70,7 @@ export async function meterCalls(fn, wait = 200, max = 5) {
 }
 
 export async function sequenceCalls(elements, fn, wait = 200) {
-  elements.reduce(
+  return elements.reduce(
     (promiseChain, element) => promiseChain.then(() => new Promise((resolve) => {
       setTimeout(() => {
         window.requestAnimationFrame(() => {
@@ -576,19 +576,20 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  document.querySelectorAll('main .section').forEach((el) => {
-    el.style.setProperty('--body-font-family', '"Libre Franklin Fallback", system-ui, sans-serif;');
-    el.style.setProperty('--heading-font-family', '"Raleway Fallback", system-ui, sans-serif;');
-  });
-  sequenceCalls([...document.querySelectorAll('main .section')], (el) => {
-    el.setProperty('--body-font-family', '"Libre Franklin", "Libre Franklin Fallback", system-ui, sans-serif;');
-    el.setProperty('--heading-font-family', '"Raleway", "Raleway Fallback", system-ui, sans-serif;');
-  }, 50);
   await loadHeader(doc.querySelector('header'));
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
   loadFooter(footer);
+
+  document.querySelectorAll('main .section').forEach((el) => {
+    el.style.setProperty('--body-font-family', '"Libre Franklin Fallback", system-ui, sans-serif');
+    el.style.setProperty('--heading-font-family', '"Raleway Fallback", system-ui, sans-serif');
+  });
+  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  await sequenceCalls([...document.querySelectorAll('main .section')], (el) => {
+    el.style.setProperty('--body-font-family', '"Libre Franklin", "Libre Franklin Fallback", system-ui, sans-serif');
+    el.style.setProperty('--heading-font-family', '"Raleway", "Raleway Fallback", system-ui, sans-serif');
+  }, 50);
 
   // identify the first item in the menu
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
