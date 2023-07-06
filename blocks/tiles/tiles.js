@@ -89,6 +89,7 @@ export default async function decorate(block) {
         dta?.imageAlt || tileTitle,
         false,
         [
+          { media: '(min-width: 1024px)', width: 760 },
           { media: '(min-width: 600px)', width: 1200 },
           { width: 900 },
         ],
