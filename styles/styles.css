@@ -129,6 +129,10 @@
   outline-style: inset;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   font-size: var(--body-font-size-default);
   margin: 0;
