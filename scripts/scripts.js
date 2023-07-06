@@ -581,16 +581,10 @@ async function loadLazy(doc) {
     el.style.setProperty('--body-font-family', '"Libre Franklin Fallback", system-ui, sans-serif;');
     el.style.setProperty('--heading-font-family', '"Raleway Fallback", system-ui, sans-serif;');
   });
-  [...document.querySelectorAll('main .section')].reduce((promise, el) => {
-    const next = new Promise((resolve) => {
-      window.requestAnimationFrame(() => {
-        el.style.setProperty('--body-font-family', '"Libre Franklin", "Libre Franklin Fallback", system-ui, sans-serif;');
-        el.style.setProperty('--heading-font-family', '"Raleway", "Raleway Fallback", system-ui, sans-serif;');
-        resolve();
-      });
-    });
-    return promise.then(() => next);
-  }, Promise.resolve());
+  sequenceCalls([...document.querySelectorAll('main .section')], (el) => {
+    el.setProperty('--body-font-family', '"Libre Franklin", "Libre Franklin Fallback", system-ui, sans-serif;');
+    el.setProperty('--heading-font-family', '"Raleway", "Raleway Fallback", system-ui, sans-serif;');
+  }, 50);
   await loadHeader(doc.querySelector('header'));
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
