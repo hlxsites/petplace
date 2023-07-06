@@ -92,6 +92,10 @@ export default async function decorate(block) {
 
   const { id } = block;
   const data = await getAd(block.dataset.adid);
+  if (!data) {
+    console.error('Unknown ad type', block.dataset.adid);
+    return;
+  }
   const sizes = getAdSizes(data);
   block.classList.add('skeleton');
   block.style.width = `${sizes[0][0]}px`;
