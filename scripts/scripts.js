@@ -176,7 +176,8 @@ export async function getCategoryByName(categoryName) {
   if (!categories) {
     return null;
   }
-  return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
+  const categorySlug = categoryName.toLowerCase().replace(/ /g, '-');
+  return categories.data.find((c) => c.Slug === categorySlug);
 }
 
 export async function getCategoryByKey(key, value) {
@@ -721,7 +722,7 @@ export function initializeTouch(block, slideWrapper) {
  * @param {Array<CrumbData>} crumbData Information about the crumbs to add.
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
-export async function createBreadCrumbs(crumbData) {
+export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const { color } = crumbData[crumbData.length - 1];
   const breadcrumbContainer = document.createElement('nav');
   breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
@@ -738,7 +739,7 @@ export async function createBreadCrumbs(crumbData) {
 
   crumbData.forEach((crumb, i) => {
     const li = document.createElement('li');
-    if (i > 0) {
+    if (i > 0 || chevronAll) {
       const chevron = document.createElement('span');
       chevron.classList.add('icon', 'icon-chevron');
       li.append(chevron);

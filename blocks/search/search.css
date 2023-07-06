@@ -11,6 +11,7 @@
     display: inline-block;
     top: -60px;
     background-color: var(--text-color-inverted);
+    border-radius: 40px;
     padding: 40px 30px 0;
     margin: 0 ;
     bottom: 60px;
@@ -19,24 +20,28 @@
 
 .section.search-container h2::before,
 .section.search-container h2::after {
-    content: " ";
+    --radius: 10px;
+
+    content: '';
     position: absolute;
-    width: 61px;
-    height: 36px;
-    background-image: url("../../icons/bezier.svg");
-    top: 0;
+    width: calc(2 * var(--radius));
+    height: var(--radius);
+    top: calc(28px - var(--radius));
     z-index: 10;
-    left: -60px
+    left: calc(5px - 2 * var(--radius));
+    box-shadow: 0.5rem 0.25rem 0 0 white;
+    border-radius: 0 0 var(--radius) 0;
 }
 
 .section.search-container h2::after {
     display: block;
-    background-position: 100%;
-    right: -60px;
+    right: calc(5px - 2 * var(--radius));
     left: initial;
     border-bottom: none;
+    min-width: 0;
+    box-shadow: -0.5rem 0.25rem 0 0 white;
+    border-radius: 0 0 0 var(--radius);
 }
-
 
 .home-page .section.search-container p {
     margin-top: -40px;
