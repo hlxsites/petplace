@@ -531,17 +531,24 @@ function animateSkeletons(main) {
   });
   const observer1 = new MutationObserver((entries) => {
     entries.forEach((entry) => {
-      if (!entry.addedNodes.length) {
+      if (entry.type === 'childList' && !entry.addedNodes.length) {
         return;
       }
-      [...entry.addedNodes]
-        .filter((el) => el.classList?.contains('skeleton'))
-        .forEach((el) => {
-          observer.observe(el);
-        });
+      if (entry.type === 'attributes' && entry.attributeName !== 'class') {
+        return;
+      }
+      if (entry.addedNodes.length) {
+        [...entry.addedNodes]
+          .filter((el) => el.classList?.contains('skeleton'))
+          .forEach((el) => {
+            observer.observe(el);
+          });
+      } else {
+        observer.observe(entry.target);
+      }
     });
   });
-  observer1.observe(main, { childList: true, subtree: true });
+  observer1.observe(main, { attributes: true, childList: true, subtree: true });
 }
 
 /**

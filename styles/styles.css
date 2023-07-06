@@ -916,7 +916,7 @@ main .section.search-container.ad-container .ad-wrapper .ad {
   background-size: var(--width) 100%;
   background-position: 0 0;
   animation: loading 1.5s infinite;
-  rotate: 5deg;
+  rotate: 15deg;
   scale: 1 2;
   translate: calc(-1 * var(--width));
   will-change: translate;
