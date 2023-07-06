@@ -590,6 +590,12 @@ async function loadLazy(doc) {
     el.style.setProperty('--body-font-family', '"Libre Franklin", "Libre Franklin Fallback", system-ui, sans-serif');
     el.style.setProperty('--heading-font-family', '"Raleway", "Raleway Fallback", system-ui, sans-serif');
   }, 50);
+  setTimeout(() => {
+    document.querySelectorAll('main .section').forEach((el) => {
+      el.style.setProperty('--body-font-family', '');
+      el.style.setProperty('--heading-font-family', '');
+    });
+  });
 
   // identify the first item in the menu
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
