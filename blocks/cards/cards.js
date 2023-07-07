@@ -1,5 +1,5 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
-import { getCategories } from '../../scripts/scripts.js';
+import { getAuthorImage, getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -27,6 +27,25 @@ async function buildPost(post) {
         <div class="blogs-card-body">
         <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
         ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · ${post.author}</span></p>` : ''}
+      </div></a>          
+      </div>
+    </a>
+  `;
+  return postCard;
+}
+
+async function buildPost2(post) {
+  const authorImage = await getAuthorImage(post.Path);
+  const postCard = document.createElement('div');
+  postCard.classList.add('blog-cards');
+  postCard.innerHTML = `
+      <div class="blogs-card-image">
+        <a href="${post.Path}">${createOptimizedPicture(authorImage.querySelector('img').src, `Avatar image for ${post.Name}`, false, [{ width: 800 }]).outerHTML}</a>
+      </div>
+      <div>              
+        <a href="${post.Path}">
+        <div class="blogs-card-body">
+        <h3>${post.Name}</h3>
       </div></a>          
       </div>
     </a>

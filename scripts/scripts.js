@@ -191,6 +191,58 @@ export async function getCategoryImage(path) {
   // eslint-disable-next-line max-len
   return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
 }
+
+let authorsPromise = null;
+async function loadAuthors() {
+  if (authorsPromise) {
+    return authorsPromise;
+  }
+  if (!window.sessionStorage.getItem('authors')) {
+    authorsPromise = fetch('/authors/author-index.json')
+      .then((res) => res.json())
+      .then((json) => {
+        window.sessionStorage.setItem('categories', JSON.stringify(json));
+        window.hlx.data = window.hlx.data || [];
+        window.hlx.data.authors = json;
+      })
+      .catch((err) => {
+        window.sessionStorage.setItem('authors', JSON.stringify({ data: [] }));
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch authors.', err);
+      });
+    return authorsPromise;
+  }
+  return Promise.resolve();
+}
+
+export async function getAuthors() {
+  try {
+    if (window.hlx?.data?.authors) {
+      return window.hlx.data.authors;
+    }
+    const authors = window.sessionStorage.getItem('authors');
+    if (authors) {
+      return JSON.parse(authors);
+    }
+    await loadAuthors();
+    return window.hlx.data.authors;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getAuthorImage(path) {
+  const res = await fetch('/authors/author-avatar.plain.html');
+  const htmlText = await res.text();
+  const div = document.createElement('div');
+  div.innerHTML = htmlText;
+
+  const column = div.querySelector('.columns');
+  // eslint-disable-next-line max-len
+  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
+}
+
+
 /**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions
