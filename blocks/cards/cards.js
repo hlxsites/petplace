@@ -57,7 +57,7 @@ async function createCard(row) {
   const li = document.createElement('li');
   if (row.dataset.json) {
     const post = JSON.parse(row.dataset.json);
-    li.append(await buildPost(post));
+    li.append(window.location.pathname !== '/authors' ? await buildPost(post) : await buildPost2(post));
   } else {
     li.append(row);
   }
