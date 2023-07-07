@@ -523,6 +523,34 @@ function standardizeLinkNavigation() {
   });
 }
 
+function animateSkeletons(main) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      entry.target.classList.toggle('is-animated', entry.isIntersecting);
+    });
+  });
+  const observer1 = new MutationObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.type === 'childList' && !entry.addedNodes.length) {
+        return;
+      }
+      if (entry.type === 'attributes' && entry.attributeName !== 'class') {
+        return;
+      }
+      if (entry.addedNodes.length) {
+        [...entry.addedNodes]
+          .filter((el) => el.classList?.contains('skeleton'))
+          .forEach((el) => {
+            observer.observe(el);
+          });
+      } else if (entry.target.classList?.contains('skeleton')) {
+        observer.observe(entry.target);
+      }
+    });
+  });
+  observer1.observe(main, { attributes: true, childList: true, subtree: true });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -581,6 +609,7 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  animateSkeletons(main);
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
   }
