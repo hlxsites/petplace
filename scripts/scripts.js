@@ -641,6 +641,16 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
   loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
+  // Enable SRA and services.
+  window.googletag.cmd.push(() => {
+    window.googletag.pubads().enableLazyLoad();
+    window.googletag.enableServices();
+  });
+  document.querySelectorAll('.ad').forEach((block) => {
+    window.googletag.cmd.push(() => {
+      window.googletag.display(block.id);
+    });
+  });
 
   const gtmFallback = document.createElement('noscript');
   gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;

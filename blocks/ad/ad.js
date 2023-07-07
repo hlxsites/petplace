@@ -109,16 +109,6 @@ export default async function decorate(block) {
       adSlot.setTargeting(...targets);
     }
   });
-  // Enable SRA and services.
-  window.googletag.cmd.push(() => {
-    window.googletag.pubads().enableSingleRequest();
-    window.googletag.pubads().enableLazyLoad();
-    window.googletag.enableServices();
-  });
-
-  window.googletag.cmd.push(() => {
-    window.googletag.display(block.id);
-  });
 
   loadedObserver.observe(block, { attributes: true });
 }
