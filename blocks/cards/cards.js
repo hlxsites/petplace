@@ -1,5 +1,5 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
-import { getAuthorImage, getCategories } from '../../scripts/scripts.js';
+import { getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -34,13 +34,12 @@ async function buildPost(post) {
   return postCard;
 }
 
-async function buildPost2(post) {
-  const authorImage = await getAuthorImage(post.Path);
+async function buildAuthorPost(post) {
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.Path}">${createOptimizedPicture(authorImage.querySelector('img').src, `Avatar image for ${post.Name}`, false, [{ width: 800 }]).outerHTML}</a>
+        <a href="${post.Path}">${createOptimizedPicture(post.Avatar, `Avatar image for ${post.Name}`, false, [{ width: 800 }]).outerHTML}</a>
       </div>
       <div>              
         <a href="${post.Path}">
@@ -57,7 +56,7 @@ async function createCard(row) {
   const li = document.createElement('li');
   if (row.dataset.json) {
     const post = JSON.parse(row.dataset.json);
-    li.append(window.location.pathname !== '/authors' ? await buildPost(post) : await buildPost2(post));
+    li.append(window.location.pathname !== '/authors' ? await buildPost(post) : await buildAuthorPost(post));
   } else {
     li.append(row);
   }

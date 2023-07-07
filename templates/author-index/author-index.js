@@ -1,11 +1,11 @@
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
-import { meterCalls } from '../../scripts/scripts.js';
+import { getAuthorImage, meterCalls } from '../../scripts/scripts.js';
 
 async function renderAuthors(authors) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
-  for (let i = 0; i < 25; i += 1) {
+  for (let i = 0; i < 9; i += 1) {
     const div = document.createElement('div');
     div.classList.add('skeleton');
     block.append(div);
@@ -26,9 +26,15 @@ async function renderAuthors(authors) {
 
 async function getAuthors() {
   const usp = new URLSearchParams(window.location.search);
-  const limit = usp.get('limit') || 25;
+  const limit = usp.get('limit') || 10;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/authors/author-index.json')
+    .withTotal(true)
+    .map(async (author) => {
+      const image = await getAuthorImage(author.Path);
+      author.Avatar = image.querySelector('img').src;
+      return author;
+    })
     .slice(offset, offset + limit);
 }
 
