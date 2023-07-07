@@ -1,1 +1,32 @@
-/* Nothing here yet */
+.ad {
+  margin: 0 auto;
+  max-width: 100%;
+  transition: min-height .3s ease;
+}
+
+/* Skeleton loading styles */
+.ad.skeleton {
+  background-image:
+    radial-gradient(circle 16px, white 99%, transparent 0),
+    radial-gradient(circle 16px, white 99%, transparent 0),
+    linear-gradient(var(--background-color) 32px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 100%, transparent 0);
+  background-size:
+    32px 32px,
+    32px 32px,
+    calc(100% - 72px) 32px,
+    100% 100%;
+  background-position:
+    left 20px top 10px,
+    right 20px top 10px,
+    left 36px top 10px,
+    0 0;
+}
+
+.ad.skeleton::before {
+  display: inline-block;
+  padding: 1rem 2rem;
+  content: 'Advertisment loading…';
+  font-size: smaller;
+  color: var(--color-gray-light);
+}

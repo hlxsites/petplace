@@ -865,6 +865,10 @@ a.sr-focusable:focus {
     right: calc(50% - 80px);
 }
 
+main .section.search-container.ad-container .ad-wrapper .ad {
+  height: 100%;
+}
+
 /* Responsive overrides */
 
 @media (min-width: 600px) {
@@ -888,5 +892,40 @@ a.sr-focusable:focus {
 
   li {
     margin-bottom: 0.25rem;
+  }
+}
+
+/* Skeleton elements */
+
+.skeleton {
+  position: relative;
+  height: 100%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.skeleton.is-animated::after {
+  --width: 300px;
+
+  position: absolute;
+  content: '';
+  inset: 0;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(-90deg, transparent 0, transparent 25%, white 50%, transparent 75%, transparent 100%);
+  background-size: var(--width) 100%;
+  background-position: 0 0;
+  animation: loading 1.5s infinite;
+  rotate: 15deg;
+  scale: 1 2;
+  translate: calc(-1 * var(--width));
+  will-change: translate;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes loading {
+    to {
+      translate: 100%;
+    }
   }
 }
