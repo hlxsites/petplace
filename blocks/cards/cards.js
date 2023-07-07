@@ -45,6 +45,7 @@ async function buildAuthorPost(post) {
         <a href="${post.Path}">
         <div class="blogs-card-body">
         <h3>${post.Name}</h3>
+        <span class="read-more">Read more</p>
       </div></a>          
       </div>
     </a>
