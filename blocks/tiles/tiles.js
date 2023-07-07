@@ -13,9 +13,11 @@ export default async function decorate(block) {
   tileContainer.className = 'tiles-block-container';
 
   if (!articles) {
-    const res = await fetch('/article/query-index.json?sheet=article&limit=2000');
-    const queryData = await res.json();
-    articles = queryData?.data;
+    const data = await Promise.all([
+      fetch('/article/query-index.json?sheet=article&limit=2000'),
+      fetch('/article/query-index.json?sheet=breed'),
+    ].map((fetch) => fetch.then((res) => res.json())));
+    [articles, breed] = data.map((json) => json?.data);
   }
 
   const data = (await Promise.all([...block.children].map(async (row) => {
@@ -25,12 +27,6 @@ export default async function decorate(block) {
       if (articles[i].path === path) {
         return articles[i];
       }
-    }
-
-    if (!breed) {
-      const res = await fetch('/article/query-index.json?sheet=breed');
-      const queryData = await res.json();
-      breed = queryData?.data;
     }
 
     for (let i = 0; i < breed.length; i += 1) {
@@ -93,6 +89,7 @@ export default async function decorate(block) {
         dta?.imageAlt || tileTitle,
         false,
         [
+          { media: '(min-width: 1024px)', width: 760 },
           { media: '(min-width: 600px)', width: 1200 },
           { width: 900 },
         ],
