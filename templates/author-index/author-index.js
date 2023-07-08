@@ -5,7 +5,7 @@ import { getAuthorImage, meterCalls } from '../../scripts/scripts.js';
 async function renderAuthors(authors) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
-  for (let i = 0; i < 9; i += 1) {
+  for (let i = 0; i < 12; i += 1) {
     const div = document.createElement('div');
     div.classList.add('skeleton');
     block.append(div);
@@ -26,7 +26,7 @@ async function renderAuthors(authors) {
 
 async function getAuthors() {
   const usp = new URLSearchParams(window.location.search);
-  const limit = usp.get('limit') || 10;
+  const limit = usp.get('limit') || 12;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/authors/author-index.json')
     .withTotal(true)

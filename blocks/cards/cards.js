@@ -2,6 +2,7 @@ import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.
 import { getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+let isAuthorCard = false;
 
 async function buildPost(post) {
   const categories = await getCategories();
@@ -57,7 +58,7 @@ async function createCard(row) {
   const li = document.createElement('li');
   if (row.dataset.json) {
     const post = JSON.parse(row.dataset.json);
-    li.append(window.location.pathname !== '/authors' ? await buildPost(post) : await buildAuthorPost(post));
+    li.append(isAuthorCard ? await buildAuthorPost(post) : await buildPost(post));
   } else {
     li.append(row);
   }
@@ -65,6 +66,9 @@ async function createCard(row) {
 }
 
 export default function decorate(block) {
+  if (block.classList.contains('author')) {
+    isAuthorCard = true;
+  }
   const ul = document.createElement('ul');
   [...block.children].forEach(async (row) => {
     if (row.classList.contains('skeleton')) {
