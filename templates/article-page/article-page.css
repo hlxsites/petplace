@@ -51,6 +51,14 @@
   overflow: hidden;
 }
 
+.article-page .hero-container .hero > div {
+  height: 100%;
+}
+
+.article-page .hero-container .hero > div > div {
+  height: 100%;
+}
+
 .article-page .hero-container .hero h1 {
   font-size: 2rem;
   font-weight: 800;
