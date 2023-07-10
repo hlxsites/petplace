@@ -1,4 +1,4 @@
-import { getId, getJson } from '../../scripts/scripts.js';
+import { getId, getJson, isMobile } from '../../scripts/scripts.js';
 
 function addPrefetch(kind, url, as) {
   const linkEl = document.createElement('link');
@@ -10,10 +10,12 @@ function addPrefetch(kind, url, as) {
   document.head.append(linkEl);
 }
 
-addPrefetch('preconnect', 'https://securepubads.g.doubleclick.net');
-addPrefetch('preconnect', 'https://pagead2.googlesyndication.com');
-addPrefetch('preconnect', 'https://adservice.google.com');
-addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
+if (isMobile()) {
+  addPrefetch('preconnect', 'https://securepubads.g.doubleclick.net');
+  addPrefetch('preconnect', 'https://pagead2.googlesyndication.com');
+  addPrefetch('preconnect', 'https://adservice.google.com');
+  addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
+}
 
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled
