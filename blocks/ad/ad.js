@@ -92,6 +92,7 @@ export default async function decorate(block) {
   const { id } = block;
   const data = await getAd(block.dataset.adid);
   if (!data) {
+    // eslint-disable-next-line no-console
     console.error('Unknown ad type', block.dataset.adid);
     return;
   }
