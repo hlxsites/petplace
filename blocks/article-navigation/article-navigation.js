@@ -2,10 +2,8 @@ import {
   decorateIcons,
   getMetadata,
   createOptimizedPicture,
-  toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
-  getCategoriesPath,
   getCategory,
   getCategoryByName,
 } from '../../scripts/scripts.js';
@@ -45,6 +43,7 @@ function createArticleDetails(block, key, categoryInfo, article) {
 }
 
 async function createNavigation(block) {
+  const parentPath = window.location.pathname.split('/').slice(0, -1).join('/');
   let category = getMetadata('category');
   if (!category) {
     // fall back on URL of a category hasn't been defined in the page's metadata
@@ -59,19 +58,11 @@ async function createNavigation(block) {
   if (!categoryInfo) {
     return false;
   }
-  const categories = await getCategoriesPath(categoryInfo.Path);
 
   // Get all articles in that category
   const response = await fetch('/article/query-index.json?sheet=article&limit=20000');
   const json = await response.json();
-  const articles = json.data
-    .filter((article) => {
-      const articleCategories = article.category !== '0'
-        ? article.category.split(',').map((c) => c.trim().toLowerCase())
-        : article.path.split('/').splice(-2, 1);
-      return categories.some((c) => articleCategories.includes(c.Category.toLowerCase())
-        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
-    });
+  const articles = json.data.filter((article) => article.path.startsWith(parentPath));
 
   let previousArticle = null;
   let nextArticle = null;
