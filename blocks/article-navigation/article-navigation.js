@@ -47,9 +47,11 @@ function createArticleDetails(block, key, categoryInfo, article) {
 
 async function createNavigation(block) {
   let category = getMetadata('category');
+  console.log('metadata category', category);
   if (!category) {
     // fall back on URL of a category hasn't been defined in the page's metadata
     category = await getCategory(window.location.pathname.split('/').slice(-2).shift());
+    console.log('url category', category);
   }
   if (!category) {
     return false;
@@ -57,10 +59,12 @@ async function createNavigation(block) {
 
   // get full category info so we have the path of the category
   const categoryInfo = await getCategoryByName(category);
+  console.log('category info', categoryInfo);
   if (!categoryInfo) {
     return false;
   }
   const categories = await getCategoriesPath(categoryInfo.Path);
+  console.log('categories', categories);
 
   // Get all articles in that category
   const articles = ffetch('/article/query-index.json')
@@ -78,6 +82,7 @@ async function createNavigation(block) {
   let found = false;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articles) {
+    console.log('article', article);
     if (found) {
       nextArticle = article;
       break;
