@@ -1,4 +1,3 @@
-import ffetch from '../../scripts/ffetch.js';
 import {
   decorateIcons,
   getMetadata,
@@ -63,8 +62,9 @@ async function createNavigation(block) {
   const categories = await getCategoriesPath(categoryInfo.Path);
 
   // Get all articles in that category
-  const articles = ffetch('/article/query-index.json')
-    .sheet('article')
+  const response = await fetch('/article/query-index.json?sheet=article&limit=20000');
+  const json = await response.json();
+  const articles = json.data
     .filter((article) => {
       const articleCategories = article.category !== '0'
         ? article.category.split(',').map((c) => c.trim().toLowerCase())
@@ -148,14 +148,15 @@ async function createNavigation(block) {
 }
 
 export default async function decorate(block) {
-  const isVisible = await createNavigation(block);
-  if (!isVisible) {
-    // ensure the extra spacing for the block isn't present if
-    // nothing was rendered
-    const container = document.querySelector('.article-navigation-container');
-    if (!container) {
-      return;
+  createNavigation(block).then((isVisible) => {
+    if (!isVisible) {
+      // ensure the extra spacing for the block isn't present if
+      // nothing was rendered
+      const container = document.querySelector('.article-navigation-container');
+      if (!container) {
+        return;
+      }
+      container.classList.add('article-navigation-hidden');
     }
-    container.classList.add('article-navigation-hidden');
-  }
+  });
 }
