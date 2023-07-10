@@ -62,6 +62,7 @@ export async function meterCalls(fn, wait = 200, max = 5) {
         if (!queue.length) {
           res();
           window.clearInterval(interval);
+          interval = null;
         }
       }, wait);
     } else {
