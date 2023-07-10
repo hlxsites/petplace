@@ -19,13 +19,11 @@ main .hero > div {
   margin-right: auto;
   max-width: 1344px;
   width: 100%;
-  height: 100%;
 }
 
 main .hero > div > div {
   display: flex;
   flex-direction: column-reverse;
-  height: 100%;
 }
 
 main .hero h1 {
