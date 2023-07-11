@@ -8,8 +8,8 @@ async function buildPost(post) {
   const category = allCategories.data.find((c) => {
     if (post.category && post.category !== '0') {
       const postCategories = post.category.split(',');
-      return postCategories.some((category) => c.Slug === toClassName(category)
-        || category.toLowerCase() === c.Category.toLowerCase());
+      return postCategories.some((item) => c.Slug === toClassName(item)
+        || item.toLowerCase() === c.Category.toLowerCase());
     }
     return c.Slug === post.path.split('/').splice(-2, 1)[0];
   });
