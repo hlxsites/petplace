@@ -19,6 +19,7 @@ async function renderArticles(articles) {
     div.classList.add('skeleton');
     block.append(div);
   }
+  document.querySelector('.pagination').dataset.total = '...';
   articleLoadingPromise = await articles;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articleLoadingPromise) {
@@ -44,6 +45,7 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/article/query-index.json')
     .sheet('article')
+    .chunks(2000)
     .withTotal(true)
     .filter((article) => {
       const articleCategories = article.category !== '0'
