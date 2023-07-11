@@ -10,6 +10,7 @@ async function renderArticles(articles) {
     div.classList.add('skeleton');
     block.append(div);
   }
+  document.querySelector('.pagination').dataset.total = '…';
   const res = await articles;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
@@ -41,8 +42,9 @@ async function getArticles() {
   }
   return ffetch('/article/query-index.json')
     .sheet(sheet)
+    .chunks(2000)
     .withTotal(true)
-    .filter((article) => `${article.description} ${article.title}`.toLowerCase().includes(query.toLowerCase()))
+    .filter((article) => !query || `${article.description} ${article.title}`.toLowerCase().includes(query.toLowerCase()))
     .slice(offset, offset + limit);
 }
 

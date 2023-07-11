@@ -10,6 +10,7 @@ import {
 } from '../../scripts/scripts.js';
 import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
+let articleLoadingPromise;
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
@@ -18,9 +19,10 @@ async function renderArticles(articles) {
     div.classList.add('skeleton');
     block.append(div);
   }
-  const res = await articles;
+  document.querySelector('.pagination').dataset.total = '…';
+  articleLoadingPromise = await articles;
   // eslint-disable-next-line no-restricted-syntax
-  for await (const article of res) {
+  for await (const article of articleLoadingPromise) {
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(article);
     meterCalls(() => block.append(div)).then(() => {
@@ -29,7 +31,7 @@ async function renderArticles(articles) {
       });
     });
   }
-  document.querySelector('.pagination').dataset.total = res.total();
+  document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
 }
 
 async function getArticles() {
@@ -43,6 +45,7 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/article/query-index.json')
     .sheet('article')
+    .chunks(2000)
     .withTotal(true)
     .filter((article) => {
       const articleCategories = article.category !== '0'
@@ -156,6 +159,7 @@ export async function loadLazy() {
     const { data } = await getCategories();
     const subCategories = document.querySelector('.sub-categories');
     window.addEventListener('popstate', () => {
+      articleLoadingPromise.interrupt();
       updateMetadata();
       renderCategories(subCategories, data);
       renderArticles(getArticles());
@@ -167,6 +171,7 @@ export async function loadLazy() {
         return;
       }
       ev.preventDefault();
+      articleLoadingPromise.interrupt();
       window.history.pushState({}, '', link.href);
       updateMetadata();
       renderCategories(subCategories, data);

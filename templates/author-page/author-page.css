@@ -19,6 +19,15 @@
   overflow: hidden;
 }
 
+.author-page .breadcrumb ol li:first-child {
+  margin-right: 0;
+}
+
+.author-page .breadcrumb .icon-chevron {
+  fill:var(--highlight-color);
+  margin: 0;
+}
+
 .author-page .author-template-grid-social-links {
   grid-area: social;
   margin-top: 1.5rem;

@@ -13,9 +13,11 @@ export default async function decorate(block) {
   tileContainer.className = 'tiles-block-container';
 
   if (!articles) {
-    const res = await fetch('/article/query-index.json?sheet=article&limit=2000');
-    const queryData = await res.json();
-    articles = queryData?.data;
+    const data = await Promise.all([
+      fetch('/article/query-index.json?sheet=article'),
+      fetch('/article/query-index.json?sheet=breed'),
+    ].map((fetch) => fetch.then((res) => res.json())));
+    [articles, breed] = data.map((json) => json?.data);
   }
 
   const data = (await Promise.all([...block.children].map(async (row) => {
@@ -27,16 +29,25 @@ export default async function decorate(block) {
       }
     }
 
-    if (!breed) {
-      const res = await fetch('/article/query-index.json?sheet=breed');
-      const queryData = await res.json();
-      breed = queryData?.data;
-    }
-
     for (let i = 0; i < breed.length; i += 1) {
       if (breed[i].path === path) {
         return breed[i];
       }
+    }
+
+    const res = await fetch(path);
+    if (res.ok) {
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      return {
+        path,
+        title: doc.querySelector('head > title').textContent,
+        description: doc.querySelector('head > meta[name="description"]').content,
+        image: doc.querySelector('head > meta[property="og:image"]').content,
+        imageAlt: doc.querySelector('head > meta[property="og:image:alt"]').content,
+        author: doc.querySelector('head > meta[property="og:image:alt"]').content,
+        date: new Date(doc.querySelector('head > meta[name="publication-date"]').content).getTime(),
+      };
     }
 
     // eslint-disable-next-line no-console
@@ -77,7 +88,11 @@ export default async function decorate(block) {
         dta.image,
         dta?.imageAlt || tileTitle,
         false,
-        [{ width: 768 }],
+        [
+          { media: '(min-width: 1024px)', width: 760 },
+          { media: '(min-width: 600px)', width: 1200 },
+          { width: 900 },
+        ],
       );
       img = picture.querySelector('img');
       img.width = 768;
@@ -89,7 +104,10 @@ export default async function decorate(block) {
         dta.image,
         dta?.imageAlt || tileTitle,
         false,
-        [{ width: 500 }],
+        [
+          { media: '(min-width: 768px)', width: 500 },
+          { width: 300 },
+        ],
       ));
       img = picture.querySelector('img');
       img.width = 200;

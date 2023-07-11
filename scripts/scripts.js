@@ -47,6 +47,7 @@ export function loadScript(url, callback, attributes) {
     script.onload = callback;
     return script;
   }
+  callback();
   return head.querySelector(`script[src="${url}"]`);
 }
 
@@ -92,6 +93,7 @@ export async function meterCalls(fn, wait = 200, max = 5) {
         if (!queue.length) {
           res();
           window.clearInterval(interval);
+          interval = null;
         }
       }, wait);
     } else {
@@ -114,8 +116,8 @@ export async function sequenceCalls(elements, fn, wait = 200) {
   );
 }
 
-export function getId() {
-  return Math.random().toString(32).substring(2);
+export function getId(prefix = 'hlx') {
+  return `${prefix}-${Math.random().toString(32).substring(2)}`;
 }
 
 export function isMobile() {
@@ -132,43 +134,59 @@ async function render404() {
   main.classList.add('error');
 }
 
-let categoriesPromise = null;
-async function loadCategories() {
-  if (categoriesPromise) {
-    return categoriesPromise;
+const loadPromises = {};
+/**
+ * Loads JSON from a specified URL, and caches the result in session storage.
+ * @param {string} jsonUrl URL from which JSON should be retrieved. As implied, the response
+ *  from the URL is expected to be in JSON format.
+ * @param {string} cacheKey The key under which the requested JSON will be cached in session
+ *  storage.
+ * @returns {Promise} Will be resolved after the JSON has been requested and cached.
+ */
+async function loadJson(jsonUrl, cacheKey) {
+  if (loadPromises[cacheKey]) {
+    return loadPromises[cacheKey];
   }
-  if (!window.sessionStorage.getItem('categories')) {
-    categoriesPromise = fetch('/categories.json')
+  if (!window.sessionStorage.getItem(cacheKey)) {
+    loadPromises[cacheKey] = fetch(jsonUrl)
       .then((res) => res.json())
       .then((json) => {
-        window.sessionStorage.setItem('categories', JSON.stringify(json));
+        window.sessionStorage.setItem(cacheKey, JSON.stringify(json));
         window.hlx.data = window.hlx.data || [];
-        window.hlx.data.categories = json;
+        window.hlx.data[cacheKey] = json;
       })
       .catch((err) => {
-        window.sessionStorage.setItem('categories', JSON.stringify({ data: [] }));
+        window.sessionStorage.setItem(cacheKey, JSON.stringify({ data: [] }));
         // eslint-disable-next-line no-console
-        console.error('Failed to fetch categories.', err);
+        console.error(`Failed to fetch ${cacheKey}.`, err);
       });
-    return categoriesPromise;
+    return loadPromises[cacheKey];
   }
   return Promise.resolve();
 }
 
-export async function getCategories() {
+export async function getJson(jsonUrl, cacheKey) {
   try {
-    if (window.hlx?.data?.categories) {
-      return window.hlx.data.categories;
+    if (window.hlx?.data && window.hlx.data[cacheKey]) {
+      return window.hlx.data[cacheKey];
     }
-    const categories = window.sessionStorage.getItem('categories');
-    if (categories) {
-      return JSON.parse(categories);
+    const json = window.sessionStorage.getItem(cacheKey);
+    if (json) {
+      return JSON.parse(json);
     }
-    await loadCategories();
-    return window.hlx.data.categories;
+    await loadJson(jsonUrl, cacheKey);
+    return window.hlx.data[cacheKey];
   } catch (err) {
     return null;
   }
+}
+
+function loadCategories() {
+  return loadJson('/article/category/categories.json', 'categories');
+}
+
+export async function getCategories() {
+  return getJson('/article/category/categories.json', 'categories');
 }
 
 export async function getCategory(name) {
@@ -190,7 +208,8 @@ export async function getCategoryByName(categoryName) {
   if (!categories) {
     return null;
   }
-  return categories.data.find((c) => c.Category.toLowerCase() === categoryName.toLowerCase());
+  const categorySlug = categoryName.toLowerCase().replace(/ /g, '-');
+  return categories.data.find((c) => c.Slug === categorySlug);
 }
 
 export async function getCategoryByKey(key, value) {
@@ -516,7 +535,14 @@ function decorateSectionsWithBackgroundImage(main) {
 
 function standardizeLinkNavigation() {
   document.querySelectorAll('a[href]').forEach((a) => {
-    const url = new URL(a.href);
+    let url;
+    try {
+      url = new URL(a.href);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Invalid link', err);
+      return;
+    }
     // External links always open in a new tab
     if (url.hostname !== window.location.hostname) {
       a.setAttribute('target', '_blank');
@@ -527,6 +553,34 @@ function standardizeLinkNavigation() {
       a.setAttribute('target', '_blank');
     }
   });
+}
+
+function animateSkeletons(main) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      entry.target.classList.toggle('is-animated', entry.isIntersecting);
+    });
+  });
+  const observer1 = new MutationObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.type === 'childList' && !entry.addedNodes.length) {
+        return;
+      }
+      if (entry.type === 'attributes' && entry.attributeName !== 'class') {
+        return;
+      }
+      if (entry.addedNodes.length) {
+        [...entry.addedNodes]
+          .filter((el) => el.classList?.contains('skeleton'))
+          .forEach((el) => {
+            observer.observe(el);
+          });
+      } else if (entry.target.classList?.contains('skeleton')) {
+        observer.observe(entry.target);
+      }
+    });
+  });
+  observer1.observe(main, { attributes: true, childList: true, subtree: true });
 }
 
 /**
@@ -553,9 +607,6 @@ export async function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  const gtmFallback = document.createElement('noscript');
-  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
-  doc.body.prepend(gtmFallback);
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
@@ -564,6 +615,9 @@ async function loadEager(doc) {
     await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
+  }
+  if (!isMobile()) {
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
   }
 }
 
@@ -590,6 +644,7 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  animateSkeletons(main);
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
   }
@@ -620,12 +675,15 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
+  const gtmFallback = document.createElement('noscript');
+  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+  document.body.prepend(gtmFallback);
+  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
+
   if (window.location.hostname === 'www.petplace.com'
     || window.location.hostname.startsWith('main--petplace--hlxsites.hlx.')) {
     loadAccessibeWidget();
   }
-
-  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
 }
 
 /**
@@ -733,7 +791,7 @@ export function initializeTouch(block, slideWrapper) {
  * @param {Array<CrumbData>} crumbData Information about the crumbs to add.
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
-export async function createBreadCrumbs(crumbData) {
+export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const { color } = crumbData[crumbData.length - 1];
   const breadcrumbContainer = document.createElement('nav');
   breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
@@ -750,7 +808,7 @@ export async function createBreadCrumbs(crumbData) {
 
   crumbData.forEach((crumb, i) => {
     const li = document.createElement('li');
-    if (i > 0) {
+    if (i > 0 || chevronAll) {
       const chevron = document.createElement('span');
       chevron.classList.add('icon', 'icon-chevron');
       li.append(chevron);

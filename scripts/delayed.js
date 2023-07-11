@@ -1,12 +1,15 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
-import { loadScript } from './scripts.js';
+import { isMobile, loadScript } from './scripts.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
 // add more delayed functionality here
+if (isMobile()) {
+  loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
+}
 
 window.PushlySDK = window.PushlySDK || [];
 function pushly(...args) {

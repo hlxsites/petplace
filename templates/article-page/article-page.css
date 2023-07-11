@@ -3,6 +3,7 @@
   grid-template:
     "hero"
     "author" minmax(181px, min-content)
+    "ad"
     "insurance"
     "social" minmax(115px, min-content)
     "article"
@@ -24,8 +25,13 @@
   line-height: 1.4;
 }
 
+.article-page h3 {
+  font-size:1.375rem;
+  font-weight: 800;
+}
+
 .article-page .default-content-wrapper img {
-  max-width: 485px;
+  max-width: 100%;
 }
 
 .article-page .footer {
@@ -45,6 +51,14 @@
   overflow: hidden;
 }
 
+.article-page .hero-container .hero > div {
+  height: 100%;
+}
+
+.article-page .hero-container .hero > div > div {
+  height: 100%;
+}
+
 .article-page .hero-container .hero h1 {
   font-size: 2rem;
   font-weight: 800;
@@ -58,7 +72,7 @@
 }
 
 .article-page .breadcrumb .icon-chevron {
-  fill: var(--text-color);
+  fill: var(--highlight-color);
   margin: 0;
 }
 
@@ -86,6 +100,11 @@
 
 .article-template-grid-article-author {
   grid-area: author;
+}
+
+.article-page .article-template-grid-ad {
+  grid-area: ad;
+  padding: 0;
 }
 
 .article-template-grid-pet-insurance-quote {
@@ -116,11 +135,16 @@
   margin-top: 0;
 }
 
+.article-page .popular-articles-container {
+  margin-top: 3rem;
+}
+
 @media (min-width: 768px) {
   .article-page main {
     grid-template:
       "hero hero hero hero hero" min-content
       ". article .. author ." min-content
+      ". article .. ad ." min-content
       ". article .. insurance ." min-content
       ". article .. paws-up ." min-content
       ". article .. social ." 1fr
@@ -175,10 +199,6 @@
   .article-page .breadcrumb {
     position: relative;
     top: unset;
-  }
-
-  .article-page .breadcrumb .icon-chevron {
-    fill: var(--text-color-inverted);
   }
 
   .article-page .article-author-container {
@@ -237,13 +257,11 @@
 
   .article-page .hero-container .hero .breadcrumb {
     margin-bottom: 1rem;
-    color: var(--text-color-inverted);
   }
 
-  .article-page .breadcrumb > div > div > div > span svg {
-    fill: var(--text-color-inverted)
+  .article-page .hero-container .hero .breadcrumb .icon-chevron {
+    fill: var(--text-color-inverted);
   }
-
 }
 
 @media (min-width: 1024px) {

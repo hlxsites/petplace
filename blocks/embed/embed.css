@@ -33,6 +33,8 @@
 }
 
 .embed.tiktok lite-tiktok {
+  margin: 0 auto;
+  width: 518px;
   height: 738px;
 }
 
@@ -40,56 +42,3 @@
   width: 325px;
   min-height: 739px;
 }
-
-/* .embed.skeleton.tiktok > blockquote {
-  position: relative;
-  min-height: 393px;
-  background-repeat: no-repeat;
-  background-image:
-    radial-gradient(circle 16px, white 99%, transparent 0),
-    radial-gradient(circle 16px, white 99%, transparent 0),
-    linear-gradient(var(--background-color) 32px, transparent 0),
-    linear-gradient(var(--color-gray-light-alt) 231px, transparent 0),
-    linear-gradient(var(--color-gray-light-alt) 20px, transparent 0),
-    linear-gradient(var(--color-gray-light-alt) 20px, transparent 0),
-    linear-gradient(var(--color-gray-light-alt) 50px, transparent 0),
-    linear-gradient(var(--color-gray-light-alt) 50px, transparent 0);
-  background-size:
-    32px 32px,
-    32px 32px,
-    100px 32px,
-    100% 231px,
-    calc(100% - 2*24px) 20px,
-    calc(100% - 2*24px) 20px,
-    calc(100% - 4*24px) 20px,
-    calc(100% - 4*24px) 20px;
-  background-position:
-    20px 10px,
-    120px 10px,
-    36px 10px,
-    0 0,
-    24px 255px,
-    24px 280px,
-    24px 320px,
-    24px 345px;
-  overflow: hidden;
-}
-
-.embed.skeleton :is(iframe, blockquote)::after {
-  position: absolute;
-  content: '';
-  inset: 0;
-  background-repeat: no-repeat;
-  background-image: linear-gradient(90deg, transparent 0, white 50%, transparent 100%);
-  background-size: 100px 100%;
-  background-position: -100px 0;
-  animation: loading 1.5s infinite;
-  transform: rotate(30deg);
-  scale: 2;
-}
-
-@keyframes loading {
-  to {
-    background-position: calc(100% + 100px) 0;
-  }
-} */
