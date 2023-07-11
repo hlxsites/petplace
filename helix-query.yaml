@@ -28,6 +28,8 @@ indices:
   articles:
     include:
       - '/article/**'
+    exclude:
+      - 'article/category/default'
     target: /article/query-index.xlsx
     properties:
       author:
