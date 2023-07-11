@@ -19,7 +19,7 @@ async function renderArticles(articles) {
     div.classList.add('skeleton');
     block.append(div);
   }
-  document.querySelector('.pagination').dataset.total = '...';
+  document.querySelector('.pagination').dataset.total = '…';
   articleLoadingPromise = await articles;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articleLoadingPromise) {
