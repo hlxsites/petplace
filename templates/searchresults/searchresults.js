@@ -5,7 +5,7 @@ import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
-  for (let i = 0; i < 25; i += 1) {
+  for (let i = 0; i < 16; i += 1) {
     const div = document.createElement('div');
     div.classList.add('skeleton');
     block.append(div);
@@ -14,7 +14,6 @@ async function renderArticles(articles) {
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = document.createElement('div');
-    div.textContent = article.path;
     div.dataset.json = JSON.stringify(article);
     meterCalls(() => block.append(div)).then(() => {
       window.requestAnimationFrame(() => {
@@ -28,7 +27,7 @@ async function renderArticles(articles) {
 async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 16;
-  const query = usp.get('query');
+  const query = usp.get('query')?.toLowerCase();
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   const sortorder = usp.get('sort');
   let sheet = 'article';
@@ -42,7 +41,8 @@ async function getArticles() {
   return ffetch('/article/query-index.json')
     .sheet(sheet)
     .withTotal(true)
-    .filter((article) => !query || `${article.description} ${article.title}`.toLowerCase().includes(query.toLowerCase()))
+    .filter((article) => !query || article.description.toLowerCase().includes(query)
+      || article.title.toLowerCase().includes(query))
     .slice(offset, offset + limit);
 }
 
@@ -90,7 +90,6 @@ function createTemplateBlock(main, blockName) {
   const section = document.createElement('div');
 
   const block = buildBlock(blockName, { elems: [] });
-  block.dataset.limit = 16;
   section.append(block);
   main.append(section);
 }

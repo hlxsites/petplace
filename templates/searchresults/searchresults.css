@@ -54,6 +54,10 @@
   appearance: none;
 }
 
+.searchresults .cards.search{
+  flex-wrap: wrap;
+}
+
 @media (max-width: 350px) {
   .searchresults .hero-wrapper .text-div p {
     display: none;
