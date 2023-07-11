@@ -14,7 +14,7 @@ export default async function decorate(block) {
 
   if (!articles) {
     const data = await Promise.all([
-      fetch('/article/query-index.json?sheet=article&limit=2000'),
+      fetch('/article/query-index.json?sheet=article'),
       fetch('/article/query-index.json?sheet=breed'),
     ].map((fetch) => fetch.then((res) => res.json())));
     [articles, breed] = data.map((json) => json?.data);
