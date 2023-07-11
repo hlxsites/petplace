@@ -151,11 +151,11 @@ export async function getJson(jsonUrl, cacheKey) {
 }
 
 function loadCategories() {
-  return loadJson('/categories.json', 'categories');
+  return loadJson('/article/category/categories.json', 'categories');
 }
 
 export async function getCategories() {
-  return getJson('/categories.json', 'categories');
+  return getJson('/article/category/categories.json', 'categories');
 }
 
 export async function getCategory(name) {
