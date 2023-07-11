@@ -149,11 +149,13 @@ export async function loadEager(main) {
 
 export async function loadLazy() {
   const category = await getCategoryForUrl();
-  if (category) {
-    const { Color } = category;
-    const heroColorDiv = document.querySelector('.category-index .hero > div');
-    heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
+  if (!category) {
+    return;
   }
+
+  const { Color } = category;
+  const heroColorDiv = document.querySelector('.category-index .hero > div');
+  heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
 
   renderArticles(getArticles());
 
