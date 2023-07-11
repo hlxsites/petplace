@@ -118,7 +118,7 @@ async function updateMetadata() {
   if (!category) {
     throw new Error(404);
   }
-  const { Category, Color, Image } = await getCategoryForUrl();
+  const { Category, Color, Image } = category;
   document.title = document.title.replace(/<Category>/, Category);
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
@@ -148,9 +148,12 @@ export async function loadEager(main) {
 }
 
 export async function loadLazy() {
-  const { Color } = await getCategoryForUrl();
-  const heroColorDiv = document.querySelector('.category-index .hero > div');
-  heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
+  const category = await getCategoryForUrl();
+  if (category) {
+    const { Color } = category;
+    const heroColorDiv = document.querySelector('.category-index .hero > div');
+    heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
+  }
 
   renderArticles(getArticles());
 
