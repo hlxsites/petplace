@@ -4,11 +4,12 @@ import { getCategories } from '../../scripts/scripts.js';
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
 async function buildPost(post) {
-  const categories = await getCategories();
-  const category = categories.data.find((c) => {
+  const allCategories = await getCategories();
+  const category = allCategories.data.find((c) => {
     if (post.category && post.category !== '0') {
-      return c.Slug === toClassName(post.category)
-        || c.Category.toLowerCase() === post.category.toLowerCase();
+      const postCategories = post.category.split(',');
+      return postCategories.some((category) => c.Slug === toClassName(category)
+        || category.toLowerCase() === c.Category.toLowerCase());
     }
     return c.Slug === post.path.split('/').splice(-2, 1)[0];
   });
