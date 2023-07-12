@@ -2,9 +2,9 @@ import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.
 import { getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const categories = await getCategories();
 
 async function buildPost(post) {
-  const categories = await getCategories();
   const category = categories.find((c) => {
     if (post.category && post.category !== '0') {
       return c.Slug === toClassName(post.category)

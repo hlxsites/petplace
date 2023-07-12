@@ -42,17 +42,18 @@ async function renderArticles(articles) {
   }
   document.querySelector('.pagination').dataset.total = '…';
   articleLoadingPromise = await articles;
+  let meteringPromise;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articleLoadingPromise) {
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(article);
-    meterCalls(() => block.append(div)).then(() => {
-      window.requestAnimationFrame(() => {
-        block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-      });
-    });
+    meteringPromise = meterCalls(() => block.append(div));
   }
   document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
+  await (meteringPromise || Promise.resolve());
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 async function getArticles() {
