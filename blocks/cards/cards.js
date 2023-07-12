@@ -6,12 +6,12 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'nu
 async function buildPost(post) {
   const allCategories = await getCategories();
   const postCategories = post.category ? post.category.split(',') : [];
+  const postCategoriesLowerCase = postCategories.map((c) => c.trim().toLowerCase());
 
   const category = allCategories.data.find((c) => {
     if (post.category && post.category !== '0') {
-      const postCategoryLower = post.category.toLowerCase();
-      return postCategories.some((item) => c.Slug === toClassName(item)
-        || item === postCategoryLower);
+      return postCategoriesLowerCase.some((item) => c.Slug === toClassName(item)
+        || item === c.Category.toLowerCase());
     }
     return c.Slug === post.path.split('/').splice(-2, 1)[0];
   });
