@@ -134,8 +134,7 @@
     color: var(--text-color-inverted);
     line-height: 2rem;
     height: 2rem;
-    padding-left: 14px;
-    padding-right: 14px;
+    padding: 0 14px;
     display: none;
 }
 
