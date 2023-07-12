@@ -21,6 +21,7 @@ const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
+window.hlx.cache = {};
 
 /**
  * Loads a script src and provides a callback that fires after
@@ -98,17 +99,31 @@ export function isMobile() {
 }
 
 /**
+ * Fetches the desired json file and cache it to avoid repeated calls.
+ * @param {string} url The json file to fetch
+ * @returns an array of obejects contained in the json file
+ */
+export async function fetchAndCacheJson(url) {
+  const key = url.split('/').pop().split('.')[0];
+  if (window.hlx.cache[key]) {
+    return window.hlx.cache[key];
+  }
+  try {
+    const response = await fetch(url);
+    const json = await response.json();
+    window.hlx.cache[key] = json.data;
+    return window.hlx.cache[key];
+  } catch (err) {
+    return [];
+  }
+}
+
+/**
  * Returns the categories for the articles.
  * @returns a promise returning an array of categories
  */
 export async function getCategories() {
-  try {
-    const response = await fetch('/article/category/categories.json');
-    const json = await response.json();
-    return json.data;
-  } catch (err) {
-    return [];
-  }
+  return fetchAndCacheJson('/article/category/categories.json');
 }
 
 /**

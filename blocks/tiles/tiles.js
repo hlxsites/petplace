@@ -1,5 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { getCategory } from '../../scripts/scripts.js';
+import { getCategories, getCategory } from '../../scripts/scripts.js';
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
@@ -8,6 +8,9 @@ const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
 let articles;
 let breed;
 export default async function decorate(block) {
+  // Pre-fetch the categories
+  await getCategories();
+
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-block-container';
