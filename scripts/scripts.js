@@ -93,16 +93,6 @@ export function isMobile() {
   return window.innerWidth < 1024;
 }
 
-async function render404() {
-  const response = await fetch('/404.html');
-  const html = await response.text();
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  document.head.append(doc.querySelector('head>style'));
-  const main = document.querySelector('main');
-  main.innerHTML = doc.querySelector('main').innerHTML;
-  main.classList.add('error');
-}
-
 const loadPromises = {};
 /**
  * Loads JSON from a specified URL, and caches the result in session storage.
@@ -354,7 +344,7 @@ async function decorateTemplate(main) {
           }
         } catch (error) {
           if (error.message === '404') {
-            await render404();
+            window.location.replace('/404.html');
           }
           // eslint-disable-next-line no-console
           console.log(`failed to load template for ${template}`, error);
