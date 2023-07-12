@@ -45,7 +45,6 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/article/query-index.json')
     .sheet('article')
-    .chunks(1000)
     .withTotal(true)
     .filter((article) => {
       const articleCategories = article.category !== '0'
