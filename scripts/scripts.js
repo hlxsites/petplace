@@ -555,7 +555,7 @@ async function loadEager(doc) {
   }
   // Load ads eagerly on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
-  if (!isMobile()) {
+  if (!isMobile() && document.querySelector('.block.ad')) {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
   }
 }
