@@ -1,4 +1,4 @@
-import { getId, getJson, isMobile } from '../../scripts/scripts.js';
+import { getId, isMobile } from '../../scripts/scripts.js';
 
 function addPrefetch(kind, url, as) {
   const linkEl = document.createElement('link');
@@ -27,11 +27,14 @@ if (isMobile()) {
  *  if the ad could not be found.
  */
 export async function getAd(adId) {
-  const ads = await getJson('/ads.json', 'ads');
-  if (!ads) {
+  try {
+    const response = await fetch('/ads.json');
+    const json = await response.json();
+    const ads = json.data;
+    return ads.find((c) => c.ID === adId);
+  } catch (err) {
     return null;
   }
-  return ads.data.find((c) => c.ID === adId);
 }
 
 function getAdTargets(ad) {
