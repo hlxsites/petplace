@@ -74,8 +74,8 @@ indices:
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   authors:
     include:
-      - '/author/**'
-    target: /author/query-index.xlsx
+      - '/authors/**'
+    target: /authors/query-index.xlsx
     properties:
       title:
         select: head > meta[name="title"]
