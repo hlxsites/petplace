@@ -78,7 +78,7 @@ indices:
     target: /authors/query-index.xlsx
     properties:
       title:
-        select: head > meta[name="title"]
+        select: head > meta[property="og:title"]
         value: |
           attribute(el, 'content')
       description:
@@ -86,7 +86,7 @@ indices:
         value: |
           attribute(el, 'content')
       avatar:
-        select: head > meta[name="avatar"]
+        select: head > meta[property="og:avatar"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       lastModified:
