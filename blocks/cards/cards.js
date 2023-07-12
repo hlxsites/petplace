@@ -6,10 +6,10 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'nu
 async function buildPost(post) {
   const allCategories = await getCategories();
   const postCategories = post.category ? post.category.split(',') : [];
+  const postCategoryLower = post.category.toLowerCase();
 
   const category = allCategories.data.find((c) => {
     if (post.category && post.category !== '0') {
-      const postCategoryLower = post.category.toLowerCase();
       return postCategories.some((item) => c.Slug === toClassName(item)
         || item === postCategoryLower);
     }
