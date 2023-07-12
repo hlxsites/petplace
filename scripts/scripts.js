@@ -119,7 +119,7 @@ export async function getCategories() {
 export async function getCategory(name) {
   const categories = await getCategories();
   const standardizedName = toClassName(name);
-  return categories.data.find((c) => c.Slug === standardizedName
+  return categories.find((c) => c.Slug === standardizedName
     || toClassName(c.Category) === standardizedName);
 }
 
