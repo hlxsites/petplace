@@ -210,17 +210,6 @@ export async function getCategoryImage(path) {
   return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
 }
 
-export async function getAuthorImage(path) {
-  const res = await fetch('/authors/author-avatar.plain.html');
-  const htmlText = await res.text();
-  const div = document.createElement('div');
-  div.innerHTML = htmlText;
-
-  const column = div.querySelector('.columns');
-  // eslint-disable-next-line max-len
-  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
-}
-
 /**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions

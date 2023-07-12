@@ -40,12 +40,12 @@ async function buildAuthorPost(post) {
   postCard.classList.add('blog-cards');
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.Path}">${createOptimizedPicture(post.Avatar, `Avatar image for ${post.Name}`, false, [{ width: 800 }]).outerHTML}</a>
+        <a href="${post.path}">${createOptimizedPicture(post.avatar, `Avatar image for ${post.title}`, false, [{ width: 800 }]).outerHTML}</a>
       </div>
       <div>              
-        <a href="${post.Path}">
+        <a href="${post.path}">
         <div class="blogs-card-body">
-        <h3>${post.Name}</h3>
+        <h3>${post.title.slice(0, -10)}</h3>
         <span class="read-more">Read more</p>
       </div></a>          
       </div>
