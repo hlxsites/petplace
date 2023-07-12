@@ -5,7 +5,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'nu
 
 async function buildPost(post) {
   const categories = await getCategories();
-  const category = categories.data.find((c) => {
+  const category = categories.find((c) => {
     if (post.category && post.category !== '0') {
       return c.Slug === toClassName(post.category)
         || c.Category.toLowerCase() === post.category.toLowerCase();

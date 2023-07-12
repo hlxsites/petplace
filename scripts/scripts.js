@@ -53,6 +53,14 @@ export function loadScript(url, callback, attributes) {
 
 let interval;
 const queue = [];
+/**
+ * Perform some metering on a repeated function call to reduce the chances to block the CPU/GPU
+ * for too long.
+ * @param {function} fn The function to execute repeatedly
+ * @param {number} [wait] The delay to wait between batch executions, defaults to 200ms
+ * @param {number} [max] The number of function executions to trigger on each pass, defaults to 5
+ * @returns a promise that the functions were all called
+ */
 export async function meterCalls(fn, wait = 200, max = 5) {
   return new Promise((res) => {
     if (!interval) {
@@ -71,134 +79,50 @@ export async function meterCalls(fn, wait = 200, max = 5) {
   });
 }
 
-export async function sequenceCalls(elements, fn, wait = 200) {
-  elements.reduce(
-    (promiseChain, element) => promiseChain.then(() => new Promise((resolve) => {
-      setTimeout(() => {
-        window.requestAnimationFrame(() => {
-          fn(element);
-          resolve();
-        });
-      }, wait);
-    })),
-    Promise.resolve(),
-  );
-}
-
+/**
+ * Generates a random identifier.
+ *
+ * @param {string} [prefix] Optional prefix to use for the identifier
+ * @returns a string representation of a random identifier
+ */
 export function getId(prefix = 'hlx') {
   return `${prefix}-${Math.random().toString(32).substring(2)}`;
 }
 
+/**
+ * A generic helper function that checks if we are in a mobile context based on viewport size
+ * @returns true if we are on a mobile, and false otherwise
+ */
 export function isMobile() {
   return window.innerWidth < 1024;
 }
 
-const loadPromises = {};
 /**
- * Loads JSON from a specified URL, and caches the result in session storage.
- * @param {string} jsonUrl URL from which JSON should be retrieved. As implied, the response
- *  from the URL is expected to be in JSON format.
- * @param {string} cacheKey The key under which the requested JSON will be cached in session
- *  storage.
- * @returns {Promise} Will be resolved after the JSON has been requested and cached.
+ * Returns the categories for the articles.
+ * @returns a promise returning an array of categories
  */
-async function loadJson(jsonUrl, cacheKey) {
-  if (loadPromises[cacheKey]) {
-    return loadPromises[cacheKey];
-  }
-  if (!window.sessionStorage.getItem(cacheKey)) {
-    loadPromises[cacheKey] = fetch(jsonUrl)
-      .then((res) => res.json())
-      .then((json) => {
-        window.sessionStorage.setItem(cacheKey, JSON.stringify(json));
-        window.hlx.data = window.hlx.data || [];
-        window.hlx.data[cacheKey] = json;
-      })
-      .catch((err) => {
-        window.sessionStorage.setItem(cacheKey, JSON.stringify({ data: [] }));
-        // eslint-disable-next-line no-console
-        console.error(`Failed to fetch ${cacheKey}.`, err);
-      });
-    return loadPromises[cacheKey];
-  }
-  return Promise.resolve();
-}
-
-export async function getJson(jsonUrl, cacheKey) {
-  try {
-    if (window.hlx?.data && window.hlx.data[cacheKey]) {
-      return window.hlx.data[cacheKey];
-    }
-    const json = window.sessionStorage.getItem(cacheKey);
-    if (json) {
-      return JSON.parse(json);
-    }
-    await loadJson(jsonUrl, cacheKey);
-    return window.hlx.data[cacheKey];
-  } catch (err) {
-    return null;
-  }
-}
-
-function loadCategories() {
-  return loadJson('/article/category/categories.json', 'categories');
-}
-
 export async function getCategories() {
-  return getJson('/article/category/categories.json', 'categories');
+  try {
+    const response = await fetch('/article/category/categories.json');
+    const json = await response.json();
+    return json.data;
+  } catch (err) {
+    return [];
+  }
 }
 
+/**
+ * Gets the category given its name or slug.
+ * @param {string} name The category name or slug
+ * @returns the category for the given name or slug, or null
+ */
 export async function getCategory(name) {
   const categories = await getCategories();
-  if (!categories) {
-    return null;
-  }
-  return categories.data.find((c) => c.Slug === name);
+  const standardizedName = toClassName(name);
+  return categories.data.find((c) => c.Slug === standardizedName
+    || toClassName(c.Category) === standardizedName);
 }
 
-export async function getCategoryForUrl() {
-  const { pathname } = window.location;
-  const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
-  return getCategory(category);
-}
-
-export async function getCategoryByName(categoryName) {
-  const categories = await getCategories();
-  if (!categories) {
-    return null;
-  }
-  const categorySlug = categoryName.toLowerCase().replace(/ /g, '-');
-  return categories.data.find((c) => c.Slug === categorySlug);
-}
-
-export async function getCategoryByKey(key, value) {
-  const categories = await getCategories();
-  if (!categories) {
-    return null;
-  }
-  return categories.data.find((c) => c[key].toLowerCase() === value.toLowerCase());
-}
-
-export async function getCategoriesPath(path) {
-  const categories = await getCategories();
-  return categories.data.filter((c) => c.Path === path || c['Parent Path'].startsWith(path));
-}
-
-/**
- * Queries the colum and finds the matching image else uses default image.
- * @param path
- * @returns {Promise<HTMLPictureElement || undefined>}
- */
-export async function getCategoryImage(path) {
-  const res = await fetch('/article/category/category-images.plain.html');
-  const htmlText = await res.text();
-  const div = document.createElement('div');
-  div.innerHTML = htmlText;
-
-  const column = div.querySelector('.columns');
-  // eslint-disable-next-line max-len
-  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
-}
 /**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions
@@ -258,6 +182,15 @@ function getResponsiveHeroPictures(main, h1) {
   return heroPics;
 }
 
+/**
+ * Creates a responsive picture tag from several different images for different breakpoints.
+ * @param {HTMLPictureElement[]} pictures the picture elements to add to the responsive image
+ * @param {object[]} breakpoint an array of breakpoints to use for the responsive image
+ * @param {string} [quality] the quality to use on the images, defaults to 'medium'
+ *                           (one of 'low', 'medium' or 'high')
+ * @returns a HTMLPictureElement tag that is composed of the different source images and
+ * provided breakpoints
+ */
 function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
   const responsivePicture = document.createElement('picture');
   const defaultImage = pictures[0].querySelector('img');
@@ -285,6 +218,24 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
   });
 
   return responsivePicture;
+}
+
+/**
+ * Replaces several immediate sibling images by a responsive picture element.
+ * @param container - HTML parent element that contains the multiple <picture>
+ *     tags to be used in building responsive image
+ * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
+ */
+export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
+  const pictures = [...container.querySelectorAll('picture')];
+  pictures.sort((p1, p2) => {
+    const img1 = p1.querySelector('img');
+    const img2 = p2.querySelector('img');
+    return img1.width - img2.width;
+  });
+  const responsiveImage = createResponsiveImage(pictures, breakpoints);
+  container.innerHTML = '';
+  container.append(responsiveImage);
 }
 
 /**
@@ -447,6 +398,10 @@ export function decorateScreenReaderOnly(container) {
     });
 }
 
+/**
+ * Adds hidden quick navigation links to improve accessibility.
+ * @param {object[]} links a map of links (label and id for the element to jump to)
+ */
 function createA11yQuickNav(links = []) {
   const nav = document.createElement('nav');
   nav.setAttribute('aria-label', 'Skip to specific locations on the page');
@@ -468,6 +423,10 @@ function createA11yQuickNav(links = []) {
   document.body.prepend(nav);
 }
 
+/**
+ * Decorates sections with a background image based on the metadata that are set on it.
+ * @param {HTMLElement} main The container to apply this to
+ */
 function decorateSectionsWithBackgroundImage(main) {
   main.querySelectorAll('.section[data-background]').forEach((el) => {
     const div = document.createElement('div');
@@ -492,6 +451,9 @@ function decorateSectionsWithBackgroundImage(main) {
   });
 }
 
+/**
+ * Standardizes how the browser navigates when clicking links.
+ */
 function standardizeLinkNavigation() {
   document.querySelectorAll('a[href]').forEach((a) => {
     let url;
@@ -514,6 +476,10 @@ function standardizeLinkNavigation() {
   });
 }
 
+/**
+ * Animate the skeleton placeholders in the given container.
+ * @param {HTMLElement} main the container this applies to
+ */
 function animateSkeletons(main) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -546,11 +512,8 @@ function animateSkeletons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export async function decorateMain(main) {
   main.id = 'main';
-  loadCategories(main);
-  // hopefully forward compatible button decoration
   decorateButtons(main);
   await decorateIcons(main);
   await buildAutoBlocks(main);
@@ -575,6 +538,8 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
+  // Load ads eagerly on desktop since the impact is minimal there and
+  // this helps reduce CLS and loading animation duration
   if (!isMobile()) {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
   }
@@ -623,6 +588,7 @@ async function loadLazy(doc) {
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
   firstMenu.id = 'menu';
 
+  // Add hidden quick navigation links
   createA11yQuickNav([
     { id: 'main', label: 'Skip to Content' },
     { id: 'menu', label: 'Skip to Menu' },
@@ -645,7 +611,6 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed(doc) {
-  // eslint-disable-next-line import/no-cycle
   // load anything that can be postponed to the latest here
   window.setTimeout(() => {
     if (templateModule?.loadDelayed) {
@@ -654,24 +619,6 @@ function loadDelayed(doc) {
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
-}
-
-/**
- *
- * @param container - HTML parent element that contains the multiple <picture>
- *     tags to be used in building responsive image
- * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
- */
-export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
-  const pictures = [...container.querySelectorAll('picture')];
-  pictures.sort((p1, p2) => {
-    const img1 = p1.querySelector('img');
-    const img2 = p2.querySelector('img');
-    return img1.width - img2.width;
-  });
-  const responsiveImage = createResponsiveImage(pictures, breakpoints);
-  container.innerHTML = '';
-  container.append(responsiveImage);
 }
 
 function getActiveSlide(block) {

@@ -6,10 +6,14 @@ import {
   toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
-  getCategoriesPath,
+  getCategories,
   getCategory,
-  getCategoryByName,
 } from '../../scripts/scripts.js';
+
+export async function getCategoriesPath(path) {
+  const categories = await getCategories();
+  return categories.filter((c) => c.Path === path || c['Parent Path'].startsWith(path));
+}
 
 function createArticleDetails(block, key, categoryInfo, article) {
   // the article's thumbnail, which will link to the article's page
@@ -56,7 +60,7 @@ async function createNavigation(block) {
   }
 
   // get full category info so we have the path of the category
-  const categoryInfo = await getCategoryByName(category);
+  const categoryInfo = await getCategory(category);
   if (!categoryInfo) {
     return false;
   }
