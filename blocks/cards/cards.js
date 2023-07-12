@@ -5,14 +5,17 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'nu
 
 async function buildPost(post) {
   const allCategories = await getCategories();
+  const postCategories = post.category ? post.category.split(',') : [];
+
   const category = allCategories.data.find((c) => {
     if (post.category && post.category !== '0') {
-      const postCategories = post.category.split(',');
+      const postCategoryLower = post.category.toLowerCase();
       return postCategories.some((item) => c.Slug === toClassName(item)
-        || item.toLowerCase() === c.Category.toLowerCase());
+        || item === postCategoryLower);
     }
     return c.Slug === post.path.split('/').splice(-2, 1)[0];
   });
+
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
   const postDate = new Date(0);
