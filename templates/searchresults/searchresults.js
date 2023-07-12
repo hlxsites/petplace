@@ -2,6 +2,25 @@ import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
 
+function createArticleDiv(article) {
+  const div = document.createElement('div');
+  div.textContent = article.path;
+  div.dataset.json = JSON.stringify(article);
+  return div;
+}
+
+function removeSkeletons(block) {
+    window.requestAnimationFrame(() => {
+      block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+    });
+}
+
+function noResultsHidePagination() {
+  document.querySelector('.pagination').style.display = 'none';
+  const searchResultText = document.querySelector('h2');
+  searchResultText.innerHTML = 'No results found';
+}
+
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
@@ -13,16 +32,19 @@ async function renderArticles(articles) {
   document.querySelector('.pagination').dataset.total = '…';
   const res = await articles;
   // eslint-disable-next-line no-restricted-syntax
+  const promises = [];
   for await (const article of res) {
-    const div = document.createElement('div');
-    div.textContent = article.path;
-    div.dataset.json = JSON.stringify(article);
-    meterCalls(() => block.append(div)).then(() => {
-      window.requestAnimationFrame(() => {
-        block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-      });
-    });
+    const div = createArticleDiv(article);
+    promises.push(
+      meterCalls(() => block.append(div)).then(() => removeSkeletons(block))
+    );
   }
+  Promise.all(promises).then(() => {
+    // This part will only be executed if the promises array is empty,
+    // indicating that no articles were found because the promises never resolve()
+    removeSkeletons(block);
+    noResultsHidePagination();
+  });
   document.querySelector('.pagination').dataset.total = res.total();
 }
 
