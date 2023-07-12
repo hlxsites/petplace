@@ -10,9 +10,9 @@ function createArticleDiv(article) {
 }
 
 function removeSkeletons(block) {
-    window.requestAnimationFrame(() => {
-      block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-    });
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 function noResultsHidePagination() {
@@ -31,12 +31,12 @@ async function renderArticles(articles) {
   }
   document.querySelector('.pagination').dataset.total = '…';
   const res = await articles;
-  // eslint-disable-next-line no-restricted-syntax
   const promises = [];
+  // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = createArticleDiv(article);
     promises.push(
-      meterCalls(() => block.append(div)).then(() => removeSkeletons(block))
+      meterCalls(() => block.append(div)).then(() => removeSkeletons(block)),
     );
   }
   Promise.all(promises).then(() => {
