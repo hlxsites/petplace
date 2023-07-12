@@ -86,7 +86,9 @@ export default function decorate(block) {
       entry.addedNodes.forEach(async (div) => {
         if (div.classList.contains('skeleton')) {
           ul.append(await createCard(div));
-        } else if (ul.querySelector('.skeleton')) {
+          return;
+        }
+        if (ul.querySelector('.skeleton')) {
           ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div));
         } else if (div.textContent.trim()) {
           ul.append(await createCard(div));

@@ -54,6 +54,10 @@
   appearance: none;
 }
 
+.searchresults .cards .skeleton {
+  min-width: 318px;
+}
+
 @media (max-width: 350px) {
   .searchresults .hero-wrapper .text-div p {
     display: none;

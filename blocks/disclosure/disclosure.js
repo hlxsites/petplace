@@ -3,7 +3,7 @@ export default async function decorate(block) {
     return;
   }
 
-  const response = await fetch('/disclosure.plain.html');
+  const response = await fetch('/fragments/disclosure.plain.html');
   if (!response.ok) {
     return;
   }

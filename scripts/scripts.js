@@ -62,6 +62,7 @@ export async function meterCalls(fn, wait = 200, max = 5) {
         if (!queue.length) {
           res();
           window.clearInterval(interval);
+          interval = null;
         }
       }, wait);
     } else {
@@ -150,11 +151,11 @@ export async function getJson(jsonUrl, cacheKey) {
 }
 
 function loadCategories() {
-  return loadJson('/categories.json', 'categories');
+  return loadJson('/article/category/categories.json', 'categories');
 }
 
 export async function getCategories() {
-  return getJson('/categories.json', 'categories');
+  return getJson('/article/category/categories.json', 'categories');
 }
 
 export async function getCategory(name) {
@@ -595,6 +596,9 @@ async function loadEager(doc) {
     await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
+  }
+  if (!isMobile()) {
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
   }
 }
 

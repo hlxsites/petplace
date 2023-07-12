@@ -2,6 +2,7 @@
   margin: 0 auto;
   max-width: 100%;
   transition: min-height .3s ease;
+  will-change: min-height, height;
 }
 
 /* Skeleton loading styles */
