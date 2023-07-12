@@ -72,3 +72,24 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  authors:
+    include:
+      - '/author/**'
+    target: /author/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[name="title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      avatar:
+        select: head > meta[name="avatar"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
