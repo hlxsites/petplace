@@ -19,6 +19,7 @@ async function renderArticles(articles) {
     div.classList.add('skeleton');
     block.append(div);
   }
+  document.querySelector('.pagination').dataset.total = '…';
   articleLoadingPromise = await articles;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articleLoadingPromise) {
@@ -44,6 +45,7 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch('/article/query-index.json')
     .sheet('article')
+    .chunks(2000)
     .withTotal(true)
     .filter((article) => {
       const articleCategories = article.category !== '0'
@@ -116,7 +118,7 @@ async function updateMetadata() {
   if (!category) {
     throw new Error(404);
   }
-  const { Category, Color, Image } = await getCategoryForUrl();
+  const { Category, Color, Image } = category;
   document.title = document.title.replace(/<Category>/, Category);
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
@@ -146,7 +148,12 @@ export async function loadEager(main) {
 }
 
 export async function loadLazy() {
-  const { Color } = await getCategoryForUrl();
+  const category = await getCategoryForUrl();
+  if (!category) {
+    return;
+  }
+
+  const { Color } = category;
   const heroColorDiv = document.querySelector('.category-index .hero > div');
   heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
 
