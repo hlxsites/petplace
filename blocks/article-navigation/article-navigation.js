@@ -65,7 +65,7 @@ async function createNavigation(block) {
   // Get all articles in that category
   const articles = ffetch('/article/query-index.json')
     .sheet('article')
-    .chunks(2000)
+    .chunks(1000)
     .filter((article) => {
       const articleCategories = article.category !== '0'
         ? article.category.split(',').map((c) => c.trim().toLowerCase())
