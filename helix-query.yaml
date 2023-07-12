@@ -88,7 +88,7 @@ indices:
       avatar:
         select: head > meta[name="avatar"]
         value: |
-          match(attribute(el, 'content'))
+          attribute(el, 'content')
       lastModified:
         select: none
         value: |
