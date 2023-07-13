@@ -2,14 +2,14 @@ import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.
 import { getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const categories = await getCategories();
 let isAuthorCard = false;
 
 async function buildPost(post) {
-  const allCategories = await getCategories();
   const postCategories = post.category ? post.category.split(',') : [];
   const postCategoriesLowerCase = postCategories.map((c) => c.trim().toLowerCase());
 
-  const category = allCategories.data.find((c) => {
+  const category = categories.find((c) => {
     if (post.category && post.category !== '0') {
       return postCategoriesLowerCase.some((item) => c.Slug === toClassName(item)
         || item === c.Category.toLowerCase());

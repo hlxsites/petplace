@@ -30,5 +30,5 @@ export function render(block, categories) {
 
 export default async function decorate(block) {
   const categories = await getCategories();
-  render(block, categories.data);
+  render(block, categories);
 }
