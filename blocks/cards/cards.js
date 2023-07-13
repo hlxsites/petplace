@@ -2,17 +2,21 @@ import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.
 import { getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const categories = await getCategories();
 let isAuthorCard = false;
 
 async function buildPost(post) {
-  const categories = await getCategories();
-  const category = categories.data.find((c) => {
+  const postCategories = post.category ? post.category.split(',') : [];
+  const postCategoriesLowerCase = postCategories.map((c) => c.trim().toLowerCase());
+
+  const category = categories.find((c) => {
     if (post.category && post.category !== '0') {
-      return c.Slug === toClassName(post.category)
-        || c.Category.toLowerCase() === post.category.toLowerCase();
+      return postCategoriesLowerCase.some((item) => c.Slug === toClassName(item)
+        || item === c.Category.toLowerCase());
     }
     return c.Slug === post.path.split('/').splice(-2, 1)[0];
   });
+
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
   const postDate = new Date(0);
@@ -45,8 +49,8 @@ async function buildAuthorPost(post) {
       <div>              
         <a href="${post.path}">
         <div class="blogs-card-body">
-        <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
-        <span class="read-more">Read more</p>
+        <h3>${post.title.replace(/- Petplace$/i, '')}</h3>
+        <span class="read-more">Read more</span>
       </div></a>          
       </div>
     </a>

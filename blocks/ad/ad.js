@@ -1,4 +1,4 @@
-import { getId, getJson, isMobile } from '../../scripts/scripts.js';
+import { fetchAndCacheJson, getId, isMobile } from '../../scripts/scripts.js';
 
 function addPrefetch(kind, url, as) {
   const linkEl = document.createElement('link');
@@ -17,6 +17,10 @@ if (isMobile()) {
   addPrefetch('preconnect', 'https://tpc.googlesyndication.com');
 }
 
+async function getAds() {
+  return fetchAndCacheJson('/ads.json');
+}
+
 /**
  * Retrieves information about the sites ads, which will ultimately be pulled
  * from the "ads" spreadsheet at the root of the project. There is some caching
@@ -27,11 +31,8 @@ if (isMobile()) {
  *  if the ad could not be found.
  */
 export async function getAd(adId) {
-  const ads = await getJson('/ads.json', 'ads');
-  if (!ads) {
-    return null;
-  }
-  return ads.data.find((c) => c.ID === adId);
+  const ads = await getAds();
+  return ads.find((c) => c.ID === adId);
 }
 
 function getAdTargets(ad) {
