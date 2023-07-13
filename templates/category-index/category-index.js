@@ -51,25 +51,28 @@ async function renderArticles(articles) {
     articleCount += 1;
     meteringPromise = meterCalls(() => block.append(div));
   }
-  document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
-  await (meteringPromise || Promise.resolve());
-  window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-  });
   if (articleCount === 0) {
     const container = document.querySelector('.cards-container');
     const noResults = document.createElement('h2');
     noResults.innerText = 'No Articles Found';
     container.append(noResults);
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+    const pagination = document.querySelector('.pagination.block');
+    if (pagination) {
+      pagination.style.display = 'none';
+    }
   }
+  document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
+  await (meteringPromise || Promise.resolve());
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 async function getArticles() {
   const categories = await getCategories();
   const applicableCategories = categories
-    .filter((c) => c.Path === 'window.location.pathname'
-      || c['Parent Path'].startsWith('window.location.pathname'))
+    .filter((c) => c.Path === window.location.pathname
+      || c['Parent Path'].startsWith(window.location.pathname))
     .map((c) => ({ id: c.Slug, name: toClassName(c.Category) }));
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
