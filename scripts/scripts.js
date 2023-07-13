@@ -409,6 +409,9 @@ export function decorateScreenReaderOnly(container) {
     .forEach((el) => {
       if (el.innerHTML.match(srOnly)) {
         el.innerHTML = el.innerHTML.replace(srOnly, (text) => `<span class="sr-only">${text.slice(1, -1)}</span>`);
+        if (el.title) {
+          el.title = el.title.replace(srOnly, (text) => text.slice(1, -1));
+        }
       }
     });
 }

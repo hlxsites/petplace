@@ -52,11 +52,11 @@ export class AriaTabs extends HTMLElement {
       });
     });
 
-    this.querySelector('.slick-prev').addEventListener('click', () => {
+    this.closest('.care-tabs-container').querySelector('.slick-prev').addEventListener('click', () => {
       slide('prev', this, this.parentElement.parentElement);
     });
 
-    this.querySelector('.slick-next').addEventListener('click', () => {
+    this.closest('.care-tabs-container').querySelector('.slick-next').addEventListener('click', () => {
       slide('next', this, this.parentElement.parentElement);
     });
   }
@@ -82,6 +82,7 @@ export class AriaTabs extends HTMLElement {
       if (i === 0) careTabsCardWrapper.setAttribute('active', true);
       const card = careTabsCardWrapper.children[0];
       const details = careTabsCardWrapper.children[1];
+      details.id = id2;
       details.classList.add('details');
       card.classList.add('card');
       if (i === 0) card.classList.add('active');
