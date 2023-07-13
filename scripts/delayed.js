@@ -7,7 +7,7 @@ import { isMobile, loadScript } from './scripts.js';
 sampleRUM('cwv');
 
 // add more delayed functionality here
-if (isMobile() && document.querySelector('.block.ad')) {
+if (isMobile()) {
   loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
 }
 

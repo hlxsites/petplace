@@ -122,20 +122,13 @@ async function getBreadcrumbs(categorySlug) {
  * @param {Element} main Element to which template blocks will be added.
  */
 // eslint-disable-next-line import/prefer-default-export
-export async function loadEager(main) {
+export function loadEager(main) {
   createTemplateBlock(main, 'article-author');
   createAutoBlockSection(main, 'ad', 'ad');
   createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
-
-  const categorySlug = toClassName(getMetadata('category'));
-  const ad = main.querySelector('.article-template-grid-ad');
-  const adId = document.createElement('div');
-  adId.innerText = await getCategoryAd(categorySlug);
-  const adBlock = buildBlock('ad', { elems: [adId] });
-  ad.append(adBlock);
 }
 
 export async function loadLazy(main) {
@@ -150,4 +143,12 @@ export async function loadLazy(main) {
   decorateBlock(breadcrumb);
   await loadBlock(breadcrumb);
   breadCrumbs.style.visibility = '';
+
+  const ad = main.querySelector('.article-template-grid-ad');
+  const adId = document.createElement('div');
+  adId.innerText = await getCategoryAd(categorySlug);
+  const adBlock = buildBlock('ad', { elems: [adId] });
+  ad.append(adBlock);
+  decorateBlock(adBlock);
+  loadBlock(adBlock);
 }
