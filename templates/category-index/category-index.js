@@ -119,12 +119,10 @@ async function updateMetadata() {
     throw new Error(404);
   }
   const { Category, Color, Image } = category;
-  document.title = `${Category} | ${document.title}`;
+  document.title = document.title.replace(/<Category>/, Category);
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
-  const h1 = document.querySelector('h1');
-  h1.textContent = Category;
-  h1.id = toClassName(Category);
+  document.querySelector('h1').textContent = Category;
   const heroColorDiv = document.querySelector('.category-index .hero > div');
   heroColorDiv?.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
   if (Image && heroColorDiv) {
