@@ -199,6 +199,7 @@ export async function getCategoryImage(path) {
   // eslint-disable-next-line max-len
   return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
 }
+
 /**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions
