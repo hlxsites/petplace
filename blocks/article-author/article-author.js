@@ -15,9 +15,9 @@ export default async function decorate(block) {
   defaultAvatarIcon.classList.add('icon', 'icon-user');
   const avatarIfExist = avatar ? createOptimizedPicture(avatar, authorTitle) : defaultAvatarIcon;
   block.innerHTML = `
-    ${avatarIfExist.outerHTML}
     <p>${titleWithLinkIfExist}</p>
     <time datetime="${date}">${date}</time>`;
+  block.prepend(avatarIfExist);
   decorateIcons(block);
   setTimeout(() => {
     window.requestAnimationFrame(() => {
