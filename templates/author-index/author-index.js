@@ -11,6 +11,7 @@ function renderAuthors(authors) {
     block.append(div);
   }
   authors.then((data) => data.data.forEach(async (author) => {
+    // eslint-disable-next-line no-promise-executor-return
     await new Promise((resolve) => setTimeout(resolve, 100));
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(author);
@@ -27,6 +28,7 @@ async function getAuthors() {
     .then((response) => response.json());
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export async function loadLazy() {
   renderAuthors(getAuthors());
 }
