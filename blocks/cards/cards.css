@@ -74,14 +74,15 @@
   font-family: var(--heading-font-family);    
   position: absolute;
   line-height: 1.7;
-  inset: 10px 20px auto 20px;
+  inset: 10px auto auto 20px;
   border-radius: 14px;
   display: inline-block;
   padding: 0 14px;
   background: var(--bg-color);
   border: 1px solid var(--border-color);
-  color:  var(--text-color-inverted);  
+  color: var(--text-color-inverted);
   max-width: calc(100% - 2 * var(--offset-left));
+  box-sizing: border-box; 
 }
 
 .cards .blogs-card-body .card-date{
@@ -112,9 +113,7 @@
 
 /* Skeleton loading styles */
 .cards .skeleton {
-  position: relative;
   min-height: 393px;
-  background-repeat: no-repeat;
   background-image:
     radial-gradient(circle 16px, white 99%, transparent 0),
     radial-gradient(circle 16px, white 99%, transparent 0),
@@ -142,24 +141,4 @@
     24px 280px,
     24px 320px,
     24px 345px;
-  overflow: hidden;
-}
-
-.cards .skeleton::after {
-  position: absolute;
-  content: '';
-  inset: 0;
-  background-repeat: no-repeat;
-  background-image: linear-gradient(90deg, transparent 0, white 50%, transparent 100%);
-  background-size: 100px 100%;
-  background-position: -100px 0;
-  animation: loading 1.5s infinite;
-  transform: rotate(30deg);
-  scale: 2;
-}
-
-@keyframes loading {
-  to {
-    background-position: calc(100% + 100px) 0;
-  }
 }

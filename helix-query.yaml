@@ -28,6 +28,8 @@ indices:
   articles:
     include:
       - '/article/**'
+    exclude:
+      - 'article/category/default'
     target: /article/query-index.xlsx
     properties:
       author:
@@ -64,6 +66,27 @@ indices:
           attribute(el, 'content')
       description:
         select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  authors:
+    include:
+      - '/authors/**'
+    target: /authors/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      avatar:
+        select: head > meta[name="avatar"]
         value: |
           attribute(el, 'content')
       lastModified:

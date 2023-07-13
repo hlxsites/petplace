@@ -26,11 +26,17 @@
           btnContainer.append(backBtn);
         }
       }
-      sampleRUM('404', { source: document.referrer, target: window.location.href });
     });
+
+    sampleRUM('404', { source: document.referrer, target: window.location.href });
+    window.location.replace('/');
   </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
+    body {
+      display: none !important; /* FIXME: remove if redirect is removed. */
+    }
+
     main.error {
       min-height: calc(100vh - var(--nav-height));
       display: flex;

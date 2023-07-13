@@ -11,7 +11,9 @@ function renderContent(block) {
   usp.set('page', page + 1);
   const nextParams = usp.toString();
 
-  const total = Math.ceil(Number(block.getAttribute('data-total')) / limit);
+  const total = Number.isNaN(Number(block.getAttribute('data-total')))
+    ? block.getAttribute('data-total')
+    : Math.ceil(Number(block.getAttribute('data-total')) / limit);
   block.innerHTML = `
     <nav aria-label="pagination">
       <ul>

@@ -1,0 +1,6 @@
+sitemaps:
+  default:
+    origin: https://www.petplace.com
+    source: /query-index.json
+    destination: /sitemap.xml
+    lastmod: YYYY-MM-DD

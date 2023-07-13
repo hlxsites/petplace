@@ -9,7 +9,7 @@ import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 export default async function decorate(block) {
   // fetch nav content
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta).pathname : '/nav';
+  const navPath = navMeta ? new URL(navMeta).pathname : '/fragments/nav';
   let resp = await fetch(`${navPath}.plain.html`);
   if (!resp.ok) {
     return;
@@ -57,7 +57,7 @@ export default async function decorate(block) {
 
   const navSidebar = document.createElement('div');
   navSidebar.classList.add('nav-sidebar');
-  resp = await fetch('/sidenav.plain.html');
+  resp = await fetch('/fragments/sidenav.plain.html');
   if (!resp.ok) {
     return;
   }

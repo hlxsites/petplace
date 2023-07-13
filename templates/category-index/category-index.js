@@ -10,6 +10,7 @@ import {
 } from '../../scripts/scripts.js';
 import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
+let articleLoadingPromise;
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
@@ -18,9 +19,10 @@ async function renderArticles(articles) {
     div.classList.add('skeleton');
     block.append(div);
   }
-  const res = await articles;
+  document.querySelector('.pagination').dataset.total = '…';
+  articleLoadingPromise = await articles;
   // eslint-disable-next-line no-restricted-syntax
-  for await (const article of res) {
+  for await (const article of articleLoadingPromise) {
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(article);
     meterCalls(() => block.append(div)).then(() => {
@@ -29,7 +31,7 @@ async function renderArticles(articles) {
       });
     });
   }
-  document.querySelector('.pagination').dataset.total = res.total();
+  document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
 }
 
 async function getArticles() {
@@ -115,11 +117,13 @@ async function updateMetadata() {
   if (!category) {
     throw new Error(404);
   }
-  const { Category, Color, Image } = await getCategoryForUrl();
-  document.title = document.title.replace(/<Category>/, Category);
+  const { Category, Color, Image } = category;
+  document.title = `${Category} | ${document.title}`;
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
-  document.querySelector('h1').textContent = Category;
+  const h1 = document.querySelector('h1');
+  h1.textContent = Category;
+  h1.id = toClassName(Category);
   const heroColorDiv = document.querySelector('.category-index .hero > div');
   heroColorDiv?.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
   if (Image && heroColorDiv) {
@@ -145,7 +149,12 @@ export async function loadEager(main) {
 }
 
 export async function loadLazy() {
-  const { Color } = await getCategoryForUrl();
+  const category = await getCategoryForUrl();
+  if (!category) {
+    return;
+  }
+
+  const { Color } = category;
   const heroColorDiv = document.querySelector('.category-index .hero > div');
   heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
 
@@ -156,6 +165,7 @@ export async function loadLazy() {
     const { data } = await getCategories();
     const subCategories = document.querySelector('.sub-categories');
     window.addEventListener('popstate', () => {
+      articleLoadingPromise.interrupt();
       updateMetadata();
       renderCategories(subCategories, data);
       renderArticles(getArticles());
@@ -167,6 +177,7 @@ export async function loadLazy() {
         return;
       }
       ev.preventDefault();
+      articleLoadingPromise.interrupt();
       window.history.pushState({}, '', link.href);
       updateMetadata();
       renderCategories(subCategories, data);

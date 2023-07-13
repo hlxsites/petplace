@@ -2,20 +2,59 @@ import {
   buildBlock,
   decorateBlock,
   loadBlock,
-  getMetadata, toClassName,
+  getMetadata,
+  toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
-  createBreadCrumbs, getCategoryByKey,
+  createBreadCrumbs,
+  getCategory,
+  getCategoryByKey,
 } from '../../scripts/scripts.js';
 
-function createTemplateBlock(main, blockName, gridName) {
+async function getRawCategoryAd(category) {
+  if (!category) {
+    return null;
+  }
+  if (category.Ad) {
+    return category.Ad;
+  }
+  if (!category['Parent Path']) {
+    return null;
+  }
+  const parent = await getCategoryByKey('Path', category['Parent Path']);
+  return getRawCategoryAd(parent);
+}
+
+/**
+ * Retrieves the ID of the ad to show for a category. This will be determined
+ * by the "Ad" column in the categories spreadsheet. The method will check
+ * the ad column for the given category, and for all of that category's parents.
+ *
+ * If no ad is specified, the method will return a default ad.
+ * @param {string} categorySlug Slug of the category whose ad should be
+ *  retrieved.
+ * @returns {Promise<string>} ID of an ad from the ads spreadsheet.
+ */
+export async function getCategoryAd(categorySlug) {
+  const category = await getCategory(categorySlug);
+  const categoryAd = await getRawCategoryAd(category);
+  return categoryAd || 'article-default-rail';
+}
+
+function createAutoBlockSection(main, blockName, gridName) {
   const gridNameValue = gridName || blockName;
   const section = document.createElement('div');
   section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
 
-  const block = buildBlock(blockName, { elems: [] });
-  section.append(block);
   main.append(section);
+  return section;
+}
+
+function createTemplateBlock(main, blockName, gridName, elems = []) {
+  const section = createAutoBlockSection(main, blockName, gridName);
+
+  const block = buildBlock(blockName, { elems });
+  section.append(block);
 }
 
 /**
@@ -29,7 +68,15 @@ function createTableOfContents(main) {
   }
   const tocDiv = document.createElement('div');
   tocDiv.classList.add('toc');
-  main.querySelector('h1').after(tocDiv);
+
+  // if there is a disclosure, add the toc after it, otherwise add it after the h1
+  const title = main.querySelector('h1');
+  const disclosure = main.querySelector('.disclosure');
+  if (title.nextElementSibling === disclosure) {
+    disclosure.after(tocDiv);
+  } else {
+    title.after(tocDiv);
+  }
 }
 
 /**
@@ -75,12 +122,20 @@ async function getBreadcrumbs(categorySlug) {
  * @param {Element} main Element to which template blocks will be added.
  */
 // eslint-disable-next-line import/prefer-default-export
-export function loadEager(main) {
+export async function loadEager(main) {
   createTemplateBlock(main, 'article-author');
+  createAutoBlockSection(main, 'ad', 'ad');
   createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
+
+  const categorySlug = toClassName(getMetadata('category'));
+  const ad = main.querySelector('.article-template-grid-ad');
+  const adId = document.createElement('div');
+  adId.innerText = await getCategoryAd(categorySlug);
+  const adBlock = buildBlock('ad', { elems: [adId] });
+  ad.append(adBlock);
 }
 
 export async function loadLazy(main) {
@@ -93,7 +148,6 @@ export async function loadLazy(main) {
   breadCrumbs.style.visibility = 'hidden';
   breadCrumbs.append(breadcrumb);
   decorateBlock(breadcrumb);
-  return loadBlock(breadcrumb).then(() => {
-    breadCrumbs.style.visibility = '';
-  });
+  await loadBlock(breadcrumb);
+  breadCrumbs.style.visibility = '';
 }

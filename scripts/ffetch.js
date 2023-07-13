@@ -16,7 +16,7 @@ async function* request(url, context) {
     const params = new URLSearchParams(`offset=${offset}&limit=${chunks}`);
     if (sheet) params.append(`sheet`, sheet);
     const resp = await fetch(`${url}?${params.toString()}`);
-    if (resp.ok) {
+    if (resp.ok || context.interrupted) {
       const json = await resp.json();
       total = json.total;
       if (context.computeTotal) {
@@ -46,6 +46,11 @@ function withTotal(upstream, context, computeTotal) {
   return upstream;
 }
 
+function interrupt(upstream, context) {
+  context.interrupted = true;
+  return upstream;
+}
+
 function chunks(upstream, context, chunks) {
   context.chunks = chunks;
   return upstream;
@@ -63,6 +68,9 @@ function total(upstream, context) {
 async function* skip(upstream, context, skip) {
   let skipped = 0;
   for await (const entry of upstream) {
+    if (context.interrupted) {
+      return;
+    }
     if (skipped < skip) {
       skipped += 1;
     } else {
@@ -74,6 +82,9 @@ async function* skip(upstream, context, skip) {
 async function* limit(upstream, context, limit) {
   let yielded = 0;
   for await (const entry of upstream) {
+    if (context.interrupted) {
+      return;
+    }
     if (yielded < limit) {
       yield entry;
       yielded += 1;
@@ -89,6 +100,9 @@ async function* map(upstream, context, fn, maxInFlight = 5) {
     promises.push(fn(entry));
     if (promises.length === maxInFlight) {
       for (entry of promises) {
+        if (context.interrupted) {
+          return;
+        }
         entry = await entry;
         if (entry) yield entry;
       }
@@ -96,6 +110,9 @@ async function* map(upstream, context, fn, maxInFlight = 5) {
     }
   }
   for (let entry of promises) {
+    if (context.interrupted) {
+      return;
+    }
     entry = await entry;
     if (entry) yield entry;
   }
@@ -104,6 +121,9 @@ async function* map(upstream, context, fn, maxInFlight = 5) {
 async function* filter(upstream, context, fn) {
   let i = 0;
   for await (const entry of upstream) {
+    if (context.interrupted) {
+      return;
+    }
     if (fn(entry)) {
       i++;
       context.filtered = i;
@@ -172,6 +192,7 @@ function assignOperations(generator, context) {
     withHtmlParser: withHtmlParser.bind(null, generator, context),
     withTotal: withTotal.bind(null, generator, context),
     sheet: sheet.bind(null, generator, context),
+    interrupt: interrupt.bind(null, generator, context),
     total: total.bind(null, generator, context),
   };
 
