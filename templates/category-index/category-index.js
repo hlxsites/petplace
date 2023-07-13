@@ -8,7 +8,6 @@ import {
   isMobile,
   meterCalls,
 } from '../../scripts/scripts.js';
-import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 let articleLoadingPromise;
 async function renderArticles(articles) {
@@ -128,7 +127,7 @@ async function updateMetadata() {
   heroColorDiv?.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
   if (Image && heroColorDiv) {
     const picture = document.querySelector('.category-index .hero picture');
-    picture.replaceWith(createOptimizedPicture(picture.querySelector('img').src, '', true, [{ width: 1600 }]));
+    picture.replaceWith(createOptimizedPicture(Image, '', true, [{ width: 1600 }]));
   }
 }
 
@@ -151,6 +150,7 @@ export async function loadEager(main) {
 }
 
 export async function loadLazy() {
+  const { render: renderCategories } = await import('../../blocks/sub-categories/sub-categories.js');
   const category = await getCategoryForUrl();
   if (!category) {
     return;
