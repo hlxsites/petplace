@@ -2,10 +2,11 @@ import { createOptimizedPicture, decorateIcons, getMetadata } from '../../script
 
 export default async function decorate(block) {
   const authorTitle = getMetadata('author');
+  const authorTitleLowerCase = authorTitle.toLowerCase();
   const author = await fetch('/authors/query-index.json')
     .then((response) => response.json())
     .then((data) => data.data.find(
-      (item) => item.title.toLowerCase().includes(authorTitle.toLowerCase()),
+      (item) => item.title.toLowerCase().includes(authorTitleLowerCase),
     ));
   const path = author?.path;
   const avatar = author?.avatar;
