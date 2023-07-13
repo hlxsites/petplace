@@ -7,9 +7,14 @@ import {
 } from '../../scripts/lib-franklin.js';
 import {
   createBreadCrumbs,
+  getCategories,
   getCategory,
-  getCategoryByKey,
 } from '../../scripts/scripts.js';
+
+export async function getCategoryByKey(key, value) {
+  const categories = await getCategories();
+  return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
+}
 
 async function getRawCategoryAd(category) {
   if (!category) {

@@ -2,13 +2,34 @@ import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import {
   getCategories,
-  getCategoryForUrl,
-  getCategoryImage,
+  getCategory,
   getId,
   isMobile,
   meterCalls,
 } from '../../scripts/scripts.js';
 import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
+
+/**
+ * Queries the colum and finds the matching image else uses default image.
+ * @param path
+ * @returns {Promise<HTMLPictureElement || undefined>}
+ */
+export async function getCategoryImage(path) {
+  const res = await fetch('/article/category/category-images.plain.html');
+  const htmlText = await res.text();
+  const div = document.createElement('div');
+  div.innerHTML = htmlText;
+
+  const column = div.querySelector('.columns');
+  // eslint-disable-next-line max-len
+  return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
+}
+
+export async function getCategoryForUrl() {
+  const { pathname } = window.location;
+  const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
+  return getCategory(category);
+}
 
 let articleLoadingPromise;
 async function renderArticles(articles) {
@@ -21,22 +42,23 @@ async function renderArticles(articles) {
   }
   document.querySelector('.pagination').dataset.total = '…';
   articleLoadingPromise = await articles;
+  let meteringPromise;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articleLoadingPromise) {
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(article);
-    meterCalls(() => block.append(div)).then(() => {
-      window.requestAnimationFrame(() => {
-        block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-      });
-    });
+    meteringPromise = meterCalls(() => block.append(div));
   }
   document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
+  await (meteringPromise || Promise.resolve());
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 async function getArticles() {
-  const { data } = await getCategories();
-  const applicableCategories = data
+  const categories = await getCategories();
+  const applicableCategories = categories
     .filter((c) => c.Path === window.location.pathname
       || c['Parent Path'].startsWith(window.location.pathname))
     .map((c) => ({ id: c.Slug, name: toClassName(c.Category) }));
@@ -162,12 +184,12 @@ export async function loadLazy() {
 
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
-    const { data } = await getCategories();
+    const categories = await getCategories();
     const subCategories = document.querySelector('.sub-categories');
     window.addEventListener('popstate', () => {
       articleLoadingPromise.interrupt();
       updateMetadata();
-      renderCategories(subCategories, data);
+      renderCategories(subCategories, categories);
       renderArticles(getArticles());
     });
 
@@ -180,7 +202,7 @@ export async function loadLazy() {
       articleLoadingPromise.interrupt();
       window.history.pushState({}, '', link.href);
       updateMetadata();
-      renderCategories(subCategories, data);
+      renderCategories(subCategories, categories);
       renderArticles(getArticles());
     });
   }
