@@ -9,6 +9,7 @@ import {
   getCategoriesPath,
   getCategory,
   getCategoryByName,
+  isMobile,
 } from '../../scripts/scripts.js';
 
 function createArticleDetails(block, key, categoryInfo, article) {
@@ -65,6 +66,7 @@ async function createNavigation(block) {
   // Get all articles in that category
   const articles = ffetch('/article/query-index.json')
     .sheet('article')
+    .chunks(isMobile() ? 500 : 2000)
     .filter((article) => {
       const articleCategories = article.category !== '0'
         ? article.category.split(',').map((c) => c.trim().toLowerCase())
