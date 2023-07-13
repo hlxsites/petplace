@@ -5,14 +5,18 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'nu
 let isAuthorCard = false;
 
 async function buildPost(post) {
-  const categories = await getCategories();
-  const category = categories.data.find((c) => {
+  const allCategories = await getCategories();
+  const postCategories = post.category ? post.category.split(',') : [];
+  const postCategoriesLowerCase = postCategories.map((c) => c.trim().toLowerCase());
+
+  const category = allCategories.data.find((c) => {
     if (post.category && post.category !== '0') {
-      return c.Slug === toClassName(post.category)
-        || c.Category.toLowerCase() === post.category.toLowerCase();
+      return postCategoriesLowerCase.some((item) => c.Slug === toClassName(item)
+        || item === c.Category.toLowerCase());
     }
     return c.Slug === post.path.split('/').splice(-2, 1)[0];
   });
+
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
   const postDate = new Date(0);
