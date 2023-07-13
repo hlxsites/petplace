@@ -49,8 +49,8 @@ async function buildAuthorPost(post) {
       <div>              
         <a href="${post.path}">
         <div class="blogs-card-body">
-        <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
-        <span class="read-more">Read more</p>
+        <h3>${post.title.replace(/- Petplace$/i, '')}</h3>
+        <span class="read-more">Read more</span>
       </div></a>          
       </div>
     </a>
