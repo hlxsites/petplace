@@ -2,6 +2,7 @@ import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.
 import { getCategories } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+let isAuthorCard = false;
 
 async function buildPost(post) {
   const allCategories = await getCategories();
@@ -38,11 +39,30 @@ async function buildPost(post) {
   return postCard;
 }
 
+async function buildAuthorPost(post) {
+  const postCard = document.createElement('div');
+  postCard.classList.add('blog-cards');
+  postCard.innerHTML = `
+      <div class="blogs-card-image">
+        <a href="${post.path}">${createOptimizedPicture(post.avatar, `Avatar image for ${post.title}`, false, [{ width: 800 }]).outerHTML}</a>
+      </div>
+      <div>              
+        <a href="${post.path}">
+        <div class="blogs-card-body">
+        <h3>${post.title.replace(/- PetPlace$/, '')}</h3>
+        <span class="read-more">Read more</p>
+      </div></a>          
+      </div>
+    </a>
+  `;
+  return postCard;
+}
+
 async function createCard(row) {
   const li = document.createElement('li');
   if (row.dataset.json) {
     const post = JSON.parse(row.dataset.json);
-    li.append(await buildPost(post));
+    li.append(isAuthorCard ? await buildAuthorPost(post) : await buildPost(post));
   } else {
     li.append(row);
   }
@@ -50,6 +70,9 @@ async function createCard(row) {
 }
 
 export default function decorate(block) {
+  if (block.classList.contains('author')) {
+    isAuthorCard = true;
+  }
   const ul = document.createElement('ul');
   [...block.children].forEach(async (row) => {
     if (row.classList.contains('skeleton')) {

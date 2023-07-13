@@ -93,16 +93,6 @@ export function isMobile() {
   return window.innerWidth < 1024;
 }
 
-async function render404() {
-  const response = await fetch('/404.html');
-  const html = await response.text();
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  document.head.append(doc.querySelector('head>style'));
-  const main = document.querySelector('main');
-  main.innerHTML = doc.querySelector('main').innerHTML;
-  main.classList.add('error');
-}
-
 const loadPromises = {};
 /**
  * Loads JSON from a specified URL, and caches the result in session storage.
@@ -209,6 +199,7 @@ export async function getCategoryImage(path) {
   // eslint-disable-next-line max-len
   return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
 }
+
 /**
  * @typedef ResponsiveHeroPictures
  * @property {Array<Element>} pictures Picture elements that make up the various resolutions
@@ -354,7 +345,7 @@ async function decorateTemplate(main) {
           }
         } catch (error) {
           if (error.message === '404') {
-            await render404();
+            window.location.replace('/404.html');
           }
           // eslint-disable-next-line no-console
           console.log(`failed to load template for ${template}`, error);
@@ -585,7 +576,7 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
-  if (!isMobile()) {
+  if (!isMobile() && document.querySelector('.block.ad')) {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
   }
 }

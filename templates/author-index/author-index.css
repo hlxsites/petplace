@@ -1,0 +1,57 @@
+.author-index .hero {
+ box-sizing: border-box;
+ display: flex;
+ flex-direction: column;
+ justify-content: end;
+ height: 62.5vw;
+ min-height: 0;
+ max-height: 326px;
+ padding: 0;
+ isolation: isolate;
+}
+
+.author-index .hero img {
+ position: absolute;
+ inset: 0;
+ z-index: -1;
+ object-fit: cover;
+}
+
+.author-index .hero h1{
+ margin:0px;
+ color:var(--text-color-inverted);
+ text-shadow: 2px 3px 5px rgba(0,0,0,.5);
+}
+
+.author-index .hero >div {
+ padding:2rem;
+ max-width: none;
+ background: var(--color-red-transparent);
+}
+
+.author-index .hero>div>div {
+ max-width: 1392px;
+ margin: 0 auto;
+}
+
+.author-index .cards >ul{
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.author-index .cards .read-more {
+ position: relative;
+ font-weight: 600;
+}
+
+.author-index .cards .read-more::before {
+ display: inline-block;
+ content: '';
+ margin-right: .5rem;
+ height: 13px;
+ width: 29px;
+ background: var(--link-color);
+ /* stylelint-disable-next-line property-no-vendor-prefix */
+ -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
+ mask: url('../../icons/arrow.svg') no-repeat center center;
+ vertical-align: middle;
+}
