@@ -36,10 +36,6 @@
   vertical-align: middle;
 }
 
-.puppy-diaries-index .hero h1 {
-  display: none;
-}
-
 .puppy-diaries-index .blade .blade-body {
   grid-area: blade-body-area;
 }
