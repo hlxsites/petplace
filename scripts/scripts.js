@@ -51,37 +51,6 @@ export function loadScript(url, callback, attributes) {
   return head.querySelector(`script[src="${url}"]`);
 }
 
-async function loadAccessibeWidget() {
-  await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', () => {
-    const HIGHLIGHT_COLOR = '#FF7D5A';
-    window.acsbJS.init({
-      statementLink: '',
-      footerHtml: '',
-      hideMobile: false,
-      hideTrigger: false,
-      language: 'en',
-      position: 'right',
-      leadColor: HIGHLIGHT_COLOR,
-      triggerColor: HIGHLIGHT_COLOR,
-      triggerRadius: '50%',
-      triggerPositionX: 'right',
-      triggerPositionY: 'bottom',
-      triggerIcon: 'wheels',
-      triggerSize: 'medium',
-      triggerOffsetX: 20,
-      triggerOffsetY: 20,
-      mobile: {
-        triggerSize: 'small',
-        triggerPositionX: 'right',
-        triggerPositionY: 'bottom',
-        triggerOffsetX: 10,
-        triggerOffsetY: 10,
-        triggerRadius: '50%',
-      },
-    });
-  }, { async: true });
-}
-
 let interval;
 const queue = [];
 export async function meterCalls(fn, wait = 200, max = 5) {
@@ -679,11 +648,6 @@ async function loadLazy(doc) {
   gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
   document.body.prepend(gtmFallback);
   loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
-
-  if (window.location.hostname === 'www.petplace.com'
-    || window.location.hostname.startsWith('main--petplace--hlxsites.hlx.')) {
-    loadAccessibeWidget();
-  }
 }
 
 /**
