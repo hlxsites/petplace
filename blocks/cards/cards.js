@@ -1,10 +1,10 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
-import { getCategories } from '../../scripts/scripts.js';
+import { getCategories, isMobile } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 let isAuthorCard = false;
 
-async function buildPost(post) {
+async function buildPost(post, eager) {
   const allCategories = await getCategories();
   const postCategories = post.category ? post.category.split(',') : [];
   const postCategoriesLowerCase = postCategories.map((c) => c.trim().toLowerCase());
@@ -24,7 +24,7 @@ async function buildPost(post) {
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, false, [{ width: 800 }]).outerHTML}</a>
+        <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
         ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}">${category.Category}</a>` : ''}
       </div>
       <div>              
@@ -39,12 +39,12 @@ async function buildPost(post) {
   return postCard;
 }
 
-async function buildAuthorPost(post) {
+async function buildAuthorPost(post, eager) {
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.path}">${createOptimizedPicture(post.avatar, `Avatar image for ${post.title}`, false, [{ width: 800 }]).outerHTML}</a>
+        <a href="${post.path}">${createOptimizedPicture(post.avatar, `Avatar image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
       </div>
       <div>              
         <a href="${post.path}">
@@ -58,11 +58,11 @@ async function buildAuthorPost(post) {
   return postCard;
 }
 
-async function createCard(row) {
+async function createCard(row, eager = false) {
   const li = document.createElement('li');
   if (row.dataset.json) {
     const post = JSON.parse(row.dataset.json);
-    li.append(isAuthorCard ? await buildAuthorPost(post) : await buildPost(post));
+    li.append(isAuthorCard ? await buildAuthorPost(post, eager) : await buildPost(post, eager));
   } else {
     li.append(row);
   }
@@ -74,28 +74,28 @@ export default function decorate(block) {
     isAuthorCard = true;
   }
   const ul = document.createElement('ul');
-  [...block.children].forEach(async (row) => {
+  [...block.children].forEach(async (row, i) => {
     if (row.classList.contains('skeleton')) {
       ul.append(await createCard(row));
     } else if (ul.querySelector('.skeleton')) {
-      ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(row));
+      ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(row, i === 0 && isMobile()));
     } else if (row.textContent.trim()) {
-      ul.append(await createCard(row));
+      ul.append(await createCard(row, i === 0 && isMobile()));
     }
   });
   block.innerHTML = '';
   block.append(ul);
   const observer = new MutationObserver((entries) => {
     entries.forEach((entry) => {
-      entry.addedNodes.forEach(async (div) => {
+      entry.addedNodes.forEach(async (div, i) => {
         if (div.classList.contains('skeleton')) {
           ul.append(await createCard(div));
           return;
         }
         if (ul.querySelector('.skeleton')) {
-          ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div));
+          ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div, i === 0 && isMobile()));
         } else if (div.textContent.trim()) {
-          ul.append(await createCard(div));
+          ul.append(await createCard(div, i === 0 && isMobile()));
         }
         div.remove();
       });
