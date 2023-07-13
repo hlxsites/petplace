@@ -1,5 +1,6 @@
 {
   "project": "petplace",
+  "host": "www.petplace.com",
   "plugins": [
     {
       "id": "library",
