@@ -3,6 +3,12 @@
   height: 60px;
 }
 
+.article-author img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
 .article-author p {
   margin: 0;
 }
