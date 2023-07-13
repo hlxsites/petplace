@@ -19,7 +19,7 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
 export async function loadEager(main) {
   const heading = main.querySelector('h1');
   const breadcrumbData = await createBreadCrumbs([{
-    url: '/authors',
+    url: '/authors/',
     path: 'Authors',
     color: 'blue-dark',
     label: 'Authors',
