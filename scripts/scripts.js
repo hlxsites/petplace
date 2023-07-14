@@ -617,7 +617,13 @@ async function loadLazy(doc) {
   const gtmFallback = document.createElement('noscript');
   gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
   document.body.prepend(gtmFallback);
-  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
+  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true, type: 'text/partytown' });
+
+  window.partytown = {
+    lib: '/scripts/partytown/',
+    forward: ['dataLayer.push'],
+  };
+  import('./partytown/partytown.js');
 }
 
 /**
