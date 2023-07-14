@@ -40,10 +40,10 @@ async function renderArticles(articles) {
     );
   }
   Promise.all(promises).then(() => {
-    // This part will only be executed if the promises array is empty,
-    // indicating that no articles were found because the promises never resolve()
+    if (block.querySelectorAll('.skeleton').length === 25) {
+      noResultsHidePagination();
+    }
     removeSkeletons(block);
-    noResultsHidePagination();
   });
   document.querySelector('.pagination').dataset.total = res.total();
 }
