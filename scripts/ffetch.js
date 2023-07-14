@@ -11,7 +11,7 @@
  */
 
 async function* request(url, context) {
-  const { chunks, sheet, fetch } = context;
+  let { chunks, sheet, fetch } = context;
   for (let offset = 0, total = Infinity; offset < total; offset += chunks) {
     const params = new URLSearchParams(`offset=${offset}&limit=${chunks}`);
     if (sheet) params.append(`sheet`, sheet);
@@ -23,6 +23,9 @@ async function* request(url, context) {
         context.total = total;
       }
       for (const entry of json.data) yield entry;
+      if (context.incrementalChunks) {
+        chunks *= 2;
+      }
     } else {
       return;
     }
@@ -43,6 +46,11 @@ function withHtmlParser(upstream, context, parseHtml) {
 
 function withTotal(upstream, context, computeTotal) {
   context.computeTotal = computeTotal;
+  return upstream;
+}
+
+function withIncrementalChunks(upstream, context, incrementalChunks) {
+  context.incrementalChunks = incrementalChunks;
   return upstream;
 }
 
@@ -191,6 +199,7 @@ function assignOperations(generator, context) {
     withFetch: withFetch.bind(null, generator, context),
     withHtmlParser: withHtmlParser.bind(null, generator, context),
     withTotal: withTotal.bind(null, generator, context),
+    withIncrementalChunks: withIncrementalChunks.bind(null, generator, context),
     sheet: sheet.bind(null, generator, context),
     interrupt: interrupt.bind(null, generator, context),
     total: total.bind(null, generator, context),

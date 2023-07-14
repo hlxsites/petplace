@@ -80,6 +80,7 @@ async function getArticles() {
   return ffetch('/article/query-index.json')
     .sheet('article')
     .withTotal(true)
+    .withIncrementalChunks(true)
     .filter((article) => {
       const articleCategories = article.category !== '0'
         ? article.category.split(',').map((c) => toClassName(c))
