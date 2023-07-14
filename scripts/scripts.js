@@ -52,8 +52,7 @@ export function loadScript(url, callback, attributes) {
   return head.querySelector(`script[src="${url}"]`);
 }
 
-let interval;
-const queue = [];
+let queue = 0;
 /**
  * Perform some metering on a repeated function call to reduce the chances to block the CPU/GPU
  * for too long.
@@ -63,26 +62,17 @@ const queue = [];
  * @returns a promise that the functions were all called
  */
 export async function meterCalls(fn, wait = 200, max = 5) {
+  queue += 1;
   return new Promise((resolve) => {
-    if (!interval) {
-      setTimeout(() => fn.call(null));
-      interval = window.setInterval(() => {
-        Promise.all(queue.splice(0, max)
-          .map((item) => new Promise((res) => {
-            window.requestAnimationFrame(() => {
-              item.call(null);
-              res();
-            });
-          })))
-          .then(resolve);
-        if (!queue.length) {
-          window.clearInterval(interval);
-          interval = null;
-        }
-      }, wait);
-    } else {
-      queue.push(fn);
-    }
+    window.requestAnimationFrame(async () => {
+      await fn.call(null);
+      if (queue >= max) {
+        queue -= max;
+        setTimeout(() => resolve(), wait);
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
