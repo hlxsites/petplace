@@ -16,9 +16,10 @@ import {
   toClassName,
   createOptimizedPicture,
 } from './lib-franklin.js';
+// eslint-disable-next-line import/no-cycle
+import integrateMartech from './third-party.js';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
-const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
@@ -552,11 +553,6 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
-  // Load ads eagerly on desktop since the impact is minimal there and
-  // this helps reduce CLS and loading animation duration
-  if (!isMobile() && document.querySelector('.block.ad')) {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
-  }
 }
 
 /**
@@ -574,6 +570,14 @@ export function addFavIcon(href) {
   } else {
     document.getElementsByTagName('head')[0].appendChild(link);
   }
+}
+
+function initPartytown() {
+  window.partytown = {
+    lib: '/scripts/partytown/',
+    forward: ['dataLayer.push'],
+  };
+  import('./partytown/partytown.js');
 }
 
 /**
@@ -614,10 +618,8 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  const gtmFallback = document.createElement('noscript');
-  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
-  document.body.prepend(gtmFallback);
-  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true });
+  integrateMartech();
+  initPartytown();
 }
 
 /**
