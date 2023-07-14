@@ -7,7 +7,7 @@ import {
   isMobile,
   meterCalls,
 } from '../../scripts/scripts.js';
-import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
+// import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 /**
  * Queries the colum and finds the matching image else uses default image.
