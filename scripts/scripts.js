@@ -16,6 +16,7 @@ import {
   toClassName,
   createOptimizedPicture,
 } from './lib-franklin.js';
+// eslint-disable-next-line import/no-cycle
 import integrateMartech from './third-party.js';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
