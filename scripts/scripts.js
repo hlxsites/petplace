@@ -54,13 +54,19 @@ export function loadScript(url, callback, attributes) {
 let interval;
 const queue = [];
 export async function meterCalls(fn, wait = 200, max = 5) {
-  return new Promise((res) => {
+  return new Promise((resolve) => {
     if (!interval) {
       setTimeout(() => fn.call(null));
       interval = window.setInterval(() => {
-        queue.splice(0, max).forEach((item) => window.requestAnimationFrame(() => item.call(null)));
+        Promise.all(queue.splice(0, max)
+          .map((item) => new Promise((res) => {
+            window.requestAnimationFrame(() => {
+              item.call(null);
+              res();
+            });
+          })))
+          .then(resolve);
         if (!queue.length) {
-          res();
           window.clearInterval(interval);
           interval = null;
         }
