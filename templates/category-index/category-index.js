@@ -43,26 +43,28 @@ async function renderArticles(articles) {
   document.querySelector('.pagination').dataset.total = '…';
   articleLoadingPromise = await articles;
   let articleCount = 0;
-  let meteringPromise;
+  const pagination = document.querySelector('.pagination.block');
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articleLoadingPromise) {
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(article);
     articleCount += 1;
-    meteringPromise = meterCalls(() => block.append(div));
+    await meterCalls(() => block.append(div));
+    pagination.style.display = '';
   }
   if (articleCount === 0) {
     const container = document.querySelector('.cards-container');
-    const noResults = document.createElement('h2');
+    let noResults = container.querySelector('h2');
+    if (!document.querySelector('h2')) {
+      noResults = document.createElement('h2');
+      container.append(noResults);
+    }
     noResults.innerText = 'No Articles Found';
-    container.append(noResults);
-    const pagination = document.querySelector('.pagination.block');
     if (pagination) {
       pagination.style.display = 'none';
     }
   }
   document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
-  await (meteringPromise || Promise.resolve());
   window.requestAnimationFrame(() => {
     block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
   });
@@ -195,27 +197,27 @@ export async function loadLazy() {
   renderArticles(getArticles());
 
   // Softnav progressive enhancement for browsers that support it
-  if (window.navigation) {
-    const categories = await getCategories();
-    const subCategories = document.querySelector('.sub-categories');
-    window.addEventListener('popstate', () => {
-      articleLoadingPromise.interrupt();
-      updateMetadata();
-      renderCategories(subCategories, categories);
-      renderArticles(getArticles());
-    });
+  // if (window.navigation) {
+  //   const categories = await getCategories();
+  //   const subCategories = document.querySelector('.sub-categories');
+  //   window.addEventListener('popstate', () => {
+  //     articleLoadingPromise.interrupt();
+  //     updateMetadata();
+  //     renderCategories(subCategories, categories);
+  //     renderArticles(getArticles());
+  //   });
 
-    subCategories.addEventListener('click', (ev) => {
-      const link = ev.target.closest('a');
-      if (!link) {
-        return;
-      }
-      ev.preventDefault();
-      articleLoadingPromise.interrupt();
-      window.history.pushState({}, '', link.href);
-      updateMetadata();
-      renderCategories(subCategories, categories);
-      renderArticles(getArticles());
-    });
-  }
+  //   subCategories.addEventListener('click', (ev) => {
+  //     const link = ev.target.closest('a');
+  //     if (!link) {
+  //       return;
+  //     }
+  //     ev.preventDefault();
+  //     articleLoadingPromise.interrupt();
+  //     window.history.pushState({}, '', link.href);
+  //     updateMetadata();
+  //     renderCategories(subCategories, categories);
+  //     renderArticles(getArticles());
+  //   });
+  // }
 }
