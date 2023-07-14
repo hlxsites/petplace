@@ -552,11 +552,6 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
-  // Load ads eagerly on desktop since the impact is minimal there and
-  // this helps reduce CLS and loading animation duration
-  if (!isMobile() && document.querySelector('.block.ad')) {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
-  }
 }
 
 /**
