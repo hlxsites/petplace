@@ -16,9 +16,9 @@ import {
   toClassName,
   createOptimizedPicture,
 } from './lib-franklin.js';
+import integrateMartech from './third-party.js';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
-const GTM_ID = 'GTM-WP2SGNL';
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
@@ -576,6 +576,14 @@ export function addFavIcon(href) {
   }
 }
 
+function initPartytown() {
+  window.partytown = {
+    lib: '/scripts/partytown/',
+    forward: ['dataLayer.push'],
+  };
+  import('./partytown/partytown.js');
+}
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -614,16 +622,8 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  const gtmFallback = document.createElement('noscript');
-  gtmFallback.innerHTML = `<iframe src=https://www.googletagmanager.com/ns.html?id=${GTM_ID} height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
-  document.body.prepend(gtmFallback);
-  loadScript(`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`, null, { async: true, type: 'text/partytown' });
-
-  window.partytown = {
-    lib: '/scripts/partytown/',
-    forward: ['dataLayer.push'],
-  };
-  import('./partytown/partytown.js');
+  integrateMartech();
+  initPartytown();
 }
 
 /**
