@@ -35,17 +35,18 @@ async function renderArticles(articles) {
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = createArticleDiv(article);
-    promises.push(
-      meterCalls(() => block.append(div)).then(() => removeSkeletons(block)),
-    );
+    promises.push(meterCalls(() => block.append(div)));
   }
   Promise.all(promises).then(() => {
-    // This part will only be executed if the promises array is empty,
-    // indicating that no articles were found because the promises never resolve()
+    if (block.querySelectorAll('.skeleton').length === 25) {
+      noResultsHidePagination();
+    }
     removeSkeletons(block);
-    noResultsHidePagination();
   });
   document.querySelector('.pagination').dataset.total = res.total();
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 async function getArticles() {
