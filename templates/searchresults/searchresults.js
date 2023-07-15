@@ -35,9 +35,7 @@ async function renderArticles(articles) {
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = createArticleDiv(article);
-    promises.push(
-      meterCalls(() => block.append(div)).then(() => removeSkeletons(block)),
-    );
+    promises.push(meterCalls(() => block.append(div)));
   }
   Promise.all(promises).then(() => {
     if (block.querySelectorAll('.skeleton').length === 25) {
@@ -46,6 +44,9 @@ async function renderArticles(articles) {
     removeSkeletons(block);
   });
   document.querySelector('.pagination').dataset.total = res.total();
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 async function getArticles() {
