@@ -86,7 +86,9 @@ export class AriaDialog extends HTMLElement {
     function handleClose() {
       if (dialog.getAttribute('aria-modal') === 'true') {
         document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
+        if (!getComputedStyle(document.documentElement).scrollbarGutter) {
+          document.body.style.paddingRight = '';
+        }
       }
       this.firstElementChild.focus();
     }
@@ -103,7 +105,9 @@ export class AriaDialog extends HTMLElement {
     function handleOpen() {
       if (dialog.getAttribute('aria-modal') === 'true') {
         document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = '15px';
+        if (!getComputedStyle(document.documentElement).scrollbarGutter) {
+          document.body.style.paddingRight = '15px';
+        }
       }
       const [, el] = this.getFocusables();
       if (el) {
