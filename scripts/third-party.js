@@ -2,7 +2,7 @@
 import { isMobile, loadScript } from './scripts.js';
 
 const GTM_ID = 'GTM-WP2SGNL';
-const CLARITY_ID = 'ekxr1n6fgy';
+const CLARITY_ID = 'hz6a0je2i3';
 
 const GTM_SCRIPT = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
