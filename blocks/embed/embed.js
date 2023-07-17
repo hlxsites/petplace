@@ -22,7 +22,7 @@ const embedYoutubeFacade = (url) => {
 const embedInstagram = (url) => {
   const endingSlash = url.pathname.endsWith('/') ? '' : '/';
   const location = window.location.href.endsWith('.html') ? window.location.href : `${window.location.href}.html`;
-  const src = `${url.origin}${url.pathname}${endingSlash}embed/captioned?rd=${location}`;
+  const src = `${url.origin}${url.pathname}${endingSlash}embed/captioned/?rd=${location}`;
   const embedHTML = `<iframe src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy"></iframe>`;
   return embedHTML;
 };
