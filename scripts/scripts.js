@@ -49,7 +49,7 @@ export function loadScript(url, callback, attributes) {
     script.onload = callback;
     return script;
   }
-  callback();
+  if (callback) callback();
   return head.querySelector(`script[src="${url}"]`);
 }
 
