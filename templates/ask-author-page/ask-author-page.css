@@ -5,18 +5,20 @@
     'author'
     'social'
     'content'
-    'popular';
+    'popular'
+    'cards'
+    'pagination';
 }
 
-.ask-author-page main .hero-wrapper {
+.ask-author-page .hero-wrapper {
   background: var(--background-color-light);
 }
 
-.ask-author-page main .hero {
+.ask-author-page .hero {
   padding-top: 0;
 }
 
-.ask-author-page main .hero picture {
+.ask-author-page .hero picture {
   grid-area: hero-picture;
   object-fit: cover;
   object-position: center center;
@@ -27,12 +29,17 @@
   left: -30%;
 }
 
-.ask-author-page main .hero h1 {
+.ask-author-page .hero h1 {
   grid-area: hero-title;
+  margin: 0;
+  padding: 0;
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 34px;
   text-align: center;
 }
 
-.ask-author-page main .hero h3 {
+.ask-author-page .hero h3 {
   grid-area: hero-flair;
   text-align: center;
   font-family: var(--body-font-family);
@@ -41,14 +48,14 @@
   font-weight: 400;
 }
 
-.ask-author-page main .hero .ask-author-page-hero-auto-block {
+.ask-author-page .hero .ask-author-page-hero-auto-block {
   grid-area: hero-auto;
   display: flex;
   gap: 1rem;
   flex-direction: column;
 }
 
-.ask-author-page main .hero .ask-author-page-hero-auto-block a {
+.ask-author-page .hero .ask-author-page-hero-auto-block a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,11 +71,11 @@
   font-size: 1.25rem;
 }
 
-.ask-author-page main .hero .ask-author-page-hero-auto-block .icon {
+.ask-author-page .hero .ask-author-page-hero-auto-block .icon {
   margin-right: .5rem;
 }
 
-.ask-author-page main .hero .ask-author-page-hero-auto-block p {
+.ask-author-page .hero .ask-author-page-hero-auto-block p {
   font-size: .75rem;
   line-height: 14px;
 }
@@ -85,17 +92,12 @@
   max-width: 1344px;
 }
 
-.ask-author-page .hero h1 {
-  margin: 0;
-  font-weight: 600;
-  font-size: 2rem;
-  line-height: 34px;
-  margin: 0;
-  padding: 0;
-}
-
 .ask-author-page .footer {
   border-top: none;
+}
+
+.ask-author-page .section {
+  grid-area: content;
 }
 
 .ask-author-page .hero-container {
@@ -123,10 +125,12 @@
   padding-top: 0;
 }
 
-.ask-author-page .section:not(.hero-container, .author-info-container, .popular-tags-container, .social-share-container) {
-  padding-top: 0;
-  margin-top: 0;
-  grid-area: content;
+.ask-author-page .cards-container {
+  grid-area: cards;
+}
+
+.ask-author-page .pagination-container {
+  grid-area: pagination;
 }
 
 .ask-author-page .section:not(.hero-container, .author-info-container, .popular-tags-container, .social-share-container) h2 {
@@ -205,7 +209,8 @@
       'hero hero hero hero' min-content
       '. author content .' min-content
       '. social content .' min-content
-      '. popular content .' 1fr / 1fr minmax(250px, 300px) minmax(750px, 1026px) 1fr;
+      '. popular cards .' 1fr
+      '. popular pagination .' min-content / 1fr minmax(250px, 300px) minmax(750px, 1026px) 1fr;
     gap: 0 1.5rem;
   }
 

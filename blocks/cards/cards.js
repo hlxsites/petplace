@@ -79,7 +79,7 @@ export default function decorate(block) {
       ul.append(await createCard(row));
     } else if (ul.querySelector('.skeleton')) {
       ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(row));
-    } else if (row.textContent.trim()) {
+    } else if (row.dataset.json || row.textContent.trim()) {
       ul.append(await createCard(row));
     }
   });
@@ -94,7 +94,7 @@ export default function decorate(block) {
         }
         if (ul.querySelector('.skeleton')) {
           ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div));
-        } else if (div.textContent.trim()) {
+        } else if (div.dataset.json || div.textContent.trim()) {
           ul.append(await createCard(div));
         }
         div.remove();
