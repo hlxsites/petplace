@@ -98,6 +98,11 @@ export default async function decorate($block) {
     const textDiv = $slide.children[1];
     textDiv.classList.add('text-div');
 
+    imgDiv.querySelectorAll('img').forEach((img) => {
+      img.setAttribute('width', 618);
+      img.setAttribute('height', 773);
+    });
+
     decorateResponsiveImages(imgDiv);
   });
 
