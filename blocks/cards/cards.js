@@ -69,18 +69,26 @@ async function createCard(row) {
   return li;
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   if (block.classList.contains('author')) {
     isAuthorCard = true;
   }
   const ul = document.createElement('ul');
   [...block.children].forEach(async (row) => {
+    let card;
     if (row.classList.contains('skeleton')) {
-      ul.append(await createCard(row));
+      card = await createCard(row);
+      ul.append(card);
     } else if (ul.querySelector('.skeleton')) {
-      ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(row));
+      card = await createCard(row);
+      ul.querySelector('.skeleton').parentElement.replaceWith(card);
     } else if (row.dataset.json || row.textContent.trim()) {
-      ul.append(await createCard(row));
+      card = await createCard(row);
+      if (ul.querySelector('.skeleton')) {
+        ul.querySelector('.skeleton').parentElement.replaceWith(card);
+      } else {
+        ul.append(card);
+      }
     }
   });
   block.innerHTML = '';
