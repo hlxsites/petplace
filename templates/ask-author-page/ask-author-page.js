@@ -23,7 +23,7 @@ export function loadEager(main) {
 
   createTemplateBlock(main, 'author-info', [avatar, p]);
   createTemplateBlock(main, 'social-share');
-  createTemplateBlock(main, 'popular-tags');
+  // FIXME: createTemplateBlock(main, 'popular-tags');
 }
 
 export function loadLazy(main) {
