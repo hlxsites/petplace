@@ -110,10 +110,10 @@ function buildSidebar() {
   subCategories.setAttribute('aria-hidden', isMobile());
   section.append(subCategories);
 
-  // FIXME: const popularTags = buildBlock('popular-tags', { elems: [] });
-  // popularTags.id = id2;
-  // popularTags.setAttribute('aria-hidden', isMobile());
-  // section.append(popularTags);
+  const popularTags = buildBlock('popular-tags', { elems: [] });
+  popularTags.id = id2;
+  popularTags.setAttribute('aria-hidden', isMobile());
+  section.append(popularTags);
 
   filterToggle.addEventListener('click', () => {
     const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
@@ -121,7 +121,7 @@ function buildSidebar() {
       filterToggle.dataset.mobileVisible = true;
     }
     subCategories.setAttribute('aria-hidden', isVisible);
-    // FIXME: popularTags.setAttribute('aria-hidden', isVisible);
+    popularTags.setAttribute('aria-hidden', isVisible);
   });
 
   window.addEventListener('resize', () => {
@@ -129,11 +129,11 @@ function buildSidebar() {
     if (!isVisible && !isMobile()) {
       filterToggle.disabled = true;
       subCategories.setAttribute('aria-hidden', false);
-      // FIXME: popularTags.setAttribute('aria-hidden', false);
+      popularTags.setAttribute('aria-hidden', false);
     } else if (isVisible && isMobile() && !filterToggle.dataset.mobileVisible) {
       filterToggle.disabled = false;
       subCategories.setAttribute('aria-hidden', true);
-      // FIXME: popularTags.setAttribute('aria-hidden', true);
+      popularTags.setAttribute('aria-hidden', true);
     }
   }, { passive: true });
 
