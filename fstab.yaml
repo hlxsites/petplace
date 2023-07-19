@@ -3,3 +3,4 @@ mountpoints:
 
 folders:
   /article/category/: /article/category/default
+  /tags/: /tags/default
