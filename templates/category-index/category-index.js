@@ -49,7 +49,7 @@ async function renderArticles(articles) {
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(article);
     articleCount += 1;
-    await meterCalls(() => block.append(div));
+    block.append(div);
     pagination.style.display = '';
   }
   if (articleCount === 0) {
