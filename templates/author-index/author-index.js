@@ -3,7 +3,7 @@ import { meterCalls } from '../../scripts/scripts.js';
 
 const PAGE_SIZE = 12;
 
-function renderAuthors(authors) {
+async function renderAuthors(authorsPromise) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < PAGE_SIZE; i += 1) {
@@ -11,22 +11,23 @@ function renderAuthors(authors) {
     div.classList.add('skeleton');
     block.append(div);
   }
-  authors.then((data) => data.data.forEach(async (author) => {
+  const authors = await authorsPromise;
+  await Promise.all(authors.map(async (author) => {
     // eslint-disable-next-line no-promise-executor-return
     await new Promise((resolve) => setTimeout(resolve, 100));
     const div = document.createElement('div');
     div.dataset.json = JSON.stringify(author);
-    meterCalls(() => block.append(div)).then(() => {
-      window.requestAnimationFrame(() => {
-        block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-      });
-    });
+    await meterCalls(() => block.append(div));
   }));
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 async function getAuthors() {
   return fetch('/authors/query-index.json')
-    .then((response) => response.json());
+    .then((response) => response.json())
+    .then((json) => json.data);
 }
 
 function createTemplateBlock(main, blockName, gridName, elems = []) {
