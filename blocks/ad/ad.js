@@ -80,49 +80,49 @@ const loadedObserver = new MutationObserver((entries) => {
  * @param {HTMLElement} block Ad block to decorate.
  */
 export default async function decorate(block) {
-  window.googletag = window.googletag || { cmd: [] };
+  // window.googletag = window.googletag || { cmd: [] };
 
-  if (!block.id) {
-    block.id = getId('ad');
-  }
-  [...block.children].forEach((row, index) => {
-    if (index === 0) {
-      block.dataset.adid = String(row.innerText).trim();
-    }
-    row.remove();
-  });
+  // if (!block.id) {
+  //   block.id = getId('ad');
+  // }
+  // [...block.children].forEach((row, index) => {
+  //   if (index === 0) {
+  //     block.dataset.adid = String(row.innerText).trim();
+  //   }
+  //   row.remove();
+  // });
 
-  const { id } = block;
-  const data = await getAd(block.dataset.adid);
-  if (!data) {
-    // eslint-disable-next-line no-console
-    console.error('Unknown ad type', block.dataset.adid);
-    return;
-  }
-  const sizes = getAdSizes(data);
-  block.classList.add('skeleton');
-  block.style.width = `${sizes[0][0]}px`;
-  block.style.minHeight = `${sizes[0][1]}px`;
-  window.googletag.cmd.push(() => {
-    const adSlot = window.googletag
-      .defineSlot(data.Path, sizes, id)
-      .addService(window.googletag.pubads());
+  // const { id } = block;
+  // const data = await getAd(block.dataset.adid);
+  // if (!data) {
+  //   // eslint-disable-next-line no-console
+  //   console.error('Unknown ad type', block.dataset.adid);
+  //   return;
+  // }
+  // const sizes = getAdSizes(data);
+  // block.classList.add('skeleton');
+  // block.style.width = `${sizes[0][0]}px`;
+  // block.style.minHeight = `${sizes[0][1]}px`;
+  // window.googletag.cmd.push(() => {
+  //   const adSlot = window.googletag
+  //     .defineSlot(data.Path, sizes, id)
+  //     .addService(window.googletag.pubads());
 
-    const targets = getAdTargets(data);
-    if (targets) {
-      adSlot.setTargeting(...targets);
-    }
-  });
-  // Enable SRA and services.
-  window.googletag.cmd.push(() => {
-    window.googletag.pubads().enableSingleRequest();
-    window.googletag.pubads().enableLazyLoad();
-    window.googletag.enableServices();
-  });
+  //   const targets = getAdTargets(data);
+  //   if (targets) {
+  //     adSlot.setTargeting(...targets);
+  //   }
+  // });
+  // // Enable SRA and services.
+  // window.googletag.cmd.push(() => {
+  //   window.googletag.pubads().enableSingleRequest();
+  //   window.googletag.pubads().enableLazyLoad();
+  //   window.googletag.enableServices();
+  // });
 
-  window.googletag.cmd.push(() => {
-    window.googletag.display(block.id);
-  });
+  // window.googletag.cmd.push(() => {
+  //   window.googletag.display(block.id);
+  // });
 
-  loadedObserver.observe(block, { attributes: true });
+  // loadedObserver.observe(block, { attributes: true });
 }
