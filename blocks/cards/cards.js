@@ -71,6 +71,8 @@ async function createCard(row, eager = false) {
 }
 
 export default async function decorate(block) {
+  block.setAttribute('role', 'region');
+  block.setAttribute('aria-live', 'polite');
   if (block.classList.contains('author')) {
     isAuthorCard = true;
   }
