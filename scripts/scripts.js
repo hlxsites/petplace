@@ -62,7 +62,7 @@ let queue = 0;
  * @param {number} [max] The number of function executions to trigger on each pass, defaults to 5
  * @returns a promise that the functions were all called
  */
-export async function meterCalls(fn, wait = 100, max = 5) {
+export async function meterCalls(fn, wait = 150, max = 5) {
   queue += 1;
   return new Promise((resolve) => {
     window.requestAnimationFrame(async () => {
