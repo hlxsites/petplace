@@ -4,6 +4,7 @@ import { getCategories } from '../../scripts/scripts.js';
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 const categories = await getCategories();
 let isAuthorCard = false;
+let isEager = true;
 
 async function buildPost(post, eager) {
   const postCategories = post.category ? post.category.split(',') : [];
@@ -74,38 +75,40 @@ export default async function decorate(block) {
     isAuthorCard = true;
   }
   const ul = document.createElement('ul');
-  const childrenCount = [...ul.children].filter((item) => !item.querySelector('.skeleton')).length;
   [...block.children].forEach(async (row) => {
     let card;
     if (row.classList.contains('skeleton')) {
-      card = await createCard(row, childrenCount === 0);
+      card = await createCard(row);
       ul.append(card);
     } else if (ul.querySelector('.skeleton')) {
-      card = await createCard(row, childrenCount === 0);
+      card = await createCard(row, isEager);
       ul.querySelector('.skeleton').parentElement.replaceWith(card);
+      isEager = false;
     } else if (row.dataset.json || row.textContent.trim()) {
-      card = await createCard(row, childrenCount === 0);
+      card = await createCard(row, isEager);
       if (ul.querySelector('.skeleton')) {
         ul.querySelector('.skeleton').parentElement.replaceWith(card);
       } else {
         ul.append(card);
       }
+      isEager = false;
     }
   });
   block.innerHTML = '';
   block.append(ul);
   const observer = new MutationObserver((entries) => {
     entries.forEach((entry) => {
-      const childrenCount = [...ul.children].filter((item) => !item.querySelector('.skeleton')).length;
       entry.addedNodes.forEach(async (div) => {
         if (div.classList.contains('skeleton')) {
-          ul.append(await createCard(div, childrenCount === 0));
+          ul.append(await createCard(div, isEager));
           return;
         }
         if (ul.querySelector('.skeleton')) {
-          ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div, childrenCount === 0));
+          ul.querySelector('.skeleton').parentElement.replaceWith(await createCard(div, isEager));
+          isEager = false;
         } else if (div.dataset.json || div.textContent.trim()) {
-          ul.append(await createCard(div, childrenCount === 0));
+          ul.append(await createCard(div, isEager));
+          isEager = false;
         }
         div.remove();
       });
