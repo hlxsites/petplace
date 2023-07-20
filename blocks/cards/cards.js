@@ -23,9 +23,13 @@ async function buildPost(post, eager) {
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
+  const picture = createOptimizedPicture(post.image, `Teaser image for ${post.title}`, eager, [
+    { media: '(min-width: 900px)', width: '620' },
+    { width: '800' },
+  ], 'low');
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
+        <a href="${post.path}"></a>
         ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}">${category.Category}</a>` : ''}
       </div>
       <div>              
@@ -37,6 +41,7 @@ async function buildPost(post, eager) {
       </div>
     </a>
   `;
+  postCard.querySelector('a').append(picture);
   return postCard;
 }
 
