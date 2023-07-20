@@ -100,7 +100,7 @@ export default async function decorate(block) {
     entries.forEach((entry) => {
       entry.addedNodes.forEach(async (div) => {
         if (div.classList.contains('skeleton')) {
-          ul.append(await createCard(div, isEager));
+          ul.append(await createCard(div));
           return;
         }
         if (ul.querySelector('.skeleton')) {
