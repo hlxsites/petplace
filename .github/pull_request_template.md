@@ -4,4 +4,6 @@ Fix #<gh-issue-id>
 
 Test URLs:
 - Before: https://main--petplace--hlxsites.hlx.page/
-- After: https://<branch>--petplace--hlxsites.hlx.page/
+- After:
+  - https://<branch>--petplace--hlxsites.hlx.page/
+  - https://<branch>--petplace--hlxsites.hlx.page/?martech=off

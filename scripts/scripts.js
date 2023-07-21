@@ -24,6 +24,8 @@ let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
 
+export const isMartechDisabled = new URLSearchParams(window.location.search).get('martech') === 'off';
+
 /**
  * Loads a script src and provides a callback that fires after
  * the script has loaded.
@@ -618,8 +620,10 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  integrateMartech();
-  initPartytown();
+  if (!isMartechDisabled) {
+    integrateMartech();
+    initPartytown();
+  }
 }
 
 /**
