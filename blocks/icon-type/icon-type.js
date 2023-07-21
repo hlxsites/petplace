@@ -12,7 +12,7 @@ export default function decorate(block) {
   // Iterate over each li element
   liElements.forEach((liElement) => {
     const textContent = liElement.textContent.trim();
-    const iconName = block.classList.contains('guide') ? `${TRAVEL_GUIDE_ICON}` : `icon-city-${toClassName(textContent)}`;
+    const iconName = block.classList.contains('logo-solo') ? `${TRAVEL_GUIDE_ICON}` : `icon-city-${toClassName(textContent)}`;
     const iconItem = document.createElement('icon-item');
     // append svg span
     const element = document.createElement('span');
