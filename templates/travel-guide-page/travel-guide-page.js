@@ -24,7 +24,7 @@ function observeSection(section) {
       if (mutation.attributeName !== 'class') {
         return;
       }
-      if (mutation.target.classList.contains('icon-type-list')) {
+      if (mutation.target.classList.contains('columns-img-col')) {
         updateSection(section);
       }
     });

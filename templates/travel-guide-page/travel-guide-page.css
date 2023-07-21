@@ -28,14 +28,16 @@
   grid-template-areas:
     "image"
     "info";
-    
 }
 
 .travel-guide-page .section.columns-container .region-info {
   padding:2rem 0rem;
-  background-color: red;
   grid-area: info;
   position: relative;
+}
+
+.travel-guide-page main .section:nth-child(2n + 1) .region-info{
+  background-color: var(--background-color-light);
 }
 
 .travel-guide-page .section.columns-container .columns-img-col {
