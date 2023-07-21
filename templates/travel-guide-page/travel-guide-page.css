@@ -46,27 +46,27 @@
   z-index: 2;
 }
 
-/* .button-container {
+.button-container {
  height: var(--tab-bar-height);
- position: absolute;
- bottom: 50px;
- width: 100%;
  display: flex;
- justify-content: center;
+ justify-content: left;
  z-index: 1;
 }
+
+
 .button-container .button::before {
  display: inline-block;
  content: '';
  margin-right: .5rem;
  height: 13px;
- width: 29px;
- background: var(--text-color-inverted); */
+ width: 20px;
+ background: var(--text-color-inverted);
 /* stylelint-disable-next-line property-no-vendor-prefix */
-/* -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
+-webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
  mask: url('../../icons/arrow.svg') no-repeat center center;
  vertical-align: middle;
-} */
+}
+
 @media (min-width: 900px) {
 
   .travel-guide-page .section.link-box-container .default-content-wrapper {
@@ -119,11 +119,16 @@
     width: 100px;
     background-color: inherit; /* Use the same background color as the parent */
   }
+
 }
 
-
-
-
+@media (max-width: 900px) {
+.button-container .button {
+  width: 100%; 
+  padding-left: 0;
+  padding-right: 0;
+}
+}
 
 
 
