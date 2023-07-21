@@ -1,5 +1,5 @@
 import ffetch from '../../scripts/ffetch.js';
-import { buildBlock } from '../../scripts/lib-franklin.js';
+import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
 
 function createArticleDiv(article) {
@@ -32,13 +32,18 @@ async function renderArticles(articles) {
   document.querySelector('.pagination').dataset.total = '…';
   const res = await articles;
   const promises = [];
+  let found = false;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
+    found = true;
     const div = createArticleDiv(article);
     promises.push(meterCalls(() => block.append(div)));
   }
   Promise.all(promises).then(() => {
-    if (block.querySelectorAll('.skeleton').length === 25) {
+    if (!found) {
+      const usp = new URLSearchParams(window.location.search);
+      const query = usp.get('query');
+      sampleRUM('nullsearch', { source: '.search-input', target: query });
       noResultsHidePagination();
     }
     removeSkeletons(block);
@@ -149,7 +154,7 @@ export async function loadLazy(main) {
   contentDiv.append(document.querySelector('.search-wrapper'));
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
-  defaultContentWrapper.outerHTML = hero.outerHTML;
+  defaultContentWrapper.replaceWith(hero);
   renderArticles(getArticles());
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
