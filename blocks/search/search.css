@@ -76,7 +76,6 @@
 
 .search-box-wrapper .search-input{
     font-size: 1.125rem;
-    outline: none;
     background: hsl(0deg 0% 100% / 78%);
     border-radius: 70px;
     margin-bottom: 1rem;
@@ -91,7 +90,6 @@
 
 .search-box-wrapper .search-button {
     width: 100%;
-    outline: none;
     border-radius: 50px;
     height: 40px;
     background: var(--highlight-color);
