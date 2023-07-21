@@ -1,2 +1,2 @@
-export default async function decorate() {
+export default function decorate() {
 }

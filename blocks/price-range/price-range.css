@@ -50,6 +50,8 @@
   align-items: center;
   justify-content: center;
   padding-top: 30px;
+  font-size: var(--body-font-size-xl);
+
 }
 
 .price-range .expenses, .price-range .range {
@@ -88,13 +90,16 @@
   font-size: var(--body-font-size-xl);
 }
 
-.price-range .expenses {
-  font-size: var(--body-font-size-xl);
-}
-
 @media (min-width: 1024px) {
   .price-range {
     height: 90px;
+    margin: 0;
+    width: 100%;
+    align-items: center;
+    border: none;
+    grid-template:
+      "expenses range"
+      / 55% 45%;
   }
 
   .price-range .expenses::after {
@@ -110,6 +115,7 @@
   .price-range .expenses {
     margin-left: 77px;
     padding-top: 0;
+    font-size: var(--body-font-size-default);
   }
 
   .price-range .expenses, .price-range .range {
@@ -127,21 +133,7 @@
     border-bottom-left-radius: 0;
   }
 
-  .price-range {
-    margin: 0;
-    width: 100%;
-    align-items: center;
-    border: none;
-    grid-template:
-      "expenses range"
-      / 55% 45%;
-  }
-
   .price-range::before {
     display: none;
-  }
-
-  .price-range .expenses {
-    font-size: var(--body-font-size-default);
   }
 }
