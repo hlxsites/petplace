@@ -1,0 +1,5 @@
+.article-disclaimer {
+  margin-bottom: 0.75em;
+  font-size: var(--body-font-size-xs);
+  color: var(--color-magenta);
+}

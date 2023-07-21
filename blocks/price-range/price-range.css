@@ -1,0 +1,147 @@
+.price-range .expenses::before, .price-range .expenses::after, .price-range::before {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+}
+
+.price-range .expenses::before {
+  z-index: 10;
+  left: 119px;
+  top: -48px;
+  content: '$';
+  display: flex;
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+  border: 6.5px solid var(--text-color);
+  border-radius: 50%;
+  font-size: var(--heading-font-size-xl);
+  font-weight: 900;
+  color: var(--background-color);
+}
+
+.price-range::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  border: 6.5px solid var(--background-color);
+  background-color: var(--background-color);
+  border-radius: 50%;
+  left: 119px;
+  top: -48px;
+}
+
+.price-range .expenses::after {
+  z-index: 5;
+  position: absolute;
+  top: -38px;
+  left: 129px;
+  content: '';
+  display: inline-block;
+  background-color: var(--highlight-color);
+}
+
+.price-range .expenses {
+  grid-area: expenses;
+  position: relative;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+.price-range .expenses, .price-range .range {
+  font-weight: 900;
+}
+
+.price-range {
+  border: 8px solid var(--text-color);
+  border-radius: 30px;
+  display: grid;
+  gap: 0;
+  grid-template:
+    "expenses" 110px
+    "range" 70px;
+  position: relative;
+  width: 325px;
+  margin-top: 45px;
+}
+
+.price-range-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.price-range .range {
+  grid-area: range;
+  border: 1px solid var(--color-purple-light);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: var(--color-purple-light);
+  color: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--body-font-size-xl);
+}
+
+.price-range .expenses {
+  font-size: var(--body-font-size-xl);
+}
+
+@media (min-width: 1024px) {
+  .price-range {
+    height: 90px;
+  }
+
+  .price-range .expenses::after {
+    top: -16px;
+    left: -67px;
+  }
+
+  .price-range .expenses::before {
+    top: -25px;
+    left: -77px;
+  }
+
+  .price-range .expenses {
+    margin-left: 77px;
+    padding-top: 0;
+  }
+
+  .price-range .expenses, .price-range .range {
+    border-top: 6.5px solid var(--text-color);
+    border-bottom: 6.5px solid var(--text-color);
+    height: 40px;
+    font-weight: 900;
+  }
+
+  .price-range .range {
+    border-left: none;
+    border-right: 6.5px solid var(--text-color);
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 0;
+  }
+
+  .price-range {
+    margin: 0;
+    width: 100%;
+    align-items: center;
+    border: none;
+    grid-template:
+      "expenses range"
+      / 55% 45%;
+  }
+
+  .price-range::before {
+    display: none;
+  }
+
+  .price-range .expenses {
+    font-size: var(--body-font-size-default);
+  }
+}
