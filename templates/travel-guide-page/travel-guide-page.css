@@ -26,16 +26,24 @@
 .travel-guide-page .section.columns-container {
   display: grid;
   grid-template-areas:
-    "info"
-    "image";
+    "image"
+    "info";
+    
 }
 
 .travel-guide-page .section.columns-container .region-info {
+  padding:2rem 0rem;
+  background-color: red;
   grid-area: info;
+  position: relative;
 }
 
 .travel-guide-page .section.columns-container .columns-img-col {
   grid-area: image;
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-start;
+  z-index: 2;
 }
 
 /* .button-container {
@@ -84,12 +92,32 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 8rem;
   }
+
   
   .travel-guide-page .section.columns-container {
+    max-width: 1355px;
+    padding:4rem 2rem;
+    margin-left: auto;
+    margin-right: auto;
     grid-template-columns: 6fr 4fr;
-    column-gap: 2rem;
+    column-gap: 8rem;
     grid-template-areas:
       "info image";
+  }
+
+  .travel-guide-page .section.columns-container .region-info {
+    padding:6rem 4rem;
+  }
+  
+
+  .travel-guide-page .section.columns-container .region-info::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -100px; /* Make it extend 20px to the right */
+    width: 100px;
+    background-color: inherit; /* Use the same background color as the parent */
   }
 }
 
