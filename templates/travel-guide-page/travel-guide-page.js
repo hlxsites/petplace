@@ -10,9 +10,7 @@ function updateSection(section) {
     .forEach((e) => regionInfo.appendChild(e));
 
   // clean redundant childs
-  while (section.firstChild) {
-    section.removeChild(section.firstChild);
-  }
+  section.innerHTML = '';
   // append arranged city section under original city section
   section.append(regionInfo);
   section.append(image);
@@ -26,6 +24,7 @@ function observeSection(section) {
       }
       if (mutation.target.classList.contains('columns-img-col')) {
         updateSection(section);
+        observer.unobserve(mutation.target);
       }
     });
   });
