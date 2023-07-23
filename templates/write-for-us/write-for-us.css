@@ -56,10 +56,10 @@ section.hero-container {
 }
 
 .columns-container p{
- margin:1rem;
+ margin:2rem;
 }
 
-.columns-txt-col p strong::before {
+.columns-txt-col p::before {
  content: "• ";
  display: inline;
  color:var(--highlight-color);
@@ -93,12 +93,50 @@ section.hero-container {
 
 .write-for-us main .section.columns-container{
  margin: 2rem 0;
- padding: 6rem 1rem;
+ padding: 2rem 1rem;
 }
 
 .write-for-us main .section:nth-child(2n + 1){
  background-color: var(--background-color-light);
 }
+
+/* form */
+.write-for-us .form-container{
+ margin-top:2rem;
+ padding: 6rem 4rem;
+}
+
+.write-for-us .form-container h3{
+  font-size:2rem;
+  margin-bottom: 3rem;
+}
+
+.write-for-us .field-wrapper label{
+  font-size:1.2rem;
+  font-weight: 800;
+  padding:1rem;
+}
+
+.write-for-us .form-text-wrapper {
+ width: 100%;
+}
+
+.write-for-us .field-wrapper input{
+ max-width:none;
+ width: 100%;
+ box-sizing: border-box;
+ margin-top: 1rem;
+border-radius: 20px;
+}
+
+.write-for-us .form {
+ position: relative; /* Ensures the button is positioned relative to the form */
+}
+.write-for-us .field-wrapper #message{
+ height: 20rem;
+}
+
+
 
 @media (min-width: 600px) {
  .hero-wrapper .img-div {
@@ -127,5 +165,17 @@ section.hero-container {
   left: 28%; 
   text-align: left;
   max-width: 1344px;
+}
+.write-for-us main .section.columns-container{
+ padding: 6rem 3rem;
+}
+.form-submit-wrapper {
+ position: absolute; /* The button will be positioned absolutely within the form */
+ bottom: -80px; /* Adjust as needed for your design */
+ right: 20px; /* Adjust as needed for your design */
+ width:300px;
+}
+.write-for-us .form-container{
+ padding-bottom:12rem;
 }
 }
