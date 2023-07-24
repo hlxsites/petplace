@@ -12,7 +12,7 @@ section.hero-container {
  position: absolute;
  bottom: 0;
  left: 50%;
- transform: translate(-50%, 40%);
+ transform: translate(-50%, 60%);
  width: 50px;   
  height: 50px;
  background: url('../../icons/arrow-down.svg') no-repeat center;
@@ -60,10 +60,15 @@ section.hero-container {
 }
 
 .columns-txt-col p::before {
- content: "• ";
- display: inline;
- color:var(--highlight-color);
- margin-left: -10px;
+  content: "• ";
+  display: inline;
+  font-size: 1.5em;
+  color:var(--highlight-color);
+  margin-left: -10px;
+}
+
+.columns-container:nth-of-type(4) p:last-child::before {
+  display: none;
 }
 
 .columns.block.columns-2-cols {
@@ -170,9 +175,9 @@ border-radius: 20px;
  padding: 6rem 3rem;
 }
 .form-submit-wrapper {
- position: absolute; /* The button will be positioned absolutely within the form */
- bottom: -80px; /* Adjust as needed for your design */
- right: 20px; /* Adjust as needed for your design */
+ position: absolute;
+ bottom: -80px;
+ right: 20px;
  width:300px;
 }
 .write-for-us .form-container{
