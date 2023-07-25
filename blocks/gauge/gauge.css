@@ -1,15 +1,18 @@
-.price-range .expenses::before, .price-range .expenses::after, .price-range::before {
+.gauge > div {
+  position: relative;
+}
+
+.gauge .cell1, .gauge .cell1, .gauge > div::before {
   position: absolute;
   width: 75px;
   height: 75px;
   border-radius: 50%;
 }
 
-.price-range .expenses::before {
+.gauge .cell1 {
   z-index: 10;
   left: 119px;
   top: -48px;
-  content: '$';
   display: flex;
   gap: 0;
   align-items: center;
@@ -21,7 +24,7 @@
   color: var(--background-color);
 }
 
-.price-range::before {
+.gauge > div::before {
   content: '';
   display: inline-block;
   position: absolute;
@@ -32,7 +35,7 @@
   top: -48px;
 }
 
-.price-range .expenses::after {
+.gauge .cell1 {
   z-index: 5;
   position: absolute;
   top: -38px;
@@ -42,7 +45,7 @@
   background-color: var(--highlight-color);
 }
 
-.price-range .expenses {
+.gauge .cell2 {
   grid-area: expenses;
   position: relative;
   display: flex;
@@ -54,11 +57,11 @@
 
 }
 
-.price-range .expenses, .price-range .range {
+.gauge .cell2, .gauge .cell3 {
   font-weight: 900;
 }
 
-.price-range {
+.gauge > div {
   border: 8px solid var(--text-color);
   border-radius: 30px;
   display: grid;
@@ -71,13 +74,13 @@
   margin-top: 45px;
 }
 
-.price-range-wrapper {
+.gauge {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.price-range .range {
+.gauge .cell3 {
   grid-area: range;
   border: 1px solid var(--color-purple-light);
   border-bottom-left-radius: 20px;
@@ -91,7 +94,7 @@
 }
 
 @media (min-width: 1024px) {
-  .price-range {
+  .gauge > div {
     height: 90px;
     margin: 0;
     width: 100%;
@@ -102,30 +105,30 @@
       / 55% 45%;
   }
 
-  .price-range .expenses::after {
+  .gauge .cell1::after {
     top: -16px;
     left: -67px;
   }
 
-  .price-range .expenses::before {
+  .gauge .cell1 {
     top: -25px;
     left: -77px;
   }
 
-  .price-range .expenses {
+  .gauge .cell2 {
     margin-left: 77px;
     padding-top: 0;
     font-size: var(--body-font-size-default);
   }
 
-  .price-range .expenses, .price-range .range {
+  .gauge .cell2, .gauge .cell3 {
     border-top: 6.5px solid var(--text-color);
     border-bottom: 6.5px solid var(--text-color);
     height: 40px;
     font-weight: 900;
   }
 
-  .price-range .range {
+  .gauge .cell3 {
     border-left: none;
     border-right: 6.5px solid var(--text-color);
     border-top-right-radius: 40px;
@@ -133,7 +136,7 @@
     border-bottom-left-radius: 0;
   }
 
-  .price-range::before {
+  .gauge > div::before {
     display: none;
   }
 }
