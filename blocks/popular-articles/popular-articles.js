@@ -14,11 +14,13 @@ async function fetchArticleData(paths) {
 
     const catSlug = html.querySelector('meta[name="category"]').content;
     const catData = await getCategory(toClassName(catSlug));
+    const title = html.querySelector('h1').textContent;
+    const imageAlt = html.querySelector('meta[property="og:image:alt"]');
     return {
       image: html.querySelector('meta[property="og:image"]').content,
-      imageAlt: html.querySelector('meta[property="og:image:alt"]').content,
+      imageAlt: imageAlt ? imageAlt.content : title,
       path,
-      title: html.querySelector('h1').textContent,
+      title,
       category: catData.Category,
       categoryPath: catData.Path,
       author: html.querySelector('meta[name="author"]').content,
