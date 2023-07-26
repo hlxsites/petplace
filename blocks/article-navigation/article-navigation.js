@@ -50,6 +50,22 @@ function createArticleDetails(block, key, categoryInfo, article) {
   block.append(sectionContainer);
 }
 
+function getFilteredArticles(categories) {
+  // Get all articles in that category
+  const articles = ffetch('/article/query-index.json')
+    .sheet('article')
+    .chunks(isMobile() ? 500 : 2000)
+    .filter((article) => {
+      const articleCategories = article.category !== '0'
+        ? article.category.split(',').map((c) => c.trim().toLowerCase())
+        : article.path.split('/').splice(-2, 1);
+      return categories.some((c) => articleCategories.includes(c.Category.toLowerCase())
+        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
+    });
+
+  return articles;
+}
+
 async function createNavigation(block) {
   let category = getMetadata('category');
   if (!category) {
@@ -67,17 +83,7 @@ async function createNavigation(block) {
   }
   const categories = await getCategoriesPath(categoryInfo.Path);
 
-  // Get all articles in that category
-  const articles = ffetch('/article/query-index.json')
-    .sheet('article')
-    .chunks(isMobile() ? 500 : 2000)
-    .filter((article) => {
-      const articleCategories = article.category !== '0'
-        ? article.category.split(',').map((c) => c.trim().toLowerCase())
-        : article.path.split('/').splice(-2, 1);
-      return categories.some((c) => articleCategories.includes(c.Category.toLowerCase())
-        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
-    });
+  const articles = getFilteredArticles(categories);
 
   let previousArticle = null;
   let nextArticle = null;
@@ -92,6 +98,31 @@ async function createNavigation(block) {
       found = true;
     } else {
       previousArticle = article;
+    }
+  }
+
+  // if not find a previous or next article, look at the parent and sibling categories
+  let previousArticleCategoryInfo = null;
+  let nextArticleCategoryInfo = null;
+  if (!previousArticle || !nextArticle) {
+    const parentCategoryPath = categoryInfo['Parent Path'];
+    const parentCategories = await getCategoriesPath(parentCategoryPath);
+    const parentCategoriesExcludeCurrent = parentCategories.filter(
+      (pc) => !categories.some((c) => c.Category === pc.Category),
+    );
+    const parentArticles = getFilteredArticles(parentCategoriesExcludeCurrent);
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const article of parentArticles) {
+      if (!previousArticle) {
+        previousArticle = article;
+        previousArticleCategoryInfo = await getCategory(article.category);
+      } else { // !nextArticle
+        nextArticle = article;
+        nextArticleCategoryInfo = await getCategory(article.category);
+      }
+      if (previousArticle && nextArticle) {
+        break;
+      }
     }
   }
 
@@ -131,12 +162,12 @@ async function createNavigation(block) {
     block.append(leftNav);
 
     // previous article
-    createArticleDetails(block, 'previous', categoryInfo, previousArticle);
+    createArticleDetails(block, 'previous', previousArticleCategoryInfo || categoryInfo, previousArticle);
   }
 
   if (nextArticle) {
     // next article
-    createArticleDetails(block, 'next', categoryInfo, nextArticle);
+    createArticleDetails(block, 'next', nextArticleCategoryInfo || categoryInfo, nextArticle);
 
     // right arrow
     const rightNav = document.createElement('div');
