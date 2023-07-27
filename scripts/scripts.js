@@ -541,7 +541,7 @@ export async function decorateMain(main) {
   standardizeLinkNavigation();
 }
 
-function fixLinks (){
+function fixLinks() {
   const links = document.querySelectorAll('a');
 
   links.forEach((link) => {
@@ -557,15 +557,15 @@ function fixLinks (){
         // If the hostname doesn't contain '.', it's likely broken
         if (!url.hostname.includes('.')) {
           // Fix the link by making it absolute
-          // Suppose the common broken link is article/...., the article/ is readed as hostname,  
+          // Suppose the common broken link is article/...., the article/ is readed as hostname,
           // which should be added back as pathname
           // console.log('before fixing', link.getAttribute('href'));
           link.setAttribute('href', `https://www.petplace.com/${url.hostname}${url.pathname}`);
           // console.log('fixed link', link.getAttribute('href'));
         }
       } catch (e) {
-        //else direct the link to the homepage
-        link.setAttribute('href','https://www.petplace.com');
+        // else direct the link to the homepage
+        link.setAttribute('href', 'https://www.petplace.com');
       }
     }
   });
