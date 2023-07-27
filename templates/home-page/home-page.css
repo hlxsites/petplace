@@ -76,6 +76,10 @@
   flex: 1.5;
 }
 
+.home-page .ad-container.tiles-container .ad-wrapper iframe {
+  max-width: 100%;
+}
+
 @media (min-width: 600px) {
   .home-page .hero h1 {
     font-size: 2.667em;
@@ -113,6 +117,10 @@
   .home-page .ad-container.columns-container .ad-wrapper {
     flex-basis: 25%;
     max-width: 336px;
+  }
+
+  .home-page .ad-container.tiles-container .tiles-wrapper + .ad-wrapper{
+    margin-top: 2rem;
   }
 }
 
