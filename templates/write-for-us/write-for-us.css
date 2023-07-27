@@ -128,23 +128,23 @@
  width: 100%;
 }
 
-.write-for-us .field-wrapper input{
+.write-for-us .field-wrapper input,
+.write-for-us .field-wrapper textarea{
  max-width:none;
  width: 100%;
  box-sizing: border-box;
  margin-top: 1rem;
-border-radius: 20px;
+ border-radius: 20px;
 }
 
 .write-for-us .form {
  position: relative; 
 }
 
-.write-for-us .field-wrapper #message{
+.write-for-us .field-wrapper textarea{
  height: 20rem;
+ padding: 1rem 1.5rem;
 }
-
-
 
 @media (min-width: 600px) {
 .write-for-us .hero-wrapper .img-div {
