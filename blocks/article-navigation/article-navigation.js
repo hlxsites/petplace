@@ -50,7 +50,7 @@ function createArticleDetails(block, key, categoryInfo, article) {
   block.append(sectionContainer);
 }
 
-function getFilteredArticles(categories) {
+function getFilteredArticles(category) {
   // Get all articles in that category
   const articles = ffetch('/article/query-index.json')
     .sheet('article')
@@ -59,8 +59,8 @@ function getFilteredArticles(categories) {
       const articleCategories = article.category !== '0'
         ? article.category.split(',').map((c) => c.trim().toLowerCase())
         : article.path.split('/').splice(-2, 1);
-      return categories.some((c) => articleCategories.includes(c.Category.toLowerCase())
-        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
+      return articleCategories.includes(category.Category.toLowerCase())
+        || articleCategories.map((ac) => toClassName(ac)).includes(category.Slug);
     });
 
   return articles;
@@ -81,9 +81,7 @@ async function createNavigation(block) {
   if (!categoryInfo) {
     return false;
   }
-  const categories = await getCategoriesPath(categoryInfo.Path);
-
-  const articles = getFilteredArticles(categories);
+  const articles = getFilteredArticles(categoryInfo);
 
   let previousArticle = null;
   let nextArticle = null;
@@ -102,27 +100,26 @@ async function createNavigation(block) {
   }
 
   // if not find a previous or next article, look at the parent and sibling categories
-  let previousArticleCategoryInfo = null;
-  let nextArticleCategoryInfo = null;
+  let previousCategoryInfo = null;
+  let nextCategoryInfo = null;
   if (!previousArticle || !nextArticle) {
     const parentCategoryPath = categoryInfo['Parent Path'];
     const parentCategories = await getCategoriesPath(parentCategoryPath);
-    const parentCategoriesExcludeCurrent = parentCategories.filter(
-      (pc) => !categories.some((c) => c.Category === pc.Category),
-    );
-    const parentArticles = getFilteredArticles(parentCategoriesExcludeCurrent);
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const article of parentArticles) {
-      if (!previousArticle) {
-        previousArticle = article;
-        previousArticleCategoryInfo = await getCategory(article.category);
-      } else { // !nextArticle
-        nextArticle = article;
-        nextArticleCategoryInfo = await getCategory(article.category);
-      }
-      if (previousArticle && nextArticle) {
-        break;
-      }
+    const len = parentCategories.length;
+    const index = parentCategories.findIndex((c) => c.Category === categoryInfo.Category);
+
+    if (!previousArticle) {
+      previousCategoryInfo = parentCategories[(index - 1 + len) % len];
+      const previousCategoryArticles = getFilteredArticles(previousCategoryInfo);
+      const previousCategoryLastArticle = await previousCategoryArticles.last();
+      previousArticle = previousCategoryLastArticle;
+    }
+
+    if (!nextArticle) {
+      nextCategoryInfo = parentCategories[(index + 1) % len];
+      const nextCategoryArticles = getFilteredArticles(nextCategoryInfo);
+      const nextCategoryFirstArticle = await nextCategoryArticles.first();
+      nextArticle = nextCategoryFirstArticle;
     }
   }
 
@@ -162,12 +159,12 @@ async function createNavigation(block) {
     block.append(leftNav);
 
     // previous article
-    createArticleDetails(block, 'previous', previousArticleCategoryInfo || categoryInfo, previousArticle);
+    createArticleDetails(block, 'previous', previousCategoryInfo || categoryInfo, previousArticle);
   }
 
   if (nextArticle) {
     // next article
-    createArticleDetails(block, 'next', nextArticleCategoryInfo || categoryInfo, nextArticle);
+    createArticleDetails(block, 'next', nextCategoryInfo || categoryInfo, nextArticle);
 
     // right arrow
     const rightNav = document.createElement('div');

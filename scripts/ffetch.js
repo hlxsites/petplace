@@ -167,6 +167,14 @@ async function first(upstream) {
   return null;
 }
 
+async function last(upstream) {
+  let result = null;
+  for await (const entry of upstream) {
+    result = entry;
+  }
+  return result;
+}
+
 // Helper
 
 function assignOperations(generator, context) {
@@ -188,6 +196,7 @@ function assignOperations(generator, context) {
     chunks: chunks.bind(null, generator, context),
     all: all.bind(null, generator, context),
     first: first.bind(null, generator, context),
+    last: last.bind(null, generator, context),
     withFetch: withFetch.bind(null, generator, context),
     withHtmlParser: withHtmlParser.bind(null, generator, context),
     withTotal: withTotal.bind(null, generator, context),
