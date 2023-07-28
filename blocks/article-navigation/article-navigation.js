@@ -109,17 +109,29 @@ async function createNavigation(block) {
     const index = parentCategories.findIndex((c) => c.Category === categoryInfo.Category);
 
     if (!previousArticle) {
-      previousCategoryInfo = parentCategories[(index - 1 + len) % len];
-      const previousCategoryArticles = getFilteredArticles(previousCategoryInfo);
-      const previousCategoryLastArticle = await previousCategoryArticles.last();
-      previousArticle = previousCategoryLastArticle;
+      // The current article is the first article in the category.
+      // Keep searching "previous" categories till one of them has articles,
+      // and use the last article in that category as the previous article.
+      for (let i = 1; i <= len && !previousArticle; i += 1) {
+        previousCategoryInfo = parentCategories[(index - i + len) % len];
+        const previousCategoryArticles = getFilteredArticles(previousCategoryInfo);
+        // eslint-disable-next-line no-await-in-loop
+        const previousCategoryLastArticle = await previousCategoryArticles.last();
+        previousArticle = previousCategoryLastArticle;
+      }
     }
 
     if (!nextArticle) {
-      nextCategoryInfo = parentCategories[(index + 1) % len];
-      const nextCategoryArticles = getFilteredArticles(nextCategoryInfo);
-      const nextCategoryFirstArticle = await nextCategoryArticles.first();
-      nextArticle = nextCategoryFirstArticle;
+      // The current article is the last article in the category.
+      // Keep searching "next" categories till one of them has articles,
+      // and use the first article in that category as the next article.
+      for (let i = 1; i <= len && !nextArticle; i += 1) {
+        nextCategoryInfo = parentCategories[(index + i) % len];
+        const nextCategoryArticles = getFilteredArticles(nextCategoryInfo);
+        // eslint-disable-next-line no-await-in-loop
+        const nextCategoryFirstArticle = await nextCategoryArticles.first();
+        nextArticle = nextCategoryFirstArticle;
+      }
     }
   }
 
