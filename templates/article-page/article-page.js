@@ -100,7 +100,7 @@ function convertToTitleCase(str) {
  * @returns {Promise<*[]>}
  * @param categorySlug snake case value of category
  */
-async function getBreadcrumbs(categorySlugs) {
+async function getBreadcrumbs(categorySlug) {
   const breadcrumbs = [];
 
   async function fetchSegmentData(slug) {
@@ -117,7 +117,7 @@ async function getBreadcrumbs(categorySlugs) {
     }
   }
 
-  await fetchSegmentData(categorySlugs[0]);
+  await fetchSegmentData(categorySlug);
 
   return breadcrumbs.reverse();
 }
@@ -146,7 +146,7 @@ export async function loadEager(main) {
 export async function loadLazy(main) {
   const breadCrumbs = main.querySelector('.hero > div > div');
   const categorySlugs = getMetadata('category').split(',').map((slug) => toClassName(slug.trim()));
-  const crumbData = await getBreadcrumbs(categorySlugs);
+  const crumbData = await getBreadcrumbs(categorySlugs[0]);
 
   const breadcrumbContainer = await createBreadCrumbs(crumbData);
   const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
