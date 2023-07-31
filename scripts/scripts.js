@@ -548,24 +548,19 @@ function fixLinks() {
     const href = link.getAttribute('href');
     // handle href not starts with '/'
     //   e.g. /article/..... is good link
-    //   e.g. article/..... is broken link
+    //   e.g. http://article/..... is broken link
     if (!href.startsWith('/')) {
       // log the broken link
       sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
-      try {
-        const url = new URL(href);
-        // If the hostname doesn't contain '.', it's likely broken
-        if (!url.hostname.includes('.')) {
-          // Fix the link by making it absolute
-          // Suppose the common broken link is article/...., the article/ is readed as hostname,
-          // which should be added back as pathname
-          // console.log('before fixing', link.getAttribute('href'));
-          link.setAttribute('href', `https://www.petplace.com/${url.hostname}${url.pathname}`);
-          // console.log('fixed link', link.getAttribute('href'));
-        }
-      } catch (e) {
-        // else direct the link to the homepage
-        link.setAttribute('href', 'https://www.petplace.com');
+      const url = new URL(href);
+      // If the hostname doesn't contain '.', it's likely broken
+      if (!url.hostname.includes('.')) {
+        // Fix the link by making it absolute
+        // Suppose the common broken link is article/...., the article/ is readed as hostname,
+        // which should be added back as pathname
+        // console.log('before fixing', link.getAttribute('href'));
+        link.setAttribute('href', `${window.location.origin}/${url.hostname}${url.pathname}`);
+        // console.log('fixed link', link.getAttribute('href'));
       }
     }
   });
