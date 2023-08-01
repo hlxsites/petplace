@@ -51,7 +51,7 @@ function createArticleDetails(block, key, categoryInfo, article) {
 }
 
 async function createNavigation(block) {
-  let category = getMetadata('category');
+  let category = getMetadata('category').split(',')[0]?.trim();
   if (!category) {
     // fall back on URL of a category hasn't been defined in the page's metadata
     category = await getCategory(window.location.pathname.split('/').slice(-2).shift());

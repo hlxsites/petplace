@@ -1,4 +1,9 @@
-import { fetchAndCacheJson, getId, isMobile } from '../../scripts/scripts.js';
+import {
+  fetchAndCacheJson,
+  getId,
+  isMartechDisabled,
+  isMobile,
+} from '../../scripts/scripts.js';
 
 function addPrefetch(kind, url, as) {
   const linkEl = document.createElement('link');
@@ -80,6 +85,12 @@ const loadedObserver = new MutationObserver((entries) => {
  * @param {HTMLElement} block Ad block to decorate.
  */
 export default async function decorate(block) {
+  if (isMartechDisabled) {
+    block.closest('.section').classList.remove('ad-container');
+    block.parentElement.remove();
+    return;
+  }
+
   window.googletag = window.googletag || { cmd: [] };
 
   if (!block.id) {

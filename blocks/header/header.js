@@ -1,4 +1,4 @@
-import { getMetadata, decorateIcons } from '../../scripts/lib-franklin.js';
+import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-franklin.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 
@@ -39,6 +39,7 @@ export default async function decorate(block) {
   const navTools = nav.querySelector('.nav-tools');
   const searchField = document.createElement('input');
   searchField.setAttribute('aria-label', navTools.textContent);
+  searchField.className = 'search-input';
   searchField.name = 'query';
   searchField.type = 'search';
   searchField.placeholder = navTools.textContent;
@@ -138,6 +139,15 @@ export default async function decorate(block) {
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
     a.setAttribute('aria-label', `Open our ${a.firstElementChild.classList[1].substring(5)} page in a new tab.`);
+  });
+
+  block.querySelector('form').addEventListener('submit', (ev) => {
+    const query = ev.target.querySelector('.search-input').value;
+    if (!query) {
+      ev.preventDefault();
+      return;
+    }
+    sampleRUM('search', { source: '.search-input', target: query });
   });
 
   decorateIcons(nav);

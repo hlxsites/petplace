@@ -145,8 +145,8 @@ export async function loadEager(main) {
 
 export async function loadLazy(main) {
   const breadCrumbs = main.querySelector('.hero > div > div');
-  const categorySlug = toClassName(getMetadata('category'));
-  const crumbData = await getBreadcrumbs(categorySlug);
+  const categorySlugs = getMetadata('category').split(',').map((slug) => toClassName(slug.trim()));
+  const crumbData = await getBreadcrumbs(categorySlugs[0]);
 
   const breadcrumbContainer = await createBreadCrumbs(crumbData);
   const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
