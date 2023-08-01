@@ -1,5 +1,14 @@
 .gauge > div {
+  border: 8px solid var(--text-color);
+  border-radius: 30px;
+  display: grid;
+  gap: 0;
+  grid-template:
+    "expenses" 110px
+    "range" 70px;
   position: relative;
+  width: 325px;
+  margin-top: 45px;
 }
 
 .gauge .cell1, .gauge > div::before, .gauge > div::after {
@@ -59,19 +68,6 @@
 
 .gauge .cell2, .gauge .cell3 {
   font-weight: 900;
-}
-
-.gauge > div {
-  border: 8px solid var(--text-color);
-  border-radius: 30px;
-  display: grid;
-  gap: 0;
-  grid-template:
-    "expenses" 110px
-    "range" 70px;
-  position: relative;
-  width: 325px;
-  margin-top: 45px;
 }
 
 .gauge {
