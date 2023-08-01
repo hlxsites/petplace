@@ -2,7 +2,7 @@
   position: relative;
 }
 
-.gauge .cell1, .gauge .cell1, .gauge > div::before {
+.gauge .cell1, .gauge > div::before, .gauge > div::after {
   position: absolute;
   width: 75px;
   height: 75px;
@@ -24,7 +24,7 @@
   color: var(--background-color);
 }
 
-.gauge > div::before {
+.gauge > div::after {
   content: '';
   display: inline-block;
   position: absolute;
@@ -35,11 +35,11 @@
   top: -48px;
 }
 
-.gauge .cell1 {
+.gauge > div::before {
   z-index: 5;
   position: absolute;
-  top: -38px;
   left: 129px;
+  top: -38px;
   content: '';
   display: inline-block;
   background-color: var(--highlight-color);
@@ -105,14 +105,9 @@
       / 55% 45%;
   }
 
-  .gauge .cell1::after {
-    top: -16px;
-    left: -67px;
-  }
-
   .gauge .cell1 {
-    top: -25px;
-    left: -77px;
+    top: 0;
+    left: 0;
   }
 
   .gauge .cell2 {
@@ -137,6 +132,11 @@
   }
 
   .gauge > div::before {
+    top: 10px;
+    left: 10px;
+  }
+
+  .gauge > div::after {
     display: none;
   }
 }
