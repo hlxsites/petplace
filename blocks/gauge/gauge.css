@@ -11,14 +11,14 @@
   margin-top: 45px;
 }
 
-.gauge .cell1, .gauge > div::before, .gauge > div::after {
+.gauge .gauge-icon, .gauge > div::before, .gauge > div::after {
   position: absolute;
   width: 75px;
   height: 75px;
   border-radius: 50%;
 }
 
-.gauge .cell1 {
+.gauge .gauge-icon {
   z-index: 10;
   left: 119px;
   top: -48px;
@@ -54,7 +54,7 @@
   background-color: var(--highlight-color);
 }
 
-.gauge .cell2 {
+.gauge .gauge-title {
   grid-area: expenses;
   position: relative;
   display: flex;
@@ -66,7 +66,7 @@
 
 }
 
-.gauge .cell2, .gauge .cell3 {
+.gauge .gauge-title, .gauge .gauge-value {
   font-weight: 900;
 }
 
@@ -76,7 +76,7 @@
   align-items: center;
 }
 
-.gauge .cell3 {
+.gauge .gauge-value {
   grid-area: range;
   border: 1px solid var(--color-purple-light);
   border-bottom-left-radius: 20px;
@@ -101,25 +101,25 @@
       / 55% 45%;
   }
 
-  .gauge .cell1 {
+  .gauge .gauge-icon {
     top: 0;
     left: 0;
   }
 
-  .gauge .cell2 {
+  .gauge .gauge-title {
     margin-left: 77px;
     padding-top: 0;
     font-size: var(--body-font-size-default);
   }
 
-  .gauge .cell2, .gauge .cell3 {
+  .gauge .gauge-title, .gauge .gauge-value {
     border-top: 6.5px solid var(--text-color);
     border-bottom: 6.5px solid var(--text-color);
     height: 40px;
     font-weight: 900;
   }
 
-  .gauge .cell3 {
+  .gauge .gauge-value {
     border-left: none;
     border-right: 6.5px solid var(--text-color);
     border-top-right-radius: 40px;
