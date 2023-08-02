@@ -3,7 +3,7 @@ export function loadLazy() {
   const heading = document.querySelector('.full-hero-page main .hero h1');
   const paragraphs = document.querySelectorAll('.full-hero-page main .section:not(.hero-container) p');
 
-  let subtext = undefined;
+  let subtext;
   for (let i = 0; i < paragraphs.length; i += 1) {
     if (String(paragraphs[i].innerText).trim()) {
       subtext = paragraphs[i];
