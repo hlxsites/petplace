@@ -546,24 +546,23 @@ function fixLinks() {
 
   links.forEach((link) => {
     const href = link.getAttribute('href');
-    // handle href not starts with '/'
-    //   e.g. /article/..... is good link
-    //   e.g. http://article/..... is broken link
+    // handle href not starting with '/'
+    //   e.g. /article/... is a valid link
+    //   e.g. http://article/... is an invalid link
     if (!href.startsWith('/')) {
-      // log the broken link
-      sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
-      /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
       try {
         const url = new URL(href);
         // If the hostname doesn't contain '.', it's likely broken
         if (!url.hostname.includes('.')) {
+          // log the broken link
+          sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
           // Fix the link by making it absolute
-          // Suppose the common broken link is article/...., the article/ is readed as hostname,
+          // Suppose the common broken link is article/...., the article/ is read as hostname,
           // which should be added back as pathname
           link.setAttribute('href', `${window.location.origin}/${url.hostname}${url.pathname}`);
         }
       } catch (e) {
-
+          // Do nothing here, keep the link as-is
       }
     }
   });
