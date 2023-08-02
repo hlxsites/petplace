@@ -21,6 +21,10 @@
   padding: 0 0 1.5rem;
 }
 
+.full-hero-page main .hero img {
+  max-height: unset;
+}
+
 .full-hero-page main .hero picture {
   margin: 0;
 }
