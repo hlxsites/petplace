@@ -552,15 +552,18 @@ function fixLinks() {
     if (!href.startsWith('/')) {
       // log the broken link
       sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
-      const url = new URL(href);
-      // If the hostname doesn't contain '.', it's likely broken
-      if (!url.hostname.includes('.')) {
-        // Fix the link by making it absolute
-        // Suppose the common broken link is article/...., the article/ is readed as hostname,
-        // which should be added back as pathname
-        // console.log('before fixing', link.getAttribute('href'));
-        link.setAttribute('href', `${window.location.origin}/${url.hostname}${url.pathname}`);
-        // console.log('fixed link', link.getAttribute('href'));
+      /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
+      try {
+        const url = new URL(href);
+        // If the hostname doesn't contain '.', it's likely broken
+        if (!url.hostname.includes('.')) {
+          // Fix the link by making it absolute
+          // Suppose the common broken link is article/...., the article/ is readed as hostname,
+          // which should be added back as pathname
+          link.setAttribute('href', `${window.location.origin}/${url.hostname}${url.pathname}`);
+        }
+      } catch (e) {
+
       }
     }
   });
