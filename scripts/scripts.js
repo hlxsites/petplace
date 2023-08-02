@@ -541,6 +541,33 @@ export async function decorateMain(main) {
   standardizeLinkNavigation();
 }
 
+function fixLinks() {
+  const links = document.querySelectorAll('a');
+
+  links.forEach((link) => {
+    const href = link.getAttribute('href');
+    // handle href not starting with '/'
+    //   e.g. /article/... is a valid link
+    //   e.g. http://article/... is an invalid link
+    if (!href.startsWith('/')) {
+      try {
+        const url = new URL(href);
+        // If the hostname doesn't contain '.', it's likely broken
+        if (!url.hostname.includes('.')) {
+          // log the broken link
+          sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
+          // Fix the link by making it absolute
+          // Suppose the common broken link is article/...., the article/ is read as hostname,
+          // which should be added back as pathname
+          link.setAttribute('href', `${window.location.origin}/${url.hostname}${url.pathname}`);
+        }
+      } catch (e) {
+        // Do nothing here, keep the link as-is
+      }
+    }
+  });
+}
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
@@ -552,6 +579,7 @@ async function loadEager(doc) {
   if (main) {
     await decorateTemplate(main);
     await decorateMain(main);
+    fixLinks();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
