@@ -562,7 +562,7 @@ function fixLinks() {
           link.setAttribute('href', `${window.location.origin}/${url.hostname}${url.pathname}`);
         }
       } catch (e) {
-          // Do nothing here, keep the link as-is
+        // Do nothing here, keep the link as-is
       }
     }
   });
