@@ -18,7 +18,15 @@
 }
 
 .full-hero-page main .hero {
-  padding: 0 1rem 1.5rem;
+  padding: 0 0 1.5rem;
+}
+
+.full-hero-page main .hero picture {
+  margin: 0;
+}
+
+.full-hero-page main .hero > div > div {
+  overflow: hidden;
 }
 
 .full-hero-page main .disclosure-container {
@@ -65,5 +73,27 @@
 
   .full-hero-page main .blade-wrapper {
     margin-top: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .full-hero-page main .hero {
+    padding: 0 0 1.5rem;
+  }
+
+  .full-hero-page main .hero > div {
+    margin: 0;
+    max-width: unset;
+  }
+
+  .full-hero-page-text {
+    max-width: 1344px;
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    height: 500px;
+    position: absolute;
+    top: 7vw;
+    left: 14%;
   }
 }
