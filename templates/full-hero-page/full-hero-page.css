@@ -1,0 +1,99 @@
+.full-hero-page main .hero-wrapper h1 {
+  color: var(--color-purple);
+  font-size: var(--heading-font-size-xl);
+  margin-top: 1rem;
+}
+
+.full-hero-page-text {
+  padding: 2rem 1.5rem;
+}
+
+.full-hero-page main .hero-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.full-hero-page main .section:not(:first-child), .full-hero-page main .hero {
+  background-color: var(--background-color-light);
+}
+
+.full-hero-page main .hero {
+  padding: 0 1rem 1.5rem;
+}
+
+.full-hero-page main .disclosure-container {
+  padding: 0 1.5rem;
+}
+
+.full-hero-page main .disclosure {
+  margin: 0;
+  padding: 0 0 2rem;
+  text-align: center;
+}
+
+.full-hero-page main .section.center {
+  text-align: center;
+  padding-top: 0;
+}
+
+.full-hero-page main .section.center h2 {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.full-hero-page main .section:not(.hero-container) picture img {
+  border-radius: 10px;
+}
+
+.full-hero-page main .section h3 {
+  margin-top: 2rem;
+}
+
+.full-hero-page main .section .button-container {
+  margin-bottom: 2rem;
+}
+
+/* .full-hero-page main .hero-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.full-hero-page main .hero > div > div {
+  display: block;
+}
+
+.full-hero-page main .hero {
+  position: unset;
+  margin: 0;
+  padding: 0;
+}
+
+.full-hero-page main .hero > div {
+  margin: 0;
+  padding: 0;
+  max-width: unset;
+}
+
+.full-hero-page main .hero picture {
+  position: unset;
+  margin-top: var(--nav-height);
+}
+
+.full-hero-page-text {
+  display: grid;
+  grid-template:
+    ". heading ."
+    ". subtext ." auto / 1fr minmax(10px, 1344px) 1fr;
+  position: absolute;
+  max-width: 1344px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.full-hero-page-text .full-hero-page-heading {
+  grid-area: heading;
+}
+
+.full-hero-page-text .full-hero-page-subtext {
+  grid-area: subtext;
+} */

@@ -1,9 +1,6 @@
 export default async function decorate(block) {
-  if (block.textContent.trim()) {
-    return;
-  }
-
-  const response = await fetch('/fragments/disclosure.plain.html');
+  const fragment = block.textContent.trim();
+  const response = await fetch(fragment || '/fragments/disclosure.plain.html');
   if (!response.ok) {
     return;
   }
