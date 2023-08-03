@@ -1,0 +1,138 @@
+.gauge > div {
+  border: 8px solid var(--text-color);
+  border-radius: 30px;
+  display: grid;
+  gap: 0;
+  grid-template:
+    "expenses" 110px
+    "range" 70px;
+  position: relative;
+  width: 325px;
+  margin-top: 45px;
+}
+
+.gauge .gauge-icon, .gauge > div::before, .gauge > div::after {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+}
+
+.gauge .gauge-icon {
+  z-index: 10;
+  left: 119px;
+  top: -48px;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+  border: 6.5px solid var(--text-color);
+  border-radius: 50%;
+  font-size: var(--heading-font-size-xl);
+  font-weight: 900;
+  color: var(--background-color);
+}
+
+.gauge > div::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  border: 6.5px solid var(--background-color);
+  background-color: var(--background-color);
+  border-radius: 50%;
+  left: 119px;
+  top: -48px;
+}
+
+.gauge > div::before {
+  z-index: 5;
+  position: absolute;
+  left: 129px;
+  top: -38px;
+  content: '';
+  display: inline-block;
+  background-color: var(--highlight-color);
+}
+
+.gauge .gauge-title {
+  grid-area: expenses;
+  position: relative;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+  font-size: var(--body-font-size-xl);
+
+}
+
+.gauge .gauge-title, .gauge .gauge-value {
+  font-weight: 900;
+}
+
+.gauge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gauge .gauge-value {
+  grid-area: range;
+  border: 1px solid var(--color-purple-light);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: var(--color-purple-light);
+  color: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--body-font-size-xl);
+}
+
+@media (min-width: 1024px) {
+  .gauge > div {
+    height: 90px;
+    margin: 0;
+    width: 100%;
+    align-items: center;
+    border: none;
+    grid-template:
+      "expenses range"
+      / 55% 45%;
+  }
+
+  .gauge .gauge-icon {
+    top: 0;
+    left: 0;
+  }
+
+  .gauge .gauge-title {
+    margin-left: 77px;
+    padding-top: 0;
+    font-size: var(--body-font-size-default);
+  }
+
+  .gauge .gauge-title, .gauge .gauge-value {
+    border-top: 6.5px solid var(--text-color);
+    border-bottom: 6.5px solid var(--text-color);
+    height: 40px;
+    font-weight: 900;
+  }
+
+  .gauge .gauge-value {
+    border-left: none;
+    border-right: 6.5px solid var(--text-color);
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 0;
+  }
+
+  .gauge > div::before {
+    top: 10px;
+    left: 10px;
+  }
+
+  .gauge > div::after {
+    display: none;
+  }
+}
