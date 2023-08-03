@@ -82,17 +82,35 @@ async function createNavigation(block) {
   let previousArticle = null;
   let nextArticle = null;
   let found = false;
+  let firstArticle = null;
+  let lastArticle = null;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articles) {
-    if (found) {
-      nextArticle = article;
-      break;
+    if (!firstArticle) {
+      firstArticle = article;
     }
-    if (article.path === window.location.pathname) {
-      found = true;
+    lastArticle = article;
+    if (!found) {
+      if (article.path === window.location.pathname) {
+        found = true;
+      } else {
+        previousArticle = article;
+      }
     } else {
-      previousArticle = article;
+      if (!nextArticle) {
+        nextArticle = article;
+      }
+      if (previousArticle) {
+        break;
+      }
     }
+  }
+
+  if (!previousArticle) {
+    previousArticle = lastArticle;
+  }
+  if (!nextArticle) {
+    nextArticle = firstArticle;
   }
 
   if (previousArticle || nextArticle) {
