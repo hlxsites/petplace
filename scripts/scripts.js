@@ -631,11 +631,14 @@ function initPartytown() {
   import('./partytown/partytown.js');
 }
 
-function optimizedBatchLoading(promises) {
+async function optimizedBatchLoading(promises) {
   if (isMobile()) {
-    return promises.reduce((sequence, promise) => sequence.then(promise), Promise.resolve());
+    return promises.reduce(
+      (sequence, promise) => sequence.then(() => promise()),
+      Promise.resolve(),
+    );
   }
-  return Promise.all(promises);
+  return Promise.all(promises.map((promise) => promise()));
 }
 /**
  * Loads everything that doesn't need to be delayed.
@@ -656,12 +659,11 @@ async function loadLazy(doc) {
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
   await optimizedBatchLoading([
-    loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
-    loadFonts(),
-    loadHeader(doc.querySelector('header')),
-    loadFooter(footer),
+    () => loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
+    () => loadFonts(),
+    () => loadHeader(doc.querySelector('header')),
+    () => loadFooter(footer),
   ]);
-
   // identify the first item in the menu
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
   firstMenu.id = 'menu';
