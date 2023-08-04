@@ -55,6 +55,18 @@ export function loadScript(url, callback, attributes) {
   return head.querySelector(`script[src="${url}"]`);
 }
 
+/**
+ * Load fonts.css and set a session storage flag
+ */
+async function loadFonts() {
+  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  try {
+    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+  } catch (e) {
+    // do nothing
+  }
+}
+
 let queue = 0;
 /**
  * Perform some metering on a repeated function call to reduce the chances to block the CPU/GPU
@@ -583,6 +595,15 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
+
+  try {
+    /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
+    if (!isMobile() || sessionStorage.getItem('fonts-loaded')) {
+      loadFonts();
+    }
+  } catch (e) {
+    // do nothing
+  }
 }
 
 /**
@@ -626,11 +647,13 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   await loadHeader(doc.querySelector('header'));
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
   loadFooter(footer);
+
+  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  loadFonts();
 
   // identify the first item in the menu
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
