@@ -50,6 +50,25 @@ function createArticleDetails(block, key, categoryInfo, article) {
   block.append(sectionContainer);
 }
 
+async function getAllParentCategories(category) {
+  const parentCategories = [];
+  let currentCategory = category;
+  while (currentCategory.Parent) {
+    // eslint-disable-next-line no-await-in-loop
+    currentCategory = await getCategory(toClassName(currentCategory.Parent));
+    parentCategories.push(currentCategory);
+  }
+  return parentCategories;
+}
+
+function ifArticleBelongsToCategories(article, categories) {
+  const articleCategories = article.category !== '0'
+    ? article.category.split(',').map((c) => c.trim().toLowerCase())
+    : article.path.split('/').splice(-2, 1);
+  return categories.some((c) => articleCategories.includes(c.Category.toLowerCase())
+      || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
+}
+
 async function createNavigation(block) {
   let category = getMetadata('category').split(',')[0]?.trim();
   if (!category) {
@@ -65,33 +84,81 @@ async function createNavigation(block) {
   if (!categoryInfo) {
     return false;
   }
-  const categories = await getCategoriesPath(categoryInfo.Path);
+
+  const parentCategories = await getAllParentCategories(categoryInfo);
+  const categories = [categoryInfo, ...parentCategories];
 
   // Get all articles in that category
   const articles = ffetch('/article/query-index.json')
     .sheet('article')
     .chunks(isMobile() ? 500 : 2000)
-    .filter((article) => {
-      const articleCategories = article.category !== '0'
-        ? article.category.split(',').map((c) => c.trim().toLowerCase())
-        : article.path.split('/').splice(-2, 1);
-      return categories.some((c) => articleCategories.includes(c.Category.toLowerCase())
-        || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug));
-    });
+    .filter((article) => ifArticleBelongsToCategories(article, categories));
 
   let previousArticle = null;
   let nextArticle = null;
+  let firstCurrentCategoryArticle = null;
+  let lastCurrentCategoryArticle = null;
   let found = false;
+  const parentCategoryArticlesMap = new Map();
+  parentCategories.forEach((c) => parentCategoryArticlesMap.set(c.Slug, []));
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articles) {
-    if (found) {
-      nextArticle = article;
-      break;
-    }
-    if (article.path === window.location.pathname) {
-      found = true;
+    if (ifArticleBelongsToCategories(article, parentCategories)) {
+      if (parentCategoryArticlesMap.has(article['category slug'])) {
+        parentCategoryArticlesMap.get(article['category slug']).push(article);
+      }
     } else {
-      previousArticle = article;
+      if (!firstCurrentCategoryArticle) {
+        firstCurrentCategoryArticle = article;
+      }
+      lastCurrentCategoryArticle = article;
+      if (!found) {
+        if (article.path === window.location.pathname) {
+          found = true;
+        } else {
+          previousArticle = article;
+        }
+      } else {
+        if (!nextArticle) {
+          nextArticle = article;
+        }
+        if (previousArticle) {
+          break;
+        }
+      }
+    }
+  }
+
+  let previousArticleCategory = null;
+  if (!previousArticle) {
+    previousArticle = lastCurrentCategoryArticle;
+    // if there is only one or two articles in current category, use parent category's last article
+    if (!nextArticle || nextArticle === lastCurrentCategoryArticle) {
+      const parentCategory = parentCategories.find((c) => {
+        const parentCategoryArticles = parentCategoryArticlesMap.get(c.Slug);
+        return parentCategoryArticles.length;
+      });
+      if (parentCategory) {
+        const parentCategoryArticles = parentCategoryArticlesMap.get(parentCategory.Slug);
+        previousArticle = parentCategoryArticles[parentCategoryArticles.length - 1];
+        previousArticleCategory = parentCategory;
+      }
+    }
+  }
+  let nextArticleCategory = null;
+  if (!nextArticle) {
+    nextArticle = firstCurrentCategoryArticle;
+    // if there is only one or two articles in current category, use parent category's first article
+    if (previousArticle === firstCurrentCategoryArticle) {
+      const parentCategory = parentCategories.find((c) => {
+        const parentCategoryArticles = parentCategoryArticlesMap.get(c.Slug);
+        return parentCategoryArticles.length;
+      });
+      if (parentCategory) {
+        const parentCategoryArticles = parentCategoryArticlesMap.get(parentCategory.Slug);
+        [nextArticle] = parentCategoryArticles;
+        nextArticleCategory = parentCategory;
+      }
     }
   }
 
@@ -131,12 +198,12 @@ async function createNavigation(block) {
     block.append(leftNav);
 
     // previous article
-    createArticleDetails(block, 'previous', categoryInfo, previousArticle);
+    createArticleDetails(block, 'previous', previousArticleCategory || categoryInfo, previousArticle);
   }
 
   if (nextArticle) {
     // next article
-    createArticleDetails(block, 'next', categoryInfo, nextArticle);
+    createArticleDetails(block, 'next', nextArticleCategory || categoryInfo, nextArticle);
 
     // right arrow
     const rightNav = document.createElement('div');
