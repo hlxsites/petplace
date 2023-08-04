@@ -631,6 +631,12 @@ function initPartytown() {
   import('./partytown/partytown.js');
 }
 
+function optimizedBatchLoading(promises) {
+  if (isMobile()) {
+    return promises.reduce((sequence, promise) => sequence.then(promise), Promise.resolve());
+  }
+  return Promise.all(promises);
+}
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -647,12 +653,14 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  loadFonts();
-  await loadHeader(doc.querySelector('header'));
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
-  loadFooter(footer);
+  await optimizedBatchLoading([
+    loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
+    loadFonts(),
+    loadHeader(doc.querySelector('header')),
+    loadFooter(footer),
+  ]);
 
   // identify the first item in the menu
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
