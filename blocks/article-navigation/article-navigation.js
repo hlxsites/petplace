@@ -65,8 +65,8 @@ async function createNavigation(block) {
   if (!categoryInfo) {
     return false;
   }
-  const categories = await getCategoriesPath(categoryInfo.Path);
-
+  // get parent cateogry and all its sub categories(include current category apperantly)
+  const categories = await getCategoriesPath(categoryInfo['Parent Path']);
   // Get all articles in that category
   const articles = ffetch('/article/query-index.json')
     .sheet('article')
@@ -82,35 +82,83 @@ async function createNavigation(block) {
   let previousArticle = null;
   let nextArticle = null;
   let found = false;
-  let firstArticle = null;
-  let lastArticle = null;
+  let firstCurrentCategoryArticle = null;
+  let lastCurrentCategoryArticle = null;
+  let previousParentOrSiblingCategoryArticle = null;
+  let nextParentOrSiblingCategoryArticle = null;
+  let firstAllCategoryArticle = null;
+  let lastAllCategoryArticle = null;
+
+  function isInCurrentCategory(article) {
+    return article['category slug'] === categoryInfo.Slug;
+  }
+  function isTheArticle(article) {
+    return article.path === window.location.pathname;
+  }
+  function trackCurrentCategory(article) {
+    if (isInCurrentCategory(article)) {
+      if (!firstCurrentCategoryArticle) {
+        firstCurrentCategoryArticle = article;
+      }
+      lastCurrentCategoryArticle = article;
+    }
+  }
+  function trackAllCategories(article) {
+    if (!firstAllCategoryArticle) {
+      firstAllCategoryArticle = article;
+    }
+    lastAllCategoryArticle = article;
+  }
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articles) {
-    if (!firstArticle) {
-      firstArticle = article;
-    }
-    lastArticle = article;
+    trackAllCategories(article);
+    trackCurrentCategory(article);
+
     if (!found) {
-      if (article.path === window.location.pathname) {
+      if (isTheArticle(article)) {
         found = true;
-      } else {
+      } else if (isInCurrentCategory(article)) {
         previousArticle = article;
+      } else {
+        previousParentOrSiblingCategoryArticle = article;
       }
     } else {
-      if (!nextArticle) {
+      if (isInCurrentCategory(article) && !nextArticle) {
         nextArticle = article;
+      } else if (!isInCurrentCategory(article) && !nextParentOrSiblingCategoryArticle) {
+        nextParentOrSiblingCategoryArticle = article;
       }
-      if (previousArticle) {
+
+      // stop if both previous and next articles have been found in current category
+      if (previousArticle && nextArticle) {
         break;
       }
     }
   }
 
-  if (!previousArticle) {
-    previousArticle = lastArticle;
+  if (!previousArticle) { // this article is the first in the current category
+    // if current category has more than two articles, use the last article as the previous
+    if (lastCurrentCategoryArticle && nextArticle && lastCurrentCategoryArticle !== nextArticle) {
+      previousArticle = lastCurrentCategoryArticle;
+    } else if (previousParentOrSiblingCategoryArticle) {
+      // if the current category only has one or two articles,
+      // the last article from the category before current category will be the previous
+      previousArticle = previousParentOrSiblingCategoryArticle;
+    } else { // this article is the first in all categories
+      previousArticle = lastAllCategoryArticle; // wrap around to the last article
+    }
   }
-  if (!nextArticle) {
-    nextArticle = firstArticle;
+  if (!nextArticle) { // this article is the last in the current category
+    // if current category has more than two articles, use the first article as the next
+    if (firstCurrentCategoryArticle && firstCurrentCategoryArticle !== previousArticle) {
+      nextArticle = firstCurrentCategoryArticle;
+    } else if (nextParentOrSiblingCategoryArticle) {
+      // if the current category only has one or two articles,
+      // the first article from the category after current category will be the next
+      nextArticle = nextParentOrSiblingCategoryArticle;
+    } else { // this article is the last in all categories
+      nextArticle = firstAllCategoryArticle; // wrap around to the first article
+    }
   }
 
   if (previousArticle || nextArticle) {
@@ -149,12 +197,14 @@ async function createNavigation(block) {
     block.append(leftNav);
 
     // previous article
-    createArticleDetails(block, 'previous', categoryInfo, previousArticle);
+    const previousArticleCategory = categories.find((c) => c.Slug === previousArticle['category slug']);
+    createArticleDetails(block, 'previous', previousArticleCategory, previousArticle);
   }
 
   if (nextArticle) {
     // next article
-    createArticleDetails(block, 'next', categoryInfo, nextArticle);
+    const nextArticleCategory = categories.find((c) => c.Slug === nextArticle['category slug']);
+    createArticleDetails(block, 'next', nextArticleCategory, nextArticle);
 
     // right arrow
     const rightNav = document.createElement('div');
