@@ -639,6 +639,12 @@ function initPartytown() {
   import('./partytown/partytown.js');
 }
 
+/**
+ * A helper that will load resources in an optimal way.
+ *
+ * @param {Promise[]} promises an array of promises
+ * @returns a promise that all resources have been loaded
+ */
 async function optimizedBatchLoading(promises) {
   if (isMobile()) {
     return promises.reduce(
@@ -648,6 +654,7 @@ async function optimizedBatchLoading(promises) {
   }
   return Promise.all(promises.map((promise) => promise()));
 }
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
