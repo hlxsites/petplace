@@ -653,7 +653,7 @@ async function loadLazy(doc) {
   loadFooter(footer);
 
   await loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  loadFonts();
+  // loadFonts();
 
   // identify the first item in the menu
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
