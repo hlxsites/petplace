@@ -78,7 +78,7 @@ function createTemplateBlock(main, blockName) {
 }
 
 export function loadEager(main) {
-  main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(1)'));
+  main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   const cards = createTemplateBlock(main, 'cards');
   cards.classList.add('breed');
   cards.dataset.limit = 6;
