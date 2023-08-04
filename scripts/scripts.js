@@ -672,9 +672,9 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   await optimizedBatchLoading([
-    () => loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
     () => loadFonts(),
     () => loadHeader(doc.querySelector('header')),
+    () => loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
   ]);
 
   const footer = doc.querySelector('footer');
