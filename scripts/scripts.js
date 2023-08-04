@@ -106,6 +106,14 @@ export function getId(prefix = 'hlx') {
  * @returns true if we are on a mobile, and false otherwise
  */
 export function isMobile() {
+  return window.innerWidth < 600;
+}
+
+/**
+ * A generic helper function that checks if we are in a tablet context based on viewport size
+ * @returns true if we are on a tablet, and false otherwise
+ */
+export function isTablet() {
   return window.innerWidth < 1024;
 }
 
