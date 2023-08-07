@@ -150,9 +150,9 @@ export async function loadLazy(main) {
 
   const breadcrumbContainer = await createBreadCrumbs(crumbData);
   const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
-  breadCrumbs.style.visibility = 'hidden';
+  breadcrumb.style.visibility = 'hidden';
   breadCrumbs.append(breadcrumb);
   decorateBlock(breadcrumb);
   await loadBlock(breadcrumb);
-  breadCrumbs.style.visibility = '';
+  breadcrumb.style.visibility = '';
 }
