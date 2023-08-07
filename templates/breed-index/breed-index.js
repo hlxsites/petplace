@@ -1,6 +1,6 @@
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
-import { decorateResponsiveImages, getId, isMobile } from '../../scripts/scripts.js';
+import { decorateResponsiveImages, getId, isTablet } from '../../scripts/scripts.js';
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
@@ -36,14 +36,14 @@ function buildSidebar() {
 
   const id = getId();
   const filterToggle = document.createElement('button');
-  filterToggle.disabled = !isMobile();
+  filterToggle.disabled = !isTablet();
   filterToggle.setAttribute('aria-controls', `${id}`);
   filterToggle.textContent = 'Filters';
   section.append(filterToggle);
 
   const typeFilter = buildBlock('type-filters', { elems: [] });
   typeFilter.id = id;
-  typeFilter.setAttribute('aria-hidden', isMobile());
+  typeFilter.setAttribute('aria-hidden', isTablet());
   section.append(typeFilter);
 
   filterToggle.addEventListener('click', () => {
@@ -56,10 +56,10 @@ function buildSidebar() {
 
   window.addEventListener('resize', () => {
     const isVisible = filterToggle.getAttribute('aria-hidden') === 'false';
-    if (!isVisible && !isMobile()) {
+    if (!isVisible && !isTablet()) {
       filterToggle.disabled = true;
       filterToggle.setAttribute('aria-hidden', false);
-    } else if (isVisible && isMobile() && !filterToggle.dataset.mobileVisible) {
+    } else if (isVisible && isTablet() && !filterToggle.dataset.mobileVisible) {
       filterToggle.disabled = false;
       filterToggle.setAttribute('aria-hidden', true);
     }
