@@ -12,7 +12,7 @@ export default function decorate(block) {
         const optimizedImg = div.querySelector('img');
         optimizedImg.setAttribute('width', IMAGE_WIDTH);
         optimizedImg.setAttribute('height', Math.round((IMAGE_WIDTH / width) * height));
-      } else {
+      } else if (row.children.length > 1) { // support blades with only one cell of content
         div.className = 'blade-body';
       }
     });
