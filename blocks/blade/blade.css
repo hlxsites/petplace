@@ -38,7 +38,7 @@
     width: 100%;
 }
 
-.blade .blade-body p {
+.blade .blade-body p:not(:last-child) {
     margin-bottom: 0.75em;
 }
 
