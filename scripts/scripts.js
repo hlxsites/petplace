@@ -200,6 +200,7 @@ function getResponsiveHeroPictures(main, h1) {
       { width: Math.ceil(window.innerWidth / 100) * 100 },
     ], 'low');
     heroPics.pictures.push(optimized);
+    heroPics.pictureParent = picture.parentElement;
     picture.remove();
   }
   if (heroPics.pictures.length) {
@@ -291,11 +292,19 @@ async function buildHeroBlock(main) {
     const {
       pictures,
       breakpoints,
+      pictureParent,
     } = getResponsiveHeroPictures(main, h1);
     if (!pictures.length) {
       return;
     }
     const responsive = createResponsiveImage(pictures, breakpoints, 'low');
+    if (main.querySelector('.hero')) {
+      // hero block has been explicitly added to the page. put the responsive
+      // pictures back to where they were originally
+      pictureParent.append(responsive);
+      pictureParent.classList.add('hero-picture-container');
+      return;
+    }
     const section = document.createElement('div');
     if (bodyClass.includes('breed-page') || bodyClass.includes('author-page')) {
       section.append(buildBlock('hero', { elems: [responsive] }));

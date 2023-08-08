@@ -44,6 +44,41 @@ main .hero img {
   max-height: 400px;
 }
 
+/* full hero variant */
+main .hero.full h1 {
+  color: var(--color-purple);
+  font-size: var(--heading-font-size-xl);
+  margin: 1rem 0;
+}
+
+main .hero.full {
+  padding: 0;
+}
+
+main .hero.full > div > div {
+  display: block;
+}
+
+main .hero.full > div {
+  max-width: unset;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+main .hero.full > div > div.hero-picture-container {
+  line-height: 0;
+}
+
+main .hero.full > div > div:not(.hero-picture-container) {
+  padding: 2rem 1.5rem;
+}
+
+main .hero.full picture {
+  position: unset;
+  padding: 0;
+  margin: 0;
+}
+
 @media (min-width: 900px) {
   main .hero {
     display: flex;
