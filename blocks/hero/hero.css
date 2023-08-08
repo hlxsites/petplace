@@ -55,14 +55,14 @@ main .hero.full {
   padding: 0;
 }
 
-main .hero.full > div > div {
-  display: block;
-}
-
 main .hero.full > div {
   max-width: unset;
   display: flex;
   flex-direction: column-reverse;
+}
+
+main .hero.full > div > div {
+  display: block;
 }
 
 main .hero.full > div > div.hero-picture-container {
