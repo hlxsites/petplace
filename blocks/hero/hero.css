@@ -106,3 +106,17 @@ main .hero.full picture {
     box-sizing: border-box;
   }
 }
+
+@media (min-width: 1024px) {
+  /* full hero variant */
+  main .hero.full > div > div:not(.hero-picture-container) {
+    max-width: 1344px;
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    height: 500px;
+    position: absolute;
+    top: 2.5vw;
+    left: 14%;
+  }
+}
