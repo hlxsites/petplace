@@ -5,8 +5,8 @@
 
 .blade h2 {
     margin-top: 0;
-}  
-  
+}
+
 .blade > div {
     display: flex;
     flex-direction: column;
@@ -36,6 +36,10 @@
     position: relative;
     box-sizing: border-box;
     width: 100%;
+}
+
+.blade .blade-body p {
+    margin-bottom: 0.75em;
 }
 
 .blade .blade-body :is(h3, h4) {
