@@ -14,6 +14,10 @@
     gap: 1.5rem;
 }
 
+.blade.spaced > div:not(:last-child) {
+    padding-bottom: 2rem;
+}
+
 .blade .blade-image {
     box-sizing: border-box;
     overflow: hidden;
