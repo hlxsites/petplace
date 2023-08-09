@@ -129,8 +129,8 @@ async function getBreadcrumbs(categorySlug) {
 // eslint-disable-next-line import/prefer-default-export
 export async function loadEager(main) {
   createTemplateBlock(main, 'article-author');
-  createTemplateBlock(main, 'social-share');
   createAutoBlockSection(main, 'ad', 'ad');
+  createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
