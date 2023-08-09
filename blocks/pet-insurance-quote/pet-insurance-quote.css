@@ -17,21 +17,21 @@
   font-family: var(--heading-font-family);
 }
 
-/* triple variant */
-.pet-insurance-quote.triple .insurance-label {
+/* full variant */
+.pet-insurance-quote.full .insurance-label {
   grid-area: label;
 }
 
-.pet-insurance-quote.triple .insurance-button {
+.pet-insurance-quote.full .insurance-button {
   grid-area: button;
 }
 
-.pet-insurance-quote.triple .insurance-description {
+.pet-insurance-quote.full .insurance-description {
   grid-area: description;
   margin-bottom: 1rem;
 }
 
-.pet-insurance-quote.triple > div {
+.pet-insurance-quote.full > div {
   display: grid;
   grid-template:
     "description"
@@ -39,7 +39,7 @@
     "button";
 }
 
-.pet-insurance-quote.triple > div > div.insurance-description {
+.pet-insurance-quote.full > div > div.insurance-description {
   color: var(--highlight-color);
   font-weight: 100;
   font-family: var(--body-font-family);
@@ -62,12 +62,12 @@
     flex-direction: row;
   }
 
-  /* triple variant */
-  .pet-insurance-quote.triple > div {
+  /* full variant */
+  .pet-insurance-quote.full > div {
     text-align: center;
   }
 
-  .pet-insurance-quote.triple > div > div::after {
+  .pet-insurance-quote.full > div > div::after {
     display: none;
   }
 }
