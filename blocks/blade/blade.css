@@ -5,8 +5,8 @@
 
 .blade h2 {
     margin-top: 0;
-}  
-  
+}
+
 .blade > div {
     display: flex;
     flex-direction: column;
@@ -54,6 +54,10 @@
 
 .blade .blade-body p {
     font-size: var(--body-font-size-m);
+}
+
+.blade .blade-body p:not(:last-child) {
+    margin-bottom: 0.75em;
 }
 
 .blade a:not(.button):any-link {

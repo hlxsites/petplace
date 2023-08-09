@@ -1,1 +1,35 @@
-/* Nothing here yet */
+.pet-insurance-quote {
+  background-color: var(--background-color-dark);
+}
+
+.pet-insurance-quote > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.pet-insurance-quote > div > div {
+  color: var(--text-color-inverted);
+  font-size: var(--body-font-size-xl);
+  font-weight: 800;
+  font-family: var(--heading-font-family);
+}
+
+@media (min-width: 1024px) {
+  .pet-insurance-quote {
+    border: 1px solid var(--background-color-dark);
+    border-radius: 10px;
+  }
+
+  .pet-insurance-quote > div > div::after {
+    content: '→';
+    display: inline-block;
+    padding: 0 1.5rem;
+  }
+
+  .pet-insurance-quote > div {
+    flex-direction: row;
+  }
+}
