@@ -91,6 +91,11 @@
     color: var(--text-color-inverted);
 }
 
+@media (max-width: 350px) {
+    .popular-posts-card {
+        flex-direction: column;
+    }
+}
 
 @media (min-width: 768px) {
     .popular-articles-container.section {
