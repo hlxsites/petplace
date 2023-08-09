@@ -3,9 +3,9 @@
   grid-template:
     "hero"
     "author" minmax(181px, min-content)
-    "social" minmax(115px, min-content)
     "ad"
     "insurance"
+    "social" minmax(115px, min-content)
     "article"
     "article-footer"
     "paws-up"
@@ -141,10 +141,10 @@
     grid-template:
       "hero hero hero hero hero" min-content
       ". article .. author ." min-content
-      ". article .. social ." min-content
-      ". article .. ad ." 1fr
+      ". article .. ad ." min-content
       ". article .. insurance ." min-content
       ". article .. paws-up ." min-content
+      ". article .. social ." 1fr
       "popular popular popular popular popular" min-content
       "article-navigation article-navigation article-navigation article-navigation article-navigation" min-content
       / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 300px minmax(1rem, 1fr);
@@ -200,7 +200,6 @@
 
   .article-page .article-author-container {
     padding-top: 1rem;
-    padding-bottom: 0;
   }
 
   .article-page .category-link-btn {
