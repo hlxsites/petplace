@@ -63,7 +63,7 @@
   }
 
   /* triple variant */
-  .pet-insurance-quote > div {
+  .pet-insurance-quote.triple > div {
     text-align: center;
   }
 
