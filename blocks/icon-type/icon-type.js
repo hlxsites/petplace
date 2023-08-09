@@ -1,5 +1,7 @@
 import { decorateIcons, toClassName } from '../../scripts/lib-franklin.js';
 
+const TRAVEL_GUIDE_ICON = 'icon-logo-solo';
+
 export default function decorate(block) {
   const iconList = block.querySelector('ul');
 
@@ -7,11 +9,10 @@ export default function decorate(block) {
 
   // Find the li elements containing the desired text
   const liElements = iconList.querySelectorAll('li');
-
   // Iterate over each li element
   liElements.forEach((liElement) => {
     const textContent = liElement.textContent.trim();
-    const iconName = `icon-city-${toClassName(textContent)}`;
+    const iconName = block.classList.contains('logo-solo') ? `${TRAVEL_GUIDE_ICON}` : `icon-city-${toClassName(textContent)}`;
     const iconItem = document.createElement('icon-item');
     // append svg span
     const element = document.createElement('span');
