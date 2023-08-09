@@ -358,9 +358,8 @@ main blockquote p::after {
 }
 
 main img {
+  display: block;
   max-width: 100%;
-  width: auto;
-  height: auto;
 }
 
 main iframe[src*="youtube.com"] {
