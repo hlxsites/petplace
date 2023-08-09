@@ -360,6 +360,7 @@ main blockquote p::after {
 main img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 main iframe[src*="youtube.com"] {
