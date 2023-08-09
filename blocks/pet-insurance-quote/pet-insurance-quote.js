@@ -1,4 +1,11 @@
 export default function decorate(block) {
+  // for backward compatibility, there are some pet insurance blocks in existing
+  // pages that don't have content. Continue showing nothing for those cases
+  if (!block.textContent.trim()) {
+    block.remove();
+    return;
+  }
+
   const a = document.createElement('a');
   a.classList.add('button', 'primary');
   a.href = 'https://www.petpartners.com/enroll?p=PPFB2020';
