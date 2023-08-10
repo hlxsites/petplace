@@ -59,14 +59,12 @@ export default function decorate(block) {
   const buttonContainer = document.createElement('p');
   buttonContainer.classList.add('button-container');
 
-  let buttonClick = 0;
-
   const button = document.createElement('a');
   button.href = '#';
   button.title = 'Sign up now';
   button.classList.add('button', 'primary');
   button.innerText = 'Sign up now';
-  button.addEventListener('click', (e) => {
+  button.addEventListener('click', async (e) => {
     e.preventDefault();
     enableElement(button, false);
 
@@ -98,18 +96,27 @@ export default function decorate(block) {
       mergeNestedObjects: true,
       createNewFields: true
     };
-    console.log('Calling API with payload', payload);
-    // simulate API call
-    setTimeout(() => {
-      buttonClick += 1;
-      // very other button click will generate an error
-      if (buttonClick % 2 === 1) {
+
+    const fetchOpts = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Key': '3e7a9624572b4827b156af44e72fceaa'
+      },
+      body: JSON.stringify(payload)
+    };
+    try {
+      const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
+      if (!res.ok) {
         showElement(apiError);
         enableElement(button);
       } else {
         showElement(success);
       }
-    }, 1000);
+    } catch (e) {
+      showElement(apiError);
+      enableElement(button);
+    }
   });
   buttonContainer.append(button);
   target.append(buttonContainer);
