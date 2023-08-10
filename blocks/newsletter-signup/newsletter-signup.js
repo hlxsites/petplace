@@ -91,19 +91,19 @@ export default function decorate(block) {
       email,
       dataFields: {
         catnewsletter,
-        dognewsletter
+        dognewsletter,
       },
       mergeNestedObjects: true,
-      createNewFields: true
+      createNewFields: true,
     };
 
     const fetchOpts = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Api-Key': '3e7a9624572b4827b156af44e72fceaa'
+        'Api-Key': '<API KEY HERE>',
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     };
     try {
       const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
@@ -113,7 +113,7 @@ export default function decorate(block) {
       } else {
         showElement(success);
       }
-    } catch (e) {
+    } catch {
       showElement(apiError);
       enableElement(button);
     }

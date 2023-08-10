@@ -35,8 +35,19 @@ main .newsletter-signup input {
   flex-direction: column;
 }
 
+.newsletter-signup input[type="text"] {
+  padding: 0 1rem;
+  height: 38px;
+  border-radius: 20px;
+  text-align: center;
+  background-color: var(--color-mauve);
+  color: var(--text-color-inverted);
+  font-size: var(--body-font-size-m);
+  border: 1 px solid var(--color-mauve);
+}
+
 .newsletter-signup > div > span,
-.newsletter-signup > div > input[type=text],
+.newsletter-signup > div > input[type="text"],
 .newsletter-signup .button-container {
   margin: 0 1.5rem;
 }
@@ -62,22 +73,11 @@ main .newsletter-signup input {
   margin: 0;
 }
 
-.newsletter-signup input[type=checkbox] {
+.newsletter-signup input[type="checkbox"] {
   display: inline-block;
 }
 
-.newsletter-signup input[type=text] {
-  padding: 0 1rem;
-  height: 38px;
-  border-radius: 20px;
-  text-align: center;
-  background-color: var(--color-mauve);
-  color: var(--text-color-inverted);
-  font-size: var(--body-font-size-m);
-  border: 1 px solid var(--color-mauve);
-}
-
-.newsletter-signup input[type=text]::placeholder {
+.newsletter-signup input[type="text"]::placeholder {
   color: var(--text-color-inverted);
   opacity: .75;
   font-weight: 500;
@@ -108,6 +108,18 @@ main .newsletter-signup input {
 
 @media (min-width: 768px) {
   /* horizontal variant */
+  .newsletter-signup.horizontal > div {
+    padding: 1.5rem 0;
+    margin: 0 auto;
+    max-width: 1344px;
+    display: grid;
+    grid-template:
+      ". description description description description ." auto
+      ". dog dog cat cat ." auto
+      ". email name name signup ." auto
+      ". terms terms terms terms ." auto / auto 1fr auto auto 1fr auto;
+  }
+
   .newsletter-signup.horizontal > div > div {
     grid-area: description;
   }
@@ -145,19 +157,7 @@ main .newsletter-signup input {
     grid-area: terms;
   }
 
-  .newsletter-signup.horizontal > div {
-    padding: 1.5rem 0;
-    margin: 0 auto;
-    max-width: 1344px;
-    display: grid;
-    grid-template:
-      ". description description description description ." auto
-      ". dog dog cat cat ." auto
-      ". email name name signup ." auto
-      ". terms terms terms terms ." auto / auto 1fr auto auto 1fr auto;
-  }
-
-  .newsletter-signup.horizontal > div > input[type=text],
+  .newsletter-signup.horizontal > div > input[type="text"],
   .newsletter-signup.horizontal > div .button-container {
     margin: 0;
   }
