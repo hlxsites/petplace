@@ -1,6 +1,7 @@
 function addCheckbox(parent, id, label) {
   const inputId = `newsletter-checkbox-${id}`;
   const container = document.createElement('span');
+  container.classList.add(inputId);
   const check = document.createElement('input');
   check.setAttribute('type', 'checkbox');
   check.setAttribute('id', inputId);
@@ -22,6 +23,7 @@ function addCheckbox(parent, id, label) {
 function addTextbox(parent, id, label) {
   const inputId = `newsletter-text-${id}`;
   const text = document.createElement('input');
+  text.classList.add(inputId);
   text.setAttribute('type', 'text');
   text.setAttribute('id', inputId);
   text.setAttribute('name', inputId);

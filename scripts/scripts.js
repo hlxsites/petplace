@@ -669,6 +669,7 @@ async function loadNewsletter(footer) {
   const title = document.createElement('h2');
   title.innerText = 'Get the best of PetPlace straight to your inbox.';
   const newsletterBlock = buildBlock('newsletter-signup', title);
+  newsletterBlock.classList.add('horizontal');
   footer.append(newsletterBlock);
   decorateBlock(newsletterBlock);
   return loadBlock(newsletterBlock);

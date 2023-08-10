@@ -1,3 +1,7 @@
+main .newsletter-signup input {
+  all: unset;
+}
+
 .newsletter-signup {
   background-color: var(--background-color-dark);
   color: var(--text-color-inverted);
@@ -8,6 +12,8 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
 .newsletter-signup > div > div {
@@ -30,10 +36,14 @@
   font-size: var(--body-font-size-xs);
 }
 
-.newsletter-signup h2 {
+.newsletter-signup > div > div h2 {
   margin: 0;
   padding: 0;
   font-size: var(--body-font-size-l);
+}
+
+.newsletter-signup > div > div p {
+  color: var(--highlight-color);
 }
 
 .newsletter-signup .button-container a {
@@ -73,10 +83,59 @@
   color: var(--text-color-inverted);
 }
 
-@media (min-width: 1024px) {
-  .newsletter-signup > div {
+@media (min-width: 768px) {
+  /* horizontal variant */
+  .newsletter-signup.horizontal > div > div {
+    grid-area: description;
+  }
+
+  .newsletter-signup.horizontal div .newsletter-checkbox-dog {
+    grid-area: dog;
+    margin: 0;
+    justify-self: flex-end;
+  }
+
+  .newsletter-signup.horizontal div .newsletter-checkbox-cat {
+    grid-area: cat;
+    margin: 0;
+    justify-self: flex-start;
+  }
+
+  .newsletter-signup.horizontal div .newsletter-text-email {
+    grid-area: email;
+    margin: 0;
+    justify-self: flex-end;
+  }
+
+  .newsletter-signup.horizontal div .newsletter-text-name {
+    grid-area: name;
+    margin: 0;
+  }
+
+  .newsletter-signup.horizontal div .button-container {
+    grid-area: signup;
+    margin: 0;
+    justify-self: flex-start;
+  }
+
+  .newsletter-signup.horizontal div .newsletter-terms {
+    grid-area: terms;
+  }
+
+  .newsletter-signup.horizontal > div {
+    padding: 1.5rem 0;
     margin: 0 auto;
     max-width: 1344px;
-    width: 100%;
+    display: grid;
+    grid-template:
+      ". description description description description ." auto
+      ". dog dog cat cat ." auto
+      ". email name name signup ." auto
+      ". terms terms terms terms ." auto / auto 1fr auto auto 1fr auto;
+  }
+
+  .newsletter-signup.horizontal > div > input[type=text],
+  .newsletter-signup.horizontal > div .button-container {
+    margin: 0;
   }
 }
