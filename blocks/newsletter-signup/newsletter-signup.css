@@ -7,6 +7,17 @@ main .newsletter-signup input {
   color: var(--text-color-inverted);
 }
 
+.newsletter-signup .hidden {
+  display: none;
+}
+
+.newsletter-signup .disabled {
+  pointer-events: none;
+  cursor: pointer !important;
+  background-color: var(--color-gray-light) !important;
+  color: var(--color-gray-dark) !important;
+}
+
 .newsletter-signup > div {
   padding: 1.5rem;
   display: flex;
@@ -72,9 +83,21 @@ main .newsletter-signup input {
   font-weight: 500;
 }
 
+.newsletter-signup .newsletter-error, .newsletter-signup .newsletter-success {
+  text-align: center;
+  font-weight: 800;
+  font-size: var(--body-font-size-m);
+  margin-bottom: 1rem;
+}
+
+.newsletter-signup .newsletter-error {
+  color: var(--color-red);
+}
+
 .newsletter-signup .newsletter-terms {
   font-size: var(--body-font-size-xs);
   text-align: center;
+  display: block;
 }
 
 .newsletter-signup .newsletter-terms a,
