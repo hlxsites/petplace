@@ -80,6 +80,12 @@ function createInput(fd) {
   if (fd.Required && fd.Required !== 'false') {
     input.setAttribute('required', 'required');
   }
+  if (fd.Pattern) {
+    input.setAttribute('pattern', fd.Pattern);
+    if (fd.Title) {
+      input.setAttribute('title', fd.Title);
+    }
+  }
   return input;
 }
 
