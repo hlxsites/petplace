@@ -1,5 +1,7 @@
 main .newsletter-signup input {
-  all: unset;
+  width: unset;
+  margin: 0;
+  padding: 0;
 }
 
 .newsletter-signup {

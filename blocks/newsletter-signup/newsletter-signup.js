@@ -81,7 +81,7 @@ export default function decorate(block) {
     showElement(apiError, false);
     showElement(success, false);
 
-    if (!email || !name) {
+    if (!email || !name || (!catnewsletter && !dognewsletter)) {
       showElement(inputError);
       enableElement(button);
       return;
@@ -125,7 +125,7 @@ export default function decorate(block) {
   terms.classList.add('newsletter-terms');
   terms.innerHTML = `
     <p class="newsletter-success hidden">Thank you for signing up! We've received your information and will start sending newsletters to you.</p>
-    <p class="newsletter-error newsletter-input-error hidden">Please enter your name and a valid email address.</p>
+    <p class="newsletter-error newsletter-input-error hidden">Please enter your name, provide a valid email address, and select at least one newsletter.</p>
     <p class="newsletter-error newsletter-api-error hidden">Unfortunately, there was an error submitting your information. Please try again shortly.</p>
     <p>By signing up, you agree to our <a href="/terms-of-use" target="_blank">Terms of Use</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</p>
   `;
