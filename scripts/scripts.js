@@ -9,6 +9,7 @@ import {
   decorateBlocks,
   decorateTemplateAndTheme,
   waitForLCP,
+  loadBlock,
   loadBlocks,
   loadCSS,
   loadHeader,
@@ -664,6 +665,15 @@ async function optimizedBatchLoading(promises) {
   return Promise.all(promises.map((promise) => promise()));
 }
 
+async function loadNewsletter(footer) {
+  const title = document.createElement('h2');
+  title.innerText = 'Get the best of PetPlace straight to your inbox.';
+  const newsletterBlock = buildBlock('newsletter-signup', title);
+  footer.append(newsletterBlock);
+  decorateBlock(newsletterBlock);
+  return loadBlock(newsletterBlock);
+}
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -688,6 +698,7 @@ async function loadLazy(doc) {
 
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
+  loadNewsletter(footer);
   loadFooter(footer);
 
   // identify the first item in the menu
