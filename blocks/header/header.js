@@ -39,7 +39,6 @@ export default async function decorate(block) {
   const navTools = nav.querySelector('.nav-tools');
   const searchField = document.createElement('input');
   searchField.setAttribute('aria-label', navTools.textContent);
-  searchField.className = 'search-input';
   searchField.name = 'query';
   searchField.type = 'search';
   searchField.placeholder = navTools.textContent;
@@ -47,7 +46,16 @@ export default async function decorate(block) {
   searchForm.setAttribute('role', 'search');
   searchForm.action = '/search';
   searchForm.method = 'get';
-  searchForm.append(searchField);
+
+  const searchButton = document.createElement('button');
+  searchButton.className = 'search-btn';
+  searchButton.setAttribute('aria-label', 'submit search');
+  searchButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    searchForm.submit();
+  });
+
+  searchForm.append(searchField, searchButton); // Ensure button is appended after the search field
   navTools.innerHTML = '';
   navTools.append(searchForm);
 
