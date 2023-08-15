@@ -1,6 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
+import { createAnIndex } from '../../scripts/lunr.js';
 
 function createArticleDiv(article) {
   const div = document.createElement('div');
@@ -35,6 +36,7 @@ async function renderArticles(articles) {
   let found = false;
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
+    console.log(article);
     found = true;
     const div = createArticleDiv(article);
     promises.push(meterCalls(() => block.append(div)));
@@ -55,6 +57,7 @@ async function renderArticles(articles) {
 }
 
 async function getArticles() {
+  createAnIndex();
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 16;
   const query = usp.get('query');
