@@ -1,7 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
-import lunrSearchArticlePaths from '../../scripts/lunr.js';
+import { getLunrIdx, lunrSearchArticlePaths} from '../../scripts/lunr.js';
 
 function createArticleDiv(article) {
   const div = document.createElement('div');
@@ -55,13 +55,13 @@ async function renderArticles(articles) {
   });
 }
 
-async function getArticles() {
+async function getArticles(idx) {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 16;
   const query = usp.get('query');
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   const sortorder = usp.get('sort');
-  const paths = await lunrSearchArticlePaths(query);
+  const paths = lunrSearchArticlePaths(idx, query);
   let sheet = 'article';
   if (sortorder === 'titleasc') {
     sheet = 'article-by-title-asc';
@@ -132,6 +132,7 @@ export async function loadEager(main) {
 }
 
 export async function loadLazy(main) {
+  const idx = await getLunrIdx();
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const contentDiv = document.createElement('div');
@@ -157,11 +158,11 @@ export async function loadLazy(main) {
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
   defaultContentWrapper.replaceWith(hero);
-  renderArticles(getArticles());
+  renderArticles(getArticles(idx));
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
     window.addEventListener('popstate', () => {
-      renderArticles(getArticles());
+      renderArticles(getArticles(idx));
     });
   }
 }
