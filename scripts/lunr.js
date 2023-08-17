@@ -1,42 +1,45 @@
-import ffetch from './ffetch.js';
 
 let idx = null;
 
-async function getArticles() {
-  return ffetch('/article/query-index.json')
-    .sheet('article')
-    .withTotal(true);
-}
-
-async function createLunrIndex() {
-  const articles = await getArticles();
-  const res = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for await (const article of articles) {
-    res.push(article);
-  }
-  // eslint-disable-next-line no-undef
-  idx = lunr(function create() {
-    this.field('author');
-    this.field('category');
-    this.field('category name');
-    this.field('category slug');
-    this.field('date');
-    this.field('description');
-    this.field('imageAlt');
-    this.ref('path');
-    this.field('tags');
-    this.field('title');
-    this.field('type');
-
-    res.forEach((article) => this.add(article));
-  });
+export async function createAnIndex() {
+ if (idx) {
   return idx;
-}
+ }
 
-export default async function lunrSearchArticlePaths(query) {
-  if (idx === null) {
-    await createLunrIndex();
-  }
-  return new Set(idx.search(query).map(({ ref }) => ref));
+ const articles = await fetch('/article/query-index.json')
+  .then((response) => response.json())
+  .then((sheet) => sheet.article)
+  .then((data) => data.data);
+
+ idx = lunr(function () {
+  this.ref('author');
+  this.ref('category');
+  this.ref('category name');
+  this.ref('category slug');
+  this.ref('date');
+  this.ref('description');
+  this.ref('image');
+  this.ref('imageAlt');
+  this.ref('lastModified');
+  this.ref('path');
+  this.ref('tags');
+  this.ref('title');
+  this.ref('type');
+
+  articles.forEach(function (article) {
+   this.add(JSON.stringify(article));
+  }, this);
+ });
+
+ var idx2 = lunr(function () {
+  this.ref('author');
+
+  this.add({'author':'Xinyi'});
+ });
+
+
+ console.log(idx.search("dog"));
+ console.log(idx2.search("Xinyi"));
+
+ return idx;
 }
