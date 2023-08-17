@@ -668,7 +668,9 @@ async function optimizedBatchLoading(promises) {
 async function loadNewsletter(footer) {
   const title = document.createElement('h2');
   title.innerText = 'Get the best of PetPlace straight to your inbox.';
-  const newsletterBlock = buildBlock('newsletter-signup', title);
+  const terms = document.createElement('p');
+  terms.innerHTML = `By signing up, you agree to our <a href="/terms-of-use" target="_blank">Terms of Use</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a>.`;
+  const newsletterBlock = buildBlock('newsletter-signup', { elems: [title, terms]});
   newsletterBlock.classList.add('horizontal');
   footer.append(newsletterBlock);
   decorateBlock(newsletterBlock);

@@ -9,27 +9,11 @@ main .newsletter-signup input {
   color: var(--text-color-inverted);
 }
 
-.newsletter-signup .hidden {
-  display: none;
-}
-
-.newsletter-signup .disabled {
-  pointer-events: none;
-  cursor: pointer !important;
-  background-color: var(--color-gray-light) !important;
-  color: var(--color-gray-dark) !important;
-}
-
-.newsletter-signup > div {
+.newsletter-signup > div > div {
   padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
   gap: 1rem;
   max-width: 450px;
   margin: 0 auto;
-}
-
-.newsletter-signup > div > div {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,26 +21,34 @@ main .newsletter-signup input {
   flex-direction: column;
 }
 
-.newsletter-signup input[type="text"] {
-  padding: 0 1rem;
+.newsletter-signup input[type="text"], .newsletter-signup button {
+  width: 100%;
   height: 38px;
+}
+
+.newsletter-signup input[type="text"] {
   border-radius: 20px;
   text-align: center;
   background-color: var(--color-mauve);
   color: var(--text-color-inverted);
   font-size: var(--body-font-size-m);
   border: 1 px solid var(--color-mauve);
+  padding: 0;
 }
 
-.newsletter-signup > div > span,
-.newsletter-signup > div > input[type="text"],
-.newsletter-signup .button-container {
-  margin: 0 1.5rem;
-}
-
-.newsletter-signup > div > span {
+.newsletter-signup .form-checkbox-wrapper {
   display: flex;
-  gap: 5px;
+  gap: .25rem;
+}
+
+.newsletter-signup form {
+  margin: 0 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.newsletter-signup form label {
   font-size: var(--body-font-size-xs);
 }
 
@@ -66,46 +58,33 @@ main .newsletter-signup input {
   font-size: var(--body-font-size-l);
 }
 
-.newsletter-signup > div > div p {
+.newsletter-signup > div > div p:not(:last-child) {
   color: var(--highlight-color);
 }
 
-.newsletter-signup .button-container a {
-  width: 100%;
-  margin: 0;
+.newsletter-signup > div > div > p:last-child {
+  font-size: var(--body-font-size-xs);
+  text-align: center;
+  display: block;
 }
 
-.newsletter-signup input[type="checkbox"] {
-  display: inline-block;
+.newsletter-signup > div > div > p:last-child a,
+.newsletter-signup > div > div > p:last-child a:visited,
+.newsletter-signup > div > div > p:last-child a:focus {
+  color: var(--text-color-inverted);
+}
+
+.newsletter-signup button {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: var(--body-font-size-default);
 }
 
 .newsletter-signup input[type="text"]::placeholder {
   color: var(--text-color-inverted);
   opacity: .75;
   font-weight: 500;
-}
-
-.newsletter-signup .newsletter-error, .newsletter-signup .newsletter-success {
-  text-align: center;
-  font-weight: 800;
-  font-size: var(--body-font-size-m);
-  margin-bottom: 1rem;
-}
-
-.newsletter-signup .newsletter-error {
-  color: var(--color-red);
-}
-
-.newsletter-signup .newsletter-terms {
-  font-size: var(--body-font-size-xs);
-  text-align: center;
-  display: block;
-}
-
-.newsletter-signup .newsletter-terms a,
-.newsletter-signup .newsletter-terms a:visited,
-.newsletter-signup .newsletter-terms a:focus {
-  color: var(--text-color-inverted);
 }
 
 @media (min-width: 768px) {

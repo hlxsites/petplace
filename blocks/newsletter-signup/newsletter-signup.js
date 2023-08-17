@@ -1,3 +1,5 @@
+import { createForm } from '../form/form.js';
+
 function addCheckbox(parent, id, label) {
   const inputId = `newsletter-checkbox-${id}`;
   const container = document.createElement('span');
@@ -49,85 +51,97 @@ function showElement(target, show = true) {
   }
 }
 
-export default function decorate(block) {
-  const target = block.children[0];
-  const dogInputId = addCheckbox(target, 'dog', 'Yes, Send Me The Paw Print Newsletter.');
-  const catInputId = addCheckbox(target, 'cat', "Yes, Send Me The Cat's Meow Newsletter.");
-  const emailInputId = addTextbox(target, 'email', 'Type your email');
-  const nameInputId = addTextbox(target, 'name', 'Enter your name');
+export default async function decorate(block) {
+  const form = await createForm(`${window.location.protocol}//${window.location.host}/newsletter.json`);
+  form.querySelector('label[for="email"]').classList.add('sr-only');
+  form.querySelector('label[for="name"]').classList.add('sr-only');
 
-  const buttonContainer = document.createElement('p');
-  buttonContainer.classList.add('button-container');
+  const target = block.children[0].children[0];
+  if (target.children.length > 1) {
+    // insert form before terms and conditions
+    target.insertBefore(form, target.children[target.children.length - 1]);
+  } else {
+    target.append(form);
+  }
 
-  const button = document.createElement('a');
-  button.href = '#';
-  button.title = 'Sign up now';
-  button.classList.add('button', 'primary');
-  button.innerText = 'Sign up now';
-  button.addEventListener('click', async (e) => {
-    e.preventDefault();
-    enableElement(button, false);
+  // const target = block.children[0];
+  // const dogInputId = addCheckbox(target, 'dog', 'Yes, Send Me The Paw Print Newsletter.');
+  // const catInputId = addCheckbox(target, 'cat', "Yes, Send Me The Cat's Meow Newsletter.");
+  // const emailInputId = addTextbox(target, 'email', 'Type your email');
+  // const nameInputId = addTextbox(target, 'name', 'Enter your name');
 
-    const success = document.querySelector('.newsletter-signup .newsletter-success');
-    const inputError = document.querySelector('.newsletter-signup .newsletter-input-error');
-    const apiError = document.querySelector('.newsletter-signup .newsletter-api-error');
+  // const buttonContainer = document.createElement('p');
+  // buttonContainer.classList.add('button-container');
 
-    const dognewsletter = document.getElementById(dogInputId).checked;
-    const catnewsletter = document.getElementById(catInputId).checked;
-    const email = String(document.getElementById(emailInputId).value).trim();
-    const name = String(document.getElementById(nameInputId).value).trim();
+  // const button = document.createElement('a');
+  // button.href = '#';
+  // button.title = 'Sign up now';
+  // button.classList.add('button', 'primary');
+  // button.innerText = 'Sign up now';
+  // button.addEventListener('click', async (e) => {
+  //   e.preventDefault();
+  //   enableElement(button, false);
 
-    showElement(inputError, false);
-    showElement(apiError, false);
-    showElement(success, false);
+  //   const success = document.querySelector('.newsletter-signup .newsletter-success');
+  //   const inputError = document.querySelector('.newsletter-signup .newsletter-input-error');
+  //   const apiError = document.querySelector('.newsletter-signup .newsletter-api-error');
 
-    if (!email || !name || (!catnewsletter && !dognewsletter)) {
-      showElement(inputError);
-      enableElement(button);
-      return;
-    }
+  //   const dognewsletter = document.getElementById(dogInputId).checked;
+  //   const catnewsletter = document.getElementById(catInputId).checked;
+  //   const email = String(document.getElementById(emailInputId).value).trim();
+  //   const name = String(document.getElementById(nameInputId).value).trim();
 
-    const payload = {
-      email,
-      dataFields: {
-        catnewsletter,
-        dognewsletter,
-      },
-      mergeNestedObjects: true,
-      createNewFields: true,
-    };
+  //   showElement(inputError, false);
+  //   showElement(apiError, false);
+  //   showElement(success, false);
 
-    const fetchOpts = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': '<API KEY HERE>',
-      },
-      body: JSON.stringify(payload),
-    };
-    try {
-      const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
-      if (!res.ok) {
-        showElement(apiError);
-        enableElement(button);
-      } else {
-        showElement(success);
-      }
-    } catch {
-      showElement(apiError);
-      enableElement(button);
-    }
-  });
-  buttonContainer.append(button);
-  target.append(buttonContainer);
+  //   if (!email || !name || (!catnewsletter && !dognewsletter)) {
+  //     showElement(inputError);
+  //     enableElement(button);
+  //     return;
+  //   }
 
-  const terms = document.createElement('span');
-  terms.classList.add('newsletter-terms');
-  terms.innerHTML = `
-    <p class="newsletter-success hidden">Thank you for signing up! We've received your information and will start sending newsletters to you.</p>
-    <p class="newsletter-error newsletter-input-error hidden">Please enter your name, provide a valid email address, and select at least one newsletter.</p>
-    <p class="newsletter-error newsletter-api-error hidden">Unfortunately, there was an error submitting your information. Please try again shortly.</p>
-    <p>By signing up, you agree to our <a href="/terms-of-use" target="_blank">Terms of Use</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-  `;
-  target.append(terms);
+  //   const payload = {
+  //     email,
+  //     dataFields: {
+  //       catnewsletter,
+  //       dognewsletter,
+  //     },
+  //     mergeNestedObjects: true,
+  //     createNewFields: true,
+  //   };
+
+  //   const fetchOpts = {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Api-Key': '<API KEY HERE>',
+  //     },
+  //     body: JSON.stringify(payload),
+  //   };
+  //   try {
+  //     const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
+  //     if (!res.ok) {
+  //       showElement(apiError);
+  //       enableElement(button);
+  //     } else {
+  //       showElement(success);
+  //     }
+  //   } catch {
+  //     showElement(apiError);
+  //     enableElement(button);
+  //   }
+  // });
+  // buttonContainer.append(button);
+  // target.append(buttonContainer);
+
+  // const terms = document.createElement('span');
+  // terms.classList.add('newsletter-terms');
+  // terms.innerHTML = `
+  //   <p class="newsletter-success hidden">Thank you for signing up! We've received your information and will start sending newsletters to you.</p>
+  //   <p class="newsletter-error newsletter-input-error hidden">Please enter your name, provide a valid email address, and select at least one newsletter.</p>
+  //   <p class="newsletter-error newsletter-api-error hidden">Unfortunately, there was an error submitting your information. Please try again shortly.</p>
+  //   <p>By signing up, you agree to our <a href="/terms-of-use" target="_blank">Terms of Use</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+  // `;
+  // target.append(terms);
 }
