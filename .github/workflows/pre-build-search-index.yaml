@@ -7,7 +7,7 @@ on:
   pull_request:
     paths:
       - '.github/ci/**'
-      - '.github/workflows/pre-vui-dsearch-index.yaml'
+      - '.github/workflows/pre-build-search-index.yaml'
 
 env:
   TARGETDIRECTORY: "../.."
