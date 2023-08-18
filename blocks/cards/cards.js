@@ -109,8 +109,9 @@ export default async function decorate(block) {
         } else if (div.dataset.json || div.textContent.trim()) {
           ul.append(card);
           isEager = false;
+        } else {
+          div.remove();
         }
-        div.remove();
       });
     });
   });

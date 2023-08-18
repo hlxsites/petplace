@@ -3,15 +3,14 @@ import { decorateResponsiveImages, loadScript } from '../../scripts/scripts.js';
 
 function createArticleDiv(article) {
   const div = document.createElement('div');
-  div.textContent = article.doc.path;
-  div.dataset.json = JSON.stringify(article.doc);
+  div.textContent = article.path;
+  div.dataset.json = JSON.stringify(article);
   return div;
 }
 
 function removeSkeletons(block) {
-  window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-  });
+  block.querySelectorAll(':scope > .skeleton').forEach((sk) => sk.remove());
+  block.querySelectorAll('ul .skeleton').forEach((sk) => sk.parentElement.remove());
 }
 
 function noResultsHidePagination() {
@@ -27,24 +26,42 @@ async function getArticles() {
   const query = usp.get('query');
   const sortorder = usp.get('sort');
 
-  const resp = await fetch('/search-index.json');
-  const json = await resp.json();
-  const index = window.elasticlunr.Index.load(json);
-  const results = index.search(query, { bool: 'AND' });
+  // Show the recent articles if we don't have a search query
+  if (!query) {
+    const resp = await fetch('/article/query-index.json?sheet=article');
+    const json = await resp.json();
+    return json.data.slice(0, 16);
+  }
+
+  let results;
+  try {
+    const resp = await fetch('/search-index.json');
+    if (!resp.ok) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to load search index', resp.status);
+    }
+    const json = await resp.json();
+    const index = window.elasticlunr.Index.load(json);
+    results = index.search(query, { bool: 'AND' }).map((result) => result.doc);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to load search index', err);
+    results = [];
+  }
 
   let res = results;
   switch (sortorder) {
     case 'titleasc':
-      res = res.sort((a, b) => a.doc.title.localeCompare(b.doc.title));
+      res = res.sort((a, b) => a.title.localeCompare(b.title));
       break;
     case 'titledesc':
-      res = res.sort((a, b) => a.doc.title.localeCompare(b.doc.title)).reverse();
+      res = res.sort((a, b) => a.title.localeCompare(b.title)).reverse();
       break;
     case 'dateasc':
-      res = res.sort((a, b) => a.doc.date.localeCompare(b.doc.date));
+      res = res.sort((a, b) => a.date.localeCompare(b.date));
       break;
     case 'datedesc':
-      res = res.sort((a, b) => a.doc.date.localeCompare(b.doc.date)).reverse();
+      res = res.sort((a, b) => a.date.localeCompare(b.date)).reverse();
       break;
     default:
   }
@@ -80,9 +97,7 @@ async function renderArticles() {
     block.append(div);
   });
 
-  window.requestAnimationFrame(() => {
-    removeSkeletons(block);
-  });
+  removeSkeletons(block);
   document.querySelector('.pagination').dataset.total = articles.length;
 }
 
@@ -107,6 +122,7 @@ function buildSortBtn() {
   div.append(h2);
   const select = document.createElement('select');
   select.classList.add('search-select');
+  select.setAttribute('aria-label', 'Sort results');
   select.id = 'orderby';
   select.options.add(new Option('Sort By', 'sortby'));
   select.options.add(new Option('Relevance', 'relevance', false, true));
