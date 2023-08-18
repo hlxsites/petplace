@@ -1,18 +1,18 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
-import lunr from 'lunr';
+import elasticlunr from 'elasticlunr';
 
 const resp = await fetch('https://www.petplace.com/article/query-index.json?sheet=article&limit=15000');
 const json = await resp.json();
 
-const idx = lunr(function () {
-  this.ref('path');
-  this.field('title');
-  this.field('description');
-  this.field('author');
-  this.field('category name');
+const idx = elasticlunr(function () {
+  this.setRef('path');
+  this.addField('title');
+  this.addField('description');
+  this.addField('category name');
+  this.addField('author');
 
-  json.data.forEach((doc) => this.add(doc));
+  json.data.forEach((doc) => this.addDoc(doc));
 });
 
 const targetDirectory = process.argv[2];

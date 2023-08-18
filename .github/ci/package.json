@@ -2,7 +2,7 @@
   "name": "petplace-ci",
   "version": "1.0.0",
   "dependencies": {
-    "lunr": "^2.3.9",
+    "elasticlunr": "^0.9.5",
     "node-fetch": "^3.3.2"
   },
   "type": "module"

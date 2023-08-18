@@ -1,12 +1,10 @@
-import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
-import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
-import lunrSearchArticlePaths from '../../scripts/lunr.js';
+import { decorateResponsiveImages, loadScript } from '../../scripts/scripts.js';
 
 function createArticleDiv(article) {
   const div = document.createElement('div');
-  div.textContent = article.path;
-  div.dataset.json = JSON.stringify(article);
+  div.textContent = article.doc.path;
+  div.dataset.json = JSON.stringify(article.doc);
   return div;
 }
 
@@ -22,8 +20,41 @@ function noResultsHidePagination() {
   searchResultText.innerHTML = 'No results found';
 }
 
-async function renderArticles(articles) {
+async function getArticles() {
+  const usp = new URLSearchParams(window.location.search);
+  const limit = usp.get('limit') || 16;
+  const offset = (Number(usp.get('page') || 1) - 1) * limit;
+  const query = usp.get('query');
+  const sortorder = usp.get('sort');
+
+  const resp = await fetch('/search-index.json');
+  const json = await resp.json();
+  const index = window.elasticlunr.Index.load(json);
+  const results = index.search(query, { bool: 'AND' });
+
+  let res = results;
+  switch (sortorder) {
+    case 'titleasc':
+      res = res.sort((a, b) => a.doc.title.localeCompare(b.doc.title));
+      break;
+    case 'titledesc':
+      res = res.sort((a, b) => a.doc.title.localeCompare(b.doc.title)).reverse();
+      break;
+    case 'dateasc':
+      res = res.sort((a, b) => a.doc.date.localeCompare(b.doc.date));
+      break;
+    case 'datedesc':
+      res = res.sort((a, b) => a.doc.date.localeCompare(b.doc.date)).reverse();
+      break;
+    default:
+  }
+  return res.slice(offset, offset + limit);
+}
+
+async function renderArticles() {
   const block = document.querySelector('.cards');
+
+  // Prepare cards block with skeletons
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < 25; i += 1) {
     const div = document.createElement('div');
@@ -31,50 +62,28 @@ async function renderArticles(articles) {
     block.append(div);
   }
   document.querySelector('.pagination').dataset.total = '…';
-  const res = await articles;
-  const promises = [];
-  let found = false;
-  // eslint-disable-next-line no-restricted-syntax
-  for await (const article of res) {
-    found = true;
-    const div = createArticleDiv(article);
-    promises.push(meterCalls(() => block.append(div)));
+
+  const articles = await getArticles();
+
+  if (!articles.length) {
+    removeSkeletons(block);
+    const usp = new URLSearchParams(window.location.search);
+    const query = usp.get('query');
+    sampleRUM('nullsearch', { source: '.search-input', target: query });
+    noResultsHidePagination();
+    return;
   }
-  Promise.all(promises).then(() => {
-    if (!found) {
-      const usp = new URLSearchParams(window.location.search);
-      const query = usp.get('query');
-      sampleRUM('nullsearch', { source: '.search-input', target: query });
-      noResultsHidePagination();
-    }
+
+  // eslint-disable-next-line no-restricted-syntax
+  articles.forEach((article) => {
+    const div = createArticleDiv(article);
+    block.append(div);
+  });
+
+  window.requestAnimationFrame(() => {
     removeSkeletons(block);
   });
-  document.querySelector('.pagination').dataset.total = res.total();
-  window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-  });
-}
-
-async function getArticles() {
-  const usp = new URLSearchParams(window.location.search);
-  const limit = usp.get('limit') || 16;
-  const query = usp.get('query');
-  const offset = (Number(usp.get('page') || 1) - 1) * limit;
-  const sortorder = usp.get('sort');
-  const paths = await lunrSearchArticlePaths(query);
-  let sheet = 'article';
-  if (sortorder === 'titleasc') {
-    sheet = 'article-by-title-asc';
-  } else if (sortorder === 'titledesc') {
-    sheet = 'article-by-title-desc';
-  } else if (sortorder === 'dateasc') {
-    sheet = 'article-by-date-asc';
-  }
-  return ffetch('/article/query-index.json')
-    .sheet(sheet)
-    .withTotal(true)
-    .filter((article) => paths.has(article.path))
-    .slice(offset, offset + limit);
+  document.querySelector('.pagination').dataset.total = articles.length;
 }
 
 function sortselection() {
@@ -99,11 +108,13 @@ function buildSortBtn() {
   const select = document.createElement('select');
   select.classList.add('search-select');
   select.id = 'orderby';
-  select.options[0] = new Option('Sort By', 'sortby');
-  select.options[1] = new Option('title A-Z', 'titleasc');
-  select.options[2] = new Option('title Z-A', 'titledesc');
-  select.options[3] = new Option('date ASC', 'dateasc');
-  select.options[4] = new Option('date DSC', 'datedesc');
+  select.options.add(new Option('Sort By', 'sortby'));
+  select.options.add(new Option('Relevance', 'relevance', false, true));
+  select.options.add(new Option('Title A-Z', 'titleasc'));
+  select.options.add(new Option('Title Z-A', 'titledesc'));
+  select.options.add(new Option('Date ASC', 'dateasc'));
+  select.options.add(new Option('Date DSC', 'datedesc'));
+  select.options[0].disabled = true;
   const usp = new URLSearchParams(window.location.search);
   if (usp.get('sort') !== null) {
     select.value = usp.get('sort');
@@ -127,6 +138,7 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(main) {
+  loadScript('/scripts/elasticlunr.js');
   createTemplateBlock(main, 'pagination');
   main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
 }
@@ -157,11 +169,11 @@ export async function loadLazy(main) {
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
   defaultContentWrapper.replaceWith(hero);
-  renderArticles(getArticles());
+  renderArticles();
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
-    window.addEventListener('popstate', () => {
-      renderArticles(getArticles());
+    window.addEventListener('popstate', async () => {
+      renderArticles();
     });
   }
 }
