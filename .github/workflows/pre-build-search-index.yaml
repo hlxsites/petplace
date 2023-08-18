@@ -19,24 +19,27 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.head_ref }}
-        # The bot user https://github.com/hlx-blogs-keysight-bot is used to commit the changes. The personal access token
-        # must be created from: https://github.com/settings/tokens
-        # The token is then stored in the secrets of the this.
-        # see https://github.com/hlxsites/blogs-keysight/settings/secrets/actions
-        # more info: https://stackoverflow.com/a/72515781/79461
+        # The bot uses a PAT token currently assigned to ramboz to commit the changes.
+        # To change this token, a new personal access token must be created from:
+        # https://github.com/settings/tokens
+        # The token is then stored in the secrets of the this repository.
+        # See https://github.com/hlxsites/petplace/settings/secrets/actions
         token: ${{ secrets.BOT_ACCESS_TOKEN }}
+
     - name: Configure git
       run: |
-        git config user.name "GitHubActions"
+        git config user.name "Petplace - GitHub Action"
         git config user.email "<>"
+
     - uses: actions/setup-node@v3
       with:
         node-version: '18'
+
     - name: Install dependencies
       working-directory: ./.github/ci
       run: npm install
 
-    - name: Generate Search Index
+    - name: Generate the search index
       working-directory: ./.github/ci
       run:  node build-search-index.js ${{ env.TARGETDIRECTORY }}
 

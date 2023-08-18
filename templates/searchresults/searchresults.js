@@ -21,8 +21,6 @@ function noResultsHidePagination() {
 
 async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
-  const limit = usp.get('limit') || 16;
-  const offset = (Number(usp.get('page') || 1) - 1) * limit;
   const query = usp.get('query');
   const sortorder = usp.get('sort');
 
@@ -65,7 +63,7 @@ async function getArticles() {
       break;
     default:
   }
-  return res.slice(offset, offset + limit);
+  return res;
 }
 
 async function renderArticles() {
@@ -82,17 +80,21 @@ async function renderArticles() {
 
   const articles = await getArticles();
 
+  const usp = new URLSearchParams(window.location.search);
   if (!articles.length) {
     removeSkeletons(block);
-    const usp = new URLSearchParams(window.location.search);
     const query = usp.get('query');
     sampleRUM('nullsearch', { source: '.search-input', target: query });
     noResultsHidePagination();
     return;
   }
 
+  const limit = usp.get('limit') || 16;
+  const offset = (Number(usp.get('page') || 1) - 1) * limit;
+  const paginatedArticles = articles.slice(offset, offset + limit);
+
   // eslint-disable-next-line no-restricted-syntax
-  articles.forEach((article) => {
+  paginatedArticles.forEach((article) => {
     const div = createArticleDiv(article);
     block.append(div);
   });
