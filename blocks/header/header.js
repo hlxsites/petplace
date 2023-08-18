@@ -186,6 +186,7 @@ export default async function decorate(block) {
     // document.body.style.overflowY = 'hidden';
     div.addEventListener('click', async () => {
       const elem = document.getElementById('header-search-modal');
+      const headerSearch = document.querySelector('.header-search');
       if (!elem) {
         const modal = document.createElement('div');
         modal.className = 'header-search-modal';
@@ -194,6 +195,8 @@ export default async function decorate(block) {
         modal.append(decorateSearch());
         block.append(modal);
         modal.classList.add('visible');
+        headerSearch.classList.add('hide');
+        document.body.classList.add('overlay');
 
         const searchBox = document.getElementById('search-box');
         const resultsBlock = block.querySelector('.search-results');
@@ -240,6 +243,8 @@ export default async function decorate(block) {
         close.addEventListener('click', () => {
           // Hide modal
           modal.classList.remove('visible');
+          document.body.classList.remove('overlay');
+          headerSearch.classList.remove('hide');
           document.body.style.overflowY = '';
 
           // Clear search results
@@ -248,6 +253,8 @@ export default async function decorate(block) {
         });
       } else {
         elem.classList.add('visible');
+        document.body.classList.add('overlay');
+        headerSearch.classList.add('hide');
       }
       const searchBox = document.getElementById('search-box');
       const stopButtonContainer = document.querySelector('.stop-button-container');

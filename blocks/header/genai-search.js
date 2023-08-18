@@ -154,8 +154,21 @@ const decorateSearch = () => {
   // Create the <h1> element with id attribute and text content
   const h1Element = document.createElement('h1');
   h1Element.setAttribute('id', 'search');
-  const h1Text = document.createTextNode(GENAI_SEARCH_TITLE);
+  const h1Text = document.createTextNode("Discover");
   h1Element.appendChild(h1Text);
+
+  const xhrLogo = new XMLHttpRequest();
+  xhrLogo.open('GET', `${window.hlx.codeBasePath}/icons/logo.svg`, true);
+  xhrLogo.onreadystatechange = function () {
+    if (xhrLogo.readyState === 4 && xhrLogo.status === 200) {
+      // On successful response, create and append the SVG element
+      const svgElement = document.createElement('svg');
+      svgElement.className = 'icon-logo';
+      svgElement.innerHTML = xhrLogo.responseText;
+      h1Element.insertAdjacentHTML('afterend', svgElement.outerHTML);
+    }
+  };
+  xhrLogo.send();
 
   // Append the <h1> element to the inner <div> element
   innerDivElement.appendChild(h1Element);
