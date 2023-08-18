@@ -132,7 +132,6 @@ export async function loadEager(main) {
 }
 
 export async function loadLazy(main) {
-  const idx = await getLunrIdx();
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const contentDiv = document.createElement('div');
@@ -158,6 +157,7 @@ export async function loadLazy(main) {
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
   defaultContentWrapper.replaceWith(hero);
+  const idx = await getLunrIdx();
   renderArticles(getArticles(idx));
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
