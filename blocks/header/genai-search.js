@@ -140,7 +140,8 @@ const getRandomQuestions = (questions) => {
 
 const decorateSearch = () => {
   // Create the <main> element
-  const mainElement = document.createElement('main');
+  const mainElement = document.createElement('div');
+  mainElement.setAttribute('id', 'search-main');
 
   // Create the outer <div> element with class and data attributes
   const outerDivElement = document.createElement('div');

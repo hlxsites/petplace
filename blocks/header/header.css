@@ -101,18 +101,6 @@
   background-color: var(--color-gray-lighter);
 }
 
-/* Overlay styles */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Dark transparent background */
-  z-index: 9999; /* Behind the modal */
-  /* display: none; */
-}
-
 .header-search-modal {
   /* transform: scale(0); */
   transform: translate(-50%, -50%) scale(0);
@@ -125,6 +113,7 @@
   background-color: var(--body-background-color);
   z-index: 9999;
   transition: all 0.2s ease-out;
+  pointer-events: auto;
 }
 
 .header-search-modal.visible {
@@ -137,7 +126,7 @@
   left: 50%;
 }
 
-.header-search-modal main {
+.header-search-modal #search-main {
   overflow-y: scroll;
   /* overflow: hidden;
   overflow-y: auto; */
@@ -198,7 +187,7 @@
   padding: 0 96px 0 30px;
 } */
 
-main .genai-search-container h1 {
+#search-main .genai-search-container .default-content-wrapper h1 {
   font-size: 36px;
   font-style: italic;
   text-align: center;
@@ -206,7 +195,7 @@ main .genai-search-container h1 {
   margin-bottom: 20px;
 }
 
-main .search .search-box {
+#search-main .search .search-box {
   margin: auto;
   text-align: center;
   max-width: 800px;
@@ -225,7 +214,7 @@ main .search .search-box {
   flex-direction: column;
 } */
 
-main .search-wrapper .search-box input {
+#search-main .search-wrapper .search-box input {
   font-size: 1.125rem;
   background: hsl(0deg 0% 100% / 78%);
   border-radius: 70px;
@@ -237,25 +226,54 @@ main .search-wrapper .search-box input {
   padding-left: 20px;
   padding-right: 105px;
   box-shadow: 5px 5px 50px rgb(0 0 0 / 10%);
+  box-sizing: border-box;
 }
 
-main .genai-search-container {
+#search-main .genai-search-container {
   /* padding: 32px 0 14px; */
+  padding: 2rem 1.5rem;
 }
 
-main .search-results {
+/* #search-main input {
+  font-size: 1.25rem;
+  width: 100%;
+  max-width: 50rem;
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.6rem;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  background-color: var(--background-color);
+} */
+
+#search-main .search-results {
   max-width: 1200px;
   margin: auto;
   padding-top: 32px;
 }
 
-main .search-results > ul {
+#search-main .search-results > ul {
 list-style: none;
 margin: 0;
 padding: 0;
 display: grid;
 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 grid-gap: 32px;
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Dark transparent background */
+  z-index: 9998; /* Behind the modal */
+  display: none; /* Hide the overlay by default */
+  pointer-events: none;
 }
 
 @media (min-width: 1024px) {
@@ -373,7 +391,7 @@ grid-gap: 32px;
   }
 }
 
-main .genai-search-container p {
+#search-main .genai-search-container p {
   /* margin-top: unset;
   max-width: unset; */
   margin-top: 1em;
@@ -722,7 +740,7 @@ article ul, article ol {
   display: block;
   position: fixed;
   right: 50%;
-  bottom: 20px;
+  bottom: 0px;
   z-index: 1;
   transform: translateX(50%);
 }
@@ -757,7 +775,7 @@ article ul, article ol {
   display: block;
   position: fixed;
   right: 50%;
-  bottom: 20px;
+  bottom: 0px;
   z-index: 1;
   transform: translateX(50%);
 }
@@ -830,7 +848,11 @@ article ul, article ol {
   opacity: 1;
 }
 
-.search-card-container article h1 {
+.genai-search-container .search-card-container article hr {
+  display: none;
+}
+
+.genai-search-container .search-card-container article h1 {
   font-size: 1.5em;
   font-style: unset;
   text-align: unset;
@@ -838,15 +860,15 @@ article ul, article ol {
   margin-bottom: unset;
 }
 
-.search-card-container article h2 {
+.genai-search-container .search-card-container article h2 {
   font-size: var(--heading-font-size-l);
 }
 
-.search-card-container article h3 {
+.genai-search-container .search-card-container article h3 {
   font-size: var(--heading-font-size-m);
 }
 
-.search-card-container article h4 {
+.genai-search-container .search-card-container article h4 {
   font-size: var(--heading-font-size-s);
 }
 
