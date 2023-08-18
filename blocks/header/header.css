@@ -513,7 +513,7 @@ article ul, article ol {
   padding-left: 0;
 }
 
-@media screen and (max-width: 375) {
+@media screen and (max-width: 375px) {
   .links-card-container ul li {
     max-width: 300px;
   }
@@ -551,6 +551,10 @@ article ul, article ol {
   .summary-columns {
     flex-direction: column;
     align-items: center;
+  }
+
+  .header-search-modal {
+    width: 100vw;
   }
 }
 
