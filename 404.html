@@ -19,14 +19,14 @@
     // Try to identify vanity URLs
     const tokens = pathname.split('/').filter((token) => !!token);
     if (tokens.length === 1) {
-      const resp = fetch('/article/query-index.json?sheet=article&limit=-1')
-        .then((resp) => resp.json())
-        .then((json) => {
-          const article = json.data.find((article) => article.path.endsWith(tokens[0]));
+      (async function() {
+        const resp = await fetch('/article/query-index.json?sheet=article&limit=-1');
+        const json = await resp.json();
+        const article = json.data.find((article) => article.path.endsWith(tokens[0]));
           if (article) {
             window.location.replace(article.path);
           }
-        });
+      })();
     }
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
