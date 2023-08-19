@@ -10,9 +10,10 @@
     // Trying to fix URLs producing 404s
 
     // Redirect old pagination URLs
-    const [,page] = window.location.pathname.match(/\/page\/(\d+)\/$/) || [];
+    const { pathname } = window.location;
+    const [,page] = pathname.match(/\/page\/(\d+)\/$/) || [];
     if (page) {
-      window.location.replace(window.location.pathname.replace(/\/page\/(\d+)\/$/, `?page=${page}`));
+      window.location.replace(pathname.replace(/\/page\/(\d+)\/$/, `?page=${page}`));
     }
 
     // Try to identify vanity URLs
