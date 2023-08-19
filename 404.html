@@ -3,9 +3,15 @@
 
 <head>
   <title>Page not found</title>
-  <script type="module">
+  <script type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Page not found">
+  <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
+  <script type="module">
+    import { sampleRUM } from '/scripts/lib-franklin.js';
 
     // Trying to fix URLs producing 404s
 
@@ -26,12 +32,6 @@
         window.location.replace(article.path);
       }
     }
-  </script>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title" content="Page not found">
-  <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
-  <script type="module">
-    import { sampleRUM } from '/scripts/lib-franklin.js';
 
     window.addEventListener('load', () => {
       if (document.referrer) {
