@@ -36,7 +36,8 @@
     if (!redirecting && tokens.length) {
       const resp = await fetch('/article/query-index.json?sheet=article&limit=-1');
       const json = await resp.json();
-      const article = json.data.find((article) => article.path.endsWith(tokens.pop()));
+      const token = tokens.pop();
+      const article = json.data.find((article) => article.path.endsWith(token));
       if (article) {
         redirecting = true;
         window.location.replace(article.path);
