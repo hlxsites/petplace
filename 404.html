@@ -25,10 +25,10 @@
     }
 
     // Redirect invalid pagination URLs
-    [,page] = pathname.match(/\/(\d+)\/$/) || [];
+    [,page] = pathname.match(/\/(\d+)\/?$/) || [];
     if (!redirecting && page) {
       redirecting = true;
-      window.location.replace(pathname.replace(/\/(\d+)\/$/, ''));
+      window.location.replace(pathname.replace(/\/(\d+)\/?$/, ''));
     }
 
     // Try to identify vanity URLs
