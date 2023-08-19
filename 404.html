@@ -18,10 +18,17 @@
 
     // Redirect old pagination URLs
     const { pathname } = window.location;
-    const [,page] = pathname.match(/\/page\/(\d+)\/$/) || [];
+    let [,page] = pathname.match(/\/page\/(\d+)\/$/) || [];
     if (page) {
       redirecting = true;
       window.location.replace(pathname.replace(/\/page\/(\d+)\/$/, `?page=${page}`));
+    }
+
+    // Redirect invalid pagination URLs
+    [,page] = pathname.match(/\/(\d+)\/$/) || [];
+    if (!redirecting && page) {
+      redirecting = true;
+      window.location.replace(pathname.replace(/\/(\d+)\/$/, ''));
     }
 
     // Try to identify vanity URLs
