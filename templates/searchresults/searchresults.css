@@ -105,4 +105,9 @@
     position: relative;
     padding-bottom: 30.2083%;
   }
+
+  .searchresults .hero-wrapper .text-div {
+    max-width: 1344px;
+    margin: 0 auto;
+  }
 }
