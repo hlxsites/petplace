@@ -14,7 +14,6 @@
       const [,page] = window.location.pathname.match(/\/page\/(\d+)\/$/) || [];
       if (page) {
         window.location.replace(window.location.pathname.replace(/\/page\/(\d+)\/$/, `?page=${page}`));
-        return;
       }
 
       // Try to identify vanity URLs
