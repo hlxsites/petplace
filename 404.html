@@ -8,12 +8,8 @@
     window.errorCode = '404';
 
     // Trying to fix URLs producing 404s
-    if (document.referrer) {
-      const { origin, pathname } = new URL(document.referrer);
-      if (origin !== window.location.origin) {
-        return;
-      }
-
+    const { origin, pathname } = document.referrer ? new URL(document.referrer) : {};
+    if (origin === window.location.origin) {
       // Redirect old pagination URLs
       const [,page] = window.location.pathname.match(/\/page\/(\d+)\/$/) || [];
       if (page) {
