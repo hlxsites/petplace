@@ -6,6 +6,36 @@
   <script type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
+
+    // Trying to fix URLs producing 404s
+    if (document.referrer) {
+      const { origin, pathname } = new URL(document.referrer);
+      if (origin !== window.location.origin) {
+        return;
+      }
+
+      // Redirect old pagination URLs
+      const [,page] = window.location.pathname.match(/\/page\/(\d+)\/$/) || [];
+      if (page) {
+        window.location.replace(window.location.pathname.replace(/\/page\/(\d+)\/$/, `?page=${page}`));
+        return;
+      }
+
+      // Try to identify vanity URLs
+      const tokens = pathname.split('/').filter((token) => !!token);
+      if (tokens.length === 1) {
+        try {
+          const resp = await fetch('/article/query-index.json?sheet=article&limit=-1');
+          const json = await resp.json();
+          const article = json.data.find((article) => article.path.endsWith(tokens[0]));
+          if (article) {
+            window.location.replace(article);
+          }
+        } catch (err) {
+          // Nothing to do here
+        }
+      }
+    }
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
@@ -29,7 +59,7 @@
     });
 
     sampleRUM('404', { source: document.referrer, target: window.location.href });
-    window.location.replace('/');
+    // window.location.replace('/');
   </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
