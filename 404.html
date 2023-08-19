@@ -24,7 +24,7 @@
         .then((json) => {
           const article = json.data.find((article) => article.path.endsWith(tokens[0]));
           if (article) {
-            window.location.replace(article);
+            window.location.replace(article.path);
           }
         });
     }
