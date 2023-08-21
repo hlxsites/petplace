@@ -608,7 +608,7 @@ article ul, article ol {
 }
 
 .summary-columns .icon-search > svg .fill {
-  fill: var(--color-gray);
+  fill: #87888b;
 }
 
 .summary-columns ul {
@@ -620,7 +620,7 @@ article ul, article ol {
 }
 
 .summary-columns li {
-  border-radius: 10px;
+  border-radius: 6px;
   border: none;
   background-color: rgba(64, 87, 109, 0.05);
   padding: 12px;
@@ -628,10 +628,11 @@ article ul, article ol {
 
 .summary-column {
   width: 400px;
+  color: #626467;
 }
 
 .summary-column > h4 {
-  color: var(--color-gray);
+  color: #87888b;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
