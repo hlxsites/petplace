@@ -786,7 +786,7 @@ article ul, article ol {
 /* Style for the stop button */
 .stop-button {
   padding: 10px;
-  background-color: var()--color-blue-light;
+  background-color: var(--color-blue-light);
   color: #000;
   border: 1px solid var(--color-blue-dark);
   border-radius: 6px;
@@ -855,30 +855,36 @@ article ul, article ol {
   /* background-color: rgba(64, 87, 109, 0.2); */
   /* background-color: rgb(212, 221, 205); */
   background-color: var(--color-gray-light);
+  font-family: var(--heading-font-family);
   color: var(--color-gray-dark);
   text-align: center;
   border-radius: 6px;
   position: absolute;
   /* padding: 0 10px; */
-  top: 100%;
-  left: 50%;
+  /* top: 100%;
+  left: 50%; */
+  top: 10px;
+  right: 110%;
   margin-left: -125px;
   z-index: 1;
   opacity: 0;
   transition: opacity 1s;
-  font-family: var(--heading-font-family);
 }
 
 .tooltip::after {
   content: "";
   position: absolute;
-  bottom: 100%;
+  /* bottom: 100%;
   left: 50%;
-  margin-left: 20px;
+  margin-left: 20px; */
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
   border-width: 5px;
   border-style: solid;
   /* border-color: transparent transparent transparent rgba(64, 87, 109, 0.2); */
-  border-color: transparent transparent var(--color-gray-light) transparent ;
+  /* border-color: transparent transparent var(--color-gray-light) transparent ; */
+  border-color: transparent transparent transparent var(--color-gray-light);
 }
 
 .header-search:hover .tooltip {
