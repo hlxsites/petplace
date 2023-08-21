@@ -21,6 +21,7 @@
     let [,page] = pathname.match(/\/page\/(\d+)\/?$/) || [];
     if (page) {
       redirecting = true;
+      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
       window.location.replace(pathname.replace(/\/page\/(\d+)\/?$/, `?page=${page}`));
     }
 
@@ -28,6 +29,7 @@
     [,page] = pathname.match(/\/(\d+)\/?$/) || [];
     if (!redirecting && page) {
       redirecting = true;
+       sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
       window.location.replace(pathname.replace(/\/(\d+)\/?$/, ''));
     }
 
@@ -40,6 +42,7 @@
       const article = json.data.find((article) => article.path.endsWith(token));
       if (article) {
         redirecting = true;
+        sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
         window.location.replace(article.path);
       }
     }
