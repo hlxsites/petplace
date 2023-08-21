@@ -434,7 +434,7 @@ grid-gap: 32px;
   font-size: var(--body-font-size-s);
   font-weight: bold;
   font-size: 16px;
-  color: var(--color-purple-gray);
+  color: var(--highlight-color);
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -786,9 +786,9 @@ article ul, article ol {
 /* Style for the stop button */
 .stop-button {
   padding: 10px;
-  background-color: rgb(212, 221, 205);
+  background-color: var()--color-blue-light;
   color: #000;
-  border: 1px solid var(--color-gray);
+  border: 1px solid var(--color-blue-dark);
   border-radius: 6px;
   cursor: pointer;
   font-family: var(--body-font-family);
@@ -821,9 +821,9 @@ article ul, article ol {
 /* Style for the stop button */
 .regenerate-button {
   padding: 10px;
-  background-color: rgb(212, 221, 205);
+  background-color: var(--color-blue-light);
   color: #000;
-  border: 1px solid var(--color-gray);
+  border: 1px solid var(--color-blue-dark);
   border-radius: 6px;
   cursor: pointer;
   font-family: var(--body-font-family);
