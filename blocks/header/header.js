@@ -179,12 +179,20 @@ export default async function decorate(block) {
   decorateIcons(nav);
 
   const createGenAISearch = () => {
-    const div = document.createElement('div');
-    div.className = 'header-search';
-    div.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/help.svg"><span class="tooltip"><em>${GENAI_SEARCH_TITLE}</em></span></a>`;
+    const headerSearchButton = document.createElement('div');
+    headerSearchButton.className = 'header-search';
+    headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/help.svg"><span class="tooltip"><em>${GENAI_SEARCH_TITLE}</em></span></a>`;
+
+    window.addEventListener('scroll', function () {
+      if (window.scrollY >= 68) {
+        headerSearchButton.classList.add('scrolled'); // New position when scrolled to the threshold
+      } else {
+        headerSearchButton.classList.remove('scrolled'); // Original position
+      }
+    });
 
     // document.body.style.overflowY = 'hidden';
-    div.addEventListener('click', async () => {
+    headerSearchButton.addEventListener('click', async () => {
       const elem = document.getElementById('header-search-modal');
       const headerSearch = document.querySelector('.header-search');
       
@@ -281,7 +289,7 @@ export default async function decorate(block) {
       document.body.style.overflowY = 'hidden';
     });
 
-    return div;
+    return headerSearchButton;
   };
 
   block.append(createGenAISearch());

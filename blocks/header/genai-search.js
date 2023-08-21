@@ -1,4 +1,40 @@
 const GENAI_SEARCH_TITLE = "Discover PetPlace";
+const GENAI_SEARCH_INFO = "Discover PetPlace is powered by experimental Generative AI, quality results may vary.";
+
+const sampleQuestions = [
+  "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
+  "Why Dog Urine Odor Comes Back and How to Stop It",
+  "When Is a Dog Considered an Adult?",
+  "Can an Alaskan Malamute or Siberian Husky Puppy Play Nice with the Family Cat?",
+  "Do Clavamox Antibiotic Drops Expire?",
+  "Is It Dangerous for Dogs to Drink Pool Water?",
+  "Can an Outdoor Cat Become an Indoor Cat?",
+  "Cat Stress After Moving",
+  "Is Eating Mice and Rabbits Healthy for My Cat?",
+  "What Happens When Cat Food Expires?",
+  "Does Your Puppy Need a Bordetella Vaccine?",
+  "How Much Should I Feed My Puppy?",
+  "Tips on Housetraining and Dealing with Accidents",
+  "Should a Pet Be Off Antihistamines or Steroid Before Allergy Testing?",
+  "My cat was recently spayed but the male cats still want to mate with her",
+  "Should You Board Your Cat or Get a Sitter?",
+  "Is Your Dog Smarter Than a 5th Grader?",
+  "How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?"
+]
+
+const capabilities = [
+  "Uses semantic search to find relevant answers",
+  "Utilizes trusted data sources to generate responses",
+  "Declines irrelevant and inappropriate queries",
+]
+
+const limitations = [
+  "Does not support keyword matching",
+  "Does not support complex queries",
+  "May occasionally generate incorrect information",
+]
+
+let isRequestInProgress = false;
 
 function removeAllEventListeners(element) {
   const clone = element.cloneNode(true);
@@ -88,41 +124,6 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
     }
   });
 };
-
-let isRequestInProgress = false;
-
-const sampleQuestions = [
-  "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
-  "Why Dog Urine Odor Comes Back and How to Stop It",
-  "When Is a Dog Considered an Adult?",
-  "Can an Alaskan Malamute or Siberian Husky Puppy Play Nice with the Family Cat?",
-  "Do Clavamox Antibiotic Drops Expire?",
-  "Is It Dangerous for Dogs to Drink Pool Water?",
-  "Can an Outdoor Cat Become an Indoor Cat?",
-  "Cat Stress After Moving",
-  "Is Eating Mice and Rabbits Healthy for My Cat?",
-  "What Happens When Cat Food Expires?",
-  "Does Your Puppy Need a Bordetella Vaccine?",
-  "How Much Should I Feed My Puppy?",
-  "Tips on Housetraining and Dealing with Accidents",
-  "Should a Pet Be Off Antihistamines or Steroid Before Allergy Testing?",
-  "My cat was recently spayed but the male cats still want to mate with her",
-  "Should You Board Your Cat or Get a Sitter?",
-  "Is Your Dog Smarter Than a 5th Grader?",
-  "How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?"
-]
-
-const capabilities = [
-  "Uses semantic search to find relevant answers",
-  "Utilizes trusted data sources to generate responses",
-  "Declines irrelevant and inappropriate queries",
-]
-
-const limitations = [
-  "Does not support keyword matching",
-  "Does not support complex queries",
-  "May occasionally generate incorrect information",
-]
 
 // Randomly select three questions from an array
 const getRandomQuestions = (questions) => {
@@ -329,7 +330,7 @@ const createStreamingSearchCard = (resultsBlock) => {
   const card = document.createElement('div');
   card.className = 'search-card';
   card.classList.add('response-animation');
-  card.innerHTML = `<div class="search-card-container"><article></article></div>`;
+  card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><img src="${window.hlx.codeBasePath}/icons/ai_generate.svg"><p>${GENAI_SEARCH_INFO}</p></div><article></article></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
 }
@@ -562,60 +563,6 @@ const fetchResults = async (index, query) => {
 
   return answer;
 };
-
-const fetchResultsMock = async () => {
-  const responseData = {
-    "links": [
-      {
-          "description": "BambooHR article on how to find the right candidate for the job you are posting. Tips on how to invest the time now to ensure the best new hires.",
-          "name": "The Right Candidate for Your Job Ad - BambooHR Blog",
-          "thumbnail": "https://www.bamboohr.com/blog/media_10015e10cb75ec2e6b9c6d105abcf3ed9cd51f2f3.jpeg?width=1200&format=pjpg&optimize=medium",
-          "url": "https://www.bamboohr.com/blog/attracting-right-candidates-job-ad"
-      },
-      {
-          "description": "Onboarding and offboarding are the beginning and end of the employee experience, and they have a big impact on what comes in between.",
-          "name": "HR 101 | Employee Onboarding & Offboarding",
-          "thumbnail": "https://www.bamboohr.com/hr-101-guide/media_1f366a5205098a89c0378d5b0e92f59e68c7ebb35.png?width=1200&format=pjpg&optimize=medium",
-          "url": "https://www.bamboohr.com/hr-101-guide/chapter-3-talent-acquisition"
-      },
-      {
-          "description": "How do you capture the attention of the best job seekers and compete with big business at the same time? Check out our recruiting tips and tricks.",
-          "name": "How to Recruit Like the Big Guys on a Small Business Budget",
-          "thumbnail": "https://www.bamboohr.com/blog/media_1181468b0d96ae911f001ec78e6629f103ed2fee7.png?width=1200&format=pjpg&optimize=medium",
-          "url": "https://www.bamboohr.com/blog/recruit-on-a-small-budget"
-      },
-      {
-          "description": "It's tough to balance agility and quality. Here are four simple strategies for speeding up your recruiting process without sacrificing candidate quality.",
-          "name": "5 Easy Steps to Speed Up Your Hiring Process - BambooHR Blog",
-          "thumbnail": "https://www.bamboohr.com/blog/media_15282b3b902ae25dde9c6f155c5cd2e26d0bea4f0.jpeg?width=1200&format=pjpg&optimize=medium",
-          "url": "https://www.bamboohr.com/blog/speed-up-your-hiring-process"
-      },
-      {
-          "description": "Finding and retaining great talent can be difficult in today's market, but recruiting quality hires can make all the difference. To help you find and keep the best talent, you may need to take a look at your hiring processes and how you can improve them.",
-          "name": "A How-To Guide for Improving Your Quality of Hire | BambooHR",
-          "thumbnail": "https://www.bamboohr.com/resources/ebooks/media_178a190df02a4028e338bef7a7a8c77dc2f303a9f.jpeg?width=1200&format=pjpg&optimize=medium",
-          "url": "https://www.bamboohr.com/resources/ebooks/a-how-to-guide-for-improving-your-quality-of-hire"
-      },
-      {
-          "description": "Strategic HR departments use hiring forecasts to have people hired and ramped up just in time for increased demand. Here are some tips for creating your own.",
-          "name": "10 Tips for Creating a Hiring Forecast | BambooHR",
-          "thumbnail": "https://www.bamboohr.com/blog/media_158f6d2065b852651520f532d1f53520e2849bd1e.jpeg?width=1200&format=pjpg&optimize=medium",
-          "url": "https://www.bamboohr.com/blog/10-tips-for-creating-a-hiring-forecast"
-      }
-    ],
-    "query": "how do I make a good hire?",
-    "questions": [
-        "How can I ensure that a candidate will fit with the company culture?",
-        "How can I assess a candidate's skills during the hiring process?",
-        "What are some common mistakes to avoid during the hiring process?",
-        "How can I attract top talent to my company?"
-    ],
-    "result": "## Tips for Making a Good Hire\nAccording to the BambooHR blog post \"The Right Candidate for Your Job Ad\", here are some tips for making a good hire:\n- Have a candid conversation with the hiring manager about what the job description should say.\n- Write a job description that gives an accurate reflection of the position along with preferred and critical qualifications.\n- Get the hiring info upfront, including salary range, realistic qualifications, desired qualifications, responsibilities, and perks.\n- Consider the status quo before hiring someone new. Ensure that everyone on the team is meeting the status quo for efficiency before bringing in someone new.\n- Prioritize hiring needs to make sure the most important positions are filled first.\n\nFor more tips on improving the quality of your hires, check out the BambooHR ebook \"A How-To Guide for Improving Your Quality of Hire\".\n\n\n\n\n\n\n"
-  }
-  await new Promise(r => setTimeout(r, 2000));  // Sleep in ms
-
-  return responseData;
-}
 
 async function displaySearchResults(query, resultsBlock) {
   if (isRequestInProgress) {
