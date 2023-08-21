@@ -29,8 +29,15 @@
     [,page] = pathname.match(/\/(\d+)\/?$/) || [];
     if (!redirecting && page) {
       redirecting = true;
-       sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
+      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
       window.location.replace(pathname.replace(/\/(\d+)\/?$/, ''));
+    }
+
+    // Redirect old aspx pages
+    if (!redirecting && pathname.match(/\/page\d+\.aspx$/)) {
+      redirecting = true;
+      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
+      window.location.replace(pathname.replace(/\/page\d+\.aspx$/, ''));
     }
 
     // Try to identify vanity URLs
