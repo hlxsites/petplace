@@ -1,5 +1,5 @@
 const GENAI_SEARCH_TITLE = "Discover PetPlace";
-const GENAI_SEARCH_INFO = "Discover PetPlace is powered by experimental Generative AI, quality results may vary.";
+const GENAI_SEARCH_WARNING = "Discover PetPlace is powered by experimental Generative AI, information quality may vary.";
 
 const sampleQuestions = [
   "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
@@ -330,7 +330,7 @@ const createStreamingSearchCard = (resultsBlock) => {
   const card = document.createElement('div');
   card.className = 'search-card';
   card.classList.add('response-animation');
-  card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><img src="${window.hlx.codeBasePath}/icons/ai_generate.svg"><p>${GENAI_SEARCH_INFO}</p></div><article></article></div>`;
+  card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><img src="${window.hlx.codeBasePath}/icons/ai_generate.svg"><p>${GENAI_SEARCH_WARNING}</p></div><article></article></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
 }
