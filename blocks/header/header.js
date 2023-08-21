@@ -51,10 +51,10 @@ export default async function decorate(block) {
   const searchButton = document.createElement('button');
   searchButton.className = 'search-btn';
   searchButton.setAttribute('aria-label', 'submit search');
-  searchButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    searchForm.submit();
-  });
+  searchButton.type = 'submit';
+  const searchIcon = document.createElement('span');
+  searchIcon.className = 'icon icon-search';
+  searchButton.append(searchIcon);
 
   searchForm.append(searchField, searchButton);
   navTools.innerHTML = '';

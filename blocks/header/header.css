@@ -113,18 +113,14 @@
     margin: 0;         
 }
 
-  .nav-tools form::after {
+  .nav-tools .search-btn .icon-search {
     position: absolute;
-    content: '';
-    display: block;
     width: 20px;
     height: 20px;
     top: 10px;
     right: 10px;
-    background: var(--background-color);
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-mask: center / contain no-repeat url('../../icons/search.svg');
-    mask: center / contain no-repeat url('../../icons/search.svg');
+    cursor: pointer;
+    fill:var(--background-color);
   }
 
   .nav-tools input {
