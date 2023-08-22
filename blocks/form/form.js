@@ -156,13 +156,12 @@ function fill(form) {
  *  element.
  */
 export async function createForm(formURL, onSubmit) {
-  const { pathname } = new URL(formURL);
-  const resp = await fetch(pathname);
+  const resp = await fetch(formURL);
   const json = await resp.json();
   const form = document.createElement('form');
   const rules = [];
   // eslint-disable-next-line prefer-destructuring
-  form.dataset.action = pathname.split('.json')[0];
+  form.dataset.action = String(formURL).split('.json')[0];
   json.data.forEach((fd) => {
     fd.Type = fd.Type || 'text';
     const fieldWrapper = document.createElement('div');
@@ -214,6 +213,7 @@ export async function createForm(formURL, onSubmit) {
 export default async function decorate(block) {
   const form = block.querySelector('a[href$=".json"]');
   if (form) {
-    form.replaceWith(await createForm(form.href));
+    const { pathname } = new URL(form.href);
+    form.replaceWith(await createForm(pathname));
   }
 }

@@ -47,7 +47,7 @@ async function submitForm(block, fd) {
 
 export default async function decorate(block) {
   const form = await createForm(
-    `${window.location.protocol}//${window.location.host}/newsletter.json`,
+    '/newsletter.json',
     (fd) => submitForm(block, fd),
   );
   form.querySelector('label[for="email"]').classList.add('sr-only');
