@@ -64,4 +64,8 @@ export default async function decorate(block) {
   } else {
     target.append(form);
   }
+
+  block.querySelectorAll('a').forEach((link) => {
+    link.setAttribute('target', '_blank');
+  });
 }

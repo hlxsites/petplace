@@ -72,6 +72,7 @@ main .newsletter-signup input {
 .newsletter-signup > div > div > p:last-child a:visited,
 .newsletter-signup > div > div > p:last-child a:focus {
   color: var(--text-color-inverted);
+  text-decoration: underline;
 }
 
 .newsletter-signup button {
