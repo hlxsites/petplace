@@ -680,6 +680,24 @@ async function loadNewsletter(footer) {
 }
 
 /**
+ * Retrieves a value indicating whether the user has already signed up
+ * for the newsletter.
+ * @returns {boolean} True if the user has already signed up, false
+ *  otherwise.
+ */
+export function isNewsletterSignedUp() {
+  return !!localStorage.getItem(NEWSLETTER_SIGNUP_KEY);
+}
+
+/**
+ * Sets the value indicating that the user has signed up for
+ * the newsletter.
+ */
+export function setNewsletterSignedUp() {
+  localStorage.setItem(NEWSLETTER_SIGNUP_KEY, 'true');
+}
+
+/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
@@ -863,24 +881,6 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
-}
-
-/**
- * Retrieves a value indicating whether the user has already signed up
- * for the newsletter.
- * @returns {boolean} True if the user has already signed up, false
- *  otherwise.
- */
-export function isNewsletterSignedUp() {
-  return !!localStorage.getItem(NEWSLETTER_SIGNUP_KEY);
-}
-
-/**
- * Sets the value indicating that the user has signed up for
- * the newsletter.
- */
-export function setNewsletterSignedUp() {
-  localStorage.setItem(NEWSLETTER_SIGNUP_KEY, 'true');
 }
 
 async function loadPage() {
