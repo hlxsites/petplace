@@ -434,7 +434,7 @@ grid-gap: 32px;
   font-size: var(--body-font-size-s);
   font-weight: bold;
   font-size: 16px;
-  color: var(--highlight-color);
+  color: var(--color-blue-dark);
   margin-top: 0;
   margin-bottom: 0;
 }
