@@ -87,6 +87,15 @@ main .newsletter-signup input {
   font-weight: 500;
 }
 
+.newsletter-signup .newsletter-message {
+  font-weight: 800;
+  font-size: var(--body-font-size-m);
+}
+
+.newsletter-signup .newsletter-message.error {
+  color: var(--color-red);
+}
+
 @media (min-width: 900px) {
   /* horizontal variant */
   .newsletter-signup.horizontal > div > div {
@@ -99,7 +108,8 @@ main .newsletter-signup input {
     display: grid;
     grid-template:
     ". dog dog cat cat ." auto
-    ". email name name signup ." auto / auto 1fr auto auto 1fr auto;
+    ". email name name signup ." auto
+    ". message message message message ." / auto 1fr auto auto 1fr auto;
 }
 
   .newsletter-signup.horizontal form .form-checkbox-wrapper:nth-child(1) {
@@ -129,6 +139,10 @@ main .newsletter-signup input {
     grid-area: signup;
     margin: 0;
     justify-self: flex-start;
+  }
+
+  .newsletter-signup.horizontal form .newsletter-message {
+    grid-area: message;
   }
 
   .newsletter-signup.horizontal input[type="text"], .newsletter-signup.horizontal button {
