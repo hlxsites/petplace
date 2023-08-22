@@ -20,6 +20,8 @@ import {
 // eslint-disable-next-line import/no-cycle
 import integrateMartech from './third-party.js';
 
+const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
+
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
@@ -699,10 +701,13 @@ async function loadLazy(doc) {
     () => loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
   ]);
 
+  const FOOTER_SPACING = 'footer-top-spacing';
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
-  if (getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
+  footer.classList.add(FOOTER_SPACING);
+  if (!isNewsletterSignedUp() && getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
     loadNewsletter(footer);
+    footer.classList.remove(FOOTER_SPACING);
   }
   loadFooter(footer);
 
@@ -858,6 +863,24 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
+}
+
+/**
+ * Retrieves a value indicating whether the user has already signed up
+ * for the newsletter.
+ * @returns {boolean} True if the user has already signed up, false
+ *  otherwise.
+ */
+export function isNewsletterSignedUp() {
+  return !!localStorage.getItem(NEWSLETTER_SIGNUP_KEY);
+}
+
+/**
+ * Sets the value indicating that the user has signed up for
+ * the newsletter.
+ */
+export function setNewsletterSignedUp() {
+  localStorage.setItem(NEWSLETTER_SIGNUP_KEY, 'true');
 }
 
 async function loadPage() {

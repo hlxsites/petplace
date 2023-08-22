@@ -1,4 +1,5 @@
 import { createForm } from '../form/form.js';
+import { setNewsletterSignedUp } from '../../scripts/scripts.js';
 
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
@@ -38,6 +39,7 @@ async function submitForm(block, fd) {
     if (!res.ok) {
       showError(block, fd);
     } else {
+      setNewsletterSignedUp();
       showMessage(block, fd.Success);
     }
   } catch (e) {
