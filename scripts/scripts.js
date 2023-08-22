@@ -701,7 +701,9 @@ async function loadLazy(doc) {
 
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
-  loadNewsletter(footer);
+  if (getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
+    loadNewsletter(footer);
+  }
   loadFooter(footer);
 
   // identify the first item in the menu
