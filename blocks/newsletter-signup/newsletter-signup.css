@@ -1,0 +1,152 @@
+main .newsletter-signup input {
+  width: unset;
+  margin: 0;
+  padding: 0;
+}
+
+.newsletter-signup {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-inverted);
+}
+
+.newsletter-signup > div > div {
+  padding: 1.5rem;
+  gap: 1rem;
+  max-width: 450px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.newsletter-signup input[type="text"], .newsletter-signup button {
+  width: 100%;
+  height: 38px;
+}
+
+.newsletter-signup input[type="text"] {
+  border-radius: 20px;
+  text-align: center;
+  background-color: var(--color-mauve);
+  color: var(--text-color-inverted);
+  font-size: var(--body-font-size-m);
+  border: 1 px solid var(--color-mauve);
+  padding: 0;
+}
+
+.newsletter-signup .form-checkbox-wrapper {
+  display: flex;
+  gap: .25rem;
+}
+
+.newsletter-signup form {
+  margin: 0 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.newsletter-signup form label {
+  font-size: var(--body-font-size-xs);
+}
+
+.newsletter-signup > div > div h2 {
+  margin: 0;
+  padding: 0;
+  font-size: var(--body-font-size-l);
+}
+
+.newsletter-signup > div > div p:not(:last-child) {
+  color: var(--highlight-color);
+}
+
+.newsletter-signup > div > div > p:last-child {
+  font-size: var(--body-font-size-xs);
+  text-align: center;
+  display: block;
+}
+
+.newsletter-signup > div > div > p:last-child a,
+.newsletter-signup > div > div > p:last-child a:visited,
+.newsletter-signup > div > div > p:last-child a:focus {
+  color: var(--text-color-inverted);
+  text-decoration: underline;
+}
+
+.newsletter-signup button {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: var(--body-font-size-default);
+}
+
+.newsletter-signup input[type="text"]::placeholder {
+  color: var(--text-color-inverted);
+  opacity: .75;
+  font-weight: 500;
+}
+
+.newsletter-signup .newsletter-message {
+  font-weight: 800;
+  font-size: var(--body-font-size-m);
+}
+
+.newsletter-signup .newsletter-message.error {
+  color: var(--color-red);
+}
+
+@media (min-width: 900px) {
+  /* horizontal variant */
+  .newsletter-signup.horizontal > div > div {
+    padding: 1.5rem 0;
+    margin: 0 auto;
+    max-width: 1344px;
+  }
+
+  .newsletter-signup.horizontal form {
+    display: grid;
+    grid-template:
+    ". dog dog cat cat ." auto
+    ". email name name signup ." auto
+    ". message message message message ." / auto 1fr auto auto 1fr auto;
+}
+
+  .newsletter-signup.horizontal form .form-checkbox-wrapper:nth-child(1) {
+    grid-area: dog;
+    margin: 0;
+    justify-self: flex-end;
+  }
+
+  .newsletter-signup.horizontal form .form-checkbox-wrapper:nth-child(2) {
+    grid-area: cat;
+    margin: 0;
+    justify-self: flex-start;
+  }
+
+  .newsletter-signup.horizontal form .form-text-wrapper:nth-child(3) {
+    grid-area: email;
+    margin: 0;
+    justify-self: flex-end;
+  }
+
+  .newsletter-signup.horizontal form .form-text-wrapper:nth-child(4) {
+    grid-area: name;
+    margin: 0;
+  }
+
+  .newsletter-signup.horizontal form .form-submit-wrapper {
+    grid-area: signup;
+    margin: 0;
+    justify-self: flex-start;
+  }
+
+  .newsletter-signup.horizontal form .newsletter-message {
+    grid-area: message;
+  }
+
+  .newsletter-signup.horizontal input[type="text"], .newsletter-signup.horizontal button {
+    width: 250px;
+  }
+}

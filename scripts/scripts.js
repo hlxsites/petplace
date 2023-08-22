@@ -9,6 +9,7 @@ import {
   decorateBlocks,
   decorateTemplateAndTheme,
   waitForLCP,
+  loadBlock,
   loadBlocks,
   loadCSS,
   loadHeader,
@@ -18,6 +19,8 @@ import {
 } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import integrateMartech from './third-party.js';
+
+const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 let templateModule;
@@ -664,6 +667,36 @@ async function optimizedBatchLoading(promises) {
   return Promise.all(promises.map((promise) => promise()));
 }
 
+async function loadNewsletter(footer) {
+  const title = document.createElement('h2');
+  title.innerText = 'Get the best of PetPlace straight to your inbox.';
+  const terms = document.createElement('p');
+  terms.innerHTML = 'By signing up, you agree to our <a href="/terms-of-use">Terms of Use</a> and <a href="/privacy-policy">Privacy Policy</a>.';
+  const newsletterBlock = buildBlock('newsletter-signup', { elems: [title, terms] });
+  newsletterBlock.classList.add('horizontal');
+  footer.append(newsletterBlock);
+  decorateBlock(newsletterBlock);
+  return loadBlock(newsletterBlock);
+}
+
+/**
+ * Retrieves a value indicating whether the user has already signed up
+ * for the newsletter.
+ * @returns {boolean} True if the user has already signed up, false
+ *  otherwise.
+ */
+export function isNewsletterSignedUp() {
+  return !!localStorage.getItem(NEWSLETTER_SIGNUP_KEY);
+}
+
+/**
+ * Sets the value indicating that the user has signed up for
+ * the newsletter.
+ */
+export function setNewsletterSignedUp() {
+  localStorage.setItem(NEWSLETTER_SIGNUP_KEY, 'true');
+}
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -686,8 +719,14 @@ async function loadLazy(doc) {
     () => loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
   ]);
 
+  const FOOTER_SPACING = 'footer-top-spacing';
   const footer = doc.querySelector('footer');
   footer.id = 'footer';
+  footer.classList.add(FOOTER_SPACING);
+  if (!isNewsletterSignedUp() && getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
+    loadNewsletter(footer);
+    footer.classList.remove(FOOTER_SPACING);
+  }
   loadFooter(footer);
 
   // identify the first item in the menu

@@ -46,20 +46,26 @@ async function submitForm(form) {
   return payload;
 }
 
-function createButton(fd) {
+function createButton(fd, onSubmit) {
   const button = document.createElement('button');
   button.textContent = fd.Label;
   button.classList.add('button');
   if (fd.Type === 'submit') {
-    button.addEventListener('click', async (event) => {
+    button.addEventListener('click', (event) => {
       const form = button.closest('form');
+      let doSubmit = onSubmit;
+      if (!doSubmit) {
+        doSubmit = async () => {
+          await submitForm(form);
+          const redirectTo = fd.Extra;
+          window.location.href = redirectTo;
+        };
+      }
       if (fd.Placeholder) form.dataset.action = fd.Placeholder;
       if (form.checkValidity()) {
         event.preventDefault();
         button.setAttribute('disabled', '');
-        await submitForm(form);
-        const redirectTo = fd.Extra;
-        window.location.href = redirectTo;
+        doSubmit(fd);
       }
     });
   }
@@ -85,6 +91,9 @@ function createInput(fd) {
     if (fd.Title) {
       input.setAttribute('title', fd.Title);
     }
+  }
+  if (fd.Checked) {
+    input.setAttribute('checked', fd.Checked);
   }
   return input;
 }
@@ -134,14 +143,25 @@ function fill(form) {
   }
 }
 
-async function createForm(formURL) {
-  const { pathname } = new URL(formURL);
-  const resp = await fetch(pathname);
+/**
+ * Builds a <form> element based on the definition in a spreadsheet from
+ * the source repository. The method will request the form content, then
+ * use the provided JSON data to construct the element.
+ * @param {string} formURL Full URL from which the form's configuration will
+ *  be retrieved.
+ * @param {function} [onSubmit] If provided, will be called when the form
+ *  is successfully submitted. The default behavior will be to submit the
+ *  form's data as JSON back to the form's URL.
+ * @returns {Promise<HTMLElement>} Resolves with the newly created form
+ *  element.
+ */
+export async function createForm(formURL, onSubmit) {
+  const resp = await fetch(formURL);
   const json = await resp.json();
   const form = document.createElement('form');
   const rules = [];
   // eslint-disable-next-line prefer-destructuring
-  form.dataset.action = pathname.split('.json')[0];
+  form.dataset.action = String(formURL).split('.json')[0];
   json.data.forEach((fd) => {
     fd.Type = fd.Type || 'text';
     const fieldWrapper = document.createElement('div');
@@ -166,7 +186,7 @@ async function createForm(formURL) {
         fieldWrapper.append(createTextArea(fd));
         break;
       case 'submit':
-        fieldWrapper.append(createButton(fd));
+        fieldWrapper.append(createButton(fd, onSubmit));
         break;
       default:
         fieldWrapper.append(createLabel(fd));
@@ -193,6 +213,7 @@ async function createForm(formURL) {
 export default async function decorate(block) {
   const form = block.querySelector('a[href$=".json"]');
   if (form) {
-    form.replaceWith(await createForm(form.href));
+    const { pathname } = new URL(form.href);
+    form.replaceWith(await createForm(pathname));
   }
 }
