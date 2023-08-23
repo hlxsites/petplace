@@ -100,7 +100,7 @@ main .newsletter-signup input {
 @media (min-width: 900px) {
   /* horizontal variant */
   .newsletter-signup.horizontal > div > div {
-    padding: 1.5rem 0;
+    padding: 3rem 0;
     margin: 0 auto;
     max-width: 1344px;
   }
