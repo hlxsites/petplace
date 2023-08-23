@@ -356,11 +356,14 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   }
 
   // If the div already exists, update its content with the new message
-  resultsBlock.querySelector('.search-card article').innerHTML = marked.parse(response.result);
+  // resultsBlock.querySelector('.search-card article').innerHTML = marked.parse(response.result);
+  if (article) {
+    article.innerHTML = marked.parse(response.result);
+  }
 
   // Add target="_blank" to all anchor tags
   const card = resultsBlock.querySelector('.search-card');
-  const anchorTags = card.querySelectorAll('a');
+  const anchorTags = card?.querySelectorAll('a');
 
   anchorTags?.forEach((anchorTag) => {
     anchorTag.setAttribute('target', '_blank');
@@ -458,7 +461,13 @@ const createLinksCard = (results) => {
 
     const linkInfoElement = document.createElement('div');
     linkInfoElement.className = 'link-info';
-    linkInfoElement.innerHTML = `<a href="${link.url}" target="_blank">${link.name}</a><p>${link.description}</p>`;
+
+    if (link.name === link.description) {
+      linkInfoElement.innerHTML = `<a href="${link.url}" target="_blank">${link.name}</a>`;
+    } else {
+      linkInfoElement.innerHTML = `<a href="${link.url}" target="_blank">${link.name}</a><p>${link.description}</p>`;
+    }
+    
     listItem.appendChild(linkInfoElement);
     listItem.addEventListener('click', () => {
       window.open(link.url, '_blank');
@@ -601,10 +610,10 @@ async function displaySearchResults(query, resultsBlock) {
 
   // Get search-card-container elements
   const cardContainer = resultsBlock.querySelector('.search-card');
-  cardContainer.classList.add('response-animation');
+  cardContainer?.classList.add('response-animation');
 
   // Trigger the animation by adding the 'show' class after a small delay
-  cardContainer.classList.add('show');
+  cardContainer?.classList.add('show');
   // setTimeout(() => {
   //   cardContainer.classList.add('show');
   // }, 100);
