@@ -668,13 +668,15 @@ async function optimizedBatchLoading(promises) {
 }
 
 async function loadNewsletter(footer) {
-  const title = document.createElement('h2');
-  title.innerText = 'Get the best of PetPlace straight to your inbox.';
-  const terms = document.createElement('p');
-  terms.innerHTML = 'By signing up, you agree to our <a href="/terms-of-use">Terms of Use</a> and <a href="/privacy-policy">Privacy Policy</a>.';
-  const newsletterBlock = buildBlock('newsletter-signup', { elems: [title, terms] });
+  const res = await fetch('/fragments/newsletter-footer');
+  const text = await res.text();
+
+  const fragmentHtml = document.createElement('div');
+  fragmentHtml.innerHTML = text;
+  const blockElements = fragmentHtml.querySelector('.newsletter-signup > div > div');
+  const newsletterBlock = buildBlock('newsletter-signup', { elems: [...blockElements.children] });
   newsletterBlock.classList.add('horizontal');
-  footer.append(newsletterBlock);
+  footer.insertBefore(newsletterBlock, footer.children[0]);
   decorateBlock(newsletterBlock);
   return loadBlock(newsletterBlock);
 }
@@ -719,15 +721,16 @@ async function loadLazy(doc) {
     () => loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
   ]);
 
-  const FOOTER_SPACING = 'footer-top-spacing';
   const footer = doc.querySelector('footer');
+  loadFooter(footer);
+
+  const FOOTER_SPACING = 'footer-top-spacing';
   footer.id = 'footer';
   footer.classList.add(FOOTER_SPACING);
   if (!isNewsletterSignedUp() && getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
     loadNewsletter(footer);
     footer.classList.remove(FOOTER_SPACING);
   }
-  loadFooter(footer);
 
   // identify the first item in the menu
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
