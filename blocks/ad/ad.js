@@ -1,3 +1,4 @@
+import { sampleRUM } from '../../scripts/lib-franklin.js';
 import {
   fetchAndCacheJson,
   getId,
@@ -80,6 +81,25 @@ const loadedObserver = new MutationObserver((entries) => {
   });
 });
 
+let conversionMonitor;
+let exitIframe;
+const enterIframe = () => {
+  const el = document.activeElement;
+  const block = el?.closest('.ad');
+  if (block && el.tagName === 'IFRAME') {
+    window.clearInterval(conversionMonitor);
+    sampleRUM.convert('ad-click', block.dataset.adid, block, []);
+    conversionMonitor = setInterval(exitIframe, 100);
+  }
+};
+exitIframe = () => {
+  const el = document.activeElement;
+  if (el && el.tagName !== 'IFRAME') {
+    window.clearInterval(conversionMonitor);
+    conversionMonitor = setInterval(enterIframe, 100);
+  }
+};
+
 /**
  *
  * @param {HTMLElement} block Ad block to decorate.
@@ -89,6 +109,10 @@ export default async function decorate(block) {
     block.closest('.section').classList.remove('ad-container');
     block.parentElement.remove();
     return;
+  }
+
+  if (!conversionMonitor && sampleRUM.convert) {
+    conversionMonitor = setInterval(enterIframe, 100);
   }
 
   window.googletag = window.googletag || { cmd: [] };

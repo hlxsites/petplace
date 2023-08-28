@@ -13,6 +13,47 @@
   <script type="module">
     import { sampleRUM } from '/scripts/lib-franklin.js';
 
+    let redirecting = false;
+    // Trying to fix URLs producing 404s
+
+    // Redirect old pagination URLs
+    const { pathname } = window.location;
+    let [,page] = pathname.match(/\/page\/(\d+)\/?$/) || [];
+    if (page) {
+      redirecting = true;
+      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
+      window.location.replace(pathname.replace(/\/page\/(\d+)\/?$/, `?page=${page}`));
+    }
+
+    // Redirect invalid pagination URLs
+    [,page] = pathname.match(/\/(\d+)\/?$/) || [];
+    if (!redirecting && page) {
+      redirecting = true;
+      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
+      window.location.replace(pathname.replace(/\/(\d+)\/?$/, ''));
+    }
+
+    // Redirect old aspx pages
+    if (!redirecting && pathname.match(/\/page\d+\.aspx$/)) {
+      redirecting = true;
+      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
+      window.location.replace(pathname.replace(/\/page\d+\.aspx$/, ''));
+    }
+
+    // Try to identify vanity URLs
+    const tokens = pathname.split('/').filter((token) => !!token);
+    if (!redirecting && tokens.length) {
+      const resp = await fetch('/article/query-index.json?sheet=article&limit=-1');
+      const json = await resp.json();
+      const token = tokens.pop();
+      const article = json.data.find((article) => article.path.endsWith(token));
+      if (article) {
+        redirecting = true;
+        sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
+        window.location.replace(article.path);
+      }
+    }
+
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
@@ -29,7 +70,9 @@
     });
 
     sampleRUM('404', { source: document.referrer, target: window.location.href });
-    window.location.replace('/');
+    if (!redirecting) {
+      window.location.replace('/');
+    }
   </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <style>

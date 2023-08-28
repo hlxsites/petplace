@@ -1,3 +1,5 @@
+import { sampleRUM } from '../../scripts/lib-franklin.js';
+
 export default function decorate(block) {
   // for backward compatibility, there are some pet insurance blocks in existing
   // pages that don't have content. Continue showing nothing for those cases
@@ -14,4 +16,10 @@ export default function decorate(block) {
   a.innerText = buttonCell.innerText;
   buttonCell.remove();
   block.children[0].append(a);
+
+  if (sampleRUM.convert) {
+    a.addEventListener('click', () => {
+      sampleRUM.convert('insurance-enroll', a.innerText, a, []);
+    });
+  }
 }
