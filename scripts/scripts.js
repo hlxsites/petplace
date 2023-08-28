@@ -667,18 +667,38 @@ async function optimizedBatchLoading(promises) {
   return Promise.all(promises.map((promise) => promise()));
 }
 
-async function loadNewsletter(footer) {
-  const res = await fetch('/fragments/newsletter-footer');
+async function createNewsletterAutoBlock(fragmentUrl, addElement) {
+  const res = await fetch(fragmentUrl);
   const text = await res.text();
 
   const fragmentHtml = document.createElement('div');
   fragmentHtml.innerHTML = text;
   const blockElements = fragmentHtml.querySelector('.newsletter-signup > div > div');
   const newsletterBlock = buildBlock('newsletter-signup', { elems: [...blockElements.children] });
-  newsletterBlock.classList.add('horizontal');
-  footer.insertBefore(newsletterBlock, footer.children[0]);
+  addElement(newsletterBlock);
   decorateBlock(newsletterBlock);
+  return newsletterBlock;
+}
+
+async function loadNewsletter(footer) {
+  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-footer', (block) => {
+    footer.insertBefore(block, footer.children[0]);
+  });
+  newsletterBlock.classList.add('horizontal');
   return loadBlock(newsletterBlock);
+}
+
+async function loadNewsletterPopup() {
+  const popupContainer = document.createElement('div');
+  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-popup', (block) => {
+    popupContainer.append(block);
+  });
+  await loadBlock(newsletterBlock);
+
+  const popupBlock = buildBlock('popup', popupContainer);
+  footer.append(popupBlock);
+  decorateBlock(popupBlock);
+  await loadBlock(popupBlock);
 }
 
 /**
@@ -764,6 +784,10 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
+
+    // TODO: display newsletter popup as determined by petplace team
+    // loadNewsletterPopup(document.querySelector('footer'));
+
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
