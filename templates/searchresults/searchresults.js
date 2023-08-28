@@ -1,5 +1,5 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
-import { decorateResponsiveImages, loadScript } from '../../scripts/scripts.js';
+import { decorateResponsiveImages } from '../../scripts/scripts.js';
 
 let searchWorker;
 // 2G connections are too slow to realistically load the elasticlunr search index
@@ -166,7 +166,6 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(main) {
-  loadScript('/scripts/elasticlunr.js');
   createTemplateBlock(main, 'pagination');
   main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
 }
