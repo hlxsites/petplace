@@ -6,15 +6,28 @@ import elasticlunr from 'elasticlunr';
 const resp = await fetch('https://www.petplace.com/article/query-index.json?sheet=article&limit=15000');
 const json = await resp.json();
 
+function minimizeIndexedData(doc) {
+  if (doc.title === doc.description) {
+    delete doc.description;
+  }
+  doc.image = doc.image.replace(/\?.*/, '');
+  delete doc['category name'];
+  delete doc['category slug'];
+  delete doc.imageAlt;
+  delete doc.lastModified;
+  delete doc.tags;
+  delete doc.type;
+  return doc;
+}
 // Pre-build the search index from the returned articles
 const idx = elasticlunr(function () {
   this.setRef('path');
   this.addField('title');
   this.addField('description');
-  this.addField('category name');
+  this.addField('category');
   this.addField('author');
 
-  json.data.forEach((doc) => this.addDoc(doc));
+  json.data.forEach((doc) => this.addDoc(minimizeIndexedData(doc)));
 });
 
 // Save the search index to a static file in the repository
