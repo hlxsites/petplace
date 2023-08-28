@@ -784,6 +784,7 @@ a.sr-focusable:focus {
   font-size: var(--body-font-size-xxs);
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 footer .popup hlx-aria-dialog > button {
   height: 1px;
   width: 1px;

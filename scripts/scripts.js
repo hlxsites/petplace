@@ -688,7 +688,7 @@ async function loadNewsletter(footer) {
   return loadBlock(newsletterBlock);
 }
 
-async function loadNewsletterPopup() {
+async function loadNewsletterPopup(footer) {
   const popupContainer = document.createElement('div');
   const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-popup', (block) => {
     popupContainer.append(block);
@@ -786,7 +786,7 @@ function loadDelayed(doc) {
     }
 
     // TODO: display newsletter popup as determined by petplace team
-    // loadNewsletterPopup(document.querySelector('footer'));
+    loadNewsletterPopup(document.querySelector('footer'));
 
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
