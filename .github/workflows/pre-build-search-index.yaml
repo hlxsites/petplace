@@ -1,0 +1,50 @@
+name: Pre-build the seach index
+
+on:
+  repository_dispatch:
+    types:
+      - resource-published
+  pull_request:
+    paths:
+      - '.github/ci/**'
+      - '.github/workflows/pre-build-search-index.yaml'
+
+env:
+  TARGETDIRECTORY: "../.."
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+        # The bot uses a PAT token currently assigned to ramboz to commit the changes.
+        # To change this token, a new personal access token must be created from:
+        # https://github.com/settings/tokens
+        # The token is then stored in the secrets of the this repository.
+        # See https://github.com/hlxsites/petplace/settings/secrets/actions
+        token: ${{ secrets.BOT_ACCESS_TOKEN }}
+
+    - name: Configure git
+      run: |
+        git config user.name "Petplace - GitHub Action"
+        git config user.email "<>"
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      working-directory: ./.github/ci
+      run: npm install
+
+    - name: Generate the search index
+      working-directory: ./.github/ci
+      run:  node build-search-index.js ${{ env.TARGETDIRECTORY }}
+
+    - name: Commit and push changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: 'search-index.json'
+        commit_message: "chore: update the search index"
