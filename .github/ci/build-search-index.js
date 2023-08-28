@@ -19,6 +19,7 @@ function minimizeIndexedData(doc) {
   delete doc.type;
   return doc;
 }
+
 // Pre-build the search index from the returned articles
 const idx = elasticlunr(function () {
   this.setRef('path');

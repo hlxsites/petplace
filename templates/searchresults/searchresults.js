@@ -1,6 +1,13 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, loadScript } from '../../scripts/scripts.js';
 
+let searchWorker;
+// 2G connections are too slow to realistically load the elasticlunr search index
+// instead we'll do a poor man's search on the last 5K articles
+if (window.navigator.connection.effectiveType !== '2g') {
+  searchWorker = new Worker('/scripts/worker/search.js');
+}
+
 function createArticleDiv(article) {
   const div = document.createElement('div');
   div.textContent = article.path;
@@ -32,38 +39,41 @@ async function getArticles() {
   }
 
   let results;
-  try {
-    const resp = await fetch('/search-index.json');
-    if (!resp.ok) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to load search index', resp.status);
-    }
+  if (searchWorker) {
+    searchWorker.postMessage(query);
+    results = await new Promise((resolve) => {
+      searchWorker.onmessage = (e) => {
+        resolve(e.data);
+      };
+    });
+  } else {
+    // Poor-man's fallback search for slow connections,
+    // only looks at the last 5K articles and does basic keyword matching
+    // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
+    const queryTokens = query.split(' ');
+    const resp = await fetch('/article/query-index.json?sheet=article&limit=-5000');
     const json = await resp.json();
-    const index = window.elasticlunr.Index.load(json);
-    results = index.search(query, { bool: 'AND' }).map((result) => result.doc);
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error('Failed to load search index', err);
-    results = [];
+
+    results = json.data.filter((article) => queryTokens.every((t) => article.title.includes(t)
+      || article.description.includes(t)));
   }
 
-  let res = results;
   switch (sortorder) {
     case 'titleasc':
-      res = res.sort((a, b) => a.title.localeCompare(b.title));
+      results = results.sort((a, b) => a.title.localeCompare(b.title));
       break;
     case 'titledesc':
-      res = res.sort((a, b) => a.title.localeCompare(b.title)).reverse();
+      results = results.sort((a, b) => a.title.localeCompare(b.title)).reverse();
       break;
     case 'dateasc':
-      res = res.sort((a, b) => a.date.localeCompare(b.date));
+      results = results.sort((a, b) => a.date.localeCompare(b.date));
       break;
     case 'datedesc':
-      res = res.sort((a, b) => a.date.localeCompare(b.date)).reverse();
+      results = results.sort((a, b) => a.date.localeCompare(b.date)).reverse();
       break;
     default:
   }
-  return res;
+  return results;
 }
 
 async function renderArticles() {
