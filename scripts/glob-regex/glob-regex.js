@@ -1,3 +1,7 @@
+/**
+ * Originally adapted from https://github.com/aleclarson/glob-regex/blob/master/index.js
+ */
+
 const dotRE = /\./g;
 const dotPattern = '\\.';
 

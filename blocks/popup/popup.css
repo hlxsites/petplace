@@ -1,13 +1,16 @@
-.popup div[role="dialog"][aria-hidden="false"] {
+.popup div[role="dialog"] {
   position: fixed;
   inset: 0;
   margin: 0;
   padding: 0;
   background-color: var(--color-purple-transparent);
   z-index: 1000;
-  display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.popup div[role="dialog"][aria-hidden="false"] {
+  display: flex;
 }
 
 .popup div[role="dialog"] > div {

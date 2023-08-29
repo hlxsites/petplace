@@ -1,4 +1,3 @@
-import ffetch from './ffetch.js';
 import globRegex from './glob-regex/glob-regex.js';
 import {
   sampleRUM,
@@ -735,16 +734,18 @@ export function setNewsletterSignedUp() {
  *  if the configuration could not be found.
  */
 export async function getConfiguration(sheet) {
-  let config;
   try {
-    config = await ffetch('/drafts/frisbey/configuration.json')
-      .sheet(sheet)
-      .all();
+    const res = await fetch(`/configuration.json?sheet=${sheet}`);
+    if (!res.ok) {
+      return undefined;
+    }
+    const json = await res.json();
+    return json.data;
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log(`Unable to load ${sheet} configuration`);
   }
-  return config;
+  return undefined;
 }
 
 async function addNewsletterPopup() {
@@ -754,7 +755,7 @@ async function addNewsletterPopup() {
   }
   const delay = newsletterConfig
     .find((item) => item.Key === 'delay-seconds');
-  const seconds = delay ? parseInt(delay.Value, 10) : 10;
+  const seconds = delay ? Number(delay.Value) : 10;
   const excluded = newsletterConfig.filter((item) => {
     if (item.Key !== 'exclude-pattern') {
       return false;
