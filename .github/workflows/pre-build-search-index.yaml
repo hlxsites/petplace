@@ -43,7 +43,7 @@ jobs:
       working-directory: ./.github/ci
       run:  node build-search-index.js ${{ env.TARGETDIRECTORY }}
 
-    - name: Generate the search index
+    - name: Generate the RSS/Atom feed
       working-directory: ./.github/ci
       run:  node generate-news-feed.js ${{ env.TARGETDIRECTORY }}
 
