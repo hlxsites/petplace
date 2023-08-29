@@ -6,9 +6,9 @@ const limit = 1000;
 
 function sanitize(str) {
   return str
-    .replace('&amp;', '&')
-    .replace('\x92', '\'')
-    .replace('\x97', '—')
+    .replaceAll('&amp;', '&')
+    .replaceAll('\x92', '\'')
+    .replaceAll('\x97', '—')
 }
 async function fetchArticles() {
   let offset = 0;
