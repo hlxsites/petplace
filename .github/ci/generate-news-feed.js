@@ -1,0 +1,82 @@
+import { Feed } from 'feed';
+import fs from 'fs';
+
+const targetDirectory = process.argv[2];
+const limit = 1000;
+
+function getFolder(category) {
+  return category['Parent Path'].replace('/article/category', '');
+}
+function toClassName(name) {
+  return typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/g, '-').replace(/^-|-$/g, '').replace(/-+/g, '-')
+    : '';
+}
+
+async function fetchCategories() {
+  const response = await fetch('https://www.petplace.com/article/category/categories.json');
+  const json = await response.json();
+  return json.data;
+}
+    
+async function fetchArticles() {
+  let offset = 0;
+  const allPosts = [];
+
+  while (true) {
+    const api = new URL('https://www.petplace.com/article/query-index.json?sheet=article');
+    api.searchParams.append('offset', JSON.stringify(offset));
+    api.searchParams.append('limit', limit);
+    const response = await fetch(api);
+    const result = await response.json();
+
+    allPosts.push(...result.data);
+
+    if (result.offset + result.limit < result.total) {
+      // there are more pages
+      offset = result.offset + result.limit;
+    } else {
+      break;
+    }
+  }
+  return allPosts;
+}
+
+async function main() {
+  const articles = await fetchArticles();
+  const newestPost = new Date(articles[articles.length - 1].date * 1000);
+  const feed = new Feed({
+    title: `PetPlace.com articles`,
+    id: 'petplace.com',
+    link: `https://www.petplace.com/rss.xml`,
+    updated: newestPost,
+    generator: 'News feed generator (GitHub action)',
+    language: 'en',
+    copyright: `All rights reserved ${new Date().getFullYear()},  Independence America Holdings Corp.`,
+  });
+
+  articles.forEach((article) => {
+    feed.addItem({
+      id: article.path,
+      title: article.title,
+      description: article.description,
+      link: `https://www.petplace.com${article.path}`,
+      author: [{
+        name: article.author,
+      }],
+      date: new Date(article.date * 1000),
+      image: `https://www.petplace.com${article.image}`,
+      category: article['category name'] ? [{name: article['category name'] }] : ''
+    })
+  });
+
+  if (!fs.existsSync(targetDirectory)) {
+    fs.mkdirSync(targetDirectory);
+  }
+
+  fs.writeFileSync(`${targetDirectory}/atom.xml`, feed.atom1());
+  fs.writeFileSync(`${targetDirectory}/rss.xml`, feed.rss2());
+}
+
+main()
+  .catch((e) => console.error(e));

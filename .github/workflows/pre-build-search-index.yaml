@@ -1,4 +1,4 @@
-name: Pre-build the seach index
+name: Pre-build the seach index and update RSS/Atom feeds
 
 on:
   repository_dispatch:
@@ -43,8 +43,12 @@ jobs:
       working-directory: ./.github/ci
       run:  node build-search-index.js ${{ env.TARGETDIRECTORY }}
 
+    - name: Generate the search index
+      working-directory: ./.github/ci
+      run:  node generate-news-feed.js ${{ env.TARGETDIRECTORY }}
+
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: 'search-index.json'
-        commit_message: "chore: update the search index"
+        file_pattern: 'search-index.json rss.xml atom.xml'
+        commit_message: "chore: update the search index and rss/atom feeds"
