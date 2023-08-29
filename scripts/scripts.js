@@ -845,7 +845,6 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
-
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
