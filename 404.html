@@ -25,6 +25,13 @@
       window.location.replace(pathname.replace(/\/page\/(\d+)\/?$/, `?page=${page}`));
     }
 
+    // Redirect RSS feeds
+    if (pathname.endsWith('/feed/')) {
+      redirecting = true;
+      sampleRUM('redirect-rss-feed', { source: document.referrer, target: window.location.href });
+      window.location.replace('/rss.xml');
+    }
+
     // Redirect invalid pagination URLs
     [,page] = pathname.match(/\/(\d+)\/?$/) || [];
     if (!redirecting && page) {
