@@ -48,7 +48,7 @@ async function main() {
   const feed = new Feed({
     title: `PetPlace.com articles`,
     id: 'https://www.petplace.com/',
-    link: 'https://www.petplace.com/atom.xml',
+    link: 'https://www.petplace.com/',
     updated: new Date(newestPost * 1000),
     generator: 'News feed generator (GitHub action)',
     language: 'en',
