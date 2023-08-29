@@ -691,6 +691,9 @@ async function loadNewsletter(footer) {
 }
 
 async function loadNewsletterPopup(footer) {
+  if (isNewsletterSignedUp()) {
+    return;
+  }
   if (sessionStorage.getItem(NEWSLETTER_POPUP_KEY)) {
     return;
   }
