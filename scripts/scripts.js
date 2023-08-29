@@ -727,6 +727,52 @@ export function setNewsletterSignedUp() {
 }
 
 /**
+ * Loads configuration values from the site's configuration.xlsx file.
+ * @param {string} sheet The name of the sheet whose configuration should
+ *  be loaded.
+ * @returns {Promise<Array<*>|undefined>} Resolves with the array of
+ *  configuration values from the specified sheet. Will be undefined
+ *  if the configuration could not be found.
+ */
+export async function getConfiguration(sheet) {
+  let config;
+  try {
+    config = await ffetch('/drafts/frisbey/configuration.json')
+      .sheet(sheet)
+      .all();
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(`Unable to load ${sheet} configuration`);
+  }
+  return config;
+}
+
+async function addNewsletterPopup() {
+  const newsletterConfig = await getConfiguration('newsletter-popup');
+  if (!newsletterConfig) {
+    return;
+  }
+  const delay = newsletterConfig
+    .find((item) => item.Key === 'delay-seconds');
+  const seconds = delay ? parseInt(delay.Value, 10) : 10;
+  const excluded = newsletterConfig.filter((item) => {
+    if (item.Key !== 'exclude-pattern') {
+      return false;
+    }
+    const regexp = globRegex(item.Value);
+    return regexp.test(window.location.pathname);
+  });
+  if (excluded.length) {
+    return;
+  }
+  window.setTimeout(() => {
+    loadNewsletterPopup(document.querySelector('footer'));
+  }, seconds * 1000);
+
+  document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
+}
+
+/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
@@ -787,52 +833,6 @@ async function loadLazy(doc) {
   }
 
   addNewsletterPopup();
-}
-
-/**
- * Loads configuration values from the site's configuration.xlsx file.
- * @param {string} sheet The name of the sheet whose configuration should
- *  be loaded.
- * @returns {Promise<Array<*>|undefined>} Resolves with the array of
- *  configuration values from the specified sheet. Will be undefined
- *  if the configuration could not be found.
- */
-export async function getConfiguration(sheet) {
-  let config;
-  try {
-    config = await ffetch('/drafts/frisbey/configuration.json')
-      .sheet(sheet)
-      .all();
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log(`Unable to load ${sheet} configuration`);
-  }
-  return config;
-}
-
-async function addNewsletterPopup() {
-  const newsletterConfig = await getConfiguration('newsletter-popup');
-  if (!newsletterConfig) {
-    return;
-  }
-  const delay = newsletterConfig
-    .find((item) => item.Key === 'delay-seconds');
-  const seconds = delay ? parseInt(delay.Value, 10) : 10;
-  const excluded = newsletterConfig.filter((item) => {
-    if (item.Key !== 'exclude-pattern') {
-      return false;
-    }
-    const regexp = globRegex(item.Value);
-    return regexp.test(window.location.pathname);
-  });
-  if (excluded.length) {
-    return;
-  }
-  window.setTimeout(() => {
-    loadNewsletterPopup(document.querySelector('footer'));
-  }, seconds * 1000);
-
-  document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
 }
 
 /**
