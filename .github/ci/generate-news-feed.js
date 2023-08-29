@@ -7,6 +7,7 @@ const limit = 1000;
 function sanitize(str) {
   return str
     .replace('&amp;', '&')
+    .replace('\x92', '\'')
     .replace('\x97', '—')
 }
 async function fetchArticles() {
@@ -54,7 +55,7 @@ async function main() {
       author: [{
         name: article.author,
       }],
-      date: new Date(article.date * 1000),
+      date: article.date ? new Date(article.date * 1000) : '',
       image: `https://www.petplace.com${article.image.replace(/\?.*/, '')}`,
       category: article['category name'] ? [{name: article['category name'] }] : ''
     })
