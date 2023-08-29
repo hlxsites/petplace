@@ -30,6 +30,8 @@ indices:
       - '/article/**'
     exclude:
       - 'article/category/default'
+      - 'article/category/category-images'
+      - 'article/breed/'
     target: /article/query-index.xlsx
     properties:
       author:

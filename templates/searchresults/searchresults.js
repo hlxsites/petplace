@@ -1,6 +1,12 @@
-import ffetch from '../../scripts/ffetch.js';
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
-import { decorateResponsiveImages, meterCalls } from '../../scripts/scripts.js';
+import { decorateResponsiveImages } from '../../scripts/scripts.js';
+
+let searchWorker;
+// 2G connections are too slow to realistically load the elasticlunr search index
+// instead we'll do a poor man's search on the last 5K articles
+if (!('connection' in window.navigator) || !['slow-2g', '2g'].includes(window.navigator.connection.effectiveType)) {
+  searchWorker = new Worker('/scripts/worker/search.js');
+}
 
 function createArticleDiv(article) {
   const div = document.createElement('div');
@@ -10,9 +16,8 @@ function createArticleDiv(article) {
 }
 
 function removeSkeletons(block) {
-  window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-  });
+  block.querySelectorAll(':scope > .skeleton').forEach((sk) => sk.remove());
+  block.querySelectorAll('ul .skeleton').forEach((sk) => sk.parentElement.remove());
 }
 
 function noResultsHidePagination() {
@@ -21,8 +26,60 @@ function noResultsHidePagination() {
   searchResultText.innerHTML = 'No results found';
 }
 
-async function renderArticles(articles) {
+async function getArticles() {
+  const usp = new URLSearchParams(window.location.search);
+  const query = usp.get('query');
+  const sortorder = usp.get('sort');
+
+  // Show the recent articles if we don't have a search query
+  if (!query) {
+    const resp = await fetch('/article/query-index.json?sheet=article');
+    const json = await resp.json();
+    return json.data.slice(0, 16);
+  }
+
+  let results;
+  if (searchWorker) {
+    searchWorker.postMessage(query);
+    results = await new Promise((resolve) => {
+      searchWorker.onmessage = (e) => {
+        resolve(e.data);
+      };
+    });
+  } else {
+    // Poor-man's fallback search for slow connections,
+    // only looks at the last 5K articles and does basic keyword matching
+    // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
+    const queryTokens = query.split(' ');
+    const resp = await fetch('/article/query-index.json?sheet=article&limit=-5000');
+    const json = await resp.json();
+
+    results = json.data.filter((article) => queryTokens.every((t) => article.title.includes(t)
+      || article.description.includes(t)));
+  }
+
+  switch (sortorder) {
+    case 'titleasc':
+      results = results.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'titledesc':
+      results = results.sort((a, b) => a.title.localeCompare(b.title)).reverse();
+      break;
+    case 'dateasc':
+      results = results.sort((a, b) => a.date.localeCompare(b.date));
+      break;
+    case 'datedesc':
+      results = results.sort((a, b) => a.date.localeCompare(b.date)).reverse();
+      break;
+    default:
+  }
+  return results;
+}
+
+async function renderArticles() {
   const block = document.querySelector('.cards');
+
+  // Prepare cards block with skeletons
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < 25; i += 1) {
     const div = document.createElement('div');
@@ -30,49 +87,30 @@ async function renderArticles(articles) {
     block.append(div);
   }
   document.querySelector('.pagination').dataset.total = '…';
-  const res = await articles;
-  const promises = [];
-  let found = false;
-  // eslint-disable-next-line no-restricted-syntax
-  for await (const article of res) {
-    found = true;
-    const div = createArticleDiv(article);
-    promises.push(meterCalls(() => block.append(div)));
-  }
-  Promise.all(promises).then(() => {
-    if (!found) {
-      const usp = new URLSearchParams(window.location.search);
-      const query = usp.get('query');
-      sampleRUM('nullsearch', { source: '.search-input', target: query });
-      noResultsHidePagination();
-    }
-    removeSkeletons(block);
-  });
-  document.querySelector('.pagination').dataset.total = res.total();
-  window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
-  });
-}
 
-async function getArticles() {
+  const articles = await getArticles();
+
   const usp = new URLSearchParams(window.location.search);
-  const limit = usp.get('limit') || 16;
-  const query = usp.get('query');
-  const offset = (Number(usp.get('page') || 1) - 1) * limit;
-  const sortorder = usp.get('sort');
-  let sheet = 'article';
-  if (sortorder === 'titleasc') {
-    sheet = 'article-by-title-asc';
-  } else if (sortorder === 'titledesc') {
-    sheet = 'article-by-title-desc';
-  } else if (sortorder === 'dateasc') {
-    sheet = 'article-by-date-asc';
+  if (!articles.length) {
+    removeSkeletons(block);
+    const query = usp.get('query');
+    sampleRUM('nullsearch', { source: '.search-input', target: query });
+    noResultsHidePagination();
+    return;
   }
-  return ffetch('/article/query-index.json')
-    .sheet(sheet)
-    .withTotal(true)
-    .filter((article) => !query || `${article.description} ${article.title}`.toLowerCase().includes(query.toLowerCase()))
-    .slice(offset, offset + limit);
+
+  const limit = usp.get('limit') || 16;
+  const offset = (Number(usp.get('page') || 1) - 1) * limit;
+  const paginatedArticles = articles.slice(offset, offset + limit);
+
+  // eslint-disable-next-line no-restricted-syntax
+  paginatedArticles.forEach((article) => {
+    const div = createArticleDiv(article);
+    block.append(div);
+  });
+
+  removeSkeletons(block);
+  document.querySelector('.pagination').dataset.total = articles.length;
 }
 
 function sortselection() {
@@ -96,12 +134,15 @@ function buildSortBtn() {
   div.append(h2);
   const select = document.createElement('select');
   select.classList.add('search-select');
+  select.setAttribute('aria-label', 'Sort results');
   select.id = 'orderby';
-  select.options[0] = new Option('Sort By', 'sortby');
-  select.options[1] = new Option('title A-Z', 'titleasc');
-  select.options[2] = new Option('title Z-A', 'titledesc');
-  select.options[3] = new Option('date ASC', 'dateasc');
-  select.options[4] = new Option('date DSC', 'datedesc');
+  select.options.add(new Option('Sort By', 'sortby'));
+  select.options.add(new Option('Relevance', 'relevance', false, true));
+  select.options.add(new Option('Title A-Z', 'titleasc'));
+  select.options.add(new Option('Title Z-A', 'titledesc'));
+  select.options.add(new Option('Date ASC', 'dateasc'));
+  select.options.add(new Option('Date DSC', 'datedesc'));
+  select.options[0].disabled = true;
   const usp = new URLSearchParams(window.location.search);
   if (usp.get('sort') !== null) {
     select.value = usp.get('sort');
@@ -155,11 +196,11 @@ export async function loadLazy(main) {
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
   defaultContentWrapper.replaceWith(hero);
-  renderArticles(getArticles());
+  renderArticles();
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
-    window.addEventListener('popstate', () => {
-      renderArticles(getArticles());
+    window.addEventListener('popstate', async () => {
+      renderArticles();
     });
   }
 }
