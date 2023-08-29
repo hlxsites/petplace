@@ -732,6 +732,12 @@ export function setNewsletterSignedUp() {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+
+  const context = { getMetadata, toClassName };
+  // eslint-disable-next-line import/no-relative-packages
+  const { initConversionTracking } = await import('../plugins/rum-conversion/src/index.js');
+  await initConversionTracking.call(context, document);
+
   animateSkeletons(main);
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);

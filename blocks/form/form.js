@@ -1,3 +1,5 @@
+import { sampleRUM } from '../../scripts/lib-franklin.js';
+
 function createSelect(fd) {
   const select = document.createElement('select');
   select.id = fd.Field;
@@ -42,6 +44,9 @@ async function submitForm(form) {
     },
     body: JSON.stringify({ data: payload }),
   });
+  if (sampleRUM.convert) {
+    sampleRUM.convert('form-submission', form.dataset.action, form, []);
+  }
   await resp.text();
   return payload;
 }
