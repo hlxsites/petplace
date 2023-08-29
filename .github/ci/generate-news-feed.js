@@ -3,7 +3,12 @@ import fs from 'fs';
 
 const targetDirectory = process.argv[2];
 const limit = 1000;
-    
+
+function sanitize(str) {
+  return str
+    .replace('&amp;', '&')
+    .replace('\x97', '—')
+}
 async function fetchArticles() {
   let offset = 0;
   const allPosts = [];
@@ -30,7 +35,6 @@ async function fetchArticles() {
 async function main() {
   const articles = await fetchArticles();
   const newestPost = Math.max(...articles.map((article) => article.date));
-  console.log(111, new Date(newestPost * 1000));
   const feed = new Feed({
     title: `PetPlace.com articles`,
     id: 'petplace.com',
@@ -44,8 +48,8 @@ async function main() {
   articles.forEach((article) => {
     feed.addItem({
       id: `https://www.petplace.com${article.path}`,
-      title: article.title,
-      description: article.description,
+      title: sanitize(article.title),
+      description: sanitize(article.description),
       link: `https://www.petplace.com${article.path}`,
       author: [{
         name: article.author,
