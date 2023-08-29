@@ -1,3 +1,5 @@
+import ffetch from './ffetch.js';
+import globRegex from './glob-regex/glob-regex.js';
 import {
   sampleRUM,
   buildBlock,
@@ -20,6 +22,7 @@ import {
 // eslint-disable-next-line import/no-cycle
 import integrateMartech from './third-party.js';
 
+const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
@@ -689,6 +692,10 @@ async function loadNewsletter(footer) {
 }
 
 async function loadNewsletterPopup(footer) {
+  if (sessionStorage.getItem(NEWSLETTER_POPUP_KEY)) {
+    return;
+  }
+  sessionStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
   const popupContainer = document.createElement('div');
   const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-popup', (block) => {
     popupContainer.append(block);
@@ -772,6 +779,54 @@ async function loadLazy(doc) {
     integrateMartech();
     initPartytown();
   }
+
+  addNewsletterPopup();
+}
+
+/**
+ * Loads configuration values from the site's configuration.xlsx file.
+ * @param {string} sheet The name of the sheet whose configuration should
+ *  be loaded.
+ * @returns {Promise<Array<*>|undefined>} Resolves with the array of
+ *  configuration values from the specified sheet. Will be undefined
+ *  if the configuration could not be found.
+ */
+export async function getConfiguration(sheet) {
+  let config;
+  try {
+    config = await ffetch('/drafts/frisbey/configuration.json')
+      .sheet(sheet)
+      .all();
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(`Unable to load ${sheet} configuration`);
+  }
+  return config;
+}
+
+async function addNewsletterPopup() {
+  const newsletterConfig = await getConfiguration('newsletter-popup');
+  if (!newsletterConfig) {
+    return;
+  }
+  const delay = newsletterConfig
+    .find((item) => item.Key === 'delay-seconds');
+  const seconds = delay ? parseInt(delay.Value, 10) : 10;
+  const excluded = newsletterConfig.filter((item) => {
+    if (item.Key !== 'exclude-pattern') {
+      return false;
+    }
+    const regexp = globRegex(item.Value);
+    return regexp.test(window.location.pathname);
+  });
+  if (excluded.length) {
+    return;
+  }
+  window.setTimeout(() => {
+    loadNewsletterPopup(document.querySelector('footer'));
+  }, seconds * 1000);
+
+  document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
 }
 
 /**
@@ -784,9 +839,6 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
-
-    // TODO: display newsletter popup as determined by petplace team
-    loadNewsletterPopup(document.querySelector('footer'));
 
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');

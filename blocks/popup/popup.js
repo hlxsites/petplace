@@ -17,7 +17,5 @@ export default function decorate(block) {
   ariaDialog.append(contentContainer);
   target.append(ariaDialog);
 
-  setTimeout(() => {
-    showDialog.click();
-  }, 1000);
+  showDialog.click();
 }
