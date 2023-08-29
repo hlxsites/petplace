@@ -8,6 +8,7 @@ export default function decorate(block) {
   }
 
   if (sampleRUM.convert) {
+    const a = block.querySelector('a');
     a.addEventListener('click', () => {
       sampleRUM.convert('insurance-enroll', a.innerText, a, []);
     });
