@@ -57,7 +57,7 @@ async function main() {
 
   articles.forEach((article) => {
     feed.addItem({
-      id: article.path,
+      id: `https://www.petplace.com${article.path}`,
       title: article.title,
       description: article.description,
       link: `https://www.petplace.com${article.path}`,
@@ -65,7 +65,7 @@ async function main() {
         name: article.author,
       }],
       date: new Date(article.date * 1000),
-      image: `https://www.petplace.com${article.image}`,
+      image: `https://www.petplace.com${article.image.replace(/\?.*/, '')}`,
       category: article['category name'] ? [{name: article['category name'] }] : ''
     })
   });
