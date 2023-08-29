@@ -6,8 +6,9 @@ const limit = 1000;
 
 function sanitize(str) {
   return str
-    .replaceAll('&amp;', '&#x26;')  
+    .replaceAll('&amp;', '&#x26;')
     .replaceAll('&', '&#x26;')
+    .replaceAll('&amp;#x26;', '&#x26;')
     .replaceAll('<', '&#x3C;')
     .replaceAll('\x91', '&#x27;') // single quote (opening)
     .replaceAll('\x92', '&#x27;') // single quote (closing)
