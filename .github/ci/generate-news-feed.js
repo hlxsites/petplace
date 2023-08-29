@@ -3,21 +3,6 @@ import fs from 'fs';
 
 const targetDirectory = process.argv[2];
 const limit = 1000;
-
-function getFolder(category) {
-  return category['Parent Path'].replace('/article/category', '');
-}
-function toClassName(name) {
-  return typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/g, '-').replace(/^-|-$/g, '').replace(/-+/g, '-')
-    : '';
-}
-
-async function fetchCategories() {
-  const response = await fetch('https://www.petplace.com/article/category/categories.json');
-  const json = await response.json();
-  return json.data;
-}
     
 async function fetchArticles() {
   let offset = 0;
@@ -44,12 +29,13 @@ async function fetchArticles() {
 
 async function main() {
   const articles = await fetchArticles();
-  const newestPost = new Date(articles[articles.length - 1].date * 1000);
+  const newestPost = Math.max(...articles.map((article) => article.date));
+  console.log(111, new Date(newestPost * 1000));
   const feed = new Feed({
     title: `PetPlace.com articles`,
     id: 'petplace.com',
     link: `https://www.petplace.com/rss.xml`,
-    updated: newestPost,
+    updated: new Date(newestPost * 1000),
     generator: 'News feed generator (GitHub action)',
     language: 'en',
     copyright: `All rights reserved ${new Date().getFullYear()},  Independence America Holdings Corp.`,
