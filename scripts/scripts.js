@@ -690,6 +690,16 @@ async function loadNewsletter(footer) {
   return loadBlock(newsletterBlock);
 }
 
+/**
+ * Retrieves a value indicating whether the user has already signed up
+ * for the newsletter.
+ * @returns {boolean} True if the user has already signed up, false
+ *  otherwise.
+ */
+export function isNewsletterSignedUp() {
+  return !!localStorage.getItem(NEWSLETTER_SIGNUP_KEY);
+}
+
 async function loadNewsletterPopup(footer) {
   if (isNewsletterSignedUp()) {
     return;
@@ -708,16 +718,6 @@ async function loadNewsletterPopup(footer) {
   footer.append(popupBlock);
   decorateBlock(popupBlock);
   await loadBlock(popupBlock);
-}
-
-/**
- * Retrieves a value indicating whether the user has already signed up
- * for the newsletter.
- * @returns {boolean} True if the user has already signed up, false
- *  otherwise.
- */
-export function isNewsletterSignedUp() {
-  return !!localStorage.getItem(NEWSLETTER_SIGNUP_KEY);
 }
 
 /**
