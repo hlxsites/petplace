@@ -784,6 +784,20 @@ a.sr-focusable:focus {
   font-size: var(--body-font-size-xxs);
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
+footer .popup hlx-aria-dialog > button {
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  position: fixed;
+  background-color: transparent !important;
+  top: 0;
+  left: -10px;
+  z-index: -1000;
+}
+
 @media (prefers-contrast: more) {
   :root {
     --high-contrast-color: #ab2400;

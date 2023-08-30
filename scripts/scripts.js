@@ -1,3 +1,4 @@
+import globRegex from './glob-regex/glob-regex.js';
 import {
   sampleRUM,
   buildBlock,
@@ -20,6 +21,7 @@ import {
 // eslint-disable-next-line import/no-cycle
 import integrateMartech from './third-party.js';
 
+const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
@@ -667,17 +669,24 @@ async function optimizedBatchLoading(promises) {
   return Promise.all(promises.map((promise) => promise()));
 }
 
-async function loadNewsletter(footer) {
-  const res = await fetch('/fragments/newsletter-footer');
+async function createNewsletterAutoBlock(fragmentUrl, addElement) {
+  const res = await fetch(fragmentUrl);
   const text = await res.text();
 
   const fragmentHtml = document.createElement('div');
   fragmentHtml.innerHTML = text;
   const blockElements = fragmentHtml.querySelector('.newsletter-signup > div > div');
   const newsletterBlock = buildBlock('newsletter-signup', { elems: [...blockElements.children] });
-  newsletterBlock.classList.add('horizontal');
-  footer.insertBefore(newsletterBlock, footer.children[0]);
+  addElement(newsletterBlock);
   decorateBlock(newsletterBlock);
+  return newsletterBlock;
+}
+
+async function loadNewsletter(footer) {
+  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-footer', (block) => {
+    footer.insertBefore(block, footer.children[0]);
+  });
+  newsletterBlock.classList.add('horizontal');
   return loadBlock(newsletterBlock);
 }
 
@@ -691,12 +700,80 @@ export function isNewsletterSignedUp() {
   return !!localStorage.getItem(NEWSLETTER_SIGNUP_KEY);
 }
 
+async function loadNewsletterPopup(footer) {
+  if (isNewsletterSignedUp()) {
+    return;
+  }
+  if (sessionStorage.getItem(NEWSLETTER_POPUP_KEY)) {
+    return;
+  }
+  sessionStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
+  const popupContainer = document.createElement('div');
+  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-popup', (block) => {
+    popupContainer.append(block);
+  });
+  await loadBlock(newsletterBlock);
+
+  const popupBlock = buildBlock('popup', popupContainer);
+  footer.append(popupBlock);
+  decorateBlock(popupBlock);
+  await loadBlock(popupBlock);
+}
+
 /**
  * Sets the value indicating that the user has signed up for
  * the newsletter.
  */
 export function setNewsletterSignedUp() {
   localStorage.setItem(NEWSLETTER_SIGNUP_KEY, 'true');
+}
+
+/**
+ * Loads configuration values from the site's configuration.xlsx file.
+ * @param {string} sheet The name of the sheet whose configuration should
+ *  be loaded.
+ * @returns {Promise<Array<*>|undefined>} Resolves with the array of
+ *  configuration values from the specified sheet. Will be undefined
+ *  if the configuration could not be found.
+ */
+export async function getConfiguration(sheet) {
+  try {
+    const res = await fetch(`/configuration.json?sheet=${sheet}`);
+    if (!res.ok) {
+      return undefined;
+    }
+    const json = await res.json();
+    return json.data;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(`Unable to load ${sheet} configuration`);
+  }
+  return undefined;
+}
+
+async function addNewsletterPopup() {
+  const newsletterConfig = await getConfiguration('newsletter-popup');
+  if (!newsletterConfig) {
+    return;
+  }
+  const delay = newsletterConfig
+    .find((item) => item.Key === 'delay-seconds');
+  const seconds = delay ? Number(delay.Value) : 10;
+  const excluded = newsletterConfig.filter((item) => {
+    if (item.Key !== 'exclude-pattern') {
+      return false;
+    }
+    const regexp = globRegex(item.Value);
+    return regexp.test(window.location.pathname);
+  });
+  if (excluded.length) {
+    return;
+  }
+  window.setTimeout(() => {
+    loadNewsletterPopup(document.querySelector('footer'));
+  }, seconds * 1000);
+
+  document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
 }
 
 /**
@@ -764,6 +841,8 @@ async function loadLazy(doc) {
     integrateMartech();
     initPartytown();
   }
+
+  addNewsletterPopup();
 }
 
 /**
