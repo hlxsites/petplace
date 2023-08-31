@@ -26,6 +26,10 @@ main .newsletter-signup input {
   height: 38px;
 }
 
+.newsletter-signup button[disabled] {
+  color: var(--text-color-alt);
+}
+
 .newsletter-signup input[type="text"] {
   border-radius: 20px;
   text-align: center;
