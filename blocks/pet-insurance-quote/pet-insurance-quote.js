@@ -1,4 +1,4 @@
-import { sampleRUM, decorateIcons } from '../../scripts/lib-franklin.js';
+import { sampleRUM } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
   // for backward compatibility, there are some pet insurance blocks in existing
