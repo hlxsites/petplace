@@ -30,20 +30,20 @@
   margin: 0;
 }
 
-/* full variant */
-.pet-insurance-quote.full > div > div {
+/* vertical variant */
+.pet-insurance-quote.vertical > div > div {
   align-items: unset;
 }
 
-.pet-insurance-quote.full .button-container {
+.pet-insurance-quote.vertical .button-container {
   align-self: center;
 }
 
-.pet-insurance-quote.full .button-container, .pet-insurance-quote.full .button-container a {
+.pet-insurance-quote.vertical .button-container, .pet-insurance-quote.vertical .button-container a {
   width: 100%;
 }
 
-.pet-insurance-quote.full > div > div p:nth-child(1) {
+.pet-insurance-quote.vertical > div > div p:nth-child(1) {
   color: var(--highlight-color);
   font-weight: 100;
   font-family: var(--body-font-family);
@@ -67,17 +67,17 @@
     padding: 0 .5rem 0 1.5rem;
   }
 
-  /* full variant */
-  .pet-insurance-quote.full > div > div {
+  /* vertical variant */
+  .pet-insurance-quote.vertical > div > div {
     flex-direction: column;
     align-items: center;
   }
 
-  .pet-insurance-quote.full .button-container, .pet-insurance-quote.full .button-container a {
+  .pet-insurance-quote.vertical .button-container, .pet-insurance-quote.vertical .button-container a {
     width: unset;
   }
   
-  .pet-insurance-quote.full > div > div > p::after {
+  .pet-insurance-quote.vertical > div > div > p::after {
     display: none;
   }
 }
