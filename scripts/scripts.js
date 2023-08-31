@@ -704,10 +704,10 @@ async function loadNewsletterPopup(footer) {
   if (isNewsletterSignedUp()) {
     return;
   }
-  if (sessionStorage.getItem(NEWSLETTER_POPUP_KEY)) {
+  if (localStorage.getItem(NEWSLETTER_POPUP_KEY)) {
     return;
   }
-  sessionStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
+  localStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
   const popupContainer = document.createElement('div');
   const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-popup', (block) => {
     popupContainer.append(block);
