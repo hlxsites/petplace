@@ -94,7 +94,7 @@ async function adminOperation(url, op) {
     `${FRANKLIN_ADMIN_API}/${op}${orgRepoRef}${pathname.replace(/\/$/, '')}`,
     { method: 'POST' },
   );
-  return response.ok && response.text();
+  return response.ok;
 }
 
 async function querySourceDocument(url, selector) {
@@ -183,6 +183,11 @@ async function preview(url) {
 // eslint-disable-next-line no-unused-vars
 async function publish(url) {
   return adminOperation(url, 'live');
+}
+
+// eslint-disable-next-line no-unused-vars
+async function cache(url) {
+  return adminOperation(url, 'cache');
 }
 
 const times = [];
