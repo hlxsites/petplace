@@ -54,7 +54,7 @@ async function getArticles() {
       };
     });
     if (!isTrueSearch) {
-      results = results.slice(0, 16);
+      results = results.slice(0, 8);
     }
   } else {
     // Poor-man's fallback search for slow connections,
@@ -126,6 +126,14 @@ async function renderArticles() {
   removeSkeletons(block);
   if (pagination) {
     pagination.dataset.total = articles.length;
+  }
+
+  if (!isTrueSearch) {
+    document.querySelector('.cards').addEventListener('click', (ev) => {
+      if (ev.target.closest('a')) {
+        sampleRUM('saved-404', { source: window.location.href, target: ev.target.href });
+      }
+    });
   }
 }
 
