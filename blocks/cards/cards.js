@@ -52,6 +52,8 @@ async function buildPost(post, eager) {
 async function buildAuthorPost(post, eager) {
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
+  postCard.setAttribute('itemscope', '');
+  postCard.setAttribute('itemtype', 'https://schema.org/Person');
   postCard.innerHTML = `
       <div class="blogs-card-image">
         <a href="${post.path}">${createOptimizedPicture(post.avatar, `Avatar image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
@@ -59,12 +61,13 @@ async function buildAuthorPost(post, eager) {
       <div>              
         <a href="${post.path}">
         <div class="blogs-card-body">
-        <h3>${post.title.replace(/- Petplace$/i, '')}</h3>
+        <h3 itemprop="name">${post.title.replace(/- Petplace$/i, '')}</h3>
         <span class="read-more">Read more</span>
       </div></a>          
       </div>
     </a>
   `;
+  postCard.querySelector('img').setAttribute('itemprop', 'image');
   return postCard;
 }
 
