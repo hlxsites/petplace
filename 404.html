@@ -7,6 +7,7 @@
     window.isErrorPage = true;
     window.errorCode = '404';
   </script>
+  <meta name="template" content="searchresults">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
   <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
@@ -47,20 +48,6 @@
       window.location.replace(pathname.replace(/\/page\d+\.aspx$/, ''));
     }
 
-    // Try to identify vanity URLs
-    const tokens = pathname.split('/').filter((token) => !!token);
-    if (!redirecting && tokens.length) {
-      const resp = await fetch('/article/query-index.json?sheet=article&limit=-1');
-      const json = await resp.json();
-      const token = tokens.pop();
-      const article = json.data.find((article) => article.path.endsWith(token));
-      if (article) {
-        redirecting = true;
-        sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
-        window.location.replace(article.path);
-      }
-    }
-
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
@@ -77,34 +64,12 @@
     });
 
     sampleRUM('404', { source: document.referrer, target: window.location.href });
-    if (!redirecting) {
-      window.location.replace('/');
-    }
   </script>
   <link rel="stylesheet" href="/styles/styles.css">
-  <style>
-    body {
-      display: none !important; /* FIXME: remove if redirect is removed. */
-    }
-
-    main.error {
-      min-height: calc(100vh - var(--nav-height));
-      display: flex;
-      align-items: center;
-    }
-
-    main.error .error-number {
-      width: 100%;
-    }
-
-    main.error .error-number text {
-      font-family: var(--fixed-font-family);
-    }
-  </style>
   <link rel="stylesheet" href="/styles/lazy-styles.css">
 </head>
 
-<body>
+<body class="">
   <header></header>
   <main class="error">
     <div class="section">

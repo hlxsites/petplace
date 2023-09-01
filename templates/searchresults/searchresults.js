@@ -1,6 +1,8 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages } from '../../scripts/scripts.js';
 
+const isTrueSearch = window.location.pathname === '/search';
+
 let searchWorker;
 // 2G connections are too slow to realistically load the elasticlunr search index
 // instead we'll do a poor man's search on the last 5K articles
@@ -28,8 +30,7 @@ function noResultsHidePagination() {
 
 async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
-  const query = usp.get('query');
-  const sortorder = usp.get('sort');
+  const query = isTrueSearch ? usp.get('query') : window.location.pathname.split('/').pop().replace(/-/g, ' ');
 
   // Show the recent articles if we don't have a search query
   if (!query) {
@@ -40,12 +41,15 @@ async function getArticles() {
 
   let results;
   if (searchWorker) {
-    searchWorker.postMessage(query);
+    searchWorker.postMessage({ query, operator: isTrueSearch ? 'AND' : 'OR' });
     results = await new Promise((resolve) => {
       searchWorker.onmessage = (e) => {
         resolve(e.data);
       };
     });
+    if (!isTrueSearch) {
+      results = results.slice(0, 16);
+    }
   } else {
     // Poor-man's fallback search for slow connections,
     // only looks at the last 5K articles and does basic keyword matching
@@ -58,6 +62,7 @@ async function getArticles() {
       || article.description.includes(t)));
   }
 
+  const sortorder = usp.get('sort');
   switch (sortorder) {
     case 'titleasc':
       results = results.sort((a, b) => a.title.localeCompare(b.title));
@@ -86,7 +91,10 @@ async function renderArticles() {
     div.classList.add('skeleton');
     block.append(div);
   }
-  document.querySelector('.pagination').dataset.total = '…';
+  const pagination = document.querySelector('.pagination');
+  if (pagination) {
+    pagination.dataset.total = '…';
+  }
 
   const articles = await getArticles();
 
@@ -110,7 +118,9 @@ async function renderArticles() {
   });
 
   removeSkeletons(block);
-  document.querySelector('.pagination').dataset.total = articles.length;
+  if (pagination) {
+    pagination.dataset.total = articles.length;
+  }
 }
 
 function sortselection() {
@@ -166,8 +176,13 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(main) {
-  createTemplateBlock(main, 'pagination');
-  main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
+  if (isTrueSearch) {
+    createTemplateBlock(main, 'pagination');
+    main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
+  } else {
+    const response = await fetch('/fragments/404.plain.html');
+    main.innerHTML = await response.text();
+  }
 }
 
 export async function loadLazy(main) {
@@ -192,7 +207,9 @@ export async function loadLazy(main) {
       contentDiv.append(el);
     }
   });
-  contentDiv.append(document.querySelector('.search-wrapper'));
+  if (isTrueSearch) {
+    contentDiv.append(document.querySelector('.search-wrapper'));
+  }
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
   defaultContentWrapper.replaceWith(hero);
