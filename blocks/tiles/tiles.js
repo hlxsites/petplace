@@ -73,6 +73,8 @@ export default async function decorate(block) {
     // Create tile div for each individual tile
     const tile = document.createElement('div');
     tile.classList.add('tile');
+    tile.setAttribute('itemscope', '');
+    tile.setAttribute('itemtype', 'https://schema.org/Article');
 
     const imgPadding = document.createElement('div');
     if (index === 0) {
@@ -115,6 +117,7 @@ export default async function decorate(block) {
       img = picture.querySelector('img');
       img.width = 200;
       img.height = 200;
+      img.setAttribute('itemprop', 'image');
     }
 
     // Create content div.  This contains title, author, date etc..
@@ -127,7 +130,7 @@ export default async function decorate(block) {
     const categoryLink = document.createElement('a');
     categoryLink.classList.add('category-link-btn');
     categoryLink.href = categories[index]?.Path;
-    categoryLink.innerHTML = categories[index]?.Category;
+    categoryLink.innerHTML = `<span itemprop="about">${categories[index]?.Category}</span>`;
     categoryLink.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color})`);
 
     if (index !== 0) {
@@ -140,17 +143,30 @@ export default async function decorate(block) {
     const title = document.createElement('a');
     title.href = dta.path;
     const titleHeader = document.createElement('h3');
+    titleHeader.setAttribute('itemprop', 'name');
     titleHeader.innerHTML = tileTitle;
     title.append(titleHeader);
+    const link = document.createElement('link');
+    link.setAttribute('itemprop', 'url');
+    link.setAttribute('href', dta.path);
+    title.append(link);
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');
 
     const date = new Date(dta.date * 1000);
     date.setHours(date.getHours() + (date.getTimezoneOffset() / 60));
-    const formattedDate = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    const formattedDate = document.createElement('span');
+    formattedDate.setAttribute('itemprop', 'datePublished');
+    formattedDate.setAttribute('content', date.toISOString().substring(0, 10));
+    formattedDate.textContent = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 
-    dateAuthorContainer.append(`${formattedDate} · `);
-    dateAuthorContainer.append(dta.author);
+    const author = document.createElement('span');
+    author.setAttribute('itemprop', 'author');
+    author.textContent = dta.author;
+
+    dateAuthorContainer.append(formattedDate);
+    dateAuthorContainer.append(' · ');
+    dateAuthorContainer.append(author);
 
     imgContainer.append(imgPadding);
     imgContainer.append(picture);
