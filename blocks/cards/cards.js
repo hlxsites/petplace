@@ -20,29 +20,40 @@ async function buildPost(post, eager) {
 
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
+  postCard.setAttribute('itemscope', '');
+  postCard.setAttribute('itemtype', 'https://schema.org/Article');
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
-      <div class="blogs-card-image">
-        <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
-        ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}">${category.Category}</a>` : ''}
-      </div>
-      <div>              
-        <a href="${post.path}">
+    <div class="blogs-card-image">
+      <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
+      ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}"><span itemprop="about">${category.Category}</span></a>` : ''}
+    </div>
+    <div>
+      <a href="${post.path}">
         <div class="blogs-card-body">
-        <h3>${post.title.replace(/[-|] Petplace(\.com)?$/i, '')}</h3>
-        ${category.Category !== 'Breeds' ? `<p><span class="card-date"> <time datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · ${post.author}</span></p>` : ''}
-      </div></a>          
-      </div>
-    </a>
-  `;
+          <link itemprop="url" href="${post.path}"/>
+          <h3 itemprop="name">${post.title.replace(/[-|] Petplace(\.com)?$/i, '')}</h3>
+          ${category.Category !== 'Breeds' ? `<p>
+            <span class="card-date">
+              <time itemprop="datePublished" datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · 
+              <span itemprop="author">${post.author}</span>
+            </span>
+          </p>` : ''}
+        </div>
+      </a>
+    </div>
+  </a>`;
+  postCard.querySelector('img').setAttribute('itemprop', 'image');
   return postCard;
 }
 
 async function buildAuthorPost(post, eager) {
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
+  postCard.setAttribute('itemscope', '');
+  postCard.setAttribute('itemtype', 'https://schema.org/Person');
   postCard.innerHTML = `
       <div class="blogs-card-image">
         <a href="${post.path}">${createOptimizedPicture(post.avatar, `Avatar image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
@@ -50,12 +61,13 @@ async function buildAuthorPost(post, eager) {
       <div>              
         <a href="${post.path}">
         <div class="blogs-card-body">
-        <h3>${post.title.replace(/[-|] Petplace(\.com)?$/i, '')}</h3>
+        <h3 itemprop="name">${post.title.replace(/[-|] Petplace(\.com)?$/i, '')}</h3>
         <span class="read-more">Read more</span>
       </div></a>          
       </div>
     </a>
   `;
+  postCard.querySelector('img').setAttribute('itemprop', 'image');
   return postCard;
 }
 

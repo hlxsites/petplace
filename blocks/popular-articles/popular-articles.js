@@ -91,18 +91,21 @@ export default async function decorate(block) {
 
     PopularPostsData.forEach((post, i) => {
       const popularPostsWrapper = `
-      <div class="popular-posts-card">
-        <a href=" ${post.path}">
+        <div class="popular-posts-card" itemscope itemtype="https://schema.org/Article">
+          <a href="${post.path}">
             <div class="img-div"></div>
-        </a>
-        <div class="title-div">
-            <a href="${post.categoryPath}">${post.category}</a>
-            <a href=" ${post.path}"><h3>${post.title}</h3></a>
-        </div>
-      </div>          
-    `;
+          </a>
+          <div class="title-div">
+            <a href="${post.categoryPath}"><span itemprop="about">${post.category}<span></a>
+            <a href="${post.path}"><h3 itemprop="name">${post.title}</h3></a>
+            <link itemprop="url" href="${post.path}"/>
+          </div>
+        </div>          
+      `;
       cardWrapper.innerHTML += popularPostsWrapper;
-      cardWrapper.querySelectorAll('.img-div')[i].append(createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '300' }]));
+      const imgDiv = cardWrapper.querySelectorAll('.img-div')[i];
+      imgDiv.append(createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '300' }]));
+      imgDiv.querySelector('img').setAttribute('itemprop', 'image');
     });
 
     return block.append(cardWrapper);

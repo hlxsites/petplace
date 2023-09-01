@@ -141,9 +141,16 @@ export async function loadEager(main) {
   adId.innerText = await getCategoryAd(categorySlug);
   const adBlock = buildBlock('ad', { elems: [adId] });
   ad.append(adBlock);
+
+  main.setAttribute('itemscope', '');
+  main.setAttribute('itemtype', 'https://schema.org/Article');
 }
 
 export async function loadLazy(main) {
+  main.querySelector('.hero h1').setAttribute('itemprop', 'name');
+  main.querySelector('.hero img').setAttribute('itemprop', 'image');
+  main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
+
   const breadCrumbs = main.querySelector('.hero > div > div');
   const categorySlugs = getMetadata('category').split(',').map((slug) => toClassName(slug.trim()));
   const crumbData = await getBreadcrumbs(categorySlugs[0]);
