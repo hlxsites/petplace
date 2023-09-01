@@ -15,10 +15,13 @@ export default async function decorate(block) {
   const defaultAvatarIcon = document.createElement('span');
   defaultAvatarIcon.classList.add('icon', 'icon-user');
   const avatarIfExist = avatar ? createOptimizedPicture(avatar, authorTitle) : defaultAvatarIcon;
+  avatarIfExist.querySelector('img')?.setAttribute('itemprop', 'image');
   block.innerHTML = `
-    <p>${titleWithLinkIfExist}</p>
-    <time datetime="${date}">${date}</time>`;
-  block.prepend(avatarIfExist);
+    <div itemprop="author" itemscope itemtype="https://schema.org/Person">
+      <p itemprop="name">${titleWithLinkIfExist}</p>
+    </div>
+    <time itemprop="datePublished" datetime="${date}">${date}</time>`;
+  block.firstElementChild.prepend(avatarIfExist);
   decorateIcons(block);
   setTimeout(() => {
     window.requestAnimationFrame(() => {

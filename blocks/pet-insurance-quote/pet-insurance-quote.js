@@ -5,6 +5,7 @@ export default function decorate(block) {
   // pages that don't have content. Continue showing nothing for those cases
   if (!block.textContent.trim()) {
     block.remove();
+    return;
   }
 
   if (sampleRUM.convert) {

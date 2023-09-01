@@ -14,28 +14,51 @@ const embedYoutubeFacade = (url) => {
   } else {
     videoId = url.pathname.split('/').pop();
   }
+  const wrapper = document.createElement('div');
+  wrapper.setAttribute('itemscope', '');
+  wrapper.setAttribute('itemtype', 'https://schema.org/VideoObject');
+  const link = document.createElement('link');
+  link.setAttribute('itemprop', 'embedUrl');
+  link.href = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1`;
+  wrapper.append(link);
   const litePlayer = document.createElement('lite-youtube');
   litePlayer.setAttribute('videoid', videoId);
-  return litePlayer.outerHTML;
+  wrapper.append(litePlayer);
+  return wrapper.outerHTML;
 };
 
 const embedInstagram = (url) => {
   const endingSlash = url.pathname.endsWith('/') ? '' : '/';
   const location = window.location.href.endsWith('.html') ? window.location.href : `${window.location.href}.html`;
   const src = `${url.origin}${url.pathname}${endingSlash}embed/captioned/?rd=${window.encodeURIComponent(location)}`;
-  const embedHTML = `<iframe src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy"></iframe>`;
+  const embedHTML = `
+    <div itemscope itemtype="https://schema.org/SocialMediaPosting">
+      <link itemprop="url" href="${url.origin}${url.pathname}${endingSlash}embed/captioned/"/>
+      <iframe itemprop="url" src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy"></iframe>
+    </div>
+  `;
   return embedHTML;
 };
 
 const embedTwitter = (url) => {
   loadScript('https://platform.twitter.com/widgets.js');
-  const embedHTML = `<blockquote><a href="${url}"></a></blockquote>`;
+  const embedHTML = `
+    <blockquote itemscope itemtype="https://schema.org/SocialMediaPosting">
+      <a itemprop="url" href="${url}"></a>
+    </blockquote>
+  `;
   return embedHTML;
 };
 
 const embedTiktokFacade = async (url) => {
   loadScript('/blocks/embed/lite-tiktok/lite-tiktok.js', () => {}, { async: true, type: 'module' });
-  return `<lite-tiktok videoid="${url.pathname.split('/').pop()}"></lite-tiktok>`;
+  const videoId = url.pathname.split('/').pop();
+  return `
+    <div itemscope itemtype="https://schema.org/VideoObject">
+      <link itemprop="embedUrl" href="https://www.tiktok.com/video/${videoId}"/>
+      <lite-tiktok videoid="${videoId}"></lite-tiktok>
+    </div>
+  `;
 };
 
 const EMBEDS_CONFIG = {
