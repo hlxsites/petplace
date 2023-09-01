@@ -612,6 +612,9 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     await decorateTemplate(main);
+    if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
+      document.title += ' | PetPlace.com';
+    }
     await decorateMain(main);
     fixLinks();
     document.body.classList.add('appear');

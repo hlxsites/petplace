@@ -34,7 +34,7 @@ async function buildPost(post, eager) {
       <a href="${post.path}">
         <div class="blogs-card-body">
           <link itemprop="url" href="${post.path}"/>
-          <h3 itemprop="name">${post.title.replace(/- PetPlace$/, '')}</h3>
+          <h3 itemprop="name">${post.title.replace(/[-|] Petplace(\.com)?$/i, '')}</h3>
           ${category.Category !== 'Breeds' ? `<p>
             <span class="card-date">
               <time itemprop="datePublished" datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · 
@@ -61,7 +61,7 @@ async function buildAuthorPost(post, eager) {
       <div>              
         <a href="${post.path}">
         <div class="blogs-card-body">
-        <h3 itemprop="name">${post.title.replace(/- Petplace$/i, '')}</h3>
+        <h3 itemprop="name">${post.title.replace(/[-|] Petplace(\.com)?$/i, '')}</h3>
         <span class="read-more">Read more</span>
       </div></a>          
       </div>
