@@ -18,7 +18,7 @@
     // Trying to fix URLs producing 404s
 
     // Redirect RSS feeds
-    if (pathname.endsWith('/feed/')) {
+    if (window.location.pathname.endsWith('/feed/')) {
       redirecting = true;
       sampleRUM('redirect-rss-feed', { source: document.referrer, target: window.location.href });
       window.location.replace('/rss.xml');
