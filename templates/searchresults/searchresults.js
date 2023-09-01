@@ -30,7 +30,13 @@ function noResultsHidePagination() {
 
 async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
-  const query = isTrueSearch ? usp.get('query') : window.location.pathname.split('/').pop().replace(/-/g, ' ');
+  let query;
+  if (isTrueSearch) {
+    query = usp.get('query');
+  } else {
+    const [, page] = window.location.pathname.match(/([^/]*)(\/page)?(\/(\d+))?\/?$/) || [];
+    query = page.replace(/-/g, ' ');
+  }
 
   // Show the recent articles if we don't have a search query
   if (!query) {

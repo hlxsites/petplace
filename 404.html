@@ -17,35 +17,11 @@
     let redirecting = false;
     // Trying to fix URLs producing 404s
 
-    // Redirect old pagination URLs
-    const { pathname } = window.location;
-    let [,page] = pathname.match(/\/page\/(\d+)\/?$/) || [];
-    if (page) {
-      redirecting = true;
-      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
-      window.location.replace(pathname.replace(/\/page\/(\d+)\/?$/, `?page=${page}`));
-    }
-
     // Redirect RSS feeds
     if (pathname.endsWith('/feed/')) {
       redirecting = true;
       sampleRUM('redirect-rss-feed', { source: document.referrer, target: window.location.href });
       window.location.replace('/rss.xml');
-    }
-
-    // Redirect invalid pagination URLs
-    [,page] = pathname.match(/\/(\d+)\/?$/) || [];
-    if (!redirecting && page) {
-      redirecting = true;
-      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
-      window.location.replace(pathname.replace(/\/(\d+)\/?$/, ''));
-    }
-
-    // Redirect old aspx pages
-    if (!redirecting && pathname.match(/\/page\d+\.aspx$/)) {
-      redirecting = true;
-      sampleRUM('saved-404', { source: document.referrer, target: window.location.href });
-      window.location.replace(pathname.replace(/\/page\d+\.aspx$/, ''));
     }
 
     window.addEventListener('load', () => {
