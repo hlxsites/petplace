@@ -11,7 +11,6 @@ const index = (async (global) => {
 })(this);
 
 onmessage = async (e) => {
-  const query = e.data;
-  const results = (await index).search(query, { bool: 'AND' }).map((result) => result.doc);
+  const results = (await index).search(e.data.query, { bool: e.data.operator || 'AND' }).map((result) => result.doc);
   postMessage(results);
 };

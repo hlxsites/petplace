@@ -583,15 +583,14 @@ export function decorateButtons(element) {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
         }
-        // If we have several primary buttons after one other
-        // then just add them to the same container
-        if (up.previousElementSibling
-          && up.previousElementSibling.classList.contains('button-container')) {
-          up.previousElementSibling.append(a);
-          up.remove();
-        }
       }
     }
+  });
+  // If we have several primary buttons after one other
+  // then just add them to the same container
+  document.querySelectorAll('.button-container + .button-container').forEach((c) => {
+    c.previousElementSibling.append(c.firstElementChild);
+    c.remove();
   });
 }
 
