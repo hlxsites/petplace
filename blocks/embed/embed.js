@@ -26,8 +26,10 @@ const embedYoutubeFacade = async (url) => {
     const json = await response.json();
     wrapper.innerHTML = `
       <meta itemprop="name" content="${json.title}"/>
+      <meta itemprop="uploadDate" content="${document.head.querySelector('[name="publication-date"]').content}"/>
       <link itemprop="embedUrl" href="https://www.youtube.com/embed/${videoId}"/>
       <link itemprop="thumbnailUrl" href="${json.thumbnail_url}"/>
+      
       ${wrapper.innerHTML}
     `;
   } catch (err) {
@@ -68,6 +70,7 @@ const embedTiktokFacade = async (url) => {
     return `
       <div itemscope itemtype="https://schema.org/VideoObject">
         <meta itemprop="name" content="${json.title}"/>
+        <meta itemprop="uploadDate" content="${document.head.querySelector('[name="publication-date"]').content}"/>
         <link itemprop="thumbnailUrl" href="${json.thumbnail_url}"/>
         <link itemprop="embedUrl" href="https://www.tiktok.com/video/${videoId}"/>
         <lite-tiktok videoid="${videoId}"></lite-tiktok>
