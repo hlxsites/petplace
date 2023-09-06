@@ -72,9 +72,10 @@ async function renderArticles(articles) {
 
 async function getArticles() {
   const categories = await getCategories();
+  const categoryPath = new URL(document.head.querySelector('link[rel="canonical"]').href).pathname;
   const applicableCategories = categories
-    .filter((c) => c.Path === window.location.pathname
-      || c['Parent Path'].startsWith(window.location.pathname))
+    .filter((c) => c.Path === categoryPath
+      || c['Parent Path'].startsWith(categoryPath))
     .map((c) => ({ id: c.Slug, name: toClassName(c.Category) }));
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
@@ -153,8 +154,11 @@ async function updateMetadata() {
   if (!category) {
     throw new Error(404);
   }
-  const { Category, Color, Image } = category;
+  const {
+    Category, Color, Image, Path,
+  } = category;
   document.title = Category;
+  document.head.querySelector('link[rel="canonical"]').href = `${window.location.origin}${Path}`;
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
   const h1 = document.querySelector('h1');
