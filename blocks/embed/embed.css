@@ -9,8 +9,7 @@
 * OF ANY KIND, either express or implied. See the License for the specific language
 * governing permissions and limitations under the License.
 */
-.embed,
-.embed > div {
+.embed {
   display: flex;
   margin: 0 auto 2rem;
   padding: 0;
@@ -43,4 +42,8 @@
 .embed.instagram {
   width: 325px;
   min-height: 739px;
+}
+
+.embed.instagram > div {
+  display: flex;
 }
