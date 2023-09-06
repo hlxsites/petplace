@@ -3,7 +3,7 @@ import { loadScript } from '../../scripts/scripts.js';
 
 const getDefaultEmbed = (url) => `<iframe src="${url.href}" allowfullscreen allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy"></iframe>`;
 
-const embedYoutubeFacade = (url) => {
+const embedYoutubeFacade = async (url) => {
   loadCSS('/blocks/embed/lite-yt-embed/lite-yt-embed.css');
   loadScript('/blocks/embed/lite-yt-embed/lite-yt-embed.js');
 
@@ -17,13 +17,22 @@ const embedYoutubeFacade = (url) => {
   const wrapper = document.createElement('div');
   wrapper.setAttribute('itemscope', '');
   wrapper.setAttribute('itemtype', 'https://schema.org/VideoObject');
-  const link = document.createElement('link');
-  link.setAttribute('itemprop', 'embedUrl');
-  link.href = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1`;
-  wrapper.append(link);
   const litePlayer = document.createElement('lite-youtube');
   litePlayer.setAttribute('videoid', videoId);
   wrapper.append(litePlayer);
+
+  try {
+    const response = await fetch(`https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=${videoId}`);
+    const json = await response.json();
+    wrapper.innerHTML = `
+      <meta itemprop="name" content="${json.title}"/>
+      <link itemprop="embedUrl" href="https://www.youtube.com/embed/${videoId}"/>
+      <link itemprop="thumbnailUrl" href="${json.thumbnail_url}"/>
+      ${wrapper.innerHTML}
+    `;
+  } catch (err) {
+    // Nothing to do, metadata just won't be added to the video
+  }
   return wrapper.outerHTML;
 };
 
@@ -34,7 +43,7 @@ const embedInstagram = (url) => {
   const embedHTML = `
     <div itemscope itemtype="https://schema.org/SocialMediaPosting">
       <link itemprop="url" href="${url.origin}${url.pathname}${endingSlash}embed/captioned/"/>
-      <iframe itemprop="url" src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy"></iframe>
+      <iframe src="${src}" allowfullscreen allowtransparency scrolling="no" frameborder="0" loading="lazy"></iframe>
     </div>
   `;
   return embedHTML;
@@ -53,12 +62,25 @@ const embedTwitter = (url) => {
 const embedTiktokFacade = async (url) => {
   loadScript('/blocks/embed/lite-tiktok/lite-tiktok.js', () => {}, { async: true, type: 'module' });
   const videoId = url.pathname.split('/').pop();
-  return `
-    <div itemscope itemtype="https://schema.org/VideoObject">
-      <link itemprop="embedUrl" href="https://www.tiktok.com/video/${videoId}"/>
-      <lite-tiktok videoid="${videoId}"></lite-tiktok>
-    </div>
-  `;
+  try {
+    const request = await fetch(`https://www.tiktok.com/oembed?url=https://www.tiktok.com/video/${videoId}`);
+    const json = await request.json();
+    return `
+      <div itemscope itemtype="https://schema.org/VideoObject">
+        <meta itemprop="name" content="${json.title}"/>
+        <link itemprop="thumbnailUrl" href="${json.thumbnail_url}"/>
+        <link itemprop="embedUrl" href="https://www.tiktok.com/video/${videoId}"/>
+        <lite-tiktok videoid="${videoId}"></lite-tiktok>
+      </div>
+    `;
+  } catch (err) {
+    return `
+      <div itemscope itemtype="https://schema.org/VideoObject">
+        <link itemprop="embedUrl" href="https://www.tiktok.com/video/${videoId}"/>
+        <lite-tiktok videoid="${videoId}"></lite-tiktok>
+      </div>
+    `;
+  }
 };
 
 const EMBEDS_CONFIG = {
@@ -110,8 +132,7 @@ window.addEventListener('message', (ev) => {
   try {
     data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error('[Embed] Error parsing data: ', e);
+    // Nothing to do, the message isn't the one we are looking for
     return;
   }
 

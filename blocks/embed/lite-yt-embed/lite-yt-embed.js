@@ -142,9 +142,9 @@ class LiteYTEmbed extends HTMLElement {
       params.append('autoplay', '1');
       params.append('playsinline', '1');
 
-      if (this.needsYTApiForAutoplay) {
+    //   if (this.needsYTApiForAutoplay) {
           return this.addYTPlayerIframe(params);
-      }
+    //   }
 
       const iframeEl = document.createElement('iframe');
       iframeEl.width = 560;
