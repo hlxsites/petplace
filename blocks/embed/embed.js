@@ -1,6 +1,8 @@
 import { loadCSS } from '../../scripts/lib-franklin.js';
 import { loadScript } from '../../scripts/scripts.js';
 
+const FALLBACK_PUBLICATION_DATE = '2013-07-18'; // go-live date for the Franklin site, but could be any value
+
 const getDefaultEmbed = (url) => `<iframe src="${url.href}" allowfullscreen allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy"></iframe>`;
 
 const embedYoutubeFacade = async (url) => {
@@ -26,7 +28,7 @@ const embedYoutubeFacade = async (url) => {
     const json = await response.json();
     wrapper.innerHTML = `
       <meta itemprop="name" content="${json.title}"/>
-      <meta itemprop="uploadDate" content="${document.head.querySelector('[name="publication-date"]').content}"/>
+      <meta itemprop="uploadDate" content="${document.head.querySelector('[name="publication-date"]')?.content || FALLBACK_PUBLICATION_DATE}"/>
       <link itemprop="embedUrl" href="https://www.youtube.com/embed/${videoId}"/>
       <link itemprop="thumbnailUrl" href="${json.thumbnail_url}"/>
       
@@ -70,7 +72,7 @@ const embedTiktokFacade = async (url) => {
     return `
       <div itemscope itemtype="https://schema.org/VideoObject">
         <meta itemprop="name" content="${json.title}"/>
-        <meta itemprop="uploadDate" content="${document.head.querySelector('[name="publication-date"]').content}"/>
+        <meta itemprop="uploadDate" content="${document.head.querySelector('[name="publication-date"]')?.content || FALLBACK_PUBLICATION_DATE}"/>
         <link itemprop="thumbnailUrl" href="${json.thumbnail_url}"/>
         <link itemprop="embedUrl" href="https://www.tiktok.com/video/${videoId}"/>
         <lite-tiktok videoid="${videoId}"></lite-tiktok>
