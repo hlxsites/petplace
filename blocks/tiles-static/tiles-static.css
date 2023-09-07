@@ -84,8 +84,7 @@
 
 @media (min-width: 768px) {
   .tiles-static {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
   }
 
   .tiles-static > div {
