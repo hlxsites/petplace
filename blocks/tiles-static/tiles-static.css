@@ -9,16 +9,41 @@
   border: 1px solid var(--color-gray-light);
   justify-content: center;
   align-items: center;
+  gap: 1rem;
+}
+
+.tiles-static > div::before,
+.tiles-static > div::after {
+  content: '';
+  display: block;
 }
 
 .tiles-static > div > div {
   text-align: center;
-  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .75rem;
+}
+
+.tiles-static > div > div::before,
+.tiles-static > div > div::after {
+  content: '';
+  display: block;
+}
+
+.tiles-static > div > div > * {
+  margin: 0;
+  padding: 0;
+}
+
+.tiles-static > div > div > *:nth-last-child(2) {
+  flex-grow: 1;
 }
 
 .tiles-static > div > div:is(:last-child) {
-  width: 100%;
-  margin-right: 1rem;
+  flex-grow: 1;
 }
 
 .tiles-static hr {
@@ -44,10 +69,27 @@
   color: var(--highlight-color);
   background-color: var(--background-color);
   border: 1px solid var(--highlight-color);
+  margin: 0;
 }
 
 .tiles-static a.button::before {
   display: inline;
   content: '→';
   margin-right: .75rem;
+}
+
+.tiles-static > div > div > p:not(.button-container) {
+  padding: .25rem;
+}
+
+@media (min-width: 768px) {
+  .tiles-static {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .tiles-static > div {
+    flex: 30%;
+    flex-direction: column;
+  }
 }
