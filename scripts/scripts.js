@@ -1,22 +1,23 @@
 import globRegex from './glob-regex/glob-regex.js';
 import {
-  sampleRUM,
   buildBlock,
-  loadFooter,
+  createOptimizedPicture,
+  decorateBlock,
+  decorateBlocks,
   decorateButtons,
   decorateIcons,
   decorateSections,
-  decorateBlock,
-  decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
+  getMetadata,
   loadBlock,
   loadBlocks,
   loadCSS,
+  loadFooter,
   loadHeader,
-  getMetadata,
+  sampleRUM,
+  toCamelCase,
   toClassName,
-  createOptimizedPicture,
+  waitForLCP,
 } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import integrateMartech from './third-party.js';
@@ -28,6 +29,12 @@ const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
+
+// Define the custom audiences mapping for experience decisioning
+const AUDIENCES = {
+  // mobile: () => window.innerWidth < 600,
+  // desktop: () => window.innerWidth >= 600,
+};
 
 export const isMartechDisabled = new URLSearchParams(window.location.search).get('martech') === 'off';
 
@@ -59,6 +66,33 @@ export function loadScript(url, callback, attributes) {
   if (callback) callback();
   return head.querySelector(`script[src="${url}"]`);
 }
+
+/**
+ * Gets all the metadata elements that are in the given scope.
+* @param {String} scope The scope/prefix for the metadata
+* @returns an array of HTMLElement nodes that match the given scope
+*/
+export function getAllMetadata(scope) {
+  return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
+    .reduce((res, meta) => {
+      const id = toClassName(meta.name
+        ? meta.name.substring(scope.length + 1)
+        : meta.getAttribute('property').split(':')[1]);
+      res[id] = meta.getAttribute('content');
+      return res;
+    }, {});
+}
+
+// Define an execution context
+const pluginContext = {
+  getAllMetadata,
+  getMetadata,
+  loadCSS,
+  loadScript,
+  sampleRUM,
+  toCamelCase,
+  toClassName,
+};
 
 /**
  * Load fonts.css and set a session storage flag
@@ -609,6 +643,15 @@ function fixLinks() {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  if (getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadEager: runEager } = await import('../plugins/experience-decisioning/src/index.js');
+    await runEager.call(pluginContext, { audiences: AUDIENCES });
+  }
+
   const main = doc.querySelector('main');
   if (main) {
     await decorateTemplate(main);
@@ -844,6 +887,15 @@ async function loadLazy(doc) {
   if (!isMartechDisabled) {
     integrateMartech();
     initPartytown();
+  }
+
+  if ((getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length)
+    && (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost'))) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadLazy: runLazy } = await import('../plugins/experience-decisioning/src/index.js');
+    await runLazy.call(pluginContext, { audiences: AUDIENCES });
   }
 
   addNewsletterPopup();
