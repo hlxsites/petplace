@@ -69,9 +69,9 @@ export function loadScript(url, callback, attributes) {
 
 /**
  * Gets all the metadata elements that are in the given scope.
-* @param {String} scope The scope/prefix for the metadata
-* @returns an array of HTMLElement nodes that match the given scope
-*/
+ * @param {String} scope The scope/prefix for the metadata
+ * @returns an array of HTMLElement nodes that match the given scope
+ */
 export function getAllMetadata(scope) {
   return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
     .reduce((res, meta) => {
