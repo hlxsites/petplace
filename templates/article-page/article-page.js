@@ -143,13 +143,55 @@ export async function loadEager(main) {
   ad.append(adBlock);
 
   main.setAttribute('itemscope', '');
-  main.setAttribute('itemtype', 'https://schema.org/Article');
+  const articleType = toClassName(getMetadata('type'));
+  if (articleType === 'faq') {
+    main.setAttribute('itemtype', 'https://schema.org/FAQPage');
+    [...main.querySelectorAll(':scope > div > :is(h1,h2)')]
+      .filter((h) => h.textContent.endsWith('?'))
+      .forEach((h) => {
+        if (h.nodeName === 'H1') {
+          const meta = document.createElement('meta');
+          meta.setAttribute('itemprop', 'name');
+          meta.setAttribute('content', h.textContent);
+          h.after(meta);
+        } else {
+          h.setAttribute('itemprop', 'name');
+        }
+        const question = document.createElement('div');
+        question.setAttribute('itemscope', '');
+        question.setAttribute('itemprop', 'mainEntity');
+        question.setAttribute('itemtype', 'https://schema.org/Question');
+        if (h.nodeName === 'H1') {
+          h.after(question);
+          question.append(question.nextElementSibling);
+        } else {
+          h.replaceWith(question);
+          question.append(h);
+        }
+        const answer = document.createElement('div');
+        answer.setAttribute('itemscope', '');
+        answer.setAttribute('itemprop', 'acceptedAnswer');
+        answer.setAttribute('itemtype', 'https://schema.org/Answer');
+        question.append(answer);
+        const div = document.createElement('div');
+        div.setAttribute('itemprop', 'text');
+        answer.append(div);
+        while (question.nextElementSibling && question.nextElementSibling.tagName !== 'H2') {
+          div.append(question.nextElementSibling);
+        }
+      });
+  } else {
+    main.setAttribute('itemtype', 'https://schema.org/Article');
+  }
 }
 
 export async function loadLazy(main) {
   main.querySelector('.hero h1').setAttribute('itemprop', 'name');
   main.querySelector('.hero img').setAttribute('itemprop', 'image');
-  main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
+  const articleType = toClassName(getMetadata('type'));
+  if (articleType !== 'faq') {
+    main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
+  }
 
   const breadCrumbs = main.querySelector('.hero > div > div');
   const categorySlugs = getMetadata('category').split(',').map((slug) => toClassName(slug.trim()));
