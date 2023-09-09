@@ -189,7 +189,7 @@ export async function loadLazy(main) {
   main.querySelector('.hero h1').setAttribute('itemprop', 'name');
   main.querySelector('.hero img').setAttribute('itemprop', 'image');
   const articleType = toClassName(getMetadata('type'));
-  if (!articleType) {
+  if (articleType !== 'faq') {
     main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
   }
 
