@@ -587,7 +587,7 @@ function fixLinks() {
       try {
         const url = new URL(href);
         // If the hostname doesn't contain '.', it's likely broken
-        if (!url.hostname.includes('.')) {
+        if (url.protocol.startsWith('http') && !url.hostname.includes('.')) {
           // log the broken link
           sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
           // Fix the link by making it absolute
