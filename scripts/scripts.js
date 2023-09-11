@@ -981,6 +981,14 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
   return breadcrumbContainer;
 }
 
+/**
+ * Logs the information about an error encountered by the site.
+ * @param {Error} e Error information to log.
+ */
+export async function captureError(e) {
+  sampleRUM('error', e);
+}
+
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
