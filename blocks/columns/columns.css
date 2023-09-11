@@ -34,17 +34,17 @@
   content: '';
 }
 
+.columns.emphasized > div > div > * {
+  padding: 0;
+  margin: 0;
+}
+
 .columns.emphasized > div > div > *:nth-last-child(2) {
   flex: 1;
 }
 
 .columns.emphasized > div > div > p:not(.button-container) {
   padding: 0 .5rem;
-}
-
-.columns.emphasized > div > div > * {
-  padding: 0;
-  margin: 0;
 }
 
 .columns > div > .columns-img-col {
