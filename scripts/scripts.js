@@ -587,7 +587,7 @@ function fixLinks() {
       try {
         const url = new URL(href);
         // If the hostname doesn't contain '.', it's likely broken
-        if (!url.hostname.includes('.')) {
+        if (url.protocol.startsWith('http') && !url.hostname.includes('.')) {
           // log the broken link
           sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
           // Fix the link by making it absolute
@@ -835,7 +835,8 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
   const usp = new URLSearchParams(window.location.search);
-  const utmParams = [...usp.entries()].filter(([key]) => key.startsWith('utm_'));
+  const utmParams = [...usp.entries()]
+    .filter(([key]) => key.startsWith('utm_') && key !== 'utm_id');
   utmParams.forEach(([key, value]) => {
     sampleRUM('utm-campaign', { source: key, target: value });
   });
