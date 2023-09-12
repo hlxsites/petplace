@@ -983,10 +983,11 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
 
 /**
  * Logs the information about an error encountered by the site.
+ * @param {string} source Description of the source that generated the error.
  * @param {Error} e Error information to log.
  */
-export async function captureError(e) {
-  sampleRUM('error', e);
+export async function captureError(source, e) {
+  sampleRUM('error', { source, target: e.message });
 }
 
 async function loadPage() {
