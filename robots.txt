@@ -3,7 +3,7 @@ User-agent: *
 
 Disallow: /?utm
 Disallow: /print
-Disallow: /*-aspx$
+Disallow: /*.aspx$
 Disallow: /*/feed/$
 
 Sitemap: https://www.petplace.com/sitemap.xml
