@@ -1,4 +1,10 @@
+
 User-agent: *
+
 Disallow: /?utm
+Disallow: /print
+Disallow: /*-aspx$
+Disallow: /*/feed/$
+
 Sitemap: https://www.petplace.com/sitemap.xml
 Host: https://www.petplace.com
