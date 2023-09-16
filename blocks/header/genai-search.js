@@ -593,9 +593,6 @@ async function displaySearchResults(query, resultsBlock) {
   const firstChild = resultsBlock.firstChild;
   resultsBlock.insertBefore(loadingMessage, firstChild);
 
-  // const results = await fetchResults('bamboohr', query);
-  // const results = await fetchResults('wkndcf', query);
-  // const results = await fetchResultsMock();
   const results = await fetchStreamingResults('petplace4', query, resultsBlock);
   isRequestInProgress = false;
   
