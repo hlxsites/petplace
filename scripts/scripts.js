@@ -31,34 +31,20 @@ window.hlx.cache = {};
 
 export const isMartechDisabled = new URLSearchParams(window.location.search).get('martech') === 'off';
 
-/**
- * Loads a script src and provides a callback that fires after
- * the script has loaded.
- * @param {string} url Full value to use as the script's src attribute.
- * @param {function} callback Will be invoked once the script has loaded.
- * @param {*} attributes Simple object containing attribute keys and values
- *  to add to the script tag.
- * @returns Script tag representing the script.
- */
-export function loadScript(url, callback, attributes) {
-  const head = document.querySelector('head');
-  if (!head.querySelector(`script[src="${url}"]`)) {
-    const script = document.createElement('script');
-    script.src = url;
-
-    if (attributes) {
-      Object.keys(attributes).forEach((key) => {
-        script.setAttribute(key, attributes[key]);
-      });
-    }
-
-    head.append(script);
-    script.onload = callback;
-    return script;
-  }
-  if (callback) callback();
-  return head.querySelector(`script[src="${url}"]`);
-}
+window.hlx.templates.add('/templates/article-page');
+window.hlx.templates.add('/templates/ask-author-page');
+window.hlx.templates.add('/templates/author-index');
+window.hlx.templates.add('/templates/author-page');
+window.hlx.templates.add('/templates/breed-index');
+window.hlx.templates.add('/templates/breed-page');
+window.hlx.templates.add('/templates/category-index');
+window.hlx.templates.add('/templates/home-page/');
+window.hlx.templates.add('/templates/puppy-diaries-index');
+window.hlx.templates.add('/templates/searchresults');
+window.hlx.templates.add('/templates/tag-index');
+window.hlx.templates.add('/templates/travel-guide-page');
+window.hlx.templates.add('/templates/traveling-page');
+window.hlx.templates.add('/templates/write-for-us');
 
 /**
  * Load fonts.css and set a session storage flag
@@ -611,7 +597,8 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    await decorateTemplate(main);
+    await window.hlx.plugins.run('loadEager');
+    // await decorateTemplate(main);
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
       document.title += ' | PetPlace.com';
     }
@@ -841,6 +828,8 @@ async function loadLazy(doc) {
     sampleRUM('utm-campaign', { source: key, target: value });
   });
 
+  window.hlx.plugins.run('loadLazy');
+
   if (!isMartechDisabled) {
     integrateMartech();
     initPartytown();
@@ -856,9 +845,11 @@ async function loadLazy(doc) {
 function loadDelayed(doc) {
   // load anything that can be postponed to the latest here
   window.setTimeout(() => {
+    window.hlx.plugins.load('delayed');
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
+    window.hlx.plugins.run('loadDelayed');
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
@@ -991,7 +982,9 @@ export async function captureError(source, e) {
 }
 
 async function loadPage() {
+  await window.hlx.plugins.load('eager');
   await loadEager(document);
+  await window.hlx.plugins.load('lazy');
   await loadLazy(document);
   loadDelayed(document);
 }
