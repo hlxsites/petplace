@@ -142,7 +142,8 @@ function buildSidebar() {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export async function loadEager(main) {
+export async function loadEager(document) {
+  const main = document.querySelector('main');
   await updateMetadata();
   const h2 = document.createElement('h2');
   h2.classList.add('sr-only');

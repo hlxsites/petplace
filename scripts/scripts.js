@@ -25,7 +25,6 @@ const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
-let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
 
@@ -303,44 +302,6 @@ async function buildHeroBlock(main) {
       section.append(buildBlock('hero', { elems: [responsive, h1] }));
     }
     main.prepend(section);
-  }
-}
-
-/**
- * Builds template block and adds to main as sections.
- * @param {Element} main The container element.
- * @returns {Promise} Resolves when the template block(s) have
- *  been loaded.
- */
-async function decorateTemplate(main) {
-  const template = toClassName(getMetadata('template'));
-  if (!template || template === 'generic') {
-    return;
-  }
-
-  try {
-    const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
-    const decorationComplete = new Promise((resolve) => {
-      (async () => {
-        try {
-          templateModule = await import(`../templates/${template}/${template}.js`);
-          if (templateModule?.loadEager) {
-            await templateModule.loadEager(main);
-          }
-        } catch (error) {
-          if (error.message === '404') {
-            window.location.replace('/404.html');
-          }
-          // eslint-disable-next-line no-console
-          console.log(`failed to load template for ${template}`, error);
-        }
-        resolve();
-      })();
-    });
-    await Promise.all([cssLoaded, decorationComplete]);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`failed to load template ${template}`, error);
   }
 }
 
@@ -779,9 +740,6 @@ async function loadLazy(doc) {
   await initConversionTracking.call(context, document);
 
   animateSkeletons(main);
-  if (templateModule?.loadLazy) {
-    templateModule.loadLazy(main);
-  }
   await loadBlocks(main);
 
   const { hash } = window.location;
@@ -846,9 +804,6 @@ function loadDelayed(doc) {
   // load anything that can be postponed to the latest here
   window.setTimeout(() => {
     window.hlx.plugins.load('delayed');
-    if (templateModule?.loadDelayed) {
-      templateModule.loadDelayed(doc);
-    }
     window.hlx.plugins.run('loadDelayed');
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');

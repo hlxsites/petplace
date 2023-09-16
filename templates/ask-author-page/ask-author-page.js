@@ -71,7 +71,8 @@ function createTemplateBlock(main, blockName, elems = []) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function loadEager(main) {
+export function loadEager(document) {
+  const main = document.querySelector('main');
   const avatarUrl = getMetadata('avatar');
   const authorName = getMetadata('author-name');
   const p = document.createElement('p');
@@ -86,7 +87,8 @@ export function loadEager(main) {
   pagination.dataset.limit = PAGINATE_ON;
 }
 
-export function loadLazy(main) {
+export function loadLazy(document) {
+  const main = document.querySelector('main');
   const hero = main.querySelector('.hero > div > div');
   const h3 = main.querySelector('h3');
   if (h3) {
