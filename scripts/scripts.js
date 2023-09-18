@@ -800,7 +800,7 @@ async function loadLazy(doc) {
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed(doc) {
+function loadDelayed() {
   // load anything that can be postponed to the latest here
   window.setTimeout(() => {
     window.hlx.plugins.load('delayed');
