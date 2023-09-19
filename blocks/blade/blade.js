@@ -1,4 +1,4 @@
-import { createOptimizedPicture, loadBlock, decorateBlock } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 const IMAGE_WIDTH = 450;
 export default function decorate(block) {
@@ -17,39 +17,4 @@ export default function decorate(block) {
       }
     });
   });
-  [...block.querySelectorAll('a[href]')]
-    .filter((a) => {
-      try {
-        return new URL(a.href).pathname === new URL(a.textContent).pathname
-      } catch (e) {
-        return false;
-      }
-    })
-    .forEach(async (a) => {
-      const parent = a.parentElement;
-      a.remove();
-      const url = `${window.location.protocol}//${window.location.host}${new URL(a.href).pathname}`;
-      const res = await fetch(url);
-      if (!res.ok) {
-        return;
-      }
-      const text = await res.text();
-      const div = document.createElement('div');
-      div.innerHTML = text;
-      const main = div.querySelector('main');
-      if (!main || !main.children.length) {
-        return;
-      }
-      const blockParent = main.children.item(0);
-      if (!blockParent.children.length) {
-        return;
-      }
-      const block = blockParent.children.item(0);
-      if (!block.classList.length || !block.children.length || !block.children.item(0).children.length) {
-        return;
-      }
-      parent.append(block);
-      decorateBlock(block);
-      loadBlock(block);
-    });
 }
