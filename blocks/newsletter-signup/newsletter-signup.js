@@ -1,5 +1,5 @@
 import { createForm } from '../form/form.js';
-import { setNewsletterSignedUp } from '../../scripts/scripts.js';
+import { setNewsletterSignedUp, captureError } from '../../scripts/scripts.js';
 
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
@@ -37,12 +37,14 @@ async function submitForm(block, fd) {
   try {
     const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
     if (!res.ok) {
+      captureError('newsletter-signup', new Error(`iterable API responded with ${res.status} status code`));
       showError(block, fd);
     } else {
       setNewsletterSignedUp();
       showMessage(block, fd.Success);
     }
   } catch (e) {
+    captureError('newsletter-signup', e);
     showError(block, fd);
   }
 }

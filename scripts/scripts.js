@@ -267,13 +267,20 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
  * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
  */
 export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
+  const img = container.querySelector('img');
   const pictures = [...container.querySelectorAll('picture')];
   pictures.sort((p1, p2) => {
     const img1 = p1.querySelector('img');
     const img2 = p2.querySelector('img');
     return img1.width - img2.width;
   });
-  const responsiveImage = createResponsiveImage(pictures, breakpoints);
+  const responsiveImage = pictures.length > 1
+    ? createResponsiveImage(pictures, breakpoints)
+    : createOptimizedPicture(img.src, img.alt, false, [
+      { media: '(min-width: 1200px)', width: 1600 },
+      { media: '(min-width: 600px)', width: 800 },
+      { width: 440 },
+    ]);
   container.innerHTML = '';
   container.append(responsiveImage);
 }
@@ -979,6 +986,15 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
+}
+
+/**
+ * Logs the information about an error encountered by the site.
+ * @param {string} source Description of the source that generated the error.
+ * @param {Error} e Error information to log.
+ */
+export async function captureError(source, e) {
+  sampleRUM('error', { source, target: e.message });
 }
 
 async function loadPage() {

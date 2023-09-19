@@ -13,12 +13,52 @@
   margin-bottom: 2rem;
 }
 
+.columns.emphasized > div {
+  align-items: stretch;
+  margin-bottom: 1.5rem;
+}
+
+.columns.emphasized > div > div {
+  border: 1px solid var(--color-gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+}
+
+.columns.emphasized > div > div::before,
+.columns.emphasized > div > div::after {
+  display: block;
+  content: '';
+}
+
+.columns.emphasized > div > div > * {
+  padding: 0;
+  margin: 0;
+}
+
+.columns.emphasized > div > div > *:nth-last-child(2) {
+  flex: 1;
+}
+
+.columns.emphasized > div > div > p:not(.button-container) {
+  padding: 0 .5rem;
+}
+
 .columns > div > .columns-img-col {
   order: 0;
 }
 
 .columns > div > .columns-img-col img {
   display: block;
+}
+
+.columns hr {
+  background-color: var(--highlight-color);
+  height: 3px;
+  width: 25px;
 }
 
 @media (min-width: 900px) {
