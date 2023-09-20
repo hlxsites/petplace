@@ -554,8 +554,8 @@ const fetchResults = async (index, query) => {
     document.getElementById("vertical-bar").classList.add("show");
   }
 
-  // const apiURLBase = window.location.port === "3000" ? "http://localhost:8080" : "";
-  const apiURLBase = "https://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net";
+  const apiURLBase = "https://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net"; // Internal Endpoint
+  // const apiURLBase = "https://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net"; // External Endpoint
   const apiURL = apiURLBase + `/api/index/${index}/search`;
   const answer = await fetch(`${apiURL}?q=${query}`).then((response) => {
     if (response.ok) {
