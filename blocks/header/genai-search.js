@@ -68,7 +68,10 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   }
 
   // Adobe Internal Endpoint
-  const socket = new WebSocket('wss://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net/api/query');
+  // const socket = new WebSocket('wss://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net/api/query');
+
+  // Adobe External Endpoint
+  const socket = new WebSocket("wss://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query");
   
   // BambooHR Endpoint
   // const socket = new WebSocket('wss://spire-bhr-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query');
