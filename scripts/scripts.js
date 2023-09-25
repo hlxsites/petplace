@@ -290,7 +290,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -679,7 +679,7 @@ async function optimizedBatchLoading(promises) {
   return Promise.all(promises.map((promise) => promise()));
 }
 
-async function createNewsletterAutoBlock(fragmentUrl, addElement) {
+export async function createNewsletterAutoBlock(fragmentUrl, addElement) {
   const res = await fetch(fragmentUrl);
   const text = await res.text();
 

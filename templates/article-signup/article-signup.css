@@ -1,0 +1,12 @@
+.article-signup main h1 {
+  color: var(--text-color);
+}
+
+.article-signup main .section {
+  display: flex;
+  gap: 1rem;
+}
+
+.article-signup main .newsletter-signup {
+  margin-top: 1rem;
+}
