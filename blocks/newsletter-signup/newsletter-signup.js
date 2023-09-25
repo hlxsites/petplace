@@ -37,7 +37,13 @@ async function submitForm(block, fd) {
   try {
     const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
     if (!res.ok) {
-      captureError('newsletter-signup', new Error(`iterable API responded with ${res.status} status code`));
+      let text = 'no detail.';
+      try {
+        text = await res.text();
+      } catch {
+        // swallowing exception if there are issues reading response
+      }
+      captureError('newsletter-signup', new Error(`iterable API responded with ${res.status} status code: ${text}`));
       showError(block, fd);
     } else {
       setNewsletterSignedUp();
