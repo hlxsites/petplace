@@ -146,8 +146,8 @@ export async function loadEager(main) {
   const articleType = toClassName(getMetadata('type'));
   if (articleType === 'faq') {
     main.setAttribute('itemtype', 'https://schema.org/FAQPage');
-    [...main.querySelectorAll(':scope > div > :is(h1,h2)')]
-      .filter((h) => h.textContent.endsWith('?'))
+    [...main.querySelectorAll(':scope > div > :is(h1,h2,h3)')]
+      .filter((h) => h.textContent.endsWith('?') || h.textContent.match(/#\d+/))
       .forEach((h) => {
         if (h.nodeName === 'H1') {
           const meta = document.createElement('meta');
@@ -176,7 +176,7 @@ export async function loadEager(main) {
         const div = document.createElement('div');
         div.setAttribute('itemprop', 'text');
         answer.append(div);
-        while (question.nextElementSibling && question.nextElementSibling.tagName !== 'H2') {
+        while (question.nextElementSibling && question.nextElementSibling.tagName !== h.nodeName) {
           div.append(question.nextElementSibling);
         }
       });
