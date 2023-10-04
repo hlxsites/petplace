@@ -26,7 +26,7 @@ function loadScriptInWorker(innerHTML, parent) {
   parent.appendChild(script);
 }
 
-export default function integrateMartech() {
+export function lazyMartech() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
   if (!isMobile() && document.querySelector('.block.ad')) {
@@ -35,5 +35,8 @@ export default function integrateMartech() {
 
   window.dataLayer ||= [];
   loadScriptInWorker(GTM_SCRIPT, document.body);
+}
+
+export function delayedMartech() {
   loadGTag(TAG_ID);
 }
