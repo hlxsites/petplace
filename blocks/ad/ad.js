@@ -56,7 +56,7 @@ function parseAdSizes(rawSizes) {
   return null;
 }
 
-function getAdSizes(ad) {
+function getAdSizes(el, ad) {
   if (!ad) {
     return [];
   }
@@ -64,7 +64,7 @@ function getAdSizes(ad) {
   const heights = parseAdSizes(ad.Height);
   const sizes = [];
   widths.forEach((width, i) => {
-    if (heights.length > i) {
+    if (heights.length > i && width <= el.clientWidth) {
       sizes.push([width, heights[i]]);
     }
   });
@@ -134,29 +134,35 @@ export default async function decorate(block) {
     console.error('Unknown ad type', block.dataset.adid);
     return;
   }
-  const sizes = getAdSizes(data);
+
   block.classList.add('skeleton');
-  block.style.width = `${sizes[0][0]}px`;
-  block.style.minHeight = `${sizes[0][1]}px`;
-  window.googletag.cmd.push(() => {
-    const adSlot = window.googletag
-      .defineSlot(data.Path, sizes, id)
-      .addService(window.googletag.pubads());
 
-    const targets = getAdTargets(data);
-    if (targets) {
-      adSlot.setTargeting(...targets);
-    }
-  });
-  // Enable SRA and services.
-  window.googletag.cmd.push(() => {
-    window.googletag.pubads().enableSingleRequest();
-    window.googletag.pubads().enableLazyLoad();
-    window.googletag.enableServices();
-  });
+  // Defer ad configuration until the block is rendered and we have a valid
+  // width to check against
+  window.setTimeout(() => {
+    const sizes = getAdSizes(block, data);
+    block.style.width = `${sizes[0][0]}px`;
+    block.style.minHeight = `${sizes[0][1]}px`;
+    window.googletag.cmd.push(() => {
+      const adSlot = window.googletag
+        .defineSlot(data.Path, sizes, id)
+        .addService(window.googletag.pubads());
 
-  window.googletag.cmd.push(() => {
-    window.googletag.display(block.id);
+      const targets = getAdTargets(data);
+      if (targets) {
+        adSlot.setTargeting(...targets);
+      }
+    });
+    // Enable SRA and services.
+    window.googletag.cmd.push(() => {
+      window.googletag.pubads().enableSingleRequest();
+      window.googletag.pubads().enableLazyLoad();
+      window.googletag.enableServices();
+    });
+
+    window.googletag.cmd.push(() => {
+      window.googletag.display(block.id);
+    });
   });
 
   loadedObserver.observe(block, { attributes: true });
