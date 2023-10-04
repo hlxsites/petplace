@@ -14,9 +14,9 @@ function showError(block, fd) {
 }
 
 async function submitForm(block, fd) {
-  const dognewsletter = document.getElementById('dogs').checked;
-  const catnewsletter = document.getElementById('cats').checked;
-  const email = String(document.getElementById('email').value).trim();
+  const dognewsletter = block.querySelector('form input[name="dogs"]').checked;
+  const catnewsletter = block.querySelector('form input[name="cats"]').checked;
+  const email = String(block.querySelector('form input[name="email"]').value).trim();
   const payload = {
     email,
     dataFields: {
