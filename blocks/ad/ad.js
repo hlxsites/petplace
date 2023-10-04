@@ -63,7 +63,6 @@ function getAdSizes(el, ad) {
   const widths = parseAdSizes(ad.Width);
   const heights = parseAdSizes(ad.Height);
   const sizes = [];
-  let maxWidth;
   widths.forEach((width, i) => {
     if (heights.length > i && width <= el.clientWidth) {
       sizes.push([width, heights[i]]);
