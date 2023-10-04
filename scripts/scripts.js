@@ -658,7 +658,7 @@ export function addFavIcon(href) {
 function initPartytown() {
   window.partytown = {
     lib: '/scripts/partytown/',
-    forward: ['dataLayer.push'],
+    forward: ['dataLayerProxy.push'],
   };
   import('./partytown/partytown.js');
 }
@@ -1004,8 +1004,8 @@ async function loadPage() {
 }
 
 // Initialize the data layer and mark the Google Tag Manager start event
-window.dataLayer ||= [];
-window.dataLayer.push({
+window.dataLayerProxy ||= [];
+window.dataLayerProxy.push({
   'gtm.start': Date.now(),
   event: 'gtm.js',
 });
