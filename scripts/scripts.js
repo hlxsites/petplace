@@ -301,13 +301,20 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
  * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
  */
 export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
+  const img = container.querySelector('img');
   const pictures = [...container.querySelectorAll('picture')];
   pictures.sort((p1, p2) => {
     const img1 = p1.querySelector('img');
     const img2 = p2.querySelector('img');
     return img1.width - img2.width;
   });
-  const responsiveImage = createResponsiveImage(pictures, breakpoints);
+  const responsiveImage = pictures.length > 1
+    ? createResponsiveImage(pictures, breakpoints)
+    : createOptimizedPicture(img.src, img.alt, false, [
+      { media: '(min-width: 1200px)', width: 1600 },
+      { media: '(min-width: 600px)', width: 800 },
+      { width: 440 },
+    ]);
   container.innerHTML = '';
   container.append(responsiveImage);
 }
@@ -317,7 +324,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -621,7 +628,7 @@ function fixLinks() {
       try {
         const url = new URL(href);
         // If the hostname doesn't contain '.', it's likely broken
-        if (!url.hostname.includes('.')) {
+        if (url.protocol.startsWith('http') && !url.hostname.includes('.')) {
           // log the broken link
           sampleRUM('fix-links-in-article', { source: window.location.href, target: href });
           // Fix the link by making it absolute
@@ -715,7 +722,7 @@ async function optimizedBatchLoading(promises) {
   return Promise.all(promises.map((promise) => promise()));
 }
 
-async function createNewsletterAutoBlock(fragmentUrl, addElement) {
+export async function createNewsletterAutoBlock(fragmentUrl, addElement) {
   const res = await fetch(fragmentUrl);
   const text = await res.text();
 
@@ -1031,6 +1038,15 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
+}
+
+/**
+ * Logs the information about an error encountered by the site.
+ * @param {string} source Description of the source that generated the error.
+ * @param {Error} e Error information to log.
+ */
+export async function captureError(source, e) {
+  sampleRUM('error', { source, target: e.message });
 }
 
 async function loadPage() {
