@@ -135,9 +135,13 @@ export default async function decorate(block) {
     console.error('Unknown ad type', block.dataset.adid);
     return;
   }
+
+  block.classList.add('skeleton');
+
+  // Defer ad configuration until the block is rendered and we have a valid
+  // width to check against
   window.setTimeout(() => {
     const sizes = getAdSizes(block, data);
-    block.classList.add('skeleton');
     block.style.width = `${sizes[0][0]}px`;
     block.style.minHeight = `${sizes[0][1]}px`;
     window.googletag.cmd.push(() => {
