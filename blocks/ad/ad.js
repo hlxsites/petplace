@@ -139,8 +139,11 @@ export default async function decorate(block) {
 
   // Defer ad configuration until the block is rendered and we have a valid
   // width to check against
-  window.setTimeout(() => {
+  window.requestAnimationFrame(() => {
     const sizes = getAdSizes(block, data);
+    if (!sizes.length) {
+      return;
+    }
     block.style.width = `${sizes[0][0]}px`;
     block.style.minHeight = `${sizes[0][1]}px`;
     window.googletag.cmd.push(() => {
