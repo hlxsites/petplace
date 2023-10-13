@@ -22,6 +22,7 @@ export default async function decorate(block) {
   input.className = 'search-input';
   input.type = 'search';
   input.name = 'query';
+  input.id = 'search-posts-input';
   input.placeholder = searchPlaceholder;
 
   form.append(input);
@@ -29,6 +30,7 @@ export default async function decorate(block) {
   const button = document.createElement('button');
   button.type = 'submit';
   button.className = 'search-button';
+  button.id = 'search-posts-btn';
   button.textContent = searchButtonText;
 
   form.append(button);

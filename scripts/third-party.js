@@ -20,7 +20,7 @@ export default function integrateMartech() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
   if (!isMobile() && document.querySelector('.block.ad')) {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => { }, { async: '' });
   }
 
   createInlineScript(GTM_SCRIPT, document.body);

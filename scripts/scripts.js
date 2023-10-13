@@ -1,3 +1,4 @@
+import { handleDataLayerApproach } from './datalayer.js';
 import globRegex from './glob-regex/glob-regex.js';
 import {
   sampleRUM,
@@ -854,6 +855,7 @@ async function loadLazy(doc) {
   }
 
   addNewsletterPopup();
+  handleDataLayerApproach();
 }
 
 /**
