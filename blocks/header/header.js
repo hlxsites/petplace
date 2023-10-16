@@ -2,6 +2,8 @@ import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-frankli
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 
+window.dataLayer ||= [];
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -147,6 +149,10 @@ export default async function decorate(block) {
       ev.preventDefault();
       return;
     }
+    window.dataLayer.push({
+      event: 'search',
+      search_term: query,
+    });
     sampleRUM('search', { source: '.search-input', target: query });
   });
 
