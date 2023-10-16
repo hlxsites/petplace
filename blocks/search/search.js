@@ -1,5 +1,7 @@
 import { sampleRUM } from '../../scripts/lib-franklin.js';
 
+window.dataLayer ||= [];
+
 export default async function decorate(block) {
   const searchPlaceholder = block.firstElementChild.children[0].textContent || 'Search…';
   const searchButtonText = block.firstElementChild.children[1].textContent || 'Submit';
@@ -14,6 +16,10 @@ export default async function decorate(block) {
       ev.preventDefault();
       return;
     }
+    window.dataLayer.push({
+      event: 'search',
+      search_term: query,
+    });
     sampleRUM('search', { source: '.search-input', target: query });
   });
 
