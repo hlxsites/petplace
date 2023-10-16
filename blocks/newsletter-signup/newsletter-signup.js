@@ -14,14 +14,12 @@ function showError(block, fd) {
 }
 
 async function submitForm(block, fd) {
-  const dognewsletter = document.getElementById('dogs').checked;
-  const catnewsletter = document.getElementById('cats').checked;
-  const email = String(document.getElementById('email').value).trim();
+  const formData = new FormData(block.querySelector('form'));
   const payload = {
-    email,
+    email: formData.get('email'),
     dataFields: {
-      catnewsletter,
-      dognewsletter,
+      catnewsletter: formData.get('cats') === 'on',
+      dognewsletter: formData.get('dogs') === 'on',
     },
     mergeNestedObjects: true,
     createNewFields: true,

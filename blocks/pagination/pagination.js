@@ -1,5 +1,12 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 
+function createRelLink(rel, param) {
+  const link = document.createElement('link');
+  link.setAttribute('rel', rel);
+  link.setAttribute('href', `${window.location.pathname}?${param}`);
+  return link;
+}
+
 function renderContent(block) {
   const usp = new URLSearchParams(window.location.search);
   const limit = Number(usp.get('limit') || block.dataset.limit || 25);
@@ -28,6 +35,12 @@ function renderContent(block) {
         ${cards?.childElementCount >= limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="Next page"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
       </ul>
     </nav>`;
+  if (page > 1 && !document.head.querySelector('link[rel="prev"]')) {
+    document.head.append(createRelLink('prev', prevParams));
+  }
+  if (cards?.childElementCount >= limit && !document.head.querySelector('link[rel="next"]')) {
+    document.head.append(createRelLink('next', nextParams));
+  }
   decorateIcons(block);
 }
 
