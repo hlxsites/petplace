@@ -8,6 +8,13 @@
       "environments": [ "edit" ],
       "url": "/tools/sidekick/library.html",
       "includePaths": [ "**.docx**" ]
+    },
+    {
+      "id": "insights",
+      "title": "Insights",
+      "environments": [ "edit" ],
+      "url": "/tools/sidekick/insights.html",
+      "includePaths": [ "**.docx**" ]
     }
   ]
 }
