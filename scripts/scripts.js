@@ -18,8 +18,9 @@ import {
   toClassName,
   createOptimizedPicture,
 } from './lib-franklin.js';
+
 // eslint-disable-next-line import/no-cycle
-import integrateMartech from './third-party.js';
+import { lazyMartech, delayedMartech } from './third-party.js';
 import { pushToDataLayer, handleDataLayerApproach } from './datalayer.js';
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
@@ -659,7 +660,7 @@ export function addFavIcon(href) {
 function initPartytown() {
   window.partytown = {
     lib: '/scripts/partytown/',
-    forward: ['dataLayer.push'],
+    forward: ['dataLayerProxy.push'],
   };
   import('./partytown/partytown.js');
 }
@@ -850,7 +851,7 @@ async function loadLazy(doc) {
   });
 
   if (!isMartechDisabled) {
-    integrateMartech();
+    lazyMartech();
     initPartytown();
   }
 
@@ -868,6 +869,7 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
+    delayedMartech();
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
