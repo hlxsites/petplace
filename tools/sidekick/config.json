@@ -11,7 +11,7 @@
     },
     {
       "id": "insights",
-      "title": "Project Insights",
+      "title": "Insights",
       "environments": ["edit", "preview", "publish"],
       "url": "tools/sidekick/insights.html",
       "includePaths":  [ "**.docx**" ]
