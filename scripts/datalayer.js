@@ -1,7 +1,7 @@
-window.dataLayer ||= [];
+window.dataLayerProxy ||= [];
 
 export const pushToDataLayer = (layer) => {
-  window.dataLayer.push(layer);
+  window.dataLayerProxy.push(layer);
 };
 
 // GLOBAL VARIABLES
