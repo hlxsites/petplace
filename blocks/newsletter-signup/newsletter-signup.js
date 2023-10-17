@@ -1,7 +1,6 @@
 import { createForm } from '../form/form.js';
+import { pushToDataLayer } from '../../scripts/datalayer.js';
 import { setNewsletterSignedUp, captureError } from '../../scripts/scripts.js';
-
-window.dataLayer ||= [];
 
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
@@ -48,7 +47,7 @@ async function submitForm(block, fd) {
     } else {
       setNewsletterSignedUp();
       showMessage(block, fd.Success);
-      window.dataLayer.push({
+      pushToDataLayer.push({
         event: 'sign_up',
         signup_category: 'newsletter', // Example: 'newsletter'
       });

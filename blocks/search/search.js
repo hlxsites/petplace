@@ -1,6 +1,5 @@
 import { sampleRUM } from '../../scripts/lib-franklin.js';
-
-window.dataLayer ||= [];
+import { pushToDataLayer } from '../../scripts/datalayer.js';
 
 export default async function decorate(block) {
   const searchPlaceholder = block.firstElementChild.children[0].textContent || 'Search…';
@@ -16,7 +15,7 @@ export default async function decorate(block) {
       ev.preventDefault();
       return;
     }
-    window.dataLayer.push({
+    pushToDataLayer.push({
       event: 'search',
       search_term: query,
     });

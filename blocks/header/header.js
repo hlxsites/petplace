@@ -1,8 +1,7 @@
 import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-franklin.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
-
-window.dataLayer ||= [];
+import { pushToDataLayer } from '../../scripts/datalayer.js';
 
 /**
  * decorates the header, mainly the nav
@@ -149,7 +148,7 @@ export default async function decorate(block) {
       ev.preventDefault();
       return;
     }
-    window.dataLayer.push({
+    pushToDataLayer.push({
       event: 'search',
       search_term: query,
     });
