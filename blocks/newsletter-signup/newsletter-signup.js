@@ -47,7 +47,7 @@ async function submitForm(block, fd) {
     } else {
       setNewsletterSignedUp();
       showMessage(block, fd.Success);
-      pushToDataLayer.push({
+      pushToDataLayer({
         event: 'sign_up',
         signup_category: 'newsletter', // Example: 'newsletter'
       });

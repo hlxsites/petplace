@@ -15,7 +15,7 @@ export default async function decorate(block) {
       ev.preventDefault();
       return;
     }
-    pushToDataLayer.push({
+    pushToDataLayer({
       event: 'search',
       search_term: query,
     });

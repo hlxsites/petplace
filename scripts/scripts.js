@@ -1008,7 +1008,7 @@ async function loadPage() {
 }
 
 // Initialize the data layer and mark the Google Tag Manager start event
-pushToDataLayer.push({
+pushToDataLayer({
   'gtm.start': Date.now(),
   event: 'gtm.js',
 });
