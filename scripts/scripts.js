@@ -20,7 +20,7 @@ import {
 } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import integrateMartech from './third-party.js';
-import { handleDataLayerApproach } from './datalayer.js';
+import { pushToDataLayer, handleDataLayerApproach } from './datalayer.js';
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
@@ -1006,8 +1006,7 @@ async function loadPage() {
 }
 
 // Initialize the data layer and mark the Google Tag Manager start event
-window.dataLayer ||= [];
-window.dataLayer.push({
+pushToDataLayer.push({
   'gtm.start': Date.now(),
   event: 'gtm.js',
 });
