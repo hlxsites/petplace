@@ -1,4 +1,5 @@
 import { createForm } from '../form/form.js';
+import { pushToDataLayer } from '../../scripts/datalayer.js';
 import { setNewsletterSignedUp, captureError } from '../../scripts/scripts.js';
 
 function showMessage(block, message, clazz = 'success') {
@@ -46,6 +47,10 @@ async function submitForm(block, fd) {
     } else {
       setNewsletterSignedUp();
       showMessage(block, fd.Success);
+      pushToDataLayer({
+        event: 'sign_up',
+        signup_category: 'newsletter', // Example: 'newsletter'
+      });
     }
   } catch (e) {
     captureError('newsletter-signup', e);
