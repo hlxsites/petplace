@@ -11,10 +11,10 @@
     },
     {
       "id": "insights",
-      "title": "Insights",
-      "environments": [ "any" ],
-      "url": "/tools/sidekick/insights.html",
-      "includePaths": [ "**.docx**" ]
+      "title": "Project Insights",
+      "environments": ["edit", "preview", "publish"],
+      "url": "tools/sidekick/insights.html",
+      "includePaths":  [ "**.docx**" ]
     }
   ]
 }
