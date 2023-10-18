@@ -21,7 +21,7 @@ import {
 
 // eslint-disable-next-line import/no-cycle
 import { lazyMartech, delayedMartech } from './third-party.js';
-import { pushToDataLayer, handleDataLayerApproach } from './datalayer.js';
+import { handleDataLayerApproach } from './datalayer.js';
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
@@ -1008,7 +1008,8 @@ async function loadPage() {
 }
 
 // Initialize the data layer and mark the Google Tag Manager start event
-pushToDataLayer({
+window.dataLayerProxy ||= [];
+window.dataLayerProxy.push({
   'gtm.start': Date.now(),
   event: 'gtm.js',
 });
