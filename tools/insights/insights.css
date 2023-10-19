@@ -42,7 +42,6 @@ h2, h3 {
 label {
     text-align: right;
     clear: both;
-    float: left;
     font-weight: bold;
 }
 
@@ -63,7 +62,7 @@ label {
 
 .pass {
     height: fit-content;
-    /* width: fit-content; */
+    width: fit-content; 
     background-repeat: no-repeat;
     background-color: green;
     color: white;
@@ -71,7 +70,7 @@ label {
 
 .okay {
     height: fit-content;
-    /* width: fit-content; */
+    width: fit-content; 
     background-repeat: no-repeat;
     background-color: orange;
 }

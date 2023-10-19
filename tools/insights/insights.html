@@ -18,12 +18,22 @@
 
     <body>
         <main>
+            <div class="domainkey-form" style="display: none;">
+                <h6>Register a Domain Key: <br>
+                    This will store your domainkey in local storage
+                </h6>
+                <form id="domainkey-reg">
+                    <label>Domain Key: </label>
+                    <input type="text" id="domainkey-input" name="domainkey"/>
+                    <button type="submit" form="domainkey-reg" id="save-domainkey">Save Key</button>
+                </form>
+            </div>
             <div class="insights-container">
                 <div class="overview" id="info">
                     <h2>Sidekick Insights</h2>
                     <h5 id="url-info"></h5>
                 </div>
-                <div class="metric-group" id="cwv">
+                <div class="metric-group" id="cwv" style="display: none;">
                     <label for="lcp-label">LCP</label>
                     <div class="metric" id="lcp"></div>
                     <label for="cls-label">CLS</label>
@@ -34,6 +44,7 @@
                 <div class="numeric-group" id="numerics">
                     <div class="numeric" id="pageviews"></div>
                 </div>
+                <button type="submit" id="delete-domainkey" style="width:fit-content; height:fit-content;">Delete Key</button>
             </div>
         </main>
         <script src="http://localhost:3000/tools/insights/insights.js"></script>
