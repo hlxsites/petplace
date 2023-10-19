@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Insights</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="insights.css">
-</head>
+    <head>
+        <title>Insights</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="insights.css">
+        <meta charset="utf-8" />
+        <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <meta name="Description" content="Sidekick Insights" />
+        <meta name="robots" content="noindex" />
+        <base href="/" />
+        <title>Sidekick Insights</title>
+    </head>
 
-<body>
-<main>
-    <div id="insights-container" class="insights-container">
-        <h1>RUM Dashboard</h1>
-
-    </div>
-
-</main>
-
-<script>
-
-</script>
-</body>
+    <body>
+        <main>
+            <div class="insights-container">
+                <div class="overview" id="info">
+                    <h2>Sidekick Insights</h2>
+                    <h5 id="url-info"></h5>
+                </div>
+                <div class="metric-group" id="cwv">
+                    <label for="lcp-label">LCP</label>
+                    <div class="metric" id="lcp"></div>
+                    <label for="cls-label">CLS</label>
+                    <div class="metric" id="cls"></div>
+                    <label for="inp-label">INP</label>
+                    <div class="metric" id="inp"></div>
+                </div>
+                <div class="numeric-group" id="numerics">
+                    <div class="numeric" id="pageviews"></div>
+                </div>
+            </div>
+        </main>
+        <script src="http://localhost:3000/tools/insights/insights.js"></script>
+    </body>
 
 
 </html>
