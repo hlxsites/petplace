@@ -1,0 +1,77 @@
+html, body, main {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #ededed;
+  height: 100%;
+}
+
+helix-sidekick { 
+    display: none 
+}
+
+.insights-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-areas: 
+    "head head"
+    "cwv pv"
+    "cwv pv"
+    "cwv pv";
+}
+
+h2, h3 {
+    margin: auto;
+}
+
+#info {
+    grid-area: head;
+}
+
+.numeric-group {
+    margin: auto;
+    grid-area: pv;
+}
+
+.metric-group {
+    margin: auto;
+    grid-area: cwv;
+}
+
+label {
+    text-align: right;
+    clear: both;
+    float: left;
+    font-weight: bold;
+}
+
+.fail {
+    height: fit-content;
+    width: fit-content;
+    background-repeat: no-repeat;
+    background-color: red;
+}
+
+.noresult {
+    height: fit-content;
+    width: fit-content;
+    color: white;
+    background-repeat: no-repeat;
+    background-color: grey;
+}
+
+.pass {
+    height: fit-content;
+    /* width: fit-content; */
+    background-repeat: no-repeat;
+    background-color: green;
+    color: white;
+}
+
+.okay {
+    height: fit-content;
+    /* width: fit-content; */
+    background-repeat: no-repeat;
+    background-color: orange;
+}
