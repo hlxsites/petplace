@@ -20,7 +20,11 @@ export default async function decorate(block) {
     <div itemprop="author" itemscope itemtype="https://schema.org/Person">
       <p itemprop="name">${titleWithLinkIfExist}</p>
     </div>
-    <time itemprop="datePublished" datetime="${date}">${date}</time>`;
+    <time itemprop="datePublished" datetime="${date}">${date}</time>
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="PetPlace.com"/>
+      <meta itemprop="logo" content="${window.location.origin}/icons/logo.svg"/>
+    </div>`;
   block.firstElementChild.prepend(avatarIfExist);
   decorateIcons(block);
   setTimeout(() => {

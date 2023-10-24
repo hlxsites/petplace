@@ -135,7 +135,7 @@ export async function loadEager(main) {
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
 
-  const categorySlug = toClassName(getMetadata('category'));
+  const categorySlug = toClassName(getMetadata('category').split(',')[0]?.trim());
   const ad = main.querySelector('.article-template-grid-ad');
   const adId = document.createElement('div');
   adId.innerText = await getCategoryAd(categorySlug);
@@ -181,19 +181,24 @@ export async function loadEager(main) {
         }
       });
   } else {
-    main.setAttribute('itemtype', 'https://schema.org/Article');
+    main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
   }
 }
 
 export async function loadLazy(main) {
-  main.querySelector('.hero h1').setAttribute('itemprop', 'name');
-  main.querySelector('.hero img').setAttribute('itemprop', 'image');
+  const hero = main.querySelector('.hero');
+  hero.querySelector('h1').setAttribute('itemprop', 'headline');
+  const meta = document.createElement('meta');
+  meta.setAttribute('itemprop', 'description');
+  meta.setAttribute('content', document.head.querySelector('meta[name="description"]').content);
+  hero.append(meta);
+  hero.querySelector('img').setAttribute('itemprop', 'image');
   const articleType = toClassName(getMetadata('type'));
   if (articleType !== 'faq') {
     main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
   }
 
-  const breadCrumbs = main.querySelector('.hero > div > div');
+  const breadCrumbs = hero.querySelector(':scope > div > div');
   const categorySlugs = getMetadata('category').split(',').map((slug) => toClassName(slug.trim()));
   const crumbData = await getBreadcrumbs(categorySlugs[0]);
 
