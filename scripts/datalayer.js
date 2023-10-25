@@ -1,6 +1,5 @@
-window.dataLayer ||= [];
-
 export const pushToDataLayer = (layer) => {
+  window.dataLayer ||= [];
   window.dataLayer.push(layer);
 };
 
@@ -9,7 +8,9 @@ const handleGlobalVariables = () => {
   // TODO : if meta category not present, create user story (avinash)
   const contentGroup = document.querySelector('meta[name="category"]');
   pushToDataLayer({
-    content_group: contentGroup ? contentGroup.content : '',
+    content_group: contentGroup
+      ? contentGroup.content
+      : 'N/A - Content Group Not Set',
   });
 };
 
