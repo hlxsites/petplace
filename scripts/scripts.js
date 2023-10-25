@@ -813,15 +813,9 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // load anything that can be postponed to the latest here
   window.setTimeout(() => {
-<<<<<<< HEAD
     window.hlx.plugins.load('delayed');
     window.hlx.plugins.run('loadDelayed');
-=======
-    if (templateModule?.loadDelayed) {
-      templateModule.loadDelayed(doc);
-    }
     delayedMartech();
->>>>>>> main
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
