@@ -34,7 +34,8 @@ const handleArticleShare = () => {
       });
     });
   } catch (err) {
-    console.warn('Article Share Error', err);
+    // TODO figure out best way to handle no tags
+    console.warn('Warning - No Articles Found', err);
   }
 };
 
