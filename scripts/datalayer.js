@@ -21,10 +21,9 @@ const handleArticleShare = () => {
       .querySelector('.social-share')
       .getElementsByTagName('a');
 
-    for (let i = 0; i < aTags.length; i++) {
-      aTags[i].addEventListener('click', (ev) => {
-        ev.preventDefault(); // TODO remove this for click
-        const strSplit = aTags[i].href.split('.com')[0];
+    aTags.forEach((tag) => {
+      tag.addEventListener('click', () => {
+        const strSplit = tag.href.split('.com')[0];
         const strValue = strSplit.split('.')[1] || 'Email';
         const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
 
@@ -33,10 +32,10 @@ const handleArticleShare = () => {
           method: strCaps,
         });
       });
-    }
+    });
   } catch (err) {
     console.warn('Article Share Error', err);
-    }
+  }
 };
 
 // ELEMENT CLICK -> to come later (#5)
