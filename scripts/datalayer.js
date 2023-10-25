@@ -16,6 +16,7 @@ const handleGlobalVariables = () => {
 
 // ARTICLE SHARE
 const handleArticleShare = () => {
+  try {
     const aTags = document
       .querySelector('.social-share')
       .getElementsByTagName('a');
@@ -32,6 +33,9 @@ const handleArticleShare = () => {
           method: strCaps,
         });
       });
+    }
+  } catch (err) {
+    console.warn('Article Share Error', err);
     }
 };
 
