@@ -32,20 +32,22 @@ window.hlx.cache = {};
 
 export const isMartechDisabled = new URLSearchParams(window.location.search).get('martech') === 'off';
 
-window.hlx.templates.add('/templates/article-page');
-window.hlx.templates.add('/templates/ask-author-page');
-window.hlx.templates.add('/templates/author-index');
-window.hlx.templates.add('/templates/author-page');
-window.hlx.templates.add('/templates/breed-index');
-window.hlx.templates.add('/templates/breed-page');
-window.hlx.templates.add('/templates/category-index');
-window.hlx.templates.add('/templates/home-page/');
-window.hlx.templates.add('/templates/puppy-diaries-index');
-window.hlx.templates.add('/templates/searchresults');
-window.hlx.templates.add('/templates/tag-index');
-window.hlx.templates.add('/templates/travel-guide-page');
-window.hlx.templates.add('/templates/traveling-page');
-window.hlx.templates.add('/templates/write-for-us');
+window.hlx.templates.add([
+  '/templates/article-page',
+  '/templates/ask-author-page',
+  '/templates/author-index',
+  '/templates/author-page',
+  '/templates/breed-index',
+  '/templates/breed-page',
+  '/templates/category-index',
+  '/templates/home-page/',
+  '/templates/puppy-diaries-index',
+  '/templates/searchresults',
+  '/templates/tag-index',
+  '/templates/travel-guide-page',
+  '/templates/traveling-page',
+  '/templates/write-for-us',
+]);
 
 /**
  * Load fonts.css and set a session storage flag
