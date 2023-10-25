@@ -1,4 +1,5 @@
 import { createForm } from '../form/form.js';
+import { pushToDataLayer } from '../../scripts/datalayer.js';
 import { setNewsletterSignedUp, captureError } from '../../scripts/scripts.js';
 
 function showMessage(block, message, clazz = 'success') {
@@ -14,14 +15,12 @@ function showError(block, fd) {
 }
 
 async function submitForm(block, fd) {
-  const dognewsletter = document.getElementById('dogs').checked;
-  const catnewsletter = document.getElementById('cats').checked;
-  const email = String(document.getElementById('email').value).trim();
+  const formData = new FormData(block.querySelector('form'));
   const payload = {
-    email,
+    email: formData.get('email'),
     dataFields: {
-      catnewsletter,
-      dognewsletter,
+      catnewsletter: formData.get('cats') === 'on',
+      dognewsletter: formData.get('dogs') === 'on',
     },
     mergeNestedObjects: true,
     createNewFields: true,
@@ -37,11 +36,21 @@ async function submitForm(block, fd) {
   try {
     const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
     if (!res.ok) {
-      captureError('newsletter-signup', new Error(`iterable API responded with ${res.status} status code`));
+      let text = 'no detail.';
+      try {
+        text = await res.text();
+      } catch {
+        // swallowing exception if there are issues reading response
+      }
+      captureError('newsletter-signup', new Error(`iterable API responded with ${res.status} status code: ${text}`));
       showError(block, fd);
     } else {
       setNewsletterSignedUp();
       showMessage(block, fd.Success);
+      pushToDataLayer({
+        event: 'sign_up',
+        signup_category: 'newsletter', // Example: 'newsletter'
+      });
     }
   } catch (e) {
     captureError('newsletter-signup', e);

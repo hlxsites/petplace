@@ -18,8 +18,10 @@ import {
   toClassName,
   createOptimizedPicture,
 } from './lib-franklin.js';
+
 // eslint-disable-next-line import/no-cycle
-import integrateMartech from './third-party.js';
+import { lazyMartech, delayedMartech } from './third-party.js';
+import { handleDataLayerApproach } from './datalayer.js';
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
@@ -252,13 +254,20 @@ function createResponsiveImage(pictures, breakpoint, quality = 'medium') {
  * @param breakpoints - Array of numbers to be used to define the breakpoints for the pictures.
  */
 export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
+  const img = container.querySelector('img');
   const pictures = [...container.querySelectorAll('picture')];
   pictures.sort((p1, p2) => {
     const img1 = p1.querySelector('img');
     const img2 = p2.querySelector('img');
     return img1.width - img2.width;
   });
-  const responsiveImage = createResponsiveImage(pictures, breakpoints);
+  const responsiveImage = pictures.length > 1
+    ? createResponsiveImage(pictures, breakpoints)
+    : createOptimizedPicture(img.src, img.alt, false, [
+      { media: '(min-width: 1200px)', width: 1600 },
+      { media: '(min-width: 600px)', width: 800 },
+      { width: 440 },
+    ]);
   container.innerHTML = '';
   container.append(responsiveImage);
 }
@@ -268,7 +277,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -599,7 +608,7 @@ export function addFavIcon(href) {
 function initPartytown() {
   window.partytown = {
     lib: '/scripts/partytown/',
-    forward: ['dataLayer.push'],
+    forward: ['dataLayerProxy.push'],
   };
   import('./partytown/partytown.js');
 }
@@ -620,7 +629,7 @@ async function optimizedBatchLoading(promises) {
   return Promise.all(promises.map((promise) => promise()));
 }
 
-async function createNewsletterAutoBlock(fragmentUrl, addElement) {
+export async function createNewsletterAutoBlock(fragmentUrl, addElement) {
   const res = await fetch(fragmentUrl);
   const text = await res.text();
 
@@ -789,11 +798,12 @@ async function loadLazy(doc) {
   window.hlx.plugins.run('loadLazy');
 
   if (!isMartechDisabled) {
-    integrateMartech();
+    lazyMartech();
     initPartytown();
   }
 
   addNewsletterPopup();
+  handleDataLayerApproach();
 }
 
 /**
@@ -803,8 +813,15 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // load anything that can be postponed to the latest here
   window.setTimeout(() => {
+<<<<<<< HEAD
     window.hlx.plugins.load('delayed');
     window.hlx.plugins.run('loadDelayed');
+=======
+    if (templateModule?.loadDelayed) {
+      templateModule.loadDelayed(doc);
+    }
+    delayedMartech();
+>>>>>>> main
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
@@ -945,8 +962,8 @@ async function loadPage() {
 }
 
 // Initialize the data layer and mark the Google Tag Manager start event
-window.dataLayer ||= [];
-window.dataLayer.push({
+window.dataLayerProxy ||= [];
+window.dataLayerProxy.push({
   'gtm.start': Date.now(),
   event: 'gtm.js',
 });

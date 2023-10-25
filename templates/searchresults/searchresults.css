@@ -111,3 +111,12 @@
     margin: 0 auto;
   }
 }
+
+.searchresults .error .hero-wrapper .text-div {
+  color: var(--text-color-alt);
+}
+
+.searchresults .error .hero-wrapper .text-div h1,
+.searchresults .error .hero-wrapper .text-div p {
+  color: inherit;
+}

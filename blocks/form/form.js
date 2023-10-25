@@ -2,7 +2,7 @@ import { sampleRUM } from '../../scripts/lib-franklin.js';
 
 function createSelect(fd) {
   const select = document.createElement('select');
-  select.id = fd.Field;
+  select.name = fd.Field;
   if (fd.Placeholder) {
     const ph = document.createElement('option');
     ph.textContent = fd.Placeholder;
@@ -86,7 +86,7 @@ function createHeading(fd) {
 function createInput(fd) {
   const input = document.createElement('input');
   input.type = fd.Type;
-  input.id = fd.Field;
+  input.name = fd.Field;
   input.setAttribute('placeholder', fd.Placeholder);
   if (fd.Required && fd.Required !== 'false') {
     input.setAttribute('required', 'required');
@@ -105,7 +105,7 @@ function createInput(fd) {
 
 function createTextArea(fd) {
   const input = document.createElement('textarea');
-  input.id = fd.Field;
+  input.name = fd.Field;
   input.setAttribute('placeholder', fd.Placeholder);
   if (fd.Required && fd.Required !== 'false') {
     input.setAttribute('required', 'required');

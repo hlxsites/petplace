@@ -210,7 +210,7 @@ function reportProgress(index, urls, result, time) {
   const disclosure = document.createElement('details');
   const summary = document.createElement('summary');
   const div = document.createElement('div');
-  summary.innerHTML = `<a href="${url}">${url}</a>`;
+  summary.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
   disclosure.prepend(summary);
   disclosure.append(div);
   details.append(disclosure);
