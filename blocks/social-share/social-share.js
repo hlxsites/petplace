@@ -3,7 +3,7 @@ import { decorateIcons } from '../../scripts/lib-franklin.js';
 export default function decorate(block) {
   const pageTitle = document.head.querySelector('title').textContent;
   const url = window.location.href;
-  // TODO : insta link only leads to petplace insta
+  // TODO: insta link only leads to petplace insta
   block.innerHTML = `
     <ul>
       <li><a href="https://www.facebook.com/sharer/sharer.php?u=${url}" aria-label="Share article on Facebook"><span class="icon icon-facebook"></span></a></li>

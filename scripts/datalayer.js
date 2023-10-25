@@ -1,11 +1,12 @@
+window.dataLayer ||= [];
+
 export const pushToDataLayer = (layer) => {
-  window.dataLayer ||= [];
   window.dataLayer.push(layer);
 };
 
 // GLOBAL VARIABLES
 const handleGlobalVariables = () => {
-  // TODO : if meta category not present, create user story (avinash)
+  // TODO: if meta category not present, create user story (avinash)
   const contentGroup = document.querySelector('meta[name="category"]');
   pushToDataLayer({
     content_group: contentGroup
@@ -34,7 +35,7 @@ const handleArticleShare = () => {
       });
     });
   } catch (err) {
-    // TODO figure out best way to handle no tags
+    // TODO: figure out best way to handle no tags
     console.warn('Warning - No Articles Found', err);
   }
 };
