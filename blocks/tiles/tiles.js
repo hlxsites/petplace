@@ -14,6 +14,8 @@ export default async function decorate(block) {
   // Create containing div of three tiles (one big, two small)
   const tileContainer = document.createElement('div');
   tileContainer.className = 'tiles-block-container';
+  tileContainer.setAttribute('itemscope', true);
+  tileContainer.setAttribute('itemtype', 'http://schema.org/ItemList');
 
   if (!articles) {
     const data = await Promise.all([
@@ -73,6 +75,7 @@ export default async function decorate(block) {
     // Create tile div for each individual tile
     const tile = document.createElement('div');
     tile.classList.add('tile');
+    tile.setAttribute('itemprop', 'itemListElement');
     tile.setAttribute('itemscope', '');
     tile.setAttribute('itemtype', 'https://schema.org/Article');
 

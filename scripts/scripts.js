@@ -18,8 +18,10 @@ import {
   toClassName,
   createOptimizedPicture,
 } from './lib-franklin.js';
+
 // eslint-disable-next-line import/no-cycle
 import { lazyMartech, delayedMartech } from './third-party.js';
+import { handleDataLayerApproach } from './datalayer.js';
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
@@ -854,6 +856,7 @@ async function loadLazy(doc) {
   }
 
   addNewsletterPopup();
+  handleDataLayerApproach();
 }
 
 /**
