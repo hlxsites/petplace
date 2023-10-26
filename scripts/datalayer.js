@@ -36,6 +36,17 @@ const handleArticleShare = () => {
 // ELEMENT CLICK
 // Categories -> Outbound Link, Embedded Link, Header Link, Footer Link, CTA Button, Social Link
 
+const clickHelper = (category, text, type, url) => {
+  console.log('here', category, text, type, url);
+  pushToDataLayer({
+    event: 'element_click',
+    element_category: category,
+    element_text: text,
+    element_type: type,
+    element_url: url,
+  });
+};
+
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
   handleArticleShare();
