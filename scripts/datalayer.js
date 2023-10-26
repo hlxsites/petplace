@@ -17,10 +17,7 @@ const handleGlobalVariables = () => {
 
 // ARTICLE SHARE
 const handleArticleShare = () => {
-  try {
-    const aTags = document
-      .querySelector('.social-share')
-      .getElementsByTagName('a');
+  const aTags = document.querySelectorAll('.social-share a');
 
     aTags.forEach((tag) => {
       tag.addEventListener('click', () => {
@@ -34,14 +31,10 @@ const handleArticleShare = () => {
         });
       });
     });
-  } catch (err) {
-    // TODO: figure out best way to handle no tags
-    console.warn('Warning - No Articles Found', err);
-  }
 };
 
-// ELEMENT CLICK -> to come later (#5)
-const handleElementClicks = () => {};
+// ELEMENT CLICK
+// Categories -> Outbound Link, Embedded Link, Header Link, Footer Link, CTA Button, Social Link
 
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
