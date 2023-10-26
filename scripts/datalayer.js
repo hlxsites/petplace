@@ -47,6 +47,17 @@ const clickHelper = (category, text, type, url) => {
   });
 };
 
+const handleElementClicks = () => {
+  // header link
+  const headerTracking = document.querySelectorAll('.nav-sections a');
+  headerTracking.forEach((tag) => {
+    tag.addEventListener('click', () => {
+      clickHelper('Header', tag.innerHTML, 'link', tag.href);
+    });
+  });
+
+};
+
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
   handleArticleShare();
