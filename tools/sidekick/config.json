@@ -17,8 +17,8 @@
       "passReferrer": true,
       "url": "https://sk-insight--franklin-dashboard--adobe.hlx.page/views/sidekick-index",
       "includePaths":  [ "**.docx**" ],
-      "isPalette": false,
-      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; min-width:400px; max-width:50vw; height: calc(60vh - 60px)"
+      "isPalette": true,
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:50vw; height: calc(60vh - 60px)"
     }
   ]
 }
