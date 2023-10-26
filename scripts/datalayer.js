@@ -6,7 +6,6 @@ export const pushToDataLayer = (layer) => {
 
 // GLOBAL VARIABLES
 const handleGlobalVariables = () => {
-  // TODO: if meta category not present, create user story (avinash)
   const contentGroup = document.querySelector('meta[name="category"]');
   pushToDataLayer({
     content_group: contentGroup
@@ -19,18 +18,18 @@ const handleGlobalVariables = () => {
 const handleArticleShare = () => {
   const aTags = document.querySelectorAll('.social-share a');
 
-    aTags.forEach((tag) => {
-      tag.addEventListener('click', () => {
-        const strSplit = tag.href.split('.com')[0];
-        const strValue = strSplit.split('.')[1] || 'Email';
-        const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
+  aTags.forEach((tag) => {
+    tag.addEventListener('click', () => {
+      const strSplit = tag.href.split('.com')[0];
+      const strValue = strSplit.split('.')[1] || 'Email';
+      const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
 
-        pushToDataLayer({
-          event: 'article_share',
-          method: strCaps,
-        });
+      pushToDataLayer({
+        event: 'article_share',
+        method: strCaps,
       });
     });
+  });
 };
 
 // ELEMENT CLICK
@@ -55,7 +54,6 @@ const handleElementClicks = () => {
       clickHelper('Header', tag.innerHTML, 'link', tag.href);
     });
   });
-
 };
 
 export const handleDataLayerApproach = () => {
