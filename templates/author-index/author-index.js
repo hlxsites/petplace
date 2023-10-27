@@ -41,7 +41,8 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export async function loadEager(main) {
+export async function loadEager(document) {
+  const main = document.querySelector('main');
   createTemplateBlock(main, 'popular-articles', undefined, ['<h1 class="author-popular-posts"></h1>']);
 }
 

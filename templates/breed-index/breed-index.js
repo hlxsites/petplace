@@ -77,7 +77,8 @@ function createTemplateBlock(main, blockName) {
   return block;
 }
 
-export function loadEager(main) {
+export function loadEager(document) {
+  const main = document.querySelector('main');
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
   const cards = createTemplateBlock(main, 'cards');
   cards.classList.add('breed');
@@ -87,7 +88,8 @@ export function loadEager(main) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export async function loadLazy(main) {
+export async function loadLazy(document) {
+  const main = document.querySelector('main');
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const textDiv = document.createElement('div');

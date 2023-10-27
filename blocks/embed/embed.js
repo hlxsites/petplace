@@ -1,5 +1,4 @@
-import { loadCSS } from '../../scripts/lib-franklin.js';
-import { loadScript } from '../../scripts/scripts.js';
+import { loadCSS, loadScript } from '../../scripts/lib-franklin.js';
 
 const FALLBACK_PUBLICATION_DATE = '2013-07-18'; // go-live date for the Franklin site, but could be any value
 
@@ -64,7 +63,7 @@ const embedTwitter = (url) => {
 };
 
 const embedTiktokFacade = async (url) => {
-  loadScript('/blocks/embed/lite-tiktok/lite-tiktok.js', () => {}, { async: true, type: 'module' });
+  loadScript('/blocks/embed/lite-tiktok/lite-tiktok.js', { async: true, type: 'module' });
   const videoId = url.pathname.split('/').pop();
   try {
     const request = await fetch(`https://www.tiktok.com/oembed?url=https://www.tiktok.com/video/${videoId}`);

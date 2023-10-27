@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable max-classes-per-file */
 
 /**
  * log RUM if part of the sample.
@@ -83,19 +84,46 @@ export function sampleRUM(checkpoint, data = {}) {
 
 /**
  * Loads a CSS file.
- * @param {string} href The path to the CSS file
+ * @param {string} href URL to the CSS file
  */
 export async function loadCSS(href) {
-  if (document.querySelector(`head > link[href="${href}"]`)) {
-    return Promise.resolve('noop');
-  }
-  const link = document.createElement('link');
-  link.setAttribute('rel', 'stylesheet');
   return new Promise((resolve, reject) => {
-    link.onload = (e) => resolve(e.type);
-    link.onerror = (e) => reject(e);
-    link.setAttribute('href', href);
-    document.head.appendChild(link);
+    if (!document.querySelector(`head > link[href="${href}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.onload = resolve;
+      link.onerror = reject;
+      document.head.append(link);
+    } else {
+      resolve();
+    }
+  });
+}
+
+/**
+ * Loads a non module JS file.
+ * @param {string} src URL to the JS file
+ * @param {Object} attrs additional optional attributes
+ */
+
+export async function loadScript(src, attrs) {
+  return new Promise((resolve, reject) => {
+    if (!document.querySelector(`head > script[src="${src}"]`)) {
+      const script = document.createElement('script');
+      script.src = src;
+      if (attrs) {
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const attr in attrs) {
+          script.setAttribute(attr, attrs[attr]);
+        }
+      }
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.append(script);
+    } else {
+      resolve();
+    }
   });
 }
 
@@ -128,6 +156,22 @@ export function toClassName(name) {
  */
 export function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+/**
+ * Gets all the metadata elements that are in the given scope.
+ * @param {String} scope The scope/prefix for the metadata
+ * @returns an array of HTMLElement nodes that match the given scope
+ */
+export function getAllMetadata(scope) {
+  return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
+    .reduce((res, meta) => {
+      const id = toClassName(meta.name
+        ? meta.name.substring(scope.length + 1)
+        : meta.getAttribute('property').split(':')[1]);
+      res[id] = meta.getAttribute('content');
+      return res;
+    }, {});
 }
 
 const ICONS_CACHE = {};
@@ -392,6 +436,49 @@ export function buildBlock(blockName, content) {
   return (blockEl);
 }
 
+async function loadModule(name, jsPath, cssPath, ...args) {
+  const cssLoaded = cssPath ? loadCSS(cssPath) : Promise.resolve();
+  const decorationComplete = jsPath
+    ? new Promise((resolve) => {
+      (async () => {
+        let mod;
+        try {
+          mod = await import(jsPath);
+          if (mod.default) {
+            await mod.default.apply(null, args);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load module for ${name}`, error);
+        }
+        resolve(mod);
+      })();
+    })
+    : Promise.resolve();
+  return Promise.all([cssLoaded, decorationComplete])
+    .then(([, api]) => api);
+}
+
+/**
+ * Gets the configuration for the given block, and also passes
+ * the config through all custom patching helpers added to the project.
+ *
+ * @param {Element} block The block element
+ * @returns {Object} The block config (blockName, cssPath and jsPath)
+ */
+function getBlockConfig(block) {
+  const { blockName } = block.dataset;
+  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+  const original = { blockName, cssPath, jsPath };
+  return (window.hlx.patchBlockConfig || [])
+    .filter((fn) => typeof fn === 'function')
+    .reduce(
+      (config, fn) => fn(config, original),
+      { blockName, cssPath, jsPath },
+    );
+}
+
 /**
  * Gets the configuration for the given block, and also passes
  * the config through the `patchBlockConfig` methods in the plugins.
@@ -420,22 +507,7 @@ export async function loadBlock(block) {
     block.dataset.blockStatus = 'loading';
     const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
-      const cssLoaded = loadCSS(cssPath);
-      const decorationComplete = new Promise((resolve) => {
-        (async () => {
-          try {
-            const mod = await import(jsPath);
-            if (mod.default) {
-              await mod.default(block);
-            }
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(`failed to load module for ${blockName}`, error);
-          }
-          resolve();
-        })();
-      });
-      await Promise.all([cssLoaded, decorationComplete]);
+      await loadModule(blockName, jsPath, cssPath, block);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
@@ -657,6 +729,117 @@ export function loadFooter(footer) {
   return loadBlock(footerBlock);
 }
 
+// Define an execution context for plugins
+export const executionContext = {
+  createOptimizedPicture,
+  getMetadata,
+  decorateBlock,
+  decorateButtons,
+  decorateIcons,
+  loadBlock,
+  loadCSS,
+  loadScript,
+  sampleRUM,
+  toCamelCase,
+  toClassName,
+};
+
+function parsePluginParams(id, config) {
+  const pluginId = !config
+    ? id.split('/').splice(id.endsWith('/') ? -2 : -1, 1)[0].replace(/\.js/, '')
+    : id;
+  const pluginConfig = typeof config === 'string' || !config
+    ? { url: (config || id).replace(/\/$/, '') }
+    : { load: 'eager', ...config };
+  pluginConfig.options ||= {};
+  return { id: pluginId, config: pluginConfig };
+}
+
+class PluginsRegistry {
+  #plugins;
+
+  constructor() {
+    this.#plugins = new Map();
+  }
+
+  // Register a new plugin
+  add(id, config) {
+    const { id: pluginId, config: pluginConfig } = parsePluginParams(id, config);
+    this.#plugins.set(pluginId, pluginConfig);
+  }
+
+  // Get the plugin
+  get(id) { return this.#plugins.get(id); }
+
+  // Check if the plugin exists
+  includes(id) { return !!this.#plugins.has(id); }
+
+  // Load all plugins that are referenced by URL, and updated their configuration with the
+  // actual API they expose
+  async load(phase) {
+    [...this.#plugins.entries()]
+      .filter(([, plugin]) => plugin.condition
+      && !plugin.condition(document, plugin.options, executionContext))
+      .map(([id]) => this.#plugins.delete(id));
+    return Promise.all([...this.#plugins.entries()]
+      // Filter plugins that don't match the execution conditions
+      .filter(([, plugin]) => (
+        (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
+        && phase === plugin.load && plugin.url
+      ))
+      .map(async ([key, plugin]) => {
+        try {
+          // If the plugin has a default export, it will be executed immediately
+          const pluginApi = (await loadModule(
+            key,
+            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
+            document,
+            plugin.options,
+            executionContext,
+          )) || {};
+          this.#plugins.set(key, { ...plugin, ...pluginApi });
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error('Could not load specified plugin', key);
+        }
+      }));
+  }
+
+  // Run a specific phase in the plugin
+  async run(phase) {
+    return [...this.#plugins.values()]
+      .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
+        plugin[phase] && (!plugin.condition
+            || plugin.condition(document, plugin.options, executionContext))
+          ? promise.then(() => plugin[phase](document, plugin.options, executionContext))
+          : promise
+      ), Promise.resolve());
+  }
+}
+
+class TemplatesRegistry {
+  // Register a new template
+  // eslint-disable-next-line class-methods-use-this
+  add(id, url) {
+    if (Array.isArray(id)) {
+      id.forEach((i) => window.hlx.templates.add(i));
+      return;
+    }
+    const { id: templateId, config: templateConfig } = parsePluginParams(id, url);
+    templateConfig.condition = () => toClassName(getMetadata('template')) === templateId;
+    window.hlx.plugins.add(templateId, templateConfig);
+  }
+
+  // Get the template
+  // eslint-disable-next-line class-methods-use-this
+  get(id) { return window.hlx.plugins.get(id); }
+
+  // Check if the template exists
+  // eslint-disable-next-line class-methods-use-this
+  includes(id) { return window.hlx.plugins.includes(id); }
+}
+
 /**
  * Setup block utils.
  */
@@ -665,6 +848,8 @@ export function setup() {
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.patchBlockConfig = [];
+  window.hlx.plugins = new PluginsRegistry();
+  window.hlx.templates = new TemplatesRegistry();
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {

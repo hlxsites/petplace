@@ -2,7 +2,6 @@ import { sampleRUM } from '../../scripts/lib-franklin.js';
 import {
   fetchAndCacheJson,
   getId,
-  isMartechDisabled,
   isMobile,
 } from '../../scripts/scripts.js';
 
@@ -105,7 +104,7 @@ exitIframe = () => {
  * @param {HTMLElement} block Ad block to decorate.
  */
 export default async function decorate(block) {
-  if (isMartechDisabled) {
+  if (!window.hlx.plugins.get('martech')) {
     block.closest('.section').classList.remove('ad-container');
     block.parentElement.remove();
     return;

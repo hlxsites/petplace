@@ -29,12 +29,12 @@ describe('Utils methods', () => {
   it('Loads CSS', async () => {
     // loads a css file and calls callback
     const load = await blockUtils.loadCSS('/test/scripts/test.css');
-    expect(load).to.equal('load');
+    expect(load.type).to.equal('load');
     expect(getComputedStyle(document.body).color).to.equal('rgb(255, 0, 0)');
 
     // does nothing if css already loaded
     const noop = await blockUtils.loadCSS('/test/scripts/test.css');
-    expect(noop).to.equal('noop');
+    expect(noop).to.equal(undefined);
 
     // calls callback in case of error
     try {
