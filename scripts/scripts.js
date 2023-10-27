@@ -19,8 +19,10 @@ import {
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
+
 // eslint-disable-next-line import/no-cycle
-import integrateMartech from './third-party.js';
+import { lazyMartech, delayedMartech } from './third-party.js';
+import { handleDataLayerApproach } from './datalayer.js';
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
@@ -701,7 +703,7 @@ export function addFavIcon(href) {
 function initPartytown() {
   window.partytown = {
     lib: '/scripts/partytown/',
-    forward: ['dataLayer.push'],
+    forward: ['dataLayerProxy.push'],
   };
   import('./partytown/partytown.js');
 }
@@ -892,7 +894,7 @@ async function loadLazy(doc) {
   });
 
   if (!isMartechDisabled) {
-    integrateMartech();
+    lazyMartech();
     initPartytown();
   }
 
@@ -905,6 +907,7 @@ async function loadLazy(doc) {
   }
 
   addNewsletterPopup();
+  handleDataLayerApproach();
 }
 
 /**
@@ -917,6 +920,7 @@ function loadDelayed(doc) {
     if (templateModule?.loadDelayed) {
       templateModule.loadDelayed(doc);
     }
+    delayedMartech();
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
@@ -1055,8 +1059,8 @@ async function loadPage() {
 }
 
 // Initialize the data layer and mark the Google Tag Manager start event
-window.dataLayer ||= [];
-window.dataLayer.push({
+window.dataLayerProxy ||= [];
+window.dataLayerProxy.push({
   'gtm.start': Date.now(),
   event: 'gtm.js',
 });

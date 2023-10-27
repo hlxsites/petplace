@@ -12,7 +12,7 @@ async function fetchArticleData(paths) {
     const html = document.createElement('div');
     html.innerHTML = text;
 
-    const catSlug = html.querySelector('meta[name="category"]').content;
+    const catSlug = html.querySelector('meta[name="category"]').content.split(',')[0]?.trim();
     const catData = await getCategory(toClassName(catSlug));
     const title = html.querySelector('h1').textContent;
     const imageAlt = html.querySelector('meta[property="og:image:alt"]');
@@ -88,10 +88,12 @@ export default async function decorate(block) {
   if (!isAuthorPopularPosts) {
     const cardWrapper = document.createElement('div');
     cardWrapper.classList.add('popular-cards-wrapper');
+    cardWrapper.setAttribute('itemscope', true);
+    cardWrapper.setAttribute('itemtype', 'http://schema.org/ItemList');
 
     PopularPostsData.forEach((post, i) => {
       const popularPostsWrapper = `
-        <div class="popular-posts-card" itemscope itemtype="https://schema.org/Article">
+        <div class="popular-posts-card" itemprop="itemListElement" itemscope itemtype="https://schema.org/Article">
           <a href="${post.path}">
             <div class="img-div"></div>
           </a>
