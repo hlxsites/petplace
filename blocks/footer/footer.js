@@ -39,6 +39,7 @@ export default async function decorate(block) {
 
     const nav = document.createElement('nav');
     nav.setAttribute('aria-label', 'Footer Navigation');
+    nav.className = 'footer-navs';
     const links = block.querySelector('.footer-nav ul ~ ul');
     links.replaceWith(nav);
     nav.append(links);
