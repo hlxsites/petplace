@@ -61,6 +61,7 @@ window.hlx.plugins.add('experience-decisioning', {
   condition: () => getMetadata('experiment')
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,
+  load: 'eager',
   options: { audiences: AUDIENCES },
 });
 
