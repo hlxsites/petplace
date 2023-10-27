@@ -1,40 +1,37 @@
 {
-  "name": "@adobe/helix-project-boilerplate",
-  "private": true,
+  "name": "@adobe/aem-experience-decisioning",
   "version": "1.0.0",
-  "description": "Starter project for Adobe Helix",
+  "main": "src/index.js",
   "scripts": {
-    "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
-    "test:watch": "npm test -- --watch",
-    "lint:js": "eslint .",
-    "lint:css": "stylelint blocks/**/*.css styles/*.css",
+    "lint:js": "eslint src",
+    "lint:css": "stylelint src/**/*.css",
     "lint": "npm run lint:js && npm run lint:css"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adobe/helix-project-boilerplate.git"
+    "url": "git+ssh://git@github.com/adobe/aem-experience-decisioning.git"
   },
-  "author": "Adobe",
-  "license": "Apache License 2.0",
+  "author": "Adobe Inc.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "aem",
+    "experimentation",
+    "experience",
+    "decisioning",
+    "plugin",
+    "campaigns",
+    "audiences"
+  ],
   "bugs": {
-    "url": "https://github.com/adobe/helix-project-boilerplate/issues"
+    "url": "https://github.com/adobe/aem-experience-decisioning/issues"
   },
-  "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
+  "homepage": "https://github.com/adobe/aem-experience-decisioning#readme",
   "devDependencies": {
-    "@babel/core": "7.21.0",
-    "@babel/eslint-parser": "7.19.1",
-    "@esm-bundle/chai": "4.3.4-fix.0",
-    "@web/test-runner": "0.15.1",
-    "@web/test-runner-commands": "0.6.5",
-    "chai": "4.3.7",
-    "eslint": "8.35.0",
+    "@babel/eslint-parser": "7.22.15",
+    "eslint": "8.48.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.27.5",
-    "sinon": "15.0.1",
-    "stylelint": "15.2.0",
-    "stylelint-config-standard": "30.0.1"
-  },
-  "dependencies": {
-    "@builder.io/partytown": "^0.8.0"
+    "eslint-plugin-import": "2.28.1",
+    "stylelint": "15.10.3",
+    "stylelint-config-standard": "34.0.0"
   }
 }
