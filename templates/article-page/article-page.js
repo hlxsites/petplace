@@ -127,7 +127,8 @@ async function getBreadcrumbs(categorySlug) {
  * @param {Element} main Element to which template blocks will be added.
  */
 // eslint-disable-next-line import/prefer-default-export
-export async function loadEager(main) {
+export async function loadEager(document) {
+  const main = document.querySelector('main');
   createTemplateBlock(main, 'article-author');
   createAutoBlockSection(main, 'ad', 'ad');
   createTemplateBlock(main, 'social-share');
@@ -185,7 +186,8 @@ export async function loadEager(main) {
   }
 }
 
-export async function loadLazy(main) {
+export async function loadLazy(document) {
+  const main = document.querySelector('main');
   const hero = main.querySelector('.hero');
   hero.querySelector('h1').setAttribute('itemprop', 'headline');
   const meta = document.createElement('meta');

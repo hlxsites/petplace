@@ -1,8 +1,17 @@
+import { loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
-import { isMobile, loadScript } from './scripts.js';
+import { isMobile } from './scripts.js';
 
 const GTM_ID = 'GTM-WP2SGNL';
 const TAG_ID = 'AW-11334653569';
+
+function initPartytown() {
+  window.partytown = {
+    lib: '/scripts/partytown/',
+    forward: ['dataLayerProxy.push'],
+  };
+  import('./partytown/partytown.js');
+}
 
 const GTM_SCRIPT = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,6 +28,7 @@ function loadGTag(id) {
     gtag('config', id);
   }, { async: '' });
 }
+
 function loadScriptInWorker(innerHTML, parent) {
   const script = document.createElement('script');
   script.type = 'text/partytown';
@@ -26,17 +36,18 @@ function loadScriptInWorker(innerHTML, parent) {
   parent.appendChild(script);
 }
 
-export function lazyMartech() {
+export function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
   if (!isMobile() && document.querySelector('.block.ad')) {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', () => {}, { async: '' });
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', { async: '' });
   }
 
   window.dataLayer ||= [];
   loadScriptInWorker(GTM_SCRIPT, document.body);
+  initPartytown();
 }
 
-export function delayedMartech() {
+export function loadDelayed() {
   loadGTag(TAG_ID);
 }
