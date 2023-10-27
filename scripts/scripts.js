@@ -32,8 +32,8 @@ window.hlx.cache = {};
 
 // Define the custom audiences mapping for experience decisioning
 const AUDIENCES = {
-  // mobile: () => window.innerWidth < 600,
-  // desktop: () => window.innerWidth >= 600,
+  mobile: () => window.innerWidth < 600,
+  desktop: () => window.innerWidth >= 600,
 };
 
 export const isMartechDisabled = new URLSearchParams(window.location.search).get('martech') === 'off';
@@ -656,7 +656,7 @@ async function loadEager(doc) {
     || Object.keys(getAllMetadata('audience')).length) {
     // eslint-disable-next-line import/no-relative-packages
     const { loadEager: runEager } = await import('../plugins/experience-decisioning/src/index.js');
-    await runEager.call(pluginContext, { audiences: AUDIENCES });
+    await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
 
   const main = doc.querySelector('main');
@@ -898,11 +898,10 @@ async function loadLazy(doc) {
 
   if ((getMetadata('experiment')
     || Object.keys(getAllMetadata('campaign')).length
-    || Object.keys(getAllMetadata('audience')).length)
-    && (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost'))) {
+    || Object.keys(getAllMetadata('audience')).length)) {
     // eslint-disable-next-line import/no-relative-packages
     const { loadLazy: runLazy } = await import('../plugins/experience-decisioning/src/index.js');
-    await runLazy.call(pluginContext, { audiences: AUDIENCES });
+    await runLazy(document, { audiences: AUDIENCES }, pluginContext);
   }
 
   addNewsletterPopup();
