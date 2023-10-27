@@ -36,7 +36,7 @@ const handleArticleShare = () => {
 // Categories -> Outbound Link, Embedded Link, Header Link, Footer Link, CTA Button, Social Link
 
 const clickHelper = (category, text, type, url) => {
-  console.log('here', category, text, type, url);
+  console.log('here', category, text, type, url); // TODO remove
   pushToDataLayer({
     event: 'element_click',
     element_category: category,
@@ -52,6 +52,26 @@ const handleElementClicks = () => {
   headerTracking.forEach((tag) => {
     tag.addEventListener('click', () => {
       clickHelper('Header', tag.innerHTML, 'link', tag.href);
+    });
+  });
+
+  // social link
+  const socialTracking = document.querySelectorAll('.footer-social a');
+  console.log('socials', socialTracking);
+  socialTracking.forEach((tag) => {
+    tag.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      clickHelper('Social', tag.innerHTML, 'link', tag.href);
+    });
+  });
+
+  // footer link
+  const footerTracking = document.querySelectorAll('.footer-navs a');
+  console.log('footer', footerTracking);
+  footerTracking.forEach((tag) => {
+    tag.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      clickHelper('Footer', tag.innerHTML, 'link', tag.href);
     });
   });
 };
