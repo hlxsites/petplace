@@ -20,22 +20,9 @@ const { sampleRUM } = window.hlx.rum;
 */
 sampleRUM.drain('convert', (cevent, cvalueThunk, element, listenTo = []) => {
   async function trackConversion(celement) {
-    const MAX_SESSION_LENGTH = 1000 * 60 * 60 * 24 * 30; // 30 days
     try {
-      // get all stored experiments from local storage (unified-decisioning-experiments)
-      const experiments = JSON.parse(localStorage.getItem('unified-decisioning-experiments'));
-      if (experiments) {
-        Object.entries(experiments)
-          .map(([experiment, { treatment, date }]) => ({ experiment, treatment, date }))
-          .filter(({ date }) => Date.now() - new Date(date) < MAX_SESSION_LENGTH)
-          .forEach(({ experiment, treatment }) => {
-            // send conversion event for each experiment that has been seen by this visitor
-            sampleRUM('variant', { source: experiment, target: treatment });
-          });
-      }
       // send conversion event
       const cvalue = typeof cvalueThunk === 'function' ? await cvalueThunk(element) : cvalueThunk;
-
       const data = { source: cevent, target: cvalue, element: celement };
       sampleRUM('convert', data);
     } catch (e) {
@@ -72,13 +59,13 @@ sampleRUM.drain('convert', (cevent, cvalueThunk, element, listenTo = []) => {
  * @param {Element} element link element
  * @returns link label used for tracking converstion
  */
-function getLinkLabel(element) {
-  return element.title ? this.toClassName(element.title) : this.toClassName(element.textContent);
+function getLinkLabel({ toClassName }, element) {
+  return element.title ? toClassName(element.title) : toClassName(element.textContent);
 }
 
-function getConversionNameMetadata(element) {
+function getConversionNameMetadata({ getMetadata }, element) {
   const text = element.title || element.textContent;
-  return this.getMetadata(`conversion-name--${text.toLowerCase().replace(/[^0-9a-z]/gi, '-')}-`);
+  return getMetadata(`conversion-name--${text.toLowerCase().replace(/[^0-9a-z]/gi, '-')}-`);
 }
 
 function findConversionValue(parent, fieldName) {
@@ -108,7 +95,8 @@ function findConversionValue(parent, fieldName) {
  * the id of the HTML form element will be used as conversion name
  */
 // eslint-disable-next-line import/prefer-default-export
-export async function initConversionTracking(parent = document, defaultFormConversionName = '') {
+async function initCTInternal(context, parent = document, defaultFormConversionName = '') {
+  const { toClassName, getMetadata } = context;
   const conversionElements = {
     form: () => {
       // Track all forms
@@ -121,12 +109,12 @@ export async function initConversionTracking(parent = document, defaultFormConve
           // ideally, this should not be an ID, but the case-insensitive name label of the element.
           sampleRUM.convert(undefined, (cvParent) => findConversionValue(cvParent, cvField), element, ['submit']);
         }
-        let formConversionName = section.dataset.conversionName || this.getMetadata('conversion-name');
+        let formConversionName = section.dataset.conversionName || getMetadata('conversion-name');
         if (!formConversionName) {
           // if no conversion name is defined in the metadata,
           // use the conversion name passed as parameter or the form or id
           formConversionName = defaultFormConversionName
-            ? this.toClassName(defaultFormConversionName) : element.id;
+            ? toClassName(defaultFormConversionName) : element.id;
         }
         sampleRUM.convert(formConversionName, undefined, element, ['submit']);
       });
@@ -136,7 +124,7 @@ export async function initConversionTracking(parent = document, defaultFormConve
       Array.from(parent.querySelectorAll('a[href]'))
         .map((element) => ({
           element,
-          cevent: getConversionNameMetadata.call(this, element) || this.getMetadata('conversion-name') || getLinkLabel.call(this, element),
+          cevent: getConversionNameMetadata(context, element) || getMetadata('conversion-name') || getLinkLabel(context, element),
         }))
         .forEach(({ element, cevent }) => {
           sampleRUM.convert(cevent, undefined, element, ['click']);
@@ -144,26 +132,40 @@ export async function initConversionTracking(parent = document, defaultFormConve
     },
     'labeled-link': () => {
       // track only the links configured in the metadata
-      const linkLabels = this.getMetadata('conversion-link-labels') || '';
+      const linkLabels = getMetadata('conversion-link-labels') || '';
       const trackedLabels = linkLabels.split(',')
         .map((p) => p.trim())
-        .map(this.toClassName);
+        .map(toClassName);
 
       Array.from(parent.querySelectorAll('a[href]'))
-        .filter((element) => trackedLabels.includes(getLinkLabel.call(this, element)))
+        .filter((element) => trackedLabels.includes(getLinkLabel(context, element)))
         .map((element) => ({
           element,
-          cevent: getConversionNameMetadata.call(this, element) || this.getMetadata('conversion-name') || getLinkLabel.call(this, element),
+          cevent: getConversionNameMetadata(context, element) || getMetadata('conversion-name') || getLinkLabel(context, element),
         }))
         .forEach(({ element, cevent }) => {
           sampleRUM.convert(cevent, undefined, element, ['click']);
         });
     },
   };
-
-  const declaredConversionElements = this.getMetadata('conversion-element') ? this.getMetadata('conversion-element').split(',').map((ce) => this.toClassName(ce.trim())) : [];
+  const declaredConversionElements = getMetadata('conversion-element') ? getMetadata('conversion-element').split(',').map((ce) => toClassName(ce.trim())) : [];
 
   Object.keys(conversionElements)
     .filter((ce) => declaredConversionElements.includes(ce))
     .forEach((cefn) => conversionElements[cefn]());
+}
+
+// for backwards compatibility. Keep support for initConversionTracking.call(...) invocation
+// where the context is passed as first parameter and made available in the "this" object.
+export async function initConversionTracking(parent = document, defaultFormConversionName = '') {
+  initCTInternal(this, parent, defaultFormConversionName);
+}
+
+// Add support for Plugin system
+/**
+ * Load the martech configured as non-delayed
+ * @param {*} context should contain at lease sampleRUM object and toCamelCase function
+ */
+export async function loadLazy(document, pluginOptions, context) {
+  initCTInternal(context, document);
 }

@@ -43,6 +43,10 @@ window.hlx.templates.add([
   '/templates/write-for-us',
 ]);
 
+window.hlx.plugins.add('rum-conversion', {
+  url: '/plugins/rum-conversion/src/index.js',
+  load: 'lazy',
+});
 window.hlx.plugins.add('martech', {
   url: './third-party.js',
   condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
@@ -736,11 +740,6 @@ async function addNewsletterPopup() {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-
-  const context = { getMetadata, toClassName };
-  // eslint-disable-next-line import/no-relative-packages
-  const { initConversionTracking } = await import('../plugins/rum-conversion/src/index.js');
-  await initConversionTracking.call(context, document);
 
   animateSkeletons(main);
   await loadBlocks(main);
