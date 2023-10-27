@@ -480,24 +480,6 @@ function getBlockConfig(block) {
 }
 
 /**
- * Gets the configuration for the given block, and also passes
- * the config through the `patchBlockConfig` methods in the plugins.
- *
- * @param {Element} block The block element
- * @returns {Object} The block config (blockName, cssPath and jsPath)
- */
-function getBlockConfig(block) {
-  const { blockName } = block.dataset;
-  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
-  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
-  const original = { blockName, cssPath, jsPath };
-  return window.hlx.patchBlockConfig.reduce(
-    (config, fn) => (typeof fn === 'function' ? fn(config, original) : config),
-    { blockName, cssPath, jsPath },
-  );
-}
-
-/**
  * Loads JS and CSS for a block.
  * @param {Element} block The block element
  */
