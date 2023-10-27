@@ -19,18 +19,12 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
-// eslint-disable-next-line import/no-cycle
-import { lazyMartech, delayedMartech } from './third-party.js';
-import { handleDataLayerApproach } from './datalayer.js';
-
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
-
-export const isMartechDisabled = new URLSearchParams(window.location.search).get('martech') === 'off';
 
 window.hlx.templates.add([
   '/templates/article-page',
@@ -48,6 +42,12 @@ window.hlx.templates.add([
   '/templates/traveling-page',
   '/templates/write-for-us',
 ]);
+
+window.hlx.plugins.add('martech', {
+  url: './third-party.js',
+  condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
+  load: 'lazy',
+});
 
 /**
  * Load fonts.css and set a session storage flag
@@ -607,14 +607,6 @@ export function addFavIcon(href) {
   }
 }
 
-function initPartytown() {
-  window.partytown = {
-    lib: '/scripts/partytown/',
-    forward: ['dataLayerProxy.push'],
-  };
-  import('./partytown/partytown.js');
-}
-
 /**
  * A helper that will load resources in an optimal way.
  *
@@ -799,13 +791,11 @@ async function loadLazy(doc) {
 
   window.hlx.plugins.run('loadLazy');
 
-  if (!isMartechDisabled) {
-    lazyMartech();
-    initPartytown();
-  }
-
   addNewsletterPopup();
-  handleDataLayerApproach();
+
+  import('./datalayer.js').then(({ handleDataLayerApproach }) => {
+    handleDataLayerApproach();
+  });
 }
 
 /**
@@ -817,7 +807,6 @@ function loadDelayed() {
   window.setTimeout(() => {
     window.hlx.plugins.load('delayed');
     window.hlx.plugins.run('loadDelayed');
-    delayedMartech();
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);

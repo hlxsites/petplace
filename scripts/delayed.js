@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM, loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
-import { isMartechDisabled, isMobile } from './scripts.js';
+import { isMobile } from './scripts.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
@@ -40,7 +40,7 @@ function pushly(...args) {
   window.PushlySDK.push(args);
 }
 
-if (!isMartechDisabled) {
+if (window.hlx.plugins.get('martech')) {
   if (isMobile() && document.querySelector('.block.ad')) {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', { async: '' });
   }

@@ -5,6 +5,14 @@ import { isMobile } from './scripts.js';
 const GTM_ID = 'GTM-WP2SGNL';
 const TAG_ID = 'AW-11334653569';
 
+function initPartytown() {
+  window.partytown = {
+    lib: '/scripts/partytown/',
+    forward: ['dataLayerProxy.push'],
+  };
+  import('./partytown/partytown.js');
+}
+
 const GTM_SCRIPT = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -20,6 +28,7 @@ function loadGTag(id) {
     gtag('config', id);
   }, { async: '' });
 }
+
 function loadScriptInWorker(innerHTML, parent) {
   const script = document.createElement('script');
   script.type = 'text/partytown';
@@ -27,7 +36,7 @@ function loadScriptInWorker(innerHTML, parent) {
   parent.appendChild(script);
 }
 
-export function lazyMartech() {
+export function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
   if (!isMobile() && document.querySelector('.block.ad')) {
@@ -36,8 +45,9 @@ export function lazyMartech() {
 
   window.dataLayer ||= [];
   loadScriptInWorker(GTM_SCRIPT, document.body);
+  initPartytown();
 }
 
-export function delayedMartech() {
+export function loadDelayed() {
   loadGTag(TAG_ID);
 }
