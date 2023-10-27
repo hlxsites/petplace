@@ -63,18 +63,8 @@ window.hlx.plugins.add('experience-decisioning', {
   condition: () => getMetadata('experiment')
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,
+  options: { audiences: AUDIENCES },
 });
-
-// Define an execution context
-const pluginContext = {
-  getAllMetadata,
-  getMetadata,
-  loadCSS,
-  loadScript,
-  sampleRUM,
-  toCamelCase,
-  toClassName,
-};
 
 /**
  * Load fonts.css and set a session storage flag
