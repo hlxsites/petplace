@@ -43,7 +43,10 @@ window.hlx.templates.add([
   '/templates/write-for-us',
 ]);
 
-window.hlx.plugins.add('rum-conversion', '/plugins/rum-conversion/src/index.js');
+window.hlx.plugins.add('rum-conversion', {
+  url: '/plugins/rum-conversion/src/index.js',
+  load: 'lazy',
+});
 window.hlx.plugins.add('martech', {
   url: './third-party.js',
   condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
