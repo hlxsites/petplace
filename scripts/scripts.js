@@ -15,9 +15,7 @@ import {
   loadCSS,
   loadFooter,
   loadHeader,
-  loadScript,
   sampleRUM,
-  toCamelCase,
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
