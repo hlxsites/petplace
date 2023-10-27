@@ -1,19 +1,19 @@
-# Franklin RUM Conversion tracking extension
+# AEM RUM Conversion tracking extension
 
-Adds conversion tracking functionality to Helix RUM Collection (client-side)
+Adds conversion tracking functionality to AEM RUM Collection (client-side)
 
 ## Installation
 
 ###### SSH
 
 ```bash
-git subtree add --squash --prefix plugins/rum-conversion git@github.com:adobe/franklin-rum-conversion.git main
+git subtree add --squash --prefix plugins/rum-conversion git@github.com:adobe/aem-rum-conversion.git main
 ```
 
 ###### HTTPS
 
 ```bash
-git subtree add --squash --prefix plugins/rum-conversion https://github.com/adobe/franklin-rum-conversion.git main
+git subtree add --squash --prefix plugins/rum-conversion https://github.com/adobe/aem-rum-conversion.git main
 ```
 
 You can then later update it from the source again via:
@@ -21,22 +21,39 @@ You can then later update it from the source again via:
 ###### SSH
 
 ```bash
-git subtree pull --squash --prefix plugins/rum-conversion git@github.com:adobe/franklin-rum-conversion.git main
+git subtree pull --squash --prefix plugins/rum-conversion git@github.com:adobe/aem-rum-conversion.git main
 ```
 
 ###### HTTPS
 
 ```bash
-git subtree pull --squash --prefix plugins/rum-conversion https://github.com/adobe/franklin-rum-conversion.git main
+git subtree pull --squash --prefix plugins/rum-conversion https://github.com/adobe/aem-rum-conversion.git main
 ```
 
-:warning: If you are using a folder as a franklin docroot/codeBasePath: you must add that folder in the `prefix` argument in the commands above.
+:warning: If you are using a folder as AEM docroot/codeBasePath: you must add that folder in the `prefix` argument in the commands above.
 e.g.:
 ```
-git subtree add --squash --prefix docroot/plugins/rum-conversion git@github.com:adobe/franklin-rum-conversion.git main
+git subtree add --squash --prefix docroot/plugins/rum-conversion git@github.com:adobe/aem-rum-conversion.git main
 ```
 
-## Initialization
+## Initialization for projects using the Plugin System
+Load the plugin at the beginning of your `scripts.js`
+```
+  window.hlx.plugins.add('rum-conversion', '/plugins/rum-conversion/src/index.js');
+```
+:information_source: There are some mechanisms commonly used in AEM projects, that load dynamically in the page content from a different document after the page has been fully loaded.
+e.g.: A contact us form that is displayed in a modal dialog when the user clicks a button.
+If you are using such a mechanism, that includes extra elements in the DOM after `loadLazy()` and you want to track conversions in this included HTML fragment, you need to initialize conversion tracking for that content once it is loaded in the page.
+
+```
+  window.hlx.plugins.get('rum-conversion').initConversionTracking(context, fragmentElement, defaultFormConversionName)
+```
+`context` is the  object containing `getMetadata` and `getClassName` methods \
+`fragmentElement` is the parent HTML Element included dynamically where we want to track conversions \
+`defaultFormConversionName` is the name we want to use to track the conversion of a form, when a conversion name is not defined in the section or document metadata. This parameter is optional. Typical use case is to pass the path to the fragment that contains the form.
+
+## Initialization for projects without Plugin System (DEPRECATED)
+** This approach is deprecated, and kept temporarily for backwards compatibility purposes **
 In your `script.js` find the method `loadLazy()`.
 At the end of the method add the following code:
 
@@ -49,9 +66,9 @@ At the end of the method add the following code:
   const { initConversionTracking } = await import('../plugins/rum-conversion/src/index.js');
   await initConversionTracking.call(context, document);
 ```
-Please, note that `getMetadata` and `toClassName` methods should be imported from `lib-franklin.js` in your `script.js`
+Please, note that `getMetadata` and `toClassName` methods should be imported from `aem.js`/`lib-franklin.js` in your `script.js`
 
-:information_source: There are some mechanisms commonly used in Franklin projects, that load dynamically in the page, content from a different document after the page has been fully loaded.
+:information_source: There are some mechanisms commonly used in AEM projects, that load dynamically in the page, content from a different document after the page has been fully loaded.
 e.g.: A contact us form that is displayed in a modal dialog when the user clicks a button.
 If you are using such a mechanism, that includes extra elements in the DOM after `loadLazy()` and you want to track conversions in this included HTML fragment, you need to initialize conversion tracking for that content once it is loaded in the page.
 
@@ -136,11 +153,11 @@ This method has 2 modes:
 
 ### Integration with Analytics solutions
 
-:warning: If you want to make use of the hook described below, you must ensure your `lib-franklin.js` is up to date (not older than 23.08.2023) and contains the changes in these 2 commits:
+:warning: If you want to make use of the hook described below, you must ensure your `aem.js`/`lib-franklin.js` is up to date (not older than 23.08.2023) and contains the changes in these 2 commits:
 * https://github.com/adobe/helix-project-boilerplate/commit/871ede401d2d57c8825f8970f3b28cd9de5f27f8
 * https://github.com/adobe/helix-project-boilerplate/commit/fcca39dd4f5fd2aef6852580873ab4b2cce1e2af
 
-In order to track conversions defined in Franklin in Analytics solutions, you can leverage the method `sampleRUM.always.on('convert', (data) => { ... })`\
+In order to track conversions defined in AEM in Analytics solutions, you can leverage the method `sampleRUM.always.on('convert', (data) => { ... })`\
 This method is invoked by the RUM conversion framework after every call to convert method. The parameter `data` contains the information of the conversion event tracked.
 
 It is **important** to note that while RUM data is sampled, in the sense it sends information to the RUM service from a small fraction of page views,
@@ -154,7 +171,7 @@ WebSDK or pushing the conversion events to a Data Layer.
 
 Below you can find an example for WebSDK relevant code snippet,
 or you can check [how WKND was instrumented](https://github.com/hlxsites/wknd/pull/22),
-or use [Franklin Omnivore plugin](https://github.com/adobe/franklin-omnivore-plugin) in the future.
+or use [AEM Omnivore plugin](https://github.com/adobe/franklin-omnivore-plugin) in the future.
 
 It is **important** to note that if your implementation is tracking the same events (link clicks, form submissions,
 etc.) separately as well (because, for example, you track all forms on your website, or you've configured alloy with

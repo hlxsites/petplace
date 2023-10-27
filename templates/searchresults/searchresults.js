@@ -189,7 +189,8 @@ function createTemplateBlock(main, blockName) {
   main.append(section);
 }
 
-export async function loadEager(main) {
+export async function loadEager(document) {
+  const main = document.querySelector('main');
   if (isTrueSearch) {
     createTemplateBlock(main, 'pagination');
     main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
@@ -199,7 +200,8 @@ export async function loadEager(main) {
   }
 }
 
-export async function loadLazy(main) {
+export async function loadLazy(document) {
+  const main = document.querySelector('main');
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const contentDiv = document.createElement('div');

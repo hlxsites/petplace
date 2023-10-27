@@ -19,48 +19,39 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
-// eslint-disable-next-line import/no-cycle
-import { lazyMartech, delayedMartech } from './third-party.js';
-import { handleDataLayerApproach } from './datalayer.js';
-
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
-let templateModule;
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
 
-export const isMartechDisabled = new URLSearchParams(window.location.search).get('martech') === 'off';
+window.hlx.templates.add([
+  '/templates/article-page',
+  '/templates/ask-author-page',
+  '/templates/author-index',
+  '/templates/author-page',
+  '/templates/breed-index',
+  '/templates/breed-page',
+  '/templates/category-index',
+  '/templates/home-page/',
+  '/templates/puppy-diaries-index',
+  '/templates/searchresults',
+  '/templates/tag-index',
+  '/templates/travel-guide-page',
+  '/templates/traveling-page',
+  '/templates/write-for-us',
+]);
 
-/**
- * Loads a script src and provides a callback that fires after
- * the script has loaded.
- * @param {string} url Full value to use as the script's src attribute.
- * @param {function} callback Will be invoked once the script has loaded.
- * @param {*} attributes Simple object containing attribute keys and values
- *  to add to the script tag.
- * @returns Script tag representing the script.
- */
-export function loadScript(url, callback, attributes) {
-  const head = document.querySelector('head');
-  if (!head.querySelector(`script[src="${url}"]`)) {
-    const script = document.createElement('script');
-    script.src = url;
-
-    if (attributes) {
-      Object.keys(attributes).forEach((key) => {
-        script.setAttribute(key, attributes[key]);
-      });
-    }
-
-    head.append(script);
-    script.onload = callback;
-    return script;
-  }
-  if (callback) callback();
-  return head.querySelector(`script[src="${url}"]`);
-}
+window.hlx.plugins.add('rum-conversion', {
+  url: '/plugins/rum-conversion/src/index.js',
+  load: 'lazy',
+});
+window.hlx.plugins.add('martech', {
+  url: './third-party.js',
+  condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
+  load: 'lazy',
+});
 
 /**
  * Load fonts.css and set a session storage flag
@@ -330,44 +321,6 @@ async function buildHeroBlock(main) {
 }
 
 /**
- * Builds template block and adds to main as sections.
- * @param {Element} main The container element.
- * @returns {Promise} Resolves when the template block(s) have
- *  been loaded.
- */
-async function decorateTemplate(main) {
-  const template = toClassName(getMetadata('template'));
-  if (!template || template === 'generic') {
-    return;
-  }
-
-  try {
-    const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
-    const decorationComplete = new Promise((resolve) => {
-      (async () => {
-        try {
-          templateModule = await import(`../templates/${template}/${template}.js`);
-          if (templateModule?.loadEager) {
-            await templateModule.loadEager(main);
-          }
-        } catch (error) {
-          if (error.message === '404') {
-            window.location.replace('/404.html');
-          }
-          // eslint-disable-next-line no-console
-          console.log(`failed to load template for ${template}`, error);
-        }
-        resolve();
-      })();
-    });
-    await Promise.all([cssLoaded, decorationComplete]);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`failed to load template ${template}`, error);
-  }
-}
-
-/**
  * Builds embed block for inline links to known social platforms.
  * @param {Element} main The container element
  */
@@ -620,7 +573,8 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    await decorateTemplate(main);
+    await window.hlx.plugins.run('loadEager');
+    // await decorateTemplate(main);
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
       document.title += ' | PetPlace.com';
     }
@@ -655,14 +609,6 @@ export function addFavIcon(href) {
   } else {
     document.getElementsByTagName('head')[0].appendChild(link);
   }
-}
-
-function initPartytown() {
-  window.partytown = {
-    lib: '/scripts/partytown/',
-    forward: ['dataLayerProxy.push'],
-  };
-  import('./partytown/partytown.js');
 }
 
 /**
@@ -795,15 +741,7 @@ async function addNewsletterPopup() {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
 
-  const context = { getMetadata, toClassName };
-  // eslint-disable-next-line import/no-relative-packages
-  const { initConversionTracking } = await import('../plugins/rum-conversion/src/index.js');
-  await initConversionTracking.call(context, document);
-
   animateSkeletons(main);
-  if (templateModule?.loadLazy) {
-    templateModule.loadLazy(main);
-  }
   await loadBlocks(main);
 
   const { hash } = window.location;
@@ -850,26 +788,24 @@ async function loadLazy(doc) {
     sampleRUM('utm-campaign', { source: key, target: value });
   });
 
-  if (!isMartechDisabled) {
-    lazyMartech();
-    initPartytown();
-  }
+  window.hlx.plugins.run('loadLazy');
 
   addNewsletterPopup();
-  handleDataLayerApproach();
+
+  import('./datalayer.js').then(({ handleDataLayerApproach }) => {
+    handleDataLayerApproach();
+  });
 }
 
 /**
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed(doc) {
+function loadDelayed() {
   // load anything that can be postponed to the latest here
   window.setTimeout(() => {
-    if (templateModule?.loadDelayed) {
-      templateModule.loadDelayed(doc);
-    }
-    delayedMartech();
+    window.hlx.plugins.load('delayed');
+    window.hlx.plugins.run('loadDelayed');
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
@@ -1002,7 +938,9 @@ export async function captureError(source, e) {
 }
 
 async function loadPage() {
+  await window.hlx.plugins.load('eager');
   await loadEager(document);
+  await window.hlx.plugins.load('lazy');
   await loadLazy(document);
   loadDelayed(document);
 }

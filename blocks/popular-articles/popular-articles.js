@@ -88,10 +88,12 @@ export default async function decorate(block) {
   if (!isAuthorPopularPosts) {
     const cardWrapper = document.createElement('div');
     cardWrapper.classList.add('popular-cards-wrapper');
+    cardWrapper.setAttribute('itemscope', true);
+    cardWrapper.setAttribute('itemtype', 'http://schema.org/ItemList');
 
     PopularPostsData.forEach((post, i) => {
       const popularPostsWrapper = `
-        <div class="popular-posts-card" itemscope itemtype="https://schema.org/Article">
+        <div class="popular-posts-card" itemprop="itemListElement" itemscope itemtype="https://schema.org/Article">
           <a href="${post.path}">
             <div class="img-div"></div>
           </a>
