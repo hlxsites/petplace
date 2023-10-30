@@ -14,3 +14,11 @@ export const clickHelper = (category, text, type, url) => {
     element_url: url,
   });
 };
+
+export const getSocialName = (href) => {
+  const strSplit = href.split('.com')[0];
+  const strValue = strSplit.split('.')[1] || 'Email';
+  const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
+  return strCaps;
+};
+

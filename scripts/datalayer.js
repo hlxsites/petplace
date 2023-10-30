@@ -1,5 +1,6 @@
 import {
   clickHelper,
+  getSocialName,
   pushToDataLayer,
 } from './utils/helpers.js';
 
@@ -19,13 +20,9 @@ const handleArticleShare = () => {
 
   aTags.forEach((tag) => {
     tag.addEventListener('click', () => {
-      const strSplit = tag.href.split('.com')[0];
-      const strValue = strSplit.split('.')[1] || 'Email';
-      const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
-
       pushToDataLayer({
         event: 'article_share',
-        method: strCaps,
+        method: getSocialName(tag.href),
       });
     });
   });
