@@ -1,22 +1,23 @@
 import globRegex from './glob-regex/glob-regex.js';
 import {
-  sampleRUM,
   buildBlock,
-  loadFooter,
+  createOptimizedPicture,
+  decorateBlock,
+  decorateBlocks,
   decorateButtons,
   decorateIcons,
   decorateSections,
-  decorateBlock,
-  decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
+  getAllMetadata,
+  getMetadata,
   loadBlock,
   loadBlocks,
   loadCSS,
+  loadFooter,
   loadHeader,
-  getMetadata,
+  sampleRUM,
   toClassName,
-  createOptimizedPicture,
+  waitForLCP,
 } from './lib-franklin.js';
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
@@ -25,6 +26,12 @@ const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
+
+// Define the custom audiences mapping for experience decisioning
+const AUDIENCES = {
+  mobile: () => window.innerWidth < 600,
+  desktop: () => window.innerWidth >= 600,
+};
 
 window.hlx.templates.add([
   '/templates/article-page',
@@ -51,6 +58,15 @@ window.hlx.plugins.add('martech', {
   url: './third-party.js',
   condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
   load: 'lazy',
+});
+
+window.hlx.plugins.add('experience-decisioning', {
+  url: '/plugins/experience-decisioning/src/index.js',
+  condition: () => getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length,
+  load: 'eager',
+  options: { audiences: AUDIENCES },
 });
 
 /**
@@ -571,9 +587,11 @@ function fixLinks() {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  await window.hlx.plugins.run('loadEager');
+
   const main = doc.querySelector('main');
   if (main) {
-    await window.hlx.plugins.run('loadEager');
     // await decorateTemplate(main);
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
       document.title += ' | PetPlace.com';
