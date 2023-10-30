@@ -1,4 +1,5 @@
 import {
+  clickHelper,
   pushToDataLayer,
 } from './utils/helpers.js';
 
