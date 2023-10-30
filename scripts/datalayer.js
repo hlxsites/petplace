@@ -1,8 +1,6 @@
-window.dataLayer ||= [];
-
-export const pushToDataLayer = (layer) => {
-  window.dataLayer.push(layer);
-};
+import {
+  pushToDataLayer,
+} from './utils/helpers.js';
 
 // GLOBAL VARIABLES
 const handleGlobalVariables = () => {
@@ -33,21 +31,8 @@ const handleArticleShare = () => {
 };
 
 // ELEMENT CLICK
-// Categories -> Outbound Link, Embedded Link, Header Link, Footer Link, CTA Button, Social Link
-
-const clickHelper = (category, text, type, url) => {
-  console.log('here', category, text, type, url); // TODO remove
-  pushToDataLayer({
-    event: 'element_click',
-    element_category: category,
-    element_text: text,
-    element_type: type,
-    element_url: url,
-  });
-};
-
 const handleElementClicks = () => {
-  // header link
+  // header links
   const headerTracking = document.querySelectorAll('.nav-sections a');
   headerTracking.forEach((tag) => {
     tag.addEventListener('click', () => {
