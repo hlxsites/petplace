@@ -2,6 +2,8 @@ import {
   clickHelper,
   getSocialName,
   pushToDataLayer,
+  footerNavHelper,
+  footerSocialHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -17,7 +19,6 @@ const handleGlobalVariables = () => {
 // ARTICLE SHARE
 const handleArticleShare = () => {
   const aTags = document.querySelectorAll('.social-share a');
-
   aTags.forEach((tag) => {
     tag.addEventListener('click', () => {
       pushToDataLayer({
@@ -38,25 +39,23 @@ const handleElementClicks = () => {
     });
   });
 
-  // social link
-  const socialTracking = document.querySelectorAll('.footer-social a');
-  console.log('socials', socialTracking);
-  socialTracking.forEach((tag) => {
-    tag.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      clickHelper('Social', tag.innerHTML, 'link', tag.href);
+  // footer links
+  const observer = new MutationObserver((entries) => {
+    entries.forEach((link) => {
+      const footClass = link.target.className.split('footer-');
+      // TODO - unable to detect 'footer-legal' div
+      // if (footClass[1] === 'legal') footerLegalHelper();
+      if (footClass[1] === 'nav-links') footerNavHelper();
+      if (footClass[1] === 'social') footerSocialHelper();
     });
   });
-
-  // footer link
-  const footerTracking = document.querySelectorAll('.footer-navs a');
-  console.log('footer', footerTracking);
-  footerTracking.forEach((tag) => {
-    tag.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      clickHelper('Footer', tag.innerHTML, 'link', tag.href);
+  if (document.querySelector('.footer-wrapper')) {
+    observer.observe(document.querySelector('.footer-wrapper'), {
+      subtree: true,
+      attributes: true,
+      childList: true,
     });
-  });
+  }
 };
 
 export const handleDataLayerApproach = () => {
