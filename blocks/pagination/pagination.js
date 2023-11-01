@@ -13,12 +13,6 @@ function renderContent(block) {
   const page = Number(usp.get('page') || 1);
   const cards = document.querySelector('.cards ul');
 
-  if (page > 1) {
-    const canonical = document.querySelector('link[rel="canonical"]');
-    const url = new URL(canonical.href);
-    canonical.href = `${url.origin}${url.pathname}?${usp.toString()}`;
-  }
-
   usp.set('page', page - 1);
   const prevParams = usp.toString();
   usp.set('page', page + 1);

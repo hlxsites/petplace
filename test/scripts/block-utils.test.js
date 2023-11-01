@@ -83,6 +83,11 @@ describe('Utils methods', () => {
 });
 
 describe('Sections and blocks', () => {
+  before(async () => {
+    blockUtils = await import('../../scripts/lib-franklin.js');
+    blockUtils.setup();
+  });
+
   it('Decorates sections', async () => {
     blockUtils.decorateSections(document.querySelector('main'));
     expect(document.querySelectorAll('main .section').length).to.equal(2);

@@ -32,22 +32,19 @@ function createArticleDetails(block, key, categoryInfo, article) {
   const categoryHref = categoryInfo ? categoryInfo.Path : '#';
   const category = document.createElement('div');
   category.classList.add('article-navigation-category');
-  category.innerHTML = `<a href="${categoryHref}"><span itemprop="about">${categoryInfo.Category}</span></a>`;
+  category.innerHTML = `<a href="${categoryHref}">${categoryInfo.Category}</a>`;
 
   // title of the article, which will link to the article's page
   const title = document.createElement('div');
   title.classList.add('article-navigation-title');
   title.innerHTML = `
     <a href="${article.path}">
-      <span class="article-navigation-${key}-title-text" itemprop="name">${article.title}</span>
-      <link itemprop="url" href="${article.path}"/>
+      <span class="article-navigation-${key}-title-text">${article.title}</span>
     </a>
   `;
 
   const sectionContainer = document.createElement('div');
   sectionContainer.classList.add('article-navigation-details', `article-navigation-${key}-details`);
-  sectionContainer.setAttribute('itemscope', '');
-  sectionContainer.setAttribute('itemtype', 'https://schema.org/Article');
   sectionContainer.append(category);
   sectionContainer.append(title);
 

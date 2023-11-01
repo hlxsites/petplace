@@ -158,6 +158,22 @@ export function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
+/**
+ * Gets all the metadata elements that are in the given scope.
+ * @param {String} scope The scope/prefix for the metadata
+ * @returns an array of HTMLElement nodes that match the given scope
+ */
+export function getAllMetadata(scope) {
+  return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
+    .reduce((res, meta) => {
+      const id = toClassName(meta.name
+        ? meta.name.substring(scope.length + 1)
+        : meta.getAttribute('property').split(':')[1]);
+      res[id] = meta.getAttribute('content');
+      return res;
+    }, {});
+}
+
 const ICONS_CACHE = {};
 /**
  * Replace icons with inline SVG and prefix with codeBasePath.
@@ -420,7 +436,7 @@ export function buildBlock(blockName, content) {
   return (blockEl);
 }
 
-async function loadModule(name, cssPath, jsPath, ...args) {
+async function loadModule(name, jsPath, cssPath, ...args) {
   const cssLoaded = cssPath ? loadCSS(cssPath) : Promise.resolve();
   const decorationComplete = jsPath
     ? new Promise((resolve) => {
@@ -473,7 +489,7 @@ export async function loadBlock(block) {
     block.dataset.blockStatus = 'loading';
     const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
-      await loadModule(blockName, cssPath, jsPath, block);
+      await loadModule(blockName, jsPath, cssPath, block);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
@@ -698,6 +714,7 @@ export function loadFooter(footer) {
 // Define an execution context for plugins
 export const executionContext = {
   createOptimizedPicture,
+  getAllMetadata,
   getMetadata,
   decorateBlock,
   decorateButtons,
@@ -761,8 +778,8 @@ class PluginsRegistry {
           // If the plugin has a default export, it will be executed immediately
           const pluginApi = (await loadModule(
             key,
-            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
             !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
             document,
             plugin.options,
             executionContext,
