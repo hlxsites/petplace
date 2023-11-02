@@ -28,7 +28,7 @@ export const footerSocialHelper = () => {
   const socialTracking = document.querySelectorAll('.footer-social a');
   socialTracking.forEach((tag) => {
     tag.addEventListener('click', () => {
-      clickHelper('Social', getSocialName(tag.href), 'link', tag.href);
+      clickHelper('Footer Social', getSocialName(tag.href), 'link', tag.href);
     });
   });
 };
@@ -37,7 +37,7 @@ export const footerNavHelper = () => {
   const footerTracking = document.querySelectorAll('.footer-nav-links a');
   footerTracking.forEach((tag) => {
     tag.addEventListener('click', () => {
-      clickHelper('Footer', tag.innerHTML, 'link', tag.href);
+      clickHelper('Footer Nav', tag.innerHTML, 'link', tag.href);
     });
   });
 };
@@ -47,7 +47,7 @@ export const footerLegalHelper = () => {
   const legalTracking = document.querySelectorAll('.footer-legal a');
   legalTracking.forEach((tag) => {
     tag.addEventListener('click', () => {
-      clickHelper('Footer', tag.innerHTML, 'link', tag.href);
+      clickHelper('Footer Legal', tag.innerHTML, 'link', tag.href);
     });
   });
 };

@@ -3,6 +3,7 @@ import {
   getSocialName,
   pushToDataLayer,
   footerNavHelper,
+  footerLegalHelper,
   footerSocialHelper,
 } from './utils/helpers.js';
 
@@ -44,9 +45,9 @@ const handleElementClicks = () => {
     entries.forEach((link) => {
       const footClass = link.target.className.split('footer-');
       // TODO - unable to detect 'footer-legal' div
-      // if (footClass[1] === 'legal') footerLegalHelper();
-      if (footClass[1] === 'nav-links') footerNavHelper();
+      if (footClass[1] === 'legal') footerLegalHelper();
       if (footClass[1] === 'social') footerSocialHelper();
+      if (footClass[1] === 'nav-links') footerNavHelper();
     });
   });
   if (document.querySelector('.footer-wrapper')) {
