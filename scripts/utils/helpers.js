@@ -23,6 +23,35 @@ export const getSocialName = (href) => {
   return strCaps;
 };
 
+// HEADER HELPERS
+export const headerNavHelper = () => {
+  const navTracking = document.querySelectorAll('.nav-sections a');
+  navTracking.forEach((tag) => {
+    tag.addEventListener('click', () => {
+      clickHelper('Header Nav', tag.innerHTML, 'link', tag.href);
+    });
+  });
+};
+
+export const headerMenuHelper = () => {
+  const menuTracking = document.querySelectorAll('.nav-sidebar-links a');
+  menuTracking.forEach((tag) => {
+    tag.addEventListener('click', () => {
+      clickHelper('Header Menu', tag.innerHTML, 'link', tag.href);
+    });
+  });
+};
+
+export const headerSidebarHelper = () => {
+  const sidebarTracking = document.querySelectorAll('.nav-sidebar-misc a');
+  sidebarTracking.forEach((tag) => {
+    tag.addEventListener('click', () => {
+      clickHelper('Header Sidebar', tag.innerHTML, 'link', tag.href);
+    });
+  });
+};
+
+
 // FOOTER HELPERS
 export const footerSocialHelper = () => {
   const socialTracking = document.querySelectorAll('.footer-social a');
