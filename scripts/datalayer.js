@@ -43,7 +43,7 @@ const handleElementClicks = () => {
   // cta buttons (homepage only)
   if (window.location.pathname === '/') {
     const btnTracking = document.querySelectorAll(
-      '.slides-container .button-container a'
+      '.slides-container .button-container a',
     );
     btnTracking.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -52,6 +52,7 @@ const handleElementClicks = () => {
     });
   }
 
+  // article links (coming next)
 
   // footer links
   const observer = new MutationObserver((entries) => {

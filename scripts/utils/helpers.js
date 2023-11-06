@@ -51,6 +51,7 @@ export const headerSidebarHelper = () => {
   });
 };
 
+// LINK HELPERS (coming next)
 
 // FOOTER HELPERS
 export const footerSocialHelper = () => {
