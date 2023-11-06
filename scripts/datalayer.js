@@ -39,8 +39,14 @@ const handleElementClicks = () => {
   headerNavHelper();
   headerMenuHelper();
   headerSidebarHelper();
+    const btnTracking = document.querySelectorAll(
+      '.slides-container .button-container a'
+    );
+    btnTracking.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        clickHelper('CTA Button', btn.title, 'button', btn.href);
+      });
     });
-  });
 
   // footer links
   const observer = new MutationObserver((entries) => {
