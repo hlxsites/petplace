@@ -3,8 +3,11 @@ import {
   getSocialName,
   pushToDataLayer,
   footerNavHelper,
+  headerNavHelper,
+  headerMenuHelper,
   footerLegalHelper,
   footerSocialHelper,
+  headerSidebarHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -33,10 +36,9 @@ const handleArticleShare = () => {
 // ELEMENT CLICK
 const handleElementClicks = () => {
   // header links
-  const headerTracking = document.querySelectorAll('.nav-sections a');
-  headerTracking.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      clickHelper('Header', tag.innerHTML, 'link', tag.href);
+  headerNavHelper();
+  headerMenuHelper();
+  headerSidebarHelper();
     });
   });
 
