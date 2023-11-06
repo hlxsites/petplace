@@ -39,6 +39,9 @@ const handleElementClicks = () => {
   headerNavHelper();
   headerMenuHelper();
   headerSidebarHelper();
+
+  // cta buttons (homepage only)
+  if (window.location.pathname === '/') {
     const btnTracking = document.querySelectorAll(
       '.slides-container .button-container a'
     );
@@ -47,6 +50,8 @@ const handleElementClicks = () => {
         clickHelper('CTA Button', btn.title, 'button', btn.href);
       });
     });
+  }
+
 
   // footer links
   const observer = new MutationObserver((entries) => {
