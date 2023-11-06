@@ -1,5 +1,5 @@
 import { createForm } from '../form/form.js';
-import { pushToDataLayer } from '../../scripts/datalayer.js';
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 import { setNewsletterSignedUp, captureError } from '../../scripts/scripts.js';
 
 function showMessage(block, message, clazz = 'success') {

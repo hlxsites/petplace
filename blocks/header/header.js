@@ -1,7 +1,7 @@
 import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-franklin.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
-import { pushToDataLayer } from '../../scripts/datalayer.js';
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 /**
  * decorates the header, mainly the nav

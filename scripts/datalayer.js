@@ -1,8 +1,11 @@
-window.dataLayer ||= [];
-
-export const pushToDataLayer = (layer) => {
-  window.dataLayer.push(layer);
-};
+import {
+  clickHelper,
+  getSocialName,
+  pushToDataLayer,
+  footerNavHelper,
+  footerLegalHelper,
+  footerSocialHelper,
+} from './utils/helpers.js';
 
 // GLOBAL VARIABLES
 const handleGlobalVariables = () => {
@@ -17,43 +20,43 @@ const handleGlobalVariables = () => {
 // ARTICLE SHARE
 const handleArticleShare = () => {
   const aTags = document.querySelectorAll('.social-share a');
-
   aTags.forEach((tag) => {
     tag.addEventListener('click', () => {
-      const strSplit = tag.href.split('.com')[0];
-      const strValue = strSplit.split('.')[1] || 'Email';
-      const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
-
       pushToDataLayer({
         event: 'article_share',
-        method: strCaps,
+        method: getSocialName(tag.href),
       });
     });
   });
 };
 
 // ELEMENT CLICK
-// Categories -> Outbound Link, Embedded Link, Header Link, Footer Link, CTA Button, Social Link
-
-const clickHelper = (category, text, type, url) => {
-  console.log('here', category, text, type, url);
-  pushToDataLayer({
-    event: 'element_click',
-    element_category: category,
-    element_text: text,
-    element_type: type,
-    element_url: url,
-  });
-};
-
 const handleElementClicks = () => {
-  // header link
+  // header links
   const headerTracking = document.querySelectorAll('.nav-sections a');
   headerTracking.forEach((tag) => {
     tag.addEventListener('click', () => {
       clickHelper('Header', tag.innerHTML, 'link', tag.href);
     });
   });
+
+  // footer links
+  const observer = new MutationObserver((entries) => {
+    entries.forEach((link) => {
+      const footClass = link.target.className.split('footer-');
+      // TODO - unable to detect 'footer-legal' div
+      if (footClass[1] === 'legal') footerLegalHelper();
+      if (footClass[1] === 'social') footerSocialHelper();
+      if (footClass[1] === 'nav-links') footerNavHelper();
+    });
+  });
+  if (document.querySelector('.footer-wrapper')) {
+    observer.observe(document.querySelector('.footer-wrapper'), {
+      subtree: true,
+      attributes: true,
+      childList: true,
+    });
+  }
 };
 
 export const handleDataLayerApproach = () => {
