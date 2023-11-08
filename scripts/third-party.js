@@ -31,15 +31,15 @@ function loadGTag(id) {
 
       const metaTemplate = document.querySelector('meta[name="template"]');
       if (
-        window.location.pathname === '/' &&
         metaTemplate.content === 'Home-page'
+        && window.location.pathname === '/'
       ) {
         gtag('event', 'conversion', {
           send_to: `${TAG_ID}/iQbBCNzr2OoYEIGt5Jwq`,
         });
       }
     },
-    { async: '' }
+    { async: '' },
   );
 }
 
