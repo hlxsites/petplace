@@ -20,13 +20,27 @@ const GTM_SCRIPT = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 })(window,document,'script','dataLayerProxy','${GTM_ID}');`;
 
 function loadGTag(id) {
-  loadScript(`https://www.googletagmanager.com/gtag/js?id=${TAG_ID}`, () => {
-    function gtag(...args) {
-      window.dataLayer.push(...args);
-    }
-    gtag('js', new Date());
-    gtag('config', id);
-  }, { async: '' });
+  loadScript(
+    `https://www.googletagmanager.com/gtag/js?id=${TAG_ID}`,
+    () => {
+      function gtag(...args) {
+        window.dataLayer.push(...args);
+      }
+      gtag('js', new Date());
+      gtag('config', id);
+
+      const metaTemplate = document.querySelector('meta[name="template"]');
+      if (
+        metaTemplate.content === 'Home-page'
+        && window.location.pathname === '/'
+      ) {
+        gtag('event', 'conversion', {
+          send_to: `${TAG_ID}/iQbBCNzr2OoYEIGt5Jwq`,
+        });
+      }
+    },
+    { async: '' },
+  );
 }
 
 function loadScriptInWorker(innerHTML, parent) {
