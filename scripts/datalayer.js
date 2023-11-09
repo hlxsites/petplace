@@ -39,12 +39,12 @@ const handleHeaderClicks = () => {
     const headerCat = link.closest('.nav-sections')
       ? 'Nav'
       : link.closest('.nav-sidebar-links')
-      ? 'Menu'
-      : link.closest('.nav-sidebar-misc')
-      ? 'Sidebar'
-      : link.closest('.nav-sidebar-social')
-      ? 'Social'
-      : 'Other';
+        ? 'Menu'
+        : link.closest('.nav-sidebar-misc')
+          ? 'Sidebar'
+          : link.closest('.nav-sidebar-social')
+            ? 'Social'
+            : 'Other';
 
     clickHelper(`Header ${headerCat}`, headerText, 'link', link.href);
   });
@@ -61,10 +61,10 @@ const handleFooterClicks = () => {
     const footerCat = link.closest('.footer-nav-links')
       ? 'Nav'
       : link.closest('.footer-legal')
-      ? 'Legal'
-      : link.closest('.footer-social')
-      ? 'Social'
-      : 'Other';
+        ? 'Legal'
+        : link.closest('.footer-social')
+          ? 'Social'
+          : 'Other';
 
     clickHelper(`Footer ${footerCat}`, footerText, 'link', link.href);
   });
