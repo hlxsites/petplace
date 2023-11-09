@@ -28,6 +28,28 @@ const handleArticleShare = () => {
   });
 };
 
+const handleHeaderClicks = () => {
+  document.querySelector('header').addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const headerText = link.closest('.nav-sidebar-social')
+      ? getSocialName(link.href)
+      : link.innerHTML;
+    const headerCat = link.closest('.nav-sections')
+      ? 'Nav'
+      : link.closest('.nav-sidebar-links')
+      ? 'Menu'
+      : link.closest('.nav-sidebar-misc')
+      ? 'Sidebar'
+      : link.closest('.nav-sidebar-social')
+      ? 'Social'
+      : 'Other';
+
+    clickHelper(`Header ${headerCat}`, headerText, 'link', link.href);
+  });
+};
+
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
   handleArticleShare();
