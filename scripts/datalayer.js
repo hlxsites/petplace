@@ -50,6 +50,26 @@ const handleHeaderClicks = () => {
   });
 };
 
+const handleFooterClicks = () => {
+  document.querySelector('footer').addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const footerText = link.closest('.footer-social')
+      ? getSocialName(link.href)
+      : link.innerHTML;
+    const footerCat = link.closest('.footer-nav-links')
+      ? 'Nav'
+      : link.closest('.footer-legal')
+      ? 'Legal'
+      : link.closest('.footer-social')
+      ? 'Social'
+      : 'Other';
+
+    clickHelper(`Footer ${footerCat}`, footerText, 'link', link.href);
+  });
+};
+
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
   handleArticleShare();
