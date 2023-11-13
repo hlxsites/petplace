@@ -18,7 +18,7 @@ export const clickHelper = (...args) => {
 
 export const getSocialName = (href) => {
   const strSplit = href.split('.com')[0];
-  const strValue = strSplit.split('.')[1] || 'Email';
+  const strValue = strSplit.split('.')[1] || 'email';
   const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
   return strCaps;
 };

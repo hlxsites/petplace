@@ -15,19 +15,23 @@ const handleGlobalVariables = () => {
   });
 };
 
-// ARTICLE SHARE
+// ARTICLES - sharing
 const handleArticleShare = () => {
-  const aTags = document.querySelectorAll('.social-share a');
-  aTags.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      pushToDataLayer({
-        event: 'article_share',
-        method: getSocialName(tag.href),
-      });
+  const shareIcon = document.querySelector('.social-share');
+  if (!shareIcon) return;
+
+  shareIcon.addEventListener('click', (ev) => {
+    const icon = ev.target.closest('a');
+    if (!icon) return;
+
+    pushToDataLayer({
+      event: 'article_share',
+      method: getSocialName(icon.href),
     });
   });
 };
 
+// HEADER - nav, menu, sidebar, social
 const handleHeaderClicks = () => {
   document.querySelector('header').addEventListener('click', (ev) => {
     const link = ev.target.closest('a');
@@ -50,6 +54,7 @@ const handleHeaderClicks = () => {
   });
 };
 
+// FOOTER - nav, social, legal
 const handleFooterClicks = () => {
   document.querySelector('footer').addEventListener('click', (ev) => {
     const link = ev.target.closest('a');
@@ -70,6 +75,20 @@ const handleFooterClicks = () => {
   });
 };
 
+// CTA - carousel button
+const handleCtaClicks = () => {
+  if (window.location.pathname === '/') {
+    document
+      .querySelector('.slides-container')
+      .addEventListener('click', (ev) => {
+        const btn = ev.target.closest('a');
+        if (!btn) return;
+
+        clickHelper('CTA Button', btn.title, 'button', btn.href);
+      });
+  }
+};
+
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
   handleArticleShare();
@@ -77,4 +96,5 @@ export const handleDataLayerApproach = () => {
   // ELEMENT CLICKS
   handleHeaderClicks();
   handleFooterClicks();
+  handleCtaClicks();
 };
