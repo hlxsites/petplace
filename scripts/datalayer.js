@@ -1,10 +1,8 @@
+/* eslint-disable no-nested-ternary */
 import {
   clickHelper,
   getSocialName,
   pushToDataLayer,
-  footerNavHelper,
-  footerLegalHelper,
-  footerSocialHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -30,37 +28,53 @@ const handleArticleShare = () => {
   });
 };
 
-// ELEMENT CLICK
-const handleElementClicks = () => {
-  // header links
-  const headerTracking = document.querySelectorAll('.nav-sections a');
-  headerTracking.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      clickHelper('Header', tag.innerHTML, 'link', tag.href);
-    });
-  });
+const handleHeaderClicks = () => {
+  document.querySelector('header').addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
 
-  // footer links
-  const observer = new MutationObserver((entries) => {
-    entries.forEach((link) => {
-      const footClass = link.target.className.split('footer-');
-      // TODO - unable to detect 'footer-legal' div
-      if (footClass[1] === 'legal') footerLegalHelper();
-      if (footClass[1] === 'social') footerSocialHelper();
-      if (footClass[1] === 'nav-links') footerNavHelper();
-    });
+    const headerText = link.closest('.nav-sidebar-social')
+      ? getSocialName(link.href)
+      : link.innerHTML;
+    const headerCat = link.closest('.nav-sections')
+      ? 'Nav'
+      : link.closest('.nav-sidebar-links')
+        ? 'Menu'
+        : link.closest('.nav-sidebar-misc')
+          ? 'Sidebar'
+          : link.closest('.nav-sidebar-social')
+            ? 'Social'
+            : 'Other';
+
+    clickHelper(`Header ${headerCat}`, headerText, 'link', link.href);
   });
-  if (document.querySelector('.footer-wrapper')) {
-    observer.observe(document.querySelector('.footer-wrapper'), {
-      subtree: true,
-      attributes: true,
-      childList: true,
-    });
-  }
+};
+
+const handleFooterClicks = () => {
+  document.querySelector('footer').addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const footerText = link.closest('.footer-social')
+      ? getSocialName(link.href)
+      : link.innerHTML;
+    const footerCat = link.closest('.footer-nav-links')
+      ? 'Nav'
+      : link.closest('.footer-legal')
+        ? 'Legal'
+        : link.closest('.footer-social')
+          ? 'Social'
+          : 'Other';
+
+    clickHelper(`Footer ${footerCat}`, footerText, 'link', link.href);
+  });
 };
 
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
   handleArticleShare();
-  handleElementClicks();
+
+  // ELEMENT CLICKS
+  handleHeaderClicks();
+  handleFooterClicks();
 };
