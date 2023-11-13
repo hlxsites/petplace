@@ -3,6 +3,7 @@ import {
   clickHelper,
   getSocialName,
   pushToDataLayer,
+  articleLinksHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -29,6 +30,11 @@ const handleArticleShare = () => {
       method: getSocialName(icon.href),
     });
   });
+};
+
+// ARTICLES - links
+const handleArticleClicks = () => {
+  articleLinksHelper();
 };
 
 // HEADER - nav, menu, sidebar, social
@@ -91,7 +97,12 @@ const handleCtaClicks = () => {
 
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
-  handleArticleShare();
+
+  // additional check to only run on article pages
+  if (window.location.pathname.includes('article')) {
+    handleArticleShare();
+    handleArticleClicks();
+  }
 
   // ELEMENT CLICKS
   handleHeaderClicks();
