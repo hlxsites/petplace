@@ -1,10 +1,9 @@
+/* eslint-disable no-nested-ternary */
 import {
   clickHelper,
   getSocialName,
   pushToDataLayer,
-  footerNavHelper,
-  footerLegalHelper,
-  footerSocialHelper,
+  articleLinksHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -17,50 +16,96 @@ const handleGlobalVariables = () => {
   });
 };
 
-// ARTICLE SHARE
+// ARTICLES - sharing
 const handleArticleShare = () => {
-  const aTags = document.querySelectorAll('.social-share a');
-  aTags.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      pushToDataLayer({
-        event: 'article_share',
-        method: getSocialName(tag.href),
-      });
+  const shareIcon = document.querySelector('.social-share');
+  if (!shareIcon) return;
+
+  shareIcon.addEventListener('click', (ev) => {
+    const icon = ev.target.closest('a');
+    if (!icon) return;
+
+    pushToDataLayer({
+      event: 'article_share',
+      method: getSocialName(icon.href),
     });
   });
 };
 
-// ELEMENT CLICK
-const handleElementClicks = () => {
-  // header links
-  const headerTracking = document.querySelectorAll('.nav-sections a');
-  headerTracking.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      clickHelper('Header', tag.innerHTML, 'link', tag.href);
-    });
-  });
+// ARTICLES - links
+const handleArticleClicks = () => {
+  articleLinksHelper();
+};
 
-  // footer links
-  const observer = new MutationObserver((entries) => {
-    entries.forEach((link) => {
-      const footClass = link.target.className.split('footer-');
-      // TODO - unable to detect 'footer-legal' div
-      if (footClass[1] === 'legal') footerLegalHelper();
-      if (footClass[1] === 'social') footerSocialHelper();
-      if (footClass[1] === 'nav-links') footerNavHelper();
-    });
+// HEADER - nav, menu, sidebar, social
+const handleHeaderClicks = () => {
+  document.querySelector('header').addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const headerText = link.closest('.nav-sidebar-social')
+      ? getSocialName(link.href)
+      : link.innerHTML;
+    const headerCat = link.closest('.nav-sections')
+      ? 'Nav'
+      : link.closest('.nav-sidebar-links')
+        ? 'Menu'
+        : link.closest('.nav-sidebar-misc')
+          ? 'Sidebar'
+          : link.closest('.nav-sidebar-social')
+            ? 'Social'
+            : 'Other';
+
+    clickHelper(`Header ${headerCat}`, headerText, 'link', link.href);
   });
-  if (document.querySelector('.footer-wrapper')) {
-    observer.observe(document.querySelector('.footer-wrapper'), {
-      subtree: true,
-      attributes: true,
-      childList: true,
-    });
+};
+
+// FOOTER - nav, social, legal
+const handleFooterClicks = () => {
+  document.querySelector('footer').addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const footerText = link.closest('.footer-social')
+      ? getSocialName(link.href)
+      : link.innerHTML;
+    const footerCat = link.closest('.footer-nav-links')
+      ? 'Nav'
+      : link.closest('.footer-legal')
+        ? 'Legal'
+        : link.closest('.footer-social')
+          ? 'Social'
+          : 'Other';
+
+    clickHelper(`Footer ${footerCat}`, footerText, 'link', link.href);
+  });
+};
+
+// CTA - carousel button
+const handleCtaClicks = () => {
+  if (window.location.pathname === '/') {
+    document
+      .querySelector('.slides-container')
+      .addEventListener('click', (ev) => {
+        const btn = ev.target.closest('a');
+        if (!btn) return;
+
+        clickHelper('CTA Button', btn.title, 'button', btn.href);
+      });
   }
 };
 
 export const handleDataLayerApproach = () => {
   handleGlobalVariables();
-  handleArticleShare();
-  handleElementClicks();
+
+  // additional check to only run on article pages
+  if (window.location.pathname.includes('article')) {
+    handleArticleShare();
+    handleArticleClicks();
+  }
+
+  // ELEMENT CLICKS
+  handleHeaderClicks();
+  handleFooterClicks();
+  handleCtaClicks();
 };

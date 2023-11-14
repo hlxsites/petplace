@@ -1,53 +1,46 @@
 window.dataLayer ||= [];
 
 export const pushToDataLayer = (layer) => {
-  console.log('layer', layer); // TODO: remove later
+  console.log('layer:', layer); // TODO: remove later
   window.dataLayer.push(layer);
 };
 
-export const clickHelper = (category, text, type, url) => {
-  console.log('here', category, text, type, url); // TODO: remove
+export const clickHelper = (...args) => {
+  console.log('el_clicks:', args); // TODO: remove later
   pushToDataLayer({
     event: 'element_click',
-    element_category: category,
-    element_text: text,
-    element_type: type,
-    element_url: url,
+    element_category: args[0],
+    element_text: args[1],
+    element_type: args[2],
+    element_url: args[3],
   });
 };
 
 export const getSocialName = (href) => {
   const strSplit = href.split('.com')[0];
-  const strValue = strSplit.split('.')[1] || 'Email';
+  const strValue = strSplit.split('.')[1] || 'email';
   const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
   return strCaps;
 };
 
-// FOOTER HELPERS
-export const footerSocialHelper = () => {
-  const socialTracking = document.querySelectorAll('.footer-social a');
-  socialTracking.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      clickHelper('Footer Social', getSocialName(tag.href), 'link', tag.href);
+// LINK HELPERS
+export const articleLinksHelper = () => {
+  // this is done because article template has multiple classes
+  const linkTracking = document.querySelectorAll('.default-content-wrapper');
+  if (!linkTracking) return;
+
+  linkTracking.forEach((link) => {
+    link.addEventListener('click', (ev) => {
+      ev.preventDefault(); // TODO: remove now
+      const aTag = ev.target.closest('a');
+      if (!aTag) return;
+
+      const linkCat = aTag.href.includes('petplace.com')
+        ? 'Embedded'
+        : 'Outbound';
+
+      clickHelper(`${linkCat} Link`, aTag.innerHTML, 'link', aTag.href);
     });
   });
 };
 
-export const footerNavHelper = () => {
-  const footerTracking = document.querySelectorAll('.footer-nav-links a');
-  footerTracking.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      clickHelper('Footer Nav', tag.innerHTML, 'link', tag.href);
-    });
-  });
-};
-
-// TODO - revisit later (phase 2)
-export const footerLegalHelper = () => {
-  const legalTracking = document.querySelectorAll('.footer-legal a');
-  legalTracking.forEach((tag) => {
-    tag.addEventListener('click', () => {
-      clickHelper('Footer Legal', tag.innerHTML, 'link', tag.href);
-    });
-  });
-};

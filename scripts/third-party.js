@@ -19,14 +19,24 @@ const GTM_SCRIPT = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`;
 
-function loadGTag(id) {
-  loadScript(`https://www.googletagmanager.com/gtag/js?id=${TAG_ID}`, () => {
-    function gtag(...args) {
-      window.dataLayer.push(...args);
-    }
-    gtag('js', new Date());
-    gtag('config', id);
-  }, { async: '' });
+function gtag(...args) {
+  window.dataLayer.push(...args);
+}
+
+async function loadGTag(id) {
+  await loadScript(`https://www.googletagmanager.com/gtag/js?id=${TAG_ID}`, { async: '' });
+  gtag('js', new Date());
+  gtag('config', id);
+
+  const metaTemplate = document.querySelector('meta[name="template"]');
+  if (
+    metaTemplate.content === 'Home-page'
+    && window.location.pathname === '/'
+  ) {
+    gtag('event', 'conversion', {
+      send_to: `${TAG_ID}/iQbBCNzr2OoYEIGt5Jwq`,
+    });
+  }
 }
 
 function loadScriptInWorker(innerHTML, parent) {
