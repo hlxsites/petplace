@@ -1,7 +1,8 @@
+/* eslint-disable no-nested-ternary */
 window.dataLayer ||= [];
 
 export const pushToDataLayer = (layer) => {
-  console.log('layer:', layer); // TODO: remove later
+  // console.log('layer:', layer); // TODO: remove later
   window.dataLayer.push(layer);
 };
 
@@ -22,25 +23,3 @@ export const getSocialName = (href) => {
   const strCaps = strValue.charAt(0).toUpperCase() + strValue.slice(1);
   return strCaps;
 };
-
-// LINK HELPERS
-export const articleLinksHelper = () => {
-  // this is done because article template has multiple classes
-  const linkTracking = document.querySelectorAll('.default-content-wrapper');
-  if (!linkTracking) return;
-
-  linkTracking.forEach((link) => {
-    link.addEventListener('click', (ev) => {
-      ev.preventDefault(); // TODO: remove now
-      const aTag = ev.target.closest('a');
-      if (!aTag) return;
-
-      const linkCat = aTag.href.includes('petplace.com')
-        ? 'Embedded'
-        : 'Outbound';
-
-      clickHelper(`${linkCat} Link`, aTag.innerHTML, 'link', aTag.href);
-    });
-  });
-};
-
