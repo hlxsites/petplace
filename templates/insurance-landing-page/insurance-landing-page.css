@@ -1,0 +1,129 @@
+.insurance-landing-page main .section.insurance .columns > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
+  gap: 0;
+}
+.insurance-landing-page main .section.insurance .columns > div > div {
+  display: grid;
+  padding: 0 30px 0;
+  height: 100%;
+  border-bottom: 2px dotted #736AA4;
+  margin-top: 30px;
+  grid-template-rows: 50px auto auto 40px auto;
+}
+.insurance-landing-page main .section.insurance .columns > div > div:first-of-type{
+  border-right: 2px dotted #736AA4;
+}
+.insurance-landing-page main .section.insurance .columns picture {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.insurance-landing-page main .section.insurance .columns p{
+  margin: 0;
+
+}
+  .insurance-landing-page main .section.insurance .columns h3 {
+  align-self: flex-start;
+  color: #736AA4;
+  text-align: center;
+  font-family: Libre Franklin;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 150% */
+}
+.insurance-landing-page main .section.insurance .columns ul {
+  /* justify-self: stretch; */
+}
+.insurance-landing-page main .section.insurance .columns ul li {
+  text-align: left;
+  color: #424242;
+  font-family: Libre Franklin;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 200% */
+  letter-spacing: -0.28px;
+}
+.insurance-landing-page main .section.insurance .columns > div > div > p:last-of-type{
+  /* border-bottom: 2px dotted #736AA4; */
+  /* padding-bottom: 30px; */
+  color: #424242;
+  text-align: center;
+  font-family: Libre Franklin;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 200% */
+
+
+}
+
+.insurance-landing-page main .hero.landing-page > div {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1344px;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 0px minmax(350px, 1fr);
+  height: 100%;
+}
+.insurance-landing-page main .hero.landing-page > div > div strong{
+
+color: #FFF;
+text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.50);
+font-family: Libre Franklin;
+font-size: 55px;
+font-style: normal;
+font-weight: 700;
+line-height: 42px; /* 76.364% */
+}
+.insurance-landing-page main .section.rounded {
+  border-radius: 10px;
+}
+.insurance-landing-page main .section.rounded-lg {
+  border-radius: 20px;
+}
+.insurance-landing-page main .section.highlight.rounded,
+.insurance-landing-page main .section.highlight.rounded-lg {
+  padding: 61px 85px;
+}
+.insurance-landing-page main .section.highlight.rounded h4,
+.insurance-landing-page main .section.highlight.rounded-lg h4{
+  margin-bottom: 40px;
+  padding: 0 100px 40px;
+  border-bottom: 2px dotted #fff;
+  color: #FFF;
+  text-align: center;
+  font-family: Libre Franklin;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px; /* 140% */
+}
+.insurance-landing-page main .section.highlight.rounded li,
+.insurance-landing-page main .section.highlight.rounded-lg li{
+  text-align: left;
+  margin-bottom: 30px;
+  color: #FFF;
+  font-family: Libre Franklin;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+}
+.insurance-landing-page main .section.highlight.rounded li::marker,
+.insurance-landing-page main .section.highlight.rounded-lg li::marker {
+  color: #FFF;
+text-align: center;
+font-family: Libre Franklin;
+font-size: 30px;
+font-style: normal;
+font-weight: 700;
+line-height: 42px; /* 140% */
+background: #FF7D5A;
+border-radius: 50%;
+}
+

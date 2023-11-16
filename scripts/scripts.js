@@ -49,6 +49,7 @@ window.hlx.templates.add([
   '/templates/travel-guide-page',
   '/templates/traveling-page',
   '/templates/write-for-us',
+  '/templates/insurance-landing-page',
 ]);
 
 window.hlx.plugins.add('rum-conversion', {
