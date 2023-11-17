@@ -11,6 +11,10 @@
   margin-top: 1rem;
 }
 
+.article-signup-content p {
+  margin: 20px auto;
+}
+
 @media (min-width: 1000px) {
   .article-signup main .article-signup-section {
     grid-template:
