@@ -54,6 +54,11 @@ export const articlePopularHelper = () => {
 
     const imgAlt = link.querySelector('img');
     const textBody = link.querySelector('h3');
+
+    const linkType = imgAlt ? 'image' : textBody ? 'text' : 'title';
+    const linkText = textBody ? textBody.innerHTML : link.innerHTML;
+    const logText = imgAlt ? imgAlt.alt : linkText;
+
     clickHelper('Popular Article', logText, linkType, link.href);
   });
 };
