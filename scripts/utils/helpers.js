@@ -43,3 +43,17 @@ export const articleLinksHelper = () => {
     });
   });
 };
+
+export const articlePopularHelper = () => {
+  const popularTracking = document.querySelector('.popular-articles-wrapper');
+  if (!popularTracking) return;
+
+  popularTracking.addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const imgAlt = link.querySelector('img');
+    const textBody = link.querySelector('h3');
+    clickHelper('Popular Article', logText, linkType, link.href);
+  });
+};
