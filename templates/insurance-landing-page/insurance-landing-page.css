@@ -2,20 +2,41 @@
 /* Hero Styles */
 .insurance-landing-page main .hero.landing-page {
   @media (max-width: 1024px){
-
+    min-height: 232px;
     padding: 0;
   }
+}
+.insurance-landing-page main .hero.landing-page picture {
+  margin: 0 -1.5rem;
+  max-width: 100%;
+  @media (max-width: 900px){
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom:0;
+    object-fit: cover;
+    margin:0;
+  } 
 }
 .insurance-landing-page main .hero.landing-page > div {
   margin-left: auto;
   margin-right: auto;
-  @media (min-width: 1024px){
-
-    max-width: 1344px;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 0px minmax(350px, 1fr);
-    height: 100%;
+  
+  max-width: 1344px;
+  width: 100%;
+  display: grid;
+  height: 100%;
+  grid-template-rows: 0px minmax(350px, 1fr);
+/* 
+  @media (max-width: 800px){
+    min-height: 232px;
+    grid-template-rows: 2fr 1fr;
+  } */
+  @media (max-width: 1024px){
+    min-height: 232px;
+    grid-template-rows: 2fr 1fr;
   }
 }
 /* Hero Title */
@@ -27,7 +48,16 @@
   font-style: normal;
   font-weight: 700;
   line-height: 42px; /* 76.364% */
+  @media (max-width: 1024px){
+    font-size: 44px;
+    text-align: left;
+    margin: 0 24px 28px;
+  }
+  @media (max-width:800px){
+    display: none;
+  }
 }
+
 
 .insurance-landing-page main .section h2{
   color: #3B092C;
@@ -81,8 +111,8 @@
     padding: 56px 0 0;
   }
 }
-.insurance-landing-page main .section.subhead .section-container p{
-
+.insurance-landing-page main .section.subhead .section-container h2{
+  margin: 0 0 16px;
 }
 /* Reasons Why Section Block */
 .insurance-landing-page main .section.reasons {
