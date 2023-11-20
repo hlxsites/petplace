@@ -33,9 +33,7 @@ export async function loadLazy() {
   if (!isMobile() && document.querySelector('.block.ad')) {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', { async: '' });
   }
-}
 
-export function loadDelayed() {
   /* eslint-disable */
   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -43,5 +41,8 @@ export function loadDelayed() {
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer',GTM_ID);
   /* eslint-enable */
+}
+
+export function loadDelayed() {
   loadGTag(TAG_ID);
 }
