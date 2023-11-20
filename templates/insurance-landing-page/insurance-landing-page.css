@@ -1,15 +1,25 @@
+
 /* Hero Styles */
+.insurance-landing-page main .hero.landing-page {
+  @media (max-width: 1024px){
+
+    padding: 0;
+  }
+}
 .insurance-landing-page main .hero.landing-page > div {
   margin-left: auto;
   margin-right: auto;
-  max-width: 1344px;
-  width: 100%;
-  display: grid;
-  grid-template-rows: 0px minmax(350px, 1fr);
-  height: 100%;
+  @media (min-width: 1024px){
+
+    max-width: 1344px;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 0px minmax(350px, 1fr);
+    height: 100%;
+  }
 }
 /* Hero Title */
-.insurance-landing-page main .hero.landing-page > div > div strong{
+.insurance-landing-page main .hero.landing-page > div > div h1{
   color: #FFF;
   text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.50);
   font-family: Libre Franklin;
@@ -19,11 +29,67 @@
   line-height: 42px; /* 76.364% */
 }
 
+.insurance-landing-page main .section h2{
+  color: #3B092C;
+  text-align: center;
+  font-family: Libre Franklin;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 36px; /* 140% */
+    
+  @media (min-width: 800px){
+    font-size: 32px;
+    line-height: 36px; /* 140% */
+  }
+  @media (min-width: 1024px){
+    font-size: 30px;
+    line-height: 42px; /* 140% */
+  }
+}
+.insurance-landing-page main .section p {
+  color: #424242;
+  text-align: center;
+  font-family: Libre Franklin;
+  font-style: normal;
+  font-weight: 400;
+  
+  font-size: 11px;
+  line-height: 22px; /* 200% */
+  
+  @media (min-width: 800px){
+    font-size: 16px;
+    line-height: 24px; /* 200% */
+  }
+  
+  @media (min-width: 1024px){
+    font-size: 16px;
+    line-height: 32px; /* 200% */
+  }
+}
+.insurance-landing-page main .section.subhead {
+  margin: 0;
+  padding: 0;
+}
+.insurance-landing-page main .section.subhead .section-container {
+  padding: 24px 24px 0;
+  @media (min-width: 800px){
+    padding: 32px 0 0;
+
+  }
+  @media (min-width: 1024px){
+    padding: 56px 0 0;
+  }
+}
+.insurance-landing-page main .section.subhead .section-container p{
+
+}
 /* Reasons Why Section Block */
 .insurance-landing-page main .section.reasons {
   border-radius: 20px;
   padding: 40px;
   background-color: #5D3450;
+  
 }
 /* Reasons Section Title */
 .insurance-landing-page main .section.reasons h4 {
@@ -31,32 +97,64 @@
   color: #FFF;
   text-align: center;
   font-family: Libre Franklin;
-  font-size: 30px;
   font-style: normal;
   font-weight: 700;
-  line-height: 42px; /* 140% */
-  padding-bottom: 40px;
   margin-bottom: 0;
+  padding-bottom: 32px;
+  
+  font-size: 14px;
+  line-height: 26.5px; /* 189.286% */
+  
+  @media (min-width: 800px){
+    padding-bottom: 40px;
+    font-size: 22px;
+    line-height: 36px; /* 163.636% */
+  }
+  @media (min-width: 1024px){
+    padding-bottom: 40px;
+    font-size: 30px;
+    line-height: 42px; /* 140% */
+  }
+
 }
 
 .insurance-landing-page main .section.reasons ol {
-  padding: 40px 40px 40px 100px;
   counter-reset: block-counter;
   list-style: none;
+  padding: 40px 0 0 50px;
+  
+  @media (min-width: 800px){
+    padding: 40px 0 0 50px;
+  }
+  @media (min-width: 1024px){
+    padding: 40px 0 0 100px;
+  }
 }
 .insurance-landing-page main .section.reasons li {
   position: relative;
   text-align: left;
-  margin-bottom: 30px;
-  padding-left: 40px;
+  margin-bottom: 24px;
   color: #FFF;
   font-family: Libre Franklin;
-  font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: 30px;
   counter-increment: block-counter;
   
+  font-size: 11px;
+  line-height: 22px;
+  padding-left: 0px;
+  
+  @media (min-width: 800px){
+    font-size: 16px;
+    line-height: 24px;
+    
+  }
+  @media (min-width: 1024px){
+    font-size: 20px;
+    line-height: 30px;
+    padding-left: 40px;
+    margin-bottom: 30px;;
+  }
 }
 /* Block Counter List */
 .insurance-landing-page main .section.reasons li::before {
@@ -69,15 +167,31 @@
   align-items: center;
   justify-content: center;
   
-  width: 50px;
-  height: 50px;
-  left: -60px;
+  width: 32px;
+  height: 32px;
+  left: -50px;
 
   font-family: Libre Franklin;
-  font-size: 30px;
   font-style: normal;
   font-weight: 700;
-  line-height: 42px; /* 140% */
+
+  font-size: 18px;
+  line-height: 26px; /* 144.444% */
+
+  @media (min-width: 800px){
+    font-size: 30px;
+    line-height: 42px; /* 140% */
+    padding: 40px 40px 0 60px;
+  }
+  @media (min-width: 1024px){
+    font-size: 30px;
+    line-height: 42px; /* 140% */
+    padding: 40px 40px 0 100px;
+    width: 50px;
+    height: 50px;
+    left: -60px;
+  }
+
 }
 .insurance-landing-page main .section.reasons li strong {
   color: #fff;
@@ -87,20 +201,44 @@
 /* Insurance Container */
 .insurance-landing-page main .section.insurance  {
   background-color: #F2F6FC;
+  padding-top: 0;
 }
+.insurance-landing-page main .section.insurance .section {
+  padding: 24px 0;
+  @media (min-width: 800px){
+    padding: 32px 0;
+  }
+  @media (min-width: 1024px){
+    padding: 56px 24px;
+  }
+}
+/* Insurance Section Title */
 .insurance-landing-page main .section.insurance  h4 {
   color: #3B092C;
   text-align: center;
   font-family: Libre Franklin;
-  font-size: 30px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 700;
-  line-height: 42px; /* 140% */
+  line-height: 36px; /* 163.636% */
+  margin: 0;
+
+  @media (min-width: 800px){
+    font-size: 32px;
+    line-height: 36px; /* 140% */
+  }
+  @media (min-width: 1024px){
+    font-size: 30px;
+    line-height: 42px; /* 140% */
+  }
 }
 /* Card Grid */
 .insurance-landing-page main .section.insurance .columns > div {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
   align-items: stretch;
   /* gap: 0; */
   gap: 20px;
@@ -110,43 +248,84 @@
 /* Card Container */
 .insurance-landing-page main .section.insurance .columns > div > div {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows:  50px auto auto auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: 30px 50px auto auto auto auto;
+  gap: 16px;
+  padding: 32px;
+  
   background-color: #ffffff;
   border-radius: 30px;
-  padding: 40px;
-  gap: 20px 20px;
-}
-/* Card Logo */
-.insurance-landing-page main .section.insurance .columns p:first-of-type {
-  grid-area: 1 / 1;
+  @media (min-width: 800px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:  50px auto auto auto 1fr;
+    gap: 20px 20px;
+    padding: 40px;
+
+  }
 }
 
+/* Card Logo */
+.insurance-landing-page main .section.insurance .columns p:first-of-type {
+  grid-area: 1 ;
+  justify-self: center;
+  @media (min-width: 800px) {
+    grid-area: 1 / 1;
+    justify-self: flex-start;
+    align-self: center;
+  }
+}
+.insurance-landing-page main .section.insurance .columns p:first-of-type img{
+
+  @media (max-width: 800px) {
+    max-height: 30px;
+  }
+  @media (max-width: 1024px) {
+    max-height: 30px;
+  }
+}
 /* Card CTA */
 .insurance-landing-page main .section.insurance .columns p.button-container{
-  grid-area: 1 / 2;
+  grid-area: 2 ;
+  @media (min-width: 800px) {
+    grid-area: 1 / 2;
+    justify-content: flex-end;
+  }
   align-self: center;
-  justify-content: flex-end;
 }
 
 /* Card Title */
 .insurance-landing-page main .section.insurance .columns h3 {
-  grid-column: 1 / span 2;
-  grid-row: 2;
+  grid-area: 3 / auto;
   margin: 0;
-  text-align: left;
   color: #736AA4;
   font-family: Libre Franklin;
-  font-size: 20px;
+  
+  text-align: center;
+  font-size: 12px;
   font-style: normal;
   font-weight: 700;
-  line-height: 30px; /* 150% */
+  line-height: 22px; /* 183.333% */
+  
+  @media (min-width: 800px) {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    
+    text-align: left;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 150% */
+  }
+
 }
 
 /* Card List */
 .insurance-landing-page main .section.insurance .columns ul {
-  grid-column: 1 / span 2;
-  grid-row: 3;
+  grid-area: 4 / auto;
+  @media (min-width: 800px) {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+  }
   padding-left: 14px;
 }
 
@@ -155,25 +334,49 @@
   text-align: left;
   color: #424242;
   font-family: Libre Franklin;
-  font-size: 14px;
+
+    font-size: 11px;
   font-style: normal;
   font-weight: 400;
-  line-height: 28px; /* 200% */
-  letter-spacing: -0.28px;
-  /* padding-left: 14px; */
+  line-height: 22px; /* 200% */
+  letter-spacing: -0.22px;
+  @media (min-width: 800px) {
+    font-size: 14px;
+    line-height: 28px; /* 200% */
+    letter-spacing: -0.28px;
+  }
 }
 
 /*Card Disclaimer*/
-.insurance-landing-page main .section.insurance .columns > div > div > p{
-  grid-column: 1 / span 2;
+.insurance-landing-page main .section.insurance .columns > div > div > p:not(.button-container):not(:first-of-type){
+  grid-area: auto;
   grid-row: auto;
-  text-align: left;
+
   color: #424242;
   font-family: Libre Franklin;
-  font-size: 10px;
+  text-align: left;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px; /* 200% */
+  
+  font-size: 8px;
+  line-height: 12px; /* 150% */
+  
+  @media (min-width: 800px) {
+    grid-column: 1 / span 2;
+    grid-row: auto;
+   
+    font-size: 10px;
+    line-height: 20px; /* 200% */
+  }
+    
+
+}
+.insurance-landing-page main .section.insurance .columns > div > div > p:not(.button-container):last-of-type{
+  grid-area: auto;
+  grid-row: 5;
+  /* grid-column: auto / span 2; */
+  /* grid-row: 4; */
+  /* grid-row-start: 3; */
 }
 
 
