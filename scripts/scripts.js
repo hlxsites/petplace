@@ -806,7 +806,7 @@ async function loadLazy(doc) {
     sampleRUM('utm-campaign', { source: key, target: value });
   });
 
-  window.hlx.plugins.run('loadLazy');
+  await window.hlx.plugins.run('loadLazy');
 
   addNewsletterPopup();
 
@@ -962,12 +962,5 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed(document);
 }
-
-// Initialize the data layer and mark the Google Tag Manager start event
-window.dataLayer ||= [];
-window.dataLayer.push({
-  'gtm.start': Date.now(),
-  event: 'gtm.js',
-});
 
 loadPage();

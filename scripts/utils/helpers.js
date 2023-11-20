@@ -1,4 +1,4 @@
-window.dataLayer ||= [];
+// window.dataLayer ||= [];
 
 export const pushToDataLayer = (layer) => {
   console.log('layer:', layer); // TODO: remove later
