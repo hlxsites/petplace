@@ -11,8 +11,8 @@
   margin-top: 1rem;
 }
 
-.article-signup-content p {
-  margin: 20px auto;
+.article-signup main .article-signup-content p {
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 1000px) {
