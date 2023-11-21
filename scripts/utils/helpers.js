@@ -62,3 +62,24 @@ export const articlePopularHelper = () => {
     clickHelper('Popular Article', logText, linkType, link.href);
   });
 };
+
+export const articlePrevNextHelper = () => {
+  const articleNav = document.querySelector('.article-navigation-wrapper');
+  if (!articleNav) return;
+
+  articleNav.addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const imgAlt = link.querySelector('img');
+    const textSpan = link.querySelector('span');
+
+    // initialize variables
+    let pnCat = 'N/A';
+    let pnType = 'N/A';
+    let pnText = 'N/A';
+
+
+    clickHelper(`${pnCat} Article`, pnText, pnType, link.href);
+  });
+};
