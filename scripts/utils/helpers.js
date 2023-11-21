@@ -100,6 +100,18 @@ export const articlePrevNextHelper = () => {
         pnType = 'text';
         pnText = textSpan.innerHTML;
       }
+    } else {
+      // image + title
+      const node = link.parentNode;
+      pnCat = node.className.includes('previous')
+        ? 'Previous'
+        : node.className.includes('next')
+          ? 'Next'
+          : 'Other';
+
+      pnType = imgAlt ? 'image' : 'title';
+      pnText = imgAlt ? imgAlt.alt : link.innerHTML;
+    }
 
     clickHelper(`${pnCat} Article`, pnText, pnType, link.href);
   });
