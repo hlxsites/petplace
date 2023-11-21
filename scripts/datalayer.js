@@ -4,6 +4,7 @@ import {
   getSocialName,
   pushToDataLayer,
   articleLinksHelper,
+  articlePopularHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -35,6 +36,7 @@ const handleArticleShare = () => {
 // ARTICLES - links
 const handleArticleClicks = () => {
   articleLinksHelper();
+  articlePopularHelper();
 };
 
 // HEADER - nav, menu, sidebar, social

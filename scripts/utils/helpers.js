@@ -43,3 +43,22 @@ export const articleLinksHelper = () => {
     });
   });
 };
+
+export const articlePopularHelper = () => {
+  const popularTracking = document.querySelector('.popular-articles-wrapper');
+  if (!popularTracking) return;
+
+  popularTracking.addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const imgAlt = link.querySelector('img');
+    const textBody = link.querySelector('h3');
+
+    const linkType = imgAlt ? 'image' : textBody ? 'text' : 'title';
+    const linkText = textBody ? textBody.innerHTML : link.innerHTML;
+    const logText = imgAlt ? imgAlt.alt : linkText;
+
+    clickHelper('Popular Article', logText, linkType, link.href);
+  });
+};
