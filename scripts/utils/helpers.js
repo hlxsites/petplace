@@ -82,7 +82,6 @@ export const articlePrevNextHelper = () => {
     // text + icon
     if (textSpan) {
       const spanClass = textSpan.className;
-      // left side
       if (spanClass.includes('icon-less-than')) {
         pnCat = 'Prev';
         pnType = 'icon';
@@ -90,9 +89,7 @@ export const articlePrevNextHelper = () => {
         pnCat = 'Prev';
         pnType = 'text';
         pnText = textSpan.innerHTML;
-      }
-      // right side
-      else if (spanClass.includes('icon-greater-than')) {
+      } else if (spanClass.includes('icon-greater-than')) {
         pnCat = 'Next';
         pnType = 'icon';
       } else if (spanClass.includes('next')) {
