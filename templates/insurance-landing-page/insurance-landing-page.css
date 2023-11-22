@@ -39,6 +39,7 @@
     grid-template-rows: 2fr 1fr;
   }
 }
+
 /* Hero Title */
 .insurance-landing-page main .hero.landing-page > div > div h1{
   color: #FFF;
@@ -57,7 +58,6 @@
     display: none;
   }
 }
-
 
 .insurance-landing-page main .section h2{
   color: #3B092C;
@@ -99,7 +99,7 @@
 }
 .insurance-landing-page main .section.subhead {
   margin: 0;
-  padding: 0;
+  padding: 1.5rem;
 }
 .insurance-landing-page main .section.subhead .section-container {
   padding: 24px 24px 0;
@@ -114,13 +114,20 @@
 .insurance-landing-page main .section.subhead .section-container h2{
   margin: 0 0 16px;
 }
+
 /* Reasons Why Section Block */
-.insurance-landing-page main .section.reasons {
+.insurance-landing-page main .section.reasons .section-wrapper {
   border-radius: 20px;
-  padding: 40px;
-  background-color: #5D3450;
-  
+  /* padding: 40px; */
+  background-color: #5D3450; 
 }
+
+/* Reasons Why Section Block */
+.insurance-landing-page main .section.reasons .rounded {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
 /* Reasons Section Title */
 .insurance-landing-page main .section.reasons h4 {
   border-bottom: 2px dotted #fff;
@@ -130,7 +137,8 @@
   font-style: normal;
   font-weight: 700;
   margin-bottom: 0;
-  padding-bottom: 32px;
+  padding: 32px;
+  padding-top: 0px;
   
   font-size: 14px;
   line-height: 26.5px; /* 189.286% */
@@ -153,12 +161,12 @@
   list-style: none;
   padding: 40px 0 0 50px;
   
-  @media (min-width: 800px){
+  /* @media (min-width: 800px){
     padding: 40px 0 0 50px;
   }
   @media (min-width: 1024px){
     padding: 40px 0 0 100px;
-  }
+  } */
 }
 .insurance-landing-page main .section.reasons li {
   position: relative;
@@ -172,7 +180,7 @@
   
   font-size: 11px;
   line-height: 22px;
-  padding-left: 0px;
+  padding-left: 30px;
   
   @media (min-width: 800px){
     font-size: 16px;
@@ -182,10 +190,11 @@
   @media (min-width: 1024px){
     font-size: 20px;
     line-height: 30px;
-    padding-left: 40px;
+    /* padding-left: 40px; */
     margin-bottom: 30px;;
   }
 }
+
 /* Block Counter List */
 .insurance-landing-page main .section.reasons li::before {
   position: absolute;
@@ -226,7 +235,6 @@
 .insurance-landing-page main .section.reasons li strong {
   color: #fff;
 }
-
 
 /* Insurance Container */
 .insurance-landing-page main .section.insurance  {
@@ -409,5 +417,9 @@
   /* grid-row-start: 3; */
 }
 
-
-
+.insurance-landing-page main .section.subhead,
+.insurance-landing-page main .section.reasons,
+.insurance-landing-page main .section .columns-wrapper {
+  width: 80%;
+  margin: 1.5rem auto;
+}
