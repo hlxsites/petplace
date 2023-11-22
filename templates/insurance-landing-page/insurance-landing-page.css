@@ -8,6 +8,7 @@
 }
 .insurance-landing-page .hero.landing-page picture {
   margin: 0 -1.5rem;
+  margin: 0;
   max-width: 100%;
   @media (max-width: 900px){
     position: absolute;
@@ -102,13 +103,13 @@
   padding: 1.5rem;
 }
 .insurance-landing-page .section.subhead .section-container {
-  padding: 24px 24px 0;
+  padding: 24px 24px 24px;
   @media (min-width: 800px){
-    padding: 32px 0 0;
+    padding: 32px 0 32px;
 
   }
   @media (min-width: 1024px){
-    padding: 56px 0 0;
+    padding: 56px 0 24px;
   }
 }
 .insurance-landing-page .section.subhead .section-container h2{
