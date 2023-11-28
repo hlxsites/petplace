@@ -1,4 +1,5 @@
-// window.dataLayer ||= [];
+/* eslint-disable no-nested-ternary */
+window.dataLayer ||= [];
 
 export const pushToDataLayer = (layer) => {
   console.log('layer:', layer); // TODO: remove later
@@ -31,7 +32,6 @@ export const articleLinksHelper = () => {
 
   linkTracking.forEach((link) => {
     link.addEventListener('click', (ev) => {
-      ev.preventDefault(); // TODO: remove now
       const aTag = ev.target.closest('a');
       if (!aTag) return;
 
@@ -44,3 +44,21 @@ export const articleLinksHelper = () => {
   });
 };
 
+export const articlePopularHelper = () => {
+  const popularTracking = document.querySelector('.popular-articles-wrapper');
+  if (!popularTracking) return;
+
+  popularTracking.addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const imgAlt = link.querySelector('img');
+    const textBody = link.querySelector('h3');
+
+    const linkType = imgAlt ? 'image' : textBody ? 'text' : 'title';
+    const linkText = textBody ? textBody.innerHTML : link.innerHTML;
+    const logText = imgAlt ? imgAlt.alt : linkText;
+
+    clickHelper('Popular Article', logText, linkType, link.href);
+  });
+};
