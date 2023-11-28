@@ -35,6 +35,5 @@
     "stylelint-config-standard": "30.0.1"
   },
   "dependencies": {
-    "@builder.io/partytown": "^0.8.0"
   }
 }
