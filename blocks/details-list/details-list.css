@@ -5,6 +5,7 @@
   padding-top: 0;
   padding-bottom: 1.5rem;
 }
+
 .details-list-container .details-list{
   padding: 1.5rem 0;
 
@@ -38,6 +39,7 @@
     line-height: 42px; /* 140% */
   }
 }
+
 /*  Details List Card Grid */
 .details-list-container .columns > div {
   display: grid;
@@ -51,10 +53,6 @@
   }
 }
 
-.details-list-container .columns > div:last-of-type{
-  margin-bottom: 0;
-}
-
 /*  Details List Card Container */
 .details-list-container .columns > div > div {
   display: grid;
@@ -62,7 +60,7 @@
   grid-template-rows: 1.875rem 3.125rem auto auto auto auto;
   gap: 16px;
   padding: 2rem;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   background-color: var(--background-color);
   border-radius: 1.875rem;
 
@@ -73,6 +71,12 @@
     padding: 40px;
   }
 }
+
+.details-list-container .columns > div:last-of-type{
+  margin-bottom: 0;
+}
+
+
 
 /*  Details List Card Logo */
 .details-list-container .columns p:first-of-type {
@@ -90,6 +94,7 @@
   @media (max-width: 800px) {
     max-height: 1.875rem;
   }
+
   @media (max-width: 1024px) {
     max-height: 1.875rem;
   }
@@ -112,7 +117,6 @@
   margin: 0;
   color: var( --color-purple-gray);
   font-family: var(--body-font-family);
-  
   text-align: center;
   font-size: var(--heading-font-size-xxs);
   font-style: normal;
@@ -122,7 +126,6 @@
   @media (min-width: 800px) {
     grid-column: 1 / span 2;
     grid-row: 2;
-    
     text-align: left;
     font-size: var(  --heading-font-size-l);
     font-style: normal;
@@ -147,7 +150,6 @@
   text-align: left;
   color: #424242;
   font-family: var(--body-font-family);
-
   font-size: 0.6875rem;
   font-style: normal;
   font-weight: 400;
@@ -161,24 +163,21 @@
   }
 }
 
-/*  Details List Card Disclaimer*/
-.details-list-container .columns > div > div > p:not(.button-container):not(:first-of-type){
+/* Details List Card Disclaimer */
+.details-list-container .columns > div > div > p:not(:first-of-type, .button-container){
   grid-area: auto;
   grid-row: auto;
-
   color: #424242;
   font-family: var(--body-font-family);
   text-align: left;
   font-style: normal;
   font-weight: 400;
-  
   font-size: .5rem;
   line-height: 12px; /* 150% */
   
   @media (min-width: 800px) {
     grid-column: 1 / span 2;
     grid-row: auto;
-   
     font-size: 0.625rem;
     line-height: 20px; /* 200% */
   }
