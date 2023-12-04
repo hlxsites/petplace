@@ -1,7 +1,7 @@
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 export function loadLazy() {
-  document.querySelector('.insurance').addEventListener('click', (ev) => {
+  document.querySelector('.details-list-wrapper').addEventListener('click', (ev) => {
     const btn = ev.target.closest('a');
     if (!btn) return;
 

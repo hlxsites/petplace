@@ -1,0 +1,194 @@
+
+/* Details List Container */
+.details-list-container {
+  background-color: var(--background-color-light);
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+}
+.details-list-container .details-list{
+  padding: 1.5rem 0;
+
+  @media (min-width: 800px){
+    padding: 2rem 0 1.5rem;
+  }
+
+  @media (min-width: 1024px){
+    padding: 3.5rem 1.5rem 1.5rem;
+  }
+}
+
+/*  Details List Section Title */
+.details-list h4 {
+  color: var( --background-color-dark);
+  text-align: center;
+  font-family: var(--body-font-family);
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px; /* 163.636% */
+  margin: 0;
+
+  @media (min-width: 800px){
+    font-size: 2rem;
+    line-height: 36px; /* 140% */
+  }
+
+  @media (min-width: 1024px){
+    font-size: 1.875rem;
+    line-height: 42px; /* 140% */
+  }
+}
+/*  Details List Card Grid */
+.details-list-container .columns > div {
+  display: grid;
+  grid-template-columns: 1fr;  
+  align-items: stretch;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem; 
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.details-list-container .columns > div:last-of-type{
+  margin-bottom: 0;
+}
+
+/*  Details List Card Container */
+.details-list-container .columns > div > div {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1.875rem 3.125rem auto auto auto auto;
+  gap: 16px;
+  padding: 2rem;
+  margin-bottom: 0px;
+  background-color: var(--background-color);
+  border-radius: 1.875rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:  3.125rem auto auto auto 1fr;
+    gap: 1.25rem 1.25rem;
+    padding: 40px;
+  }
+}
+
+/*  Details List Card Logo */
+.details-list-container .columns p:first-of-type {
+  grid-area: 1 ;
+  justify-self: center;
+
+  @media (min-width: 800px) {
+    grid-area: 1 / 1;
+    justify-self: flex-start;
+    align-self: center;
+  }
+}
+
+.details-list-container .columns p:first-of-type img{
+  @media (max-width: 800px) {
+    max-height: 1.875rem;
+  }
+  @media (max-width: 1024px) {
+    max-height: 1.875rem;
+  }
+}
+
+/*  Details List Card CTA */
+.details-list-container .columns p.button-container{
+  grid-area: 2 ;
+  align-self: center;
+
+  @media (min-width: 800px) {
+    grid-area: 1 / 2;
+    justify-content: flex-end;
+  }
+}
+
+/*  Details List Card Title */
+.details-list-container .columns h3 {
+  grid-area: 3 / auto;
+  margin: 0;
+  color: var( --color-purple-gray);
+  font-family: var(--body-font-family);
+  
+  text-align: center;
+  font-size: var(--heading-font-size-xxs);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px; /* 183.333% */
+  
+  @media (min-width: 800px) {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    
+    text-align: left;
+    font-size: var(  --heading-font-size-l);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 150% */
+  }
+}
+
+/*  Details List Card List */
+.details-list-container .columns ul {
+  grid-area: 4 / auto;
+  padding-left: 0.875rem;
+
+  @media (min-width: 800px) {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+  }
+}
+
+/* Card List Item */
+.details-list-container .columns ul li {
+  text-align: left;
+  color: #424242;
+  font-family: var(--body-font-family);
+
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 200% */
+  letter-spacing: -0.22px;
+
+  @media (min-width: 800px) {
+    font-size: 0.875rem;
+    line-height: 28px; /* 200% */
+    letter-spacing: -0.28px;
+  }
+}
+
+/*  Details List Card Disclaimer*/
+.details-list-container .columns > div > div > p:not(.button-container):not(:first-of-type){
+  grid-area: auto;
+  grid-row: auto;
+
+  color: #424242;
+  font-family: var(--body-font-family);
+  text-align: left;
+  font-style: normal;
+  font-weight: 400;
+  
+  font-size: .5rem;
+  line-height: 12px; /* 150% */
+  
+  @media (min-width: 800px) {
+    grid-column: 1 / span 2;
+    grid-row: auto;
+   
+    font-size: 0.625rem;
+    line-height: 20px; /* 200% */
+  }
+}
+
+.details-list-container .columns > div > div > p:not(.button-container):last-of-type{
+  grid-area: auto;
+  grid-row: 5;
+
+  @media (min-width: 800px){
+    grid-column: 1 / span 2;
+  }
+}
