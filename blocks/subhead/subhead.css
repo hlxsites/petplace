@@ -1,0 +1,25 @@
+.subhead-container {
+  padding: 24px;
+  
+  @media (min-width: 800px){
+    padding: 32px 0;
+  }
+  
+  @media (min-width: 1024px){
+    padding: 8px 0 0;
+  }
+}
+
+.subhead{
+  padding: 0;
+  margin: 0 auto !important;
+
+  @media (min-width: 1024px){
+    margin: 1.5rem auto 0 !important;
+    padding: 1.5rem;
+  }
+}
+
+.subhead .section-container h2{
+  margin: 0 0 16px;
+}
