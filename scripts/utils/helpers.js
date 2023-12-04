@@ -62,3 +62,54 @@ export const articlePopularHelper = () => {
     clickHelper('Popular Article', logText, linkType, link.href);
   });
 };
+
+export const articlePrevNextHelper = () => {
+  const articleNav = document.querySelector('.article-navigation-wrapper');
+  if (!articleNav) return;
+
+  articleNav.addEventListener('click', (ev) => {
+    const link = ev.target.closest('a');
+    if (!link) return;
+
+    const imgAlt = link.querySelector('img');
+    const textSpan = link.querySelector('span');
+
+    // initialize variables
+    let pnCat = 'N/A';
+    let pnType = 'N/A';
+    let pnText = 'N/A';
+
+    // text + icon
+    if (textSpan) {
+      const spanClass = textSpan.className;
+      if (spanClass.includes('icon-less-than')) {
+        pnCat = 'Prev';
+        pnType = 'icon';
+      } else if (spanClass.includes('previous')) {
+        pnCat = 'Prev';
+        pnType = 'text';
+        pnText = textSpan.innerHTML;
+      } else if (spanClass.includes('icon-greater-than')) {
+        pnCat = 'Next';
+        pnType = 'icon';
+      } else if (spanClass.includes('next')) {
+        pnCat = 'Next';
+        pnType = 'text';
+        pnText = textSpan.innerHTML;
+      }
+    } else {
+      // image + title
+      const node = link.parentNode;
+      pnCat = node.className.includes('previous')
+        ? 'Previous'
+        : node.className.includes('next')
+          ? 'Next'
+          : 'Other';
+
+      pnType = imgAlt ? 'image' : 'title';
+      pnText = imgAlt ? imgAlt.alt : link.innerHTML;
+    }
+
+    clickHelper(`${pnCat} Article`, pnText, pnType, link.href);
+  });
+};
