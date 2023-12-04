@@ -45,11 +45,11 @@ export default async function decorate(block) {
       return {
         path,
         title: doc.querySelector('head > title').textContent,
-        description: doc.querySelector('head > meta[name="description"]').content,
-        image: doc.querySelector('head > meta[property="og:image"]').content,
-        imageAlt: doc.querySelector('head > meta[property="og:image:alt"]').content,
-        author: doc.querySelector('head > meta[property="og:image:alt"]').content,
-        date: new Date(doc.querySelector('head > meta[name="publication-date"]').content).getTime(),
+        description: doc.querySelector('head > meta[name="description"]')?.content,
+        image: doc.querySelector('head > meta[property="og:image"]')?.content,
+        imageAlt: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
+        author: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
+        date: new Date(doc.querySelector('head > meta[name="publication-date"]')?.content).getTime(),
       };
     }
 
