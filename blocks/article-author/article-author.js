@@ -10,7 +10,8 @@ export default async function decorate(block) {
     ));
   const path = author?.path;
   const avatar = author?.avatar;
-  const date = getMetadata('publication-date');
+  const date = new Date(getMetadata('publication-date'));
+  date.setHours(date.getHours() + (date.getTimezoneOffset() / 60));
   const titleWithLinkIfExist = path ? `<a href="${path}">${authorTitle}</a>` : authorTitle;
   const defaultAvatarIcon = document.createElement('span');
   defaultAvatarIcon.classList.add('icon', 'icon-user');
@@ -20,7 +21,7 @@ export default async function decorate(block) {
     <div itemprop="author" itemscope itemtype="https://schema.org/Person">
       <p itemprop="name">${titleWithLinkIfExist}</p>
     </div>
-    <time itemprop="datePublished" datetime="${date}">${date}</time>
+    <time itemprop="datePublished" datetime="${date.toISOString().substring(0, 10)}">${date}</time>
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
       <meta itemprop="name" content="PetPlace.com"/>
       <meta itemprop="logo" content="${window.location.origin}/icons/logo.svg"/>
