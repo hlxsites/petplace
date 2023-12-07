@@ -44,6 +44,7 @@ export default async function decorate(block) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       return {
         path,
+        category: doc.querySelector('head > meta[name="category"]')?.content,
         title: doc.querySelector('head > title').textContent,
         description: doc.querySelector('head > meta[name="description"]')?.content,
         image: doc.querySelector('head > meta[property="og:image"]')?.content,
@@ -60,8 +61,12 @@ export default async function decorate(block) {
 
   const categories = await Promise.all(data.map(async (dta) => {
     const category = await getCategory(dta.path.split('/').slice(-2).shift());
+    const metaCat = await getCategory(dta.category);
+
     if (category) {
       return category;
+    } else if (metaCat) {
+      return metaCat;
     }
     return null;
   }));
