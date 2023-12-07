@@ -48,7 +48,7 @@ export default async function decorate(block) {
         description: doc.querySelector('head > meta[name="description"]')?.content,
         image: doc.querySelector('head > meta[property="og:image"]')?.content,
         imageAlt: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
-        author: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
+        author: doc.querySelector('head > meta[name="author"]')?.content,
         date: new Date(doc.querySelector('head > meta[name="publication-date"]')?.content).getTime(),
       };
     }
