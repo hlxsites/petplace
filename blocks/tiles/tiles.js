@@ -158,7 +158,7 @@ export default async function decorate(block) {
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');
 
-    const date = new Date(dta.date * 1000);
+    const date = dta.path.includes('article') ? new Date(dta.date * 1000) : new Date(dta.date);
     date.setHours(date.getHours() + (date.getTimezoneOffset() / 60));
     const formattedDate = document.createElement('span');
     formattedDate.setAttribute('itemprop', 'datePublished');
