@@ -50,7 +50,7 @@ export default async function decorate(block) {
         image: doc.querySelector('head > meta[property="og:image"]')?.content,
         imageAlt: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
         author: doc.querySelector('head > meta[name="author"]')?.content,
-        date: new Date(doc.querySelector('head > meta[name="publication-date"]')?.content).getTime(),
+        date: Math.floor(new Date(doc.querySelector('head > meta[name="publication-date"]')?.content).getTime() / 1000), 
       };
     }
 
@@ -63,12 +63,7 @@ export default async function decorate(block) {
     const category = await getCategory(dta.path.split('/').slice(-2).shift());
     const metaCat = await getCategory(dta.category);
 
-    if (category) {
-      return category;
-    } else if (metaCat) {
-      return metaCat;
-    }
-    return null;
+    return category || metaCat || null;
   }));
 
   data.forEach((dta, index) => {
@@ -158,7 +153,7 @@ export default async function decorate(block) {
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');
 
-    const date = dta.path.includes('article') ? new Date(dta.date * 1000) : new Date(dta.date);
+    const date = new Date(dta.date * 1000);
     date.setHours(date.getHours() + (date.getTimezoneOffset() / 60));
     const formattedDate = document.createElement('span');
     formattedDate.setAttribute('itemprop', 'datePublished');
