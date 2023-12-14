@@ -6,10 +6,9 @@ const GTM_ID = 'GTM-WP2SGNL';
 const GTAG_ID = 'G-V3CZKM4K6N';
 const TAG_ID = 'AW-11334653569';
 
-window.dataLayer = window.dataLayer || [];
+window.dataLayer ||= [];
 
 function gtag(args) {
-  console.log('args', args);
   window.dataLayer.push(args);
 }
 
@@ -24,8 +23,8 @@ async function loadGTag() {
 
   const metaTemplate = document.querySelector('meta[name="template"]');
   if (
-    metaTemplate.content === 'Home-page' &&
-    window.location.pathname === '/'
+    metaTemplate.content === 'Home-page'
+    && window.location.pathname === '/'
   ) {
     gtag({
       event: 'conversion',

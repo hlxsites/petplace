@@ -2,12 +2,10 @@
 window.dataLayer ||= [];
 
 export const pushToDataLayer = (layer) => {
-  console.log('layer:', layer); // TODO: remove later
   window.dataLayer.push(layer);
 };
 
 export const clickHelper = (...args) => {
-  console.log('el_clicks:', args); // TODO: remove later
   pushToDataLayer({
     event: 'element_click',
     element_category: args[0],
