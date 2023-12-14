@@ -3,10 +3,14 @@ import { loadScript } from './lib-franklin.js';
 import { isMobile } from './scripts.js';
 
 const GTM_ID = 'GTM-WP2SGNL';
+const GTAG_ID = 'G-V3CZKM4K6N';
 const TAG_ID = 'AW-11334653569';
 
-function gtag(...args) {
-  window.dataLayer.push(...args);
+window.dataLayer = window.dataLayer || [];
+
+function gtag(args) {
+  console.log('args', args);
+  window.dataLayer.push(args);
 }
 
 async function loadGTag(id) {
@@ -25,8 +29,6 @@ async function loadGTag(id) {
   }
 }
 
-window.dataLayer = window.dataLayer || [];
-
 export async function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
@@ -43,5 +45,5 @@ export function loadDelayed() {
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer',GTM_ID);
   /* eslint-enable */
-  loadGTag(TAG_ID);
+  loadGTag();
 }
