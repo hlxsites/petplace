@@ -13,18 +13,26 @@ function gtag(args) {
   window.dataLayer.push(args);
 }
 
-async function loadGTag(id) {
-  await loadScript(`https://www.googletagmanager.com/gtag/js?id=${TAG_ID}`, { async: '' });
-  gtag('js', new Date());
-  gtag('config', id);
+async function loadGTag() {
+  await loadScript(`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`, {
+    async: '',
+  });
+  gtag({ js: new Date() });
+  gtag({ config: 'GT-V3CZKM4K6N' });
+  gtag({ config: GTAG_ID });
+  gtag({ config: TAG_ID });
 
   const metaTemplate = document.querySelector('meta[name="template"]');
   if (
-    metaTemplate.content === 'Home-page'
-    && window.location.pathname === '/'
+    metaTemplate.content === 'Home-page' &&
+    window.location.pathname === '/'
   ) {
-    gtag('event', 'conversion', {
+    gtag({
+      event: 'conversion',
       send_to: `${TAG_ID}/iQbBCNzr2OoYEIGt5Jwq`,
+      value: 1.0,
+      currency: 'USD',
+      transaction_id: '12345',
     });
   }
 }
