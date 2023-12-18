@@ -76,7 +76,7 @@
 
 .search-box-wrapper .search-input{
   font-size: 1.125rem;
-  background: hsl(0deg 0% 100% / 78%);
+  background: var(--background-color);
   border-radius: 70px;
   margin-bottom: 1rem;
   width: 100%;
@@ -89,19 +89,24 @@
 }
 
 .search-box-wrapper .search-button {
-  width: 100%;
+  /* width: 100%; */
   border-radius: 50px;
   height: 40px;
-  background: var(--highlight-color);
-  color: var(--background-color);
+  background: var(--background-color);
+  color: var(---highlight-color);
   text-transform: uppercase;
   border: 1px solid hsl(0deg 0% 100% / 78%);
   font-size: 1.5rem;
   font-weight: 800;
   font-family: var(--heading-font-family);
-
+  width: auto;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 1px solid var(--color-gray);
 }
-
+.search-box-wrapper .search-button svg {
+  color: var(--highlight-color);
+}
 @media (min-width: 600px) {
   .section.genai-search-container h2 {
       width: 80%;
@@ -115,7 +120,7 @@
       height: 50px;
       max-width: 700px;
       padding-left: 30px;
-      padding-right: 260px;
+      padding-right: 86px;
   }
 
   .genai-search.large .search-box-wrapper .search-input{
@@ -127,12 +132,15 @@
       top: -12px;
       right: 4px;
       height: 42px;
-      width: 250px;
+      width: auto;
       margin-left: -254px;
+  
   }
 
   .genai-search.large .search-box-wrapper .search-button{
-      height: 55px;
+      /* height: 55px; */
+      height: 40px;
+      margin-top: 25px;
   }
 }
 
@@ -152,6 +160,21 @@
   /* font-weight: 300; */
   /* letter-spacing: -.025em; */
   padding: 20px 30px 20px;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: auto;
+}
+.search-card .divider {
+  grid-row: 2;
+  grid-column: 1;
+}
+.search-card h4 {
+  grid-row: 3;
+  grid-column: 1;
+}
+.search-card .search-card-buttons {
+  grid-row: 4;
+  grid-column: 1;
 }
 
 .search-card-warning {
@@ -160,6 +183,7 @@
   align-items: flex-start;
   margin-top: 1em;
   margin-bottom: 1.5em;
+  grid-row: 1;
 }
 
  .genai-search-container .search-card-warning p {
@@ -231,6 +255,9 @@ article ul, article ol {
 .search-card-container {
  display: grid; 
   grid-template-columns: 60% 40%;
+  grid-template-rows: auto auto auto;
+  gap: 20px;
+  grid-column: span 2;
   
   
   /* Use flexbox to center the spinner */
@@ -246,9 +273,28 @@ article ul, article ol {
 }
 .search-card-container article {
   grid-column: 1 / 2;
+  grid-row: 2;
 }
 .search-card-container .search-card-links {
   grid-column: 2 / 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: row;
+  overflow-x: hidden;
+  width: auto;
+}
+.search-card-container .search-card-links .search-card-link{
+  width: 250px;
+  min-width: 250px;
+  display: block;
+}
+.search-card-container .search-card-links .search-card-link h4{
+  font-size: var(--heading-font-size-xxs);
+  color: var(  --color-gray);
+}
+.search-card-container .search-card-links .search-card-link p{
+  font-size: var(--body-font-size-xxs);
+  color: var(--color-gray);
 }
 .search-card-container h1, h2, h3, h4, h5, h6 {
   margin-top: 10px !important;
@@ -412,6 +458,8 @@ article ul, article ol {
   height: 15px;
   background-color: var(--color-purple-gray);
   animation: blink 1s infinite;
+  grid-row: 3;
+  grid-column: 1;
 }
 
 .cursor-animation.hide {

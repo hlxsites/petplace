@@ -1,12 +1,11 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages } from '../../scripts/scripts.js';
-import {  decorateSearch, createSearchSummary, GENAI_SEARCH_TITLE } from '../../blocks/header/genai-search.js';
+import {  decorateSearch, showRegenerateButton,  createSearchSummary, GENAI_SEARCH_TITLE } from '../../blocks/header/genai-search.js';
 
 const GENAI_SEARCH_WARNING = "Discover PetPlace is powered by experimental Generative AI, information quality may vary.";
 
 const isTrueSearch = window.location.pathname === '/discovery';
 let isRequestInProgress = false;
-
 
 const createStreamingSearchCard = (resultsBlock) => {
   const card = document.createElement('div');
@@ -15,7 +14,7 @@ const createStreamingSearchCard = (resultsBlock) => {
   card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div><article></article><div class="search-card-links"></div></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
-}
+};
 
 const updateStreamingSearchCard = (resultsBlock, response, socket) => {  
   console.log('updateStreamingSearchCard', resultsBlock, response, socket);
@@ -55,9 +54,31 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
   // Loop through result.questions and create a button for each
   if (response.type === 'end') {
+    console.log('response', response);
     // Remove the cursor animation element
     const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
     cursorAnimation.classList.add('hide');
+
+    if (response.links?.length > 0) {
+      response.links?.forEach((link) => {
+        const linkContainer = document.createElement('span');
+        linkContainer.className = 'search-card-link';
+        const linkTitle = document.createElement('h4');
+        const linkText = document.createElement('p');
+        linkTitle.textContent = link.name;
+        linkText.textContent  = link.description;
+
+        linkContainer.appendChild(linkTitle);
+        linkContainer.appendChild(linkText);
+        articleLinks.appendChild(linkContainer);
+      });
+
+      const linkGroup = document.createElement('div');
+      linkGroup.className = 'search-card-links';
+      articleLinks.appendChild(linkGroup);
+    }
+
+
 
     if (response.questions?.length > 0) {
       // Add the divider and further questions heading
@@ -68,7 +89,6 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       card.appendChild(divider);
       card.appendChild(h4);
     }
-
     const paragraph = document.createElement('p');
     paragraph.className = 'search-card-buttons';
     response.questions?.forEach((question) => {
@@ -79,21 +99,21 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     });
 
     card.appendChild(paragraph);
-    resultsBlock.appendChild(createLinksCard(response));
+    // resultsBlock.appendChild(createLinksCard(response));
 
     // Remove the stop button container
-    const stopButtonContainer = document.querySelector('.stop-button-container');
-    stopButtonContainer.classList.remove('show');
-    showRegenerateButton(resultsBlock);
+    // const stopButtonContainer = document.querySelector('.stop-button-container');
+    // stopButtonContainer.classList.remove('show');
+    // showRegenerateButton(resultsBlock);
 
     // Masonry layout
-    const masonry = new Masonry(".links-card-container ul", {
-      itemSelector: ".links-card-container ul li",
-      columnWidth: ".links-card-container ul li", // Set to a specific selector or number if needed
-      gutter: 50, // Adjust the gap between items
-      horizontalOrder: true, // Preserve the left-to-right order of items
-      fitWidth: true
-    });
+    // const masonry = new Masonry(".links-card-container ul", {
+    //   itemSelector: ".links-card-container ul li",
+    //   columnWidth: ".links-card-container ul li", // Set to a specific selector or number if needed
+    //   gutter: 50, // Adjust the gap between items
+    //   horizontalOrder: true, // Preserve the left-to-right order of items
+    //   fitWidth: true
+    // });
 
     // imagesLoaded('.links-card-container', () => {
     //   masonry.layout();
@@ -270,8 +290,11 @@ export async function loadLazy(main) {
 
   const usp = new URLSearchParams(window.location.search);
   let searchQuery = usp.get('q') || '';
-  console.log('searchBox',searchQuery );
-  displaySearchResults(searchQuery , searchResultsDivElement);
+  console.log('searchBox', searchQuery );
+  if(searchQuery){
+
+    displaySearchResults(searchQuery , searchResultsDivElement);
+  }
   
   // console.log('hero', hero);
   // renderArticles();

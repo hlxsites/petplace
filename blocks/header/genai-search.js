@@ -253,7 +253,6 @@ const decorateSearch = () => {
   };
   xhr.send();
   // searchButton.appendChild(imageElement);
-
   // Append the search input <input> element to the search box <div> element
   searchBoxDivElement.appendChild(searchInput);
   searchBoxDivElement.appendChild(clearButton);
@@ -619,4 +618,4 @@ async function displaySearchResults(query, resultsBlock) {
   // }, 100);
 }
 
-export { decorateSearch, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE };
+export { decorateSearch, showRegenerateButton, removeAllEventListeners, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE };

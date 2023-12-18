@@ -29,8 +29,19 @@ export default async function decorate(block) {
   const button = document.createElement('button');
   button.type = 'submit';
   button.className = 'search-button';
-  button.textContent = searchButtonText;
-
+  // button.textContent = searchButtonText;
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // On successful response, create and append the SVG element
+      const svgElement = document.createElement('svg');
+      svgElement.className = 'icon-search';
+      svgElement.innerHTML = xhr.responseText;
+      button.appendChild(svgElement);
+    }
+  };
+  xhr.send();
   form.append(button); 
   block.innerHTML = '';
   block.append(form);
