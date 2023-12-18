@@ -274,6 +274,7 @@ article ul, article ol {
 .search-card-container article {
   grid-column: 1 / 2;
   grid-row: 2;
+  width: 100%;
 }
 .search-card-container .search-card-links {
   grid-column: 2 / 2;

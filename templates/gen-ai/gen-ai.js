@@ -623,7 +623,7 @@ async function displaySearchResults(query, resultsBlock) {
   const cursorAnimation = document.createElement('span');
   cursorAnimation.className = 'cursor-animation';
   loadingMessage.appendChild(cursorAnimation);
-  // resultsBlock.appendChild(loadingMessage);
+  resultsBlock.appendChild(loadingMessage);
   const firstChild = resultsBlock.firstChild;
   resultsBlock.insertBefore(loadingMessage, firstChild);
 
@@ -654,15 +654,19 @@ async function displaySearchResults(query, resultsBlock) {
 
     console.log('clicked results', searchBox);
     const searchBlock = document.querySelector('.genai-search-wrapper');
-  if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
-    console.log('Further questions clicked!');
-    searchBlock.scrollIntoView({ behavior: 'smooth' });
-    searchBox.value = event.target.innerText;
-    resultsBlock.innerHTML = '';
-    // const regenerateButtonContainer = document.querySelector('.regenerate-button-container');
-    // regenerateButtonContainer.classList.remove('show');
-    displaySearchResults(event.target.innerText, resultsBlock);
-  }
+    if(event.target.matches('.search-card-button') && isRequestInProgress === false) {
+      console.log('Further questions clicked!');
+      searchBlock.scrollIntoView({ behavior: 'smooth' });
+      searchBox.value = event.target.innerText;
+      resultsBlock.innerHTML = '';
+      // const regenerateButtonContainer = document.querySelector('.regenerate-button-container');
+      // regenerateButtonContainer.classList.remove('show');
+      displaySearchResults(event.target.innerText, resultsBlock);
+      if (window.history.pushState) {
+        const newSearch = window.location.protocol + '//' + window.location.host + window.location.pathname + '?q=' + event.target.innerText; 
+        window.history.pushState({ path: newSearch }, '', newSearch);
+      }
+    }
 });
 }
 
