@@ -22,6 +22,7 @@ export default async function decorate(block) {
   input.className = 'search-input';
   input.type = 'search';
   input.name = 'q';
+  input.id = 'genai-search-box';
   input.placeholder = searchPlaceholder;
 
   form.append(input);

@@ -1,7 +1,7 @@
 import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-franklin.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
-import {  decorateSearch, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE } from './genai-search.js';
+// import {  decorateSearch, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE } from './genai-search.js';
 
 const loadScript = (url, callback, type, section, defer) => {
   const head = document.querySelector('head');
