@@ -1,25 +1,24 @@
 import { loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import { isMobile } from './scripts.js';
+import { pushToDataLayer } from './utils/helpers.js';
 
 const GTM_ID = 'GTM-WP2SGNL';
+const GTAG_ID = 'G-V3CZKM4K6N';
 const TAG_ID = 'AW-11334653569';
 
-function gtag(...args) {
-  window.dataLayer.push(...args);
-}
-
-async function loadGTag(id) {
-  await loadScript(`https://www.googletagmanager.com/gtag/js?id=${TAG_ID}`, { async: '' });
-  gtag('js', new Date());
-  gtag('config', id);
+async function handleConfigs() {
+  pushToDataLayer({ js: new Date() });
+  pushToDataLayer({ config: GTAG_ID });
+  pushToDataLayer({ config: TAG_ID });
 
   const metaTemplate = document.querySelector('meta[name="template"]');
   if (
     metaTemplate.content === 'Home-page'
     && window.location.pathname === '/'
   ) {
-    gtag('event', 'conversion', {
+    pushToDataLayer({
+      event: 'conversion',
       send_to: `${TAG_ID}/iQbBCNzr2OoYEIGt5Jwq`,
     });
   }
@@ -31,8 +30,12 @@ export async function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
   if (!isMobile() && document.querySelector('.block.ad')) {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', { async: '' });
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', {
+      async: '',
+    });
   }
+  // datalayer pushes for conversion tracking
+  handleConfigs();
 }
 
 // TODO: leave it up for a week
@@ -51,5 +54,4 @@ export function loadEager() {
     f.parentNode.insertBefore(j, f);
   })(window, document, 'script', 'dataLayer', GTM_ID);
   /* eslint-enable */
-  loadGTag(TAG_ID);
 }
