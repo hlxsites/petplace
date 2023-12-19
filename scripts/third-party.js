@@ -35,7 +35,8 @@ export async function loadLazy() {
   }
 }
 
-export function loadDelayed() {
+// TODO: leave it up for a week
+export function loadEager() {
   /* eslint-disable */
   (function (w, d, s, l, i) {
     w[l] = w[l] || [];
