@@ -1,6 +1,12 @@
 // import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
-import { decorateResponsiveImages } from '../../scripts/scripts.js';
+import { decorateIcons } from '../../scripts/lib-franklin.js';
 
+// import { decorateResponsiveImages } from '../../scripts/scripts.js';
+import {
+  Events,
+  decorateSlideshowAria,
+  changeSlide,
+} from '../../blocks/slideshow/aria-slideshow.js';
 
 const GENAI_SEARCH_TITLE = "Discover PetPlace";
 const GENAI_SEARCH_WARNING = "Discover PetPlace is powered by experimental Generative AI, information quality may vary.";
@@ -210,7 +216,7 @@ const decorateSearch = () => {
   clearButton.setAttribute('id', 'clearButton');
   clearButton.setAttribute('type', 'button');
   clearButton.innerHTML = '&#10005;';
-
+  
   const verticalBar = document.createElement('span');
   verticalBar.setAttribute('id', 'vertical-bar');
   verticalBar.setAttribute('class', 'vertical-bar');
@@ -264,6 +270,7 @@ const decorateSearch = () => {
   // Append the search input <input> element to the search box <div> element
   searchBoxDivElement.appendChild(searchInput);
   searchBoxDivElement.appendChild(clearButton);
+  console.log('clear button');
   searchBoxDivElement.appendChild(verticalBar);
   searchBoxDivElement.appendChild(searchButton);
 
@@ -336,11 +343,85 @@ const decorateSearch = () => {
   return mainElement;
 }
 
+function getCurrentSlideIndex($block) {
+  // console.log('$block', $block);
+  return [...$block.children].findIndex(($child) => $child.getAttribute('active') === 'true');
+}
+function disableChildLinks($slide) {
+  [...$slide.querySelectorAll(':scope a')].forEach(($anchor) => {
+    $anchor.setAttribute('disabled', true);
+  });
+}
+
+function enableChildLinks($slide) {
+  [...$slide.querySelectorAll(':scope a')].forEach(($anchor) => {
+    $anchor.removeAttribute('disabled');
+  });
+}
+function updateSlide(currentIndex, nextIndex, $block) {
+  const $slidesContainer = $block.querySelector('.slides-container');
+  // const $tabBar = $block.querySelector('.tab-bar-container');
+
+  disableChildLinks($slidesContainer.children[currentIndex]);
+  enableChildLinks($slidesContainer.children[nextIndex]);
+
+  // $tabBar.querySelector('ol').children[currentIndex].querySelector('span').className = 'icon icon-circle';
+  // $tabBar.querySelector('ol').children[nextIndex].querySelector('span').className = 'icon icon-circle-fill';
+  // decorateIcons($tabBar.querySelector('ol'));
+
+  $slidesContainer.style.transform = `translateX(-${nextIndex * 100}vw)`;
+}
+
+function initializeTouch($block, slideshowInfo) {
+  // console.log('initializeTouch', $block, slideshowInfo);
+  const $slidesContainer = $block.querySelector('.slides-container');
+
+  let startX;
+  let currentX;
+  let diffX = 0;
+
+  $block.addEventListener('touchstart', (e) => {
+    const { tagName } = e.target;
+    if (tagName === 'A' || tagName === 'use') return;
+
+    startX = e.touches[0].pageX;
+  }, { passive: true });
+
+  $block.addEventListener('touchmove', (e) => {
+    const { tagName } = e.target;
+    if (tagName === 'A' || tagName === 'use') return;
+
+    currentX = e.touches[0].pageX;
+    diffX = currentX - startX;
+
+    const index = getCurrentSlideIndex($slidesContainer);
+    // console.log('index', index)
+    $slidesContainer.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
+  }, { passive: true });
+
+  $block.addEventListener('touchend', (e) => {
+    const { tagName } = e.target;
+    if (tagName === 'A' || tagName === 'use') return;
+
+    const index = getCurrentSlideIndex($slidesContainer);
+    // console.log('index', index);
+    if (diffX > 50) {
+      const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
+      changeSlide(slideshowInfo, index, nextIndex);
+    } else if (diffX < -50) {
+      const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
+      changeSlide(slideshowInfo, index, nextIndex);
+    } else {
+      $slidesContainer.setAttribute('style', `transform:translateX(-${index}00vw)`);
+    }
+  }, { passive: true });
+}
+
 const createStreamingSearchCard = (resultsBlock) => {
   const card = document.createElement('div');
   card.className = 'search-card';
   card.classList.add('response-animation');
-  card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div><article></article><div class="search-card-links"></div></div>`;
+  card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div><article></article><div class="slideshow"></div></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
 };
@@ -348,7 +429,7 @@ const createStreamingSearchCard = (resultsBlock) => {
 const updateStreamingSearchCard = (resultsBlock, response, socket) => {  
   // console.log('updateStreamingSearchCard', resultsBlock, response, socket);
   const article = resultsBlock.querySelector('.search-card article');
-  const articleLinks = resultsBlock.querySelector('.search-card .search-card-links');
+  // const articleLinks = resultsBlock.querySelector('.search-card .slideshow');
 
   // Create the div if it doesn't exist
   if (!article && response.type === 'streaming') {
@@ -389,25 +470,60 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     cursorAnimation.classList.add('hide');
 
     if (response.links?.length > 0) {
-      response.links?.forEach((link) => {
-        const linkContainer = document.createElement('span');
-        linkContainer.className = 'search-card-link';
-        const linkTitle = document.createElement('h4');
-        const linkText = document.createElement('p');
-        linkTitle.textContent = link.name;
-        linkText.textContent  = link.description;
+      const $slideShowContainer = document.querySelector('.gen-ai .slideshow');
 
-        linkContainer.appendChild(linkTitle);
-        linkContainer.appendChild(linkText);
-        articleLinks.appendChild(linkContainer);
+      const $slidesContainer = document.createElement('div');
+
+      $slidesContainer.classList.add('slides-container');
+      const slides = [];
+      response.links?.forEach((link) => {
+        const linkContainer = document.createElement('div');
+        linkContainer.className = 'slide';
+        const slideContent = document.createElement('div');
+        slideContent.className = 'text-div';
+        const slideTitle = document.createElement('h4');
+        const slideText = document.createElement('p');
+        slideTitle.textContent = link.name;
+        slideText.textContent = link.description;
+
+        slideContent.appendChild(slideTitle);
+        slideContent.appendChild(slideText);
+        linkContainer.appendChild(slideContent);
+        $slidesContainer.appendChild(linkContainer);
+        slides.push(linkContainer);
+      });
+      // console.log('slides', slides);
+
+      slides[0].setAttribute('active', true);
+
+      $slideShowContainer.prepend($slidesContainer);
+
+      const $sliderNavBar = document.createElement('div');
+      $sliderNavBar.classList.add('tab-bar-container');
+      $sliderNavBar.innerHTML = '<ol></ol>';
+      const tabList = $sliderNavBar.querySelector('ol');
+      [...$slidesContainer.children].forEach(($slide, i) => {
+        const $sliderNavBarButton = document.createElement('li');
+        // add interactivity
+        $sliderNavBarButton.innerHTML = `<button class="control-button"><span class="icon icon-circle${i === 0 ? '-fill' : ''}" /></button>`;
+        tabList.append($sliderNavBarButton);
+      });
+      // $slideShowContainer.prepend($sliderNavBar);
+
+      $slideShowContainer.addEventListener(Events.SLIDE_CHANGED, (e) => {
+        updateSlide(e.detail.currentIndex, e.detail.newIndex, $slideShowContainer);
       });
 
-      const linkGroup = document.createElement('div');
-      linkGroup.className = 'search-card-links';
-      articleLinks.appendChild(linkGroup);
+      const slideshowInfo = {
+        slideshowContainer: $slideShowContainer,
+        slides,
+        tabList,
+      };
+      decorateSlideshowAria(slideshowInfo, false);
+      // decorateIcons($sliderNavBar);
+
+      initializeTouch($slideShowContainer, slideshowInfo);
     }
-
-
 
     if (response.questions?.length > 0) {
       // Add the divider and further questions heading
@@ -449,68 +565,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     // });
   }
 }
-const createSearchCard = (results) => {
-  const card = document.createElement('div');
-  card.className = 'search-card';
-  card.innerHTML = `<div class="search-card-container"><article>${marked.parse(results.result)}</article></div><div class="divider"></div><h4>Further Questions</h4>`;
 
-  // Add target="_blank" to all anchor tags
-  const anchorTags = card.querySelectorAll('a');
-
-  anchorTags.forEach((anchorTag) => {
-    anchorTag.setAttribute('target', '_blank');
-  });
-
-  // Loop through result.questions and create a button for each
-  const paragraph = document.createElement('p');
-  paragraph.className = 'search-card-buttons';
-  results.questions?.forEach((question) => {
-    const button = document.createElement('button');
-    button.className = 'search-card-button';
-    button.textContent = question;
-    paragraph.appendChild(button);
-  });
-  card.appendChild(paragraph);
-
-  return card.outerHTML;
-}
-
-const createLinksCard = (results) => {
-  const linksContainer = document.createElement("div");
-  linksContainer.className = "links-card-container";
-  linksContainer.classList.add('response-animation');
-
-  // Trigger the animation by adding the 'show' class
-  linksContainer.classList.add('show');
-  const list = document.createElement("ul");
-
-  results.links?.forEach((link) => {
-    const listItem = document.createElement("li");
-    const thumbnailElement = document.createElement('img');
-    thumbnailElement.src = link.thumbnail;
-    thumbnailElement.alt = link.name;
-    listItem.appendChild(thumbnailElement);
-
-    const linkInfoElement = document.createElement('div');
-    linkInfoElement.className = 'link-info';
-
-    if (link.name === link.description) {
-      linkInfoElement.innerHTML = `<a href="${link.url}" target="_blank">${link.name}</a>`;
-    } else {
-      linkInfoElement.innerHTML = `<a href="${link.url}" target="_blank">${link.name}</a><p>${link.description}</p>`;
-    }
-    
-    listItem.appendChild(linkInfoElement);
-    listItem.addEventListener('click', () => {
-      window.open(link.url, '_blank');
-    });
-    list.appendChild(listItem);
-  })
-
-  linksContainer.appendChild(list);
-
-  return linksContainer;
-}
 
 const createSummaryColumn = (icon, title, list, type) => {
   const summaryColumnDiv = document.createElement("div");
@@ -606,13 +661,11 @@ const fetchResults = async (index, query) => {
 };
 
 async function displaySearchResults(query, resultsBlock) {
-
   if (isRequestInProgress) {
     // A request is already in progress, so do not proceed.
     return;
   }
   isRequestInProgress = true;
-  //       const resultsBlock = block.querySelector('.search-results');
 
   // Create the loading message element
   const loadingMessage = document.createElement('div');
@@ -624,12 +677,12 @@ async function displaySearchResults(query, resultsBlock) {
   cursorAnimation.className = 'cursor-animation';
   loadingMessage.appendChild(cursorAnimation);
   resultsBlock.appendChild(loadingMessage);
-  const firstChild = resultsBlock.firstChild;
+  const { firstChild } = resultsBlock;
   resultsBlock.insertBefore(loadingMessage, firstChild);
 
   const results = await fetchStreamingResults('petplace4', query, resultsBlock);
   isRequestInProgress = false;
-  
+
   // Assuming the response has a `result` property
   if (results && results.result) {
     console.log(results.result);
@@ -654,7 +707,8 @@ async function displaySearchResults(query, resultsBlock) {
 
     console.log('clicked results', searchBox);
     const searchBlock = document.querySelector('.genai-search-wrapper');
-    if(event.target.matches('.search-card-button') && isRequestInProgress === false) {
+
+    if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
       console.log('Further questions clicked!');
       searchBlock.scrollIntoView({ behavior: 'smooth' });
       searchBox.value = event.target.innerText;
@@ -663,11 +717,12 @@ async function displaySearchResults(query, resultsBlock) {
       // regenerateButtonContainer.classList.remove('show');
       displaySearchResults(event.target.innerText, resultsBlock);
       if (window.history.pushState) {
-        const newSearch = window.location.protocol + '//' + window.location.host + window.location.pathname + '?q=' + event.target.innerText; 
+        const newSearch = `${window.location.protocol}//${window.location.host}${window.location.pathname}?q=${event.target.innerText}`;
         window.history.pushState({ path: newSearch }, '', newSearch);
       }
     }
-});
+  });
+  console.log('resultsBlock', resultsBlock);
 }
 
 

@@ -1,7 +1,7 @@
 import { sampleRUM } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
-  const searchPlaceholder = block.firstElementChild.children[0].textContent || 'Search…';
+  const searchPlaceholder = block.firstElementChild.children[0].textContent || 'Ask a question or enter a topic....';
   const searchButtonText = block.firstElementChild.children[1].textContent || 'Submit';
 
   const form = document.createElement('form');
