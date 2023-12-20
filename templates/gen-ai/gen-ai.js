@@ -410,13 +410,13 @@ function initializeTouch($block, slideshowInfo) {
       const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
       changeSlide(slideshowInfo, index, nextIndex);
     } else {
-      $slidesContainer.setAttribute('style', `transform:translateX(-${index}* 260px)`);
+      $slidesContainer.setAttribute('style', `transform:translateX(-${index} * 260px)`);
     }
   }, { passive: true });
 
   $block.addEventListener('click', (e) => {
     const index = getCurrentSlideIndex($slidesContainer);
-    if (e.target.matches('.slideshow-prev')) {
+    if (e.target.matches('.slideshow-prev') && !e.target.matches('.hide')) {
       const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
       document.querySelector('.slideshow-next')?.classList.remove('hide');
       if (nextIndex === 0) {
@@ -425,7 +425,7 @@ function initializeTouch($block, slideshowInfo) {
         document.querySelector('.slideshow-prev')?.classList.remove('hide');
       }
       changeSlide(slideshowInfo, index, nextIndex);
-    } else if (e.target.matches('.slideshow-next')) {
+    } else if (e.target.matches('.slideshow-next') && !e.target.matches('.hide')) {
       const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
       document.querySelector('.slideshow-prev')?.classList.remove('hide');
 
@@ -499,10 +499,13 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       $slidesContainer.classList.add('slides-container');
       const slides = [];
       response.links?.forEach((link) => {
+
         const linkContainer = document.createElement('div');
         linkContainer.className = 'slide';
-        const slideContent = document.createElement('div');
+        const slideContent = document.createElement('a');
         slideContent.className = 'text-div';
+        slideContent.href = link.url;
+        slideContent.target = '_blank';
         const slideTitle = document.createElement('h4');
         const slideText = document.createElement('p');
         slideTitle.textContent = link.name;
@@ -520,16 +523,16 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       $slideShowContainer.prepend($slidesContainer);
 
       const $sliderNav = document.createElement('div');
-      $sliderNav.classList.add('slideshow-navigation');
+      // $sliderNav.classList.add('slideshow-navigation');
       const $sliderPrev = document.createElement('div');
       $sliderPrev.innerHTML = '<';
       $sliderPrev.className = 'slideshow-prev hide';
-      $sliderNav.appendChild($sliderPrev);
+      $slideShowContainer.appendChild($sliderPrev);
       const $sliderNext = document.createElement('div');
       $sliderNext.innerHTML = '>';
       $sliderNext.className = 'slideshow-next';
-      $sliderNav.appendChild($sliderNext);
-      $slideShowContainer.appendChild($sliderNav);
+      $slideShowContainer.appendChild($sliderNext);
+      // $slideShowContainer.appendChild($sliderNav);
       // const navList = document.querySelector('.slideshow-navigation');
 
       $slideShowContainer.addEventListener(Events.SLIDE_CHANGED, (e) => {

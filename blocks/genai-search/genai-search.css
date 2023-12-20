@@ -196,6 +196,7 @@
 .search-card .search-card-buttons {
   grid-row: 4;
   grid-column: 1;
+  cursor: pointer;
 }
 @media (max-width: 600px) {
   .search-card {
@@ -219,8 +220,8 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  margin-top: 1em;
-  margin-bottom: 1.5em;
+  /* margin-top: 1em; */
+  /* margin-bottom: 1.5em; */
   grid-row: 1;
   @media (max-width: 600px) {
     margin: 0;
@@ -229,8 +230,9 @@
 }
  .genai-search-container .search-card-warning p {
   font-family: var(--heading-font-family);
-  font-size: var(--body-font-size-xxs);
-  font-weight: normal;
+  font-size: var(--heading-font-size-xxs);
+  font-weight: 600;
+  line-height: 1.0625rem;
   /* font-size: 16px; */
   color: var(--color-blue);
   margin-top: 0;
@@ -244,32 +246,30 @@
 }
 
 .genai-search-container .search-card-button {
-  background-color: transparent;
+  background-color: #ffffff;
   border: solid 2px var(--color-purple);
   padding: 5px 10px;
   font-size: 1rem;
-  /* text-align: center; */
-  /* letter-spacing: 1px; */
   margin: 0;
   text-decoration: none;
   display: inline-block;
   flex-wrap: wrap;
-  cursor: pointer;
   border-radius: 25px;
   font-family: unset;
   font-weight: 300;
   transition: transform 0.3s ease; /* Animation for hover effect */
   color: #24081D;
 
-  /* Additional styles for the button (e.g., background, font, padding, etc.) */
   @media (max-width: 600px){
     font-size: 0.8125rem;
   }
 }
 
+
 .search-card-button:hover, .search-card-button:focus {
   background-color: var(--background-color);
   transform: scale(1.05); /* Zoom effect on hover */
+  cursor: pointer !important;
 }
 
 .genai-search-container article a {
@@ -323,12 +323,11 @@
   grid-row: 2;
   display: flex;
   flex-direction: row;
-  /* overflow-x: hidden; */
   width: auto;
   margin: 1.75rem 0;
-  /* overflow-y: hidden; */
   position: relative;
   overflow:hidden;
+  touch-action: none;
 }
 
 .genai-search-container .search-card-container .slideshow:after {
@@ -347,51 +346,38 @@
   flex-direction: row;
   transition: transform 600ms;
 }
-.genai-search-container .search-card-container .slideshow .slideshow-navigation{
-  display: none;
+.genai-search-container .search-card-container .slideshow .slideshow-prev,
+.genai-search-container .search-card-container .slideshow .slideshow-next{
+    display: none;
 }
 @media (min-width: 600px){
-  .genai-search-container .search-card-container .slideshow .slideshow-navigation{
-    position:absolute;
-    width: 100%;
-    height: 100%;
-    display: block;
-    z-index: 2;
-  }
-
-  .genai-search-container .search-card-container .slideshow .slideshow-navigation .slideshow-prev {
+  .genai-search-container .search-card-container .slideshow .slideshow-prev,
+  .genai-search-container .search-card-container .slideshow .slideshow-next {
     position: absolute;
     border: 1px solid #000;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    background: #fff;
-    cursor: pointer;    
-  }
-  .genai-search-container .search-card-container .slideshow .slideshow-navigation .slideshow-next {
-    border: 1px solid #000;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+    top: calc(50% - 20px);
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    right: 0;
-    top: 50%;
     background: #fff;
     cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.25s linear;
+    z-index: 2;
     
+    &.hide{
+      opacity: 0;
+    }
   }
-  .genai-search-container .search-card-container .slideshow .slideshow-navigation .slideshow-next.hide,
-  .genai-search-container .search-card-container .slideshow .slideshow-navigation .slideshow-prev.hide {
-    display: none;
+  .genai-search-container .search-card-container .slideshow .slideshow-prev {
+    left: 0;
+  }
+  .genai-search-container .search-card-container .slideshow .slideshow-next {
+    right: 0;
   }
 }
 
@@ -399,38 +385,32 @@
   width: 260px;
   min-width: 260px;
   display: block;
-  border-right: 1px solid #BDBDBD;
-  /* padding: 0 15px; */
-  /* width: 100vw; */
+  border-left: 1px solid #BDBDBD;
   flex-shrink: 0;
   position: relative;
-  /* @media (max-width: 600px){
-    width: 70vw;
-    min-width: 70vw;
-  } */
+  height: 160px;
 }
-.genai-search-container .search-card-container .slideshow .slides-container .slide[aria-hidden="true"]{
-  @media (max-width: 600px){
-    border-right: none;
-  }
+.genai-search-container .search-card-container .slideshow .slides-container .slide[aria-hidden="false"]{
+    border-left: 0px solid #bdbdbd;
+    transition: border .25s linear;
 }
 .genai-search-container .search-card-container .slideshow .slides-container .slide .text-div {
   padding: 0 15px;
+  display: block;
+  /* height: 100%; */
 }
 .genai-search-container .search-card-container .slideshow .slides-container .slide .text-div h4{
-  font-size: var(--heading-font-size-xxs);
+  font-size: var(--body-font-size-xxs);
   color:#969696;
+  font-weight: normal;
   margin-top: 0 !important;
-  @media (max-width: 600px){
-    font-size: 0.625rem;
-  }
+  margin-bottom: 4px !important;
+  text-transform: uppercase;
+
 }
 .genai-search-container .search-card-container .slideshow .slides-container .slide .text-div p{
-  font-size: var(--body-font-size-xs);
+  font-size: var(--heading-font-size-xxs);
   color: #24081D;
-  @media (max-width: 600px){
-    font-size: 0.75rem;
-  }
 }
 .genai-search-container .search-card-container h1, h2, h3, h4, h5, h6 {
   margin-top: 10px !important;
@@ -512,11 +492,6 @@
 
 
 
-/* .search-container h1 {
-  text-align: center;
-  color: var(--color-purple-gray);
-} */
-
 .genai-search-container .links-card-container {
   margin-bottom: 40px;
 }
@@ -590,7 +565,7 @@
     top: 5px;
   }
 }
-
+/* 
 .summary-columns {
   margin-top: 50px;
   display: flex;
@@ -644,9 +619,9 @@
 
 .hand-cursor:hover {
   background-color: rgba(64, 87, 109, 0.1);
-}
+} */
 
-@keyframes blink {
+/* @keyframes blink {
   0% {
     opacity: 0;
   }
@@ -656,7 +631,7 @@
   100% {
     opacity: 0;
   }
-}
+} */
 
 /* .cursor-animation {
   display: inline-block;
@@ -748,7 +723,7 @@
   background: none;
   border: none;
   position: absolute;
-  right: 44px;
+  right: 50px;
   top: 8px;
   transform: translateY(-50%);
   cursor: pointer;
