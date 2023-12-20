@@ -24,7 +24,6 @@ async function handleConfigs() {
   }
 }
 
-// TODO: leave it up for a week
 function gtmScript() {
   /* eslint-disable */
   (function (w, d, s, l, i) {
@@ -33,6 +32,8 @@ function gtmScript() {
     let f = d.getElementsByTagName(s)[0],
       j = d.createElement(s),
       dl = l != 'dataLayer' ? '&l=' + l : '';
+
+    console.log('gtm script loaded in eager');
 
     j.async = true;
     j.type = 'text/javascript';
@@ -53,10 +54,7 @@ function noscriptBody() {
   fr.width = 0;
   fr.style = 'display:none;visibility:hidden;';
 
-  // = `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
   ns.appendChild(fr);
-  console.log('fr', fr);
-  console.log('ns', ns);
   b.parentNode.insertBefore(ns, b);
   /* eslint-enable */
 }
@@ -70,10 +68,12 @@ export async function loadLazy() {
     });
   }
 
-  // calling gtm in lazy phase
-  gtmScript();
-  noscriptBody();
-
   // datalayer pushes for conversion tracking
   handleConfigs();
+}
+
+// calling gtm in eager phase
+export async function loadEager() {
+  gtmScript();
+  noscriptBody();
 }
