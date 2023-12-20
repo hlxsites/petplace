@@ -34,8 +34,6 @@ function gtmScript() {
       j = d.createElement(s),
       dl = l != 'dataLayer' ? '&l=' + l : '';
 
-    console.log('script', f, j);
-
     j.async = true;
     j.type = 'text/javascript';
     j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
@@ -47,10 +45,19 @@ function gtmScript() {
 function noscriptBody() {
   /* eslint-disable */
   let b = document.body.firstChild,
-    n = document.createElement('noscript');
+    ns = document.createElement('noscript'),
+    fr = document.createElement('iframe');
 
-  n.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
-  b.parentNode.insertBefore(n, b);
+  fr.src = `https://www.googletagmanager.com/ns.html?id=${GTM_ID}`;
+  fr.height = 0;
+  fr.width = 0;
+  fr.style = 'display:none;visibility:hidden;';
+
+  // = `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+  ns.appendChild(fr);
+  console.log('fr', fr);
+  console.log('ns', ns);
+  b.parentNode.insertBefore(ns, b);
   /* eslint-enable */
 }
 
