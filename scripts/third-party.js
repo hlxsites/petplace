@@ -33,8 +33,6 @@ function gtmScript() {
       j = d.createElement(s),
       dl = l != 'dataLayer' ? '&l=' + l : '';
 
-    console.log('gtm script loaded in eager');
-
     j.async = true;
     j.type = 'text/javascript';
     j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
@@ -68,12 +66,10 @@ export async function loadLazy() {
     });
   }
 
-  // datalayer pushes for conversion tracking
-  handleConfigs();
-}
-
-// calling gtm in eager phase
-export async function loadEager() {
+  // calling gtm in lazy phase
   gtmScript();
   noscriptBody();
+
+  // datalayer pushes for conversion tracking
+  handleConfigs();
 }
