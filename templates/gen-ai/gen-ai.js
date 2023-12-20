@@ -8,41 +8,41 @@ import {
   changeSlide,
 } from '../../blocks/slideshow/aria-slideshow.js';
 
-const GENAI_SEARCH_TITLE = "Discover PetPlace";
-const GENAI_SEARCH_WARNING = "Discover PetPlace is powered by experimental Generative AI, information quality may vary.";
+const GENAI_SEARCH_TITLE = 'Discover PetPlace';
+const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
 
 const sampleQuestions = [
   "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
-  "Why Dog Urine Odor Comes Back and How to Stop It",
-  "When Is a Dog Considered an Adult?",
-  "Can an Alaskan Malamute or Siberian Husky Puppy Play Nice with the Family Cat?",
-  "Do Clavamox Antibiotic Drops Expire?",
-  "Is It Dangerous for Dogs to Drink Pool Water?",
-  "Can an Outdoor Cat Become an Indoor Cat?",
-  "Cat Stress After Moving",
-  "Is Eating Mice and Rabbits Healthy for My Cat?",
-  "What Happens When Cat Food Expires?",
-  "Does Your Puppy Need a Bordetella Vaccine?",
-  "How Much Should I Feed My Puppy?",
-  "Tips on Housetraining and Dealing with Accidents",
-  "Should a Pet Be Off Antihistamines or Steroid Before Allergy Testing?",
-  "My cat was recently spayed but the male cats still want to mate with her",
-  "Should You Board Your Cat or Get a Sitter?",
-  "Is Your Dog Smarter Than a 5th Grader?",
-  "How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?"
-]
+  'Why Dog Urine Odor Comes Back and How to Stop It',
+  'When Is a Dog Considered an Adult?',
+  'Can an Alaskan Malamute or Siberian Husky Puppy Play Nice with the Family Cat?',
+  'Do Clavamox Antibiotic Drops Expire?',
+  'Is It Dangerous for Dogs to Drink Pool Water?',
+  'Can an Outdoor Cat Become an Indoor Cat?',
+  'Cat Stress After Moving',
+  'Is Eating Mice and Rabbits Healthy for My Cat?',
+  'What Happens When Cat Food Expires?',
+  'Does Your Puppy Need a Bordetella Vaccine?',
+  'How Much Should I Feed My Puppy?',
+  'Tips on Housetraining and Dealing with Accidents',
+  'Should a Pet Be Off Antihistamines or Steroid Before Allergy Testing?',
+  'My cat was recently spayed but the male cats still want to mate with her',
+  'Should You Board Your Cat or Get a Sitter?',
+  'Is Your Dog Smarter Than a 5th Grader?',
+  'How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?',
+];
 
 const capabilities = [
-  "Uses semantic search to find relevant answers",
-  "Utilizes trusted data sources to generate responses",
-  "Declines irrelevant and inappropriate queries",
-]
+  'Uses semantic search to find relevant answers',
+  'Utilizes trusted data sources to generate responses',
+  'Declines irrelevant and inappropriate queries',
+];
 
 const limitations = [
-  "Does not support keyword matching",
-  "Does not support complex queries",
-  "May occasionally generate incorrect information",
-]
+  'Does not support keyword matching',
+  'Does not support complex queries',
+  'May occasionally generate incorrect information',
+];
 
 const isTrueSearch = window.location.pathname === '/discovery';
 let isRequestInProgress = false;
@@ -68,47 +68,45 @@ function showRegenerateButton(resultsBlock) {
   });
 }
 
-
-
 const fetchStreamingResults = async (index, query, resultsBlock) => {
   if (query === '') {
     return {
-      result: 'Please enter a search query.'
-    }
-  } else {
-    // document.getElementById("clearButton").classList.add("show");
-    // document.getElementById("vertical-bar").classList.add("show");
+      result: 'Please enter a search query.',
+    };
   }
+  // document.getElementById("clearButton").classList.add("show");
+  // document.getElementById("vertical-bar").classList.add("show");
+
   console.log('fetchStreamingResults');
 
   // Adobe Internal Endpoint
   // const socket = new WebSocket('wss://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net/api/query');
 
   // Adobe External Endpoint
-  const socket = new WebSocket("wss://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query");
-  
+  const socket = new WebSocket('wss://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query');
+
   // BambooHR Endpoint
   // const socket = new WebSocket('wss://spire-bhr-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query');
 
-  socket.addEventListener('open', function(event) {
+  socket.addEventListener('open', (event) => {
     console.log('WebSocket connection established');
 
-    const messageToSend = JSON.stringify({"query": query, "index": index});
+    const messageToSend = JSON.stringify({ query, index });
     socket.send(messageToSend);
   });
 
-  socket.addEventListener('message', function(event) {
+  socket.addEventListener('message', (event) => {
     console.log('Message from server ', event);
     const message = JSON.parse(event.data);
-    
+
     updateStreamingSearchCard(resultsBlock, message, socket);
   });
 
-  socket.addEventListener('error', function(error) {
+  socket.addEventListener('error', (error) => {
     console.error('WebSocket error:', error);
   });
 
-  socket.addEventListener('close', function(event) {
+  socket.addEventListener('close', (event) => {
     console.log('WebSocket connection closed');
   });
   console.log('socket', socket);
@@ -153,7 +151,7 @@ const getRandomQuestions = (questions) => {
     }
   }
   return randomQuestions;
-}
+};
 
 const decorateSearch = () => {
   // Create the <main> element
@@ -172,7 +170,7 @@ const decorateSearch = () => {
   // Create the <h1> element with id attribute and text content
   const h1Element = document.createElement('h1');
   h1Element.setAttribute('id', 'search');
-  const h1Text = document.createTextNode("Discover");
+  const h1Text = document.createTextNode('Discover');
   h1Element.appendChild(h1Text);
 
   const xhrLogo = new XMLHttpRequest();
@@ -216,33 +214,33 @@ const decorateSearch = () => {
   clearButton.setAttribute('id', 'clearButton');
   clearButton.setAttribute('type', 'button');
   clearButton.innerHTML = '&#10005;';
-  
+
   const verticalBar = document.createElement('span');
   verticalBar.setAttribute('id', 'vertical-bar');
   verticalBar.setAttribute('class', 'vertical-bar');
 
-  searchInput.addEventListener("input", () => {
-    if (searchInput.value.trim() !== "") {
-      clearButton.classList.add("show");
-      verticalBar.classList.add("show");
+  searchInput.addEventListener('input', () => {
+    if (searchInput.value.trim() !== '') {
+      clearButton.classList.add('show');
+      verticalBar.classList.add('show');
     } else {
-      clearButton.classList.remove("show");
-      verticalBar.classList.remove("show");
+      clearButton.classList.remove('show');
+      verticalBar.classList.remove('show');
     }
   });
 
-  searchInput.addEventListener("focus", () => {
-    if (searchInput.value.trim() !== "") {
-      clearButton.classList.add("show");
-      verticalBar.classList.add("show");
+  searchInput.addEventListener('focus', () => {
+    if (searchInput.value.trim() !== '') {
+      clearButton.classList.add('show');
+      verticalBar.classList.add('show');
     }
   });
 
-  clearButton.addEventListener("click", () => {
+  clearButton.addEventListener('click', () => {
     searchInput.value = '';
     searchInput.focus();
-    clearButton.classList.remove("show");
-    verticalBar.classList.remove("show");
+    clearButton.classList.remove('show');
+    verticalBar.classList.remove('show');
   });
 
   // Create the search button <button> element with id and image element
@@ -290,7 +288,7 @@ const decorateSearch = () => {
       // On successful response, create and append the SVG element
       const svgElement = document.createElement('svg');
       svgElement.innerHTML = xhr1.responseText;
-      const firstChild = stopButton.firstChild;
+      const { firstChild } = stopButton;
       stopButton.insertBefore(svgElement, firstChild);
     }
   };
@@ -310,7 +308,7 @@ const decorateSearch = () => {
       // On successful response, create and append the SVG element
       const svgElement = document.createElement('svg');
       svgElement.innerHTML = xhr2.responseText;
-      const firstChild = regenerateButton.firstChild;
+      const { firstChild } = regenerateButton;
       regenerateButton.insertBefore(svgElement, firstChild);
     }
   };
@@ -341,7 +339,7 @@ const decorateSearch = () => {
   document.body.appendChild(mainElement);
 
   return mainElement;
-}
+};
 
 function getCurrentSlideIndex($block) {
   // console.log('$block', $block);
@@ -369,11 +367,11 @@ function updateSlide(currentIndex, nextIndex, $block) {
   // $tabBar.querySelector('ol').children[nextIndex].querySelector('span').className = 'icon icon-circle-fill';
   // decorateIcons($tabBar.querySelector('ol'));
 
-  $slidesContainer.style.transform = `translateX(-${nextIndex * 100}vw)`;
+  $slidesContainer.style.transform = `translateX(-${nextIndex * 260}px)`;
 }
 
 function initializeTouch($block, slideshowInfo) {
-  // console.log('initializeTouch', $block, slideshowInfo);
+  console.log('initializeTouch', $block, slideshowInfo);
   const $slidesContainer = $block.querySelector('.slides-container');
 
   let startX;
@@ -395,8 +393,8 @@ function initializeTouch($block, slideshowInfo) {
     diffX = currentX - startX;
 
     const index = getCurrentSlideIndex($slidesContainer);
-    // console.log('index', index)
-    $slidesContainer.style.transform = `translateX(calc(-${index}00vw + ${diffX}px))`;
+    console.log('index', index, diffX);
+    $slidesContainer.style.transform = `translateX(calc(-${index} * 260px))`;
   }, { passive: true });
 
   $block.addEventListener('touchend', (e) => {
@@ -412,9 +410,33 @@ function initializeTouch($block, slideshowInfo) {
       const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
       changeSlide(slideshowInfo, index, nextIndex);
     } else {
-      $slidesContainer.setAttribute('style', `transform:translateX(-${index}00vw)`);
+      $slidesContainer.setAttribute('style', `transform:translateX(-${index}* 260px)`);
     }
   }, { passive: true });
+
+  $block.addEventListener('click', (e) => {
+    const index = getCurrentSlideIndex($slidesContainer);
+    if (e.target.matches('.slideshow-prev')) {
+      const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
+      document.querySelector('.slideshow-next')?.classList.remove('hide');
+      if (nextIndex === 0) {
+        document.querySelector('.slideshow-prev')?.classList.add('hide');
+      } else {
+        document.querySelector('.slideshow-prev')?.classList.remove('hide');
+      }
+      changeSlide(slideshowInfo, index, nextIndex);
+    } else if (e.target.matches('.slideshow-next')) {
+      const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
+      document.querySelector('.slideshow-prev')?.classList.remove('hide');
+
+      if (nextIndex === $slidesContainer.children.length - 1) {
+        document.querySelector('.slideshow-next')?.classList.add('hide');
+      } else {
+        document.querySelector('.slideshow-next')?.classList.remove('hide');
+      }
+      changeSlide(slideshowInfo, index, nextIndex);
+    }
+  });
 }
 
 const createStreamingSearchCard = (resultsBlock) => {
@@ -426,7 +448,7 @@ const createStreamingSearchCard = (resultsBlock) => {
   resultsBlock.innerHTML = card.outerHTML;
 };
 
-const updateStreamingSearchCard = (resultsBlock, response, socket) => {  
+const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   // console.log('updateStreamingSearchCard', resultsBlock, response, socket);
   const article = resultsBlock.querySelector('.search-card article');
   // const articleLinks = resultsBlock.querySelector('.search-card .slideshow');
@@ -492,36 +514,35 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
         $slidesContainer.appendChild(linkContainer);
         slides.push(linkContainer);
       });
-      // console.log('slides', slides);
 
       slides[0].setAttribute('active', true);
 
       $slideShowContainer.prepend($slidesContainer);
 
-      const $sliderNavBar = document.createElement('div');
-      $sliderNavBar.classList.add('tab-bar-container');
-      $sliderNavBar.innerHTML = '<ol></ol>';
-      const tabList = $sliderNavBar.querySelector('ol');
-      [...$slidesContainer.children].forEach(($slide, i) => {
-        const $sliderNavBarButton = document.createElement('li');
-        // add interactivity
-        $sliderNavBarButton.innerHTML = `<button class="control-button"><span class="icon icon-circle${i === 0 ? '-fill' : ''}" /></button>`;
-        tabList.append($sliderNavBarButton);
-      });
-      // $slideShowContainer.prepend($sliderNavBar);
+      const $sliderNav = document.createElement('div');
+      $sliderNav.classList.add('slideshow-navigation');
+      const $sliderPrev = document.createElement('div');
+      $sliderPrev.innerHTML = '<';
+      $sliderPrev.className = 'slideshow-prev hide';
+      $sliderNav.appendChild($sliderPrev);
+      const $sliderNext = document.createElement('div');
+      $sliderNext.innerHTML = '>';
+      $sliderNext.className = 'slideshow-next';
+      $sliderNav.appendChild($sliderNext);
+      $slideShowContainer.appendChild($sliderNav);
+      // const navList = document.querySelector('.slideshow-navigation');
 
       $slideShowContainer.addEventListener(Events.SLIDE_CHANGED, (e) => {
+        // console.log('slide changed', e.detail);
         updateSlide(e.detail.currentIndex, e.detail.newIndex, $slideShowContainer);
       });
 
       const slideshowInfo = {
         slideshowContainer: $slideShowContainer,
         slides,
-        tabList,
       };
-      decorateSlideshowAria(slideshowInfo, false);
-      // decorateIcons($sliderNavBar);
 
+      decorateSlideshowAria(slideshowInfo, false);
       initializeTouch($slideShowContainer, slideshowInfo);
     }
 
@@ -564,14 +585,13 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     //   masonry.layout();
     // });
   }
-}
-
+};
 
 const createSummaryColumn = (icon, title, list, type) => {
-  const summaryColumnDiv = document.createElement("div");
-  summaryColumnDiv.className = "summary-column";
+  const summaryColumnDiv = document.createElement('div');
+  summaryColumnDiv.className = 'summary-column';
 
-  const titleElement = document.createElement("h4");
+  const titleElement = document.createElement('h4');
   titleElement.textContent = title;
 
   const xhr = new XMLHttpRequest();
@@ -583,20 +603,20 @@ const createSummaryColumn = (icon, title, list, type) => {
       svgElement.className = 'icon-search';
       svgElement.innerHTML = xhr.responseText;
 
-      const firstChild = titleElement.firstChild;
+      const { firstChild } = titleElement;
       titleElement.insertBefore(svgElement, firstChild);
     }
   };
   xhr.send();
 
-  const items = document.createElement("ul");
-  items.className = "summary-items";
+  const items = document.createElement('ul');
+  items.className = 'summary-items';
 
   list.forEach((text) => {
-    const item = document.createElement("li");
+    const item = document.createElement('li');
     item.className = 'summary-item';
     item.textContent = text;
-    if (type === "button") {
+    if (type === 'button') {
       item.classList.add('hand-cursor');
       item.addEventListener('click', () => {
         if (isRequestInProgress === false) {
@@ -604,57 +624,54 @@ const createSummaryColumn = (icon, title, list, type) => {
           searchBox.value = text;
           displaySearchResults(text, document.querySelector('.search-results'));
         }
-        
-      })
+      });
     }
     items.appendChild(item);
-  })
+  });
 
   summaryColumnDiv.appendChild(titleElement);
   summaryColumnDiv.appendChild(items);
 
   return summaryColumnDiv;
-}
+};
 
 const createSearchSummary = () => {
-  const summaryColumns = document.createElement("div");
-  summaryColumns.className = "summary-columns";
+  const summaryColumns = document.createElement('div');
+  summaryColumns.className = 'summary-columns';
 
-  const summaryColumn1 = createSummaryColumn("examples", "Examples", getRandomQuestions(sampleQuestions), "button");
-  const summaryColumn2 = createSummaryColumn("capabilities", "Capabilities", capabilities, "list");
-  const summaryColumn3 = createSummaryColumn("limitations", "Limitations", limitations, "list");
+  const summaryColumn1 = createSummaryColumn('examples', 'Examples', getRandomQuestions(sampleQuestions), 'button');
+  const summaryColumn2 = createSummaryColumn('capabilities', 'Capabilities', capabilities, 'list');
+  const summaryColumn3 = createSummaryColumn('limitations', 'Limitations', limitations, 'list');
 
   summaryColumns.appendChild(summaryColumn1);
   summaryColumns.appendChild(summaryColumn2);
   summaryColumns.appendChild(summaryColumn3);
 
   return summaryColumns;
-}
+};
 
 const fetchResults = async (index, query) => {
   if (query === '') {
     return {
-      result: 'Please enter a search query.'
-    }
-  } else {
-    document.getElementById("clearButton").classList.add("show");
-    document.getElementById("vertical-bar").classList.add("show");
+      result: 'Please enter a search query.',
+    };
   }
+  document.getElementById('clearButton').classList.add('show');
+  document.getElementById('vertical-bar').classList.add('show');
 
   // const apiURLBase = "https://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net"; // Internal Endpoint
-  const apiURLBase = "https://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net"; // External Endpoint
-  const apiURL = apiURLBase + `/api/index/${index}/search`;
+  const apiURLBase = 'https://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net'; // External Endpoint
+  const apiURL = `${apiURLBase}/api/index/${index}/search`;
   const answer = await fetch(`${apiURL}?q=${query}`).then((response) => {
     if (response.ok) {
       return response.json();
-    } else {
-      throw new Error('Sorry, something went wrong. Please try again later.');
     }
+    throw new Error('Sorry, something went wrong. Please try again later.');
   }).catch((error) => {
     console.log(error);
     return {
-      result: 'Sorry, something went wrong. Please try again later.'
-    }
+      result: 'Sorry, something went wrong. Please try again later.',
+    };
   });
 
   return answer;
@@ -705,7 +722,7 @@ async function displaySearchResults(query, resultsBlock) {
   resultsBlock.addEventListener('click', (event) => {
     const searchBox = document.getElementById('genai-search-box');
 
-    console.log('clicked results', searchBox);
+    console.log('clicked results', event, event.target);
     const searchBlock = document.querySelector('.genai-search-wrapper');
 
     if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
@@ -724,8 +741,6 @@ async function displaySearchResults(query, resultsBlock) {
   });
   console.log('resultsBlock', resultsBlock);
 }
-
-
 
 export async function loadEager(main) {
   // if (isTrueSearch) {
@@ -748,7 +763,7 @@ export async function loadLazy(main) {
   hero.className = 'hero-wrapper';
   imgDiv.className = 'img-div';
   contentDiv.classList = 'text-div';
-  
+
   [...heroContainer.querySelectorAll('picture')].forEach((el) => {
     imgDiv.append(el);
   });
@@ -756,7 +771,7 @@ export async function loadLazy(main) {
   contentDiv.append(document.querySelector('h1'));
   console.log('imgDiv', imgDiv);
   console.log('defaultContentWrapper', defaultContentWrapper);
-  
+
   [...defaultContentWrapper.querySelectorAll('p')].forEach((el) => {
     if (el.innerText.trim() !== '') {
       contentDiv.append(el);
@@ -770,7 +785,6 @@ export async function loadLazy(main) {
   // decorateResponsiveImages(imgDiv, ['461']);
   heroContainer.replaceWith(hero);
 
-
   // Create the search results <div> element with am-region attribute
   const searchResultsDivElement = document.createElement('div');
   searchResultsDivElement.setAttribute('class', 'search-results');
@@ -778,13 +792,12 @@ export async function loadLazy(main) {
   defaultContentWrapper.appendChild(searchResultsDivElement);
 
   const usp = new URLSearchParams(window.location.search);
-  let searchQuery = usp.get('q') || '';
-  console.log('searchBox', searchQuery );
-  if(searchQuery){
-
-    displaySearchResults(searchQuery , searchResultsDivElement);
+  const searchQuery = usp.get('q') || '';
+  console.log('searchBox', searchQuery);
+  if (searchQuery) {
+    displaySearchResults(searchQuery, searchResultsDivElement);
   }
-  
+
   // console.log('hero', hero);
   // renderArticles();
   // Softnav progressive enhancement for browsers that support it
