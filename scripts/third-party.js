@@ -44,6 +44,16 @@ function gtmScript() {
   /* eslint-enable */
 }
 
+function noscriptBody() {
+  /* eslint-disable */
+  let b = document.body.firstChild,
+    n = document.createElement('noscript');
+
+  n.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+  b.parentNode.insertBefore(n, b);
+  /* eslint-enable */
+}
+
 export async function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
@@ -55,6 +65,7 @@ export async function loadLazy() {
 
   // calling gtm in lazy phase
   gtmScript();
+  noscriptBody();
 
   // datalayer pushes for conversion tracking
   handleConfigs();
