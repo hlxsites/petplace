@@ -1,9 +1,7 @@
 /* eslint-disable no-nested-ternary */
 window.dataLayer ||= [];
 
-export const pushToDataLayer = (layer) => {
-  window.dataLayer.push(layer);
-};
+export const pushToDataLayer = (layer) => window.dataLayer.push(layer);
 
 export const clickHelper = (...args) => {
   pushToDataLayer({

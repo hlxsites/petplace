@@ -44,12 +44,13 @@ export default async function decorate(block) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       return {
         path,
+        category: doc.querySelector('head > meta[name="category"]')?.content,
         title: doc.querySelector('head > title').textContent,
         description: doc.querySelector('head > meta[name="description"]')?.content,
         image: doc.querySelector('head > meta[property="og:image"]')?.content,
         imageAlt: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
-        author: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
-        date: new Date(doc.querySelector('head > meta[name="publication-date"]')?.content).getTime(),
+        author: doc.querySelector('head > meta[name="author"]')?.content,
+        date: Math.floor(new Date(doc.querySelector('head > meta[name="publication-date"]')?.content).getTime() / 1000),
       };
     }
 
@@ -60,10 +61,9 @@ export default async function decorate(block) {
 
   const categories = await Promise.all(data.map(async (dta) => {
     const category = await getCategory(dta.path.split('/').slice(-2).shift());
-    if (category) {
-      return category;
-    }
-    return null;
+    const metaCat = await getCategory(dta.category);
+
+    return category || metaCat || null;
   }));
 
   data.forEach((dta, index) => {
