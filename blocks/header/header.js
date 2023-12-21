@@ -191,7 +191,7 @@ export default async function decorate(block) {
       }
     });
 
-    document.body.style.overflowY = 'hidden';
+    // document.body.style.overflowY = 'hidden';
     headerSearchButton.addEventListener('click', async () => {
       const elem = document.getElementById('header-search-modal');
       const headerSearch = document.querySelector('.header-search');
