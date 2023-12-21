@@ -837,10 +837,10 @@
   display: none;
 }
 
-/* .tooltip {
+.tooltip {
   position: relative;
   display: inline-block;
-} */
+}
 
 .tooltip {
   visibility: hidden;

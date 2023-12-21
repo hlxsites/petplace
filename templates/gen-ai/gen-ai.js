@@ -8,7 +8,7 @@ import {
   changeSlide,
 } from '../../blocks/slideshow/aria-slideshow.js';
 
-const GENAI_SEARCH_TITLE = 'Discover PetPlace';
+// const GENAI_SEARCH_TITLE = 'Discover PetPlace';
 const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
 
 const sampleQuestions = [
@@ -571,7 +571,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     // resultsBlock.appendChild(createLinksCard(response));
 
     // Remove the stop button container
-    const stopButtonContainer = document.querySelector('.stop-button-container');
+    const stopButtonContainer = document.querySelector('.gen-ai  .genai-search-container .stop-button-container');
     stopButtonContainer.classList.remove('show');
     // showRegenerateButton(resultsBlock);
 
