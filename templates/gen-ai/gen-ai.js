@@ -111,33 +111,33 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   });
   console.log('socket', socket);
   // Show stop button container and add a click event listener
-  // const stopButtonContainer = document.querySelector('.stop-button-container');
-  // stopButtonContainer.classList.add('show');
-  // let stopButton = stopButtonContainer.querySelector('.stop-button');
-  // removeAllEventListeners(stopButton);
-  // stopButton = stopButtonContainer.querySelector('.stop-button');
-  // stopButton.addEventListener('click', () => {
+  const stopButtonContainer = document.querySelector('.gen-ai .genai-search-container .stop-button-container');
+  stopButtonContainer.classList.add('show');
+  let stopButton = stopButtonContainer.querySelector('.stop-button');
+  removeAllEventListeners(stopButton);
+  stopButton = stopButtonContainer.querySelector('.stop-button');
+  stopButton.addEventListener('click', () => {
   //   // Close the WebSocket connection
-  //   socket.close();
+    socket.close();
 
-  //   // Remove the cursor animation element
-  //   const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
-  //   cursorAnimation.classList.add('hide');
+    // Remove the cursor animation element
+    const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
+    cursorAnimation.classList.add('hide');
 
-  //   // Remove the loading message element
-  //   const loadingMessage = resultsBlock.querySelector('.loading-message');
-  //   if (loadingMessage) {
-  //     resultsBlock.removeChild(loadingMessage);
-  //   }
+    // Remove the loading message element
+    const loadingMessage = resultsBlock.querySelector('.loading-message');
+    if (loadingMessage) {
+      resultsBlock.removeChild(loadingMessage);
+    }
 
-  //   // Remove the stop button container
-  //   stopButtonContainer.classList.remove('show');
+    // Remove the stop button container
+    stopButtonContainer.classList.remove('show');
 
-  //   const summaryContainer = resultsBlock.querySelector('.summary-columns');
-  //   if (!summaryContainer) {
-  //     // showRegenerateButton(resultsBlock);
-  //   }
-  // });
+    const summaryContainer = resultsBlock.querySelector('.summary-columns');
+    if (!summaryContainer) {
+      // showRegenerateButton(resultsBlock);
+    }
+  });
 };
 
 // Randomly select three questions from an array
@@ -155,126 +155,127 @@ const getRandomQuestions = (questions) => {
 
 const decorateSearch = () => {
   // Create the <main> element
-  const mainElement = document.createElement('div');
-  mainElement.setAttribute('id', 'search-main');
+  // const mainElement = document.createElement('div');
+  // mainElement.setAttribute('id', 'search-main');
 
   // Create the outer <div> element with class and data attributes
-  const outerDivElement = document.createElement('div');
-  outerDivElement.setAttribute('class', 'section genai-search-container');
-  outerDivElement.setAttribute('data-section-status', 'loaded');
+  // const outerDivElement = document.createElement('div');
+  // outerDivElement.setAttribute('class', 'section genai-search-container');
+  // outerDivElement.setAttribute('data-section-status', 'loaded');
 
-  // Create the inner <div> element with class attribute
-  const innerDivElement = document.createElement('div');
-  innerDivElement.setAttribute('class', 'default-content-wrapper');
+  // // Create the inner <div> element with class attribute
+  // const innerDivElement = document.createElement('div');
+  // innerDivElement.setAttribute('class', 'default-content-wrapper');
 
   // Create the <h1> element with id attribute and text content
-  const h1Element = document.createElement('h1');
-  h1Element.setAttribute('id', 'search');
-  const h1Text = document.createTextNode('Discover');
-  h1Element.appendChild(h1Text);
+  // const h1Element = document.createElement('h1');
+  // h1Element.setAttribute('id', 'search');
+  // const h1Text = document.createTextNode('Discover');
+  // h1Element.appendChild(h1Text);
 
-  const xhrLogo = new XMLHttpRequest();
-  xhrLogo.open('GET', `${window.hlx.codeBasePath}/icons/logo.svg`, true);
-  xhrLogo.onreadystatechange = function () {
-    if (xhrLogo.readyState === 4 && xhrLogo.status === 200) {
-      // On successful response, create and append the SVG element
-      const svgElement = document.createElement('svg');
-      svgElement.className = 'icon-logo';
-      svgElement.innerHTML = xhrLogo.responseText;
-      h1Element.insertAdjacentHTML('afterend', svgElement.outerHTML);
-    }
-  };
-  xhrLogo.send();
+  // const xhrLogo = new XMLHttpRequest();
+  // xhrLogo.open('GET', `${window.hlx.codeBasePath}/icons/logo.svg`, true);
+  // xhrLogo.onreadystatechange = function () {
+  //   if (xhrLogo.readyState === 4 && xhrLogo.status === 200) {
+  //     // On successful response, create and append the SVG element
+  //     const svgElement = document.createElement('svg');
+  //     svgElement.className = 'icon-logo';
+  //     svgElement.innerHTML = xhrLogo.responseText;
+  //     h1Element.insertAdjacentHTML('afterend', svgElement.outerHTML);
+  //   }
+  // };
+  // xhrLogo.send();
 
   // Append the <h1> element to the inner <div> element
-  innerDivElement.appendChild(h1Element);
+  // innerDivElement.appendChild(h1Element);
 
   // Create the second inner <div> element with class attribute
-  const secondInnerDivElement = document.createElement('div');
-  secondInnerDivElement.setAttribute('class', 'search-wrapper');
+  // const secondInnerDivElement = document.createElement('div');
+  // secondInnerDivElement.setAttribute('class', 'search-wrapper');
 
-  // Create the search block <div> element with data attributes
-  const searchDivElement = document.createElement('div');
-  searchDivElement.setAttribute('class', 'search block');
-  searchDivElement.setAttribute('data-block-name', 'search');
-  searchDivElement.setAttribute('data-block-status', 'loaded');
+  // // Create the search block <div> element with data attributes
+  // const searchDivElement = document.createElement('div');
+  // searchDivElement.setAttribute('class', 'search block');
+  // searchDivElement.setAttribute('data-block-name', 'search');
+  // searchDivElement.setAttribute('data-block-status', 'loaded');
 
   // Create the search box <div> element
-  const searchBoxDivElement = document.createElement('div');
-  searchBoxDivElement.setAttribute('class', 'search-box');
+  // const searchBoxDivElement = document.createElement('div');
+  // searchBoxDivElement.setAttribute('class', 'search-box');
 
   // Create the search input <input> element with id and placeholder attributes
-  const searchInput = document.createElement('input');
-  searchInput.setAttribute('id', 'search-box');
-  searchInput.setAttribute('type', 'text');
-  searchInput.setAttribute('placeholder', 'Ask a question...');
+  // const searchInput = document.createElement('input');
+  // searchInput.setAttribute('id', 'search-box');
+  // searchInput.setAttribute('type', 'text');
+  // searchInput.setAttribute('placeholder', 'Ask a question...');
 
   // Create clear button <button> element with id and image element
-  const clearButton = document.createElement('button');
-  clearButton.setAttribute('id', 'clearButton');
-  clearButton.setAttribute('type', 'button');
-  clearButton.innerHTML = '&#10005;';
+  // const clearButton = document.createElement('button');
+  // clearButton.setAttribute('id', 'clearButton');
+  // clearButton.setAttribute('type', 'button');
+  // clearButton.innerHTML = '&#10005;';
 
-  const verticalBar = document.createElement('span');
-  verticalBar.setAttribute('id', 'vertical-bar');
-  verticalBar.setAttribute('class', 'vertical-bar');
+  // const verticalBar = document.createElement('span');
+  // verticalBar.setAttribute('id', 'vertical-bar');
+  // verticalBar.setAttribute('class', 'vertical-bar');
 
-  searchInput.addEventListener('input', () => {
-    if (searchInput.value.trim() !== '') {
-      clearButton.classList.add('show');
-      verticalBar.classList.add('show');
-    } else {
-      clearButton.classList.remove('show');
-      verticalBar.classList.remove('show');
-    }
-  });
+  // searchInput.addEventListener('input', () => {
+  //   if (searchInput.value.trim() !== '') {
+  //     clearButton.classList.add('show');
+  //     verticalBar.classList.add('show');
+  //   } else {
+  //     clearButton.classList.remove('show');
+  //     verticalBar.classList.remove('show');
+  //   }
+  // });
 
-  searchInput.addEventListener('focus', () => {
-    if (searchInput.value.trim() !== '') {
-      clearButton.classList.add('show');
-      verticalBar.classList.add('show');
-    }
-  });
+  // searchInput.addEventListener('focus', () => {
+  //   if (searchInput.value.trim() !== '') {
+  //     clearButton.classList.add('show');
+  //     verticalBar.classList.add('show');
+  //   }
+  // });
 
-  clearButton.addEventListener('click', () => {
-    searchInput.value = '';
-    searchInput.focus();
-    clearButton.classList.remove('show');
-    verticalBar.classList.remove('show');
-  });
+  // clearButton.addEventListener('click', () => {
+  //   searchInput.value = '';
+  //   searchInput.focus();
+  //   clearButton.classList.remove('show');
+  //   verticalBar.classList.remove('show');
+  // });
 
   // Create the search button <button> element with id and image element
-  const searchButton = document.createElement('button');
-  searchButton.setAttribute('id', 'search-button');
-  searchButton.setAttribute('type', 'button');
+  // const searchButton = document.createElement('button');
+  // searchButton.setAttribute('id', 'search-button');
+  // searchButton.setAttribute('type', 'button');
   // const imageElement = document.createElement('img');
   // imageElement.src = `${window.hlx.codeBasePath}/icons/search.svg`;
   // imageElement.alt = 'Search';
   // imageElement.className = 'icon-search';
   // Create an AJAX request to fetch the SVG file
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      // On successful response, create and append the SVG element
-      const svgElement = document.createElement('svg');
-      svgElement.className = 'icon-search';
-      svgElement.innerHTML = xhr.responseText;
-      searchButton.appendChild(svgElement);
-    }
-  };
-  xhr.send();
+  // const xhr = new XMLHttpRequest();
+  // xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
+  // xhr.onreadystatechange = function () {
+  //   if (xhr.readyState === 4 && xhr.status === 200) {
+  //     // On successful response, create and append the SVG element
+  //     const svgElement = document.createElement('svg');
+  //     svgElement.className = 'icon-search';
+  //     svgElement.innerHTML = xhr.responseText;
+  //     searchButton.appendChild(svgElement);
+  //   }
+  // };
+  // xhr.send();
   // searchButton.appendChild(imageElement);
   // Append the search input <input> element to the search box <div> element
-  searchBoxDivElement.appendChild(searchInput);
-  searchBoxDivElement.appendChild(clearButton);
+  // searchBoxDivElement.appendChild(searchInput);
+  // searchBoxDivElement.appendChild(clearButton);
   console.log('clear button');
-  searchBoxDivElement.appendChild(verticalBar);
-  searchBoxDivElement.appendChild(searchButton);
-
+  // searchBoxDivElement.appendChild(verticalBar);
+  // searchBoxDivElement.appendChild(searchButton);
+  // const searchContainer = document.querySelector('.gen-ai .genai-search-container .default-content-wrapper');
   // Append the search box <div> element to the search block <div> element
-  searchDivElement.appendChild(searchBoxDivElement);
-
+  // searchDivElement.appendChild(searchBoxDivElement);
+  // const searchDivElement = document.createElement('div');
+  // searchDivElement.className = 'search-control';
   // Create the stop generating button <button> element
   const stopButtonContainer = document.createElement('div');
   stopButtonContainer.className = 'stop-button-container';
@@ -316,8 +317,8 @@ const decorateSearch = () => {
   regenerateButtonContainer.appendChild(regenerateButton);
 
   // Append the stop generating button <button> element to the search block <div> element
-  searchDivElement.appendChild(stopButtonContainer);
-  searchDivElement.appendChild(regenerateButtonContainer);
+  // searchContainer.appendChild(stopButtonContainer);
+  // searchContainer.appendChild(regenerateButtonContainer);
 
   // Create the search results <div> element with am-region attribute
   const searchResultsDivElement = document.createElement('div');
@@ -325,20 +326,20 @@ const decorateSearch = () => {
   searchResultsDivElement.setAttribute('am-region', 'Search');
 
   // Append the search results <div> element to the search block <div> element
-  searchDivElement.appendChild(searchResultsDivElement);
-
+  // searchDivElement.appendChild(searchResultsDivElement);
+  return stopButtonContainer;
   // Append the inner <div> elements and search block <div> element to the outer <div> element
-  outerDivElement.appendChild(innerDivElement);
-  outerDivElement.appendChild(secondInnerDivElement);
-  secondInnerDivElement.appendChild(searchDivElement);
+  // outerDivElement.appendChild(innerDivElement);
+  // outerDivElement.appendChild(secondInnerDivElement);
+  // secondInnerDivElement.appendChild(searchDivElement);
 
   // Append the outer <div> element to the <main> element
-  mainElement.appendChild(outerDivElement);
+  // mainElement.appendChild(outerDivElement);
 
   // Append the <main> element to the body of the document
-  document.body.appendChild(mainElement);
+  // document.body.appendChild(mainElement);
 
-  return mainElement;
+  // return mainElement;
 };
 
 function getCurrentSlideIndex($block) {
@@ -492,14 +493,13 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     cursorAnimation.classList.add('hide');
 
     if (response.links?.length > 0) {
-      const $slideShowContainer = document.querySelector('.gen-ai .slideshow');
+      const $slideShowContainer = document.querySelector('.gen-ai .genai-search-container .slideshow');
 
       const $slidesContainer = document.createElement('div');
 
       $slidesContainer.classList.add('slides-container');
       const slides = [];
       response.links?.forEach((link) => {
-
         const linkContainer = document.createElement('div');
         linkContainer.className = 'slide';
         const slideContent = document.createElement('a');
@@ -522,7 +522,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
       $slideShowContainer.prepend($slidesContainer);
 
-      const $sliderNav = document.createElement('div');
+      // const $sliderNav = document.createElement('div');
       // $sliderNav.classList.add('slideshow-navigation');
       const $sliderPrev = document.createElement('div');
       $sliderPrev.innerHTML = '<';
@@ -571,8 +571,8 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     // resultsBlock.appendChild(createLinksCard(response));
 
     // Remove the stop button container
-    // const stopButtonContainer = document.querySelector('.stop-button-container');
-    // stopButtonContainer.classList.remove('show');
+    const stopButtonContainer = document.querySelector('.stop-button-container');
+    stopButtonContainer.classList.remove('show');
     // showRegenerateButton(resultsBlock);
 
     // Masonry layout
@@ -762,7 +762,7 @@ export async function loadLazy(main) {
   const contentDiv = document.createElement('div');
   const defaultContentWrapper = main.querySelector('.default-content-wrapper');
   const heroContainer = main.querySelector('.section.hero-container');
-  defaultContentWrapper.parentElement.classList.add('hero-container');
+  // defaultContentWrapper.parentElement.classList.add('hero-container');
   hero.className = 'hero-wrapper';
   imgDiv.className = 'img-div';
   contentDiv.classList = 'text-div';
@@ -792,6 +792,7 @@ export async function loadLazy(main) {
   const searchResultsDivElement = document.createElement('div');
   searchResultsDivElement.setAttribute('class', 'search-results');
   searchResultsDivElement.setAttribute('am-region', 'Search');
+  searchResultsDivElement.appendChild(decorateSearch());
   defaultContentWrapper.appendChild(searchResultsDivElement);
 
   const usp = new URLSearchParams(window.location.search);
@@ -799,6 +800,8 @@ export async function loadLazy(main) {
   console.log('searchBox', searchQuery);
   if (searchQuery) {
     displaySearchResults(searchQuery, searchResultsDivElement);
+  } else {
+    console.log('decorate search?');
   }
 
   // console.log('hero', hero);
