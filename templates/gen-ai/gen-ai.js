@@ -418,10 +418,11 @@ function initializeTouch($block, slideshowInfo) {
   $block.addEventListener('click', (e) => {
     const index = getCurrentSlideIndex($slidesContainer);
     if (e.target.matches('.slideshow-prev') && !e.target.matches('.hide')) {
-      const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
+      const nextIndex = index - 1;
       document.querySelector('.slideshow-next')?.classList.remove('hide');
       if (nextIndex === 0) {
         document.querySelector('.slideshow-prev')?.classList.add('hide');
+        $slidesContainer.setAttribute('style', 'transform:translateX(0px)');
       } else {
         document.querySelector('.slideshow-prev')?.classList.remove('hide');
       }
@@ -522,21 +523,17 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
       $slideShowContainer.prepend($slidesContainer);
 
-      // const $sliderNav = document.createElement('div');
-      // $sliderNav.classList.add('slideshow-navigation');
       const $sliderPrev = document.createElement('div');
-      $sliderPrev.innerHTML = '<';
+      $sliderPrev.innerHTML = '&#60;';
       $sliderPrev.className = 'slideshow-prev hide';
       $slideShowContainer.appendChild($sliderPrev);
       const $sliderNext = document.createElement('div');
-      $sliderNext.innerHTML = '>';
+      $sliderNext.innerHTML = '&#62;';
       $sliderNext.className = 'slideshow-next';
       $slideShowContainer.appendChild($sliderNext);
-      // $slideShowContainer.appendChild($sliderNav);
-      // const navList = document.querySelector('.slideshow-navigation');
+
 
       $slideShowContainer.addEventListener(Events.SLIDE_CHANGED, (e) => {
-        // console.log('slide changed', e.detail);
         updateSlide(e.detail.currentIndex, e.detail.newIndex, $slideShowContainer);
       });
 
