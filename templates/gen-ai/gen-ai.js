@@ -359,14 +359,9 @@ function enableChildLinks($slide) {
 }
 function updateSlide(currentIndex, nextIndex, $block) {
   const $slidesContainer = $block.querySelector('.slides-container');
-  // const $tabBar = $block.querySelector('.tab-bar-container');
 
   disableChildLinks($slidesContainer.children[currentIndex]);
   enableChildLinks($slidesContainer.children[nextIndex]);
-
-  // $tabBar.querySelector('ol').children[currentIndex].querySelector('span').className = 'icon icon-circle';
-  // $tabBar.querySelector('ol').children[nextIndex].querySelector('span').className = 'icon icon-circle-fill';
-  // decorateIcons($tabBar.querySelector('ol'));
 
   $slidesContainer.style.transform = `translateX(-${nextIndex * 260}px)`;
 }
@@ -394,7 +389,6 @@ function initializeTouch($block, slideshowInfo) {
     diffX = currentX - startX;
 
     const index = getCurrentSlideIndex($slidesContainer);
-    console.log('index', index, diffX);
     $slidesContainer.style.transform = `translateX(calc(-${index} * 260px))`;
   }, { passive: true });
 
@@ -451,9 +445,7 @@ const createStreamingSearchCard = (resultsBlock) => {
 };
 
 const updateStreamingSearchCard = (resultsBlock, response, socket) => {
-  // console.log('updateStreamingSearchCard', resultsBlock, response, socket);
   const article = resultsBlock.querySelector('.search-card article');
-  // const articleLinks = resultsBlock.querySelector('.search-card .slideshow');
 
   // Create the div if it doesn't exist
   if (!article && response.type === 'streaming') {
@@ -503,16 +495,27 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       response.links?.forEach((link) => {
         const linkContainer = document.createElement('div');
         linkContainer.className = 'slide';
+
         const slideContent = document.createElement('a');
         slideContent.className = 'text-div';
         slideContent.href = link.url;
         slideContent.target = '_blank';
-        const slideTitle = document.createElement('h4');
-        const slideText = document.createElement('p');
-        slideTitle.textContent = link.name;
-        slideText.textContent = link.description;
 
-        slideContent.appendChild(slideTitle);
+        let { hostname } = new URL(slideContent.href);
+        if (hostname.indexOf('www.') > -1) {
+          hostname = hostname.split('www.')[1];
+        }
+
+        const slideDomain = document.createElement('h4');
+        slideDomain.textContent = hostname;
+        const slideText = document.createElement('p');
+        const slideTitle = document.createElement('strong');
+        slideTitle.textContent = decodeURI(link.name);
+        slideText.appendChild(slideTitle);
+        const slideDescription = document.createTextNode(link.description);
+        slideText.appendChild(slideDescription);
+
+        slideContent.appendChild(slideDomain);
         slideContent.appendChild(slideText);
         linkContainer.appendChild(slideContent);
         $slidesContainer.appendChild(linkContainer);
