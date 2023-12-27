@@ -65,8 +65,10 @@ export async function loadLazy() {
       async: '',
     });
   }
+}
 
-  // calling gtm in lazy phase
+// calling gtm in delayed phase
+export async function loadDelayed() {
   gtmScript();
   noscriptBody();
 
