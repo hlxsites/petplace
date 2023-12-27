@@ -208,7 +208,8 @@ const decorateSearch = () => {
   // searchInput.setAttribute('id', 'search-box');
   // searchInput.setAttribute('type', 'text');
   // searchInput.setAttribute('placeholder', 'Ask a question...');
-
+  // const searchInput = document.querySelector('#genai-search-box');
+  // console.log('searchInput', searchInput)
   // Create clear button <button> element with id and image element
   // const clearButton = document.createElement('button');
   // clearButton.setAttribute('id', 'clearButton');
@@ -508,8 +509,11 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
         const slideDomain = document.createElement('h4');
         slideDomain.textContent = hostname;
+
         const slideText = document.createElement('p');
+
         const slideTitle = document.createElement('strong');
+  
         slideTitle.textContent = decodeURI(link.name);
         slideText.appendChild(slideTitle);
         const slideDescription = document.createTextNode(link.description);

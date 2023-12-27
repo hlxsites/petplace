@@ -25,6 +25,38 @@ export default async function decorate(block) {
   input.id = 'genai-search-box';
   input.placeholder = searchPlaceholder;
 
+
+  const clearButton = document.createElement('button');
+  clearButton.setAttribute('id', 'clearButton');
+  clearButton.setAttribute('type', 'button');
+  clearButton.innerHTML = '&#10005;';
+
+
+  input.addEventListener('input', () => {
+    if (input.value.trim() !== '') {
+      clearButton.classList.add('show');
+    } else {
+      clearButton.classList.remove('show');
+    }
+  });
+
+  input.addEventListener('focus', () => {
+    if (input.value.trim() !== '') {
+      clearButton.classList.add('show');
+    }
+  });
+  input.addEventListener('focusout', () => {
+    clearButton.classList.remove('show');
+  });
+
+  clearButton.addEventListener('click', () => {
+    input.value = '';
+    input.focus();
+    clearButton.classList.remove('show');
+  });
+
+  form.append(clearButton);
+
   form.append(input);
 
   const button = document.createElement('button');
