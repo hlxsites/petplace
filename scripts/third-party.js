@@ -29,7 +29,38 @@ async function gtagLoad() {
   }
 }
 
-window.dataLayer = window.dataLayer || [];
+function gtmScript() {
+  /* eslint-disable */
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    let f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != 'dataLayer' ? '&l=' + l : '';
+
+    j.async = true;
+    j.type = 'text/javascript';
+    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', GTM_ID);
+  /* eslint-enable */
+}
+
+function noscriptBody() {
+  /* eslint-disable */
+  let b = document.body.firstChild,
+    ns = document.createElement('noscript'),
+    fr = document.createElement('iframe');
+
+  fr.src = `https://www.googletagmanager.com/ns.html?id=${GTM_ID}`;
+  fr.height = 0;
+  fr.width = 0;
+  fr.style = 'display:none;visibility:hidden;';
+
+  ns.appendChild(fr);
+  b.parentNode.insertBefore(ns, b);
+  /* eslint-enable */
+}
 
 export async function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
