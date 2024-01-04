@@ -23,11 +23,11 @@
   border-bottom: 2px solid var(--highlight-color);
 }
 
-.home-page .centered h2 {
+.home-page .centered :is(h1, h2) {
   border: none;
 }
 
-.home-page .centered h2::after {
+.home-page .centered :is(h1, h2)::after {
   display: none;
 }
 
@@ -74,6 +74,50 @@
 
 .home-page .columns > div > div:first-child {
   flex: 1.5;
+}
+
+.section.search-container :is(h1, h2) {
+  position: relative;
+  display: inline-block;
+  top: -60px;
+  background-color: var(--text-color-inverted);
+  border-radius: 40px;
+  padding: 40px 30px 0;
+  margin: 0 ;
+  bottom: 60px;
+  width: 60%;
+  color: inherit;
+  font-size: 2.25em;
+}
+
+.section.search-container :is(h1, h2)::before,
+.section.search-container :is(h1, h2)::after {
+  --radius: 10px;
+
+  content: '';
+  position: absolute;
+  width: calc(2 * var(--radius));
+  height: var(--radius);
+  top: calc(28px - var(--radius));
+  z-index: 10;
+  left: calc(5px - 2 * var(--radius));
+  box-shadow: 0.5rem 0.25rem 0 0 white;
+  border-radius: 0 0 var(--radius) 0;
+}
+
+.section.search-container :is(h1, h2)::after {
+  display: block;
+  right: calc(5px - 2 * var(--radius));
+  left: initial;
+  border-bottom: none;
+  min-width: 0;
+  box-shadow: -0.5rem 0.25rem 0 0 white;
+  border-radius: 0 0 0 var(--radius);
+}
+
+.section.search-container p {
+  margin-top: -40px;
+  max-width: 726px;
 }
 
 @media (min-width: 600px) {

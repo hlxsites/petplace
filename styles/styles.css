@@ -189,7 +189,7 @@ h5 { font-size: var(--heading-font-size-s) }
 
 h6 { font-size: var(--heading-font-size-xs) }
 
-:is(h2, h3, h4, h5, h6) em {
+:is(h1, h2, h3, h4, h5, h6) em {
   color: var(--highlight-color);
   font-style: normal;
 }
