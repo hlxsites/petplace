@@ -111,7 +111,7 @@
 }
 
 @media (min-width: 600px) {
-    .section.search-container h1 {
+    .section.search-container :is(h1, h2) {
         width: 80%;
     }
 
@@ -145,7 +145,7 @@
 }
 
 @media (min-width: 768px) {
-    .section.search-container h1 {
+    .section.search-container :is(h1, h2) {
         width: initial;
     }
 }

@@ -114,9 +114,17 @@ main .slideshow-container {
         padding-left: 25px;
     }
 
-    .slide .text-div h2 {
+    .slide .text-div :is(h1, h2) {
         max-width: 50%;
         text-align: left;
+        font-size: var(--heading-font-size-xxl);
+        color: var(--text-color-inverted);
+        line-height: 1.1;
+        border: none;
+    }
+
+    .slide .text-div :is(h1, h2)::after {
+        display: none;
     }
 
     .slides-container .slide .button {
