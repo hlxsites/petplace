@@ -138,34 +138,39 @@ export default async function decorate(block) {
 
   // Defer ad configuration until the block is rendered and we have a valid
   // width to check against
-  window.requestAnimationFrame(() => {
-    const sizes = getAdSizes(block, data);
-    if (!sizes.length) {
+  new MutationObserver(() => {
+    if (block.dataset.blockStatus !== 'loaded') {
       return;
     }
-    block.style.width = `${sizes[0][0]}px`;
-    block.style.minHeight = `${sizes[0][1]}px`;
-    window.googletag.cmd.push(() => {
-      const adSlot = window.googletag
-        .defineSlot(data.Path, sizes, id)
-        .addService(window.googletag.pubads());
-
-      const targets = getAdTargets(data);
-      if (targets) {
-        adSlot.setTargeting(...targets);
+    window.requestAnimationFrame(() => {
+      const sizes = getAdSizes(block, data);
+      if (!sizes.length) {
+        return;
       }
-    });
-    // Enable SRA and services.
-    window.googletag.cmd.push(() => {
-      window.googletag.pubads().enableSingleRequest();
-      window.googletag.pubads().enableLazyLoad();
-      window.googletag.enableServices();
-    });
+      block.style.width = `${sizes[0][0]}px`;
+      block.style.minHeight = `${sizes[0][1]}px`;
+      window.googletag.cmd.push(() => {
+        const adSlot = window.googletag
+          .defineSlot(data.Path, sizes, id)
+          .addService(window.googletag.pubads());
 
-    window.googletag.cmd.push(() => {
-      window.googletag.display(block.id);
+        const targets = getAdTargets(data);
+        if (targets) {
+          adSlot.setTargeting(...targets);
+        }
+      });
+      // Enable SRA and services.
+      window.googletag.cmd.push(() => {
+        window.googletag.pubads().enableSingleRequest();
+        window.googletag.pubads().enableLazyLoad();
+        window.googletag.enableServices();
+      });
+
+      window.googletag.cmd.push(() => {
+        window.googletag.display(block.id);
+      });
     });
-  });
+  }).observe(block, { attributes: true, attributeFilter: ['data-block-status'] });
 
   loadedObserver.observe(block, { attributes: true });
 }
