@@ -138,8 +138,8 @@ export default async function decorate(block) {
 
   // Defer ad configuration until the block is rendered and we have a valid
   // width to check against
-  new MutationObserver(() => {
-    if (block.dataset.blockStatus !== 'loaded') {
+  new MutationObserver((entries) => {
+    if (entries[0].target.dataset.sectionStatus !== 'loaded') {
       return;
     }
     window.requestAnimationFrame(() => {
@@ -170,7 +170,7 @@ export default async function decorate(block) {
         window.googletag.display(block.id);
       });
     });
-  }).observe(block, { attributes: true, attributeFilter: ['data-block-status'] });
+  }).observe(block.closest('.section'), { attributes: true, attributeFilter: ['data-section-status'] });
 
   loadedObserver.observe(block, { attributes: true });
 }
