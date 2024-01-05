@@ -26,6 +26,12 @@ main .slideshow-container {
     position: relative;
 }
 
+.slides-container .slide h2 {
+    color: white;
+    border: none;
+    font-size: 2.75rem;
+}
+
 .slides-container .slide .button {
     padding: .375rem .875rem;
     font-family: var(--heading-font-family);
@@ -108,7 +114,7 @@ main .slideshow-container {
         padding-left: 25px;
     }
 
-    .slide .text-div h1 {
+    .slide .text-div h2 {
         max-width: 50%;
         text-align: left;
     }
