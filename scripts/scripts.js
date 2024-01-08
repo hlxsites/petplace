@@ -42,6 +42,7 @@ window.hlx.templates.add([
   '/templates/breed-index',
   '/templates/breed-page',
   '/templates/category-index',
+  '/templates/gen-ai',
   '/templates/home-page/',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
