@@ -10,7 +10,7 @@ import {
 
 // const GENAI_SEARCH_TITLE = 'Discover PetPlace';
 const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
-console.log('gen-ai-template js');
+
 // const sampleQuestions = [
 //   "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
 //   'Why Dog Urine Odor Comes Back and How to Stop It',
@@ -472,8 +472,6 @@ async function displaySearchResults(query, resultsBlock) {
 }
 
 export async function loadEager() {
-  console.log('loadEager');
-
   // if (isTrueSearch) {
   //   createTemplateBlock(main, 'pagination');
   //   main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
@@ -484,7 +482,6 @@ export async function loadEager() {
 }
 
 export async function loadLazy(main) {
-  console.log('load lazy');
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const contentDiv = document.createElement('div');

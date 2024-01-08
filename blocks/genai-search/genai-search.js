@@ -45,6 +45,9 @@ export default async function decorate(block) {
       clearButton.classList.add('show');
     }
   });
+  input.addEventListener('focusout', () => {
+    clearButton.classList.remove('show');
+  });
 
   clearButton.addEventListener('click', () => {
     input.value = '';
