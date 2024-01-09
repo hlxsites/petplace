@@ -76,6 +76,7 @@
   flex: 1.5;
 }
 
+.section.genai-search-container :is(h1, h2),
 .section.search-container :is(h1, h2) {
   position: relative;
   display: inline-block;

@@ -63,7 +63,7 @@ export default async function decorate(block) {
   const button = document.createElement('button');
   button.type = 'submit';
   button.className = 'search-button';
-  // button.textContent = searchButtonText;
+  button.textContent = searchButtonText;
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
   xhr.onreadystatechange = function () {
