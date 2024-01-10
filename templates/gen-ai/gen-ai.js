@@ -359,9 +359,10 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
         const slideText = document.createElement('p');
 
         const slideTitle = document.createElement('strong');
-  
-        slideTitle.textContent = decodeURI(link.name);
-        slideText.appendChild(slideTitle);
+        if (link.name) {
+          slideTitle.textContent = decodeURI(link.name);
+          slideText.appendChild(slideTitle);
+        }
         const slideDescription = document.createTextNode(link.description);
         slideText.appendChild(slideDescription);
 
@@ -421,6 +422,34 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   }
 };
 
+function displayInsuranceCTA(resultsBlock) {
+  const insuranceCtaCopy = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness, Click to learn more.';
+  const insuranceCtaPath = document.head.querySelector('insurance-page-path')?.content || '/pet-insurance';
+
+  const resultContainer = document.createElement('div');
+  resultContainer.className = 'insurance-card';
+  resultContainer.innerHTML = `<div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div>`;
+  
+  const ctaContainer = document.createElement('div');
+  ctaContainer.className = 'cta-container';
+  
+  const ctaTitle = document.createElement('h4');
+  ctaTitle.textContent = 'Petplace.com/pet-insurance';
+
+  const ctaText = document.createElement('p');
+  ctaText.textContent = insuranceCtaCopy;
+
+  ctaContainer.appendChild(ctaTitle);
+  ctaContainer.appendChild(ctaText);
+  resultContainer.appendChild(ctaContainer);
+  resultsBlock.appendChild(resultContainer);
+
+  ctaContainer.addEventListener('click', () => {
+    const petInsurancePath = `${window.location.protocol}//${window.location.host}${insuranceCtaPath}`;
+    window.location.href = petInsurancePath;
+  });
+}
+
 async function displaySearchResults(query, resultsBlock) {
   if (isRequestInProgress) {
     // A request is already in progress, so do not proceed.
@@ -443,7 +472,6 @@ async function displaySearchResults(query, resultsBlock) {
 
   const results = await fetchStreamingResults('petplace4', query, resultsBlock);
   isRequestInProgress = false;
-
 
   // Get search-card-container elements
   const cardContainer = resultsBlock.querySelector('.search-card');
@@ -520,7 +548,11 @@ export async function loadLazy(main) {
   const usp = new URLSearchParams(window.location.search);
   const searchQuery = usp.get('q') || '';
   if (searchQuery) {
-    displaySearchResults(searchQuery, searchResultsDivElement);
+    if (searchQuery.indexOf('insurance') === -1) {
+      displaySearchResults(searchQuery, searchResultsDivElement);
+    } else {
+      displayInsuranceCTA(searchResultsDivElement);
+    }
   }
 
   // console.log('hero', hero);
