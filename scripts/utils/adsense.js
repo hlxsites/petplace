@@ -2,7 +2,7 @@ window.googletag ||= { cmd: [] };
 
 const mappingHelper = (adLoc) => {
   // Ad Unit size mapping
-  const mapping_side_desktop = googletag
+  const mappingSideDesktop = window.googletag
     .sizeMapping()
     .addSize([0, 0], [])
     .addSize(
@@ -10,23 +10,23 @@ const mappingHelper = (adLoc) => {
       [
         [160, 600],
         [300, 600],
-      ]
+      ],
     )
     .build();
 
-  const mapping_top_mobile = googletag
+  const mappingTopMobile = window.googletag
     .sizeMapping()
     .addSize(
       [0, 0],
       [
         [320, 50],
         [320, 100],
-      ]
+      ],
     )
     .addSize([980, 200], [])
     .build();
 
-  const mapping_middle_mobile = googletag
+  const mappingMiddleMobile = window.googletag
     .sizeMapping()
     .addSize(
       [0, 0],
@@ -35,12 +35,12 @@ const mappingHelper = (adLoc) => {
         [320, 100],
         [300, 250],
         [336, 280],
-      ]
+      ],
     )
     .addSize([980, 200], [])
     .build();
 
-  const mapping_leaderboard = googletag
+  const mappingLeaderboard = window.googletag
     .sizeMapping()
     .addSize(
       [0, 0],
@@ -49,7 +49,7 @@ const mappingHelper = (adLoc) => {
         [320, 100],
         [300, 250],
         [336, 280],
-      ]
+      ],
     )
     .addSize(
       [980, 200],
@@ -57,16 +57,14 @@ const mappingHelper = (adLoc) => {
         [728, 90],
         [970, 90],
         [970, 250],
-      ]
+      ],
     )
     .build();
 
-  console.log('adloc', adLoc);
-
-  if (adLoc.includes('top')) return mapping_top_mobile;
-  if (adLoc.includes('side')) return mapping_side_desktop;
-  if (adLoc.includes('middle')) return mapping_middle_mobile;
-  if (adLoc.includes('bottom')) return mapping_leaderboard;
+  if (adLoc.includes('top')) return mappingTopMobile;
+  if (adLoc.includes('side')) return mappingSideDesktop;
+  if (adLoc.includes('middle')) return mappingMiddleMobile;
+  if (adLoc.includes('bottom')) return mappingLeaderboard;
 };
 
 const sizingArr = (adLoc) => {
@@ -83,9 +81,9 @@ const sizingArr = (adLoc) => {
 
 // script for display (loop)
 const gtagDisplay = (argsArr) => {
-  googletag.cmd.push(function () {
+  window.googletag.cmd.push(() => {
     for (let i = 0; i < argsArr.length; i++) {
-      googletag.display(argsArr[i]);
+      window.googletag.display(argsArr[i]);
     }
   });
 };
@@ -126,58 +124,60 @@ export const adsDefineSlot = (...args) => {
   const REFRESH_VALUE = 'true';
   const lastItemIndex = args.length - 1;
 
-  googletag.cmd.push(function () {
+  window.googletag.cmd.push(() => {
     // var dataLayer = document.DataLayer
     // var articleValue; TRY CAPTURING THIS VALUE FROM THE DATALAYER BEFORE ASSIGN THE VALUE FOR THE VARIABLE
 
     for (let i = 0; i < lastItemIndex; i++) {
-      googletag
+      window.googletag
         .defineSlot(
           `/1004510/petplace_web/${args[i]}`,
           sizingArr(args[i]),
-          args[i]
+          args[i],
         )
         .defineSizeMapping(mappingHelper(args[i]))
         .setTargeting(REFRESH_KEY, REFRESH_VALUE)
         .setTargeting('refreshed_slot', 'false')
-        .addService(googletag.pubads());
+        .addService(window.googletag.pubads());
     }
 
-    anchor_slot = googletag.defineOutOfPageSlot(
+    anchor_slot = window.googletag.defineOutOfPageSlot(
       `/1004510/petplace_web/${args[lastItemIndex]}`,
-      googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR
+      window.googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR,
     );
 
     if (anchor_slot) {
       anchor_slot
         .setTargeting(REFRESH_KEY, REFRESH_VALUE)
         .setTargeting('refreshed_slot', 'false')
-        .addService(googletag.pubads());
+        .addService(window.googletag.pubads());
     } else console.log('Anchor not loaded');
 
     // Refresh subroutine
     const SECONDS_TO_WAIT_AFTER_VIEWABILITY = 30;
-    googletag.pubads().addEventListener('impressionViewable', function (event) {
-      const slot = event.slot;
-      if (slot.getTargeting(REFRESH_KEY).indexOf(REFRESH_VALUE) > -1) {
-        slot.setTargeting('refreshed_slot', 'true');
-        setTimeout(function () {
-          googletag.pubads().refresh([slot]);
-        }, SECONDS_TO_WAIT_AFTER_VIEWABILITY * 1000);
-      }
-    });
+    window.googletag
+      .pubads()
+      .addEventListener('impressionViewable', function (event) {
+        const slot = event.slot;
+        if (slot.getTargeting(REFRESH_KEY).indexOf(REFRESH_VALUE) > -1) {
+          slot.setTargeting('refreshed_slot', 'true');
+          setTimeout(() => {
+            window.googletag.pubads().refresh([slot]);
+          }, SECONDS_TO_WAIT_AFTER_VIEWABILITY * 1000);
+        }
+      });
 
     // Lazy loading subroutine
-    googletag.pubads().enableLazyLoad({
+    window.googletag.pubads().enableLazyLoad({
       fetchMarginPercent: 100,
       renderMarginPercent: 100,
       mobileScaling: 2.0,
     });
 
-    googletag.pubads().set('page_url', 'https://www.petplace.com');
-    //googletag.pubads().setTargeting('article', articleValue);
-    googletag.pubads().setCentering(true);
-    googletag.enableServices();
+    window.googletag.pubads().set('page_url', 'https://www.petplace.com');
+    //window.googletag.pubads().setTargeting('article', articleValue);
+    window.googletag.pubads().setCentering(true);
+    window.googletag.enableServices();
   });
 
   // after the definitions
