@@ -1,5 +1,9 @@
 import ffetch from '../../scripts/ffetch.js';
-import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import {
+  buildBlock,
+  createOptimizedPicture,
+  toClassName,
+} from '../../scripts/lib-franklin.js';
 import {
   getCategories,
   getCategory,
@@ -7,6 +11,7 @@ import {
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
+import { adsDefineSlot, adsDivCreator } from '../../scripts/utils/adsense.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 /**
@@ -225,4 +230,13 @@ export async function loadLazy() {
   //     renderArticles(getArticles());
   //   });
   // }
+}
+
+// top, bottom, anchor
+// (middle to come later)
+export async function loadDelayed() {
+  adsDivCreator('category_top');
+  adsDivCreator('category_bottom');
+
+  adsDefineSlot('category_top', 'category_bottom', 'category_anchor');
 }
