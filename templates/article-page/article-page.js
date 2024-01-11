@@ -10,6 +10,7 @@ import {
   getCategories,
   getCategory,
 } from '../../scripts/scripts.js';
+import { adsDefineSlot, adsDivCreator } from '../../scripts/utils/adsense.js';
 
 export async function getCategoryByKey(key, value) {
   const categories = await getCategories();
@@ -211,4 +212,13 @@ export async function loadLazy(document) {
   decorateBlock(breadcrumb);
   await loadBlock(breadcrumb);
   breadcrumb.style.visibility = '';
+}
+
+// top, bottom, anchor
+// (middle + side later)
+export async function loadDelayed() {
+  adsDivCreator('article_top');
+  adsDivCreator('article_bottom');
+
+  adsDefineSlot('article_top', 'article_bottom', 'article_anchor');
 }
