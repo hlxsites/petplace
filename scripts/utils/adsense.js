@@ -65,6 +65,8 @@ const mappingHelper = (adLoc) => {
   if (adLoc.includes('side')) return mappingSideDesktop;
   if (adLoc.includes('middle')) return mappingMiddleMobile;
   if (adLoc.includes('bottom')) return mappingLeaderboard;
+
+  return null;
 };
 
 const sizingArr = (adLoc) => {
@@ -82,9 +84,9 @@ const sizingArr = (adLoc) => {
 // script for display (loop)
 const gtagDisplay = (argsArr) => {
   window.googletag.cmd.push(() => {
-    for (let i = 0; i < argsArr.length; i++) {
-      window.googletag.display(argsArr[i]);
-    }
+    argsArr.forEach((arg) => {
+      window.googletag.display(arg);
+    });
   });
 };
 
@@ -119,15 +121,18 @@ export const adsDivCreator = (adLoc) => {
 
 // google tag for adsense
 export const adsDefineSlot = (...args) => {
-  let anchor_slot;
+  let anchorSlot;
   const REFRESH_KEY = 'refresh';
   const REFRESH_VALUE = 'true';
   const lastItemIndex = args.length - 1;
 
   window.googletag.cmd.push(() => {
+    // TODO -> this will come in later
     // var dataLayer = document.DataLayer
-    // var articleValue; TRY CAPTURING THIS VALUE FROM THE DATALAYER BEFORE ASSIGN THE VALUE FOR THE VARIABLE
+    // var articleValue;
+    // TRY CAPTURING THIS VALUE FROM DATALAYER BEFORE ASSIGN VARIABLE
 
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < lastItemIndex; i++) {
       window.googletag
         .defineSlot(
@@ -141,13 +146,13 @@ export const adsDefineSlot = (...args) => {
         .addService(window.googletag.pubads());
     }
 
-    anchor_slot = window.googletag.defineOutOfPageSlot(
+    anchorSlot = window.googletag.defineOutOfPageSlot(
       `/1004510/petplace_web/${args[lastItemIndex]}`,
       window.googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR,
     );
 
-    if (anchor_slot) {
-      anchor_slot
+    if (anchorSlot) {
+      anchorSlot
         .setTargeting(REFRESH_KEY, REFRESH_VALUE)
         .setTargeting('refreshed_slot', 'false')
         .addService(window.googletag.pubads());
@@ -157,8 +162,8 @@ export const adsDefineSlot = (...args) => {
     const SECONDS_TO_WAIT_AFTER_VIEWABILITY = 30;
     window.googletag
       .pubads()
-      .addEventListener('impressionViewable', function (event) {
-        const slot = event.slot;
+      .addEventListener('impressionViewable', (event) => {
+        const { slot } = event;
         if (slot.getTargeting(REFRESH_KEY).indexOf(REFRESH_VALUE) > -1) {
           slot.setTargeting('refreshed_slot', 'true');
           setTimeout(() => {
@@ -175,13 +180,13 @@ export const adsDefineSlot = (...args) => {
     });
 
     window.googletag.pubads().set('page_url', 'https://www.petplace.com');
-    //window.googletag.pubads().setTargeting('article', articleValue);
+    // window.googletag.pubads().setTargeting('article', articleValue);
     window.googletag.pubads().setCentering(true);
     window.googletag.enableServices();
   });
 
   // after the definitions
   const newArgs = args.filter((arg) => !arg.includes('anchor'));
-  newArgs.push(anchor_slot);
+  newArgs.push(anchorSlot);
   gtagDisplay(newArgs);
 };
