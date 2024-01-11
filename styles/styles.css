@@ -81,9 +81,6 @@
 
   /* nav height */
   --nav-height: 68px;
-
-  /* adsense */
-  --tw-bg-opacity: 1;
 }
 
 @media (min-width: 600px) {
@@ -958,11 +955,11 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 }
 
 .bg-gray-light {
-  background-color: rgb(238 238 238 / var(--tw-bg-opacity));
+  background-color: rgb(238 238 238 / 100%);
 }
 
 .bg-white {
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(255 255 255 / 100%);
 }
 
 .sub-container,
@@ -993,7 +990,6 @@ main .section.search-container.ad-container .ad-wrapper .ad {
   color: rgb(0 8 38 / 33%);
   font-size: .75rem;
 }
-
 
 .publi-wrapper-multiplex {
   width: 100%;
