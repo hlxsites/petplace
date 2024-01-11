@@ -80,6 +80,16 @@ const sizingArr = (adLoc) => {
 
   return null;
 };
+
+// script for display (loop)
+const gtagDisplay = (argsArr) => {
+  googletag.cmd.push(function () {
+    for (let i = 0; i < argsArr.length; i++) {
+      googletag.display(argsArr[i]);
+    }
+  });
+};
+
 export const adsDivCreator = (adLoc) => {
   const mainDiv = document.createElement('div');
   mainDiv.className = 'publi-container bg-white';
@@ -169,4 +179,9 @@ export const adsDefineSlot = (...args) => {
     googletag.pubads().setCentering(true);
     googletag.enableServices();
   });
+
+  // after the definitions
+  const newArgs = args.filter((arg) => !arg.includes('anchor'));
+  newArgs.push(anchor_slot);
+  gtagDisplay(newArgs);
 };
