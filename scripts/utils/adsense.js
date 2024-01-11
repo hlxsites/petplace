@@ -80,3 +80,31 @@ const sizingArr = (adLoc) => {
 
   return null;
 };
+export const adsDivCreator = (adLoc) => {
+  const mainDiv = document.createElement('div');
+  mainDiv.className = 'publi-container bg-white';
+
+  const subDiv = document.createElement('div');
+  subDiv.className = 'sub-container';
+  mainDiv.appendChild(subDiv);
+
+  const adDiv = document.createElement('div');
+  adDiv.className = 'publi-wrapper publi-wrapper-bg';
+  subDiv.appendChild(adDiv);
+
+  const idLoc = document.createElement('div');
+  idLoc.id = adLoc;
+  adDiv.appendChild(idLoc);
+
+  if (adLoc.includes('top')) {
+    const hero = document.querySelector('.hero');
+    hero.after(mainDiv);
+  }
+
+  // MIDDLE COMES LATER
+
+  if (adLoc.includes('bottom')) {
+    const footer = document.querySelector('footer');
+    footer.before(mainDiv);
+  }
+};
