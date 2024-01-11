@@ -942,3 +942,59 @@ main .section.search-container.ad-container .ad-wrapper .ad {
     }
   }
 }
+
+/* ADSENSE */
+
+.publi-container {
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+
+.publi-container-bottom {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.bg-gray-light {
+  --tw-bg-opacity: 1;
+  background-color: rgba(238, 238, 238, var(--tw-bg-opacity));
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+}
+
+.sub-container,
+.publi-wrapper {
+  text-align: center;
+  margin: auto;
+}
+
+.sub-container {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.publi-wrapper-bg:not(:empty) {
+  background-color: #e5ebef;
+  border-radius: 7px;
+  padding: 0.5rem;
+  overflow: hidden;
+}
+
+.publi-wrapper-bg:not(:empty)::before {
+  content: "Advertising";
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  color: rgba(0, 8, 38, .33);
+  font-size: .75rem;
+}
+
+
+.publi-wrapper-multiplex {
+  width: 100%;
+}
