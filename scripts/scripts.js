@@ -754,6 +754,14 @@ async function addNewsletterPopup() {
   document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
 }
 
+document.addEventListener('sidekick-ready', () => {
+  document.querySelector('helix-sidekick')
+    .addEventListener('custom:publish-later', async (ev) => {
+      const { publishLater } = await import('../tools/sidekick/authoring.js');
+      publishLater(ev.detail.data);
+    });
+}, { once: true });
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element

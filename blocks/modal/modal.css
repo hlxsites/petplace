@@ -1,0 +1,111 @@
+dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+dialog .form {
+  display: flex;
+  flex-direction: column;
+}
+
+dialog .form header {
+  height: auto;
+  border-bottom: 1px solid;
+  margin-bottom: 1rem;
+}
+
+dialog .form button {
+  display: inline-block;
+  height: unset;
+  width: unset;
+  padding: 5px 30px;
+  font-size: unset;
+  text-transform: unset;
+}
+
+dialog .form footer {
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
+}
+
+dialog .form header button {
+  position: absolute;
+  display: inline-block;
+  top: 1rem;
+  right: 1rem;
+  height: 22px;
+  width: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: inherit;
+  overflow: initial;
+  text-overflow: initial;
+  white-space: initial;
+}
+
+dialog .form footer button {
+  margin-bottom: 0;
+}
+
+dialog .icon-x,
+dialog .icon-x::before,
+dialog .icon-x::after {
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  width: 20px;
+}
+
+dialog .icon-x::before,
+dialog .icon-x::after {
+  content: '';
+  position: absolute;
+  background: currentcolor;
+  top: 3px;
+  left: 1px;
+  transform: rotate(45deg);
+  transform-origin: 2px 1px;
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+}
+
+dialog .icon-x {
+  height: 22px;
+}
+
+dialog .icon-x::after {
+  top: unset;
+  bottom: 3px;
+  transform: rotate(-45deg);
+}
+
+dialog .form header :is(h1, h2, h3) {
+  margin: 0 0 1rem;
+  color: initial;
+  font-size: 2rem;
+}
+
+dialog .form .field-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+dialog .form input {
+  box-sizing: border-box;
+  display: inline-block;
+  width: auto;
+  margin: .5rem 0 1rem;
+}
+
+dialog.success {
+  border-color: green;
+}
+
+dialog.error {
+  border-color: red;
+}

@@ -8,6 +8,12 @@
       "environments": [ "edit" ],
       "url": "/tools/sidekick/library.html",
       "includePaths": [ "**.docx**" ]
+    },
+    {
+      "id": "publish-later",
+      "title": "Publish Later",
+      "environments": [ "dev", "preview" ],
+      "event": "publish-later"
     }
   ]
 }

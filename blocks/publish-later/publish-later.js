@@ -1,8 +1,33 @@
-import { sampleRUM } from '../../scripts/lib-franklin.js';
+import { loadCSS } from "../../scripts/lib-franklin.js";
+
+/**
+ * Loads a non module JS file.
+ * @param {string} src URL to the JS file
+ * @param {Object} attrs additional optional attributes
+ */
+export async function loadScript(src, attrs) {
+  return new Promise((resolve, reject) => {
+    if (!document.querySelector(`head > script[src="${src}"]`)) {
+      const script = document.createElement('script');
+      script.src = src;
+      if (attrs) {
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const attr in attrs) {
+          script.setAttribute(attr, attrs[attr]);
+        }
+      }
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.append(script);
+    } else {
+      resolve();
+    }
+  });
+}
 
 function createSelect(fd) {
   const select = document.createElement('select');
-  select.name = fd.Field;
+  select.id = fd.Field;
   if (fd.Placeholder) {
     const ph = document.createElement('option');
     ph.textContent = fd.Placeholder;
@@ -16,7 +41,7 @@ function createSelect(fd) {
     option.value = o.trim();
     select.append(option);
   });
-  if (fd.Required && fd.Required !== 'false') {
+  if (fd.Mandatory === 'x') {
     select.setAttribute('required', 'required');
   }
   return select;
@@ -44,35 +69,23 @@ async function submitForm(form) {
     },
     body: JSON.stringify({ data: payload }),
   });
-  if (sampleRUM.convert) {
-    sampleRUM.convert('form-submission', form.dataset.action, form, []);
-  }
   await resp.text();
   return payload;
 }
 
-function createButton(fd, onSubmit) {
+function createButton(fd) {
   const button = document.createElement('button');
   button.textContent = fd.Label;
   button.classList.add('button');
-  button.name = fd.Field;
-  button.type = fd.Type;
   if (fd.Type === 'submit') {
-    button.addEventListener('click', (event) => {
+    button.addEventListener('click', async (event) => {
       const form = button.closest('form');
-      let doSubmit = onSubmit;
-      if (!doSubmit) {
-        doSubmit = async () => {
-          await submitForm(form);
-          const redirectTo = fd.Extra;
-          window.location.href = redirectTo;
-        };
-      }
-      if (fd.Placeholder) form.dataset.action = fd.Placeholder;
       if (form.checkValidity()) {
         event.preventDefault();
         button.setAttribute('disabled', '');
-        doSubmit(fd);
+        await submitForm(form);
+        const redirectTo = fd.Extra;
+        window.location.href = redirectTo;
       }
     });
   }
@@ -88,31 +101,19 @@ function createHeading(fd) {
 function createInput(fd) {
   const input = document.createElement('input');
   input.type = fd.Type;
-  input.name = fd.Field;
   input.id = fd.Field;
-  if (fd.Placeholder) {
-    input.setAttribute('placeholder', fd.Placeholder);
-  }
-  if (fd.Required && fd.Required !== 'false') {
+  input.setAttribute('placeholder', fd.Placeholder);
+  if (fd.Mandatory === 'x') {
     input.setAttribute('required', 'required');
-  }
-  if (fd.Pattern) {
-    input.setAttribute('pattern', fd.Pattern);
-    if (fd.Title) {
-      input.setAttribute('title', fd.Title);
-    }
-  }
-  if (fd.Checked) {
-    input.setAttribute('checked', fd.Checked);
   }
   return input;
 }
 
 function createTextArea(fd) {
   const input = document.createElement('textarea');
-  input.name = fd.Field;
+  input.id = fd.Field;
   input.setAttribute('placeholder', fd.Placeholder);
-  if (fd.Required && fd.Required !== 'false') {
+  if (fd.Mandatory === 'x') {
     input.setAttribute('required', 'required');
   }
   return input;
@@ -122,7 +123,7 @@ function createLabel(fd) {
   const label = document.createElement('label');
   label.setAttribute('for', fd.Field);
   label.textContent = fd.Label;
-  if (fd.Required && fd.Required !== 'false') {
+  if (fd.Mandatory === 'x') {
     label.classList.add('required');
   }
   return label;
@@ -144,34 +145,14 @@ function applyRules(form, rules) {
   });
 }
 
-function fill(form) {
-  const { action } = form.dataset;
-  if (action === '/tools/bot/register-form') {
-    const loc = new URL(window.location.href);
-    form.querySelector('#owner').value = loc.searchParams.get('owner') || '';
-    form.querySelector('#installationId').value = loc.searchParams.get('id') || '';
-  }
-}
-
-/**
- * Builds a <form> element based on the definition in a spreadsheet from
- * the source repository. The method will request the form content, then
- * use the provided JSON data to construct the element.
- * @param {string} formURL Full URL from which the form's configuration will
- *  be retrieved.
- * @param {function} [onSubmit] If provided, will be called when the form
- *  is successfully submitted. The default behavior will be to submit the
- *  form's data as JSON back to the form's URL.
- * @returns {Promise<HTMLElement>} Resolves with the newly created form
- *  element.
- */
-export async function createForm(formURL, onSubmit) {
-  const resp = await fetch(formURL);
+async function createForm(formURL) {
+  const { pathname } = new URL(formURL);
+  const resp = await fetch(pathname);
   const json = await resp.json();
   const form = document.createElement('form');
   const rules = [];
   // eslint-disable-next-line prefer-destructuring
-  form.dataset.action = String(formURL).split('.json')[0];
+  form.dataset.action = pathname.split('.json')[0];
   json.data.forEach((fd) => {
     fd.Type = fd.Type || 'text';
     const fieldWrapper = document.createElement('div');
@@ -196,8 +177,7 @@ export async function createForm(formURL, onSubmit) {
         fieldWrapper.append(createTextArea(fd));
         break;
       case 'submit':
-      case 'button':
-        fieldWrapper.append(createButton(fd, onSubmit));
+        fieldWrapper.append(createButton(fd));
         break;
       default:
         fieldWrapper.append(createLabel(fd));
@@ -214,17 +194,26 @@ export async function createForm(formURL, onSubmit) {
     }
     form.append(fieldWrapper);
   });
-
+  const previewURL = document.URL.toString();
+  const pathField = form.querySelector('input#path');
+  if (pathField) {
+    pathField.type = 'hidden';
+    pathField.value = previewURL;
+    const pathLabel = form.querySelector('label[for="path"]');
+    if (pathLabel) pathLabel.remove();
+  }
   form.addEventListener('change', () => applyRules(form, rules));
   applyRules(form, rules);
-  fill(form);
   return (form);
 }
 
 export default async function decorate(block) {
-  const form = block.querySelector('a[href$=".json"],a[href*=".json?"]');
+  const form = block.querySelector('a[href$=".json"]');
   if (form) {
-    const { pathname, search } = new URL(form.href);
-    form.replaceWith(await createForm(pathname + search));
+    await form.replaceWith(await createForm(form.href));
+    // add calendar functionality
+    await loadScript(`${window.hlx.codeBasePath}/blocks/publish-later/vanilla-calendar.min.js`);
+    loadCSS(`${window.hlx.codeBasePath}/blocks/publish-later/vanilla-calendar.min.css`);
+    loadCSS(`${window.hlx.codeBasePath}/blocks/publish-later/light.min.css`);
   }
 }
