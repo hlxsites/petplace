@@ -108,3 +108,65 @@ export const adsDivCreator = (adLoc) => {
     footer.before(mainDiv);
   }
 };
+
+// google tag for adsense
+export const adsDefineSlot = (...args) => {
+  let anchor_slot;
+  const REFRESH_KEY = 'refresh';
+  const REFRESH_VALUE = 'true';
+  const lastItemIndex = args.length - 1;
+
+  googletag.cmd.push(function () {
+    // var dataLayer = document.DataLayer
+    // var articleValue; TRY CAPTURING THIS VALUE FROM THE DATALAYER BEFORE ASSIGN THE VALUE FOR THE VARIABLE
+
+    for (let i = 0; i < lastItemIndex; i++) {
+      googletag
+        .defineSlot(
+          `/1004510/petplace_web/${args[i]}`,
+          sizingArr(args[i]),
+          args[i]
+        )
+        .defineSizeMapping(mappingHelper(args[i]))
+        .setTargeting(REFRESH_KEY, REFRESH_VALUE)
+        .setTargeting('refreshed_slot', 'false')
+        .addService(googletag.pubads());
+    }
+
+    anchor_slot = googletag.defineOutOfPageSlot(
+      `/1004510/petplace_web/${args[lastItemIndex]}`,
+      googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR
+    );
+
+    if (anchor_slot) {
+      anchor_slot
+        .setTargeting(REFRESH_KEY, REFRESH_VALUE)
+        .setTargeting('refreshed_slot', 'false')
+        .addService(googletag.pubads());
+    } else console.log('Anchor not loaded');
+
+    // Refresh subroutine
+    const SECONDS_TO_WAIT_AFTER_VIEWABILITY = 30;
+    googletag.pubads().addEventListener('impressionViewable', function (event) {
+      const slot = event.slot;
+      if (slot.getTargeting(REFRESH_KEY).indexOf(REFRESH_VALUE) > -1) {
+        slot.setTargeting('refreshed_slot', 'true');
+        setTimeout(function () {
+          googletag.pubads().refresh([slot]);
+        }, SECONDS_TO_WAIT_AFTER_VIEWABILITY * 1000);
+      }
+    });
+
+    // Lazy loading subroutine
+    googletag.pubads().enableLazyLoad({
+      fetchMarginPercent: 100,
+      renderMarginPercent: 100,
+      mobileScaling: 2.0,
+    });
+
+    googletag.pubads().set('page_url', 'https://www.petplace.com');
+    //googletag.pubads().setTargeting('article', articleValue);
+    googletag.pubads().setCentering(true);
+    googletag.enableServices();
+  });
+};
