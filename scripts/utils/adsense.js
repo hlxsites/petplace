@@ -1,8 +1,8 @@
 window.googletag ||= { cmd: [] };
 
+// TODO: fix sizing in next PR
 const mappingHelper = (adLoc) => {
-  // Ad Unit size mapping
-  const mappingSideDesktop = window.googletag
+  const mappingSide = window.googletag
     .sizeMapping()
     .addSize([0, 0], [])
     .addSize(
@@ -14,7 +14,7 @@ const mappingHelper = (adLoc) => {
     )
     .build();
 
-  const mappingTopMobile = window.googletag
+  const mappingTopHero = window.googletag
     .sizeMapping()
     .addSize(
       [0, 0],
@@ -23,21 +23,13 @@ const mappingHelper = (adLoc) => {
         [320, 100],
       ],
     )
-    .addSize([980, 200], [])
-    .build();
-
-  const mappingMiddleMobile = window.googletag
-    .sizeMapping()
     .addSize(
-      [0, 0],
+      [980, 200],
       [
-        [320, 50],
-        [320, 100],
-        [300, 250],
-        [336, 280],
+        [728, 90],
+        [970, 90],
       ],
     )
-    .addSize([980, 200], [])
     .build();
 
   const mappingLeaderboard = window.googletag
@@ -61,10 +53,11 @@ const mappingHelper = (adLoc) => {
     )
     .build();
 
-  if (adLoc.includes('top')) return mappingTopMobile;
-  if (adLoc.includes('side')) return mappingSideDesktop;
-  if (adLoc.includes('middle')) return mappingMiddleMobile;
-  if (adLoc.includes('bottom')) return mappingLeaderboard;
+  if (adLoc.includes('side')) return mappingSide;
+  if (adLoc.includes('top')) return mappingTopHero;
+  if (adLoc.includes('middle') || adLoc.includes('bottom')) {
+    return mappingLeaderboard;
+  }
 
   return null;
 };
@@ -72,13 +65,17 @@ const mappingHelper = (adLoc) => {
 const sizingArr = (adLoc) => {
   const sizeSide = [[160, 600]];
   const sizeTopMid = [[320, 50]];
-  const sizeBottom = [[728, 90]];
+  const sizeLeader = [[728, 90]];
 
-  if (adLoc.includes('top') || adLoc.includes('middle')) return sizeTopMid;
-  if (adLoc.includes('side')) return sizeSide;
-  if (adLoc.includes('bottom')) return sizeBottom;
+  if (adLoc.includes('article')) {
+    if (adLoc.includes('top') || adLoc.includes('middle')) {
+      return sizeTopMid;
+    }
+    if (adLoc.includes('side')) return sizeSide;
+    if (adLoc.includes('bottom')) return sizeLeader;
+  }
 
-  return null;
+  return sizeLeader;
 };
 
 export const adsDivCreator = (adLoc) => {
@@ -97,17 +94,19 @@ export const adsDivCreator = (adLoc) => {
   idLoc.id = adLoc;
   adDiv.appendChild(idLoc);
 
+  // TODO: needs refactoring for category and home
   if (adLoc.includes('top')) {
     const hero = document.querySelector('.hero');
     hero.after(mainDiv);
   }
 
-  // MIDDLE COMES LATER
-
   if (adLoc.includes('bottom')) {
     const footer = document.querySelector('footer');
     footer.before(mainDiv);
   }
+
+  // SIDE COMES LATER (only article)
+  // MIDDLE COMES LATER (only article)
 };
 
 // script for display (loop)
