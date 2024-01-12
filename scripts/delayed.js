@@ -42,10 +42,11 @@ function pushly(...args) {
 
 if (window.hlx.plugins.get('martech')) {
   if (
-    (document.querySelector('.block.ad') ||
-      window.location.pathname.includes('article') ||
-      window.location.pathname.includes('category')) &&
-    isMobile()
+    (document.querySelector('.block.ad')
+    || window.location.pathname.includes('tags')
+    || window.location.pathname.includes('article')
+    || window.location.pathname.includes('category'))
+    && isMobile()
   ) {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', {
       async: '',
