@@ -7,6 +7,55 @@
     margin: 0 auto;
 }
 
+.section.search-container h1 {
+    display: inline-block;
+    top: -60px;
+    background-color: var(--text-color-inverted);
+    border-radius: 40px;
+    padding: 40px 30px 0;
+    margin: 0 ;
+    bottom: 60px;
+    width: 60%;
+    color: black;
+    font-size: 1.75rem;
+    position: relative;
+}
+
+:is(h1) em {
+    color: #ff7d5a;
+    font-style: normal;
+}
+
+.section.search-container h1::before,
+.section.search-container h1::after {
+    --radius: 10px;
+
+    content: '';
+    position: absolute;
+    width: calc(2 * var(--radius));
+    height: var(--radius);
+    top: calc(28px - var(--radius));
+    z-index: 10;
+    left: calc(5px - 2 * var(--radius));
+    box-shadow: 0.5rem 0.25rem 0 0 white;
+    border-radius: 0 0 var(--radius) 0;
+}
+
+.section.search-container h1::after {
+    display: block;
+    right: calc(5px - 2 * var(--radius));
+    left: initial;
+    border-bottom: none;
+    min-width: 0;
+    box-shadow: -0.5rem 0.25rem 0 0 white;
+    border-radius: 0 0 0 var(--radius);
+}
+
+.home-page .section.search-container p {
+    margin-top: -40px;
+    max-width: 726px;
+}
+
 .search.block {
     display: flex;
     justify-content: center;
