@@ -233,8 +233,7 @@ export async function loadLazy() {
 }
 
 // top, bottom, anchor
-// (middle to come later)
-export async function loadDelayed() {
+export function loadDelayed() {
   adsDivCreator('category_top');
   adsDivCreator('category_bottom');
 

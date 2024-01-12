@@ -1,6 +1,5 @@
 window.googletag ||= { cmd: [] };
 
-// TODO: fix sizing in next PR
 const mappingHelper = (adLoc) => {
   const mappingSide = window.googletag
     .sizeMapping()
@@ -94,7 +93,6 @@ export const adsDivCreator = (adLoc) => {
   idLoc.id = adLoc;
   adDiv.appendChild(idLoc);
 
-  // TODO: needs refactoring for category and home
   if (adLoc.includes('top')) {
     const hero = document.querySelector('.hero');
     hero.after(mainDiv);
@@ -126,7 +124,6 @@ export const adsDefineSlot = (...args) => {
   const lastItemIndex = args.length - 1;
 
   window.googletag.cmd.push(() => {
-    // TODO -> this will come in later
     // var dataLayer = document.DataLayer
     // var articleValue;
     // TRY CAPTURING THIS VALUE FROM DATALAYER BEFORE ASSIGN VARIABLE

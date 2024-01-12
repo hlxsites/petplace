@@ -216,7 +216,7 @@ export async function loadLazy(document) {
 
 // top, bottom, anchor
 // (middle + side later)
-export async function loadDelayed() {
+export function loadDelayed() {
   adsDivCreator('article_top');
   adsDivCreator('article_bottom');
 
