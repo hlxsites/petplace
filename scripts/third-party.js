@@ -65,7 +65,12 @@ function noscriptBody() {
 export async function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
-  if (!isMobile() && document.querySelector('.block.ad')) {
+  if (
+    !isMobile() &&
+    (document.querySelector('.block.ad') ||
+      window.location.pathname.includes('article') ||
+      window.location.pathname.includes('category'))
+  ) {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', {
       async: '',
     });

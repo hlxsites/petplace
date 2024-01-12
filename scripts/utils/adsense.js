@@ -81,15 +81,6 @@ const sizingArr = (adLoc) => {
   return null;
 };
 
-// script for display (loop)
-const gtagDisplay = (argsArr) => {
-  window.googletag.cmd.push(() => {
-    argsArr.forEach((arg) => {
-      window.googletag.display(arg);
-    });
-  });
-};
-
 export const adsDivCreator = (adLoc) => {
   const mainDiv = document.createElement('div');
   mainDiv.className = 'publi-container bg-white';
@@ -117,6 +108,15 @@ export const adsDivCreator = (adLoc) => {
     const footer = document.querySelector('footer');
     footer.before(mainDiv);
   }
+};
+
+// script for display (loop)
+const gtagDisplay = (argsArr) => {
+  window.googletag.cmd.push(() => {
+    argsArr.forEach((arg) => {
+      window.googletag.display(arg);
+    });
+  });
 };
 
 // google tag for adsense
