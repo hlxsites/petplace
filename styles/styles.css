@@ -81,7 +81,6 @@
 
   /* nav height */
   --nav-height: 68px;
-
 }
 
 @media (min-width: 600px) {
@@ -941,4 +940,57 @@ main .section.search-container.ad-container .ad-wrapper .ad {
       translate: 100%;
     }
   }
+}
+
+/* ADSENSE */
+
+.publi-container {
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+
+.publi-container-bottom {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.bg-gray-light {
+  background-color: rgb(238 238 238 / 100%);
+}
+
+.bg-white {
+  background-color: rgb(255 255 255 / 100%);
+}
+
+.sub-container,
+.publi-wrapper {
+  text-align: center;
+  margin: auto;
+}
+
+.sub-container {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.publi-wrapper-bg:not(:empty) {
+  background-color: #e5ebef;
+  border-radius: 7px;
+  padding: 0.5rem;
+  overflow: hidden;
+}
+
+.publi-wrapper-bg:not(:empty)::before {
+  content: "Advertising";
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  color: rgb(0 8 38 / 33%);
+  font-size: .75rem;
+}
+
+.publi-wrapper-multiplex {
+  width: 100%;
 }
