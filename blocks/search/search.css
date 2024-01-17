@@ -7,7 +7,7 @@
     margin: 0 auto;
 }
 
-.section.search-container h1 {
+.home-page .section.search-container h1 {
     display: inline-block;
     top: -60px;
     background-color: var(--text-color-inverted);
@@ -26,8 +26,8 @@
     font-style: normal;
 }
 
-.section.search-container h1::before,
-.section.search-container h1::after {
+.home-page .section.search-container h1::before,
+.home-page .section.search-container h1::after {
     --radius: 10px;
 
     content: '';
@@ -41,7 +41,7 @@
     border-radius: 0 0 var(--radius) 0;
 }
 
-.section.search-container h1::after {
+.home-page .section.search-container h1::after {
     display: block;
     right: calc(5px - 2 * var(--radius));
     left: initial;
