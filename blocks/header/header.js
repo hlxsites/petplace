@@ -49,6 +49,11 @@ export default async function decorate(block) {
   searchForm.action = '/search';
   searchForm.method = 'get';
   searchForm.append(searchField);
+  searchForm.addEventListener('click', (ev) => {
+    if (ev?.target?.nodeName === 'FORM') {
+      ev.target.submit();
+    }
+  });
   navTools.innerHTML = '';
   navTools.append(searchForm);
 

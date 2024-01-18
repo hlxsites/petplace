@@ -111,6 +111,7 @@
     /* stylelint-disable-next-line property-no-vendor-prefix */
     -webkit-mask: center / contain no-repeat url('../../icons/search.svg');
     mask: center / contain no-repeat url('../../icons/search.svg');
+    cursor: pointer;
   }
 
   .nav-tools input {
