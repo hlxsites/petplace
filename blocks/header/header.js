@@ -88,6 +88,11 @@ export default async function decorate(block) {
 
   const sidebarSearch = document.createElement('div');
   sidebarSearch.append(searchForm.cloneNode(true));
+  sidebarSearch.querySelector('form')?.addEventListener('click', (ev) => {
+    if (ev?.target?.nodeName === 'FORM') {
+      ev.target.submit();
+    }
+  });
   dialogContent.insertBefore(sidebarSearch, dialogContent.childNodes[4]);
 
   classes = ['header', 'links', 'search', 'misc', 'social'];
