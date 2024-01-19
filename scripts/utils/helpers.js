@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 window.dataLayer ||= [];
 
+/** DATALAYER */
+
 export const pushToDataLayer = (layer) => window.dataLayer.push(layer);
 
 export const clickHelper = (...args) => {
@@ -20,7 +22,7 @@ export const getSocialName = (href) => {
   return strCaps;
 };
 
-// LINK HELPERS
+// link helpers
 export const articleLinksHelper = () => {
   // this is done because article template has multiple classes
   const linkTracking = document.querySelectorAll('.default-content-wrapper');
@@ -99,8 +101,8 @@ export const articlePrevNextHelper = () => {
       pnCat = node.className.includes('previous')
         ? 'Previous'
         : node.className.includes('next')
-          ? 'Next'
-          : 'Other';
+        ? 'Next'
+        : 'Other';
 
       pnType = imgAlt ? 'image' : 'title';
       pnText = imgAlt ? imgAlt.alt : link.innerHTML;
@@ -108,4 +110,83 @@ export const articlePrevNextHelper = () => {
 
     clickHelper(`${pnCat} Article`, pnText, pnType, link.href);
   });
+};
+
+/** ADSENSE */
+
+export const mappingHelper = (adLoc) => {
+  const mappingSide = window.googletag
+    .sizeMapping()
+    .addSize([0, 0], [])
+    .addSize(
+      [980, 200],
+      [
+        [160, 600],
+        [300, 600],
+      ],
+    )
+    .build();
+
+  const mappingTopHero = window.googletag
+    .sizeMapping()
+    .addSize(
+      [0, 0],
+      [
+        [320, 50],
+        [320, 100],
+      ],
+    )
+    .addSize(
+      [980, 200],
+      [
+        [728, 90],
+        [970, 90],
+      ],
+    )
+    .build();
+
+  const mappingLeaderboard = window.googletag
+    .sizeMapping()
+    .addSize(
+      [0, 0],
+      [
+        [320, 50],
+        [320, 100],
+        [300, 250],
+        [336, 280],
+      ],
+    )
+    .addSize(
+      [980, 200],
+      [
+        [728, 90],
+        [970, 90],
+        [970, 250],
+      ],
+    )
+    .build();
+
+  if (adLoc.includes('side')) return mappingSide;
+  if (adLoc.includes('top')) return mappingTopHero;
+  if (adLoc.includes('middle') || adLoc.includes('bottom')) {
+    return mappingLeaderboard;
+  }
+
+  return null;
+};
+
+export const sizingArr = (adLoc) => {
+  const sizeSide = [[160, 600]];
+  const sizeTopMid = [[320, 50]];
+  const sizeLeader = [[728, 90]];
+
+  if (adLoc.includes('article')) {
+    if (adLoc.includes('top') || adLoc.includes('middle')) {
+      return sizeTopMid;
+    }
+    if (adLoc.includes('side')) return sizeSide;
+    if (adLoc.includes('bottom')) return sizeLeader;
+  }
+
+  return sizeLeader;
 };
