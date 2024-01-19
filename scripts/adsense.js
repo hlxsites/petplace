@@ -30,6 +30,16 @@ export const adsDivCreator = (adLoc) => {
   if (adLoc.includes('side')) return;
 
   // MIDDLE COMES LATER (only article)
+  if (adLoc.includes('middle')) {
+    // not doing home or category mids (for now)
+    if (adLoc.includes('article')) {
+      const allParas = document.querySelectorAll('p');
+      const parasLength = allParas.length;
+      if (parasLength >= 4) {
+        allParas[parasLength / 2].after(mainDiv);
+      }
+    }
+  }
 };
 
 // script for display (loop)
