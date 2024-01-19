@@ -1,6 +1,3 @@
-import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import { buildBlock } from '../../scripts/lib-franklin.js';
-
 function createSpanBlock(main) {
   const searches = main.getElementsByClassName('search-box-wrapper');
 
@@ -17,19 +14,20 @@ function createSpanBlock(main) {
     // Eventlistener to redirect user to aggregator site.
     searchButton.addEventListener('click', (ev) => {
       const code = searchInput.value;
-      if(code) {
+      if (code) {
         ev.preventDefault();
         window.open(`https://polite-smoke-035c7bd10.4.azurestaticapps.net?zipCode=${code}`, '_blank');
       }
     });
 
     const spanBlock = document.createElement('span');
-    spanBlock.className ='arrow-right';
+    spanBlock.className = 'arrow-right';
     searchButton.appendChild(spanBlock);
   });
 }
 
 export function loadLazy() {
+  const main = document.querySelector('#main');
   createSpanBlock(main);
   // document.querySelector('.details-list-wrapper').addEventListener('click', (ev) => {
   //   const btn = ev.target.closest('a');
