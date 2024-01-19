@@ -101,8 +101,8 @@ export const articlePrevNextHelper = () => {
       pnCat = node.className.includes('previous')
         ? 'Previous'
         : node.className.includes('next')
-        ? 'Next'
-        : 'Other';
+          ? 'Next'
+          : 'Other';
 
       pnType = imgAlt ? 'image' : 'title';
       pnText = imgAlt ? imgAlt.alt : link.innerHTML;

@@ -1,3 +1,5 @@
+import { mappingHelper, sizingArr } from './utils/helpers.js';
+
 window.googletag ||= { cmd: [] };
 
 export const adsDivCreator = (adLoc) => {

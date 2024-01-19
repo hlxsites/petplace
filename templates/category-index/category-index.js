@@ -11,7 +11,7 @@ import {
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
-import { adsDefineSlot, adsDivCreator } from '../../scripts/utils/adsense.js';
+import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 /**
