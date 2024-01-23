@@ -972,8 +972,8 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 }
 
 .sub-container {
-  justify-content: center;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -982,16 +982,6 @@ main .section.search-container.ad-container .ad-wrapper .ad {
   border-radius: 7px;
   padding: 0.5rem;
   overflow: hidden;
-}
-
-.publi-wrapper-bg:not(:empty)::before {
-  content: "Advertising";
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-  color: rgb(0 8 38 / 33%);
-  font-size: .75rem;
 }
 
 .publi-wrapper-multiplex {
