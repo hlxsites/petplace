@@ -16,7 +16,7 @@ function createSpanBlock(main) {
       const code = searchInput.value;
       if (code) {
         ev.preventDefault();
-        window.open(`https://polite-smoke-035c7bd10.4.azurestaticapps.net?zipCode=${code}`, '_blank');
+        window.open(`https://quote.petplace.com/questionnaire?zipCode=${code}`, '_blank');
       }
     });
 
