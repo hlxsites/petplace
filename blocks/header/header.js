@@ -48,15 +48,24 @@ export default async function decorate(block) {
   searchForm.setAttribute('role', 'search');
   searchForm.action = '/search';
   searchForm.method = 'get';
-  searchForm.append(searchField);
-  searchForm.addEventListener('click', (ev) => {
-    if (ev?.target?.nodeName === 'FORM') {
-      ev.target.submit();
-    }
-  });
+
+  const searchButton = document.createElement('button');
+  searchButton.className = 'search-btn';
+  searchButton.setAttribute('aria-label', 'submit search');
+  searchButton.type = 'submit';
+  const searchIcon = document.createElement('span');
+  searchIcon.className = 'icon icon-search';
+  searchButton.append(searchIcon);
+
+  searchForm.append(searchField, searchButton);
   navTools.innerHTML = '';
   navTools.append(searchForm);
-
+  searchButton.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    if (searchField.value !== '') {
+      searchForm.submit();
+    }
+  });
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
@@ -88,9 +97,10 @@ export default async function decorate(block) {
 
   const sidebarSearch = document.createElement('div');
   sidebarSearch.append(searchForm.cloneNode(true));
-  sidebarSearch.querySelector('form')?.addEventListener('click', (ev) => {
-    if (ev?.target?.nodeName === 'FORM') {
-      ev.target.submit();
+  sidebarSearch.querySelector('form button')?.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    if (sidebarSearch.querySelector('input')?.value !== '') {
+      sidebarSearch.querySelector('form')?.submit();
     }
   });
   dialogContent.insertBefore(sidebarSearch, dialogContent.childNodes[4]);
