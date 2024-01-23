@@ -1,4 +1,4 @@
-import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
 function createRelLink(rel, param) {
   const link = document.createElement('link');
@@ -7,7 +7,7 @@ function createRelLink(rel, param) {
   return link;
 }
 
-function renderContent(block) {
+function renderContent(block, placeholders) {
   const usp = new URLSearchParams(window.location.search);
   const limit = Number(usp.get('limit') || block.dataset.limit || 25);
   const page = Number(usp.get('page') || 1);
@@ -24,9 +24,9 @@ function renderContent(block) {
   block.innerHTML = `
     <nav aria-label="pagination">
       <ul>
-        ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="Previous page"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
-        <li><a href="#" aria-current="page" tabindex="-1">Page: ${page}${total ? ` of ${total}` : ''}</a></li>
-        ${cards?.childElementCount >= limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="Next page"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
+        ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="${placeholders.previousPage}"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
+        <li><a href="#" aria-current="page" tabindex="-1">${placeholders.pageIndex.replace('{{page}}', page).replace('{{total}}', total || '…')}</a></li>
+        ${cards?.childElementCount >= limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="${placeholders.nextPage}"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
       </ul>
     </nav>`;
   if (page > 1 && !document.head.querySelector('link[rel="prev"]')) {
@@ -39,7 +39,8 @@ function renderContent(block) {
 }
 
 export default async function decorate(block) {
-  renderContent(block);
+  const placeholders = await fetchPlaceholders();
+  renderContent(block, placeholders);
   block.addEventListener('click', (ev) => {
     const a = ev.target.closest('a');
     if (!a) {
@@ -55,14 +56,14 @@ export default async function decorate(block) {
   let observer = new MutationObserver((entries) => {
     entries.forEach((e) => {
       if (e.attributeName === 'data-total') {
-        renderContent(block);
+        renderContent(block, placeholders);
       }
     });
   });
   observer.observe(block, { attributes: true });
 
   observer = new MutationObserver(() => {
-    renderContent(block);
+    renderContent(block, placeholders);
   });
   if (document.querySelector('.cards ul')) {
     observer.observe(document.querySelector('.cards ul'), { childList: true });

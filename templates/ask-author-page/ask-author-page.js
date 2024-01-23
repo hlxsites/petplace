@@ -3,6 +3,7 @@ import {
   buildBlock,
   createOptimizedPicture,
   decorateIcons,
+  fetchPlaceholders,
   getMetadata,
   toClassName,
 } from '../../scripts/lib-franklin.js';
@@ -24,6 +25,7 @@ async function getArticles() {
 
 let articleLoadingPromise;
 async function renderArticles(articles) {
+  const placeholders = await fetchPlaceholders();
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < PAGINATE_ON; i += 1) {
@@ -50,7 +52,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = 'No Articles Found';
+    noResults.innerText = placeholders.noArticles;
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -87,7 +89,8 @@ export function loadEager(document) {
   pagination.dataset.limit = PAGINATE_ON;
 }
 
-export function loadLazy(document) {
+export async function loadLazy(document) {
+  const placeholders = await fetchPlaceholders();
   const main = document.querySelector('main');
   const hero = main.querySelector('.hero > div > div');
   const h3 = main.querySelector('h3');
@@ -106,7 +109,7 @@ export function loadLazy(document) {
   const askNow = document.createElement('a');
   askNow.append(arrow);
   askNow.append(text);
-  askNow.href = 'mailto:info@petplace.com';
+  askNow.href = `mailto:${placeholders.websiteEmail}`;
   autoBlockDiv.append(askNow);
   decorateIcons(askNow);
 

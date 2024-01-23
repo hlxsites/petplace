@@ -1,3 +1,5 @@
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
+
 function appendItems(items, container) {
   items.forEach((item) => {
     const newTOC = document.createElement('a');
@@ -8,6 +10,7 @@ function appendItems(items, container) {
 }
 
 export default async function decorate(block) {
+  const placeholders = await fetchPlaceholders();
   if (block.classList.contains('inline')) {
     const parent = block.closest('.toc-container');
     parent.classList.add('is-inline');
@@ -22,7 +25,7 @@ export default async function decorate(block) {
     const allH2s = main.querySelectorAll('main h2');
     const tocHeader = document.createElement('h2');
     const tocList = document.createElement('ol');
-    tocHeader.innerText = 'Table of Contents';
+    tocHeader.innerText = placeholders.tableOfContents;
     block.appendChild(tocHeader);
     if (allH2s.length > 1) {
       for (let index = 0; index < allH2s.length; index += 1) {

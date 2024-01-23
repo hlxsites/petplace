@@ -1,6 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import {
   decorateIcons,
+  fetchPlaceholders,
   getMetadata,
   createOptimizedPicture,
   toClassName,
@@ -164,11 +165,13 @@ async function createNavigation(block) {
     }
   }
 
+  const placeholders = await fetchPlaceholders();
+
   if (previousArticle || nextArticle) {
     // combined previous/next label for mobile view
     const combinedHeader = document.createElement('div');
     combinedHeader.classList.add('article-navigation-combined-header');
-    combinedHeader.innerText = 'Previous / Next Article';
+    combinedHeader.innerText = placeholders.previousNextArticle;
     block.append(combinedHeader);
   }
 
@@ -176,7 +179,7 @@ async function createNavigation(block) {
     // previous-only label for non-mobile
     const previousHeader = document.createElement('div');
     previousHeader.classList.add('article-navigation-previous-header');
-    previousHeader.innerText = 'Previous Article';
+    previousHeader.innerText = placeholders.previousArticle;
     block.append(previousHeader);
   }
 
@@ -184,7 +187,7 @@ async function createNavigation(block) {
     // next-only label for non-mobile
     const nextHeader = document.createElement('div');
     nextHeader.classList.add('article-navigation-next-header');
-    nextHeader.innerText = 'Next Article';
+    nextHeader.innerText = placeholders.nextArticle;
     block.append(nextHeader);
   }
 

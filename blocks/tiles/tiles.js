@@ -1,14 +1,11 @@
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { getCategories, getCategory } from '../../scripts/scripts.js';
-
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
 
 let articles;
 let breed;
 export default async function decorate(block) {
   // Pre-fetch the categories
+  const placeholders = await fetchPlaceholders();
   await getCategories();
 
   // Create containing div of three tiles (one big, two small)
@@ -136,6 +133,21 @@ export default async function decorate(block) {
     if (index !== 0) {
       categoryLink.classList.add('category-link-btn-transparent');
     }
+
+    const monthNames = [
+      placeholders.january,
+      placeholders.february,
+      placeholders.march,
+      placeholders.april,
+      placeholders.may,
+      placeholders.june,
+      placeholders.july,
+      placeholders.august,
+      placeholders.september,
+      placeholders.october,
+      placeholders.november,
+      placeholders.december,
+    ];
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');

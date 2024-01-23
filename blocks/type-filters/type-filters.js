@@ -1,14 +1,24 @@
-import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
-  const breeds = ['Sporting', 'Hound', 'Terrier', 'Non-Sporting', 'Toy', 'Herding', 'Working', 'N/A'];
+  const placeholders = await fetchPlaceholders();
+  const breeds = [
+    placeholders.dogTypeSporting,
+    placeholders.dogTypeHound,
+    placeholders.dogTypeTerrier,
+    placeholders.dogTypeNonSporting,
+    placeholders.dogTypeToy,
+    placeholders.dogTypeHerding,
+    placeholders.dogTypeWorking,
+    placeholders.dogTypeOther,
+  ];
   const usp = new URLSearchParams(window.location.search);
   const type = usp.get('type')?.split(',') || [];
   block.innerHTML = `
     <div class="type-filter">
       <div class="category-filters">
         <h3>
-          Type <span class="icon icon-chevron"></span>
+          ${placeholders.dogType} <span class="icon icon-chevron"></span>
         </h3>
         <div class="filter-type is-active">
           ${breeds.map((breed) => `

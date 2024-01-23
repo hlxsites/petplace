@@ -2,6 +2,7 @@ import ffetch from '../../scripts/ffetch.js';
 import {
   buildBlock,
   createOptimizedPicture,
+  fetchPlaceholders,
   toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
@@ -38,6 +39,7 @@ export async function getCategoryForUrl() {
 
 let articleLoadingPromise;
 async function renderArticles(articles) {
+  const placeholders = await fetchPlaceholders();
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < 25; i += 1) {
@@ -64,7 +66,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = 'No Articles Found';
+    noResults.innerText = placeholders.noArticles;
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -98,7 +100,7 @@ async function getArticles() {
     .slice(offset, offset + limit);
 }
 
-function buildSidebar() {
+function buildSidebar(placeholders) {
   const section = document.createElement('div');
   section.classList.add('sidebar');
   section.setAttribute('role', 'complementary');
@@ -108,7 +110,7 @@ function buildSidebar() {
   const filterToggle = document.createElement('button');
   filterToggle.disabled = !isTablet();
   filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
-  filterToggle.textContent = 'Filters';
+  filterToggle.textContent = placeholders.filters;
   section.append(filterToggle);
 
   const subCategories = buildBlock('sub-categories', { elems: [] });
@@ -178,14 +180,15 @@ async function updateMetadata() {
 }
 
 export async function loadEager(document) {
+  const placeholders = await fetchPlaceholders();
   const main = document.querySelector('main');
   await updateMetadata();
   const h2 = document.createElement('h2');
   h2.classList.add('sr-only');
-  h2.textContent = 'Articles';
+  h2.textContent = placeholders.articles;
   const h1 = main.querySelector('h1');
   h1.after(h2);
-  main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(1)'));
+  main.insertBefore(buildSidebar(placeholders), main.querySelector(':scope > div:nth-of-type(1)'));
   createTemplateBlock(main, 'pagination');
   // eslint-disable-next-line no-restricted-globals
   const heroImg = await getCategoryImage(location.pathname);
