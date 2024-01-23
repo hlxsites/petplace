@@ -1,126 +1,459 @@
+.insurance-landing-page main .hero {
+  align-items: start;
+  min-height: 429px;
+}
 
-/* Hero Styles */
-.insurance-landing-page .hero.landing-page {
-  @media (max-width: 1024px){
-    min-height: 232px;
-    padding: 0;
+.insurance-landing-page .hero > div {
+  margin-left: 100px;
+  @media (max-width: 768px) {
+    margin-left: auto;
+  }
+
+  @media (min-width: 769px) and (max-width:1024px) {
+    margin-left: 25px !important;
   }
 }
-.insurance-landing-page .hero.landing-page picture {
-  margin: 0 -1.5rem;
-  margin: 0;
-  max-width: 100%;
-
-  @media (max-width: 900px){
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    object-fit: cover;
-    margin:0;
-  } 
-}
-.insurance-landing-page .hero.landing-page > div {
-  margin-left: auto;
-  margin-right: auto;
-  
-  max-width: 1344px;
-  width: 100%;
-  display: grid;
-  height: 100%;
-  grid-template-rows: 0px minmax(350px, 1fr);
-
-  @media (max-width: 1024px){
-    min-height: 232px;
-    grid-template-rows: 2fr 1fr;
-  }
+.insurance-landing-page main .hero > div > div:not(:first-child) {
+  align-items: start;
+  flex-direction: column;
+  margin: 3rem 0px;
+  max-width: 660px;
 }
 
-/* Hero Title */
-.insurance-landing-page .hero.landing-page > div > div h1{
+.insurance-landing-page main .hero > div > div h1{
+  margin-bottom: 0px;
+}
+
+.insurance-landing-page main .hero > div > div p{
   color: #FFF;
-  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.50);
-  font-family: var(--body-font-family);
-  font-size: var(--heading-font-size-xxxl);
-  font-style: normal;
-  font-weight: 700;
-  line-height: 42px; /* 76.364% */
-
-  @media (max-width: 1024px){
-    font-size: 2.75rem;
-    text-align: left;
-    margin: 0 24px 28px;
-  }
-
-  @media (max-width:800px){
-    display: none;
+  font-size: 1.5rem;
+  @media (max-width: 600px) {
+    color: #09090D;
   }
 }
 
-.insurance-landing-page .section h2{
-  color: var(--background-color-dark);
-  text-align: center;
+.insurance-landing-page .section > .columns-wrapper {
+  @media (min-width: 1200px) {
+    max-width: 90%;
+  }
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container{ 
+  position: absolute;
+  left: 0;
+  top: 335px;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  right: 0;
+  margin: 0 auto;
+
+  @media (max-width: 600px) {
+    position: relative;
+    top: 0;
+    padding: 0 1.5rem;
+  }
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container > .search-wrapper{
+  margin-left: 100px;
+
+  @media (min-width: 769px) and (max-width:1024px) {
+    margin-left: 25px;
+  }
+  @media (max-width: 768px) {
+    margin-left: unset;
+  }
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container {
+  @media (max-width: 600px) {
+    box-shadow: none;
+  }
+}
+
+.insurance-landing-page .search-container {
+  padding: 0 1.5rem;
+  @media (max-width: 600px) {
+    width: 75%;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 0 1.5rem;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
+  }
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container .search-box-wrapper{
+  margin-top: 4rem;
+
+  @media (max-width: 600px) {
+    margin-top: 0;
+  }
+
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container .search.block{
+  justify-content: start;
+}
+
+
+.insurance-landing-page .search-box-wrapper .search-input {
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
+
+  @media (max-width: 600px) {
+    border: 1px solid var(--background-color-dark)
+  }
+}
+
+.insurance-landing-page .search-box-wrapper .search-button{
+  width: fit-content;
+  text-transform: capitalize;
+  font-size: 1.125rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+}
+
+.insurance-landing-page .arrow-right {
+  box-sizing: border-box;
+  display: inline-block;
+  transform: scale(2, 2);
+  border-top: 0.5px solid transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: inset 0 0 0 2px;
+  width: 12px;
+  height: 4px;
+  margin-left: 24px;
+}
+.insurance-landing-page .arrow-right::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(45deg);
+  right: 0;
+  bottom: -2px
+}
+.insurance-landing-page .columns-container{
+  @media (max-width: 600px) {
+    padding: 0 1.5rem;
+  }
+}
+
+.insurance-landing-page .columns-img-col{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.insurance-landing-page .columns-img-col picture{
+  width: 50%;
+}
+
+.insurance-landing-page .columns-img-col:nth-child(4) > picture{
+  width: 30%;
+}
+
+.insurance-landing-page .columns-img-col:nth-child(5) {
+  @media (min-width: 601px) and (max-width:1024px) {
+    justify-content: start;
+  }
+}
+
+.insurance-landing-page .columns-img-col:nth-child(5) > picture{
+  width: 65%;
+}
+
+.insurance-landing-page .columns-txt-col{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.insurance-landing-page .columns-txt-col h2{
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #09090D;
+}
+
+.insurance-landing-page .columns-txt-col p{
+  color: #09090D;
+}
+
+.insurance-landing-page .columns-txt-col:first-child h2{
+  font-size: 2.750rem;
+
+  @media (max-width: 600px) {
+    font-size: 2rem;
+  }
+}
+
+.insurance-landing-page .subhead-container{
+  padding: 1rem 1.5rem;
+
+  @media (max-width:600px) {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.insurance-landing-page .subhead-container>div h2{
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin: 0;
+
+  @media (max-width: 600px) {
+    font-size: 2rem;
+  }
+}
+
+
+.insurance-landing-page .subhead-container>div p{
+  font-size: 1.5rem;
+  font-weight: 400;
+  width: 690px;
+  margin: 0 auto;
+
+  @media (max-width:600px) {
+    width: unset;
+    font-size: 1rem;
+  }
+}
+
+.insurance-landing-page .columns-container .logos div{
+  gap: 24px;
+  @media (min-width: 601px) and (max-width:1024px) {
+    flex: 1 1 25%;
+  }
+}
+
+.insurance-landing-page .columns-container .columns div{
+  @media (min-width: 601px) and (max-width:1024px) {
+    flex-wrap: wrap;
+  }
+
+}
+.insurance-landing-page .columns-txt-col:first-child{
+  @media (min-width: 601px) and (max-width:1024px) {
+    width: 100%;
+    flex: unset;
+  }
+
+}
+
+.insurance-landing-page .columns-txt-col:not(:first-child){
+  /* position: relative; */
+  text-align: left;
+  margin-bottom: 24px;
+  color: var(--text-color-inverted);
+  font-family: var(--body-font-family);
+  font-style: normal;
+  font-weight: 400;
+  @media (min-width: 800px){
+    padding-left: 0;
+    font-size: var(--body-font-size-m);
+    line-height: 24px;
+  }
+
+  @media (min-width: 1024px){
+    font-size: var(--body-font-size-l);
+    line-height: 30px;
+    margin-bottom: 30px;
+    flex: 1;
+  }
+}
+
+/* Block Counter List */
+.insurance-landing-page .columns-txt-col:not(:first-child)::before{
+  background: var(--number-background-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  left: -3.125rem;
   font-family: var(--body-font-family);
   font-style: normal;
   font-weight: 700;
-  font-size:   var(--body-font-size-xl);
-  line-height: 36px; /* 140% */
-    
+  font-size: var(--heading-font-size-m);
+  line-height: 26px; /* 144.444% */
+
   @media (min-width: 800px){
-    font-size: 2rem;
-    line-height: 36px; /* 140% */
+    font-size: 1.875rem;
+    line-height: 42px; /* 140% */
+    padding: 2.5rem 2.5rem 0 3.75rem;
   }
+
   @media (min-width: 1024px){
     font-size: 1.875rem;
     line-height: 42px; /* 140% */
+    padding: 2.5rem 2.5rem 0 6.25rem;
+    width: 3.125rem;
+    height: 3.125rem;
+    left: -3.75rem;
   }
 }
-.insurance-landing-page .section p {
-  color: #424242;
-  text-align: center;
-  font-family: var(--body-font-family);
-  font-style: normal;
-  font-weight: 400;
+
+.insurance-landing-page .columns-3-cols > div{
+  counter-reset: first-row 0;
+  counter-reset: second-row 2;
+}
+
+.insurance-landing-page .columns-3-cols > div:first-child > .columns-txt-col:not(:first-child){
+  counter-increment: first-row;
+}
+
+.insurance-landing-page .columns-3-cols > div:first-child > .columns-txt-col:not(:first-child):before{
+  content: counter(first-row);
+}
+
+.insurance-landing-page .columns-3-cols > div:last-child > .columns-txt-col:not(:first-child){
+  counter-increment: second-row;
+}
+
+.insurance-landing-page .columns-3-cols > div:last-child > .columns-txt-col:not(:first-child):before{
+  content: counter(second-row);
+}
+
+.insurance-landing-page .accordion-container{
+  display: flex;
+  /* width: 100%; */
+  background-color: var(--faq-background-color);
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+    width: auto;
+  }
+
+  @media (min-width: 601px) and (max-width: 1024px) {
+    flex-direction: column-reverse;
+    align-items: center;
+    width: auto;
+  }
+}
+
+.insurance-landing-page .accordion-wrapper{
+  width: 70%;
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+
+  @media (min-width: 601px) and (max-width: 1024px) {
+    width: 100%;
+  }
+}
+
+.insurance-landing-page .default-content-wrapper{
+  width: 30%;
+  display: flex;
+  justify-content: start;
+
+  h2{
+    font-size: 2.750rem;
+    font-weight: 700;
+    color: #09090D;
   
-  font-size: 0.6875rem;
-  line-height: 22px; /* 200% */
-  
-  @media (min-width: 800px){
-    font-size:  var(--body-font-size-m);
-    line-height: 24px; /* 200% */
+    @media (max-width: 600px) {
+      font-size: 2rem;
+      text-align: center;
+    }
   }
-  
-  @media (min-width: 1024px){
-    font-size: var(--body-font-size-m);
-    line-height: 32px; /* 200% */
-  }
-}
 
-.insurance-landing-page .subhead,
-.insurance-landing-page .reasons {
-  width: 80%;
-  margin: 0 auto 0 !important;
-}
-.insurance-landing-page .subhead{
-  @media (min-width: 1024px){
-    width: 65%;
+  @media (max-width: 600px) {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (min-width: 601px) and (max-width: 1024px) {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
   }
 }
-.insurance-landing-page  .columns-wrapper,
-.insurance-landing-page .default-content-wrapper {
-  width: 80%;
-  margin: 0 auto;
+
+.insurance-landing-page .accordion-section{
+  background-color: #fff;
 }
 
-.insurance-landing-page .default-content-wrapper {
-  padding-top: 24px;
+.insurance-landing-page .accordion-section h3 button, .insurance-landing-page .accordion-section .text{
+  background-color: #fff;
+  color: var(--faq-accordion-txt-color);
+  padding: 16px 44px;
 }
 
-.insurance-landing-page .default-content-wrapper em {
-  color: #424242;
+.insurance-landing-page .accordion-section .text{
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
 
-  text-align: center;
-  font-size:  var(--heading-font-size-xxs);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 21px; /* 175% */
+.insurance-landing-page .accordion button[aria-expanded]::after {
+  -webkit-mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
+  mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
+  background-color: #6E6D73;
+  width: 20px;
+  height: 20px;
+}
+
+.insurance-landing-page .accordion button[aria-expanded="true"]::after {
+  -webkit-mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
+  mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
+  background-color: #6E6D73;
+  width: 20px;
+  height: 20px;
+}
+
+@media (min-width: 600px) {
+
+  .insurance-landing-page .columns > div {
+    align-items: start;
+    flex-direction: unset;
+    gap: 32px;
+  }
+
+  .insurance-landing-page .logos > div {
+    align-items: center;
+  }
+
+  .insurance-landing-page .columns > div > div {
+    flex: 1;
+    order: unset;
+    margin-bottom: 0;
+  }
+
+  .insurance-landing-page main .hero {
+    display: flex;
+    /* align-items: center; */
+  }
+
+  .insurance-landing-page  .hero img {
+    aspect-ratio: unset;
+    max-height: unset;
+  }
+
+  .insurance-landing-page .hero h1 {
+    color: var(--text-color-inverted);
+    font-size: var(--heading-font-size-xxxl);
+  }
+  .insurance-landing-page .hero picture {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    object-fit: cover;
+    box-sizing: border-box;
+  }
 }
