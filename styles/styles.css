@@ -15,6 +15,7 @@
 :root {
   /* colors */
   --highlight-color: #ff7d5a;
+  --compare-button-bg-color: #c74d2f;
   --number-background-color: #7369ab;
   --faq-background-color: #f1f0f7;
   --faq-accordion-txt-color: #2f2f33;
