@@ -171,6 +171,7 @@
   cursor: pointer;
   fill:var(--background-color);
 }
+
 .nav-sidebar-search input {
   height: 40px;
   width: 100%;
