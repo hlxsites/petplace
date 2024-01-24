@@ -38,7 +38,7 @@ export const adsDivCreator = (adLoc) => {
       const allParas = document.querySelectorAll('p');
       const parasLength = allParas.length;
       if (parasLength >= 4) {
-        allParas[parasLength / 2].after(mainDiv);
+        allParas[Math.ceil(parasLength / 2)].after(mainDiv);
       }
     }
   }
