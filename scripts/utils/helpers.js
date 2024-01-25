@@ -115,6 +115,18 @@ export const articlePrevNextHelper = () => {
 /** ADSENSE */
 
 export const mappingHelper = (adLoc) => {
+  const mappingTop = window.googletag
+    .sizeMapping()
+    .addSize(
+      [0, 0],
+      [
+        [320, 50],
+        [320, 100],
+      ],
+    )
+    .addSize([980, 200], [[728, 90]])
+    .build();
+
   const mappingSide = window.googletag
     .sizeMapping()
     .addSize([0, 0], [])
@@ -127,22 +139,18 @@ export const mappingHelper = (adLoc) => {
     )
     .build();
 
-  const mappingTopHero = window.googletag
+  const mappingMiddle = window.googletag
     .sizeMapping()
     .addSize(
       [0, 0],
       [
         [320, 50],
         [320, 100],
+        [300, 250],
+        [336, 280],
       ],
     )
-    .addSize(
-      [980, 200],
-      [
-        [728, 90],
-        [970, 90],
-      ],
-    )
+    .addSize([980, 200], [[728, 90]])
     .build();
 
   const mappingLeaderboard = window.googletag
@@ -166,13 +174,15 @@ export const mappingHelper = (adLoc) => {
     )
     .build();
 
-  if (adLoc.includes('side')) return mappingSide;
-  if (adLoc.includes('top')) return mappingTopHero;
-  if (adLoc.includes('middle') || adLoc.includes('bottom')) {
-    return mappingLeaderboard;
-  }
-
-  return null;
+  return adLoc.includes('top')
+    ? mappingTop
+    : adLoc.includes('side')
+      ? mappingSide
+      : adLoc.includes('middle')
+        ? mappingMiddle
+        : adLoc.includes('bottom')
+          ? mappingLeaderboard
+          : null;
 };
 
 export const sizingArr = (adLoc) => {
@@ -181,11 +191,13 @@ export const sizingArr = (adLoc) => {
   const sizeLeader = [[728, 90]];
 
   if (adLoc.includes('article')) {
-    if (adLoc.includes('top') || adLoc.includes('middle')) {
-      return sizeTopMid;
-    }
-    if (adLoc.includes('side')) return sizeSide;
-    if (adLoc.includes('bottom')) return sizeLeader;
+    return adLoc.includes('top') || adLoc.includes('middle')
+      ? sizeTopMid
+      : adLoc.includes('side')
+        ? sizeSide
+        : adLoc.includes('botom')
+          ? sizeLeader
+          : null;
   }
 
   return sizeLeader;
