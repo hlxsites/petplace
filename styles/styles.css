@@ -15,9 +15,6 @@
 :root {
   /* colors */
   --highlight-color: #ff7d5a;
-  --number-background-color: #7369ab;
-  --faq-background-color: #f1f0f7;
-  --faq-accordion-txt-color: #2f2f33;
   --link-color: var(--highlight-color);
   --link-hover-color: var(--highlight-color);
   --link-color-alt: var(--color-blue);
