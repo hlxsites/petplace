@@ -147,6 +147,121 @@
     padding: 1rem;
   }
 }
+.home-page .subhead{
+  padding: 0 1.5rem;
+
+  h2{
+    margin: 0;
+  }
+}
+
+.home-page .insurance-search .search-box-wrapper{
+  margin-bottom: 0;
+}
+
+.home-page .section.search-container:nth-of-type(2n+1){
+  background-color: unset;
+  padding: 0;
+  width: 80%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  @media (max-width: 600px) {
+    width: 75%;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 0.5rem 1.5rem;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
+  }
+}
+
+.home-page .insurance-search .search-input {
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
+
+  @media (max-width: 600px) {
+    border: 1px solid var(--background-color-dark)
+  }
+}
+
+.home-page .insurance-search .search-button{
+  width: fit-content;
+  text-transform: capitalize;
+  font-size: 1.125rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row-reverse;
+  gap: 12px;
+  background-color: var(--compare-button-bg-color);
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+}
+
+.home-page .insurance-search .search-button::before {
+  display: inline-block;
+  content: '';
+  margin-right: .5rem;
+  height: 13px;
+  width: 29px;
+  background: var(--text-color-inverted);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
+  mask: url('../../icons/arrow.svg') no-repeat center center;
+  vertical-align: middle;
+}
+
+.error-state {
+  border: 2px solid var(--error-message-color) !important;
+}
+
+.error-spacing {
+  gap: 40px;
+}
+
+.error-state::placeholder{
+  color: var(--error-message-color);
+}
+
+.home-page .find-useful-wrapper{
+  display: none;
+}
+
+.home-page .find-useful-wrapper .error{
+  display: flex;
+  justify-content: center;
+  margin-left: -250px;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+    position: absolute;
+    margin-top: -115px;
+    width: 75%;
+  }
+}
+
+.home-page .find-useful-wrapper .error>div>div{
+  display: flex;
+  align-items: center;
+  width: auto;
+  padding: 8px 16px;
+  color: var(--error-message-color);
+  background-color: var(--error-message-bg-color);
+}
+
+.home-page .find-useful-wrapper .error>div>div::before {
+  display: inline-block;
+  content: '';
+  margin-right: .5rem;
+  height: 22px;
+  width: 22px;
+  background: var(--error-message-color);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask: url('../../icons/alert.svg') no-repeat center center;
+  mask: url('../../icons/alert.svg') no-repeat center center;
+  vertical-align: middle;
+}
 
 @media (min-width: 600px) {
   .home-page .hero h1 {

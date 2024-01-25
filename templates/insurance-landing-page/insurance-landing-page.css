@@ -38,6 +38,10 @@
   }
 }
 
+.insurance-landing-page .search-box-wrapper{
+  margin-bottom: 0;
+}
+
 .insurance-landing-page :not(.search-container ~ .search-container).search-container{ 
   position: absolute;
   left: 0;
@@ -78,7 +82,7 @@
     width: 75%;
     margin: 0 auto;
     border-radius: 24px;
-    padding: 0 1.5rem;
+    padding: 0.5rem 1.5rem;
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
   }
 }
@@ -412,6 +416,83 @@
   background-color: #6E6D73;
   width: 20px;
   height: 20px;
+}
+
+.error-state {
+  border: 2px solid var(--error-message-color) !important;
+}
+
+.error-state::placeholder{
+  color: var(--error-message-color);
+}
+
+.error-spacing{
+  gap: 40px;
+}
+
+.insurance-landing-page .find-useful-wrapper{
+  display: none;
+
+  @media (max-width:600px) {
+    margin-bottom: 16px;
+  }
+
+}
+
+.insurance-landing-page .find-useful-wrapper .error{
+  display: flex;
+  justify-content: center;
+  margin-left: -250px;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+    position: absolute;
+    margin-top: -115px;
+    width: 75%;
+  }
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container > .find-useful-wrapper{
+  @media (min-width: 900px) {
+    margin: 0;
+  }
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container > .find-useful-wrapper .error{
+  justify-content: start;
+  align-items: start;
+  margin-left: 120px;
+  @media (max-width: 600px) {
+    margin-left: unset;
+    width: 100%;
+  }
+
+  @media (min-width: 601px) and (max-width: 1024px) {
+    margin-left: 45px !important;
+  }
+}
+
+.insurance-landing-page .find-useful-wrapper .error>div>div{
+  display: flex;
+  align-items: center;
+  width: auto;
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: var(--error-message-color);
+  background-color: var(--error-message-bg-color);
+}
+
+.insurance-landing-page .find-useful-wrapper .error>div>div::before {
+  display: inline-block;
+  content: '';
+  margin-right: .5rem;
+  height: 22px;
+  width: 22px;
+  background: var(--error-message-color);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask: url('../../icons/alert.svg') no-repeat center center;
+  mask: url('../../icons/alert.svg') no-repeat center center;
+  vertical-align: middle;
 }
 
 @media (min-width: 600px) {
