@@ -1,81 +1,6 @@
+import { mappingHelper, sizingArr } from './utils/helpers.js';
+
 window.googletag ||= { cmd: [] };
-
-const mappingHelper = (adLoc) => {
-  const mappingSide = window.googletag
-    .sizeMapping()
-    .addSize([0, 0], [])
-    .addSize(
-      [980, 200],
-      [
-        [160, 600],
-        [300, 600],
-      ],
-    )
-    .build();
-
-  const mappingTopHero = window.googletag
-    .sizeMapping()
-    .addSize(
-      [0, 0],
-      [
-        [320, 50],
-        [320, 100],
-      ],
-    )
-    .addSize(
-      [980, 200],
-      [
-        [728, 90],
-        [970, 90],
-      ],
-    )
-    .build();
-
-  const mappingLeaderboard = window.googletag
-    .sizeMapping()
-    .addSize(
-      [0, 0],
-      [
-        [320, 50],
-        [320, 100],
-        [300, 250],
-        [336, 280],
-      ],
-    )
-    .addSize(
-      [980, 200],
-      [
-        [728, 90],
-        [970, 90],
-        [970, 250],
-      ],
-    )
-    .build();
-
-  if (adLoc.includes('side')) return mappingSide;
-  if (adLoc.includes('top')) return mappingTopHero;
-  if (adLoc.includes('middle') || adLoc.includes('bottom')) {
-    return mappingLeaderboard;
-  }
-
-  return null;
-};
-
-const sizingArr = (adLoc) => {
-  const sizeSide = [[160, 600]];
-  const sizeTopMid = [[320, 50]];
-  const sizeLeader = [[728, 90]];
-
-  if (adLoc.includes('article')) {
-    if (adLoc.includes('top') || adLoc.includes('middle')) {
-      return sizeTopMid;
-    }
-    if (adLoc.includes('side')) return sizeSide;
-    if (adLoc.includes('bottom')) return sizeLeader;
-  }
-
-  return sizeLeader;
-};
 
 export const adsDivCreator = (adLoc) => {
   const mainDiv = document.createElement('div');
@@ -104,7 +29,19 @@ export const adsDivCreator = (adLoc) => {
   }
 
   // SIDE COMES LATER (only article)
+  if (adLoc.includes('side')) return;
+
   // MIDDLE COMES LATER (only article)
+  if (adLoc.includes('middle')) {
+    // not doing home or category mids (for now)
+    if (adLoc.includes('article')) {
+      const allParas = document.querySelectorAll('p');
+      const parasLength = allParas.length;
+      if (parasLength >= 4) {
+        allParas[Math.ceil(parasLength / 2)].after(mainDiv);
+      }
+    }
+  }
 };
 
 // script for display (loop)
@@ -124,12 +61,8 @@ export const adsDefineSlot = (...args) => {
   const lastItemIndex = args.length - 1;
 
   window.googletag.cmd.push(() => {
-    // var dataLayer = document.DataLayer
-    // var articleValue;
-    // TRY CAPTURING THIS VALUE FROM DATALAYER BEFORE ASSIGN VARIABLE
-
     // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < lastItemIndex; i++) {
+    for (let i = 1; i < lastItemIndex; i++) {
       window.googletag
         .defineSlot(
           `/1004510/petplace_web/${args[i]}`,
@@ -139,6 +72,7 @@ export const adsDefineSlot = (...args) => {
         .defineSizeMapping(mappingHelper(args[i]))
         .setTargeting(REFRESH_KEY, REFRESH_VALUE)
         .setTargeting('refreshed_slot', 'false')
+        .setCollapseEmptyDiv(true)
         .addService(window.googletag.pubads());
     }
 
@@ -175,14 +109,17 @@ export const adsDefineSlot = (...args) => {
       mobileScaling: 2.0,
     });
 
+    const pageType = args[lastItemIndex].split('_')[0];
     window.googletag.pubads().set('page_url', 'https://www.petplace.com');
-    // window.googletag.pubads().setTargeting('article', articleValue);
+    window.googletag.pubads().setTargeting(pageType, args[0]);
     window.googletag.pubads().setCentering(true);
+    window.googletag.pubads().collapseEmptyDivs(true);
     window.googletag.enableServices();
   });
 
   // after the definitions
-  const newArgs = args.filter((arg) => !arg.includes('anchor'));
-  newArgs.push(anchorSlot);
-  gtagDisplay(newArgs);
+  args.pop();
+  args.shift();
+  args.push(anchorSlot);
+  gtagDisplay(args);
 };

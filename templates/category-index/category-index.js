@@ -11,7 +11,8 @@ import {
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
-import { adsDefineSlot, adsDivCreator } from '../../scripts/utils/adsense.js';
+import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 /**
@@ -232,10 +233,20 @@ export async function loadLazy() {
   // }
 }
 
-// top, bottom, anchor
-export function loadDelayed() {
+export async function loadDelayed() {
+  const pageCat = await getCategoryForUrl().Slug;
+  await pushToDataLayer({
+    event: 'adsense',
+    category: pageCat.Slug,
+  });
+
   adsDivCreator('category_top');
   adsDivCreator('category_bottom');
 
-  adsDefineSlot('category_top', 'category_bottom', 'category_anchor');
+  adsDefineSlot(
+    pageCat.Slug,
+    'category_top',
+    'category_bottom',
+    'category_anchor',
+  );
 }

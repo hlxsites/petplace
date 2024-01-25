@@ -99,18 +99,28 @@
     position: relative;
   }
 
-  .nav-tools form::after {
+  .nav-tools .search-btn {
     position: absolute;
-    content: '';
-    display: block;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px; 
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0;        
+    margin: 0;         
+}
+
+  .nav-tools .search-btn .icon-search {
+    position: absolute;
     width: 20px;
     height: 20px;
     top: 10px;
     right: 10px;
-    background: var(--background-color);
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-mask: center / contain no-repeat url('../../icons/search.svg');
-    mask: center / contain no-repeat url('../../icons/search.svg');
+    cursor: pointer;
+    fill:var(--background-color);
   }
 
   .nav-tools input {
