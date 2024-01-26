@@ -19,10 +19,6 @@ function createSpanBlock(main) {
         window.open(`https://quote.petplace.com/questionnaire?zipCode=${code}`, '_blank');
       }
     });
-
-    const spanBlock = document.createElement('span');
-    spanBlock.className = 'arrow-right';
-    searchButton.appendChild(spanBlock);
   });
 }
 
