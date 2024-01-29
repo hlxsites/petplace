@@ -440,10 +440,11 @@ export function getPlaceholder(key, options = {}) {
   if (!window.placeholders) {
     throw new Error('Please load placeholders first using "fetchPlaceholders".');
   }
-  if (!window.placeholders.default[key]) {
+  const placeholders = window.placeholders[window.hlx.contentBasePath || 'default'];
+  if (!placeholders[key]) {
     throw new Error(`Placeholder ${key} not found`);
   }
-  return Object.entries(options).reduce((str, [k, v]) => str.replace(`{{${k}}}`, v), window.placeholders.default[key]);
+  return Object.entries(options).reduce((str, [k, v]) => str.replace(`{{${k}}}`, v), placeholders[key]);
 }
 
 /**
@@ -614,7 +615,7 @@ async function loadEager(doc) {
   setLocale();
   decorateTemplateAndTheme();
 
-  await fetchPlaceholders();
+  await fetchPlaceholders(window.hlx.contentBasePath || 'default');
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
@@ -686,7 +687,7 @@ export async function createNewsletterAutoBlock(fragmentUrl, addElement) {
 }
 
 async function loadNewsletter(footer) {
-  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-footer', (block) => {
+  const newsletterBlock = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-footer`, (block) => {
     footer.insertBefore(block, footer.children[0]);
   });
   newsletterBlock.classList.add('horizontal');
@@ -712,7 +713,7 @@ async function loadNewsletterPopup(footer) {
   }
   localStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
   const popupContainer = document.createElement('div');
-  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-popup', (block) => {
+  const newsletterBlock = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-popup`, (block) => {
     popupContainer.append(block);
   });
   await loadBlock(newsletterBlock);

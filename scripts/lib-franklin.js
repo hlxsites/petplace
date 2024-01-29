@@ -253,7 +253,7 @@ export async function fetchPlaceholders(prefix = 'default', topic = null) {
   if (!loaded) {
     window.placeholders[`${prefix}-loaded`] = new Promise((resolve, reject) => {
       try {
-        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json?${topic ? `sheet=${topic}` : ''}`)
+        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json${topic ? `?sheet=${topic}` : ''}`)
           .then((resp) => resp.json())
           .then((json) => {
             const placeholders = {};
