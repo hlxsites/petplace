@@ -8,6 +8,7 @@ import {
   decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
+  fetchPlaceholders,
   getAllMetadata,
   getMetadata,
   loadBlock,
@@ -430,12 +431,28 @@ export function decorateScreenReaderOnly(container) {
 }
 
 /**
+ * Gets the value of a placeholder.
+ * @param {string} key The key of the placeholder to retrieve
+ * @param {Object} options The template strings to use
+ * @returns the desired placeholder string, or throws an error if not found
+ */
+export function getPlaceholder(key, options = {}) {
+  if (!window.placeholders) {
+    throw new Error('Please load placeholders first using "fetchPlaceholders".');
+  }
+  if (!window.placeholders.default[key]) {
+    throw new Error(`Placeholder ${key} not found`);
+  }
+  return Object.entries(options).reduce((str, [k, v]) => str.replace(`{{${k}}}`, v), window.placeholders.default[key]);
+}
+
+/**
  * Adds hidden quick navigation links to improve accessibility.
- * @param {object[]} links a map of links (label and id for the element to jump to)
+ * @param {Object[]} links a map of links (label and id for the element to jump to)
  */
 function createA11yQuickNav(links = []) {
   const nav = document.createElement('nav');
-  nav.setAttribute('aria-label', 'Skip to specific locations on the page');
+  nav.setAttribute('aria-label', getPlaceholder('accessibilityNavigationLabel'));
   nav.classList.add('a11y-quicknav', 'sr-focusable');
   links.forEach((l) => {
     const button = document.createElement('button');
@@ -590,13 +607,14 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
 
+  await fetchPlaceholders();
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
   if (main) {
     // await decorateTemplate(main);
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
-      document.title += ' | PetPlace.com';
+      document.title += ` | ${getPlaceholder('websiteName')}`;
     }
     await decorateMain(main);
     fixLinks();
@@ -791,9 +809,9 @@ async function loadLazy(doc) {
 
   // Add hidden quick navigation links
   createA11yQuickNav([
-    { id: 'main', label: 'Skip to Content' },
-    { id: 'menu', label: 'Skip to Menu' },
-    { id: 'footer', label: 'Skip to Footer' },
+    { id: 'main', label: getPlaceholder('skipMain') },
+    { id: 'menu', label: getPlaceholder('skipMenu') },
+    { id: 'footer', label: getPlaceholder('skipFooter') },
   ]);
 
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
@@ -905,7 +923,7 @@ export function initializeTouch(block, slideWrapper) {
 export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const { color } = crumbData[crumbData.length - 1];
   const breadcrumbContainer = document.createElement('nav');
-  breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
+  breadcrumbContainer.setAttribute('aria-label', getPlaceholder('breadcrumb'));
 
   const ol = document.createElement('ol');
 
@@ -913,7 +931,7 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const homeLink = document.createElement('a');
   homeLink.href = '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
-  homeLink.setAttribute('aria-label', 'Go to our Homepage');
+  homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
   homeLi.append(homeLink);
   ol.append(homeLi);
 

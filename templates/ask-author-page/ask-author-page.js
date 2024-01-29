@@ -6,7 +6,7 @@ import {
   getMetadata,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { meterCalls } from '../../scripts/scripts.js';
+import { getPlaceholder, meterCalls } from '../../scripts/scripts.js';
 
 const PAGINATE_ON = 12;
 
@@ -50,7 +50,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = 'No Articles Found';
+    noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -106,7 +106,7 @@ export function loadLazy(document) {
   const askNow = document.createElement('a');
   askNow.append(arrow);
   askNow.append(text);
-  askNow.href = 'mailto:info@petplace.com';
+  askNow.href = `mailto:${getPlaceholder('websiteEmail')}`;
   autoBlockDiv.append(askNow);
   decorateIcons(askNow);
 
