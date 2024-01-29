@@ -1,3 +1,9 @@
+function isValidZipcode(code) {
+  const regex = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/;
+
+  return regex.test(code);
+}
+
 function createSpanBlock(main) {
   const insuranceSearch = main.querySelector('.insurance-search');
   const formEl = insuranceSearch.querySelector('.search-box-wrapper');
@@ -22,20 +28,13 @@ function createSpanBlock(main) {
       formEl.classList.add('error-spacing');
       searchInput.value = '';
     }
-  })
-}
-
-function isValidZipcode(code){
-  const regex = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/
-
-  return regex.test(code);
+  });
 }
 
 export function loadLazy() {
   const main = document.querySelector('#main');
   createSpanBlock(main);
 }
-
 
 // eslint-disable-next-line import/prefer-default-export
 export function loadEager() {

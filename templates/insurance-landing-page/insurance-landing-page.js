@@ -1,3 +1,22 @@
+function removeAllErrorMessage(searchContainers) {
+  [...searchContainers].forEach((el) => {
+    const searchDiv = el.querySelector('.search-box-wrapper');
+    const errorMsg = el.querySelector('.find-useful-wrapper');
+    const searchInput = el.querySelector('.search-input');
+
+    errorMsg.style.display = 'none';
+    searchInput.classList.remove('error-state');
+    searchDiv.classList.remove('error-spacing');
+    searchInput.value = '';
+  });
+}
+
+function isValidZipcode(code) {
+  const regex = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/;
+
+  return regex.test(code);
+}
+
 function createSpanBlock(main) {
   const searchContainers = main.getElementsByClassName('search-container');
 
@@ -24,25 +43,6 @@ function createSpanBlock(main) {
       }
     });
   });
-}
-
-function removeAllErrorMessage(searchContainers) {
-  [...searchContainers].forEach((el) => {
-    const searchDiv = el.querySelector('.search-box-wrapper');
-    const errorMsg = el.querySelector('.find-useful-wrapper');
-    const searchInput = el.querySelector('.search-input');
-
-    errorMsg.style.display = 'none';
-    searchInput.classList.remove('error-state');
-    searchDiv.classList.remove('error-spacing');
-    searchInput.value = '';
-  });
-}
-
-function isValidZipcode(code){
-  const regex = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/
-
-  return regex.test(code);
 }
 
 export function loadLazy() {
