@@ -443,14 +443,14 @@ export function getPlaceholder(key, options = {}) {
   if (!window.placeholders.default[key]) {
     throw new Error(`Placeholder ${key} not found`);
   }
-  Object.entries(options).reduce(([k, v]) => window.placeholders.default[key].replace(`{{${k}}}`, v), window.placeholders.default[key]);
+  return Object.entries(options).reduce((str, [k, v]) => str.replace(`{{${k}}}`, v), window.placeholders.default[key]);
 }
 
 /**
  * Adds hidden quick navigation links to improve accessibility.
  * @param {Object[]} links a map of links (label and id for the element to jump to)
  */
-async function createA11yQuickNav(links = []) {
+function createA11yQuickNav(links = []) {
   const nav = document.createElement('nav');
   nav.setAttribute('aria-label', getPlaceholder('accessibilityNavigationLabel'));
   nav.classList.add('a11y-quicknav', 'sr-focusable');
@@ -808,7 +808,7 @@ async function loadLazy(doc) {
   firstMenu.id = 'menu';
 
   // Add hidden quick navigation links
-  await createA11yQuickNav([
+  createA11yQuickNav([
     { id: 'main', label: getPlaceholder('skipMain') },
     { id: 'menu', label: getPlaceholder('skipMenu') },
     { id: 'footer', label: getPlaceholder('skipFooter') },
