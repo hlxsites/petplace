@@ -235,7 +235,7 @@ export async function loadLazy() {
 }
 
 export async function loadDelayed() {
-  const pageCat = await getCategoryForUrl().Slug;
+  const pageCat = await getCategoryForUrl();
   await pushToDataLayer({
     event: 'adsense',
     category: pageCat.Slug,
