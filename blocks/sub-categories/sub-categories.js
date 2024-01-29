@@ -1,6 +1,6 @@
-import { getCategories } from '../../scripts/scripts.js';
+import { getCategories, getPlaceholder } from '../../scripts/scripts.js';
 
-export function render(block, categories) {
+function render(block, categories) {
   block.innerHTML = '';
 
   const childCategories = categories.filter((c) => c['Parent Path'] === window.location.pathname);
@@ -11,7 +11,7 @@ export function render(block, categories) {
   block.style.display = '';
 
   const heading = document.createElement('h2');
-  heading.textContent = 'Sub categories';
+  heading.textContent = getPlaceholder('subCategories');
   block.append(heading);
   childCategories.forEach((c) => {
     const hasDescendants = categories.find((d) => d['Parent Path'] === c.Path);
