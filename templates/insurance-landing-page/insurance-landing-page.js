@@ -23,10 +23,6 @@ function createSpanBlock(main) {
         searchInput.value = '';
       }
     });
-
-    const spanBlock = document.createElement('span');
-    spanBlock.className = 'arrow-right';
-    searchButton.appendChild(spanBlock);
   });
 }
 
