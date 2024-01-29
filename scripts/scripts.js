@@ -35,6 +35,7 @@ const AUDIENCES = {
 };
 
 window.hlx.templates.add([
+  '/templates/adopt',
   '/templates/article-page',
   '/templates/article-signup',
   '/templates/ask-author-page',
