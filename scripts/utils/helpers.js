@@ -180,6 +180,8 @@ export const mappingHelper = (adLoc) => {
   if (adLoc.includes('middle')) return mappingMiddle;
   if (adLoc.includes('bottom')) return mappingLeaderboard;
 
+  return mappingLeaderboard;
+
   // return adLoc.includes('top')
   //   ? mappingTop
   //   : adLoc.includes('side')
