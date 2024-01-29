@@ -582,12 +582,19 @@ function fixLinks() {
   });
 }
 
+function setLocale() {
+  const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/(\w{2})-(\w{2})/i) || [];
+  const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
+  document.documentElement.lang = locale;
+  window.hlx.contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
+}
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  setLocale();
   decorateTemplateAndTheme();
 
   await window.hlx.plugins.run('loadEager');

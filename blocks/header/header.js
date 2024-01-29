@@ -10,7 +10,7 @@ import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 export default async function decorate(block) {
   // fetch nav content
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta).pathname : '/fragments/nav';
+  const navPath = navMeta ? new URL(navMeta).pathname : `${window.hlx.contentBasePath}/fragments/nav`;
   let resp = await fetch(`${navPath}.plain.html`);
   if (!resp.ok) {
     return;
@@ -73,7 +73,7 @@ export default async function decorate(block) {
 
   const navSidebar = document.createElement('div');
   navSidebar.classList.add('nav-sidebar');
-  resp = await fetch('/fragments/sidenav.plain.html');
+  resp = await fetch(`${window.hlx.contentBasePath}/fragments/sidenav.plain.html`);
   if (!resp.ok) {
     return;
   }
