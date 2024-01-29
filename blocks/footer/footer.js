@@ -32,7 +32,7 @@ export default async function decorate(block) {
     });
 
     block.querySelector('.footer-nav ul:first-of-type').classList.add('footer-social');
-    block.querySelectorAll('.footer-social a').forEach(async (a) => {
+    block.querySelectorAll('.footer-social a').forEach((a) => {
       a.setAttribute('target', '_blank');
       a.setAttribute('rel', 'noopener noreferrer');
       a.setAttribute('aria-label', getPlaceholder('socialLinkLabel', { page: a.firstElementChild.classList[1].substring(5) }));

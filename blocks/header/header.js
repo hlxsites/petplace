@@ -144,11 +144,11 @@ export default async function decorate(block) {
     return Promise.resolve();
   };
 
-  navSidebar.querySelectorAll('[role="tree"] button[aria-controls]').forEach(async (toggle) => {
+  navSidebar.querySelectorAll('[role="tree"] button[aria-controls]').forEach((toggle) => {
     const item = navSidebar.querySelector(`#${toggle.getAttribute('aria-controls')}`);
     toggle.setAttribute('aria-label', getPlaceholder('openNavItem', { item: item.textContent }));
   });
-  const observer = new MutationObserver(async (entries) => {
+  const observer = new MutationObserver((entries) => {
     const { attributeName, target } = entries.pop();
     if (attributeName !== 'aria-expanded') {
       return;
@@ -163,7 +163,7 @@ export default async function decorate(block) {
     observer.observe(item, { attributes: true });
   });
 
-  block.querySelectorAll('.nav-sidebar-social a').forEach(async (a) => {
+  block.querySelectorAll('.nav-sidebar-social a').forEach((a) => {
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
     a.setAttribute('aria-label', getPlaceholder('socialLinkLabel', { page: a.firstElementChild.classList[1].substring(5) }));

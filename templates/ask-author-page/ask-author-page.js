@@ -87,7 +87,7 @@ export function loadEager(document) {
   pagination.dataset.limit = PAGINATE_ON;
 }
 
-export async function loadLazy(document) {
+export function loadLazy(document) {
   const main = document.querySelector('main');
   const hero = main.querySelector('.hero > div > div');
   const h3 = main.querySelector('h3');

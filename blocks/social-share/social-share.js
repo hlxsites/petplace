@@ -1,7 +1,7 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 import { getPlaceholder } from '../../scripts/scripts.js';
 
-export default async function decorate(block) {
+export default function decorate(block) {
   const pageTitle = document.head.querySelector('title').textContent;
   const url = window.location.href;
   // TODO: insta link only leads to petplace insta

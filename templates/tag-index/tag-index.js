@@ -155,6 +155,6 @@ export async function loadEager(document) {
   createTemplateBlock(main, 'pagination');
 }
 
-export async function loadLazy() {
+export function loadLazy() {
   renderArticles(getArticles());
 }

@@ -62,7 +62,7 @@ export default async function decorate(block) {
     return category || metaCat || null;
   }));
 
-  data.forEach(async (dta, index) => {
+  data.forEach((dta, index) => {
     const tileTitle = dta.title.endsWith(' - PetPlace')
       ? dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'))
       : dta.title;
