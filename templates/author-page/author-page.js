@@ -2,11 +2,10 @@ import ffetch from '../../scripts/ffetch.js';
 import {
   buildBlock,
   createOptimizedPicture,
-  fetchPlaceholders,
   getMetadata,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { createBreadCrumbs, meterCalls } from '../../scripts/scripts.js';
+import { createBreadCrumbs, getPlaceholder, meterCalls } from '../../scripts/scripts.js';
 
 const PAGINATE_ON = 12;
 
@@ -24,7 +23,6 @@ async function getArticles() {
 
 let articleLoadingPromise;
 async function renderArticles(articles) {
-  const placeholders = await fetchPlaceholders();
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < PAGINATE_ON; i += 1) {
@@ -51,7 +49,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = placeholders.noArticles;
+    noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -75,14 +73,13 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
 
 // eslint-disable-next-line import/prefer-default-export
 export async function loadEager(document) {
-  const placeholders = await fetchPlaceholders();
   const main = document.querySelector('main');
   const heading = main.querySelector('h1');
   const breadcrumbData = await createBreadCrumbs([{
     url: '/authors/',
     path: 'Authors',
     color: 'blue-dark',
-    label: placeholders.authors,
+    label: getPlaceholder('authors'),
   }, {
     url: window.location,
     path: heading.innerText,

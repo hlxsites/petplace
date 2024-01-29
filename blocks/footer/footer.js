@@ -1,4 +1,5 @@
-import { decorateIcons, fetchPlaceholders, readBlockConfig } from '../../scripts/lib-franklin.js';
+import { decorateIcons, readBlockConfig } from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 
 /**
  * loads and decorates the footer
@@ -13,7 +14,6 @@ export default async function decorate(block) {
   const resp = await fetch(`${footerPath}.plain.html`, window.location.pathname.endsWith('/footer') ? { cache: 'reload' } : {});
 
   if (resp.ok) {
-    const placeholders = await fetchPlaceholders();
     const html = await resp.text();
 
     // decorate footer DOM
@@ -32,14 +32,14 @@ export default async function decorate(block) {
     });
 
     block.querySelector('.footer-nav ul:first-of-type').classList.add('footer-social');
-    block.querySelectorAll('.footer-social a').forEach((a) => {
+    block.querySelectorAll('.footer-social a').forEach(async (a) => {
       a.setAttribute('target', '_blank');
       a.setAttribute('rel', 'noopener noreferrer');
-      a.setAttribute('aria-label', placeholders.socialLinkLabel.replace('{{page}}', a.firstElementChild.classList[1].substring(5)));
+      a.setAttribute('aria-label', getPlaceholder('socialLinkLabel', { page: a.firstElementChild.classList[1].substring(5) }));
     });
 
     const nav = document.createElement('nav');
-    nav.setAttribute('aria-label', placeholders.footerNavigation);
+    nav.setAttribute('aria-label', getPlaceholder('footerNavigation'));
     nav.className = 'footer-nav-links';
     const links = block.querySelector('.footer-nav ul ~ ul');
     links.replaceWith(nav);

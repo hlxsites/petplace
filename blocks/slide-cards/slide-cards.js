@@ -1,8 +1,6 @@
-import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import { slide, initializeTouch } from '../../scripts/scripts.js';
+import { getPlaceholder, slide, initializeTouch } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
-  const placeholders = await fetchPlaceholders();
   const breedColorClasses = ['breed-purple', 'breed-red', 'breed-blue'];
   const id = Math.random().toString(32).substring(2);
   block.id = id;
@@ -28,7 +26,7 @@ export default async function decorate(block) {
   const buttonPrev = document.createElement('button');
   buttonPrev.setAttribute('type', 'button');
   buttonPrev.setAttribute('data-role', 'none');
-  buttonPrev.setAttribute('aria-label', placeholders.previousSlide);
+  buttonPrev.setAttribute('aria-label', getPlaceholder('previousSlide'));
   buttonPrev.setAttribute('aria-controls', id);
   buttonPrev.classList.add('slick-arrow', 'slick-prev');
   buttonPrev.addEventListener('click', () => {
@@ -37,7 +35,7 @@ export default async function decorate(block) {
   const buttonNext = document.createElement('button');
   buttonNext.setAttribute('type', 'button');
   buttonNext.setAttribute('data-role', 'none');
-  buttonNext.setAttribute('aria-label', placeholders.nextSlide);
+  buttonNext.setAttribute('aria-label', getPlaceholder('nextSlide'));
   buttonNext.setAttribute('aria-controls', id);
   buttonNext.classList.add('slick-arrow', 'slick-next');
   buttonNext.addEventListener('click', () => {

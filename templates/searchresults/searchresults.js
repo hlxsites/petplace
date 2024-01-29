@@ -1,5 +1,5 @@
-import { buildBlock, fetchPlaceholders, sampleRUM } from '../../scripts/lib-franklin.js';
-import { decorateResponsiveImages } from '../../scripts/scripts.js';
+import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
+import { decorateResponsiveImages, getPlaceholder } from '../../scripts/scripts.js';
 
 const isTrueSearch = window.location.pathname === '/search';
 
@@ -22,10 +22,10 @@ function removeSkeletons(block) {
   block.querySelectorAll('ul .skeleton').forEach((sk) => sk.parentElement.remove());
 }
 
-function noResultsHidePagination(placeholders) {
+function noResultsHidePagination() {
   document.querySelector('.pagination').style.display = 'none';
   const searchResultText = document.querySelector('h2');
-  searchResultText.innerHTML = placeholders.noResults;
+  searchResultText.innerHTML = getPlaceholder('noResults');
 }
 
 async function getArticles() {
@@ -87,7 +87,7 @@ async function getArticles() {
   return results;
 }
 
-async function renderArticles(placeholders) {
+async function renderArticles() {
   const block = document.querySelector('.cards');
 
   // Prepare cards block with skeletons
@@ -109,7 +109,7 @@ async function renderArticles(placeholders) {
     removeSkeletons(block);
     const query = usp.get('query');
     sampleRUM('nullsearch', { source: '.search-input', target: query });
-    noResultsHidePagination(placeholders);
+    noResultsHidePagination();
     return;
   }
 
@@ -150,22 +150,22 @@ function sortselection() {
   }
 }
 
-function buildSortBtn(placeholders) {
+function buildSortBtn() {
   const div = document.createElement('div');
   div.classList.add('sortbtn');
   const h2 = document.createElement('h2');
-  h2.innerText = placeholders.searchResults;
+  h2.innerText = getPlaceholder('searchResults');
   div.append(h2);
   const select = document.createElement('select');
   select.classList.add('search-select');
-  select.setAttribute('aria-label', placeholders.sortResults);
+  select.setAttribute('aria-label', getPlaceholder('sortResults'));
   select.id = 'orderby';
-  select.options.add(new Option(placeholders.sortBy, 'sortby'));
-  select.options.add(new Option(placeholders.sortByRelevance, 'relevance', false, true));
-  select.options.add(new Option(placeholders.sortByTitleAsc, 'titleasc'));
-  select.options.add(new Option(placeholders.sortByTitleDesc, 'titledesc'));
-  select.options.add(new Option(placeholders.sortByDateAsc, 'dateasc'));
-  select.options.add(new Option(placeholders.sortByDateDesc, 'datedesc'));
+  select.options.add(new Option(getPlaceholder('sortBy'), 'sortby'));
+  select.options.add(new Option(getPlaceholder('sortByRelevance'), 'relevance', false, true));
+  select.options.add(new Option(getPlaceholder('sortByTitleAsc'), 'titleasc'));
+  select.options.add(new Option(getPlaceholder('sortByTitleDesc'), 'titledesc'));
+  select.options.add(new Option(getPlaceholder('sortByDateAsc'), 'dateasc'));
+  select.options.add(new Option(getPlaceholder('sortByDateDesc'), 'datedesc'));
   select.options[0].disabled = true;
   const usp = new URLSearchParams(window.location.search);
   if (usp.get('sort') !== null) {
@@ -190,11 +190,10 @@ function createTemplateBlock(main, blockName) {
 }
 
 export async function loadEager(document) {
-  const placeholders = await fetchPlaceholders();
   const main = document.querySelector('main');
   if (isTrueSearch) {
     createTemplateBlock(main, 'pagination');
-    main.insertBefore(buildSortBtn(placeholders), main.querySelector(':scope > div:nth-of-type(2)'));
+    main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
   } else {
     const response = await fetch('/fragments/404.plain.html');
     main.innerHTML = await response.text();
@@ -202,7 +201,6 @@ export async function loadEager(document) {
 }
 
 export async function loadLazy(document) {
-  const placeholders = await fetchPlaceholders();
   const main = document.querySelector('main');
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
@@ -231,11 +229,11 @@ export async function loadLazy(document) {
   hero.append(contentDiv);
   decorateResponsiveImages(imgDiv, ['461']);
   defaultContentWrapper.replaceWith(hero);
-  renderArticles(placeholders);
+  renderArticles();
   // Softnav progressive enhancement for browsers that support it
   if (window.navigation) {
     window.addEventListener('popstate', async () => {
-      renderArticles(placeholders);
+      renderArticles();
     });
   }
 }

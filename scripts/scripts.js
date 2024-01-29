@@ -431,13 +431,28 @@ export function decorateScreenReaderOnly(container) {
 }
 
 /**
+ * Gets the value of a placeholder.
+ * @param {string} key The key of the placeholder to retrieve
+ * @param {Object} options The template strings to use
+ * @returns the desired placeholder string, or throws an error if not found
+ */
+export function getPlaceholder(key, options = {}) {
+  if (!window.placeholders) {
+    throw new Error('Please load placeholders first using "fetchPlaceholders".');
+  }
+  if (!window.placeholders.default[key]) {
+    throw new Error(`Placeholder ${key} not found`);
+  }
+  Object.entries(options).reduce(([k, v]) => window.placeholders.default[key].replace(`{{${k}}}`, v), window.placeholders.default[key]);
+}
+
+/**
  * Adds hidden quick navigation links to improve accessibility.
  * @param {Object[]} links a map of links (label and id for the element to jump to)
- * @param {Object} placeholders the placeholder strings to use
  */
-function createA11yQuickNav(links = [], placeholders = {}) {
+async function createA11yQuickNav(links = []) {
   const nav = document.createElement('nav');
-  nav.setAttribute('aria-label', placeholders.accessibilityNavigationLabel);
+  nav.setAttribute('aria-label', getPlaceholder('accessibilityNavigationLabel'));
   nav.classList.add('a11y-quicknav', 'sr-focusable');
   links.forEach((l) => {
     const button = document.createElement('button');
@@ -592,14 +607,14 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
 
+  await fetchPlaceholders();
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
   if (main) {
     // await decorateTemplate(main);
-    const placeholders = await fetchPlaceholders();
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
-      document.title += ` | ${placeholders.websiteName}`;
+      document.title += ` | ${getPlaceholder('websiteName')}`;
     }
     await decorateMain(main);
     fixLinks();
@@ -792,14 +807,12 @@ async function loadLazy(doc) {
   const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
   firstMenu.id = 'menu';
 
-  const placeholders = await fetchPlaceholders();
-
   // Add hidden quick navigation links
-  createA11yQuickNav([
-    { id: 'main', label: placeholders.skipMain },
-    { id: 'menu', label: placeholders.skipMenu },
-    { id: 'footer', label: placeholders.skipFooter },
-  ], placeholders);
+  await createA11yQuickNav([
+    { id: 'main', label: getPlaceholder('skipMain') },
+    { id: 'menu', label: getPlaceholder('skipMenu') },
+    { id: 'footer', label: getPlaceholder('skipFooter') },
+  ]);
 
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
@@ -908,10 +921,9 @@ export function initializeTouch(block, slideWrapper) {
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
 export async function createBreadCrumbs(crumbData, chevronAll = false) {
-  const placeholders = await fetchPlaceholders();
   const { color } = crumbData[crumbData.length - 1];
   const breadcrumbContainer = document.createElement('nav');
-  breadcrumbContainer.setAttribute('aria-label', placeholders.breadcrumb);
+  breadcrumbContainer.setAttribute('aria-label', getPlaceholder('breadcrumb'));
 
   const ol = document.createElement('ol');
 
@@ -919,7 +931,7 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const homeLink = document.createElement('a');
   homeLink.href = '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
-  homeLink.setAttribute('aria-label', placeholders.logoLinkLabel);
+  homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
   homeLi.append(homeLink);
   ol.append(homeLi);
 

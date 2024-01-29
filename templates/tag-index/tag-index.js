@@ -1,12 +1,12 @@
 import ffetch from '../../scripts/ffetch.js';
 import {
   buildBlock,
-  fetchPlaceholders,
   toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
   fetchAndCacheJson,
   getId,
+  getPlaceholder,
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
@@ -33,7 +33,7 @@ async function getArticles() {
 }
 
 let articleLoadingPromise;
-async function renderArticles(articles, placeholders) {
+async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < PAGINATE_ON; i += 1) {
@@ -60,7 +60,7 @@ async function renderArticles(articles, placeholders) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = placeholders.noArticles;
+    noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -94,7 +94,7 @@ async function updateMetadata() {
   h1.id = toClassName(Name);
 }
 
-function buildSidebar(placeholders) {
+function buildSidebar() {
   const section = document.createElement('div');
   section.classList.add('sidebar');
   section.setAttribute('role', 'complementary');
@@ -104,7 +104,7 @@ function buildSidebar(placeholders) {
   const filterToggle = document.createElement('button');
   filterToggle.disabled = !isTablet();
   filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
-  filterToggle.textContent = placeholders.filters;
+  filterToggle.textContent = getPlaceholder('filters');
   section.append(filterToggle);
 
   const subCategories = buildBlock('sub-categories', { elems: [] });
@@ -144,19 +144,17 @@ function buildSidebar(placeholders) {
 
 // eslint-disable-next-line import/prefer-default-export
 export async function loadEager(document) {
-  const placeholders = await fetchPlaceholders();
   const main = document.querySelector('main');
   await updateMetadata();
   const h2 = document.createElement('h2');
   h2.classList.add('sr-only');
-  h2.textContent = placeholders.articles;
+  h2.textContent = getPlaceholder('articles');
   const h1 = main.querySelector('h1');
   h1.after(h2);
-  main.insertBefore(buildSidebar(placeholders), main.querySelector(':scope > div:nth-of-type(1)'));
+  main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(1)'));
   createTemplateBlock(main, 'pagination');
 }
 
 export async function loadLazy() {
-  const placeholders = await fetchPlaceholders();
-  renderArticles(getArticles(), placeholders);
+  renderArticles(getArticles());
 }

@@ -1,11 +1,10 @@
-import { createOptimizedPicture, fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import { getCategories, getCategory } from '../../scripts/scripts.js';
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { getCategories, getCategory, getPlaceholder } from '../../scripts/scripts.js';
 
 let articles;
 let breed;
 export default async function decorate(block) {
   // Pre-fetch the categories
-  const placeholders = await fetchPlaceholders();
   await getCategories();
 
   // Create containing div of three tiles (one big, two small)
@@ -63,7 +62,7 @@ export default async function decorate(block) {
     return category || metaCat || null;
   }));
 
-  data.forEach((dta, index) => {
+  data.forEach(async (dta, index) => {
     const tileTitle = dta.title.endsWith(' - PetPlace')
       ? dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'))
       : dta.title;
@@ -135,18 +134,18 @@ export default async function decorate(block) {
     }
 
     const monthNames = [
-      placeholders.january,
-      placeholders.february,
-      placeholders.march,
-      placeholders.april,
-      placeholders.may,
-      placeholders.june,
-      placeholders.july,
-      placeholders.august,
-      placeholders.september,
-      placeholders.october,
-      placeholders.november,
-      placeholders.december,
+      getPlaceholder('january'),
+      getPlaceholder('february'),
+      getPlaceholder('march'),
+      getPlaceholder('april'),
+      getPlaceholder('may'),
+      getPlaceholder('june'),
+      getPlaceholder('july'),
+      getPlaceholder('august'),
+      getPlaceholder('september'),
+      getPlaceholder('october'),
+      getPlaceholder('november'),
+      getPlaceholder('december'),
     ];
 
     const categoryLinkMobile = categoryLink.cloneNode(true);

@@ -1,7 +1,6 @@
-import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import { getCategories } from '../../scripts/scripts.js';
+import { getCategories, getPlaceholder } from '../../scripts/scripts.js';
 
-export function render(block, categories, placeholders) {
+function render(block, categories) {
   block.innerHTML = '';
 
   const childCategories = categories.filter((c) => c['Parent Path'] === window.location.pathname);
@@ -12,7 +11,7 @@ export function render(block, categories, placeholders) {
   block.style.display = '';
 
   const heading = document.createElement('h2');
-  heading.textContent = placeholders.subCategories;
+  heading.textContent = getPlaceholder('subCategories');
   block.append(heading);
   childCategories.forEach((c) => {
     const hasDescendants = categories.find((d) => d['Parent Path'] === c.Path);
@@ -31,6 +30,5 @@ export function render(block, categories, placeholders) {
 
 export default async function decorate(block) {
   const categories = await getCategories();
-  const placeholders = await fetchPlaceholders();
-  render(block, categories, placeholders);
+  render(block, categories);
 }

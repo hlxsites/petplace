@@ -3,11 +3,10 @@ import {
   buildBlock,
   createOptimizedPicture,
   decorateIcons,
-  fetchPlaceholders,
   getMetadata,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { meterCalls } from '../../scripts/scripts.js';
+import { getPlaceholder, meterCalls } from '../../scripts/scripts.js';
 
 const PAGINATE_ON = 12;
 
@@ -25,7 +24,6 @@ async function getArticles() {
 
 let articleLoadingPromise;
 async function renderArticles(articles) {
-  const placeholders = await fetchPlaceholders();
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
   for (let i = 0; i < PAGINATE_ON; i += 1) {
@@ -52,7 +50,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = placeholders.noArticles;
+    noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -90,7 +88,6 @@ export function loadEager(document) {
 }
 
 export async function loadLazy(document) {
-  const placeholders = await fetchPlaceholders();
   const main = document.querySelector('main');
   const hero = main.querySelector('.hero > div > div');
   const h3 = main.querySelector('h3');
@@ -109,7 +106,7 @@ export async function loadLazy(document) {
   const askNow = document.createElement('a');
   askNow.append(arrow);
   askNow.append(text);
-  askNow.href = `mailto:${placeholders.websiteEmail}`;
+  askNow.href = `mailto:${getPlaceholder('websiteEmail')}`;
   autoBlockDiv.append(askNow);
   decorateIcons(askNow);
 

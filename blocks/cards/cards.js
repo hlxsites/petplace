@@ -1,12 +1,12 @@
-import { createOptimizedPicture, fetchPlaceholders, toClassName } from '../../scripts/lib-franklin.js';
-import { getCategories } from '../../scripts/scripts.js';
+import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import { getCategories, getPlaceholder } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 const categories = await getCategories();
 let isAuthorCard = false;
 let isEager = true;
 
-async function buildPost(post, eager, placeholders) {
+async function buildPost(post, eager) {
   const postCategories = post.category ? post.category.split(',') : [];
   const postCategoriesLowerCase = postCategories.map((c) => c.trim().toLowerCase());
 
@@ -27,7 +27,7 @@ async function buildPost(post, eager, placeholders) {
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
     <div class="blogs-card-image">
-      <a href="${post.path}">${createOptimizedPicture(post.image, `${placeholders.teaserLabel} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
+      <a href="${post.path}">${createOptimizedPicture(post.image, `${getPlaceholder('teaserLabel')} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
       ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}"><span itemprop="about">${category.Category}</span></a>` : ''}
     </div>
     <div>
@@ -49,14 +49,14 @@ async function buildPost(post, eager, placeholders) {
   return postCard;
 }
 
-async function buildAuthorPost(post, eager, placeholders) {
+async function buildAuthorPost(post, eager) {
   const postCard = document.createElement('div');
   postCard.classList.add('blog-cards');
   postCard.setAttribute('itemscope', '');
   postCard.setAttribute('itemtype', 'https://schema.org/Person');
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.path}">${createOptimizedPicture(post.avatar, `${placeholders.avatarLabel} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
+        <a href="${post.path}">${createOptimizedPicture(post.avatar, `${getPlaceholder('avatarLabel')} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
       </div>
       <div>              
         <a href="${post.path}">
@@ -71,13 +71,13 @@ async function buildAuthorPost(post, eager, placeholders) {
   return postCard;
 }
 
-async function createCard(row, eager, placeholders) {
+async function createCard(row, eager) {
   const li = document.createElement('li');
   if (row.dataset.json) {
     const post = JSON.parse(row.dataset.json);
     li.append(isAuthorCard
-      ? await buildAuthorPost(post, eager, placeholders)
-      : await buildPost(post, eager, placeholders));
+      ? await buildAuthorPost(post, eager)
+      : await buildPost(post, eager));
   } else {
     li.append(row);
   }
@@ -85,7 +85,6 @@ async function createCard(row, eager, placeholders) {
 }
 
 export default async function decorate(block) {
-  const placeholders = await fetchPlaceholders();
   block.setAttribute('role', 'region');
   block.setAttribute('aria-live', 'polite');
   if (block.classList.contains('author')) {
@@ -93,7 +92,7 @@ export default async function decorate(block) {
   }
   const ul = document.createElement('ul');
   [...block.children].forEach(async (row) => {
-    const card = await createCard(row, !row.classList.contains('skeleton') && isEager, placeholders);
+    const card = await createCard(row, !row.classList.contains('skeleton') && isEager);
     if (row.classList.contains('skeleton')) {
       ul.append(card);
     } else if (ul.querySelector('.skeleton')) {
@@ -113,7 +112,7 @@ export default async function decorate(block) {
   const observer = new MutationObserver((entries) => {
     entries.forEach((entry) => {
       entry.addedNodes.forEach(async (div) => {
-        const card = await createCard(div, !div.classList.contains('skeleton') && isEager, placeholders);
+        const card = await createCard(div, !div.classList.contains('skeleton') && isEager);
         if (div.classList.contains('skeleton')) {
           ul.append(card);
           return;

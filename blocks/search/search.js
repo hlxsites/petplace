@@ -1,10 +1,10 @@
-import { fetchPlaceholders, sampleRUM } from '../../scripts/lib-franklin.js';
+import { sampleRUM } from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 export default async function decorate(block) {
-  const placeholders = await fetchPlaceholders();
-  const searchPlaceholder = block.firstElementChild.children[0].textContent || placeholders.search;
-  const searchButtonText = block.firstElementChild.children[1].textContent || placeholders.submit;
+  const searchPlaceholder = block.firstElementChild.children[0].textContent || getPlaceholder('search');
+  const searchButtonText = block.firstElementChild.children[1].textContent || getPlaceholder('submit');
 
   const form = document.createElement('form');
   form.setAttribute('role', 'search');
