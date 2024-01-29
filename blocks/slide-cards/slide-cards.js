@@ -1,4 +1,4 @@
-import { slide, initializeTouch } from '../../scripts/scripts.js';
+import { getPlaceholder, slide, initializeTouch } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const breedColorClasses = ['breed-purple', 'breed-red', 'breed-blue'];
@@ -26,7 +26,7 @@ export default async function decorate(block) {
   const buttonPrev = document.createElement('button');
   buttonPrev.setAttribute('type', 'button');
   buttonPrev.setAttribute('data-role', 'none');
-  buttonPrev.setAttribute('aria-label', 'View previous slide.');
+  buttonPrev.setAttribute('aria-label', getPlaceholder('previousSlide'));
   buttonPrev.setAttribute('aria-controls', id);
   buttonPrev.classList.add('slick-arrow', 'slick-prev');
   buttonPrev.addEventListener('click', () => {
@@ -35,7 +35,7 @@ export default async function decorate(block) {
   const buttonNext = document.createElement('button');
   buttonNext.setAttribute('type', 'button');
   buttonNext.setAttribute('data-role', 'none');
-  buttonNext.setAttribute('aria-label', 'View next slide.');
+  buttonNext.setAttribute('aria-label', getPlaceholder('nextSlide'));
   buttonNext.setAttribute('aria-controls', id);
   buttonNext.classList.add('slick-arrow', 'slick-next');
   buttonNext.addEventListener('click', () => {

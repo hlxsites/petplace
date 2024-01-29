@@ -1,4 +1,9 @@
-import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-franklin.js';
+import {
+  decorateIcons,
+  getMetadata,
+  sampleRUM,
+} from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
@@ -31,11 +36,11 @@ export default async function decorate(block) {
 
   const navHamburger = nav.querySelector('.nav-hamburger');
   navHamburger.innerHTML = `
-    <button type="button" aria-controls="nav" aria-label="Open navigation">
+    <button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">
       ${navHamburger.innerHTML}
     </button>`;
 
-  nav.querySelector('.nav-brand a').setAttribute('aria-label', 'Navigate to homepage');
+  nav.querySelector('.nav-brand a').setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
 
   const navTools = nav.querySelector('.nav-tools');
   const searchField = document.createElement('input');
@@ -90,7 +95,7 @@ export default async function decorate(block) {
 
   const treeViewWrapper = dialogContent.querySelector('ul').parentElement;
   const ariaTreeView = document.createElement(AriaTreeView.tagName);
-  ariaTreeView.setAttribute('label', 'Secondary Navigation');
+  ariaTreeView.setAttribute('label', getPlaceholder('secondaryNavigationLabel'));
   ariaTreeView.append(dialogContent.querySelector('ul'));
   treeViewWrapper.replaceWith(ariaTreeView);
   ariaDialog.append(dialogContent);
@@ -115,9 +120,9 @@ export default async function decorate(block) {
   nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
 
   const sidebarToggle = ariaDialog.querySelector('button');
-  sidebarToggle.setAttribute('aria-label', 'Open side bar');
+  sidebarToggle.setAttribute('aria-label', getPlaceholder('openNavigation'));
   const close = ariaDialog.querySelector('[role="dialog"] button');
-  close.setAttribute('aria-label', 'Close side bar');
+  close.setAttribute('aria-label', getPlaceholder('closeNavigation'));
   close.innerHTML = '<span class="icon icon-close"></span>';
 
   const dialog = ariaDialog.querySelector('[role="dialog"]');
@@ -141,7 +146,7 @@ export default async function decorate(block) {
 
   navSidebar.querySelectorAll('[role="tree"] button[aria-controls]').forEach((toggle) => {
     const item = navSidebar.querySelector(`#${toggle.getAttribute('aria-controls')}`);
-    toggle.setAttribute('aria-label', `Opens the ${item.textContent} item`);
+    toggle.setAttribute('aria-label', getPlaceholder('openNavItem', { item: item.textContent }));
   });
   const observer = new MutationObserver((entries) => {
     const { attributeName, target } = entries.pop();
@@ -150,7 +155,9 @@ export default async function decorate(block) {
     }
     const toggle = navSidebar.querySelector(`button[aria-controls="${target.id}"]`);
     const isExpanded = target.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-label', `${isExpanded ? 'Closes' : 'Opens'} the ${target.textContent} item`);
+    toggle.setAttribute('aria-label', isExpanded
+      ? getPlaceholder('closeNavItem')
+      : getPlaceholder('openNavItem', { item: target.textContent }));
   });
   navSidebar.querySelectorAll('[role="tree"] [role="treeitem"]').forEach((item) => {
     observer.observe(item, { attributes: true });
@@ -159,7 +166,7 @@ export default async function decorate(block) {
   block.querySelectorAll('.nav-sidebar-social a').forEach((a) => {
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
-    a.setAttribute('aria-label', `Open our ${a.firstElementChild.classList[1].substring(5)} page in a new tab.`);
+    a.setAttribute('aria-label', getPlaceholder('socialLinkLabel', { page: a.firstElementChild.classList[1].substring(5) }));
   });
 
   block.querySelector('form').addEventListener('submit', (ev) => {

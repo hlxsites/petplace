@@ -1,4 +1,5 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/lib-franklin.js';
+import { decorateIcons, readBlockConfig } from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 
 /**
  * loads and decorates the footer
@@ -34,11 +35,11 @@ export default async function decorate(block) {
     block.querySelectorAll('.footer-social a').forEach((a) => {
       a.setAttribute('target', '_blank');
       a.setAttribute('rel', 'noopener noreferrer');
-      a.setAttribute('aria-label', `Open our ${a.firstElementChild.classList[1].substring(5)} page in a new tab.`);
+      a.setAttribute('aria-label', getPlaceholder('socialLinkLabel', { page: a.firstElementChild.classList[1].substring(5) }));
     });
 
     const nav = document.createElement('nav');
-    nav.setAttribute('aria-label', 'Footer Navigation');
+    nav.setAttribute('aria-label', getPlaceholder('footerNavigation'));
     nav.className = 'footer-nav-links';
     const links = block.querySelector('.footer-nav ul ~ ul');
     links.replaceWith(nav);
