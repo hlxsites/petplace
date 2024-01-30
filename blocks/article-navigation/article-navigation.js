@@ -8,6 +8,7 @@ import {
 import {
   getCategories,
   getCategory,
+  getPlaceholder,
   isMobile,
 } from '../../scripts/scripts.js';
 
@@ -168,7 +169,7 @@ async function createNavigation(block) {
     // combined previous/next label for mobile view
     const combinedHeader = document.createElement('div');
     combinedHeader.classList.add('article-navigation-combined-header');
-    combinedHeader.innerText = 'Previous / Next Article';
+    combinedHeader.innerText = getPlaceholder('previousNextArticle');
     block.append(combinedHeader);
   }
 
@@ -176,7 +177,7 @@ async function createNavigation(block) {
     // previous-only label for non-mobile
     const previousHeader = document.createElement('div');
     previousHeader.classList.add('article-navigation-previous-header');
-    previousHeader.innerText = 'Previous Article';
+    previousHeader.innerText = getPlaceholder('previousArticle');
     block.append(previousHeader);
   }
 
@@ -184,7 +185,7 @@ async function createNavigation(block) {
     // next-only label for non-mobile
     const nextHeader = document.createElement('div');
     nextHeader.classList.add('article-navigation-next-header');
-    nextHeader.innerText = 'Next Article';
+    nextHeader.innerText = getPlaceholder('nextArticle');
     block.append(nextHeader);
   }
 

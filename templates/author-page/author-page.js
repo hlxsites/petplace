@@ -5,7 +5,7 @@ import {
   getMetadata,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { createBreadCrumbs, meterCalls } from '../../scripts/scripts.js';
+import { createBreadCrumbs, getPlaceholder, meterCalls } from '../../scripts/scripts.js';
 
 const PAGINATE_ON = 12;
 
@@ -49,7 +49,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = 'No Articles Found';
+    noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -79,7 +79,7 @@ export async function loadEager(document) {
     url: '/authors/',
     path: 'Authors',
     color: 'blue-dark',
-    label: 'Authors',
+    label: getPlaceholder('authors'),
   }, {
     url: window.location,
     path: heading.innerText,

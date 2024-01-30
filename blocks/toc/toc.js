@@ -1,3 +1,5 @@
+import { getPlaceholder } from '../../scripts/scripts.js';
+
 function appendItems(items, container) {
   items.forEach((item) => {
     const newTOC = document.createElement('a');
@@ -22,7 +24,7 @@ export default async function decorate(block) {
     const allH2s = main.querySelectorAll('main h2');
     const tocHeader = document.createElement('h2');
     const tocList = document.createElement('ol');
-    tocHeader.innerText = 'Table of Contents';
+    tocHeader.innerText = getPlaceholder('tableOfContents');
     block.appendChild(tocHeader);
     if (allH2s.length > 1) {
       for (let index = 0; index < allH2s.length; index += 1) {

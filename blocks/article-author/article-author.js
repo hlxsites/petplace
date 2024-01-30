@@ -1,4 +1,9 @@
-import { createOptimizedPicture, decorateIcons, getMetadata } from '../../scripts/lib-franklin.js';
+import {
+  createOptimizedPicture,
+  decorateIcons,
+  getMetadata,
+} from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const authorTitle = getMetadata('author');
@@ -23,7 +28,7 @@ export default async function decorate(block) {
     </div>
     <time itemprop="datePublished" datetime="${date.toISOString().substring(0, 10)}">${date}</time>
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-      <meta itemprop="name" content="PetPlace.com"/>
+      <meta itemprop="name" content="${getPlaceholder('websiteName')}"/>
       <meta itemprop="logo" content="${window.location.origin}/icons/logo.svg"/>
     </div>`;
   block.firstElementChild.prepend(avatarIfExist);

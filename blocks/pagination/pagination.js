@@ -1,4 +1,5 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 
 function createRelLink(rel, param) {
   const link = document.createElement('link');
@@ -24,9 +25,9 @@ function renderContent(block) {
   block.innerHTML = `
     <nav aria-label="pagination">
       <ul>
-        ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="Previous page"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
-        <li><a href="#" aria-current="page" tabindex="-1">Page: ${page}${total ? ` of ${total}` : ''}</a></li>
-        ${cards?.childElementCount >= limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="Next page"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
+        ${page > 1 ? `<li><a href="${window.location.pathname}?${prevParams}" aria-label="${getPlaceholder('previousPage')}"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
+        <li><a href="#" aria-current="page" tabindex="-1">${getPlaceholder('pageIndex', { page, total: total || '…' })}</a></li>
+        ${cards?.childElementCount >= limit ? `<li><a href="${window.location.pathname}?${nextParams}" aria-label="${getPlaceholder('nextPage')}"><span class="icon icon-chevron-wide"></span></a></li>` : ''}
       </ul>
     </nav>`;
   if (page > 1 && !document.head.querySelector('link[rel="prev"]')) {

@@ -8,6 +8,7 @@ import {
   decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
+  fetchPlaceholders,
   getAllMetadata,
   getMetadata,
   loadBlock,
@@ -430,12 +431,29 @@ export function decorateScreenReaderOnly(container) {
 }
 
 /**
+ * Gets the value of a placeholder.
+ * @param {string} key The key of the placeholder to retrieve
+ * @param {Object} options The template strings to use
+ * @returns the desired placeholder string, or throws an error if not found
+ */
+export function getPlaceholder(key, options = {}) {
+  if (!window.placeholders) {
+    throw new Error('Please load placeholders first using "fetchPlaceholders".');
+  }
+  const placeholders = window.placeholders[window.hlx.contentBasePath || 'default'];
+  if (!placeholders[key]) {
+    throw new Error(`Placeholder ${key} not found`);
+  }
+  return Object.entries(options).reduce((str, [k, v]) => str.replace(`{{${k}}}`, v), placeholders[key]);
+}
+
+/**
  * Adds hidden quick navigation links to improve accessibility.
- * @param {object[]} links a map of links (label and id for the element to jump to)
+ * @param {Object[]} links a map of links (label and id for the element to jump to)
  */
 function createA11yQuickNav(links = []) {
   const nav = document.createElement('nav');
-  nav.setAttribute('aria-label', 'Skip to specific locations on the page');
+  nav.setAttribute('aria-label', getPlaceholder('accessibilityNavigationLabel'));
   nav.classList.add('a11y-quicknav', 'sr-focusable');
   links.forEach((l) => {
     const button = document.createElement('button');
@@ -582,21 +600,29 @@ function fixLinks() {
   });
 }
 
+function setLocale() {
+  const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/(\w{2})-(\w{2})/i) || [];
+  const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
+  document.documentElement.lang = locale;
+  window.hlx.contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
+}
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  setLocale();
   decorateTemplateAndTheme();
 
+  await fetchPlaceholders(window.hlx.contentBasePath || 'default');
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
   if (main) {
     // await decorateTemplate(main);
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
-      document.title += ' | PetPlace.com';
+      document.title += ` | ${getPlaceholder('websiteName')}`;
     }
     await decorateMain(main);
     fixLinks();
@@ -661,7 +687,7 @@ export async function createNewsletterAutoBlock(fragmentUrl, addElement) {
 }
 
 async function loadNewsletter(footer) {
-  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-footer', (block) => {
+  const newsletterBlock = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-footer`, (block) => {
     footer.insertBefore(block, footer.children[0]);
   });
   newsletterBlock.classList.add('horizontal');
@@ -687,7 +713,7 @@ async function loadNewsletterPopup(footer) {
   }
   localStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
   const popupContainer = document.createElement('div');
-  const newsletterBlock = await createNewsletterAutoBlock('/fragments/newsletter-popup', (block) => {
+  const newsletterBlock = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-popup`, (block) => {
     popupContainer.append(block);
   });
   await loadBlock(newsletterBlock);
@@ -791,9 +817,9 @@ async function loadLazy(doc) {
 
   // Add hidden quick navigation links
   createA11yQuickNav([
-    { id: 'main', label: 'Skip to Content' },
-    { id: 'menu', label: 'Skip to Menu' },
-    { id: 'footer', label: 'Skip to Footer' },
+    { id: 'main', label: getPlaceholder('skipMain') },
+    { id: 'menu', label: getPlaceholder('skipMenu') },
+    { id: 'footer', label: getPlaceholder('skipFooter') },
   ]);
 
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
@@ -905,15 +931,15 @@ export function initializeTouch(block, slideWrapper) {
 export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const { color } = crumbData[crumbData.length - 1];
   const breadcrumbContainer = document.createElement('nav');
-  breadcrumbContainer.setAttribute('aria-label', 'Breadcrumb');
+  breadcrumbContainer.setAttribute('aria-label', getPlaceholder('breadcrumb'));
 
   const ol = document.createElement('ol');
 
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
-  homeLink.href = '/';
+  homeLink.href = window.hlx.contentBasePath || '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
-  homeLink.setAttribute('aria-label', 'Go to our Homepage');
+  homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
   homeLi.append(homeLink);
   ol.append(homeLi);
 
