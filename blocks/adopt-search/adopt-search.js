@@ -19,6 +19,7 @@ function parseData(data) {
     });
     return blockMetaData
 }
+
 export default async function decorate(block) {
     const blockMetaData = parseData(block);
 
@@ -89,8 +90,10 @@ export default async function decorate(block) {
     zipInput.setAttribute('aria-label', blockMetaData.zipPlaceholder);
     zipInput.className = 'zipCode';
     zipInput.type = 'text';
-    zipInput.name = 'zipCode';
-    zipInput.id = 'zipCode';
+    zipInput.name = 'zip';
+    zipInput.id = 'zip';
+    zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
+    zipInput.required = true;
     zipInput.placeholder = blockMetaData.zipPlaceholder;
     zipContainer.append(zipLabel);
     zipContainer.append(zipInput);
@@ -149,9 +152,17 @@ export default async function decorate(block) {
 
     form.append(zipContainer);
     form.append(button);
+    const formWrapper = document.createElement('div');
+    formWrapper.className = "adopt-search-wrapper"
+    // block.append(form);
+    formWrapper.append(form);
+    console.log('block', block)
+    
+    const heroContainer = document.querySelector('.columns.hero');
+    console.log('heroContainer', heroContainer, heroContainer.firstElementChild.lastElementChild);
+    heroContainer.firstElementChild.lastElementChild.append(formWrapper);
+    
     block.innerHTML = '';
-    block.append(form);
-
     //   const usp = new URLSearchParams(window.location.search);
     //   block.querySelector('.search-input').value = usp.get('q') || '';
 }
