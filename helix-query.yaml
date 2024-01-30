@@ -1,13 +1,14 @@
 version: 1
 
 indices:
-  sitemap:
+  sitemap-en-us:
     target: /query-index.xlsx
     exclude:
       - 'article/category/default'
       - 'drafts/**'
       - 'fragments/**'
       - 'tools/**'
+      - 'en-gb/**'
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -25,6 +26,35 @@ indices:
         select: none
         value: |
           parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+  sitemap-en-gb:
+    target: /en-gb/query-index.xlsx
+    include:
+      - '/en-gb/**'
+    exclude:
+      - 'drafts/**'
+      - 'tools/**'
+      - '/en-gb/article/category/default'
+      - '/en-gb/fragments/**'
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      primary-language-url:
+        select: head > meta[name="primary-language-url"]
+        value: attribute(el, "content")
   articles:
     include:
       - '/article/**'
