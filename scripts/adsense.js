@@ -53,23 +53,21 @@ const gtagDisplay = (argsArr) => {
   });
 };
 
-// google tag for adsense
-export const adsDefineSlot = (...args) => {
-  let anchorSlot;
+const adsenseSetup = (adArgs, catVal, anchorSlot) => {
   const REFRESH_KEY = 'refresh';
   const REFRESH_VALUE = 'true';
-  const lastItemIndex = args.length - 1;
+  const lastItemIndex = adArgs.length - 1;
 
   window.googletag.cmd.push(() => {
     // eslint-disable-next-line no-plusplus
-    for (let i = 1; i < lastItemIndex; i++) {
+    for (let i = 0; i < lastItemIndex; i++) {
       window.googletag
         .defineSlot(
-          `/1004510/petplace_web/${args[i]}`,
-          sizingArr(args[i]),
-          args[i],
+          `/1004510/petplace_web/${adArgs[i]}`,
+          sizingArr(adArgs[i]),
+          adArgs[i],
         )
-        .defineSizeMapping(mappingHelper(args[i]))
+        .defineSizeMapping(mappingHelper(adArgs[i]))
         .setTargeting(REFRESH_KEY, REFRESH_VALUE)
         .setTargeting('refreshed_slot', 'false')
         .setCollapseEmptyDiv(true)
@@ -77,7 +75,7 @@ export const adsDefineSlot = (...args) => {
     }
 
     anchorSlot = window.googletag.defineOutOfPageSlot(
-      `/1004510/petplace_web/${args[lastItemIndex]}`,
+      `/1004510/petplace_web/${adArgs[lastItemIndex]}`,
       window.googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR,
     );
 
@@ -109,17 +107,26 @@ export const adsDefineSlot = (...args) => {
       mobileScaling: 2.0,
     });
 
-    const pageType = args[lastItemIndex].split('_')[0];
+    const pageType = adArgs[lastItemIndex].split('_')[0];
     window.googletag.pubads().set('page_url', 'https://www.petplace.com');
-    window.googletag.pubads().setTargeting(pageType, args[0]);
+    window.googletag.pubads().setTargeting(pageType, catVal);
     window.googletag.pubads().setCentering(true);
     window.googletag.pubads().collapseEmptyDivs(true);
     window.googletag.enableServices();
   });
 
+  return anchorSlot;
+};
+
+// google tag for adsense
+export const adsDefineSlot = async (catVal, adArgs) => {
+  let anchorSlot;
+
+  await adsenseSetup(adArgs, catVal, anchorSlot);
+
   // after the definitions
-  args.pop();
-  args.shift();
-  args.push(anchorSlot);
-  gtagDisplay(args);
+  const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
+  anchorSlot && newArgs.push(anchorSlot);
+  gtagDisplay(newArgs);
+};
 };
