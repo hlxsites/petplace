@@ -12,7 +12,7 @@ function removeAllErrorMessage(searchContainers) {
 }
 
 function isValidZipcode(code) {
-  const regex = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/;
+  const regex = /^[0-9]{5}(?:-[0-9]{4})?$/;
 
   return regex.test(code);
 }
