@@ -113,7 +113,7 @@ async function getBreadcrumbs(categorySlug) {
       label: convertToTitleCase(categoryData.Slug),
     });
 
-    if (categoryData['Parent Path'] !== '/article/category/' && categoryData['Parent Path']) {
+    if (categoryData['Parent Path'] !== `${window.hlx.contentBasePath}/article/category/` && categoryData['Parent Path']) {
       const { Slug } = await getCategoryByKey('Path', categoryData['Parent Path']);
       await fetchSegmentData(Slug);
     }

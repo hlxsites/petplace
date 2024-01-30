@@ -937,7 +937,7 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
 
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
-  homeLink.href = '/';
+  homeLink.href = window.hlx.contentBasePath || '/';
   homeLink.innerHTML = '<span class="icon icon-home"></span>';
   homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
   homeLi.append(homeLink);
