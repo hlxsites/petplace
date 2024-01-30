@@ -40,7 +40,7 @@ async function getArticles() {
 
   // Show the recent articles if we don't have a search query
   if (!query) {
-    const resp = await fetch('/article/query-index.json?sheet=article');
+    const resp = await fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=article`);
     const json = await resp.json();
     return json.data.slice(0, 16);
   }
@@ -61,7 +61,7 @@ async function getArticles() {
     // only looks at the last 5K articles and does basic keyword matching
     // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
     const queryTokens = query.split(' ');
-    const resp = await fetch('/article/query-index.json?sheet=article&limit=-5000');
+    const resp = await fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=article&limit=-5000`);
     const json = await resp.json();
 
     results = json.data.filter((article) => queryTokens.every((t) => article.title.includes(t)
