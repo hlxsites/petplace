@@ -14,7 +14,7 @@ async function getArticles() {
   const limit = usp.get('limit') || PAGINATE_ON;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   const author = window.location.pathname.split('/').pop();
-  return ffetch('/article/query-index.json')
+  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('article')
     .withTotal(true)
     .filter((article) => toClassName(article.author) === author)
@@ -76,7 +76,7 @@ export async function loadEager(document) {
   const main = document.querySelector('main');
   const heading = main.querySelector('h1');
   const breadcrumbData = await createBreadCrumbs([{
-    url: '/authors/',
+    url: `${window.hlx.contentBasePath}/authors/`,
     path: 'Authors',
     color: 'blue-dark',
     label: getPlaceholder('authors'),
