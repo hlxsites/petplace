@@ -14,7 +14,7 @@ import {
 const PAGINATE_ON = 12;
 
 async function getTagForUrl() {
-  const tags = await fetchAndCacheJson('/tags/tags.json');
+  const tags = await fetchAndCacheJson(`${window.hlx.contentBasePath}/tags/tags.json`);
   const { pathname } = window.location;
   return tags.find((tag) => tag.Path === pathname);
 }
@@ -25,7 +25,7 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   const tag = await getTagForUrl();
   const tagName = toClassName(tag.Name);
-  return ffetch('/article/query-index.json')
+  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('article')
     .withTotal(true)
     .filter((article) => JSON.parse(article.tags).map((t) => toClassName(t)).includes(tagName))
