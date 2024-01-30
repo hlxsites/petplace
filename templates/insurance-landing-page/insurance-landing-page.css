@@ -136,7 +136,7 @@
 .insurance-landing-page .columns-txt-col{
   display: flex;
   flex-direction: column;
-  margin-bottom: 0;
+  margin-bottom: 16px;
 }
 
 .insurance-landing-page .columns-txt-col h2{
@@ -154,6 +154,10 @@
 
   @media (max-width: 600px) {
     font-size: 2rem;
+  }
+
+  @media (min-width: 900px) {
+    width: 90%;
   }
 }
 
@@ -353,6 +357,13 @@
   background-color: #fff;
   color: var(--faq-accordion-txt-color);
   padding: 16px 44px;
+}
+
+.insurance-landing-page .accordion-section h3 button {
+  @media (min-width: 600px) {
+    font-size: 24px;
+    line-height: 28px;
+  }
 }
 
 .insurance-landing-page .accordion-section .text{
