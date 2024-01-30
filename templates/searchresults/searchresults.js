@@ -195,7 +195,7 @@ export async function loadEager(document) {
     createTemplateBlock(main, 'pagination');
     main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
   } else {
-    const response = await fetch('/fragments/404.plain.html');
+    const response = await fetch(`${window.hlx.contentBasePath}/fragments/404.plain.html`);
     main.innerHTML = await response.text();
   }
 }

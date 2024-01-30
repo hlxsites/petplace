@@ -10,7 +10,7 @@ export default async function decorate(block) {
   block.textContent = '';
 
   // fetch footer content
-  const footerPath = cfg.footer || '/fragments/footer';
+  const footerPath = cfg.footer || `${window.hlx.contentBasePath}/fragments/footer`;
   const resp = await fetch(`${footerPath}.plain.html`, window.location.pathname.endsWith('/footer') ? { cache: 'reload' } : {});
 
   if (resp.ok) {
