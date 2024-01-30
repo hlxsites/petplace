@@ -174,15 +174,23 @@ export const mappingHelper = (adLoc) => {
     )
     .build();
 
-  return adLoc.includes('top')
-    ? mappingTop
-    : adLoc.includes('side')
-      ? mappingSide
-      : adLoc.includes('middle')
-        ? mappingMiddle
-        : adLoc.includes('bottom')
-          ? mappingLeaderboard
-          : null;
+  // reverting to this for now as hotfix
+  if (adLoc.includes('top')) return mappingTop;
+  if (adLoc.includes('side')) return mappingSide;
+  if (adLoc.includes('middle')) return mappingMiddle;
+  if (adLoc.includes('bottom')) return mappingLeaderboard;
+
+  return mappingLeaderboard;
+
+  // return adLoc.includes('top')
+  //   ? mappingTop
+  //   : adLoc.includes('side')
+  //     ? mappingSide
+  //     : adLoc.includes('middle')
+  //       ? mappingMiddle
+  //       : adLoc.includes('bottom')
+  //         ? mappingLeaderboard
+  //         : null;
 };
 
 export const sizingArr = (adLoc) => {
@@ -190,15 +198,19 @@ export const sizingArr = (adLoc) => {
   const sizeTopMid = [[320, 50]];
   const sizeLeader = [[728, 90]];
 
+  // reverting to this for now as hotfix
   if (adLoc.includes('article')) {
-    return adLoc.includes('top') || adLoc.includes('middle')
-      ? sizeTopMid
-      : adLoc.includes('side')
-        ? sizeSide
-        : adLoc.includes('botom')
-          ? sizeLeader
-          : null;
+    if (adLoc.includes('side')) return sizeSide;
+    if (adLoc.includes('top')) return sizeTopMid;
+    if (adLoc.includes('middle')) return sizeTopMid;
+    if (adLoc.includes('bottom')) return sizeLeader;
   }
+
+  // return adLoc.includes('top') || adLoc.includes('middle')
+  //   ? sizeTopMid
+  //   : adLoc.includes('side')
+  //   ? sizeSide
+  //   : sizeLeader;
 
   return sizeLeader;
 };
