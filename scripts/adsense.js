@@ -121,12 +121,10 @@ const adsenseSetup = (adArgs, catVal, anchorSlot) => {
 // google tag for adsense
 export const adsDefineSlot = async (catVal, adArgs) => {
   let anchorSlot;
-
   await adsenseSetup(adArgs, catVal, anchorSlot);
 
   // after the definitions
   const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
   anchorSlot && newArgs.push(anchorSlot);
   gtagDisplay(newArgs);
-};
 };
