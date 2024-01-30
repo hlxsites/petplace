@@ -53,7 +53,8 @@ const gtagDisplay = (argsArr) => {
   });
 };
 
-const adsenseSetup = (adArgs, catVal, anchorSlot) => {
+const adsenseSetup = (adArgs, catVal) => {
+  let anchorSlot;
   const REFRESH_KEY = 'refresh';
   const REFRESH_VALUE = 'true';
   const lastItemIndex = adArgs.length - 1;
@@ -120,11 +121,11 @@ const adsenseSetup = (adArgs, catVal, anchorSlot) => {
 
 // google tag for adsense
 export const adsDefineSlot = async (catVal, adArgs) => {
-  let anchorSlot;
-  await adsenseSetup(adArgs, catVal, anchorSlot);
+  // separate function to return the anchor slot
+  const anchorSlot = await adsenseSetup(adArgs, catVal);
 
-  // after the definitions
+  // after the definitions to display
   const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
-  anchorSlot && newArgs.push(anchorSlot);
+  if (anchorSlot) newArgs.push(anchorSlot);
   gtagDisplay(newArgs);
 };
