@@ -3,20 +3,10 @@
   min-height: 429px;
 }
 
-.insurance-landing-page .hero > div {
-  margin-left: 100px;
-  @media (max-width: 768px) {
-    margin-left: auto;
-  }
-
-  @media (min-width: 769px) and (max-width:1024px) {
-    margin-left: 25px !important;
-  }
-}
 .insurance-landing-page main .hero > div > div:not(:first-child) {
   align-items: start;
   flex-direction: column;
-  margin: 3rem 0px;
+  margin: 2rem 0px;
   max-width: 660px;
 }
 
@@ -29,12 +19,6 @@
   font-size: 1.5rem;
   @media (max-width: 600px) {
     color: #09090D;
-  }
-}
-
-.insurance-landing-page .section > .columns-wrapper {
-  @media (min-width: 1200px) {
-    max-width: 90%;
   }
 }
 
@@ -59,17 +43,6 @@
   }
 }
 
-.insurance-landing-page :not(.search-container ~ .search-container).search-container > .search-wrapper{
-  margin-left: 100px;
-
-  @media (min-width: 769px) and (max-width:1024px) {
-    margin-left: 25px;
-  }
-  @media (max-width: 768px) {
-    margin-left: unset;
-  }
-}
-
 .insurance-landing-page :not(.search-container ~ .search-container).search-container {
   @media (max-width: 600px) {
     box-shadow: none;
@@ -88,7 +61,7 @@
 }
 
 .insurance-landing-page :not(.search-container ~ .search-container).search-container .search-box-wrapper{
-  margin-top: 4rem;
+  margin-top: 2.5rem;
 
   @media (max-width: 600px) {
     margin-top: 0;
@@ -157,17 +130,7 @@
 }
 
 .insurance-landing-page .columns-img-col:nth-child(4) > picture{
-  width: 30%;
-}
-
-.insurance-landing-page .columns-img-col:nth-child(5) {
-  @media (min-width: 601px) and (max-width:1024px) {
-    justify-content: start;
-  }
-}
-
-.insurance-landing-page .columns-img-col:nth-child(5) > picture{
-  width: 65%;
+  width: 35%;
 }
 
 .insurance-landing-page .columns-txt-col{
@@ -228,7 +191,7 @@
 .insurance-landing-page .columns-container .logos div{
   gap: 24px;
   @media (min-width: 601px) and (max-width:1024px) {
-    flex: 1 1 25%;
+    flex: 1 1 40%;
   }
 }
 
@@ -323,7 +286,6 @@
 
 .insurance-landing-page .accordion-container{
   display: flex;
-  /* width: 100%; */
   background-color: var(--faq-background-color);
   gap: 20px;
 
@@ -336,6 +298,10 @@
     flex-direction: column-reverse;
     align-items: center;
     width: auto;
+  }
+
+  @media (min-width: 1025px){
+    padding: 2rem calc((100% - 1344px)/2);
   }
 }
 
@@ -435,6 +401,7 @@
   display: flex;
   justify-content: center;
   margin-left: -250px;
+  margin-bottom: 16px;
 
   @media (max-width: 600px) {
     margin-left: 0;
@@ -444,23 +411,12 @@
   }
 }
 
-.insurance-landing-page :not(.search-container ~ .search-container).search-container > .find-useful-wrapper{
-  @media (min-width: 900px) {
-    margin: 0;
-  }
-}
-
 .insurance-landing-page :not(.search-container ~ .search-container).search-container > .find-useful-wrapper .error{
-  justify-content: start;
-  align-items: start;
-  margin-left: 120px;
+  justify-content: flex-start;
+  margin-left: 20px;
   @media (max-width: 600px) {
     margin-left: unset;
     width: 100%;
-  }
-
-  @media (min-width: 601px) and (max-width: 1024px) {
-    margin-left: 45px !important;
   }
 }
 
@@ -507,7 +463,6 @@
 
   .insurance-landing-page main .hero {
     display: flex;
-    /* align-items: center; */
   }
 
   .insurance-landing-page  .hero img {
@@ -529,4 +484,61 @@
     object-fit: cover;
     box-sizing: border-box;
   }
+}
+
+.insurance-landing-page :not(.search-container ~ .search-container).search-container > .default-content-wrapper{
+  width: 100%;
+  max-width: 1334px;
+  display: block;
+
+  & p {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    margin-left: 20px;
+  }
+  @media (max-width: 600px) {
+    width: 100%;
+    display: flex;
+    margin-left: unset;
+    justify-content: center;
+
+    & p {
+      color: var(--faq-accordion-txt-color);
+      margin-bottom: 4rem;
+      margin-left: 0;
+    }
+  }
+
+}
+
+.insurance-landing-page .section.subhead-container ~ .section.subhead-container {
+  background-color: var(--background-color-dark) !important;
+  color: var(--text-color-inverted) !important;
+  margin-top: 4rem;
+  padding-bottom: 0;
+
+  & .disclaimer {
+    margin-top: 0 !important;
+  }
+
+  & .disclaimer div {
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 16px;
+    padding-bottom: 0.8rem;
+  }
+
+  @media (max-width: 900px) {
+    padding-bottom: 1.5rem;
+  }
+}
+
+.insurance-landing-page .footer-top-spacing .footer {
+  border-top: unset;
+}
+
+.insurance-landing-page .section:last-child{
+  padding: unset;
 }
