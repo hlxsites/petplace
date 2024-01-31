@@ -90,7 +90,7 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  authors:
+  authors-en-us: &authors-base
     include:
       - '/authors/**'
     target: /authors/query-index.xlsx
@@ -111,3 +111,8 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  authors-en-gb:
+    <<: *authors-base
+    include:
+      - '/en-gb/authors/**'
+    target: /en-gb/authors/query-index.xlsx
