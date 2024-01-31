@@ -601,7 +601,7 @@ function fixLinks() {
 }
 
 function setLocale() {
-  const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/(\w{2})-(\w{2})/i) || [];
+  const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
   const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
   document.documentElement.lang = locale;
   window.hlx.contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
