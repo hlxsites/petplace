@@ -15,15 +15,24 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
+    align-items: flex-start;
+}
+.adopt-search-wrapper .adopt-search.results form {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
 }
 
-.adopt-search-wrapper form fieldset {
+.adopt-search-wrapper  form fieldset {
     display: flex;
     border: none;
     margin: 0;
     padding: 0;
     width: 50%;
     gap: 16px;
+}
+.adopt-search-wrapper .adopt-search.results form fieldset {
+    width: auto;
 }
 .adopt-search-wrapper form fieldset label {
     display: flex;
@@ -48,17 +57,23 @@
     color: #fff;
 }
 .adopt-search-wrapper form fieldset label {
-        padding: 10px var(--Spacing-Large, 24px);
+    padding: 10px var(--Spacing-Large, 24px);
 
     width: auto;
     display: inline;
     border: 1px solid var(--Border-Strong, #D0D0D6);
-     border-radius: 8px;
+    border-radius: 8px;
 }
 
 .adopt-search-wrapper form > div {
     display: flex;
     flex-direction: column;
+    /* width: 100%; */
+
+}
+.adopt-search-wrapper .adopt-search.results form > div {
+
+    width: 100%;
 
 }
 
@@ -106,6 +121,7 @@
     }
   }
   
-  .genai-search.large .search-box-wrapper #clearButton.show {
-    display: inline-block;
+  .adopt-search-wrapper form button.adopt-search-button {
+    width: 100%;
+    max-width: fit-content;
   }

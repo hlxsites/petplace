@@ -37,7 +37,7 @@ export default async function decorate(block) {
         const legend = document.createElement('legend');
         legend.innerText = petTypeLabel;
         radioContainer.append(legend);
-        const petTypes =petTypeValues.split(',');
+        const petTypes = petTypeValues.split(',');
         console.log('petTypes', petTypes)
         petTypes.forEach((petType) => {
             const p = document.createElement('div');
@@ -71,7 +71,7 @@ export default async function decorate(block) {
     option.value = '';
 
     breedSelect.append(option);
-    breedContainer.append(breedLabel)
+    breedContainer.append(breedLabelElement)
     breedContainer.append(breedSelect);
 
     const zipContainer = document.createElement('div');
@@ -88,7 +88,7 @@ export default async function decorate(block) {
     zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
     zipInput.required = true;
     zipInput.placeholder = zipPlaceholder;
-    zipContainer.append(zipLabel);
+    zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
 
 
