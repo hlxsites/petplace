@@ -16,20 +16,7 @@ function createLabel(fd) {
     return label;
 }
 
-function parseData(data) {
-    const blockMetaData = {};
-    [...data.children].forEach((row) => {
-        if (row.children.length > 1) {
-            Object.assign(blockMetaData, { [row.children[0].innerText]: row.children[1].innerText });
-        }
-    });
-    return blockMetaData
-}
-
 export default async function decorate(block) {
-    const blockMetaData = parseData(block);
-
-    console.log('blockMetaData', blockMetaData);
 
 
     const form = document.createElement('form');
@@ -46,11 +33,11 @@ export default async function decorate(block) {
     //   });
 
     const radioContainer = document.createElement('fieldset');
-    if (blockMetaData.petTypeValues) {
+    if (petTypeValues) {
         const legend = document.createElement('legend');
-        legend.innerText = blockMetaData.petTypeLabel;
+        legend.innerText = petTypeLabel;
         radioContainer.append(legend);
-        const petTypes = blockMetaData.petTypeValues.split(',');
+        const petTypes =petTypeValues.split(',');
         console.log('petTypes', petTypes)
         petTypes.forEach((petType) => {
             const p = document.createElement('div');
@@ -58,7 +45,7 @@ export default async function decorate(block) {
             label.setAttribute('for', `radio-${petType}`);
             label.innerText = petType;
             const radio = document.createElement('input');
-            //   input.setAttribute('aria-label', blockMetaData.)
+            //   input.setAttribute('aria-label', )
             radio.type = "radio";
             radio.name = 'petType';
             radio.id = `radio-${petType}`;
@@ -71,16 +58,16 @@ export default async function decorate(block) {
     }
 
     const breedContainer = document.createElement('div');
-    const breedLabel = document.createElement('label');
-    breedLabel.for = "breed";
-    breedLabel.innerText = blockMetaData.breedLabel;
+    const breedLabelElement = document.createElement('label');
+    breedLabelElement.for = "breed";
+    breedLabelElement.innerText = breedLabel;
 
     const breedSelect = document.createElement('select');
     breedSelect.name = "breed";
     breedSelect.id = "breed";
     breedSelect.className = 'form-select-wrapper';
     const option = document.createElement('option');
-    option.innerText = blockMetaData.breedPlaceholder
+    option.innerText = breedPlaceholder
     option.value = '';
 
     breedSelect.append(option);
@@ -88,19 +75,19 @@ export default async function decorate(block) {
     breedContainer.append(breedSelect);
 
     const zipContainer = document.createElement('div');
-    const zipLabel = document.createElement('label');
-    zipLabel.setAttribute('for', "zipCode");
-    zipLabel.innerText = blockMetaData.zipLabel;
+    const zipLabelElem = document.createElement('label');
+    zipLabelElem.setAttribute('for', "zipCode");
+    zipLabelElem.innerText = zipLabel;
 
     const zipInput = document.createElement('input');
-    zipInput.setAttribute('aria-label', blockMetaData.zipPlaceholder);
+    zipInput.setAttribute('aria-label', zipPlaceholder);
     zipInput.className = 'zipCode';
     zipInput.type = 'text';
     zipInput.name = 'zip';
     zipInput.id = 'zip';
     zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
     zipInput.required = true;
-    zipInput.placeholder = blockMetaData.zipPlaceholder;
+    zipInput.placeholder = zipPlaceholder;
     zipContainer.append(zipLabel);
     zipContainer.append(zipInput);
 
@@ -139,7 +126,7 @@ export default async function decorate(block) {
     const button = document.createElement('button');
     button.type = 'submit';
     button.className = 'adopt-search-button';
-    button.textContent = blockMetaData.searchButtonText;
+    button.textContent = searchButtonText;
     //   const xhr = new XMLHttpRequest();
     //   xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
     //   xhr.onreadystatechange = function () {
