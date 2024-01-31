@@ -1,4 +1,10 @@
-import { sampleRUM } from '../../scripts/lib-franklin.js';
+import { sampleRUM, fetchPlaceholders} from '../../scripts/lib-franklin.js';
+
+// fetch placeholders from the 'en' folder
+const placeholders = await fetchPlaceholders('/adopt');
+// retrieve the value for key 'foo'
+const { petTypeLabel, petTypeValues, breedLabel, breedPlaceholder, zipLabel, zipPlaceholder, zipErrorMessage, searchButtonText } = placeholders;
+console.log('placeholders', petTypeLabel, petTypeValues, breedLabel, breedPlaceholder, zipLabel, zipPlaceholder, zipErrorMessage, searchButtonText);
 
 function createLabel(fd) {
     const label = document.createElement('label');
@@ -152,17 +158,24 @@ export default async function decorate(block) {
 
     form.append(zipContainer);
     form.append(button);
-    const formWrapper = document.createElement('div');
-    formWrapper.className = "adopt-search-wrapper"
-    // block.append(form);
-    formWrapper.append(form);
-    console.log('block', block)
+
+    console.log('block', block,form)
     
     const heroContainer = document.querySelector('.columns.hero');
-    console.log('heroContainer', heroContainer, heroContainer.firstElementChild.lastElementChild);
-    heroContainer.firstElementChild.lastElementChild.append(formWrapper);
+
+    if(heroContainer?.firstElementChild?.lastElementChild != null){
+        const formWrapper = document.createElement('div');
+        formWrapper.className = "adopt-search-wrapper"
+        formWrapper.append(form);
+        block.innerHTML = '';
+        
+        heroContainer.firstElementChild.lastElementChild.append(formWrapper);
+    } else {
+        
+        block.innerHTML = ''; 
+        block.append(form); 
+    }
     
-    block.innerHTML = '';
     //   const usp = new URLSearchParams(window.location.search);
     //   block.querySelector('.search-input').value = usp.get('q') || '';
 }
