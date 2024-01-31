@@ -114,8 +114,6 @@ export default async function decorate(block) {
     conversionMonitor = setInterval(enterIframe, 100);
   }
 
-  window.googletag = window.googletag || { cmd: [] };
-
   if (!block.id) {
     block.id = getId('ad');
   }
