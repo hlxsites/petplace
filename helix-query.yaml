@@ -1,14 +1,15 @@
 version: 1
 
 indices:
-  sitemap:
+  sitemap-en-us:
     target: /query-index.xlsx
     exclude:
       - 'article/category/default'
       - 'drafts/**'
       - 'fragments/**'
+      - 'en-gb/**'
       - 'tools/**'
-    properties:
+    properties: &sitemap-base-props
       title:
         select: head > meta[property="og:title"]
         value: |
@@ -25,6 +26,21 @@ indices:
         select: none
         value: |
           parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+  sitemap-en-gb:
+    target: /en-gb/query-index.xlsx
+    include:
+      - '/en-gb/**'
+    exclude:
+      - 'drafts/**'
+      - 'tools/**'
+      - 'en-gb/article/category/default'
+      - 'en-gb/drafts/**'
+      - 'en-gb/fragments/**'
+    properties:
+      <<: *sitemap-base-props
+      primary-language-url:
+        select: head > meta[name="primary-language-url"]
+        value: attribute(el, "content")
   articles:
     include:
       - '/article/**'
