@@ -442,7 +442,7 @@ export function getPlaceholder(key, options = {}) {
   }
   const placeholders = window.placeholders[window.hlx.contentBasePath || 'default'];
   if (!placeholders[key]) {
-    throw new Error(`Placeholder ${key} not found`);
+    throw new Error(`Placeholder "${key}" not found`);
   }
   return Object.entries(options).reduce((str, [k, v]) => str.replace(`{{${k}}}`, v), placeholders[key]);
 }
@@ -601,7 +601,7 @@ function fixLinks() {
 }
 
 function setLocale() {
-  const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/(\w{2})-(\w{2})/i) || [];
+  const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
   const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
   document.documentElement.lang = locale;
   window.hlx.contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
