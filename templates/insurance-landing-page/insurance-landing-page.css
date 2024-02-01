@@ -15,10 +15,10 @@
 }
 
 .insurance-landing-page main .hero > div > div p {
-  color: #fff;
+  color: var(--text-color-inverted);
   font-size: 1.5rem;
   @media (max-width: 600px) {
-    color: #09090d;
+    color: var(--pet-insurance-txt-color);
   }
 }
 
@@ -105,14 +105,14 @@
 
 .insurance-landing-page .search-box-wrapper .search-button::before {
   display: inline-block;
-  content: '';
+  content: "";
   margin-right: 0.5rem;
   height: 13px;
   width: 29px;
   background: var(--text-color-inverted);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
-  mask: url('../../icons/arrow.svg') no-repeat center center;
+  -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
+  mask: url("../../icons/arrow.svg") no-repeat center center;
   vertical-align: middle;
 }
 
@@ -146,11 +146,11 @@
 .insurance-landing-page .columns-txt-col h2 {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #09090d;
+  color: var(--pet-insurance-txt-color);
 }
 
 .insurance-landing-page .columns-txt-col p {
-  color: #09090d;
+  color: var(--pet-insurance-txt-color);
 }
 
 .insurance-landing-page .columns-txt-col:first-child h2 {
@@ -341,7 +341,7 @@
   h2 {
     font-size: 2.75rem;
     font-weight: 700;
-    color: #09090d;
+    color: var(--pet-insurance-txt-color);
 
     @media (max-width: 600px) {
       font-size: 2rem;
@@ -363,12 +363,12 @@
 }
 
 .insurance-landing-page .accordion-section {
-  background-color: #fff;
+  background-color: var(--text-color-inverted);
 }
 
 .insurance-landing-page .accordion-section h3 button,
 .insurance-landing-page .accordion-section .text {
-  background-color: #fff;
+  background-color: var(--text-color-inverted);
   color: var(--faq-accordion-txt-color);
   padding: 16px 44px;
 }
@@ -388,7 +388,7 @@
 .insurance-landing-page .accordion button[aria-expanded]::after {
   -webkit-mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
   mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
-  background-color: #6e6d73;
+  background-color: var(--faq-accordion-arrow-bg-color);
   width: 20px;
   height: 20px;
 }
@@ -396,7 +396,7 @@
 .insurance-landing-page .accordion button[aria-expanded="true"]::after {
   -webkit-mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
   mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
-  background-color: #6e6d73;
+  background-color: var(--faq-accordion-arrow-bg-color);
   width: 20px;
   height: 20px;
 }
