@@ -1,7 +1,5 @@
 import { mappingHelper, sizingArr } from './utils/helpers.js';
 
-window.googletag ||= { cmd: [] };
-
 export const adsDivCreator = (adLoc) => {
   const mainDiv = document.createElement('div');
   mainDiv.className = 'publi-container bg-white';
