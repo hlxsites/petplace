@@ -17,7 +17,10 @@
 .insurance-landing-page main .hero > div > div p {
   color: var(--text-color-inverted);
   font-size: 1.5rem;
-  @media (max-width: 600px) {
+}
+
+@media (max-width: 600px) {
+  .insurance-landing-page main .hero > div > div p {
     color: var(--pet-insurance-txt-color);
   }
 }
@@ -36,24 +39,30 @@
   bottom: 0;
   right: 0;
   margin: 0 auto;
+}
 
-  @media (max-width: 600px) {
+@media (max-width: 600px) {
+  .insurance-landing-page
+  :not(.search-container ~ .search-container).search-container {
     position: relative;
     top: 0;
     padding: 0 1.5rem;
   }
 }
 
-.insurance-landing-page
+@media (max-width: 600px) {
+  .insurance-landing-page
   :not(.search-container ~ .search-container).search-container {
-  @media (max-width: 600px) {
     box-shadow: none;
   }
 }
 
 .insurance-landing-page .search-container {
   padding: 0 1.5rem;
-  @media (max-width: 600px) {
+}
+
+@media (max-width: 600px) {
+  .insurance-landing-page .search-container {
     width: 75%;
     margin: 0 auto;
     border-radius: 24px;
@@ -66,8 +75,12 @@
   :not(.search-container ~ .search-container).search-container
   .search-box-wrapper {
   margin-top: 2.5rem;
+}
 
-  @media (max-width: 600px) {
+@media (max-width: 600px) {
+  .insurance-landing-page
+  :not(.search-container ~ .search-container).search-container
+  .search-box-wrapper {
     margin-top: 0;
   }
 }
@@ -80,8 +93,10 @@
 
 .insurance-landing-page .search-box-wrapper .search-input {
   box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
+}
 
-  @media (max-width: 600px) {
+@media (max-width: 600px) {
+  .insurance-landing-page .search-box-wrapper .search-input {
     border: 1px solid var(--background-color-dark);
   }
 }
@@ -97,8 +112,10 @@
   flex-direction: row-reverse;
   gap: 12px;
   background-color: var(--compare-button-bg-color);
+}
 
-  @media (max-width: 600px) {
+@media (max-width: 600px) {
+  .insurance-landing-page .search-box-wrapper .search-button {
     width: 100%;
   }
 }
@@ -116,8 +133,12 @@
   vertical-align: middle;
 }
 
-.insurance-landing-page .columns-container {
-  @media (max-width: 600px) {
+/* .insurance-landing-page .columns-container {
+
+} */
+
+@media (max-width: 600px) {
+  .insurance-landing-page .columns-container {
     padding: 2rem 1.5rem;
   }
 }
