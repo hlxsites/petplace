@@ -41,7 +41,7 @@ indices:
       primary-language-url:
         select: head > meta[name="primary-language-url"]
         value: attribute(el, "content")
-  articles:
+  articles-en-us: &articles-base
     include:
       - '/article/**'
     exclude:
@@ -90,6 +90,15 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  articles-en-gb:
+    <<: *articles-base
+    include:
+      - '/en-gb/article/**'
+    exclude:
+      - 'en-gb/article/category/default'
+      - 'en-gb/article/category/category-images'
+      - 'en-gb/article/breed/'
+    target: /en-gb/article/query-index.xlsx
   authors-en-us: &authors-base
     include:
       - '/authors/**'
