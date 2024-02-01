@@ -8,6 +8,10 @@
   flex-direction: column;
   margin: 3rem 0px;
   max-width: 660px;
+
+  @media (max-width: 600px ) {
+    margin-bottom: 10px;
+  }
 }
 
 .insurance-landing-page main .hero > div > div h1 {
@@ -526,7 +530,7 @@
     line-height: 20px;
     font-weight: 400;
     margin-left: 40px;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
   }
   @media (max-width: 600px) {
     width: 100%;
