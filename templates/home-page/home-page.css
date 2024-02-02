@@ -1,20 +1,18 @@
-
-
-.home-page .section:nth-of-type(2n+1) {
+.home-page .section:nth-of-type(2n + 1) {
   background: var(--background-color-light);
 }
 
 .home-page main h2 {
   position: relative;
   font-size: 1.7rem;
-  padding-bottom: .2em;
+  padding-bottom: 0.2em;
   margin: 0 0 2rem;
   border-bottom: 2px solid var(--color-gray);
 }
 
 .home-page main h2::after {
   position: absolute;
-  content: '';
+  content: "";
   display: block;
   bottom: -2px;
   width: 15%;
@@ -53,14 +51,14 @@
 
 .home-page .columns h3::after {
   position: absolute;
-  bottom: -.5rem;
+  bottom: -0.5rem;
   left: 50%;
   margin-left: -0.5rem;
   width: 1rem;
   height: 1px;
   background: var(--color-blue-dark);
   display: block;
-  content: '';
+  content: "";
 }
 
 .home-page .columns [data-align="center"] p {
@@ -76,7 +74,7 @@
   flex: 1.5;
 }
 
-.home-page .slide > .text-div > p a{
+.home-page .slide > .text-div > p a {
   display: flex;
   flex-direction: row-reverse;
   justify-content: center;
@@ -87,14 +85,14 @@
 
 .home-page .slides-container .slide .button::before {
   display: inline-block;
-  content: '';
-  margin-right: .5rem;
+  content: "";
+  margin-right: 0.5rem;
   height: 13px;
   width: 29px;
   background: var(--text-color-inverted);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
-  mask: url('../../icons/arrow.svg') no-repeat center center;
+  -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
+  mask: url("../../icons/arrow.svg") no-repeat center center;
   vertical-align: middle;
 }
 
@@ -105,7 +103,7 @@
   background-color: var(--text-color-inverted);
   border-radius: 40px;
   padding: 40px 30px 0;
-  margin: 0 ;
+  margin: 0;
   bottom: 60px;
   width: 60%;
   color: inherit;
@@ -116,7 +114,7 @@
 .section.search-container :is(h1, h2)::after {
   --radius: 10px;
 
-  content: '';
+  content: "";
   position: absolute;
   width: calc(2 * var(--radius));
   height: var(--radius);
@@ -142,47 +140,32 @@
   max-width: 726px;
 }
 
-@media (max-width: 600px){
-  .home-page .button-container{
-    padding: 1rem;
-  }
-}
-.home-page .subhead{
+.home-page .subhead {
   padding: 0 1.5rem;
 
-  h2{
+  h2 {
     margin: 0;
   }
 }
 
-.home-page .insurance-search .search-box-wrapper{
+.home-page .insurance-search .search-box-wrapper {
   margin-bottom: 0;
 }
 
-.home-page .section.search-container ~ .section.search-container{
+.home-page .section.search-container ~ .section.search-container {
   background-color: unset;
   padding: 0;
   width: 80%;
   margin: 0 auto;
   padding: 0 1.5rem;
-  @media (max-width: 600px) {
-    width: 75%;
-    margin: 0 auto;
-    border-radius: 24px;
-    padding: 0.5rem 1.5rem;
-    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
-  }
 }
 
 .home-page .insurance-search .search-input {
   box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
 
-  @media (max-width: 600px) {
-    border: 1px solid var(--background-color-dark)
-  }
 }
 
-.home-page .insurance-search .search-button{
+.home-page .insurance-search .search-button {
   width: fit-content;
   text-transform: capitalize;
   font-size: 1.125rem;
@@ -194,21 +177,18 @@
   gap: 12px;
   background-color: var(--compare-button-bg-color);
 
-  @media (max-width: 600px) {
-    width: 100%;
-  }
 }
 
 .home-page .insurance-search .search-button::before {
   display: inline-block;
-  content: '';
-  margin-right: .5rem;
+  content: "";
+  margin-right: 0.5rem;
   height: 13px;
   width: 29px;
   background: var(--text-color-inverted);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
-  mask: url('../../icons/arrow.svg') no-repeat center center;
+  -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
+  mask: url("../../icons/arrow.svg") no-repeat center center;
   vertical-align: middle;
 }
 
@@ -220,28 +200,21 @@
   gap: 40px;
 }
 
-.error-state::placeholder{
+.error-state::placeholder {
   color: var(--error-message-color);
 }
 
-.home-page .find-useful-wrapper{
+.home-page .find-useful-wrapper {
   display: none;
 }
 
-.home-page .find-useful-wrapper .error{
+.home-page .find-useful-wrapper .error {
   display: flex;
   justify-content: center;
   margin-left: -250px;
-
-  @media (max-width: 600px) {
-    margin-left: 0;
-    position: absolute;
-    margin-top: -115px;
-    width: 75%;
-  }
 }
 
-.home-page .find-useful-wrapper .error>div>div{
+.home-page .find-useful-wrapper .error > div > div {
   display: flex;
   align-items: center;
   width: auto;
@@ -250,17 +223,46 @@
   background-color: var(--error-message-bg-color);
 }
 
-.home-page .find-useful-wrapper .error>div>div::before {
+.home-page .find-useful-wrapper .error > div > div::before {
   display: inline-block;
-  content: '';
-  margin-right: .5rem;
+  content: "";
+  margin-right: 0.5rem;
   height: 22px;
   width: 22px;
   background: var(--error-message-color);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url('../../icons/alert.svg') no-repeat center center;
-  mask: url('../../icons/alert.svg') no-repeat center center;
+  -webkit-mask: url("../../icons/alert.svg") no-repeat center center;
+  mask: url("../../icons/alert.svg") no-repeat center center;
   vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .home-page .button-container {
+    padding: 1rem;
+  }
+
+  .home-page .section.search-container ~ .section.search-container {
+    width: 75%;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 0.5rem 1.5rem;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
+  }
+
+  .home-page .insurance-search .search-input {
+    border: 1px solid var(--background-color-dark);
+  }
+
+  .home-page .insurance-search .search-button {
+    width: 100%;
+  }
+
+  .home-page .find-useful-wrapper .error {
+    margin-left: 0;
+    position: absolute;
+    margin-top: -115px;
+    width: 75%;
+  }
 }
 
 @media (min-width: 600px) {
