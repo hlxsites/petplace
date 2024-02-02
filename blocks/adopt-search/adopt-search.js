@@ -17,21 +17,14 @@ function createLabel(fd) {
     return label;
 }
 
-export default async function decorate(block) {
-
-
-    const form = document.createElement('form');
-    form.setAttribute('role', 'search');
-    form.className = 'adopt-search-box-wrapper';
-    form.action = ' ';
-    form.addEventListener('submit', (ev) => {
-    ev.preventDefault();
-    fetch('https://api-stg-petplace.azure-api.net/adopt/animals', {
+async function callAnimalList() {
+    console.log('animalList');
+    const response = await fetch('https://api-stg-petplace.azure-api.net/adopt/animals', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: {
+        body: JSON.stringify({
             "locationInformation": {
                 "clientId": null,
                 "latLon": {
@@ -45,11 +38,25 @@ export default async function decorate(block) {
                 "startIndex": 0,
                 "numResults": 100
             }
-        }
-        }).then((response) => {
-            console.log('response', response);
-        });
-      });
+        })
+    });
+    return response.json();
+}
+
+export default async function decorate(block) {
+
+
+    const form = document.createElement('form');
+    form.setAttribute('role', 'search');
+    form.className = 'adopt-search-box-wrapper';
+    form.action = ' ';
+    form.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        callAnimalList().then((data) => {
+            console.log('data', data);
+            
+        })
+    });
 
     const radioContainer = document.createElement('fieldset');
     if (petTypeValues) {
@@ -105,7 +112,7 @@ export default async function decorate(block) {
     zipInput.name = 'zipPostal';
     zipInput.id = 'zip';
     // zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
-    zipInput.required = true;
+    // zipInput.required = true;
     zipInput.placeholder = zipPlaceholder;
     zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
