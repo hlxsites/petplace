@@ -6,6 +6,7 @@ import {
 import {
   fetchAndCacheJson,
   getId,
+  getPlaceholder,
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
@@ -13,7 +14,7 @@ import {
 const PAGINATE_ON = 12;
 
 async function getTagForUrl() {
-  const tags = await fetchAndCacheJson('/tags/tags.json');
+  const tags = await fetchAndCacheJson(`${window.hlx.contentBasePath}/tags/tags.json`);
   const { pathname } = window.location;
   return tags.find((tag) => tag.Path === pathname);
 }
@@ -24,7 +25,7 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   const tag = await getTagForUrl();
   const tagName = toClassName(tag.Name);
-  return ffetch('/article/query-index.json')
+  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('article')
     .withTotal(true)
     .filter((article) => JSON.parse(article.tags).map((t) => toClassName(t)).includes(tagName))
@@ -59,7 +60,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = 'No Articles Found';
+    noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -103,7 +104,7 @@ function buildSidebar() {
   const filterToggle = document.createElement('button');
   filterToggle.disabled = !isTablet();
   filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
-  filterToggle.textContent = 'Filters';
+  filterToggle.textContent = getPlaceholder('filters');
   section.append(filterToggle);
 
   const subCategories = buildBlock('sub-categories', { elems: [] });
@@ -147,7 +148,7 @@ export async function loadEager(document) {
   await updateMetadata();
   const h2 = document.createElement('h2');
   h2.classList.add('sr-only');
-  h2.textContent = 'Articles';
+  h2.textContent = getPlaceholder('articles');
   const h1 = main.querySelector('h1');
   h1.after(h2);
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(1)'));

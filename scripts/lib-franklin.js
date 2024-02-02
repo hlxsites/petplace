@@ -247,13 +247,13 @@ export async function decorateIcons(element) {
  * @param {string} [prefix] Location of placeholders
  * @returns {object} Window placeholders object
  */
-export async function fetchPlaceholders(prefix = 'default') {
+export async function fetchPlaceholders(prefix = 'default', topic = null) {
   window.placeholders = window.placeholders || {};
   const loaded = window.placeholders[`${prefix}-loaded`];
   if (!loaded) {
     window.placeholders[`${prefix}-loaded`] = new Promise((resolve, reject) => {
       try {
-        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
+        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json${topic ? `?sheet=${topic}` : ''}`)
           .then((resp) => resp.json())
           .then((json) => {
             const placeholders = {};
