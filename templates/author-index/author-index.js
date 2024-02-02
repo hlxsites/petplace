@@ -25,7 +25,7 @@ async function renderAuthors(authorsPromise) {
 }
 
 async function getAuthors() {
-  return fetch('/authors/query-index.json')
+  return fetch(`${window.hlx.contentBasePath}/authors/query-index.json`)
     .then((response) => response.json())
     .then((json) => json.data);
 }

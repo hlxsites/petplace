@@ -23,7 +23,9 @@ function removeSkeletons(block) {
 }
 
 function noResultsHidePagination() {
-  document.querySelector('.pagination').style.display = 'none';
+  if (isTrueSearch) {
+    document.querySelector('.pagination').style.display = 'none';
+  }
   const searchResultText = document.querySelector('h2');
   searchResultText.innerHTML = getPlaceholder('noResults');
 }
@@ -197,6 +199,16 @@ export async function loadEager(document) {
   } else {
     const response = await fetch(`${window.hlx.contentBasePath}/fragments/404.plain.html`);
     main.innerHTML = await response.text();
+
+    // Update 404 page metadata
+    document.head.querySelector('title').textContent = `${getPlaceholder('pageNotFound')} | ${getPlaceholder('websiteName')}`;
+    document.head.querySelector('meta[property="og:title"]').content = document.head.title;
+    if (document.body.querySelector('.error-message')) {
+      document.body.querySelector('.error-message').textContent = document.head.title;
+    }
+    if (document.body.querySelector('.error-button-home')) {
+      document.body.querySelector('.error-button-home').textContent = getPlaceholder('goHome');
+    }
   }
 }
 
