@@ -29,7 +29,7 @@ export default async function decorate(block) {
     fetch('https://api-stg-petplace.azure-api.net/adopt/animals', {
         method: 'POST',
         headers: {
-            'Content-type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: {
             "locationInformation": {
