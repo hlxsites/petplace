@@ -15,6 +15,15 @@
 :root {
   /* colors */
   --highlight-color: #ff7d5a;
+  --compare-button-bg-color: #c74d2f;
+  --number-background-color: #7369ab;
+  --faq-background-color: #f1f0f7;
+  --faq-accordion-txt-color: #2f2f33;
+  --faq-accordion-arrow-bg-color: #6e6d73;
+  --figo-powered-txt-color: #585973;
+  --pet-insurance-txt-color: #09090d;
+  --error-message-bg-color: #fcefed;
+  --error-message-color: #ba271a;
   --link-color: var(--highlight-color);
   --link-hover-color: var(--highlight-color);
   --link-color-alt: var(--color-blue);
