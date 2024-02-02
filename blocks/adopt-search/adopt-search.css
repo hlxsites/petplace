@@ -1,15 +1,14 @@
-.adopt-search-container {
+.adopt-search-container {}
 
-}
 .adopt-search-container h1 {
-   color: #000;
+    color: #000;
 }
+
 .adopt-search-container h2 {
-   color: #000;
+    color: #000;
 }
-.adopt-search-wrapper {
-    
-}
+
+.adopt-search-wrapper {}
 
 .adopt-search-wrapper form {
     display: flex;
@@ -17,13 +16,14 @@
     gap: 32px;
     align-items: flex-start;
 }
+
 .adopt-search-wrapper .adopt-search.results form {
     display: flex;
     flex-direction: row;
     gap: 32px;
 }
 
-.adopt-search-wrapper  form fieldset {
+.adopt-search-wrapper form fieldset {
     display: flex;
     border: none;
     margin: 0;
@@ -31,9 +31,11 @@
     width: 50%;
     gap: 16px;
 }
+
 .adopt-search-wrapper .adopt-search.results form fieldset {
     width: auto;
 }
+
 .adopt-search-wrapper form fieldset label {
     display: flex;
     justify-content: center;
@@ -44,18 +46,22 @@
     font-size: 18px;
     font-style: normal;
     font-weight: 600;
-    line-height: 28px; /* 155.556% */
+    line-height: 28px;
+    /* 155.556% */
 }
+
 .adopt-search-wrapper form fieldset input {
     /* display: none; */
     position: fixed;
     opacity: 0;
     pointer-events: none;
 }
-.adopt-search-wrapper form fieldset input:checked + label {
+
+.adopt-search-wrapper form fieldset input:checked+label {
     background: var(--Purple-300, #7369AB);
     color: #fff;
 }
+
 .adopt-search-wrapper form fieldset label {
     padding: 10px var(--Spacing-Large, 24px);
 
@@ -65,21 +71,22 @@
     border-radius: 8px;
 }
 
-.adopt-search-wrapper form > div {
+.adopt-search-wrapper form>div {
     display: flex;
     flex-direction: column;
     /* width: 100%; */
 
 }
-.adopt-search-wrapper .adopt-search.results form > div {
+
+.adopt-search-wrapper .adopt-search.results form>div {
 
     width: 100%;
 
 }
 
-.adopt-search-wrapper form  input:not([type=radio]),
-.adopt-search-wrapper form  select,
-.adopt-search-wrapper form  textarea {
+.adopt-search-wrapper form input:not([type=radio]),
+.adopt-search-wrapper form select,
+.adopt-search-wrapper form textarea {
     border: 1px solid #000;
     height: 48px;
     padding: 0 16px;
@@ -91,7 +98,7 @@
 
 }
 
-.adopt-search-wrapper form > div > label,
+.adopt-search-wrapper form>div>label,
 .adopt-search-wrapper form fieldset legend {
     color: var(--Text-Default, #28061E);
     /* Body/Small/Button */
@@ -102,6 +109,7 @@
     line-height: normal;
     margin-bottom: 12px;
 }
+
 .adopt-search-wrapper form div #clearButton {
     display: none;
     background: none;
@@ -114,48 +122,54 @@
     font-weight: bold;
     color: #A4A4A4D9;
     font-size: 18px;
-    @media (max-width: 600px){
-      font-size: 13px;
-      top: 6px;
-      right: 28px;
+
+    @media (max-width: 600px) {
+        font-size: 13px;
+        top: 6px;
+        right: 28px;
     }
-  }
-  
-  .adopt-search-wrapper form button.adopt-search-button {
+}
+
+.adopt-search-wrapper form button.adopt-search-button {
     width: 100%;
     max-width: fit-content;
-  }
+}
 
 
-  .adopt-search-results .results{
+.adopt-search-results .results {
     display: flex;
     flex-direction: row;
     gap: 20px;
     flex-wrap: wrap;
-  }
-  .adopt-search-results .results div.animal{
+}
+
+.adopt-search-results .results div.animal {
     max-width: 250px;
     border-radius: 12px;
-    filter: drop-shadow(rgba(0,0,0,24%) 1px 2px 4px);
+    filter: drop-shadow(rgba(0, 0, 0, 24%) 1px 2px 4px);
     background-color: #fff;
-  }
-  .adopt-search-results .results div.animal img{
-      
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-    }
-    .adopt-search-results .results div.animal h3{
-        text-overflow: ellipsis;
-        font-size: 22px;
-        
-    }
-    .adopt-search-results .results div.animal p {
-        font-size: 16px;
-        line-height: 20px;
-        padding-bottom: 16px;
-    }
-    .adopt-search-results .results div.animal h3,
-    .adopt-search-results .results div.animal p{
-        padding-left: 12px;
-        padding-right: 12px;
-    }
+}
+
+.adopt-search-results .results div.animal img {
+
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.adopt-search-results .results div.animal h3 {
+    text-overflow: ellipsis;
+    font-size: 22px;
+
+}
+
+.adopt-search-results .results div.animal p {
+    font-size: 16px;
+    line-height: 20px;
+    padding-bottom: 16px;
+}
+
+.adopt-search-results .results div.animal h3,
+.adopt-search-results .results div.animal p {
+    padding-left: 12px;
+    padding-right: 12px;
+}

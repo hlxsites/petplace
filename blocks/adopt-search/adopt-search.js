@@ -1,64 +1,60 @@
 /* eslint-disable indent */
-import { sampleRUM, fetchPlaceholders} from '../../scripts/lib-franklin.js';
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
-// fetch placeholders from the 'en' folder
+// fetch placeholders from the /adopt folder currently, but placeholders should |
+// be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/adopt');
-// retrieve the value for key 'foo'
-const { petTypeLabel, petTypeValues, breedLabel, breedPlaceholder, zipLabel, zipPlaceholder, zipErrorMessage, searchButtonText } = placeholders;
+const {
+    petTypeLabel,
+    petTypeValues,
+    breedLabel,
+    breedPlaceholder,
+    zipLabel,
+    zipPlaceholder,
+    zipErrorMessage,
+    searchButtonText,
+} = placeholders;
 console.log('placeholders', petTypeLabel, petTypeValues, breedLabel, breedPlaceholder, zipLabel, zipPlaceholder, zipErrorMessage, searchButtonText);
 
-function createLabel(fd) {
-    const label = document.createElement('label');
-    label.setAttribute('for', fd.Field);
-    label.textContent = fd.Label;
-    if (fd.Required && fd.Required !== 'false') {
-        label.classList.add('required');
-    }
-    return label;
-}
-
 async function callAnimalList() {
-    console.log('animalList');
     const response = await fetch('https://api-stg-petplace.azure-api.net/adopt/animals', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "locationInformation": {
-                "clientId": null,
-                "latLon": {
-                    "lat": 26.7474188,
-                    "lon": -80.2890581
+            locationInformation: {
+                clientId: null,
+                latLon: {
+                    lat: 26.7474188,
+                    lon: -80.2890581,
                 },
-                "zipPostal": null,
-                "milesRadius": 10
+                zipPostal: null,
+                milesRadius: 10,
             },
-            "animalFilters": {
-                "startIndex": 0,
-                "numResults": 100
-            }
-        })
+            animalFilters: {
+                startIndex: 0,
+                numResults: 100,
+            },
+        }),
     });
     return response.json();
 }
 
 export default async function decorate(block) {
-
-
     const form = document.createElement('form');
     form.setAttribute('role', 'search');
     form.className = 'adopt-search-box-wrapper';
     form.action = ' ';
     form.addEventListener('submit', (ev) => {
         ev.preventDefault();
-        //should detect if the user is on the /adopt/search page before showing results
-        //if on /adopt/ the form should direct to /adopt/search?[queryparameters]
+        // should detect if the user is on the /adopt/search page before showing results
+        // if on /adopt/ the form should direct to /adopt/search?[queryparameters]
         callAnimalList().then((data) => {
             console.log('data', data);
 
             // temporarily inserting results into empty section on page
-            const tempResultsContainer= block.closest('.section').nextElementSibling;
+            const tempResultsContainer = block.closest('.section').nextElementSibling;
             tempResultsContainer.classList.add('adopt-search-results');
             const tempResultsBlock = tempResultsContainer.firstElementChild;
             tempResultsBlock.classList.add('results');
@@ -85,8 +81,8 @@ export default async function decorate(block) {
                 div.append(p);
                 div.append(animalLocation);
                 tempResultsBlock.append(div);
-            })
-        })
+            });
+        });
     });
 
     const radioContainer = document.createElement('fieldset');
@@ -102,32 +98,31 @@ export default async function decorate(block) {
             label.innerText = petType;
             const radio = document.createElement('input');
             //   input.setAttribute('aria-label', )
-            radio.type = "radio";
+            radio.type = 'radio';
             radio.name = 'filterAnimalType';
             radio.id = `radio-${petType}`;
             radio.value = petType;
-            p.append(radio)
-            p.append(label)
-            radioContainer.append(p)
-        })
-
+            p.append(radio);
+            p.append(label);
+            radioContainer.append(p);
+        });
     }
 
     const breedContainer = document.createElement('div');
     const breedLabelElement = document.createElement('label');
-    breedLabelElement.for = "breed";
+    breedLabelElement.for = 'breed';
     breedLabelElement.innerText = breedLabel;
 
     const breedSelect = document.createElement('select');
-    breedSelect.name = "breed";
-    breedSelect.id = "breed";
+    breedSelect.name = 'breed';
+    breedSelect.id = 'breed';
     breedSelect.className = 'form-select-wrapper';
     const option = document.createElement('option');
-    option.innerText = breedPlaceholder
+    option.innerText = breedPlaceholder;
     option.value = '';
 
     breedSelect.append(option);
-    breedContainer.append(breedLabelElement)
+    breedContainer.append(breedLabelElement);
     breedContainer.append(breedSelect);
 
     const zipContainer = document.createElement('div');
@@ -146,7 +141,6 @@ export default async function decorate(block) {
     zipInput.placeholder = zipPlaceholder;
     zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
-
 
     const clearButton = document.createElement('button');
     clearButton.setAttribute('id', 'clearButton');
@@ -175,9 +169,8 @@ export default async function decorate(block) {
         zipInput.focus();
         clearButton.classList.remove('show');
     });
-    zipContainer.append(clearButton)
+    zipContainer.append(clearButton);
     //   form.append(clearButton);
-
 
     const button = document.createElement('button');
     button.type = 'submit';
@@ -202,23 +195,21 @@ export default async function decorate(block) {
     form.append(zipContainer);
     form.append(button);
 
-    console.log('block', block,form)
-    
+
     const heroContainer = document.querySelector('.columns.hero');
 
-    if(heroContainer?.firstElementChild?.lastElementChild != null){
+    if (heroContainer?.firstElementChild?.lastElementChild != null) {
         const formWrapper = document.createElement('div');
-        formWrapper.className = "adopt-search-wrapper"
+        formWrapper.className = 'adopt-search-wrapper';
         formWrapper.append(form);
         block.innerHTML = '';
-        
+
         heroContainer.firstElementChild.lastElementChild.append(formWrapper);
     } else {
-        
-        block.innerHTML = ''; 
-        block.append(form); 
+        block.innerHTML = '';
+        block.append(form);
     }
-    
+
     //   const usp = new URLSearchParams(window.location.search);
     //   block.querySelector('.search-input').value = usp.get('q') || '';
 }
