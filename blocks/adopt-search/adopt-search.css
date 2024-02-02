@@ -125,3 +125,37 @@
     width: 100%;
     max-width: fit-content;
   }
+
+
+  .adopt-search-results .results{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .adopt-search-results .results div.animal{
+    max-width: 250px;
+    border-radius: 12px;
+    filter: drop-shadow(rgba(0,0,0,24%) 1px 2px 4px);
+    background-color: #fff;
+  }
+  .adopt-search-results .results div.animal img{
+      
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+    .adopt-search-results .results div.animal h3{
+        text-overflow: ellipsis;
+        font-size: 22px;
+        
+    }
+    .adopt-search-results .results div.animal p {
+        font-size: 16px;
+        line-height: 20px;
+        padding-bottom: 16px;
+    }
+    .adopt-search-results .results div.animal h3,
+    .adopt-search-results .results div.animal p{
+        padding-left: 12px;
+        padding-right: 12px;
+    }

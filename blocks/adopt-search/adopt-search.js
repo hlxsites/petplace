@@ -52,9 +52,40 @@ export default async function decorate(block) {
     form.action = ' ';
     form.addEventListener('submit', (ev) => {
         ev.preventDefault();
+        //should detect if the user is on the /adopt/search page before showing results
+        //if on /adopt/ the form should direct to /adopt/search?[queryparameters]
         callAnimalList().then((data) => {
             console.log('data', data);
-            
+
+            // temporarily inserting results into empty section on page
+            const tempResultsContainer= block.closest('.section').nextElementSibling;
+            tempResultsContainer.classList.add('adopt-search-results');
+            const tempResultsBlock = tempResultsContainer.firstElementChild;
+            tempResultsBlock.classList.add('results');
+            tempResultsBlock.innerHTML = '';
+            const animalArray = data.animal;
+
+            animalArray.forEach((animal) => {
+                const div = document.createElement('div');
+                div.className = 'animal';
+                const img = document.createElement('img');
+                img.src = animal.coverImagePath;
+                const anchor = document.createElement('a');
+                anchor.href = `/adopt/pet/${animal.animalId}/${animal.clientId}`;
+
+                anchor.append(img);
+                const animalName = document.createElement('h3');
+                animalName.innerText = animal.Name;
+                const p = document.createElement('p');
+                p.innerText = `${animal.Gender} - ${animal.Breed}`;
+                const animalLocation = document.createElement('p');
+                animalLocation.innerHTML = `${animal.City}`;
+                div.append(anchor);
+                div.append(animalName);
+                div.append(p);
+                div.append(animalLocation);
+                tempResultsBlock.append(div);
+            })
         })
     });
 
@@ -64,7 +95,6 @@ export default async function decorate(block) {
         legend.innerText = petTypeLabel;
         radioContainer.append(legend);
         const petTypes = petTypeValues.split(',');
-        console.log('petTypes', petTypes)
         petTypes.forEach((petType) => {
             const p = document.createElement('div');
             const label = document.createElement('label');
