@@ -48,7 +48,7 @@ async function getPathsFromSlideshow() {
 }
 
 async function getPopularPosts(block, isAuthorPopularPosts) {
-  const res = await fetch('/fragments/popular-posts');
+  const res = await fetch(`${window.hlx.contentBasePath}/fragments/popular-posts`);
   const text = await res.text();
   const html = document.createElement('div');
   let paths = [];
