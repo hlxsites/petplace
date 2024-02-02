@@ -95,7 +95,7 @@ export default async function decorate(block) {
 
     const zipContainer = document.createElement('div');
     const zipLabelElem = document.createElement('label');
-    zipLabelElem.setAttribute('for', "zipCode");
+    zipLabelElem.setAttribute('for', 'zipCode');
     zipLabelElem.innerText = zipLabel;
 
     const zipInput = document.createElement('input');
@@ -104,7 +104,7 @@ export default async function decorate(block) {
     zipInput.type = 'text';
     zipInput.name = 'zipPostal';
     zipInput.id = 'zip';
-    zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
+    // zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
     zipInput.required = true;
     zipInput.placeholder = zipPlaceholder;
     zipContainer.append(zipLabelElem);
