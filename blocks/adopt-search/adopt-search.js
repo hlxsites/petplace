@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { sampleRUM, fetchPlaceholders} from '../../scripts/lib-franklin.js';
 
 // fetch placeholders from the 'en' folder
@@ -22,15 +23,33 @@ export default async function decorate(block) {
     const form = document.createElement('form');
     form.setAttribute('role', 'search');
     form.className = 'adopt-search-box-wrapper';
-    //   form.action = '/discovery';
-    //   form.addEventListener('submit', (ev) => {
-    //     // const query = ev.target.querySelector('.search-input').value;
-    //     // if (!query) {
-    //     //   ev.preventDefault();
-    //     //   return;
-    //     // }
-    //     // sampleRUM('search', { source: '.search-input', target: query });
-    //   });
+    form.action = ' ';
+    form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    fetch('https://api-stg-petplace.azure-api.net/adopt/animals', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: {
+            "locationInformation": {
+                "clientId": null,
+                "latLon": {
+                    "lat": 26.7474188,
+                    "lon": -80.2890581
+                },
+                "zipPostal": null,
+                "milesRadius": 10
+            },
+            "animalFilters": {
+                "startIndex": 0,
+                "numResults": 100
+            }
+        }
+        }).then((response) => {
+            console.log('response', response);
+        });
+      });
 
     const radioContainer = document.createElement('fieldset');
     if (petTypeValues) {
@@ -47,7 +66,7 @@ export default async function decorate(block) {
             const radio = document.createElement('input');
             //   input.setAttribute('aria-label', )
             radio.type = "radio";
-            radio.name = 'petType';
+            radio.name = 'filterAnimalType';
             radio.id = `radio-${petType}`;
             radio.value = petType;
             p.append(radio)
@@ -83,7 +102,7 @@ export default async function decorate(block) {
     zipInput.setAttribute('aria-label', zipPlaceholder);
     zipInput.className = 'zipCode';
     zipInput.type = 'text';
-    zipInput.name = 'zip';
+    zipInput.name = 'zipPostal';
     zipInput.id = 'zip';
     zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
     zipInput.required = true;
