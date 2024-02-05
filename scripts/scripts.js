@@ -35,6 +35,7 @@ const AUDIENCES = {
 };
 
 window.hlx.templates.add([
+  '/templates/adopt',
   '/templates/article-page',
   '/templates/article-signup',
   '/templates/ask-author-page',
@@ -302,7 +303,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
