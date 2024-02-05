@@ -96,6 +96,10 @@
   width: 35%;
 }
 
+.insurance-landing-page .columns-img-col:nth-child(2) > picture {
+  width: 80%;
+}
+
 .insurance-landing-page .columns-txt-col {
   display: flex;
   flex-direction: column;
@@ -508,6 +512,7 @@
     color: var(--text-color-inverted);
     font-size: var(--heading-font-size-xxxl);
   }
+
   .insurance-landing-page .hero picture {
     position: absolute;
     z-index: -1;
@@ -589,6 +594,10 @@
     p {
     margin-left: 20px;
   }
+
+  .insurance-landing-page .columns-img-col:nth-child(2) > picture {
+    width: 70%;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -602,7 +611,12 @@
   .insurance-landing-page .accordion-container {
     padding: 2rem calc((100% - 1344px) / 2);
   }
+
+  .insurance-landing-page .columns-img-col:nth-child(2) > picture {
+    width: 90%;
+  }
 }
+
 @media (min-width: 1025px) and (max-width: 1400px) {
   .insurance-landing-page
     :not(.section ~ .section).section
