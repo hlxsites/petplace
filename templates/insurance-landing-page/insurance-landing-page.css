@@ -517,6 +517,7 @@
     right: 0;
     object-fit: cover;
     box-sizing: border-box;
+    margin: 0;
   }
 
   .insurance-landing-page .accordion-section h3 button {
