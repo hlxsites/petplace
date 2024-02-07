@@ -150,7 +150,13 @@ export const mappingHelper = (adLoc) => {
         [336, 280],
       ],
     )
-    .addSize([980, 200], [[728, 90]])
+    .addSize(
+      [980, 200],
+      [
+        [300, 250],
+        [336, 280],
+      ],
+    )
     .build();
 
   const mappingLeaderboard = window.googletag

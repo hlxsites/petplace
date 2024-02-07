@@ -954,8 +954,7 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 /* ADSENSE */
 
 .publi-container {
-  padding-top: 4rem;
-  padding-bottom: 2rem;
+  padding: 1rem;
 }
 
 .publi-container-bottom {
@@ -984,9 +983,7 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 }
 
 .publi-wrapper-bg:not(:empty) {
-  background-color: #e5ebef;
   border-radius: 7px;
-  padding: 0.5rem;
   overflow: hidden;
 }
 
