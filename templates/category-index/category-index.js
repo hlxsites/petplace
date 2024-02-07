@@ -24,6 +24,7 @@ import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 export async function getCategoryImage(path) {
   const res = await fetch('/article/category/category-images.plain.html');
   const htmlText = await res.text();
+  console.log(htmlText)
   const div = document.createElement('div');
   div.innerHTML = htmlText;
 
