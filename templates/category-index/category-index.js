@@ -238,16 +238,16 @@ export async function loadDelayed() {
   const pageCat = await getCategoryForUrl();
   await pushToDataLayer({
     event: 'adsense',
+    type: 'category',
     category: pageCat.Slug,
   });
 
-  adsDivCreator('category_top');
-  adsDivCreator('category_bottom');
+  await adsDivCreator('category_top');
+  await adsDivCreator('category_bottom');
 
-  adsDefineSlot(
-    pageCat.Slug,
+  adsDefineSlot(pageCat.Slug, [
     'category_top',
     'category_bottom',
     'category_anchor',
-  );
+  ]);
 }
