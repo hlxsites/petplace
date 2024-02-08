@@ -19,8 +19,15 @@ export const adsDivCreator = (adLoc) => {
   adDiv.appendChild(idLoc);
 
   if (adLoc.includes('top')) {
-    const hero = document.querySelector('.hero');
-    hero.after(mainDiv);
+    if (adLoc.includes('home')) {
+      const adSection = document
+        .querySelectorAll('.tiles-container')[0]
+        .querySelectorAll('.default-content-wrapper')[0];
+      adSection.before(mainDiv);
+    } else {
+      const hero = document.querySelector('.hero-wrapper');
+      hero.after(mainDiv);
+    }
   }
 
   if (adLoc.includes('bottom')) {
