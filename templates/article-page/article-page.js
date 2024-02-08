@@ -213,6 +213,11 @@ export async function loadLazy(document) {
   decorateBlock(breadcrumb);
   await loadBlock(breadcrumb);
   breadcrumb.style.visibility = '';
+
+  adsDivCreator('article_top');
+  adsDivCreator('article_side');
+  adsDivCreator('article_middle');
+  adsDivCreator('article_bottom');
 }
 
 // (side later with refactor)
@@ -220,16 +225,14 @@ export async function loadDelayed() {
   const articleCat = toClassName(getMetadata('category').split(',')[0]?.trim());
   await pushToDataLayer({
     event: 'adsense',
+    type: 'article',
     category: articleCat,
   });
-
-  adsDivCreator('article_top');
-  adsDivCreator('article_middle');
-  adsDivCreator('article_bottom');
 
   adsDefineSlot(
     articleCat,
     'article_top',
+    'article_side',
     'article_middle',
     'article_bottom',
     'article_anchor',
