@@ -17,14 +17,38 @@ async function createCarouselSection(){
     carouselContainer.className = 'carousel-container';
     return carouselContainer;
 }
-async function createAboutPetSection(){
+async function createAboutPetSection(animalDetail){
+    const {name} = animalDetail
     const aboutPetContainer = document.createElement('div');
     aboutPetContainer.className = 'about-pet-container';
+    aboutPetContainer.innerHTML = `
+    <div class="about-pet-header">
+        <h1 class="about-pet-title">${name}</h1>
+        <div class="about-pet-ctas"></div>
+    </div>
+
+    
+    `
 }
-async function createShelterSection(shelterInfo){
+async function createShelterSection(shelterDetail){
+    const {Location: name, ['Phone Number']: phoneNumber, City: city, State: state, Address: address} = shelterDetail
     const shelterContainer = document.createElement('div');
     shelterContainer.className = 'shelter-container';
-
+    shelterContainer.innerHTML = `
+    <h2 class="shelter-name">${name}</h2>
+    <div class="shelter-location">
+        <span class="shelter-city">${city}</span>
+        <span class="dot-separator"></span>
+        <span class="shelter-state">${state}</span>
+    </div>
+    <div class="shelter-address">
+        ${address}
+    </div>
+    <div class="shelter-phone">
+        <a href="tel:${phoneNumber}">${phoneNumber}</a>
+    </div>
+    
+    `
 }
 async function createChecklistSection() {
     const checklistContainer = document.createElement('div');
@@ -136,7 +160,7 @@ function createPetCard({name, gender, breed, city, state, image, animalId, clien
         <h3 class="pet-card-name"><a href="/adopt/pet/${clientId}/${animalId}" class="stretched-link">${name}</a></h3>
         <div class="pet-card-info">
             <span class="pet-card-gender">${gender}</span>
-            <span class="pet-card-separator"></span>
+            <span class="dot-separator"></span>
             <span class="pet-card-breed">${breed}</span>
         </div>
         <div class="pet-card-address">

@@ -32,6 +32,12 @@
     margin-bottom: 32px;
 }
 
+/* shelter section */
+.pet-details .shelter-location {
+    display: flex;
+    align-items: center;
+}
+
 /* Similar Pets section */
 
 .pet-details .similar-pets-container {
@@ -80,7 +86,7 @@
     display: flex;
     align-items: center;
 }
-.pet-details .pet-card-separator {
+.pet-details .dot-separator {
     display: block;
     width: 4px;
     height: 4px;
