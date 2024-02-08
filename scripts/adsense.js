@@ -51,8 +51,6 @@ export const adsDivCreator = (adLoc) => {
         allParas[Math.ceil(parasLength / 2)].after(mainDiv);
       }
     }
-
-    return;
   }
 };
 
