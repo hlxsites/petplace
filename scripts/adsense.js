@@ -28,10 +28,12 @@ export const adsDivCreator = (adLoc) => {
     footer.before(mainDiv);
   }
 
-  // SIDE COMES LATER (only article)
-  if (adLoc.includes('side')) return;
+  if (adLoc.includes('side')) {
+    // if (adLoc === 'article_side') {
+    const aside = document.querySelector('.social-share-wrapper');
+    aside.after(mainDiv);
+  }
 
-  // MIDDLE COMES LATER (only article)
   if (adLoc.includes('middle')) {
     // not doing home or category mids (for now)
     if (adLoc.includes('article')) {
