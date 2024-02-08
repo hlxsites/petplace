@@ -74,14 +74,15 @@
 .adopt-search-wrapper form>div {
     display: flex;
     flex-direction: column;
-    /* width: 100%; */
 
+
+    @media (max-width: 600px) {
+        width: 100%;
+    }
 }
 
 .adopt-search-wrapper .adopt-search.results form>div {
-
     width: 100%;
-
 }
 
 .adopt-search-wrapper form input:not([type=radio]),
