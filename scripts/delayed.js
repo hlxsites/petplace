@@ -42,7 +42,7 @@ function pushly(...args) {
 
 if (window.hlx.plugins.get('martech')) {
   if (
-    (document.querySelector('.block.ad')
+    (window.location.pathname === '/'
     || window.location.pathname.includes('tags')
     || window.location.pathname.includes('article')
     || window.location.pathname.includes('category'))
