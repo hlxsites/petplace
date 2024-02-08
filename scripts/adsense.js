@@ -35,12 +35,15 @@ export const adsDivCreator = (adLoc) => {
     footer.before(mainDiv);
   }
 
-  // SIDE COMES LATER (only article)
-  if (adLoc.includes('side')) return;
-
-  // MIDDLE COMES LATER (only article)
   if (adLoc.includes('middle')) {
-    // not doing home or category mids (for now)
+    if (adLoc.includes('home')) {
+      const adSection = document
+        .querySelectorAll('.tiles-container')[1]
+        .querySelectorAll('.default-content-wrapper')[1];
+
+      adSection.before(mainDiv);
+    }
+
     if (adLoc.includes('article')) {
       const allParas = document.querySelectorAll('p');
       const parasLength = allParas.length;
