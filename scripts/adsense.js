@@ -110,9 +110,12 @@ const adsenseSetup = (adArgs, catVal) => {
       mobileScaling: 2.0,
     });
 
-    const pageType = adArgs[lastItemIndex].split('_')[0];
-    window.googletag.pubads().set('page_url', 'https://www.petplace.com');
-    window.googletag.pubads().setTargeting(pageType, catVal);
+    if (catVal) {
+      const pageType = adArgs[lastItemIndex].split('_')[0];
+      window.googletag.pubads().setTargeting(pageType, catVal);
+    }
+
+    window.googletag.pubads().setTargeting('test', 'true');
     window.googletag.pubads().setCentering(true);
     window.googletag.pubads().collapseEmptyDivs(true);
     window.googletag.enableServices();
