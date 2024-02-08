@@ -122,7 +122,7 @@ const adsenseSetup = (adArgs, catVal) => {
 };
 
 // google tag for adsense
-export const adsDefineSlot = async (catVal, adArgs) => {
+export const adsDefineSlot = async (adArgs, catVal) => {
   // separate function to return the anchor slot
   const anchorSlot = await adsenseSetup(adArgs, catVal);
 

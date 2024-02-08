@@ -190,11 +190,8 @@ export async function loadDelayed() {
     category: articleCat,
   });
 
-  adsDefineSlot(articleCat, [
-    'article_top',
-    'article_side',
-    'article_middle',
-    'article_bottom',
-    'article_anchor',
-  ]);
+  adsDefineSlot(
+    ['article_top', 'article_middle', 'article_bottom', 'article_anchor'],
+    articleCat,
+  );
 }
