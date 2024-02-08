@@ -232,6 +232,9 @@ export async function loadLazy() {
   //     renderArticles(getArticles());
   //   });
   // }
+
+  adsDivCreator('category_top');
+  adsDivCreator('category_bottom');
 }
 
 export async function loadDelayed() {
@@ -242,12 +245,8 @@ export async function loadDelayed() {
     category: pageCat.Slug,
   });
 
-  await adsDivCreator('category_top');
-  await adsDivCreator('category_bottom');
-
-  adsDefineSlot(pageCat.Slug, [
-    'category_top',
-    'category_bottom',
-    'category_anchor',
-  ]);
+  adsDefineSlot(
+    ['category_top', 'category_bottom', 'category_anchor'],
+    pageCat.Slug,
+  );
 }

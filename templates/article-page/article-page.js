@@ -213,6 +213,10 @@ export async function loadLazy(document) {
   decorateBlock(breadcrumb);
   await loadBlock(breadcrumb);
   breadcrumb.style.visibility = '';
+
+  adsDivCreator('article_top');
+  adsDivCreator('article_middle');
+  adsDivCreator('article_bottom');
 }
 
 // (side later with refactor)
@@ -224,14 +228,13 @@ export async function loadDelayed() {
     category: articleCat,
   });
 
-  await adsDivCreator('article_top');
-  await adsDivCreator('article_middle');
-  await adsDivCreator('article_bottom');
-
-  adsDefineSlot(articleCat, [
-    'article_top',
-    'article_middle',
-    'article_bottom',
-    'article_anchor',
-  ]);
+  adsDefineSlot(
+    [
+      'article_top',
+      'article_middle',
+      'article_bottom',
+      'article_anchor',
+    ],
+    articleCat,
+  );
 }

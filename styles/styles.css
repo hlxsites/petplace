@@ -962,14 +962,6 @@ main .section.search-container.ad-container .ad-wrapper .ad {
   padding-bottom: 1rem;
 }
 
-.bg-gray-light {
-  background-color: rgb(238 238 238 / 100%);
-}
-
-.bg-white {
-  background-color: rgb(255 255 255 / 100%);
-}
-
 .sub-container,
 .publi-wrapper {
   text-align: center;
@@ -983,6 +975,7 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 }
 
 .publi-wrapper-bg:not(:empty) {
+  background-color: transparent;
   border-radius: 7px;
   overflow: hidden;
 }

@@ -4,7 +4,7 @@ window.googletag ||= { cmd: [] };
 
 export const adsDivCreator = (adLoc) => {
   const mainDiv = document.createElement('div');
-  mainDiv.className = 'publi-container bg-white';
+  mainDiv.className = 'publi-container';
 
   const subDiv = document.createElement('div');
   subDiv.className = 'sub-container';
@@ -19,8 +19,15 @@ export const adsDivCreator = (adLoc) => {
   adDiv.appendChild(idLoc);
 
   if (adLoc.includes('top')) {
-    const hero = document.querySelector('.hero');
-    hero.after(mainDiv);
+    if (adLoc.includes('home')) {
+      const adSection = document
+        .querySelectorAll('.tiles-container')[0]
+        .querySelectorAll('.default-content-wrapper')[0];
+      adSection.before(mainDiv);
+    } else {
+      const hero = document.querySelector('.hero-wrapper');
+      hero.after(mainDiv);
+    }
   }
 
   if (adLoc.includes('bottom')) {
@@ -28,12 +35,15 @@ export const adsDivCreator = (adLoc) => {
     footer.before(mainDiv);
   }
 
-  // SIDE COMES LATER (only article)
-  if (adLoc.includes('side')) return;
-
-  // MIDDLE COMES LATER (only article)
   if (adLoc.includes('middle')) {
-    // not doing home or category mids (for now)
+    if (adLoc.includes('home')) {
+      const adSection = document
+        .querySelectorAll('.tiles-container')[1]
+        .querySelectorAll('.default-content-wrapper')[1];
+
+      adSection.before(mainDiv);
+    }
+
     if (adLoc.includes('article')) {
       const allParas = document.querySelectorAll('p');
       const parasLength = allParas.length;
@@ -108,9 +118,12 @@ const adsenseSetup = (adArgs, catVal) => {
       mobileScaling: 2.0,
     });
 
-    const pageType = adArgs[lastItemIndex].split('_')[0];
+    if (catVal) {
+      const pageType = adArgs[lastItemIndex].split('_')[0];
+      window.googletag.pubads().setTargeting(pageType, catVal);
+    }
+
     window.googletag.pubads().set('page_url', 'https://www.petplace.com');
-    window.googletag.pubads().setTargeting(pageType, catVal);
     window.googletag.pubads().setCentering(true);
     window.googletag.pubads().collapseEmptyDivs(true);
     window.googletag.enableServices();
@@ -120,7 +133,7 @@ const adsenseSetup = (adArgs, catVal) => {
 };
 
 // google tag for adsense
-export const adsDefineSlot = async (catVal, adArgs) => {
+export const adsDefineSlot = async (adArgs, catVal) => {
   // separate function to return the anchor slot
   const anchorSlot = await adsenseSetup(adArgs, catVal);
 
