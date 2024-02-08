@@ -8,7 +8,6 @@ import {
 import {
   createBreadCrumbs,
   getCategories,
-  getCategory,
 } from '../../scripts/scripts.js';
 import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
@@ -106,7 +105,6 @@ export async function loadEager(document) {
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
-
 
   main.setAttribute('itemscope', '');
   const articleType = toClassName(getMetadata('type'));
