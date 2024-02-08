@@ -4,7 +4,7 @@ window.googletag ||= { cmd: [] };
 
 export const adsDivCreator = (adLoc) => {
   const mainDiv = document.createElement('div');
-  mainDiv.className = 'publi-container bg-white';
+  mainDiv.className = 'publi-container';
 
   const subDiv = document.createElement('div');
   subDiv.className = 'sub-container';
@@ -41,6 +41,8 @@ export const adsDivCreator = (adLoc) => {
         allParas[Math.ceil(parasLength / 2)].after(mainDiv);
       }
     }
+
+    return;
   }
 };
 
@@ -108,9 +110,12 @@ const adsenseSetup = (adArgs, catVal) => {
       mobileScaling: 2.0,
     });
 
-    const pageType = adArgs[lastItemIndex].split('_')[0];
+    if (catVal) {
+      const pageType = adArgs[lastItemIndex].split('_')[0];
+      window.googletag.pubads().setTargeting(pageType, catVal);
+    }
+
     window.googletag.pubads().set('page_url', 'https://www.petplace.com');
-    window.googletag.pubads().setTargeting(pageType, catVal);
     window.googletag.pubads().setCentering(true);
     window.googletag.pubads().collapseEmptyDivs(true);
     window.googletag.enableServices();
@@ -120,7 +125,7 @@ const adsenseSetup = (adArgs, catVal) => {
 };
 
 // google tag for adsense
-export const adsDefineSlot = async (catVal, adArgs) => {
+export const adsDefineSlot = async (adArgs, catVal) => {
   // separate function to return the anchor slot
   const anchorSlot = await adsenseSetup(adArgs, catVal);
 
