@@ -954,21 +954,12 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 /* ADSENSE */
 
 .publi-container {
-  padding-top: 4rem;
-  padding-bottom: 2rem;
+  padding: 1rem;
 }
 
 .publi-container-bottom {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.bg-gray-light {
-  background-color: rgb(238 238 238 / 100%);
-}
-
-.bg-white {
-  background-color: rgb(255 255 255 / 100%);
 }
 
 .sub-container,
@@ -984,9 +975,8 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 }
 
 .publi-wrapper-bg:not(:empty) {
-  background-color: #e5ebef;
+  background-color: transparent;
   border-radius: 7px;
-  padding: 0.5rem;
   overflow: hidden;
 }
 

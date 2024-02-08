@@ -124,7 +124,13 @@ export const mappingHelper = (adLoc) => {
         [320, 100],
       ],
     )
-    .addSize([980, 200], [[728, 90]])
+    .addSize(
+      [980, 200],
+      [
+        [728, 90],
+        [970, 90],
+      ],
+    )
     .build();
 
   const mappingSide = window.googletag
@@ -150,7 +156,13 @@ export const mappingHelper = (adLoc) => {
         [336, 280],
       ],
     )
-    .addSize([980, 200], [[728, 90]])
+    .addSize(
+      [980, 200],
+      [
+        [300, 250],
+        [336, 280],
+      ],
+    )
     .build();
 
   const mappingLeaderboard = window.googletag
@@ -174,10 +186,12 @@ export const mappingHelper = (adLoc) => {
     )
     .build();
 
-  // reverting to this for now as hotfix
+  if (adLoc.includes('article')) {
+    if (adLoc.includes('side')) return mappingSide;
+    if (adLoc.includes('middle')) return mappingMiddle;
+  }
+
   if (adLoc.includes('top')) return mappingTop;
-  if (adLoc.includes('side')) return mappingSide;
-  if (adLoc.includes('middle')) return mappingMiddle;
   if (adLoc.includes('bottom')) return mappingLeaderboard;
 
   return mappingLeaderboard;
@@ -198,7 +212,6 @@ export const sizingArr = (adLoc) => {
   const sizeTopMid = [[320, 50]];
   const sizeLeader = [[728, 90]];
 
-  // reverting to this for now as hotfix
   if (adLoc.includes('article')) {
     if (adLoc.includes('side')) return sizeSide;
     if (adLoc.includes('top')) return sizeTopMid;

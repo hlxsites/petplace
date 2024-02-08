@@ -232,22 +232,21 @@ export async function loadLazy() {
   //     renderArticles(getArticles());
   //   });
   // }
+
+  adsDivCreator('category_top');
+  adsDivCreator('category_bottom');
 }
 
 export async function loadDelayed() {
   const pageCat = await getCategoryForUrl();
   await pushToDataLayer({
     event: 'adsense',
+    type: 'category',
     category: pageCat.Slug,
   });
 
-  adsDivCreator('category_top');
-  adsDivCreator('category_bottom');
-
   adsDefineSlot(
+    ['category_top', 'category_bottom', 'category_anchor'],
     pageCat.Slug,
-    'category_top',
-    'category_bottom',
-    'category_anchor',
   );
 }
