@@ -1,3 +1,6 @@
+/* layout of */
+
+
 /* checklist section */
 .pet-details .checklist-container {
     padding: 32px 24px 32px 24px;
@@ -27,4 +30,76 @@
 }
 .pet-details .checklist-item ul li {
     margin-bottom: 32px;
+}
+
+/* Similar Pets section */
+
+.pet-details .similar-pets-container {
+    padding: 32px 0 16px;
+    @media (min-width: 1024px){
+        padding: 48px 0 32px;
+    }
+}
+.pet-details .pet-card {
+    width: 250px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px 0px #0000003D;
+    position: relative;
+    flex-shrink: 0;
+    @media (min-width: 1024px){
+        width: 300px;
+    }
+}
+
+.pet-details .pet-card-body {
+    padding: 24px 16px 16px;
+}
+.pet-details .pet-card-favorite {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
+}
+.pet-details .similar-pets-gallery-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+.pet-details .similar-pets-gallery {
+    padding: 32px 0 16px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+}
+.pet-details .pet-card-name {
+    margin-bottom: 8px;
+}
+.pet-details .pet-card-image img {
+    border-radius: 8px 8px 0 0;
+}
+.pet-details .pet-card-info {
+    display: flex;
+    align-items: center;
+}
+.pet-details .pet-card-separator {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #000000;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+.pet-details .pet-card-address {
+    margin-top: 24px;
+}
+.pet-details .stretched-link {
+    color: #000000;
+}
+.pet-details .stretched-link:after{
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }

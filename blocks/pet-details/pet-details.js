@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { fetchPlaceholders, createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 async function getParametersFromUrl() {
     const { pathname } = window.location;
@@ -44,20 +44,46 @@ async function createChecklistSection() {
     if (checklistLabel) {
         const checklistLabelEl = document.createElement('h2');
         checklistLabelEl.textContent = checklistLabel;
-        checklistContainer.appendChild(checklistLabelEl)
+        checklistContainer.append(checklistLabelEl)
     }
     if (checklistItem1Label) {
-        checklistContainer.appendChild(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
-        checklistContainer.appendChild(createCta('', 'Start Pet Match Survey', 'button primary', true));
+        checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
+        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'button primary', true));
     }
     if (checklistItem2Label) {
-        checklistContainer.appendChild(createChecklistItem(2, checklistItem2Label, checklistItem2Text));
+        checklistContainer.append(createChecklistItem(2, checklistItem2Label, checklistItem2Text));
     }
     if (checklistItem3Label) {
-        checklistContainer.appendChild(createChecklistItem(3, checklistItem3Label, checklistItem3Text));
+        checklistContainer.append(createChecklistItem(3, checklistItem3Label, checklistItem3Text));
     }
-    checklistContainer.appendChild(createCta('', 'View Full Checklist', 'button primary', true));
+    checklistContainer.append(createCta('', 'View Full Checklist', 'button primary', true));
     return checklistContainer;
+}
+async function createSimilarPetsSection(sectionTitle, petArr){
+    const similarPetsContainer = document.createElement('div');
+    similarPetsContainer.className = 'similar-pets-container';
+    const title = document.createElement('h2');
+    title.className = 'similar-pets-title';
+    title.textContent = sectionTitle;
+    similarPetsContainer.append(title);
+    if(petArr && petArr.length > 0 ) {
+        const galleryWrapper = document.createElement('div');
+        galleryWrapper.className = 'similar-pets-gallery-wrapper';
+        const gallery = document.createElement('div');
+        gallery.className = 'similar-pets-gallery';
+        petArr.forEach(pet => {
+            gallery.append(createPetCard(pet));
+        })
+        galleryWrapper.appendChild(gallery)
+        similarPetsContainer.append(galleryWrapper);
+    } else {
+        const noResults = document.createElement('div');
+        noResults.className = 'similar-pets-no-results';
+        noResults.textContent = 'There are no other similar pets available.';
+        similarPetsContainer.append(noResults);
+    }
+
+    return similarPetsContainer;
 }
 function createCta(url, text, className, openNew) {
     const cta = document.createElement('a');
@@ -71,7 +97,7 @@ function createCta(url, text, className, openNew) {
     }
     return cta;
 }
-function createChecklistItem (index, label, text) {
+function createChecklistItem(index, label, text) {
     const checklistItemContainer = document.createElement('div');
     checklistItemContainer.className = 'checklist-item';
     if (label) {
@@ -81,7 +107,7 @@ function createChecklistItem (index, label, text) {
         <span class="checklist-item-label-index">${index}</span>
         <span class="checklist-item-label-text">${label}</span>
         `;
-        checklistItemContainer.appendChild(checklistItemLabelEl);
+        checklistItemContainer.append(checklistItemLabelEl);
     }
     if (text) {
         const textArr = text.split(',')
@@ -89,15 +115,41 @@ function createChecklistItem (index, label, text) {
         textArr.forEach(str => {
             const listItem = document.createElement('li');
             listItem.textContent = str;
-            textList.appendChild(listItem);
+            textList.append(listItem);
         })
-        checklistItemContainer.appendChild(textList);
+        checklistItemContainer.append(textList);
     }
     return checklistItemContainer;
 }
-async function createSimilarPetsSection(){
-    const similarPetsContainer = document.createElement('div');
-    similarPetsContainer.className = 'similar-pets-container';
+function createPetCard({name, gender, breed, city, state, image, animalId, clientId}) {
+    const petCard = document.createElement('div');
+    petCard.className = 'pet-card';
+    const pictureContainer = document.createElement('div');
+    pictureContainer.className = 'pet-card-image';
+    pictureContainer.append(createOptimizedPicture(image, name, false, [
+        { media: '(min-width: 1024px)', width: 300 },
+        { width: 250 },
+    ]));
+    const cardBody = document.createElement('div');
+    cardBody.className = 'pet-card-body';
+    cardBody.innerHTML = `
+        <h3 class="pet-card-name"><a href="/adopt/pet/${clientId}/${animalId}" class="stretched-link">${name}</a></h3>
+        <div class="pet-card-info">
+            <span class="pet-card-gender">${gender}</span>
+            <span class="pet-card-separator"></span>
+            <span class="pet-card-breed">${breed}</span>
+        </div>
+        <div class="pet-card-address">
+            ${city}, ${state}
+        </div>
+    `;
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'pet-card-button-conainer';
+    buttonContainer.innerHTML = `
+    <button class="pet-card-favorite"><span>Favorite</span></button>
+    `
+    petCard.append(pictureContainer, cardBody, buttonContainer);
+    return petCard;
 }
 export default async function decorate(block) {
     console.log(await getParametersFromUrl());
@@ -110,6 +162,48 @@ export default async function decorate(block) {
     const layoutContainer = document.createElement('div');
     layoutContainer.className = 'layout-container';
     layoutContainer.append(await createChecklistSection());
-    block.appendChild(layoutContainer)
+    block.append(layoutContainer);
 
+    block.append(await createSimilarPetsSection('Similar Pets', [
+        {
+            name: 'Thaddeus Bumblefoot',
+            gender: 'Male',
+            breed: 'Cocker Spaniel',
+            city: 'Golden Valley',
+            state: 'MN',
+            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
+            animalId: '',
+            clientId: ''
+        },
+        {
+            name: 'Thaddeus Bumblefoot',
+            gender: 'Male',
+            breed: 'Cocker Spaniel',
+            city: 'Golden Valley',
+            state: 'MN',
+            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
+            animalId: '',
+            clientId: ''
+        },
+        {
+            name: 'Thaddeus Bumblefoot',
+            gender: 'Male',
+            breed: 'Cocker Spaniel',
+            city: 'Golden Valley',
+            state: 'MN',
+            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
+            animalId: '',
+            clientId: ''
+        },
+        {
+            name: 'Thaddeus Bumblefoot',
+            gender: 'Male',
+            breed: 'Cocker Spaniel',
+            city: 'Golden Valley',
+            state: 'MN',
+            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
+            animalId: '',
+            clientId: ''
+        }
+    ]));
 }
