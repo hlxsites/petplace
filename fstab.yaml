@@ -4,4 +4,4 @@ mountpoints:
 folders:
   /article/category/: /article/category/default
   /tags/: /tags/default
-  /adopt/pet/: /adopt/pet/default
+  /adopt/pet-adoption/: /adopt/pet-adoption/default
