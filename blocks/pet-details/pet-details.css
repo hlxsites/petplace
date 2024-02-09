@@ -1,8 +1,29 @@
-/* layout of */
-.pet-details .layout-container {
-
+/* button */
+.pet-details .pet-details-button,
+.pet-details a.pet-details-button {
+    margin: 0;
+    padding: 14px 50px;
+    font-size: 18px;
+    font-family: var(--body-font-family);
+    font-weight: 600;
+    line-height: 1.2;
+}
+.pet-details button.pet-details-button.primary,
+.pet-details a.pet-details-button.primary {
+    background-color: var(--compare-button-bg-color);
+}
+.pet-details .pet-details-button-icon-favorite {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    -webkit-mask: url("../../icons/favorite.svg") no-repeat center center;
+    mask: url("../../icons/favorite.svg") no-repeat center center;
+    background-color: #09090D;
+    margin-right: 16px;
 }
 
+/* layout container */
 .pet-details .about-pet-container,
 .pet-details .shelter-container,
 .pet-details .checklist-container {
@@ -22,6 +43,7 @@
     .pet-details .checklist-item-label-index {
         display: block;
         box-sizing: border-box;
+        flex-shrink: 0;
         width: 56px;
         height: 56px;
         padding-top: 12px;
@@ -32,10 +54,23 @@
         background-color:#EBE8FC;
     }
     .pet-details .checklist-item ul {
-        list-style-type: "\2610 ";
+        list-style-type: none;
+        padding: 0;
     }
     .pet-details .checklist-item ul li {
         margin-bottom: 32px;
+        padding: 0;
+        display: inline-flex;
+    }
+    .pet-details .checklist-item ul li:before {
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 12px;
+        border: 2px solid #6E6D73;
+        border-radius: 2px;
+        flex-shrink: 0;
     }
 /* about pet section */
 
@@ -44,6 +79,7 @@
     }
     .pet-details .about-pet-title {
         color: var(--color-black);
+        margin: 0;
     }
     .pet-details .about-pet-subtitle,
     .pet-details .about-pet-details {
@@ -60,6 +96,11 @@
     }
     .pet-details .about-pet-body h3 {
         margin-bottom: 24px;
+    }
+    .pet-details .about-pet-ctas {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
     }
 
 /* shelter section */
@@ -96,6 +137,7 @@
         -webkit-mask: url("../../icons/phone.svg") no-repeat center center;
         mask: url("../../icons/phone.svg") no-repeat center center;
     }
+    .pet-details .shelter-address a,
     .pet-details .shelter-phone a {
         color: var(--color-black);
     }
@@ -116,11 +158,30 @@
 .pet-details .pet-card-body {
     padding: 24px 16px 16px;
 }
-.pet-details .pet-card-favorite {
+.pet-details .pet-card-button-conainer {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 16px;
+    right: 16px;
     z-index: 3;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+}
+.pet-details .pet-card-favorite {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #FFFFFFD9;
+}
+.pet-details .pet-card-favorite-icon {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    -webkit-mask: url("../../icons/favorite.svg") no-repeat center center;
+    mask: url("../../icons/favorite.svg") no-repeat center center;
+    background-color: var(--text-color-disabled);
 }
 .pet-details .similar-pets-gallery-wrapper {
     width: 100%;
@@ -158,6 +219,7 @@
     left: 0;
 }
 
+
 .pet-details .dot {
     display: inline-block;
     vertical-align: middle;
@@ -180,6 +242,8 @@
     margin-left: 16px;
     margin-right: 16px;
 }
+
+
 @media (max-width: 600px) {
     .pet-details .about-pet-size + .dot {
         display: none;
@@ -196,11 +260,38 @@
     .pet-details .about-pet-location {
         display: block;
     }
+    .pet-details .about-pet-ctas {
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 40px;
+    }
 }
 
 @media (min-width: 768px) {
     .pet-details .similar-pets-container {
         padding: 48px 0 32px;
+    }
+    .pet-details .about-pet-header {
+        display: grid;
+        grid-template-columns: 1fr max-content;
+        grid-template-rows: auto auto auto;
+    }
+    .pet-details .about-pet-title {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+    }
+    .pet-details .about-pet-ctas {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+        align-self: start;
+    }
+    .pet-details .about-pet-subtitle {
+        grid-column: 1 / 3;
+        grid-row: 2 / 3;
+    }
+    .pet-details .about-pet-details {
+        grid-column: 1 / 3;
+        grid-row: 3 / 4;
     }
     .pet-details .about-pet-container {
         padding: 24px;

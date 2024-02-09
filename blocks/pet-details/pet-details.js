@@ -39,8 +39,13 @@ async function createAboutPetSection({name, animalId, clientId, breed, secBreed,
             <span class="about-pet-id">Animal ID: ${animalId}</span>
         </div>
         <div class="about-pet-ctas">
-            <button class="about-pet-cta-favorite secondary">Favorite</button>
-            <button class="about-pet-cta-inquiry primary">Submit An Inquiry</button>
+            <button class="about-pet-favorite pet-details-button secondary">
+                <span class="pet-details-button-icon-favorite"></span>
+                Favorite
+            </button>
+            <button class="about-pet-inquiry pet-details-button primary">
+                Submit An Inquiry
+            </button>
         </div>
     </div>
     <div class="about-pet-body">
@@ -63,7 +68,7 @@ async function createShelterSection({name, city, state, address, phoneNumber}){
     <h2 class="shelter-name">${name}</h2>
     <div class="shelter-location">${city}, ${state}</div>
     <div class="shelter-address">
-        <div>${address}</div>
+        <a href="https://maps.google.com/?q=${htmlToString(address)}">${address}</a>
     </div>
     <div class="shelter-phone">
         <a href="tel:${phoneNumber}">${phoneNumber}</a>
@@ -93,7 +98,7 @@ async function createChecklistSection() {
     }
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
-        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'button primary', true));
+        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary', true));
     }
     if (checklistItem2Label) {
         checklistContainer.append(createChecklistItem(2, checklistItem2Label, checklistItem2Text));
@@ -101,7 +106,7 @@ async function createChecklistSection() {
     if (checklistItem3Label) {
         checklistContainer.append(createChecklistItem(3, checklistItem3Label, checklistItem3Text));
     }
-    checklistContainer.append(createCta('', 'View Full Checklist', 'button primary', true));
+    checklistContainer.append(createCta('', 'View Full Checklist', 'pet-details-button button primary', true));
     return checklistContainer;
 }
 async function createSimilarPetsSection(sectionTitle, petArr){
@@ -191,10 +196,18 @@ function createPetCard({name, gender, breed, city, state, image, animalId, clien
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'pet-card-button-conainer';
     buttonContainer.innerHTML = `
-    <button class="pet-card-favorite"><span>Favorite</span></button>
+    <button class="pet-card-favorite">
+        <span class="pet-card-favorite-icon"></span>
+        <span class="sr-only">Favorite</span>
+    </button>
     `
     petCard.append(pictureContainer, cardBody, buttonContainer);
     return petCard;
+}
+function htmlToString(html) {
+    const tempDivElement = document.createElement("div");
+    tempDivElement.innerHTML = html;
+    return tempDivElement.textContent || tempDivElement.innerText || "";
 }
 export default async function decorate(block) {
     console.log(await getParametersFromUrl());
