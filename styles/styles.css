@@ -31,9 +31,11 @@
   --background-color: #fff;
   --background-color-light: #f2f6fc;
   --background-color-dark: #3b092c;
+  --border-color: #D9D9D9;
   --text-color: #28061e;
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
+  --color-black: #000000;
   --color-gray: #8f8f8f;  
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
@@ -43,6 +45,7 @@
   --color-blue-light: #c4d1e9;
   --color-blue-dark: #5773a8;
   --color-purple: #6f69a8;
+  --color-purple-dark: #302280;
   --color-purple-light: #978ce0;
   --color-purple-gray: #736aa4;
   --color-purple-light-alt: #8e8199;

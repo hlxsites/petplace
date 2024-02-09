@@ -17,38 +17,59 @@ async function createCarouselSection(){
     carouselContainer.className = 'carousel-container';
     return carouselContainer;
 }
-async function createAboutPetSection(animalDetail){
-    const {name} = animalDetail
+async function createAboutPetSection({name, animalId, clientId, breed, secBreed, city, state, age, gender, size, locatedAt, description, ageDescription, moreInfo, dataUpdated}){
+
     const aboutPetContainer = document.createElement('div');
     aboutPetContainer.className = 'about-pet-container';
     aboutPetContainer.innerHTML = `
     <div class="about-pet-header">
         <h1 class="about-pet-title">${name}</h1>
-        <div class="about-pet-ctas"></div>
+        <div class="about-pet-subtitle">
+            <span class="about-pet-breed">${breed}</span>
+            <span class="dot dot-large"></span>
+            <span class="about-pet-location">${city}, ${state}</span>
+        </div>
+        <div class="about-pet-details">
+            <span class="about-pet-age">${age}</span>
+            <span class="dot dot-medium"></span>
+            <span class="about-pet-gender">${gender}</span>
+            <span class="dot dot-medium"></span>
+            <span class="about-pet-size">${size}</span>
+            <span class="dot dot-medium"></span>
+            <span class="about-pet-id">Animal ID: ${animalId}</span>
+        </div>
+        <div class="about-pet-ctas">
+            <button class="about-pet-cta-favorite secondary">Favorite</button>
+            <button class="about-pet-cta-inquiry primary">Submit An Inquiry</button>
+        </div>
+    </div>
+    <div class="about-pet-body">
+        <h3>About ${name}</h3>
+        ${locatedAt && `<p>Located At: ${locatedAt}</p>`}
+        ${description && `<p>Description: ${description}</p>`}
+        ${ageDescription && `<p>Age: ${ageDescription}</p>`}
+        ${moreInfo && `<p>More Info: ${moreInfo}</p>`}
+        ${dataUpdated && `<p>Data Updated: ${dataUpdated}</p>`}
     </div>
 
     
     `
+    return aboutPetContainer;
 }
-async function createShelterSection(shelterDetail){
-    const {Location: name, ['Phone Number']: phoneNumber, City: city, State: state, Address: address} = shelterDetail
+async function createShelterSection({name, city, state, address, phoneNumber}){
     const shelterContainer = document.createElement('div');
     shelterContainer.className = 'shelter-container';
     shelterContainer.innerHTML = `
     <h2 class="shelter-name">${name}</h2>
-    <div class="shelter-location">
-        <span class="shelter-city">${city}</span>
-        <span class="dot-separator"></span>
-        <span class="shelter-state">${state}</span>
-    </div>
+    <div class="shelter-location">${city}, ${state}</div>
     <div class="shelter-address">
-        ${address}
+        <div>${address}</div>
     </div>
     <div class="shelter-phone">
         <a href="tel:${phoneNumber}">${phoneNumber}</a>
     </div>
-    
     `
+    return shelterContainer
 }
 async function createChecklistSection() {
     const checklistContainer = document.createElement('div');
@@ -160,7 +181,7 @@ function createPetCard({name, gender, breed, city, state, image, animalId, clien
         <h3 class="pet-card-name"><a href="/adopt/pet/${clientId}/${animalId}" class="stretched-link">${name}</a></h3>
         <div class="pet-card-info">
             <span class="pet-card-gender">${gender}</span>
-            <span class="dot-separator"></span>
+            <span class="dot"></span>
             <span class="pet-card-breed">${breed}</span>
         </div>
         <div class="pet-card-address">
@@ -185,6 +206,32 @@ export default async function decorate(block) {
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');
     layoutContainer.className = 'layout-container';
+    layoutContainer.append(await createAboutPetSection({
+        name: 'Dakota', 
+        animalId: '40596030', 
+        clientId: '40596030',
+        breed: 'American Staffordshire Terrier', 
+        secBreed: 'Crossbreed', 
+        city: 'Watertown', 
+        state: 'WI', 
+        age: 'Adult', 
+        gender: 'Male', 
+        size: 'Large', 
+        locatedAt: 'Watertown Humane Society', 
+        description: 'My name is Dakota.<br >I am a male, black American Staffordshire Terrier mix.', 
+        ageDescription: 'The shelter staff think I am about 5 years old.', 
+        moreInfo: 'I have been at the shelter since Aug 23, 2022.', 
+        dataUpdated: 'This information was refreshed 100 days ago.'
+    }))
+    layoutContainer.append(await createShelterSection(
+        {
+            name: 'Watertown Humane Society',
+            city: 'Watertown',
+            state: 'WI',
+            address: '418 Water Tower Court  <br/>Watertown, WI 53094',
+            phoneNumber: '9202611270'
+        }
+    ))
     layoutContainer.append(await createChecklistSection());
     block.append(layoutContainer);
 
