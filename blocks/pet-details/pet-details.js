@@ -12,9 +12,22 @@ async function getPetDetail(clientId, animalId) {
 async function getSimilarPets(clientId, animalId){
 
 }
-async function createCarouselSection(){
+async function createCarouselSection(name, imageArr){
     const carouselContainer = document.createElement('div');
     carouselContainer.className = 'carousel-container';
+    if(imageArr.length <= 1) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-div';
+        imageContainer.append(createOptimizedPicture(imageArr[0] || 'https://24petconnect.com/Content/Images/No_pic_t.jpg', name || '', true, [
+            { media: '(min-width: 1024px)', width: 1600 },
+            { width: 768 },
+        ]));
+        carouselContainer.append(imageContainer)
+
+    } else {
+
+    }
+
     return carouselContainer;
 }
 async function createAboutPetSection({name, animalId, clientId, breed, secBreed, city, state, age, gender, size, locatedAt, description, ageDescription, moreInfo, dataUpdated}){
