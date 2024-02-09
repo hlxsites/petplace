@@ -1,0 +1,263 @@
+.adopt-search-results.list {
+    background-color: #FAFAFC;
+    position: relative;
+}
+.adopt-search-results-container.section {
+    border-top: 1px solid #D0D0D6;
+    border-bottom: 1px solid #D0D0D6;
+    padding: 24px 24px 18px 24px;
+}
+
+.adopt-search-results-container h1 {
+    color: #000;
+}
+
+.adopt-search-results-container h2 {
+    color: #000;
+}
+
+.adopt-search-results .sidebar {
+    margin: 0 0 20px 0;
+    padding: 0;
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+
+@media screen and (min-width: 1024px) {
+    .adopt-search-results .sidebar {
+        position: absolute;
+        width: 200px;
+    }
+}
+
+
+.adopt-search-results-wrapper form {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+@media only screen and (min-width: 600px) {
+    .adopt-search-results-wrapper form {
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+}
+
+.adopt-search-results-wrapper .adopt-search.results form {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+}
+
+.adopt-search-results-wrapper form fieldset {
+    display: flex;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    gap: 16px;
+}
+
+.adopt-search-results-wrapper .adopt-search.results form fieldset {
+    width: auto;
+}
+
+.adopt-search-results-wrapper form fieldset label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--Text-Supporting, #2F2F33);
+    font-family: "Libre Franklin";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+    /* 155.556% */
+}
+
+.adopt-search-results-wrapper form fieldset input {
+    /* display: none; */
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.adopt-search-results-wrapper form fieldset input:checked+label {
+    background: var(--Purple-300, #7369AB);
+    color: #fff;
+}
+
+.adopt-search-results-wrapper form fieldset label {
+    padding: 10px var(--Spacing-Large, 24px);
+
+    width: auto;
+    display: inline;
+    border: 1px solid var(--Border-Strong, #D0D0D6);
+    border-radius: 8px;
+}
+
+.adopt-search-results-wrapper form>div {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+@media only screen and (min-width: 600px) {
+    .adopt-search-results-wrapper form>div {
+        width: 100%;
+    }
+}
+
+.adopt-search-results-wrapper .adopt-search.results form>div {
+
+    width: 100%;
+
+}
+
+.adopt-search-results-wrapper form input:not([type=radio]),
+.adopt-search-results-wrapper form select,
+.adopt-search-results-wrapper form textarea {
+    border: 1px solid #3B092C;
+    height: 43px;
+    padding: 0 16px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    color: var(--Text-Default, #28061E);
+}
+
+.adopt-search-results-wrapper form input::placeholder {
+    color: var(--Text-Default, #28061E);
+}
+
+.adopt-search-results-wrapper form select {
+    /** for the dropdown indicator */
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.adopt-search-results-wrapper form>div>label,
+.adopt-search-results-wrapper form fieldset legend {
+    color: var(--Text-Default, #28061E);
+    /* Body/Small/Button */
+    font-family: "Libre Franklin";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 12px;
+}
+
+.adopt-search-results-wrapper form fieldset legend {
+    margin-bottom: 20px;
+}
+
+.adopt-search-results-wrapper form div #clearButton {
+    display: none;
+    background: none;
+    border: none;
+    position: absolute;
+    right: 30px;
+    top: 16px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-weight: bold;
+    color: #A4A4A4D9;
+    font-size: 18px;
+
+    @media (max-width: 600px) {
+        font-size: 13px;
+        top: 6px;
+        right: 28px;
+    }
+}
+
+.adopt-search-results-wrapper form button.adopt-search-button {
+    width: 100%;
+    max-width: fit-content;
+    margin: 29px 0 0;
+    height: 43px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.adopt-search-results .results {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+@media screen and (min-width: 1024px) {
+    .adopt-search-results .results {
+        margin-left: 220px;
+    }
+}
+
+.adopt-search-results .results div.animal {
+    width: 100%;
+    border-radius: 12px;
+    filter: drop-shadow(rgba(0, 0, 0, 24%) 1px 2px 4px);
+    background-color: #fff;
+    
+}
+@media screen and (min-width: 1024px) {
+    .adopt-search-results .results div.animal {
+        max-width: 250px;
+    }
+}
+
+.adopt-search-results .results div.animal img {
+
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+.adopt-search-results .results div.animal .favorite {
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 8px 5px 3px;
+    margin: 0;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.adopt-search-results .results div.animal object {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.adopt-search-results .results div.animal h3 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.adopt-search-results .results div.animal p {
+    font-size: 16px;
+    line-height: 20px;
+    padding-bottom: 16px;
+    font-weight: 400;
+}
+
+.adopt-search-results .results div.animal p.location {
+    font-size: 18px;
+}
+
+.adopt-search-results .results div.animal h3,
+.adopt-search-results .results div.animal p {
+    padding-left: 12px;
+    padding-right: 12px;
+}
