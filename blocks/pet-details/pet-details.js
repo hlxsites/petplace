@@ -4,10 +4,19 @@ import { fetchPlaceholders, createOptimizedPicture } from '../../scripts/lib-fra
 async function getParametersFromUrl() {
     const { pathname } = window.location;
     const [clientId, animalId] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 2);
-    return {clientId, animalId}
+    //return {clientId, animalId}
+    return {clientId: 'PP1008', animalId: '40596030'}
 }
-async function getPetDetail(clientId, animalId) {
-
+async function fetchAnimalData(clientId, animalId) {
+    const animalApi = `https://api-stg-petplace.azure-api.net/animal/${animalId}/client/${clientId}`
+    const resp = await fetch(animalApi);
+    if (resp.ok) {
+        const json = await resp.json();
+        console.log(json)
+        return json;
+    } else {
+        return null;
+    }
 }
 async function getSimilarPets(clientId, animalId){
 
@@ -15,15 +24,13 @@ async function getSimilarPets(clientId, animalId){
 async function createCarouselSection(name, imageArr){
     const carouselContainer = document.createElement('div');
     carouselContainer.className = 'carousel-container';
-    if(imageArr.length <= 1) {
+    if(imageArr.length <= 1 ) {
         const imageContainer = document.createElement('div');
         imageContainer.className = 'image-div';
-        imageContainer.append(createOptimizedPicture(imageArr[0] || 'https://24petconnect.com/Content/Images/No_pic_t.jpg', name || '', true, [
-            { media: '(min-width: 1024px)', width: 1600 },
-            { width: 768 },
-        ]));
-        carouselContainer.append(imageContainer)
-
+        imageContainer.innerHTML = `
+            <img src=${imageArr[0] || "https://24petconnect.com/Content/Images/No_pic_t.jpg"} alt=${imageArr[0] ? name : "no image available"} />
+            `;
+        carouselContainer.append(imageContainer);
     } else {
 
     }
@@ -223,11 +230,37 @@ function htmlToString(html) {
     return tempDivElement.textContent || tempDivElement.innerText || "";
 }
 export default async function decorate(block) {
-    console.log(await getParametersFromUrl());
     const {clientId, animalId} = await getParametersFromUrl();
+    const petData = await fetchAnimalData(clientId, animalId);
+    const {
+        Age: age, 
+        ['Age Description']: ageDescription,
+        ['Animal Type']: animalType,
+        ['Data Updated']: dataUpdated,
+        Description: description,
+        Gender: gender,
+        ['Located At']: locatedAt,
+        ['More Info']: moreInfo,
+        ['Primary Breed']: primaryBreed,
+        ['Secondary Breed']: secondaryBreed,
+        Size: size
+    } = petData.animalDetail[0];
+
+    const {
+        Address: address,
+        City: city,
+        State: state,
+        Location: clientName,
+        ['Phone Number']: clientPhone,
+        Street: street,
+        Website: clientWebsite,
+        Zip: zip,
+        adoptMeState,
+        clientEmail
+    } = petData.clientDetail[0];
 
     block.textContent = '';
-    block.append(await createCarouselSection());
+    block.append(await createCarouselSection('', petData.imageURL));
 
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');
