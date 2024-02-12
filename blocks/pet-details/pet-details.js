@@ -5,6 +5,7 @@ async function getParametersFromUrl() {
     const { pathname } = window.location;
     const [clientId, animalId] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 2);
     //return {clientId, animalId}
+    console.log(clientId, animalId)
     return {clientId: 'PP1008', animalId: '40596030'}
 }
 async function fetchAnimalData(clientId, animalId) {
@@ -12,13 +13,62 @@ async function fetchAnimalData(clientId, animalId) {
     const resp = await fetch(animalApi);
     if (resp.ok) {
         const json = await resp.json();
-        console.log(json)
+        console.log('api data: ', json)
         return json;
     } else {
         return null;
     }
 }
-async function getSimilarPets(clientId, animalId){
+function getPetDetailData(apiData) {
+    const { imageURL, animalDetail, clientDetail } = apiData;
+    const {
+        AnimalId,
+        name: petName,
+        Age: age, 
+        ['Age Description']: ageDescription,
+        ['Animal Type']: animalType,
+        ['Data Updated']: dataUpdated,
+        Description: description,
+        Gender: gender,
+        ['More Info']: moreInfo,
+        ['Primary Breed']: primaryBreed,
+        ['Secondary Breed']: secondaryBreed,
+        Size: size
+    } = animalDetail[0];
+    const {
+        Address: address,
+        Street: street,
+        City: city,
+        State: state,
+        Zip: zip,
+        Location: shelterName,
+        ['Phone Number']: shelterPhone
+    } = clientDetail[0];
+
+    const formattedData = {
+        imageUrl: imageURL || [],
+        animalId: AnimalId,
+        petName: petName || 'Name',
+        animalType,
+        age,
+        gender,
+        breed: primaryBreed || secondaryBreed || '',
+        size,
+        description,
+        ageDescription,
+        moreInfo,
+        dataUpdated,
+        address,
+        street,
+        city,
+        state,
+        zip,
+        shelterName,
+        shelterPhone
+    }
+    return formattedData
+}
+async function getSimilarPets(payLoad){
 
 }
 async function createCarouselSection(name, imageArr){
@@ -37,13 +87,13 @@ async function createCarouselSection(name, imageArr){
 
     return carouselContainer;
 }
-async function createAboutPetSection({name, animalId, clientId, breed, secBreed, city, state, age, gender, size, locatedAt, description, ageDescription, moreInfo, dataUpdated}){
-
+async function createAboutPetSection(aboutPet){
+    const {petName, animalId, breed, city, state, age, gender, size, shelterName, description, ageDescription, moreInfo, dataUpdated} = aboutPet
     const aboutPetContainer = document.createElement('div');
     aboutPetContainer.className = 'about-pet-container';
     aboutPetContainer.innerHTML = `
     <div class="about-pet-header">
-        <h1 class="about-pet-title">${name}</h1>
+        <h1 class="about-pet-title">${petName}</h1>
         <div class="about-pet-subtitle">
             <span class="about-pet-breed">${breed}</span>
             <span class="dot dot-large"></span>
@@ -69,29 +119,28 @@ async function createAboutPetSection({name, animalId, clientId, breed, secBreed,
         </div>
     </div>
     <div class="about-pet-body">
-        <h3>About ${name}</h3>
-        ${locatedAt && `<p>Located At: ${locatedAt}</p>`}
+        <h3>About ${petName}</h3>
+        ${shelterName && `<p>Located At: ${shelterName}</p>`}
         ${description && `<p>Description: ${description}</p>`}
         ${ageDescription && `<p>Age: ${ageDescription}</p>`}
         ${moreInfo && `<p>More Info: ${moreInfo}</p>`}
         ${dataUpdated && `<p>Data Updated: ${dataUpdated}</p>`}
     </div>
-
-    
     `
     return aboutPetContainer;
 }
-async function createShelterSection({name, city, state, address, phoneNumber}){
+async function createShelterSection(aboutShelter){
+    const {shelterName, city, state, address, shelterPhone} = aboutShelter
     const shelterContainer = document.createElement('div');
     shelterContainer.className = 'shelter-container';
     shelterContainer.innerHTML = `
-    <h2 class="shelter-name">${name}</h2>
+    <h2 class="shelter-name">${shelterName}</h2>
     <div class="shelter-location">${city}, ${state}</div>
     <div class="shelter-address">
         <a href="https://maps.google.com/?q=${htmlToString(address)}">${address}</a>
     </div>
     <div class="shelter-phone">
-        <a href="tel:${phoneNumber}">${phoneNumber}</a>
+        <a href="tel:${shelterPhone}">${shelterPhone}</a>
     </div>
     `
     return shelterContainer
@@ -191,19 +240,20 @@ function createChecklistItem(index, label, text) {
     }
     return checklistItemContainer;
 }
-function createPetCard({name, gender, breed, city, state, image, animalId, clientId}) {
+function createPetCard(petData) {
+    const {petName, gender, breed, city, state, image, animalId, clientId} = petData
     const petCard = document.createElement('div');
     petCard.className = 'pet-card';
     const pictureContainer = document.createElement('div');
     pictureContainer.className = 'pet-card-image';
-    pictureContainer.append(createOptimizedPicture(image, name, false, [
+    pictureContainer.append(createOptimizedPicture(image, petName, false, [
         { media: '(min-width: 1024px)', width: 300 },
         { width: 250 },
     ]));
     const cardBody = document.createElement('div');
     cardBody.className = 'pet-card-body';
     cardBody.innerHTML = `
-        <h3 class="pet-card-name"><a href="/adopt/pet/${clientId}/${animalId}" class="stretched-link">${name}</a></h3>
+        <h3 class="pet-card-name"><a href="/adopt/pet/${clientId}/${animalId}" class="stretched-link">${petName}</a></h3>
         <div class="pet-card-info">
             <span class="pet-card-gender">${gender}</span>
             <span class="dot"></span>
@@ -231,66 +281,38 @@ function htmlToString(html) {
 }
 export default async function decorate(block) {
     const {clientId, animalId} = await getParametersFromUrl();
-    const petData = await fetchAnimalData(clientId, animalId);
+    const apiData = await fetchAnimalData(clientId, animalId);
+    const petData = getPetDetailData(apiData);
+    console.log(petData)
     const {
-        Age: age, 
-        ['Age Description']: ageDescription,
-        ['Animal Type']: animalType,
-        ['Data Updated']: dataUpdated,
-        Description: description,
-        Gender: gender,
-        ['Located At']: locatedAt,
-        ['More Info']: moreInfo,
-        ['Primary Breed']: primaryBreed,
-        ['Secondary Breed']: secondaryBreed,
-        Size: size
-    } = petData.animalDetail[0];
-
-    const {
-        Address: address,
-        City: city,
-        State: state,
-        Location: clientName,
-        ['Phone Number']: clientPhone,
-        Street: street,
-        Website: clientWebsite,
-        Zip: zip,
-        adoptMeState,
-        clientEmail
-    } = petData.clientDetail[0];
+        imageUrl,
+        petName,
+        animalType,
+        age,
+        gender,
+        breed,
+        size,
+        description,
+        ageDescription,
+        moreInfo,
+        dataUpdated,
+        address,
+        street,
+        city,
+        state,
+        zip,
+        shelterName,
+        shelterPhone
+    } = petData
 
     block.textContent = '';
-    block.append(await createCarouselSection('', petData.imageURL));
+    block.append(await createCarouselSection('', imageUrl));
 
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');
     layoutContainer.className = 'layout-container';
-    layoutContainer.append(await createAboutPetSection({
-        name: 'Dakota', 
-        animalId: '40596030', 
-        clientId: '40596030',
-        breed: 'American Staffordshire Terrier', 
-        secBreed: 'Crossbreed', 
-        city: 'Watertown', 
-        state: 'WI', 
-        age: 'Adult', 
-        gender: 'Male', 
-        size: 'Large', 
-        locatedAt: 'Watertown Humane Society', 
-        description: 'My name is Dakota.<br >I am a male, black American Staffordshire Terrier mix.', 
-        ageDescription: 'The shelter staff think I am about 5 years old.', 
-        moreInfo: 'I have been at the shelter since Aug 23, 2022.', 
-        dataUpdated: 'This information was refreshed 100 days ago.'
-    }))
-    layoutContainer.append(await createShelterSection(
-        {
-            name: 'Watertown Humane Society',
-            city: 'Watertown',
-            state: 'WI',
-            address: '418 Water Tower Court  <br/>Watertown, WI 53094',
-            phoneNumber: '9202611270'
-        }
-    ))
+    layoutContainer.append(await createAboutPetSection({petName, animalId, breed, city, state, age, gender, size, shelterName, description, ageDescription, moreInfo, dataUpdated}));
+    layoutContainer.append(await createShelterSection({shelterName, city, state, address, shelterPhone}));
     layoutContainer.append(await createChecklistSection());
     block.append(layoutContainer);
 
