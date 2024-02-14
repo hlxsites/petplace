@@ -5,72 +5,124 @@ async function getParametersFromUrl() {
     const { pathname } = window.location;
     const [clientId, animalId] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 2);
     //return {clientId, animalId}
-    console.log(clientId, animalId)
     return {clientId: 'PP1008', animalId: '40596030'}
 }
 async function fetchAnimalData(clientId, animalId) {
-    const animalApi = `https://api-stg-petplace.azure-api.net/animal/${animalId}/client/${clientId}`
-    const resp = await fetch(animalApi);
-    if (resp.ok) {
-        const json = await resp.json();
-        console.log('api data: ', json)
-        return json;
-    } else {
-        return null;
+    const animalApi = `https://api-stg-petplace.azure-api.net/animal/${animalId}/client/${clientId}`;
+    try {
+        const resp = await fetch(animalApi);
+        if(resp.ok) {
+            const json = await resp.json();
+            console.log('animial data: ', json)
+            return formatAnimalData(json);
+        } else {
+            return {};
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+}
+async function fetchSimilarPets(zip, animalType) {
+    const animalApi = 'https://api-stg-petplace.azure-api.net/animal/';
+    const payload = {
+        locationInformation: {
+          clientId: null,
+          zipPostal: zip, 
+          milesRadius: 25
+        },
+        animalFilters: {
+          startIndex: 0,
+          numResults: 100,
+          filterAnimalType: animalType 
+        }
+    }
+    try {
+        const resp = await fetch(animalApi, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        if(resp.ok) {
+            const json = await resp.json();
+            console.log('similar pets ', json.animal);
+            return formatSimilarPetData(json.animal)
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.error('Error:', error);
     }
 }
-function getPetDetailData(apiData) {
-    const { imageURL, animalDetail, clientDetail } = apiData;
+function formatAnimalData(apiData) {
+    const { imageURL, ppRequired, animalDetail, clientDetail} = apiData;
     const {
-        AnimalId,
-        name: petName,
-        Age: age, 
-        ['Age Description']: ageDescription,
+        AnimalId: animalId,
+        ClientId: clientId,
         ['Animal Type']: animalType,
-        ['Data Updated']: dataUpdated,
-        Description: description,
-        Gender: gender,
-        ['More Info']: moreInfo,
+        ['Pet Name']: petName,
         ['Primary Breed']: primaryBreed,
         ['Secondary Breed']: secondaryBreed,
-        Size: size
-    } = animalDetail[0];
-    const {
+        Age: age, 
+        Gender: gender,
+        ['Size Category']: size,
+        Description: description,
+        ['Shelter Name']: shelterName,
+        ['Shelter Phone']: shelterPhone,
+        ['Pet Location']: petLocation,
         Address: address,
-        Street: street,
         City: city,
         State: state,
-        Zip: zip,
-        Location: shelterName,
-        ['Phone Number']: shelterPhone
-    } = clientDetail[0];
+        Zip: zip
+    } = ppRequired ? ppRequired[0] : {};
+
+    const {['Phone Number']: clientPhone} = clientDetail ? clientDetail[0] : {}
 
     const formattedData = {
         imageUrl: imageURL || [],
-        animalId: AnimalId,
-        petName: petName || 'Name',
+        animalId,
+        clientId,
         animalType,
+        petName,
         age,
         gender,
-        breed: primaryBreed || secondaryBreed || '',
+        primaryBreed,
+        secondaryBreed,
         size,
         description,
-        ageDescription,
-        moreInfo,
-        dataUpdated,
+        petLocation,
         address,
-        street,
         city,
         state,
         zip,
         shelterName,
-        shelterPhone
+        shelterPhone: shelterPhone || clientPhone || ''
     }
+    console.log('formatted animal data', formattedData)
     return formattedData
 }
-async function getSimilarPets(payLoad){
-
+function formatSimilarPetData(apiData) {
+    if(apiData && apiData.length > 4) {
+        const filteredData = apiData.filter(animal => animal && typeof animal.coverImagePath === 'string');
+        if (filteredData.length > 4) {
+            const size = 4;
+            let randomNumbers = new Set();
+            let indexArr;
+            while (randomNumbers.size < size) {
+                randomNumbers.add(Math.floor(Math.random() * filteredData.length));
+            }
+            indexArr = [...randomNumbers];
+            return filteredData.filter((data, index) => indexArr.includes(index));
+        } else {
+            return filteredData;
+        }
+    } else {
+        return apiData;
+    }
 }
+
 async function createCarouselSection(name, imageArr){
     const carouselContainer = document.createElement('div');
     carouselContainer.className = 'carousel-container';
@@ -78,7 +130,7 @@ async function createCarouselSection(name, imageArr){
         const imageContainer = document.createElement('div');
         imageContainer.className = 'image-div';
         imageContainer.innerHTML = `
-            <img src=${imageArr[0] || "https://24petconnect.com/Content/Images/No_pic_t.jpg"} alt=${imageArr[0] ? name : "no image available"} />
+            <img src=${imageArr[0] || 'https://24petconnect.com/Content/Images/No_pic_t.jpg'} alt=${imageArr[0] ? name : 'no image available'} />
             `;
         carouselContainer.append(imageContainer);
     } else {
@@ -88,25 +140,25 @@ async function createCarouselSection(name, imageArr){
     return carouselContainer;
 }
 async function createAboutPetSection(aboutPet){
-    const {petName, animalId, breed, city, state, age, gender, size, shelterName, description, ageDescription, moreInfo, dataUpdated} = aboutPet
+    const {petName, animalId, primaryBreed, secondaryBreed, city, state, age, gender, size, shelterName, description, ageDescription, moreInfo, dataUpdated} = aboutPet
     const aboutPetContainer = document.createElement('div');
     aboutPetContainer.className = 'about-pet-container';
     aboutPetContainer.innerHTML = `
     <div class="about-pet-header">
-        <h1 class="about-pet-title">${petName}</h1>
+        <h1 class="about-pet-title">${petName || animalId}</h1>
         <div class="about-pet-subtitle">
-            <span class="about-pet-breed">${breed}</span>
-            <span class="dot dot-large"></span>
-            <span class="about-pet-location">${city}, ${state}</span>
+            <div class="about-pet-subtitle-inner">
+                ${(primaryBreed || secondaryBreed) ? `<span class="about-pet-breed">${primaryBreed && secondaryBreed ? primaryBreed + '/' + secondaryBreed : primaryBreed ? primaryBreed : secondaryBreed}</span>` : ''}
+                ${(city || state) ? `<span class="about-pet-location">${city && state ? city + ', ' + state : city ? city : state}</span>` : ''}
+            </div>
         </div>
         <div class="about-pet-details">
-            <span class="about-pet-age">${age}</span>
-            <span class="dot dot-medium"></span>
-            <span class="about-pet-gender">${gender}</span>
-            <span class="dot dot-medium"></span>
-            <span class="about-pet-size">${size}</span>
-            <span class="dot dot-medium"></span>
-            <span class="about-pet-id">Animal ID: ${animalId}</span>
+            <div class="about-pet-details-inner">
+                ${age ? `<span class="about-pet-age">${age}</span>`: ''}
+                ${gender ? `<span class="about-pet-gender">${gender}</span>` :''}
+                ${size ? `<span class="about-pet-size">${size}</span>` : ''}
+                ${animalId ? `<span class="about-pet-id">Animal ID: ${animalId}</span>` : ''}
+            </div>
         </div>
         <div class="about-pet-ctas">
             <button class="about-pet-favorite pet-details-button secondary">
@@ -119,30 +171,30 @@ async function createAboutPetSection(aboutPet){
         </div>
     </div>
     <div class="about-pet-body">
-        <h3>About ${petName}</h3>
-        ${shelterName && `<p>Located At: ${shelterName}</p>`}
-        ${description && `<p>Description: ${description}</p>`}
-        ${ageDescription && `<p>Age: ${ageDescription}</p>`}
-        ${moreInfo && `<p>More Info: ${moreInfo}</p>`}
-        ${dataUpdated && `<p>Data Updated: ${dataUpdated}</p>`}
+        <h3>About ${petName || animalId}</h3>
+        ${shelterName ? `<p>Located At: ${shelterName}</p>` : ''}
+        ${description ? `<p>Description: ${description}</p>` : ''}
+        ${ageDescription ? `<p>Age: ${ageDescription}</p>` : ''}
+        ${moreInfo ? `<p>More Info: ${moreInfo}</p>` : ''}
+        ${dataUpdated ? `<p>Data Updated: ${dataUpdated}</p>` :''}
     </div>
-    `
+    `;
     return aboutPetContainer;
 }
-async function createShelterSection(aboutShelter){
+async function createShelterSection(aboutShelter) {
     const {shelterName, city, state, address, shelterPhone} = aboutShelter
     const shelterContainer = document.createElement('div');
     shelterContainer.className = 'shelter-container';
     shelterContainer.innerHTML = `
-    <h2 class="shelter-name">${shelterName}</h2>
-    <div class="shelter-location">${city}, ${state}</div>
-    <div class="shelter-address">
-        <a href="https://maps.google.com/?q=${htmlToString(address)}">${address}</a>
-    </div>
-    <div class="shelter-phone">
-        <a href="tel:${shelterPhone}">${shelterPhone}</a>
-    </div>
-    `
+        <h2 class="shelter-name">${shelterName || 'Shelter Information'}</h2>
+        ${(city || state) ? `<div class="shelter-location">
+            <span>${city && state ? city + ', ' + state : city ? city : state}</span></div>` : ''
+        }
+        ${ address ? `<div class="shelter-address">
+            <a href="https://maps.google.com/?q=${htmlToString(address)}">${shelterName ? `${shelterName}</br>${address}`: address}</a></div>` : ''
+        }
+        ${shelterPhone ? `<div class="shelter-phone"><a href="tel:${shelterPhone}">${shelterPhone}</a></div>`: ''}
+    `;
     return shelterContainer
 }
 async function createChecklistSection() {
@@ -241,7 +293,8 @@ function createChecklistItem(index, label, text) {
     return checklistItemContainer;
 }
 function createPetCard(petData) {
-    const {petName, gender, breed, city, state, image, animalId, clientId} = petData
+    const {Name: petName, ['Animal type']: animalType, Gender: gender, Breed: breed, City: city, State: state, coverImagePath: image, animalId, clientId} = petData
+    const petDetailPageUrl = `/pet-adoption/${animalType}/${animalId}/${clientId}`
     const petCard = document.createElement('div');
     petCard.className = 'pet-card';
     const pictureContainer = document.createElement('div');
@@ -253,14 +306,14 @@ function createPetCard(petData) {
     const cardBody = document.createElement('div');
     cardBody.className = 'pet-card-body';
     cardBody.innerHTML = `
-        <h3 class="pet-card-name"><a href="/adopt/pet/${clientId}/${animalId}" class="stretched-link">${petName}</a></h3>
+        <h3 class="pet-card-name"><a href=${petDetailPageUrl} class="stretched-link">${petName}</a></h3>
         <div class="pet-card-info">
-            <span class="pet-card-gender">${gender}</span>
-            <span class="dot"></span>
-            <span class="pet-card-breed">${breed}</span>
+            ${gender ? `<span class="pet-card-gender">${gender}</span>` : ''}
+            ${gender && breed ? `<span class="pet-card-dot"></span>`: ''}
+            ${breed ? `<span class="pet-card-breed">${breed}</span>` :''}
         </div>
         <div class="pet-card-address">
-            ${city}, ${state}
+            ${city || state ? city && state ? city + ', ' + state : city ? city : state : ''}
         </div>
     `;
     const buttonContainer = document.createElement('div');
@@ -281,9 +334,7 @@ function htmlToString(html) {
 }
 export default async function decorate(block) {
     const {clientId, animalId} = await getParametersFromUrl();
-    const apiData = await fetchAnimalData(clientId, animalId);
-    const petData = getPetDetailData(apiData);
-    console.log(petData)
+    const petData = await fetchAnimalData(clientId, animalId);
     const {
         imageUrl,
         petName,
@@ -305,8 +356,11 @@ export default async function decorate(block) {
         shelterPhone
     } = petData
 
+    const similarPetsArr = await fetchSimilarPets(zip, animalType)
+    console.log(similarPetsArr)
+
     block.textContent = '';
-    block.append(await createCarouselSection('', imageUrl));
+    block.append(await createCarouselSection('', imageUrl || []));
 
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');
@@ -316,46 +370,5 @@ export default async function decorate(block) {
     layoutContainer.append(await createChecklistSection());
     block.append(layoutContainer);
 
-    block.append(await createSimilarPetsSection('Similar Pets', [
-        {
-            name: 'Thaddeus Bumblefoot',
-            gender: 'Male',
-            breed: 'Cocker Spaniel',
-            city: 'Golden Valley',
-            state: 'MN',
-            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
-            animalId: '',
-            clientId: ''
-        },
-        {
-            name: 'Thaddeus Bumblefoot',
-            gender: 'Male',
-            breed: 'Cocker Spaniel',
-            city: 'Golden Valley',
-            state: 'MN',
-            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
-            animalId: '',
-            clientId: ''
-        },
-        {
-            name: 'Thaddeus Bumblefoot',
-            gender: 'Male',
-            breed: 'Cocker Spaniel',
-            city: 'Golden Valley',
-            state: 'MN',
-            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
-            animalId: '',
-            clientId: ''
-        },
-        {
-            name: 'Thaddeus Bumblefoot',
-            gender: 'Male',
-            breed: 'Cocker Spaniel',
-            city: 'Golden Valley',
-            state: 'MN',
-            image: '/article/cats/pet-care/media_1eb856c86ea16a14c8740deab5ba5258a6bf02eaa.png',
-            animalId: '',
-            clientId: ''
-        }
-    ]));
+    block.append(await createSimilarPetsSection('Similar Pets', similarPetsArr));
 }
