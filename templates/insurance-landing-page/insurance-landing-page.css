@@ -70,14 +70,14 @@
 
 .insurance-landing-page .search-box-wrapper .search-button::before {
   display: inline-block;
-  content: "";
+  content: '';
   margin-right: 0.5rem;
   height: 13px;
   width: 29px;
   background: var(--text-color-inverted);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
-  mask: url("../../icons/arrow.svg") no-repeat center center;
+  -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
+  mask: url('../../icons/arrow.svg') no-repeat center center;
   vertical-align: middle;
 }
 
@@ -218,6 +218,7 @@
   font-weight: 700;
   color: var(--pet-insurance-txt-color);
 }
+
 .insurance-landing-page .accordion-section {
   background-color: var(--text-color-inverted);
 }
@@ -235,16 +236,16 @@
 }
 
 .insurance-landing-page .accordion button[aria-expanded]::after {
-  -webkit-mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
-  mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
+  -webkit-mask: url('../../icons/long-arrow-down.svg') center / 100% 100%;
+  mask: url('../../icons/long-arrow-down.svg') center / 100% 100%;
   background-color: var(--faq-accordion-arrow-bg-color);
   width: 20px;
   height: 20px;
 }
 
-.insurance-landing-page .accordion button[aria-expanded="true"]::after {
-  -webkit-mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
-  mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
+.insurance-landing-page .accordion button[aria-expanded='true']::after {
+  -webkit-mask: url('../../icons/long-arrow-up.svg') center / 100% 100%;
+  mask: url('../../icons/long-arrow-up.svg') center / 100% 100%;
   background-color: var(--faq-accordion-arrow-bg-color);
   width: 20px;
   height: 20px;
@@ -293,14 +294,14 @@
 
 .insurance-landing-page .find-useful-wrapper .error > div > div::before {
   display: inline-block;
-  content: "";
+  content: '';
   margin-right: 0.5rem;
   height: 22px;
   width: 22px;
   background: var(--error-message-color);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url("../../icons/alert.svg") no-repeat center center;
-  mask: url("../../icons/alert.svg") no-repeat center center;
+  -webkit-mask: url('../../icons/alert.svg') no-repeat center center;
+  mask: url('../../icons/alert.svg') no-repeat center center;
   vertical-align: middle;
 }
 
@@ -363,6 +364,7 @@
   .insurance-landing-page main .hero > div > div:not(:first-child) {
     margin-bottom: 10px;
   }
+
   .insurance-landing-page main .hero > div > div p {
     color: var(--pet-insurance-txt-color);
   }
@@ -508,6 +510,7 @@
     color: var(--text-color-inverted);
     font-size: var(--heading-font-size-xxxl);
   }
+
   .insurance-landing-page .hero picture {
     position: absolute;
     z-index: -1;
@@ -604,6 +607,7 @@
     padding: 2rem calc((100% - 1344px) / 2);
   }
 }
+
 @media (min-width: 1025px) and (max-width: 1400px) {
   .insurance-landing-page
     :not(.section ~ .section).section
