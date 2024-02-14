@@ -18,6 +18,9 @@ const {
 // console.log('placeholders', petTypeLabel, petTypeValues, breedLabel, breedPlaceholder, zipLabel, zipPlaceholder, zipErrorMessage, searchButtonText);
 
 let breedList = [];
+let current_page = 1;
+let records_per_page = 16;
+let animalArray = []
 
 async function callAnimalList() {
     const petType = document.getElementById("pet-type")?.value;
@@ -62,14 +65,24 @@ async function callAnimalList() {
 }
 
 async function callBreedList(petType) {
-    let endpoint = "https://api-stg-petplace.azure-api.net/breed";
-    if (petType !== "null") {
-        endpoint = endpoint + "/" + petType
+    const breedSelect = document.getElementById('breed');
+    if (breedSelect && petType === "other") {
+        breedSelect.setAttribute("disabled", "disabled");
+        return
     }
-    const response = await fetch(endpoint, {
-        method: 'GET'
-    });
-    return response.json();
+    else {
+        if (breedSelect) {
+            breedSelect.removeAttribute("disabled");
+        }
+        let endpoint = "https://api-stg-petplace.azure-api.net/breed";
+        if (petType !== "null") {
+            endpoint = endpoint + "/" + petType
+        }
+        const response = await fetch(endpoint, {
+            method: 'GET'
+        });
+        return response.json();
+    }
 }
 
 function updateBreedListSelect() {
@@ -86,18 +99,108 @@ function updateBreedListSelect() {
 
     breedList.forEach((breed) => {
         const option = document.createElement('option');
-        option.innerText = breed?.breedKey;
-        option.value = breed?.breedValue;
+        option.innerText = breed?.breedValue;
+        option.value = breed?.breedKey;
     
         breedSelect.append(option);
     })
+}
+
+function prevPage()
+{
+    if (current_page > 1) {
+        current_page--;
+        calculatePagination(current_page);
+    }
+}
+
+function nextPage()
+{
+    if (current_page < numPages()) {
+        current_page++;
+        calculatePagination(current_page);
+    }
+}
+function numPages()
+{
+    return Math.ceil(animalArray.length / records_per_page);
+}
+
+function calculatePagination(page) {
+    let filteredArray = [];
+    // Validate page
+    if (page < 1) page = 1;
+    if (page > numPages()) page = numPages();
+
+    for (var i = (page-1) * records_per_page; i < (page * records_per_page) && i < animalArray.length; i++) {
+        filteredArray.push(animalArray[i]);
+    }
+    const activeButton = document.querySelector('.pagination-numbers .active');
+    activeButton?.classList.remove('active');
+    const paginationButtons = document.querySelectorAll('.pagination-numbers button');
+    paginationButtons[page - 1]?.classList?.add('active');
+    buildResultsList(filteredArray);
 }
 
 window.onload = callBreedList("null").then((data) => {
     breedList = data;
     updateBreedListSelect();
     callAnimalList();
+    const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
+    const div = document.createElement('div');
+    div.className = 'pagination hidden';
+
+    // add pagination
+    const previousButton = document.createElement('button');
+    previousButton.id = ('btn_prev');
+    previousButton.addEventListener('click', prevPage)
+    previousButton.innerText = '<';
+    const nextButton = document.createElement('button');
+    nextButton.id = ('btn_next');
+    nextButton.addEventListener('click', nextPage)
+    nextButton.innerText = '>';
+    div.append(previousButton);
+    const paginationNumbers = document.createElement('div');
+    paginationNumbers.className = 'pagination-numbers';
+    div.append(paginationNumbers);
+    div.append(nextButton);
+    tempResultsContainer.append(div);
+    
 });
+
+function buildResultsList(animalList) {
+    const tempResultsBlock = document.getElementById('results-block');
+    tempResultsBlock.innerHTML = '';
+    animalList.forEach((animal) => {
+        const div = document.createElement('div');
+        div.className = 'animal';
+        const img = document.createElement('object');
+        img.data = animal.coverImagePath;
+        img.type = "image/jpg";
+        const fallback = document.createElement('img');
+        fallback.src = getMetadata('image-fallback');
+        img.append(fallback);
+        const anchor = document.createElement('a');
+        anchor.href = `/adopt/pet/${animal.animalId}/${animal.clientId}`;
+        anchor.append(img);
+        const likeButton = document.createElement('button');
+        likeButton.innerHTML = '<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.3 4.55114C22.8314 3.63452 22.154 2.84083 21.3223 2.2341C20.4906 1.62736 19.528 1.22455 18.5121 1.05815C17.4962 0.891748 16.4554 0.966411 15.4736 1.27612C14.4918 1.58583 13.5966 2.12191 12.86 2.84114L12 3.62114L11.17 2.86114C10.4344 2.13135 9.53545 1.58739 8.54766 1.27436C7.55987 0.961323 6.51169 0.888233 5.49002 1.06114C4.47076 1.21761 3.50388 1.61617 2.67044 2.22341C1.837 2.83066 1.16131 3.62888 0.700017 4.55114C0.0805959 5.76129 -0.13608 7.13766 0.0815777 8.47958C0.299236 9.82151 0.939848 11.0588 1.91002 12.0111L11.28 21.6711C11.3733 21.7679 11.4851 21.8449 11.6088 21.8975C11.7326 21.9501 11.8656 21.9772 12 21.9772C12.1344 21.9772 12.2675 21.9501 12.3912 21.8975C12.5149 21.8449 12.6267 21.7679 12.72 21.6711L22.08 12.0311C23.0535 11.0768 23.6968 9.8366 23.9163 8.49115C24.1357 7.1457 23.9198 5.76533 23.3 4.55114ZM20.66 10.6211L12.36 19.1711C12.2634 19.2651 12.1347 19.3187 12 19.3211C11.8657 19.3168 11.7377 19.2634 11.64 19.1711L3.33002 10.6111C2.66352 9.95404 2.22228 9.10271 2.06957 8.1793C1.91687 7.25589 2.06055 6.30784 2.48002 5.47114C2.80009 4.82822 3.26939 4.27124 3.84871 3.84675C4.42803 3.42227 5.10053 3.14261 5.81002 3.03114C6.53132 2.91042 7.27107 2.96456 7.96711 3.18903C8.66315 3.41351 9.29515 3.80175 9.81002 4.32114L11.34 5.71114C11.5238 5.87698 11.7625 5.96878 12.01 5.96878C12.2575 5.96878 12.4963 5.87698 12.68 5.71114L14.24 4.29114C14.7573 3.77638 15.3905 3.39328 16.0866 3.17402C16.7826 2.95477 17.5211 2.90577 18.24 3.03114C18.9406 3.15001 19.603 3.43308 20.1731 3.85719C20.7432 4.28129 21.2048 4.83436 21.52 5.47114C21.9391 6.31036 22.0815 7.26072 21.927 8.18592C21.7725 9.11112 21.329 9.96362 20.66 10.6211Z" fill="#464646"/></svg>'
+        likeButton.className = 'favorite';
+        const animalName = document.createElement('h3');
+        animalName.innerText = animal.Name?.replace(/ *\([^)]*\) */g, "");
+        const p = document.createElement('p');
+        p.innerText = `${animal.Gender} • ${animal.Breed}`;
+        const animalLocation = document.createElement('p');
+        animalLocation.className = 'location';
+        animalLocation.innerHTML = `${animal.City}`;
+        div.append(anchor);
+        div.append(animalName);
+        div.append(p);
+        div.append(animalLocation);
+        div.append(likeButton);
+        tempResultsBlock.append(div);
+    });
+}
 
 export default async function decorate(block) {
     const form = document.createElement('form');
@@ -112,9 +215,17 @@ export default async function decorate(block) {
             console.log('data', data);
             // clear any previous results
             let resultsContainer = document.querySelector('.default-content-wrapper.results');
+            let sidebarElement = document.querySelector('.sidebar');
             if (resultsContainer) {
                 resultsContainer.innerHTML = '';
             }
+            if (sidebarElement) {
+                sidebarElement.remove();
+            }
+            // show pagination
+            const pagination = document.querySelector('.pagination.hidden');
+            pagination?.classList.remove('hidden');
+            
             // temporarily inserting results into empty section on page
             const tempResultsContainer = block.closest('.section').nextElementSibling;
             tempResultsContainer.classList.add('adopt-search-results');
@@ -122,7 +233,8 @@ export default async function decorate(block) {
             const tempResultsBlock = tempResultsContainer.firstElementChild;
             tempResultsBlock.classList.add('results');
             tempResultsBlock.innerHTML = '';
-            const animalArray = data.animal;
+            tempResultsBlock.id = 'results-block'
+            animalArray = data.animal;
 
             // adding filter sidebar
             const sidebar = document.createElement('div');
@@ -130,36 +242,20 @@ export default async function decorate(block) {
             sidebar.innerHTML = "sidebar test content";
             tempResultsContainer.prepend(sidebar);
 
-
-            animalArray.forEach((animal) => {
-                const div = document.createElement('div');
-                div.className = 'animal';
-                const img = document.createElement('object');
-                img.data = animal.coverImagePath;
-                img.type = "image/jpg";
-                const fallback = document.createElement('img');
-                fallback.src = getMetadata('image-fallback');
-                img.append(fallback);
-                const anchor = document.createElement('a');
-                anchor.href = `/adopt/pet/${animal.animalId}/${animal.clientId}`;
-                anchor.append(img);
-                const likeButton = document.createElement('button');
-                likeButton.innerHTML = '<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.3 4.55114C22.8314 3.63452 22.154 2.84083 21.3223 2.2341C20.4906 1.62736 19.528 1.22455 18.5121 1.05815C17.4962 0.891748 16.4554 0.966411 15.4736 1.27612C14.4918 1.58583 13.5966 2.12191 12.86 2.84114L12 3.62114L11.17 2.86114C10.4344 2.13135 9.53545 1.58739 8.54766 1.27436C7.55987 0.961323 6.51169 0.888233 5.49002 1.06114C4.47076 1.21761 3.50388 1.61617 2.67044 2.22341C1.837 2.83066 1.16131 3.62888 0.700017 4.55114C0.0805959 5.76129 -0.13608 7.13766 0.0815777 8.47958C0.299236 9.82151 0.939848 11.0588 1.91002 12.0111L11.28 21.6711C11.3733 21.7679 11.4851 21.8449 11.6088 21.8975C11.7326 21.9501 11.8656 21.9772 12 21.9772C12.1344 21.9772 12.2675 21.9501 12.3912 21.8975C12.5149 21.8449 12.6267 21.7679 12.72 21.6711L22.08 12.0311C23.0535 11.0768 23.6968 9.8366 23.9163 8.49115C24.1357 7.1457 23.9198 5.76533 23.3 4.55114ZM20.66 10.6211L12.36 19.1711C12.2634 19.2651 12.1347 19.3187 12 19.3211C11.8657 19.3168 11.7377 19.2634 11.64 19.1711L3.33002 10.6111C2.66352 9.95404 2.22228 9.10271 2.06957 8.1793C1.91687 7.25589 2.06055 6.30784 2.48002 5.47114C2.80009 4.82822 3.26939 4.27124 3.84871 3.84675C4.42803 3.42227 5.10053 3.14261 5.81002 3.03114C6.53132 2.91042 7.27107 2.96456 7.96711 3.18903C8.66315 3.41351 9.29515 3.80175 9.81002 4.32114L11.34 5.71114C11.5238 5.87698 11.7625 5.96878 12.01 5.96878C12.2575 5.96878 12.4963 5.87698 12.68 5.71114L14.24 4.29114C14.7573 3.77638 15.3905 3.39328 16.0866 3.17402C16.7826 2.95477 17.5211 2.90577 18.24 3.03114C18.9406 3.15001 19.603 3.43308 20.1731 3.85719C20.7432 4.28129 21.2048 4.83436 21.52 5.47114C21.9391 6.31036 22.0815 7.26072 21.927 8.18592C21.7725 9.11112 21.329 9.96362 20.66 10.6211Z" fill="#464646"/></svg>'
-                likeButton.className = 'favorite';
-                const animalName = document.createElement('h3');
-                animalName.innerText = animal.Name?.replace(/ *\([^)]*\) */g, "");
-                const p = document.createElement('p');
-                p.innerText = `${animal.Gender} • ${animal.Breed}`;
-                const animalLocation = document.createElement('p');
-                animalLocation.className = 'location';
-                animalLocation.innerHTML = `${animal.City}`;
-                div.append(anchor);
-                div.append(animalName);
-                div.append(p);
-                div.append(animalLocation);
-                div.append(likeButton);
-                tempResultsBlock.append(div);
-            });
+            const paginationNumbers = document.querySelector('.pagination-numbers');
+            paginationNumbers.innerHTML = '';
+            // add pagination numbers
+            for (var i = 0; i < numPages(); i++) {
+                const button = document.createElement('button');
+                if (i === 0) {
+                    button.className = 'active';
+                }
+                button.addEventListener('click', calculatePagination(i + 1));
+                button.innerHTML = i + 1;
+                paginationNumbers.append(button);
+            }
+            current_page = 1;
+            calculatePagination(1);
         });
     });
 

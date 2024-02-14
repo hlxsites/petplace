@@ -20,7 +20,6 @@
     margin: 0 0 20px 0;
     padding: 0;
     position: relative;
-    height: 100%;
     overflow: auto;
 }
 
@@ -29,6 +28,55 @@
         position: absolute;
         width: 200px;
     }
+}
+
+.pagination.hidden {
+    display: none;
+}
+.adopt-search-results .pagination {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.adopt-search-results .pagination .pagination-numbers {
+    display: inline;
+}
+.adopt-search-results .pagination .pagination-numbers button {
+    display: inline;
+    background-color: transparent;
+    color: #2F2F33;
+    border: 1px solid #2F2F33;
+    border-left: transparent;
+    border-radius: 0;
+    padding: 10px;
+}
+.adopt-search-results .pagination .pagination-numbers button.active {
+    color: #fff;
+    background-color: #7369AB;
+}
+
+.adopt-search-results .pagination #btn_prev {
+    background-color: transparent;
+    color: #2F2F33;
+    border: 1px solid #2F2F33;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 10px;
+
+}
+.adopt-search-results .pagination #btn_next {
+    background-color: transparent;
+    color: #2F2F33;
+    border: 1px solid #2F2F33;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 10px;
+    border-left: transparent;
 }
 
 
@@ -219,6 +267,7 @@
 
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+    width: 100%;
 }
 .adopt-search-results .results div.animal .favorite {
     background-color: #fff;
