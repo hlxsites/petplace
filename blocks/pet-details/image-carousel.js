@@ -1,4 +1,4 @@
-export function DetectSwipe(element, callback) {
+function DetectSwipe(element, callback) {
 
     const touchElement = element;
     let swipeDirection;
@@ -54,19 +54,13 @@ export function DetectSwipe(element, callback) {
 }
 
 export const ImageCarousel = {
-    selectors: {
-        self: '[data-cmp-component="notablecontentscarousel"]',
-        sliderEl: '.slider',
-        slideEl: '.slide-contain',
-        sliderPrev: 'button.carouselSection__btn--prev',
-        sliderNext: 'button.carouselSection__btn--next',
-        currentPage: '.carouselSection__status .current-page'
-    },
-    intiateSlider: function() {
-        const {selectors} = this;
+
+    intiateSlider: function(arg) {
+        const {selectors} = arg;
         const components = document.querySelectorAll(selectors.self);
         components.forEach(component => {
             const slider = component.querySelector(selectors.sliderEl);
+            console.log('slider', slider)
             if (slider) {
                 const initialSlides = Array.from(slider.querySelectorAll(selectors.slideEl));
                 const prevButton = component.querySelector(selectors.sliderPrev);
@@ -79,7 +73,6 @@ export const ImageCarousel = {
                     } else if (swipeDirection == 'right') {
                         prevButton.click();
                     }
-
                 }
 
                 if (initialSlideCount == 1) {
@@ -133,7 +126,7 @@ export const ImageCarousel = {
                         slideClone.setAttribute('aria-label', `slide ${i+1}`);
                         slider.append(slideClone);
                     }
-                    const slides = Array.from(document.querySelectorAll('.slider .slide-contain'));
+                    const slides = Array.from(document.querySelectorAll(selectors.slideEl));
                     slider.style.width = slides.length * 100 + '%';
                     let currentIndex = slidesToShow;
                     this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
@@ -172,7 +165,7 @@ export const ImageCarousel = {
     },
     updateActiveSlide: function(component, currentIndex, slideArray, slider, initialSlideCount){
         const slideDistance = (1/slideArray.length) * 100 ;
-        const currentPageEl = component.querySelector(this.selectors.currentPage);
+        //const currentPageEl = component.querySelector(this.selectors.currentPage);
         for (let i = 0; i < slideArray.length; i++) {
             if (i != currentIndex) {
                 slideArray[i].setAttribute('aria-hidden', 'true');
@@ -189,13 +182,13 @@ export const ImageCarousel = {
             }
         }
         const dataIndex = parseInt(slideArray[currentIndex].getAttribute("data-slide-index"));
-        currentPageEl.innerText = dataIndex < 0 ? (dataIndex + initialSlideCount + 1) : (dataIndex >= initialSlideCount ? dataIndex - initialSlideCount + 1: dataIndex+1);
+        //currentPageEl.innerText = dataIndex < 0 ? (dataIndex + initialSlideCount + 1) : (dataIndex >= initialSlideCount ? dataIndex - initialSlideCount + 1: dataIndex+1);
         //console.log('current:', currentPageEl.innerText);
         slider.style.transform = 'translateX(' + (-slideDistance * currentIndex) + '%)';
     },
-    init: function() {
-        this.intiateSlider();
-
+    init: function(arg) {
+        console.log('carousel init')
+        this.intiateSlider(arg);
     }
 
 };

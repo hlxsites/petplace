@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import { fetchPlaceholders, createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { ImageCarousel } from './image-carousel.js';
 
 async function getParametersFromUrl() {
     const { pathname } = window.location;
@@ -13,7 +14,6 @@ async function fetchAnimalData(clientId, animalId) {
         const resp = await fetch(animalApi);
         if(resp.ok) {
             const json = await resp.json();
-            console.log('animial data: ', json)
             return formatAnimalData(json);
         } else {
             return {};
@@ -47,7 +47,6 @@ async function fetchSimilarPets(zip, animalType) {
         });
         if(resp.ok) {
             const json = await resp.json();
-            console.log('similar pets ', json.animal);
             return formatSimilarPetData(json.animal)
         } else {
             return [];
@@ -57,7 +56,7 @@ async function fetchSimilarPets(zip, animalType) {
     }
 }
 function formatAnimalData(apiData) {
-    const { imageURL, ppRequired, animalDetail, clientDetail} = apiData;
+    const { imageURL, ppRequired } = apiData;
     const {
         AnimalId: animalId,
         ClientId: clientId,
@@ -70,15 +69,14 @@ function formatAnimalData(apiData) {
         ['Size Category']: size,
         Description: description,
         ['Shelter Name']: shelterName,
-        ['Shelter Phone']: shelterPhone,
+        ['Phone Number']: shelterPhone,
         ['Pet Location']: petLocation,
-        Address: address,
+        ['Pet Location Address']: petLocationAddress,
+        ['Shelter Address']: shelterAddress,
         City: city,
         State: state,
         Zip: zip
     } = ppRequired ? ppRequired[0] : {};
-
-    const {['Phone Number']: clientPhone} = clientDetail ? clientDetail[0] : {}
 
     const formattedData = {
         imageUrl: imageURL || [],
@@ -93,12 +91,13 @@ function formatAnimalData(apiData) {
         size,
         description,
         petLocation,
-        address,
+        petLocationAddress,
+        shelterAddress,
         city,
         state,
         zip,
         shelterName,
-        shelterPhone: shelterPhone || clientPhone || ''
+        shelterPhone
     }
     console.log('formatted animal data', formattedData)
     return formattedData
@@ -123,7 +122,12 @@ function formatSimilarPetData(apiData) {
     }
 }
 
-async function createCarouselSection(name, imageArr){
+async function createCarouselSection(name, images){
+    const imageArr = [
+        'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
+        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
+        'https://www.petplace.com/media_1d9f7b0e1110611b194d15f3f414400d61f753114.png'
+    ]
     const carouselContainer = document.createElement('div');
     carouselContainer.className = 'carousel-container';
     if(imageArr.length <= 1 ) {
@@ -134,7 +138,46 @@ async function createCarouselSection(name, imageArr){
             `;
         carouselContainer.append(imageContainer);
     } else {
-
+        const carouselDiv = document.createElement('div');
+        carouselDiv.className = 'carousel-div';
+        let slidesHtml = ''
+        let navigationHtml = ''
+        imageArr.forEach((image, index) => {
+            slidesHtml += `
+            <div class="image-carousel-slide" data-slide-index=${index} role="group" aria-label=${"slide" + index}>
+                <div class="image-carousel-slide-inner">
+                    <div class="image-carousel-slide-image">
+                        <img src=${image} alt="image description text">
+                    </div>
+                </div>
+            </div>`
+        })
+        imageArr.forEach((image, index) => {
+            navigationHtml += `
+            <button aria-disabled=${index === 0 ? "true": "false"} class=${index === 0 ? `image-carousel-navigator active` : "image-carousel-navigator"} data-slide-to-index=${index}>
+                <span class="sr-only">Show slide ${index + 1} of ${imageArr.length}</span>
+            </button>
+            `
+        })
+        carouselDiv.innerHTML = `
+        <div role="region" aria-roledescription="carousel" aria-label="Pet images" class="image-carousel">
+            <div class="image-carousel-controls-container" role="group" aria-label="Slide controls">
+                <div class="image-carousel-controls">
+                    <button aria-label="Previous slide" class="image-carousel-previous"></button>
+                    ${navigationHtml}
+                    <button aria-label="Next slide" class="image-carousel-next"></button>
+                </div>
+            </div>
+            <div class="image-carousel-slider-layout">
+                <div class="image-carousel-slider-container">
+                    <div class="image-carousel-slider">
+                        ${slidesHtml}
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+        carouselContainer.append(carouselDiv);
     }
 
     return carouselContainer;
@@ -182,7 +225,7 @@ async function createAboutPetSection(aboutPet){
     return aboutPetContainer;
 }
 async function createShelterSection(aboutShelter) {
-    const {shelterName, city, state, address, shelterPhone} = aboutShelter
+    const {shelterName, city, state, petLocationAddress, shelterPhone} = aboutShelter
     const shelterContainer = document.createElement('div');
     shelterContainer.className = 'shelter-container';
     shelterContainer.innerHTML = `
@@ -190,8 +233,8 @@ async function createShelterSection(aboutShelter) {
         ${(city || state) ? `<div class="shelter-location">
             <span>${city && state ? city + ', ' + state : city ? city : state}</span></div>` : ''
         }
-        ${ address ? `<div class="shelter-address">
-            <a href="https://maps.google.com/?q=${htmlToString(address)}">${shelterName ? `${shelterName}</br>${address}`: address}</a></div>` : ''
+        ${ petLocationAddress ? `<div class="shelter-address">
+            <a href="https://maps.google.com/?q=${htmlToString(petLocationAddress)}">${shelterName ? `${shelterName}</br>${petLocationAddress}`: petLocationAddress}</a></div>` : ''
         }
         ${shelterPhone ? `<div class="shelter-phone"><a href="tel:${shelterPhone}">${shelterPhone}</a></div>`: ''}
     `;
@@ -341,14 +384,15 @@ export default async function decorate(block) {
         animalType,
         age,
         gender,
-        breed,
+        primaryBreed,
+        secondaryBreed,
         size,
         description,
         ageDescription,
         moreInfo,
         dataUpdated,
-        address,
-        street,
+        shelterAddress,
+        petLocationAddress,
         city,
         state,
         zip,
@@ -357,18 +401,26 @@ export default async function decorate(block) {
     } = petData
 
     const similarPetsArr = await fetchSimilarPets(zip, animalType)
-    console.log(similarPetsArr)
 
     block.textContent = '';
     block.append(await createCarouselSection('', imageUrl || []));
 
+
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');
     layoutContainer.className = 'layout-container';
-    layoutContainer.append(await createAboutPetSection({petName, animalId, breed, city, state, age, gender, size, shelterName, description, ageDescription, moreInfo, dataUpdated}));
-    layoutContainer.append(await createShelterSection({shelterName, city, state, address, shelterPhone}));
+    layoutContainer.append(await createAboutPetSection({petName, animalId, primaryBreed, secondaryBreed, city, state, age, gender, size, shelterName, description, ageDescription, moreInfo, dataUpdated}));
+    layoutContainer.append(await createShelterSection({shelterName, city, state, petLocationAddress, shelterPhone}));
     layoutContainer.append(await createChecklistSection());
     block.append(layoutContainer);
 
     block.append(await createSimilarPetsSection('Similar Pets', similarPetsArr));
+    ImageCarousel.init({selectors: {
+        self: '.image-carousel',
+        sliderEl: '.image-carousel-slider',
+        slideEl: '.image-carousel-slide',
+        sliderPrev: 'button.image-carousel-previous',
+        sliderNext: 'button.image-carousel-next',
+        slideNavigator: 'button.image-carousel-navigator'
+    }});
 }
