@@ -22,6 +22,9 @@
     width: 100%;
     justify-self: center;
 }
+.pet-details .list-section {
+    overflow: hidden;
+}
 
 /* button */
 .pet-details .pet-details-button,
@@ -276,11 +279,11 @@
     padding: 32px 0 16px;
 }
 .pet-details .pet-card {
-    width: 250px;
+    min-width: 250px;
+    flex: 1;
     border-radius: 8px;
     box-shadow: 0px 2px 4px 0px #0000003D;
     position: relative;
-    flex-shrink: 0;
 }
 
 .pet-details .pet-card-body {
@@ -318,7 +321,6 @@
 .pet-details .similar-pets-gallery {
     padding: 32px 0 16px;
     display: flex;
-    flex-wrap: nowrap;
     gap: 24px;
 }
 .pet-details .pet-card-name {
@@ -485,11 +487,11 @@
 
 @media (min-width: 1024px) {
     .pet-details .pet-card {
-        width: 300px;
+        min-width: 300px;
     }
     .pet-details .body-section {
         display: grid;
-        grid-template-columns: 6.7fr 40px 3.3fr;
+        grid-template-columns: minmax(0, 6.7fr) 40px minmax(0, 3.3fr);
         grid-template-rows: repeat(3, auto);
     }
     .pet-details .about-pet-container {
