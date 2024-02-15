@@ -54,18 +54,16 @@ function DetectSwipe(element, callback) {
 }
 
 export const ImageCarousel = {
-
     intiateSlider: function(arg) {
-        const {selectors} = arg;
+        const {selectors, slidesToShow} = arg;
         const components = document.querySelectorAll(selectors.self);
         components.forEach(component => {
             const slider = component.querySelector(selectors.sliderEl);
-            console.log('slider', slider)
             if (slider) {
                 const initialSlides = Array.from(slider.querySelectorAll(selectors.slideEl));
                 const prevButton = component.querySelector(selectors.sliderPrev);
                 const nextButton = component.querySelector(selectors.sliderNext);
-                const slidesToShow = 3;
+                const navigators = component.querySelectorAll(selectors.sliderNavigator);
                 const initialSlideCount = initialSlides.length;
                 const slideAction = (swipeDirection) => {
                     if(swipeDirection == 'left') {
@@ -75,12 +73,7 @@ export const ImageCarousel = {
                     }
                 }
 
-                if (initialSlideCount == 1) {
-                    nextButton.disabled = true;
-                    nextButton.classList.add('disabled');
-                    prevButton.disabled = true;
-                    prevButton.classList.add('disabled');
-                } else if (initialSlideCount == 2) {
+                if (initialSlideCount == 2) {
                     slider.style.width = initialSlides.length * 100 + '%';
                     let currentIndex = 0;
                     this.updateActiveSlide(component, currentIndex, initialSlides, slider, initialSlideCount);
