@@ -54,17 +54,18 @@ function DetectSwipe(element, callback) {
 }
 
 export const ImageCarousel = {
-    intiateSlider: function(arg) {
-        const {selectors, slidesToShow} = arg;
-        const components = document.querySelectorAll(selectors.self);
+    intiateSlider: function(selectors) {
+        const {self, sliderEl, slideEl, sliderPrev, sliderNext, sliderNavigator } = selectors;
+        const components = document.querySelectorAll(self);
         components.forEach(component => {
-            const slider = component.querySelector(selectors.sliderEl);
+            const slider = component.querySelector(sliderEl);
             if (slider) {
-                const initialSlides = Array.from(slider.querySelectorAll(selectors.slideEl));
-                const prevButton = component.querySelector(selectors.sliderPrev);
-                const nextButton = component.querySelector(selectors.sliderNext);
-                const navigators = component.querySelectorAll(selectors.sliderNavigator);
+                const initialSlides = Array.from(slider.querySelectorAll(slideEl));
+                const prevButton = component.querySelector(sliderPrev);
+                const nextButton = component.querySelector(sliderNext);
+                const navigators = component.querySelectorAll(sliderNavigator);
                 const initialSlideCount = initialSlides.length;
+                const slidesToShow = initialSlideCount >= 3 ? 3 : initialSlideCount;
                 const slideAction = (swipeDirection) => {
                     if(swipeDirection == 'left') {
                         nextButton.click();
@@ -73,85 +74,66 @@ export const ImageCarousel = {
                     }
                 }
 
-                if (initialSlideCount == 2) {
-                    slider.style.width = initialSlides.length * 100 + '%';
-                    let currentIndex = 0;
-                    this.updateActiveSlide(component, currentIndex, initialSlides, slider, initialSlideCount);
-                    nextButton.addEventListener('click', () => {
-                        if(currentIndex >= 1) {
-                            return;
-                        }
-                        slider.style.transition = "transform 1s ease-in-out";
-                        currentIndex++;
-                        this.updateActiveSlide(component, currentIndex, initialSlides, slider, initialSlideCount);
-                        nextButton.disabled = true;
-                        nextButton.classList.add('disabled');
-                        prevButton.disabled = false;
-                        prevButton.classList.remove('disabled');
-                    });
-                    prevButton.addEventListener('click', () => {
-                        if (currentIndex <= 0) {
-                            return;
-                        }
-                        slider.style.transition = "transform 1s ease-in-out";
-                        currentIndex--;
-                        this.updateActiveSlide(component, currentIndex, initialSlides, slider, initialSlideCount);
-                        prevButton.disabled = true;
-                        prevButton.classList.add('disabled');
-                        nextButton.disabled = false;
-                        nextButton.classList.remove('disabled');
-                    });
-                } else if (initialSlideCount >= slidesToShow) {
-                    //clone and append slides
-                    for (let i = initialSlideCount; i > (initialSlideCount - slidesToShow); i--) {
-                        const slideIndex = i - 1;
-                        const slideClone = initialSlides[slideIndex].cloneNode(true);
-                        slideClone.setAttribute("data-slide-index", slideIndex - initialSlideCount);
-                        slideClone.classList.add('slide-cloned');
-                        slideClone.setAttribute('aria-label', `slide ${i}`);
-                        slider.prepend(slideClone);
-                    }
-                    for (let i = 0; i < slidesToShow; i++) {
-                        const slideIndex = i;
-                        const slideClone = initialSlides[slideIndex].cloneNode(true);
-                        slideClone.setAttribute("data-slide-index", slideIndex + initialSlideCount);
-                        slideClone.classList.add('slide-cloned');
-                        slideClone.setAttribute('aria-label', `slide ${i+1}`);
-                        slider.append(slideClone);
-                    }
-                    const slides = Array.from(document.querySelectorAll(selectors.slideEl));
-                    slider.style.width = slides.length * 100 + '%';
-                    let currentIndex = slidesToShow;
-                    this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
-                    nextButton.addEventListener('click', () => {
-                        if(currentIndex >= slides.length - slidesToShow) {
-                            return;
-                        }
-                        slider.style.transition = "transform 1s ease-in-out";
-                        currentIndex++;
-                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
-                    });
-                    prevButton.addEventListener('click', () => {
-                        if (currentIndex <= slidesToShow - 1) {
-                            return;
-                        }
-                        slider.style.transition = "transform 1s ease-in-out";
-                        currentIndex--;
-                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
-                    });
-                    slider.addEventListener('transitionend', () => {
-                        if(currentIndex == slides.length - slidesToShow){
-                            slider.style.transition = "none";
-                            currentIndex = slides.length - currentIndex;
-                            this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
-                        }
-                        if(currentIndex == slidesToShow - 1){
-                            slider.style.transition = "none";
-                            currentIndex = slides.length - slidesToShow - 1;
-                            this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
-                        }      
-                    });
+                //clone and prepend slides
+                for (let i = initialSlideCount; i > (initialSlideCount - slidesToShow); i--) {
+                    const slideIndex = i - 1;
+                    const slideClone = initialSlides[slideIndex].cloneNode(true);
+                    slideClone.setAttribute("data-slide-index", slideIndex - initialSlideCount);
+                    slideClone.classList.add('slide-cloned');
+                    slideClone.setAttribute('aria-label', `slide ${i}`);
+                    slider.prepend(slideClone);
                 }
+                //clone and append slides
+                for (let i = 0; i < slidesToShow; i++) {
+                    const slideIndex = i;
+                    const slideClone = initialSlides[slideIndex].cloneNode(true);
+                    slideClone.setAttribute("data-slide-index", slideIndex + initialSlideCount);
+                    slideClone.classList.add('slide-cloned');
+                    slideClone.setAttribute('aria-label', `slide ${i+1}`);
+                    slider.append(slideClone);
+                }
+                const slides = Array.from(document.querySelectorAll(selectors.slideEl));
+                slider.style.width = slides.length * 100 + '%';
+                let currentIndex = slidesToShow;
+                this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount,initialSlideCount);
+                nextButton.addEventListener('click', () => {
+                    if(currentIndex >= slides.length - slidesToShow) {
+                        return;
+                    }
+                    slider.style.transition = "transform 1s ease-in-out";
+                    currentIndex++;
+                    this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                });
+                prevButton.addEventListener('click', () => {
+                    if (currentIndex <= slidesToShow - 1) {
+                        return;
+                    }
+                    slider.style.transition = "transform 1s ease-in-out";
+                    currentIndex--;
+                    this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                });
+                navigators.forEach(button => {
+                    button.addEventListener('click', (event)=> {
+                        const targetIndex = event.target.getAttribute('data-slide-to-index');
+                        console.log('currentIndex: ', currentIndex, ', targetIndex:', parseInt(targetIndex) + slidesToShow)
+                        currentIndex = parseInt(targetIndex) + slidesToShow;
+                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                    })
+                });
+                slider.addEventListener('transitionend', () => {
+                    if(currentIndex == slides.length - slidesToShow){
+                        slider.style.transition = "none";
+                        currentIndex = slides.length - currentIndex;
+                        console.log('transitionend', currentIndex)
+                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                    }
+                    if(currentIndex == slidesToShow - 1){
+                        slider.style.transition = "none";
+                        currentIndex = slides.length - slidesToShow - 1;
+                        console.log('transitionend', currentIndex)
+                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                    }      
+                });
                 DetectSwipe(slider, slideAction);
             }
         });
@@ -163,15 +145,9 @@ export const ImageCarousel = {
             if (i != currentIndex) {
                 slideArray[i].setAttribute('aria-hidden', 'true');
                 slideArray[i].classList.remove('slide-active');
-                slideArray[i].querySelectorAll('a, input, button, select').forEach(el => {
-                    el.setAttribute('tabindex', '-1');
-                });
             } else {
                 slideArray[i].removeAttribute('aria-hidden');
                 slideArray[i].classList.add('slide-active');
-                slideArray[i].querySelectorAll('a, input, button, select').forEach(el => {
-                    el.removeAttribute('tabindex');
-                });
             }
         }
         const dataIndex = parseInt(slideArray[currentIndex].getAttribute("data-slide-index"));
@@ -180,8 +156,7 @@ export const ImageCarousel = {
         slider.style.transform = 'translateX(' + (-slideDistance * currentIndex) + '%)';
     },
     init: function(arg) {
-        console.log('carousel init')
-        this.intiateSlider(arg);
+        this.intiateSlider(arg.selectors);
     }
 
 };

@@ -128,24 +128,18 @@ function formatSimilarPetData(apiData) {
 async function createCarouselSection(petName, images){
     const imageArr = [
         'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
-        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg'
+        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
+        'https://www.petplace.com/article/drug-library/drug-library/library/media_1f51af83c0034c69ffa46deb71514a1574a44a9a3.png',
+        'https://www.petplace.com/article/dogs/pet-behavior-training/media_14291138c30db350c8f97c5fa84a387124ee9eb61.jpeg',
+        'https://www.petplace.com/article/cats/just-for-fun/media_119b46f6ce6a55a154c58cd58f79020ac4b1cdff2.jpeg'
     ]
 
     const outterContainer = document.createElement('div');
-    outterContainer.className = imageArr.length <= 2 ? 'image-section' : 'carousel-section';
-    if(imageArr.length <= 2 ) {
+    outterContainer.className = imageArr.length < 2 ? 'image-section' : imageArr.length == 2 ? 'carousel-section two-slides-carousel' : 'carousel-section';
+    if(imageArr.length <= 1 ) {
         const imageContainer = document.createElement('div');
         imageContainer.className = 'image-div';
-        imageContainer.innerHTML = `
-            ${imageArr.length === 0 ? `
-                <img src="/images/pet_profile_placeholder.png" alt="no image available" />
-            ` : imageArr.length === 1 ? `
-                <img src=${imageArr[0]} alt="${petName}" />
-            ` : `
-                <img src=${imageArr[0]} alt="${petName}" />
-                <img src=${imageArr[1]} alt="${petName}" />
-            `}
-        `
+        imageContainer.innerHTML = `<img src=${imageArr.length === 0 ? "/images/pet_profile_placeholder.png" : imageArr[0]} alt=${ imageArr.length === 0 ? "no image available" : petName } />`;
         outterContainer.append(imageContainer);
     } else {
         const carouselDiv = document.createElement('div');
@@ -415,7 +409,6 @@ export default async function decorate(block) {
             sliderPrev: 'button.image-carousel-previous',
             sliderNext: 'button.image-carousel-next',
             sliderNavigator: 'button.image-carousel-navigator'
-        }, 
-        slidesToShow: 3
+        }
     });
 }
