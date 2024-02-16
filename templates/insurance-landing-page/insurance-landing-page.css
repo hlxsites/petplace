@@ -478,6 +478,23 @@
     margin: 0;
     margin-left: 20px;
   }
+
+  .insurance-landing-page .logos div div:last-child {
+    display: none;
+  }
+
+  .insurance-landing-page .columns-container .logos div {
+    gap: 20px;
+  }
+
+  .insurance-landing-page .section.columns-container:has(.logos) {
+    padding-bottom: 0;
+  }
+
+  .insurance-landing-page .columns-img-col:nth-child(3) > picture,
+  .insurance-landing-page .columns-img-col:nth-child(5) > picture {
+    width: 40%;
+  }
 }
 
 @media (min-width: 600px) {
