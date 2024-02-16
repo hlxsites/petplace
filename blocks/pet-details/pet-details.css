@@ -17,7 +17,7 @@
     width: 100%;
     overflow: hidden;
 }
-.pet-details .body-section,
+.pet-details .contents-section,
 .pet-details .list-section {
     grid-column: 2 / 3;
     width: 100%;
@@ -64,13 +64,19 @@
 .pet-details .image-section .image-div {
     padding-bottom: 32px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 24px;
 }
-.pet-details .image-section .image-div img {
+.pet-details .carousel-section .image-div >div,
+.pet-details .image-section .image-div >div {
     aspect-ratio: 375 / 389;
+    max-width: 100%;
+}
+.pet-details .carousel-section .image-div img,
+.pet-details .image-section .image-div img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -82,6 +88,8 @@
     aspect-ratio: 375 / 389;
 }
 .pet-details .carousel-section .image-carousel-slide-image img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 .pet-details .carousel-section .image-carousel-controls-container {
@@ -430,13 +438,62 @@
         gap: 16px;
         margin-top: 24px;
     }
+    .pet-details .carousel-section.two-slides .carousel-div {
+        display: block;
+    }
+    .pet-details .carousel-section.two-slides .image-div {
+        display: none;
+    }
 
 }
 
 @media (min-width: 768px) {
-    .pet-details .similar-pets-container {
-        padding: 48px 0 32px;
+    .pet-details {
+        grid-template-columns: 24px 1fr 24px;
     }
+
+    .pet-details .carousel-section .image-div >div,
+    .pet-details .image-section .image-div >div {
+        aspect-ratio: 495 / 575;
+    }
+    .pet-details .carousel-section .image-div img,
+    .pet-details .image-section .image-div img {
+        border-radius: 12px;
+    }
+    .pet-details .carousel-section .image-carousel {
+        padding-bottom: 96px;
+    }
+    .pet-details .carousel-section .image-carousel-slide-image {
+        aspect-ratio: 700 / 575;
+    }
+    .pet-details .carousel-section .image-carousel-slide-image img {
+        width: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+    .pet-details .carousel-section .image-carousel-layout-container {
+        grid-template-columns: 1fr 2fr 1fr;
+    }
+    .pet-details .carousel-section .image-carousel-slider-container {
+        grid-column: 2 / 3;
+    }
+
+    .pet-details .carousel-section.two-slides .carousel-div {
+        display: none;
+    }
+    .pet-details .carousel-section.two-slides .image-div {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        padding-bottom: 32px;
+    }
+    .pet-details .carousel-section.two-slides .image-div>div {
+        flex: 1;
+        max-width: 700px;
+    }
+
     .pet-details .about-pet-header {
         display: grid;
         grid-template-columns: 1fr max-content;
@@ -466,42 +523,14 @@
         padding-top: 24px;
         margin-top: 8px;
     }
-    .pet-details .carousel-section .image-carousel {
-        padding-bottom: 96px;
-    }
-    .pet-details .carousel-section .image-carousel-slide-image {
-        aspect-ratio: 700 / 575;
-    }
-    .pet-details .carousel-section .image-carousel-slide-image img {
-        width: 100%;
-        object-fit: cover;
-        border-radius: 12px;
-    }
-    .pet-details .carousel-section .image-carousel-layout-container {
-        grid-template-columns: 1fr 2fr 1fr;
-    }
-    .pet-details .carousel-section .image-carousel-slider-container {
-        grid-column: 2 / 3;
-    }
-    .pet-details .image-section .image-div {
-        flex-direction: row;
-    }
-    .pet-details .image-section .image-div img {
-        aspect-ratio: 700 / 575;
-        max-width: 700px;
-        border-radius: 12px;
-    }
-    .pet-details {
-        grid-template-columns: 24px 1fr 24px;
-    }
 
+    .pet-details .similar-pets-container {
+        padding: 48px 0 32px;
+    }
 }
 
 @media (min-width: 1024px) {
-    .pet-details .pet-card {
-        min-width: 300px;
-    }
-    .pet-details .body-section {
+    .pet-details .contents-section {
         display: grid;
         grid-template-columns: minmax(0, 6.7fr) 40px minmax(0, 3.3fr);
         grid-template-rows: repeat(3, auto);
@@ -523,11 +552,17 @@
         align-self: start;
         justify-self: stretch;
     }
-
+    .pet-details .pet-card {
+        min-width: 300px;
+    }
+    .pet-details .carousel-section .image-div >div,
+    .pet-details .image-section .image-div >div {
+        aspect-ratio: 700 / 575;
+    }
 
 }
 @media (min-width: 1200px) {
-    .pet-details .body-section,
+    .pet-details .contents-section,
     .pet-details .list-section { 
         max-width: 1344px;
     }

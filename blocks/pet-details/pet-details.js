@@ -6,7 +6,7 @@ async function getParametersFromUrl() {
     const { pathname } = window.location;
     const [animalId, clientId] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 2);
     //return {clientId, animalId}
-    return {clientId: 'PP1008', animalId: '40596030'}
+    return {animalId: '40596030', clientId: 'PP1008'}
 }
 async function fetchAnimalData(clientId, animalId) {
     const animalApi = `https://api-stg-petplace.azure-api.net/animal/${animalId}/client/${clientId}`;
@@ -146,18 +146,31 @@ async function createCarouselSection(petName, images){
     //     'https://www.petplace.com/article/cats/just-for-fun/media_119b46f6ce6a55a154c58cd58f79020ac4b1cdff2.jpeg'
     // ]
     const imageArr = [
-        'https://www.petplace.com/article/drug-library/drug-library/library/media_1f51af83c0034c69ffa46deb71514a1574a44a9a3.png',
-        'https://www.petplace.com/article/cats/just-for-fun/media_119b46f6ce6a55a154c58cd58f79020ac4b1cdff2.jpeg'
+        'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
+        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg'
     ]
 
-    const outterContainer = document.createElement('div');
-    outterContainer.className = imageArr.length < 2 ? 'image-section' : imageArr.length == 2 ? 'carousel-section two-slides-carousel' : 'carousel-section';
-    if(imageArr.length <= 1 ) {
-        const imageContainer = document.createElement('div');
-        imageContainer.className = 'image-div';
-        imageContainer.innerHTML = `<img src=${imageArr.length === 0 ? "/images/pet_profile_placeholder.png" : imageArr[0]} alt=${ imageArr.length === 0 ? "no image available" : petName } />`;
-        outterContainer.append(imageContainer);
+    if(imageArr.length < 2 ) {
+        const imageSectionContainer = document.createElement('div');
+        imageSectionContainer.className = 'image-section';
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'image-div';
+        imageDiv.innerHTML = `<div><img src=${imageArr.length === 0 ? "/images/pet_profile_placeholder.png" : imageArr[0]} alt=${ imageArr.length === 0 ? "no image available" : petName } /><div>`;
+        imageSectionContainer.append(imageDiv);
+        return imageSectionContainer
     } else {
+        const carouselSectionContainer = document.createElement('div');
+        carouselSectionContainer.className = imageArr.length === 2 ? 'carousel-section two-slides' : 'carousel-section';
+        if(imageArr.length === 2) {
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'image-div';
+            imageDiv.innerHTML = `
+                <div><img src=${imageArr[0]} alt=${petName} /></div>
+                <div><img src=${imageArr[1]} alt=${petName} /></div>
+                `;
+            carouselSectionContainer.append(imageDiv);
+        }
+
         const carouselDiv = document.createElement('div');
         carouselDiv.className = 'carousel-div';
         let slidesHtml = ''
@@ -197,10 +210,11 @@ async function createCarouselSection(petName, images){
             </div>
         </div>
         `
-        outterContainer.append(carouselDiv);
+        carouselSectionContainer.append(carouselDiv);
+        return carouselSectionContainer;
     }
 
-    return outterContainer;
+
 }
 async function createAboutPetSection(aboutPet){
     const {petName, animalId, primaryBreed, secondaryBreed, city, state, age, gender, size, email, description, locatedAt, ageDescription, moreInfo, dataUpdated} = aboutPet
@@ -211,7 +225,9 @@ async function createAboutPetSection(aboutPet){
         <h1 class="about-pet-title">${petName || animalId}</h1>
         <div class="about-pet-subtitle">
             <div class="about-pet-subtitle-inner">
-                ${(primaryBreed || secondaryBreed) ? `<span class="about-pet-breed">${primaryBreed && secondaryBreed ? primaryBreed + '/' + secondaryBreed : primaryBreed ? primaryBreed : secondaryBreed}</span>` : 'Breed N/A'}
+                ${(primaryBreed || secondaryBreed) ? `
+                    <span class="about-pet-breed">${primaryBreed && secondaryBreed ? primaryBreed + '/' + secondaryBreed : primaryBreed ? primaryBreed : secondaryBreed}</span>` 
+                    : 'Breed N/A'}
                 ${(city || state) ? `<span class="about-pet-location">${city && state ? city + ', ' + state : city ? city + ', State N/A' : 'City N/A, ' + state}</span>` : 'Location N/A'}
             </div>
         </div>
@@ -410,7 +426,7 @@ export default async function decorate(block) {
 
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');
-    layoutContainer.className = 'body-section';
+    layoutContainer.className = 'contents-section';
 
     layoutContainer.append(await createAboutPetSection(petData));
     layoutContainer.append(await createShelterSection(petData));
