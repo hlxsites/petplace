@@ -96,6 +96,11 @@
   width: 35%;
 }
 
+.insurance-landing-page .columns-img-col:nth-child(3) > picture,
+  .insurance-landing-page .columns-img-col:nth-child(5) > picture {
+    width: 60%;
+  }
+
 .insurance-landing-page .columns-txt-col {
   display: flex;
   flex-direction: column;
@@ -490,11 +495,6 @@
   .insurance-landing-page .section.columns-container:has(.logos) {
     padding-bottom: 0;
   }
-
-  .insurance-landing-page .columns-img-col:nth-child(3) > picture,
-  .insurance-landing-page .columns-img-col:nth-child(5) > picture {
-    width: 40%;
-  }
 }
 
 @media (min-width: 600px) {
@@ -559,6 +559,11 @@
   
   .insurance-landing-page .columns-img-col:nth-child(4) > picture {
     width: 30%;
+  }
+
+  .insurance-landing-page .columns-img-col:nth-child(3) > picture,
+  .insurance-landing-page .columns-img-col:nth-child(5) > picture {
+    width: 40%;
   }
 }
 
