@@ -166,8 +166,8 @@
 }
 .pet-details .carousel-section .image-carousel-slide {
     flex: 1;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 1px;
+    padding-right: 1px;
 }
 .pet-details .carousel-section .image-carousel-slide[aria-hidden='true'] {
     display: block;
@@ -465,6 +465,10 @@
     }
     .pet-details .carousel-section .image-carousel {
         padding-bottom: 96px;
+    }
+    .pet-details .carousel-section .image-carousel-slide {
+        padding-left: 12px;
+        padding-right: 12px;
     }
     .pet-details .carousel-section .image-carousel-slide-image {
         aspect-ratio: 700 / 575;
