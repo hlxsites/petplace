@@ -1,15 +1,76 @@
+/* Adopt Global */
+
+.adopt button,
+.adopt a.button {
+  background-color: var(--compare-button-bg-color);
+}
+
+/* Hero */
+.adopt .hero h1 {
+  margin: 0;
+  font-size: 49.5px;
+  line-height: 84px;
+  color: #000;
+
+  @media (min-width: 1024px) {
+    font-size: 72px;
+    line-height: 58px;
+  }
+}
+
+.adopt .hero h2 {
+  margin: 8px 0 0;
+  font-size: 22px;
+  line-height: 26px;
+  color: #000;
+
+  @media (min-width: 1024px) {
+    margin: 12px 0 0;
+    font-size: 32px;
+    line-height: 36px;
+  }
+}
+
+.adopt .hero > div {
+  @media (min-width: 1024px) {
+    gap: 70px;
+  }
+}
+
+.adopt .hero .columns-img-col {
+  margin: 0 -24px 24px;
+
+  @media (min-width: 768px) {
+    margin: 0 0 24px;
+  }
+}
+
+.adopt .hero .columns-img-col picture img {
+  width: 100%;
+  border-radius: none;
+
+  @media (min-width: 1024px) {
+    border-radius: 16px;
+  }
+}
+
+.adopt .hero .columns-txt-col {
+  margin-bottom: 0;
+}
+
+.adopt .hero .columns-txt-col h1,
+.adopt .hero .columns-txt-col h2 {
+  text-align: center;
+
+  @media (min-width: 768px) {
+    text-align: left;
+  }
+}
+
+/* Search */
+
 .adopt-search-container {
-}
-
-.adopt-search-container h1 {
-  color: #000;
-}
-
-.adopt-search-container h2 {
-  color: #000;
-}
-
-.adopt-search-wrapper {
+  display: none;
 }
 
 .adopt-search-wrapper form {
@@ -17,6 +78,7 @@
   flex-direction: column;
   gap: 32px;
   align-items: flex-start;
+  margin-top: 32px;
 }
 
 .adopt-search-wrapper .adopt-search.results form {
@@ -49,7 +111,6 @@
   font-style: normal;
   font-weight: 600;
   line-height: 28px;
-  /* 155.556% */
 }
 
 .adopt-search-wrapper form fieldset input {
@@ -66,9 +127,8 @@
 
 .adopt-search-wrapper form fieldset label {
   padding: 10px var(--Spacing-Large, 24px);
-
   width: auto;
-  display: inline;
+  display: inline-block;
   border: 1px solid var(--Border-Strong, #d0d0d6);
   border-radius: 8px;
 }
@@ -89,6 +149,7 @@
 .adopt-search-wrapper form input:not([type='radio']),
 .adopt-search-wrapper form select,
 .adopt-search-wrapper form textarea {
+  margin-bottom: 0;
   border: 1px solid #000;
   height: 48px;
   padding: 0 16px;
@@ -132,62 +193,40 @@
 }
 
 .adopt-search-wrapper form button.adopt-search-button {
+  margin: 8px 0 8px;
+  padding-block: 13px;
   width: 100%;
-  max-width: fit-content;
+  min-width: 300px;
+  font-size: 18px;
+
+  @media (min-width: 768px) {
+    margin-left: auto;
+    max-width: fit-content;
+  }
 }
 
-.adopt-search-results .results {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.adopt-search-results .results div.animal {
-  max-width: 250px;
-  border-radius: 12px;
-  filter: drop-shadow(rgba(0, 0, 0, 24%) 1px 2px 4px);
-  background-color: #fff;
-}
-
-.adopt-search-results .results div.animal img {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-.adopt-search-results .results div.animal h3 {
-  text-overflow: ellipsis;
-  font-size: 22px;
-}
-
-.adopt-search-results .results div.animal p {
-  font-size: 16px;
-  line-height: 20px;
-  padding-bottom: 16px;
-}
-
-.adopt-search-results .results div.animal h3,
-.adopt-search-results .results div.animal p {
-  padding-left: 12px;
-  padding-right: 12px;
-}
-
-/* Adoptable Pets */
-.similar-pets-container {
+/* Adoptable Pets / Pet Card */
+.adoptable-pets-container {
   padding: 32px 0 16px;
 }
-.pet-card {
+
+.adoptable-pets .pet-card {
   width: 250px;
   border-radius: 8px;
   box-shadow: 0px 2px 4px 0px #0000003d;
   position: relative;
   flex-shrink: 0;
+
+  @media (min-width: 1024px) {
+    width: 300px;
+  }
 }
 
-.pet-card-body {
+.adoptable-pets .pet-card-body {
   padding: 24px 16px 16px;
 }
-.pet-card-button-conainer {
+
+.adoptable-pets .pet-card-button-conainer {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -196,7 +235,8 @@
   height: 40px;
   background: transparent;
 }
-.pet-card-favorite {
+
+.adoptable-pets .pet-card-favorite {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -204,7 +244,8 @@
   border-radius: 50%;
   background-color: #ffffffd9;
 }
-.pet-card-favorite-icon {
+
+.adoptable-pets .pet-card-favorite-icon {
   display: inline-block;
   width: 100%;
   height: 100%;
@@ -212,38 +253,135 @@
   mask: url('../../icons/favorite.svg') no-repeat center center;
   background-color: var(--text-color-disabled);
 }
-.similar-pets-gallery-wrapper {
+
+.adoptable-pets .adoptable-pets-gallery-wrapper {
   width: 100%;
   overflow-x: auto;
 }
-.similar-pets-gallery {
+
+.adoptable-pets .adoptable-pets-gallery {
   padding: 32px 0 16px;
   display: flex;
   flex-wrap: nowrap;
   gap: 24px;
 }
-.pet-card-name {
+
+.adoptable-pets .pet-card-name {
   margin-bottom: 8px;
 }
-.pet-card-image img {
+
+.adoptable-pets .pet-card-image img {
+  width: 100%;
   border-radius: 8px 8px 0 0;
 }
-.pet-card-info {
+
+.adoptable-pets .pet-card-info {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.pet-card-address {
+.adoptable-pets .pet-card-info .pet-card-dot {
+  margin-left: 12px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-black);
+}
+
+.adoptable-pets .pet-card-info .pet-card-dot + .pet-card-breed {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adoptable-pets .pet-card-address {
   margin-top: 24px;
 }
-.stretched-link {
+
+.adoptable-pets .stretched-link {
   color: #000000;
 }
-.stretched-link:after {
+
+.adoptable-pets .stretched-link:after {
   position: absolute;
   content: '';
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+/* Guide */
+
+.adopt-guide-container .columns-wrapper {
+  @media (min-width: 1024px) {
+    display: flex;
+    gap: 70px;
+  }
+}
+
+.adopt-guide-container .columns-img-col {
+  max-width: max-content;
+}
+
+.adopt-guide-container .guide > div {
+  @media only screen and (min-width: 768px) {
+    flex-direction: row;
+    gap: 32px;
+  }
+}
+
+.adopt-guide-container .guide > div + div {
+  margin-top: 48px;
+}
+
+.adopt-guide-container .guide .button-container {
+  margin-top: 32px;
+}
+
+.adopt-guide-container .guide .button {
+  margin: 0;
+}
+
+.adopt-guide-container h2 {
+  margin-top: 0;
+  max-width: 28ch;
+  font-size: 44px;
+
+  @media (min-width: 1024px) {
+    padding-right: 90px;
+  }
+}
+
+/* Insurance */
+
+.adopt .insurance .button {
+  margin: 32px 0 0;
+  color: #222;
+  background-color: var(--text-color-inverted);
+  border: 1px solid #222;
+
+  @media (min-width: 1024px) {
+    margin: 40px 0 0;
+  }
+}
+
+.adopt .insurance > div {
+  @media (min-width: 1024px) {
+    gap: 74px;
+  }
+}
+
+.adopt .insurance h2 {
+  margin: 0 0 14px;
+  font-size: 32px;
+  line-height: 36px;
+
+  @media (min-width: 1024px) {
+    font-size: 49.5px;
+    line-height: 58px;
+  }
 }

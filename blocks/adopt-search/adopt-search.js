@@ -1,9 +1,9 @@
 /* eslint-disable indent */
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 
-// fetch placeholders from the /adopt folder currently, but placeholders should |
+// fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
-const placeholders = await fetchPlaceholders('/adopt');
+const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
   petTypeLabel,
   petTypeValues,
@@ -34,32 +34,6 @@ export default async function decorate(block) {
   form.setAttribute('role', 'search');
   form.className = 'adopt-search-box-wrapper';
   form.action = ' ';
-
-  callAnimalList('GET', 'breed').then((data) => {
-    const animalArray = data;
-
-    animalArray.forEach((animal) => {
-      const div = document.createElement('div');
-      div.className = 'animal';
-      const img = document.createElement('img');
-      img.src = animal.coverImagePath;
-      const anchor = document.createElement('a');
-      anchor.href = `/adopt/pet/${animal.animalId}/${animal.clientId}`;
-
-      anchor.append(img);
-      const animalName = document.createElement('h3');
-      animalName.innerText = animal.Name;
-      const p = document.createElement('p');
-      p.innerText = `${animal.Gender} - ${animal.Breed}`;
-      const animalLocation = document.createElement('p');
-      animalLocation.innerHTML = `${animal.City}`;
-      div.append(anchor);
-      div.append(animalName);
-      div.append(p);
-      div.append(animalLocation);
-      // tempResultsBlock.append(div);
-    });
-  });
 
   const radioContainer = document.createElement('fieldset');
   if (petTypeValues) {
@@ -148,8 +122,9 @@ export default async function decorate(block) {
   zipInput.type = 'text';
   zipInput.name = 'zipPostal';
   zipInput.id = 'zip';
-  // zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
+  zipInput.pattern = '^[0-9]{5}(?:-[0-9]{4})?$';
   zipInput.required = true;
+  zipInput.title = zipErrorMessage;
   zipInput.placeholder = zipPlaceholder;
   zipContainer.append(zipLabelElem);
   zipContainer.append(zipInput);
@@ -185,8 +160,8 @@ export default async function decorate(block) {
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
-    // should detect if the user is on the /adopt/search page before showing results
-    // if on /adopt/ the form should direct to /adopt/search?[queryparameters]
+    // should detect if the user is on the /pet-adoption/search page before showing results
+    // if on /pet-adoption/ the form should direct to /pet-adoption/search?[queryparameters]
     // zipPostal, filterBreed, filterAnimalType
     const selectedBreed = encodeURIComponent(breedSelect.value.toLowerCase());
     const selectedAnimalType = encodeURIComponent(
@@ -201,30 +176,18 @@ export default async function decorate(block) {
     searchParams.set('filterBreed', selectedBreed);
     searchParams.set('filterAnimalType', selectedAnimalType);
 
-    const searchUrl = `/adopt/search?${searchParams.toString()}`;
+    const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
 
     window.location.href = searchUrl;
   });
 
   zipContainer.append(clearButton);
-  //   form.append(clearButton);
+  // form.append(clearButton);
 
   const button = document.createElement('button');
   button.type = 'submit';
   button.className = 'adopt-search-button';
   button.textContent = searchButtonText;
-  //   const xhr = new XMLHttpRequest();
-  //   xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
-  //   xhr.onreadystatechange = function () {
-  //     if (xhr.readyState === 4 && xhr.status === 200) {
-  //       // On successful response, create and append the SVG element
-  //       const svgElement = document.createElement('svg');
-  //       svgElement.className = 'icon-search';
-  //       svgElement.innerHTML = xhr.responseText;
-  //       button.appendChild(svgElement);
-  //     }
-  //   };
-  //   xhr.send();
   form.append(radioContainer);
 
   form.append(breedContainer);
@@ -261,20 +224,20 @@ export default async function decorate(block) {
     const img = document.createElement('object');
     img.data = coverImagePath;
     img.type = 'image/jpg';
+    img.className = 'pet-card-image';
     const fallback = document.createElement('img');
     fallback.src = getMetadata('image-fallback');
     img.append(fallback);
-    console.log('img', img);
     const cardBody = document.createElement('div');
     cardBody.className = 'pet-card-body';
     cardBody.innerHTML = `
-        <h3 class='pet-card-name'><a href='/adopt/pet/${clientId}/${animalId}' class='stretched-link'>${Name?.replace(
+        <h3 class='pet-card-name'><a href='/pet-adoption/pet/${clientId}/${animalId}' class='stretched-link'>${Name?.replace(
       / *\([^)]*\) */g,
       ''
     )}</a></h3>
         <div class='pet-card-info'>
             <span class='pet-card-gender'>${Gender}</span>
-            <span class='dot'></span>
+            <span class='pet-card-dot'></span>
             <span class='pet-card-breed'>${Breed}</span>
         </div>
         <div class='pet-card-address'>
@@ -294,37 +257,32 @@ export default async function decorate(block) {
   }
 
   async function createAdoptablePetsSection(sectionTitle, petArr) {
-    const similarPetsContainer = document.createElement('div');
-    similarPetsContainer.className = 'similar-pets-container';
+    const adoptablePetsContainer = document.createElement('div');
+    adoptablePetsContainer.className = 'adoptable-pets-container';
     const title = document.createElement('h2');
-    title.className = 'similar-pets-title';
+    title.className = 'adoptable-pets-title';
     title.textContent = sectionTitle;
-    similarPetsContainer.append(title);
-    console.log('petArr', petArr);
+    adoptablePetsContainer.append(title);
+
     if (petArr && petArr.length > 0) {
       const galleryWrapper = document.createElement('div');
-      galleryWrapper.className = 'similar-pets-gallery-wrapper';
+      galleryWrapper.className = 'adoptable-pets-gallery-wrapper';
       const gallery = document.createElement('div');
-      gallery.className = 'similar-pets-gallery';
+      gallery.className = 'adoptable-pets-gallery';
       petArr.forEach((pet) => {
-        console.log(pet);
         gallery.append(createPetCard(pet));
       });
       galleryWrapper.appendChild(gallery);
-      similarPetsContainer.append(galleryWrapper);
+      adoptablePetsContainer.append(galleryWrapper);
     } else {
       const noResults = document.createElement('div');
-      noResults.className = 'similar-pets-no-results';
+      noResults.className = 'adoptable-pets-no-results';
       noResults.textContent = 'There are no other similar pets available.';
-      similarPetsContainer.append(noResults);
+      adoptablePetsContainer.append(noResults);
     }
-    console.log('block', block);
 
-    return similarPetsContainer;
+    return adoptablePetsContainer;
   }
-
-  //   const usp = new URLSearchParams(window.location.search);
-  //   block.querySelector('.search-input').value = usp.get('q') || '';
 
   const payload = {
     locationInformation: {
@@ -339,9 +297,30 @@ export default async function decorate(block) {
   };
 
   callAnimalList('POST', 'animal', payload).then(async (data) => {
-    console.log(data);
-    block.append(
-      await createAdoptablePetsSection('Adoptable Pets', data.animal)
+    const adoptablePetsContainer = document.querySelector(
+      '.adoptable-pets-container'
     );
+
+    if (adoptablePetsContainer.firstElementChild?.lastElementChild != null) {
+      adoptablePetsContainer.firstElementChild.lastElementChild.append(
+        await createAdoptablePetsSection('Adoptable Pets', data.animal)
+      );
+    }
   });
+
+  const adoptSearchContainer = document.querySelector(
+    '.adopt-search-container'
+  );
+
+  if (adoptSearchContainer?.nextElementSibling?.classList.contains('section')) {
+    adoptSearchContainer.nextElementSibling.classList.add(
+      'adopt-guide-container'
+    );
+    const adoptGuideContainer = adoptSearchContainer.nextElementSibling;
+
+    const guideHeading = adoptGuideContainer.firstElementChild;
+    const guideColumns = adoptGuideContainer.lastElementChild;
+
+    guideColumns.prepend(guideHeading);
+  }
 }
