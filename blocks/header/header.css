@@ -52,7 +52,7 @@
   width: 190px;
 }
 
-.genai-search-container .default-content-wrapper {
+body.gen-ai .genai-search-container .default-content-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,7 +67,7 @@
   object-fit: contain;
   display: inline-block;
   padding: 9px;
-  color: #9CA393;
+  color: var(--color-gray-lighter);
   box-sizing: border-box;
 }
 
@@ -95,7 +95,7 @@
   height: 54px;
   line-height: 54px;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%);
-  background-color: var(--background-color);
+  background-color: var(--highlight-color);
   margin: 10px;
   padding: 9px;
   border-radius: 27px;
