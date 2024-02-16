@@ -93,7 +93,7 @@ function formatAnimalData(apiData) {
         animalId,
         clientId,
         animalType,
-        petName,
+        petName: extractName(petName),
         age,
         gender,
         primaryBreed,
@@ -104,7 +104,7 @@ function formatAnimalData(apiData) {
         petLocationAddress,
         shelterAddress,
         shelterName,
-        shelterPhone,
+        shelterPhone: formatPhoneNumber(shelterPhone),
         city,
         state,
         zip,
@@ -138,16 +138,12 @@ function formatSimilarPetData(apiData) {
 }
 
 async function createCarouselSection(petName, images){
-    // const imageArr = [
-    //     'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
-    //     'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
-    //     'https://www.petplace.com/article/drug-library/drug-library/library/media_1f51af83c0034c69ffa46deb71514a1574a44a9a3.png',
-    //     'https://www.petplace.com/article/dogs/pet-behavior-training/media_14291138c30db350c8f97c5fa84a387124ee9eb61.jpeg',
-    //     'https://www.petplace.com/article/cats/just-for-fun/media_119b46f6ce6a55a154c58cd58f79020ac4b1cdff2.jpeg'
-    // ]
+
     const imageArr = [
         'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
-        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg'
+        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
+        'https://www.petplace.com/article/dogs/pet-care/media_1d7035030f35833989f5b2f765eeb04c3c3539c07.jpeg',
+        'https://www.petplace.com/article/dogs/pet-care/media_13cb8037aa8ff514c96d9a08ced9d7773409c2947.jpeg'
     ]
 
     if(imageArr.length < 2 ) {
@@ -413,6 +409,17 @@ function htmlToString(html) {
     const tempDivElement = document.createElement("div");
     tempDivElement.innerHTML = html;
     return tempDivElement.textContent || tempDivElement.innerText || "";
+}
+function formatPhoneNumber(phoneNumberString) {
+    var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+    }
+    return null;
+}
+function extractName(nameString) {
+    return nameString.replace(/\s*\([^)]*\)/, '').trim();
 }
 export default async function decorate(block) {
     const {clientId, animalId} = await getParametersFromUrl();

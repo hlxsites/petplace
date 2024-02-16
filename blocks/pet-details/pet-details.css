@@ -109,6 +109,8 @@
     width: 40px;
     height: 40px;
     padding: 8px;
+    margin-top: 0;
+    margin-bottom: 0;
     background: transparent;
 }
 .pet-details .carousel-section .image-carousel-previous:after,
@@ -476,6 +478,9 @@
     }
     .pet-details .carousel-section .image-carousel-slider-container {
         grid-column: 2 / 3;
+    }
+    .pet-details .carousel-section .image-carousel-controls-container {
+        bottom: 32px;
     }
 
     .pet-details .carousel-section.two-slides .carousel-div {
