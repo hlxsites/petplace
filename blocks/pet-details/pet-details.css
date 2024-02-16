@@ -258,8 +258,8 @@
     .pet-details .shelter-phone {
         margin-top: 24px;
     }
-    .pet-details .shelter-address:before,
-    .pet-details .shelter-phone:before {
+    .pet-details .shelter-address a:before,
+    .pet-details .shelter-phone a:before {
         display: inline-block;
         content: "";
         width: 24px;
@@ -267,16 +267,17 @@
         margin-right: 16px;
         background-color: var(--color-purple-dark);
     }
-    .pet-details .shelter-address:before {
+    .pet-details .shelter-address a:before {
         -webkit-mask: url("../../icons/map.svg") no-repeat center center;
         mask: url("../../icons/map.svg") no-repeat center center;
     }
-    .pet-details .shelter-phone:before {
+    .pet-details .shelter-phone a:before {
         -webkit-mask: url("../../icons/phone.svg") no-repeat center center;
         mask: url("../../icons/phone.svg") no-repeat center center;
     }
     .pet-details .shelter-address a,
     .pet-details .shelter-phone a {
+        display: inline-flex;
         color: var(--color-black);
     }
 

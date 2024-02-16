@@ -57,7 +57,7 @@ async function fetchSimilarPets(zip, animalType) {
     }
 }
 function formatAnimalData(apiData) {
-    const { imageURL, ppRequired } = apiData;
+    const { imageURL, ppRequired, animalDetail } = apiData;
     const {
         AnimalId: animalId,
         ClientId: clientId,
@@ -80,6 +80,14 @@ function formatAnimalData(apiData) {
         Email: email
     } = ppRequired ? ppRequired[0] : {};
 
+    const {
+        ['Located At']: locatedAt,
+        Age: ageDescription,
+        ['More Info']: moreInfo,
+        ['Data Updated']: dataUpdated
+    } = animalDetail ? animalDetail[0] : {}
+
+
     const formattedData = {
         imageUrl: imageURL || [],
         animalId,
@@ -100,7 +108,11 @@ function formatAnimalData(apiData) {
         city,
         state,
         zip,
-        email
+        email,
+        locatedAt,
+        ageDescription,
+        moreInfo,
+        dataUpdated
     }
     console.log('formatted animal data', formattedData)
     return formattedData
@@ -191,7 +203,7 @@ async function createCarouselSection(petName, images){
     return outterContainer;
 }
 async function createAboutPetSection(aboutPet){
-    const {petName, animalId, primaryBreed, secondaryBreed, city, state, age, gender, size, email, shelterName, description, ageDescription, moreInfo, dataUpdated} = aboutPet
+    const {petName, animalId, primaryBreed, secondaryBreed, city, state, age, gender, size, email, description, locatedAt, ageDescription, moreInfo, dataUpdated} = aboutPet
     const aboutPetContainer = document.createElement('div');
     aboutPetContainer.className = 'about-pet-container';
     aboutPetContainer.innerHTML = `
@@ -199,15 +211,15 @@ async function createAboutPetSection(aboutPet){
         <h1 class="about-pet-title">${petName || animalId}</h1>
         <div class="about-pet-subtitle">
             <div class="about-pet-subtitle-inner">
-                ${(primaryBreed || secondaryBreed) ? `<span class="about-pet-breed">${primaryBreed && secondaryBreed ? primaryBreed + '/' + secondaryBreed : primaryBreed ? primaryBreed : secondaryBreed}</span>` : ''}
-                ${(city || state) ? `<span class="about-pet-location">${city && state ? city + ', ' + state : city ? city : state}</span>` : ''}
+                ${(primaryBreed || secondaryBreed) ? `<span class="about-pet-breed">${primaryBreed && secondaryBreed ? primaryBreed + '/' + secondaryBreed : primaryBreed ? primaryBreed : secondaryBreed}</span>` : 'Breed N/A'}
+                ${(city || state) ? `<span class="about-pet-location">${city && state ? city + ', ' + state : city ? city + ', State N/A' : 'City N/A, ' + state}</span>` : 'Location N/A'}
             </div>
         </div>
         <div class="about-pet-details">
             <div class="about-pet-details-inner">
-                ${age ? `<span class="about-pet-age">${age}</span>`: ''}
-                ${gender ? `<span class="about-pet-gender">${gender}</span>` :''}
-                ${size ? `<span class="about-pet-size">${size}</span>` : ''}
+                ${age ? `<span class="about-pet-age">${age}</span>`: 'Age N/A'}
+                ${gender ? `<span class="about-pet-gender">${gender}</span>` :'Gender N/A'}
+                ${size ? `<span class="about-pet-size">${size}</span>` : 'Size N/A'}
                 ${animalId ? `<span class="about-pet-id">Animal ID: ${animalId}</span>` : ''}
             </div>
         </div>
@@ -222,29 +234,30 @@ async function createAboutPetSection(aboutPet){
         </div>
     </div>
     <div class="about-pet-body">
-        <h3>About ${petName || animalId}</h3>
-        ${shelterName ? `<p>Located At: ${shelterName}</p>` : ''}
-        ${description ? `<p>Description: ${description}</p>` : ''}
-        ${ageDescription ? `<p>Age: ${ageDescription}</p>` : ''}
-        ${moreInfo ? `<p>More Info: ${moreInfo}</p>` : ''}
-        ${dataUpdated ? `<p>Data Updated: ${dataUpdated}</p>` :''}
+        ${petName ? `<h3>About ${petName}</h3>`: `<h3>Description</h3>`}
+        ${description ? `<div>${description}</div>` : ''}
+        ${locatedAt ? `<div>Located At: ${locatedAt}</div>` : ''}
+        ${ageDescription ? `<div>Age: ${ageDescription}</div>` : ''}
+        ${moreInfo ? `<div>More Info: ${moreInfo}</div>` : ''}
+        ${dataUpdated ? `<div>Data Updated: ${dataUpdated}</div>` :''}
     </div>
     `;
     return aboutPetContainer;
 }
 async function createShelterSection(aboutShelter) {
-    const {shelterName, city, state, petLocationAddress, shelterPhone} = aboutShelter
+    const {shelterName, shelterAddress, shelterPhone, city, state, zip} = aboutShelter
+    const lastAddressLine = city && state && zip ? `${city}, ${state} ${zip}` : '';
     const shelterContainer = document.createElement('div');
     shelterContainer.className = 'shelter-container';
     shelterContainer.innerHTML = `
-        <h2 class="shelter-name">${shelterName || 'Shelter Information'}</h2>
+        <h2 class="shelter-name">${shelterName || 'Shelter Name N/A'}</h2>
         ${(city || state) ? `<div class="shelter-location">
             <span>${city && state ? city + ', ' + state : city ? city : state}</span></div>` : ''
         }
-        ${ petLocationAddress ? `<div class="shelter-address">
-            <a href="https://maps.google.com/?q=${htmlToString(petLocationAddress)}">${shelterName ? `${shelterName}</br>${petLocationAddress}`: petLocationAddress}</a></div>` : ''
-        }
-        ${shelterPhone ? `<div class="shelter-phone"><a href="tel:${shelterPhone}">${shelterPhone}</a></div>`: ''}
+        <div class="shelter-address">${shelterName && shelterAddress && lastAddressLine ? `
+            <a href="https://maps.google.com/?q=${shelterAddress + lastAddressLine}"><span>${shelterName}</br>${shelterAddress}</br>${lastAddressLine}</span></a>
+        `: `Shelter Location N/A`}</div>
+        <div class="shelter-phone">${shelterPhone ? `<a href="tel:${shelterPhone}"><span>${shelterPhone}</span></a>`: `Phone Number N/A`}</div>
     `;
     return shelterContainer
 }
