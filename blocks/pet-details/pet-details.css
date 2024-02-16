@@ -156,11 +156,13 @@
 }
 .pet-details .carousel-section .image-carousel-slide {
     flex: 1;
-    padding-right: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
 }
 .pet-details .carousel-section .image-carousel-slide[aria-hidden='true'] {
     display: block;
 }
+
 
 
 /* checklist section */

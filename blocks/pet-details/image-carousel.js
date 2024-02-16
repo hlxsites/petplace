@@ -54,8 +54,8 @@ function DetectSwipe(element, callback) {
 }
 
 export const ImageCarousel = {
-    intiateSlider: function(selectors) {
-        const {self, sliderEl, slideEl, sliderPrev, sliderNext, sliderNavigator } = selectors;
+    intiateSlider: function() {
+        const {self, sliderEl, slideEl, sliderPrev, sliderNext, sliderNavigator } = this.SELECTORS;
         const components = document.querySelectorAll(self);
         components.forEach(component => {
             const slider = component.querySelector(sliderEl);
@@ -92,17 +92,17 @@ export const ImageCarousel = {
                     slideClone.setAttribute('aria-label', `slide ${i+1}`);
                     slider.append(slideClone);
                 }
-                const slides = Array.from(document.querySelectorAll(selectors.slideEl));
+                const slides = Array.from(component.querySelectorAll(slideEl));
                 slider.style.width = slides.length * 100 + '%';
                 let currentIndex = slidesToShow;
-                this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount,initialSlideCount);
+                this.updateActiveSlide(component, currentIndex, slidesToShow);
                 nextButton.addEventListener('click', () => {
                     if(currentIndex >= slides.length - slidesToShow) {
                         return;
                     }
                     slider.style.transition = "transform 1s ease-in-out";
                     currentIndex++;
-                    this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                    this.updateActiveSlide(component, currentIndex, slidesToShow);
                 });
                 prevButton.addEventListener('click', () => {
                     if (currentIndex <= slidesToShow - 1) {
@@ -110,39 +110,40 @@ export const ImageCarousel = {
                     }
                     slider.style.transition = "transform 1s ease-in-out";
                     currentIndex--;
-                    this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                    this.updateActiveSlide(component, currentIndex, slidesToShow);
                 });
                 navigators.forEach(button => {
                     button.addEventListener('click', (event)=> {
                         const targetIndex = event.target.getAttribute('data-slide-to-index');
-                        console.log('currentIndex: ', currentIndex, ', targetIndex:', parseInt(targetIndex) + slidesToShow)
                         currentIndex = parseInt(targetIndex) + slidesToShow;
-                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                        this.updateActiveSlide(component, currentIndex, slidesToShow);
                     })
                 });
                 slider.addEventListener('transitionend', () => {
                     if(currentIndex == slides.length - slidesToShow){
                         slider.style.transition = "none";
                         currentIndex = slides.length - currentIndex;
-                        console.log('transitionend', currentIndex)
-                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
+                        this.updateActiveSlide(component, currentIndex, slidesToShow);
                     }
                     if(currentIndex == slidesToShow - 1){
                         slider.style.transition = "none";
                         currentIndex = slides.length - slidesToShow - 1;
-                        console.log('transitionend', currentIndex)
-                        this.updateActiveSlide(component, currentIndex, slides, slider, initialSlideCount);
-                    }      
+                        this.updateActiveSlide(component, currentIndex, slidesToShow);
+                    } 
+                        
                 });
                 DetectSwipe(slider, slideAction);
             }
         });
     },
-    updateActiveSlide: function(component, currentIndex, slideArray, slider, initialSlideCount){
+    updateActiveSlide: function(component, currentIndex, slidesToShow){
+        const slider = component.querySelector(this.SELECTORS.sliderEl)
+        const slideArray = component.querySelectorAll(this.SELECTORS.slideEl);
+        const navigators = component.querySelectorAll(this.SELECTORS.sliderNavigator)
         const slideDistance = (1/slideArray.length) * 100 ;
-        //const currentPageEl = component.querySelector(this.selectors.currentPage);
+
         for (let i = 0; i < slideArray.length; i++) {
-            if (i != currentIndex) {
+            if (i !== currentIndex) {
                 slideArray[i].setAttribute('aria-hidden', 'true');
                 slideArray[i].classList.remove('slide-active');
             } else {
@@ -150,13 +151,19 @@ export const ImageCarousel = {
                 slideArray[i].classList.add('slide-active');
             }
         }
-        const dataIndex = parseInt(slideArray[currentIndex].getAttribute("data-slide-index"));
-        //currentPageEl.innerText = dataIndex < 0 ? (dataIndex + initialSlideCount + 1) : (dataIndex >= initialSlideCount ? dataIndex - initialSlideCount + 1: dataIndex+1);
-        //console.log('current:', currentPageEl.innerText);
+        for (let i = 0; i < navigators.length; i++) {
+            if(i + slidesToShow !== currentIndex) {
+                navigators[i].setAttribute('aria-disabled', 'false');
+            } else {
+                navigators[i].setAttribute('aria-disabled', 'true');
+            }
+        } 
         slider.style.transform = 'translateX(' + (-slideDistance * currentIndex) + '%)';
+
     },
     init: function(arg) {
-        this.intiateSlider(arg.selectors);
+        this.SELECTORS = arg.selectors;
+        this.intiateSlider();
     }
 
 };

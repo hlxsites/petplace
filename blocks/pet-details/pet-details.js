@@ -126,11 +126,15 @@ function formatSimilarPetData(apiData) {
 }
 
 async function createCarouselSection(petName, images){
+    // const imageArr = [
+    //     'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
+    //     'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
+    //     'https://www.petplace.com/article/drug-library/drug-library/library/media_1f51af83c0034c69ffa46deb71514a1574a44a9a3.png',
+    //     'https://www.petplace.com/article/dogs/pet-behavior-training/media_14291138c30db350c8f97c5fa84a387124ee9eb61.jpeg',
+    //     'https://www.petplace.com/article/cats/just-for-fun/media_119b46f6ce6a55a154c58cd58f79020ac4b1cdff2.jpeg'
+    // ]
     const imageArr = [
-        'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
-        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
         'https://www.petplace.com/article/drug-library/drug-library/library/media_1f51af83c0034c69ffa46deb71514a1574a44a9a3.png',
-        'https://www.petplace.com/article/dogs/pet-behavior-training/media_14291138c30db350c8f97c5fa84a387124ee9eb61.jpeg',
         'https://www.petplace.com/article/cats/just-for-fun/media_119b46f6ce6a55a154c58cd58f79020ac4b1cdff2.jpeg'
     ]
 
@@ -158,7 +162,7 @@ async function createCarouselSection(petName, images){
         })
         imageArr.forEach((image, index) => {
             navigationHtml += `
-            <button aria-disabled=${index === 0 ? "true": "false"} class=${index === 0 ? `image-carousel-navigator active` : "image-carousel-navigator"} data-slide-to-index=${index}>
+            <button aria-disabled=${index === 0 ? "true": "false"} class="image-carousel-navigator" data-slide-to-index=${index}>
                 <span class="sr-only">Show slide ${index + 1} of ${imageArr.length}</span>
             </button>
             `
@@ -408,7 +412,8 @@ export default async function decorate(block) {
             slideEl: '.image-carousel-slide',
             sliderPrev: 'button.image-carousel-previous',
             sliderNext: 'button.image-carousel-next',
-            sliderNavigator: 'button.image-carousel-navigator'
+            sliderNavigator: 'button.image-carousel-navigator',
+            activeNavigator: 'button.image-carousel-navigator[aria-disabled="false"]'
         }
     });
 }
