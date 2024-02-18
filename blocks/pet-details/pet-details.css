@@ -471,10 +471,10 @@
         padding-right: 12px;
     }
     .pet-details .carousel-section .image-carousel-slide-image {
-        aspect-ratio: 700 / 575;
+        aspect-ratio: 495 / 575;
     }
     .pet-details .carousel-section .image-carousel-layout-container {
-        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-columns: 1fr 519px 1fr;
     }
     .pet-details .carousel-section .image-carousel-slider-container {
         grid-column: 2 / 3;
@@ -560,15 +560,28 @@
     .pet-details .pet-card {
         min-width: 300px;
     }
+    .pet-details .carousel-section .image-carousel-layout-container {
+        grid-template-columns: 1fr 724px 1fr;
+    }
+    .pet-details .carousel-section .image-carousel-slide-image {
+        aspect-ratio: 700 / 575;
+    }
     .pet-details .carousel-section .image-div >div,
     .pet-details .image-section .image-div >div {
         aspect-ratio: 700 / 575;
     }
+
+
 
 }
 @media (min-width: 1200px) {
     .pet-details .contents-section,
     .pet-details .list-section { 
         max-width: 1344px;
+    }
+}
+@media (min-width: 1440px) {
+    .pet-details .carousel-section .image-carousel-layout-container {
+        grid-template-columns: 1fr 2fr 1fr;
     }
 }
