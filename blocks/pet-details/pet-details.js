@@ -138,20 +138,22 @@ function formatSimilarPetData(apiData) {
 }
 
 async function createCarouselSection(petName, images){
-
-    const imageArr = [
-        'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
-        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
-        'https://www.petplace.com/article/dogs/pet-care/media_1d7035030f35833989f5b2f765eeb04c3c3539c07.jpeg',
-        'https://www.petplace.com/article/dogs/pet-care/media_13cb8037aa8ff514c96d9a08ced9d7773409c2947.jpeg'
-    ]
+        const imageArr = images;
+    // example images for testing carousel
+    // const imageArr = [
+    //     'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
+    //     'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
+    //     'https://www.petplace.com/article/dogs/pet-care/media_1d7035030f35833989f5b2f765eeb04c3c3539c07.jpeg',
+    //     'https://www.petplace.com/article/dogs/pet-care/media_13cb8037aa8ff514c96d9a08ced9d7773409c2947.jpeg'
+    // ]
 
     if(imageArr.length < 2 ) {
         const imageSectionContainer = document.createElement('div');
         imageSectionContainer.className = 'image-section';
         const imageDiv = document.createElement('div');
         imageDiv.className = 'image-div';
-        imageDiv.innerHTML = `<div><img src=${imageArr.length === 0 ? "/images/pet_profile_placeholder.png" : imageArr[0]} alt=${ imageArr.length === 0 ? "no image available" : petName } /><div>`;
+        console.log('pet name', petName)
+        imageDiv.innerHTML = `<div><img src=${imageArr.length === 0 ? "/images/pet_profile_placeholder.png" : imageArr[0]} alt=${ imageArr.length === 0 ? "no image available" : petName || '' } /></div>`;
         imageSectionContainer.append(imageDiv);
         return imageSectionContainer
     } else {
@@ -429,7 +431,7 @@ export default async function decorate(block) {
     block.textContent = '';
 
     //Create carousel section
-    block.append(await createCarouselSection('', petData?.imageUrl || []));
+    block.append(await createCarouselSection(petData.petName || '', petData?.imageUrl || []));
 
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');

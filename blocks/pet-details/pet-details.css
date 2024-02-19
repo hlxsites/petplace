@@ -71,6 +71,7 @@
 .pet-details .carousel-section .image-div >div,
 .pet-details .image-section .image-div >div {
     aspect-ratio: 375 / 389;
+    width: 100%;
     max-width: 100%;
 }
 .pet-details .carousel-section .image-div img,
@@ -458,6 +459,9 @@
     .pet-details .image-section .image-div >div {
         aspect-ratio: 495 / 575;
     }
+    .pet-details .image-section .image-div >div {
+        max-width: 495px;
+    }
     .pet-details .carousel-section .image-div img,
     .pet-details .image-section .image-div img,
     .pet-details .carousel-section .image-carousel-slide-image img {
@@ -570,8 +574,9 @@
     .pet-details .image-section .image-div >div {
         aspect-ratio: 700 / 575;
     }
-
-
+    .pet-details .image-section .image-div >div {
+        max-width: 700px;
+    }
 
 }
 @media (min-width: 1200px) {
