@@ -45,9 +45,9 @@
   }
 }
 
-.adopt .hero .columns-img-col picture img {
+body.adopt .hero .columns-img-col picture img {
   width: 100%;
-  border-radius: none;
+  border-radius: 0;
 
   @media (min-width: 1024px) {
     border-radius: 16px;

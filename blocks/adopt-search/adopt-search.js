@@ -4,6 +4,7 @@ import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
+
 const {
   petTypeLabel,
   petTypeValues,
@@ -13,7 +14,55 @@ const {
   zipPlaceholder,
   zipErrorMessage,
   searchButtonText,
+  adoptablePetsTitle,
 } = placeholders;
+
+function createPetCard({
+  Name,
+  Gender,
+  Breed,
+  City,
+  State,
+  animalId,
+  clientId,
+  coverImagePath,
+}) {
+  const petCard = document.createElement('div');
+  petCard.className = 'pet-card';
+  const img = document.createElement('object');
+  img.data = coverImagePath;
+  img.type = 'image/jpg';
+  img.className = 'pet-card-image';
+  const fallback = document.createElement('img');
+  fallback.src = getMetadata('image-fallback');
+  img.append(fallback);
+  const cardBody = document.createElement('div');
+  cardBody.className = 'pet-card-body';
+  cardBody.innerHTML = `
+      <h3 class='pet-card-name'><a href='/pet-adoption/pet/${clientId}/${animalId}' class='stretched-link'>${Name?.replace(
+    / *\([^)]*\) */g,
+    ''
+  )}</a></h3>
+      <div class='pet-card-info'>
+          <span class='pet-card-gender'>${Gender}</span>
+          <span class='pet-card-dot'></span>
+          <span class='pet-card-breed'>${Breed}</span>
+      </div>
+      <div class='pet-card-address'>
+          ${City}, ${State}
+      </div>
+  `;
+  const buttonContainer = document.createElement('div');
+  buttonContainer.className = 'pet-card-button-conainer';
+  buttonContainer.innerHTML = `
+  <button class='pet-card-favorite'>
+      <span class='pet-card-favorite-icon'></span>
+      <span class='sr-only'>Favorite</span>
+  </button>
+  `;
+  petCard.append(img, cardBody, buttonContainer);
+  return petCard;
+}
 
 async function callAnimalList(method, path, payload) {
   const baseUrl = 'https://api-stg-petplace.azure-api.net/';
@@ -29,7 +78,7 @@ async function callAnimalList(method, path, payload) {
   return response.json();
 }
 
-export default async function decorate(block) {
+async function createSearchForm(block) {
   const form = document.createElement('form');
   form.setAttribute('role', 'search');
   form.className = 'adopt-search-box-wrapper';
@@ -212,82 +261,48 @@ export default async function decorate(block) {
     block.innerHTML = '';
     block.append(form);
   }
+}
 
-  function createPetCard({
-    Name,
-    Gender,
-    Breed,
-    City,
-    State,
-    animalId,
-    clientId,
-    coverImagePath,
-  }) {
-    const petCard = document.createElement('div');
-    petCard.className = 'pet-card';
-    const img = document.createElement('object');
-    img.data = coverImagePath;
-    img.type = 'image/jpg';
-    img.className = 'pet-card-image';
-    const fallback = document.createElement('img');
-    fallback.src = getMetadata('image-fallback');
-    img.append(fallback);
-    const cardBody = document.createElement('div');
-    cardBody.className = 'pet-card-body';
-    cardBody.innerHTML = `
-        <h3 class='pet-card-name'><a href='/pet-adoption/pet/${clientId}/${animalId}' class='stretched-link'>${Name?.replace(
-      / *\([^)]*\) */g,
-      ''
-    )}</a></h3>
-        <div class='pet-card-info'>
-            <span class='pet-card-gender'>${Gender}</span>
-            <span class='pet-card-dot'></span>
-            <span class='pet-card-breed'>${Breed}</span>
-        </div>
-        <div class='pet-card-address'>
-            ${City}, ${State}
-        </div>
-    `;
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'pet-card-button-conainer';
-    buttonContainer.innerHTML = `
-    <button class='pet-card-favorite'>
-        <span class='pet-card-favorite-icon'></span>
-        <span class='sr-only'>Favorite</span>
-    </button>
-    `;
-    petCard.append(img, cardBody, buttonContainer);
-    return petCard;
+async function createAdoptablePetsContent(petArr) {
+  const adoptablePetsContainer = document.createElement('div');
+  adoptablePetsContainer.className = 'adoptable-pets-container';
+  const title = document.createElement('h2');
+  title.className = 'adoptable-pets-title';
+  title.textContent = adoptablePetsTitle;
+  adoptablePetsContainer.append(title);
+
+  if (petArr && petArr.length > 0) {
+    const galleryWrapper = document.createElement('div');
+    galleryWrapper.className = 'adoptable-pets-gallery-wrapper';
+    const gallery = document.createElement('div');
+    gallery.className = 'adoptable-pets-gallery';
+    petArr.forEach((pet) => {
+      gallery.append(createPetCard(pet));
+    });
+    galleryWrapper.appendChild(gallery);
+    adoptablePetsContainer.append(galleryWrapper);
+  } else {
+    const noResults = document.createElement('div');
+    noResults.className = 'adoptable-pets-no-results';
+    noResults.textContent = 'There are no other similar pets available.';
+    adoptablePetsContainer.append(noResults);
   }
 
-  async function createAdoptablePetsSection(sectionTitle, petArr) {
-    const adoptablePetsContainer = document.createElement('div');
-    adoptablePetsContainer.className = 'adoptable-pets-container';
-    const title = document.createElement('h2');
-    title.className = 'adoptable-pets-title';
-    title.textContent = sectionTitle;
-    adoptablePetsContainer.append(title);
+  return adoptablePetsContainer;
+}
 
-    if (petArr && petArr.length > 0) {
-      const galleryWrapper = document.createElement('div');
-      galleryWrapper.className = 'adoptable-pets-gallery-wrapper';
-      const gallery = document.createElement('div');
-      gallery.className = 'adoptable-pets-gallery';
-      petArr.forEach((pet) => {
-        gallery.append(createPetCard(pet));
-      });
-      galleryWrapper.appendChild(gallery);
-      adoptablePetsContainer.append(galleryWrapper);
-    } else {
-      const noResults = document.createElement('div');
-      noResults.className = 'adoptable-pets-no-results';
-      noResults.textContent = 'There are no other similar pets available.';
-      adoptablePetsContainer.append(noResults);
-    }
-
-    return adoptablePetsContainer;
+async function createAdoptablePetsSection(
+  adoptablePetsContainer,
+  adoptablePetsData
+) {
+  if (adoptablePetsContainer.firstElementChild?.lastElementChild != null) {
+    adoptablePetsContainer.firstElementChild.lastElementChild.append(
+      await createAdoptablePetsContent(adoptablePetsData.animal)
+    );
   }
+}
 
+export default async function decorate(block) {
   const payload = {
     locationInformation: {
       clientId: null,
@@ -300,21 +315,15 @@ export default async function decorate(block) {
     },
   };
 
-  callAnimalList('POST', 'animal', payload).then(async (data) => {
-    const adoptablePetsContainer = document.querySelector(
-      '.adoptable-pets-container'
-    );
-
-    if (adoptablePetsContainer.firstElementChild?.lastElementChild != null) {
-      adoptablePetsContainer.firstElementChild.lastElementChild.append(
-        await createAdoptablePetsSection('Adoptable Pets', data.animal)
-      );
-    }
-  });
-
+  const adoptablePetsData = await callAnimalList('POST', 'animal', payload);
   const adoptSearchContainer = document.querySelector(
     '.adopt-search-container'
   );
+  const adoptablePetsContainer = document.querySelector(
+    '.adoptable-pets-container'
+  );
+  createSearchForm(block);
+  createAdoptablePetsSection(adoptablePetsContainer, adoptablePetsData);
 
   if (adoptSearchContainer?.nextElementSibling?.classList.contains('section')) {
     adoptSearchContainer.nextElementSibling.classList.add(
