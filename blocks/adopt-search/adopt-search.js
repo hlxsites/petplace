@@ -327,7 +327,7 @@ export default async function decorate(block) {
 
   if (adoptSearchContainer?.nextElementSibling?.classList.contains('section')) {
     adoptSearchContainer.nextElementSibling.classList.add(
-      'adopt-guide-container'
+      'adopt-guide-container',
     );
     const adoptGuideContainer = adoptSearchContainer.nextElementSibling;
 
