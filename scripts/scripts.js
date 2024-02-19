@@ -83,7 +83,7 @@ export async function getRegion() {
   const locations = resp.headers.get('X-Served-By').split(',');
   const pops = locations.map((l) => l.split('-').pop());
   return Object.entries(REGIONS)
-    .find(([, values]) => pops.some((loc) => values.includes(loc)))?.[0];
+    .find(([, values]) => pops.some((loc) => values.includes(loc)))?.[0] || 'en-US';
 }
 
 /**
@@ -722,7 +722,7 @@ async function addRegionSelectorPopup() {
 
   const dialogContent = document.createElement('div');
 
-  const regionSelector = buildBlock('region-selector', [[region]]);
+  const regionSelector = buildBlock('region-selector', [[]]);
   dialogContent.append(regionSelector);
   decorateBlock(regionSelector);
   await loadBlock(regionSelector);
@@ -737,7 +737,7 @@ async function addRegionSelectorPopup() {
   const popup = document.querySelector('.popup');
   if (window.hlx.contentBasePath === '/en-gb' && region !== 'en-GB') {
     popup.querySelector('hlx-aria-dialog').open();
-  } else if (!window.hlx.contentBasePath && region) {
+  } else if (!window.hlx.contentBasePath && region !== 'en-US') {
     popup.querySelector('hlx-aria-dialog').open();
   }
   popup.querySelector('hlx-aria-dialog .primary').focus();
