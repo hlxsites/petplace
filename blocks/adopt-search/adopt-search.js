@@ -41,7 +41,7 @@ function createPetCard({
   cardBody.innerHTML = `
       <h3 class='pet-card-name'><a href='/pet-adoption/pet/${clientId}/${animalId}' class='stretched-link'>${Name?.replace(
     / *\([^)]*\) */g,
-    ''
+    '',
   )}</a></h3>
       <div class='pet-card-info'>
           <span class='pet-card-gender'>${Gender}</span>
@@ -126,7 +126,7 @@ async function createSearchForm(block) {
   }
 
   const radioBtns = radioContainer.querySelectorAll(
-    'input[name="filterAnimalType"]'
+    'input[name="filterAnimalType"]',
   );
 
   radioBtns.forEach((radio) => {
@@ -217,7 +217,7 @@ async function createSearchForm(block) {
     const selectedAnimalType = encodeURIComponent(
       radioContainer
         .querySelector('input[name="filterAnimalType"]:checked')
-        .value.toLowerCase()
+        .value.toLowerCase(),
     );
     const zipCode = zipInput.value;
 
@@ -293,11 +293,11 @@ async function createAdoptablePetsContent(petArr) {
 
 async function createAdoptablePetsSection(
   adoptablePetsContainer,
-  adoptablePetsData
+  adoptablePetsData,
 ) {
   if (adoptablePetsContainer.firstElementChild?.lastElementChild != null) {
     adoptablePetsContainer.firstElementChild.lastElementChild.append(
-      await createAdoptablePetsContent(adoptablePetsData.animal)
+      await createAdoptablePetsContent(adoptablePetsData.animal),
     );
   }
 }
@@ -317,10 +317,10 @@ export default async function decorate(block) {
 
   const adoptablePetsData = await callAnimalList('POST', 'animal', payload);
   const adoptSearchContainer = document.querySelector(
-    '.adopt-search-container'
+    '.adopt-search-container',
   );
   const adoptablePetsContainer = document.querySelector(
-    '.adoptable-pets-container'
+    '.adoptable-pets-container',
   );
   createSearchForm(block);
   createAdoptablePetsSection(adoptablePetsContainer, adoptablePetsData);
