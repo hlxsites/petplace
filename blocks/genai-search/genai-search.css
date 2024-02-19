@@ -54,13 +54,16 @@
 .section.genai-search-container h1 {
   display: inline-block;
   top: -60px;
-  background-color: var(--text-color-inverted);
+  /* background-color: var(--text-color-inverted); */
   @media (max-width: 600px){
     padding-top: 1rem;
     width: 70%;
     color: var(--color-orange);
   }
  } 
+ .section.genai-search-container h1 span{
+  color: var(--highlight-color);
+ }
 
  .section.genai-search-container h1::first-line{
   color: var(  --text-color);
@@ -115,7 +118,10 @@
 .section.genai-search-container .default-content-wrapper h2 {
   display: inline;
 }
-
+#search-main .section.genai-search-container p {
+  text-align: center;
+  max-width: 1024px;
+}
 .home-page .section.genai-search-container p {
   margin-top: -40px;
   max-width: 726px;

@@ -59,7 +59,9 @@ body.gen-ai .genai-search-container .default-content-wrapper {
   gap: 20px;
   margin-bottom: 10px;
 }
-
+body.gen-ai #search-main .genai-search-container .default-content-wrapper {
+  gap: 0;
+}
 .header-search img, 
 .header-search .icon svg {
   width: 36px;
@@ -73,7 +75,7 @@ body.gen-ai .genai-search-container .default-content-wrapper {
 
 .header-search {
   position: fixed;
-  right: 2rem;
+  right: 1rem;
   bottom: 2rem;
   display: flex;
   flex-direction: column;
@@ -199,10 +201,15 @@ body.gen-ai .genai-search-container .default-content-wrapper {
 
 #search-main .genai-search-container .default-content-wrapper h1 {
   font-size: 36px;
-  font-style: italic;
+  /* font-style: italic; */
   text-align: center;
   color: var(--color-purple-gray);
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  width: auto;
+  @media (max-width: 600px){
+    padding-top: 0;
+    margin-top: 0;
+  }
 }
 
 #search-main .search .search-box {
@@ -577,22 +584,6 @@ article ul, article ol {
   color: var(--color-purple);
 }
 
-@media (max-width: 600px) {
-  #search-main .summary-columns {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #search-main .header-search-modal {
-    width: 100vw;
-  }
-
-  #search-main .header-search-close {
-    right: 5px;
-    top: 5px;
-  }
-}
-
 #search-main .summary-columns {
   margin-top: 50px;
   display: flex;
@@ -639,6 +630,39 @@ article ul, article ol {
   flex-wrap: wrap;
   padding-bottom: 24px;
 }
+@media (max-width: 600px){
+  .header-search-modal {
+    width: 100vw;
+    height: 100vh;
+  }
+  .header-search-close {
+    right: 1rem;
+    bottom: 1rem;
+    top: unset;
+    background-color: var(--background-color-dark)
+  }
+  #search-main .summary-columns {
+   margin-top: 0;
+   flex-direction: column;
+   align-items: center;
+  }
+  #search-main .summary-columns ul {
+    padding: 0 2rem;
+  }
+  #search-main .summary-columns .summary-column {
+    display: none;
+  }
+  #search-main .summary-columns .summary-column:first-of-type {
+    display: block;
+  }
+  #search-main .summary-column > h4{
+    padding: 0;
+  }
+  #search-main .summary-column > h4 > svg {
+    display: none;
+  }
+}
+
 
 .hand-cursor {
   cursor: pointer;
