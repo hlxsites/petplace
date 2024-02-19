@@ -52,6 +52,7 @@ export default async function decorate(block) {
       radio.name = 'filterAnimalType';
       radio.id = `radio-${petType}`;
       radio.value = petType;
+      radio.required = true;
       p.append(radio);
       p.append(label);
       radioContainer.append(p);
@@ -173,8 +174,11 @@ export default async function decorate(block) {
 
     const searchParams = new URLSearchParams();
     searchParams.set('zipPostal', zipCode);
-    searchParams.set('filterBreed', selectedBreed);
     searchParams.set('filterAnimalType', selectedAnimalType);
+
+    if (selectedBreed !== '') {
+      searchParams.set('filterBreed', selectedBreed);
+    }
 
     const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
 
