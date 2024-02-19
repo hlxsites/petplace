@@ -806,6 +806,19 @@ footer .popup hlx-aria-dialog > button {
   z-index: -1000;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
+.footer-legal .popup hlx-aria-dialog > button {
+  position: relative;
+  height: auto;
+  width: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  z-index: initial;
+}
+
 @media (prefers-contrast: more) {
   :root {
     --high-contrast-color: #ab2400;
