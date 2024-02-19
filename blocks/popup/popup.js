@@ -21,9 +21,7 @@ export default function decorate(block) {
   ariaDialog.append(contentContainer);
   target.append(ariaDialog);
 
-  if (block.children.length > 1) {
-
-  } else {
+  if (block.children.length < 2) {
     ariaDialog.open();
   }
 }
