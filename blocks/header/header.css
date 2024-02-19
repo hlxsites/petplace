@@ -66,14 +66,14 @@ body.gen-ai .genai-search-container .default-content-wrapper {
   height: 36px;
   object-fit: contain;
   display: inline-block;
-  padding: 9px;
-  color: var(--color-gray-lighter);
+  /* padding: 9px; */
+  color: #9CA393;
   box-sizing: border-box;
 }
 
 .header-search {
   position: fixed;
-  right: 2px;
+  right: 2rem;
   bottom: 2rem;
   display: flex;
   flex-direction: column;
@@ -91,19 +91,20 @@ body.gen-ai .genai-search-container .default-content-wrapper {
 }
 
 .header-search > a {
-  width: 54px;
-  height: 54px;
+  width: 72px;
+  height: 72px;
   line-height: 54px;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%);
-  background-color: var(--highlight-color);
+  background-color: var(  --highlight-color);
   margin: 10px;
-  padding: 9px;
-  border-radius: 27px;
+  padding: 16px 8px;
+  border-radius: 50%;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .header-search a:hover {
-  background-color: var(--color-gray-lighter);
+  background-color: var(  --background-color-dark);
 }
 
 .header-search-modal {

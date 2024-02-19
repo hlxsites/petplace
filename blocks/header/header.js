@@ -2,7 +2,7 @@ import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-frankli
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import {  decorateSearch, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE } from './genai-search.js';
+import {  decorateSearch, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE, GENAI_TOOLTIP } from './genai-search.js';
 
 const loadScript = (url, callback, type, section, defer) => {
   const head = document.querySelector('head');
@@ -187,7 +187,7 @@ export default async function decorate(block) {
     console.log('genai search');
     const headerSearchButton = document.createElement('div');
     headerSearchButton.className = 'header-search';
-    headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/help.svg"><span class="tooltip"><em>${GENAI_SEARCH_TITLE}</em></span></a>`;
+    headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
 
     window.addEventListener('scroll', function () {
       if (window.scrollY >= 68) {

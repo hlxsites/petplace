@@ -1017,42 +1017,45 @@ body:not(.gen-ai) .genai-search.large .search-box-wrapper #clearButton{
 
 .tooltip {
   visibility: hidden;
-  width: 200px;
-  /* background-color: rgba(64, 87, 109, 0.2); */
-  /* background-color: rgb(212, 221, 205); */
-  background-color: var(--color-gray-light);
+  width: 94px;
+  height: auto;
+  background-color: #fff;
   font-family: var(--heading-font-family);
   color: var(--color-gray-dark);
   text-align: center;
   border-radius: 6px;
   position: absolute;
-  /* padding: 0 10px; */
-  /* top: 100%;
-  left: 50%; */
-  top: 10px;
-  right: 110%;
-  margin-left: -125px;
+  font-style: normal;
+  padding: 10px;
+
   z-index: 1;
   opacity: 0;
   transition: opacity 1s;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+  text-align: center;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 1px 7px rgba(0,0,0, 0.2));
 }
 
 .tooltip::after {
   content: "";
   position: absolute;
-  /* bottom: 100%;
-  left: 50%;
-  margin-left: 20px; */
-  top: 50%;
-  left: 100%;
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  /* border-color: transparent transparent transparent rgba(64, 87, 109, 0.2); */
-  /* border-color: transparent transparent var(--color-gray-light) transparent ; */
-  border-color: transparent transparent transparent var(--color-gray-light);
-}
 
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: -5px;
+  border-width: 10px;
+  border-style: solid;
+  border-color:  var( --background-color) transparent transparent transparent;
+}
+.header-search:hover a{
+  background-color: black;
+}
 .header-search:hover .tooltip {
   visibility: visible;
   opacity: 1;
