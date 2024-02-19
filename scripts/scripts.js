@@ -612,7 +612,6 @@ function setLocale() {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  setLocale();
   decorateTemplateAndTheme();
 
   await fetchPlaceholders(window.hlx.contentBasePath || 'default');
@@ -984,6 +983,7 @@ export async function captureError(source, e) {
 }
 
 async function loadPage() {
+  setLocale();
   await window.hlx.plugins.load('eager');
   await loadEager(document);
   await window.hlx.plugins.load('lazy');
