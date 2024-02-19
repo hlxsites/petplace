@@ -3,7 +3,7 @@ import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
-const placeholders = await fetchPlaceholders('/adopt');
+const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
     petTypeLabel,
     petTypeValues,
@@ -13,10 +13,19 @@ const {
     zipPlaceholder,
     zipErrorMessage,
     searchButtonText,
-    searchAlertText
+    searchAlertText,
+    genderOptions,
+    sizeOptions,
+    radiusOptions,
+    ageOptions,
+    filtersLabel,
+    radiusLabel,
+    genderLabel,
+    sizeLabel,
+    ageLabel
 } = placeholders;
 // console.log('placeholders', petTypeLabel, petTypeValues, breedLabel, breedPlaceholder, zipLabel, zipPlaceholder, zipErrorMessage, searchButtonText);
-
+console.log(placeholders);
 let breedList = [];
 let current_page = 1;
 let records_per_page = 16;
@@ -37,6 +46,23 @@ async function callAnimalList() {
     if (!zip) {
         zip = null;
     }
+    let radius = document.getElementById("radius")?.value;
+    console.log(radius)
+    if (!radius || radius === "null") {
+        radius = 10;
+    }
+    let gender = document.querySelector('input[name="gender"]:checked')?.value;
+    if (!gender) {
+        gender = null;
+    }
+    let age = document.querySelector('input[name="age"]:checked')?.value;
+    if (!age) {
+        age = null;
+    }
+    let size = document.querySelector('input[name="size"]:checked')?.value;
+    if (!size) {
+        size = null;
+    }
 
     const response = await fetch('https://api-stg-petplace.azure-api.net/animal', {
         method: 'POST',
@@ -51,13 +77,16 @@ async function callAnimalList() {
                     lon: -80.2890581,
                 },
                 zipPostal: zip,
-                milesRadius: 10,
+                milesRadius: radius,
             },
             animalFilters: {
                 startIndex: 0,
                 numResults: 50,
                 filterAnimalType: animalType,
                 filterBreedType: breed,
+                filterGender: gender,
+                filterAge: age,
+                filterSize: size
             },
         }),
     });
@@ -127,6 +156,10 @@ function numPages()
 }
 
 function calculatePagination(page) {
+    if (page.currentTarget?.myParam) {
+        page = page.currentTarget?.myParam;
+        current_page = page;
+    }
     let filteredArray = [];
     // Validate page
     if (page < 1) page = 1;
@@ -170,6 +203,9 @@ window.onload = callBreedList("null").then((data) => {
 
 function buildResultsList(animalList) {
     const tempResultsBlock = document.getElementById('results-block');
+    if (tempResultsBlock.offsetHeight !== 0) {
+        tempResultsBlock.style.height = tempResultsBlock.offsetHeight.toString() + 'px';
+    }
     tempResultsBlock.innerHTML = '';
     animalList.forEach((animal) => {
         const div = document.createElement('div');
@@ -200,6 +236,168 @@ function buildResultsList(animalList) {
         div.append(likeButton);
         tempResultsBlock.append(div);
     });
+    setTimeout(() => {
+        tempResultsBlock.style.removeProperty('height');
+      }, "500");
+    
+}
+
+function buildFilterSidebar(sidebar)  {
+    const filterLabel = document.createElement('h3');
+    filterLabel.className = 'sidebar-label';
+    filterLabel.innerHTML = filtersLabel;
+    sidebar.append(filterLabel);
+
+    // create search radius select
+    const radiusLabelElement = document.createElement('label');
+    radiusLabelElement.for = 'radius';
+    radiusLabelElement.className = 'sidebar-header';
+    radiusLabelElement.innerText = radiusLabel;
+
+    const radiusSelect = document.createElement('select');
+    radiusSelect.name = 'radius';
+    radiusSelect.id = 'radius';
+    radiusSelect.className = 'filter-select';
+    const radiusOption = document.createElement('option');
+    radiusOption.innerText = "Any";
+    radiusOption.value = null;
+
+    radiusSelect.append(radiusOption);
+    const radiusList = radiusOptions.split(',');
+        radiusList.forEach((radius) => {
+            const radiusListOption = document.createElement('option');
+            radiusListOption.innerText = radius;
+            radiusListOption.value = radius;
+        
+            radiusSelect.append(radiusListOption);
+        });
+    sidebar.append(radiusLabelElement);
+    sidebar.append(radiusSelect);
+
+    // create gender radio buttons
+    const genderBlock = document.createElement('div');
+    genderBlock.className = 'radio-block';
+    const genderLabelElement = document.createElement('div');
+    genderLabelElement.className = 'sidebar-header';
+    genderLabelElement.innerText = genderLabel;
+    genderBlock.append(genderLabelElement);
+    sidebar.append(genderBlock);
+
+    const anyLabel = document.createElement('label');
+    anyLabel.for = 'gender-any';
+    anyLabel.className = 'radio-container';
+    anyLabel.innerHTML = 'Any';
+    const anyGenderRadio = document.createElement('input');
+    anyGenderRadio.type = 'radio';
+    anyGenderRadio.name = 'gender';
+    anyGenderRadio.id = 'gender-any'
+    anyGenderRadio.value = null;
+    anyLabel.append(anyGenderRadio);
+    const checkmark = document.createElement('span');
+    checkmark.className = 'checkmark';
+    anyLabel.append(checkmark);
+    genderBlock.append(anyLabel);
+
+    const genderList = genderOptions.split(',');
+    genderList.forEach((gender) => {
+        const genderLabel = document.createElement('label');
+        genderLabel.for = gender;
+        genderLabel.className = 'radio-container';
+        genderLabel.innerHTML = gender;
+        const genderRadio = document.createElement('input');
+        genderRadio.type = 'radio';
+        genderRadio.name = 'gender';
+        genderRadio.id = gender;
+        genderRadio.value = placeholders[gender.toLowerCase()];
+        genderLabel.append(genderRadio);
+        const checkmark = document.createElement('span');
+        checkmark.className = 'checkmark';
+        genderLabel.append(checkmark);
+        genderBlock.append(genderLabel);
+    })
+
+    // create age radio buttons
+    const ageBlock = document.createElement('div');
+    ageBlock.className = 'radio-block';
+    const ageLabelElement = document.createElement('div');
+    ageLabelElement.className = 'sidebar-header';
+    ageLabelElement.innerText = ageLabel;
+    ageBlock.append(ageLabelElement);
+    sidebar.append(ageBlock);
+
+    const anyAgeRadio = document.createElement('input');
+    const anyAgeLabel = document.createElement('label');
+    anyAgeLabel.for = 'age-any';
+    anyAgeLabel.className = 'radio-container';
+    anyAgeLabel.innerHTML = 'Any';
+    anyAgeRadio.type = 'radio';
+    anyAgeRadio.name = 'age';
+    anyAgeRadio.id = 'age-any'
+    anyAgeRadio.value = null;
+    anyAgeLabel.append(anyAgeRadio);
+    const ageCheckmark = document.createElement('span');
+    ageCheckmark.className = 'checkmark';
+    anyAgeLabel.append(ageCheckmark);
+    ageBlock.append(anyAgeLabel);
+    const ageList = ageOptions.split(',');
+    ageList.forEach((age) => {
+        const ageLabel = document.createElement('label');
+        ageLabel.for = age;
+        ageLabel.className = 'radio-container';
+        ageLabel.innerHTML = age;
+        const ageRadio = document.createElement('input');
+        ageRadio.type = 'radio';
+        ageRadio.name = 'age';
+        ageRadio.id = age;
+        let formattedAge = age[0].toLowerCase() + age.slice(1);
+        ageRadio.value = placeholders[formattedAge?.replace(/\s+/g, '')?.replace(/\+/g, '')];
+        ageLabel.append(ageRadio);
+        const checkmark = document.createElement('span');
+        checkmark.className = 'checkmark';
+        ageLabel.append(checkmark);
+        ageBlock.append(ageLabel);
+    });
+
+    // create size radio buttons
+    const sizeBlock = document.createElement('div');
+    sizeBlock.className = 'radio-block';
+    const sizeLabelElement = document.createElement('div');
+    sizeLabelElement.className = 'sidebar-header';
+    sizeLabelElement.innerText = sizeLabel;
+    sizeBlock.append(sizeLabelElement);
+    sidebar.append(sizeBlock);
+
+    const anySizeLabel = document.createElement('label');
+    anySizeLabel.for = 'size-any';
+    anySizeLabel.className = 'radio-container';
+    anySizeLabel.innerHTML = 'Any';
+    const anySizeRadio = document.createElement('input');
+    anySizeRadio.type = 'radio';
+    anySizeRadio.name = 'size';
+    anySizeRadio.id = 'size-any'
+    anySizeRadio.value = null;
+    anySizeLabel.append(anySizeRadio);
+    const sizeCheckmark = document.createElement('span');
+    sizeCheckmark.className = 'checkmark';
+    anySizeLabel.append(sizeCheckmark);
+    sizeBlock.append(anySizeLabel);
+    const sizeList = sizeOptions.split(',');
+    sizeList.forEach((size) => {
+        const sizeLabel = document.createElement('label');
+        sizeLabel.for = size;
+        sizeLabel.className = 'radio-container';
+        sizeLabel.innerHTML = size;
+        const sizeRadio = document.createElement('input');
+        sizeRadio.type = 'radio';
+        sizeRadio.name = 'size';
+        sizeRadio.id = size;
+        sizeRadio.value = placeholders[size.toLowerCase()];
+        sizeLabel.append(sizeRadio);
+        const checkmark = document.createElement('span');
+        checkmark.className = 'checkmark';
+        sizeLabel.append(checkmark);
+        sizeBlock.append(sizeLabel);
+    });
 }
 
 export default async function decorate(block) {
@@ -219,28 +417,36 @@ export default async function decorate(block) {
             if (resultsContainer) {
                 resultsContainer.innerHTML = '';
             }
-            if (sidebarElement) {
-                sidebarElement.remove();
-            }
             // show pagination
             const pagination = document.querySelector('.pagination.hidden');
             pagination?.classList.remove('hidden');
             
             // temporarily inserting results into empty section on page
-            const tempResultsContainer = block.closest('.section').nextElementSibling;
+            let tempResultsContainer = document.getElementById('results-container');
+            if (!tempResultsContainer) {
+                tempResultsContainer = block.closest('.section').nextElementSibling;
+                tempResultsContainer.id = 'results-container';
+            }
+            
             tempResultsContainer.classList.add('adopt-search-results');
             tempResultsContainer.classList.add('list');
-            const tempResultsBlock = tempResultsContainer.firstElementChild;
+            let tempResultsBlock = document.getElementById('results-block');
+            if (!tempResultsBlock) {
+                tempResultsBlock = tempResultsContainer.firstElementChild;
+            }
             tempResultsBlock.classList.add('results');
             tempResultsBlock.innerHTML = '';
             tempResultsBlock.id = 'results-block'
             animalArray = data.animal;
 
             // adding filter sidebar
-            const sidebar = document.createElement('div');
-            sidebar.classList.add('sidebar');
-            sidebar.innerHTML = "sidebar test content";
-            tempResultsContainer.prepend(sidebar);
+            
+            if (!sidebarElement) {
+                const sidebar = document.createElement('div');
+                sidebar.classList.add('sidebar');
+                buildFilterSidebar(sidebar);
+                tempResultsContainer.prepend(sidebar);
+            }
 
             const paginationNumbers = document.querySelector('.pagination-numbers');
             paginationNumbers.innerHTML = '';
@@ -250,7 +456,8 @@ export default async function decorate(block) {
                 if (i === 0) {
                     button.className = 'active';
                 }
-                button.addEventListener('click', calculatePagination(i + 1));
+                button.addEventListener('click', calculatePagination);
+                button.myParam = i + 1;
                 button.innerHTML = i + 1;
                 paginationNumbers.append(button);
             }

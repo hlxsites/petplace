@@ -20,7 +20,7 @@
     margin: 0 0 20px 0;
     padding: 0;
     position: relative;
-    overflow: auto;
+    overflow: hidden;
 }
 
 @media screen and (min-width: 1024px) {
@@ -28,6 +28,98 @@
         position: absolute;
         width: 200px;
     }
+}
+
+.adopt-search-results .sidebar .sidebar-header {
+    font-size: 16px;
+    font-weight: 800;
+    font-family: Raleway,sans-serif;
+    margin-bottom: 10px;
+} 
+
+.adopt-search-results .sidebar select {
+    display: block;
+    border: 1px solid #3B092C;
+    height: 43px;
+    padding: 0 16px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    color: var(--Text-Default, #28061E);
+    margin-top: 10px;
+
+    /** for the dropdown indicator */
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.adopt-search-results .sidebar .radio-block {
+    display: block;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #D0D0D6;
+}
+
+.adopt-search-results .sidebar .radio-container {
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.adopt-search-results .sidebar .radio-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.adopt-search-results .sidebar .radio-container .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 2px solid #6E6D73;
+}
+
+.adopt-search-results .sidebar .radio-container input:checked ~ .checkmark  {
+    background-color: #7369AB;
+    border: 2px solid #7369AB;
+}
+
+.adopt-search-results .sidebar .radio-container .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.adopt-search-results .sidebar .radio-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.adopt-search-results .sidebar .radio-container  .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .pagination.hidden {
@@ -247,6 +339,8 @@
 @media screen and (min-width: 1024px) {
     .adopt-search-results .results {
         margin-left: 220px;
+        max-height: 1500px;
+        transition: max-height 0.5s ease-out;
     }
 }
 
