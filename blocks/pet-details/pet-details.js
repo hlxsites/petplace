@@ -4,9 +4,11 @@ import { ImageCarousel } from './image-carousel.js';
 
 async function getParametersFromUrl() {
     const { pathname } = window.location;
-    const [animalId, clientId] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 2);
+    const pathArr = pathname.split('/')
+    const [animalId, clientId] = pathname.endsWith('/') ? pathArr.slice(pathArr.length - 3, pathArr.length - 1): pathArr.slice(-2);
+    console.log(animalId, clientId)
     //return {clientId, animalId}
-    return {animalId: '40596030', clientId: 'PP1008'}
+    return {animalId: '40596030', clientId: 'PP1008'};
 }
 async function fetchAnimalData(clientId, animalId) {
     const animalApi = `https://api-stg-petplace.azure-api.net/animal/${animalId}/client/${clientId}`;
