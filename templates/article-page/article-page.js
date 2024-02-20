@@ -8,7 +8,6 @@ import {
 import {
   createBreadCrumbs,
   getCategories,
-  getCategory,
 } from '../../scripts/scripts.js';
 import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
