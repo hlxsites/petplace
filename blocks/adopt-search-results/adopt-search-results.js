@@ -11,8 +11,6 @@ const {
     breedPlaceholder,
     zipLabel,
     zipPlaceholder,
-    zipErrorMessage,
-    searchButtonText,
     searchAlertText,
     genderOptions,
     sizeOptions,
@@ -22,14 +20,16 @@ const {
     radiusLabel,
     genderLabel,
     sizeLabel,
-    ageLabel
+    ageLabel,
+    clearLabel
 } = placeholders;
 // console.log('placeholders', petTypeLabel, petTypeValues, breedLabel, breedPlaceholder, zipLabel, zipPlaceholder, zipErrorMessage, searchButtonText);
-console.log(placeholders);
+// console.log(placeholders);
 let breedList = [];
 let current_page = 1;
 let records_per_page = 16;
 let animalArray = []
+
 
 async function callAnimalList() {
     applyFilters();
@@ -161,6 +161,14 @@ function numPages()
 {
     return Math.ceil(animalArray.length / records_per_page);
 }
+function clearFilters() {
+    document.getElementById("radius").selectedIndex = 0;
+    let radioButtons = document.querySelectorAll('input:checked');
+    for(var i=0;i<radioButtons.length;i++) {
+        radioButtons[i].checked = false;
+    }
+    
+}
 
 function calculatePagination(page) {
     if (page.currentTarget?.myParam) {
@@ -175,17 +183,36 @@ function calculatePagination(page) {
     for (var i = (page-1) * records_per_page; i < (page * records_per_page) && i < animalArray.length; i++) {
         filteredArray.push(animalArray[i]);
     }
-    const activeButton = document.querySelector('.pagination-numbers .active');
-    activeButton?.classList.remove('active');
-    const paginationButtons = document.querySelectorAll('.pagination-numbers button');
-    paginationButtons[page - 1]?.classList?.add('active');
+    const paginationNumbers = document.querySelector('.pagination-numbers');
+    paginationNumbers.innerHTML = '';
+    // add pagination numbers
+    const maxPagesToShow = 2; // Adjust as needed
+    for (let i = 1; i <= numPages(); i++) {
+        if (i === 1 || i === numPages() || (i >= current_page - Math.floor(maxPagesToShow / 2) && i <= current_page + Math.floor(maxPagesToShow / 2))) {
+            
+            const button = document.createElement('button');
+            if (i === current_page) {
+                console.log(current_page, i)
+                button.className = 'active';
+            }
+            button.addEventListener('click', calculatePagination);
+            button.myParam = i;
+            button.innerHTML = i;
+            paginationNumbers.append(button);
+        }
+        // Add an ellipsis to indicate that there are more pages available
+        else if (i === current_page - Math.floor(maxPagesToShow / 2) - 1 || i === current_page + Math.floor(maxPagesToShow / 2) + 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            paginationNumbers.appendChild(ellipsis);
+        }
+    }
     buildResultsList(filteredArray);
 }
 
 window.onload = callBreedList("null").then((data) => {
     breedList = data;
     updateBreedListSelect();
-    callAnimalList();
     const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
     const div = document.createElement('div');
     div.className = 'pagination hidden';
@@ -205,6 +232,16 @@ window.onload = callBreedList("null").then((data) => {
     div.append(paginationNumbers);
     div.append(nextButton);
     tempResultsContainer.append(div);
+
+    // When the page loads, check if there are any query parameters in the URL
+    let params = new URLSearchParams(window.location.search);
+
+    // If there are, select the corresponding filters
+    let filters = {};
+    if (params.has('filterZip')) {
+        console.log(params.get('filterZip'))
+        document.getElementById('zip').value = params.get('filterZip');
+    }
     
 });
 
@@ -245,7 +282,7 @@ function buildResultsList(animalList) {
     });
     setTimeout(() => {
         tempResultsBlock.style.removeProperty('height');
-      }, "500");
+      }, "400");
     
 }
 
@@ -254,6 +291,13 @@ function buildFilterSidebar(sidebar)  {
     filterLabel.className = 'sidebar-label';
     filterLabel.innerHTML = filtersLabel;
     sidebar.append(filterLabel);
+
+    // create clear button
+    const clearButton = document.createElement('button');
+    clearButton.className = 'sidebar-clear';
+    clearButton.innerHTML = clearLabel;
+    clearButton.addEventListener('click', clearFilters);
+    sidebar.append(clearButton);
 
     // create search radius select
     const radiusLabelElement = document.createElement('label');
@@ -405,9 +449,9 @@ function getFilters() {
 }
 
 // Apply filters
-function applyFilters() {
+    const applyFilters = function() {
     const filters = getFilters();
-
+    console.log(filters)
     // Update the URL with the selected filters as query parameters
     let params = new URLSearchParams(filters);
     window.history.replaceState({}, '', '?' + params.toString());
@@ -452,35 +496,6 @@ function buildResultsContainer(data) {
         tempResultsContainer.prepend(sidebar);
     }
 
-    const paginationNumbers = document.querySelector('.pagination-numbers');
-    paginationNumbers.innerHTML = '';
-    // add pagination numbers
-    const maxPagesToShow = 1; // Adjust as needed
-    for (var i = 0; i < numPages(); i++) {
-        if (i === 0 || i === numPages() || (i >= current_page - Math.floor(maxPagesToShow / 2) && i <= current_page + Math.floor(maxPagesToShow / 2))) {
-            
-            const button = document.createElement('button');
-            if (i === 0) {
-                button.className = 'active';
-            }
-            button.addEventListener('click', calculatePagination);
-            button.myParam = i + 1;
-            button.innerHTML = i + 1;
-            paginationNumbers.append(button);
-        }
-        // Add an ellipsis to indicate that there are more pages available
-        else if (i === (numPages() - 2)) {
-            const ellipsis = document.createElement('span');
-            ellipsis.textContent = '...';
-            paginationNumbers.appendChild(ellipsis);
-        } else if ((i + 1) === numPages()) {
-            const button = document.createElement('button');
-            button.addEventListener('click', calculatePagination);
-            button.myParam = i + 1;
-            button.innerHTML = i + 1;
-            paginationNumbers.append(button);
-        }
-    }
     current_page = 1;
     calculatePagination(1);
 }
@@ -601,18 +616,6 @@ export default async function decorate(block) {
     button.type = 'submit';
     button.className = 'adopt-search-button';
     button.textContent = searchAlertText;
-    //   const xhr = new XMLHttpRequest();
-    //   xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
-    //   xhr.onreadystatechange = function () {
-    //     if (xhr.readyState === 4 && xhr.status === 200) {
-    //       // On successful response, create and append the SVG element
-    //       const svgElement = document.createElement('svg');
-    //       svgElement.className = 'icon-search';
-    //       svgElement.innerHTML = xhr.responseText;
-    //       button.appendChild(svgElement);
-    //     }
-    //   };
-    //   xhr.send();
 
     form.append(petTypeContainer);
 

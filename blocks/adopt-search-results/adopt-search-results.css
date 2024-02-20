@@ -24,10 +24,22 @@
     overflow: hidden;
 }
 
+.adopt-search-results .sidebar .sidebar-clear {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-family: "Libre Franklin";
+    font-weight: 400;
+    font-size: 16px;
+    text-decoration: underline;
+    color: #2F2F33;
+    background-color: transparent;
+}
+
 @media screen and (min-width: 1024px) {
     .adopt-search-results .sidebar {
         position: absolute;
-        width: 200px;
+        width: 250px;
     }
 }
 
@@ -137,9 +149,12 @@
 }
 .adopt-search-results .pagination .pagination-numbers button {
     display: inline;
+    font-family: "Libre Franklin";
+    font-weight: 400;
+    font-size: 18px;
     background-color: transparent;
     color: #2F2F33;
-    border: 1px solid #2F2F33;
+    border: 1px solid #D0D0D6;
     border-left: transparent;
     border-radius: 0;
     padding: 10px;
@@ -147,23 +162,30 @@
 .adopt-search-results .pagination .pagination-numbers button.active {
     color: #fff;
     background-color: #7369AB;
+    border: 1px solid #7369AB;
 }
 .adopt-search-results .pagination .pagination-numbers span {
     position: relative;
+    font-family: "Libre Franklin";
+    font-weight: 400;
+    font-size: 18px;
     top: 1px;
     display: inline;
     background-color: transparent;
     color: #2F2F33;
-    border: 1px solid #2F2F33;
+    border: 1px solid #D0D0D6;
     border-left: transparent;
     border-radius: 0;
-    padding: 7px 7px 8px;
+    padding: 11px 7px 9px;
 }
 
 .adopt-search-results .pagination #btn_prev {
     background-color: transparent;
+    font-family: "Libre Franklin";
+    font-weight: 400;
+    font-size: 18px;
     color: #2F2F33;
-    border: 1px solid #2F2F33;
+    border: 1px solid #D0D0D6;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     border-top-right-radius: 0;
@@ -173,8 +195,11 @@
 }
 .adopt-search-results .pagination #btn_next {
     background-color: transparent;
+    font-family: "Libre Franklin";
+    font-weight: 400;
+    font-size: 18px;
     color: #2F2F33;
-    border: 1px solid #2F2F33;
+    border: 1px solid #D0D0D6;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-top-left-radius: 0;
@@ -350,7 +375,7 @@
 
 @media screen and (min-width: 1024px) {
     .adopt-search-results .results {
-        margin-left: 220px;
+        margin-left: 270px;
         max-height: 1500px;
         transition: max-height 0.5s ease-out;
     }
