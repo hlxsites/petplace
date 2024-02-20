@@ -16,9 +16,6 @@ body.adopt .hero h2 {
   letter-spacing: -0.64px;
   color: #000;
 }
-body.adopt .hero .columns-img-col {
-  align-self: stretch;
-}
 body.adopt .columns.guide .columns-img-col {
   width: auto;
 }

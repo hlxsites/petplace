@@ -101,7 +101,6 @@ async function createSearchForm(block) {
       radio.name = 'filterAnimalType';
       radio.id = `radio-${petType}`;
       radio.value = petType;
-      radio.required = true;
       p.append(radio);
       p.append(label);
       radioContainer.append(p);
@@ -147,6 +146,7 @@ async function createSearchForm(block) {
   const breedLabelElement = document.createElement('label');
   breedLabelElement.for = 'breed';
   breedLabelElement.innerText = breedLabel;
+  breedLabelElement.setAttribute('for', 'breed');
 
   const breedSelect = document.createElement('select');
   breedSelect.name = 'breed';
@@ -214,16 +214,26 @@ async function createSearchForm(block) {
     // if on /pet-adoption/ the form should direct to /pet-adoption/search?[queryparameters]
     // zipPostal, filterBreed, filterAnimalType
     const selectedBreed = encodeURIComponent(breedSelect.value.toLowerCase());
-    const selectedAnimalType = encodeURIComponent(
-      radioContainer
-        .querySelector('input[name="filterAnimalType"]:checked')
-        .value.toLowerCase(),
-    );
     const zipCode = zipInput.value;
+    let selectedAnimalType = null;
+
+    if (radioContainer
+      .querySelector('input[name="filterAnimalType"]:checked')) {
+        selectedAnimalType = encodeURIComponent(
+          radioContainer
+            .querySelector('input[name="filterAnimalType"]:checked')
+            .value.toLowerCase(),
+        );
+    } else {
+      selectedAnimalType = '';
+    }
 
     const searchParams = new URLSearchParams();
     searchParams.set('zipPostal', zipCode);
-    searchParams.set('filterAnimalType', selectedAnimalType);
+
+    if (selectedAnimalType !== '') {
+      searchParams.set('filterAnimalType', selectedAnimalType);
+    }
 
     if (selectedBreed !== '') {
       searchParams.set('filterBreed', selectedBreed);
@@ -311,7 +321,7 @@ export default async function decorate(block) {
     },
     animalFilters: {
       startIndex: 0,
-      numResults: 50,
+      numResults: 4,
     },
   };
 
