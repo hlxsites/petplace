@@ -3,3 +3,20 @@
     justify-content: center;
     width: 100%;
 }
+.bytetag-round {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    max-width: 100% !important;
+    gap: 150px;
+}
+.bytetag-round > div {
+    max-width: 550px;
+}
+.bytetag-round > div h3 {
+    border-top: 1px solid #D9D9D9;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+.bytetag-round > div h3:first-of-type {
+    border-top: 0;
+}
