@@ -180,7 +180,7 @@ async function createSearchForm(block) {
   zipContainer.append(zipInput);
 
   const clearButton = document.createElement('button');
-  clearButton.setAttribute('id', 'clearButton');
+  clearButton.setAttribute('id', 'clear-button');
   clearButton.setAttribute('type', 'button');
   clearButton.innerHTML = '&#10005;';
 

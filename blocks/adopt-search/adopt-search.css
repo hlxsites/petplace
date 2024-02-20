@@ -5,6 +5,10 @@
   background-color: var(--compare-button-bg-color);
 }
 
+.adopt .columns-img-col {
+  max-width: max-content;
+}
+
 /* Hero */
 .adopt .hero h1 {
   margin: 0;
@@ -45,9 +49,10 @@
   }
 }
 
-body.adopt .hero .columns-img-col picture img {
+.adopt .hero img {
+  object-fit: cover;
   width: 100%;
-  border-radius: 0;
+  height: 100%;
 
   @media (min-width: 1024px) {
     border-radius: 16px;
@@ -58,8 +63,8 @@ body.adopt .hero .columns-img-col picture img {
   margin-bottom: 0;
 }
 
-.adopt .hero .columns-txt-col h1,
-.adopt .hero .columns-txt-col h2 {
+.adopt .hero h1,
+.adopt .hero h2 {
   text-align: center;
 
   @media (min-width: 768px) {
@@ -73,7 +78,7 @@ body.adopt .hero .columns-img-col picture img {
   display: none;
 }
 
-.adopt-search-wrapper form {
+.adopt-search-box-wrapper {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -81,13 +86,7 @@ body.adopt .hero .columns-img-col picture img {
   margin-top: 32px;
 }
 
-.adopt-search-wrapper .adopt-search.results form {
-  display: flex;
-  flex-direction: row;
-  gap: 32px;
-}
-
-.adopt-search-wrapper form fieldset {
+.adopt-search-box-wrapper fieldset {
   display: flex;
   border: none;
   margin: 0;
@@ -96,44 +95,46 @@ body.adopt .hero .columns-img-col picture img {
   gap: 16px;
 }
 
-.adopt-search-wrapper .adopt-search.results form fieldset {
-  width: auto;
+.adopt-search-box-wrapper label,
+.adopt-search-box-wrapper fieldset legend {
+  color: var(--text-default, #28061e);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: 12px;
 }
 
-.adopt-search-wrapper form fieldset label {
+.adopt-search-box-wrapper fieldset label {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  color: var(--Text-Supporting, #2f2f33);
-  font-family: 'Libre Franklin';
+  padding: 10px var(--spacing-large, 24px);
+  width: auto;
+  font-family: var(--body-font-family);
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 28px;
+  color: var(--text-supporting, #2f2f33);
+  border: 1px solid var(--border-strong, #d0d0d6);
+  border-radius: 8px;
 }
 
-.adopt-search-wrapper form fieldset input {
+.adopt-search-box-wrapper fieldset input {
   /* display: none; */
   position: fixed;
   opacity: 0;
   pointer-events: none;
 }
 
-.adopt-search-wrapper form fieldset input:checked + label {
-  background: var(--Purple-300, #7369ab);
+.adopt-search-box-wrapper fieldset input:checked + label {
+  background: var(--purple-300, #7369ab);
   color: #fff;
 }
 
-.adopt-search-wrapper form fieldset label {
-  padding: 10px var(--Spacing-Large, 24px);
-  width: auto;
-  display: inline-block;
-  border: 1px solid var(--Border-Strong, #d0d0d6);
-  border-radius: 8px;
-}
-
-.adopt-search-wrapper form > div {
+.adopt-search-wrapper .adopt-search-box-wrapper > div {
   display: flex;
   flex-direction: column;
 
@@ -142,13 +143,9 @@ body.adopt .hero .columns-img-col picture img {
   }
 }
 
-.adopt-search-wrapper .adopt-search.results form > div {
-  width: 100%;
-}
-
-.adopt-search-wrapper form input:not([type='radio']),
-.adopt-search-wrapper form select,
-.adopt-search-wrapper form textarea {
+.adopt-search-box-wrapper input:not([type='radio']),
+.adopt-search-box-wrapper select,
+.adopt-search-box-wrapper textarea {
   margin-bottom: 0;
   border: 1px solid #000;
   height: 48px;
@@ -157,22 +154,10 @@ body.adopt .hero .columns-img-col picture img {
   width: 100%;
   max-width: 100%;
   font-size: 16px;
-  color: var(--Text-Default, #28061e);
+  color: var(--text-default, #28061e);
 }
 
-.adopt-search-wrapper form > div > label,
-.adopt-search-wrapper form fieldset legend {
-  color: var(--Text-Default, #28061e);
-  /* Body/Small/Button */
-  font-family: 'Libre Franklin';
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  margin-bottom: 12px;
-}
-
-.adopt-search-wrapper form div #clearButton {
+.adopt-search-box-wrapper #clear-button {
   display: none;
   background: none;
   border: none;
@@ -192,8 +177,8 @@ body.adopt .hero .columns-img-col picture img {
   }
 }
 
-.adopt-search-wrapper form button.adopt-search-button {
-  margin: 8px 0 8px;
+.adopt-search-box-wrapper button.adopt-search-button {
+  margin: 8px 0;
   padding-block: 13px;
   width: 100%;
   min-width: 300px;
@@ -213,7 +198,7 @@ body.adopt .hero .columns-img-col picture img {
 .adoptable-pets .pet-card {
   width: 250px;
   border-radius: 8px;
-  box-shadow: 0px 2px 4px 0px #0000003d;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 24%);
   position: relative;
   flex-shrink: 0;
 
@@ -242,7 +227,7 @@ body.adopt .hero .columns-img-col picture img {
   margin: 0;
   padding: 0;
   border-radius: 50%;
-  background-color: #ffffffd9;
+  background-color: #ffffd9;
 }
 
 .adoptable-pets .pet-card-favorite-icon {
@@ -302,10 +287,10 @@ body.adopt .hero .columns-img-col picture img {
 }
 
 .adoptable-pets .stretched-link {
-  color: #000000;
+  color: #000;
 }
 
-.adoptable-pets .stretched-link:after {
+.adoptable-pets .stretched-link::after {
   position: absolute;
   content: '';
   top: 0;
@@ -315,16 +300,11 @@ body.adopt .hero .columns-img-col picture img {
 }
 
 /* Guide */
-
 .adopt-guide-container .columns-wrapper {
   @media (min-width: 1024px) {
     display: flex;
     gap: 70px;
   }
-}
-
-.adopt-guide-container .columns-img-col {
-  max-width: max-content;
 }
 
 .adopt-guide-container .guide > div {
@@ -346,7 +326,7 @@ body.adopt .hero .columns-img-col picture img {
   margin: 0;
 }
 
-.adopt-guide-container h2 {
+.adopt-guide-container .default-content-wrapper h2 {
   margin-top: 0;
   max-width: 28ch;
   font-size: 44px;
@@ -357,7 +337,6 @@ body.adopt .hero .columns-img-col picture img {
 }
 
 /* Insurance */
-
 .adopt .insurance .button {
   margin: 32px 0 0;
   color: #222;
@@ -369,13 +348,13 @@ body.adopt .hero .columns-img-col picture img {
   }
 }
 
-.adopt .insurance > div {
+.adopt .insurance.columns > div {
   @media (min-width: 1024px) {
     gap: 74px;
   }
 }
 
-.adopt .insurance h2 {
+.adopt .insurance .columns-txt-col h2 {
   margin: 0 0 14px;
   font-size: 32px;
   line-height: 36px;
