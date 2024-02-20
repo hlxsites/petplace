@@ -1,6 +1,7 @@
 .adopt-search-results.list {
     background-color: #FAFAFC;
     position: relative;
+    min-height: 680px;
 }
 .adopt-search-results-container.section {
     border-top: 1px solid #D0D0D6;
@@ -146,6 +147,17 @@
 .adopt-search-results .pagination .pagination-numbers button.active {
     color: #fff;
     background-color: #7369AB;
+}
+.adopt-search-results .pagination .pagination-numbers span {
+    position: relative;
+    top: 1px;
+    display: inline;
+    background-color: transparent;
+    color: #2F2F33;
+    border: 1px solid #2F2F33;
+    border-left: transparent;
+    border-radius: 0;
+    padding: 7px 7px 8px;
 }
 
 .adopt-search-results .pagination #btn_prev {

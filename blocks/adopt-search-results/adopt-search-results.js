@@ -32,6 +32,7 @@ let records_per_page = 16;
 let animalArray = []
 
 async function callAnimalList() {
+    applyFilters();
     const petType = document.getElementById("pet-type")?.value;
     let animalType = null
     if (petType !== 'null') {
@@ -47,7 +48,6 @@ async function callAnimalList() {
         zip = null;
     }
     let radius = document.getElementById("radius")?.value;
-    console.log(radius)
     if (!radius || radius === "null") {
         radius = 10;
     }
@@ -56,12 +56,19 @@ async function callAnimalList() {
         gender = null;
     }
     let age = document.querySelector('input[name="age"]:checked')?.value;
+    
+    let ageList = [];
     if (!age) {
-        age = null;
+        ageList = null
+    } else {
+        ageList.push(age);
     }
     let size = document.querySelector('input[name="size"]:checked')?.value;
+    let sizeList = [];
     if (!size) {
         size = null;
+    } else {
+        sizeList.push(size);
     }
 
     const response = await fetch('https://api-stg-petplace.azure-api.net/animal', {
@@ -81,12 +88,12 @@ async function callAnimalList() {
             },
             animalFilters: {
                 startIndex: 0,
-                numResults: 50,
+                numResults: 100,
                 filterAnimalType: animalType,
                 filterBreedType: breed,
                 filterGender: gender,
-                filterAge: age,
-                filterSize: size
+                filterAge: ageList,
+                filterSize: sizeList
             },
         }),
     });
@@ -116,7 +123,7 @@ async function callBreedList(petType) {
 
 function updateBreedListSelect() {
     const breedSelect = document.getElementById("breed")
-    var i, L = breedSelect.options.length - 1;
+    var i, L = breedSelect?.options.length - 1;
     for(i = L; i >= 0; i--) {
         breedSelect.remove(i);
     }
@@ -124,14 +131,14 @@ function updateBreedListSelect() {
     const option = document.createElement('option');
     option.innerText = breedPlaceholder;
     option.value = '';
-    breedSelect.append(option);
+    breedSelect?.append(option);
 
     breedList.forEach((breed) => {
         const option = document.createElement('option');
         option.innerText = breed?.breedValue;
         option.value = breed?.breedKey;
     
-        breedSelect.append(option);
+        breedSelect?.append(option);
     })
 }
 
@@ -258,6 +265,11 @@ function buildFilterSidebar(sidebar)  {
     radiusSelect.name = 'radius';
     radiusSelect.id = 'radius';
     radiusSelect.className = 'filter-select';
+    radiusSelect.addEventListener('change', () => {
+        callAnimalList().then((data) => {
+            buildResultsContainer(data);
+        });
+    });
     const radiusOption = document.createElement('option');
     radiusOption.innerText = "Any";
     radiusOption.value = null;
@@ -283,21 +295,6 @@ function buildFilterSidebar(sidebar)  {
     genderBlock.append(genderLabelElement);
     sidebar.append(genderBlock);
 
-    const anyLabel = document.createElement('label');
-    anyLabel.for = 'gender-any';
-    anyLabel.className = 'radio-container';
-    anyLabel.innerHTML = 'Any';
-    const anyGenderRadio = document.createElement('input');
-    anyGenderRadio.type = 'radio';
-    anyGenderRadio.name = 'gender';
-    anyGenderRadio.id = 'gender-any'
-    anyGenderRadio.value = null;
-    anyLabel.append(anyGenderRadio);
-    const checkmark = document.createElement('span');
-    checkmark.className = 'checkmark';
-    anyLabel.append(checkmark);
-    genderBlock.append(anyLabel);
-
     const genderList = genderOptions.split(',');
     genderList.forEach((gender) => {
         const genderLabel = document.createElement('label');
@@ -309,6 +306,11 @@ function buildFilterSidebar(sidebar)  {
         genderRadio.name = 'gender';
         genderRadio.id = gender;
         genderRadio.value = placeholders[gender.toLowerCase()];
+        genderRadio.addEventListener('click', () => {
+            callAnimalList().then((data) => {
+                buildResultsContainer(data);
+            });
+        });
         genderLabel.append(genderRadio);
         const checkmark = document.createElement('span');
         checkmark.className = 'checkmark';
@@ -325,20 +327,6 @@ function buildFilterSidebar(sidebar)  {
     ageBlock.append(ageLabelElement);
     sidebar.append(ageBlock);
 
-    const anyAgeRadio = document.createElement('input');
-    const anyAgeLabel = document.createElement('label');
-    anyAgeLabel.for = 'age-any';
-    anyAgeLabel.className = 'radio-container';
-    anyAgeLabel.innerHTML = 'Any';
-    anyAgeRadio.type = 'radio';
-    anyAgeRadio.name = 'age';
-    anyAgeRadio.id = 'age-any'
-    anyAgeRadio.value = null;
-    anyAgeLabel.append(anyAgeRadio);
-    const ageCheckmark = document.createElement('span');
-    ageCheckmark.className = 'checkmark';
-    anyAgeLabel.append(ageCheckmark);
-    ageBlock.append(anyAgeLabel);
     const ageList = ageOptions.split(',');
     ageList.forEach((age) => {
         const ageLabel = document.createElement('label');
@@ -349,8 +337,14 @@ function buildFilterSidebar(sidebar)  {
         ageRadio.type = 'radio';
         ageRadio.name = 'age';
         ageRadio.id = age;
+        ageRadio.addEventListener('click', () => {
+            callAnimalList().then((data) => {
+                buildResultsContainer(data);
+            });
+        });
         let formattedAge = age[0].toLowerCase() + age.slice(1);
-        ageRadio.value = placeholders[formattedAge?.replace(/\s+/g, '')?.replace(/\+/g, '')];
+        console.log(formattedAge?.replace(/\s+/g, '')?.replace(/\+/g, '')?.replace(/\//g, ''), placeholders)
+        ageRadio.value = placeholders[formattedAge?.replace(/\s+/g, '')?.replace(/\+/g, '')?.replace(/\//g, '')];
         ageLabel.append(ageRadio);
         const checkmark = document.createElement('span');
         checkmark.className = 'checkmark';
@@ -367,20 +361,6 @@ function buildFilterSidebar(sidebar)  {
     sizeBlock.append(sizeLabelElement);
     sidebar.append(sizeBlock);
 
-    const anySizeLabel = document.createElement('label');
-    anySizeLabel.for = 'size-any';
-    anySizeLabel.className = 'radio-container';
-    anySizeLabel.innerHTML = 'Any';
-    const anySizeRadio = document.createElement('input');
-    anySizeRadio.type = 'radio';
-    anySizeRadio.name = 'size';
-    anySizeRadio.id = 'size-any'
-    anySizeRadio.value = null;
-    anySizeLabel.append(anySizeRadio);
-    const sizeCheckmark = document.createElement('span');
-    sizeCheckmark.className = 'checkmark';
-    anySizeLabel.append(sizeCheckmark);
-    sizeBlock.append(anySizeLabel);
     const sizeList = sizeOptions.split(',');
     sizeList.forEach((size) => {
         const sizeLabel = document.createElement('label');
@@ -392,12 +372,117 @@ function buildFilterSidebar(sidebar)  {
         sizeRadio.name = 'size';
         sizeRadio.id = size;
         sizeRadio.value = placeholders[size.toLowerCase()];
+        sizeRadio.addEventListener('click', () => {
+            callAnimalList().then((data) => {
+                buildResultsContainer(data);
+            });
+        });
         sizeLabel.append(sizeRadio);
         const checkmark = document.createElement('span');
         checkmark.className = 'checkmark';
         sizeLabel.append(checkmark);
         sizeBlock.append(sizeLabel);
     });
+}
+ // Get filters
+function getFilters() {
+    let filters = {
+        filterRadius: document.getElementById('radius')?.value,
+        filterGender: document.querySelector('input[name="gender"]:checked')?.value,
+        filterAge: document.querySelector('input[name="age"]:checked')?.value,
+        filterType: document.getElementById('pet-type')?.value,
+        filterBreed: document.getElementById('breed')?.value,
+        filterZip: document.getElementById('zip')?.value
+        // Add more filters as needed
+    };
+
+    // Only include the size filter in the request filter object when 'Cat' is not selected
+    if (document.getElementById('pet-type')?.value !== 'Cat') {
+        filters.filterSize = document.querySelector('input[name="size"]:checked')?.value
+    }
+
+    return filters;
+}
+
+// Apply filters
+function applyFilters() {
+    const filters = getFilters();
+
+    // Update the URL with the selected filters as query parameters
+    let params = new URLSearchParams(filters);
+    window.history.replaceState({}, '', '?' + params.toString());
+};
+
+function buildResultsContainer(data) {
+    // clear any previous results
+    const block = document.querySelector('.adopt-search-results.block');
+    let resultsContainer = document.querySelector('.default-content-wrapper.results');
+    let sidebarElement = document.querySelector('.sidebar');
+    if (resultsContainer) {
+        resultsContainer.innerHTML = '';
+    }
+    // show pagination
+    const pagination = document.querySelector('.pagination.hidden');
+    pagination?.classList.remove('hidden');
+    
+    // temporarily inserting results into empty section on page
+    let tempResultsContainer = document.getElementById('results-container');
+    if (!tempResultsContainer) {
+        tempResultsContainer = block.closest('.section').nextElementSibling;
+        tempResultsContainer.id = 'results-container';
+    }
+    
+    tempResultsContainer.classList.add('adopt-search-results');
+    tempResultsContainer.classList.add('list');
+    let tempResultsBlock = document.getElementById('results-block');
+    if (!tempResultsBlock) {
+        tempResultsBlock = tempResultsContainer.firstElementChild;
+    }
+    tempResultsBlock.classList.add('results');
+    tempResultsBlock.innerHTML = '';
+    tempResultsBlock.id = 'results-block'
+    animalArray = data.animal;
+
+    // adding filter sidebar
+    
+    if (!sidebarElement) {
+        const sidebar = document.createElement('div');
+        sidebar.classList.add('sidebar');
+        buildFilterSidebar(sidebar);
+        tempResultsContainer.prepend(sidebar);
+    }
+
+    const paginationNumbers = document.querySelector('.pagination-numbers');
+    paginationNumbers.innerHTML = '';
+    // add pagination numbers
+    const maxPagesToShow = 1; // Adjust as needed
+    for (var i = 0; i < numPages(); i++) {
+        if (i === 0 || i === numPages() || (i >= current_page - Math.floor(maxPagesToShow / 2) && i <= current_page + Math.floor(maxPagesToShow / 2))) {
+            
+            const button = document.createElement('button');
+            if (i === 0) {
+                button.className = 'active';
+            }
+            button.addEventListener('click', calculatePagination);
+            button.myParam = i + 1;
+            button.innerHTML = i + 1;
+            paginationNumbers.append(button);
+        }
+        // Add an ellipsis to indicate that there are more pages available
+        else if (i === (numPages() - 2)) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            paginationNumbers.appendChild(ellipsis);
+        } else if ((i + 1) === numPages()) {
+            const button = document.createElement('button');
+            button.addEventListener('click', calculatePagination);
+            button.myParam = i + 1;
+            button.innerHTML = i + 1;
+            paginationNumbers.append(button);
+        }
+    }
+    current_page = 1;
+    calculatePagination(1);
 }
 
 export default async function decorate(block) {
@@ -410,59 +495,7 @@ export default async function decorate(block) {
         // should detect if the user is on the /adopt/search page before showing results
         // if on /adopt/ the form should direct to /adopt/search?[queryparameters]
         callAnimalList().then((data) => {
-            console.log('data', data);
-            // clear any previous results
-            let resultsContainer = document.querySelector('.default-content-wrapper.results');
-            let sidebarElement = document.querySelector('.sidebar');
-            if (resultsContainer) {
-                resultsContainer.innerHTML = '';
-            }
-            // show pagination
-            const pagination = document.querySelector('.pagination.hidden');
-            pagination?.classList.remove('hidden');
-            
-            // temporarily inserting results into empty section on page
-            let tempResultsContainer = document.getElementById('results-container');
-            if (!tempResultsContainer) {
-                tempResultsContainer = block.closest('.section').nextElementSibling;
-                tempResultsContainer.id = 'results-container';
-            }
-            
-            tempResultsContainer.classList.add('adopt-search-results');
-            tempResultsContainer.classList.add('list');
-            let tempResultsBlock = document.getElementById('results-block');
-            if (!tempResultsBlock) {
-                tempResultsBlock = tempResultsContainer.firstElementChild;
-            }
-            tempResultsBlock.classList.add('results');
-            tempResultsBlock.innerHTML = '';
-            tempResultsBlock.id = 'results-block'
-            animalArray = data.animal;
-
-            // adding filter sidebar
-            
-            if (!sidebarElement) {
-                const sidebar = document.createElement('div');
-                sidebar.classList.add('sidebar');
-                buildFilterSidebar(sidebar);
-                tempResultsContainer.prepend(sidebar);
-            }
-
-            const paginationNumbers = document.querySelector('.pagination-numbers');
-            paginationNumbers.innerHTML = '';
-            // add pagination numbers
-            for (var i = 0; i < numPages(); i++) {
-                const button = document.createElement('button');
-                if (i === 0) {
-                    button.className = 'active';
-                }
-                button.addEventListener('click', calculatePagination);
-                button.myParam = i + 1;
-                button.innerHTML = i + 1;
-                paginationNumbers.append(button);
-            }
-            current_page = 1;
-            calculatePagination(1);
+            buildResultsContainer(data);
         });
     });
 
@@ -528,8 +561,8 @@ export default async function decorate(block) {
     zipInput.type = 'text';
     zipInput.name = 'zipPostal';
     zipInput.id = 'zip';
-    // zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
-    // zipInput.required = true;
+    zipInput.pattern = `^\\d{5}(?:[-\\s]\\d{4})?$`;
+    zipInput.required = true;
     zipInput.placeholder = zipPlaceholder;
     zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
