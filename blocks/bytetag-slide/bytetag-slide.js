@@ -21,13 +21,13 @@
   function ShopifyBuyInit() {
     console.log('shopifyBuyInit()');
     var client = ShopifyBuy.buildClient({
-      domain: 'http://bytetag.myshopify.com ',
+      domain: 'bytetag.myshopify.com',
       storefrontAccessToken: 'abc347e34c78c1cd83d5a8b686963f35',
     });
     ShopifyBuy.UI.onReady(client).then(function (ui) {
       ui.createComponent('product', {
         id: '8345669861622',
-        node: document.getElementById('product-component-1706028430936'),
+        node: document.querySelector('.product-component-1706028430936'),
         moneyFormat: '%24%7B%7Bamount%7D%7D',
         options: {
   "product": {
