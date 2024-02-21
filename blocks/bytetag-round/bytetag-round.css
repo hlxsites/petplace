@@ -9,6 +9,12 @@
     max-width: 100% !important;
     gap: 150px;
 }
+@media (max-width: 600px){
+    .bytetag-round {
+        flex-direction: column !important;
+        width: 100%;
+    }
+}
 .bytetag-round > div {
     max-width: 550px;
 }

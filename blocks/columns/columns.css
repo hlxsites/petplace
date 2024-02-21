@@ -47,6 +47,53 @@
   padding: 0 .5rem;
 }
 
+.columns.cards > div{
+  align-items: stretch;
+}
+.columns.cards > div > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 1rem;
+  color: var(  --text-color);
+  border: 1px solid #D0D0D6;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+.columns.cards > div > div > p:first-of-type > picture > img:first-of-type {
+  width: 100%;
+  object-fit: cover;
+  border-collapse: separate;
+}
+.columns.cards > div > div > h3, 
+.columns.cards > div > div > h3 > em{
+  color: var(--text-color);
+}
+.columns.cards > div > div > p:not(:first-of-type){
+  /* text-align: center; */
+  font-size: var(   --body-font-size-default);
+  margin-bottom: var(--body-font-size-default);
+  /* padding: 0 16px; */
+}
+.columns.cards > div > div > p:not(:first-of-type),
+.columns.cards > div > div > h3 {
+  padding: 0 16px;
+  margin: 0;
+}
+.columns.cards > div > div > p:last-of-type{
+  margin-bottom: 0;
+}
+
+.section.highlight > div > .columns.cards > div > div {
+  align-items: center;
+  padding: 32px;
+  box-shadow: 0px 4px 16px #000;
+  background-color: var(  --background-color);
+}
+.section.highlight > div > .columns.cards > div > div p{
+  text-align: center;
+  /* object-fit: unset; */
+}
 .columns > div > .columns-img-col {
   order: 0;
 }
