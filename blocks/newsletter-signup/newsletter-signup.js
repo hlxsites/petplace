@@ -54,7 +54,7 @@ async function submitForm(block, fd) {
       showMessage(block, fd.Success);
       pushToDataLayer({
         event: 'sign_up',
-        signup_category: 'newsletter', // Example: 'newsletter'
+        signup_category: 'newsletter',
       });
     }
   } catch (e) {
