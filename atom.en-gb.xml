@@ -2,11 +2,21 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.petplace.com/en-gb</id>
     <title>PetPlace.com articles</title>
-    <updated>2024-01-11T00:00:00.000Z</updated>
+    <updated>2024-02-14T00:00:00.000Z</updated>
     <generator>News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.petplace.com/en-gb"/>
     <link rel="self" href="https://www.petplace.com/atom.en-gb.xml"/>
     <rights>All rights reserved 2024,  Independence America Holdings Corp.</rights>
+    <entry>
+        <title type="html"><![CDATA[A Guide to Bonding with Your Cat | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-companionship-a-guide-to-bonding-with-your-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-companionship-a-guide-to-bonding-with-your-cat"/>
+        <updated>2024-02-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Does your cat really love you? We list the signs of your cat's affection, discuss the human-animal relationship, and offers tips for bonding with your cat.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Does My Cat Love Me? | PetPlace.com]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/7-signs-your-cat-actually-adores-you</id>
@@ -55,6 +65,26 @@
         <summary type="html"><![CDATA[If your cat is licking her fur off, it's certainly concerning. What causes it and what can you do? There are several reasons cats lick their fur.]]></summary>
         <author>
             <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Understanding Ragdoll Cat Personality Traits | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/ragdoll-cat-personality-traits</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/ragdoll-cat-personality-traits"/>
+        <updated>2023-08-29T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Is a Ragdoll cat the perfect companion for you? Learn about their unique personality traits with our in-depth guide.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Understanding Cat Talk: What is Your Kitty Saying?]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/understanding-cat-talk-kitty-saying</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/understanding-cat-talk-kitty-saying"/>
+        <updated>2023-06-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Ever wonder what your cat is saying? We break down each sound your cat makes and what it might mean in our article about cat talk.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
         </author>
     </entry>
     <entry>
@@ -148,6 +178,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[The Perfect Cat Day: What’s an Ideal Cat Schedule? - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/normal-cat-behavior/perfect-cat-day-whats-ideal-cat-schedule</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/normal-cat-behavior/perfect-cat-day-whats-ideal-cat-schedule"/>
+        <updated>2021-07-06T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Should your cat be on a schedule? Absolutely! We break down the ideal daily cat schedule, including tips for meals and play.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Your Guide to Siamese Cats - PetPlace]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/breeds/guide-to-siamese-cats</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/breeds/guide-to-siamese-cats"/>
@@ -195,6 +235,26 @@
         <summary type="html"><![CDATA[Choosing a Domestic Shorthair]]></summary>
         <author>
             <name>J. Anne Helgren</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Does Your Cat Have Nine Lives?]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/does-your-cat-have-nine-lives</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/does-your-cat-have-nine-lives"/>
+        <updated>2019-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Does Your Cat Have Nine Lives?]]></summary>
+        <author>
+            <name>Renae Hamrick RVT</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[What You Need to Know About Cat Personalities - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/what-you-need-to-know-about-cat-personality</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/what-you-need-to-know-about-cat-personality"/>
+        <updated>2019-11-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats are known for their distinctive personalities and different breeds are commonly recognized by their specific traits and lovable idiosyncrasies.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
         </author>
     </entry>
     <entry>
@@ -258,6 +318,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Why Don’t Cats Listen When They’re Called? | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/why-dont-cats-listen-when-theyre-called</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-behavior-training/why-dont-cats-listen-when-theyre-called"/>
+        <updated>2019-10-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Unravel the mysteries of why cats don’t listen and discover practical tips to make yourself heard. Improve your pet's communication today!]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Black Cats: The Myth, The Legend, And The Science]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/black-cats-the-myth-the-legend-and-the-science</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/black-cats-the-myth-the-legend-and-the-science"/>
@@ -298,6 +368,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[OCD, FHS, and Mental Illness in Cats | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/crazy-cats-can-cats-be-mentally-ill</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/crazy-cats-can-cats-be-mentally-ill"/>
+        <updated>2019-09-28T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[However, can cats actually be “mentally ill”? The answer is yes. Cats can suffer from a number of behavioral issues. Learn more here.]]></summary>
+        <author>
+            <name>Janis Row</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[The Coolest Cats of All-Time]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/the-coolest-cats-of-all-time</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/the-coolest-cats-of-all-time"/>
@@ -305,6 +385,16 @@
         <summary type="html"><![CDATA[The Coolest Cats of All-Time]]></summary>
         <author>
             <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Catnip... and How it Affects Your Cat's Behavior]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/catnip-and-how-it-affects-your-cats-behavior</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/catnip-and-how-it-affects-your-cats-behavior"/>
+        <updated>2019-08-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Catnip... and How it Affects Your Cat's Behavior]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
         </author>
     </entry>
     <entry>
@@ -395,6 +485,16 @@
         <summary type="html"><![CDATA[What Does My Cat's Poop Mean?]]></summary>
         <author>
             <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cat Facts: How Much Do You Know About Cats? The Answers!]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-facts-much-know-cats-answers</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-facts-much-know-cats-answers"/>
+        <updated>2017-10-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat Facts: How Much Do You Know About Cats? The Answers!]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
         </author>
     </entry>
     <entry>
@@ -553,6 +653,16 @@
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/social-media-darlings-5-tips-for-incorporating-your-pets-into-your-posts"/>
         <updated>2015-11-19T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Social Media Darlings: 5 Tips for Incorporating Your Pets into Your Posts]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cats and Sleep: What You Need to Know]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-and-sleep-what-you-need-to-know</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-and-sleep-what-you-need-to-know"/>
+        <updated>2015-11-05T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats and Sleep: What You Need to Know]]></summary>
         <author>
             <name>PetPlace Staff</name>
         </author>
@@ -795,6 +905,16 @@
         <summary type="html"><![CDATA[Moving with Your Bird]]></summary>
         <author>
             <name>Suzanne Zweigart</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cat Paw Preference - Is Your Cat a "Righty" or a "Lefty"?]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-paw-preference-is-your-cat-a-righty-or-a-lefty</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-paw-preference-is-your-cat-a-righty-or-a-lefty"/>
+        <updated>2015-08-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat Paw Preference - Is Your Cat a "Righty" or a "Lefty"?]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
         </author>
     </entry>
     <entry>
@@ -1198,6 +1318,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Cat Bite Etiquette: What to Do, What to Say]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-bite-etiquette-what-to-do-what-to-say</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-bite-etiquette-what-to-do-what-to-say"/>
+        <updated>2015-06-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat Bite Etiquette: What to Do, What to Say]]></summary>
+        <author>
+            <name>Dr. Patricia Khuly</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[How to Give Your Bird a Bath]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/birds/general/how-to-give-your-bird-a-bath</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/general/how-to-give-your-bird-a-bath"/>
@@ -1225,6 +1355,26 @@
         <summary type="html"><![CDATA[Foster Care of Orphan Wild Baby Birds]]></summary>
         <author>
             <name>Rochielle Goulette</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cat Scratching? A Guide to Declawing]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-scratching-a-guide-to-declawing</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-scratching-a-guide-to-declawing"/>
+        <updated>2015-05-18T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat Scratching? A Guide to Declawing]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Crazy for Catnip and Catmint]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/crazy-for-catnip-and-catmint</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/crazy-for-catnip-and-catmint"/>
+        <updated>2015-05-18T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Crazy for Catnip and Catmint]]></summary>
+        <author>
+            <name>Moira Allen</name>
         </author>
     </entry>
     <entry>
@@ -1458,6 +1608,56 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Cat Colors and Coat Patterns]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-colors-and-coat-patterns</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-colors-and-coat-patterns"/>
+        <updated>2015-02-26T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat Colors and Coat Patterns]]></summary>
+        <author>
+            <name>J. Anne Helgren</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cats: A Calming Influence on People with High Blood Pressure]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-a-calming-influence-on-people-with-high-blood-pressure</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-a-calming-influence-on-people-with-high-blood-pressure"/>
+        <updated>2015-02-26T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats: A Calming Influence on People with High Blood Pressure]]></summary>
+        <author>
+            <name>Rebecca Sweat</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Clicker Training Your Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/clicker-training-your-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/clicker-training-your-cat"/>
+        <updated>2015-02-26T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Clicker Training Your Cat]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cats Living with Other Pets]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-living-with-other-pets</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-living-with-other-pets"/>
+        <updated>2015-02-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[How do cats do living with other pets? Our vets discuss success stories and tips for what you can do to introduce pets here.]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cats that Talk and Talk...Dealing with Hypervocalization]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-that-talk-and-talk-dealing-with-hypervocalization</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-that-talk-and-talk-dealing-with-hypervocalization"/>
+        <updated>2015-02-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats that Talk and Talk...Dealing with Hypervocalization]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Sneezing and Nasal Discharge in Birds]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/birds/general/sneezing-and-nasal-discharge-in-birds</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/general/sneezing-and-nasal-discharge-in-birds"/>
@@ -1465,6 +1665,16 @@
         <summary type="html"><![CDATA[Like people, most normal birds will sneeze occasionally in an attempt to clear dust and debris from their nostrils. But should you ever be concerned when your bird sneezes? Learn more about sneezing and nasal discharge in birds here.]]></summary>
         <author>
             <name>Dr. Barbara Oglesbee</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Do Cats Get Cabin Fever? Find Out!]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/do-cats-get-cabin-fever-find-out</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/do-cats-get-cabin-fever-find-out"/>
+        <updated>2015-01-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Do Cats Get Cabin Fever? Find Out!]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
         </author>
     </entry>
     <entry>
@@ -2955,6 +3165,116 @@
         <summary type="html"><![CDATA[Can You Train Your Cat?]]></summary>
         <author>
             <name>Karen Commings</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cat Owners Comment About How to Know if it is the Right Time to Euthanize]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-owners-comment-about-how-to-know-if-it-is-the-right-time-to-euthanize</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-owners-comment-about-how-to-know-if-it-is-the-right-time-to-euthanize"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat Owners Comment About How to Know if it is the Right Time to Euthanize]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cat Whispering - Mastering the Language of Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-whispering-mastering-the-language-of-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-whispering-mastering-the-language-of-cat"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat Whispering - Mastering the Language of Cat]]></summary>
+        <author>
+            <name>Renae Hamrick RVT</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Common Behavior Problems in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/common-behavior-problems-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/common-behavior-problems-in-cats"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Common Behavior Problems in Cats]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cats That Can't Hear]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-that-cant-hear</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-that-cant-hear"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats That Can't Hear]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cats Home Alone]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-home-alone</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-home-alone"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats Home Alone]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Compulsive Feeding Behavior]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/compulsive-feeding-behavior</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/compulsive-feeding-behavior"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Compulsive Feeding Behavior]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cats Living with Dogs]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-living-with-dogs</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cats-living-with-dogs"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats Living with Dogs]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Compulsive Behavior]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/compulsive-behavior</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/compulsive-behavior"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Compulsive Behavior]]></summary>
+        <author>
+            <name>Dr. Alice Moon-Fanelli</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Compulsive Reproductive Behavior]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/compulsive-reproductive-behavior</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/compulsive-reproductive-behavior"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Compulsive Reproductive Behavior]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Do Cats Get the Winter Blues? Seasonal Affective Disorder in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/do-cats-get-the-winter-blues-seasonal-affective-disorder-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/do-cats-get-the-winter-blues-seasonal-affective-disorder-in-cats"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Do Cats Get the Winter Blues? Seasonal Affective Disorder in Cats]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Do Cats Mourn the Loss of Another Cat?]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/do-cats-mourn-the-loss-of-another-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/do-cats-mourn-the-loss-of-another-cat"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Do Cats Mourn the Loss of Another Cat?]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
         </author>
     </entry>
     <entry>
