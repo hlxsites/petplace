@@ -26,6 +26,10 @@ jobs:
         # See https://github.com/hlxsites/petplace/settings/secrets/actions
         token: ${{ secrets.BOT_ACCESS_TOKEN }}
 
+    - run: |
+        echo "Status: ${{ github.event.client_payload.status }}"
+        echo "Path: ${{ github.event.client_payload.path }}"
+
     - name: Configure git
       run: |
         git config user.name "Petplace - GitHub Action"
