@@ -35,4 +35,5 @@ const idx = elasticlunr(function () {
 
 // Save the search index to a static file in the repository
 const targetFile = `${targetDirectory}/search-index${fileSuffix}.db`;
+console.log(`Writing search index to ${targetFile}`);
 fs.writeFileSync(targetFile, JSON.stringify(idx));
