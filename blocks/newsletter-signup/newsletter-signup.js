@@ -25,11 +25,14 @@ async function submitForm(block, fd) {
     mergeNestedObjects: true,
     createNewFields: true,
   };
+
+  const api_key = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
+
   const fetchOpts = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Api-Key': '3e7a9624572b4827b156af44e72fceaa',
+      'Api-Key': api_key,
     },
     body: JSON.stringify(payload),
   };
