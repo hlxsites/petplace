@@ -1,8 +1,11 @@
 import { Feed } from 'feed';
 import fs from 'fs';
+import { fetchArticles, getLocaleForUrl } from './utils.js';
 
 const targetDirectory = process.argv[2];
-const limit = 1000;
+const locale = getLocaleForUrl(process.argv[3]);
+const fileSuffix = locale === 'en-US' ? '' : `.${locale.toLowerCase()}`;
+const contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
 
 function sanitize(str) {
   return str
@@ -20,57 +23,34 @@ function sanitize(str) {
     .replaceAll('\x99', '&#x2122;'); // TM symbol
 }
 
-async function fetchArticles() {
-  let offset = 0;
-  const allPosts = [];
-
-  while (true) {
-    const api = new URL('https://www.petplace.com/article/query-index.json?sheet=article');
-    api.searchParams.append('offset', JSON.stringify(offset));
-    api.searchParams.append('limit', limit);
-    const response = await fetch(api);
-    const result = await response.json();
-
-    allPosts.push(...result.data);
-
-    if (result.offset + result.limit < result.total) {
-      // there are more pages
-      offset = result.offset + result.limit;
-    } else {
-      break;
-    }
-  }
-  return allPosts;
-}
-
 async function main() {
-  const articles = await fetchArticles();
+  const articles = await fetchArticles(locale);
   const newestPost = Math.max(...articles.map((article) => article.date));
   const feed = new Feed({
     title: `PetPlace.com articles`,
-    id: 'https://www.petplace.com/',
-    link: 'https://www.petplace.com/',
+    id: `https://www.petplace.com${contentBasePath}`,
+    link: `https://www.petplace.com${contentBasePath}`,
     updated: new Date(newestPost * 1000),
     generator: 'News feed generator (GitHub action)',
-    language: 'en',
+    language: locale,
     copyright: `All rights reserved ${new Date().getFullYear()},  Independence America Holdings Corp.`,
     feedLinks: {
-      atom: 'https://www.petplace.com/atom.xml',
-      rss: 'https://www.petplace.com/rss.xml'
+      atom: `https://www.petplace.com/atom${fileSuffix}.xml`,
+      rss: `https://www.petplace.com/rss${fileSuffix}.xml`
     },
   });
 
   articles.forEach((article) => {
     feed.addItem({
-      id: `https://www.petplace.com${article.path}`,
+      id: `https://www.petplace.com${contentBasePath}${article.path}`,
       title: sanitize(article.title),
       description: sanitize(article.description),
-      link: `https://www.petplace.com${article.path}`,
+      link: `https://www.petplace.com${contentBasePath}${article.path}`,
       author: article.author
         ? [{ name: article.author }]
         : '',
       date: article.date ? new Date(article.date * 1000) : '',
-      image: `https://www.petplace.com${article.image.replace(/\?.*/, '')}`,
+      image: `https://www.petplace.com${contentBasePath}${article.image.replace(/\?.*/, '')}`,
       category: article['category name']
         ? [{ name: sanitize(article['category name']), term: article.category }]
         : ''
@@ -81,8 +61,8 @@ async function main() {
     fs.mkdirSync(targetDirectory);
   }
 
-  fs.writeFileSync(`${targetDirectory}/atom.xml`, feed.atom1());
-  fs.writeFileSync(`${targetDirectory}/rss.xml`, feed.rss2());
+  fs.writeFileSync(`${targetDirectory}/atom${fileSuffix}.xml`, feed.atom1());
+  fs.writeFileSync(`${targetDirectory}/rss${fileSuffix}.xml`, feed.rss2());
 }
 
 main()
