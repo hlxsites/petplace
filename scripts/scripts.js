@@ -301,7 +301,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-async function buildHeroBlock(main) {
+function buildHeroBlock(main) {
   const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
@@ -385,15 +385,31 @@ function buildHyperlinkedImages(main) {
     });
 }
 
+function buildCookieConsent(main) {
+  if (window.hlx && window.hlx.consent) {
+    // consent not configured for page or already initialized
+    return;
+  }
+  const ccPath = `${window.hlx.contentBasePath}/fragments/cookie-consent`;
+  window.hlx.consent = { status: 'pending' };
+  const blockHTML = `<div>${ccPath}</div>`;
+  const section = document.createElement('div');
+  const ccBlock = document.createElement('div');
+  ccBlock.innerHTML = blockHTML;
+  section.append(buildBlock('cookie-consent', ccBlock));
+  main.append(section);
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-async function buildAutoBlocks(main) {
+function buildAutoBlocks(main) {
   try {
-    await buildHeroBlock(main);
-    await buildEmbedBlocks(main);
-    await buildHyperlinkedImages(main);
+    buildHeroBlock(main);
+    buildEmbedBlocks(main);
+    buildHyperlinkedImages(main);
+    buildCookieConsent(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -561,11 +577,11 @@ function animateSkeletons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-export async function decorateMain(main) {
+export function decorateMain(main) {
   main.id = 'main';
   decorateButtons(main);
-  await decorateIcons(main);
-  await buildAutoBlocks(main);
+  decorateIcons(main);
+  buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
@@ -623,7 +639,7 @@ async function loadEager(doc) {
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
       document.title += ` | ${getPlaceholder('websiteName')}`;
     }
-    await decorateMain(main);
+    decorateMain(main);
     fixLinks();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
