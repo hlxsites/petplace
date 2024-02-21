@@ -18,12 +18,10 @@ async function submitForm(block, fd) {
   const formData = new FormData(block.querySelector('form'));
   const payload = {
     email: formData.get('email'),
-    dataFields: {
-      catnewsletter: formData.get('cats') === 'on',
-      dognewsletter: formData.get('dogs') === 'on',
-    },
-    mergeNestedObjects: true,
-    createNewFields: true,
+    first_name: formData.get('name'),
+    catnewsletter: formData.get('cats') === 'on',
+    dognewsletter: formData.get('dogs') === 'on',
+    singupdate: new Date(),
   };
 
   const api_key = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
