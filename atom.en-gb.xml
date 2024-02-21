@@ -2,11 +2,21 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.petplace.com/en-gb</id>
     <title>PetPlace.com articles</title>
-    <updated>2023-12-04T00:00:00.000Z</updated>
+    <updated>2024-01-11T00:00:00.000Z</updated>
     <generator>News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.petplace.com/en-gb"/>
     <link rel="self" href="https://www.petplace.com/atom.en-gb.xml"/>
     <rights>All rights reserved 2024,  Independence America Holdings Corp.</rights>
+    <entry>
+        <title type="html"><![CDATA[Does My Cat Love Me? | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/7-signs-your-cat-actually-adores-you</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/7-signs-your-cat-actually-adores-you"/>
+        <updated>2024-01-11T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cat owners are head-over-heels in love with their felines... but do their cats love them back? We review the 7 signs that your cat loves you as much as they love them.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Simethicone (Gas-X) for Pets | PetPlace.com]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/drug-library/simethicone-gas-x-dogs-cats</id>
@@ -218,6 +228,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Black Cats: The Myth, The Legend, And The Science]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/black-cats-the-myth-the-legend-and-the-science</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/black-cats-the-myth-the-legend-and-the-science"/>
+        <updated>2019-10-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Black Cats: The Myth, The Legend, And The Science]]></summary>
+        <author>
+            <name>Janis Row</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Common Household Dangers for Cats]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/keeping-your-cat-healthy/common-household-dangers-for-cats</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/keeping-your-cat-healthy/common-household-dangers-for-cats"/>
@@ -365,6 +385,16 @@
         <summary type="html"><![CDATA[Funny Holiday Cat Stories]]></summary>
         <author>
             <name>PetPlace.com Cat Lover</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Aggressive Cats? Here&#x27;s How To Keep the Peace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/aggressive-cats-heres-how-to-keep-the-peace</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/aggressive-cats-heres-how-to-keep-the-peace"/>
+        <updated>2016-12-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Aggressive Cats? Here&#x27;s How To Keep the Peace]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
         </author>
     </entry>
     <entry>
@@ -2705,6 +2735,76 @@
         <summary type="html"><![CDATA[Spring Cleaning for Cat Lovers – 10 Tips to Help]]></summary>
         <author>
             <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[6 Ways to Read Your Cat's Mind]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/6-ways-to-read-your-cats-mind</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/6-ways-to-read-your-cats-mind"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[6 Ways to Read Your Cat's Mind]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[20 Rules to Live By: Things You Can Learn From a Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/20-rules-to-live-by-things-you-can-learn-from-a-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/20-rules-to-live-by-things-you-can-learn-from-a-cat"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[20 Rules to Live By: Things You Can Learn From a Cat]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[7 Tips to Get Your Cat to Like Your Boyfriend]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/7-tips-to-get-your-cat-to-like-your-boyfriend</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/7-tips-to-get-your-cat-to-like-your-boyfriend"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[7 Tips to Get Your Cat to Like Your Boyfriend]]></summary>
+        <author>
+            <name>Heather Stern</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[An Expression of Sympathy: Create a Pet Loss Gift Basket]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/an-expression-of-sympathy-create-a-pet-loss-gift-basket</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/an-expression-of-sympathy-create-a-pet-loss-gift-basket"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[An Expression of Sympathy: Create a Pet Loss Gift Basket]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Behavior of the Senior Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/behavior-of-the-senior-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/behavior-of-the-senior-cat"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Behavior of the Senior Cat]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Behavior Problems in Cats Alphabetical]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/behavior-problems-in-cats-alphabetical</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/behavior-problems-in-cats-alphabetical"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Behavior Problems in Cats Alphabetical]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bonding in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/bonding-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/bonding-in-cats"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Cats bond to their moms, their human owners, or other cats. They may show separation anxiety if separated. Learn more about bonding in cats here.]]></summary>
+        <author>
+            <name>Dr. Nicholas Dodman</name>
         </author>
     </entry>
     <entry>
