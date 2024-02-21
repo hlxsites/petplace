@@ -2,11 +2,21 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.petplace.com/en-gb</id>
     <title>PetPlace.com articles</title>
-    <updated>2023-05-22T00:00:00.000Z</updated>
+    <updated>2023-10-05T00:00:00.000Z</updated>
     <generator>News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.petplace.com/en-gb"/>
     <link rel="self" href="https://www.petplace.com/atom.en-gb.xml"/>
     <rights>All rights reserved 2024,  Independence America Holdings Corp.</rights>
+    <entry>
+        <title type="html"><![CDATA[My Cat is Licking Her Fur Off, What Do I Do? - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/my-cat-is-licking-her-fur-off-what-do-i-do</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/my-cat-is-licking-her-fur-off-what-do-i-do"/>
+        <updated>2023-10-05T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[If your cat is licking her fur off, it's certainly concerning. What causes it and what can you do? There are several reasons cats lick their fur.]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Bernese Mountain Dog - PetPlace]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/breed/bernese-mountain-dogs</id>
@@ -15,6 +25,16 @@
         <summary type="html"><![CDATA[The Bernese Mountain Dog is a protective pooch that enjoys family, fun &#x26; affection. Here's everything you need to know about this larger-than-life breed.]]></summary>
         <author>
             <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How to Induce Vomiting (Emesis) in Cats - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-induce-vomiting-emesis-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-induce-vomiting-emesis-in-cats"/>
+        <updated>2023-03-22T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[If your cat ingests something toxic, you may want to avoid the risk and induce vomiting. Here are safe methods to induce vomiting (emesis) in cats.]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
         </author>
     </entry>
     <entry>
@@ -108,6 +128,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[How to Control Excessive Shedding in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-control-excessive-shedding-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-control-excessive-shedding-in-cats"/>
+        <updated>2019-10-21T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Shedding in cats is normal however excessive shedding is not. Learn more about shedding in cats and what you can do about excessive shedding.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Bird Reproduction: Understanding Egg Laying in Birds | PetPlace.com]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/birds/pet-behavior-training/small-pet-behavior-training/birds-small-pet-behavior-training/will-bird-lay-eggs</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/pet-behavior-training/small-pet-behavior-training/birds-small-pet-behavior-training/will-bird-lay-eggs"/>
@@ -115,6 +145,16 @@
         <summary type="html"><![CDATA[What should you do, and how can you know if your avian friend will lay eggs? Understand the nuances of bird egg-laying. Uncover the mysteries today!]]></summary>
         <author>
             <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Kidney Failure in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/kidney-failure-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/kidney-failure-in-cats"/>
+        <updated>2018-10-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Kidney failure in cats can be categorized into two types — acute kidney failure and chronic kidney failure. Learn more about each of these conditions here.]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
         </author>
     </entry>
     <entry>
@@ -503,6 +543,116 @@
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/choking-in-cats"/>
         <updated>2015-06-30T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Choking in Cats]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Highrise Syndrome in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/highrise-syndrome-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/highrise-syndrome-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Highrise Syndrome in Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Feline Head Trauma: Everything You Need to Know | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/head-trauma-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/head-trauma-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Head Trauma in Cats]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Gunshot Injury in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/gunshot-injury-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/gunshot-injury-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Gunshot Injury in Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How House Fires Can Affect Your Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-house-fires-can-affect-your-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-house-fires-can-affect-your-cat"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[How House Fires Can Affect Your Cat]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hypothermia (Low Body Temperature) in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/hypothermia-low-body-temperature-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/hypothermia-low-body-temperature-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Hypothermia (Low Body Temperature) in Cats]]></summary>
+        <author>
+            <name>Dr. Bari Spielman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Laceration in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/laceration-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/laceration-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Laceration in Cats]]></summary>
+        <author>
+            <name>Dr. David Diamond</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Near Drowning in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/near-drowning-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/near-drowning-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Near Drowning in Cats]]></summary>
+        <author>
+            <name>Dr. Anne Marie Manning</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Peritonitis in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/peritonitis-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/peritonitis-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Peritonitis in Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Pulmonary Contusion - Lung Bruising in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/pulmonary-contusion-lung-bruising-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/pulmonary-contusion-lung-bruising-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Pulmonary Contusion - Lung Bruising in Cats]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Soft Tissue Trauma in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/soft-tissue-trauma-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/soft-tissue-trauma-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Soft Tissue Trauma in Cats]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sprains in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/sprains-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/sprains-in-cats"/>
+        <updated>2015-06-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Sprains in Cats]]></summary>
         <author>
             <name>PetPlace Veterinarians</name>
         </author>

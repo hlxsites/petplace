@@ -4,12 +4,20 @@
         <title>PetPlace.com articles</title>
         <link>https://www.petplace.com/en-gb</link>
         <description>undefined</description>
-        <lastBuildDate>Mon, 22 May 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 05 Oct 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>News feed generator (GitHub action)</generator>
         <language>en-GB</language>
         <copyright>All rights reserved 2024,  Independence America Holdings Corp.</copyright>
         <atom:link href="https://www.petplace.com/rss.en-gb.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[My Cat is Licking Her Fur Off, What Do I Do? - PetPlace]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/my-cat-is-licking-her-fur-off-what-do-i-do</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/my-cat-is-licking-her-fur-off-what-do-i-do</guid>
+            <pubDate>Thu, 05 Oct 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[If your cat is licking her fur off, it's certainly concerning. What causes it and what can you do? There are several reasons cats lick their fur.]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_11f0db5d437f98e443e269e7861a62925555ef73f.jpeg" length="0" type="image/jpeg"/>
+        </item>
         <item>
             <title><![CDATA[Bernese Mountain Dog - PetPlace]]></title>
             <link>https://www.petplace.com/en-gb/en-gb/article/breed/bernese-mountain-dogs</link>
@@ -17,6 +25,14 @@
             <pubDate>Mon, 22 May 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[The Bernese Mountain Dog is a protective pooch that enjoys family, fun &#x26; affection. Here's everything you need to know about this larger-than-life breed.]]></description>
             <enclosure url="https://www.petplace.com/en-gb/en-gb/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[How to Induce Vomiting (Emesis) in Cats - PetPlace]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-induce-vomiting-emesis-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-induce-vomiting-emesis-in-cats</guid>
+            <pubDate>Wed, 22 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[If your cat ingests something toxic, you may want to avoid the risk and induce vomiting. Here are safe methods to induce vomiting (emesis) in cats.]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_138b7c3d33188c54fbd06b791e23cbb96881b52de.jpeg" length="0" type="image/jpeg"/>
         </item>
         <item>
             <title><![CDATA[Cane Corso: Traits, Care, and Information | PetPlace.com]]></title>
@@ -91,12 +107,28 @@
             <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1a3f21d8bf055de216a07fff8dbf7ff2c87110e3e.jpeg" length="0" type="image/jpeg"/>
         </item>
         <item>
+            <title><![CDATA[How to Control Excessive Shedding in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-control-excessive-shedding-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-to-control-excessive-shedding-in-cats</guid>
+            <pubDate>Mon, 21 Oct 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Shedding in cats is normal however excessive shedding is not. Learn more about shedding in cats and what you can do about excessive shedding.]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1889d2b43649f2b3b2015fb1bc56e6ec032da6c54.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
             <title><![CDATA[Bird Reproduction: Understanding Egg Laying in Birds | PetPlace.com]]></title>
             <link>https://www.petplace.com/en-gb/en-gb/article/birds/pet-behavior-training/small-pet-behavior-training/birds-small-pet-behavior-training/will-bird-lay-eggs</link>
             <guid>https://www.petplace.com/en-gb/en-gb/article/birds/pet-behavior-training/small-pet-behavior-training/birds-small-pet-behavior-training/will-bird-lay-eggs</guid>
             <pubDate>Sun, 29 Sep 2019 00:00:00 GMT</pubDate>
             <description><![CDATA[What should you do, and how can you know if your avian friend will lay eggs? Understand the nuances of bird egg-laying. Uncover the mysteries today!]]></description>
             <enclosure url="https://www.petplace.com/en-gb/en-gb/article/birds/pet-behavior-training/small-pet-behavior-training/birds-small-pet-behavior-training/media_1b32c1b348097703ab12b5af6e81f55d8e13fd13d.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Kidney Failure in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/kidney-failure-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/kidney-failure-in-cats</guid>
+            <pubDate>Tue, 30 Oct 2018 00:00:00 GMT</pubDate>
+            <description><![CDATA[Kidney failure in cats can be categorized into two types — acute kidney failure and chronic kidney failure. Learn more about each of these conditions here.]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1ba91416b4138533af24857723035ffde7559572d.jpeg" length="0" type="image/jpeg"/>
         </item>
         <item>
             <title><![CDATA[Why Does My Bird Pluck His Feathers?]]></title>
@@ -408,6 +440,94 @@
             <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/choking-in-cats</guid>
             <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
             <description><![CDATA[Choking in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Highrise Syndrome in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/highrise-syndrome-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/highrise-syndrome-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Highrise Syndrome in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Feline Head Trauma: Everything You Need to Know | PetPlace.com]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/head-trauma-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/head-trauma-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Head Trauma in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Gunshot Injury in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/gunshot-injury-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/gunshot-injury-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Gunshot Injury in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[How House Fires Can Affect Your Cat]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-house-fires-can-affect-your-cat</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/how-house-fires-can-affect-your-cat</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[How House Fires Can Affect Your Cat]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_163ef837d763b2f65032dbe1cd9a78f337d623a45.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Hypothermia (Low Body Temperature) in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/hypothermia-low-body-temperature-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/hypothermia-low-body-temperature-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Hypothermia (Low Body Temperature) in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Laceration in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/laceration-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/laceration-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Laceration in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Near Drowning in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/near-drowning-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/near-drowning-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Near Drowning in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Peritonitis in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/peritonitis-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/peritonitis-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Peritonitis in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Pulmonary Contusion - Lung Bruising in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/pulmonary-contusion-lung-bruising-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/pulmonary-contusion-lung-bruising-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Pulmonary Contusion - Lung Bruising in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Soft Tissue Trauma in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/soft-tissue-trauma-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/soft-tissue-trauma-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Soft Tissue Trauma in Cats]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
+        </item>
+        <item>
+            <title><![CDATA[Sprains in Cats]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/sprains-in-cats</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/sprains-in-cats</guid>
+            <pubDate>Tue, 30 Jun 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Sprains in Cats]]></description>
             <enclosure url="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/media_1b9c888fc201b2549987161d4f2fbe9a3f156e9dd.jpeg" length="0" type="image/jpeg"/>
         </item>
         <item>
