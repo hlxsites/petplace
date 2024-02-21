@@ -24,6 +24,7 @@ function createPetCard({
   Breed,
   City,
   State,
+  'Animal type': animalType,
   animalId,
   clientId,
   coverImagePath,
@@ -40,7 +41,7 @@ function createPetCard({
   const cardBody = document.createElement('div');
   cardBody.className = 'pet-card-body';
   cardBody.innerHTML = `
-      <h3 class='pet-card-name'><a href='/pet-adoption/pet/${clientId}/${animalId}' class='stretched-link'>${Name?.replace(
+      <h3 class='pet-card-name'><a href='/pet-adoption/${animalType.toLowerCase()}s/${animalId}/${clientId}' class='stretched-link'>${Name?.replace(
     / *\([^)]*\) */g,
     '',
   )}</a></h3>
@@ -322,7 +323,7 @@ export default async function decorate(block) {
     },
     animalFilters: {
       startIndex: 0,
-      numResults: 4,
+      numResults: 50,
     },
   };
 
