@@ -33,8 +33,12 @@ async function submitForm(block, fd) {
     },
     body: JSON.stringify(payload),
   };
+
   try {
-    const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
+    const base_uri =
+      'https://mcsbqrbj0-1-ng0pyzwy21q8hn78.rest.marketingcloudapis.com/';
+    const res = await fetch(base_uri, fetchOpts);
+
     if (!res.ok) {
       let text = 'no detail.';
       try {
