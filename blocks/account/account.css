@@ -1,0 +1,58 @@
+/* form */
+.account-form-container {
+    padding: 24px 16px;
+    border: 1px solid var(--border-base-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+}
+.account-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 16px;
+
+}
+.account-form .form-control {
+    flex-basis: 100%;
+}
+
+.account-form .form-control input {
+    margin-bottom: 0;
+}
+.account-form .form-control--text input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--background-color-dark);
+    color: var(--text-color);
+
+}
+
+.account-form .form-control--submit input[type="submit"]{
+    width: auto;
+    max-width: auto;
+    margin-left: auto;
+    background-color: var(--compare-button-bg-color);
+    color: var(--text-color-inverted);
+}
+.account-form label {
+    font-family: var(--body-font-family);
+    font-weight: 500;
+    font-size: var(--body-font-size-default);
+    line-height: 0.875;
+    color: var(--pet-insurance-txt-color);
+    margin-bottom: 12px;
+    display: block;
+}
+
+@media (min-width: 768px) {  
+    .account-form-container {
+        padding: 40px;
+    }  
+    .account-form .form-control.half-width {
+        flex-basis: calc(50% - 8px);
+    }
+}
+@media (min-width: 1024px) {    
+
+}
