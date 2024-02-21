@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>PetPlace.com articles</title>
+        <link>https://www.petplace.com/en-gb</link>
+        <description>undefined</description>
+        <lastBuildDate>Thu, 23 Sep 2021 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>News feed generator (GitHub action)</generator>
+        <language>en-GB</language>
+        <copyright>All rights reserved 2024,  Independence America Holdings Corp.</copyright>
+        <atom:link href="https://www.petplace.com/rss.en-gb.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Check Out 10 of Our Favorite Talented Pet Videos - PetPlace]]></title>
+            <link>https://www.petplace.com/en-gb/en-gb/article/10-talented-pet-videos</link>
+            <guid>https://www.petplace.com/en-gb/en-gb/article/10-talented-pet-videos</guid>
+            <pubDate>Thu, 23 Sep 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Need a quick pick-me-up? Check out these videos of amazingly talented and cute cats and dogs.]]></description>
+            <enclosure url="https://www.petplace.com/en-gb/en-gb/article/media_1331e43b116aa900264ec638c404221a1e103a9b7.jpeg" length="0" type="image/jpeg"/>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://www.petplace.com/en-gb</id>
+    <title>PetPlace.com articles</title>
+    <updated>2021-09-23T00:00:00.000Z</updated>
+    <generator>News feed generator (GitHub action)</generator>
+    <link rel="alternate" href="https://www.petplace.com/en-gb"/>
+    <link rel="self" href="https://www.petplace.com/atom.en-gb.xml"/>
+    <rights>All rights reserved 2024,  Independence America Holdings Corp.</rights>
+    <entry>
+        <title type="html"><![CDATA[Check Out 10 of Our Favorite Talented Pet Videos - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/10-talented-pet-videos</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/10-talented-pet-videos"/>
+        <updated>2021-09-23T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Need a quick pick-me-up? Check out these videos of amazingly talented and cute cats and dogs.]]></summary>
+        <author>
+            <name>Nenagh Sheehan</name>
+        </author>
+    </entry>
+</feed>
