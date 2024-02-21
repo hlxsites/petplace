@@ -2,11 +2,41 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.petplace.com/en-gb</id>
     <title>PetPlace.com articles</title>
-    <updated>2021-09-23T00:00:00.000Z</updated>
+    <updated>2023-05-22T00:00:00.000Z</updated>
     <generator>News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.petplace.com/en-gb"/>
     <link rel="self" href="https://www.petplace.com/atom.en-gb.xml"/>
     <rights>All rights reserved 2024,  Independence America Holdings Corp.</rights>
+    <entry>
+        <title type="html"><![CDATA[Bernese Mountain Dog - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/bernese-mountain-dogs</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/bernese-mountain-dogs"/>
+        <updated>2023-05-22T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Bernese Mountain Dog is a protective pooch that enjoys family, fun &#x26; affection. Here's everything you need to know about this larger-than-life breed.]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cane Corso: Traits, Care, and Information | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/cane-corso</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/cane-corso"/>
+        <updated>2022-09-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Discover the robust world of the Cane Corso. Our breed guide details their history, build, look, and personality to help you become the best Cane Corso owner!]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The German Shepherd: Characteristics and History | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/german-shepherd</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/german-shepherd"/>
+        <updated>2022-07-19T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Discover the loyal and intelligent German Shepherd. Our breed guide examines their history, physicality, looks, and temperament.]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Check Out 10 of Our Favorite Talented Pet Videos - PetPlace]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/10-talented-pet-videos</id>
@@ -935,6 +965,186 @@
         <summary type="html"><![CDATA[The Anatolian Shepherd dog is the best of both worlds, offering protection and devotion in equal measure. We review the breed's unique history and look.]]></summary>
         <author>
             <name>Jenna Kahn, MBA, VMD</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bichon Frise Dog Breed Characteristics | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/bichon-frise</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/bichon-frise"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Those looking for an affectionate family dog need look no further than the Bichon Frise breed. We review their distinctive look, personality, and history.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Beauceron Breed Characteristics and Care | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/beauceron</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/beauceron"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Don't let their appearance fool you. Beauceron are devoted family pets, as known for their affection as they are for police and guard work.]]></summary>
+        <author>
+            <name>Jenna Kahn, MBA, VMD</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Basset Hound - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/basset-hound</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/basset-hound"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Basset Hound is a laidback hunter with a nose for sniffing out prey. Our breed guide details this dog's pedigree &#x26; current role as family pet.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Belgian Malinois: Notable Traits and Tail Characteristics | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/belgian-malinois</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/belgian-malinois"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Explore the versatile Belgian Malinois breed. Discover tail characteristics and more. Unearth the details now!]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Australian Cattle Dog - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/australian-cattle-dog</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/australian-cattle-dog"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[An expert herder with a deep devotion to family, the Australian Cattle Dog is a unique breed that pairs a wolf's endurance with a Dalmatian's loyalty.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Boerboel - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/boerboel</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/boerboel"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Looking for a dog specifically bred to protect your family &#x26; home? The Boerboel is not only the perfect guardian, but also an affectionate companion.]]></summary>
+        <author>
+            <name>Jenna Kahn, MBA, VMD</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Bloodhound - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/bloodhound</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/bloodhound"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bloodhounds are exceptional trackers that make even better household companions. Learn more about this endearing and beloved dog in our breed guide.]]></summary>
+        <author>
+            <name>Jenna Kahn, MBA, VMD</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Border Collie - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/border-collie</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/border-collie"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Border Collies are smart herding dogs in need of activity and exercise. Our breed guide examines their history, health, and amazing abilities.]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Boston Terrier: Guide to Care and Temperament | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/boston-terrier</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/boston-terrier"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Looking for a well-mannered canine companion that loves to cuddle? The Boston Terrier is right up your alley. Check out our guide for care tips &#x26; traits.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Clumber Spaniel - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/clumber-spaniel</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/clumber-spaniel"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Looking for a laidback family dog that's built for snuggles? The Clumber Spaniel is a large-breed made for quiet time with affectionate families.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cocker Spaniel - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/cocker-spaniel</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/cocker-spaniel"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Boisterous, beautiful, and family friendly, the Cocker Spaniel is a dog breed suited for every type of family and living space.]]></summary>
+        <author>
+            <name>Stephanie Lenoir LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Coton de Tulear - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/coton-de-tulear</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/coton-de-tulear"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[These soft &#x26; snuggly dogs are relatively new to the US, but they've built up quite a reputation. We discuss the unique Coton de Tulear look &#x26; demeanor.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[English Bulldog - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/english-bulldog</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/english-bulldog"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[English Bulldogs are lovable couch potatoes that are devoted to their owners. Our breed guide details their history, body type, appearance, and personality.]]></summary>
+        <author>
+            <name>Stephanie Lenoir LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Great Dane - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/great-dane</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/great-dane"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The immensity of the Great Dane makes them a fascinating and formidable family pet. We review this dog breed's history, personality, and overall health.]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Great Pyrenees - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/great-pyrenees</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/great-pyrenees"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Great Pyrenees has been everything from a hunter to a nobleman. Our breed guide details this dog's history, look &#x26; personality.]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Irish Wolfhound - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/irish-wolfhound</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/irish-wolfhound"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Originally bred as hunters, the Irish Wolfhound has softened over time &#x26; developed into a loving companion. Here's a look at this larger-than-life breed.]]></summary>
+        <author>
+            <name>Christy McDowell, LVT, VTS (ECC)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Jack Russell Terrier - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/jack-russell-terrier</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/jack-russell-terrier"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Smart &#x26; high-energy, the Jack Russell Terrier is built for active families with older children. We take a comprehensive look at this unique dog breed.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Labrador Retriever - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/breed/labrador-retriever</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/breed/labrador-retriever"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Extremely devoted &#x26; exceptionally skilled, the Labrador Retriever has spent over 25 years atop the AKC's Most Popular Dog Breeds list for good reason.]]></summary>
+        <author>
+            <name>Alanna Mallory, BS, LVT, VTS (SAIM)</name>
         </author>
     </entry>
 </feed>
