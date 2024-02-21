@@ -1,6 +1,6 @@
 import fs from 'fs';
 import elasticlunr from 'elasticlunr';
-import { fetchArticles } from './utils.js';
+import { fetchArticles, getLocaleForUrl } from './utils.js';
 
 const targetDirectory = process.argv[2];
 const locale = getLocaleForUrl(process.argv[3]);
