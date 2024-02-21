@@ -2,11 +2,31 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.petplace.com/en-gb</id>
     <title>PetPlace.com articles</title>
-    <updated>2023-10-05T00:00:00.000Z</updated>
+    <updated>2023-12-04T00:00:00.000Z</updated>
     <generator>News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.petplace.com/en-gb"/>
     <link rel="self" href="https://www.petplace.com/atom.en-gb.xml"/>
     <rights>All rights reserved 2024,  Independence America Holdings Corp.</rights>
+    <entry>
+        <title type="html"><![CDATA[Simethicone (Gas-X) for Pets | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/drug-library/simethicone-gas-x-dogs-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/drug-library/simethicone-gas-x-dogs-cats"/>
+        <updated>2023-12-04T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Simethicone, commonly known as Gas-X, is a an anti-foaming and anti-flatulent agent used to treat discomfort, pain, bloating, burping, and flatulence caused by excessive intestinal gas, that can be used in dogs and cats.]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Potential Thanksgiving Dangers for Your Pet | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/general/potential-thanksgiving-dangers-pet</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/general/potential-thanksgiving-dangers-pet"/>
+        <updated>2023-11-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Excluding your pet from the Thanksgiving festivities is out of the question, but be sure to keep them away from dangerous food, hot ovens &#x26; unruly guests.]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[My Cat is Licking Her Fur Off, What Do I Do? - PetPlace]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/my-cat-is-licking-her-fur-off-what-do-i-do</id>
@@ -198,6 +218,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Yunnan Baiyao for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/drug-library/yunnan-baiyao-dogs-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/drug-library/yunnan-baiyao-dogs-cats"/>
+        <updated>2018-03-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Yunnan Baiyao is available without a prescription but should not be administered unless under the supervision and guidance of a veterinarian. Learn more about yunnan baiyao for dogs and cats here.]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Why Does My Bird Pluck His Feathers?]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/birds/general/why-does-my-bird-pluck-his-feathers</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/general/why-does-my-bird-pluck-his-feathers"/>
@@ -218,6 +248,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[10 New Year's Resolutions for Your Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/10-new-years-resolutions-for-your-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/10-new-years-resolutions-for-your-cat"/>
+        <updated>2017-01-04T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[10 New Year's Resolutions for Your Cat]]></summary>
+        <author>
+            <name>Alex Lieber</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Finding Your New Feathered Friend: The Top 10 Pet Birds]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/birds/general/finding-your-new-feathered-friend-the-top-10-pet-birds</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/general/finding-your-new-feathered-friend-the-top-10-pet-birds"/>
@@ -233,6 +273,16 @@
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/general/are-you-my-mother-how-to-care-for-a-baby-bird"/>
         <updated>2016-09-08T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Are You My Mother? How to Care for a Baby Bird]]></summary>
+        <author>
+            <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[3 of History's Most Heroic Cats - They'll Amaze You! - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/3-of-historys-most-heroic-cats-theyll-amaze-you</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/3-of-historys-most-heroic-cats-theyll-amaze-you"/>
+        <updated>2016-06-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Dogs aren't the only service animals. Read the inspiring stories of 3 cats that defied the odds and risked life and limb for their caregivers and kittens.]]></summary>
         <author>
             <name>PetPlace Staff</name>
         </author>
@@ -378,6 +428,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Heimlich For Your Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/heimlich-for-your-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/heimlich-for-your-cat"/>
+        <updated>2015-09-15T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Heimlich For Your Cat]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[How to Medicate Your Bird]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/birds/general/how-to-medicate-your-bird</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/general/how-to-medicate-your-bird"/>
@@ -395,6 +455,16 @@
         <summary type="html"><![CDATA[First Aid for Birds]]></summary>
         <author>
             <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[100 Great Ways to Spoil Your Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/100-ways-to-spoil-your-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/100-ways-to-spoil-your-cat"/>
+        <updated>2015-09-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[100 Ways to Pamper and Spoil Your Cat | PetPlace.com]]></summary>
+        <author>
+            <name>PetPlace.com Cat Lover</name>
         </author>
     </entry>
     <entry>
@@ -1775,6 +1845,66 @@
         <summary type="html"><![CDATA[Minoxidil® is very poisonous to cats. Minoxidil® is a topical solution used to promote hair growth in people. Learn more about Minoxidil toxicity in cats.]]></summary>
         <author>
             <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Transporting an Injured Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/transporting-an-injured-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/transporting-an-injured-cat"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Transporting an Injured Cat]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Recognizing an Emergency in Cats: Who and When to Call]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/recognizing-an-emergency-in-cats-who-and-when-to-call</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/recognizing-an-emergency-in-cats-who-and-when-to-call"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Recognizing an Emergency in Cats: Who and When to Call]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[First Aid - Top 10 Things to Know for Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/first-aid-top-10-things-to-know-for-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/first-aid-for-cats/first-aid-top-10-things-to-know-for-cats"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[First Aid - Top 10 Things to Know for Cats]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2 Cats Having a Conversation - Cute Video]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/2-cats-having-a-conversation-cute-video</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/2-cats-having-a-conversation-cute-video"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[2 Cats Having a Conversation - Cute Video]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2005 Pet Horoscopes]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/2005-pet-horoscopes</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/2005-pet-horoscopes"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[2005 Pet Horoscopes]]></summary>
+        <author>
+            <name>Cal Orey</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2014 - 2015 Cat Horoscopes - What&#x27;s In Store for Your Feline Leo]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/2014-2015-cat-horoscopes-whats-in-store-for-your-feline-leo</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/just-for-fun/2014-2015-cat-horoscopes-whats-in-store-for-your-feline-leo"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[2014 - 2015 Cat Horoscopes - What&#x27;s In Store for Your Feline Leo]]></summary>
+        <author>
+            <name>Cal Orey</name>
         </author>
     </entry>
     <entry>
