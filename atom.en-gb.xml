@@ -928,6 +928,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Tapeworm Infection in Cats - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/tapeworm-infection-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/tapeworm-infection-in-cats"/>
+        <updated>2020-04-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Tapeworm infection is a very common problem in cats. We discuss ways for pet parents to spot infection, administer treatment, and prevent recurrence.]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[What to Expect at the Veterinary Emergency Hospital - PetPlace]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/cat-health/visiting-veterinary-hospital</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/cat-health/visiting-veterinary-hospital"/>
@@ -3578,6 +3588,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[The Benefits of Vinegar for Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-benefits-of-vinegar-for-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-benefits-of-vinegar-for-cats"/>
+        <updated>2015-08-27T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Benefits of Vinegar for Cats]]></summary>
+        <author>
+            <name>Cal Orey</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Do Indoor Cats Need Pet Insurance?]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/keeping-your-cat-healthy/do-indoor-cats-need-pet-insurance</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/keeping-your-cat-healthy/do-indoor-cats-need-pet-insurance"/>
@@ -3765,6 +3785,26 @@
         <summary type="html"><![CDATA[How to Remove a Fishhook in Your Cat]]></summary>
         <author>
             <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Dangers of Fleas in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-dangers-of-fleas-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-dangers-of-fleas-in-cats"/>
+        <updated>2015-08-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Dangers of Fleas in Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Finicky Feline]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-finicky-feline</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-finicky-feline"/>
+        <updated>2015-08-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Finicky Feline]]></summary>
+        <author>
+            <name>Karen Commings</name>
         </author>
     </entry>
     <entry>
@@ -4833,6 +4873,46 @@
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/structure-and-function-of-the-tongue-teeth-and-mouth-in-cats"/>
         <updated>2015-08-03T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Structure and Function of the Tongue, Teeth and Mouth in Cats]]></summary>
+        <author>
+            <name>Dr. Bari Spielman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Structure and Function of the Urinary Tract in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/structure-and-function-of-the-urinary-tract-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/structure-and-function-of-the-urinary-tract-in-cats"/>
+        <updated>2015-08-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Structure and Function of the Urinary Tract in Cats]]></summary>
+        <author>
+            <name>Dr. Bari Spielman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Structure and Function of the Whiskers in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/structure-and-function-of-the-whiskers-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/structure-and-function-of-the-whiskers-in-cats"/>
+        <updated>2015-08-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Structure and Function of the Whiskers in Cats]]></summary>
+        <author>
+            <name>Virginia Wells</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Syncope (Fainting) in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/syncope-fainting-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/syncope-fainting-in-cats"/>
+        <updated>2015-08-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Syncope (Fainting) in Cats]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Tachypnea (Rapid Breathing Rate) in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/tachypnea-rapid-breathing-rate-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/tachypnea-rapid-breathing-rate-in-cats"/>
+        <updated>2015-08-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Tachypnea (Rapid Breathing Rate) in Cats]]></summary>
         <author>
             <name>Dr. Bari Spielman</name>
         </author>
@@ -6948,6 +7028,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Stud Tail in Cats (Supracaudal Gland Hyperplasia)]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/stud-tail-in-cats-supracaudal-gland-hyperplasia</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/stud-tail-in-cats-supracaudal-gland-hyperplasia"/>
+        <updated>2015-07-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Stud Tail in Cats (Supracaudal Gland Hyperplasia)]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Allergic Reaction from an Unknown Cause in Cats]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/allergic-reaction-from-an-unknown-cause-in-cats</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/diseases-conditions-of-cats/allergic-reaction-from-an-unknown-cause-in-cats"/>
@@ -8288,6 +8378,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[The Best Way to Feed a Cat]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-best-way-to-feed-a-cat</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-best-way-to-feed-a-cat"/>
+        <updated>2015-03-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Best Way to Feed a Cat]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Favorite Household Toys for the Frugal Cat Lover]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/keeping-your-cat-healthy/favorite-household-toys-for-the-frugal-cat-lover</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/cats/keeping-your-cat-healthy/favorite-household-toys-for-the-frugal-cat-lover"/>
@@ -8835,6 +8935,36 @@
         <summary type="html"><![CDATA[Is Your Cat Too Thin?]]></summary>
         <author>
             <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Subcutaneous Fluids in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/subcutaneous-fluids-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/subcutaneous-fluids-in-cats"/>
+        <updated>2015-01-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Subcutaneous Fluids in Cats]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Summer Hazards in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/summer-hazards-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/summer-hazards-in-cats"/>
+        <updated>2015-01-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Summer Hazards in Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Basics of Cat Breeding]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-basics-of-cat-breeding</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-basics-of-cat-breeding"/>
+        <updated>2015-01-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Basics of Cat Breeding]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
         </author>
     </entry>
     <entry>
@@ -12615,6 +12745,56 @@
         <summary type="html"><![CDATA[Spring and Summer Plant Toxicity in Cats]]></summary>
         <author>
             <name>PetPlace Staff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Strychnine Poisoning in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/strychnine-poisoning-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/strychnine-poisoning-in-cats"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Strychnine Poisoning in Cats]]></summary>
+        <author>
+            <name>Dr. Bari Spielman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Supplements in Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/supplements-in-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/supplements-in-cats"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Supplements in Cats]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Taking Your Cat's Temperature]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/taking-your-cats-temperature</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/taking-your-cats-temperature"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Taking Your Cat's Temperature]]></summary>
+        <author>
+            <name>PetPlace Veterinarians</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Tartar Control Diets for Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/tartar-control-diets-for-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/tartar-control-diets-for-cats"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Tartar Control Diets for Cats]]></summary>
+        <author>
+            <name>Dr. Amy Wolff</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Feline Reproductive Cycle]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-feline-reproductive-cycle</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/cats/pet-health/the-feline-reproductive-cycle"/>
+        <updated>2014-12-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Feline Reproductive Cycle]]></summary>
+        <author>
+            <name>Dr. Amy Wolff</name>
         </author>
     </entry>
     <entry>
