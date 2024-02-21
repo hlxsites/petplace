@@ -24,21 +24,20 @@ async function submitForm(block, fd) {
     singupdate: new Date(),
   };
 
-  const api_key = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
+  const apiKey = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
 
   const fetchOpts = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Api-Key': api_key,
+      'Api-Key': apiKey,
     },
     body: JSON.stringify(payload),
   };
 
   try {
-    const base_uri =
-      'https://mcsbqrbj0-1-ng0pyzwy21q8hn78.rest.marketingcloudapis.com/';
-    const res = await fetch(base_uri, fetchOpts);
+    const baseUri = 'https://mcsbqrbj0-1-ng0pyzwy21q8hn78.rest.marketingcloudapis.com/';
+    const res = await fetch(baseUri, fetchOpts);
 
     if (!res.ok) {
       let text = 'no detail.';
