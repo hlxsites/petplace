@@ -2,11 +2,21 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.petplace.com/en-gb</id>
     <title>PetPlace.com articles</title>
-    <updated>2024-02-14T00:00:00.000Z</updated>
+    <updated>2024-02-19T00:00:00.000Z</updated>
     <generator>News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.petplace.com/en-gb"/>
     <link rel="self" href="https://www.petplace.com/atom.en-gb.xml"/>
     <rights>All rights reserved 2024,  Independence America Holdings Corp.</rights>
+    <entry>
+        <title type="html"><![CDATA[Ketamine for Dogs and Cats | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/ketamine-ketaset-vetalar-vetaket-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/ketamine-ketaset-vetalar-vetaket-for-dogs-and-cats"/>
+        <updated>2024-02-19T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Ketamine works by disrupting the central nervous system and inducing a cataleptic state. For dogs and cats, Ketamine is often used for restraint, sedation, pain, and/or anesthesia. Learn more about this medication here.]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[A Guide to Bonding with Your Cat | PetPlace.com]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/cats/pet-behavior-training/cat-companionship-a-guide-to-bonding-with-your-cat</id>
@@ -105,6 +115,16 @@
         <summary type="html"><![CDATA[Is your cat currently recovering following surgery? Here are easy ways to tell if their incision is healing normally or if they need medical attention.]]></summary>
         <author>
             <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Claritin® for Dogs and Cats | PetPlace.com]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/loratadine-claritin-alavert-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/loratadine-claritin-alavert-for-dogs-and-cats"/>
+        <updated>2024-01-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Wondering if you can give your dog or cat Claritin for itchy skin? Our vets discuss the medication, the side effects, and what you should be aware of.]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
         </author>
     </entry>
     <entry>
@@ -1233,6 +1253,16 @@
         <link href="https://www.petplace.com/en-gb/en-gb/article/dogs/pet-health/6-deadly-poisons-that-could-kill-your-dog"/>
         <updated>2022-10-20T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[It's important to be aware. Many household items are dangerous for your dogs to be around. Learn more about 6 deadly poisons that could kill your dog.]]></summary>
+        <author>
+            <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Levetiracetam (Keppra®) for Dogs and Cats - PetPlace]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/levetiracetam-keppra-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/levetiracetam-keppra-for-dogs-and-cats"/>
+        <updated>2022-10-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Was your dog or cat just prescribed levetiracetam? This prescription is used to treat seizures in dogs and cats. Here are our vets discussing how it works.]]></summary>
         <author>
             <name>Dr. Debra Primovic - DVM</name>
         </author>
@@ -7505,6 +7535,16 @@
         <summary type="html"><![CDATA[What You Should Do If Your Dog Has an Allergic Reaction]]></summary>
         <author>
             <name>Dr. Debra Primovic - DVM</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Lactulose (Cephalic, Kristalose) for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lactulose-cephalic-kristalose-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lactulose-cephalic-kristalose-for-dogs-and-cats"/>
+        <updated>2015-09-23T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Lactulose (Cephalic, Kristalose) for Dogs and Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
         </author>
     </entry>
     <entry>
@@ -15028,6 +15068,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Lufenuron (Program®) for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lufenuron-program-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lufenuron-program-for-dogs-and-cats"/>
+        <updated>2015-08-11T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Lufenuron (Program®) for Dogs and Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Pet Birds: Choosing a Budgie or Parakeet | PetPlace.com]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/birds/general/choosing-a-budgie-or-parakeet</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/birds/general/choosing-a-budgie-or-parakeet"/>
@@ -15718,6 +15768,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Lidocaine for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lidocaine-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lidocaine-for-dogs-and-cats"/>
+        <updated>2015-08-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Lidocaine, also known as Xylocaine®, is an anesthetic used in dogs and cats for the treatment of abnormal heart rhythms or cardiac arrhythmia. It is also used as a local anesthetic e.g. to numb an area on the skin prior to sutures. Learn more about this medication from our veterinarians here.]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Amikacin (Amiglyde-V®) for Dogs and Cats]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/amikacin-amiglyde-v-for-dogs-and-cats</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/amikacin-amiglyde-v-for-dogs-and-cats"/>
@@ -15825,6 +15885,16 @@
         <summary type="html"><![CDATA[Estradiol (ECP®) for Dogs and Cats]]></summary>
         <author>
             <name>Dr. Nicholas Dodman</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ketoconazole (Nizoral®) for Cats and Dogs]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/ketoconazole-nizoral-for-cats-and-dogs</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/ketoconazole-nizoral-for-cats-and-dogs"/>
+        <updated>2015-08-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Ketoconazole, commonly known by the brand name Nizoral®, is used in cats and dogs to treat infections caused by fungi. Learn more about this drug here.]]></summary>
+        <author>
+            <name>Dr. Mark Papich</name>
         </author>
     </entry>
     <entry>
@@ -19108,6 +19178,16 @@
         </author>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Lincomycin (Lincocin®) for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lincomycin-lincocin-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/lincomycin-lincocin-for-dogs-and-cats"/>
+        <updated>2015-07-16T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Lincomycin (Lincocin®) for Dogs and Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Clomipramine (Clomicalm®, Anafranil®) for Dogs and Cats]]></title>
         <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/clomipramine-clomicalm-anafranil-for-dogs-and-cats</id>
         <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/clomipramine-clomicalm-anafranil-for-dogs-and-cats"/>
@@ -19115,6 +19195,16 @@
         <summary type="html"><![CDATA[Clomipramine (Clomicalm®, Anafranil®) for Dogs and Cats]]></summary>
         <author>
             <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Levothyroxine (Soloxine®,ThyroTabs®) for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/levothyroxine-soloxinethyrotabs-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/levothyroxine-soloxinethyrotabs-for-dogs-and-cats"/>
+        <updated>2015-07-15T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Levothyroxine (Soloxine®,ThyroTabs®) for Dogs and Cats]]></summary>
+        <author>
+            <name>Dr. Mark Papich</name>
         </author>
     </entry>
     <entry>
@@ -19663,6 +19753,26 @@
         <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/kaolin-and-pectin-kapectolin-k-p-for-dogs-and-cats"/>
         <updated>2015-07-09T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Kaolin and Pectin (Kapectolin®, K-P®) for Dogs and Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ketoprofen (Ketofen®) for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/ketoprofen-ketofen-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/ketoprofen-ketofen-for-dogs-and-cats"/>
+        <updated>2015-07-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Ketoprofen (Ketofen®) for Dogs and Cats]]></summary>
+        <author>
+            <name>Dr. Dawn Ruben</name>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Loperamide (Imodium®) for Dogs and Cats]]></title>
+        <id>https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/loperamide-imodium-for-dogs-and-cats</id>
+        <link href="https://www.petplace.com/en-gb/en-gb/article/drug-library/drug-library/library/loperamide-imodium-for-dogs-and-cats"/>
+        <updated>2015-07-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Loperamide, commonly known as Imodium®, is used to treat diarrhea in cats and dogs. Our vets discuss how this drug is used and what pet owners need to know.]]></summary>
         <author>
             <name>Dr. Dawn Ruben</name>
         </author>
