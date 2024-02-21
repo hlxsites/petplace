@@ -1,6 +1,6 @@
 import { Feed } from 'feed';
 import fs from 'fs';
-import { fetchArticles } from './utils';
+import { fetchArticles, getLocaleForUrl } from './utils.js';
 
 const targetDirectory = process.argv[2];
 const locale = getLocaleForUrl(process.argv[3]);
