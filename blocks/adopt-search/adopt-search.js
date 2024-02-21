@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
+import endPoints from '../../variables/endpoints.js';
 
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
@@ -65,7 +66,7 @@ function createPetCard({
 }
 
 async function callAnimalList(method, path, payload) {
-  const baseUrl = 'https://api-stg-petplace.azure-api.net/';
+  const baseUrl = endPoints.apiUrl;
   const url = `${baseUrl}${path ? `/${path}` : ''}`;
 
   const response = await fetch(url, {
