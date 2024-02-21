@@ -63,6 +63,8 @@ async function main() {
 
   fs.writeFileSync(`${targetDirectory}/atom${fileSuffix}.xml`, feed.atom1());
   fs.writeFileSync(`${targetDirectory}/rss${fileSuffix}.xml`, feed.rss2());
+  console.log(`Writing search index to ${targetDirectory}/atom${fileSuffix}.xml`);
+  console.log(`Writing search index to ${targetDirectory}/rss${fileSuffix}.xml`);
 }
 
 main()
