@@ -40,6 +40,7 @@ window.hlx.templates.add([
   '/templates/ask-author-page',
   '/templates/author-index',
   '/templates/author-page',
+  '/templates/bytetag',
   '/templates/breed-index',
   '/templates/breed-page',
   '/templates/category-index',

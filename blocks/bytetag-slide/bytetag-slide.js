@@ -13,7 +13,6 @@ export default async function decorate(block) {
     loadScript();
   }
   function loadScript() {
-    console.log("loadScript()");
     var script = document.createElement("script");
     script.async = true;
     script.src = scriptURL;
@@ -24,7 +23,6 @@ export default async function decorate(block) {
     script.onload = ShopifyBuyInit;
   }
   function ShopifyBuyInit() {
-    console.log("shopifyBuyInit()");
     var client = ShopifyBuy.buildClient({
       domain: "bytetag.myshopify.com",
       storefrontAccessToken: "abc347e34c78c1cd83d5a8b686963f35",
