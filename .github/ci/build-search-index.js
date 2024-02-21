@@ -3,13 +3,7 @@ import elasticlunr from 'elasticlunr';
 import { fetchArticles, getLocaleForUrl } from './utils.js';
 
 const targetDirectory = process.argv[2];
-const resourcePath = process.argv[3];
-if (!resourcePath) {
-  console.error('Resource path is required');
-  return;
-}
-
-const locale = getLocaleForUrl(resourcePath);
+const locale = getLocaleForUrl(process.argv[3]);
 const fileSuffix = locale === 'en-US' ? '' : `.${locale.toLowerCase()}`;
 
 const articles = await fetchArticles(locale);

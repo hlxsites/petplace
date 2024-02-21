@@ -27,7 +27,7 @@ export async function fetchArticles(locale = 'en-US') {
   return allPosts;
 }
 
-export function getLocaleForUrl(urlString) {
+export function getLocaleForUrl(urlString = '/') {
   const [, lang = 'en', region = 'US'] = new URL(urlString, 'https://www.petplace.com').pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
   return `${lang.toLowerCase()}-${region.toUpperCase()}`;
 }
