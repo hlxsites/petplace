@@ -26,6 +26,10 @@ jobs:
         # See https://github.com/hlxsites/petplace/settings/secrets/actions
         token: ${{ secrets.BOT_ACCESS_TOKEN }}
 
+    - run: |
+        echo "Status: ${{ github.event.client_payload.status }}"
+        echo "Path: ${{ github.event.client_payload.path }}"
+
     - name: Configure git
       run: |
         git config user.name "Petplace - GitHub Action"
@@ -33,7 +37,7 @@ jobs:
 
     - uses: actions/setup-node@v3
       with:
-        node-version: '18'
+        node-version: '20'
 
     - name: Install dependencies
       working-directory: ./.github/ci
@@ -41,14 +45,14 @@ jobs:
 
     - name: Generate the search index
       working-directory: ./.github/ci
-      run:  node build-search-index.js ${{ env.TARGETDIRECTORY }}
+      run:  node build-search-index.js ${{ env.TARGETDIRECTORY }} ${{ github.event.client_payload.path }}
 
     - name: Generate the RSS/Atom feed
       working-directory: ./.github/ci
-      run:  node generate-news-feed.js ${{ env.TARGETDIRECTORY }}
+      run:  node generate-news-feed.js ${{ env.TARGETDIRECTORY }} ${{ github.event.client_payload.path }}
 
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: 'search-index.db rss.xml atom.xml'
+        file_pattern: 'search-index*.db rss*.xml atom*.xml'
         commit_message: "chore: update the search index and rss/atom feeds"
