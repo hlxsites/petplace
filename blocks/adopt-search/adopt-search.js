@@ -66,6 +66,11 @@ function createPetCard({
   return petCard;
 }
 
+function getRandomItems(array, count) {
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
 async function callAnimalList(method, path, payload) {
   const baseUrl = endPoints.apiUrl;
   const url = `${baseUrl}${path ? `/${path}` : ''}`;
@@ -307,9 +312,11 @@ async function createAdoptablePetsSection(
   adoptablePetsContainer,
   adoptablePetsData,
 ) {
+  const adoptablePetsSelected = getRandomItems(adoptablePetsData.animal, 4);
+
   if (adoptablePetsContainer.firstElementChild?.lastElementChild != null) {
     adoptablePetsContainer.firstElementChild.lastElementChild.append(
-      await createAdoptablePetsContent(adoptablePetsData.animal),
+      await createAdoptablePetsContent(adoptablePetsSelected),
     );
   }
 }
