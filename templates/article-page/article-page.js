@@ -8,44 +8,13 @@ import {
 import {
   createBreadCrumbs,
   getCategories,
-  getCategory,
 } from '../../scripts/scripts.js';
-import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
+import { adsenseFunc } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 export async function getCategoryByKey(key, value) {
   const categories = await getCategories();
   return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
-}
-
-async function getRawCategoryAd(category) {
-  if (!category) {
-    return null;
-  }
-  if (category.Ad) {
-    return category.Ad;
-  }
-  if (!category['Parent Path']) {
-    return null;
-  }
-  const parent = await getCategoryByKey('Path', category['Parent Path']);
-  return getRawCategoryAd(parent);
-}
-
-/**
- * Retrieves the ID of the ad to show for a category. This will be determined
- * by the "Ad" column in the categories spreadsheet. The method will check
- * the ad column for the given category, and for all of that category's parents.
- *
- * If no ad is specified, the method will return a default ad.
- * @param {string} categorySlug Slug of the category whose ad should be
- *  retrieved.
- * @returns {Promise<string>} ID of an ad from the ads spreadsheet.
- */
-export async function getCategoryAd(categorySlug) {
-  const category = await getCategory(categorySlug);
-  const categoryAd = await getRawCategoryAd(category);
-  return categoryAd || 'article-default-rail';
 }
 
 function createAutoBlockSection(main, blockName, gridName) {
@@ -132,18 +101,10 @@ async function getBreadcrumbs(categorySlug) {
 export async function loadEager(document) {
   const main = document.querySelector('main');
   createTemplateBlock(main, 'article-author');
-  createAutoBlockSection(main, 'ad', 'ad');
   createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
   createTableOfContents(main);
-
-  const categorySlug = toClassName(getMetadata('category').split(',')[0]?.trim());
-  const ad = main.querySelector('.article-template-grid-ad');
-  const adId = document.createElement('div');
-  adId.innerText = await getCategoryAd(categorySlug);
-  const adBlock = buildBlock('ad', { elems: [adId] });
-  ad.append(adBlock);
 
   main.setAttribute('itemscope', '');
   const articleType = toClassName(getMetadata('type'));
@@ -214,12 +175,9 @@ export async function loadLazy(document) {
   await loadBlock(breadcrumb);
   breadcrumb.style.visibility = '';
 
-  adsDivCreator('article_top');
-  adsDivCreator('article_middle');
-  adsDivCreator('article_bottom');
+  adsenseFunc('article', 'create');
 }
 
-// (side later with refactor)
 export async function loadDelayed() {
   const articleCat = toClassName(getMetadata('category').split(',')[0]?.trim());
   await pushToDataLayer({
@@ -228,13 +186,5 @@ export async function loadDelayed() {
     category: articleCat,
   });
 
-  adsDefineSlot(
-    [
-      'article_top',
-      'article_middle',
-      'article_bottom',
-      'article_anchor',
-    ],
-    articleCat,
-  );
+  adsenseFunc('article', articleCat);
 }

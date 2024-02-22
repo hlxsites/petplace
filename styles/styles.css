@@ -983,3 +983,14 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 .publi-wrapper-multiplex {
   width: 100%;
 }
+
+.social-share-container .publi-container {
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.social-share-container .publi-wrapper {
+  margin: 0;
+}
