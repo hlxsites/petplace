@@ -220,13 +220,13 @@ function buildResultsList(animalList) {
 function calculatePagination(page) {
     let tempPage = page;
     if (tempPage.currentTarget?.myParam) {
-        currentPage = tempPage.currentTarget?.myParam;
+        tempPage = page.currentTarget?.myParam;
+        currentPage = page.currentTarget?.myParam;
     }
     const filteredArray = [];
     // Validate page
     if (tempPage < 1) tempPage = 1;
     if (tempPage > numPages()) tempPage = numPages();
-
     for (
         let i = (tempPage - 1) * recordsPerPage;
         i < tempPage * recordsPerPage && i < animalArray.length;
