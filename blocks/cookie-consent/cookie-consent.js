@@ -30,7 +30,7 @@ function manageConsentUpdate(selCategories) {
   window.hlx.consent.categories = newCategories;
   setStoredPreference(newCategories);
   sampleRUM('consentupdate', { source: newCategories });
-  const consentUpdateEvent = new CustomEvent('consent-updated', newCategories);
+  const consentUpdateEvent = new CustomEvent('consent-updated', { detail: { categories: newCategories } });
   dispatchEvent(consentUpdateEvent);
 }
 
@@ -39,7 +39,7 @@ function manageConsentRead(categories) {
   window.hlx.consent.status = 'done';
   window.hlx.consent.categories = categories;
   sampleRUM('consent', { source: categories });
-  const consentReadEvent = new CustomEvent('consent', categories);
+  const consentReadEvent = new CustomEvent('consent', { detail: { categories } });
   dispatchEvent(consentReadEvent);
 }
 

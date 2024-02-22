@@ -25,8 +25,7 @@
 <script>
   window.googletag ||= { cmd: [] };
   window.dataLayer ||= [];
-  window.dataLayer.push({ js: new Date() });
-  window.dataLayer.push({ config: 'GT-KD23TWW' });
-  window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
-  window.dataLayer.push({ config: 'AW-11334653569' });
+  window.clarity ||= function() {
+    (window.clarity.q ||= []).push(arguments)
+  }
 </script>

@@ -53,6 +53,8 @@ window.hlx.templates.add([
   '/templates/insurance-landing-page',
 ]);
 
+const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
+
 window.hlx.plugins.add('rum-conversion', {
   url: '/plugins/rum-conversion/src/index.js',
   load: 'lazy',
@@ -69,7 +71,11 @@ window.hlx.plugins.add('experience-decisioning', {
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,
   load: 'eager',
-  options: { audiences: AUDIENCES },
+  options: {
+    audiences: AUDIENCES,
+    storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
+      ? window.localStorage : window.SessionStorage,
+  },
 });
 
 /**
@@ -386,10 +392,34 @@ function buildHyperlinkedImages(main) {
 }
 
 function buildCookieConsent(main) {
-  if (window.hlx && window.hlx.consent) {
-    // consent not configured for page or already initialized
+  // do not initialize consent logic twice
+  if (window.hlx.consent) {
     return;
   }
+  if (document.documentElement.lang !== 'en-US') {
+    window.dataLayer.push(['consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+    }]);
+  } else {
+    // US region does not need the cookie consent logic
+    window.clarity('consent');
+    return;
+  }
+  const updateConsentHandler = (ev) => {
+    window.dataLayer.push(['consent', 'update', {
+      ad_storage: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_user_data: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_personalization: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      analytics_storage: ev.detail.categories.includes('CC_ANALYTICS') ? 'granted' : 'denied',
+    }]);
+    window.clarity('consent', ev.detail.categories.includes('CC_ANALYTICS'));
+  };
+  window.addEventListener('consent', updateConsentHandler);
+  window.addEventListener('consent-updated', updateConsentHandler);
+
   const ccPath = `${window.hlx.contentBasePath}/fragments/cookie-consent`;
   window.hlx.consent = { status: 'pending' };
   const blockHTML = `<div>${ccPath}</div>`;
@@ -1000,6 +1030,12 @@ export async function captureError(source, e) {
 
 async function loadPage() {
   setLocale();
+
+  window.dataLayer.push({ js: new Date() });
+  window.dataLayer.push({ config: 'GT-KD23TWW' });
+  window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
+  window.dataLayer.push({ config: 'AW-11334653569' });
+
   await window.hlx.plugins.load('eager');
   await loadEager(document);
   await window.hlx.plugins.load('lazy');
