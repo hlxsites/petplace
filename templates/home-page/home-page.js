@@ -8,6 +8,9 @@ function isValidZipcode(code) {
 
 function createSpanBlock(main) {
   const insuranceSearch = main.querySelector('.insurance-search');
+  if (!insuranceSearch) {
+    return;
+  }
   const formEl = insuranceSearch.querySelector('.search-box-wrapper');
   formEl.removeAttribute('action');
   const searchInput = formEl.querySelector('.search-input');
