@@ -29,8 +29,10 @@ async function submitForm(block, fd) {
   const fetchOpts = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
       'Api-Key': apiKey,
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Origin': '*',
     },
     body: JSON.stringify(payload),
   };
