@@ -101,7 +101,7 @@ const handleComparePlanClicks = (className) => {
 
 // CTA - carousel button, insurance button
 const handleCtaClicks = () => {
-  if (window.location.pathname === '/') {
+  if (window.location.pathname === `${window.hlx.contentBasePath}/`) {
     document
       .querySelector('.slides-container')
       .addEventListener('click', (ev) => {
@@ -114,7 +114,7 @@ const handleCtaClicks = () => {
     handleComparePlanClicks('.insurance-search');
   }
 
-  if (window.location.pathname === '/pet-insurance') {
+  if (window.location.pathname === `${window.hlx.contentBasePath}/pet-insurance`) {
     handleComparePlanClicks('.top-search');
     handleComparePlanClicks('.bottom-search');
   }
