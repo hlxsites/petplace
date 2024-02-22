@@ -36,7 +36,7 @@ async function submitForm(block, fd) {
   };
 
   try {
-    const baseUri = 'https://mcsbqrbj0-1-ng0pyzwy21q8hn78.rest.marketingcloudapis.com/';
+    const baseUri = 'https://mcsbqrbj0-1-ng0pyzwy21q8hn78.rest.marketingcloudapis.com/interaction/v1/events';
     const res = await fetch(baseUri, fetchOpts);
 
     if (!res.ok) {
