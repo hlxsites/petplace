@@ -75,15 +75,12 @@ async function createAccountDetailsPanel() {
                     </div>
                     <div class="account-layout-row">
                         <div class="account-layout-column">
-                            <h4>Partner Offers</h4>
+                            <h4 id="partner-offers-label">Partner Offers</h4>
                             <p>Receive updates from PetPlace and our trusted partners</p>
                         </div>
                         <div class="account-layout-column">
                             <div class="form-control form-control--switch">
-                                <label class="switch-container">
-                                    <input type="checkbox" checked="checked" id="alert-sms">
-                                    <span class="checkmark"></span>
-                                </label>
+                                ${createSwitch('partner-offers-switch', null, 'partner-offers-label').outerHTML}
                             </div>
                         </div>                
                     </div>
@@ -116,6 +113,23 @@ async function createAccountDetailsPanel() {
     `;
     return panelDiv;
 
+}
+function createSwitch(inputId, label, ariaLabelledBy) {
+    const switchDiv = document.createElement('div');
+    switchDiv.className = 'switch-container';
+    switchDiv.innerHTML = `
+        ${label ? `<label><span class="switch-label">${label}</span>` : ''}
+        <input id=${inputId || ''} type="checkbox" role="switch"${!label && ariaLabelledBy ? ` aria-labelledby = ${ariaLabelledBy}`: ''}>
+        <span class="switch-state">
+            <span class="switch-state-container">
+                <span class="switch-state-position"> </span>
+            </span>
+            <span class="switch-on" aria-hidden="true">On</span>
+            <span class="switch-off" aria-hidden="true">Off</span>
+        </span>
+        ${label ? `</label>` : ''}
+    `
+    return switchDiv;
 }
 
 export default async function decorate(block) {
