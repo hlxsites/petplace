@@ -1,7 +1,7 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, getPlaceholder } from '../../scripts/scripts.js';
 
-const isTrueSearch = window.location.pathname === '/search';
+const isTrueSearch = window.location.pathname === `${window.hlx.contentBasePath}/search`;
 
 let searchWorker;
 // 2G connections are too slow to realistically load the elasticlunr search index
