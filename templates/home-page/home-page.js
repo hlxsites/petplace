@@ -1,4 +1,4 @@
-import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
+import { adsenseFunc } from '../../scripts/adsense.js';
 
 function isValidZipcode(code) {
   const regex = /^[0-9]{5}(?:-[0-9]{4})?$/;
@@ -39,9 +39,7 @@ function createSpanBlock(main) {
 export function loadLazy() {
   const main = document.querySelector('#main');
   createSpanBlock(main);
-  adsDivCreator('home_top');
-  adsDivCreator('home_middle');
-  adsDivCreator('home_bottom');
+  adsenseFunc('home', 'create');
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -50,5 +48,5 @@ export function loadEager() {
 }
 
 export function loadDelayed() {
-  adsDefineSlot(['home_top', 'home_middle', 'home_bottom', 'home_anchor']);
+  adsenseFunc('home');
 }

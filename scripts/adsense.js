@@ -2,7 +2,7 @@ import { mappingHelper, sizingArr } from './utils/helpers.js';
 
 window.googletag ||= { cmd: [] };
 
-export const adsDivCreator = (adLoc) => {
+const adsDivCreator = (adLoc) => {
   const mainDiv = document.createElement('div');
   mainDiv.className = 'publi-container';
 
@@ -137,8 +137,7 @@ const adsenseSetup = (adArgs, catVal) => {
   return anchorSlot;
 };
 
-// google tag for adsense
-export const adsDefineSlot = async (adArgs, catVal) => {
+const adsDefineSlot = async (adArgs, catVal) => {
   // separate function to return the anchor slot
   const anchorSlot = await adsenseSetup(adArgs, catVal);
 
@@ -146,4 +145,36 @@ export const adsDefineSlot = async (adArgs, catVal) => {
   const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
   if (anchorSlot) newArgs.push(anchorSlot);
   gtagDisplay(newArgs);
+};
+
+// google tag for adsense
+export const adsenseFunc = async (pageType, catVal) => {
+  if (catVal === 'create') {
+    adsDivCreator(`${pageType}_top`);
+    adsDivCreator(`${pageType}_bottom`);
+
+    if (pageType === 'article') {
+      adsDivCreator(`${pageType}_side`);
+    }
+
+    if (pageType === 'home' || pageType === 'article') {
+      adsDivCreator(`${pageType}_middle`);
+    }
+  } else {
+    const adsArr = [
+      `${pageType}_top`,
+      `${pageType}_bottom`,
+      `${pageType}_anchor`,
+    ];
+
+    if (pageType === 'article') {
+      adsArr.unshift(`${pageType}_side`);
+    }
+
+    if (pageType === 'home' || pageType === 'article') {
+      adsArr.unshift(`${pageType}_middle`);
+    }
+
+    adsDefineSlot(adsArr, catVal);
+  }
 };

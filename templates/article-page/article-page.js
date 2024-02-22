@@ -9,7 +9,7 @@ import {
   createBreadCrumbs,
   getCategories,
 } from '../../scripts/scripts.js';
-import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
+import { adsenseFunc } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 export async function getCategoryByKey(key, value) {
@@ -175,10 +175,7 @@ export async function loadLazy(document) {
   await loadBlock(breadcrumb);
   breadcrumb.style.visibility = '';
 
-  adsDivCreator('article_top');
-  adsDivCreator('article_side');
-  adsDivCreator('article_middle');
-  adsDivCreator('article_bottom');
+  adsenseFunc('article', 'create');
 }
 
 export async function loadDelayed() {
@@ -189,14 +186,5 @@ export async function loadDelayed() {
     category: articleCat,
   });
 
-  adsDefineSlot(
-    [
-      'article_top',
-      'article_side',
-      'article_middle',
-      'article_bottom',
-      'article_anchor',
-    ],
-    articleCat,
-  );
+  adsenseFunc('article', articleCat);
 }
