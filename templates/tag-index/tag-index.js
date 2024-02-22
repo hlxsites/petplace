@@ -10,6 +10,8 @@ import {
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
 
 const PAGINATE_ON = 12;
 
@@ -157,4 +159,17 @@ export async function loadEager(document) {
 
 export function loadLazy() {
   renderArticles(getArticles());
+  adsDivCreator('tag_top');
+  adsDivCreator('tag_bottom');
+}
+
+export async function loadDelayed() {
+  const pageTag = await getTagForUrl();
+  await pushToDataLayer({
+    event: 'adsense',
+    type: 'tags',
+    category: pageTag.Slug,
+  });
+
+  adsDefineSlot(['tag_top', 'tag_bottom', 'tag_anchor'], pageTag.Slug);
 }
