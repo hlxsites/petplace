@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { ImageCarousel } from './image-carousel.js';
+import { getRandomItems, extractName, formatPhoneNumber } from '../../templates/adopt/adopt.js';
 
 async function getParametersFromUrl() {
     const { pathname } = window.location;
@@ -406,17 +407,7 @@ function createPetCard(petData, fallBackImage) {
     petCard.append(pictureContainer, cardBody, buttonContainer);
     return petCard;
 }
-function formatPhoneNumber(phoneNumberString) {
-    var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
-    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-    if (match) {
-        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
-    }
-    return null;
-}
-function extractName(nameString) {
-    return nameString.replace(/\s*\([^)]*\)/, '').trim();
-}
+
 function createImageObject(imagePath, fallBackSrc, fallBackAlt, width, height) {
     const img = document.createElement('object');
     img.data = imagePath;
