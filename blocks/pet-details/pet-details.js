@@ -123,19 +123,7 @@ function formatAnimalData(apiData) {
 }
 function formatSimilarPetData(apiData) {
     if(apiData && apiData.length > 4) {
-        const filteredData = apiData.filter(animal => animal && typeof animal.coverImagePath === 'string');
-        if (filteredData.length > 4) {
-            const size = 4;
-            let randomNumbers = new Set();
-            let indexArr;
-            while (randomNumbers.size < size) {
-                randomNumbers.add(Math.floor(Math.random() * filteredData.length));
-            }
-            indexArr = [...randomNumbers];
-            return filteredData.filter((data, index) => indexArr.includes(index));
-        } else {
-            return filteredData;
-        }
+        return getRandomItems(apiData, 4);
     } else {
         return apiData;
     }
@@ -299,7 +287,7 @@ async function createChecklistSection() {
     }
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
-        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary', true));
+        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
     }
     if (checklistItem2Label) {
         checklistContainer.append(createChecklistItem(2, checklistItem2Label, checklistItem2Text));
@@ -307,7 +295,7 @@ async function createChecklistSection() {
     if (checklistItem3Label) {
         checklistContainer.append(createChecklistItem(3, checklistItem3Label, checklistItem3Text));
     }
-    checklistContainer.append(createCta('', 'View Full Checklist', 'pet-details-button button primary', true));
+    checklistContainer.append(createCta('', 'View Full Checklist', 'pet-details-button button primary right-arrow', true));
     return checklistContainer;
 }
 async function createSimilarPetsSection(sectionTitle, petArr){

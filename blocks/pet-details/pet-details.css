@@ -37,6 +37,20 @@
     font-weight: 600;
     line-height: 1.2;
 }
+.pet-details .pet-details-button.right-arrow:after,
+.pet-details a.pet-details-button.right-arrow:after{
+    content: '';
+    display: inline-block;
+    width: 17px;
+    height: 16px;
+    margin-left: 16px;
+    vertical-align: middle;
+    mask-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='17' fill='none' %3E%3Cg clip-path='url(%23A)' stroke='%23fff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M.5 8.471h15m-7 7l7-7-7-7'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='A'%3E%3Cpath fill='%23fff' transform='translate(0 .471)' d='M0 0h16v16H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    background-color: var(--background-color);
+}
 .pet-details button.pet-details-button.primary,
 .pet-details a.pet-details-button.primary {
     background-color: var(--compare-button-bg-color);
