@@ -1,40 +1,21 @@
-body.adopt {
-
-}
-
 body.adopt .hero h1 {
-
-    font-family: Raleway;
-font-size: 72px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-letter-spacing: -1.44px;
-color: #000;
+  font-family: Raleway;
+  font-size: 72px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -1.44px;
+  color: #000;
 }
-body.adopt .hero h2{
-    font-family: Raleway;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 36px; /* 112.5% */
-    letter-spacing: -0.64px;
-    color: #000;
-    
-}
-body.adopt .hero .columns-img-col {
-    align-self: stretch;
-}
-body.adopt .hero .columns-img-col picture img {
-    object-fit: cover;
-    height: 100%;
-    border-radius: 16px;
-}
-
-body.adopt .columns.guide {
-    
+body.adopt .hero h2 {
+  font-family: Raleway;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 36px; /* 112.5% */
+  letter-spacing: -0.64px;
+  color: #000;
 }
 body.adopt .columns.guide .columns-img-col {
-    width: auto;
-
+  width: auto;
 }
