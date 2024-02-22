@@ -10,7 +10,7 @@ import {
   getCategories,
   getCategory,
 } from '../../scripts/scripts.js';
-import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
+import { adsenseFunc } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 export async function getCategoryByKey(key, value) {
@@ -214,12 +214,9 @@ export async function loadLazy(document) {
   await loadBlock(breadcrumb);
   breadcrumb.style.visibility = '';
 
-  adsDivCreator('article_top');
-  adsDivCreator('article_middle');
-  adsDivCreator('article_bottom');
+  adsenseFunc('article', 'create');
 }
 
-// (side later with refactor)
 export async function loadDelayed() {
   const articleCat = toClassName(getMetadata('category').split(',')[0]?.trim());
   await pushToDataLayer({
@@ -228,13 +225,5 @@ export async function loadDelayed() {
     category: articleCat,
   });
 
-  adsDefineSlot(
-    [
-      'article_top',
-      'article_middle',
-      'article_bottom',
-      'article_anchor',
-    ],
-    articleCat,
-  );
+  adsenseFunc('article', articleCat);
 }
