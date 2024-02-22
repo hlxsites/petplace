@@ -1,49 +1,87 @@
-.bytetag main .hero {
-    align-items: start;
-    min-height: 550px;
+.bytetag .section.hero-container {
+  padding: 0;
+  display: none;
+}
+.bytetag .hero-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    position: relative;
+    min-height: 547px;
+    width: 100%;
   }
-  
-.bytetag main .hero > div > div:not(:first-child) {
-    align-items: start;
-    flex-direction: column;
-    margin: 3rem 0px;
-    max-width: 660px;
+}
+.bytetag .hero-wrapper .img-div {
+  max-width: 100%;
+  @media (min-width: 1024px) {
+    position: absolute;
+    z-index: -1;
+    right: 0;
   }
-  
-.bytetag main .hero > div > div h1 {
-    margin-bottom: 0px;
+}
+.bytetag .hero-wrapper .img-div img {
+  object-fit: cover;
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+  @media (min-width: 800px) {
+    min-height: 400px;
   }
-  
-.bytetag main .hero > div > div p {
-    color: var(--text-color-inverted);
-    font-size: 1.5rem;
+  @media (min-width: 1024px) {
+    object-position: right;
+    min-height: 547px;
+  }
 }
+.bytetag .hero-wrapper .text-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 30px;
+  width: 100%;
 
-@media (min-width: 600px){
-
-    .bytetag main .hero > div > div:first-of-type picture:last-of-type {
-        position: absolute;
-    }
-    .bytetag main .hero > div > div:first-of-type picture img{
-        object-fit: contain;
-        object-position: right;
-    }
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+    align-items: flex-start;
+    max-width: 1392px;
+    min-height: 547px;
+    margin: 0 auto;
+  }
 }
-.bytetag main .hero > div > div:not(.hero-picture-container) {
-
+.bytetag .hero-wrapper .text-div h1 {
+  font-weight: 800;
+  font-size: 0;
+  height: 75px;
+  width: 470px;
+  max-width: 90%;
+  margin: 20px 0 10px;
+  color: black;
+  background: url(../../images/bytetag-logo.svg) no-repeat;
+  background-size: contain;
 }
-/* .bytetag main .hero > div > div:not(.hero-picture-container) picture, */
-.bytetag main .hero > div > div:last-of-type picture {
-    position: unset;
+.bytetag .hero-wrapper .text-div h1 + p {
+  font-size: 28px;
+  line-height: 36px;
+  padding: 0 1rem;
+  @media (min-width: 1024px) {
+    max-width: 468px;
+  }
 }
-.bytetag main .hero > div > div:last-of-type picture img {
-
-    object-fit: unset;
-    width: auto;
+.bytetag .hero-wrapper .text-div p:last-of-type{
+    font-size: 16px;
+    line-height: 28px;
 }
-.bytetag main .hero > div > div:last-of-type h1 {
-    color: black;
-}
-.bytetag main .hero > div > div:last-of-type p {
-    color: black;
+.bytetag .hero-wrapper .text-div p:last-of-type::before {
+  display: inline-block;
+  content: '';
+  margin-left: .8rem;
+  margin-bottom: 4px;
+  height: 12px;
+  width: 80px;
+  background: var(--text-color);
+  -webkit-mask: url('../../icons/stars-five.svg') no-repeat center center;
+  mask: url('../../icons/stars-five.svg') no-repeat center center;
+  vertical-align: middle;
 }
