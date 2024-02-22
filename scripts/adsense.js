@@ -35,6 +35,11 @@ const adsDivCreator = (adLoc) => {
     footer.before(mainDiv);
   }
 
+  if (adLoc.includes('side')) {
+    const aside = document.querySelector('.social-share-wrapper');
+    aside.after(mainDiv);
+  }
+
   if (adLoc.includes('middle')) {
     if (adLoc.includes('home')) {
       const adSection = document
