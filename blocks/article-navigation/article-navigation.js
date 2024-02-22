@@ -92,7 +92,7 @@ async function createNavigation(block) {
   const categories = [categoryInfo, ...parentCategories];
 
   // Get all articles in that category
-  const articles = ffetch('/article/query-index.json')
+  const articles = ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('article')
     .chunks(isMobile() ? 500 : 2000)
     .filter((article) => ifArticleBelongsToCategories(article, categories));

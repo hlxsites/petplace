@@ -22,7 +22,7 @@ import { pushToDataLayer } from '../../scripts/utils/helpers.js';
  * @returns {Promise<HTMLPictureElement || undefined>}
  */
 export async function getCategoryImage(path) {
-  const res = await fetch('/article/category/category-images.plain.html');
+  const res = await fetch(`${window.hlx.contentBasePath}/article/category/category-images.plain.html`);
   const htmlText = await res.text();
   const div = document.createElement('div');
   div.innerHTML = htmlText;
@@ -87,7 +87,7 @@ async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
-  return ffetch('/article/query-index.json')
+  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('article')
     .withTotal(true)
     .filter((article) => {
