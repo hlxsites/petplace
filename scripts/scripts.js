@@ -396,15 +396,14 @@ function buildCookieConsent(main) {
   if (window.hlx.consent) {
     return;
   }
-  if (document.documentElement.lang !== 'en-US') {
-    window.dataLayer.push(['consent', 'default', {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'denied',
+  // US region does not need the cookie consent logic
+  if (document.documentElement.lang === 'en-US') {
+    window.dataLayer.push(['consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted',
     }]);
-  } else {
-    // US region does not need the cookie consent logic
     window.clarity('consent');
     return;
   }
