@@ -6,10 +6,14 @@ import { getRandomItems, extractName, formatPhoneNumber } from '../../templates/
 async function getParametersFromUrl() {
     const { pathname } = window.location;
     const pathArr = pathname.split('/')
-    const [animalId, clientId] = pathname.endsWith('/') ? pathArr.slice(pathArr.length - 3, pathArr.length - 1): pathArr.slice(-2);
-    console.log(animalId, clientId)
-    //return {clientId, animalId}
-    return {animalId: '40596030', clientId: 'PP1008'};
+    const pagePathString = getMetadata('pet-profile-page-paths') || '/pet-adoption/dogs/,/pet-adoption/cats/,/pet-adoption/others/'
+    const pagePaths = pagePathString.split(',');
+    if(pagePaths.some(el => pathname.startsWith(el)) && pathArr.length >= 4) {
+        const [animalId, clientId] = pathname.endsWith('/') ? pathArr.slice(pathArr.length - 3, pathArr.length - 1): pathArr.slice(-2);
+        return {animalId, clientId};
+    } else {
+        return {};
+    }
 }
 async function fetchAnimalData(clientId, animalId) {
     const animalApi = `https://api-stg-petplace.azure-api.net/animal/${animalId}/client/${clientId}`;
@@ -17,7 +21,6 @@ async function fetchAnimalData(clientId, animalId) {
         const resp = await fetch(animalApi);
         if(resp.ok) {
             const json = await resp.json();
-            console.log('api data', json)
             return formatAnimalData(json);
         } else {
             return {};
@@ -51,7 +54,6 @@ async function fetchSimilarPets(zip, animalType) {
         });
         if(resp.ok) {
             const json = await resp.json();
-            console.log(json.animal)
             return formatSimilarPetData(json.animal)
         } else {
             return [];
@@ -118,7 +120,6 @@ function formatAnimalData(apiData) {
         moreInfo,
         dataUpdated
     }
-    console.log('formatted animal data', formattedData)
     return formattedData
 }
 function formatSimilarPetData(apiData) {
@@ -130,15 +131,7 @@ function formatSimilarPetData(apiData) {
 }
 
 async function createCarouselSection(petName, images){
-        const imageArr = images;
-    // example images for testing carousel
-    // const imageArr = [
-    //     'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
-    //     'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
-    //     'https://www.petplace.com/article/dogs/pet-care/media_1d7035030f35833989f5b2f765eeb04c3c3539c07.jpeg',
-    //     'https://www.petplace.com/article/dogs/pet-care/media_13cb8037aa8ff514c96d9a08ced9d7773409c2947.jpeg'
-    // ]
-
+    const imageArr = images;
     if(imageArr.length < 2 ) {
         const imageSectionContainer = document.createElement('div');
         imageSectionContainer.className = 'image-section';
@@ -413,34 +406,36 @@ function createImageObject(imagePath, fallBackSrc, fallBackAlt, width, height) {
     return img;
 }
 export default async function decorate(block) {
-    const {clientId, animalId} = await getParametersFromUrl();
-    const petData = await fetchAnimalData(clientId, animalId);
-    const similarPetsArr = await fetchSimilarPets(petData.zip, petData.animalType)
-
     block.textContent = '';
+    const {animalId, clientId} = await getParametersFromUrl();
+    if (animalId && clientId) {
 
-    //Create carousel section
-    block.append(await createCarouselSection(petData.petName || '', petData?.imageUrl || []));
+        const petData = await fetchAnimalData(clientId, animalId);
+        const similarPetsArr = await fetchSimilarPets(petData.zip, petData.animalType)
 
-    // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
-    const layoutContainer = document.createElement('div');
-    layoutContainer.className = 'contents-section';
+        //Create carousel section
+        block.append(await createCarouselSection(petData.petName || '', petData?.imageUrl || []));
 
-    layoutContainer.append(await createAboutPetSection(petData));
-    layoutContainer.append(await createShelterSection(petData));
-    layoutContainer.append(await createChecklistSection());
-    block.append(layoutContainer);
+        // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
+        const layoutContainer = document.createElement('div');
+        layoutContainer.className = 'contents-section';
 
-    block.append(await createSimilarPetsSection('Similar Pets', similarPetsArr));
-    ImageCarousel.init({
-        selectors: {
-            self: '.image-carousel',
-            sliderEl: '.image-carousel-slider',
-            slideEl: '.image-carousel-slide',
-            sliderPrev: 'button.image-carousel-previous',
-            sliderNext: 'button.image-carousel-next',
-            sliderNavigator: 'button.image-carousel-navigator',
-            activeNavigator: 'button.image-carousel-navigator[aria-disabled="false"]'
-        }
-    });
+        layoutContainer.append(await createAboutPetSection(petData));
+        layoutContainer.append(await createShelterSection(petData));
+        layoutContainer.append(await createChecklistSection());
+        block.append(layoutContainer);
+
+        block.append(await createSimilarPetsSection('Similar Pets', similarPetsArr));
+        ImageCarousel.init({
+            selectors: {
+                self: '.image-carousel',
+                sliderEl: '.image-carousel-slider',
+                slideEl: '.image-carousel-slide',
+                sliderPrev: 'button.image-carousel-previous',
+                sliderNext: 'button.image-carousel-next',
+                sliderNavigator: 'button.image-carousel-navigator',
+                activeNavigator: 'button.image-carousel-navigator[aria-disabled="false"]'
+            }
+        });
+    }
 }
