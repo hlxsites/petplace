@@ -12,7 +12,7 @@ import {
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
-import { adsDefineSlot, adsDivCreator } from '../../scripts/adsense.js';
+import { adsenseFunc } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
@@ -233,8 +233,7 @@ export async function loadLazy() {
   //   });
   // }
 
-  adsDivCreator('category_top');
-  adsDivCreator('category_bottom');
+  adsenseFunc('category', 'create');
 }
 
 export async function loadDelayed() {
@@ -245,8 +244,5 @@ export async function loadDelayed() {
     category: pageCat.Slug,
   });
 
-  adsDefineSlot(
-    ['category_top', 'category_bottom', 'category_anchor'],
-    pageCat.Slug,
-  );
+  adsenseFunc('category', pageCat.Slug);
 }
