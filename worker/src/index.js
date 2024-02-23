@@ -1,6 +1,4 @@
 /* eslint-disable import/no-unresolved */
-import { env } from 'fastly:env';
-import { SimpleCache } from 'fastly:cache';
 import { SecretStore } from 'fastly:secret-store';
 
 const VALID_HOSTS = [
