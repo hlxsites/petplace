@@ -1,16 +1,16 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require('path');
+// const webpack = require('webpack');
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   optimization: {
-    minimize: false
+    minimize: false,
   },
-  target: "webworker",
+  target: 'webworker',
   output: {
-    filename: "index.js",
-    path: path.resolve(__dirname, "bin"),
-    libraryTarget: "this",
+    filename: 'index.js',
+    path: path.resolve(__dirname, 'bin'),
+    libraryTarget: 'this',
   },
   module: {
     rules: [
@@ -26,13 +26,13 @@ module.exports = {
     // }),
   ],
   externals: [
-    ({request,}, callback) => {
+    ({ request }, callback) => {
       // Allow Webpack to handle fastly:* namespaced module imports by treating
       // them as modules rather than try to process them as URLs
       if (/^fastly:.*$/.test(request)) {
-        return callback(null, 'commonjs ' + request);
+        return callback(null, `commonjs ${request}`);
       }
-      callback();
-    }
+      return callback();
+    },
   ],
 };
