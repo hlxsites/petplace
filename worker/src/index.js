@@ -1,6 +1,4 @@
 /* eslint-disable import/no-unresolved */
-import { env } from 'fastly:env';
-import { SimpleCache } from 'fastly:cache';
 import { SecretStore } from 'fastly:secret-store';
 
 const VALID_HOSTS = [
@@ -52,12 +50,7 @@ async function handleRequest(event) {
 
   const url = new URL(req.url);
   if (url.pathname === '/services/newsletter' && req.method === 'POST') {
-    const accessToken = env('FASTLY_HOSTNAME') === 'localhost'
-      ? await getNewsletterToken()
-      : SimpleCache.getOrSet('newsletter-token', async () => ({
-        value: await getNewsletterToken(),
-        ttl: 3600,
-      }));
+    const accessToken = await getNewsletterToken();
     const secrets = new SecretStore('services_secrets');
     const restBackend = await secrets.get('newsletter_rest_backend');
     const backendRequest = new Request(`https://${restBackend.plaintext()}/interaction/v1/events`, req);
