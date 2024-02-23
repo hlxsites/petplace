@@ -18,8 +18,6 @@ msalInstance.initialize().then(() => {
  * @param {*} featureName name of the feature that is invoking the login function, e.g. "Favorite". Used for logging purposes when a user signs up an account for the first time.
  */
 export function login(callback, featureName) {
-    sessionStorage.setItem('originUrl', window.location.href);
-
     // TODO use loginRedirect for mobile devices
     msalInstance.loginPopup(loginRequest)
     // msalInstance.loginRedirect(loginRequest)
@@ -154,8 +152,6 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
             });
         }
 
-        sessionStorage.removeItem('originUrl');
-        
         // invoke custom callback if one was provided
         if (customCallback) {
           customCallback(response);
