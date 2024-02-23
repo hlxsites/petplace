@@ -9,19 +9,19 @@ function formatAnimalData(apiData) {
     const {
         AnimalId: animalId,
         ClientId: clientId,
-        ['Animal Type']: animalType,
-        ['Pet Name']: petName,
-        ['Primary Breed']: primaryBreed,
-        ['Secondary Breed']: secondaryBreed,
+        'Animal Type': animalType,
+        'Pet Name': petName,
+        'Primary Breed': primaryBreed,
+        'Secondary Breed': secondaryBreed,
         Age: age,
         Gender: gender,
-        ['Size Category']: size,
+        'Size Category': size,
         Description: description,
-        ['Shelter Name']: shelterName,
-        ['Phone Number']: shelterPhone,
-        ['Pet Location']: petLocation,
-        ['Pet Location Address']: petLocationAddress,
-        ['Shelter Address']: shelterAddress,
+        'Shelter Name': shelterName,
+        'Phone Number': shelterPhone,
+        'Pet Location': petLocation,
+        'Pet Location Address': petLocationAddress,
+        'Shelter Address': shelterAddress,
         City: city,
         State: state,
         Zip: zip,
@@ -29,10 +29,10 @@ function formatAnimalData(apiData) {
     } = ppRequired ? ppRequired[0] : {};
 
     const {
-        ['Located At']: locatedAt,
+        'Located At': locatedAt,
         Age: ageDescription,
-        ['More Info']: moreInfo,
-        ['Data Updated']: dataUpdated,
+        'More Info': moreInfo,
+        'Data Updated': dataUpdated,
     } = animalDetail ? animalDetail[0] : {};
 
     const formattedData = {
@@ -124,7 +124,7 @@ function createChecklistItem(index, label, text) {
 function createPetCard(petData, fallBackImage) {
     const {
         Name: petName,
-        ['Animal type']: animalType,
+        'Animal type': animalType,
         Gender: gender,
         reed: breed,
         City: city,
@@ -312,13 +312,12 @@ async function createAboutPetSection(aboutPet) {
             <div class='about-pet-subtitle-inner'>
                 ${(primaryBreed || secondaryBreed) ? `
                     <span class='about-pet-breed'>
-                        ${primaryBreed ? primaryBreed : ''}${secondaryBreed ? `/${secondaryBreed}` : ''}
+                        ${primaryBreed || ''}${primaryBreed && secondaryBreed ? '/' : ''}${secondaryBreed || ''}
                     </span>`
                     : 'Breed N/A'}
                 ${(city || state) ? (`
                     <span class='about-pet-location'>
-                        ${city ? city : 'City N/A'}
-                        ${state ? `, ${state}` : ', State N/A'}
+                        ${city || 'City N/A'}, ${state || 'State N/A'}
                     </span>`) : 'Location N/A'
                 }
             </div>
@@ -367,7 +366,7 @@ async function createShelterSection(aboutShelter) {
     shelterContainer.innerHTML = `
         <h2 class='shelter-name'>${shelterName || 'Shelter Name N/A'}</h2>
         ${(city || state) ? `<div class='shelter-location'>
-           <span>${city ? city : ''}${state ? `, ${state}` : ''}</span></div>` : ''
+           <span>${city || ''}${city && state ? ', ' : ''}${state || ''}</span></div>` : ''
         }
         <div class='shelter-address'>${shelterName && shelterAddress && lastAddressLine ? `
             <a href='https://maps.google.com/?q=${shelterAddress + lastAddressLine}'><span>${shelterName}</br>${shelterAddress}</br>${lastAddressLine}</span></a>
