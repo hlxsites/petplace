@@ -199,7 +199,7 @@ function buildResultsList(animalList) {
         p.innerText = `${animal.Gender} • ${animal.Breed}`;
         const animalLocation = document.createElement('p');
         animalLocation.className = 'location';
-        animalLocation.innerHTML = `${animal.City}`;
+        animalLocation.innerHTML = `${animal.City}, ${animal.State}`;
         div.append(anchor);
         div.append(animalName);
         div.append(p);
