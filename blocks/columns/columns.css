@@ -59,6 +59,7 @@
   border: 1px solid #D0D0D6;
   gap: 8px;
   padding-bottom: 24px;
+  text-align: left;
 }
 .columns.cards > div > div > p:first-of-type > picture > img:first-of-type {
   width: 100%;
