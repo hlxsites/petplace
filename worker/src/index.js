@@ -38,7 +38,22 @@ async function getNewsletterToken() {
 }
 
 async function registerForNewsletter(req) {
-  
+  const accessToken = env('FASTLY_HOSTNAME') === 'localhost'
+    ? await getNewsletterToken()
+    : SimpleCache.getOrSet('newsletter-token', async () => ({
+      value: await getNewsletterToken(),
+      ttl: 1200,
+    }));
+  const secrets = new SecretStore('services_secrets');
+  const restBackend = await secrets.get('newsletter_rest_backend');
+  const backendRequest = new Request(`https://${restBackend.plaintext()}/interaction/v1/events`, req);
+  return fetch(backendRequest, {
+    backend: 'newsletter',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
 }
 
 async function handleRequest(event) {
@@ -56,24 +71,10 @@ async function handleRequest(event) {
 
   const url = new URL(req.url);
   if (url.pathname === '/services/newsletter' && req.method === 'POST') {
-    const accessToken = env('FASTLY_HOSTNAME') === 'localhost'
-      ? await getNewsletterToken()
-      : SimpleCache.getOrSet('newsletter-token', async () => ({
-        value: await getNewsletterToken(),
-        ttl: 1200,
-      }));
-    const secrets = new SecretStore('services_secrets');
-    const restBackend = await secrets.get('newsletter_rest_backend');
-    const backendRequest = new Request(`https://${restBackend.plaintext()}/interaction/v1/events`, req);
-    const backendResponse = await fetch(backendRequest, {
-      backend: 'newsletter',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
+    let backendResponse = await registerForNewsletter(req);
     if (backendResponse.status === 401 && env('FASTLY_HOSTNAME') !== 'localhost') { // Assume token expired
       SimpleCache.purge('newsletter-token');
+      backendResponse = await registerForNewsletter(req);
     }
     backendResponse.headers.append('Access-Control-Allow-Origin', originUrl.origin);
     return backendResponse;
