@@ -20,8 +20,9 @@ msalInstance.initialize().then(() => {
 export function login(callback, featureName) {
     sessionStorage.setItem('originUrl', window.location.href);
 
-    // msalInstance.loginPopup(loginRequest)
-    msalInstance.loginRedirect(loginRequest)
+    // TODO use loginRedirect for mobile devices
+    msalInstance.loginPopup(loginRequest)
+    // msalInstance.loginRedirect(loginRequest)
         .then((response) => handleResponse(response, callback, featureName))
         .catch(error => {
             console.log(error);
@@ -73,10 +74,16 @@ export function acquireToken(customCallback) {
             if (customCallback) {
                 login(customCallback);
             } else {
-                login();
+                login((tokenResponse) => resolve(tokenResponse.accessToken));
             }
         }
     });
+}
+
+// function to check if user is logged in or not
+export function isLoggedIn() {
+    const accounts = msalInstance.getAllAccounts();
+    return accounts.length > 0;
 }
 
 function selectAccount() {
