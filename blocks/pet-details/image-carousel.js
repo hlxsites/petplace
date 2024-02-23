@@ -11,7 +11,7 @@ function DetectSwipe(element, callback) {
     const distThreshold = 50;
     const angleThreshold = 30 * (Math.PI / 180);
     const timeThreshold = 500;
-    const handleSwipe = callback || function () { return undefined; };
+    const handleSwipe = callback || function noop() { return undefined; };
 
     touchElement.addEventListener('touchstart', (e) => {
         const touchObj = e.changedTouches[0];
@@ -22,14 +22,15 @@ function DetectSwipe(element, callback) {
         startY = touchObj.pageY;
         startTime = new Date().getTime();
     }, false);
-  
+
     touchElement.addEventListener('touchmove', (e) => {
       const touchObj = e.changedTouches[0];
       distX = touchObj.pageX - startX;
       distY = touchObj.pageY - startY;
       elapsedTime = new Date().getTime() - startTime;
-      if (elapsedTime <= timeThreshold) { 
-          if (Math.abs(distX) >= distThreshold && (Math.abs(distY)/Math.abs(distX)) <= Math.tan(angleThreshold)) {
+      if (elapsedTime <= timeThreshold) {
+          if (Math.abs(distX) >= distThreshold
+            && (Math.abs(distY) / Math.abs(distX)) <= Math.tan(angleThreshold)) {
             e.preventDefault();
           }
       }
@@ -40,12 +41,13 @@ function DetectSwipe(element, callback) {
         distX = touchObj.pageX - startX;
         distY = touchObj.pageY - startY;
         elapsedTime = new Date().getTime() - startTime;
-        if (elapsedTime <= timeThreshold) { 
-            if (Math.abs(distX) >= distThreshold && (Math.abs(distY)/Math.abs(distX)) <= Math.tan(angleThreshold)){
-                swipeDirection = (distX < 0)? 'left' : 'right';
-            }
-            else if (Math.abs(distY) >= distThreshold && (Math.abs(distX)/Math.abs(distY)) <= Math.tan(angleThreshold)){ 
-                swipeDirection = (distY < 0)? 'up' : 'down';
+        if (elapsedTime <= timeThreshold) {
+            if (Math.abs(distX) >= distThreshold
+                && (Math.abs(distY) / Math.abs(distX)) <= Math.tan(angleThreshold)) {
+                swipeDirection = (distX < 0) ? 'left' : 'right';
+            } else if (Math.abs(distY) >= distThreshold
+                && (Math.abs(distX) / Math.abs(distY)) <= Math.tan(angleThreshold)) {
+                swipeDirection = (distY < 0) ? 'up' : 'down';
             }
         }
         handleSwipe(swipeDirection);
@@ -53,10 +55,12 @@ function DetectSwipe(element, callback) {
 }
 
 export const ImageCarousel = {
-    intiateSlider () {
-        const {self, sliderEl, slideEl, sliderPrev, sliderNext, sliderNavigator } = this.SELECTORS;
+    intiateSlider() {
+        const {
+            self, sliderEl, slideEl, sliderPrev, sliderNext, sliderNavigator,
+        } = this.SELECTORS;
         const components = document.querySelectorAll(self);
-        components.forEach(component => {
+        components.forEach((component) => {
             const slider = component.querySelector(sliderEl);
             if (slider) {
                 const initialSlides = Array.from(slider.querySelectorAll(slideEl));
@@ -66,80 +70,83 @@ export const ImageCarousel = {
                 const initialSlideCount = initialSlides.length;
                 const slidesToShow = initialSlideCount >= 3 ? 3 : initialSlideCount;
                 const slideAction = (swipeDirection) => {
-                    if (swipeDirection == 'left') {
+                    if (swipeDirection === 'left') {
                         nextButton.click();
-                    } else if (swipeDirection == 'right') {
+                    } else if (swipeDirection === 'right') {
                         prevButton.click();
                     }
-                }
-                //clone and prepend slides
-                for (let i = initialSlideCount; i > (initialSlideCount - slidesToShow); i--) {
+                };
+
+                // clone and prepend slides
+                for (let i = initialSlideCount; i > (initialSlideCount - slidesToShow); i -= 1) {
                     const slideIndex = i - 1;
                     const slideClone = initialSlides[slideIndex].cloneNode(true);
-                    slideClone.setAttribute("data-slide-index", slideIndex - initialSlideCount);
+                    slideClone.setAttribute('data-slide-index', slideIndex - initialSlideCount);
                     slideClone.classList.add('slide-cloned');
                     slideClone.setAttribute('aria-label', `slide ${i}`);
                     slider.prepend(slideClone);
                 }
-                //clone and append slides
-                for (let i = 0; i < slidesToShow; i++) {
+
+                // clone and append slides
+                for (let i = 0; i < slidesToShow; i += 1) {
                     const slideIndex = i;
                     const slideClone = initialSlides[slideIndex].cloneNode(true);
-                    slideClone.setAttribute("data-slide-index", slideIndex + initialSlideCount);
+                    slideClone.setAttribute('data-slide-index', slideIndex + initialSlideCount);
                     slideClone.classList.add('slide-cloned');
-                    slideClone.setAttribute('aria-label', `slide ${i+1}`);
+                    slideClone.setAttribute('aria-label', `slide ${i + 1}`);
                     slider.append(slideClone);
                 }
+
                 const slides = Array.from(component.querySelectorAll(slideEl));
-                slider.style.width = slides.length * 100 + '%';
+                slider.style.width = `${slides.length * 100}%`;
                 let currentIndex = slidesToShow;
                 this.updateActiveSlide(component, currentIndex, slidesToShow);
                 nextButton.addEventListener('click', () => {
                     if (currentIndex >= slides.length - slidesToShow) {
                         return;
                     }
-                    slider.style.transition = "transform 1s ease-in-out";
-                    currentIndex++;
+                    slider.style.transition = 'transform 1s ease-in-out';
+                    currentIndex += 1;
                     this.updateActiveSlide(component, currentIndex, slidesToShow);
                 });
                 prevButton.addEventListener('click', () => {
                     if (currentIndex <= slidesToShow - 1) {
                         return;
                     }
-                    slider.style.transition = "transform 1s ease-in-out";
-                    currentIndex--;
+                    slider.style.transition = 'transform 1s ease-in-out';
+                    currentIndex -= 1;
                     this.updateActiveSlide(component, currentIndex, slidesToShow);
                 });
-                navigators.forEach(button => {
-                    button.addEventListener('click', (event)=> {
+                navigators.forEach((button) => {
+                    button.addEventListener('click', (event) => {
                         const targetIndex = event.target.getAttribute('data-slide-to-index');
-                        currentIndex = parseInt(targetIndex) + slidesToShow;
+                        currentIndex = parseInt(targetIndex, 10) + slidesToShow;
                         this.updateActiveSlide(component, currentIndex, slidesToShow);
-                    })
+                    });
                 });
                 slider.addEventListener('transitionend', () => {
-                    if (currentIndex == slides.length - slidesToShow) {
-                        slider.style.transition = "none";
+                    if (currentIndex === slides.length - slidesToShow) {
+                        slider.style.transition = 'none';
                         currentIndex = slides.length - currentIndex;
                         this.updateActiveSlide(component, currentIndex, slidesToShow);
                     }
-                    if (currentIndex == slidesToShow - 1){
-                        slider.style.transition = "none";
+                    if (currentIndex === slidesToShow - 1) {
+                        slider.style.transition = 'none';
                         currentIndex = slides.length - slidesToShow - 1;
                         this.updateActiveSlide(component, currentIndex, slidesToShow);
-                    }                     
+                    }
                 });
                 DetectSwipe(slider, slideAction);
             }
         });
     },
-    updateActiveSlide (component, currentIndex, slidesToShow) {
+    updateActiveSlide(component, currentIndex, slidesToShow) {
         const slider = component.querySelector(this.SELECTORS.sliderEl);
         const slideArray = component.querySelectorAll(this.SELECTORS.slideEl);
         const navigators = component.querySelectorAll(this.SELECTORS.sliderNavigator);
-        const slideDistance = (1/slideArray.length) * 100 ;
+        const slideDistance = (1 / slideArray.length) * 100;
 
-        for (let i = 0; i < slideArray.length; i++) {
+        for (let i = 0; i < slideArray.length; i += 1) {
             if (i !== currentIndex) {
                 slideArray[i].setAttribute('aria-hidden', 'true');
                 slideArray[i].classList.remove('slide-active');
@@ -149,17 +156,17 @@ export const ImageCarousel = {
             }
         }
 
-        for (let i = 0; i < navigators.length; i++) {
+        for (let i = 0; i < navigators.length; i += 1) {
             if (i + slidesToShow !== currentIndex) {
                 navigators[i].setAttribute('aria-disabled', 'false');
             } else {
                 navigators[i].setAttribute('aria-disabled', 'true');
             }
         }
-        slider.style.transform = 'translateX(' + (-slideDistance * currentIndex) + '%)';
+        slider.style.transform = `translateX(${-slideDistance * currentIndex}%)`;
     },
-    init (arg) {
+    init(arg) {
         this.SELECTORS = arg.selectors;
         this.intiateSlider();
-    }
-}
+    },
+};
