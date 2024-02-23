@@ -177,6 +177,7 @@
 
   @media (min-width: 1025px) {
     display: flex;
+    align-self: stretch;
     flex-direction: column;
     justify-content: space-around;
   }
