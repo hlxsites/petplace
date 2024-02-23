@@ -1,4 +1,6 @@
 /* eslint-disable import/no-unresolved */
+import { env } from 'fastly:env';
+import { SimpleCache } from 'fastly:cache';
 import { SecretStore } from 'fastly:secret-store';
 
 const VALID_HOSTS = [
@@ -35,6 +37,10 @@ async function getNewsletterToken() {
   return json.access_token;
 }
 
+async function registerForNewsletter(req) {
+  
+}
+
 async function handleRequest(event) {
   const req = event.request;
 
@@ -50,7 +56,12 @@ async function handleRequest(event) {
 
   const url = new URL(req.url);
   if (url.pathname === '/services/newsletter' && req.method === 'POST') {
-    const accessToken = await getNewsletterToken();
+    const accessToken = env('FASTLY_HOSTNAME') === 'localhost'
+      ? await getNewsletterToken()
+      : SimpleCache.getOrSet('newsletter-token', async () => ({
+        value: await getNewsletterToken(),
+        ttl: 1200,
+      }));
     const secrets = new SecretStore('services_secrets');
     const restBackend = await secrets.get('newsletter_rest_backend');
     const backendRequest = new Request(`https://${restBackend.plaintext()}/interaction/v1/events`, req);
@@ -61,6 +72,9 @@ async function handleRequest(event) {
         'Content-Type': 'application/json',
       },
     });
+    if (backendResponse.status === 401 && env('FASTLY_HOSTNAME') !== 'localhost') { // Assume token expired
+      SimpleCache.purge('newsletter-token');
+    }
     backendResponse.headers.append('Access-Control-Allow-Origin', originUrl.origin);
     return backendResponse;
   }
