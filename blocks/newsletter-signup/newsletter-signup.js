@@ -39,8 +39,7 @@ async function submitForm(block, fd) {
   };
 
   try {
-    const baseUri =
-      'https://aem-eds-petplace.edgecompute.app/services/newsletter';
+    const baseUri = 'https://aem-eds-petplace.edgecompute.app/services/newsletter';
     const res = await fetch(baseUri, fetchOpts);
 
     if (!res.ok) {
