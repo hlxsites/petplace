@@ -338,11 +338,6 @@ function buildFilterSidebar(sidebar) {
             buildResultsContainer(data);
         });
     });
-    const radiusOption = document.createElement('option');
-    radiusOption.innerText = 'Any';
-    radiusOption.value = null;
-
-    radiusSelect.append(radiusOption);
     const radiusList = radiusOptions.split(',');
         radiusList.forEach((radius) => {
             const radiusListOption = document.createElement('option');
