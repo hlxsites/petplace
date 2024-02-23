@@ -1,0 +1,41 @@
+# This file describes a Fastly Compute package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = ["ramboz@adobe.com"]
+description = "A reverse proxy to integrate the website with third-party services"
+language = "javascript"
+manifest_version = 3
+name = "aem-eds-petplace"
+service_id = "yGkOmb0NEu8ATnubeO1X93"
+
+[scripts]
+  build = "npm run build"
+  post_init = "npm install"
+
+[local_server]
+
+  [local_server.backends]
+
+    [local_server.backends.auth]
+      url = "…"
+
+    [local_server.backends.newsletter]
+      url = "…"
+
+    [local_server.secret_stores]
+
+      [[local_server.secret_stores.services_secrets]]
+        key = "newsletter_auth_backend"
+        data = "…"
+
+      [[local_server.secret_stores.services_secrets]]
+        key = "newsletter_rest_backend"
+        data = "…"
+
+      [[local_server.secret_stores.services_secrets]]
+        key = "newsletter_client_id"
+        data = "…"
+
+      [[local_server.secret_stores.services_secrets]]
+        key = "newsletter_client_secret"
+        data = "…"
