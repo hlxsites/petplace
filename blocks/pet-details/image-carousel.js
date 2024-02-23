@@ -21,35 +21,35 @@ function DetectSwipe(element, callback) {
         startX = touchObj.pageX;
         startY = touchObj.pageY;
         startTime = new Date().getTime();
-    }, false)
+    }, false);
   
     touchElement.addEventListener('touchmove', (e) => {
       const touchObj = e.changedTouches[0];
-      distX = touchObj.pageX - startX; 
+      distX = touchObj.pageX - startX;
       distY = touchObj.pageY - startY;
       elapsedTime = new Date().getTime() - startTime;
-      if (elapsedTime <= timeThreshold){ 
-          if (Math.abs(distX) >= distThreshold && (Math.abs(distY)/Math.abs(distX)) <= Math.tan(angleThreshold)){
+      if (elapsedTime <= timeThreshold) { 
+          if (Math.abs(distX) >= distThreshold && (Math.abs(distY)/Math.abs(distX)) <= Math.tan(angleThreshold)) {
             e.preventDefault();
           }
       }
     }, false);
-  
+
     touchElement.addEventListener('touchend', (e) => {
         const touchObj = e.changedTouches[0];
-        distX = touchObj.pageX - startX; 
+        distX = touchObj.pageX - startX;
         distY = touchObj.pageY - startY;
         elapsedTime = new Date().getTime() - startTime;
-        if (elapsedTime <= timeThreshold){ 
+        if (elapsedTime <= timeThreshold) { 
             if (Math.abs(distX) >= distThreshold && (Math.abs(distY)/Math.abs(distX)) <= Math.tan(angleThreshold)){
-                swipeDirection = (distX < 0)? 'left' : 'right'; 
+                swipeDirection = (distX < 0)? 'left' : 'right';
             }
             else if (Math.abs(distY) >= distThreshold && (Math.abs(distX)/Math.abs(distY)) <= Math.tan(angleThreshold)){ 
-                swipeDirection = (distY < 0)? 'up' : 'down'; 
+                swipeDirection = (distY < 0)? 'up' : 'down';
             }
         }
         handleSwipe(swipeDirection);
-    }, false)
+    }, false);
 }
 
 export const ImageCarousel = {
@@ -66,7 +66,7 @@ export const ImageCarousel = {
                 const initialSlideCount = initialSlides.length;
                 const slidesToShow = initialSlideCount >= 3 ? 3 : initialSlideCount;
                 const slideAction = (swipeDirection) => {
-                    if(swipeDirection == 'left') {
+                    if (swipeDirection == 'left') {
                         nextButton.click();
                     } else if (swipeDirection == 'right') {
                         prevButton.click();
@@ -118,7 +118,7 @@ export const ImageCarousel = {
                     })
                 });
                 slider.addEventListener('transitionend', () => {
-                    if (currentIndex == slides.length - slidesToShow){
+                    if (currentIndex == slides.length - slidesToShow) {
                         slider.style.transition = "none";
                         currentIndex = slides.length - currentIndex;
                         this.updateActiveSlide(component, currentIndex, slidesToShow);
@@ -127,16 +127,16 @@ export const ImageCarousel = {
                         slider.style.transition = "none";
                         currentIndex = slides.length - slidesToShow - 1;
                         this.updateActiveSlide(component, currentIndex, slidesToShow);
-                    }                         
+                    }                     
                 });
                 DetectSwipe(slider, slideAction);
             }
         });
     },
     updateActiveSlide (component, currentIndex, slidesToShow) {
-        const slider = component.querySelector(this.SELECTORS.sliderEl)
+        const slider = component.querySelector(this.SELECTORS.sliderEl);
         const slideArray = component.querySelectorAll(this.SELECTORS.slideEl);
-        const navigators = component.querySelectorAll(this.SELECTORS.sliderNavigator)
+        const navigators = component.querySelectorAll(this.SELECTORS.sliderNavigator);
         const slideDistance = (1/slideArray.length) * 100 ;
 
         for (let i = 0; i < slideArray.length; i++) {
@@ -155,7 +155,7 @@ export const ImageCarousel = {
             } else {
                 navigators[i].setAttribute('aria-disabled', 'true');
             }
-        } 
+        }
         slider.style.transform = 'translateX(' + (-slideDistance * currentIndex) + '%)';
     },
     init (arg) {
