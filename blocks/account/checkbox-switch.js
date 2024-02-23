@@ -1,5 +1,6 @@
-class CheckboxSwitch {
+export class CheckboxSwitch {
     constructor(domNode) {
+      console.log(domNode);
       this.switchNode = domNode;
       this.switchNode.addEventListener('focus', (event) => this.onFocus(event));
       this.switchNode.addEventListener('blur', (event) => this.onBlur(event));
