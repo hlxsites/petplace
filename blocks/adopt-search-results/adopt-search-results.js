@@ -69,7 +69,6 @@ async function callAnimalList() {
     if (petType !== 'null') {
         animalType = petType;
     }
-    
     const breedType = document.getElementById('breed')?.value;
     let breed = null;
     if (breedType !== '') {
