@@ -555,12 +555,12 @@
 
 @media screen and (min-width: 600px) {
     .adopt-search-results .results div.animal {
-        max-width: 250px;
+        width: calc((50% - 30px))
     }
 }
 @media screen and (min-width: 1024px) {
     .adopt-search-results .results div.animal {
-        max-width: 250px;
+        width: calc((25% - 15px))
     }
 }
 
