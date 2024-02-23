@@ -11,8 +11,8 @@ function DetectSwipe(element, callback) {
     const distThreshold = 50;
     const angleThreshold = 30 * (Math.PI / 180);
     const timeThreshold = 500;
-    const handleSwipe = callback || function() {return undefined;};
-  
+    const handleSwipe = callback || function () { return undefined; };
+
     touchElement.addEventListener('touchstart', (e) => {
         const touchObj = e.changedTouches[0];
         swipeDirection = 'none';
@@ -53,7 +53,7 @@ function DetectSwipe(element, callback) {
 }
 
 export const ImageCarousel = {
-    intiateSlider() {
+    intiateSlider () {
         const {self, sliderEl, slideEl, sliderPrev, sliderNext, sliderNavigator } = this.SELECTORS;
         const components = document.querySelectorAll(self);
         components.forEach(component => {
@@ -133,7 +133,7 @@ export const ImageCarousel = {
             }
         });
     },
-    updateActiveSlide(component, currentIndex, slidesToShow) {
+    updateActiveSlide (component, currentIndex, slidesToShow) {
         const slider = component.querySelector(this.SELECTORS.sliderEl)
         const slideArray = component.querySelectorAll(this.SELECTORS.slideEl);
         const navigators = component.querySelectorAll(this.SELECTORS.sliderNavigator)
@@ -158,7 +158,7 @@ export const ImageCarousel = {
         } 
         slider.style.transform = 'translateX(' + (-slideDistance * currentIndex) + '%)';
     },
-    init(arg) {
+    init (arg) {
         this.SELECTORS = arg.selectors;
         this.intiateSlider();
     }
