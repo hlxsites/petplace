@@ -1,28 +1,40 @@
 /* eslint-disable import/no-unresolved */
+import { env } from 'fastly:env';
 import { SimpleCache } from 'fastly:cache';
 import { SecretStore } from 'fastly:secret-store';
+
+const VALID_HOSTS = [
+  /^localhost$/, // local dev
+  /--petplace--hlxsites\.hlx\.(page|live)$/, // EDS URLs
+  /^www.petplace.com$/, // prod host
+];
 
 function badRequest() {
   return new Response('Bad Request', {
     status: 400,
   });
 }
+
 async function getNewsletterToken() {
   const secrets = new SecretStore('services_secrets');
+  const authBackend = await secrets.get('newsletter_auth_backend');
   const clientId = await secrets.get('newsletter_client_id');
   const clientSecret = await secrets.get('newsletter_client_secret');
-  const backendResponse = await fetch('/interaction/v1/requestToken', {
-    backend: 'newsletter',
+  const body = {
+    grant_type: 'client_credentials',
+    client_id: clientId.plaintext(),
+    client_secret: clientSecret.plaintext(),
+  };
+  const backendResponse = await fetch(`https://${authBackend.plaintext()}/v2/token`, {
+    backend: 'auth',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      clientId: clientId.plaintext(),
-      clientSecret: clientSecret.plaintext(),
-    }),
+    body: JSON.stringify(body),
   });
   const json = await backendResponse.json();
-  return json.accessToken;
+  return json.access_token;
 }
 
 async function handleRequest(event) {
@@ -34,25 +46,25 @@ async function handleRequest(event) {
   }
 
   const originUrl = new URL(req.headers.get('origin'));
-  if (![
-    /^localhost$/, // local dev
-    /--petplace--hlxsites\.hlx\.(page|live)$/, // EDS URLs
-    /^www.petplace.com$/, // prod host
-  ].some((allowedHost) => originUrl.hostname.match(allowedHost))) {
+  if (!VALID_HOSTS.some((host) => originUrl.hostname.match(host))) {
     return badRequest();
   }
 
   const url = new URL(req.url);
   if (url.pathname === '/services/newsletter' && req.method === 'POST') {
-    const accessToken = SimpleCache.getOrSet('newsletter-token', async () => ({
-      value: await getNewsletterToken(),
-      ttl: 3600,
-    }));
-    const backendRequest = new Request('/interaction/v1/events', req);
+    const accessToken = env('FASTLY_HOSTNAME') === 'localhost'
+      ? await getNewsletterToken()
+      : SimpleCache.getOrSet('newsletter-token', async () => ({
+        value: await getNewsletterToken(),
+        ttl: 3600,
+      }));
+    const secrets = new SecretStore('services_secrets');
+    const restBackend = await secrets.get('newsletter_rest_backend');
+    const backendRequest = new Request(`https://${restBackend.plaintext()}/interaction/v1/events`, req);
     const backendResponse = await fetch(backendRequest, {
       backend: 'newsletter',
       headers: {
-        Authorrization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
     });
