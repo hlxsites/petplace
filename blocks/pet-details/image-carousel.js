@@ -1,5 +1,5 @@
+/* eslint-disable indent */
 function DetectSwipe(element, callback) {
-
     const touchElement = element;
     let swipeDirection;
     let startX;
@@ -13,8 +13,7 @@ function DetectSwipe(element, callback) {
     const timeThreshold = 500;
     const handleSwipe = callback || function(swipeDirection){console.log('');};
   
-  
-    touchElement.addEventListener('touchstart', function(e){
+    touchElement.addEventListener('touchstart', (e) => {
         const touchObj = e.changedTouches[0];
         swipeDirection = 'none';
         distX = 0;
@@ -24,7 +23,7 @@ function DetectSwipe(element, callback) {
         startTime = new Date().getTime();
     }, false)
   
-    touchElement.addEventListener('touchmove', function(e){
+    touchElement.addEventListener('touchmove', (e) => {
       const touchObj = e.changedTouches[0];
       distX = touchObj.pageX - startX; 
       distY = touchObj.pageY - startY;
@@ -36,7 +35,7 @@ function DetectSwipe(element, callback) {
       }
     }, false);
   
-    touchElement.addEventListener('touchend', function(e){
+    touchElement.addEventListener('touchend', (e) => {
         const touchObj = e.changedTouches[0];
         distX = touchObj.pageX - startX; 
         distY = touchObj.pageY - startY;
@@ -54,7 +53,7 @@ function DetectSwipe(element, callback) {
 }
 
 export const ImageCarousel = {
-    intiateSlider: function() {
+    intiateSlider() {
         const {self, sliderEl, slideEl, sliderPrev, sliderNext, sliderNavigator } = this.SELECTORS;
         const components = document.querySelectorAll(self);
         components.forEach(component => {
@@ -73,7 +72,6 @@ export const ImageCarousel = {
                         prevButton.click();
                     }
                 }
-
                 //clone and prepend slides
                 for (let i = initialSlideCount; i > (initialSlideCount - slidesToShow); i--) {
                     const slideIndex = i - 1;
@@ -97,7 +95,7 @@ export const ImageCarousel = {
                 let currentIndex = slidesToShow;
                 this.updateActiveSlide(component, currentIndex, slidesToShow);
                 nextButton.addEventListener('click', () => {
-                    if(currentIndex >= slides.length - slidesToShow) {
+                    if (currentIndex >= slides.length - slidesToShow) {
                         return;
                     }
                     slider.style.transition = "transform 1s ease-in-out";
@@ -120,23 +118,22 @@ export const ImageCarousel = {
                     })
                 });
                 slider.addEventListener('transitionend', () => {
-                    if(currentIndex == slides.length - slidesToShow){
+                    if (currentIndex == slides.length - slidesToShow){
                         slider.style.transition = "none";
                         currentIndex = slides.length - currentIndex;
                         this.updateActiveSlide(component, currentIndex, slidesToShow);
                     }
-                    if(currentIndex == slidesToShow - 1){
+                    if (currentIndex == slidesToShow - 1){
                         slider.style.transition = "none";
                         currentIndex = slides.length - slidesToShow - 1;
                         this.updateActiveSlide(component, currentIndex, slidesToShow);
-                    } 
-                        
+                    }                         
                 });
                 DetectSwipe(slider, slideAction);
             }
         });
     },
-    updateActiveSlide: function(component, currentIndex, slidesToShow){
+    updateActiveSlide(component, currentIndex, slidesToShow) {
         const slider = component.querySelector(this.SELECTORS.sliderEl)
         const slideArray = component.querySelectorAll(this.SELECTORS.slideEl);
         const navigators = component.querySelectorAll(this.SELECTORS.sliderNavigator)
@@ -151,19 +148,18 @@ export const ImageCarousel = {
                 slideArray[i].classList.add('slide-active');
             }
         }
+
         for (let i = 0; i < navigators.length; i++) {
-            if(i + slidesToShow !== currentIndex) {
+            if (i + slidesToShow !== currentIndex) {
                 navigators[i].setAttribute('aria-disabled', 'false');
             } else {
                 navigators[i].setAttribute('aria-disabled', 'true');
             }
         } 
         slider.style.transform = 'translateX(' + (-slideDistance * currentIndex) + '%)';
-
     },
-    init: function(arg) {
+    init(arg) {
         this.SELECTORS = arg.selectors;
         this.intiateSlider();
     }
-
-};
+}

@@ -109,6 +109,8 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+    user-select: none;
+    pointer-events: none;
 }
 .pet-details .carousel-section .image-carousel-controls-container {
     padding: 0;
@@ -186,6 +188,7 @@
     flex: 1;
     padding-left: 1px;
     padding-right: 1px;
+    user-select: none;
 }
 .pet-details .carousel-section .image-carousel-slide[aria-hidden='true'] {
     display: block;

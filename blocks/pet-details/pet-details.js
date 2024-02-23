@@ -2,6 +2,7 @@
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { ImageCarousel } from './image-carousel.js';
 import { getRandomItems, extractName, formatPhoneNumber } from '../../templates/adopt/adopt.js';
+import endPoints from '../../variables/endpoints.js';
 
 async function getParametersFromUrl() {
     const { pathname } = window.location;
@@ -15,8 +16,7 @@ async function getParametersFromUrl() {
         return {};
     }
 }
-async function fetchAnimalData(clientId, animalId) {
-    const animalApi = `https://api-stg-petplace.azure-api.net/animal/${animalId}/client/${clientId}`;
+async function fetchAnimalData(animalApi) {
     try {
         const resp = await fetch(animalApi);
         if(resp.ok) {
@@ -30,8 +30,7 @@ async function fetchAnimalData(clientId, animalId) {
     }
 
 }
-async function fetchSimilarPets(zip, animalType) {
-    const animalApi = 'https://api-stg-petplace.azure-api.net/animal/';
+async function fetchSimilarPets(zip, animalType, animalListApi) {
     const payload = {
         locationInformation: {
           clientId: null,
@@ -45,7 +44,7 @@ async function fetchSimilarPets(zip, animalType) {
         }
     }
     try {
-        const resp = await fetch(animalApi, {
+        const resp = await fetch(animalListApi, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -131,7 +130,14 @@ function formatSimilarPetData(apiData) {
 }
 
 async function createCarouselSection(petName, images){
-    const imageArr = images;
+    //const imageArr = images;
+        // example images for testing carousel
+    const imageArr = [
+        'https://www.petplace.com/article/breed/media_18690a7f17637edc779b59ac94cd3303b3c46d597.jpeg',
+        'https://www.petplace.com/article/dogs/just-for-fun/media_12c574158c76b42b855fdb1b3c983a546ccf22637.jpeg',
+        'https://www.petplace.com/article/dogs/pet-care/media_1d7035030f35833989f5b2f765eeb04c3c3539c07.jpeg',
+        'https://www.petplace.com/article/dogs/pet-care/media_13cb8037aa8ff514c96d9a08ced9d7773409c2947.jpeg'
+    ]
     if(imageArr.length < 2 ) {
         const imageSectionContainer = document.createElement('div');
         imageSectionContainer.className = 'image-section';
@@ -232,7 +238,7 @@ async function createAboutPetSection(aboutPet){
     </div>
     <div class="about-pet-body">
         ${petName ? `<h3>About ${petName}</h3>`: `<h3>Description</h3>`}
-        ${description ? `<div>${description}</div>` : ''}
+        ${description ? `<div>${description}</div>` : 'Description N/A'}
         ${locatedAt ? `<div>Located At: ${locatedAt}</div>` : ''}
         ${ageDescription ? `<div>Age: ${ageDescription}</div>` : ''}
         ${moreInfo ? `<div>More Info: ${moreInfo}</div>` : ''}
@@ -357,7 +363,7 @@ function createChecklistItem(index, label, text) {
 }
 function createPetCard(petData, fallBackImage) {
     const {Name: petName, ['Animal type']: animalType, Gender: gender, Breed: breed, City: city, State: state, coverImagePath, animalId, clientId} = petData
-    const petDetailPageUrl = `/pet-adoption/${animalType}/${animalId}/${clientId}`
+    const petDetailPageUrl = `/pet-adoption/${animalType.toLowerCase()}s/${animalId}/${clientId}`
     const petCard = document.createElement('div');
     petCard.className = 'pet-card';
     const pictureContainer = document.createElement('div');
@@ -409,9 +415,11 @@ export default async function decorate(block) {
     block.textContent = '';
     const {animalId, clientId} = await getParametersFromUrl();
     if (animalId && clientId) {
-
-        const petData = await fetchAnimalData(clientId, animalId);
-        const similarPetsArr = await fetchSimilarPets(petData.zip, petData.animalType)
+        const baseUrl = endPoints.apiUrl;
+        const animalApi = `${baseUrl}/animal/${animalId}/client/${clientId}`;
+        const animalListApi = `${baseUrl}/animal/`;
+        const petData = await fetchAnimalData(animalApi);
+        const similarPetsArr = await fetchSimilarPets(petData.zip, petData.animalType, animalListApi)
 
         //Create carousel section
         block.append(await createCarouselSection(petData.petName || '', petData?.imageUrl || []));
