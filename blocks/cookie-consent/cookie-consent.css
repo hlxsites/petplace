@@ -26,6 +26,7 @@
   color: var(--text-color);
   font-size: var(--consent-banner-font-size-s);
   text-align: left;
+  z-index: 1000;
 }
 
 .consent.banner .controls {

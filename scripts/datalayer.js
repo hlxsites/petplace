@@ -86,7 +86,7 @@ const handleFooterClicks = () => {
 };
 
 const handleComparePlanClicks = (className) => {
-  document.querySelector(className).addEventListener('click', (ev) => {
+  document.querySelector(className)?.addEventListener('click', (ev) => {
     const btn = ev.target.closest('button');
     if (!btn) return;
 

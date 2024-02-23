@@ -963,6 +963,10 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 
 /* ADSENSE */
 
+html > ins[data-google-query-id] {
+  z-index: 999 !important;
+}
+
 .publi-container {
   padding: 1rem;
 }

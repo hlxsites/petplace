@@ -95,7 +95,7 @@ function buildAndShowBanner(consentSections, callback) {
   const bannerElement = createBanner(bannerSection);
   const categoriesMap = getCategoriesInBanner(bannerSection, consentSections);
   addListeners(bannerElement, callback, categoriesMap, consentSections);
-  document.querySelector('main').append(bannerElement);
+  document.documentElement.append(bannerElement);
 }
 
 /**
