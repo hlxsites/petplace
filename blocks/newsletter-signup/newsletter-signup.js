@@ -16,12 +16,12 @@ function showError(block, fd) {
 
 async function submitForm(block, fd) {
   const formData = new FormData(block.querySelector('form'));
-  const payload = {
+  const formInfo = {
     email: formData.get('email'),
     first_name: formData.get('name'),
     catnewsletter: formData.get('cats') === 'on',
     dognewsletter: formData.get('dogs') === 'on',
-    singupdate: new Date(),
+    country: 'en-US', // rework later
   };
 
   const apiKey = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
