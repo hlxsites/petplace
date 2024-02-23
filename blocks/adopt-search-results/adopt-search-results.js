@@ -110,10 +110,6 @@ async function callAnimalList() {
         body: JSON.stringify({
             locationInformation: {
                 clientId: null,
-                latLon: {
-                    lat: 26.7474188,
-                    lon: -80.2890581,
-                },
                 zipPostal: zip,
                 milesRadius: radius,
             },
@@ -128,6 +124,7 @@ async function callAnimalList() {
             },
         }),
     });
+    console.log(response)
     return response.json();
 }
 
@@ -280,7 +277,10 @@ function nextPage() {
 }
 
 function clearFilters() {
-    document.getElementById('radius').selectedIndex = 0;
+    const radiusSelect = document.getElementById('radius').selectedIndex;
+    if (radiusSelect) {
+        radiusSelect = 0;
+    };
     const radioButtons = document.querySelectorAll('input:checked');
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
@@ -665,7 +665,7 @@ export default async function decorate(block) {
         callBreedList(petTypeSelect.value.toLowerCase()).then((data) => {
             breedList = data;
             const radioSize = document.querySelector('.radio-size');
-            if (petTypeSelect.value.toLowerCase() === 'cat') {
+            if (petTypeSelect.value.toLowerCase() === 'cat' || petTypeSelect.value.toLowerCase() === 'other') {
                 radioSize?.classList.add('hidden');
             } else {
                 radioSize?.classList.remove('hidden');
