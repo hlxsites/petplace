@@ -19,8 +19,8 @@ msalInstance.initialize().then(() => {
  */
 export function login(callback, featureName) {
     // TODO use loginRedirect for mobile devices
-    msalInstance.loginPopup(loginRequest)
-    // msalInstance.loginRedirect(loginRequest)
+    // msalInstance.loginPopup(loginRequest)
+    msalInstance.loginRedirect(loginRequest)
         .then((response) => handleResponse(response, callback, featureName))
         .catch(error => {
             console.log(error);
