@@ -9,9 +9,9 @@ function DetectSwipe(element, callback) {
     let elapsedTime;
     let startTime;
     const distThreshold = 50;
-    const angleThreshold = 30 * Math.PI / 180;
+    const angleThreshold = 30 * (Math.PI / 180);
     const timeThreshold = 500;
-    const handleSwipe = callback || function(swipeDirection){console.log('');};
+    const handleSwipe = callback || function() {return undefined;};
   
     touchElement.addEventListener('touchstart', (e) => {
         const touchObj = e.changedTouches[0];
