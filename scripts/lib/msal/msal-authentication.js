@@ -1,12 +1,12 @@
 import { createDefaultMsalInstance } from './msal-instance.js';
 import { loginRequest, logoutRequest, tokenRequest } from './default-msal-config.js';
+import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';   
 
 const msalInstance = createDefaultMsalInstance();
 
 // register a custom callback function (e.g. handleResponse()) once the user has successfully logged in and was redirected back to the site
 msalInstance.initialize().then(() => {
-    // Register Callbacks for Redirect flow
     msalInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
         console.log(error);
     });
@@ -18,13 +18,20 @@ msalInstance.initialize().then(() => {
  * @param {*} featureName name of the feature that is invoking the login function, e.g. "Favorite". Used for logging purposes when a user signs up an account for the first time.
  */
 export function login(callback, featureName) {
-    // TODO use loginRedirect for mobile devices
-    // msalInstance.loginPopup(loginRequest)
-    msalInstance.loginRedirect(loginRequest)
+    // use loginRedirect() for mobile devices, use loginPopup() for desktop.
+    if (isMobile()) {
+        msalInstance.loginRedirect(loginRequest)
         .then((response) => handleResponse(response, callback, featureName))
         .catch(error => {
             console.log(error);
         });
+    } else {
+        msalInstance.loginPopup(loginRequest)
+        .then((response) => handleResponse(response, callback, featureName))
+        .catch(error => {
+            console.log(error);
+        });
+    }
 }
 
 export function logout() {
@@ -33,7 +40,11 @@ export function logout() {
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
      */
 
-    msalInstance.logoutPopup(logoutRequest);
+    if (isMobile()) {
+        msalInstance.logoutRedirect(logoutRequest);
+    } else {
+        msalInstance.logoutPopup(logoutRequest);    
+    }
 }
 
 export function acquireToken(customCallback) {
@@ -50,18 +61,34 @@ export function acquireToken(customCallback) {
                 .catch(function (error) {
                     //Acquire token silent failure, and send an interactive request
                     if (error instanceof InteractionRequiredAuthError) {
-                        msalInstance
-                            .acquireTokenPopup(tokenRequest)
-                            .then(function (accessTokenResponse) {
-                                // Acquire token interactive success
-                                let accessToken = accessTokenResponse.accessToken;
-                                resolve(accessToken);
-                            })
-                            .catch(function (error) {
-                                // Acquire token interactive failure
-                                console.error(error);
-                                reject(error);
-                            });
+                        if (isMobile()) {
+                            msalInstance
+                                .acquireTokenRedirect(tokenRequest)
+                                .then(function (accessTokenResponse) {
+                                    // Acquire token interactive success
+                                    let accessToken = accessTokenResponse.accessToken;
+                                    resolve(accessToken);
+                                })
+                                .catch(function (error) {
+                                    // Acquire token interactive failure
+                                    console.error(error);
+                                    reject(error);
+                                });
+                        } else {
+                            msalInstance
+                                .acquireTokenPopup(tokenRequest)
+                                .then(function (accessTokenResponse) {
+                                    // Acquire token interactive success
+                                    let accessToken = accessTokenResponse.accessToken;
+                                    resolve(accessToken);
+                                })
+                                .catch(function (error) {
+                                    // Acquire token interactive failure
+                                    console.error(error);
+                                    reject(error);
+                                });
+                        }
+                        
                     } else {
                         console.log(error);
                         reject(error);
