@@ -26,15 +26,16 @@ async function submitForm(block, fd) {
 
   const apiKey = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
 
+  const payload = {
+    ContactKey: formInfo.email,
+    EventDefinitionKey: apiKey,
+    Data: formInfo,
+  };
+
   const fetchOpts = {
     method: 'POST',
-    headers: {
-      'Api-Key': apiKey,
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Methods': 'POST',
-      'Access-Control-Allow-Origin': '*',
-    },
     body: JSON.stringify(payload),
+    'Content-Type': 'application/json',
   };
 
   try {
