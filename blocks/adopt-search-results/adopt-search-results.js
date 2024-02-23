@@ -124,14 +124,13 @@ async function callAnimalList() {
             },
         }),
     });
-    console.log(response)
     return response.json();
 }
 
 async function callBreedList(petType) {
     const breedSelect = document.getElementById('breed');
     if (breedSelect && petType === 'other') {
-        breedSelect.setAttribute('disabled', 'disabled');
+        breedSelect.setAttribute('disabled', '');
     } else {
         if (breedSelect) {
             breedSelect.removeAttribute('disabled');
@@ -160,8 +159,7 @@ function updateBreedListSelect() {
     breedOption.innerText = breedPlaceholder;
     breedOption.value = '';
     breedSelect?.append(breedOption);
-
-    breedList.forEach((breed) => {
+    breedList?.forEach((breed) => {
         const option = document.createElement('option');
         option.innerText = breed?.breedValue;
         option.value = breed?.breedKey;
@@ -277,7 +275,7 @@ function nextPage() {
 }
 
 function clearFilters() {
-    const radiusSelect = document.getElementById('radius').selectedIndex;
+    const radiusSelect = document.getElementById('radius')?.selectedIndex;
     if (radiusSelect) {
         radiusSelect = 0;
     };
