@@ -1,5 +1,6 @@
 import { decorateIcons, readBlockConfig } from '../../scripts/lib-franklin.js';
 import { getPlaceholder } from '../../scripts/scripts.js';
+import { showUpdateConsent } from '../cookie-consent/cookie-consent.js';
 
 /**
  * loads and decorates the footer
@@ -44,5 +45,19 @@ export default async function decorate(block) {
     const links = block.querySelector('.footer-nav ul ~ ul');
     links.replaceWith(nav);
     nav.append(links);
+
+    const consentLinkText = getPlaceholder('cookiePreferences');
+    const consentLink = [...block.querySelectorAll('.footer-legal li')].find((li) => li.textContent === consentLinkText);
+    if (consentLink) {
+      const button = document.createElement('button');
+      button.classList.add('button', 'silent');
+      button.textContent = consentLinkText;
+      consentLink.innerHTML = '';
+      consentLink.append(button);
+      consentLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showUpdateConsent(`${window.hlx.contentBasePath}/fragments/cookie-consent`);
+      });
+    }
   }
 }
