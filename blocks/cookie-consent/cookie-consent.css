@@ -15,7 +15,7 @@
   translate: -50%;
   box-sizing: border-box;
   width: 100%;
-  max-width: 1024px;
+  max-width: 1200px;
   padding: 1rem 1.5rem;
   background-color: var(--background-color);
   border-radius: 4px;
@@ -55,7 +55,7 @@
 @media (width >= 900px) {
   .consent.banner {
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
   }
 
   .consent.banner .controls {
