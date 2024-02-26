@@ -34,21 +34,31 @@
   display: flex !important;
   flex-direction: row-reverse;
   max-width: 100% !important;
-  gap: 150px;
   text-align: left;
+  padding: 0 2rem;
+  justify-content: space-evenly;
+  width: 100%;
   @media (max-width: 600px) {
+    padding: 0;
     flex-direction: column-reverse !important;
     width: 100%;
     gap: 25px;
+    align-items: center;
+  }
+  @media (max-width: 1024px) {
+    gap: 20px;
   }
 }
-
+.bytetag-buy > iframe {
+  max-width: 400px;
+}
 .bytetag-buy.slide {
   flex-direction: row;
 }
 
 .bytetag-buy > div {
   width: 100%;
+  max-width: 515px;
 }
 
 .bytetag-buy > div h2 {

@@ -83,6 +83,9 @@ export function loadShopifyBuy(id, node, accessToken) {
               title: {
                 "font-family": "Source Sans Pro, sans-serif",
                 color: "#323f48",
+                "text-align": "left",
+                "font-size": "26px",
+                "padding-top": "1rem",
               },
               button: {
                 ":hover": {
@@ -97,7 +100,10 @@ export function loadShopifyBuy(id, node, accessToken) {
               price: {
                 "font-family": "Source Sans Pro, sans-serif",
                 "font-weight": "bold",
+                "text-align": "left",
+                width: "100%",
                 color: "#323f48",
+                "font-size": "26px",
               },
               compareAt: {
                 "font-family": "Source Sans Pro, sans-serif",
@@ -185,13 +191,20 @@ export function loadShopifyBuy(id, node, accessToken) {
             },
           },
           option: {
+            "max-width": "100%",
+
             styles: {
+              "max-width": "100%",
+
               label: {
                 "font-family": "Source Sans Pro, sans-serif",
                 color: "#323f48",
+                "max-width": "100%",
               },
               select: {
                 "font-family": "Source Sans Pro, sans-serif",
+                "max-width": "100%",
+
               },
             },
             googleFonts: ["Source Sans Pro"],
