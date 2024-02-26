@@ -4,6 +4,9 @@ import { ImageCarousel } from './image-carousel.js';
 import { getRandomItems, extractName, formatPhoneNumber } from '../../templates/adopt/adopt.js';
 import endPoints from '../../variables/endpoints.js';
 
+function isEmptyObject(obj) {
+    return typeof obj === 'object' && Object.keys(obj).length === 0;
+}
 function formatAnimalData(apiData) {
     const { imageURL, ppRequired, animalDetail } = apiData;
     const {
@@ -70,19 +73,26 @@ function formatSimilarPetData(apiData) {
     return apiData;
 }
 function createImageObject(imagePath, fallBackSrc, fallBackAlt, width, height) {
-    const img = document.createElement('object');
-    img.data = imagePath;
-    img.type = 'image/jpg';
-    if (width) {
-        img.width = width;
+    let img;
+    if (!imagePath || isEmptyObject(imagePath)) {
+        img = document.createElement('img');
+        img.src = fallBackSrc;
+        img.alt = fallBackAlt || '';
+    } else {
+        img = document.createElement('object');
+        img.data = imagePath;
+        img.type = 'image/jpg';
+        if (width) {
+            img.width = width;
+        }
+        if (height) {
+            img.height = height;
+        }
+        const fallback = document.createElement('img');
+        fallback.src = fallBackSrc;
+        fallback.alt = fallBackAlt || '';
+        img.append(fallback);
     }
-    if (height) {
-        img.height = height;
-    }
-    const fallback = document.createElement('img');
-    fallback.src = fallBackSrc;
-    fallback.alt = fallBackAlt || '';
-    img.append(fallback);
     return img;
 }
 function createCta(url, text, className, openNew) {
