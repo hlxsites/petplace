@@ -26,6 +26,7 @@ const {
     applyFiltersLabel,
     filterCta,
     createSearchAlert,
+    noResults,
 } = placeholders;
 
 // console.log(placeholders);
@@ -110,10 +111,6 @@ async function callAnimalList() {
         body: JSON.stringify({
             locationInformation: {
                 clientId: null,
-                latLon: {
-                    lat: 26.7474188,
-                    lon: -80.2890581,
-                },
                 zipPostal: zip,
                 milesRadius: radius,
             },
@@ -128,13 +125,25 @@ async function callAnimalList() {
             },
         }),
     });
+    if (response.status === 204) {
+        let resultsContainer = document.querySelector('.default-content-wrapper.results');
+        if (!resultsContainer) {
+            resultsContainer = document.querySelector('.default-content-wrapper');
+        }
+        const paginationBlock = document.querySelector('.pagination');
+        paginationBlock.classList.add('hide');
+        resultsContainer.innerHTML = noResults;
+    } else {
+        const paginationBlock = document.querySelector('.pagination');
+        paginationBlock?.classList.remove('hide');
+    }
     return response.json();
 }
 
 async function callBreedList(petType) {
     const breedSelect = document.getElementById('breed');
     if (breedSelect && petType === 'other') {
-        breedSelect.setAttribute('disabled', 'disabled');
+        breedSelect.setAttribute('disabled', '');
     } else {
         if (breedSelect) {
             breedSelect.removeAttribute('disabled');
@@ -163,8 +172,7 @@ function updateBreedListSelect() {
     breedOption.innerText = breedPlaceholder;
     breedOption.value = '';
     breedSelect?.append(breedOption);
-
-    breedList.forEach((breed) => {
+    breedList?.forEach((breed) => {
         const option = document.createElement('option');
         option.innerText = breed?.breedValue;
         option.value = breed?.breedKey;
@@ -204,7 +212,7 @@ function buildResultsList(animalList) {
         p.innerText = `${animal.Gender} • ${animal.Breed}`;
         const animalLocation = document.createElement('p');
         animalLocation.className = 'location';
-        animalLocation.innerHTML = `${animal.City}`;
+        animalLocation.innerHTML = `${animal.City}, ${animal.State}`;
         div.append(anchor);
         div.append(animalName);
         div.append(p);
@@ -280,7 +288,10 @@ function nextPage() {
 }
 
 function clearFilters() {
-    document.getElementById('radius').selectedIndex = 0;
+    const radiusSelect = document.getElementById('radius')?.selectedIndex;
+    if (radiusSelect) {
+        radiusSelect = 0;
+    };
     const radioButtons = document.querySelectorAll('input:checked');
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
@@ -338,11 +349,6 @@ function buildFilterSidebar(sidebar) {
             buildResultsContainer(data);
         });
     });
-    const radiusOption = document.createElement('option');
-    radiusOption.innerText = 'Any';
-    radiusOption.value = null;
-
-    radiusSelect.append(radiusOption);
     const radiusList = radiusOptions.split(',');
         radiusList.forEach((radius) => {
             const radiusListOption = document.createElement('option');
@@ -670,7 +676,7 @@ export default async function decorate(block) {
         callBreedList(petTypeSelect.value.toLowerCase()).then((data) => {
             breedList = data;
             const radioSize = document.querySelector('.radio-size');
-            if (petTypeSelect.value.toLowerCase() === 'cat') {
+            if (petTypeSelect.value.toLowerCase() === 'cat' || petTypeSelect.value.toLowerCase() === 'other') {
                 radioSize?.classList.add('hidden');
             } else {
                 radioSize?.classList.remove('hidden');
