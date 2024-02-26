@@ -281,6 +281,9 @@
     text-align: center;
     margin-top: 20px;
 }
+.adopt-search-results .pagination.hide {
+    display: none;
+}
 @media screen and (min-width: 1024px) {
     .adopt-search-results .pagination {
         margin-left: 270px;

@@ -26,6 +26,7 @@ const {
     applyFiltersLabel,
     filterCta,
     createSearchAlert,
+    noResults,
 } = placeholders;
 
 // console.log(placeholders);
@@ -124,6 +125,18 @@ async function callAnimalList() {
             },
         }),
     });
+    if (response.status === 204) {
+        let resultsContainer = document.querySelector('.default-content-wrapper.results');
+        if (!resultsContainer) {
+            resultsContainer = document.querySelector('.default-content-wrapper');
+        }
+        const paginationBlock = document.querySelector('.pagination');
+        paginationBlock.classList.add('hide');
+        resultsContainer.innerHTML = noResults;
+    } else {
+        const paginationBlock = document.querySelector('.pagination');
+        paginationBlock?.classList.remove('hide');
+    }
     return response.json();
 }
 
