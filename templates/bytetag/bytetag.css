@@ -1,7 +1,12 @@
+.bytetag main .section {
+    padding: 2rem 1rem;
+}
+
 .bytetag .section.hero-container {
   padding: 0;
   display: none;
 }
+
 .bytetag .hero-wrapper {
   display: flex;
   flex-direction: column-reverse;
@@ -12,6 +17,7 @@
     width: 100%;
   }
 }
+
 .bytetag .hero-wrapper .img-div {
   max-width: 100%;
   @media (min-width: 1024px) {
@@ -20,6 +26,7 @@
     right: 0;
   }
 }
+
 .bytetag .hero-wrapper .img-div img {
   object-fit: cover;
   height: 300px;
@@ -34,6 +41,7 @@
     min-height: 547px;
   }
 }
+
 .bytetag .hero-wrapper .text-div {
   display: flex;
   flex-direction: column;
@@ -41,7 +49,6 @@
   align-items: center;
   margin: 0 auto 30px;
   width: 100%;
-
   @media (min-width: 1024px) {
     padding: 0 2rem;
     align-items: flex-start;
@@ -50,6 +57,7 @@
     margin: 0 auto;
   }
 }
+
 .bytetag .hero-wrapper .text-div h1 {
   font-weight: 800;
   font-size: 0;
@@ -61,18 +69,45 @@
   background: url(../../images/bytetag-logo.svg) no-repeat;
   background-size: contain;
 }
+
 .bytetag .hero-wrapper .text-div h1 + p {
   font-size: 28px;
   line-height: 36px;
   padding: 0 1rem;
   @media (min-width: 1024px) {
+    padding:0;
     max-width: 468px;
+    margin: 1rem 0;
   }
 }
+
+.bytetag .hero-wrapper .text-div p.button-container {
+    width: 260px;
+    @media (max-width: 600px){
+        width: 100%; 
+    }
+}
+
+.bytetag .hero-wrapper .text-div p.button-container > a{
+    width: 100%;
+    font-weight: 400;
+    background-color: #C74D2F;
+    @media (max-width: 600px) {
+        margin: 1rem;
+    }
+}
+
+.bytetag .hero-wrapper .text-div p.button-container > a:hover,
+.bytetag .hero-wrapper .text-div p.button-container > a:focus{
+    background-color: var(--link-hover-color);
+    cursor: pointer;
+}
+
 .bytetag .hero-wrapper .text-div p:last-of-type{
     font-size: 16px;
     line-height: 28px;
 }
+
 .bytetag .hero-wrapper .text-div p:last-of-type::before {
   display: inline-block;
   content: '';
@@ -84,4 +119,10 @@
   -webkit-mask: url('../../icons/stars-five.svg') no-repeat center center;
   mask: url('../../icons/stars-five.svg') no-repeat center center;
   vertical-align: middle;
+}
+
+.bytetag .section h2 {
+    font-size: 35px;
+    line-height: 45px;
+    margin-bottom: 3rem;
 }
