@@ -135,6 +135,11 @@ async function createAccountDetailsPanel() {
                         </div>
                     </div>
                 </div>
+                <div class='account-layout-row'>
+                    <div class='form-control form-control--submit'>
+                        <input type='submit' class='account-button' value='Save Changes'>
+                    </div>
+                </div>
             </form>
         </div>
     `;
