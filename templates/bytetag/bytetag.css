@@ -133,18 +133,14 @@
   cursor: pointer;
 }
 
-.bytetag .hero-wrapper .text-div p:last-of-type strong em {
-  font-family: var(--heading-font-family);
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 28px;
+.bytetag .hero-wrapper .text-div p:last-of-type {
+  display: flex;
+  align-items: center;
 }
-
 .bytetag .hero-wrapper .text-div p:last-of-type::before {
   display: inline-block;
   content: "";
-  margin-left: 0.8rem;
-  margin-bottom: 4px;
+  margin: 0 0.4rem 0 0.8rem;
   height: 12px;
   width: 80px;
   background: var(--text-color);
@@ -153,12 +149,21 @@
   vertical-align: middle;
 }
 
+.bytetag .hero-wrapper .text-div p:last-of-type strong em {
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 28px;
+}
 .bytetag .section h2 {
   font-size: 48px;
   line-height: 58px;
   font-weight: 700;
   color: #333f48;
   margin-bottom: 1rem;
+  @media (max-width: 600px){
+    font-size: 40px;
+    line-height: 50px;
+  }
 }
 
 .bytetag .section .default-content-wrapper h2 {
