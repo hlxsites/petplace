@@ -324,19 +324,19 @@ async function createAboutPetSection(aboutPet) {
                     <span class='about-pet-breed'>
                         ${primaryBreed || ''}${primaryBreed && secondaryBreed ? '/' : ''}${secondaryBreed || ''}
                     </span>`
-                    : 'Breed N/A'}
+                    : '<span>Breed N/A</span>'}
                 ${(city || state) ? (`
                     <span class='about-pet-location'>
                         ${city || 'City N/A'}, ${state || 'State N/A'}
-                    </span>`) : 'Location N/A'
+                    </span>`) : '<span>Location N/A</span>'
                 }
             </div>
         </div>
         <div class='about-pet-details'>
             <div class='about-pet-details-inner'>
-                ${age ? `<span class='about-pet-age'>${age}</span>` : 'Age N/A'}
-                ${gender ? `<span class='about-pet-gender'>${gender}</span>` : 'Gender N/A'}
-                ${size ? `<span class='about-pet-size'>${size}</span>` : 'Size N/A'}
+                ${age ? `<span class='about-pet-age'>${age}</span>` : '<span>Age N/A</span>'}
+                ${gender ? `<span class='about-pet-gender'>${gender}</span>` : '<span>Gender N/A</span>'}
+                ${size ? `<span class='about-pet-size'>${size}</span>` : '<span>Size N/A</span>'}
                 ${animalId ? `<span class='about-pet-id'>Animal ID: ${animalId}</span>` : ''}
             </div>
         </div>
@@ -349,7 +349,7 @@ async function createAboutPetSection(aboutPet) {
     </div>
     <div class='about-pet-body'>
         ${petName ? `<h3>About ${petName}</h3>` : '<h3>Description</h3>'}
-        ${description ? `<div>${description}</div>` : 'Description N/A'}
+        ${description ? `<div>${description}</div>` : '<div>Description N/A</div>'}
         ${locatedAt ? `<div>Located At: ${locatedAt}</div>` : ''}
         ${ageDescription ? `<div>Age: ${ageDescription}</div>` : ''}
         ${moreInfo ? `<div>More Info: ${moreInfo}</div>` : ''}
