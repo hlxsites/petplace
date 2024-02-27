@@ -37,6 +37,7 @@
     font-weight: 600;
     line-height: 1.2;
 }
+
 .pet-details .pet-details-button.right-arrow:after,
 .pet-details a.pet-details-button.right-arrow:after{
     content: '';
@@ -88,9 +89,8 @@
     width: 100%;
     max-width: 100%;
 }
-.pet-details .image-section .image-div >div object {
-    width: 100%;
-}
+
+.pet-details .image-section .image-div object,
 .pet-details .carousel-section .image-div img,
 .pet-details .image-section .image-div img {
     width: 100%;
@@ -246,6 +246,8 @@
     .pet-details .about-pet-title {
         color: var(--color-black);
         margin: 0;
+        font-size: 50px;
+        line-height: 1.2;
     }
     .pet-details .about-pet-subtitle {
         margin-top: 24px;
@@ -361,10 +363,15 @@
 .pet-details .pet-card-name {
     margin-bottom: 8px;
 }
+.pet-details .pet-card-image {
+    aspect-ratio: 250 / 246;
+}
 .pet-details .pet-card-image object,
-.pet-details .pet-card-image object img {
+.pet-details .pet-card-image img {
     border-radius: 8px 8px 0 0;
     width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .pet-details .pet-card-info {
@@ -450,7 +457,9 @@
     }
 
 
-
+.pet-details object {
+    overflow: hidden;
+}
 @media (max-width: 767px) {
     .pet-details .about-pet-location {
         display: block;
@@ -580,6 +589,9 @@
         align-self: start;
         justify-self: stretch;
     }
+    .pet-details a.pet-details-button {
+        max-width: 100%;
+    }
     .pet-details .pet-card {
         min-width: 300px;
     }
@@ -595,6 +607,9 @@
     }
     .pet-details .image-section .image-div >div {
         max-width: 700px;
+    }
+    .pet-details .pet-card-image {
+        aspect-ratio: 300 / 246;
     }
 
 }
