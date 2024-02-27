@@ -164,7 +164,12 @@ async function createSurveyPanel() {
 }
 
 async function createTabComponent() {
-    const tabTitles = ['Account Details', 'Search Alerts', 'Favorites', 'Pet Match Survey'];
+    const tabArray = [
+        {title: 'Account Details', hash: 'details'},
+        {title: 'Search Alerts', hash: 'searchalerts'},
+        {title: 'Favorites', hash: 'favorites'},
+        {title: 'Pet Match Survey', hash: 'survey'},
+    ];
     const tabPanels = [await createAccountDetailsPanel(), await createSearchAlertsPanel(), await createFavoritesPanel(), await createSurveyPanel()];
     const tabs = document.createElement('div');
     tabs.className = 'account-tabs';
@@ -172,23 +177,24 @@ async function createTabComponent() {
     title.className = 'account-tabs-title';
     title.textContent = 'My Account';
     tabs.append(title);
-    const tablist =  document.createElement('div');
+    const tablist =  document.createElement('ul');
     tablist.className = 'account-tablist';
     tablist.setAttribute('role', 'tablist');
     tabTitles.forEach((tab, index) => {
-        const btn  = document.createElement('button');
-        btn.className = `account-tab account-tab--${tab.toLowerCase().split(' ').join('-')}`;
-        btn.setAttribute('type', 'button');
-        btn.setAttribute('role', 'tab');
-        btn.setAttribute('id', `account-tab-${index}`);
-        btn.setAttribute('aria-selected', `${index === 0 ? 'true' : 'false'}`);
-        btn.setAttribute('aria-controls', `account-tabpanel-${index}`);
+        const listItem = document.createElement('li');
+        listItem.setAttribute('role', 'presentation');
+        const link  = document.createElement('a');
+        link.className = `account-tab account-tab--${tab.toLowerCase().split(' ').join('-')}`;
+        link.setAttribute('role', 'tab');
+        link.setAttribute('id', `account-tab-${index}`);
+        link.setAttribute('aria-selected', `${index === 0 ? 'true' : 'false'}`);
+        link.setAttribute('aria-controls', `account-tabpanel-${index}`);
         const iconEl = document.createElement('span');
         iconEl.className = 'account-tab-icon';
         const textEl = document.createElement('span');
         textEl.className = 'account-tab-text';
         textEl.textContent = tab;
-        btn.append(iconEl, textEl);
+        link.append(iconEl, textEl);
         tablist.append(btn);
     });
     tabs.append(tablist);
