@@ -1,7 +1,8 @@
 .adopt-search-results.list {
-    background-color: #FAFAFC;
     position: relative;
     min-height: 680px;
+    max-width: 1334px;
+    margin: 0 auto;
 }
 .adopt-search-results-container.section {
     border-top: 1px solid #D0D0D6;

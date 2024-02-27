@@ -71,9 +71,9 @@ async function callAnimalList() {
         animalType = petType;
     }
     const breedType = document.getElementById('breed')?.value;
-    let breed = null;
+    const breeds = [];
     if (breedType !== '') {
-        breed = breedType;
+        breeds.push(breedType);
     }
     let zip = document.getElementById('zip')?.value;
     if (!zip) {
@@ -118,7 +118,7 @@ async function callAnimalList() {
                 startIndex: 0,
                 numResults: 100,
                 filterAnimalType: animalType,
-                filterBreedType: breed,
+                filterBreed: breeds,
                 filterGender: gender,
                 filterAge: ageList,
                 filterSize: sizeList,
@@ -698,6 +698,9 @@ export default async function decorate(block) {
     const option = document.createElement('option');
     option.innerText = breedPlaceholder;
     option.value = '';
+    breedSelect.addEventListener('change', () => {
+        clearFilters();
+    });
 
     breedSelect.append(option);
 
