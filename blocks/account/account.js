@@ -180,33 +180,38 @@ async function createTabComponent() {
     const tablist =  document.createElement('ul');
     tablist.className = 'account-tablist';
     tablist.setAttribute('role', 'tablist');
-    tabTitles.forEach((tab, index) => {
+    tabArray.forEach((tab, index) => {
         const listItem = document.createElement('li');
         listItem.setAttribute('role', 'presentation');
         const link  = document.createElement('a');
-        link.className = `account-tab account-tab--${tab.toLowerCase().split(' ').join('-')}`;
+        link.className = `account-tab account-tab--${tab.hash}`;
         link.setAttribute('role', 'tab');
+        link.setAttribute('href', `#${tab.hash}`);
         link.setAttribute('id', `account-tab-${index}`);
         link.setAttribute('aria-selected', `${index === 0 ? 'true' : 'false'}`);
-        link.setAttribute('aria-controls', `account-tabpanel-${index}`);
+        link.setAttribute('aria-controls', tab.hash);
         const iconEl = document.createElement('span');
         iconEl.className = 'account-tab-icon';
         const textEl = document.createElement('span');
         textEl.className = 'account-tab-text';
-        textEl.textContent = tab;
+        textEl.textContent = tab.title;
         link.append(iconEl, textEl);
-        tablist.append(btn);
+        listItem.append(link);
+        tablist.append(listItem);
     });
     tabs.append(tablist);
+    const tabContents = document.createElement('div');
+    tabContents.className = 'account-tab-contents';
     tabPanels.forEach((panel, index) => {
         const panelWrapper = document.createElement('div');
-        panelWrapper.className = `account-tabpanel account-tabpanel--${tabTitles[index].toLowerCase().split(' ').join('-')}${index === 0 ? '' : ' is-hidden'}`
-        panelWrapper.setAttribute('id', `account-tabpanel-${index}`);
+        panelWrapper.className = `account-tabpanel account-tabpanel--${tabArray[index].hash}${index === 0 ? '' : ' is-hidden'}`
+        panelWrapper.setAttribute('id', tabArray[index].hash);
         panelWrapper.setAttribute('role', 'tabpanel');
         panelWrapper.setAttribute('aria-labelledby', `account-tab-${index}`);
         panelWrapper.append(panel);
-        tabs.append(panelWrapper);
+        tabContents.append(panelWrapper);
     });
+    tabs.append(tabContents);
     const tabListEl = tabs.querySelector('[role=\'tablist\']');
     const tabPanelEls = tabs.querySelectorAll('[role=\'tabpanel\']')
     new TabsManual(tabListEl, tabPanelEls);

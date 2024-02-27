@@ -5,6 +5,7 @@ export default class TabsManual {
       this.firstTab = null;
       this.lastTab = null;
       this.tabs = Array.from(this.tablistNode.querySelectorAll('[role=tab]'));
+      console.log(this.tabs.map(tab => tab.href));
       this.tabpanels = Array.from(panelNodes);
   
       for (let i = 0; i < this.tabs.length; i += 1) {
@@ -21,6 +22,7 @@ export default class TabsManual {
         }
         this.lastTab = tab;
       }
+
   
       this.setSelectedTab(this.firstTab);
     }
@@ -87,6 +89,11 @@ export default class TabsManual {
           this.moveFocusToTab(this.lastTab);
           flag = true;
           break;
+        case 'Enter':
+        case 'Space':
+          this.setSelectedTab(tgt);
+          flag = true;
+          break;
         default:
           break;
       }
@@ -96,10 +103,8 @@ export default class TabsManual {
         event.preventDefault();
       }
     }
-  
-    // Since this example uses buttons for the tabs, the click onr also is activated
-    // with the space and enter keys
     onClick(event) {
+      event.preventDefault();
       this.setSelectedTab(event.currentTarget);
     }
 }

@@ -5,6 +5,7 @@ import { getRandomItems, extractName, formatPhoneNumber } from '../../templates/
 import endPoints from '../../variables/endpoints.js';
 
 function formatAnimalData(apiData) {
+    console.log(apiData);
     const { imageURL, ppRequired, animalDetail } = apiData;
     const {
         AnimalId: animalId,
