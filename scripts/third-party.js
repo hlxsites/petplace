@@ -19,7 +19,7 @@ export async function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
   if (
-    (window.location.pathname === '/'
+    (window.location.pathname === `${window.hlx.contentBasePath}/`
     || window.location.pathname.includes('tags')
     || window.location.pathname.includes('article')
     || window.location.pathname.includes('category'))

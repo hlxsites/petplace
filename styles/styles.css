@@ -302,6 +302,16 @@ a.button:hover, a.button:focus, button:hover, button:focus  {
   cursor: pointer;
 }
 
+a.button.silent,
+button.button.silent {
+  background: inherit;
+  border: none;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
 button:disabled, button:disabled:hover {
   background-color: var(--background-color-light);
   cursor: unset;
@@ -953,6 +963,10 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 
 /* ADSENSE */
 
+html > ins[data-google-query-id] {
+  z-index: 999 !important;
+}
+
 .publi-container {
   padding: 1rem;
 }
@@ -982,4 +996,15 @@ main .section.search-container.ad-container .ad-wrapper .ad {
 
 .publi-wrapper-multiplex {
   width: 100%;
+}
+
+.social-share-container .publi-container {
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.social-share-container .publi-wrapper {
+  margin: 0;
 }
