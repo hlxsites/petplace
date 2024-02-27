@@ -20,6 +20,7 @@ import {
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
+import { login, logout, acquireToken, isLoggedIn } from './lib/msal/msal-authentication.js'
 
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
@@ -630,6 +631,13 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
+
+  // TODO delete this. it is for dev testing only.
+  window.debugMsal = {};
+  window.debugMsal.login = login;
+  window.debugMsal.logout = logout;
+  window.debugMsal.acquireToken = acquireToken;
+  window.debugMsal.isLoggedIn = isLoggedIn;
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
