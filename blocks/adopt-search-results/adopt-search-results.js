@@ -37,10 +37,38 @@ let animalArray = [];
 
  // Get filters
 function getFilters() {
+    const genderFilters = document.querySelectorAll('input[name="gender"]:checked');
+    let genderFilterList = '';
+    genderFilters?.forEach((gender) => {
+        if (genderFilterList !== '') {
+            genderFilterList += ',' + gender?.value;
+        } else {
+            genderFilterList += gender?.value;
+        }
+    });
+    const ageFilters = document.querySelectorAll('input[name="age"]:checked');
+    let ageFilterList = '';
+    ageFilters?.forEach((age) => {
+        if (ageFilterList !== '') {
+            ageFilterList += ',' + age?.value;
+        } else {
+            ageFilterList += age?.value;
+        }
+    });
+
+    const sizeFilters = document.querySelectorAll('input[name="size"]:checked');
+    let sizeFilterList = '';
+    sizeFilters?.forEach((size) => {
+        if (sizeFilterList !== '') {
+            sizeFilterList += ',' + size?.value;
+        } else {
+            sizeFilterList += size?.value;
+        }
+    });
     const filters = {
         milesRadius: document.getElementById('radius')?.value,
-        filterGender: document.querySelector('input[name="gender"]:checked')?.value,
-        filterAge: document.querySelector('input[name="age"]:checked')?.value,
+        filterGender: genderFilterList,
+        filterAge: ageFilterList,
         filterAnimalType: document.getElementById('pet-type')?.value,
         filterBreed: document.getElementById('breed')?.value,
         zipPostal: document.getElementById('zip')?.value,
@@ -49,7 +77,7 @@ function getFilters() {
 
     // Only include the size filter in the request filter object when 'Cat' is not selected
     if (document.getElementById('pet-type')?.value !== 'Cat') {
-        filters.filterSize = document.querySelector('input[name="size"]:checked')?.value;
+        filters.filterSize = sizeFilterList;
     }
 
     return filters;
@@ -83,24 +111,28 @@ async function callAnimalList() {
     if (!radius || radius === 'null') {
         radius = 10;
     }
-    let gender = document.querySelector('input[name="gender"]:checked')?.value;
-    if (!gender) {
-        gender = null;
-    }
-    const age = document.querySelector('input[name="age"]:checked')?.value;
-
+    const genderElements = document.querySelectorAll('input[name="gender"]:checked');
+    let gender = "";
+        if (genderElements.length === 1) {
+            gender = genderElements[0]?.value;
+        }
+    const age = document.querySelectorAll('input[name="age"]:checked');
     let ageList = [];
-    if (!age) {
+    if (age && age?.length === 0) {
         ageList = null;
     } else {
-        ageList.push(age);
+        age?.forEach((item) => {
+            ageList.push(item.value)
+        })
     }
-    let size = document.querySelector('input[name="size"]:checked')?.value;
-    const sizeList = [];
-    if (!size) {
-        size = null;
+    const size = document.querySelectorAll('input[name="size"]:checked');
+    let sizeList = [];
+    if (size && size?.length === 0) {
+        sizeList = null;
     } else {
-        sizeList.push(size);
+        size?.forEach((item) => {
+            sizeList.push(item.value);
+        })
     }
 
     const response = await fetch(`${endPoints.apiUrl}/animal`, {
@@ -376,7 +408,7 @@ function buildFilterSidebar(sidebar) {
         genderListLabel.className = 'radio-container';
         genderListLabel.innerHTML = gender;
         const genderRadio = document.createElement('input');
-        genderRadio.type = 'radio';
+        genderRadio.type = 'checkbox';
         genderRadio.name = 'gender';
         genderRadio.id = gender;
         genderRadio.value = placeholders[gender.toLowerCase()];
@@ -408,7 +440,7 @@ function buildFilterSidebar(sidebar) {
         ageListLabel.className = 'radio-container';
         ageListLabel.innerHTML = age;
         const ageRadio = document.createElement('input');
-        ageRadio.type = 'radio';
+        ageRadio.type = 'checkbox';
         ageRadio.name = 'age';
         ageRadio.id = age;
         ageRadio.addEventListener('click', () => {
@@ -441,7 +473,7 @@ function buildFilterSidebar(sidebar) {
         sizeListLabel.className = 'radio-container';
         sizeListLabel.innerHTML = size;
         const sizeRadio = document.createElement('input');
-        sizeRadio.type = 'radio';
+        sizeRadio.type = 'checkbox';
         sizeRadio.name = 'size';
         sizeRadio.id = size;
         sizeRadio.value = placeholders[size.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
@@ -613,21 +645,30 @@ window.onload = callBreedList('null').then((data) => {
             }
             const genderRadios = document.querySelectorAll('input[name="gender"]');
             for (let i = 0; i < genderRadios.length; i += 1) {
-                if (genderRadios[i].value === params.get('filterGender')) {
-                    genderRadios[i].checked = true;
-                }
+                const genderArray = params.get('filterGender').split(',');
+                genderArray?.forEach((gender) => {
+                    if (genderRadios[i].value === gender) {
+                        genderRadios[i].checked = true;
+                    }
+                })
             }
             const ageRadios = document.querySelectorAll('input[name="age"]');
             for (let i = 0; i < ageRadios.length; i += 1) {
-                if (ageRadios[i].value === params.get('filterAge')) {
-                    ageRadios[i].checked = true;
-                }
+                const ageArray = params.get('filterAge').split(',');
+                ageArray?.forEach((age) => {
+                    if (ageRadios[i].value === age) {
+                        ageRadios[i].checked = true;
+                    }
+                })
             }
             const sizeRadios = document.querySelectorAll('input[name="size"]');
             for (let i = 0; i < sizeRadios.length; i += 1) {
-                if (sizeRadios[i].value === params.get('filterSize')) {
-                    sizeRadios[i].checked = true;
-                }
+                const sizeArray = params.get('filterSize').split(',');
+                sizeArray?.forEach((size) => {
+                    if (sizeRadios[i].value === size) {
+                        sizeRadios[i].checked = true;
+                    }
+                })
             }
         });
     }
