@@ -171,14 +171,14 @@ async function createSearchForm(block) {
 
   const zipContainer = document.createElement('div');
   const zipLabelElem = document.createElement('label');
-  zipLabelElem.setAttribute('for', 'zipCode');
+  zipLabelElem.setAttribute('for', 'zip-code');
   zipLabelElem.innerText = zipLabel;
 
   const zipInput = document.createElement('input');
   zipInput.setAttribute('aria-label', zipPlaceholder);
   zipInput.setAttribute('aria-describedby', '');
   zipInput.ariaInvalid = 'false';
-  zipInput.className = 'zipCode';
+  zipInput.className = 'zip-code';
   zipInput.type = 'text';
   zipInput.name = 'zipPostal';
   zipInput.id = 'zip';
@@ -232,11 +232,13 @@ async function createSearchForm(block) {
     ev.preventDefault();
 
     if (!zipInput.checkValidity()) {
+      zipInput.classList.add('error');
       errorSpan.classList.add('active');
       zipInput.setAttribute('aria-describedby', 'zip-error');
       zipInput.ariaInvalid = 'true';
       zipInput.focus();
     } else {
+      zipInput.classList.remove('error');
       errorSpan.classList.remove('active');
       zipInput.setAttribute('aria-describedby', '');
       zipInput.ariaInvalid = 'false';

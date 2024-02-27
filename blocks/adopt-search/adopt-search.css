@@ -177,8 +177,13 @@
   background-size: 1em;
 }
 
-.adopt-search-box-wrapper .zipCode:has(+ .error-message.active) {
+.adopt-search-box-wrapper .zip-code.error {
+  color: #930000;
   border: 1px solid #d31510;
+}
+
+.adopt-search-box-wrapper .zip-code.error::placeholder {
+  color: #930000;
 }
 
 .adopt-search-box-wrapper .error-message {
