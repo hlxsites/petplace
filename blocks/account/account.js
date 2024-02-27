@@ -177,6 +177,7 @@ async function createTabComponent() {
     title.className = 'account-tabs-title';
     title.textContent = 'My Account';
     tabs.append(title);
+    // create tab list for desktop display
     const tablist =  document.createElement('ul');
     tablist.className = 'account-tablist';
     tablist.setAttribute('role', 'tablist');
@@ -200,6 +201,17 @@ async function createTabComponent() {
         tablist.append(listItem);
     });
     tabs.append(tablist);
+
+    // create select dropdown for mobile display
+    const selectDiv = document.createElement('div');
+    selectDiv.className = 'account-select';
+    const selectEl = document.createElement('select');
+    tabArray.forEach((tab, index) => {
+        const option = document.createElement('option');
+        
+        selectEl.append(option);
+
+    });
     const tabContents = document.createElement('div');
     tabContents.className = 'account-tab-contents';
     tabPanels.forEach((panel, index) => {

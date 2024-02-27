@@ -241,7 +241,10 @@
     display: flex;
     border-bottom: 2px solid var(--border-strong, #d0d0d6);
 }
-
+.account-tablist >li {
+    margin: 0;
+    padding: 0;
+}
 .account-tab {
     background-color: var(--neutral-50, #FAFAFC);
     color: var(--text-supporting, #2F2F33);
