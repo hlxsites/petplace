@@ -37,6 +37,7 @@
     font-weight: 600;
     line-height: 1.2;
 }
+
 .pet-details .pet-details-button.right-arrow:after,
 .pet-details a.pet-details-button.right-arrow:after{
     content: '';
@@ -456,7 +457,9 @@
     }
 
 
-
+.pet-details object {
+    overflow: hidden;
+}
 @media (max-width: 767px) {
     .pet-details .about-pet-location {
         display: block;
@@ -585,6 +588,9 @@
         grid-row: 1 / 4;
         align-self: start;
         justify-self: stretch;
+    }
+    .pet-details a.pet-details-button {
+        max-width: 100%;
     }
     .pet-details .pet-card {
         min-width: 300px;

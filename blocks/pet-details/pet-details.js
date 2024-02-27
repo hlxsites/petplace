@@ -345,9 +345,6 @@ async function createAboutPetSection(aboutPet) {
                 <span class='pet-details-button-icon-favorite'></span>
                 Favorite
             </button>
-            ${email ? `<button class='about-pet-inquiry pet-details-button primary'>
-                Submit An Inquiry
-            </button>` : ''}
         </div>
     </div>
     <div class='about-pet-body'>
