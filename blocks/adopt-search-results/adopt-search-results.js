@@ -38,12 +38,12 @@ let animalArray = [];
  // Get filters
 function getFilters() {
     const filters = {
-        filterRadius: document.getElementById('radius')?.value,
+        milesRadius: document.getElementById('radius')?.value,
         filterGender: document.querySelector('input[name="gender"]:checked')?.value,
         filterAge: document.querySelector('input[name="age"]:checked')?.value,
-        filterType: document.getElementById('pet-type')?.value,
+        filterAnimalType: document.getElementById('pet-type')?.value,
         filterBreed: document.getElementById('breed')?.value,
-        filterZip: document.getElementById('zip')?.value,
+        zipPostal: document.getElementById('zip')?.value,
         // Add more filters as needed
     };
 
@@ -584,13 +584,13 @@ window.onload = callBreedList('null').then((data) => {
     const params = new URLSearchParams(window.location.search);
 
     // If there are, select the corresponding filters - Top filters first
-    if (params.has('filterZip')) {
+    if (params.has('zipPostal')) {
         const petZip = document.getElementById('zip');
-        petZip.value = params.get('filterZip');
+        petZip.value = params.get('zipPostal');
         const petType = document.getElementById('pet-type');
         const petTypes = petType.options;
         for (let i = 0; i < petTypes.length; i += 1) {
-            if (petTypes[i].value === params.get('filterType')) {
+            if (petTypes[i].value === params.get('filterAnimalType')) {
                 petType.selectedIndex = i;
             }
         }
@@ -607,7 +607,7 @@ window.onload = callBreedList('null').then((data) => {
             const petRadius = document.getElementById('radius');
             const petRadiusOptions = petRadius.options;
             for (let i = 0; i < petRadiusOptions.length; i += 1) {
-                if (petRadiusOptions[i].value === params.get('filterRadius')) {
+                if (petRadiusOptions[i].value === params.get('milesRadius')) {
                     petRadius.selectedIndex = i;
                 }
             }
