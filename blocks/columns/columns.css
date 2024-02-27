@@ -71,6 +71,8 @@
   padding-top: 18px !important;
   font-size: 20px;
   line-height: 28px;
+  font-weight: 400;
+  color: #000000;
 }
 
 .section:not(.highlight) .columns.cards > div > div > h3,
@@ -164,6 +166,7 @@
 }
 
 .section.highlight > div > .columns.cards > div > div p{
+  color: #000000;
   text-align: center;
   font-size: 18px;
   line-height: 28px;
