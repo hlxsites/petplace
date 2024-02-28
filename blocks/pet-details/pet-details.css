@@ -66,6 +66,9 @@
     background-color: #09090D;
     margin-right: 16px;
 }
+.pet-details .about-pet-favorite {
+    color: var(--text-weak, #222222);
+}
 
 /* layout container */
 .pet-details .about-pet-container,
@@ -73,7 +76,16 @@
 .pet-details .checklist-container {
     border-radius: 12px;
     box-shadow: 0px 2px 12px 0px #0000001A;
+    color: #000000;
 }
+.pet-details .about-pet-body > h3,
+.pet-details .checklist-container .checklist-item-label {
+    color: #000000;
+}
+.pet-details .checklist-container > h2 {
+    color: var(--text-main, #09090D);
+}
+
 /* carousel section */
 
 .pet-details .image-section .image-div {
@@ -329,6 +341,10 @@
 
 .pet-details .pet-card-body {
     padding: 24px 16px 16px;
+    color: #000000;
+}
+.pet-details .pet-card-body h3 {
+    color: #000000;
 }
 .pet-details .pet-card .like-button-conainer {
     position: absolute;
