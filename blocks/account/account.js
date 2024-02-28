@@ -189,6 +189,7 @@ async function createTabComponent() {
         link.setAttribute('role', 'tab');
         link.setAttribute('href', `#${tab.hash}`);
         link.setAttribute('id', `account-tab-${index}`);
+        link.setAttribute('data-tab-index', index);
         link.setAttribute('aria-selected', `${index === 0 ? 'true' : 'false'}`);
         link.setAttribute('aria-controls', tab.hash);
         const iconEl = document.createElement('span');
@@ -208,10 +209,10 @@ async function createTabComponent() {
     const selectEl = document.createElement('select');
     selectEl.className = 'account-select';
     selectEl.id = 'account-select';
-    tabArray.forEach((tab) => {
+    tabArray.forEach((tab, index) => {
         const option = document.createElement('option');
         option.textContent = tab.title;
-        option.value = tab.hash;
+        option.value = index;
         selectEl.append(option);
     });
     selectDiv.append(selectEl);
@@ -230,8 +231,9 @@ async function createTabComponent() {
     });
     tabs.append(tabContents);
     const tabListEl = tabs.querySelector('[role=\'tablist\']');
-    const tabPanelEls = tabs.querySelectorAll('[role=\'tabpanel\']')
-    new TabsManual(tabListEl, tabPanelEls);
+    const dropdownEl = tabs.querySelector('select.account-select');
+    const tabPanelEls = tabs.querySelectorAll('[role=\'tabpanel\']');
+    new TabsManual(tabListEl, dropdownEl, tabPanelEls);
     return tabs;
 
 

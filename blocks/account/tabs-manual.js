@@ -1,11 +1,11 @@
 export default class TabsManual {
-    constructor(groupNode, panelNodes) {
+    constructor(groupNode, dropdownNode, panelNodes) {
       this.tablistNode = groupNode;
+      this.selectNode = dropdownNode;
       this.tabs = [];
       this.firstTab = null;
       this.lastTab = null;
       this.tabs = Array.from(this.tablistNode.querySelectorAll('[role=tab]'));
-      console.log(this.tabs.map(tab => tab.href));
       this.tabpanels = Array.from(panelNodes);
   
       for (let i = 0; i < this.tabs.length; i += 1) {
@@ -22,9 +22,13 @@ export default class TabsManual {
         }
         this.lastTab = tab;
       }
-
-  
-      this.setSelectedTab(this.firstTab);
+      this.selectNode.addEventListener('change', this.onChange.bind(this));
+      const currentHash = window.location.hash;
+      if(currentHash && this.getIndexByHash(currentHash) > -1) {
+        this.setSelectedTab(this.tabs[this.getIndexByHash(currentHash)]);
+      } else {
+        this.setSelectedTab(this.firstTab);
+      }
     }
   
     setSelectedTab(currentTab) {
@@ -40,6 +44,8 @@ export default class TabsManual {
           this.tabpanels[i].classList.add('is-hidden');
         }
       }
+      this.selectNode.value = currentTab.getAttribute('data-tab-index');
+      this.selectNode.setAttribute('data-active-panel', currentTab.getAttribute('aria-controls'));
     }
   
     moveFocusToTab(currentTab) {
@@ -106,5 +112,16 @@ export default class TabsManual {
     onClick(event) {
       event.preventDefault();
       this.setSelectedTab(event.currentTarget);
+    }
+    onChange(event) {
+      const selectedIndex = parseInt(event.currentTarget.value);
+      this.setSelectedTab(this.tabs[selectedIndex]);
+    }
+    getIndexByHash(hashStr) {
+      const targetTab = this.tabs.find((tab) => tab.href.endsWith(hashStr));
+      if (targetTab) {
+        return parseInt(targetTab.getAttribute('data-tab-index'));
+      }
+      return -1;
     }
 }
