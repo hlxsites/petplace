@@ -1,7 +1,8 @@
 .adopt-search-results.list {
-    background-color: #FAFAFC;
     position: relative;
     min-height: 680px;
+    max-width: 1334px;
+    margin: 0 auto;
 }
 .adopt-search-results-container.section {
     border-top: 1px solid #D0D0D6;
@@ -519,6 +520,7 @@
     height: 43px;
     font-size: 18px;
     font-weight: 600;
+    background-color: #C74D2F;
 }
 
 .adopt-search-results-wrapper form button.adopt-save-search-button {
