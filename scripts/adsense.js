@@ -132,13 +132,15 @@ const adsenseSetup = (adArgs, catVal) => {
 };
 
 const adsDefineSlot = async (adArgs, catVal) => {
-  // separate function to return the anchor slot
-  const anchorSlot = await adsenseSetup(adArgs, catVal);
+  window.googletag.cmd.push(async () => {
+    // separate function to return the anchor slot
+    const anchorSlot = await adsenseSetup(adArgs, catVal);
 
-  // after the definitions to display
-  const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
-  if (anchorSlot) newArgs.push(anchorSlot);
-  gtagDisplay(newArgs);
+    // after the definitions to display
+    const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
+    if (anchorSlot) newArgs.push(anchorSlot);
+    gtagDisplay(newArgs);
+  });
 };
 
 // google tag for adsense
