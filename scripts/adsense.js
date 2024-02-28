@@ -74,6 +74,10 @@ const adsenseSetup = (adArgs, catVal) => {
   const REFRESH_VALUE = 'true';
   const lastItemIndex = adArgs.length - 1;
 
+  const adLocale = window.hlx.contentBasePath === '/en-gb'
+    ? 'petplace_uk_web'
+    : 'petplace_web';
+
   window.googletag.cmd.push(() => {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < lastItemIndex; i++) {
