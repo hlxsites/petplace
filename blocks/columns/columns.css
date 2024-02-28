@@ -122,10 +122,6 @@
   margin-bottom: 12px;
 }
 
-.columns.cards > div > div > p:not(:first-of-type),
-.columns.cards > div > div > h3 {
-  padding: 0 16px;
-}
 
 .columns.cards > div > div > p:last-of-type{
   margin-bottom: 0;
@@ -140,7 +136,7 @@
 .section.highlight > div > .columns.cards > div > div {
   align-items: center;
   padding: 32px;
-  box-shadow: 0px 4px 16px #000;
+  box-shadow: 0px 4px 16px rgba(0,0,0,.25);
   gap: 8px;
   background-color: var(  --background-color);
   @media (max-width: 600px){
@@ -152,7 +148,8 @@
   font-size: 26px;
   line-height: 36px;
   font-weight: 700;
-  @media (max-width: 600px){
+  text-align: center;
+  @media (max-width: 1025px){
     padding: 0;
   }
 }

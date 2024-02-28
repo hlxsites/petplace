@@ -5,13 +5,13 @@
 
 .bytetag-buy-container > .default-content-wrapper {
   text-align: center;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     margin-top: 3rem;
   }
 }
 
 .bytetag-buy-container > .default-content-wrapper > p {
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     font-size: 18px;
   }
 }
@@ -38,7 +38,7 @@
   padding: 0 2rem;
   justify-content: space-evenly;
   width: 100%;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     padding: 0;
     flex-direction: column-reverse !important;
     width: 100%;
@@ -63,7 +63,7 @@
 
 .bytetag-buy > div h2 {
   font-size: 3rem;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     font-size: 40px;
     line-height: 50px;
   }
@@ -97,7 +97,24 @@
 }
 
 .bytetag-buy > div > div > p > picture + * {
-  font-style: normal;
-  font-size: 24px;
-  line-height: 34px;
+
+}
+.bytetag-buy > div > div > p:first-of-type > em {
+    font-style: normal;
+    font-size: 24px;
+    line-height: 34px;
+}
+.bytetag-buy > div > div > p:first-of-type > em::before {
+    display: inline-block;
+    content: "";
+    margin: 0 0.4rem 0 0;
+    height: 24px;
+    width: 136px;
+    background: #7369AB;
+    -webkit-mask: url("../../icons/stars-five-purple.svg") no-repeat center center;
+    mask: url("../../icons/stars-five-purple.svg") no-repeat center center;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    
+
 }
