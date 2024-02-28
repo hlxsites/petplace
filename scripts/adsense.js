@@ -61,10 +61,8 @@ const adsDivCreator = (adLoc) => {
 
 // script for display (loop)
 const gtagDisplay = (argsArr) => {
-  window.googletag.cmd.push(() => {
-    argsArr.forEach((arg) => {
-      window.googletag.display(arg);
-    });
+  argsArr.forEach((arg) => {
+    window.googletag.display(arg);
   });
 };
 
