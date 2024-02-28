@@ -83,7 +83,7 @@ const adsenseSetup = (adArgs, catVal) => {
     for (let i = 0; i < lastItemIndex; i++) {
       window.googletag
         .defineSlot(
-          `/1004510/petplace_web/${adArgs[i]}`,
+          `/1004510/${adLocale}/${adArgs[i]}`,
           sizingArr(adArgs[i]),
           adArgs[i],
         )
@@ -95,7 +95,7 @@ const adsenseSetup = (adArgs, catVal) => {
     }
 
     anchorSlot = window.googletag.defineOutOfPageSlot(
-      `/1004510/petplace_web/${adArgs[lastItemIndex]}`,
+      `/1004510/${adLocale}/${adArgs[lastItemIndex]}`,
       window.googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR,
     );
 
