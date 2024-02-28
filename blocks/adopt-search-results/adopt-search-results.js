@@ -148,7 +148,6 @@ async function callAnimalList() {
             },
             animalFilters: {
                 startIndex: 0,
-                numResults: 100,
                 filterAnimalType: animalType,
                 filterBreed: breeds,
                 filterGender: gender,
