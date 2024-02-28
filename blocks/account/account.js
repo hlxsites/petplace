@@ -204,14 +204,19 @@ async function createTabComponent() {
 
     // create select dropdown for mobile display
     const selectDiv = document.createElement('div');
-    selectDiv.className = 'account-select';
+    selectDiv.className = 'account-select-container';
     const selectEl = document.createElement('select');
-    tabArray.forEach((tab, index) => {
+    selectEl.className = 'account-select';
+    selectEl.id = 'account-select';
+    tabArray.forEach((tab) => {
         const option = document.createElement('option');
-        
+        option.textContent = tab.title;
+        option.value = tab.hash;
         selectEl.append(option);
-
     });
+    selectDiv.append(selectEl);
+    tabs.append(selectDiv);
+    // create tab panels
     const tabContents = document.createElement('div');
     tabContents.className = 'account-tab-contents';
     tabPanels.forEach((panel, index) => {
