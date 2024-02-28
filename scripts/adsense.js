@@ -145,32 +145,27 @@ const adsDefineSlot = async (adArgs, catVal) => {
 
 // google tag for adsense
 export const adsenseFunc = async (pageType, catVal) => {
+  const boolArticle = pageType === 'article';
+  const boolMiddle = pageType === 'home' || boolArticle;
+
   if (catVal === 'create') {
+    if (boolArticle) adsDivCreator(`${pageType}_side`);
+    if (boolMiddle) adsDivCreator(`${pageType}_middle`);
+
     adsDivCreator(`${pageType}_top`);
     adsDivCreator(`${pageType}_bottom`);
-
-    if (pageType === 'article') {
-      adsDivCreator(`${pageType}_side`);
-    }
-
-    if (pageType === 'home' || pageType === 'article') {
-      adsDivCreator(`${pageType}_middle`);
-    }
-  } else {
-    const adsArr = [
-      `${pageType}_top`,
-      `${pageType}_bottom`,
-      `${pageType}_anchor`,
-    ];
-
-    if (pageType === 'article') {
-      adsArr.unshift(`${pageType}_side`);
-    }
-
-    if (pageType === 'home' || pageType === 'article') {
-      adsArr.unshift(`${pageType}_middle`);
-    }
-
-    adsDefineSlot(adsArr, catVal);
+    return;
   }
+
+  const adsArr = [
+    `${pageType}_top`,
+    `${pageType}_bottom`,
+    `${pageType}_anchor`,
+  ];
+
+  if (boolArticle) adsArr.unshift(`${pageType}_side`);
+  if (boolMiddle) adsArr.unshift(`${pageType}_middle`);
+
+  adsDefineSlot(adsArr, catVal);
+  return;
 };
