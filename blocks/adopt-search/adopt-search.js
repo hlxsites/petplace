@@ -90,6 +90,7 @@ async function createSearchForm(block) {
   form.setAttribute('role', 'search');
   form.className = 'adopt-search-box-wrapper';
   form.action = ' ';
+  form.noValidate = true;
 
   const radioContainer = document.createElement('fieldset');
   if (petTypeValues) {
@@ -170,12 +171,14 @@ async function createSearchForm(block) {
 
   const zipContainer = document.createElement('div');
   const zipLabelElem = document.createElement('label');
-  zipLabelElem.setAttribute('for', 'zipCode');
+  zipLabelElem.setAttribute('for', 'zip-code');
   zipLabelElem.innerText = zipLabel;
 
   const zipInput = document.createElement('input');
   zipInput.setAttribute('aria-label', zipPlaceholder);
-  zipInput.className = 'zipCode';
+  zipInput.setAttribute('aria-describedby', '');
+  zipInput.ariaInvalid = 'false';
+  zipInput.className = 'zip-code';
   zipInput.type = 'text';
   zipInput.name = 'zipPostal';
   zipInput.id = 'zip';
@@ -185,6 +188,12 @@ async function createSearchForm(block) {
   zipInput.placeholder = zipPlaceholder;
   zipContainer.append(zipLabelElem);
   zipContainer.append(zipInput);
+
+  const errorSpan = document.createElement('span');
+  errorSpan.className = 'error-message';
+  errorSpan.id = 'zip-error';
+  errorSpan.textContent = zipErrorMessage;
+  zipContainer.append(errorSpan);
 
   const clearButton = document.createElement('button');
   clearButton.setAttribute('id', 'clear-button');
@@ -216,39 +225,50 @@ async function createSearchForm(block) {
   });
 
   form.addEventListener('submit', (ev) => {
-    ev.preventDefault();
-    // should detect if the user is on the /pet-adoption/search page before showing results
-    // if on /pet-adoption/ the form should direct to /pet-adoption/search?[queryparameters]
-    // zipPostal, filterBreed, filterAnimalType
     const selectedBreed = encodeURIComponent(breedSelect.value.toLowerCase());
     const zipCode = zipInput.value;
     let selectedAnimalType = null;
 
-    if (radioContainer
-      .querySelector('input[name="filterAnimalType"]:checked')) {
-        selectedAnimalType = encodeURIComponent(
-          radioContainer
-            .querySelector('input[name="filterAnimalType"]:checked')
-            .value.toLowerCase(),
-        );
+    ev.preventDefault();
+
+    if (!zipInput.checkValidity()) {
+      zipInput.classList.add('error');
+      errorSpan.classList.add('active');
+      zipInput.setAttribute('aria-describedby', 'zip-error');
+      zipInput.ariaInvalid = 'true';
+      zipInput.focus();
     } else {
-      selectedAnimalType = '';
+      zipInput.classList.remove('error');
+      errorSpan.classList.remove('active');
+      zipInput.setAttribute('aria-describedby', '');
+      zipInput.ariaInvalid = 'false';
+
+      if (radioContainer
+        .querySelector('input[name="filterAnimalType"]:checked')) {
+          selectedAnimalType = encodeURIComponent(
+            radioContainer
+              .querySelector('input[name="filterAnimalType"]:checked')
+              .value.toLowerCase(),
+          );
+      } else {
+        selectedAnimalType = '';
+      }
+
+      const searchParams = new URLSearchParams();
+      searchParams.set('zipPostal', zipCode);
+
+      if (selectedAnimalType !== '') {
+        searchParams.set('filterAnimalType', selectedAnimalType);
+      }
+
+      if (selectedBreed !== '') {
+        searchParams.set('filterBreed', selectedBreed);
+      }
+
+      const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
+
+      window.location.href = searchUrl;
     }
-
-    const searchParams = new URLSearchParams();
-    searchParams.set('zipPostal', zipCode);
-
-    if (selectedAnimalType !== '') {
-      searchParams.set('filterAnimalType', selectedAnimalType);
-    }
-
-    if (selectedBreed !== '') {
-      searchParams.set('filterBreed', selectedBreed);
-    }
-
-    const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
-
-    window.location.href = searchUrl;
   });
 
   zipContainer.append(clearButton);
