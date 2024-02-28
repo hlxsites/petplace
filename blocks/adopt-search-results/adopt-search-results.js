@@ -174,7 +174,7 @@ async function callAnimalList() {
 
 async function callBreedList(petType) {
     const breedSelect = document.getElementById('breed');
-    if (breedSelect && petType === 'other') {
+    if (breedSelect && (petType === 'other' || petType === 'null')) {
         breedSelect.setAttribute('disabled', '');
     } else {
         if (breedSelect) {
@@ -626,12 +626,17 @@ window.onload = callBreedList('null').then((data) => {
                 petType.selectedIndex = i;
             }
         }
+
         const petBreed = document.getElementById('breed');
         const petBreeds = petBreed.options;
         for (let i = 0; i < petBreeds.length; i += 1) {
             if (petBreeds[i].value === params.get('filterBreed')) {
                 petBreed.selectedIndex = i;
             }
+        }
+
+        if (petType?.value === 'other' || petType?.value === 'null') {
+            petBreed.setAttribute('disabled', '');
         }
         callAnimalList().then((response) => {
             buildResultsContainer(response);
