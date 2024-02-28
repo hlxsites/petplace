@@ -61,14 +61,15 @@
   object-fit: cover;
   height: 300px;
   width: 100%;
-  object-fit: cover;
-  object-position: top;
+  object-fit: contain;
+  object-position: top right;
   @media (min-width: 800px) {
     min-height: 400px;
   }
   @media (min-width: 1024px) {
     object-position: right;
     min-height: 547px;
+    object-fit: cover
   }
 }
 
