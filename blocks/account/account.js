@@ -149,6 +149,54 @@ async function createAccountDetailsPanel() {
 async function createSearchAlertsPanel() {
     const panelDiv = document.createElement('div');
     panelDiv.className = 'account-tabpanel-inner';
+    panelDiv.innerHTML = `
+      <h3>Search Alerts</h3>
+      <div class='saved-search-layout-container'>
+        <div class='saved-search-layout-row'>
+          <div class='saved-search__content'>
+            <div class='saved-search__title'>Dogs near 55105, MN</div>
+            <div class='saved-search__timestamp'>Created on 1/2/2024</div>
+          </div>
+          <a class='saved-search__cta account-button' href=''>Launch Search</a>
+          <button class='saved-search__delete' aria-label='Delete this search item'></button>
+        </div>
+        <div class='saved-search-layout-row'>
+          <div class='saved-search__content'>
+            <div class='saved-search__title'>Dogs near 55105, MN</div>
+            <div class='saved-search__timestamp'>Created on 1/2/2024</div>
+          </div>
+          <a class='saved-search__cta account-button' href=''>Launch Search</a>
+          <button class='saved-search__delete' aria-label='Delete this search item'></button>
+        </div>
+        <div class='saved-search-layout-row'>
+          <div class='saved-search__content'>
+            <div class='saved-search__title'>Dogs near 55105, MN</div>
+            <div class='saved-search__timestamp'>Created on 1/2/2024</div>
+          </div>
+          <a class='saved-search__cta account-button' href=''>Launch Search</a>
+          <button class='saved-search__delete' aria-label='Delete this search item'></button>
+        </div>
+        <div class='saved-search-layout-row'>
+          <div class='saved-search__content'>
+            <div class='saved-search__title'>Dogs near 55105, MN</div>
+            <div class='saved-search__timestamp'>Created on 1/2/2024</div>
+          </div>
+          <a class='saved-search__cta account-button' href=''>Launch Search</a>
+          <button class='saved-search__delete' aria-label='Delete this search item'></button>
+        </div>
+        <div class='saved-search-layout-row'>
+          <div class='saved-search__content'>
+            <div class='saved-search__title'>Dogs near 55105, MN</div>
+            <div class='saved-search__timestamp'>Created on 1/2/2024</div>
+          </div>
+          <a class='saved-search__cta account-button' href=''>Launch Search</a>
+          <button class='saved-search__delete' aria-label='Delete this search item'></button>
+        </div>
+      </div>
+
+      <button class="saved-search__cta-new-search">Start New Search</button>
+    `;
+  
     return panelDiv;
 }
 
