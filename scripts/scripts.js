@@ -146,7 +146,8 @@ export function isTablet() {
  * @returns an array of obejects contained in the json file
  */
 export async function fetchAndCacheJson(url) {
-  const key = url.split('/').pop().split('.')[0];
+  const subkey = url.split('/').pop().split('.')[0];
+  const key = `${window.hlx.contentBasePath}/${subkey}`;
   if (window.hlx.cache[key]) {
     return window.hlx.cache[key];
   }
@@ -165,7 +166,7 @@ export async function fetchAndCacheJson(url) {
  * @returns a promise returning an array of categories
  */
 export async function getCategories() {
-  return fetchAndCacheJson('/article/category/categories.json');
+  return fetchAndCacheJson(`${window.hlx.contentBasePath}/article/category/categories.json`);
 }
 
 /**
