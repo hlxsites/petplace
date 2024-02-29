@@ -5,6 +5,7 @@ import endPoints from '../../variables/endpoints.js';
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
+import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 
 const {
   petTypeLabel,
@@ -17,54 +18,6 @@ const {
   searchButtonText,
   adoptablePetsTitle,
 } = placeholders;
-
-function createPetCard({
-  Name,
-  Gender,
-  Breed,
-  City,
-  State,
-  'Animal type': animalType,
-  animalId,
-  clientId,
-  coverImagePath,
-}) {
-  const petCard = document.createElement('div');
-  petCard.className = 'pet-card';
-  const img = document.createElement('object');
-  img.data = coverImagePath;
-  img.type = 'image/jpg';
-  img.className = 'pet-card-image';
-  const fallback = document.createElement('img');
-  fallback.src = getMetadata('image-fallback');
-  img.append(fallback);
-  const cardBody = document.createElement('div');
-  cardBody.className = 'pet-card-body';
-  cardBody.innerHTML = `
-      <h3 class='pet-card-name'><a href='/pet-adoption/${animalType.toLowerCase()}s/${animalId}/${clientId}' class='stretched-link'>${Name?.replace(
-    / *\([^)]*\) */g,
-    '',
-  )}</a></h3>
-      <div class='pet-card-info'>
-          <span class='pet-card-gender'>${Gender}</span>
-          <span class='pet-card-dot'></span>
-          <span class='pet-card-breed'>${Breed}</span>
-      </div>
-      <div class='pet-card-address'>
-          ${City}, ${State}
-      </div>
-  `;
-  const buttonContainer = document.createElement('div');
-  buttonContainer.className = 'pet-card-button-conainer';
-  buttonContainer.innerHTML = `
-  <button class='pet-card-favorite'>
-      <span class='pet-card-favorite-icon'></span>
-      <span class='sr-only'>Favorite</span>
-  </button>
-  `;
-  petCard.append(img, cardBody, buttonContainer);
-  return petCard;
-}
 
 function getRandomItems(array, count) {
   const shuffled = array.sort(() => 0.5 - Math.random());
@@ -314,7 +267,7 @@ async function createAdoptablePetsContent(petArr) {
     const gallery = document.createElement('div');
     gallery.className = 'adoptable-pets-gallery';
     petArr.forEach((pet) => {
-      gallery.append(createPetCard(pet));
+      gallery.append(buildPetCard(pet));
     });
     galleryWrapper.appendChild(gallery);
     adoptablePetsContainer.append(galleryWrapper);

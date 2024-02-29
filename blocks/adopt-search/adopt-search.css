@@ -484,3 +484,96 @@
   background-position: center center;
   background-size: 1em;
 }
+.adopt div.pet-card {
+  width: 100%;
+  border-radius: 12px;
+  filter: drop-shadow(rgba(0, 0, 0, 24%) 1px 2px 4px);
+  background-color: #fff;
+  position: relative;
+  
+}
+
+@media screen and (min-width: 600px) {
+  .adopt div.pet-card {
+      width: calc((50% - 30px))
+  }
+}
+@media screen and (min-width: 1024px) {
+  .adopt div.pet-card {
+      width: calc((25% - 15px))
+  }
+}
+
+.adopt div.pet-card img {
+
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  width: 100%;
+}
+.adopt div.pet-card .like-button {
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 8px 5px 3px;
+  margin: 0;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.adopt div.pet-card .like-button .favorite {
+  display: none;
+}
+.adopt div.pet-card .like-button.favorited .default {
+  display: none;
+}
+.adopt div.pet-card .like-button.favorited .favorite {
+  display: block;
+  background-color: #F8D1CA;
+  top: 0;
+  right: 0;
+}
+.adopt div.pet-card .like-button.favorited {
+  background-color: #F8D1CA;
+}
+.adopt div.pet-card object {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.adopt div.pet-card h3 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  text-overflow: ellipsis;
+  font-size: 22px;
+  font-weight: 800;
+  color: #000;
+}
+.adopt div.pet-card h3 a {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  text-overflow: ellipsis;
+  font-size: 22px;
+  font-weight: 800;
+  color: #000;
+}
+
+.adopt div.pet-card .pet-card-info {
+  font-size: 16px;
+  line-height: 20px;
+  padding-bottom: 16px;
+  font-weight: 400;
+}
+
+.adopt div.pet-card .pet-card-address {
+  font-size: 18px;
+  padding-bottom: 16px;
+}
+
+.adopt div.pet-card h3,
+.adopt div.pet-card .pet-card-info,
+.adopt div.pet-card .pet-card-address {
+  padding-left: 12px;
+  padding-right: 12px;
+}
