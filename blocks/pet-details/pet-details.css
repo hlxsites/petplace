@@ -31,11 +31,13 @@
 .pet-details .pet-details-button,
 .pet-details a.pet-details-button {
     margin: 0;
-    padding: 12px 50px;
+    padding: 12px 20px;
+    width: 100%;
     font-size: 18px;
     font-family: var(--body-font-family);
     font-weight: 600;
     line-height: 1.2;
+    white-space: unset;
 }
 
 .pet-details .pet-details-button.right-arrow:after,
@@ -512,6 +514,13 @@
 }
 
 @media (min-width: 768px) {
+    /* button */
+    .pet-details .pet-details-button,
+    .pet-details a.pet-details-button {
+        padding: 12px 50px;
+        width: auto;
+    }
+
     .pet-details {
         grid-template-columns: 24px 1fr 24px;
     }
