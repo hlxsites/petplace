@@ -5,6 +5,7 @@ import { getRandomItems, extractName, formatPhoneNumber } from '../../templates/
 import endPoints from '../../variables/endpoints.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setFavorite } from '../../scripts/adoption/favorite.js';
+import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 function isEmptyObject(obj) {
     return typeof obj === 'object' && Object.keys(obj).length === 0;
@@ -403,6 +404,29 @@ async function createSimilarPetsSection(sectionTitle, petArr) {
     return listSection;
 }
 
+function getFavorites(response) {
+    fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${response}`,
+        }
+    }).then(response => {
+        //console.log('Success:', response.status);
+        return response.json();
+    }).then((data) => {
+        // favorite Pet in the UI
+        data.forEach((favorite) => {
+            const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
+            favoriteButton?.classList.add('favorited');
+            favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 export default async function decorate(block) {
     block.textContent = '';
     const { animalId, clientId } = await getParametersFromUrl();
@@ -440,5 +464,17 @@ export default async function decorate(block) {
         // add favorite functionality
         const favoriteCta = document.getElementById(animalId);
         favoriteCta.addEventListener('click', (e) => {setFavorite(e, petData)});
+
+        // check if user is logged in
+        if (isLoggedIn()) {
+            // if logged in set pet as favorite
+            acquireToken()
+            .then(response => {
+                getFavorites(response);            
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });;
+        }
     }
 }

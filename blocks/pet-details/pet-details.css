@@ -69,8 +69,15 @@
 .pet-details .about-pet-favorite {
     color: var(--text-weak, #222222);
 }
-.pet-details .about-pet-favorite.favorited {
-    background-color: #F8D1CA;
+.pet-details .about-pet-favorite.favorited .pet-details-button-icon-favorite {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    -webkit-mask: url("../../icons/favorited.svg") no-repeat center center;
+    mask: url("../../icons/favorited.svg") no-repeat center center;
+    background-color: red;
+    margin-right: 16px;
 }
 
 /* layout container */
