@@ -11,6 +11,7 @@ function isEmptyObject(obj) {
     return typeof obj === 'object' && Object.keys(obj).length === 0;
 }
 function formatAnimalData(apiData) {
+    console.log(apiData);
     const { imageURL, ppRequired, animalDetail } = apiData;
     const {
         AnimalId: animalId,

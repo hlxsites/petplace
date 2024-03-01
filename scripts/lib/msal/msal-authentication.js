@@ -1,13 +1,20 @@
-import { createDefaultMsalInstance } from './msal-instance.js';
-import { loginRequest, logoutRequest, tokenRequest } from './default-msal-config.js';
+import { createDefaultMsalInstance, createMsalInstance } from './msal-instance.js';
+import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalChangePwdConfig } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';   
 
 const msalInstance = createDefaultMsalInstance();
+const msalChangePwdInstance = createMsalInstance(msalChangePwdConfig);
 
 // register a custom callback function (e.g. handleResponse()) once the user has successfully logged in and was redirected back to the site
 msalInstance.initialize().then(() => {
     msalInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
+        console.log(error);
+    });
+});
+
+msalChangePwdInstance.initialize().then(() => {
+    msalChangePwdInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
         console.log(error);
     });
 });
@@ -60,7 +67,7 @@ export function acquireToken(customCallback) {
                 })
                 .catch(function (error) {
                     //Acquire token silent failure, and send an interactive request
-                    if (error instanceof InteractionRequiredAuthError) {
+                    if (error instanceof msal.InteractionRequiredAuthError) {
                         if (isMobile()) {
                             msalInstance
                                 .acquireTokenRedirect(tokenRequest)
@@ -109,6 +116,22 @@ export function acquireToken(customCallback) {
 export function isLoggedIn() {
     const accounts = msalInstance.getAllAccounts();
     return accounts.length > 0;
+}
+export function changePassword(callback, featureName) {
+    // use loginRedirect() for mobile devices, use loginPopup() for desktop.
+    if (isMobile()) {
+        msalChangePwdInstance.loginRedirect(changePwdRequest)
+        .then((response) => handleResponse(response, callback, featureName))
+        .catch(error => {
+            console.log(error);
+        });
+    } else {
+        msalChangePwdInstance.loginPopup(changePwdRequest)
+        .then((response) => handleResponse(response, callback, featureName))
+        .catch(error => {
+            console.log(error);
+        });
+    }
 }
 
 function selectAccount() {

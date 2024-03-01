@@ -42,7 +42,16 @@ export const msalConfig = {
         }
       }
     }
-  };
+};
+
+export const msalChangePwdConfig = {
+  auth: {
+      clientId: "680fcf6c-4c38-4d11-8963-d65de9aec0d9",
+      authority: b2cPolicies.authorities.changePassword.authority,
+      knownAuthorities: [b2cPolicies.authorityDomain],
+      redirectUri: window.location.origin
+  },
+};
   
 /**
  * Scopes you add here will be prompted for user consent during sign-in.
@@ -67,4 +76,8 @@ export const logoutRequest = {
 export const tokenRequest = {
   scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"], 
   forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token
+};
+export const changePwdRequest = {
+  scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"],
+  mainWindowRedirectUri: window.location.href
 };
