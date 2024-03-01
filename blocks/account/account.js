@@ -1,7 +1,6 @@
 import TabsManual from "./tabs-manual.js";
 import endPoints from '../../variables/endpoints.js';
-import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
-import { isMobile } from '../../scripts/scripts.js';
+import { acquireToken, changePassword } from '../../scripts/lib/msal/msal-authentication.js';
 
 function serialize(data) {
 	let obj = {};
@@ -366,33 +365,7 @@ export default async function decorate(block) {
             });
         });
         changePwdButton.addEventListener('click', () => {
-            const msalConfig = {
-                auth: {
-                    clientId: "680fcf6c-4c38-4d11-8963-d65de9aec0d9",
-                    authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE",
-                    redirectUri: window.location.href
-                },
-            };
-            
-            const myMSALObj = new msal.PublicClientApplication(msalConfig);
-            
-            function changePassword() {
-                const loginRequest = {
-                    scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"],
-                };
-            
-                // use myMSALObj.loginPopup() for desktop, use myMSALObj.loginRedirect() for mobile
-                if (isMobile()) {
-                    myMSALObj.loginRedirect(loginRequest).catch(function(error) {
-                        console.log(error);
-                    });
-                } else {
-                    myMSALObj.loginPopup(loginRequest).catch(function(error) {
-                        console.log(error);
-                    });
-                }
-            }
-            changePassword();
+            changePassword()
         })
 
     }
