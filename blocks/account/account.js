@@ -1,6 +1,7 @@
 import TabsManual from "./tabs-manual.js";
 import endPoints from '../../variables/endpoints.js';
 import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
+import { isMobile } from '../../scripts/scripts.js';
 
 function serialize(data) {
 	let obj = {};
@@ -32,7 +33,7 @@ function refactorPreferenceForm(formObj) {
     }
     return formatted;
 }
-function toggleButtonStates(buttons, disabled = true) {
+function disableButtons(buttons, disabled = true) {
     buttons.forEach(button => {
         if (disabled) {
             button.setAttribute('disabled', 'disabled');
@@ -98,11 +99,11 @@ async function createAccountDetailsPanel(userData) {
             <form class='account-form account-form--personal' id='personal-info-form'>
                 <div class='form-control form-control--text half-width'>
                     <label for='fname'>First Name</label>
-                    <input type='text' id='FirstName' name='FirstName' value=${FirstName}>
+                    <input type='text' id='FirstName' name='FirstName' value=${FirstName} required>
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='lname'>Last Name</label>
-                    <input type='text' id='LastName' name='LastName' value=${LastName}>
+                    <input type='text' id='LastName' name='LastName' value=${LastName} required>
                 </div>
                 <div class='form-control form-control--text'>
                     <label for='email'>Email</label>
@@ -114,7 +115,7 @@ async function createAccountDetailsPanel(userData) {
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='zip'>Zip/Postal Code</label>
-                    <input type='text' id='ZipCode' name='ZipCode' value=${ZipCode}>
+                    <input type='text' id='ZipCode' name='ZipCode' value=${ZipCode} required pattern='^[0-9]{5}(?:-[0-9]{4})?$'>
                 </div>
                 <div class='form-control form-control--submit'>
                     <button type='submit' class='account-button' value='Save Changes' disabled>Save Changes</button>
@@ -125,7 +126,7 @@ async function createAccountDetailsPanel(userData) {
         <div class='account-layout-container'>
             <div class='account-layout-row account-layout-row--change-pwd'>
                 <p>Create a new account password</p>
-                <a class='change-password-link account-button' href=''>Change Password</a>
+                <button class='account-button account-button--change-pwd' id='change-pwd'>Change Password</button>
             </div>
         </div>
         <h3>Communication Preferences</h3>
@@ -293,23 +294,24 @@ async function createTabComponent(accountDetails) {
     const tabPanelEls = tabs.querySelectorAll('[role=\'tabpanel\']');
     new TabsManual(tabListEl, dropdownEl, tabPanelEls);
     return tabs;
-
-
 }
 async function callUserApi(token, apiUrl, method = 'GET', payload = null) {
     let result = null;
     const config = {
         method: method,
-        headers: {Authorization: `Bearer ${token}`},
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
     };
     if (method !== 'GET') {
         config.body = JSON.stringify(payload);
     }
     try {
         const resp = await fetch(apiUrl, config);
-        if (resp.ok) {
+        if (resp.status === 200) {
             result = await resp.json();
-        }
+        } 
     } catch (error) {
         console.error('Error:', error);
     }
@@ -331,26 +333,66 @@ export default async function decorate(block) {
         const textInputs = block.querySelectorAll('input[type=\'text\']:not(:disabled)');
         const checkboxes = block.querySelectorAll('input[type=\'checkbox\']');
         const submitButtons = block.querySelectorAll('button[type=\'submit\']');
-        textInputs.forEach(input => {
+        const changePwdButton = block.querySelector('#change-pwd');
+        textInputs.forEach((input) => {
             input.addEventListener('keypress', (event) => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                 } 
             });
-            input.addEventListener('input', (event) => {
-                if (event.target.value !== initialUserData[event.target.name]) {
-                    submitButtons.forEach(button => {button.removeAttribute('disabled')});
+            input.addEventListener('input', () => {
+                if (input.validity.valid && input.value.trim() !== '' && input.value.trim() !== initialUserData[input.name]) {
+                    disableButtons(submitButtons, false);
                 } else {
-                    submitButtons.forEach(button => {button.setAttribute('disabled', 'disabled')});
+                    disableButtons(submitButtons, true);
                 }
             });
         });
-        submitButtons.forEach(button => {
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                if(checkbox.checked !== initialUserData[checkbox.name]) {
+                    disableButtons(submitButtons, false);
+                } else {
+                    disableButtons(submitButtons, true);
+                }
+            });
+        });
+        submitButtons.forEach((button) => {
             button.addEventListener('click', async (event) => {
                 event.preventDefault();
                 const payLoad = {...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm)))};
-                const response = await callUserApi(token, userApi, 'PUT', payLoad);
+                await callUserApi(token, userApi, 'PUT', payLoad);
+                disableButtons(submitButtons, true);
             });
+        });
+        changePwdButton.addEventListener('click', () => {
+            const msalConfig = {
+                auth: {
+                    clientId: "680fcf6c-4c38-4d11-8963-d65de9aec0d9",
+                    authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE",
+                    redirectUri: window.location.href
+                },
+            };
+            
+            const myMSALObj = new msal.PublicClientApplication(msalConfig);
+            
+            function changePassword() {
+                const loginRequest = {
+                    scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"],
+                };
+            
+                // use myMSALObj.loginPopup() for desktop, use myMSALObj.loginRedirect() for mobile
+                if (isMobile()) {
+                    myMSALObj.loginRedirect(loginRequest).catch(function(error) {
+                        console.log(error);
+                    });
+                } else {
+                    myMSALObj.loginPopup(loginRequest).catch(function(error) {
+                        console.log(error);
+                    });
+                }
+            }
+            changePassword();
         })
 
     }
