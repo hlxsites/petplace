@@ -160,6 +160,7 @@ async function callAnimalList() {
         }),
     });
     if (response.status === 204) {
+        buildResultsContainer([]);
         let resultsContainer = document.querySelector('.default-content-wrapper.results');
         if (!resultsContainer) {
             resultsContainer = document.querySelector('.default-content-wrapper');
@@ -216,7 +217,7 @@ function updateBreedListSelect() {
 }
 
 function numPages() {
-    return Math.ceil(animalArray.length / recordsPerPage);
+    return Math.ceil(animalArray?.length / recordsPerPage);
 }
 
 function getFavorites(response) {
@@ -280,7 +281,7 @@ function calculatePagination(page) {
     if (tempPage > numPages()) tempPage = numPages();
     for (
         let i = (tempPage - 1) * recordsPerPage;
-        i < tempPage * recordsPerPage && i < animalArray.length;
+        i < tempPage * recordsPerPage && i < animalArray?.length;
         i += 1
         ) {
         filteredArray.push(animalArray[i]);
@@ -331,9 +332,9 @@ function nextPage() {
 }
 
 function clearFilters() {
-    const radiusSelect = document.getElementById('radius')?.selectedIndex;
+    const radiusSelect = document.getElementById('radius');
     if (radiusSelect) {
-        radiusSelect = 0;
+        radiusSelect.selectedIndex = 0;
     };
     const radioButtons = document.querySelectorAll('input:checked');
     for (let i = 0; i < radioButtons.length; i += 1) {
