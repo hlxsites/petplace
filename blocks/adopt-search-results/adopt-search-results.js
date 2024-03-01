@@ -233,6 +233,7 @@ function getFavorites(response) {
         data.forEach((favorite) => {
             const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
             favoriteButton?.classList.add('favorited');
+            favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
         })
     })
     .catch((error) => {

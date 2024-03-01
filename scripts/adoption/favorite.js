@@ -25,12 +25,14 @@ export function setFavorite(e, animal) {
                 // favorite Pet in the UI
                 const favoriteButton = document.getElementById(animal.animalId);
                 favoriteButton.classList.add('favorited');
+                favoriteButton?.setAttribute('data-favorite-id', response);
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
         } else {
-            fetch(`${endPoints.apiUrl}/adopt/api/Favorite/${animal.animalId}`, {
+            const favoriteId = document.getElementById(animal.animalId).dataset?.favoriteId;
+            fetch(`${endPoints.apiUrl}/adopt/api/Favorite/${favoriteId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
