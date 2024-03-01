@@ -5,8 +5,7 @@
  */
 export const b2cPolicies = {
     names: {
-        signUpSignIn: "B2C_1_susi_reset_v2",
-        editProfile: "B2C_1_edit_profile_v2"
+        signUpSignIn: "B2C_1_susi"
     },
     authorities: {
         signUpSignIn: {

@@ -1,4 +1,5 @@
 import { createDefaultMsalInstance, createMsalInstance } from './msal-instance.js';
+import { b2cPolicies } from './policies.js';
 import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalChangePwdConfig } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';   
@@ -54,7 +55,12 @@ export function logout() {
     }
 }
 
-export function acquireToken(customCallback) {
+/**
+ * 
+ * @param {*} featureName name of the feature that is invoking the login function, e.g. "Favorite". Used for logging purposes when a user signs up an account for the first time.
+ * @returns a Promise that resolves with the access token
+ */
+export function acquireToken(featureName) {
     const accounts = msalInstance.getAllAccounts();
 
     return new Promise((resolve, reject) => {
@@ -103,11 +109,7 @@ export function acquireToken(customCallback) {
                 });
         } else {
             // prompt login if no token exists
-            if (customCallback) {
-                login(customCallback);
-            } else {
-                login((tokenResponse) => resolve(tokenResponse.accessToken));
-            }
+            login((tokenResponse) => resolve(tokenResponse.accessToken), featureName);
         }
     });
 }
@@ -117,6 +119,7 @@ export function isLoggedIn() {
     const accounts = msalInstance.getAllAccounts();
     return accounts.length > 0;
 }
+
 export function changePassword(callback, featureName) {
     // use loginRedirect() for mobile devices, use loginPopup() for desktop.
     if (isMobile()) {
@@ -143,7 +146,7 @@ function selectAccount() {
     const currentAccounts = msalInstance.getAllAccounts();
 
     if (currentAccounts.length < 1) {
-        console.log('azure user not logged in');
+        // azure user not logged in
         return;
     } else if (currentAccounts.length > 1) {
 
@@ -178,6 +181,9 @@ function selectAccount() {
         // setAccount(currentAccounts[0]);
     }
 }
+
+// in case of page refresh
+selectAccount();
 
 function handleResponse(response, customCallback, featureName = 'PetPlace (Generic)') {
     /**
