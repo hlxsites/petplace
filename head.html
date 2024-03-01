@@ -13,7 +13,7 @@
   window.clarity ||= function() {
     (window.clarity.q ||= []).push(arguments)
   }
-  function gtag(){dataLayer.push(arguments);}
+  function gtag() { window.dataLayer.push(arguments); }
   gtag('consent', 'default', {
     'ad_storage': 'denied',
     'ad_user_data': 'denied',
