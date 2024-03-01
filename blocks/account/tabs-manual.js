@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 export default class TabsManual {
     constructor(groupNode, dropdownNode, panelNodes) {
       this.tablistNode = groupNode;
@@ -7,16 +8,13 @@ export default class TabsManual {
       this.lastTab = null;
       this.tabs = Array.from(this.tablistNode.querySelectorAll('[role=tab]'));
       this.tabpanels = Array.from(panelNodes);
-  
+
       for (let i = 0; i < this.tabs.length; i += 1) {
         const tab = this.tabs[i];
-  
         tab.tabIndex = -1;
         tab.setAttribute('aria-selected', 'false');
-  
         tab.addEventListener('keydown', this.onKeydown.bind(this));
         tab.addEventListener('click', this.onClick.bind(this));
-  
         if (!this.firstTab) {
           this.firstTab = tab;
         }
@@ -24,13 +22,13 @@ export default class TabsManual {
       }
       this.selectNode.addEventListener('change', this.onChange.bind(this));
       const currentHash = window.location.hash;
-      if(currentHash && this.getIndexByHash(currentHash) > -1) {
+      if (currentHash && this.getIndexByHash(currentHash) > -1) {
         this.setSelectedTab(this.tabs[this.getIndexByHash(currentHash)]);
       } else {
         this.setSelectedTab(this.firstTab);
       }
     }
-  
+
     setSelectedTab(currentTab) {
       for (let i = 0; i < this.tabs.length; i += 1) {
         const tab = this.tabs[i];
@@ -47,14 +45,13 @@ export default class TabsManual {
       this.selectNode.value = currentTab.getAttribute('data-tab-index');
       this.selectNode.setAttribute('data-active-panel', currentTab.getAttribute('aria-controls'));
     }
-  
+
     moveFocusToTab(currentTab) {
       currentTab.focus();
     }
-  
+
     moveFocusToPreviousTab(currentTab) {
-      var index;
-  
+      let index;
       if (currentTab === this.firstTab) {
         this.moveFocusToTab(this.lastTab);
       } else {
@@ -62,7 +59,7 @@ export default class TabsManual {
         this.moveFocusToTab(this.tabs[index - 1]);
       }
     }
-  
+
     moveFocusToNextTab(currentTab) {
       let index; 
       if (currentTab === this.lastTab) {
@@ -72,12 +69,12 @@ export default class TabsManual {
         this.moveFocusToTab(this.tabs[index + 1]);
       }
     }
-  
+
     /* EVENT HANDLERS */
     onKeydown(event) {
       const tgt = event.currentTarget;
       let flag = false;
-  
+
       switch (event.key) {
         case 'ArrowLeft':
           this.moveFocusToPreviousTab(tgt);
@@ -96,27 +93,29 @@ export default class TabsManual {
           flag = true;
           break;
         case 'Enter':
-        case 'Space':
           this.setSelectedTab(tgt);
           flag = true;
           break;
         default:
           break;
       }
-  
+
       if (flag) {
         event.stopPropagation();
         event.preventDefault();
       }
     }
+
     onClick(event) {
       event.preventDefault();
       this.setSelectedTab(event.currentTarget);
     }
+
     onChange(event) {
       const selectedIndex = parseInt(event.currentTarget.value);
       this.setSelectedTab(this.tabs[selectedIndex]);
     }
+
     getIndexByHash(hashStr) {
       const targetTab = this.tabs.find((tab) => tab.href.endsWith(hashStr));
       if (targetTab) {

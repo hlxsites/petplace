@@ -1,21 +1,16 @@
-import TabsManual from "./tabs-manual.js";
+/* eslint-disable indent */
+import TabsManual from './tabs-manual.js';
 import endPoints from '../../variables/endpoints.js';
 import { acquireToken, changePassword } from '../../scripts/lib/msal/msal-authentication.js';
 
 function serialize(data) {
-	let obj = {};
-	for (let [key, value] of data) {
-		if (obj[key] !== undefined) {
-			if (!Array.isArray(obj[key])) {
-				obj[key] = [obj[key]];
-			}
-			obj[key].push(value);
-		} else {
-			obj[key] = value;
-		}
-	}
-	return obj;
+    const obj = {};
+    for (const [key, value] of data) {
+        obj[key] = value;
+    }
+    return obj;
 }
+
 function refactorPreferenceForm(formObj) {
     const formatted = {
         EmailOptIn: false,
@@ -24,16 +19,16 @@ function refactorPreferenceForm(formObj) {
         PartnerOffer: false,
         CatNewsletterOptIn: false,
         DogNewsletterOptIn: false,
-    }
-    for (const property in formObj){
-        if (formObj[property] === 'on') {
-            formatted[property] = true;
+    };
+    Object.keys(formObj).forEach((key) => {
+        if (formObj[key] === 'on') {
+            formatted[key] = true;
         }
-    }
+    });
     return formatted;
 }
 function disableButtons(buttons, disabled = true) {
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
         if (disabled) {
             button.setAttribute('disabled', 'disabled');
         } else {
@@ -77,7 +72,7 @@ function createSwitch(inputId, accessibilityLabel, isOn = false) {
 }
 
 async function createAccountDetailsPanel(userData) {
-    const { 
+    const {
         FirstName,
         LastName,
         Email,
@@ -110,7 +105,7 @@ async function createAccountDetailsPanel(userData) {
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='phone'>Phone Number</label>
-                    <input type='text' id='PhoneNumber' name='PhoneNumber' placeholder="Enter your phone number" value=${PhoneNumber || ''}>
+                    <input type='text' id='PhoneNumber' name='PhoneNumber' placeholder='Enter your phone number' value=${PhoneNumber || ''}>
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='zip'>Zip/Postal Code</label>
@@ -135,18 +130,18 @@ async function createAccountDetailsPanel(userData) {
                 <div class='account-layout-row'>
                     <div class='account-layout-column'>
                         <h4>Newsletter</h4>
-                        <p class="text-supporting">Receive our PetPlace Newsletter</p>
+                        <p class='text-supporting'>Receive our PetPlace Newsletter</p>
                     </div>
                     <div class='account-layout-column account-layout-column--form-controls'>
                         <div class='form-control form-control--checkbox'>
                             <label class='checkbox-container'>Dog
-                                <input type='checkbox' id='DogNewsletterOptIn' name='DogNewsletterOptIn' ${DogNewsletterOptIn ? 'checked' :''}>
+                                <input type='checkbox' id='DogNewsletterOptIn' name='DogNewsletterOptIn' ${DogNewsletterOptIn ? 'checked' : ''}>
                                 <span class='checkmark'></span>
                             </label>
                         </div>
                         <div class='form-control form-control--checkbox'>
                             <label class='checkbox-container'>Cat
-                                <input type='checkbox' id='CatNewsletterOptIn' name='CatNewsletterOptIn' ${CatNewsletterOptIn ? 'checked' :''}>
+                                <input type='checkbox' id='CatNewsletterOptIn' name='CatNewsletterOptIn' ${CatNewsletterOptIn ? 'checked' : ''}>
                                 <span class='checkmark'></span>
                             </label>
                         </div>
@@ -155,7 +150,7 @@ async function createAccountDetailsPanel(userData) {
                 <div class='account-layout-row'>
                     <div class='account-layout-column'>
                         <h4>PetPlace Offers</h4>
-                        <p class="text-supporting">Get updates on the latest PetPlace happenings</p>
+                        <p class='text-supporting'>Get updates on the latest PetPlace happenings</p>
                     </div>
                     <div class='account-layout-column'>
                         ${createSwitch('PetPlaceOffer', 'PetPlace Offers', PetPlaceOffer).outerHTML}
@@ -164,7 +159,7 @@ async function createAccountDetailsPanel(userData) {
                 <div class='account-layout-row'>
                     <div class='account-layout-column'>
                         <h4 id='partner-offers-label'>Partner Offers</h4>
-                        <p class="text-supporting">Receive updates from PetPlace and our trusted partners</p>
+                        <p class='text-supporting'>Receive updates from PetPlace and our trusted partners</p>
                     </div>
                     <div class='account-layout-column'>
                         <div class='form-control form-control--switch'>
@@ -176,7 +171,7 @@ async function createAccountDetailsPanel(userData) {
                 <div class='account-layout-row'>
                     <div class='account-layout-column'>
                         <h4>PetPlace Adopt Alerts</h4>
-                        <p class="text-supporting">Receive adoption related updates</p>
+                        <p class='text-supporting'>Receive adoption related updates</p>
                     </div>
                     <div class='account-layout-column account-layout-column--form-controls'>
                         <div class='form-control form-control--checkbox'>
@@ -223,12 +218,17 @@ async function createSurveyPanel() {
 
 async function createTabComponent(accountDetails) {
     const tabArray = [
-        {title: 'Account Details', hash: 'details'},
-        {title: 'Search Alerts', hash: 'searchalerts'},
-        {title: 'Favorites', hash: 'favorites'},
-        {title: 'Pet Match Survey', hash: 'survey'},
+        { title: 'Account Details', hash: 'details' },
+        { title: 'Search Alerts', hash: 'searchalerts' },
+        { title: 'Favorites', hash: 'favorites' },
+        { title: 'Pet Match Survey', hash: 'survey' },
     ];
-    const tabPanels = [await createAccountDetailsPanel(accountDetails), await createSearchAlertsPanel(), await createFavoritesPanel(), await createSurveyPanel()];
+    const tabPanels = [
+        await createAccountDetailsPanel(accountDetails),
+        await createSearchAlertsPanel(),
+        await createFavoritesPanel(),
+        await createSurveyPanel(),
+    ];
     const tabs = document.createElement('div');
     tabs.className = 'account-tabs';
     const title = document.createElement('h2');
@@ -236,13 +236,13 @@ async function createTabComponent(accountDetails) {
     title.textContent = 'My Account';
     tabs.append(title);
     // create tab list for desktop display
-    const tablist =  document.createElement('ul');
+    const tablist = document.createElement('ul');
     tablist.className = 'account-tablist';
     tablist.setAttribute('role', 'tablist');
     tabArray.forEach((tab, index) => {
         const listItem = document.createElement('li');
         listItem.setAttribute('role', 'presentation');
-        const link  = document.createElement('a');
+        const link = document.createElement('a');
         link.className = `account-tab account-tab--${tab.hash}`;
         link.setAttribute('role', 'tab');
         link.setAttribute('href', `#${tab.hash}`);
@@ -280,7 +280,7 @@ async function createTabComponent(accountDetails) {
     tabContents.className = 'account-tab-contents';
     tabPanels.forEach((panel, index) => {
         const panelWrapper = document.createElement('div');
-        panelWrapper.className = `account-tabpanel account-tabpanel--${tabArray[index].hash}${index === 0 ? '' : ' is-hidden'}`
+        panelWrapper.className = `account-tabpanel account-tabpanel--${tabArray[index].hash}${index === 0 ? '' : ' is-hidden'}`;
         panelWrapper.setAttribute('id', tabArray[index].hash);
         panelWrapper.setAttribute('role', 'tabpanel');
         panelWrapper.setAttribute('aria-labelledby', `account-tab-${index}`);
@@ -301,7 +301,7 @@ async function callUserApi(token, apiUrl, method = 'GET', payload = null) {
         headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
-        }
+        },
     };
     if (method !== 'GET') {
         config.body = JSON.stringify(payload);
@@ -310,7 +310,7 @@ async function callUserApi(token, apiUrl, method = 'GET', payload = null) {
         const resp = await fetch(apiUrl, config);
         if (resp.status === 200) {
             result = await resp.json();
-        } 
+        }
     } catch (error) {
         console.error('Error:', error);
     }
@@ -335,7 +335,7 @@ export default async function decorate(block) {
         const changePwdButton = block.querySelector('#change-pwd');
         textInputs.forEach((input) => {
             input.addEventListener('keypress', (event) => {
-                if (event.key === "Enter") {
+                if (event.key === 'Enter') {
                     event.preventDefault();
                 } 
             });
