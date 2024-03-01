@@ -29,6 +29,7 @@ const {
     filterCta,
     createSearchAlert,
     noResults,
+    zipErrorMessage,
 } = placeholders;
 
 // console.log(placeholders);
@@ -775,18 +776,35 @@ export default async function decorate(block) {
     zipInput.name = 'zipPostal';
     zipInput.id = 'zip';
     zipInput.pattern = '[0-9]{5}';
+    zipInput.title = zipErrorMessage;
     zipInput.required = true;
     zipInput.placeholder = zipPlaceholder;
     zipInput.addEventListener('blur', () => {
         const isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipInput.value);
         if (isValidZip) {
+        zipInput.classList.remove('error');
+        errorSpan.classList.remove('active');
+        zipInput.setAttribute('aria-describedby', '');
+        zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
                 buildResultsContainer(data);
             });
+        } else {
+        zipInput.classList.add('error');
+        errorSpan.classList.add('active');
+        zipInput.setAttribute('aria-describedby', 'zip-error');
+        zipInput.ariaInvalid = 'true';
         }
     });
+
+    const errorSpan = document.createElement('span');
+    errorSpan.className = 'error-message';
+    errorSpan.id = 'zip-error';
+    errorSpan.textContent = zipErrorMessage;
+
     zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
+    zipContainer.append(errorSpan);
 
     const clearButton = document.createElement('button');
     clearButton.setAttribute('id', 'clearButton');
