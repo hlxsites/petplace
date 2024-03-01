@@ -178,7 +178,7 @@ async function createSearchForm(block) {
   });
 
   form.addEventListener('submit', (ev) => {
-    const selectedBreed = encodeURIComponent(breedSelect.value.toLowerCase());
+    const selectedBreed = encodeURIComponent(breedSelect.value);
     const zipCode = zipInput.value;
     let selectedAnimalType = null;
 
@@ -201,7 +201,7 @@ async function createSearchForm(block) {
           selectedAnimalType = encodeURIComponent(
             radioContainer
               .querySelector('input[name="filterAnimalType"]:checked')
-              .value.toLowerCase(),
+              .value,
           );
       } else {
         selectedAnimalType = '';
@@ -219,7 +219,6 @@ async function createSearchForm(block) {
       }
 
       const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
-
       window.location.href = searchUrl;
     }
   });
