@@ -1,6 +1,6 @@
 import { createDefaultMsalInstance, createMsalInstance } from './msal-instance.js';
 import { b2cPolicies } from './policies.js';
-import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalChangePwdConfig } from './default-msal-config.js';
+import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';   
 
