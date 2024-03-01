@@ -5,6 +5,7 @@ import endPoints from '../../variables/endpoints.js';
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
+import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 
 const {
   petTypeLabel,
@@ -17,54 +18,6 @@ const {
   searchButtonText,
   adoptablePetsTitle,
 } = placeholders;
-
-function createPetCard({
-  Name,
-  Gender,
-  Breed,
-  City,
-  State,
-  'Animal type': animalType,
-  animalId,
-  clientId,
-  coverImagePath,
-}) {
-  const petCard = document.createElement('div');
-  petCard.className = 'pet-card';
-  const img = document.createElement('object');
-  img.data = coverImagePath;
-  img.type = 'image/jpg';
-  img.className = 'pet-card-image';
-  const fallback = document.createElement('img');
-  fallback.src = getMetadata('image-fallback');
-  img.append(fallback);
-  const cardBody = document.createElement('div');
-  cardBody.className = 'pet-card-body';
-  cardBody.innerHTML = `
-      <h3 class='pet-card-name'><a href='/pet-adoption/${animalType.toLowerCase()}s/${animalId}/${clientId}' class='stretched-link'>${Name?.replace(
-    / *\([^)]*\) */g,
-    '',
-  )}</a></h3>
-      <div class='pet-card-info'>
-          <span class='pet-card-gender'>${Gender}</span>
-          <span class='pet-card-dot'></span>
-          <span class='pet-card-breed'>${Breed}</span>
-      </div>
-      <div class='pet-card-address'>
-          ${City}, ${State}
-      </div>
-  `;
-  const buttonContainer = document.createElement('div');
-  buttonContainer.className = 'pet-card-button-conainer';
-  buttonContainer.innerHTML = `
-  <button class='pet-card-favorite'>
-      <span class='pet-card-favorite-icon'></span>
-      <span class='sr-only'>Favorite</span>
-  </button>
-  `;
-  petCard.append(img, cardBody, buttonContainer);
-  return petCard;
-}
 
 function getRandomItems(array, count) {
   const shuffled = array.sort(() => 0.5 - Math.random());
@@ -90,6 +43,7 @@ async function createSearchForm(block) {
   form.setAttribute('role', 'search');
   form.className = 'adopt-search-box-wrapper';
   form.action = ' ';
+  form.noValidate = true;
 
   const radioContainer = document.createElement('fieldset');
   if (petTypeValues) {
@@ -170,12 +124,14 @@ async function createSearchForm(block) {
 
   const zipContainer = document.createElement('div');
   const zipLabelElem = document.createElement('label');
-  zipLabelElem.setAttribute('for', 'zipCode');
+  zipLabelElem.setAttribute('for', 'zip-code');
   zipLabelElem.innerText = zipLabel;
 
   const zipInput = document.createElement('input');
   zipInput.setAttribute('aria-label', zipPlaceholder);
-  zipInput.className = 'zipCode';
+  zipInput.setAttribute('aria-describedby', '');
+  zipInput.ariaInvalid = 'false';
+  zipInput.className = 'zip-code';
   zipInput.type = 'text';
   zipInput.name = 'zipPostal';
   zipInput.id = 'zip';
@@ -185,6 +141,12 @@ async function createSearchForm(block) {
   zipInput.placeholder = zipPlaceholder;
   zipContainer.append(zipLabelElem);
   zipContainer.append(zipInput);
+
+  const errorSpan = document.createElement('span');
+  errorSpan.className = 'error-message';
+  errorSpan.id = 'zip-error';
+  errorSpan.textContent = zipErrorMessage;
+  zipContainer.append(errorSpan);
 
   const clearButton = document.createElement('button');
   clearButton.setAttribute('id', 'clear-button');
@@ -216,39 +178,50 @@ async function createSearchForm(block) {
   });
 
   form.addEventListener('submit', (ev) => {
-    ev.preventDefault();
-    // should detect if the user is on the /pet-adoption/search page before showing results
-    // if on /pet-adoption/ the form should direct to /pet-adoption/search?[queryparameters]
-    // zipPostal, filterBreed, filterAnimalType
     const selectedBreed = encodeURIComponent(breedSelect.value.toLowerCase());
     const zipCode = zipInput.value;
     let selectedAnimalType = null;
 
-    if (radioContainer
-      .querySelector('input[name="filterAnimalType"]:checked')) {
-        selectedAnimalType = encodeURIComponent(
-          radioContainer
-            .querySelector('input[name="filterAnimalType"]:checked')
-            .value.toLowerCase(),
-        );
+    ev.preventDefault();
+
+    if (!zipInput.checkValidity()) {
+      zipInput.classList.add('error');
+      errorSpan.classList.add('active');
+      zipInput.setAttribute('aria-describedby', 'zip-error');
+      zipInput.ariaInvalid = 'true';
+      zipInput.focus();
     } else {
-      selectedAnimalType = '';
+      zipInput.classList.remove('error');
+      errorSpan.classList.remove('active');
+      zipInput.setAttribute('aria-describedby', '');
+      zipInput.ariaInvalid = 'false';
+
+      if (radioContainer
+        .querySelector('input[name="filterAnimalType"]:checked')) {
+          selectedAnimalType = encodeURIComponent(
+            radioContainer
+              .querySelector('input[name="filterAnimalType"]:checked')
+              .value.toLowerCase(),
+          );
+      } else {
+        selectedAnimalType = '';
+      }
+
+      const searchParams = new URLSearchParams();
+      searchParams.set('zipPostal', zipCode);
+
+      if (selectedAnimalType !== '') {
+        searchParams.set('filterAnimalType', selectedAnimalType);
+      }
+
+      if (selectedBreed !== '') {
+        searchParams.set('filterBreed', selectedBreed);
+      }
+
+      const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
+
+      window.location.href = searchUrl;
     }
-
-    const searchParams = new URLSearchParams();
-    searchParams.set('zipPostal', zipCode);
-
-    if (selectedAnimalType !== '') {
-      searchParams.set('filterAnimalType', selectedAnimalType);
-    }
-
-    if (selectedBreed !== '') {
-      searchParams.set('filterBreed', selectedBreed);
-    }
-
-    const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
-
-    window.location.href = searchUrl;
   });
 
   zipContainer.append(clearButton);
@@ -294,7 +267,7 @@ async function createAdoptablePetsContent(petArr) {
     const gallery = document.createElement('div');
     gallery.className = 'adoptable-pets-gallery';
     petArr.forEach((pet) => {
-      gallery.append(createPetCard(pet));
+      gallery.append(buildPetCard(pet));
     });
     galleryWrapper.appendChild(gallery);
     adoptablePetsContainer.append(galleryWrapper);

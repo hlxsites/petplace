@@ -1,6 +1,8 @@
 /* eslint-disable indent */
-import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
+import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
@@ -148,7 +150,6 @@ async function callAnimalList() {
             },
             animalFilters: {
                 startIndex: 0,
-                numResults: 100,
                 filterAnimalType: animalType,
                 filterBreed: breeds,
                 filterGender: gender,
@@ -174,7 +175,7 @@ async function callAnimalList() {
 
 async function callBreedList(petType) {
     const breedSelect = document.getElementById('breed');
-    if (breedSelect && petType === 'other') {
+    if (breedSelect && (petType === 'other' || petType === 'null')) {
         breedSelect.setAttribute('disabled', '');
     } else {
         if (breedSelect) {
@@ -217,6 +218,29 @@ function numPages() {
     return Math.ceil(animalArray.length / recordsPerPage);
 }
 
+function getFavorites(response) {
+    fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${response}`,
+        }
+    }).then(response => {
+        //console.log('Success:', response.status);
+        return response.json();
+    }).then((data) => {
+        // favorite Pet in the UI
+        data.forEach((favorite) => {
+            const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
+            favoriteButton?.classList.add('favorited');
+            favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 function buildResultsList(animalList) {
     const tempResultsBlock = document.getElementById('results-block');
     if (tempResultsBlock.offsetHeight !== 0) {
@@ -224,34 +248,20 @@ function buildResultsList(animalList) {
     }
     tempResultsBlock.innerHTML = '';
     animalList.forEach((animal) => {
-        const div = document.createElement('div');
-        div.className = 'animal';
-        const img = document.createElement('object');
-        img.data = animal.coverImagePath;
-        img.type = 'image/jpg';
-        const fallback = document.createElement('img');
-        fallback.src = getMetadata('image-fallback');
-        img.append(fallback);
-        const anchor = document.createElement('a');
-        anchor.href = `/pet-adoption/${animal.filterAnimalType.toLowerCase()}s/${animal.animalId}/${animal.clientId}`;
-        anchor.append(img);
-        const likeButton = document.createElement('button');
-        likeButton.innerHTML = '<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.3 4.55114C22.8314 3.63452 22.154 2.84083 21.3223 2.2341C20.4906 1.62736 19.528 1.22455 18.5121 1.05815C17.4962 0.891748 16.4554 0.966411 15.4736 1.27612C14.4918 1.58583 13.5966 2.12191 12.86 2.84114L12 3.62114L11.17 2.86114C10.4344 2.13135 9.53545 1.58739 8.54766 1.27436C7.55987 0.961323 6.51169 0.888233 5.49002 1.06114C4.47076 1.21761 3.50388 1.61617 2.67044 2.22341C1.837 2.83066 1.16131 3.62888 0.700017 4.55114C0.0805959 5.76129 -0.13608 7.13766 0.0815777 8.47958C0.299236 9.82151 0.939848 11.0588 1.91002 12.0111L11.28 21.6711C11.3733 21.7679 11.4851 21.8449 11.6088 21.8975C11.7326 21.9501 11.8656 21.9772 12 21.9772C12.1344 21.9772 12.2675 21.9501 12.3912 21.8975C12.5149 21.8449 12.6267 21.7679 12.72 21.6711L22.08 12.0311C23.0535 11.0768 23.6968 9.8366 23.9163 8.49115C24.1357 7.1457 23.9198 5.76533 23.3 4.55114ZM20.66 10.6211L12.36 19.1711C12.2634 19.2651 12.1347 19.3187 12 19.3211C11.8657 19.3168 11.7377 19.2634 11.64 19.1711L3.33002 10.6111C2.66352 9.95404 2.22228 9.10271 2.06957 8.1793C1.91687 7.25589 2.06055 6.30784 2.48002 5.47114C2.80009 4.82822 3.26939 4.27124 3.84871 3.84675C4.42803 3.42227 5.10053 3.14261 5.81002 3.03114C6.53132 2.91042 7.27107 2.96456 7.96711 3.18903C8.66315 3.41351 9.29515 3.80175 9.81002 4.32114L11.34 5.71114C11.5238 5.87698 11.7625 5.96878 12.01 5.96878C12.2575 5.96878 12.4963 5.87698 12.68 5.71114L14.24 4.29114C14.7573 3.77638 15.3905 3.39328 16.0866 3.17402C16.7826 2.95477 17.5211 2.90577 18.24 3.03114C18.9406 3.15001 19.603 3.43308 20.1731 3.85719C20.7432 4.28129 21.2048 4.83436 21.52 5.47114C21.9391 6.31036 22.0815 7.26072 21.927 8.18592C21.7725 9.11112 21.329 9.96362 20.66 10.6211Z" fill="#464646"/></svg>';
-        likeButton.className = 'favorite';
-        const animalName = document.createElement('h3');
-        animalName.innerText = animal.Name?.replace(/ *\([^)]*\) */g, '');
-        const p = document.createElement('p');
-        p.innerText = `${animal.Gender} • ${animal.Breed}`;
-        const animalLocation = document.createElement('p');
-        animalLocation.className = 'location';
-        animalLocation.innerHTML = `${JSON.stringify(animal.City) === 'null' ? '' : animal.City} ${JSON.stringify(animal.State) === 'null' ? '' : ', ' + animal.State}`;
-        div.append(anchor);
-        div.append(animalName);
-        div.append(p);
-        div.append(animalLocation);
-        div.append(likeButton);
+        const div = buildPetCard(animal);
         tempResultsBlock.append(div);
     });
+    // check if user is logged in
+    if (isLoggedIn()) {
+        // if logged in set pet as favorite
+        acquireToken()
+        .then(response => {
+            getFavorites(response);            
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });;
+    }
     setTimeout(() => {
         tempResultsBlock.style.removeProperty('height');
     }, '400');
@@ -626,12 +636,17 @@ window.onload = callBreedList('null').then((data) => {
                 petType.selectedIndex = i;
             }
         }
+
         const petBreed = document.getElementById('breed');
         const petBreeds = petBreed.options;
         for (let i = 0; i < petBreeds.length; i += 1) {
             if (petBreeds[i].value === params.get('filterBreed')) {
                 petBreed.selectedIndex = i;
             }
+        }
+
+        if (petType?.value === 'other' || petType?.value === 'null') {
+            petBreed.setAttribute('disabled', '');
         }
         callAnimalList().then((response) => {
             buildResultsContainer(response);
