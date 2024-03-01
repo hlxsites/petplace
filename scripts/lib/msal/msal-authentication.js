@@ -67,7 +67,7 @@ export function acquireToken(customCallback) {
                 })
                 .catch(function (error) {
                     //Acquire token silent failure, and send an interactive request
-                    if (error instanceof InteractionRequiredAuthError) {
+                    if (error instanceof msal.InteractionRequiredAuthError) {
                         if (isMobile()) {
                             msalInstance
                                 .acquireTokenRedirect(tokenRequest)
