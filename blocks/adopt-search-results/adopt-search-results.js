@@ -647,7 +647,7 @@ window.onload = callBreedList('null').then((data) => {
             }
         }
 
-        if (petType?.value === 'other' || petType?.value === 'null') {
+        if (petType?.value === 'Other' || petType?.value === 'null') {
             petBreed.setAttribute('disabled', '');
         }
         callAnimalList().then((response) => {
