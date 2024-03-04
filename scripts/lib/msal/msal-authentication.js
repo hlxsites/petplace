@@ -128,8 +128,18 @@ export function acquireToken(featureName) {
 
 // function to check if user is logged in or not
 export function isLoggedIn() {
-    const accounts = msalInstance.getAllAccounts();
-    return accounts.length > 0;
+    return new Promise((resolve, reject) => {
+        const accounts = msalInstance.getAllAccounts();
+        msalInstance.acquireTokenSilent({ account: accounts[0], scopes: tokenRequest.scopes })
+            .then(function (accessTokenResponse) {
+                // User is logged in with a valid session
+                resolve(true);
+            })
+            .catch(function (error) {
+                // Token has expired or user interaction is required
+                resolve(false);
+            });
+    });
 }
 
 export function changePassword(callback, featureName) {

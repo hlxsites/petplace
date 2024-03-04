@@ -467,15 +467,19 @@ export default async function decorate(block) {
         favoriteCta.addEventListener('click', (e) => {setFavorite(e, petData)});
 
         // check if user is logged in
-        if (isLoggedIn()) {
-            // if logged in set pet as favorite
-            acquireToken()
-            .then(response => {
-                getFavorites(response);            
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });;
-        }
+        isLoggedIn().then(isLoggedIn => {
+            if (isLoggedIn) {
+                // if logged in set pet as favorite
+                acquireToken()
+                .then(response => {
+                    getFavorites(response);            
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });;
+            } else {
+              // not logged in or token is expired without ability to silently refresh its validity
+            }
+          });
     }
 }

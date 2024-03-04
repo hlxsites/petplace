@@ -254,17 +254,21 @@ function buildResultsList(animalList) {
         tempResultsBlock.append(div);
     });
     // check if user is logged in
-    if (isLoggedIn()) {
-        console.log(isLoggedIn())
-        // if logged in set pet as favorite
-        acquireToken()
-        .then(response => {
-            getFavorites(response);            
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });;
-    }
+    isLoggedIn().then(isLoggedIn => {
+        console.log(isLoggedIn)
+        if (isLoggedIn) {
+            // if logged in set pet as favorite
+            acquireToken()
+            .then(response => {
+                getFavorites(response);            
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });;
+        } else {
+          // not logged in or token is expired without ability to silently refresh its validity
+        }
+      });
     setTimeout(() => {
         tempResultsBlock.style.removeProperty('height');
     }, '400');
