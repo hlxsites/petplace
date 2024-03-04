@@ -1,5 +1,6 @@
 import { createDefaultMsalInstance, createMsalInstance } from './msal-instance.js';
 import { b2cPolicies } from './policies.js';
+import { initRedirectHandlers } from './login-redirect-handlers.js';
 import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';   
@@ -7,18 +8,24 @@ import endPoints from '../../../variables/endpoints.js';
 const msalInstance = createDefaultMsalInstance();
 const msalChangePwdInstance = createMsalInstance(msalChangePwdConfig);
 
-// register a custom callback function (e.g. handleResponse()) once the user has successfully logged in and was redirected back to the site
-msalInstance.initialize().then(() => {
-    msalInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
-        console.log(error);
+if (document.querySelector('.account')) {
+    msalChangePwdInstance.initialize().then(() => {
+        msalChangePwdInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
+            console.log(error);
+        });
     });
-});
-
-msalChangePwdInstance.initialize().then(() => {
-    msalChangePwdInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
-        console.log(error);
+} else {
+    // register a custom callback function (e.g. handleResponse()) once the user has successfully logged in and was redirected back to the site)
+    msalInstance.initialize().then(() => {
+        msalInstance.handleRedirectPromise().then(response => {
+            handleResponse(response, response => initRedirectHandlers(response), localStorage.getItem('featureName'));
+            localStorage.removeItem('featureName');
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     });
-});
+}
 
 /**
  * 
@@ -61,6 +68,11 @@ export function logout() {
  * @returns a Promise that resolves with the access token
  */
 export function acquireToken(featureName) {
+    if (featureName) {
+        // save in localStorage for loginRedirect() scenarios
+        localStorage.setItem('featureName', featureName);
+    }
+    
     const accounts = msalInstance.getAllAccounts();
 
     return new Promise((resolve, reject) => {
@@ -186,6 +198,10 @@ function selectAccount() {
 selectAccount();
 
 function handleResponse(response, customCallback, featureName = 'PetPlace (Generic)') {
+    if (featureName === null) {
+        featureName = 'PetPlace (Generic)';
+    }
+
     /**
      * To see the full list of response object properties, visit:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#response
@@ -203,14 +219,20 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                 },
                 body: featureName ? "\"" + featureName + "\"" : null
             })
+            .then(() => {
+                // invoke custom callback if one was provided
+                if (customCallback) {
+                    customCallback(response);
+                }
+            })
             .catch((error) => {
                 console.error('/adopt/api/User Error:', error);
             });
-        }
-
-        // invoke custom callback if one was provided
-        if (customCallback) {
-          customCallback(response);
+        } else {
+            // invoke custom callback if one was provided
+            if (customCallback) {
+                customCallback(response);
+            }
         }
     } else {
         selectAccount();
