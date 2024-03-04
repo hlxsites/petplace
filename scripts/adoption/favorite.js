@@ -1,56 +1,67 @@
 import { acquireToken, isLoggedIn } from '../lib/msal/msal-authentication.js';
 import endPoints from '../../variables/endpoints.js';
 
+export const STORAGE_KEY_SAVE_FAVORITE = 'saveFavorite';
+
 // set a favorite pet for user
 export function setFavorite(e, animal) {
     e.preventDefault();
     const isFavorite = document.getElementById(animal.animalId).classList.contains('favorited');
-    function setAsFavorite(token) {
-        // Send POST request to create user in the database
-        if (!isFavorite){
-            fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    "AnimalReferenceNumber": animal.animalId,
-                    "ClientId": animal.clientId
-                })
-            })
-            .then(response => {
-                //console.log('Success:', response.status);
-                // favorite Pet in the UI
-                const favoriteButton = document.getElementById(animal.animalId);
-                favoriteButton.classList.add('favorited');
-                favoriteButton?.setAttribute('data-favorite-id', response);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        } else {
-            const favoriteId = document.getElementById(animal.animalId).dataset?.favoriteId;
-            fetch(`${endPoints.apiUrl}/adopt/api/Favorite/${favoriteId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-            .then(response => {
-                //console.log('Success:', response.status);
-                // favorite Pet in the UI
-                const favoriteButton = document.getElementById(animal.animalId);
-                favoriteButton.classList.remove('favorited');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-    }
+
+    // save in localStorage for loginRedirect() scenarios
+    localStorage.setItem(STORAGE_KEY_SAVE_FAVORITE, JSON.stringify({
+        "animalId": animal.animalId,
+        "clientId": animal.clientId
+    }));
 
     acquireToken("Favorite").then(token => {
-        setAsFavorite(token);
+        if (!isFavorite) {
+            saveFavorite(token, animal);
+        } else {
+            const favoriteId = document.getElementById(animal.animalId).dataset?.favoriteId;
+            deleteFavorite(token, animal, favoriteId);
+        }
+    });
+}
+
+export function saveFavorite(token, animal) {
+    fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            "AnimalReferenceNumber": animal.animalId,
+            "ClientId": animal.clientId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        localStorage.removeItem(STORAGE_KEY_SAVE_FAVORITE);
+
+        const favoriteButton = document.getElementById(animal.animalId);
+        favoriteButton?.classList.add('favorited');
+        favoriteButton?.setAttribute('data-favorite-id', data);
+    })
+    .catch((error) => {
+        console.error('Error saving favorite', error);
+    });
+}
+
+export function deleteFavorite(token, animal, favoriteId) {
+    fetch(`${endPoints.apiUrl}/adopt/api/Favorite/${favoriteId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    })
+    .then(response => {
+        const favoriteButton = document.getElementById(animal.animalId);
+        favoriteButton?.classList.remove('favorited');
+    })
+    .catch((error) => {
+        console.error('Error deleting favorite', error);
     });
 }
