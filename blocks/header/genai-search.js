@@ -3,24 +3,28 @@ const GENAI_SEARCH_WARNING = "Discover PetPlace is powered by experimental Gener
 const GENAI_TOOLTIP = "Try our AI powered discover tool and get all your questions answered";
 
 const sampleQuestions = [
-  "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
-  "Why Dog Urine Odor Comes Back and How to Stop It",
-  "When Is a Dog Considered an Adult?",
-  "Can an Alaskan Malamute or Siberian Husky Puppy Play Nice with the Family Cat?",
-  "Do Clavamox Antibiotic Drops Expire?",
-  "Is It Dangerous for Dogs to Drink Pool Water?",
-  "Can an Outdoor Cat Become an Indoor Cat?",
-  "Cat Stress After Moving",
-  "Is Eating Mice and Rabbits Healthy for My Cat?",
-  "What Happens When Cat Food Expires?",
-  "Does Your Puppy Need a Bordetella Vaccine?",
-  "How Much Should I Feed My Puppy?",
-  "Tips on Housetraining and Dealing with Accidents",
-  "Should a Pet Be Off Antihistamines or Steroid Before Allergy Testing?",
-  "My cat was recently spayed but the male cats still want to mate with her",
-  "Should You Board Your Cat or Get a Sitter?",
-  "Is Your Dog Smarter Than a 5th Grader?",
-  "How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?"
+  // "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
+  // "Why Dog Urine Odor Comes Back and How to Stop It",
+  // "When Is a Dog Considered an Adult?",
+  // "Can an Alaskan Malamute or Siberian Husky Puppy Play Nice with the Family Cat?",
+  // "Do Clavamox Antibiotic Drops Expire?",
+  // "Is It Dangerous for Dogs to Drink Pool Water?",
+  // "Can an Outdoor Cat Become an Indoor Cat?",
+  // "Cat Stress After Moving",
+  // "Is Eating Mice and Rabbits Healthy for My Cat?",
+  // "What Happens When Cat Food Expires?",
+  // "Does Your Puppy Need a Bordetella Vaccine?",
+  // "How Much Should I Feed My Puppy?",
+  // "Tips on Housetraining and Dealing with Accidents",
+  // "Should a Pet Be Off Antihistamines or Steroid Before Allergy Testing?",
+  // "My cat was recently spayed but the male cats still want to mate with her",
+  // "Should You Board Your Cat or Get a Sitter?",
+  // "Is Your Dog Smarter Than a 5th Grader?",
+  // "How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?"
+  "What are the benefits of pet insurance?",
+  "Where is the best place to adopt a pet?",
+  "Why should i microchip my dog?",
+  "What are the most popular pet names?"
 ]
 
 const capabilities = [
@@ -551,13 +555,13 @@ const createSearchSummary = () => {
   const summaryColumns = document.createElement("div");
   summaryColumns.className = "summary-columns";
 
-  const summaryColumn1 = createSummaryColumn("examples", "Examples", getRandomQuestions(sampleQuestions), "button");
-  const summaryColumn2 = createSummaryColumn("capabilities", "Capabilities", capabilities, "list");
-  const summaryColumn3 = createSummaryColumn("limitations", "Limitations", limitations, "list");
+  const summaryColumn1 = createSummaryColumn("examples", "Sample Questions", sampleQuestions, "button");
+  // const summaryColumn2 = createSummaryColumn("capabilities", "Capabilities", capabilities, "list");
+  // const summaryColumn3 = createSummaryColumn("limitations", "Limitations", limitations, "list");
 
   summaryColumns.appendChild(summaryColumn1);
-  summaryColumns.appendChild(summaryColumn2);
-  summaryColumns.appendChild(summaryColumn3);
+  // summaryColumns.appendChild(summaryColumn2);
+  // summaryColumns.appendChild(summaryColumn3);
 
   return summaryColumns;
 }
@@ -573,7 +577,9 @@ const fetchResults = async (index, query) => {
   }
 
   // const apiURLBase = "https://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net"; // Internal Endpoint
-  const apiURLBase = "https://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net"; // External Endpoint
+  // const apiURLBase = "https://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net"; // External Endpoint
+  const apiURLBase = "https://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io"; // External Endpoint
+  
   const apiURL = apiURLBase + `/api/index/${index}/search`;
   const answer = await fetch(`${apiURL}?q=${query}`).then((response) => {
     if (response.ok) {
