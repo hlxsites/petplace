@@ -16,7 +16,7 @@
   }
 }
 .section.genai-search-container:not(.centered) {
-  background-color: var(--background-color-light);
+  /* background-color: var(--background-color-light); */
 }
 .section.genai-search-container:not(.centered) .default-content-wrapper {
   display: flex;
