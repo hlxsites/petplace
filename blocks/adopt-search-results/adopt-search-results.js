@@ -255,6 +255,7 @@ function buildResultsList(animalList) {
     });
     // check if user is logged in
     if (isLoggedIn()) {
+        console.log(isLoggedIn())
         // if logged in set pet as favorite
         acquireToken()
         .then(response => {
@@ -698,11 +699,24 @@ export default async function decorate(block) {
     form.action = ' ';
     form.addEventListener('submit', (ev) => {
         ev.preventDefault();
-        // should detect if the user is on the /adopt/search page before showing results
-        // if on /adopt/ the form should direct to /adopt/search?[queryparameters]
-        callAnimalList().then((data) => {
-            buildResultsContainer(data);
-        });
+        
+        const zipInput = document.getElementById('zip');
+        const errorSpan = document.getElementById('zip-error');
+        const isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipInput.value);
+        if (isValidZip) {
+        zipInput.classList.remove('error');
+        errorSpan.classList.remove('active');
+        zipInput.setAttribute('aria-describedby', '');
+        zipInput.ariaInvalid = 'false';
+            callAnimalList().then((data) => {
+                buildResultsContainer(data);
+            });
+        } else {
+        zipInput.classList.add('error');
+        errorSpan.classList.add('active');
+        zipInput.setAttribute('aria-describedby', 'zip-error');
+        zipInput.ariaInvalid = 'true';
+        }
     });
 
     // Building Pet Type select element
@@ -778,7 +792,6 @@ export default async function decorate(block) {
     zipInput.id = 'zip';
     zipInput.pattern = '[0-9]{5}';
     zipInput.title = zipErrorMessage;
-    zipInput.required = true;
     zipInput.placeholder = zipPlaceholder;
     zipInput.addEventListener('blur', () => {
         const isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipInput.value);
