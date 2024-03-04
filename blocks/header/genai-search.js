@@ -72,10 +72,13 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   // const socket = new WebSocket('wss://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net/api/query');
 
   // Adobe External Endpoint
-  const socket = new WebSocket("wss://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query");
+  // const socket = new WebSocket("wss://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query");
   
   // BambooHR Endpoint
   // const socket = new WebSocket('wss://spire-bhr-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query');
+
+  //new Adobe Endpoint
+  const socket = new WebSocket("wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query");
 
   socket.addEventListener('open', function(event) {
     console.log('WebSocket connection established');

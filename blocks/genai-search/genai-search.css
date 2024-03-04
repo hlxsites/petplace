@@ -385,7 +385,7 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button{
 
 .genai-search-container .search-card {
   margin-bottom: 20px;
-  background-color: white;
+  /* background-color: white; */
   display: grid;
   grid-template-columns: 60% 40%;
   grid-template-rows: auto;
