@@ -146,7 +146,7 @@ const adsDefineSlot = async (adArgs, catVal) => {
 // google tag for adsense
 export const adsenseFunc = async (pageType, catVal) => {
   const boolArticle = pageType === 'article';
-  const boolMiddle = pageType === 'home' || boolArticle;
+  const boolMiddle = pageType !== 'category' || pageType !== 'tags';
 
   if (catVal === 'create') {
     if (boolArticle) adsDivCreator(`${pageType}_side`);
@@ -157,14 +157,11 @@ export const adsenseFunc = async (pageType, catVal) => {
     return;
   }
 
-  const adsArr = [
-    `${pageType}_top`,
-    `${pageType}_bottom`,
-    `${pageType}_anchor`,
-  ];
+  const adPage = pageType === 'breeds' ? 'breed' : pageType;
+  const adsArr = [`${adPage}_top`, `${adPage}_bottom`, `${adPage}_anchor`];
 
-  if (boolArticle) adsArr.unshift(`${pageType}_side`);
-  if (boolMiddle) adsArr.unshift(`${pageType}_middle`);
+  if (boolArticle) adsArr.unshift(`${adPage}_side`);
+  if (boolMiddle) adsArr.unshift(`${adPage}_middle`);
 
   adsDefineSlot(adsArr, catVal);
 };
