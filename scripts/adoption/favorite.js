@@ -44,13 +44,36 @@ export function saveFavorite(token, animal) {
         favoriteButton?.classList.add('favorited');
         favoriteButton?.setAttribute('data-favorite-id', data);
         
+
+        // display rest of favorites on the page
+        fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        }).then(response => {
+            //console.log('Success:', response.status);
+            return response.json();
+        }).then((data) => {
+            // favorite Pet in the UI
+            data.forEach((favorite) => {
+                const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
+                favoriteButton?.classList.add('favorited');
+                favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
+            })
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
         return data;
     })
+    
     .catch((error) => {
         console.error('Error saving favorite', error);
         throw error;
     });
-}
 }
 
 export function deleteFavorite(token, animal, favoriteId) {
