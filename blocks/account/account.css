@@ -393,7 +393,7 @@
     url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
 }
 
-/* error messagae */ 
+/* error message */ 
 .form-control--text .error-message {
     display: none;
     margin-top: 12px;
@@ -454,6 +454,144 @@
     .account .account-select-container {
         display: none;
     }
+}
 
-    
+/* favorites details */
+.account-tabpanel--favorites .no-fav-pets {
+    text-align: center;
+}
+
+.account-tabpanel--favorites .new-search-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 52px;
+}
+
+.account-tabpanel--favorites .account-button--new-search {
+    display: flex;
+    align-items: center;
+}
+
+.account-tabpanel--favorites .account-button--new-search svg {
+    margin-right: 16px;
+}
+
+.account-tabpanel--favorites .fav-pet-card {
+    margin-bottom: 16px;
+    border: 1px solid var(--border-base-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    color: var(--color-black);
+}
+
+.account-tabpanel--favorites .fav-pet-card:last-of-type {
+    margin-bottom: 0;
+}
+
+.account-tabpanel--favorites .fav-pet-card a {
+    color: var(--color-black);
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-info {
+    padding: 24px;
+    width: 100%;
+    flex: 1;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-img img {
+    object-fit: cover;
+    width: 343px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-name {
+    font-family: Raleway,sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 26px;
+    margin-bottom: 8px;
+    display: flex;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-details {
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-separator {
+    display: inline-block;
+    margin: 0 12px;
+    width: 4px;
+    height: 4px;
+    border-radius: 100%;
+    background-color: var(--color-black);
+}
+
+.account-tabpanel--favorites .fav-pet-card .remove-fav {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    height: 24px;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-info-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.account-tabpanel--favorites .fav-pet-card.no-image .fp-img img {
+    object-fit: contain;
+}
+
+
+.account-tabpanel--favorites .fav-pet-card .unavailable-tag,
+.account-tabpanel--favorites .fav-pet-card.unavailable .fp-img {
+    display: none;
+}
+
+.account-tabpanel--favorites .fav-pet-card.unavailable .fp-url {
+    pointer-events: none;
+}
+
+.account-tabpanel--favorites .fav-pet-card.unavailable .unavailable-tag {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 40;
+    color: #C12010;
+    background-color: #FFF1F0;
+    padding: 4px 8px;
+    border-radius: 16px;
+    margin-left: 16px;
+}
+
+.account-tabpanel--favorites .view-more-btn {
+    display: block;
+    margin: 24px auto 0;
+    font-size: 18px;
+    line-height: 22px;
+    height: 48px;
+}
+
+@media (min-width: 768px) {
+    .account-tabpanel--favorites .fav-pet-card {
+        height: 183px;
+    }
+
+    .account-tabpanel--favorites .fav-pet-card {
+        flex-direction: row;
+    }
+
+    .account-tabpanel--favorites .fav-pet-card .fp-img img {
+        width: 257px;
+    }
 }
