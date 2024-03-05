@@ -676,7 +676,7 @@ window.onload = callBreedList('null').then((data) => {
             }
             const ageRadios = document.querySelectorAll('input[name="age"]');
             for (let i = 0; i < ageRadios.length; i += 1) {
-                const ageArray = params.get('filterAge').split(',');
+                const ageArray = params.get('filterAge')?.split(',');
                 ageArray?.forEach((age) => {
                     if (ageRadios[i].value === age) {
                         ageRadios[i].checked = true;
@@ -685,7 +685,7 @@ window.onload = callBreedList('null').then((data) => {
             }
             const sizeRadios = document.querySelectorAll('input[name="size"]');
             for (let i = 0; i < sizeRadios.length; i += 1) {
-                const sizeArray = params.get('filterSize').split(',');
+                const sizeArray = params.get('filterSize')?.split(',');
                 sizeArray?.forEach((size) => {
                     if (sizeRadios[i].value === size) {
                         sizeRadios[i].checked = true;
