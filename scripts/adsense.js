@@ -1,4 +1,4 @@
-import { mappingHelper, sizingArr } from './utils/helpers.js';
+import { isMiddleAd, mappingHelper, sizingArr } from './utils/helpers.js';
 
 window.googletag ||= { cmd: [] };
 
@@ -162,7 +162,7 @@ const adsDefineSlot = async (adArgs, catVal) => {
 // google tag for adsense
 export const adsenseFunc = async (pageType, catVal) => {
   const boolArticle = pageType === 'article';
-  const boolMiddle = pageType !== 'category' || pageType !== 'tags';
+  const boolMiddle = isMiddleAd(pageType);
 
   if (catVal === 'create') {
     if (boolArticle) adsDivCreator(`${pageType}_side`);
