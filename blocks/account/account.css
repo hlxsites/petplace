@@ -546,9 +546,14 @@
 
 .account-tabpanel--favorites .fav-pet-card.no-image .fp-img img {
     object-fit: contain;
+    background-color: #F7F7FA;
 }
 
+.account-tabpanel--favorites .hidden {
+    display: none !important;
+}
 
+.account-tabpanel--favorites .fav-pet-card.fp-hidden,
 .account-tabpanel--favorites .fav-pet-card .unavailable-tag,
 .account-tabpanel--favorites .fav-pet-card.unavailable .fp-img {
     display: none;
@@ -571,7 +576,7 @@
     margin-left: 16px;
 }
 
-.account-tabpanel--favorites .view-more-btn {
+.account-tabpanel--favorites #view-more-btn {
     display: block;
     margin: 24px auto 0;
     font-size: 18px;
@@ -581,7 +586,7 @@
 
 @media (min-width: 768px) {
     .account-tabpanel--favorites .fav-pet-card {
-        height: 183px;
+        min-height: 183px;
     }
 
     .account-tabpanel--favorites .fav-pet-card {
