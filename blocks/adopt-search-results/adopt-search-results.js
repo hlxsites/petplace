@@ -667,7 +667,7 @@ window.onload = callBreedList('null').then((data) => {
             }
             const genderRadios = document.querySelectorAll('input[name="gender"]');
             for (let i = 0; i < genderRadios.length; i += 1) {
-                const genderArray = params.get('filterGender').split(',');
+                const genderArray = params.get('filterGender')?.split(',');
                 genderArray?.forEach((gender) => {
                     if (genderRadios[i].value === gender) {
                         genderRadios[i].checked = true;
