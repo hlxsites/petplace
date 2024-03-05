@@ -15,8 +15,16 @@ const adsDivCreator = (adLoc) => {
   subDiv.appendChild(adDiv);
 
   const idLoc = document.createElement('div');
-  idLoc.id = adLoc;
+  if (adLoc.includes('breeds')) {
+    const locSplice = adLoc.split('_');
+    idLoc.id = `breed_${locSplice[1]}`;
+  } else idLoc.id = adLoc;
   adDiv.appendChild(idLoc);
+
+  if (adLoc === 'article_side') {
+    const aside = document.querySelector('.social-share-wrapper');
+    aside.after(mainDiv);
+  }
 
   if (adLoc.includes('top')) {
     if (adLoc.includes('home')) {
