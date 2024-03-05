@@ -37,9 +37,6 @@ function getFavorites(animalData) {
             arrFavList.forEach((favorited) => {
                 const favPetCard = {};
                 const fallBackImg = getMetadata('animal-card-image-fall-back');
-                // const petName = favorited.Animal.Name.toUpperCase()
-                //     + favorited.Animal.Name.slice(1);
-                console.log('favorited', favorited);
 
                 //Ask EVG to add AnimalType to the Animal object
                 // const petDetailPageUrl = `/pet-adoption/${favorited.AnimalType.toLowerCase()}s/${favorited.Animal.ReferenceNumber}/${favorited.Animal.ClientId}`;

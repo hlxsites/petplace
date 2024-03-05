@@ -496,14 +496,11 @@
 
 .account-tabpanel--favorites .fav-pet-card .fp-info {
     padding: 24px;
-    width: 100%;
-    flex: 1;
 }
 
 .account-tabpanel--favorites .fav-pet-card .fp-img img {
     object-fit: cover;
-    width: 343px;
-    height: 100%;
+    max-height: 229px;
     margin: 0 auto;
 }
 
@@ -591,7 +588,13 @@
         flex-direction: row;
     }
 
+    .account-tabpanel--favorites .fav-pet-card .fp-info {
+        width: 100%;
+        flex: 1;
+    }
+
     .account-tabpanel--favorites .fav-pet-card .fp-img img {
-        width: 257px;
+        width: 343px;
+        height: 100%;
     }
 }
