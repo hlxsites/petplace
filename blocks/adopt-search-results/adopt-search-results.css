@@ -138,7 +138,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
-    z-index: 9;
+    z-index: 20;
 }
 .adopt-search-results .overlay.show {
     display: block;
@@ -675,4 +675,79 @@ display: block;
 .adopt-search-results .results div.pet-card .pet-card-address {
     padding-left: 12px;
     padding-right: 12px;
+}
+
+.adopt-search-results .save-search-modal {
+    display: none;
+    z-index: 21;
+    padding: 20px;
+    border-radius: 15px;
+}
+.adopt-search-results .save-search-modal.show {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    width: 60%;
+    background-color: white;
+    color: black;
+}
+@media screen and (min-width: 1024px) {
+    .adopt-search-results .save-search-modal.show {
+        top: 250px;
+    }
+}
+.adopt-search-results .save-search-modal .success-icon {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.adopt-search-results .save-search-modal .modal-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36px;
+}
+.adopt-search-results .save-search-modal .modal-subtitle {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.adopt-search-results .save-search-modal .button-container {
+    display: block;
+    text-align: center;
+}
+.adopt-search-results .save-search-modal .manage-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid #222222;
+    color: #222222;
+    font-family: "Libre Franklin";
+    font-size: 18px;
+    font-weight: 600;
+    padding: 8px 10px;
+    text-overflow: unset;
+    overflow: visible;
+    margin-top: 30px;
+}
+@media screen and (min-width: 1024px) {
+    .adopt-search-results .save-search-modal .manage-button {
+        margin-right: 20px;
+    }
+}
+.adopt-search-results .save-search-modal .continue-button {
+    height: 43px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #C74D2F;
+}
+.adopt-search-results .save-search-modal .saved-filters {
+    text-align: center;
+    font-family: "Libre Franklin";
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 10px;
 }
