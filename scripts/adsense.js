@@ -32,6 +32,9 @@ const adsDivCreator = (adLoc) => {
         .querySelectorAll('.tiles-container')[0]
         .querySelectorAll('.default-content-wrapper')[0];
       adSection.before(mainDiv);
+    } else if (adLoc.includes('breeds')) {
+      const attrSection = document.querySelector('.blade-wrapper');
+      attrSection.before(mainDiv);
     } else {
       const hero = document.querySelector('.hero-wrapper');
       hero.after(mainDiv);
@@ -39,13 +42,13 @@ const adsDivCreator = (adLoc) => {
   }
 
   if (adLoc.includes('bottom')) {
-    const footer = document.querySelector('footer');
-    footer.before(mainDiv);
-  }
-
-  if (adLoc.includes('side')) {
-    const aside = document.querySelector('.social-share-wrapper');
-    aside.after(mainDiv);
+    if (adLoc.includes('breeds')) {
+      const refs = document.querySelector('.section.well');
+      refs.after(mainDiv);
+    } else {
+      const footer = document.querySelector('footer');
+      footer.before(mainDiv);
+    }
   }
 
   if (adLoc.includes('middle')) {
@@ -55,6 +58,11 @@ const adsDivCreator = (adLoc) => {
         .querySelectorAll('.default-content-wrapper')[1];
 
       adSection.before(mainDiv);
+    }
+
+    if (adLoc.includes('breeds')) {
+      const adSection = document.querySelector('.blade-container');
+      adSection.after(mainDiv);
     }
 
     if (adLoc.includes('article')) {
