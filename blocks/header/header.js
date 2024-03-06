@@ -9,6 +9,7 @@ import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 function isPopoverSupported() {
+  // eslint-disable-next-line no-prototype-builtins
   return HTMLElement.prototype.hasOwnProperty('popover');
 }
 
