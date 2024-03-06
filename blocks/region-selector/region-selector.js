@@ -1,4 +1,5 @@
 import { decorateButtons } from '../../scripts/lib-franklin.js';
+import { DETAULT_REGION } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const resp = await fetch(`${window.hlx.contentBasePath}/fragments/region-selector.plain.html`);
@@ -13,7 +14,7 @@ export default async function decorate(block) {
     if (region?.match(/\w{2}-\w{2}/)) {
       locale = `${region.substring(0, 2)}-${region.substring(3, 5).toUpperCase()}`;
     } else if (region === '') {
-      locale = 'en-US';
+      locale = DETAULT_REGION;
     }
     a.classList.add('button');
     a.setAttribute('href', path);

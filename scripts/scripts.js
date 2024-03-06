@@ -35,7 +35,8 @@ const AUDIENCES = {
   desktop: () => window.innerWidth >= 600,
 };
 
-const REGIONS = {
+export const DETAULT_REGION = 'en-US';
+export const REGIONS = {
   'en-GB': ['LCY', 'LHR', 'LON', 'MAN'],
 };
 
@@ -89,7 +90,7 @@ export async function getRegion() {
   const locations = resp.headers.get('X-Served-By').split(',');
   const pops = locations.map((l) => l.split('-').pop());
   return Object.entries(REGIONS)
-    .find(([, values]) => pops.some((loc) => values.includes(loc)))?.[0] || 'en-US';
+    .find(([, values]) => pops.some((loc) => values.includes(loc)))?.[0] || DETAULT_REGION;
 }
 
 /**
@@ -666,7 +667,7 @@ function setLocale() {
   const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
   const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
   document.documentElement.lang = locale;
-  window.hlx.contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
+  window.hlx.contentBasePath = locale === DETAULT_REGION ? '' : `/${locale.toLowerCase()}`;
 }
 
 function redirectToPreferredRegion() {

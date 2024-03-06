@@ -3,10 +3,14 @@ import {
   getMetadata,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
-import { getPlaceholder } from '../../scripts/scripts.js';
+import { DETAULT_REGION, REGIONS, getPlaceholder } from '../../scripts/scripts.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+
+function isPopoverSupported() {
+  return HTMLElement.prototype.hasOwnProperty('popover');
+}
 
 /**
  * decorates the header, mainly the nav
@@ -71,6 +75,43 @@ export default async function decorate(block) {
       searchForm.submit();
     }
   });
+
+  const regionSelector = document.createElement('button');
+  const regionMenu = document.createElement('div');
+  const regions = [DETAULT_REGION, ...Object.keys(REGIONS)];
+  regions
+    .filter((r) => r !== document.documentElement.lang)
+    .forEach((r) => {
+      const regionLink = document.createElement('a');
+      regionLink.setAttribute('hreflang', r);
+      regionLink.setAttribute('href', r === DETAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
+      regionLink.title = `Navigate to our ${r} website`;
+      switch (r) {
+        case 'en-GB':
+          regionLink.textContent = '🇬🇧';
+          break;
+        default:
+          regionLink.textContent = '🇺🇲';
+          break;
+      }
+      regionMenu.append(regionLink);
+    });
+  switch (document.documentElement.lang) {
+    case 'en-GB':
+      regionSelector.textContent = '🇬🇧';
+      break;
+    default:
+      regionSelector.textContent = '🇺🇲';
+      break;
+  }
+  if (isPopoverSupported()) {
+    regionMenu.popover = 'auto';
+    regionSelector.popoverTargetElement = regionMenu;
+    regionSelector.popoverTargetAction = 'toggle';
+  }
+  navTools.append(regionSelector);
+  navTools.append(regionMenu);
+
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);

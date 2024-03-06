@@ -92,7 +92,8 @@
 
 @media (min-width: 1200px) {
   .nav-tools {
-    display: unset;
+    display: flex;
+    align-items: center;
   }
 
   .nav-tools form {
@@ -149,7 +150,35 @@
     mask: url('../../icons/close.svg') no-repeat;
   }
 
-  .home-page .nav-tools {
+  .nav-tools button[popovertarget] {
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+    background: inherit;
+    border: none;
+    border-radius: 0;
+    line-height: 1rem;
+  }
+
+  .nav-tools [popover] {
+    font-size: 1.5rem;
+  }
+
+  .nav-tools [popover]:popover-open {
+    position: absolute;
+    inset: unset;
+    right: 9px;
+    top: 52px;
+    display: flex;
+    gap: .5rem;
+  }
+
+  .nav-tools [popover]:popover-open a {
+    line-height: 1.3rem;
+    text-decoration: none;
+  }
+
+  .home-page .nav-tools form {
     display: none;
   }
 
@@ -169,6 +198,10 @@
 
   .nav-sections li {
     font-size: 1rem;
+  }
+
+  .nav-tools [popover]:popover-open {
+    right: calc((100% - 1376px) / 2 + 9px);
   }
 }
 
