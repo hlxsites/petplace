@@ -178,7 +178,7 @@ async function createSearchForm(block) {
   });
 
   form.addEventListener('submit', (ev) => {
-    const selectedBreed = encodeURIComponent(breedSelect.value);
+    const selectedBreed = breedSelect.value;
     const zipCode = zipInput.value;
     let selectedAnimalType = null;
 

@@ -3,6 +3,7 @@ import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
+import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
@@ -255,7 +256,6 @@ function buildResultsList(animalList) {
     });
     // check if user is logged in
     isLoggedIn().then(isLoggedIn => {
-        console.log(isLoggedIn)
         if (isLoggedIn) {
             // if logged in set pet as favorite
             acquireToken()
@@ -667,7 +667,7 @@ window.onload = callBreedList('null').then((data) => {
             }
             const genderRadios = document.querySelectorAll('input[name="gender"]');
             for (let i = 0; i < genderRadios.length; i += 1) {
-                const genderArray = params.get('filterGender').split(',');
+                const genderArray = params.get('filterGender')?.split(',');
                 genderArray?.forEach((gender) => {
                     if (genderRadios[i].value === gender) {
                         genderRadios[i].checked = true;
@@ -676,7 +676,7 @@ window.onload = callBreedList('null').then((data) => {
             }
             const ageRadios = document.querySelectorAll('input[name="age"]');
             for (let i = 0; i < ageRadios.length; i += 1) {
-                const ageArray = params.get('filterAge').split(',');
+                const ageArray = params.get('filterAge')?.split(',');
                 ageArray?.forEach((age) => {
                     if (ageRadios[i].value === age) {
                         ageRadios[i].checked = true;
@@ -685,7 +685,7 @@ window.onload = callBreedList('null').then((data) => {
             }
             const sizeRadios = document.querySelectorAll('input[name="size"]');
             for (let i = 0; i < sizeRadios.length; i += 1) {
-                const sizeArray = params.get('filterSize').split(',');
+                const sizeArray = params.get('filterSize')?.split(',');
                 sizeArray?.forEach((size) => {
                     if (sizeRadios[i].value === size) {
                         sizeRadios[i].checked = true;
@@ -867,6 +867,9 @@ export default async function decorate(block) {
         <path d="M12 3.47104C13.9891 3.47104 15.8968 4.26122 17.3033 5.66774C18.7098 7.07426 19.5 8.98192 19.5 10.971C19.5 18.017 21 19.221 21 19.221H3C3 19.221 4.5 17.305 4.5 10.971C4.5 8.98192 5.29018 7.07426 6.6967 5.66774C8.10322 4.26122 10.0109 3.47104 12 3.47104Z" stroke="#09090D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs>
         <clipPath id="clip0_1997_2586"><rect width="24" height="24" fill="white" transform="translate(0 0.471039)"/></clipPath></defs></svg>
         ${createSearchAlert}`;
+    saveButton.addEventListener('click', (event) => {
+        setSaveSearch(event);
+    })
     form.append(petTypeContainer);
 
     form.append(breedContainer);

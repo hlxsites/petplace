@@ -373,7 +373,7 @@ async function createChecklistSection() {
     if (checklistItem3Label) {
         checklistContainer.append(createChecklistItem(3, checklistItem3Label, checklistItem3Text));
     }
-    checklistContainer.append(createCta('', 'View Full Checklist', 'pet-details-button button primary right-arrow', true));
+    checklistContainer.append(createCta('/pet-adoption/checklist', 'View Full Checklist', 'pet-details-button button primary right-arrow', false));
     return checklistContainer;
 }
 async function createSimilarPetsSection(sectionTitle, petArr) {
