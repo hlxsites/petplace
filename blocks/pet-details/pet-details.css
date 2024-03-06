@@ -732,6 +732,13 @@
   }
 }
 
+.button-container > * {
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 .pet-details .inquiry-modal .modal-cta-button {
   padding-inline: 24px;
 }
