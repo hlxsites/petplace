@@ -735,12 +735,14 @@ async function addRegionSelectorPopup() {
   decorateBlock(dialog);
   await loadBlock(dialog);
   const popup = document.querySelector('.popup');
-  if (window.hlx.contentBasePath === '/en-gb' && region !== 'en-GB') {
-    popup.querySelector('hlx-aria-dialog').open();
-  } else if (!window.hlx.contentBasePath && region !== 'en-US') {
-    popup.querySelector('hlx-aria-dialog').open();
+  if (!localStorage.getItem(PREFERRED_REGION_KEY)) {
+    if (window.hlx.contentBasePath === '/en-gb' && region !== 'en-GB') {
+      popup.querySelector('hlx-aria-dialog').open();
+    } else if (!window.hlx.contentBasePath && region !== 'en-US') {
+      popup.querySelector('hlx-aria-dialog').open();
+    }
+    popup.querySelector('hlx-aria-dialog .primary').focus();
   }
-  popup.querySelector('hlx-aria-dialog .primary').focus();
   popup.addEventListener('click', (ev) => {
     if (!ev.target.closest('.button')) {
       return;
