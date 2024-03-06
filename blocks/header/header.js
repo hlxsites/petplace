@@ -3,7 +3,7 @@ import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
-const GENAI_TOOLTIP = "Try our AI powered discover tool and get all your questions answered";
+const GENAI_TOOLTIP = "Try our AI powered discovery tool and get all your questions answered";
 
 const loadScript = (url, callback, type, section, defer) => {
   const head = document.querySelector('head');

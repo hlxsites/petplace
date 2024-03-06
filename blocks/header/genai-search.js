@@ -1,6 +1,6 @@
 const GENAI_SEARCH_TITLE = "Discover PetPlace"; 
 const GENAI_SEARCH_WARNING = "Discover PetPlace is powered by experimental Generative AI, information quality may vary.";
-const GENAI_TOOLTIP = "Try our AI powered discover tool and get all your questions answered";
+const GENAI_TOOLTIP = "Try our AI powered discovery tool and get all your questions answered";
 
 const sampleQuestions = [
   // "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
