@@ -12,29 +12,26 @@ function createControlGroup(Id, IsMultiAnswer, Label, options) {
     legend.className = 'sr-only';
     container.append(legend);
     options.forEach((option) => {
-        const label = document.createElement('label');
-        label.className = `custom-input custom-input--${type}`
-        label.innerText = option.AnswerText;
+        const div = document.createElement('div');
+        div.className = 'custom-input';
         const input = document.createElement('input');
         input.type = type;
         input.value = option.AnswerText;
         input.id = `question-${Id}-option-${option.Id}`;
         input.name = IsMultiAnswer ? `question-${Id}-option-${option.Id}` :`question-${Id}`;
-        const checkmark = document.createElement('span');
-        checkmark.className = 'checkmark';
-        label.append(input, checkmark);
-        container.append(label);
+        const label = document.createElement('label');
+        label.setAttribute('for', `question-${Id}-option-${option.Id}`);
+        label.innerText = option.AnswerText;
+        div.append(input, label);
+        container.append(div);
     });
     return container;
 }
-function createSelect(Id, IsMultiAnswer, Label, options) {
+function createSingleSelect(Id, Label, options) {
         const select = document.createElement('select');
         select.setAttribute('aria-label', Label);
         select.name = `question-${Id}`;
         select.id = `question-${Id}`;
-        if (IsMultiAnswer) {
-            select.setAttribute('multiple', true);
-        }
         options.forEach((option) => {
             const op = document.createElement('option');
             op.innerText = option.AnswerText;
@@ -54,7 +51,7 @@ function createQuestion(item, index) {
     const optionsDiv = document.createElement('div');
     optionsDiv.className = 'pet-survey__options';
     if (ExternalAnswerSource) {
-        optionsDiv.append(createSelect(Id, IsMultiAnswer, Label, QuestionOptions));
+        optionsDiv.append(createSingleSelect(Id, Label, QuestionOptions));
     } else {
         optionsDiv.append(createControlGroup(Id, IsMultiAnswer, Label, QuestionOptions));
     }
