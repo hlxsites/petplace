@@ -638,8 +638,8 @@ function redirectToPreferredRegion() {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  redirectToPreferredRegion();
   setLocale();
+  redirectToPreferredRegion();
   decorateTemplateAndTheme();
 
   await fetchPlaceholders(window.hlx.contentBasePath || 'default');
