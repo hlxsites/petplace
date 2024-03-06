@@ -7,14 +7,14 @@ export default async function decorate(block) {
   const form = document.createElement('form');
   form.setAttribute('role', 'search');
   form.className = 'search-box-wrapper';
-  form.action = '/discovery';
   form.addEventListener('submit', (ev) => {
     const query = ev.target.querySelector('.search-input').value;
-    if (!query) {
+    if (query) {
       ev.preventDefault();
-      return;
+      window.localStorage.setItem('gen-ai-query', JSON.stringify(query));
+      document.location.pathname = '/discovery';
     }
-    sampleRUM('search', { source: '.search-input', target: query });
+    return;
   });
 
   const input = document.createElement('input');
@@ -79,6 +79,8 @@ export default async function decorate(block) {
   block.innerHTML = '';
   block.append(form);
 
-  const usp = new URLSearchParams(window.location.search);
-  block.querySelector('.search-input').value = usp.get('q') || '';
+  const query = window.localStorage.getItem('gen-ai-query');
+  if(query && document.location.pathname.indexOf('/discovery') !== -1){
+    block.querySelector('.search-input').value = JSON.parse(query);
+  }
 }

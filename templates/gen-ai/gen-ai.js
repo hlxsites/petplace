@@ -1,48 +1,11 @@
-// import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
-// import { decorateIcons } from '../../scripts/lib-franklin.js';
-
-// import { decorateResponsiveImages } from '../../scripts/scripts.js';
 import {
   Events,
   decorateSlideshowAria,
   changeSlide,
 } from '../../blocks/slideshow/aria-slideshow.js';
 
-// const GENAI_SEARCH_TITLE = 'Discover PetPlace';
 const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
 
-// const sampleQuestions = [
-//   "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
-//   'Why Dog Urine Odor Comes Back and How to Stop It',
-//   'When Is a Dog Considered an Adult?',
-//   'Can an Alaskan Malamute or Siberian Husky Puppy Play Nice with the Family Cat?',
-//   'Do Clavamox Antibiotic Drops Expire?',
-//   'Is It Dangerous for Dogs to Drink Pool Water?',
-//   'Can an Outdoor Cat Become an Indoor Cat?',
-//   'Cat Stress After Moving',
-//   'Is Eating Mice and Rabbits Healthy for My Cat?',
-//   'What Happens When Cat Food Expires?',
-//   'Does Your Puppy Need a Bordetella Vaccine?',
-//   'How Much Should I Feed My Puppy?',
-//   'Tips on Housetraining and Dealing with Accidents',
-//   'Should a Pet Be Off Antihistamines or Steroid Before Allergy Testing?',
-//   'My cat was recently spayed but the male cats still want to mate with her',
-//   'Should You Board Your Cat or Get a Sitter?',
-//   'Is Your Dog Smarter Than a 5th Grader?',
-//   'How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?',
-// ];
-
-// const capabilities = [
-//   'Uses semantic search to find relevant answers',
-//   'Utilizes trusted data sources to generate responses',
-//   'Declines irrelevant and inappropriate queries',
-// ];
-
-// const limitations = [
-//   'Does not support keyword matching',
-//   'Does not support complex queries',
-//   'May occasionally generate incorrect information',
-// ];
 
 const isTrueSearch = window.location.pathname === '/discovery';
 let isRequestInProgress = false;
@@ -59,24 +22,11 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
       result: 'Please enter a search query.',
     };
   }
-  // document.getElementById("clearButton").classList.add("show");
-  // document.getElementById("vertical-bar").classList.add("show");
 
-  // console.log('fetchStreamingResults');
-
-  // Adobe Internal Endpoint
-  // const socket = new WebSocket('wss://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net/api/query');
-
-  // Adobe External Endpoint
-  // const socket = new WebSocket('wss://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query');
-  
-  // BambooHR Endpoint
-  // const socket = new WebSocket('wss://spire-bhr-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query');
-  
   const socket = new WebSocket("wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query");
 
   socket.addEventListener('open', (event) => {
-    console.log('WebSocket connection established');
+    // console.log('WebSocket connection established');
 
     const messageToSend = JSON.stringify({ query, index });
     socket.send(messageToSend);
@@ -96,7 +46,6 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   socket.addEventListener('close', (event) => {
     console.log('WebSocket connection closed');
   });
-  // console.log('socket', socket);
   // Show stop button container and add a click event listener
   const stopButtonContainer = document.querySelector('.gen-ai .genai-search-container .stop-button-container');
   stopButtonContainer.classList.add('show');
@@ -168,30 +117,14 @@ const decorateSearch = () => {
   xhr2.send();
   regenerateButtonContainer.appendChild(regenerateButton);
 
-  // Append the stop generating button <button> element to the search block <div> element
-  // searchContainer.appendChild(stopButtonContainer);
-  // searchContainer.appendChild(regenerateButtonContainer);
-
   // Create the search results <div> element with am-region attribute
   const searchResultsDivElement = document.createElement('div');
   searchResultsDivElement.setAttribute('class', 'search-results');
   searchResultsDivElement.setAttribute('am-region', 'Search');
 
   // Append the search results <div> element to the search block <div> element
-  // searchDivElement.appendChild(searchResultsDivElement);
   return stopButtonContainer;
-  // Append the inner <div> elements and search block <div> element to the outer <div> element
-  // outerDivElement.appendChild(innerDivElement);
-  // outerDivElement.appendChild(secondInnerDivElement);
-  // secondInnerDivElement.appendChild(searchDivElement);
 
-  // Append the outer <div> element to the <main> element
-  // mainElement.appendChild(outerDivElement);
-
-  // Append the <main> element to the body of the document
-  // document.body.appendChild(mainElement);
-
-  // return mainElement;
 };
 
 function getCurrentSlideIndex($block) {
@@ -248,7 +181,6 @@ function initializeTouch($block, slideshowInfo) {
     if (tagName === 'A' || tagName === 'use') return;
 
     const index = getCurrentSlideIndex($slidesContainer);
-    // console.log('index', index);
     if (diffX > 50) {
       const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
       changeSlide(slideshowInfo, index, nextIndex);
@@ -502,13 +434,7 @@ async function displaySearchResults(query, resultsBlock) {
 }
 
 export async function loadEager() {
-  // if (isTrueSearch) {
-  //   createTemplateBlock(main, 'pagination');
-  //   main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
-  // } else {
-  //   const response = await fetch('/fragments/404.plain.html');
-  //   main.innerHTML = await response.text();
-  // }
+
 }
 
 export async function loadLazy(main) {
@@ -535,9 +461,7 @@ export async function loadLazy(main) {
   if (isTrueSearch) {
     contentDiv.append(document.querySelector('.genai-search-wrapper'));
   }
-  // heroContainer.remove();
   hero.append(contentDiv);
-  // decorateResponsiveImages(imgDiv, ['461']);
   heroContainer.replaceWith(hero);
 
   // Create the search results <div> element with am-region attribute
@@ -547,22 +471,14 @@ export async function loadLazy(main) {
   searchResultsDivElement.appendChild(decorateSearch());
   defaultContentWrapper.appendChild(searchResultsDivElement);
 
-  const usp = new URLSearchParams(window.location.search);
-  const searchQuery = usp.get('q') || '';
+  const searchQuery = window.localStorage.getItem('gen-ai-query');
   if (searchQuery) {
     if (searchQuery.indexOf('insurance') === -1) {
       displaySearchResults(searchQuery, searchResultsDivElement);
     } else {
       displayInsuranceCTA(searchResultsDivElement);
     }
+    // window.localStorage.removeItem('gen-ai-query');
   }
 
-  // console.log('hero', hero);
-  // renderArticles();
-  // Softnav progressive enhancement for browsers that support it
-  // if (window.navigation) {
-  //   window.addEventListener('popstate', async () => {
-  //     // renderArticles();
-  //   });
-  // }
 }
