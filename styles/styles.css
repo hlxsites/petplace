@@ -817,6 +817,7 @@ footer .popup hlx-aria-dialog > button {
   color: inherit;
   font: inherit;
   z-index: initial;
+  left: auto;
 }
 
 @media (prefers-contrast: more) {
