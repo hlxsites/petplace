@@ -2,7 +2,8 @@ import { getMetadata, decorateIcons, sampleRUM } from '../../scripts/lib-frankli
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import {  decorateSearch, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE, GENAI_TOOLTIP } from './genai-search.js';
+
+const GENAI_TOOLTIP = "Try our AI powered discover tool and get all your questions answered";
 
 const loadScript = (url, callback, type, section, defer) => {
   const head = document.querySelector('head');
@@ -183,8 +184,7 @@ export default async function decorate(block) {
 
   decorateIcons(nav);
 
-  const createGenAISearch = () => {
-    console.log('genai search');
+  const createGenAISearchCTA = () => {
     const headerSearchButton = document.createElement('div');
     headerSearchButton.className = 'header-search';
     headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
@@ -197,106 +197,14 @@ export default async function decorate(block) {
       }
     });
 
-    // document.body.style.overflowY = 'hidden';
     headerSearchButton.addEventListener('click', async () => {
-      const elem = document.getElementById('header-search-modal');
-      const headerSearch = document.querySelector('.header-search');
-      
-      if (!elem) {
-        const modal = document.createElement('div');
-        modal.className = 'header-search-modal';
-        modal.id = 'header-search-modal';
-        modal.innerHTML = '<div class="header-search-close"></div>';
-        modal.append(decorateSearch());
-        block.append(modal);
-        modal.classList.add('visible');
-        headerSearch.classList.add('hide');
-
-        const footer = document.querySelector('.footer-wrapper');
-        const overlayElement = document.createElement('div');
-        overlayElement.className = 'overlay';
-        footer.parentNode.insertBefore(overlayElement, footer.nextSibling);
-        overlayElement.style.display = 'block';
-        document.body.style.pointerEvents = 'none';
-
-        const searchBox = document.getElementById('search-box');
-        const resultsBlock = block.querySelector('.search-results');
-        
-        searchBox.addEventListener('keypress', (event) => {
-          if (event.key === 'Enter') {
-            searchBox.blur();
-
-            const summaryContainer = resultsBlock.querySelector('.summary-columns');
-            if (!summaryContainer) {
-              resultsBlock.innerHTML = '';
-              const regenerateButtonContainer = document.querySelector('.regenerate-button-container');
-              regenerateButtonContainer.classList.remove('show');
-            }
-
-            displaySearchResults(searchBox.value, resultsBlock);
-          }
-        });
-
-        const searchButton = document.getElementById('search-button');
-        searchButton.addEventListener('click', () => {
-          const summaryContainer = resultsBlock.querySelector('.summary-columns');
-          if (!summaryContainer) {
-            resultsBlock.innerHTML = '';
-            const regenerateButtonContainer = document.querySelector('.regenerate-button-container');
-            regenerateButtonContainer.classList.remove('show');
-          }
-          displaySearchResults(searchBox.value, resultsBlock);
-        });
-
-        resultsBlock.addEventListener('click', (event) => {
-          if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
-            console.log("Further questions clicked!");
-            block.querySelector('.genai-search-container').scrollIntoView({ behavior: 'smooth' });
-            searchBox.value = event.target.innerText;
-            resultsBlock.innerHTML = '';
-            const regenerateButtonContainer = document.querySelector('.regenerate-button-container');
-            regenerateButtonContainer.classList.remove('show');
-            displaySearchResults(event.target.innerText, resultsBlock);
-          }
-        });
-
-        const close = modal.querySelector('.header-search-close');
-        close.addEventListener('click', () => {
-          // Hide modal
-          modal.classList.remove('visible');
-          // homePage.classList.remove('overlay');
-          overlayElement.style.display = 'none';
-          document.body.style.pointerEvents = 'auto';
-          headerSearch.classList.remove('hide');
-          document.body.style.overflowY = '';
-
-          // Clear search results
-          document.getElementById('clearButton').classList.remove("show");
-          document.getElementById('vertical-bar').classList.remove("show");
-        });
-      } else {
-        elem.classList.add('visible');
-        // homePage.classList.add('overlay');
-        document.querySelector('.overlay').style.display = 'block';
-        document.body.style.pointerEvents = 'none';
-        headerSearch.classList.add('hide');
-      }
-      const searchBox = document.getElementById('search-box');
-      const stopButtonContainer = document.querySelector('.stop-button-container');
-      const regenerateButtonContainer = document.querySelector('.regenerate-button-container');
-      const resultsBlock = block.querySelector('.search-results');
-
-      searchBox.value = '';
-      searchBox.focus();
-      stopButtonContainer.classList.remove('show');
-      regenerateButtonContainer.classList.remove('show');
-      resultsBlock.innerHTML = '';
-      resultsBlock.appendChild(createSearchSummary());
-      document.body.style.overflowY = 'hidden';
+      document.location.pathname = '/discovery';
     });
 
     return headerSearchButton;
   };
 
-  block.append(createGenAISearch());
+  if(document.body.classList.contains('article-page')){ 
+    block.append(createGenAISearchCTA());
+  }
 }
