@@ -3,7 +3,7 @@ import {
   getMetadata,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
-import { DETAULT_REGION, REGIONS, getPlaceholder } from '../../scripts/scripts.js';
+import { DETAULT_REGION, REGIONS, getId, getPlaceholder } from '../../scripts/scripts.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
@@ -109,6 +109,19 @@ export default async function decorate(block) {
     regionMenu.popover = 'auto';
     regionSelector.popoverTargetElement = regionMenu;
     regionSelector.popoverTargetAction = 'toggle';
+  } else {
+    const id = getId('dropdown');
+    regionMenu.id = id;
+    regionMenu.setAttribute('aria-hidden', 'true');
+    regionSelector.setAttribute('aria-controls', id);
+    regionSelector.setAttribute('aria-haspopup', true);
+    regionSelector.addEventListener('click', () => {
+      const isHidden = regionMenu.getAttribute('aria-hidden') === 'true';
+      regionMenu.setAttribute('aria-hidden', (!isHidden).toString());
+      if (!isHidden) {
+        regionMenu.querySelector('a').focus();
+      }
+    });
   }
   navTools.append(regionSelector);
   navTools.append(regionMenu);
