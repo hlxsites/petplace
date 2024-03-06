@@ -146,7 +146,8 @@ export function isTablet() {
  * @returns an array of obejects contained in the json file
  */
 export async function fetchAndCacheJson(url) {
-  const key = url.split('/').pop().split('.')[0];
+  const subkey = url.split('/').pop().split('.')[0];
+  const key = `${window.hlx.contentBasePath}/${subkey}`;
   if (window.hlx.cache[key]) {
     return window.hlx.cache[key];
   }
@@ -165,7 +166,7 @@ export async function fetchAndCacheJson(url) {
  * @returns a promise returning an array of categories
  */
 export async function getCategories() {
-  return fetchAndCacheJson('/article/category/categories.json');
+  return fetchAndCacheJson(`${window.hlx.contentBasePath}/article/category/categories.json`);
 }
 
 /**
@@ -396,24 +397,26 @@ function buildCookieConsent(main) {
   if (window.hlx.consent) {
     return;
   }
+  // eslint-disable-next-line prefer-rest-params
+  function gtag() { window.dataLayer.push(arguments); }
   // US region does not need the cookie consent logic
   if (document.documentElement.lang === 'en-US') {
-    window.dataLayer.push(['consent', 'update', {
+    gtag('consent', 'update', {
       ad_storage: 'granted',
       ad_user_data: 'granted',
       ad_personalization: 'granted',
       analytics_storage: 'granted',
-    }]);
+    });
     window.clarity('consent');
     return;
   }
   const updateConsentHandler = (ev) => {
-    window.dataLayer.push(['consent', 'update', {
+    gtag('consent', 'update', {
       ad_storage: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
       ad_user_data: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
       ad_personalization: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
       analytics_storage: ev.detail.categories.includes('CC_ANALYTICS') ? 'granted' : 'denied',
-    }]);
+    });
     window.clarity('consent', ev.detail.categories.includes('CC_ANALYTICS'));
   };
   window.addEventListener('consent', updateConsentHandler);

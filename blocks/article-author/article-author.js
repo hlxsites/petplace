@@ -35,7 +35,7 @@ export default async function decorate(block) {
   decorateIcons(block);
   setTimeout(() => {
     window.requestAnimationFrame(() => {
-      block.querySelector('time').textContent = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(new Date(date));
+      block.querySelector('time').textContent = new Intl.DateTimeFormat(document.documentElement.lang, { dateStyle: 'long' }).format(new Date(date));
     });
   });
 }
