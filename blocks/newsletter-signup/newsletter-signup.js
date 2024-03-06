@@ -1,6 +1,6 @@
 import { createForm } from '../form/form.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import { setNewsletterSignedUp, captureError, DETAULT_REGION } from '../../scripts/scripts.js';
+import { setNewsletterSignedUp, captureError, DEFAULT_REGION } from '../../scripts/scripts.js';
 
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
@@ -21,7 +21,7 @@ async function submitForm(block, fd) {
     first_name: formData.get('name'),
     catnewsletter: formData.get('cats') === 'on',
     dognewsletter: formData.get('dogs') === 'on',
-    country: DETAULT_REGION, // rework later
+    country: DEFAULT_REGION, // rework later
   };
 
   const apiKey = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';

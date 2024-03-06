@@ -36,16 +36,3 @@
   align-items: center;
   gap: .5rem;
 }
-
-.region-selector a[hreflang]::before {
-  font-size: 2rem;
-  line-height: 0;
-}
-
-.region-selector a[hreflang="en-US"]::before {
-  content: '🇺🇲';
-}
-
-.region-selector a[hreflang="en-GB"]::before {
-  content: '🇬🇧';
-}

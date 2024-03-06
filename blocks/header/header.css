@@ -94,6 +94,7 @@
   .nav-tools {
     display: flex;
     align-items: center;
+    gap: .5rem;
   }
 
   .nav-tools form {

@@ -4,7 +4,7 @@ import {
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
 import {
-  DETAULT_REGION,
+  DEFAULT_REGION,
   REGIONS,
   getId,
   getPlaceholder,
@@ -84,32 +84,22 @@ export default async function decorate(block) {
 
   const regionSelector = document.createElement('button');
   const regionMenu = document.createElement('div');
-  const regions = [DETAULT_REGION, ...Object.keys(REGIONS)];
+  const regions = [DEFAULT_REGION, ...Object.keys(REGIONS)];
   regions
     .filter((r) => r !== document.documentElement.lang)
     .forEach((r) => {
       const regionLink = document.createElement('a');
       regionLink.setAttribute('hreflang', r);
-      regionLink.setAttribute('href', r === DETAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
+      regionLink.setAttribute('href', r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
       regionLink.title = `Navigate to our ${r} website`;
-      switch (r) {
-        case 'en-GB':
-          regionLink.textContent = '🇬🇧';
-          break;
-        default:
-          regionLink.textContent = '🇺🇲';
-          break;
-      }
+      const regionIcon = document.createElement('span');
+      regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
+      regionLink.append(regionIcon);
       regionMenu.append(regionLink);
     });
-  switch (document.documentElement.lang) {
-    case 'en-GB':
-      regionSelector.textContent = '🇬🇧';
-      break;
-    default:
-      regionSelector.textContent = '🇺🇲';
-      break;
-  }
+  const regionSelectorIcon = document.createElement('span');
+  regionSelectorIcon.classList.add('icon', `icon-flag-${document.documentElement.lang.toLowerCase()}`);
+  regionSelector.append(regionSelectorIcon);
   if (isPopoverSupported()) {
     regionMenu.popover = 'auto';
     regionSelector.popoverTargetElement = regionMenu;
@@ -130,6 +120,7 @@ export default async function decorate(block) {
   }
   navTools.append(regionSelector);
   navTools.append(regionMenu);
+  decorateIcons(navTools);
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
