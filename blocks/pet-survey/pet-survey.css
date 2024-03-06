@@ -14,7 +14,7 @@ main .pet-survey-container {
     align-items: center;
 }
 .pet-survey__layout-container.hide {
-    display: none;
+    /*display: none;*/
 }
 .pet-survey__presurvey {
     width: 100%;
@@ -109,7 +109,7 @@ progress[value]::-webkit-progress-value {
 }
 
 .pet-survey__question {
-    display: none;
+    /*display: none; */
 }
 .pet-survey__question.active {
     display: block;

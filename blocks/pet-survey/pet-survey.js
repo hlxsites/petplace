@@ -1,29 +1,36 @@
 
 /* eslint-disable indent */
-import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import endPoints from '../../variables/endpoints.js';
+import MultiSelect from './multi-select.js';
 
+function createInput(wrapperClass = '', type, id, name, value, labelText) {
+    const div = document.createElement('div');
+    if (wrapperClass) {
+        div.className = wrapperClass;        
+    }
+    const input = document.createElement('input');
+    input.type = type;
+    input.value = value;
+    input.name = name;
+    input.id = id;
+    input.setAttribute('data-label-text', labelText);
+    const label = document.createElement('label');
+    label.setAttribute('for', id);
+    label.innerText = labelText;
+    div.append(input, label);
+    return div;
+}
 function createControlGroup(Id, IsMultiAnswer, Label, options) {
     const type = IsMultiAnswer ? 'checkbox' : 'radio';
-    const container = document.createElement('fieldset');
-    const legend = document.createElement('legend');
-    legend.innerText = Label;
-    legend.className = 'sr-only';
-    container.append(legend);
+    const container = document.createElement('div');
+    container.setAttribute('role', 'group');
+    container.setAttribute('aria-label', Label);
+    container.setAttribute('tabindex', '0');
     options.forEach((option) => {
-        const div = document.createElement('div');
-        div.className = 'custom-input';
-        const input = document.createElement('input');
-        input.type = type;
-        input.value = option.AnswerText;
-        input.id = `question-${Id}-option-${option.Id}`;
-        input.name = IsMultiAnswer ? `question-${Id}-option-${option.Id}` :`question-${Id}`;
-        const label = document.createElement('label');
-        label.setAttribute('for', `question-${Id}-option-${option.Id}`);
-        label.innerText = option.AnswerText;
-        div.append(input, label);
-        container.append(div);
+        const input = createInput('custom-input', type, `question-${Id}-option-${option.Id}`, IsMultiAnswer ? `question-${Id}-option-${option.Id}` :`question-${Id}`, option.AnswerText, option.AnswerText);
+        container.append(input);
     });
     return container;
 }
@@ -40,6 +47,35 @@ function createSingleSelect(Id, Label, options) {
         });
         return select;
 }
+function createMultiSelect(Id, options) {
+    const containerDiv = document.createElement('div');
+    containerDiv.className = 'multi-select';
+    containerDiv.id = `multi-select-question-${Id}`;
+    const button = document.createElement('button');
+    button.id = `multi-select-button-${Id}`;
+    button.className = 'multi-select__button';
+    button.type = 'button';
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', `multi-select-options-${Id}`);
+    const text = document.createElement('span');
+    text.className = 'multi-select__button-text';
+    text.innerText = 'Select from menu...';
+    const icon = document.createElement('span');
+    icon.className = 'multi-select__button-icon';
+    button.append(text, icon);
+    const groupDiv = document.createElement('div');
+    groupDiv.setAttribute('role', 'group');
+    groupDiv.setAttribute('aria-labelledby', `multi-select-button-${Id}`);
+    groupDiv.setAttribute('tabindex', '0');
+    groupDiv.className = 'multi-select__options';
+    groupDiv.id = `multi-select-options-${Id}`;
+    options.forEach((option, index) => {
+        groupDiv.append(createInput('multi-select-input', 'checkbox', `question-${Id}-option-${index}`, `question-${Id}-option-${index}`, option.Id, option.AnswerText));
+    });
+    containerDiv.append(button, groupDiv);
+    new MultiSelect(containerDiv);
+    return containerDiv;
+}
 function createQuestion(item, index) {
     const { ExternalAnswerSource, Id, IsMultiAnswer, Label, QuestionText, QuestionOptions } = item.Question;
     const itemDiv = document.createElement('div');
@@ -51,7 +87,11 @@ function createQuestion(item, index) {
     const optionsDiv = document.createElement('div');
     optionsDiv.className = 'pet-survey__options';
     if (ExternalAnswerSource) {
-        optionsDiv.append(createSingleSelect(Id, Label, QuestionOptions));
+        if (IsMultiAnswer) {
+            optionsDiv.append(createMultiSelect(Id, QuestionOptions));
+        } else {
+            optionsDiv.append(createSingleSelect(Id, Label, QuestionOptions));
+        }
     } else {
         optionsDiv.append(createControlGroup(Id, IsMultiAnswer, Label, QuestionOptions));
     }
@@ -62,6 +102,12 @@ function hidePresurvey() {
     const preSurvey = document.querySelector('.pet-survey__layout-container--presurvey');
     if (preSurvey) {
         preSurvey.classList.add('hide');
+    }
+}
+function showSurvey() {
+    const survey = document.querySelector('.pet-survey__layout-container--survey');
+    if (survey) {
+        survey.classList.remove('hide');
     }
 }
 async function fetchSurveyQuestions(surveyId) {
@@ -106,6 +152,7 @@ async function createPresurveyInterface(preSurveyHeading, preSurveySubheading, p
 
     startBtn.addEventListener('click', () => {
         hidePresurvey();
+        showSurvey();
     });
 
     cancelBtn.addEventListener('click', () => {
@@ -119,7 +166,7 @@ async function createPresurveyInterface(preSurveyHeading, preSurveySubheading, p
 }
 async function createSurveyInterface(surveyHeading, questions) {
     const containerDiv = document.createElement('div');
-    containerDiv.className = 'pet-survey__layout-container';
+    containerDiv.className = 'pet-survey__layout-container pet-survey__layout-container--survey hide';
     const surveyDiv = document.createElement('div');
     surveyDiv.className = 'pet-survey__survey';
     // create title
