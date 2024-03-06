@@ -3,7 +3,12 @@ import {
   getMetadata,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
-import { DETAULT_REGION, REGIONS, getId, getPlaceholder } from '../../scripts/scripts.js';
+import {
+  DETAULT_REGION,
+  REGIONS,
+  getId,
+  getPlaceholder,
+} from '../../scripts/scripts.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
