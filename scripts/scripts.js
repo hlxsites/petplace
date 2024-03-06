@@ -58,6 +58,8 @@ window.hlx.templates.add([
   '/templates/insurance-landing-page',
 ]);
 
+const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
+
 window.hlx.plugins.add('rum-conversion', {
   url: '/plugins/rum-conversion/src/index.js',
   load: 'lazy',
@@ -74,7 +76,11 @@ window.hlx.plugins.add('experience-decisioning', {
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,
   load: 'eager',
-  options: { audiences: AUDIENCES },
+  options: {
+    audiences: AUDIENCES,
+    storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
+      ? window.localStorage : window.SessionStorage,
+  },
 });
 
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
@@ -154,7 +160,8 @@ export function isTablet() {
  * @returns an array of obejects contained in the json file
  */
 export async function fetchAndCacheJson(url) {
-  const key = url.split('/').pop().split('.')[0];
+  const subkey = url.split('/').pop().split('.')[0];
+  const key = `${window.hlx.contentBasePath}/${subkey}`;
   if (window.hlx.cache[key]) {
     return window.hlx.cache[key];
   }
@@ -173,7 +180,7 @@ export async function fetchAndCacheJson(url) {
  * @returns a promise returning an array of categories
  */
 export async function getCategories() {
-  return fetchAndCacheJson('/article/category/categories.json');
+  return fetchAndCacheJson(`${window.hlx.contentBasePath}/article/category/categories.json`);
 }
 
 /**
@@ -315,7 +322,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-async function buildHeroBlock(main) {
+function buildHeroBlock(main) {
   const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
@@ -399,15 +406,56 @@ function buildHyperlinkedImages(main) {
     });
 }
 
+function buildCookieConsent(main) {
+  // do not initialize consent logic twice
+  if (window.hlx.consent) {
+    return;
+  }
+  // eslint-disable-next-line prefer-rest-params
+  function gtag() { window.dataLayer.push(arguments); }
+  // US region does not need the cookie consent logic
+  if (document.documentElement.lang === 'en-US') {
+    gtag('consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted',
+    });
+    window.clarity('consent');
+    return;
+  }
+  const updateConsentHandler = (ev) => {
+    gtag('consent', 'update', {
+      ad_storage: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_user_data: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_personalization: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      analytics_storage: ev.detail.categories.includes('CC_ANALYTICS') ? 'granted' : 'denied',
+    });
+    window.clarity('consent', ev.detail.categories.includes('CC_ANALYTICS'));
+  };
+  window.addEventListener('consent', updateConsentHandler);
+  window.addEventListener('consent-updated', updateConsentHandler);
+
+  const ccPath = `${window.hlx.contentBasePath}/fragments/cookie-consent`;
+  window.hlx.consent = { status: 'pending' };
+  const blockHTML = `<div>${ccPath}</div>`;
+  const section = document.createElement('div');
+  const ccBlock = document.createElement('div');
+  ccBlock.innerHTML = blockHTML;
+  section.append(buildBlock('cookie-consent', ccBlock));
+  main.append(section);
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-async function buildAutoBlocks(main) {
+function buildAutoBlocks(main) {
   try {
-    await buildHeroBlock(main);
-    await buildEmbedBlocks(main);
-    await buildHyperlinkedImages(main);
+    buildHeroBlock(main);
+    buildEmbedBlocks(main);
+    buildHyperlinkedImages(main);
+    buildCookieConsent(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -575,11 +623,11 @@ function animateSkeletons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-export async function decorateMain(main) {
+export function decorateMain(main) {
   main.id = 'main';
   decorateButtons(main);
-  await decorateIcons(main);
-  await buildAutoBlocks(main);
+  decorateIcons(main);
+  buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
@@ -651,7 +699,7 @@ async function loadEager(doc) {
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
       document.title += ` | ${getPlaceholder('websiteName')}`;
     }
-    await decorateMain(main);
+    decorateMain(main);
     fixLinks();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
@@ -1051,6 +1099,13 @@ export async function captureError(source, e) {
 }
 
 async function loadPage() {
+  setLocale();
+
+  window.dataLayer.push({ js: new Date() });
+  window.dataLayer.push({ config: 'GT-KD23TWW' });
+  window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
+  window.dataLayer.push({ config: 'AW-11334653569' });
+
   await window.hlx.plugins.load('eager');
   await loadEager(document);
   await window.hlx.plugins.load('lazy');

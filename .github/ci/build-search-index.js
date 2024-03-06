@@ -1,10 +1,12 @@
-import fetch from 'node-fetch';
 import fs from 'fs';
 import elasticlunr from 'elasticlunr';
+import { fetchArticles, getLocaleForUrl } from './utils.js';
 
-// Fetch the article query index
-const resp = await fetch('https://www.petplace.com/article/query-index.json?sheet=article&limit=15000');
-const json = await resp.json();
+const targetDirectory = process.argv[2];
+const locale = getLocaleForUrl(process.argv[3]);
+const fileSuffix = locale === 'en-US' ? '' : `.${locale.toLowerCase()}`;
+
+const articles = await fetchArticles(locale);
 
 function minimizeIndexedData(doc) {
   if (doc.title === doc.description) {
@@ -28,10 +30,10 @@ const idx = elasticlunr(function () {
   this.addField('category');
   this.addField('author');
 
-  json.data.forEach((doc) => this.addDoc(minimizeIndexedData(doc)));
+  articles.forEach((doc) => this.addDoc(minimizeIndexedData(doc)));
 });
 
 // Save the search index to a static file in the repository
-const targetDirectory = process.argv[2];
-const targetFile = `${targetDirectory}/search-index.db`;
+const targetFile = `${targetDirectory}/search-index${fileSuffix}.db`;
+console.log(`Writing search index to ${targetFile}`);
 fs.writeFileSync(targetFile, JSON.stringify(idx));

@@ -4,3 +4,8 @@ mountpoints:
 folders:
   /article/category/: /article/category/default
   /tags/: /tags/default
+  /pet-adoption/dogs/: /pet-adoption/default
+  /pet-adoption/cats/: /pet-adoption/default
+  /pet-adoption/others/: /pet-adoption/default
+  /en-gb/article/category/: /en-gb/article/category/default
+  /en-gb/tags/: /en-gb/tags/default

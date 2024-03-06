@@ -51,7 +51,7 @@ export default async function decorate(block) {
   searchField.placeholder = navTools.textContent;
   const searchForm = document.createElement('form');
   searchForm.setAttribute('role', 'search');
-  searchForm.action = '/search';
+  searchForm.action = `${window.hlx.contentBasePath}/search`;
   searchForm.method = 'get';
 
   const searchButton = document.createElement('button');

@@ -186,25 +186,15 @@ export const mappingHelper = (adLoc) => {
     )
     .build();
 
+  // this conditional is only for articles
   if (adLoc.includes('article')) {
     if (adLoc.includes('side')) return mappingSide;
     if (adLoc.includes('middle')) return mappingMiddle;
   }
 
   if (adLoc.includes('top')) return mappingTop;
-  if (adLoc.includes('bottom')) return mappingLeaderboard;
-
+  // for everything else, it returns leaderboard
   return mappingLeaderboard;
-
-  // return adLoc.includes('top')
-  //   ? mappingTop
-  //   : adLoc.includes('side')
-  //     ? mappingSide
-  //     : adLoc.includes('middle')
-  //       ? mappingMiddle
-  //       : adLoc.includes('bottom')
-  //         ? mappingLeaderboard
-  //         : null;
 };
 
 export const sizingArr = (adLoc) => {
@@ -214,16 +204,9 @@ export const sizingArr = (adLoc) => {
 
   if (adLoc.includes('article')) {
     if (adLoc.includes('side')) return sizeSide;
-    if (adLoc.includes('top')) return sizeTopMid;
-    if (adLoc.includes('middle')) return sizeTopMid;
     if (adLoc.includes('bottom')) return sizeLeader;
+    return sizeTopMid;
   }
-
-  // return adLoc.includes('top') || adLoc.includes('middle')
-  //   ? sizeTopMid
-  //   : adLoc.includes('side')
-  //   ? sizeSide
-  //   : sizeLeader;
 
   return sizeLeader;
 };
