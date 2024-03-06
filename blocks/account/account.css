@@ -476,7 +476,8 @@
     margin-right: 16px;
 }
 
-.account-tabpanel--favorites .fav-pet-card {
+.account-tabpanel--favorites .fav-pet-card,
+.account-tabpanel--favorites .confirm-remove-modal {
     margin-bottom: 16px;
     border: 1px solid var(--border-base-color);
     border-radius: 8px;
@@ -530,7 +531,8 @@
     background-color: var(--color-black);
 }
 
-.account-tabpanel--favorites .fav-pet-card .remove-fav {
+.account-tabpanel--favorites .fav-pet-card .remove-fav,
+.account-tabpanel--favorites .confirm-remove-modal .close-modal {
     background-color: transparent;
     padding: 0;
     margin: 0;
@@ -582,6 +584,62 @@
     font-size: 18px;
     line-height: 22px;
     height: 48px;
+}
+
+.account-tabpanel--favorites .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 20;
+}
+
+.account-tabpanel--favorites .overlay.show {
+    display: block;
+}
+
+.account-tabpanel--favorites .confirm-remove-modal {
+    width: 70%;
+    margin: 0 auto;
+    padding: 24px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 140px;
+    z-index: 21;
+}
+
+.account-tabpanel--favorites .confirm-remove-modal .modal-action-btns {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.account-tabpanel--favorites .confirm-remove-modal .modal-action-btns .cancel {
+    margin-bottom: 16px;
+    background-color: transparent;
+    font-family: "Libre Franklin";
+    font-weight: 400;
+    font-size: 16px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    color: #2F2F33;
+    padding: 0;
+    border-radius: unset;
+}
+
+.account-tabpanel--favorites .confirm-remove-modal .close-modal {
+    margin-left: auto;
+    display: block;
 }
 
 @media (min-width: 768px) {

@@ -15,32 +15,108 @@ function orderByAvailability(a, b) {
     return 0;
 }
 
-async function bindAccountFavoritesEvents(block, token) {
-    const viewMoreBtn = block.querySelector('.favorites-list #view-more-btn');
-    const removeBtns = block.querySelectorAll('button.remove-fav');
-    viewMoreBtn.addEventListener('click', () => {
-        let currentHiddenCards = block.querySelectorAll('.fav-pet-card.fp-hidden');
-        currentHiddenCards.forEach((card, index) => {
-            if (index < 5) {
-                card.classList.remove('fp-hidden');
-            }
-        })
-        currentHiddenCards = block.querySelectorAll('.fav-pet-card.fp-hidden');
-
-        if (currentHiddenCards.length < 1) {
-            viewMoreBtn.classList.add('hidden');
-        }
-    });
-
-    removeBtns.forEach((button) => {
-        button.addEventListener('click', async (event) => {
-            event.preventDefault();
-            //const payLoad = {...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm)))};
-            //await callUserApi(token, 'PUT', payLoad);
-        });
+function removeFavoritePet(id, token, btn) {
+    return fetch(`${endPoints.apiUrl}/adopt/api/Favorite/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    .then(() => {
+        btn.closest('.fav-pet-card').remove();
+    })
+    .catch((error) => {
+        console.error('Error deleting favorite', error);
+        throw error;
     });
 }
 
+function openRemoveConfirmModal(petName, element, id, token, btn) {
+    const modal = document.querySelector('.confirm-remove-modal');
+    const confirmBtn = document.querySelector('.confirm-remove-modal .confirm');
+    const cancelBtn = document.querySelector('.confirm-remove-modal .cancel');
+    const closeModal = document.querySelector('.confirm-remove-modal .close-modal');
+
+    modal.classList.remove('hidden');
+    modal.querySelector('.pet-to-be-removed').textContent = petName;
+    const overlay = document.querySelector('.overlay');
+    overlay.classList.add('show');
+    confirmBtn.addEventListener('click', () => {
+        removeFavoritePet(id, token, btn);
+        element.remove();
+        modal.classList.add('hidden');
+        overlay.classList.remove('show');
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        overlay.classList.remove('show');
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        overlay.classList.remove('show');
+    });
+}
+
+function createRemoveConfirmModal() {
+    const removeConfirmModal = `
+        <div class="modal confirm-remove-modal hidden">
+            <div class="modal-header">
+                <button class="close-modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M4.5 19.5L19.5 4.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4.5 4.5L19.5 19.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you wish to remove <span class="pet-to-be-removed"></span> from your favorites?</p>
+                <div class="modal-action-btns">
+                    <button class="cancel">No</button>
+                    <button class="confirm">Yes</button>
+                </div>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    `;
+
+    return removeConfirmModal;
+}
+
+async function bindAccountFavoritesEvents(block, token, favList) {
+    const viewMoreBtn = block.querySelector('.favorites-list #view-more-btn');
+    const removeBtns = block.querySelectorAll('button.remove-fav');
+
+    if (viewMoreBtn) {
+        viewMoreBtn.addEventListener('click', () => {
+            let currentHiddenCards = block.querySelectorAll('.fav-pet-card.fp-hidden');
+            currentHiddenCards.forEach((card, index) => {
+                if (index < 5) {
+                    card.classList.remove('fp-hidden');
+                }
+            });
+            currentHiddenCards = block.querySelectorAll('.fav-pet-card.fp-hidden');
+    
+            if (currentHiddenCards.length < 1) {
+                viewMoreBtn.classList.add('hidden');
+            }
+        });
+    }
+
+    removeBtns.forEach((button, index) => {
+        button.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            if (favList[index].Animal.IsAvailable) {
+                openRemoveConfirmModal(extractName(favList[index].Animal.Name), button.closest('.fav-pet-card'), favList[index].Id, token, button);
+            } else {
+                removeFavoritePet(favList[index].Id, token, button);
+            }
+        });
+    });
+}
 
 function getFavorites(animalData) {
     const emptyFavList = `
@@ -149,13 +225,13 @@ function getFavorites(animalData) {
                 viewMoreBtn.innerHTML = 'View More';
                 viewMoreBtn.setAttribute('id', 'view-more-btn');
                 viewMoreBtn.classList.add('secondary');
-                document.querySelector('.favorites-list').append(viewMoreBtn);
+                elFavList.append(viewMoreBtn);
             }
         } else {
             elFavList.innerHTML = emptyFavList;
         }
 
-        await bindAccountFavoritesEvents(elFavList, animalData);
+        await bindAccountFavoritesEvents(elFavList, animalData, arrFavList);
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -172,8 +248,9 @@ export async function createAccountFavoritesPanel(animalData) {
         <h3>Favorites</h3>
         <div class="favorites-list"></div>
     `;
-
     getFavorites(animalData);
+
+    panelDiv.innerHTML += createRemoveConfirmModal();
 
     return panelDiv;
 }
