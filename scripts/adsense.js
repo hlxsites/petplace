@@ -88,11 +88,15 @@ const adsenseSetup = (adArgs, catVal) => {
   const REFRESH_VALUE = 'true';
   const lastItemIndex = adArgs.length - 1;
 
+  const adLocale = window.hlx.contentBasePath === '/en-gb'
+    ? 'petplace_uk_web'
+    : 'petplace_web';
+
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < lastItemIndex; i++) {
     window.googletag
       .defineSlot(
-        `/1004510/petplace_web/${adArgs[i]}`,
+        `/1004510/${adLocale}/${adArgs[i]}`,
         sizingArr(adArgs[i]),
         adArgs[i],
       )
@@ -104,7 +108,7 @@ const adsenseSetup = (adArgs, catVal) => {
   }
 
   const anchorSlot = window.googletag.defineOutOfPageSlot(
-    `/1004510/petplace_web/${adArgs[lastItemIndex]}`,
+    `/1004510/${adLocale}/${adArgs[lastItemIndex]}`,
     window.googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR,
   );
 
