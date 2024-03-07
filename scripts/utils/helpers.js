@@ -210,3 +210,17 @@ export const sizingArr = (adLoc) => {
 
   return sizeLeader;
 };
+
+export const isMiddleAd = (type) => {
+  switch (type) {
+    case 'home':
+    case 'article':
+    case 'breeds':
+      return true;
+    case 'category':
+    case 'tags':
+    case 'breed':
+    default:
+      return false;
+  }
+};

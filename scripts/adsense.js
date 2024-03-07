@@ -1,4 +1,4 @@
-import { mappingHelper, sizingArr } from './utils/helpers.js';
+import { isMiddleAd, mappingHelper, sizingArr } from './utils/helpers.js';
 
 window.googletag ||= { cmd: [] };
 
@@ -15,8 +15,16 @@ const adsDivCreator = (adLoc) => {
   subDiv.appendChild(adDiv);
 
   const idLoc = document.createElement('div');
-  idLoc.id = adLoc;
+  if (adLoc.includes('breeds')) {
+    const locSplice = adLoc.split('_');
+    idLoc.id = `breed_${locSplice[1]}`;
+  } else idLoc.id = adLoc;
   adDiv.appendChild(idLoc);
+
+  if (adLoc === 'article_side') {
+    const aside = document.querySelector('.social-share-wrapper');
+    aside.after(mainDiv);
+  }
 
   if (adLoc.includes('top')) {
     if (adLoc.includes('home')) {
@@ -24,6 +32,9 @@ const adsDivCreator = (adLoc) => {
         .querySelectorAll('.tiles-container')[0]
         .querySelectorAll('.default-content-wrapper')[0];
       adSection.before(mainDiv);
+    } else if (adLoc.includes('breeds')) {
+      const attrSection = document.querySelector('.blade-wrapper');
+      attrSection.before(mainDiv);
     } else {
       const hero = document.querySelector('.hero-wrapper');
       hero.after(mainDiv);
@@ -31,13 +42,13 @@ const adsDivCreator = (adLoc) => {
   }
 
   if (adLoc.includes('bottom')) {
-    const footer = document.querySelector('footer');
-    footer.before(mainDiv);
-  }
-
-  if (adLoc.includes('side')) {
-    const aside = document.querySelector('.social-share-wrapper');
-    aside.after(mainDiv);
+    if (adLoc.includes('breeds')) {
+      const refs = document.querySelector('.section.well');
+      refs.after(mainDiv);
+    } else {
+      const footer = document.querySelector('footer');
+      footer.before(mainDiv);
+    }
   }
 
   if (adLoc.includes('middle')) {
@@ -47,6 +58,11 @@ const adsDivCreator = (adLoc) => {
         .querySelectorAll('.default-content-wrapper')[1];
 
       adSection.before(mainDiv);
+    }
+
+    if (adLoc.includes('breeds')) {
+      const adSection = document.querySelector('.blade-container');
+      adSection.after(mainDiv);
     }
 
     if (adLoc.includes('article')) {
@@ -150,7 +166,7 @@ const adsDefineSlot = async (adArgs, catVal) => {
 // google tag for adsense
 export const adsenseFunc = async (pageType, catVal) => {
   const boolArticle = pageType === 'article';
-  const boolMiddle = pageType === 'home' || boolArticle;
+  const boolMiddle = isMiddleAd(pageType);
 
   if (catVal === 'create') {
     if (boolArticle) adsDivCreator(`${pageType}_side`);
@@ -161,14 +177,11 @@ export const adsenseFunc = async (pageType, catVal) => {
     return;
   }
 
-  const adsArr = [
-    `${pageType}_top`,
-    `${pageType}_bottom`,
-    `${pageType}_anchor`,
-  ];
+  const adPage = pageType === 'breeds' ? 'breed' : pageType;
+  const adsArr = [`${adPage}_top`, `${adPage}_bottom`, `${adPage}_anchor`];
 
-  if (boolArticle) adsArr.unshift(`${pageType}_side`);
-  if (boolMiddle) adsArr.unshift(`${pageType}_middle`);
+  if (boolArticle) adsArr.unshift(`${adPage}_side`);
+  if (boolMiddle) adsArr.unshift(`${adPage}_middle`);
 
   adsDefineSlot(adsArr, catVal);
 };
