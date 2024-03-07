@@ -21,7 +21,7 @@ import {
   waitForLCP,
 } from './lib-franklin.js';
 
-const PREFERRED_REGION_KEY = 'petplace-preferred-region';
+export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 

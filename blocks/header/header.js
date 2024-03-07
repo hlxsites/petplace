@@ -5,6 +5,7 @@ import {
 } from '../../scripts/lib-franklin.js';
 import {
   DEFAULT_REGION,
+  PREFERRED_REGION_KEY,
   REGIONS,
   getId,
   getPlaceholder,
@@ -92,6 +93,9 @@ export default async function decorate(block) {
       regionLink.setAttribute('hreflang', r);
       regionLink.setAttribute('href', r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
       regionLink.title = `Navigate to our ${r} website`;
+      regionLink.addEventListener('click', (ev) => {
+        localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
+      });
       const regionIcon = document.createElement('span');
       regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
       regionLink.append(regionIcon);
