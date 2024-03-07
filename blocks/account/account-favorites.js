@@ -177,6 +177,7 @@ function getFavorites(animalData) {
                     PostalCode,
                     ReferenceNumber,
                     Sex,
+                    Species,
                     ShelterName,
                     State,
                     Street,
@@ -185,8 +186,13 @@ function getFavorites(animalData) {
                 const favPetCard = {};
                 const fallBackImg = getMetadata('animal-card-image-fall-back');
 
-                // const petDetailPageUrl = `/pet-adoption/${favorited.AnimalType.toLowerCase()}s/${ReferenceNumber}/${ClientId}`;
-                const petDetailPageUrl = `/pet-adoption/cats/${favorited.Animal.ReferenceNumber}/${ClientId}`;
+                let petDetailPageUrl = '';
+                if (Species !== null && ReferenceNumber !== null && ClientId !== null) {
+                    petDetailPageUrl = `/pet-adoption/${Species.toLowerCase()}s/${ReferenceNumber}/${ClientId}`;
+                } else {
+                    petDetailPageUrl = null;
+                }
+
                 favPetCard.availability = IsAvailable;
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
@@ -196,7 +202,7 @@ function getFavorites(animalData) {
                     <div class="fp-info">
                         <div class="fp-info-header">
                             <div>
-                                <p class="fp-name"><a class="fp-url" href="${petDetailPageUrl}">${Name ? extractName(Name) : Id}</a> <span class="unavailable-tag">No Longer available</span></p>
+                                <p class="fp-name"><a class="${petDetailPageUrl ? '' : 'prevent-click'} ${IsAvailable ? '' : 'prevent-click'}" href="${petDetailPageUrl || ''}">${Name ? extractName(Name) : Id}</a> <span class="unavailable-tag">No Longer available</span></p>
                                 <p class="fp-details">${Breed || ''} ${Breed && Sex ? '<span class="fp-separator"></span>' : ''} ${Sex || ''}</p>
                             </div>
                             <button class="remove-fav">

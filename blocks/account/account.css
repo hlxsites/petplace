@@ -561,7 +561,7 @@
     display: none;
 }
 
-.account-tabpanel--favorites .fav-pet-card.unavailable .fp-url {
+.account-tabpanel--favorites .prevent-click {
     pointer-events: none;
 }
 
