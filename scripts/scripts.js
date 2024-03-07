@@ -440,11 +440,15 @@ function fixHyperLinks(main) {
   [...main.querySelectorAll('a[href]')]
     .filter((a) => !a.href.startsWith(window.hlx.contentBasePath))
     .forEach(async (a) => {
-      const newURL = `${window.hlx.contentBasePath}${new URL(a.href).pathname}`;
+      const { pathname } = new URL(a.href);
+      if (pathname.startsWith(window.hlx.contentBasePath)) {
+        return;
+      }
+      const newURL = `${window.hlx.contentBasePath}${pathname}`;
       // If the localized version of the page exists, let's point to it instead of the US page
       const resp = await fetch(newURL, { method: 'HEAD' });
       if (resp.ok) {
-        a.href = `${window.hlx.contentBasePath}${new URL(a.href).pathname}`;
+        a.href = newURL;
       }
     });
 }
