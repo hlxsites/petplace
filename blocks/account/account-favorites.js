@@ -39,7 +39,6 @@ function openRemoveConfirmModal(petName, element, id, token, btn) {
     const closeModal = document.querySelector('.confirm-remove-modal .close-modal');
 
     modal.classList.remove('hidden');
-    modal.querySelector('.pet-to-be-removed').textContent = petName;
     const overlay = document.querySelector('.overlay');
     overlay.classList.add('show');
     confirmBtn.addEventListener('click', () => {
@@ -64,18 +63,13 @@ function createRemoveConfirmModal() {
     const removeConfirmModal = `
         <div class="modal confirm-remove-modal hidden">
             <div class="modal-header">
-                <button class="close-modal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M4.5 19.5L19.5 4.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M4.5 4.5L19.5 19.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+            <h3 class="modal-title">Delete Favorite</h3>
             </div>
             <div class="modal-body">
-                <p>Are you sure you wish to remove <span class="pet-to-be-removed"></span> from your favorites?</p>
+                <p>Are you sure you want to remove this pet from your favorites?</p>
                 <div class="modal-action-btns">
-                    <button class="cancel">No</button>
-                    <button class="confirm">Yes</button>
+                    <button class="cancel">Cancel</button>
+                    <button class="confirm">Remove Pet</button>
                 </div>
             </div>
         </div>

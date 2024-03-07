@@ -5,6 +5,7 @@
 .section.account-container {
     background-color: #FAFAFC;
     padding: 24px 16px;
+    position: relative;
 }
 
 .account .account-layout-container {
@@ -531,8 +532,7 @@
     background-color: var(--color-black);
 }
 
-.account-tabpanel--favorites .fav-pet-card .remove-fav,
-.account-tabpanel--favorites .confirm-remove-modal .close-modal {
+.account-tabpanel--favorites .fav-pet-card .remove-fav {
     background-color: transparent;
     padding: 0;
     margin: 0;
@@ -605,41 +605,53 @@
 }
 
 .account-tabpanel--favorites .confirm-remove-modal {
-    width: 70%;
-    margin: 0 auto;
-    padding: 24px;
-    position: fixed;
-    top: 50%;
+    position: absolute;
+    top: 0px;
     left: 50%;
-    transform: translate(-50%, -50%);
-    min-height: 140px;
+    transform: translate(-50%, -80%);
+    width: 60%;
+    background-color: white;
+    color: black;
     z-index: 21;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.account-tabpanel--favorites .confirm-remove-modal .modal-title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36px;
 }
 
 .account-tabpanel--favorites .confirm-remove-modal .modal-action-btns {
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 10px;
     margin-top: 20px;
 }
 
 .account-tabpanel--favorites .confirm-remove-modal .modal-action-btns .cancel {
     margin-bottom: 16px;
+    display: inline-flex;
+    align-items: center;
     background-color: transparent;
+    border: 1px solid #222222;
     font-family: "Libre Franklin";
-    font-weight: 400;
-    font-size: 16px;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    color: #2F2F33;
-    padding: 0;
-    border-radius: unset;
+    color: #222222;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 5px 30px;
+    text-overflow: unset;
+    overflow: visible;
 }
 
-.account-tabpanel--favorites .confirm-remove-modal .close-modal {
-    margin-left: auto;
-    display: block;
+.account-tabpanel--favorites .confirm-remove-modal .modal-action-btns .confirm {
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #C74D2F;
+    background-color: #C74D2F;
 }
 
 @media (min-width: 768px) {
@@ -659,5 +671,11 @@
     .account-tabpanel--favorites .fav-pet-card .fp-img img {
         width: 343px;
         height: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .account-tabpanel--favorites .confirm-remove-modal {
+        top: 250px;
     }
 }
