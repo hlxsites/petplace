@@ -207,8 +207,8 @@ async function createCarouselSection(petName, images) {
             const imageDiv = document.createElement('div');
             imageDiv.className = 'image-div';
             imageDiv.innerHTML = `
-                <div><img src=${imageArr[0]} alt=${petName} /></div>
-                <div><img src=${imageArr[1]} alt=${petName} /></div>
+                <div><object data=${imageArr[0]}><img src=${getMetadata('carousel-image-fall-back')} alt=${petName} /></object></div>
+                <div><object data=${imageArr[1]}><img src=${getMetadata('carousel-image-fall-back')} alt=${petName} /></object></div>
                 `;
             sectionContainer.append(imageDiv);
         }
@@ -222,7 +222,9 @@ async function createCarouselSection(petName, images) {
             <div class='image-carousel-slide' data-slide-index=${index} role='group' aria-label=${`slide ${index}`}>
                 <div class='image-carousel-slide-inner'>
                     <div class='image-carousel-slide-image'>
-                        <img src=${image} alt='image description text'>
+                        <object data=${image}>
+                            <img src=${getMetadata('carousel-image-fall-back')} alt='image description text'>
+                        </object>
                     </div>
                 </div>
             </div>`;
