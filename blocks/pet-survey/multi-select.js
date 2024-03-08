@@ -6,14 +6,29 @@ export default class MultiSelect {
         this.toggleButtonNode = this.containerNode.querySelector('.multi-select__button');
         this.toggleButtonTextNode = this.containerNode.querySelector('.multi-select__button-text');
         this.checkboxNodes = Array.from(this.containerNode.querySelectorAll('input[type=checkbox'));
-        this.toggleButtonNode.addEventListener('click', this.onButtonClick.bind(this));
+        this.containerNodes = Array.from(document.querySelectorAll('body'));
+        this.toggleButtonNode.addEventListener('click', this.onButtonClick.bind(this, this.toggleButtonNode));
         this.checkboxNodes.forEach((checkbox) => {
-            checkbox.addEventListener('change', this.onChange.bind(this))
-        })
-
+          checkbox.addEventListener('change', this.onChange.bind(this));
+        });
+        this.containerNodes.forEach((container) => {
+          container.addEventListener('focusout', this.handleFocusOut.bind(container));
+        });
+        document.onkeydown = function(event) {
+          const evt = event;
+          let isEscape = false;
+          if ('key' in evt) {
+            isEscape = evt.key === 'Escape' || evt.key === 'Esc';
+          } else {
+            isEscape = evt.keyCode === 27;
+          }
+          if (isEscape) {
+            this.onButtonClick(this.toggleButtonNode, 'close');
+          }
+        };
     }
-    onButtonClick(event, state) {
-        const btn = event.currentTarget;
+    onButtonClick(button, state) {
+        const btn = button;
         // force the options group to collapse
         if (state === 'close') {
           btn.setAttribute('aria-expanded', 'false');
@@ -25,9 +40,13 @@ export default class MultiSelect {
     }
     onChange(event) {
         const selected = this.checkboxNodes.filter((node) => node.checked);
-        const displayText = selected.map((el) => el.getAttribute('data-label-text')).join(',') || this.defaultButtonText;
+        const displayText = selected.length > 0 ? `${selected.length} selected` : this.defaultButtonText;
         this.toggleButtonTextNode.innerText = displayText;
     }
-
-
+    handleFocusOut(event) {
+      const containsFocus = this.contains(event.relatedTarget);
+      if (!containsFocus) {
+        this.onButtonClick(this.toggleButtonNode, 'close');
+      }
+    }
 }
