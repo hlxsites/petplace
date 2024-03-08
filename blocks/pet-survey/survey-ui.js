@@ -1,11 +1,13 @@
-export function createInput(wrapperClass = '', type, id, name, value, labelText) {
+export function createInput(wrapperClass = '', type, id, name, value = null, labelText) {
     const div = document.createElement('div');
     if (wrapperClass) {
         div.className = wrapperClass;        
     }
     const input = document.createElement('input');
     input.type = type;
-    input.value = value;
+    if (value) {
+        input.value = value;
+    }
     input.name = name;
     input.id = id;
     input.setAttribute('data-label-text', labelText);
@@ -27,7 +29,7 @@ export function createControlGroup(Id, IsMultiAnswer, Label, options) {
     });
     return container;
 }
-export function createSingleSelect(questionId, options, label = null, className = null, attributes = null) {
+export function createSingleSelect(questionId, options, defaultValue= null, label = null, className = null, attributes = null) {
     const containerDiv = document.createElement('div');
     containerDiv.className = `single-select ${className || ''}`;
     if (label) {
@@ -49,6 +51,9 @@ export function createSingleSelect(questionId, options, label = null, className 
         const op = document.createElement('option');
         op.innerText = option.AnswerText;
         op.value = option.AnswerText;
+        if (defaultValue && option.AnswerText.toLowerCase() === defaultValue.toLowerCase() ) {
+            op.setAttribute('selected', 'selected');
+        }
         select.append(op);
     });
     containerDiv.append(select);
@@ -119,7 +124,7 @@ export function createPresurvey(preSurveyHeading, preSurveySubheading, preSurvey
         <h2 class='pet-survey__presurvey-heading'>${preSurveyHeading || 'Ready to adopt a pet?'}</h2>
         <p class='pet-survey__presurvey-subheading'>
             ${preSurveySubheading || 'Fill out the following pet match survey to submit an inquiry to the shelter or rescue. Already have an account with a completed survey?'}
-            <button id="pet-survey-signin">${preSurveySignInLabel || 'Sign in'}</button>
+            <button id="pet-survey-presurvey-signin">${preSurveySignInLabel || 'Sign in'}</button>
         </p>
     `;
     const ctaDiv = document.createElement('div');
@@ -180,7 +185,7 @@ export function createSurveySteps(surveyHeading, questions) {
     containerDiv.append(surveyDiv);
     return containerDiv;
 }
-export const createSummary = (animalType, surveyResponseAnswers) => {
+export const createSummary = (animalType, surveyResponseAnswers, animalId = null, clientId = null) => {
     const form = document.createElement('form');
     form.id = `${animalType}-survey-form`;
     form.name = `${animalType}-survey-form`;
@@ -190,9 +195,44 @@ export const createSummary = (animalType, surveyResponseAnswers) => {
         if (Question.IsMultiAnswer) {
             form.append(createMultiSelect(Question.Id, Question.QuestionOptions, Question.Label, 'pet-survey__form-control'));
         } else {
-           form.append(createSingleSelect(Question.Id, Question.QuestionOptions, Question.Label, 'pet-survey__form-control', Question.Label === 'Desired Pet Type' ? {'disabled' : 'disabled'}: null));
+            const isPetTypeField = Question.Label === 'Desired Pet Type';
+           form.append(createSingleSelect(Question.Id, Question.QuestionOptions, isPetTypeField ? animalType : null, Question.Label, 'pet-survey__form-control', isPetTypeField ? {'disabled' : 'disabled'}: null));
         }
-
     });
+    const ctaContainer = document.createElement('div');
+    ctaContainer.className = 'pet-survey__cta-container';
+    if (animalId && clientId) {
+        // Add agreement checkbox
+        const agreementDiv = document.createElement('div');
+        agreementDiv.className = 'pet-survey__form-control agreement-checkbox'
+        const agreementCheckbox = document.createElement('label');
+        agreementCheckbox.className = 'checkbox-container'
+        agreementCheckbox.innerHTML = `
+        I agree to share my information with the applicable shelter.
+        <input type="checkbox" id='pet-survey-summary-agreement' name="pet-survey-summary-agreement">
+        <span class="checkmark"></span>
+        `;
+        agreementDiv.append(agreementCheckbox);
+        form.append(agreementDiv);
+        // Add Back and Submit Inquiry Button
+        const backBtn = document.createElement('button');
+        backBtn.id = 'pet-survey-summary-back';
+        backBtn.className = 'pet-survey__button secondary';
+        backBtn.innerText = 'Back';
+        const inquiryBtn = document.createElement('button');
+        inquiryBtn.id = 'pet-survey-summary-inquiry';
+        inquiryBtn.className = 'pet-survey__button primary';
+        inquiryBtn.innerText = 'Submit Inquiry';
+        ctaContainer.append(backBtn, inquiryBtn);
+    } else {
+        // Add Save Changes button
+        const saveBtn = document.createElement('button');
+        saveBtn.id = 'pet-survey-summary-save';
+        saveBtn.setAttribute('disabled', 'disabled');
+        saveBtn.className = 'pet-survey__button secondary';
+        saveBtn.innerText = 'Save Changes';
+        ctaContainer.append(saveBtn);
+    }
+    form.append(ctaContainer);
     return form;
 }

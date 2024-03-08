@@ -156,6 +156,7 @@ export default async function decorate(block) {
     const animalId = searchParams.get('animalId');
     const clientId = searchParams.get('clientId');
     const surveyId = animalType === 'dog' ? 1 : animalType === 'cat' ? 2 : null;
+    console.log('animal', animalType, animalId, clientId);
 
     // fetch placeholders from the 'adopt' folder
     const placeholders = await fetchPlaceholders('/adopt');
@@ -172,7 +173,8 @@ export default async function decorate(block) {
     } = placeholders;
     const questions = await fetchSurveyQuestions(surveyId);
     console.log(questions)
-    const formHtml = createSummary(animalType, questions);
+    block.append(createSurveySteps(surveyHeading, questions));
+    const formHtml = createSummary(animalType, questions, animalId, clientId);
     block.append(formHtml)
 
     if (IS_LOGGED_IN) {
@@ -188,7 +190,7 @@ export default async function decorate(block) {
     } else {
         block.append(createPresurvey(preSurveyHeading, preSurveySubheading, preSurveySignInLabel, surveyCancelLabel, surveyStartLabel));
         const questions = await fetchSurveyQuestions(surveyId);
-        block.append(createSurveySteps(surveyHeading, questions));
+
     }
 
 }

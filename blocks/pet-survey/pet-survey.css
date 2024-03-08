@@ -16,23 +16,16 @@ main .pet-survey-container {
 .pet-survey__layout-container.hide {
     /*display: none;*/
 }
-.pet-survey__presurvey {
-    width: 100%;
-    text-align: center;
-    color: var(--text-supporting, #2F2F33);
-}
+
+/*button */
 .pet-survey__cta-container {
-    margin-top: 32px;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     gap: 16px;
+    margin-top: 24px;
 }
-.pet-survey__survey h1 {
-    color: #000000;
-    font-size: 44px;
-    line-height: 1.2;
-}
-.pet-survey__button {
+a.pet-survey__button,
+button.pet-survey__button {
     min-width: 175px;
     margin: 0;
     padding: 12px 20px;
@@ -63,8 +56,18 @@ main .pet-survey-container {
     background-color: var(--background-white, #FFFFFF);
     border-color: var(--text-supporting, #2F2F33);
 }
+/*presurvey */
 
-#pet-survey-signin {
+.pet-survey__presurvey {
+    width: 100%;
+    text-align: center;
+    color: var(--text-supporting, #2F2F33);
+}
+.pet-survey__presurvey .pet-survey__cta-container {
+    margin-top: 32px;
+    justify-content: center;
+}
+#pet-survey-presurvey-signin {
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -74,6 +77,12 @@ main .pet-survey-container {
     font-family: var(--body-font-family);
     font-size: 18px;
     line-height: 1.56;
+}
+/* survery steps */
+.pet-survey__survey h1 {
+    color: #000000;
+    font-size: 44px;
+    line-height: 1.2;
 }
 
 /* progress bar */
@@ -222,6 +231,7 @@ progress[value]::-webkit-progress-value {
 .custom-input + .custom-input {
     margin-top: 16px;
 }
+
 /* custom select */
 .single-select select,
 .multi-select__button {
@@ -278,6 +288,13 @@ progress[value]::-webkit-progress-value {
     background-image: none;
 }
 
+.pet-survey__form .pet-survey__cta-container {
+    flex-basis: 100%;
+}
+.pet-survey__form-control.agreement-checkbox label {
+    margin-bottom: 0;
+    font-weight: 400;
+}
 
 @media (min-width: 768px) {
     .pet-survey-container {
@@ -294,6 +311,15 @@ progress[value]::-webkit-progress-value {
     }
     .pet-survey__form-control {
         flex-basis: calc(50% - 12px);
+    }
+    .pet-survey__form-control.agreement-checkbox {
+        flex-basis: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .pet-survey__form .pet-survey__cta-container {
+        align-items: flex-start;
+        justify-content: center;
     }
 }
 @media (min-width: 1024px) {
