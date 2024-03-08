@@ -823,8 +823,8 @@ async function loadLazy(doc) {
   }
 
   // identify the first item in the menu
-  const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
-  firstMenu.id = 'menu';
+  // const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
+  // firstMenu.id = 'menu';
 
   // Add hidden quick navigation links
   createA11yQuickNav([

@@ -86,115 +86,39 @@ export default async function decorate(block) {
   navLogin.innerHTML = '';
   navLogin.append(loginBtnContainer);
 
-  const navWrapper = document.createElement('div');
-  navWrapper.className = 'nav-wrapper';
-  navWrapper.append(nav);
-  block.append(navWrapper);
+  const megaNav = nav.querySelector('.nav-meganav');
+  const megaNavContent = nav.querySelector('.nav-meganav div');
+  const megaNavWrapper = document.createElement('ul');
+  megaNavWrapper.className = 'nav-wrapper';
+  megaNavWrapper.append(nav);
+  block.append(nav);
 
-  const navMegaNav = document.querySelector('.nav-meganav');
-  console.log('', navMegaNav);
-//   const megaNavContainer = document.createElement('ul');
-//   megaNavContainer.className = 'nav-list';
-//   megaNavContainer.append(navMegaNav);
-// console.log('navMegaNav', navMegaNav);
-// console.log('megaNavContainer', megaNavContainer);
+  const petMenuList = document.createElement('ul');
+  const petSubMenuList = document.createElement('ul');
+  petSubMenuList.classList.add('content');
+  let tempLI;
 
-  // SIDEBAR - to be removed
-  // const navSidebar = document.createElement('div');
-  // navSidebar.classList.add('nav-sidebar');
-  // resp = await fetch(`${window.hlx.contentBasePath}/fragments/sidenav.plain.html`);
-  // if (!resp.ok) {
-  //   return;
-  // }
+  [...megaNavContent.children].forEach((item) => {
+    const listItem = document.createElement('li');
+    if (item.children.length === 1) {
+      const menuTitle = document.createElement('a');
+      menuTitle.innerText = item.innerText;
+      menuTitle.setAttribute('role', 'button');
+      listItem.appendChild(menuTitle);
+      petMenuList.append(listItem);
+      tempLI = listItem;
+      // petSubMenuList.innerHTML = '';
+    } else if (item.children.length > 1) {
+      listItem.innerHTML = item.innerHTML;
+      petSubMenuList.append(listItem);
+      tempLI.append(petSubMenuList);
+      petSubMenuList.previousElementSibling.classList.add('collapsible');
+    }
+  });
 
-  // html = await resp.text();
+  megaNav.innerHTML = '';
+  megaNav.append(petMenuList);
 
-  // const ariaDialog = document.createElement(AriaDialog.tagName);
-  // ariaDialog.setAttribute('modal', true);
-
-  // ariaDialog.append(nav.querySelector('.nav-hamburger span').cloneNode(true));
-
-  // const dialogContent = document.createElement('div');
-  // dialogContent.innerHTML = html;
-  // console.log('dialogContent', dialogContent);
-
-  // const treeViewWrapper = dialogContent.querySelector('ul').parentElement;
-  // const ariaTreeView = document.createElement(AriaTreeView.tagName);
-  // ariaTreeView.setAttribute('label', getPlaceholder('secondaryNavigationLabel'));
-  // ariaTreeView.append(dialogContent.querySelector('ul'));
-  // treeViewWrapper.replaceWith(ariaTreeView);
-  // ariaDialog.append(dialogContent);
-
-  // const sidebarSearch = document.createElement('div');
-  // sidebarSearch.append(searchForm.cloneNode(true));
-  // sidebarSearch.querySelector('form button')?.addEventListener('click', (ev) => {
-  //   ev.preventDefault();
-  //   if (sidebarSearch.querySelector('input')?.value !== '') {
-  //     sidebarSearch.querySelector('form')?.submit();
-  //   }
-  // });
-  // dialogContent.insertBefore(sidebarSearch, dialogContent.childNodes[4]);
-
-  // classes = ['header', 'links', 'search', 'misc', 'social'];
-  // classes.forEach((c, i) => {
-  //   const section = dialogContent.children[i];
-  //   if (section) section.classList.add(`nav-sidebar-${c}`);
-  // });
-
-  // navSidebar.append(ariaDialog);
-  // nav.querySelector('.nav-hamburger button').replaceWith(navSidebar);
-
-  // const sidebarToggle = ariaDialog.querySelector('button');
-  // sidebarToggle.setAttribute('aria-label', getPlaceholder('openNavigation'));
-  // const close = ariaDialog.querySelector('[role="dialog"] button');
-  // close.setAttribute('aria-label', getPlaceholder('closeNavigation'));
-  // close.innerHTML = '<span class="icon icon-close"></span>';
-
-  // const dialog = ariaDialog.querySelector('[role="dialog"]');
-  // dialog.firstElementChild.style.transform = 'translate(-450px,0)';
-  // dialog.addEventListener('click', (ev) => {
-  //   if (ev.target !== dialog) {
-  //     return;
-  //   }
-  //   ariaDialog.close();
-  // });
-  // ariaDialog.onToggle = async (open) => {
-  //   if (!open) {
-  //     return new Promise((resolve) => {
-  //       dialog.firstElementChild.style.transform = 'translate(-450px,0)';
-  //       dialog.firstElementChild.addEventListener('transitionend', resolve, { once: true });
-  //     });
-  //   }
-  //   dialog.firstElementChild.style.transform = 'translate(0,0)';
-  //   return Promise.resolve();
-  // };
-
-  // navSidebar.querySelectorAll('[role="tree"] button[aria-controls]').forEach((toggle) => {
-  //   const item = navSidebar.querySelector(`#${toggle.getAttribute('aria-controls')}`);
-  //   toggle.setAttribute('aria-label', getPlaceholder('openNavItem', { item: item.textContent }));
-  // });
-  // const observer = new MutationObserver((entries) => {
-  //   const { attributeName, target } = entries.pop();
-  //   if (attributeName !== 'aria-expanded') {
-  //     return;
-  //   }
-  //   const toggle = navSidebar.querySelector(`button[aria-controls="${target.id}"]`);
-  //   const isExpanded = target.getAttribute('aria-expanded') === 'true';
-  //   toggle.setAttribute('aria-label', isExpanded
-  //     ? getPlaceholder('closeNavItem')
-  //     : getPlaceholder('openNavItem', { item: target.textContent }));
-  // });
-  // navSidebar.querySelectorAll('[role="tree"] [role="treeitem"]').forEach((item) => {
-  //   observer.observe(item, { attributes: true });
-  // });
-
-  // block.querySelectorAll('.nav-sidebar-social a').forEach((a) => {
-  //   a.setAttribute('target', '_blank');
-  //   a.setAttribute('rel', 'noopener noreferrer');
-  //   a.setAttribute('aria-label', getPlaceholder('socialLinkLabel', { page: a.firstElementChild.classList[1].substring(5) }));
-  // });
-
-  // SIDEBAR - to be removed
 
   block.querySelector('form').addEventListener('submit', (ev) => {
     const query = ev.target.querySelector('.search-input').value;
