@@ -29,7 +29,6 @@ export default async function decorate(block) {
   nav.id = 'nav';
   nav.innerHTML = html;
 
-  // const classes = ['brand', 'tools', 'login', 'sections', 'hamburger', 'meganav'];
   const classes = ['brand', 'tools', 'login', 'hamburger', 'meganav'];
   classes.forEach((c, i) => {
     const section = nav.children[i];
@@ -94,31 +93,51 @@ export default async function decorate(block) {
   block.append(nav);
 
   const petMenuList = document.createElement('ul');
-  const petSubMenuList = document.createElement('ul');
-  petSubMenuList.classList.add('content');
   let tempLI;
+  let tempUl;
 
   [...megaNavContent.children].forEach((item) => {
     const listItem = document.createElement('li');
+    const petSubMenuList = document.createElement('ul');
+    petSubMenuList.classList.add('content');
+
     if (item.children.length === 1) {
-      const menuTitle = document.createElement('a');
-      menuTitle.innerText = item.innerText;
-      menuTitle.setAttribute('role', 'button');
+      let menuTitle = document.createElement('button');
+      menuTitle.innerHTML = item.innerHTML;
+      menuTitle.querySelector('a');
+
+      if (menuTitle.querySelector('a') !== null) {
+        menuTitle = menuTitle.querySelector('a');
+        menuTitle.classList.add('menu-item');
+      } else {
+        menuTitle.innerText = item.innerText;
+        menuTitle.setAttribute('role', 'button');
+        menuTitle.classList.add('collapsible', 'menu-item');
+      }
       listItem.appendChild(menuTitle);
       petMenuList.append(listItem);
       tempLI = listItem;
-      // petSubMenuList.innerHTML = '';
+      tempUl = petSubMenuList;
     } else if (item.children.length > 1) {
       listItem.innerHTML = item.innerHTML;
-      petSubMenuList.append(listItem);
-      tempLI.append(petSubMenuList);
-      petSubMenuList.previousElementSibling.classList.add('collapsible');
+      tempUl.append(listItem);
+      tempLI.append(tempUl);
+      tempUl.previousElementSibling.classList.add('collapsible', 'menu-item');
+
+      const parentEl = tempUl.previousElementSibling;
+      if (parentEl.tagName === 'A') {
+        const newButton = document.createElement('button');
+        newButton.textContent = parentEl.textContent;
+        newButton.setAttribute('role', 'button');
+        newButton.classList.add('collapsible', 'menu-item');
+        parentEl.parentNode.insertBefore(newButton, parentEl);
+        parentEl.parentNode.removeChild(parentEl);
+      }
     }
   });
 
   megaNav.innerHTML = '';
   megaNav.append(petMenuList);
-
 
   block.querySelector('form').addEventListener('submit', (ev) => {
     const query = ev.target.querySelector('.search-input').value;
@@ -131,6 +150,16 @@ export default async function decorate(block) {
       search_term: query,
     });
     sampleRUM('search', { source: '.search-input', target: query });
+  });
+
+  block.querySelector('.collapsible').addEventListener('click', (event) => {
+    event.target.classList.toggle('active');
+    const content = event.target.nextElementSibling;
+    if (content.style.maxHeight) {
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = `${content.scrollHeight}px`;
+    }
   });
 
   decorateIcons(nav);
