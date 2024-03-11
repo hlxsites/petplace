@@ -365,15 +365,15 @@ async function createChecklistSection() {
         checklistLabelEl.textContent = checklistLabel;
         checklistContainer.append(checklistLabelEl);
     }
-    if (checklistItem1Label) {
+    /* if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
         checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
-    }
+    } */
     if (checklistItem2Label) {
-        checklistContainer.append(createChecklistItem(2, checklistItem2Label, checklistItem2Text));
+        checklistContainer.append(createChecklistItem(1, checklistItem2Label, checklistItem2Text));
     }
     if (checklistItem3Label) {
-        checklistContainer.append(createChecklistItem(3, checklistItem3Label, checklistItem3Text));
+        checklistContainer.append(createChecklistItem(2, checklistItem3Label, checklistItem3Text));
     }
     checklistContainer.append(createCta('/pet-adoption/checklist', 'View Full Checklist', 'pet-details-button button primary right-arrow', false));
     return checklistContainer;

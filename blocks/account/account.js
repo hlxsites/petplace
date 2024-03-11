@@ -11,7 +11,7 @@ async function createTabComponent() {
         { title: 'Account Details', hash: 'details' },
         { title: 'Search Alerts', hash: 'searchalerts' },
         { title: 'Favorites', hash: 'favorites' },
-        { title: 'Pet Match Survey', hash: 'survey' },
+        // { title: 'Pet Match Survey', hash: 'survey' },
     ];
     const tabs = document.createElement('div');
     tabs.className = 'account-tabs';
