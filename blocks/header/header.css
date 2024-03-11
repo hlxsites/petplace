@@ -4,12 +4,15 @@ footer {
 }
 
 #nav {
-  display: flex;
-  padding: 0 1rem;
+  /* display: flex; */
   /* height: var(--nav-height); */
   gap: 0 1rem;
-  align-items: center;
-  justify-content: space-between;
+  /* align-items: center;
+  justify-content: space-between; */
+}
+
+#nav .hidden {
+  display: none;
 }
 
 #nav .nav-brand .icon-logo {
@@ -28,7 +31,7 @@ footer {
   border-radius: 360px;
 }
 
-.nav-wrapper.search-input ::placeholder {
+#nav .nav-wrapper.search-input ::placeholder {
   color: #909090;
   font-size: 16px;
   line-height: 20px;
@@ -46,12 +49,12 @@ footer {
   border-radius: 0;
 }
 
-#nav .login-btn {
-  background-color: #C74D2F;
+#nav .nav-login ul {
+  display: none;
 }
 
-#nav .nav-meganav ul {
-  padding-left: 0;
+#nav .login-btn {
+  background-color: #C74D2F;
 }
 
 #nav .nav-meganav li {
@@ -66,7 +69,7 @@ footer {
   font-family: "Libre Franklin";
   font-size: 18px;
   line-height: 22px;
-  padding: 24px 0;
+  padding: 24px;
   border-bottom: 1px solid #000000;
   background-color: transparent;
   border-radius: 0;
@@ -80,12 +83,62 @@ footer {
   margin: 0;
 }
 
+#nav .collapsible::after {
+  content: '\2303';
+  font-size: 20px;
+  color: #000000;
+  float: right;
+}
+
+#nav .collapsible.active {
+  background-color: #3C0040;
+  color: #FFFFFF;
+}
+
+#nav .collapsible.active:after {
+  transform: rotate(180deg) translateY(6px);
+  color: #FFFFFF;
+}
+
+#nav .nav-meganav ul {
+  padding-left: 0;
+}
+
+#nav .collapsible.active + ul.content {
+  padding: 16px;
+  border-bottom: 1px solid #3C0040;
+}
+
 #nav .content {
-  padding: 0 18px;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
+
+#nav .content li {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+#nav .content li div:first-child {
+  margin-right: 12px;
+}
+
+#nav .nav-hamburger button,
+#nav .nav-close button {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}
+/* 
+#nav .nav-hamburger,
+#nav .nav-close {
+  position: absolute;
+  right: 16px;
+  top: 7.5px;
+} */
 
 @media (min-width: 1024px) {
   #nav .nav-brand .icon-logo {

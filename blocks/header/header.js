@@ -16,7 +16,7 @@ export default async function decorate(block) {
   // fetch nav content
   const navMeta = getMetadata('mega-nav');
   const navPath = navMeta ? new URL(navMeta).pathname : `${window.hlx.contentBasePath}/fragments/mega-nav`;
-  let resp = await fetch(`${navPath}.plain.html`);
+  const resp = await fetch(`${navPath}.plain.html`);
 
   if (!resp.ok) {
     return;
@@ -29,19 +29,13 @@ export default async function decorate(block) {
   nav.id = 'nav';
   nav.innerHTML = html;
 
-  const classes = ['brand', 'tools', 'login', 'hamburger', 'meganav'];
+  const classes = ['brand', 'tools', 'login', 'hamburger', 'close', 'meganav'];
   classes.forEach((c, i) => {
     const section = nav.children[i];
     if (section) section.classList.add(`nav-${c}`);
   });
 
-  // const navHamburger = nav.querySelector('.nav-hamburger');
-  // navHamburger.innerHTML = `
-  //   <button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">
-  //     ${navHamburger.innerHTML}
-  //   </button>`;
-
-  // nav.querySelector('.nav-brand a').setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
+  nav.querySelector('.nav-brand a').setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
 
   const navTools = nav.querySelector('.nav-tools');
   const searchField = document.createElement('input');
@@ -75,15 +69,37 @@ export default async function decorate(block) {
   });
 
   const navLogin = nav.querySelector('.nav-login');
-  const loginBtnContainer = document.createElement('div');
-  loginBtnContainer.classList.add('login-btn-container');
-  const loginBtn = document.createElement('button');
-  loginBtn.className = 'login-btn';
-  loginBtn.setAttribute('aria-label', 'login');
-  loginBtn.textContent = navLogin.textContent;
-  loginBtnContainer.append(loginBtn);
-  navLogin.innerHTML = '';
-  navLogin.append(loginBtnContainer);
+  const loginBtnsContainer = document.createElement('div');
+  loginBtnsContainer.classList.add('login-btns-container');
+  navLogin.querySelectorAll('li').forEach((item, index) => {
+    if (index === 0) {
+      const loginBtn = document.createElement('button');
+      loginBtn.className = 'login-btn';
+      loginBtn.setAttribute('aria-label', 'login');
+      loginBtn.textContent = item.textContent;
+      loginBtnsContainer.append(loginBtn);
+    } else {
+      const userLinks = document.createElement('a');
+    }
+  });
+
+  // navLogin.querySelectorAll('li').remove();
+
+  navLogin.append(loginBtnsContainer);
+
+  const navHamburger = nav.querySelector('.nav-hamburger');
+  navHamburger.innerHTML = `
+    <button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">
+      ${navHamburger.innerHTML}
+    </button>`;
+
+  nav.querySelector('.nav-brand a').setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
+
+  const navClose = nav.querySelector('.nav-close');
+  navClose.innerHTML = `
+    <button type="button" class="hidden" aria-controls="nav" aria-label="${getPlaceholder('closeNavigation')}">
+      ${navClose.innerHTML}
+    </button>`;
 
   const megaNav = nav.querySelector('.nav-meganav');
   const megaNavContent = nav.querySelector('.nav-meganav div');
