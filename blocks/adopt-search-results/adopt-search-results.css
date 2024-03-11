@@ -138,7 +138,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
-    z-index: 9;
+    z-index: 20;
 }
 .adopt-search-results .overlay.show {
     display: block;
@@ -459,6 +459,30 @@
     color: var(--Text-Default, #28061E);
 }
 
+.adopt-search-results-wrapper form input.error {
+    color: #930000;
+    border: 1px solid #d31510;
+}
+
+.adopt-search-results-wrapper form input.error::placeholder {
+color: #930000;
+}
+
+.adopt-search-results-wrapper .error-message {
+display: none;
+margin-top: 12px;
+padding-left: 24px;
+font-size: 14px;
+color: #930000;
+background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='17' fill='none' stroke='%23d31510' stroke-width='1.5' stroke-linejoin='round'%3E%3Cpath d='M1.5 11.578l4.249 4.393h6.503l4.249-4.393V5.364L12.251.971H5.749L1.5 5.364v6.214z'/%3E%3Cg stroke-linecap='round'%3E%3Cpath d='M9 11.87a.25.25 0 1 1 0-.5m0 .5a.25.25 0 1 0 0-.5'/%3E%3Cpath d='M9 9.37v-5.5' stroke-miterlimit='10'/%3E%3C/g%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: left center;
+}
+
+.adopt-search-results-wrapper .error-message.active {
+display: block;
+}
+
 .adopt-search-results-wrapper form select {
     /** for the dropdown indicator */
     appearance: none;
@@ -559,7 +583,7 @@
     }
 }
 
-.adopt-search-results .results div.animal {
+.adopt-search-results .results div.pet-card {
     width: 100%;
     border-radius: 12px;
     filter: drop-shadow(rgba(0, 0, 0, 24%) 1px 2px 4px);
@@ -569,23 +593,23 @@
 }
 
 @media screen and (min-width: 600px) {
-    .adopt-search-results .results div.animal {
+    .adopt-search-results .results div.pet-card {
         width: calc((50% - 30px))
     }
 }
 @media screen and (min-width: 1024px) {
-    .adopt-search-results .results div.animal {
+    .adopt-search-results .results div.pet-card {
         width: calc((25% - 15px))
     }
 }
 
-.adopt-search-results .results div.animal img {
+.adopt-search-results .results div.pet-card img {
 
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     width: 100%;
 }
-.adopt-search-results .results div.animal .favorite {
+.adopt-search-results .results div.pet-card .like-button {
     background-color: #fff;
     border-radius: 50%;
     padding: 8px 5px 3px;
@@ -594,7 +618,22 @@
     top: 15px;
     right: 15px;
 }
-.adopt-search-results .results div.animal object {
+.adopt-search-results .results div.pet-card .like-button .favorite {
+    display: none;
+}
+.adopt-search-results .results div.pet-card .like-button.favorited .default {
+    display: none;
+}
+.adopt-search-results .results div.pet-card .like-button.favorited .favorite {
+    display: block;
+    background-color: #F8D1CA;
+    top: 0;
+    right: 0;
+}
+.adopt-search-results .results div.pet-card .like-button.favorited {
+    background-color: #F8D1CA;
+}
+.adopt-search-results .results div.pet-card object {
     display: block;
     max-width: 100%;
     height: auto;
@@ -602,27 +641,113 @@
     border-top-right-radius: 12px;
 }
 
-.adopt-search-results .results div.animal h3 {
+.adopt-search-results .results div.pet-card h3 {
     margin-top: 20px;
     margin-bottom: 5px;
     text-overflow: ellipsis;
     font-size: 22px;
     font-weight: 800;
+    color: #000;
+}
+.adopt-search-results .results div.pet-card h3 a {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
+    font-size: 22px;
+    font-weight: 800;
+    color: #000;
 }
 
-.adopt-search-results .results div.animal p {
+.adopt-search-results .results div.pet-card .pet-card-info {
     font-size: 16px;
     line-height: 20px;
     padding-bottom: 16px;
     font-weight: 400;
 }
 
-.adopt-search-results .results div.animal p.location {
+.adopt-search-results .results div.pet-card .pet-card-address {
     font-size: 18px;
+    padding-bottom: 16px;
 }
 
-.adopt-search-results .results div.animal h3,
-.adopt-search-results .results div.animal p {
+.adopt-search-results .results div.pet-card h3,
+.adopt-search-results .results div.pet-card .pet-card-info,
+.adopt-search-results .results div.pet-card .pet-card-address {
     padding-left: 12px;
     padding-right: 12px;
+}
+
+.adopt-search-results .save-search-modal {
+    display: none;
+    z-index: 21;
+    padding: 20px;
+    border-radius: 15px;
+}
+.adopt-search-results .save-search-modal.show {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    width: 60%;
+    background-color: white;
+    color: black;
+}
+@media screen and (min-width: 1024px) {
+    .adopt-search-results .save-search-modal.show {
+        top: 250px;
+    }
+}
+.adopt-search-results .save-search-modal .success-icon {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.adopt-search-results .save-search-modal .modal-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36px;
+}
+.adopt-search-results .save-search-modal .modal-subtitle {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.adopt-search-results .save-search-modal .button-container {
+    display: block;
+    text-align: center;
+}
+.adopt-search-results .save-search-modal .manage-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid #222222;
+    color: #222222;
+    font-family: "Libre Franklin";
+    font-size: 18px;
+    font-weight: 600;
+    padding: 8px 10px;
+    text-overflow: unset;
+    overflow: visible;
+    margin-top: 30px;
+}
+@media screen and (min-width: 1024px) {
+    .adopt-search-results .save-search-modal .manage-button {
+        margin-right: 20px;
+    }
+}
+.adopt-search-results .save-search-modal .continue-button {
+    height: 43px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #C74D2F;
+}
+.adopt-search-results .save-search-modal .saved-filters {
+    text-align: center;
+    font-family: "Libre Franklin";
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 10px;
 }

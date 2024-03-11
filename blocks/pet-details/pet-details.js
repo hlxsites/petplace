@@ -3,6 +3,9 @@ import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { ImageCarousel } from './image-carousel.js';
 import { getRandomItems, extractName, formatPhoneNumber } from '../../templates/adopt/adopt.js';
 import endPoints from '../../variables/endpoints.js';
+import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
+import { setFavorite } from '../../scripts/adoption/favorite.js';
+import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 function isEmptyObject(obj) {
     return typeof obj === 'object' && Object.keys(obj).length === 0;
@@ -132,49 +135,6 @@ function createChecklistItem(index, label, text) {
     }
     return checklistItemContainer;
 }
-function createPetCard(petData, fallBackImage) {
-    const {
-        Name: petName,
-        'Animal type': animalType,
-        Gender: gender,
-        reed: breed,
-        City: city,
-        State: state,
-        coverImagePath,
-        animalId,
-        clientId,
-    } = petData;
-    const petDetailPageUrl = `/pet-adoption/${animalType.toLowerCase()}s/${animalId}/${clientId}`;
-    const petCard = document.createElement('div');
-    petCard.className = 'pet-card';
-    const pictureContainer = document.createElement('div');
-    pictureContainer.className = 'pet-card-image';
-    pictureContainer.append(createImageObject(coverImagePath, fallBackImage, null, 300, 246));
-    const cardBody = document.createElement('div');
-    cardBody.className = 'pet-card-body';
-    cardBody.innerHTML = `
-        <h3 class='pet-card-name'><a href=${petDetailPageUrl} class='stretched-link'>${petName ? extractName(petName) : animalId}</a></h3>
-        <div class='pet-card-info'>
-            ${gender ? `<span class='pet-card-gender'>${gender}</span>` : ''}
-            ${gender && breed ? '<span class=\'pet-card-dot\'></span>' : ''}
-            ${breed ? `<span class='pet-card-breed'>${breed}</span>` : ''}
-        </div>
-        <div class='pet-card-address'>
-            ${city || ''}${city && state ? ', ' : ''}${state || ''}
-        </div>
-    `;
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'like-button-conainer';
-    buttonContainer.innerHTML = `
-    <button class='like-button' aria-label='Like'>
-        <svg width='24' height='22' viewBox='0 0 24 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
-            <path d='M23.3 4.55114C22.8314 3.63452 22.154 2.84083 21.3223 2.2341C20.4906 1.62736 19.528 1.22455 18.5121 1.05815C17.4962 0.891748 16.4554 0.966411 15.4736 1.27612C14.4918 1.58583 13.5966 2.12191 12.86 2.84114L12 3.62114L11.17 2.86114C10.4344 2.13135 9.53545 1.58739 8.54766 1.27436C7.55987 0.961323 6.51169 0.888233 5.49002 1.06114C4.47076 1.21761 3.50388 1.61617 2.67044 2.22341C1.837 2.83066 1.16131 3.62888 0.700017 4.55114C0.0805959 5.76129 -0.13608 7.13766 0.0815777 8.47958C0.299236 9.82151 0.939848 11.0588 1.91002 12.0111L11.28 21.6711C11.3733 21.7679 11.4851 21.8449 11.6088 21.8975C11.7326 21.9501 11.8656 21.9772 12 21.9772C12.1344 21.9772 12.2675 21.9501 12.3912 21.8975C12.5149 21.8449 12.6267 21.7679 12.72 21.6711L22.08 12.0311C23.0535 11.0768 23.6968 9.8366 23.9163 8.49115C24.1357 7.1457 23.9198 5.76533 23.3 4.55114ZM20.66 10.6211L12.36 19.1711C12.2634 19.2651 12.1347 19.3187 12 19.3211C11.8657 19.3168 11.7377 19.2634 11.64 19.1711L3.33002 10.6111C2.66352 9.95404 2.22228 9.10271 2.06957 8.1793C1.91687 7.25589 2.06055 6.30784 2.48002 5.47114C2.80009 4.82822 3.26939 4.27124 3.84871 3.84675C4.42803 3.42227 5.10053 3.14261 5.81002 3.03114C6.53132 2.91042 7.27107 2.96456 7.96711 3.18903C8.66315 3.41351 9.29515 3.80175 9.81002 4.32114L11.34 5.71114C11.5238 5.87698 11.7625 5.96878 12.01 5.96878C12.2575 5.96878 12.4963 5.87698 12.68 5.71114L14.24 4.29114C14.7573 3.77638 15.3905 3.39328 16.0866 3.17402C16.7826 2.95477 17.5211 2.90577 18.24 3.03114C18.9406 3.15001 19.603 3.43308 20.1731 3.85719C20.7432 4.28129 21.2048 4.83436 21.52 5.47114C21.9391 6.31036 22.0815 7.26072 21.927 8.18592C21.7725 9.11112 21.329 9.96362 20.66 10.6211Z' fill='#464646'/>
-        </svg>
-    </button>
-    `;
-    petCard.append(pictureContainer, cardBody, buttonContainer);
-    return petCard;
-}
 async function getParametersFromUrl() {
     const { pathname } = window.location;
     const pathArr = pathname.split('/');
@@ -247,8 +207,8 @@ async function createCarouselSection(petName, images) {
             const imageDiv = document.createElement('div');
             imageDiv.className = 'image-div';
             imageDiv.innerHTML = `
-                <div><img src=${imageArr[0]} alt=${petName} /></div>
-                <div><img src=${imageArr[1]} alt=${petName} /></div>
+                <div><object data=${imageArr[0]}><img src=${getMetadata('carousel-image-fall-back')} alt=${petName} /></object></div>
+                <div><object data=${imageArr[1]}><img src=${getMetadata('carousel-image-fall-back')} alt=${petName} /></object></div>
                 `;
             sectionContainer.append(imageDiv);
         }
@@ -262,7 +222,9 @@ async function createCarouselSection(petName, images) {
             <div class='image-carousel-slide' data-slide-index=${index} role='group' aria-label=${`slide ${index}`}>
                 <div class='image-carousel-slide-inner'>
                     <div class='image-carousel-slide-image'>
-                        <img src=${image} alt='image description text'>
+                        <object data=${image}>
+                            <img src=${getMetadata('carousel-image-fall-back')} alt='image description text'>
+                        </object>
                     </div>
                 </div>
             </div>`;
@@ -342,7 +304,7 @@ async function createAboutPetSection(aboutPet) {
             </div>
         </div>
         <div class='about-pet-ctas'>
-            <button class='about-pet-favorite pet-details-button secondary'>
+            <button class='about-pet-favorite pet-details-button secondary' id='${animalId}'>
                 <span class='pet-details-button-icon-favorite'></span>
                 Favorite
             </button>
@@ -413,7 +375,7 @@ async function createChecklistSection() {
     if (checklistItem3Label) {
         checklistContainer.append(createChecklistItem(3, checklistItem3Label, checklistItem3Text));
     }
-    checklistContainer.append(createCta('', 'View Full Checklist', 'pet-details-button button primary right-arrow', true));
+    checklistContainer.append(createCta('/pet-adoption/checklist', 'View Full Checklist', 'pet-details-button button primary right-arrow', false));
     return checklistContainer;
 }
 async function createSimilarPetsSection(sectionTitle, petArr) {
@@ -431,7 +393,7 @@ async function createSimilarPetsSection(sectionTitle, petArr) {
         const gallery = document.createElement('div');
         gallery.className = 'similar-pets-gallery';
         petArr.forEach((pet) => {
-            gallery.append(createPetCard(pet, getMetadata('animal-card-image-fall-back')));
+            gallery.append(buildPetCard(pet, getMetadata('animal-card-image-fall-back')));
         });
         galleryWrapper.appendChild(gallery);
         similarPetsContainer.append(galleryWrapper);
@@ -443,6 +405,29 @@ async function createSimilarPetsSection(sectionTitle, petArr) {
     }
     listSection.append(similarPetsContainer);
     return listSection;
+}
+
+function getFavorites(response) {
+    fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${response}`,
+        }
+    }).then(response => {
+        //console.log('Success:', response.status);
+        return response.json();
+    }).then((data) => {
+        // favorite Pet in the UI
+        data.forEach((favorite) => {
+            const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
+            favoriteButton?.classList.add('favorited');
+            favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
 
 export default async function decorate(block) {
@@ -479,5 +464,24 @@ export default async function decorate(block) {
                 activeNavigator: 'button.image-carousel-navigator[aria-disabled=\'false\']',
             },
         });
+        // add favorite functionality
+        const favoriteCta = document.getElementById(animalId);
+        favoriteCta.addEventListener('click', (e) => {setFavorite(e, petData)});
+
+        // check if user is logged in
+        isLoggedIn().then(isLoggedIn => {
+            if (isLoggedIn) {
+                // if logged in set pet as favorite
+                acquireToken()
+                .then(response => {
+                    getFavorites(response);            
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });;
+            } else {
+              // not logged in or token is expired without ability to silently refresh its validity
+            }
+          });
     }
 }

@@ -1,16 +1,31 @@
-import { createDefaultMsalInstance } from './msal-instance.js';
-import { loginRequest, logoutRequest, tokenRequest } from './default-msal-config.js';
+import { createDefaultMsalInstance, createMsalInstance } from './msal-instance.js';
+import { b2cPolicies } from './policies.js';
+import { initRedirectHandlers } from './login-redirect-handlers.js';
+import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';   
 
 const msalInstance = createDefaultMsalInstance();
+const msalChangePwdInstance = createMsalInstance(msalChangePwdConfig);
 
-// register a custom callback function (e.g. handleResponse()) once the user has successfully logged in and was redirected back to the site
-msalInstance.initialize().then(() => {
-    msalInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
-        console.log(error);
+if (document.querySelector('.account')) {
+    msalChangePwdInstance.initialize().then(() => {
+        msalChangePwdInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
+            console.log(error);
+        });
     });
-});
+} else {
+    // register a custom callback function (e.g. handleResponse()) once the user has successfully logged in and was redirected back to the site)
+    msalInstance.initialize().then(() => {
+        msalInstance.handleRedirectPromise().then(response => {
+            handleResponse(response, response => initRedirectHandlers(response), localStorage.getItem('featureName'));
+            localStorage.removeItem('featureName');
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    });
+}
 
 /**
  * 
@@ -47,7 +62,17 @@ export function logout() {
     }
 }
 
-export function acquireToken(customCallback) {
+/**
+ * 
+ * @param {*} featureName name of the feature that is invoking the login function, e.g. "Favorite". Used for logging purposes when a user signs up an account for the first time.
+ * @returns a Promise that resolves with the access token
+ */
+export function acquireToken(featureName) {
+    if (featureName) {
+        // save in localStorage for loginRedirect() scenarios
+        localStorage.setItem('featureName', featureName);
+    }
+    
     const accounts = msalInstance.getAllAccounts();
 
     return new Promise((resolve, reject) => {
@@ -60,7 +85,7 @@ export function acquireToken(customCallback) {
                 })
                 .catch(function (error) {
                     //Acquire token silent failure, and send an interactive request
-                    if (error instanceof InteractionRequiredAuthError) {
+                    if (error instanceof msal.InteractionRequiredAuthError) {
                         if (isMobile()) {
                             msalInstance
                                 .acquireTokenRedirect(tokenRequest)
@@ -96,19 +121,42 @@ export function acquireToken(customCallback) {
                 });
         } else {
             // prompt login if no token exists
-            if (customCallback) {
-                login(customCallback);
-            } else {
-                login((tokenResponse) => resolve(tokenResponse.accessToken));
-            }
+            login((tokenResponse) => resolve(tokenResponse.accessToken), featureName);
         }
     });
 }
 
 // function to check if user is logged in or not
 export function isLoggedIn() {
-    const accounts = msalInstance.getAllAccounts();
-    return accounts.length > 0;
+    return new Promise((resolve, reject) => {
+        const accounts = msalInstance.getAllAccounts();
+        msalInstance.acquireTokenSilent({ account: accounts[0], scopes: tokenRequest.scopes })
+            .then(function (accessTokenResponse) {
+                // User is logged in with a valid session
+                resolve(true);
+            })
+            .catch(function (error) {
+                // Token has expired or user interaction is required
+                resolve(false);
+            });
+    });
+}
+
+export function changePassword(callback, featureName) {
+    // use loginRedirect() for mobile devices, use loginPopup() for desktop.
+    if (isMobile()) {
+        msalChangePwdInstance.loginRedirect(changePwdRequest)
+        .then((response) => handleResponse(response, callback, featureName))
+        .catch(error => {
+            console.log(error);
+        });
+    } else {
+        msalChangePwdInstance.loginPopup(changePwdRequest)
+        .then((response) => handleResponse(response, callback, featureName))
+        .catch(error => {
+            console.log(error);
+        });
+    }
 }
 
 function selectAccount() {
@@ -120,7 +168,7 @@ function selectAccount() {
     const currentAccounts = msalInstance.getAllAccounts();
 
     if (currentAccounts.length < 1) {
-        console.log('azure user not logged in');
+        // azure user not logged in
         return;
     } else if (currentAccounts.length > 1) {
 
@@ -156,7 +204,14 @@ function selectAccount() {
     }
 }
 
+// in case of page refresh
+selectAccount();
+
 function handleResponse(response, customCallback, featureName = 'PetPlace (Generic)') {
+    if (featureName === null) {
+        featureName = 'PetPlace (Generic)';
+    }
+
     /**
      * To see the full list of response object properties, visit:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#response
@@ -174,14 +229,20 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                 },
                 body: featureName ? "\"" + featureName + "\"" : null
             })
+            .then(() => {
+                // invoke custom callback if one was provided
+                if (customCallback) {
+                    customCallback(response);
+                }
+            })
             .catch((error) => {
                 console.error('/adopt/api/User Error:', error);
             });
-        }
-
-        // invoke custom callback if one was provided
-        if (customCallback) {
-          customCallback(response);
+        } else {
+            // invoke custom callback if one was provided
+            if (customCallback) {
+                customCallback(response);
+            }
         }
     } else {
         selectAccount();
