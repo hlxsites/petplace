@@ -447,6 +447,27 @@ function buildCookieConsent(main) {
   main.append(section);
 }
 
+function fixHyperLinks(main) {
+  // We only want to fix links on 'en' pages that are not the default US
+  if (!window.hlx.contentBasePath || !document.documentElement.lang.startsWith('en-')) {
+    return;
+  }
+  [...main.querySelectorAll('a[href]')]
+    .filter((a) => !a.href.startsWith(window.hlx.contentBasePath))
+    .forEach(async (a) => {
+      const { pathname } = new URL(a.href);
+      if (pathname.startsWith(window.hlx.contentBasePath)) {
+        return;
+      }
+      const newURL = `${window.hlx.contentBasePath}${pathname}`;
+      // If the localized version of the page exists, let's point to it instead of the US page
+      const resp = await fetch(newURL, { method: 'HEAD' });
+      if (resp.ok) {
+        a.href = newURL;
+      }
+    });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -457,6 +478,7 @@ function buildAutoBlocks(main) {
     buildEmbedBlocks(main);
     buildHyperlinkedImages(main);
     buildCookieConsent(main);
+    fixHyperLinks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

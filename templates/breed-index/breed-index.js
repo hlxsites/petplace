@@ -1,3 +1,4 @@
+import { adsenseFunc } from '../../scripts/adsense.js';
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, getId, isTablet } from '../../scripts/scripts.js';
@@ -21,10 +22,10 @@ async function getArticles() {
   const type = usp.get('type')?.split(',') || [];
   const limit = usp.get('limit') || 6;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
-  return ffetch('/article/query-index.json')
+  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('breed')
     .withTotal(true)
-    .filter((article) => article.path.startsWith('/article/breed')
+    .filter((article) => article.path.startsWith(`${window.hlx.contentBasePath}/article/breed`)
       && (!type.length || (type.length === 1 && type[0] === '') || type.includes(article.type)))
     .slice(offset, offset + limit);
 }
@@ -145,4 +146,10 @@ export async function loadLazy(document) {
       renderArticles(getArticles());
     });
   }
+
+  adsenseFunc('breed', 'create');
+}
+
+export function loadDelayed() {
+  adsenseFunc('breed');
 }
