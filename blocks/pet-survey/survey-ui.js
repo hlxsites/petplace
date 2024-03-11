@@ -1,30 +1,36 @@
 import MultiSelect from "./multi-select.js";
 
-export function createInput(wrapperClass = '', type, questionId, option, prefix) {
+export function createInput(wrapperClass = '', type, questionId, option, isExternal, prefix = null) {
     const div = document.createElement('div');
     if (wrapperClass) {
         div.className = wrapperClass;        
     }
     const input = document.createElement('input');
     input.type = type;
+    if (type === 'radio') {
+        input.name = `${prefix ? prefix + '-' : ''}question-${questionId}`;
+    }
     input.id = `${prefix ? prefix + '-' : ''}question-${questionId}-option-${option.Id}`;
     input.setAttribute('data-question-id', questionId);
     input.setAttribute('data-option-id', option.Id);
     input.setAttribute('data-option-text', option.AnswerText);
+    if (isExternal) {
+        input.setAttribute('data-is-external', 'true');
+    }
     const label = document.createElement('label');
     label.setAttribute('for', `${prefix ? prefix + '-' : ''}question-${questionId}-option-${option.Id}`);
     label.innerText = option.AnswerText;
     div.append(input, label);
     return div;
 }
-export function createControlGroup(Id, IsMultiAnswer, Label, options) {
-    const type = IsMultiAnswer ? 'checkbox' : 'radio';
+export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options) {
+    const type = isMultiAnswer ? 'checkbox' : 'radio';
     const container = document.createElement('div');
     container.setAttribute('role', 'group');
     container.setAttribute('aria-label', Label);
     container.setAttribute('tabindex', '0');
     options.forEach((option) => {
-        const input = createInput('custom-input', type, Id, option, 'survey');
+        const input = createInput('custom-input', type, Id, option, isExternal, 'survey');
         container.append(input);
     });
     return container;
@@ -41,6 +47,7 @@ export function createSingleSelect(questionId, options, defaultValue= null, labe
     const select = document.createElement('select');
     select.name = `${prefix ? prefix + '-' : ''}question-${questionId}`;
     select.id = `${prefix ? prefix + '-' : ''}question-${questionId}`;
+    select.setAttribute('data-question-id', questionId);
     if (attributes) {
         const keys = Object.keys(attributes);
         keys.forEach((key) => {
@@ -59,7 +66,7 @@ export function createSingleSelect(questionId, options, defaultValue= null, labe
     containerDiv.append(select);
     return containerDiv;
 }
-export function createMultiSelect(questionId, options, label = null, className = null, prefix = null) {
+export function createMultiSelect(questionId, options, isExternal, label = null, className = null, prefix = null) {
     const containerDiv = document.createElement('div');
     containerDiv.className = `multi-select ${className || ''}`;
     containerDiv.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}`;
@@ -88,7 +95,7 @@ export function createMultiSelect(questionId, options, label = null, className =
     groupDiv.className = 'multi-select__options';
     groupDiv.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-options`;
     options.forEach((option) => {
-        groupDiv.append(createInput('multi-select__input', 'checkbox', questionId, option, prefix));
+        groupDiv.append(createInput('multi-select__input', 'checkbox', questionId, option, isExternal, prefix));
     });
     containerDiv.append(button, groupDiv);
     new MultiSelect(containerDiv);
@@ -104,14 +111,16 @@ export function createQuestion(item, index) {
     itemDiv.append(question);
     const optionsDiv = document.createElement('div');
     optionsDiv.className = 'pet-survey__options';
+    let isExternal = false;
     if (ExternalAnswerSource) {
+        isExternal = true;
         if (IsMultiAnswer) {
-            optionsDiv.append(createMultiSelect(Id, QuestionOptions, null, null, 'survey'));
+            optionsDiv.append(createMultiSelect(Id, QuestionOptions, isExternal, null, null, 'survey'));
         } else {
-            optionsDiv.append(createSingleSelect(Id, Label, QuestionOptions));
+            optionsDiv.append(createSingleSelect(Id, QuestionOptions, Label, null, isExternal ? {'data-is-external' : 'true'} : null, 'survey'));
         }
     } else {
-        optionsDiv.append(createControlGroup(Id, IsMultiAnswer, Label, QuestionOptions));
+        optionsDiv.append(createControlGroup(Id, IsMultiAnswer, isExternal, Label, QuestionOptions));
     }
     itemDiv.append(optionsDiv);
     return itemDiv;
@@ -195,11 +204,19 @@ export async function createSummaryForm(animalType, surveyResponseAnswers, anima
     form.className = 'pet-survey__form';
     surveyResponseAnswers.forEach((response) => {
         const { Question } = response;
+        const isExternal = Question.ExternalAnswerSource ? true: false;
         if (Question.IsMultiAnswer) {
-            form.append(createMultiSelect(Question.Id, Question.QuestionOptions, Question.Label, 'pet-survey__form-control', 'summary'));
+            form.append(createMultiSelect(Question.Id, Question.QuestionOptions, isExternal, Question.Label, 'pet-survey__form-control', 'summary'));
         } else {
             const isPetTypeField = Question.Label === 'Desired Pet Type';
-           form.append(createSingleSelect(Question.Id, Question.QuestionOptions, isPetTypeField ? animalType : null, Question.Label, 'pet-survey__form-control', isPetTypeField ? {'disabled' : 'disabled'}: null));
+            const attributes = isPetTypeField || isExternal ? {} : null;
+            if (isPetTypeField) {
+                attributes['disabled'] = 'disabled';
+            }
+            if (isExternal) {
+                attributes['data-is-external'] = 'true';
+            }
+           form.append(createSingleSelect(Question.Id, Question.QuestionOptions, isPetTypeField ? animalType : null, Question.Label, 'pet-survey__form-control', attributes, 'summary'));
         }
     });
     const ctaContainer = document.createElement('div');

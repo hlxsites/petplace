@@ -27,8 +27,24 @@ function toggleScreen(name, block, isShown = true) {
     }
   }
 }
+function setActiveQuestion(block, currentIndex, targetIndex) {
+  const questionDivs = Array.from(block.querySelectorAll('.pet-survey__survey .pet-survey__question'));
+  if (targetIndex >= 0 && targetIndex < questionDivs.length) {
+    questionDivs[currentIndex].classList.remove('active');
+    questionDivs[targetIndex].classList.add('active');
+  }
+  if (targetIndex === 0) {
+    block.querySelector('#pet-survey-back').setAttribute('disabled', 'disabled');
+  } else {
+    block.querySelector('#pet-survey-back').removeAttribute('disabled');
+  }
+  if (targetIndex === questionDivs.length) {
+    toggleScreen('survey', block, false);
+    toggleScreen('summary', block);
+  }
+}
 
-async function bindPresurveyButtonEvents(block) {
+function bindPresurveyButtonEvents(block) {
   const cancelBtn = block.querySelector('#pet-survey-cancel');
   const startBtn = block.querySelector('#pet-survey-start');
   if (cancelBtn) {
@@ -43,23 +59,8 @@ async function bindPresurveyButtonEvents(block) {
     });
   }
 }
-function setActiveQuestion(block, currentIndex, targetIndex) {
-  const questionDivs = Array.from(block.querySelectorAll('.pet-survey__survey .pet-survey__question'));
-  if (targetIndex >= 0 && targetIndex < questionDivs.length) {
-    questionDivs[currentIndex].classList.remove('active');
-    questionDivs[targetIndex].classList.add('active');
-  }
-  if (targetIndex === 0) {
-    block.querySelector('#pet-survey-back').setAttribute('disabled', 'disabled');
-  } else {
-    block.querySelector('#pet-survey-back').removeAttribute('disabled');
-  }
-  if (targetIndex === questionDivs.length - 1) {
-    toggleScreen('survey', block, false);
-    toggleScreen('summary', block);
-  }
-}
-async function bindSurveyButtonEvents(block) {
+
+function bindSurveyButtonEvents(block) {
   const backBtn = block.querySelector('#pet-survey-back');
   const nextBtn = block.querySelector('#pet-survey-next');
 
@@ -76,6 +77,57 @@ async function bindSurveyButtonEvents(block) {
     });
   }
 
+}
+
+function bindSummaryButtonEvents(block) {
+  const backBtn = block.querySelector('#pet-survey-summary-back');
+  const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
+  if (backBtn) {
+    backBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (block.querySelector('.pet-survey__layout-container--survey')) {
+        toggleScreen('summary', block, false);
+        toggleScreen('survey', block);
+      } else {
+        window.history.back();
+      }
+    });
+  }
+  if (inquiryBtn) {
+    inquiryBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+    });
+  }
+}
+function updateSurveyProgress(block) {
+  const surveyQuestions = block.querySelectorAll('.pet-survey__survey .pet-survey__question');
+  const progressBar = block.querySelector('#pet-survey-progress');
+  let progress = 0;
+  let surveyAnswers = [];
+  surveyQuestions.forEach((question) => {
+    const checked = Array.from(question.querySelectorAll('input:checked'));
+    if (checked.length > 0) {
+      progress += 1;
+      checked.forEach((el) => {
+        const isExternal = el.getAttribute('data-is-external');
+        const data = {
+          QuestionId: isExternal ? null : el.getAttribute('data-question-id'),
+          QuestionOptionId: isExternal ? null : el.getAttribute('data-option-id'),
+        }
+        if (isExternal) {
+          data['ExternalAnswerKey'] = el.getAttribute('data-option-id');
+          data['UserResponseText'] = el.getAttribute('data-option-text');
+        }
+        surveyAnswers.push(data);
+      });
+    }
+
+  });
+  if (progressBar) {
+    progressBar.value = progress;
+    progressBar.innerText = Math.ceil((progress / progressBar.max) * 100);
+  }
+  return surveyAnswers;
 }
 
 async function fetchSurveyQuestions(surveyId) {
@@ -138,7 +190,6 @@ export default async function decorate(block) {
     } = placeholders;
 
     const state = {
-      activeQuestionIndex: 0,
       surveyAnswers: {},
     }
     let isLoggedInUser = await isLoggedIn();
@@ -146,32 +197,57 @@ export default async function decorate(block) {
     const questions = await fetchSurveyQuestions(surveyId);
     console.log(questions);
 
+    function bindSurveyChangeEvents() {
+      const surveyInputs = block.querySelectorAll('.pet-survey__survey .pet-survey__question input');
+      surveyInputs.forEach((inputEl) => {
+        inputEl.addEventListener('change', ()=> {
+          state.surveyAnswers = updateSurveyProgress(block);
+        });
+      })
+    }
+    function updateSummaryForm(answers) {
+      answers.forEach(answer => {
+        const questionId = answer.QuestionId || answer.ExternalAnswerKey;
+
+      });
+
+    }
+
     async function renderAsUser() {
       token = await acquireToken();
       const result = await callSurveyResponse(surveyId, token);
       if (result && result.Completed) {
         if (!block.querySelector('.pet-survey__layout-container--summary')) {
           block.append(await createSummaryScreen(surveySummaryHeading, surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
+          bindSummaryButtonEvents(block);
         }
         toggleScreen('summary', block);
       } else {
         if (!block.querySelector('.pet-survey__layout-container--survey')) {
+           // Add survey steps
           block.append(await createSurveySteps(surveyHeading, questions));
-          bindSurveyButtonEvents(block)
+          bindSurveyButtonEvents(block);
+          bindSurveyChangeEvents(block);
         }
         toggleScreen('survey', block);
         if (!block.querySelector('.pet-survey__layout-container--summary')) {
+          // Add summary
           block.append(await createSummaryScreen(surveySummaryHeading,surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
+          bindSummaryButtonEvents(block);
         }
       }
     }
     async function renderAsNonUser() {
       block.append(await createPresurvey(preSurveyHeading, preSurveySubheading, preSurveySignInLabel, surveyCancelLabel, surveyStartLabel));
-      await bindPresurveyButtonEvents(block);
+      bindPresurveyButtonEvents(block);
       toggleScreen('presurvey', block);
+      // Add survey steps
       block.append(await createSurveySteps(surveyHeading, questions));
-      bindSurveyButtonEvents(block)
+      bindSurveyButtonEvents(block);
+      bindSurveyChangeEvents(block);
+      // Add summary
       block.append(await createSummaryScreen(surveySummaryHeading, surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
+      bindSummaryButtonEvents(block);
 
     }
 
