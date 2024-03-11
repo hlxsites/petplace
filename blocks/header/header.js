@@ -60,6 +60,7 @@ export default async function decorate(block) {
   searchForm.append(searchField, searchButton);
 
   navTools.innerHTML = '';
+  navTools.classList.add('hidden');
   navTools.append(searchForm);
   searchButton.addEventListener('click', (ev) => {
     ev.preventDefault();
@@ -97,9 +98,10 @@ export default async function decorate(block) {
 
   const navClose = nav.querySelector('.nav-close');
   navClose.innerHTML = `
-    <button type="button" class="hidden" aria-controls="nav" aria-label="${getPlaceholder('closeNavigation')}">
+    <button type="button" aria-controls="nav" aria-label="${getPlaceholder('closeNavigation')}">
       ${navClose.innerHTML}
     </button>`;
+  navClose.classList.add('hidden');
 
   const megaNav = nav.querySelector('.nav-meganav');
   const megaNavContent = nav.querySelector('.nav-meganav div');
@@ -154,6 +156,7 @@ export default async function decorate(block) {
 
   megaNav.innerHTML = '';
   megaNav.append(petMenuList);
+  megaNav.classList.add('hidden');
 
   block.querySelector('form').addEventListener('submit', (ev) => {
     const query = ev.target.querySelector('.search-input').value;
@@ -176,6 +179,20 @@ export default async function decorate(block) {
     } else {
       content.style.maxHeight = `${content.scrollHeight}px`;
     }
+  });
+
+  block.querySelector('.nav-hamburger').addEventListener('click', (event) => {
+    navHamburger.classList.add('hidden');
+    navClose.classList.remove('hidden');
+    navTools.classList.remove('hidden');
+    megaNav.classList.remove('hidden');
+  });
+
+  block.querySelector('.nav-close').addEventListener('click', (event) => {
+    navClose.classList.add('hidden');
+    navHamburger.classList.remove('hidden');
+    navTools.classList.add('hidden');
+    megaNav.classList.add('hidden');
   });
 
   decorateIcons(nav);
