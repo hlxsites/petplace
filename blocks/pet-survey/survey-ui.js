@@ -35,7 +35,7 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
     });
     return container;
 }
-export function createSingleSelect(questionId, options, defaultValue= null, label = null, className = null, attributes = null, prefix=null) {
+export function createSingleSelect(questionId, options, defaultValue= null, label = null, className = null, attributes = null, prefix=null, errorMessage = null) {
     const containerDiv = document.createElement('div');
     containerDiv.className = `single-select ${className || ''}`;
     if (label) {
@@ -54,6 +54,12 @@ export function createSingleSelect(questionId, options, defaultValue= null, labe
             select.setAttribute(key, attributes[key]);
         });
     }
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.innerText = 'Select from menu...';
+    placeholder.setAttribute('disabled', 'disabled');
+    placeholder.setAttribute('selected', true);
+    select.append(placeholder);
     options.forEach((option) => {
         const op = document.createElement('option');
         op.innerText = option.AnswerText;
@@ -64,6 +70,12 @@ export function createSingleSelect(questionId, options, defaultValue= null, labe
         select.append(op);
     });
     containerDiv.append(select);
+    if (errorMessage) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.innerHTML = errorMessage;
+        containerDiv.append(errorDiv);
+    }
     return containerDiv;
 }
 export function createMultiSelect(questionId, options, isExternal, label = null, className = null, prefix = null) {
@@ -209,7 +221,7 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
             form.append(createMultiSelect(Question.Id, Question.QuestionOptions, isExternal, Question.Label, 'pet-survey__form-control', 'summary'));
         } else {
             const isPetTypeField = Question.Label === 'Desired Pet Type';
-            const attributes = isPetTypeField || isExternal ? {} : null;
+            const attributes = {required: true};
             if (isPetTypeField) {
                 attributes['disabled'] = 'disabled';
             }

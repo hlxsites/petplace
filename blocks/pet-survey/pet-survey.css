@@ -366,6 +366,23 @@ progress[value]::-webkit-progress-value {
     margin-bottom: 0;
     font-weight: 400;
 }
+/* error messagae */ 
+.pet-survey__form-control .error-message {
+    display: none;
+    margin-top: 12px;
+    padding-left: 24px;
+    font-size: 14px;
+    color: #930000;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='17' fill='none' stroke='%23d31510' stroke-width='1.5' stroke-linejoin='round'%3E%3Cpath d='M1.5 11.578l4.249 4.393h6.503l4.249-4.393V5.364L12.251.971H5.749L1.5 5.364v6.214z'/%3E%3Cg stroke-linecap='round'%3E%3Cpath d='M9 11.87a.25.25 0 1 1 0-.5m0 .5a.25.25 0 1 0 0-.5'/%3E%3Cpath d='M9 9.37v-5.5' stroke-miterlimit='10'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+.pet-survey__form-control select:invalid {
+    border-color: #d31510;
+}
+.pet-survey__form-control select[required]:invalid + .error-message {
+    display: block;
+}
 
 @media (min-width: 768px) {
     .pet-survey-container {

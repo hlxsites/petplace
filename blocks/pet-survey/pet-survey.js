@@ -29,7 +29,7 @@ export default async function decorate(block) {
     } = placeholders;
 
     const state = {
-      surveyAnswers: {},
+      surveyAnswers: [],
     }
     let isLoggedInUser = await isLoggedIn();
     let token;
@@ -144,18 +144,22 @@ export default async function decorate(block) {
       }
     }
     function updateSummaryForm(block, answers) {
-      console.log(answers);
       const form = block.querySelector('.pet-survey__layout-container--summary form');
+      const multiSelectCheckboxes = Array.from(form.querySelectorAll('.multi-select input[type=\'checkbox\']'));
+      multiSelectCheckboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+      });
       answers.forEach((answer) => {
         const selectId = `summary-question-${answer.QuestionId}`;
         const checkboxId = `summary-question-${answer.QuestionId}-option-${answer.QuestionOptionId || answer.ExternalAnswerKey}`;
-        const selectEl = form.querySelector(`#${selectId}`);
-        const checkboxEl = form.querySelector(`#${checkboxId}`);
+        const selectEl = block.querySelector(`[id='${selectId}']`);
+        const checkboxEl = block.querySelector(`[id='${checkboxId}']`);
         if (selectEl) {
           selectEl.value = answer.QuestionOptionId;
         } else if (checkboxEl) {
           checkboxEl.checked = true;
         }
+
       });
       const multiSelects = form.querySelectorAll('.multi-select');
       multiSelects.forEach((el) => {

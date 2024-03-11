@@ -5,7 +5,7 @@ export default class MultiSelect {
         this.containerNode = wrapperNode;
         this.toggleButtonNode = this.containerNode.querySelector('.multi-select__button');
         this.toggleButtonTextNode = this.containerNode.querySelector('.multi-select__button-text');
-        this.checkboxNodes = Array.from(this.containerNode.querySelectorAll('input[type=checkbox'));
+        this.checkboxNodes = Array.from(this.containerNode.querySelectorAll('input[type=\'checkbox\']'));
         this.containerNodes = Array.from(document.querySelectorAll('body'));
         this.toggleButtonNode.addEventListener('click', this.onButtonClick.bind(this, this.toggleButtonNode));
         this.checkboxNodes.forEach((checkbox) => {
