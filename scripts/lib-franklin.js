@@ -209,8 +209,8 @@ export async function decorateIcons(element) {
           ICONS_CACHE[iconName] = {
             html: svg
               .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-              .replace(/ width=".*?"/, '')
-              .replace(/ height=".*?"/, '')
+              .replace(/<symbol[^<]+( width=".*?")/, (match) => (match.replace(/ width=".*?"/, '')))
+              .replace(/<symbol[^<]+( height=".*?")/, (match) => (match.replace(/ height=".*?"/, '')))
               .replace('</svg>', '</symbol>'),
           };
         }

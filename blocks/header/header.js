@@ -3,10 +3,21 @@ import {
   getMetadata,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
-import { getPlaceholder } from '../../scripts/scripts.js';
+import {
+  DEFAULT_REGION,
+  PREFERRED_REGION_KEY,
+  REGIONS,
+  getId,
+  getPlaceholder,
+} from '../../scripts/scripts.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+
+function isPopoverSupported() {
+  // eslint-disable-next-line no-prototype-builtins
+  return HTMLElement.prototype.hasOwnProperty('popover');
+}
 
 /**
  * decorates the header, mainly the nav
@@ -71,6 +82,53 @@ export default async function decorate(block) {
       searchForm.submit();
     }
   });
+
+  // FIXME: remove conditional on UK website go-live
+  if (window.hlx.contentBasePath) {
+    const regionSelector = document.createElement('button');
+    const regionMenu = document.createElement('div');
+    const regions = [DEFAULT_REGION, ...Object.keys(REGIONS)];
+    regions
+      .filter((r) => r !== document.documentElement.lang)
+      .forEach((r) => {
+        const regionLink = document.createElement('a');
+        regionLink.setAttribute('hreflang', r);
+        regionLink.setAttribute('href', r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
+        regionLink.title = `Navigate to our ${r} website`;
+        regionLink.addEventListener('click', (ev) => {
+          localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
+        });
+        const regionIcon = document.createElement('span');
+        regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
+        regionLink.append(regionIcon);
+        regionMenu.append(regionLink);
+      });
+    const regionSelectorIcon = document.createElement('span');
+    regionSelectorIcon.classList.add('icon', `icon-flag-${document.documentElement.lang.toLowerCase()}`);
+    regionSelector.append(regionSelectorIcon);
+    if (isPopoverSupported()) {
+      regionMenu.popover = 'auto';
+      regionSelector.popoverTargetElement = regionMenu;
+      regionSelector.popoverTargetAction = 'toggle';
+    } else {
+      const id = getId('dropdown');
+      regionMenu.id = id;
+      regionMenu.setAttribute('aria-hidden', 'true');
+      regionSelector.setAttribute('aria-controls', id);
+      regionSelector.setAttribute('aria-haspopup', true);
+      regionSelector.addEventListener('click', () => {
+        const isHidden = regionMenu.getAttribute('aria-hidden') === 'true';
+        regionMenu.setAttribute('aria-hidden', (!isHidden).toString());
+        if (!isHidden) {
+          regionMenu.querySelector('a').focus();
+        }
+      });
+    }
+    navTools.append(regionSelector);
+    navTools.append(regionMenu);
+    decorateIcons(navTools);
+  }
+
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
