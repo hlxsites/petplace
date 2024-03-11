@@ -7,15 +7,26 @@ main .pet-survey-container {
     display: grid;
     min-height: 653px;
 }
-
 .pet-survey__layout-container {
+    box-sizing: border-box;
+    align-self: stretch;
+    justify-self: stretch;
     display: flex;
-    height: 100%;
+}
+.pet-survey__layout-container.pet-survey__layout-container--presurvey {
     align-items: center;
 }
-.pet-survey__layout-container.hide {
-    /*display: none;*/
+.pet-survey__layout-container.pet-survey__layout-container--survey {
+    padding-top: 92px;
+    
 }
+.pet-survey__layout-container.pet-survey__layout-container--summary {
+    flex-direction: column;
+}
+.pet-survey__layout-container.hide {
+    display: none;
+}
+
 
 /*button */
 .pet-survey__cta-container {
@@ -56,6 +67,14 @@ button.pet-survey__button {
     background-color: var(--background-white, #FFFFFF);
     border-color: var(--text-supporting, #2F2F33);
 }
+.pet-survey__button:disabled,
+.pet-survey__button:disabled:hover,
+.pet-survey__button:disabled:focus  {
+    background-color: var(--background-inactive, #F1F0F7);
+    color: var(--text-inactive, #85848A);
+    border-color: var(--background-inactive, #F1F0F7);
+}
+
 /*presurvey */
 
 .pet-survey__presurvey {
@@ -63,11 +82,14 @@ button.pet-survey__button {
     text-align: center;
     color: var(--text-supporting, #2F2F33);
 }
+.pet-survey__presurvey .pet-survey__presurvey-heading {
+    margin-top: 0;
+}
 .pet-survey__presurvey .pet-survey__cta-container {
     margin-top: 32px;
     justify-content: center;
 }
-#pet-survey-presurvey-signin {
+#pet-survey-signin {
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -79,10 +101,18 @@ button.pet-survey__button {
     line-height: 1.56;
 }
 /* survery steps */
+.pet-survey__survey {
+    width: 100%;
+}
 .pet-survey__survey h1 {
     color: #000000;
     font-size: 44px;
     line-height: 1.2;
+    margin-top: 0px;
+}
+.pet-survey__survey .pet-survey__cta-container {
+    margin-top: 48px;
+    justify-content: center;
 }
 
 /* progress bar */
@@ -118,7 +148,7 @@ progress[value]::-webkit-progress-value {
 }
 
 .pet-survey__question {
-    /*display: none; */
+    display: none;
 }
 .pet-survey__question.active {
     display: block;
@@ -130,7 +160,7 @@ progress[value]::-webkit-progress-value {
 
 /* fieldset */
 
-.pet-survey .pet-survey__options fieldset {
+.pet-survey__options fieldset {
     border: none;
     padding: 0;
     margin: 0;
@@ -257,10 +287,51 @@ progress[value]::-webkit-progress-value {
 .multi-select__button:focus {
     background-color: #FFFFFF;
 }
-/* summary form */
+.pet-survey__question .multi-select__button {
+    border-color: var(--border-base, #E4E4EB);
+}
+.multi-select__options {
+    background-color: #FFFFFF;
+    padding: 14px 32px 16px 14px;
+    border: 1px solid var(--border-base, #E4E4EB);
+    border-radius: 0px 0px 8px 8px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+.multi-select {
+    position: relative;
+}
+.multi-select__options {
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+.multi-select__options .multi-select__input input,
+.multi-select__options .multi-select__input label {
+    display: inline-block;
+    width: auto;
+}
+.multi-select__options .multi-select__input + .multi-select__input {
+    margin-top: 12px;
+}
+.multi-select__options .multi-select__input input {
+    margin: 0;
+    margin-right: 16px;
+}
+.multi-select__button[aria-expanded='true'] + .multi-select__options {
+    z-index: 1;
+}
+/* summary sreen */
 
-.pet-survey__form label,
-.pet-survey__form .label {
+
+.pet-survey__summary-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.pet-survey__form .pet-survey__form-control > label,
+.pet-survey__form .pet-survey__form-control > .label {
     display: block;
     color: var(--text-main, #09090D);
     font-family: var(--body-font-family);

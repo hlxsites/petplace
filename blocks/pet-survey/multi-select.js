@@ -12,7 +12,7 @@ export default class MultiSelect {
           checkbox.addEventListener('change', this.onChange.bind(this));
         });
         this.containerNodes.forEach((container) => {
-          container.addEventListener('focusout', this.handleFocusOut.bind(container));
+          container.addEventListener('focusout', this.handleFocusOut.bind(this));
         });
         document.onkeydown = function(event) {
           const evt = event;
@@ -44,7 +44,7 @@ export default class MultiSelect {
         this.toggleButtonTextNode.innerText = displayText;
     }
     handleFocusOut(event) {
-      const containsFocus = this.contains(event.relatedTarget);
+      const containsFocus = this.containerNode.contains(event.relatedTarget);
       if (!containsFocus) {
         this.onButtonClick(this.toggleButtonNode, 'close');
       }
