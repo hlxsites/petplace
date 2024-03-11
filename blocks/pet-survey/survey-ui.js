@@ -195,15 +195,15 @@ export async function createSurveySteps(surveyHeading, questions) {
     containerDiv.append(surveyDiv);
     return containerDiv;
 }
-export async function createSummaryForm(animalType, surveyResponseAnswers, animalId = null, clientId = null) {
+export async function createSummaryForm(animalType, questionArray, animalId = null, clientId = null) {
     const formDiv = document.createElement('div');
     formDiv.className = 'pet-survey__form-container';
     const form = document.createElement('form');
     form.id = `${animalType}-survey-form`;
     form.name = `${animalType}-survey-form`;
     form.className = 'pet-survey__form';
-    surveyResponseAnswers.forEach((response) => {
-        const { Question } = response;
+    questionArray.forEach((item) => {
+        const { Question } = item;
         const isExternal = Question.ExternalAnswerSource ? true: false;
         if (Question.IsMultiAnswer) {
             form.append(createMultiSelect(Question.Id, Question.QuestionOptions, isExternal, Question.Label, 'pet-survey__form-control', 'summary'));
