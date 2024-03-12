@@ -206,10 +206,13 @@ async function createCarouselSection(petName, images) {
         if (imageArr.length === 2) {
             const imageDiv = document.createElement('div');
             imageDiv.className = 'image-div';
-            imageDiv.innerHTML = `
-                <div><object data=${imageArr[0]}><img src=${getMetadata('carousel-image-fall-back')} alt=${petName} /></object></div>
-                <div><object data=${imageArr[1]}><img src=${getMetadata('carousel-image-fall-back')} alt=${petName} /></object></div>
-                `;
+            imageArr.forEach((image) => {
+                const imageBlock = document.createElement('div');
+                imageBlock.className = 'image-div';
+                imageBlock.innerHTML = '<div></div>';
+                imageBlock.firstElementChild.append(createImageObject(image || '', getMetadata('carousel-image-fall-back'), null, 700, 575));
+                imageDiv.append(imageBlock);
+            })
             sectionContainer.append(imageDiv);
         }
 
