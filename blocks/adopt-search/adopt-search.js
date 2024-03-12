@@ -135,7 +135,6 @@ async function createSearchForm(block) {
   zipInput.type = 'text';
   zipInput.name = 'zipPostal';
   zipInput.id = 'zip';
-  zipInput.pattern = '^[0-9]{5}(?:-[0-9]{4})?$';
   zipInput.required = true;
   zipInput.title = zipErrorMessage;
   zipInput.placeholder = zipPlaceholder;
@@ -183,8 +182,8 @@ async function createSearchForm(block) {
     let selectedAnimalType = null;
 
     ev.preventDefault();
-
-    if (!zipInput.checkValidity()) {
+    const isValidZip = /^(\d{5}|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/.test(zipInput.value);
+    if (!isValidZip) {
       zipInput.classList.add('error');
       errorSpan.classList.add('active');
       zipInput.setAttribute('aria-describedby', 'zip-error');
