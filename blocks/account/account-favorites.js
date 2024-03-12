@@ -33,13 +33,12 @@ function removeFavoritePet(id, token, btn) {
 }
 
 function openRemoveConfirmModal(petName, element, id, token, btn) {
-    const modal = document.querySelector('.confirm-remove-modal');
-    const confirmBtn = document.querySelector('.confirm-remove-modal .confirm');
-    const cancelBtn = document.querySelector('.confirm-remove-modal .cancel');
-    const closeModal = document.querySelector('.confirm-remove-modal .close-modal');
-
+    const modal = document.querySelector('.confirm-remove-favorite-modal');
+    const confirmBtn = document.querySelector('.confirm-remove-favorite-modal .confirm');
+    const cancelBtn = document.querySelector('.confirm-remove-favorite-modal .cancel');
     modal.classList.remove('hidden');
-    const overlay = document.querySelector('.overlay');
+    console.log(modal)
+    const overlay = document.querySelector('.account-tabpanel--favorites .overlay');
     overlay.classList.add('show');
     confirmBtn.addEventListener('click', () => {
         removeFavoritePet(id, token, btn);
@@ -52,16 +51,11 @@ function openRemoveConfirmModal(petName, element, id, token, btn) {
         modal.classList.add('hidden');
         overlay.classList.remove('show');
     });
-
-    closeModal.addEventListener('click', () => {
-        modal.classList.add('hidden');
-        overlay.classList.remove('show');
-    });
 }
 
 function createRemoveConfirmModal() {
     const removeConfirmModal = `
-        <div class="modal confirm-remove-modal hidden">
+        <div class="modal confirm-remove-favorite-modal hidden">
             <div class="modal-header">
             <h3 class="modal-title">Delete Favorite</h3>
             </div>
@@ -191,7 +185,10 @@ function getFavorites(animalData) {
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
                     <div class="fp-img">
-                        <img src="${ImageUrl || fallBackImg}" />
+                        <object data=${ImageUrl}>
+                            <img src="${fallBackImg}" />
+                        </object>
+                        
                     </div>
                     <div class="fp-info">
                         <div class="fp-info-header">

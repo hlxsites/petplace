@@ -607,7 +607,7 @@
     display: block;
 }
 
-.account-tabpanel--favorites .confirm-remove-modal {
+.account-tabpanel--favorites .confirm-remove-favorite-modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -621,13 +621,13 @@
     text-align: center;
 }
 
-.account-tabpanel--favorites .confirm-remove-modal .modal-title {
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-title {
     font-size: 32px;
     font-weight: 700;
     line-height: 36px;
 }
 
-.account-tabpanel--favorites .confirm-remove-modal .modal-action-btns {
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns {
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -635,7 +635,7 @@
     margin-top: 20px;
 }
 
-.account-tabpanel--favorites .confirm-remove-modal .modal-action-btns .cancel {
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns .cancel {
     margin-bottom: 16px;
     display: inline-flex;
     align-items: center;
@@ -650,7 +650,7 @@
     overflow: visible;
 }
 
-.account-tabpanel--favorites .confirm-remove-modal .modal-action-btns .confirm {
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns .confirm {
     font-size: 18px;
     font-weight: 600;
     background-color: #C74D2F;
@@ -739,9 +739,12 @@
         flex: 1;
     }
 
-    .account-tabpanel--favorites .fav-pet-card .fp-img img {
+    .account-tabpanel--favorites .fav-pet-card .fp-img img,
+    .account-tabpanel--favorites .fav-pet-card .fp-img object {
         width: 343px;
-        height: 100%;
+        height: 200px;
+        vertical-align: middle;
+        overflow: hidden!important;
     }
 }
 
