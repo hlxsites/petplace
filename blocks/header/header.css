@@ -1,10 +1,10 @@
-main,
+/* main,
 footer {
   display: none;
-}
+} */
 
 #nav {
-  /* height: var(--nav-height); */
+  height: var(--nav-height);
   gap: 0 1%;
   display: grid;
   grid-template-columns: 52% 47%;
@@ -14,13 +14,19 @@ footer {
   padding-left: 16px;
   grid-row: 1/2;
   grid-column: 1/2;
-  display: flex;
-  align-items: center;
+}
+
+#nav .nav-brand p {
+  margin-top: 8px;
 }
 
 #nav .nav-tools {
   grid-row: 2/3;
   grid-column: 1/3;
+  padding: 16px 10px;
+  position: relative;
+  z-index: 2;
+  background-color: #FFFFFF;
 }
 
 #nav .nav-login {
@@ -38,6 +44,8 @@ footer {
 #nav .nav-meganav {
   grid-row: 3/3;
   grid-column: 1/3;
+  z-index: 2;
+  background-color: #FFFFFF;
 }
 
 #nav .hidden {
@@ -49,19 +57,16 @@ footer {
   width: 145px;
 }
 
-#nav .nav-tools {
-  padding: 10px 16px;
-  position: relative;
-}
-
 #nav .search-input {
   width: 100%;
   height: 48px;
   border-radius: 360px;
+  padding-left: 16px;
 }
 
-#nav .nav-wrapper.search-input ::placeholder {
+#nav .header-wrapper.search-input::placeholder {
   color: #909090;
+  color: red;
   font-size: 16px;
   line-height: 20px;
 }
@@ -94,7 +99,12 @@ footer {
   margin-bottom: 0;
 }
 
+#nav .nav-meganav > ul > li {
+  border-bottom: 1px solid #000000;
+}
+
 #nav .menu-item {
+  box-sizing: border-box;
   display: block;
   color: #000000;
   font-family: "Libre Franklin";
@@ -110,10 +120,15 @@ footer {
   text-align: left;
   -webkit-tap-highlight-color: transparent;
 }
-/* 
-#nav a.menu-item {
-  padding: 24px 0 24px 16px;
-} */
+
+#nav button.menu-item {
+  border: 0;
+  border-bottom: 1px solid #000000;
+}
+
+#nav .menu-item:last-of-type {
+  border: 0;
+}
 
 #nav .collapsible {
   margin: 0;
@@ -141,7 +156,6 @@ footer {
 }
 
 #nav .collapsible.active + ul.content {
-  padding: 16px;
   border-bottom: 1px solid #3C0040;
 }
 
@@ -149,15 +163,31 @@ footer {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+  font-family: Raleway, sans-serif;
 }
 
 #nav .content li {
+  padding: 16px 16px 24px 16px;
   display: flex;
-  margin-bottom: 24px;
 }
 
 #nav .content li div:first-child {
   margin-right: 12px;
+}
+
+#nav .content a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  margin-bottom: 8px;
+}
+
+#nav .content p {
+  color: #8A8A8A;
+  font-size: 12px;
+  line-height: 14px;
 }
 
 #nav .nav-hamburger button,
@@ -168,13 +198,6 @@ footer {
   padding: 0;
   margin: 0;
 }
-/* 
-#nav .nav-hamburger,
-#nav .nav-close {
-  position: absolute;
-  right: 16px;
-  top: 7.5px;
-} */
 
 @media (min-width: 1024px) {
   #nav .nav-brand .icon-logo {

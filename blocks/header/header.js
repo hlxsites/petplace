@@ -181,14 +181,18 @@ export default async function decorate(block) {
     }
   });
 
-  block.querySelector('.nav-hamburger').addEventListener('click', (event) => {
+  block.querySelector('.nav-hamburger').addEventListener('click', () => {
     navHamburger.classList.add('hidden');
     navClose.classList.remove('hidden');
     navTools.classList.remove('hidden');
     megaNav.classList.remove('hidden');
+    megaNav.querySelectorAll('.collapsible').forEach((element) => {
+      element.classList.remove('active');
+      element.nextSibling.style.maxHeight = '';
+    });
   });
 
-  block.querySelector('.nav-close').addEventListener('click', (event) => {
+  block.querySelector('.nav-close').addEventListener('click', () => {
     navClose.classList.add('hidden');
     navHamburger.classList.remove('hidden');
     navTools.classList.add('hidden');
