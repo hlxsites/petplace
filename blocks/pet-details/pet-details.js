@@ -225,9 +225,7 @@ async function createCarouselSection(petName, images) {
             <div class='image-carousel-slide' data-slide-index=${index} role='group' aria-label=${`slide ${index}`}>
                 <div class='image-carousel-slide-inner'>
                     <div class='image-carousel-slide-image'>
-                        <object data=${image}>
-                            <img src=${getMetadata('carousel-image-fall-back')} alt='image description text'>
-                        </object>
+                        ${createImageObject(image || '', getMetadata('carousel-image-fall-back'), null, 700, 575).outerHTML}
                     </div>
                 </div>
             </div>`;
