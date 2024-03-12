@@ -415,20 +415,17 @@ async function displaySearchResults(query, resultsBlock) {
   cardContainer?.classList.add('show');
 
   resultsBlock.addEventListener('click', (event) => {
-    const searchBox = document.getElementById('genai-search-box');
+    const searchBox = document.getElementById('genai-search-box') || document.getElementById('search-box');
 
     const searchBlock = document.querySelector('.genai-search-wrapper');
 
     if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
       searchBlock.scrollIntoView({ behavior: 'smooth' });
+
+      window.localStorage.setItem('gen-ai-query', JSON.stringify(event.target.innerText));
       searchBox.value = event.target.innerText;
       resultsBlock.innerHTML = '';
-
       displaySearchResults(event.target.innerText, resultsBlock);
-      if (window.history.pushState) {
-        const newSearch = `${window.location.protocol}//${window.location.host}${window.location.pathname}?q=${event.target.innerText}`;
-        window.history.pushState({ path: newSearch }, '', newSearch);
-      }
     }
   });
 }
