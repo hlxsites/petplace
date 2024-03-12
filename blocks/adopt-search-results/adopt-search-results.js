@@ -480,6 +480,13 @@ function buildFilterSidebar(sidebar) {
     const sizeLabelElement = document.createElement('div');
     sizeLabelElement.className = 'sidebar-header';
     sizeLabelElement.innerText = sizeLabel;
+
+    // check if size should be hidden
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('filterAnimalType') === 'Cat') {
+        sizeBlock.classList.add('hidden');
+    }
+
     sizeBlock.append(sizeLabelElement);
     sidebar.append(sizeBlock);
 

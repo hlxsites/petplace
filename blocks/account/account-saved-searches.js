@@ -125,7 +125,7 @@ function getSearches(token) {
                     searchUrl += '&filterAnimalType=' + saved.SearchParameters.animalFilters.filterAnimalType;
                 }
                 if (saved.SearchParameters.animalFilters.filterBreed.length) {
-                    searchUrl += '&filterBreed=' + saved.SearchParameters.animalFilters.filterBreed[0];
+                    searchUrl += '&filterBreed=' + saved.SearchParameters.animalFilters.filterBreed[0].replace(' ', '+');
                 }
                 if (saved.SearchParameters.animalFilters.filterGender !== '') {
                     searchUrl += '&filterGender=' + saved.SearchParameters.animalFilters.filterGender;
