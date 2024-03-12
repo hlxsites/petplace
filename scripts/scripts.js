@@ -1127,6 +1127,7 @@ export async function captureError(source, e) {
 async function loadPage() {
   setLocale();
 
+  window.dataLayer ||= {};
   window.dataLayer.push({ js: new Date() });
   window.dataLayer.push({ config: 'GT-KD23TWW' });
   window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
