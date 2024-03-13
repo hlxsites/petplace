@@ -36,8 +36,7 @@ export function loadDelayed() {
 }
 
 export function loadShopifyBuy(id, node, accessToken) {
-  var scriptURL =
-    "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
+  const scriptURL = "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
   if (window.ShopifyBuy) {
     if (window.ShopifyBuy.UI) {
       ShopifyBuyInit();
