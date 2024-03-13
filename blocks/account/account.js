@@ -3,7 +3,7 @@ import TabsManual from './tabs-manual.js';
 import endPoints from '../../variables/endpoints.js';
 import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
 import { bindAccountDetailsEvents, createAccountDetailsPanel } from './account-details.js';
-
+import { buildBlock, decorateBlock, loadBlock } from '../../scripts/lib-franklin.js';
 async function createTabComponent() {
     const tabArray = [
         { title: 'Account Details', hash: 'details' },
@@ -110,5 +110,11 @@ export default async function decorate(block) {
         block.append(await createTabComponent());
         block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));
         await bindAccountDetailsEvents(block, token, initialUserData);
-    }
+
+        const surveyContainer =  block.querySelector('#survey')
+        const surveyBlock = buildBlock('pet-survey', '');
+        surveyContainer.append(surveyBlock);
+        decorateBlock(surveyBlock);
+        await loadBlock(surveyBlock);
+    }   
 }
