@@ -5,6 +5,7 @@
 .section.account-container {
     background-color: #FAFAFC;
     padding: 24px 16px;
+    position: relative;
 }
 
 .account .account-layout-container {
@@ -393,7 +394,7 @@
     url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
 }
 
-/* error messagae */ 
+/* error message */ 
 .form-control--text .error-message {
     display: none;
     margin-top: 12px;
@@ -454,6 +455,403 @@
     .account .account-select-container {
         display: none;
     }
+}
 
-    
+/* favorites details */
+.account-tabpanel--favorites .no-fav-pets {
+    text-align: center;
+}
+
+.account-tabpanel--favorites .new-search-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 52px;
+}
+
+.account-tabpanel--favorites .account-button--new-search {
+    display: flex;
+    align-items: center;
+}
+
+.account-tabpanel--favorites .account-button--new-search svg {
+    margin-right: 16px;
+}
+
+.account-tabpanel--favorites .fav-pet-card,
+.account-tabpanel--favorites .confirm-remove-modal {
+    margin-bottom: 16px;
+    border: 1px solid var(--border-base-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    color: var(--color-black);
+}
+
+.account-tabpanel--favorites .fav-pet-card:last-of-type {
+    margin-bottom: 0;
+}
+
+.account-tabpanel--favorites .fav-pet-card a {
+    color: var(--color-black);
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-info {
+    padding: 24px;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-img img {
+    object-fit: cover;
+    max-height: 229px;
+    margin: 0 auto;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-name {
+    font-family: Raleway,sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 26px;
+    margin-bottom: 8px;
+    display: flex;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-details {
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-separator {
+    display: inline-block;
+    margin: 0 12px;
+    width: 4px;
+    height: 4px;
+    border-radius: 100%;
+    background-color: var(--color-black);
+}
+
+.account-tabpanel--favorites .fav-pet-card .remove-fav {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    height: 24px;
+}
+
+.account-tabpanel--favorites .fav-pet-card .fp-info-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.account-tabpanel--favorites .fav-pet-card.no-image .fp-img img {
+    object-fit: contain;
+    background-color: #F7F7FA;
+}
+
+.account-tabpanel--favorites .hidden {
+    display: none !important;
+}
+.account-tabpanel--searchalerts .hidden {
+  display: none !important;
+}
+
+.account-tabpanel--favorites .fav-pet-card.fp-hidden,
+.account-tabpanel--favorites .fav-pet-card .unavailable-tag,
+.account-tabpanel--favorites .fav-pet-card.unavailable .fp-img {
+    display: none;
+}
+
+.account-tabpanel--favorites .prevent-click {
+    pointer-events: none;
+}
+
+.account-tabpanel--favorites .fav-pet-card.unavailable .unavailable-tag {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 40;
+    color: #C12010;
+    background-color: #FFF1F0;
+    padding: 4px 8px;
+    border-radius: 16px;
+    margin-left: 16px;
+}
+
+.account-tabpanel--favorites #view-more-btn {
+    display: block;
+    margin: 24px auto 0;
+    font-size: 18px;
+    line-height: 22px;
+    height: 48px;
+}
+
+.account-tabpanel--favorites .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 20;
+}
+
+.account-tabpanel--favorites .overlay.show {
+    display: block;
+}
+
+.account-tabpanel--favorites .confirm-remove-favorite-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    width: 60%;
+    background-color: white;
+    color: black;
+    z-index: 21;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36px;
+}
+
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns .cancel {
+    margin-bottom: 16px;
+    display: inline-flex;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid #222222;
+    font-family: "Libre Franklin";
+    color: #222222;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 5px 30px;
+    text-overflow: unset;
+    overflow: visible;
+}
+
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns .confirm {
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #C74D2F;
+    background-color: #C74D2F;
+}
+
+.account-tabpanel--searchalerts .overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 20;
+}
+
+.account-tabpanel--searchalerts .overlay.show {
+  display: block;
+}
+
+.account-tabpanel--searchalerts .confirm-remove-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  background-color: white;
+  color: black;
+  z-index: 21;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.account-tabpanel--searchalerts .confirm-remove-modal .modal-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .cancel {
+  margin-bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #222222;
+  font-family: "Libre Franklin";
+  color: #222222;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 5px 30px;
+  text-overflow: unset;
+  overflow: visible;
+}
+
+.account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .confirm {
+  font-size: 18px;
+  font-weight: 600;
+  background-color: #C74D2F;
+  background-color: #C74D2F;
+}
+
+@media (min-width: 768px) {
+    .account-tabpanel--favorites .fav-pet-card {
+        min-height: 183px;
+    }
+
+    .account-tabpanel--favorites .fav-pet-card {
+        flex-direction: row;
+    }
+
+    .account-tabpanel--favorites .fav-pet-card .fp-info {
+        width: 100%;
+        flex: 1;
+    }
+
+    .account-tabpanel--favorites .fav-pet-card .fp-img img,
+    .account-tabpanel--favorites .fav-pet-card .fp-img object {
+        width: 343px;
+        height: 200px;
+        vertical-align: middle;
+        overflow: hidden!important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .account-tabpanel--favorites .confirm-remove-modal {
+        top: 250px;
+    }
+}
+
+/* Saved Search Alerts */
+.section.saved-search-container {
+  background-color: #fafafc;
+  padding: 24px 16px;
+}
+
+.account .saved-search-layout-container {
+  border: 1px solid var(--border-base-color);
+  border-radius: 8px;
+  background-color: var(--background-color);
+}
+
+.account .saved-search-layout-row {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px 16px 40px;
+
+  @media (min-width: 768px) {
+    padding: 40px;
+  }
+}
+
+.account .saved-search-layout-row + .saved-search-layout-row {
+  border-top: 1px solid #e4e4eb;
+}
+
+.account .saved-search__title {
+  font-weight: 600;
+}
+
+.account .saved-search__timestamp {
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.account .saved-search__cta {
+  order: 3;
+  width: 100%;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    order: initial;
+    margin-left: auto;
+    width: auto;
+  }
+}
+
+.account .saved-search__delete {
+  display: inline-block;
+  margin: 0 0 0 auto;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='25' fill='none' stroke='%236e6d73' stroke-width='1.5' stroke-linejoin='round'%3E%3Cpath d='M18.058 22.856H5.942a1.73 1.73 0 0 1-1.731-1.731V5.548h15.577v15.577a1.73 1.73 0 0 1-1.731 1.731z'/%3E%3Cpath d='M9.404 17.663V10.74m5.192 6.923V10.74M.75 5.548h22.5' stroke-linecap='round'/%3E%3Cpath d='M14.596 2.086H9.404a1.73 1.73 0 0 0-1.731 1.731v1.731h8.654V3.817a1.73 1.73 0 0 0-1.731-1.731z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  @media (min-width: 768px) {
+    align-self: center;
+    margin: 0;
+  }
+}
+
+.account .saved-search__cta-new-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 40px auto 0;
+  padding-block: 13px;
+  width: 100%;
+  min-width: 300px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2f2f33;
+  background: #fff;
+  border: 1px solid #2f2f33;
+  border-radius: 50px;
+
+  @media (min-width: 768px) {
+    margin-left: auto;
+    max-width: fit-content;
+  }
+}
+
+.account .saved-search__cta-new-search:before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='none'%3E%3Cg clip-path='url(%23A)' stroke='%2309090d' stroke-width='1.5' stroke-miterlimit='10' stroke-linejoin='round'%3E%3Cpath d='M12.5 23.471c6.075 0 11-4.925 11-11s-4.925-11-11-11-11 4.925-11 11 4.925 11 11 11z'/%3E%3Cg stroke-linecap='round'%3E%3Cpath d='M12.451 6.947v11.049'/%3E%3Cpath d='M6.976 12.422h10.951'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='A'%3E%3Cpath fill='%23fff' transform='translate(.5 .471)' d='M0 0h24v24H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 24px;
 }

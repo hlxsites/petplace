@@ -9,10 +9,7 @@ import {
 import endPoints from '../../variables/endpoints.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setFavorite } from '../../scripts/adoption/favorite.js';
-import {
-  acquireToken,
-  isLoggedIn,
-} from '../../scripts/lib/msal/msal-authentication.js';
+import { acquireToken, isLoggedIn,} from '../../scripts/lib/msal/msal-authentication.js';
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
   inquiryNotificationTitle,
@@ -234,10 +231,21 @@ async function createCarouselSection(petName, images) {
     if (imageArr.length === 2) {
       const imageDiv = document.createElement('div');
       imageDiv.className = 'image-div';
-      imageDiv.innerHTML = `
-                <div><img src=${imageArr[0]} alt=${petName} /></div>
-                <div><img src=${imageArr[1]} alt=${petName} /></div>
-                `;
+      imageArr.forEach((image) => {
+        const imageBlock = document.createElement('div');
+        imageBlock.className = 'image-div';
+        imageBlock.innerHTML = '<div></div>';
+        imageBlock.firstElementChild.append(
+          createImageObject(
+            image || '',
+            getMetadata('carousel-image-fall-back'),
+            null,
+            700,
+            575
+          )
+        );
+        imageDiv.append(imageBlock);
+      });
       sectionContainer.append(imageDiv);
     }
 
@@ -250,7 +258,15 @@ async function createCarouselSection(petName, images) {
             <div class='image-carousel-slide' data-slide-index=${index} role='group' aria-label=${`slide ${index}`}>
                 <div class='image-carousel-slide-inner'>
                     <div class='image-carousel-slide-image'>
-                        <img src=${image} alt='image description text'>
+                        ${
+                          createImageObject(
+                            image || '',
+                            getMetadata('carousel-image-fall-back'),
+                            null,
+                            700,
+                            575
+                          ).outerHTML
+                        }
                     </div>
                 </div>
             </div>`;
@@ -433,35 +449,26 @@ async function createChecklistSection() {
     checklistLabelEl.textContent = checklistLabel;
     checklistContainer.append(checklistLabelEl);
   }
-  if (checklistItem1Label) {
-    checklistContainer.append(
-      createChecklistItem(1, checklistItem1Label, checklistItem1Text)
-    );
-    checklistContainer.append(
-      createCta(
-        '',
-        'Start Pet Match Survey',
-        'pet-details-button button primary right-arrow',
-        true
-      )
-    );
-  }
+  /* if (checklistItem1Label) {
+        checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
+        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
+    } */
   if (checklistItem2Label) {
     checklistContainer.append(
-      createChecklistItem(2, checklistItem2Label, checklistItem2Text)
+      createChecklistItem(1, checklistItem2Label, checklistItem2Text)
     );
   }
   if (checklistItem3Label) {
     checklistContainer.append(
-      createChecklistItem(3, checklistItem3Label, checklistItem3Text)
+      createChecklistItem(2, checklistItem3Label, checklistItem3Text)
     );
   }
   checklistContainer.append(
     createCta(
-      '',
+      '/pet-adoption/checklist',
       'View Full Checklist',
       'pet-details-button button primary right-arrow',
-      true
+      false
     )
   );
   return checklistContainer;
@@ -694,24 +701,25 @@ export default async function decorate(block) {
           "button.image-carousel-navigator[aria-disabled='false']",
       },
     });
-    // add favorite functionality
-    const favoriteCta = document.getElementById(animalId);
-    favoriteCta.addEventListener('click', (e) => {
-      setFavorite(e, petData);
-    });
+     // add favorite functionality
+     const favoriteCta = document.getElementById(animalId);
+     favoriteCta.addEventListener('click', (e) => {setFavorite(e, petData)});
 
-    // check if user is logged in
-    if (isLoggedIn()) {
-      token = await acquireToken();
-      // if logged in set pet as favorite
-      acquireToken()
-        .then((response) => {
-          getFavorites(response);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    }
+     // check if user is logged in
+     isLoggedIn().then(isLoggedIn => {
+         if (isLoggedIn) {
+             // if logged in set pet as favorite
+             acquireToken()
+             .then(response => {
+                 getFavorites(response);            
+             })
+             .catch((error) => {
+                 console.error('Error:', error);
+             });;
+         } else {
+           // not logged in or token is expired without ability to silently refresh its validity
+         }
+       });
 
     // add inquiry functionality
     const petCtaContaner = document.querySelector('.about-pet-ctas');

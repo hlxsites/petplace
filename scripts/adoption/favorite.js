@@ -25,7 +25,7 @@ export function setFavorite(e, animal) {
 }
 
 export function saveFavorite(token, animal) {
-    fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+    return fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -43,14 +43,41 @@ export function saveFavorite(token, animal) {
         const favoriteButton = document.getElementById(animal.animalId);
         favoriteButton?.classList.add('favorited');
         favoriteButton?.setAttribute('data-favorite-id', data);
+        
+
+        // display rest of favorites on the page
+        fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        }).then(response => {
+            //console.log('Success:', response.status);
+            return response.json();
+        }).then((data) => {
+            // favorite Pet in the UI
+            data.forEach((favorite) => {
+                const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
+                favoriteButton?.classList.add('favorited');
+                favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
+            })
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+        return data;
     })
+    
     .catch((error) => {
         console.error('Error saving favorite', error);
+        throw error;
     });
 }
 
 export function deleteFavorite(token, animal, favoriteId) {
-    fetch(`${endPoints.apiUrl}/adopt/api/Favorite/${favoriteId}`, {
+    return fetch(`${endPoints.apiUrl}/adopt/api/Favorite/${favoriteId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -60,8 +87,10 @@ export function deleteFavorite(token, animal, favoriteId) {
     .then(response => {
         const favoriteButton = document.getElementById(animal.animalId);
         favoriteButton?.classList.remove('favorited');
+        return response;
     })
     .catch((error) => {
         console.error('Error deleting favorite', error);
+        throw error;
     });
 }
