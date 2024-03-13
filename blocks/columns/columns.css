@@ -46,7 +46,7 @@
 .columns.emphasized > div > div > p:not(.button-container) {
   padding: 0 .5rem;
 }
-
+/* Start of shopify landing page custom column.cards styles */
 .columns.cards > div > div {
   display: flex;
   flex-direction: column;
@@ -168,6 +168,7 @@
   font-size: 18px;
   line-height: 28px;
 }
+/* end of shopify landing page custom card styles */
 
 .columns > div > .columns-img-col {
   order: 0;
