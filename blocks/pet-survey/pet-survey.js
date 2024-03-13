@@ -12,7 +12,7 @@ export default async function decorate(block) {
     const animalType = searchParams.get('animalType');
     const animalId = searchParams.get('animalId');
     const clientId = searchParams.get('clientId');
-    const surveyId = animalType === 'dog' ? 1 : animalType === 'cat' ? 2 : null;
+    const surveyId = animalType === 'dog' ? 1 : animalType === 'cat' ? 2 : null; // need to update this to use the surveyId from the query string
 
     // fetch placeholders from the 'adopt' folder
     const placeholders = await fetchPlaceholders('/adopt');
@@ -90,7 +90,6 @@ export default async function decorate(block) {
           const data = {
             "QuestionId":  parseInt(el.target.getAttribute('data-question-id')),
             "QuestionOptionId": parseInt(el.target.value),
-            "Deleted": true,
           }
           state.surveyAnswers.push(data);
         });
@@ -160,8 +159,11 @@ export default async function decorate(block) {
             "SurveyResponseAnswers": [...state.surveyAnswers],
           }
           console.log('payload', payload)
-          const result = await callSurveyResponse(surveyId, token, 'POST',payload);
+          const result = await callSurveyResponse(surveyId, token, 'POST', payload);
           // need add logic to validate form, save survey and submit inquiry 
+          if (result) {
+            window.location.href = `/pet-adoption/account?animalType=${animalType}#survey`
+          }
         });
       }
     }
@@ -238,7 +240,7 @@ export default async function decorate(block) {
       return surveyAnswers;
     }
     
-    async function fetchSurveyQuestions(surveyId) {
+    async function fetchSurveyQuestions(surveyId = null) {
       const questionsApi = `${endPoints.apiUrl}/adopt/api/SurveyQuestion/${surveyId}`;
       let result;
       try {
@@ -310,6 +312,9 @@ export default async function decorate(block) {
           block.append(await createSummaryScreen(surveySummaryHeading,surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
           bindSummaryBackButtonEvents(block, false);
           // bindSummarySaveEvent(block);
+          block.querySelector('form.pet-survey__form').addEventListener('submit', (event) => {
+            event.preventDefault();
+          });
           bindSummaryInquiryEvent(block);
         }
       }
@@ -324,7 +329,12 @@ export default async function decorate(block) {
       bindSurveyChangeEvents(block);
       // Add summary
       block.append(await createSummaryScreen(surveySummaryHeading, surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
+      block.querySelector('form.pet-survey__form').addEventListener('submit', (event) => {
+        event.preventDefault();
+      });
       bindSummaryBackButtonEvents(block, false);
+      bindSummaryInquiryEvent(block);
+
 
     }
 

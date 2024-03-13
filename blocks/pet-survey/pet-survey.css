@@ -416,3 +416,7 @@ progress[value]::-webkit-progress-value {
         margin: 0 auto;
     }
 }
+.account-wrapper .pet-survey__summary-header,
+.account-wrapper .pet-survey__survey h1{
+    display:none;
+}
