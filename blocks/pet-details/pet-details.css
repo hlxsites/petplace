@@ -33,6 +33,8 @@
 .pet-details a.pet-details-button,
 .pet-details .submit-inquiry-button,
 .pet-details .modal-cta-button {
+  display: inline-flex;
+  align-items: center;
   margin: 0;
   padding: 12px 50px;
   font-size: 18px;
@@ -40,7 +42,19 @@
   font-weight: 600;
   line-height: 1.2;
   width: 100%;
+  min-width: max-content;
   white-space: unset;
+}
+
+.pet-details .submit-inquiry-button {
+  display: none;
+
+  color: #fff;
+  background-color: var(--compare-button-bg-color);
+}
+
+.pet-details .submit-inquiry-button.visible {
+  display: block;
 }
 
 .pet-details .pet-details-button.right-arrow:after,
@@ -224,8 +238,14 @@
 
 /* checklist section */
 .pet-details .checklist-container {
+  display: none;
   padding: 32px 24px 32px 24px;
 }
+
+.pet-details .checklist-container.visible {
+  display: block;
+}
+
 .pet-details .checklist-item {
   margin-top: 48px;
 }
@@ -617,6 +637,9 @@
     display: grid;
     grid-template-columns: minmax(0, 6.7fr) 40px minmax(0, 3.3fr);
     grid-template-rows: repeat(3, auto);
+  }
+  .pet-details .contents-section--no-inquiry {
+    grid-template-columns: 100%;
   }
   .pet-details .about-pet-container {
     grid-column: 1 / 2;

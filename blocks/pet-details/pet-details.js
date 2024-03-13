@@ -429,7 +429,7 @@ async function createShelterSection(aboutShelter) {
     `;
   return shelterContainer;
 }
-async function createChecklistSection() {
+async function createChecklistSection(inquiryStatus) {
   const checklistContainer = document.createElement('div');
   checklistContainer.className = 'checklist-container';
   // fetch placeholders from the 'adopt' folder
@@ -444,25 +444,44 @@ async function createChecklistSection() {
     checklistItem3Label,
     checklistItem3Text,
   } = placeholders;
+
   if (checklistLabel) {
     const checklistLabelEl = document.createElement('h2');
     checklistLabelEl.textContent = checklistLabel;
     checklistContainer.append(checklistLabelEl);
   }
-  /* if (checklistItem1Label) {
+
+  if(inquiryStatus === true) {
+    if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
         checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
-    } */
+    }
+  }
+
   if (checklistItem2Label) {
-    checklistContainer.append(
-      createChecklistItem(1, checklistItem2Label, checklistItem2Text)
-    );
+    let itemContent = null;
+
+    if (inquiryStatus === 'true') {
+      itemContent = createChecklistItem(2, checklistItem2Label, checklistItem2Text)
+    } else {
+      itemContent = createChecklistItem(1, checklistItem2Label, checklistItem2Text)
+    }
+
+    checklistContainer.append(itemContent);
   }
+
   if (checklistItem3Label) {
-    checklistContainer.append(
-      createChecklistItem(2, checklistItem3Label, checklistItem3Text)
-    );
+    let itemContent = null;
+
+    if (inquiryStatus === 'true') {
+      itemContent = createChecklistItem(3, checklistItem3Label, checklistItem3Text)
+    } else {
+      itemContent = createChecklistItem(2, checklistItem3Label, checklistItem3Text)
+    }
+
+    checklistContainer.append(itemContent);
   }
+
   checklistContainer.append(
     createCta(
       '/pet-adoption/checklist',
@@ -627,32 +646,6 @@ function getSurveyStatus(token, animalType) {
     });
 }
 
-function postInquiry(token, animalId, clientId, surveyResponseId) {
-  const inquiryData = {
-    AnimalReferenceNumber: animalId,
-    ClientId: clientId,
-    SurveyResponseId: surveyResponseId ? surveyResponseId : 0,
-  };
-
-  fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(inquiryData),
-  })
-    .then((response) => {
-      // Dev Note: commented check for 200 status ONLY for testing purposes, will need to be removed when API issue is resolved
-      //if (response.status === 200) {
-      buildShowModal();
-      //}
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
 export default async function decorate(block) {
   block.textContent = '';
   let token = null;
@@ -683,7 +676,6 @@ export default async function decorate(block) {
 
     layoutContainer.append(await createAboutPetSection(petData));
     layoutContainer.append(await createShelterSection(petData));
-    layoutContainer.append(await createChecklistSection());
     block.append(layoutContainer);
 
     block.append(
@@ -701,65 +693,75 @@ export default async function decorate(block) {
           "button.image-carousel-navigator[aria-disabled='false']",
       },
     });
+
      // add favorite functionality
      const favoriteCta = document.getElementById(animalId);
      favoriteCta.addEventListener('click', (e) => {setFavorite(e, petData)});
 
      // check if user is logged in
      isLoggedIn().then(isLoggedIn => {
-         if (isLoggedIn) {
-             // if logged in set pet as favorite
-             acquireToken()
-             .then(response => {
-                 getFavorites(response);            
-             })
-             .catch((error) => {
-                 console.error('Error:', error);
-             });;
-         } else {
-           // not logged in or token is expired without ability to silently refresh its validity
-         }
-       });
+        if (isLoggedIn) {
+            // if logged in set pet as favorite
+            acquireToken()
+            .then(response => {
+                getFavorites(response);            
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });;
+        } else {
+          // not logged in or token is expired without ability to silently refresh its validity
+        }
+      });
 
     // add inquiry functionality
     const petCtaContaner = document.querySelector('.about-pet-ctas');
     petCtaContaner.innerHTML += `<button class='submit-inquiry-button button secondary'>Submit An Inquiry</button>`;
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
-    submitInquiryCta.addEventListener('click', () => {
-      // if user is logged in, check if survey is completed
-      if (token) {
-        // if animal type is Dog/Cat, check if survey is completed
-        if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {
-          const surveyStatus = getSurveyStatus(token, petData.animalType);
-          let surveyStatusCompleted = null;
-          surveyStatus.then((data) => {
-            surveyStatusCompleted = data.Completed;
-          });
+    if(petData.animalType === 'Dog' || petData.animalType === 'Cat') {
 
-          // if survey IS NOT COMPLETED, set path to survey
-          if (!surveyStatusCompleted) {
-            window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType}`;
+      if(petData.email !== null) {
+        // if email is available, append createChecklistSection WITH survey content
+        submitInquiryCta.classList.add('visible');
+        layoutContainer.append(await createChecklistSection(true));
+        const checklistContainer = document.querySelector('.checklist-container');
+        checklistContainer.classList.add('visible');
+
+
+        submitInquiryCta.addEventListener('click', () => {
+          // if user is logged in, check if survey is completed
+          if (token) {
+            // check if survey is completed
+            const surveyStatus = getSurveyStatus(token, petData.animalType);
+            let surveyStatusCompleted = null;
+
+            surveyStatus.then((data) => {
+              surveyStatusCompleted = data.Completed;
+            });
+
+            // if survey IS NOT COMPLETED, set path to survey
+            if (!surveyStatusCompleted) {
+              window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType.toLowerCase()}`;
+            } else {
+              // if survey IS COMPLETED, set path to survey summary page aka inquiry confirmation
+              window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType.toLowerCase()}`;
+            }
+            
           } else {
-            // if survey IS COMPLETED, set path to survey summary page aka inquiry confirmation
-            window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType}`;
+            // if user is NOT logged in, set path to survey
+            window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType.toLowerCase()}`;
           }
-        } else {
-          // if animal type isn't Dog/Cat, set path to inquiry
-          postInquiry(token, animalId, clientId, 0);
-        }
+        });
       } else {
-        // if user is logged in and animal type is Dog/Cat, set path to survey
-        if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {
-          window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType.toLowerCase()}`;
-        } else {
-          // if user is not logged in and animal type isn't Dog/Cat, set path to inquiry
-          acquireToken('Inquiry').then((token) => {
-            // Post inquiry after user logs in
-            postInquiry(token, animalId, clientId, 0);
-          });
-        }
+        // if email is not available, append createChecklistSection W/OUT survey content
+        layoutContainer.append(await createChecklistSection(false));
+        const checklistContainer = document.querySelector('.checklist-container');
+        checklistContainer.classList.add('visible');
       }
-    });
+    } else {
+      // if animal type isn't Dog/Cat, expand contents section to full width
+      layoutContainer.classList.add('contents-section--no-inquiry');
+    }
   }
 }
