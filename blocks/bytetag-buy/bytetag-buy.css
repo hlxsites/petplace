@@ -1,6 +1,6 @@
 .bytetag-buy-container.highlight {
-  background-color: #f9f9f9 !important;
-  border-top: 3px solid #d0d0d6;
+  background-color: var(--color-gray-lightest) !important;
+  border-top: 3px solid var( --color-gray-lighter);
 }
 
 .bytetag-buy-container > .default-content-wrapper {
