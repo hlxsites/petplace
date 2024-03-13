@@ -40,7 +40,7 @@ export function loadShopifyBuy(id, node, accessToken) {
 
   function ShopifyBuyInit() {
     // eslint-disable-next-line no-undef
-    var client = ShopifyBuy.buildClient({
+    const client = ShopifyBuy.buildClient({
       domain: 'bytetag.myshopify.com',
       storefrontAccessToken: accessToken,
     });

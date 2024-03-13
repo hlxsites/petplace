@@ -2,7 +2,7 @@ import { loadShopifyBuy } from '../../scripts/third-party.js';
 
 export default async function decorate(block) {
   const container = block.parentElement.parentElement;
-  const {
+  let {
     dataset: { bytetagId, bytetagToken },
   } = container;
   if (bytetagId && bytetagToken) {
