@@ -162,7 +162,7 @@ export default async function decorate(block) {
           const result = await callSurveyResponse(surveyId, token, 'POST', payload);
           // need add logic to validate form, save survey and submit inquiry 
           if (result) {
-            window.location.href = `/pet-adoption/account?animalType=${animalType}#survey`
+            window.location.href = `/pet-adoption/inquiry-confirmation` // make this value authorable
           }
         });
       }
