@@ -83,7 +83,19 @@ export default async function decorate(block) {
         });
       })
     }
-    
+    function bindSurveySummaryChangeEvents() {
+      const surveyInputs = block.querySelectorAll(' .pet-survey__form-control select');
+      surveyInputs.forEach((inputEl) => {
+        inputEl.addEventListener('change', (el)=> {         
+          const data = {
+            "QuestionId":  parseInt(el.target.getAttribute('data-question-id')),
+            "QuestionOptionId": parseInt(el.target.value),
+            "Deleted": true,
+          }
+          state.surveyAnswers.push(data);
+        });
+      })
+    }
     function bindPresurveyButtonEvents(block) {
       const cancelBtn = block.querySelector('#pet-survey-cancel');
       const startBtn = block.querySelector('#pet-survey-start');
@@ -113,7 +125,10 @@ export default async function decorate(block) {
       if (nextBtn) {
         nextBtn.addEventListener('click', () => {
           const currentActiveIndex = parseInt(block.querySelector('.pet-survey .pet-survey__question.active').getAttribute('data-q-index'));
-          setActiveQuestion(block, currentActiveIndex, currentActiveIndex + 1);
+          // make sure a question has been checked before moving to the next
+          if(block.querySelector('.pet-survey .pet-survey__question.active input:checked') || !block.querySelector('.pet-survey .pet-survey__question.active input')) {
+            setActiveQuestion(block, currentActiveIndex, currentActiveIndex + 1);
+          }
         });
       }
     
@@ -137,12 +152,35 @@ export default async function decorate(block) {
     function bindSummaryInquiryEvent(block) {
       const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
       if (inquiryBtn) {
-        inquiryBtn.addEventListener('click', (event) => {
+        inquiryBtn.addEventListener('click', async (event) => {
           event.preventDefault();
+          console.log('answers', state, state.surveyAnswers, questions)
+          const payload = {
+            "SurveyId": surveyId,
+            "SurveyResponseAnswers": [...state.surveyAnswers],
+          }
+          console.log('payload', payload)
+          const result = await callSurveyResponse(surveyId, token, 'POST',payload);
           // need add logic to validate form, save survey and submit inquiry 
         });
       }
     }
+    function bindSummarySaveEvent(block) {
+      const saveBtn = block.querySelector('#pet-survey-summary-save');
+      if (saveBtn) {
+        saveBtn.addEventListener('click', async (event) => {
+          event.preventDefault();
+          const payload = {
+            "Id": surveyId , 
+            "SurveyResponseAnswers": [...state.surveyAnswers],
+          }
+          console.log('save payload', payload)
+          const result = await callSurveyResponse(surveyId, token, 'PUT', payload);
+        });
+      }
+    }
+
+
     function updateSummaryForm(block, answers) {
       const form = block.querySelector('.pet-survey__layout-container--summary form');
       const multiSelectCheckboxes = Array.from(form.querySelectorAll('.multi-select input[type=\'checkbox\']'));
@@ -252,6 +290,8 @@ export default async function decorate(block) {
           block.append(await createSummaryScreen(surveySummaryHeading, surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
           updateSummaryForm(block, answers); 
           bindSummaryBackButtonEvents(block, true);
+          bindSurveySummaryChangeEvents(block);
+          bindSummarySaveEvent(block);
         }
         toggleScreen('summary', block);
       } else {
@@ -269,6 +309,8 @@ export default async function decorate(block) {
           // Add summary
           block.append(await createSummaryScreen(surveySummaryHeading,surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
           bindSummaryBackButtonEvents(block, false);
+          // bindSummarySaveEvent(block);
+          bindSummaryInquiryEvent(block);
         }
       }
     }

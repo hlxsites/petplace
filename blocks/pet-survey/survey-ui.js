@@ -257,13 +257,18 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
         inquiryBtn.innerText = 'Submit Inquiry';
         ctaContainer.append(backBtn, inquiryBtn);
     } else {
+        // add back button to summary screen with save changes
+        const backBtn = document.createElement('button');
+        backBtn.id = 'pet-survey-summary-back';
+        backBtn.className = 'pet-survey__button secondary';
+        backBtn.innerText = 'Back';
         // Add Save Changes button
         const saveBtn = document.createElement('button');
         saveBtn.id = 'pet-survey-summary-save';
-        saveBtn.setAttribute('disabled', 'disabled');
+        // saveBtn.setAttribute('disabled', 'disabled');
         saveBtn.className = 'pet-survey__button secondary';
         saveBtn.innerText = 'Save Changes';
-        ctaContainer.append(saveBtn);
+        ctaContainer.append(backBtn, saveBtn);
     }
     form.append(ctaContainer);
     formDiv.append(form);
