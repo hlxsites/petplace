@@ -46,6 +46,7 @@
 .columns.emphasized > div > div > p:not(.button-container) {
   padding: 0 .5rem;
 }
+
 /* Start of shopify landing page custom column.cards styles */
 .columns.cards > div > div {
   display: flex;
@@ -61,6 +62,10 @@
   margin-bottom: 0;
 }
 
+.columns > div > .columns-img-col img {
+  display: block;
+}
+
 .columns.cards > div > div > p:first-of-type > picture > img:first-of-type {
   width: 100%;
   object-fit: cover;
@@ -72,7 +77,27 @@
   font-size: 20px;
   line-height: 28px;
   font-weight: 400;
-  color: #000000;
+  color: #000;
+  color: var(--text-color);
+  margin-bottom: 0;
+}
+
+.columns.cards > div > div > p:not(:first-of-type){
+  font-size: var(--body-font-size-default);
+  margin-bottom: 12px;
+}
+
+.columns.cards > div > div > p:last-of-type{
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.section.highlight > div > .columns.cards > div > div p{
+  color: #000;
+  text-align: center;
+  font-size: 18px;
+  line-height: 28px;
 }
 
 .section:not(.highlight) .columns.cards > div > div > h3,
@@ -106,27 +131,11 @@
   vertical-align: middle;
 } 
 
-.columns.cards > div > div > h3{
-  color: var(--text-color);
-  margin-bottom: 0;
-}
-
 .columns.cards > div > div > p > em {
   font-style: normal;
   color: #666A6C;
   font-size: 14px;
   line-height: 28px;
-}
-.columns.cards > div > div > p:not(:first-of-type){
-  font-size: var(--body-font-size-default);
-  margin-bottom: 12px;
-}
-
-
-.columns.cards > div > div > p:last-of-type{
-  margin-bottom: 0;
-  font-size: 16px;
-  line-height: 24px;
 }
 
 .section.highlight > div > .columns.cards > div {
@@ -136,9 +145,10 @@
 .section.highlight > div > .columns.cards > div > div {
   align-items: center;
   padding: 32px;
-  box-shadow: 0px 4px 16px rgba(0,0,0,.25);
+  box-shadow: 0 4px 16px rgba(0 0 0 / 25%);
   gap: 8px;
   background-color: var(  --background-color);
+
   @media (max-width: 600px){
    text-align:center;
   }
@@ -149,33 +159,24 @@
   line-height: 36px;
   font-weight: 700;
   text-align: center;
+
   @media (max-width: 1025px){
     padding: 0;
   }
 }
 
 .section.highlight > div > .columns.cards > div > div h3 em {
-  color: #000000;
+  color: #000;
 }
 
 .section.highlight > div > .columns.cards > div > div h3::after {
   content: none;
 }
 
-.section.highlight > div > .columns.cards > div > div p{
-  color: #000000;
-  text-align: center;
-  font-size: 18px;
-  line-height: 28px;
-}
 /* end of shopify landing page custom card styles */
 
 .columns > div > .columns-img-col {
   order: 0;
-}
-
-.columns > div > .columns-img-col img {
-  display: block;
 }
 
 .columns hr {

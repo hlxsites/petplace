@@ -686,6 +686,7 @@ main .section.highlight.strong {
   background-color: var(--background-color-dark);
   color: var(--text-color-inverted);
 }
+
 main .section.highlight.purple {
   background-color: var( --color-purple-dark);
   color: var(--text-color-inverted);

@@ -5,9 +5,18 @@
 
 .bytetag-buy-container > .default-content-wrapper {
   text-align: center;
+
   @media (max-width: 900px) {
     margin-top: 3rem;
   }
+}
+
+.bytetag-buy > div p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #000;
+  display: flex;
+  align-items: center;
 }
 
 .bytetag-buy-container > .default-content-wrapper > p {
@@ -25,6 +34,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
+
   @media (min-width: 1024px) {
     padding: 2rem 0;
   }
@@ -38,6 +48,7 @@
   padding: 0 2rem;
   justify-content: space-evenly;
   width: 100%;
+
   @media (max-width: 900px) {
     padding: 0;
     flex-direction: column-reverse !important;
@@ -45,13 +56,16 @@
     gap: 25px;
     align-items: center;
   }
+
   @media (max-width: 1024px) {
     gap: 20px;
   }
 }
+
 .bytetag-buy > iframe {
   max-width: 400px;
 }
+
 .bytetag-buy.slide {
   flex-direction: row;
 }
@@ -63,6 +77,7 @@
 
 .bytetag-buy > div h2 {
   font-size: 3rem;
+
   @media (max-width: 900px) {
     font-size: 40px;
     line-height: 50px;
@@ -75,16 +90,8 @@
   padding-top: 1rem;
   font-size: 26px;
   line-height: 36px;
-  color: #000000;
+  color: #000;
   font-weight: 700;
-}
-
-.bytetag-buy > div p {
-  font-size: 18px;
-  line-height: 28px;
-  color: #000000;
-  display: flex;
-  align-items: center;
 }
 
 .bytetag-buy > div h3:first-of-type {
@@ -96,14 +103,12 @@
   margin-right: 10px;
 }
 
-.bytetag-buy > div > div > p > picture + * {
-
-}
 .bytetag-buy > div > div > p:first-of-type > em {
     font-style: normal;
     font-size: 24px;
     line-height: 34px;
 }
+
 .bytetag-buy > div > div > p:first-of-type > em::before {
     display: inline-block;
     content: "";
@@ -115,6 +120,4 @@
     mask: url("../../icons/stars-five-purple.svg") no-repeat center center;
     vertical-align: middle;
     margin-bottom: 5px;
-    
-
 }
