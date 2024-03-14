@@ -182,7 +182,7 @@ async function createSearchForm(block) {
     let selectedAnimalType = null;
 
     ev.preventDefault();
-    const isValidZip = /^(\d{5}|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/.test(zipInput.value);
+    const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
     if (!isValidZip) {
       zipInput.classList.add('error');
       errorSpan.classList.add('active');

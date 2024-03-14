@@ -713,7 +713,7 @@ export default async function decorate(block) {
         
         const zipInput = document.getElementById('zip');
         const errorSpan = document.getElementById('zip-error');
-        const isValidZip = /^(\d{5}|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/.test(zipInput.value);
+        const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
         if (isValidZip) {
         zipInput.classList.remove('error');
         errorSpan.classList.remove('active');
@@ -804,7 +804,7 @@ export default async function decorate(block) {
     zipInput.title = zipErrorMessage;
     zipInput.placeholder = zipPlaceholder;
     zipInput.addEventListener('blur', () => {
-        const isValidZip = /^(\d{5}|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/.test(zipInput.value);
+        const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
         if (isValidZip) {
         zipInput.classList.remove('error');
         errorSpan.classList.remove('active');
