@@ -38,6 +38,7 @@
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
   --color-gray-lighter: #f7f7f7;
+  --color-gray-lightest: #f9f9f9;
   --color-gray-dark: #4a4a4a;
   --color-blue: #678fda;
   --color-blue-light: #c4d1e9;
@@ -46,6 +47,7 @@
   --color-purple-light: #978ce0;
   --color-purple-gray: #736aa4;
   --color-purple-light-alt: #8e8199;
+  --color-purple-dark: #302280;
   --color-dark-maroon: #5d3450;
   --color-red: #ff6662;
   --color-gold: #d8c46c;
@@ -692,6 +694,11 @@ main .section.highlight {
 
 main .section.highlight.strong {
   background-color: var(--background-color-dark);
+  color: var(--text-color-inverted);
+}
+
+main .section.highlight.purple {
+  background-color: var( --color-purple-dark);
   color: var(--text-color-inverted);
 }
 
