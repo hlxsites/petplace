@@ -483,7 +483,7 @@ function buildFilterSidebar(sidebar) {
 
     // check if size should be hidden
     const params = new URLSearchParams(window.location.search);
-    if (params.get('filterAnimalType') === 'Cat') {
+    if (params.get('filterAnimalType') === 'Cat' || params.get('filterAnimalType') === 'Other') {
         sizeBlock.classList.add('hidden');
     }
 
