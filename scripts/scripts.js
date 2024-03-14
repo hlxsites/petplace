@@ -978,7 +978,9 @@ async function loadLazy(doc) {
 
   await window.hlx.plugins.run('loadLazy');
 
-  addNewsletterPopup();
+  if (!window.hlx.codeBasePath) {
+    addNewsletterPopup();
+  }
 
   import('./datalayer.js').then(({ handleDataLayerApproach }) => {
     handleDataLayerApproach();
