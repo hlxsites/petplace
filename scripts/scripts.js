@@ -978,7 +978,7 @@ async function loadLazy(doc) {
 
   await window.hlx.plugins.run('loadLazy');
 
-  if (!window.hlx.codeBasePath) {
+  if (!window.hlx.contentBasePath) {
     addNewsletterPopup();
   }
 
