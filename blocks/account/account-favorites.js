@@ -52,6 +52,33 @@ function openRemoveConfirmModal(petName, element, id, token, btn) {
         overlay.classList.remove('show');
     });
 }
+function isEmptyObject(obj) {
+    return typeof obj === 'object' && Object.keys(obj).length === 0;
+}
+
+function createImageObject(imagePath, fallBackSrc, fallBackAlt, width, height) {
+    let img;
+    if (!imagePath || isEmptyObject(imagePath)) {
+        img = document.createElement('img');
+        img.src = fallBackSrc;
+        img.alt = fallBackAlt || '';
+    } else {
+        img = document.createElement('object');
+        img.data = imagePath;
+        img.type = 'image/jpg';
+        if (width) {
+            img.width = width;
+        }
+        if (height) {
+            img.height = height;
+        }
+        const fallback = document.createElement('img');
+        fallback.src = fallBackSrc;
+        fallback.alt = fallBackAlt || '';
+        img.append(fallback);
+    }
+    return img;
+}
 
 function createRemoveConfirmModal() {
     const removeConfirmModal = `
@@ -185,10 +212,7 @@ function getFavorites(animalData) {
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
                     <div class="fp-img">
-                        <object data=${ImageUrl}>
-                            <img src="${fallBackImg}" />
-                        </object>
-                        
+                    ${createImageObject(ImageUrl, fallBackImg,'').outerHTML}                        
                     </div>
                     <div class="fp-info">
                         <div class="fp-info-header">
