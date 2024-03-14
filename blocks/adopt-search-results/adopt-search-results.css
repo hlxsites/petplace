@@ -23,18 +23,16 @@
     padding: 0;
     overflow: hidden;
     display: none;
-
     padding: 1.3rem;
     min-height: 250px;
-    position: absolute;
     border: 1px solid #ddd;
     background-color: #fff;
     border-radius: 15px;
     z-index: 10;
-    position: fixed;
+    position: absolute;
     left: 50%;
-    top: 50px;
-    transform: translate(-50%, 0);
+    top: 0;
+    transform: translate(-50%, -50%);
     width: 80%;
     z-index: 25;
 }
