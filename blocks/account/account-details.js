@@ -94,25 +94,25 @@ export async function createAccountDetailsPanel(userData) {
             <form class='account-form account-form--personal' id='personal-info-form'>
                 <div class='form-control form-control--text half-width'>
                     <label for='fname'>First Name</label>
-                    <input type='text' id='FirstName' name='FirstName' value=${FirstName} required>
+                    <input type='text' id='FirstName' name='FirstName' value="${FirstName}" required>
                     <span class="error-message" id="FirstName-error">Please enter your first name.</span>
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='lname'>Last Name</label>
-                    <input type='text' id='LastName' name='LastName' value=${LastName} required>
+                    <input type='text' id='LastName' name='LastName' value="${LastName}" required>
                     <span class="error-message" id="LastName-error">Please enter your last name.</span>
                 </div>
                 <div class='form-control form-control--text'>
                     <label for='email'>Email</label>
-                    <input type='text' id='Email' name='email' value=${Email} disabled>
+                    <input type='text' id='Email' name='email' value="${Email}" disabled>
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='phone'>Phone Number</label>
-                    <input type='text' id='PhoneNumber' name='PhoneNumber' placeholder='Enter your phone number' value=${PhoneNumber || ''}>
+                    <input type='text' id='PhoneNumber' name='PhoneNumber' placeholder='Enter your phone number' value="${PhoneNumber || ''}">
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='zip'>Zip/Postal Code</label>
-                    <input type='text' id='ZipCode' name='ZipCode' value=${ZipCode} required pattern='^[0-9]{5}(?:-[0-9]{4})?$'>
+                    <input type='text' id='ZipCode' name='ZipCode' value="${ZipCode}" required pattern='^[0-9]{5}(?:-[0-9]{4})?$'>
                     <span class="error-message" id="ZipCode-error">Please enter your zip/postal code.</span>
                 </div>
                 <div class='form-control form-control--submit'>
