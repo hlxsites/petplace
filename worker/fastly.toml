@@ -6,7 +6,7 @@ description = "A reverse proxy to integrate the website with third-party service
 language = "javascript"
 manifest_version = 3
 name = "aem-eds-petplace"
-service_id = "yGkOmb0NEu8ATnubeO1X93"
+service_id = "jxj1sIfJ6OJYvOyEskHL94"
 
 [scripts]
   build = "npm run build"
