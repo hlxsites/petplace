@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
-import { extractName, formatPhoneNumber } from '../../templates/adopt/adopt.js';
+import { extractName } from '../../templates/adopt/adopt.js';
 
 const arrInquiryList = [];
 
@@ -27,7 +27,7 @@ function removeInquiryPet(id, token, btn) {
       btn.closest('.inquiry-pet-card').remove();
   })
   .catch((error) => {
-      console.error('Error deleting inquiry', error);
+      // console.error('Error deleting inquiry', error);
       throw error;
   });
 }
@@ -224,7 +224,7 @@ function getInquiries(animalData) {
             inquiryPetCard.card = `
             <div class="inquiry-pet-card ${IsAvailable ? 'available' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
                 <div class="fp-img">
-                ${createImageObject(ImageUrl, fallBackImg,'').outerHTML}                        
+                ${createImageObject(ImageUrl, fallBackImg, '').outerHTML}                        
                 </div>
                 <div class="fp-info">
                     <div class="fp-info-header">
@@ -272,7 +272,7 @@ function getInquiries(animalData) {
     await bindAccountInquiryEvents(elInquiryList, animalData, arrInquiryList);
 })
 .catch((error) => {
-    // console.error('Error:', error);
+    console.error('Error:', error);
     const elInquiryList = document.querySelector('.inquiry-list');
 
     elInquiryList.innerHTML = emptyInquiryList;
