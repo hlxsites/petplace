@@ -31,8 +31,8 @@
 /* button */
 .pet-details .pet-details-button,
 .pet-details a.pet-details-button,
-.pet-details .submit-inquiry-button,
-.pet-details .modal-cta-button {
+.pet-details .submit-inquiry-button
+/* .pet-details .modal-cta-button */ {
   display: inline-flex;
   align-items: center;
   margin: 0;
@@ -715,7 +715,7 @@
     display: none;
   }
 }
-
+/* 
 .pet-details .inquiry-modal {
   display: none;
   z-index: 21;
@@ -764,7 +764,7 @@
     flex-direction: row;
     justify-content: center;
   }
-}
+} */
 
 .button-container > * {
   @media screen and (max-width: 1024px) {
@@ -773,6 +773,6 @@
   }
 }
 
-.pet-details .inquiry-modal .modal-cta-button {
+/* .pet-details .inquiry-modal .modal-cta-button {
   padding-inline: 24px;
-}
+} */

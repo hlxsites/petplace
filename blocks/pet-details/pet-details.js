@@ -9,14 +9,15 @@ import {
 import endPoints from '../../variables/endpoints.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setFavorite } from '../../scripts/adoption/favorite.js';
-import { acquireToken, isLoggedIn,} from '../../scripts/lib/msal/msal-authentication.js';
-const placeholders = await fetchPlaceholders('/pet-adoption');
+import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+
+/* const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
   inquiryNotificationTitle,
   inquiryNotificationText,
   inquiryNotificationPrimaryCtaLabel,
   inquiryNotificationSecondaryCtaLabel,
-} = placeholders;
+} = placeholders; */
 
 function isEmptyObject(obj) {
   return typeof obj === 'object' && Object.keys(obj).length === 0;
@@ -148,9 +149,7 @@ function createChecklistItem(index, label, text) {
 async function getParametersFromUrl() {
   const { pathname } = window.location;
   const pathArr = pathname.split('/');
-  const pagePathString =
-    getMetadata('pet-profile-page-paths') ||
-    '/pet-adoption/dogs/,/pet-adoption/cats/,/pet-adoption/others/';
+  const pagePathString = getMetadata('pet-profile-page-paths') || '/pet-adoption/dogs/,/pet-adoption/cats/,/pet-adoption/others/';
   const pagePaths = pagePathString.split(',');
   if (pagePaths.some((el) => pathname.startsWith(el)) && pathArr.length >= 4) {
     const [animalId, clientId] = pathname.endsWith('/')
@@ -169,7 +168,7 @@ async function fetchAnimalData(animalApi) {
       result = formatAnimalData(json);
     }
   } catch (error) {
-    console.error('Error:', error);
+    // console.error('Error:', error);
   }
   return result;
 }
@@ -200,7 +199,7 @@ async function fetchSimilarPets(zip, animalType, animalListApi) {
       result = formatSimilarPetData(json.animal);
     }
   } catch (error) {
-    console.error('Error:', error);
+    // console.error('Error:', error);
   }
   return result;
 }
@@ -219,15 +218,12 @@ async function createCarouselSection(petName, images) {
         getMetadata('carousel-image-fall-back'),
         null,
         700,
-        575
-      )
+        575,
+      ),
     );
     sectionContainer.append(imageDiv);
   } else {
-    sectionContainer.className =
-      imageArr.length === 2
-        ? 'carousel-section two-slides'
-        : 'carousel-section';
+    sectionContainer.className = imageArr.length === 2 ? 'carousel-section two-slides' : 'carousel-section';
     if (imageArr.length === 2) {
       const imageDiv = document.createElement('div');
       imageDiv.className = 'image-div';
@@ -241,8 +237,8 @@ async function createCarouselSection(petName, images) {
             getMetadata('carousel-image-fall-back'),
             null,
             700,
-            575
-          )
+            575,
+          ),
         );
         imageDiv.append(imageBlock);
       });
@@ -264,7 +260,7 @@ async function createCarouselSection(petName, images) {
                             getMetadata('carousel-image-fall-back'),
                             null,
                             700,
-                            575
+                            575,
                           ).outerHTML
                         }
                     </div>
@@ -315,7 +311,7 @@ async function createAboutPetSection(aboutPet) {
     age,
     gender,
     size,
-    email,
+    // email,
     description,
     locatedAt,
     ageDescription,
@@ -396,10 +392,10 @@ async function createAboutPetSection(aboutPet) {
   return aboutPetContainer;
 }
 async function createShelterSection(aboutShelter) {
-  const { shelterName, shelterAddress, shelterPhone, city, state, zip } =
-    aboutShelter;
-  const lastAddressLine =
-    city && state && zip ? `${city}, ${state} ${zip}` : '';
+  const {
+ shelterName, shelterAddress, shelterPhone, city, state, zip,
+} = aboutShelter;
+  const lastAddressLine = city && state && zip ? `${city}, ${state} ${zip}` : '';
   const shelterContainer = document.createElement('div');
   shelterContainer.className = 'shelter-container';
   shelterContainer.innerHTML = `
@@ -451,7 +447,7 @@ async function createChecklistSection(inquiryStatus) {
     checklistContainer.append(checklistLabelEl);
   }
 
-  if(inquiryStatus === true) {
+  if (inquiryStatus === true) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
         checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
@@ -462,9 +458,9 @@ async function createChecklistSection(inquiryStatus) {
     let itemContent = null;
 
     if (inquiryStatus === 'true') {
-      itemContent = createChecklistItem(2, checklistItem2Label, checklistItem2Text)
+      itemContent = createChecklistItem(2, checklistItem2Label, checklistItem2Text);
     } else {
-      itemContent = createChecklistItem(1, checklistItem2Label, checklistItem2Text)
+      itemContent = createChecklistItem(1, checklistItem2Label, checklistItem2Text);
     }
 
     checklistContainer.append(itemContent);
@@ -474,9 +470,9 @@ async function createChecklistSection(inquiryStatus) {
     let itemContent = null;
 
     if (inquiryStatus === 'true') {
-      itemContent = createChecklistItem(3, checklistItem3Label, checklistItem3Text)
+      itemContent = createChecklistItem(3, checklistItem3Label, checklistItem3Text);
     } else {
-      itemContent = createChecklistItem(2, checklistItem3Label, checklistItem3Text)
+      itemContent = createChecklistItem(2, checklistItem3Label, checklistItem3Text);
     }
 
     checklistContainer.append(itemContent);
@@ -487,8 +483,8 @@ async function createChecklistSection(inquiryStatus) {
       '/pet-adoption/checklist',
       'View Full Checklist',
       'pet-details-button button primary right-arrow',
-      false
-    )
+      false,
+    ),
   );
   return checklistContainer;
 }
@@ -508,7 +504,7 @@ async function createSimilarPetsSection(sectionTitle, petArr) {
     gallery.className = 'similar-pets-gallery';
     petArr.forEach((pet) => {
       gallery.append(
-        buildPetCard(pet, getMetadata('animal-card-image-fall-back'))
+        buildPetCard(pet, getMetadata('animal-card-image-fall-back')),
       );
     });
     galleryWrapper.appendChild(gallery);
@@ -522,8 +518,9 @@ async function createSimilarPetsSection(sectionTitle, petArr) {
   listSection.append(similarPetsContainer);
   return listSection;
 }
-async function buildShowModal() {
-  //build and show success modal
+
+/* async function buildShowModal() {
+  // build and show success modal
   let modal = document.getElementById('inquiry-notification-modal');
   const petDetailsBlock = document.querySelector('.pet-details');
   if (!modal) {
@@ -561,8 +558,7 @@ async function buildShowModal() {
   });
 
   const secondaryButton = document.createElement('button');
-  secondaryButton.className =
-    'pet-details-button modal-cta-button button primary';
+  secondaryButton.className = 'pet-details-button modal-cta-button button primary';
   secondaryButton.innerText = inquiryNotificationSecondaryCtaLabel;
   secondaryButton.addEventListener('click', () => {
     window.location.href = '/pet-adoption/checklist';
@@ -577,7 +573,7 @@ async function buildShowModal() {
   modal.append(buttonContainer);
   petDetailsBlock.append(modal);
 
-  //build overlay
+  // build overlay
   const overlay = document.createElement('div');
   overlay.className = 'overlay';
   petDetailsBlock.append(overlay);
@@ -597,33 +593,7 @@ function closeModal() {
   modal.classList.remove('show');
   const overlay = document.querySelector('.overlay');
   overlay.classList.remove('show');
-}
-
-function getFavorites(response) {
-  fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${response}`,
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      // favorite Pet in the UI
-      data.forEach((favorite) => {
-        const favoriteButton = document.getElementById(
-          favorite?.Animal.ReferenceNumber
-        );
-        favoriteButton?.classList.add('favorited');
-        favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
-      });
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
+} */
 
 function getSurveyStatus(token, animalType) {
   const surveyAnimalType = animalType === 'Dog' ? 1 : 2; // 1 for Dog, 2 for Cat
@@ -636,19 +606,15 @@ function getSurveyStatus(token, animalType) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   )
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      return data;
-    });
+    .then((response) => response.json())
+    .then((data) => data);
 }
 
 export default async function decorate(block) {
   block.textContent = '';
-  let token = null;
+  const token = null;
   const { animalId, clientId } = await getParametersFromUrl();
   if (animalId && clientId) {
     const baseUrl = endPoints.apiUrl;
@@ -659,15 +625,15 @@ export default async function decorate(block) {
     const similarPetsArr = await fetchSimilarPets(
       petData.zip,
       petData.animalType,
-      petListApi
+      petListApi,
     );
 
     // Create carousel section
     block.append(
       await createCarouselSection(
         petData.petName || '',
-        petData?.imageUrl || []
-      )
+        petData?.imageUrl || [],
+      ),
     );
 
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
@@ -679,7 +645,7 @@ export default async function decorate(block) {
     block.append(layoutContainer);
 
     block.append(
-      await createSimilarPetsSection('Similar Pets', similarPetsArr)
+      await createSimilarPetsSection('Similar Pets', similarPetsArr),
     );
     ImageCarousel.init({
       selectors: {
@@ -694,40 +660,18 @@ export default async function decorate(block) {
       },
     });
 
-     // add favorite functionality
-     const favoriteCta = document.getElementById(animalId);
-     favoriteCta.addEventListener('click', (e) => {setFavorite(e, petData)});
-
-     // check if user is logged in
-     isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
-            // if logged in set pet as favorite
-            acquireToken()
-            .then(response => {
-                getFavorites(response);            
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });;
-        } else {
-          // not logged in or token is expired without ability to silently refresh its validity
-        }
-      });
-
     // add inquiry functionality
     const petCtaContaner = document.querySelector('.about-pet-ctas');
-    petCtaContaner.innerHTML += `<button class='submit-inquiry-button button secondary'>Submit An Inquiry</button>`;
+    petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
-    if(petData.animalType === 'Dog' || petData.animalType === 'Cat') {
-
-      if(petData.email !== null) {
+    if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {
+      if (petData.email !== null) {
         // if email is available, append createChecklistSection WITH survey content
         submitInquiryCta.classList.add('visible');
         layoutContainer.append(await createChecklistSection(true));
         const checklistContainer = document.querySelector('.checklist-container');
         checklistContainer.classList.add('visible');
-
 
         submitInquiryCta.addEventListener('click', () => {
           // if user is logged in, check if survey is completed
@@ -747,7 +691,6 @@ export default async function decorate(block) {
               // if survey IS COMPLETED, set path to survey summary page aka inquiry confirmation
               window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType.toLowerCase()}`;
             }
-            
           } else {
             // if user is NOT logged in, set path to survey
             window.location.href = `/pet-adoption/survey?animalId=${animalId}&clientId=${clientId}&animalType=${petData.animalType.toLowerCase()}`;
@@ -763,5 +706,49 @@ export default async function decorate(block) {
       // if animal type isn't Dog/Cat, expand contents section to full width
       layoutContainer.classList.add('contents-section--no-inquiry');
     }
+
+     // add favorite functionality
+     const favoriteCta = document.getElementById(animalId);
+     favoriteCta.addEventListener('click', (e) => { setFavorite(e, petData); });
   }
+
+  function getFavorites(response) {
+    fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${response}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // favorite Pet in the UI
+        data.forEach((favorite) => {
+          const favoriteButton = document.getElementById(
+            favorite?.Animal.ReferenceNumber,
+          );
+          favoriteButton?.classList.add('favorited');
+          favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
+        });
+      })
+      .catch((error) => {
+        // console.error('Error:', error);
+      });
+  }
+
+  // check if user is logged in
+  isLoggedIn().then((isLoggedIn) => {
+     if (isLoggedIn) {
+         // if logged in set pet as favorite
+         acquireToken()
+         .then((response) => {
+             getFavorites(response);
+         })
+         .catch((error) => {
+             // console.error('Error:', error);
+         });
+     } else {
+       // not logged in or token is expired without ability to silently refresh its validity
+     }
+   });
 }
