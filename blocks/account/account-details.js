@@ -239,6 +239,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             const payLoad = {...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm)))};
             await callUserApi(token, 'PUT', payLoad);
             disableButtons(submitButtons, true);
+            initialUserData = payLoad;
         });
     });
     changePwdButton.addEventListener('click', () => {
