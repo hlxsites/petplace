@@ -699,6 +699,9 @@ window.onload = callBreedList('null').then((data) => {
                     }
                 })
             }
+            callAnimalList().then((data) => {
+                buildResultsContainer(data);
+            });
         });
     }
 });
