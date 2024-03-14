@@ -1,13 +1,13 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, getPlaceholder } from '../../scripts/scripts.js';
 
-const isTrueSearch = window.location.pathname === '/search';
+const isTrueSearch = window.location.pathname === `${window.hlx.contentBasePath}/search`;
 
 let searchWorker;
 // 2G connections are too slow to realistically load the elasticlunr search index
 // instead we'll do a poor man's search on the last 5K articles
 if (!('connection' in window.navigator) || !['slow-2g', '2g'].includes(window.navigator.connection.effectiveType)) {
-  searchWorker = new Worker('/scripts/worker/search.js');
+  searchWorker = new Worker(`/scripts/worker/search.js?locale=${document.documentElement.lang}`);
 }
 
 function createArticleDiv(article) {

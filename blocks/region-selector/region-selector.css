@@ -1,0 +1,38 @@
+.region-selector {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-inverted);
+  padding: 1.5rem;
+}
+
+.region-selector p {
+  text-align: left;
+  margin-bottom: 1rem;
+  width: auto;
+}
+
+.region-selector .button-container {
+  justify-content: center;
+  margin: 0;
+}
+
+.region-selector .button.secondary {
+  color: var(--text-color-inverted);
+}
+
+.region-selector .button.primary::after {
+  display: inline-block;
+  content: '';
+  height: 13px;
+  width: 29px;
+  background: var(--text-color-inverted);
+  -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
+  mask: url('../../icons/arrow.svg') no-repeat center center;
+  vertical-align: middle;
+  order: 1;
+}
+
+.region-selector a[hreflang] {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
