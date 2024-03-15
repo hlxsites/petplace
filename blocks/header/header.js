@@ -70,7 +70,7 @@ export default async function decorate(block) {
 
   const mobileSearchForm = searchForm.cloneNode(true);
   const navToolsMobile = document.createElement('div');
-  navToolsMobile.classList.add('nav-tools-mobile');
+  navToolsMobile.classList.add('nav-tools-mobile', 'hidden');
   navToolsMobile.append(mobileSearchForm);
 
   navTools.append(navToolsDesktop);
@@ -101,6 +101,10 @@ export default async function decorate(block) {
         const userLinks = item.querySelector('a');
         userLinks.classList.add('account-btn');
         loginBtnsContainer.append(userLinks);
+      } else if (item.querySelector('picture')) {
+        userMenu.classList.add('user-btn', 'hidden');
+        userMenu.append(item.querySelector('picture'));
+        navLogin.append(userMenu);
       } else {
         const signOutBtn = document.createElement('button');
         signOutBtn.className = 'sign-out-btn';
@@ -108,12 +112,6 @@ export default async function decorate(block) {
         signOutBtn.textContent = item.textContent;
         loginBtnsContainer.append(signOutBtn);
       }
-    }
-
-    if (item.querySelector('picture')) {
-      userMenu.classList.add('user-btn', 'hidden');
-      userMenu.append(item.querySelector('picture'));
-      navLogin.append(userMenu);
     }
   });
   navLogin.querySelector('ul').remove();
@@ -123,7 +121,6 @@ export default async function decorate(block) {
     login(() => {
       if (isLoggedIn()) {
         event.target.classList.add('hidden');
-        // if (user has image) { replace placeholder picture }
         userMenu.classList.remove('hidden');
       } else {
         event.target.classList.remove('hidden');
@@ -135,14 +132,6 @@ export default async function decorate(block) {
   navLogin.querySelector('.user-btn').addEventListener('click', () => {
     navLogin.querySelector('.account-options').classList.toggle('hidden');
   });
-
-  // if (isLoggedIn()) {
-  //   navLogin.querySelector('.login-btn').classList.add('hidden');
-  //   navLogin.querySelector('.user-btn').classList.remove('hidden');
-  // } else {
-  //   navLogin.querySelector('.login-btn').classList.remove('hidden');
-  //   navLogin.querySelector('.user-btn').classList.add('hidden');
-  // }
 
   navLogin.querySelector('.sign-out-btn').addEventListener('click', () => {
     logout(() => {
@@ -267,7 +256,8 @@ export default async function decorate(block) {
     navClose.querySelector('button').focus();
     megaNavBg.classList.remove('hidden');
     document.querySelector('body').classList.add('body-locked');
-    navToolsDesktop.classList.remove('hidden');
+    navToolsDesktop.classList.add('hidden');
+    navToolsMobile.classList.remove('hidden');
     megaNav.classList.remove('hidden');
     megaNav.querySelectorAll('.collapsible').forEach((element) => {
       element.classList.remove('active');
@@ -306,29 +296,37 @@ export default async function decorate(block) {
       } else {
         navToolsMobile.classList.add('hidden');
         navToolsDesktop.classList.add('hidden');
+        navHamburger.classList.remove('hidden');
       }
     } else {
+      navClose.classList.add('hidden');
+      navHamburger.classList.add('hidden');
       navToolsDesktop.classList.remove('hidden');
       navToolsMobile.classList.add('hidden');
+      megaNav.classList.remove('hidden');
     }
 
-    if (isLoggedIn()) {
-      navLogin.querySelector('.user-btn').classList.remove('hidden');
-      navLogin.querySelector('.login-btn').classList.add('hidden');
-    } else {
-      navLogin.querySelector('.user-btn').classList.add('hidden');
-      navLogin.querySelector('.login-btn').classList.remove('hidden');
-    }
+    isLoggedIn().then(isLoggedIn => {
+      if (isLoggedIn) {
+        navLogin.querySelector('.user-btn').classList.remove('hidden');
+        navLogin.querySelector('.login-btn').classList.add('hidden');
+      } else {
+        navLogin.querySelector('.user-btn').classList.add('hidden');
+        navLogin.querySelector('.login-btn').classList.remove('hidden');
+      }
+    });
   }
 
-  document.onreadystatechange = () => {
-    if (document.readyState === 'complete') {
-      checkInterface();
-    }
-  };
+  checkInterface();
 
   window.addEventListener('resize', () => {
     checkInterface();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!document.querySelector('.account-options').contains(event.target) && !document.querySelector('.user-btn').contains(event.target)) {
+      document.querySelector('.account-options').classList.add('hidden');
+    }
   });
 
   decorateIcons(nav);
