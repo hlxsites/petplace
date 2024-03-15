@@ -1,13 +1,14 @@
-/* main,
-footer {
-  display: none;
-} */
-
 #nav {
   height: var(--nav-height);
   gap: 0 1%;
   display: grid;
   grid-template-columns: 52% 47%;
+  position: relative;
+}
+
+.header-wrapper .hidden,
+#nav .hidden {
+  display: none !important;
 }
 
 #nav .nav-brand {
@@ -20,7 +21,7 @@ footer {
   margin-top: 8px;
 }
 
-#nav .nav-tools {
+#nav .nav-tools-mobile {
   grid-row: 2/3;
   grid-column: 1/3;
   padding: 16px 10px;
@@ -29,7 +30,8 @@ footer {
   background-color: #FFFFFF;
 }
 
-#nav .nav-login {
+#nav .nav-login,
+#nav .user-btn {
   grid-row: 1/2;
   grid-column: 2/3;
 }
@@ -46,10 +48,6 @@ footer {
   grid-column: 1/3;
   z-index: 2;
   background-color: #FFFFFF;
-}
-
-#nav .hidden {
-  display: none;
 }
 
 #nav .nav-brand .icon-logo {
@@ -93,14 +91,46 @@ footer {
   padding: 13px 24px;
 }
 
+#nav .user-btn {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 8px 0;
+}
+
+#nav .user-btn img {
+  width: 40px;
+  height: 40px;
+  aspect-ratio: auto 40 / 40;
+}
+
 #nav .nav-meganav li {
   list-style-type: none;
   padding-left: 0;
   margin-bottom: 0;
 }
 
+#nav .nav-meganav ul {
+  padding-left: 0;
+}
+
 #nav .nav-meganav > ul > li {
   border-bottom: 1px solid #000000;
+}
+
+#nav .nav-meganav .pet-topic {
+  display: flex;
+  margin-bottom: 0;
+}
+
+#nav .nav-meganav .pet-topic-info {
+  margin-left: 12px;
+}
+
+#nav .nav-meganav .pet-topic-title {
+  display: block;
+  margin-bottom: 8px;
 }
 
 #nav .menu-item {
@@ -151,14 +181,6 @@ footer {
   color: #FFFFFF;
 }
 
-#nav .nav-meganav ul {
-  padding-left: 0;
-}
-
-#nav .collapsible.active + ul.content {
-  border-bottom: 1px solid #3C0040;
-}
-
 #nav .content {
   max-height: 0;
   overflow: hidden;
@@ -167,8 +189,16 @@ footer {
 }
 
 #nav .content li {
-  padding: 16px 16px 24px 16px;
+  padding: 12px 16px 12px 16px;
   display: flex;
+}
+
+#nav .content li:first-of-type {
+  padding-top: 16px;
+}
+
+#nav .content li:last-of-type {
+  padding-bottom: 24px;
 }
 
 #nav .content li div:first-child {
@@ -197,6 +227,63 @@ footer {
   border-radius: 0;
   padding: 0;
   margin: 0;
+}
+
+
+.header {
+  z-index: 4;
+  position: relative;
+}
+
+.meganav-bg {
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
+#nav .account-options {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  border-radius: 0 0 8px 8px;
+  border: 1px solid #E4E4EB;
+  box-shadow: 0px 34px 21px 0px #0000000D;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 100%;
+  z-index: 3;
+}
+
+#nav .account-btn,
+#nav .sign-out-btn {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  color: #000000;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: left;
+  padding: 14px 24px;
+  margin: 0;
+  text-decoration: none;
+  font-family: "Libre Franklin";
+}
+
+#nav .account-btn {
+  border-bottom: 1px solid #E4E4EB;
+}
+
+.body-locked {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: fixed;
 }
 
 @media (min-width: 1024px) {

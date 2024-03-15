@@ -3,10 +3,11 @@ import {
   getMetadata,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
-import { getPlaceholder } from '../../scripts/scripts.js';
+import { getPlaceholder, isTablet } from '../../scripts/scripts.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+import { login, logout, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 /**
  * decorates the header, mainly the nav
@@ -35,8 +36,10 @@ export default async function decorate(block) {
     if (section) section.classList.add(`nav-${c}`);
   });
 
+  // logo
   nav.querySelector('.nav-brand a').setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
 
+  // search bar
   const navTools = nav.querySelector('.nav-tools');
   const searchField = document.createElement('input');
   searchField.setAttribute('aria-label', navTools.textContent);
@@ -60,8 +63,18 @@ export default async function decorate(block) {
   searchForm.append(searchField, searchButton);
 
   navTools.innerHTML = '';
-  navTools.classList.add('hidden');
-  navTools.append(searchForm);
+
+  const navToolsDesktop = document.createElement('div');
+  navToolsDesktop.classList.add('nav-tools-desktop', 'hidden');
+  navToolsDesktop.append(searchForm);
+
+  const mobileSearchForm = searchForm.cloneNode(true);
+  const navToolsMobile = document.createElement('div');
+  navToolsMobile.classList.add('nav-tools-mobile');
+  navToolsMobile.append(mobileSearchForm);
+
+  navTools.append(navToolsDesktop);
+
   searchButton.addEventListener('click', (ev) => {
     ev.preventDefault();
     if (searchField.value !== '') {
@@ -69,25 +82,78 @@ export default async function decorate(block) {
     }
   });
 
+  // login
   const navLogin = nav.querySelector('.nav-login');
+  const userMenu = document.createElement('button');
   const loginBtnsContainer = document.createElement('div');
-  loginBtnsContainer.classList.add('login-btns-container');
+  loginBtnsContainer.classList.add('account-options', 'hidden');
   navLogin.querySelectorAll('li').forEach((item, index) => {
     if (index === 0) {
       const loginBtn = document.createElement('button');
       loginBtn.className = 'login-btn';
       loginBtn.setAttribute('aria-label', 'login');
       loginBtn.textContent = item.textContent;
-      loginBtnsContainer.append(loginBtn);
-    } else {
-      const userLinks = document.createElement('a');
+      navLogin.append(loginBtn);
+    }
+
+    if (index > 0) {
+      if (item.querySelector('a')) {
+        const userLinks = item.querySelector('a');
+        userLinks.classList.add('account-btn');
+        loginBtnsContainer.append(userLinks);
+      } else {
+        const signOutBtn = document.createElement('button');
+        signOutBtn.className = 'sign-out-btn';
+        signOutBtn.setAttribute('aria-label', 'sign out');
+        signOutBtn.textContent = item.textContent;
+        loginBtnsContainer.append(signOutBtn);
+      }
+    }
+
+    if (item.querySelector('picture')) {
+      userMenu.classList.add('user-btn', 'hidden');
+      userMenu.append(item.querySelector('picture'));
+      navLogin.append(userMenu);
     }
   });
-
-  // navLogin.querySelectorAll('li').remove();
-
+  navLogin.querySelector('ul').remove();
   navLogin.append(loginBtnsContainer);
 
+  navLogin.querySelector('.login-btn').addEventListener('click', (event) => {
+    login(() => {
+      if (isLoggedIn()) {
+        event.target.classList.add('hidden');
+        // if (user has image) { replace placeholder picture }
+        userMenu.classList.remove('hidden');
+      } else {
+        event.target.classList.remove('hidden');
+        userMenu.classList.add('hidden');
+      }
+    });
+  });
+
+  navLogin.querySelector('.user-btn').addEventListener('click', () => {
+    navLogin.querySelector('.account-options').classList.toggle('hidden');
+  });
+
+  // if (isLoggedIn()) {
+  //   navLogin.querySelector('.login-btn').classList.add('hidden');
+  //   navLogin.querySelector('.user-btn').classList.remove('hidden');
+  // } else {
+  //   navLogin.querySelector('.login-btn').classList.remove('hidden');
+  //   navLogin.querySelector('.user-btn').classList.add('hidden');
+  // }
+
+  navLogin.querySelector('.sign-out-btn').addEventListener('click', () => {
+    logout(() => {
+      if (!isLoggedIn()) {
+        navLogin.querySelector('.login-btn').classList.remove('hidden');
+        navLogin.querySelector('.user-btn').classList.add('hidden');
+      }
+    });
+  });
+
+  // hamburguer menu
   const navHamburger = nav.querySelector('.nav-hamburger');
   navHamburger.innerHTML = `
     <button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">
@@ -103,6 +169,7 @@ export default async function decorate(block) {
     </button>`;
   navClose.classList.add('hidden');
 
+  // meganav
   const megaNav = nav.querySelector('.nav-meganav');
   const megaNavContent = nav.querySelector('.nav-meganav div');
   const megaNavWrapper = document.createElement('ul');
@@ -137,7 +204,29 @@ export default async function decorate(block) {
       tempLI = listItem;
       tempUl = petSubMenuList;
     } else if (item.children.length > 1) {
-      listItem.innerHTML = item.innerHTML;
+      const aHref = item.querySelector('a').getAttribute('href');
+      const aText = item.querySelector('a').innerText;
+      const picEl = item.querySelector('picture');
+      const pEl = item.querySelectorAll('p')[1];
+      pEl.classList.add('pet-topic-description');
+
+      const aEl = document.createElement('a');
+      aEl.setAttribute('href', aHref);
+      aEl.classList.add('pet-topic');
+
+      const spanEl = document.createElement('span');
+      spanEl.innerText = aText;
+      spanEl.classList.add('pet-topic-title');
+
+      const divEl = document.createElement('div');
+      divEl.classList.add('pet-topic-info');
+
+      aEl.append(picEl);
+      aEl.append(divEl);
+      divEl.append(spanEl);
+      divEl.append(pEl);
+      listItem.append(aEl);
+
       tempUl.append(listItem);
       tempLI.append(tempUl);
       tempUl.previousElementSibling.classList.add('collapsible', 'menu-item');
@@ -157,19 +246,10 @@ export default async function decorate(block) {
   megaNav.innerHTML = '';
   megaNav.append(petMenuList);
   megaNav.classList.add('hidden');
-
-  block.querySelector('form').addEventListener('submit', (ev) => {
-    const query = ev.target.querySelector('.search-input').value;
-    if (!query) {
-      ev.preventDefault();
-      return;
-    }
-    pushToDataLayer({
-      event: 'search',
-      search_term: query,
-    });
-    sampleRUM('search', { source: '.search-input', target: query });
-  });
+  nav.insertBefore(navToolsMobile, megaNav);
+  const megaNavBg = document.createElement('div');
+  megaNavBg.classList.add('meganav-bg', 'hidden');
+  document.querySelector('.header-wrapper').append(megaNavBg);
 
   block.querySelector('.collapsible').addEventListener('click', (event) => {
     event.target.classList.toggle('active');
@@ -184,7 +264,10 @@ export default async function decorate(block) {
   block.querySelector('.nav-hamburger').addEventListener('click', () => {
     navHamburger.classList.add('hidden');
     navClose.classList.remove('hidden');
-    navTools.classList.remove('hidden');
+    navClose.querySelector('button').focus();
+    megaNavBg.classList.remove('hidden');
+    document.querySelector('body').classList.add('body-locked');
+    navToolsDesktop.classList.remove('hidden');
     megaNav.classList.remove('hidden');
     megaNav.querySelectorAll('.collapsible').forEach((element) => {
       element.classList.remove('active');
@@ -195,8 +278,57 @@ export default async function decorate(block) {
   block.querySelector('.nav-close').addEventListener('click', () => {
     navClose.classList.add('hidden');
     navHamburger.classList.remove('hidden');
-    navTools.classList.add('hidden');
+    navHamburger.querySelector('button').focus();
+    document.querySelector('body').classList.remove('body-locked');
+    navToolsDesktop.classList.add('hidden');
+    navToolsMobile.classList.add('hidden');
     megaNav.classList.add('hidden');
+    megaNavBg.classList.add('hidden');
+  });
+
+  block.querySelector('form').addEventListener('submit', (ev) => {
+    const query = ev.target.querySelector('.search-input').value;
+    if (!query) {
+      ev.preventDefault();
+      return;
+    }
+    pushToDataLayer({
+      event: 'search',
+      search_term: query,
+    });
+    sampleRUM('search', { source: '.search-input', target: query });
+  });
+
+  function checkInterface() {
+    if (isTablet()) {
+      if (document.querySelector('body').classList.contains('body-locked')) {
+        navClose.click();
+      } else {
+        navToolsMobile.classList.add('hidden');
+        navToolsDesktop.classList.add('hidden');
+      }
+    } else {
+      navToolsDesktop.classList.remove('hidden');
+      navToolsMobile.classList.add('hidden');
+    }
+
+    if (isLoggedIn()) {
+      navLogin.querySelector('.user-btn').classList.remove('hidden');
+      navLogin.querySelector('.login-btn').classList.add('hidden');
+    } else {
+      navLogin.querySelector('.user-btn').classList.add('hidden');
+      navLogin.querySelector('.login-btn').classList.remove('hidden');
+    }
+  }
+
+  document.onreadystatechange = () => {
+    if (document.readyState === 'complete') {
+      checkInterface();
+    }
+  };
+
+  window.addEventListener('resize', () => {
+    checkInterface();
   });
 
   decorateIcons(nav);
