@@ -5,12 +5,14 @@ import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
 import { bindAccountDetailsEvents, createAccountDetailsPanel } from './account-details.js';
 import { createAccountFavoritesPanel } from './account-favorites.js';
 import { createSavedSearchPanel } from './account-saved-searches.js';
+import { createAccountInquiriesPanel } from './account-inquiries.js';
 
 async function createTabComponent() {
     const tabArray = [
         { title: 'Account Details', hash: 'details' },
         { title: 'Search Alerts', hash: 'searchalerts' },
         { title: 'Favorites', hash: 'favorites' },
+        { title: 'Inquiries', hash: 'inquiries' },
         // { title: 'Pet Match Survey', hash: 'survey' },
     ];
     const tabs = document.createElement('div');
@@ -113,6 +115,7 @@ export default async function decorate(block) {
         block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));
         block.querySelector('#favorites').append(await createAccountFavoritesPanel(token));
         block.querySelector('#searchalerts').append(await createSavedSearchPanel(token));
+        block.querySelector('#inquiries').append(await createAccountInquiriesPanel(token));
         await bindAccountDetailsEvents(block, token, initialUserData);
     }
 }
