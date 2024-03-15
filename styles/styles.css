@@ -96,7 +96,7 @@
   --heading-font-size-xxs: 0.75em;
 
   /* nav height */
-  --nav-height: 68px;
+  --nav-height: 64px;
 }
 
 @media (min-width: 600px) {
@@ -113,6 +113,12 @@
   :root {
     --heading-font-size-xxl: 3.125rem;
     --heading-font-size-xl: 2em;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --nav-height: 147px;
   }
 }
 
