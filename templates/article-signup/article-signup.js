@@ -33,7 +33,7 @@ export async function loadLazy(main) {
   defaultContent.innerHTML = '';
   defaultContent.append(templateContent);
 
-  if (window.hlx.contentBasePath) {
+  if (!window.hlx.contentBasePath) {
     const newsletter = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-footer`, (block) => {
       templateContent.append(block);
     });
