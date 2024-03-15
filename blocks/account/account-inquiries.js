@@ -233,7 +233,7 @@ function getInquiries(animalData) {
                               <a class="${petDetailPageUrl ? '' : 'prevent-click'} ${IsAvailable ? '' : 'prevent-click'}" href="${petDetailPageUrl || ''}">
                                 ${Name ? extractName(Name) : Id}
                               </a> 
-                              <span class="available-tag">Inquired ${formattedDate}</span></p>
+                              <span class="available-tag">Inquired ${formattedDate}</span>
                               <span class="unavailable-tag">No Longer available</span></p>
                             <p class="fp-details">${Breed || ''} ${Breed && Sex ? '<span class="fp-separator"></span>' : ''} ${Sex || ''}</p>
                         </div>

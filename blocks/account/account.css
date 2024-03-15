@@ -573,7 +573,8 @@
 .account-tabpanel--favorites .fav-pet-card.unavailable .fp-img,
 .account-tabpanel--inquiries .inquiry-pet-card.fp-hidden,
 .account-tabpanel--inquiries .inquiry-pet-card .unavailable-tag,
-.account-tabpanel--inquiries .inquiry-pet-card.unavailable .fp-img {
+.account-tabpanel--inquiries .inquiry-pet-card.unavailable .fp-img,
+.account-tabpanel--inquiries .inquiry-pet-card .available-tag {
   display: none;
 }
 
