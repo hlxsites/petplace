@@ -153,7 +153,6 @@
   text-decoration: none;
   font-weight: 500;
   text-align: left;
-  /* -webkit-tap-highlight-color: transparent; */
 }
 
 #nav button.menu-item {
@@ -174,6 +173,7 @@
   font-size: 20px;
   color: #000000;
   float: right;
+  transform: rotate(180deg) translateY(6px);
 }
 
 #nav .collapsible.active {
@@ -182,7 +182,7 @@
 }
 
 #nav .collapsible.active:after {
-  transform: rotate(180deg) translateY(6px);
+  transform: none;
   color: #FFFFFF;
 }
 
@@ -353,12 +353,26 @@
     border-radius: 10px;
   }
 
+  #nav .content li {
+    margin: 0;
+  }
+
+  #nav .content li:hover {
+    background-color: #EBE8FC;
+    border-radius: 10px;
+  }
+
+  #nav .content li:hover img {
+    transform: rotate(15deg);
+  }
+
   #nav .nav-meganav {
     background-color: #3C0040;
     grid-column: 1/4;
   }
 
   #nav .nav-meganav ul {
+    padding-left: 48px;
     position: relative;
     left: 0;
     display: flex;
@@ -392,24 +406,24 @@
 
   #nav .collapsible::after {
     color: #FFFFFF;
+    margin-left: 8px;
   }
 
-  #nav .collapsible.active {
+  #nav .collapsible.active,
+  #nav .collapsible.active::after,
+  #nav button.menu-item:hover::after {
     background-color: #FFFFFF;
     color: #000000;
+    transform: translateY(3px);
   }
 
-  #nav .collapsible.active:after {
-    color: #000000;
-  }
-
-  /* #nav .collapsible::after {
-    color: #000000;
-  } */
-
-  #nav .content {
+  #nav .collapsible.active + .content {
+    position: absolute;
+    background: white;
+    top: 100%;
     flex-direction: column;
+    align-items: flex-start;
     background-color: #FFFFFF;
-    /* height: unset; */
+    height: unset;
   }
 }
