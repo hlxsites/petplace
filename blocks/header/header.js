@@ -3,7 +3,7 @@ import {
   getMetadata,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
-import { getPlaceholder, isTablet } from '../../scripts/scripts.js';
+import { getPlaceholder, isMobile, isTablet } from '../../scripts/scripts.js';
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
@@ -30,7 +30,7 @@ export default async function decorate(block) {
   nav.id = 'nav';
   nav.innerHTML = html;
 
-  const classes = ['brand', 'tools', 'login', 'hamburger', 'close', 'meganav'];
+  const classes = ['brand', 'tools', 'login', 'hamburger', 'close', 'meganav', 'featured-article'];
   classes.forEach((c, i) => {
     const section = nav.children[i];
     if (section) section.classList.add(`nav-${c}`);
@@ -158,7 +158,7 @@ export default async function decorate(block) {
     </button>`;
   navClose.classList.add('hidden');
 
-  // meganav
+  // meganav and featuredArticle
   const megaNav = nav.querySelector('.nav-meganav');
   const megaNavContent = nav.querySelector('.nav-meganav div');
   const megaNavWrapper = document.createElement('ul');
@@ -166,14 +166,37 @@ export default async function decorate(block) {
   megaNavWrapper.append(nav);
   block.append(nav);
 
-  const petMenuList = document.createElement('ul');
-  let tempLI;
-  let tempUl;
+  // featuredArticle
+  const featuredArticle = nav.querySelector('.nav-featured-article');
+  const articleTitle = document.createElement('span');
+  articleTitle.classList.add('article-title');
+  articleTitle.innerText = featuredArticle.children[0].innerText;
+  const articleImg = document.createElement('picture');
+  articleImg.innerHTML = featuredArticle.querySelector('picture').innerHTML;
+  articleImg.classList.add('article-img');
+  const articleDescription = document.createElement('p');
+  articleDescription.innerText = featuredArticle.children[2].innerText;
+  articleDescription.classList.add('article-desc');
+  const articleUrl = document.createElement('a');
+  articleUrl.setAttribute('href', featuredArticle.querySelector('a').getAttribute('href'));
+  articleUrl.innerText = featuredArticle.querySelector('a').innerText;
+  articleUrl.classList.add('article-url');
 
-  [...megaNavContent.children].forEach((item) => {
+  featuredArticle.innerHTML = '';
+  featuredArticle.append(articleTitle);
+  featuredArticle.append(articleImg);
+  featuredArticle.append(articleDescription);
+  featuredArticle.append(articleUrl);
+
+  const petMenuList = document.createElement('ul');
+  const ulEl = document.createElement('ul');
+  let tempLI;
+  let tempDiv;
+
+  [...megaNavContent.children].forEach((item, index) => {
     const listItem = document.createElement('li');
-    const petSubMenuList = document.createElement('ul');
-    petSubMenuList.classList.add('content');
+    const petSubMenuList = document.createElement('div');
+    petSubMenuList.classList.add('content', 'content-dropdown');
 
     if (item.children.length === 1) {
       let menuTitle = document.createElement('button');
@@ -186,12 +209,12 @@ export default async function decorate(block) {
       } else {
         menuTitle.innerText = item.innerText;
         menuTitle.setAttribute('role', 'button');
-        menuTitle.classList.add('collapsible', 'menu-item');
+        menuTitle.classList.add('collapsible', 'menu-item', 'button-dropdown');
       }
       listItem.appendChild(menuTitle);
       petMenuList.append(listItem);
       tempLI = listItem;
-      tempUl = petSubMenuList;
+      tempDiv = petSubMenuList;
     } else if (item.children.length > 1) {
       const aHref = item.querySelector('a').getAttribute('href');
       const aText = item.querySelector('a').innerText;
@@ -210,17 +233,25 @@ export default async function decorate(block) {
       const divEl = document.createElement('div');
       divEl.classList.add('pet-topic-info');
 
+      const breakLi = document.createElement('li');
+      breakLi.classList.add('break');
+
       aEl.append(picEl);
       aEl.append(divEl);
       divEl.append(spanEl);
       divEl.append(pEl);
       listItem.append(aEl);
 
-      tempUl.append(listItem);
-      tempLI.append(tempUl);
-      tempUl.previousElementSibling.classList.add('collapsible', 'menu-item');
+      tempDiv.append(ulEl);
+      tempDiv.append(featuredArticle);
+      ulEl.append(listItem);
+      if (index % 4 === 0) {
+        ulEl.append(breakLi);
+      }
+      tempLI.append(tempDiv);
+      tempDiv.previousElementSibling.classList.add('collapsible', 'menu-item');
 
-      const parentEl = tempUl.previousElementSibling;
+      const parentEl = tempDiv.previousElementSibling;
       if (parentEl.tagName === 'A') {
         const newButton = document.createElement('button');
         newButton.textContent = parentEl.textContent;
@@ -326,6 +357,12 @@ export default async function decorate(block) {
   document.addEventListener('click', (event) => {
     if (!document.querySelector('.account-options').contains(event.target) && !document.querySelector('.user-btn').contains(event.target)) {
       document.querySelector('.account-options').classList.add('hidden');
+    }
+    const buttonDropdown = document.querySelector('.button-dropdown');
+    const contentDropdown = document.querySelector('.content-dropdown');
+    if (!document.querySelector('.content-dropdown').contains(event.target) && !document.querySelector('.button-dropdown').contains(event.target)) {
+      buttonDropdown.classList.remove('active');
+      contentDropdown.style.maxHeight = null;
     }
   });
 

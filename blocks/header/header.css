@@ -1,3 +1,18 @@
+.header {
+  z-index: 4;
+  position: relative;
+}
+
+.meganav-bg {
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
 #nav {
   height: var(--nav-height);
   gap: 0 24px;
@@ -13,6 +28,11 @@
 #nav button,
 #nav a {
   -webkit-tap-highlight-color: transparent;
+}
+
+#nav .break {
+  flex-basis: 100%;
+  height: 0;
 }
 
 #nav .nav-brand {
@@ -235,21 +255,6 @@
 }
 
 
-.header {
-  z-index: 4;
-  position: relative;
-}
-
-.meganav-bg {
-  background-color: #FFFFFF;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-}
-
 #nav .account-options {
   display: flex;
   flex-direction: column;
@@ -282,6 +287,10 @@
 
 #nav .account-btn {
   border-bottom: 1px solid #E4E4EB;
+}
+
+#nav .nav-featured-article {
+  display: none;
 }
 
 .body-locked {
@@ -348,7 +357,7 @@
   #nav .account-options {
     width: 247px;
     left: unset;
-    right: 32px;
+    right: 20px;
     top: 76px;
     border-radius: 10px;
   }
@@ -376,13 +385,16 @@
     position: relative;
     left: 0;
     display: flex;
-    width: 100%;
     height: 67px;
     align-items: center;
   }
 
   #nav .nav-meganav li {
-    margin-right: 32px;
+    margin-right: 16px;
+  }
+
+  #nav .nav-meganav li:last-of-type {
+    margin-right: 0;
   }
 
   #nav .nav-meganav > ul > li {
@@ -409,7 +421,6 @@
     margin-left: 8px;
   }
 
-  #nav .collapsible.active,
   #nav .collapsible.active::after,
   #nav button.menu-item:hover::after {
     background-color: #FFFFFF;
@@ -417,13 +428,66 @@
     transform: translateY(3px);
   }
 
-  #nav .collapsible.active + .content {
+  #nav .collapsible + .content {
     position: absolute;
-    background: white;
+    left: 0;
     top: 100%;
-    flex-direction: column;
+    display: flex;
     align-items: flex-start;
+    justify-content: space-between;
     background-color: #FFFFFF;
     height: unset;
+    width: 100%;
+  }
+
+  #nav .collapsible + .content ul {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px 0 40px 48px;
+    flex-wrap: wrap;
+    height: 372px;
+  }
+
+  #nav .nav-featured-article {
+    display: block;
+    font-family: "Libre Franklin";
+    max-width: 309px;
+    padding: 40px 48px 40px 0;
+
+  }
+
+  #nav .article-title {
+    display: block;
+    margin-bottom: 16px;
+    font-family: Raleway, sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    font-weight: 700;
+  }
+
+  #nav .article-img {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  #nav .article-desc {
+    font-weight: 400;
+    font-size: 24px;
+    color: #000000;
+    margin-bottom: 24px;
+  }
+
+  #nav .content .article-url {
+    display: flex;
+    color: #7369AB;
+    font-weight: 600;
+    size: 15px;
+    line-height: 18px;
+  }
+
+  #nav .article-url::after {
+    content: '\2303';
+    transform: rotate(90deg);
   }
 }
