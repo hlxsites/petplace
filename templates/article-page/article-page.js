@@ -199,13 +199,6 @@ export async function loadLazy(document) {
   if (articleType !== 'faq') {
     main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
   }
-  // console.log('nth', main.querySelector('.section:nth-of-type(2) h2:nth-of-type(2)'));
-  // createTemplateBlock(main.querySelector('.section:nth-of-type(2) h2:nth-of-type(2)'), 'genai-search');
-
-  // const secondHeadline = main.querySelector('.section:nth-of-type(2) h2:nth-of-type(2)');
-  // console.log('secondHeadline', secondHeadline);
-  // const genAIBlock = buildBlock('genai-search', { });
-
 
   const genAIDiv = document.createElement('div');
   genAIDiv.classList.add('section');
@@ -217,14 +210,19 @@ export async function loadLazy(document) {
   genAIDiv.append(genAIMeta);
 
   const articleContainer = main.querySelector('.section:nth-of-type(2)');
-  console.log('articleContainer', articleContainer);
   const genaiBlock = buildBlock('genai-search', '');
+  const genAITitle = document.createElement('h2');
+  const genAISubtitle = document.createElement('h2');
+  genAITitle.innerText = 'Learn even more with...  ';
+  genAISubtitle.innerText = 'AI Powered PetPlace Discovery';
+
+  genAIDiv.append(genAITitle);
+  genAIDiv.append(genAISubtitle);
   genAIDiv.append(genaiBlock);
   articleContainer.append(genAIDiv);
+
   decorateBlock(genaiBlock);
   await loadBlock(genaiBlock);
-
-
 
   // genAIBlock.insertBefore(secondHeadline);
   const breadCrumbs = hero.querySelector(':scope > div > div');

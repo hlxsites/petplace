@@ -1,8 +1,8 @@
 import { sampleRUM } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
-  const searchPlaceholder = 'Ask a question or enter a topic....';
-  const searchButtonText = 'Submit';
+  const searchPlaceholder = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[0].textContent : 'Ask a question or enter a topic....';
+  const searchButtonText = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[1].textContent : 'Submit';
 
   const form = document.createElement('form');
   form.setAttribute('role', 'search');
@@ -25,12 +25,10 @@ export default async function decorate(block) {
   input.id = 'search-box';
   input.placeholder = searchPlaceholder;
 
-
   const clearButton = document.createElement('button');
   clearButton.setAttribute('id', 'clearButton');
   clearButton.setAttribute('type', 'button');
   clearButton.innerHTML = '&#10005;';
-
 
   input.addEventListener('input', () => {
     if (input.value.trim() !== '') {
@@ -80,7 +78,7 @@ export default async function decorate(block) {
   block.append(form);
 
   const query = window.localStorage.getItem('gen-ai-query');
-  if(query && document.location.pathname.indexOf('/discovery') !== -1){
+  if (query && document.location.pathname.indexOf('/discovery') !== -1) {
     block.querySelector('.search-input').value = JSON.parse(query);
   }
 }
