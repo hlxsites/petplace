@@ -218,6 +218,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
      */
 
     if (response !== null) {
+        console.log('newUser', response.account.idTokenClaims.newUser)
         // the 'newUser' flag is present for newly registered users that are logging in for the very first time.
         if (response.account.idTokenClaims.newUser) {
             // New user detected. Send POST request to create user in the database

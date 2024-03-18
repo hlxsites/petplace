@@ -6,6 +6,7 @@ import { bindAccountDetailsEvents, createAccountDetailsPanel } from './account-d
 import { createAccountFavoritesPanel } from './account-favorites.js';
 import { createSavedSearchPanel } from './account-saved-searches.js';
 
+import { buildBlock, decorateBlock, loadBlock } from '../../scripts/lib-franklin.js';
 async function createTabComponent() {
     const tabArray = [
         { title: 'Account Details', hash: 'details' },
@@ -114,5 +115,11 @@ export default async function decorate(block) {
         block.querySelector('#favorites').append(await createAccountFavoritesPanel(token));
         block.querySelector('#searchalerts').append(await createSavedSearchPanel(token));
         await bindAccountDetailsEvents(block, token, initialUserData);
-    }
+
+        const surveyContainer =  block.querySelector('#survey')
+        const surveyBlock = buildBlock('pet-survey', '');
+        surveyContainer.append(surveyBlock);
+        decorateBlock(surveyBlock);
+        await loadBlock(surveyBlock);
+    }   
 }
