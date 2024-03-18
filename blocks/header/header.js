@@ -331,7 +331,6 @@ export default async function decorate(block) {
     regionSelectorWrapper.append(regionMenu);
     decorateIcons(regionSelectorWrapper);
     nav.insertBefore(regionSelectorWrapper, navToolsMobile);
-    console.log('regionSelectorWrapper', regionSelectorWrapper);
   }
 
   block.querySelector('.collapsible').addEventListener('click', (event) => {
@@ -357,6 +356,7 @@ export default async function decorate(block) {
       element.classList.remove('active');
       element.nextSibling.style.maxHeight = '';
     });
+    document.querySelector('.nav-language-selector').classList.remove('hidden');
   });
 
   block.querySelector('.nav-close').addEventListener('click', () => {
@@ -368,6 +368,7 @@ export default async function decorate(block) {
     navToolsMobile.classList.add('hidden');
     megaNav.classList.add('hidden');
     megaNavBg.classList.add('hidden');
+    document.querySelector('.nav-language-selector').classList.add('hidden');
   });
 
   block.querySelector('form').addEventListener('submit', (ev) => {
@@ -392,6 +393,7 @@ export default async function decorate(block) {
         navToolsDesktop.classList.add('hidden');
         megaNav.classList.add('hidden');
         navHamburger.classList.remove('hidden');
+        document.querySelector('.nav-language-selector').classList.add('hidden');
       }
     } else {
       navClose.classList.add('hidden');
@@ -399,6 +401,7 @@ export default async function decorate(block) {
       navToolsDesktop.classList.remove('hidden');
       navToolsMobile.classList.add('hidden');
       megaNav.classList.remove('hidden');
+      document.querySelector('.nav-language-selector').classList.remove('hidden');
     }
 
     isLoggedIn().then(isLoggedIn => {
