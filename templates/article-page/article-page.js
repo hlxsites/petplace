@@ -199,7 +199,34 @@ export async function loadLazy(document) {
   if (articleType !== 'faq') {
     main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
   }
+  // console.log('nth', main.querySelector('.section:nth-of-type(2) h2:nth-of-type(2)'));
+  // createTemplateBlock(main.querySelector('.section:nth-of-type(2) h2:nth-of-type(2)'), 'genai-search');
 
+  // const secondHeadline = main.querySelector('.section:nth-of-type(2) h2:nth-of-type(2)');
+  // console.log('secondHeadline', secondHeadline);
+  // const genAIBlock = buildBlock('genai-search', { });
+
+
+  const genAIDiv = document.createElement('div');
+  genAIDiv.classList.add('section');
+  genAIDiv.classList.add('genai-search');
+
+  const genAIMeta = document.createElement('meta');
+  genAIMeta.setAttribute('itemprop', 'description');
+  genAIMeta.setAttribute('content', document.head.querySelector('meta[name="description"]').content);
+  genAIDiv.append(genAIMeta);
+
+  const articleContainer = main.querySelector('.section:nth-of-type(2)');
+  console.log('articleContainer', articleContainer);
+  const genaiBlock = buildBlock('genai-search', '');
+  genAIDiv.append(genaiBlock);
+  articleContainer.append(genAIDiv);
+  decorateBlock(genaiBlock);
+  await loadBlock(genaiBlock);
+
+
+
+  // genAIBlock.insertBefore(secondHeadline);
   const breadCrumbs = hero.querySelector(':scope > div > div');
   const categorySlugs = getMetadata('category').split(',').map((slug) => toClassName(slug.trim()));
   const crumbData = await getBreadcrumbs(categorySlugs[0]);

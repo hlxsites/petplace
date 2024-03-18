@@ -1,8 +1,8 @@
 import { sampleRUM } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
-  const searchPlaceholder = block.firstElementChild.children[0].textContent || 'Ask a question or enter a topic....';
-  const searchButtonText = block.firstElementChild.children[1].textContent || 'Submit';
+  const searchPlaceholder = 'Ask a question or enter a topic....';
+  const searchButtonText = 'Submit';
 
   const form = document.createElement('form');
   form.setAttribute('role', 'search');
@@ -14,7 +14,7 @@ export default async function decorate(block) {
       window.localStorage.setItem('gen-ai-query', JSON.stringify(query));
       document.location.pathname = '/discovery';
     }
-    return;
+    // return;
   });
 
   const input = document.createElement('input');
@@ -55,7 +55,7 @@ export default async function decorate(block) {
     clearButton.classList.remove('show');
   });
 
-  form.append(clearButton);
+  // form.append(clearButton);
 
   form.append(input);
 

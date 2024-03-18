@@ -470,10 +470,10 @@ export async function loadLazy(main) {
 
   const searchQuery = window.localStorage.getItem('gen-ai-query');
   if (searchQuery) {
-    if (searchQuery.indexOf('insurance') === -1) {
-      displaySearchResults(searchQuery, searchResultsDivElement);
-    } else {
+    if (searchQuery.indexOf('insurance') !== -1) {
       displayInsuranceCTA(searchResultsDivElement);
+    } else {
+      displaySearchResults(searchQuery, searchResultsDivElement);
     }
     // window.localStorage.removeItem('gen-ai-query');
   }
