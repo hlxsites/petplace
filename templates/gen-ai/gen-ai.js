@@ -14,6 +14,7 @@ function removeAllEventListeners(element) {
   element.parentNode.replaceChild(clone, element);
 }
 
+// eslint-disable-next-line consistent-return
 const fetchStreamingResults = async (index, query, resultsBlock) => {
   if (query === '') {
     return {
@@ -34,6 +35,7 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
     console.log('Message from server ', event);
     const message = JSON.parse(event.data);
 
+    // eslint-disable-next-line no-use-before-define
     updateStreamingSearchCard(resultsBlock, message, socket);
   });
 
@@ -41,7 +43,7 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
     console.error('WebSocket error:', error);
   });
 
-  socket.addEventListener('close', (event) => {
+  socket.addEventListener('close', () => {
     console.log('WebSocket connection closed');
   });
   // Show stop button container and add a click event listener
@@ -224,7 +226,7 @@ const createStreamingSearchCard = (resultsBlock) => {
   resultsBlock.innerHTML = card.outerHTML;
 };
 
-const updateStreamingSearchCard = (resultsBlock, response, socket) => {
+const updateStreamingSearchCard = (resultsBlock, response) => {
   const article = resultsBlock.querySelector('.search-card article');
 
   // Create the div if it doesn't exist
@@ -243,8 +245,10 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     resultsBlock.querySelector('.search-card-container').appendChild(cursorAnimation);
   }
 
-  // If the div already exists, update its content with the new message
+  // // If the div already exists, update its content with the new message
+  // eslint-disable-next-line no-undef
   if (article && marked) {
+    // eslint-disable-next-line no-undef
     article.innerHTML = marked.parse(response.result);
   }
 
@@ -281,6 +285,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
         let { hostname } = new URL(slideContent.href);
         if (hostname.indexOf('www.') > -1) {
+          // eslint-disable-next-line prefer-destructuring
           hostname = hostname.split('www.')[1];
         }
 
@@ -400,6 +405,7 @@ async function displaySearchResults(query, resultsBlock) {
   const { firstChild } = resultsBlock;
   resultsBlock.insertBefore(loadingMessage, firstChild);
 
+  // eslint-disable-next-line no-unused-vars
   const results = await fetchStreamingResults('petplace4', query, resultsBlock);
   isRequestInProgress = false;
 
@@ -424,10 +430,6 @@ async function displaySearchResults(query, resultsBlock) {
       displaySearchResults(event.target.innerText, resultsBlock);
     }
   });
-}
-
-export async function loadEager() {
-
 }
 
 export async function loadLazy(main) {
