@@ -26,6 +26,12 @@ main .slideshow-container {
     position: relative;
 }
 
+.slides-container .slide h2 {
+    color: white;
+    border: none;
+    font-size: 2.75rem;
+}
+
 .slides-container .slide .button {
     padding: .375rem .875rem;
     font-family: var(--heading-font-family);
@@ -38,13 +44,10 @@ main .slideshow-container {
 
 .slide .text-div {
     position: absolute;
-    left: 0;
-    top: 0;
+    inset: 0;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    bottom: 0;
-    right: 0;
     text-align: center;
     margin: 0 auto;
 }

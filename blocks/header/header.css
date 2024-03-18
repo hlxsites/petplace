@@ -340,25 +340,37 @@ grid-gap: 32px;
 
 @media (min-width: 1200px) {
   .nav-tools {
-    display: unset;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
   }
 
   .nav-tools form {
     position: relative;
   }
 
-  .nav-tools form::after {
+  .nav-tools .search-btn {
     position: absolute;
-    content: '';
-    display: block;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px; 
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0;        
+    margin: 0;         
+}
+
+  .nav-tools .search-btn .icon-search {
+    position: absolute;
     width: 20px;
     height: 20px;
     top: 10px;
     right: 10px;
-    background: var(--background-color);
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-mask: center / contain no-repeat url('../../icons/search.svg');
-    mask: center / contain no-repeat url('../../icons/search.svg');
+    cursor: pointer;
+    fill:var(--background-color);
   }
 
   .nav-tools input {
@@ -387,7 +399,43 @@ grid-gap: 32px;
     mask: url('../../icons/close.svg') no-repeat;
   }
 
-  .home-page .nav-tools {
+  .nav-tools button[popovertarget],
+  .nav-tools button[aria-haspopup] {
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+    background: inherit;
+    border: none;
+    border-radius: 0;
+    line-height: 1rem;
+  }
+
+  .nav-tools [popover],
+  .nav-tools button[aria-haspopup] + [aria-hidden] {
+    position: absolute;
+    inset: unset;
+    right: 9px;
+    top: 52px;
+    gap: .5rem;
+    z-index: 999;
+    padding: .25rem;
+    background-color: var(--background-color);
+    border: 1px solid;
+    font-size: 1.5rem;
+  }
+
+  .nav-tools [popover]:popover-open,
+  .nav-tools [aria-hidden="false"] {
+    display: flex;
+  }
+
+  .nav-tools [popover] a,
+  .nav-tools button[aria-haspopup] + [aria-hidden] a {
+    line-height: 1.3rem;
+    text-decoration: none;
+  }
+
+  .home-page .nav-tools form {
     display: none;
   }
 
@@ -407,6 +455,11 @@ grid-gap: 32px;
 
   .nav-sections li {
     font-size: 1rem;
+  }
+
+  .nav-tools [popover],
+  .nav-tools button[aria-haspopup] + [aria-hidden] {
+    right: calc((100% - 1376px) / 2 + 9px);
   }
 }
 

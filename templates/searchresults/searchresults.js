@@ -1,13 +1,13 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
-import { decorateResponsiveImages } from '../../scripts/scripts.js';
+import { decorateResponsiveImages, getPlaceholder } from '../../scripts/scripts.js';
 
-const isTrueSearch = window.location.pathname === '/search';
+const isTrueSearch = window.location.pathname === `${window.hlx.contentBasePath}/search`;
 
 let searchWorker;
 // 2G connections are too slow to realistically load the elasticlunr search index
 // instead we'll do a poor man's search on the last 5K articles
 if (!('connection' in window.navigator) || !['slow-2g', '2g'].includes(window.navigator.connection.effectiveType)) {
-  searchWorker = new Worker('/scripts/worker/search.js');
+  searchWorker = new Worker(`/scripts/worker/search.js?locale=${document.documentElement.lang}`);
 }
 
 function createArticleDiv(article) {
@@ -23,9 +23,11 @@ function removeSkeletons(block) {
 }
 
 function noResultsHidePagination() {
-  document.querySelector('.pagination').style.display = 'none';
+  if (isTrueSearch) {
+    document.querySelector('.pagination').style.display = 'none';
+  }
   const searchResultText = document.querySelector('h2');
-  searchResultText.innerHTML = 'No results found';
+  searchResultText.innerHTML = getPlaceholder('noResults');
 }
 
 async function getArticles() {
@@ -40,7 +42,7 @@ async function getArticles() {
 
   // Show the recent articles if we don't have a search query
   if (!query) {
-    const resp = await fetch('/article/query-index.json?sheet=article');
+    const resp = await fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=article`);
     const json = await resp.json();
     return json.data.slice(0, 16);
   }
@@ -61,7 +63,7 @@ async function getArticles() {
     // only looks at the last 5K articles and does basic keyword matching
     // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
     const queryTokens = query.split(' ');
-    const resp = await fetch('/article/query-index.json?sheet=article&limit=-5000');
+    const resp = await fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=article&limit=-5000`);
     const json = await resp.json();
 
     results = json.data.filter((article) => queryTokens.every((t) => article.title.includes(t)
@@ -154,18 +156,18 @@ function buildSortBtn() {
   const div = document.createElement('div');
   div.classList.add('sortbtn');
   const h2 = document.createElement('h2');
-  h2.innerText = 'Search Results';
+  h2.innerText = getPlaceholder('searchResults');
   div.append(h2);
   const select = document.createElement('select');
   select.classList.add('search-select');
-  select.setAttribute('aria-label', 'Sort results');
+  select.setAttribute('aria-label', getPlaceholder('sortResults'));
   select.id = 'orderby';
-  select.options.add(new Option('Sort By', 'sortby'));
-  select.options.add(new Option('Relevance', 'relevance', false, true));
-  select.options.add(new Option('Title A-Z', 'titleasc'));
-  select.options.add(new Option('Title Z-A', 'titledesc'));
-  select.options.add(new Option('Date ASC', 'dateasc'));
-  select.options.add(new Option('Date DSC', 'datedesc'));
+  select.options.add(new Option(getPlaceholder('sortBy'), 'sortby'));
+  select.options.add(new Option(getPlaceholder('sortByRelevance'), 'relevance', false, true));
+  select.options.add(new Option(getPlaceholder('sortByTitleAsc'), 'titleasc'));
+  select.options.add(new Option(getPlaceholder('sortByTitleDesc'), 'titledesc'));
+  select.options.add(new Option(getPlaceholder('sortByDateAsc'), 'dateasc'));
+  select.options.add(new Option(getPlaceholder('sortByDateDesc'), 'datedesc'));
   select.options[0].disabled = true;
   const usp = new URLSearchParams(window.location.search);
   if (usp.get('sort') !== null) {
@@ -195,8 +197,18 @@ export async function loadEager(document) {
     createTemplateBlock(main, 'pagination');
     main.insertBefore(buildSortBtn(), main.querySelector(':scope > div:nth-of-type(2)'));
   } else {
-    const response = await fetch('/fragments/404.plain.html');
+    const response = await fetch(`${window.hlx.contentBasePath}/fragments/404.plain.html`);
     main.innerHTML = await response.text();
+
+    // Update 404 page metadata
+    document.head.querySelector('title').textContent = `${getPlaceholder('pageNotFound')} | ${getPlaceholder('websiteName')}`;
+    document.head.querySelector('meta[property="og:title"]').content = document.head.title;
+    if (document.body.querySelector('.error-message')) {
+      document.body.querySelector('.error-message').textContent = document.head.title;
+    }
+    if (document.body.querySelector('.error-button-home')) {
+      document.body.querySelector('.error-button-home').textContent = getPlaceholder('goHome');
+    }
   }
 }
 

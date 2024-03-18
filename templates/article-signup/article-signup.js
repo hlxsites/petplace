@@ -33,8 +33,10 @@ export async function loadLazy(main) {
   defaultContent.innerHTML = '';
   defaultContent.append(templateContent);
 
-  const newsletter = await createNewsletterAutoBlock('/fragments/newsletter-footer', (block) => {
-    templateContent.append(block);
-  });
-  await loadBlock(newsletter);
+  if (!window.hlx.contentBasePath) {
+    const newsletter = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-footer`, (block) => {
+      templateContent.append(block);
+    });
+    await loadBlock(newsletter);
+  }
 }

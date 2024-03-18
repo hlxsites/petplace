@@ -7,8 +7,6 @@
     "insurance"
     "social" minmax(115px, min-content)
     "article"
-    "article-footer"
-    "paws-up"
     "social-after"
     "popular"
     "article-navigation";
@@ -112,10 +110,6 @@
   grid-area: social;
 }
 
-.article-template-grid-paws-up {
-  grid-area: paws-up;
-}
-
 .article-template-grid-social-share-after {
   grid-area: social-after;
 }
@@ -143,7 +137,6 @@
       ". article .. author ." min-content
       ". article .. ad ." min-content
       ". article .. insurance ." min-content
-      ". article .. paws-up ." min-content
       ". article .. social ." 1fr
       "popular popular popular popular popular" min-content
       "article-navigation article-navigation article-navigation article-navigation article-navigation" min-content
@@ -199,7 +192,7 @@
   }
 
   .article-page .article-author-container {
-    padding-top: 1rem;
+    padding: 1rem 0.5rem;
   }
 
   .article-page .category-link-btn {

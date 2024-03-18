@@ -85,9 +85,23 @@ const handleFooterClicks = () => {
   });
 };
 
-// CTA - carousel button
+const handleComparePlanClicks = (className) => {
+  document.querySelector(className)?.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('button');
+    if (!btn) return;
+
+    clickHelper(
+      'CTA Button',
+      btn.innerText,
+      'button',
+      'https://quote.petplace.com/questionnaire',
+    );
+  });
+};
+
+// CTA - carousel button, insurance button
 const handleCtaClicks = () => {
-  if (window.location.pathname === '/') {
+  if (window.location.pathname === `${window.hlx.contentBasePath}/`) {
     document
       .querySelector('.slides-container')
       .addEventListener('click', (ev) => {
@@ -96,6 +110,13 @@ const handleCtaClicks = () => {
 
         clickHelper('CTA Button', btn.title, 'button', btn.href);
       });
+
+    handleComparePlanClicks('.insurance-search');
+  }
+
+  if (window.location.pathname === `${window.hlx.contentBasePath}/pet-insurance`) {
+    handleComparePlanClicks('.top-search');
+    handleComparePlanClicks('.bottom-search');
   }
 };
 

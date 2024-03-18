@@ -1,12 +1,19 @@
 import ffetch from '../../scripts/ffetch.js';
-import { buildBlock, createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import {
+  buildBlock,
+  createOptimizedPicture,
+  toClassName,
+} from '../../scripts/lib-franklin.js';
 import {
   getCategories,
   getCategory,
+  getPlaceholder,
   getId,
   isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
+import { adsenseFunc } from '../../scripts/adsense.js';
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 /**
@@ -15,7 +22,7 @@ import {
  * @returns {Promise<HTMLPictureElement || undefined>}
  */
 export async function getCategoryImage(path) {
-  const res = await fetch('/article/category/category-images.plain.html');
+  const res = await fetch(`${window.hlx.contentBasePath}/article/category/category-images.plain.html`);
   const htmlText = await res.text();
   const div = document.createElement('div');
   div.innerHTML = htmlText;
@@ -59,7 +66,7 @@ async function renderArticles(articles) {
       noResults = document.createElement('h2');
       container.append(noResults);
     }
-    noResults.innerText = 'No Articles Found';
+    noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
       pagination.style.display = 'none';
     }
@@ -80,7 +87,7 @@ async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
-  return ffetch('/article/query-index.json')
+  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('article')
     .withTotal(true)
     .filter((article) => {
@@ -103,7 +110,7 @@ function buildSidebar() {
   const filterToggle = document.createElement('button');
   filterToggle.disabled = !isTablet();
   filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
-  filterToggle.textContent = 'Filters';
+  filterToggle.textContent = getPlaceholder('filters');
   section.append(filterToggle);
 
   const subCategories = buildBlock('sub-categories', { elems: [] });
@@ -177,7 +184,7 @@ export async function loadEager(document) {
   await updateMetadata();
   const h2 = document.createElement('h2');
   h2.classList.add('sr-only');
-  h2.textContent = 'Articles';
+  h2.textContent = getPlaceholder('articles');
   const h1 = main.querySelector('h1');
   h1.after(h2);
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(1)'));
@@ -225,4 +232,17 @@ export async function loadLazy() {
   //     renderArticles(getArticles());
   //   });
   // }
+
+  adsenseFunc('category', 'create');
+}
+
+export async function loadDelayed() {
+  const pageCat = await getCategoryForUrl();
+  await pushToDataLayer({
+    event: 'adsense',
+    type: 'category',
+    category: pageCat.Slug,
+  });
+
+  adsenseFunc('category', pageCat.Slug);
 }

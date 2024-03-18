@@ -1,9 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { getCategories, getCategory } from '../../scripts/scripts.js';
-
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
+import { getCategories, getCategory, getPlaceholder } from '../../scripts/scripts.js';
 
 let articles;
 let breed;
@@ -17,8 +13,8 @@ export default async function decorate(block) {
 
   if (!articles) {
     const data = await Promise.all([
-      fetch('/article/query-index.json?sheet=article&limit=500'),
-      fetch('/article/query-index.json?sheet=breed'),
+      fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=article&limit=500`),
+      fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=breed`),
     ].map((fetch) => fetch.then((res) => res.json())));
     [articles, breed] = data.map((json) => json?.data);
   }
@@ -136,6 +132,21 @@ export default async function decorate(block) {
     if (index !== 0) {
       categoryLink.classList.add('category-link-btn-transparent');
     }
+
+    const monthNames = [
+      getPlaceholder('january'),
+      getPlaceholder('february'),
+      getPlaceholder('march'),
+      getPlaceholder('april'),
+      getPlaceholder('may'),
+      getPlaceholder('june'),
+      getPlaceholder('july'),
+      getPlaceholder('august'),
+      getPlaceholder('september'),
+      getPlaceholder('october'),
+      getPlaceholder('november'),
+      getPlaceholder('december'),
+    ];
 
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');

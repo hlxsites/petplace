@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 window.dataLayer ||= [];
 
+/** DATALAYER */
+
 export const pushToDataLayer = (layer) => window.dataLayer.push(layer);
 
 export const clickHelper = (...args) => {
@@ -20,7 +22,7 @@ export const getSocialName = (href) => {
   return strCaps;
 };
 
-// LINK HELPERS
+// link helpers
 export const articleLinksHelper = () => {
   // this is done because article template has multiple classes
   const linkTracking = document.querySelectorAll('.default-content-wrapper');
@@ -108,4 +110,117 @@ export const articlePrevNextHelper = () => {
 
     clickHelper(`${pnCat} Article`, pnText, pnType, link.href);
   });
+};
+
+/** ADSENSE */
+
+export const mappingHelper = (adLoc) => {
+  const mappingTop = window.googletag
+    .sizeMapping()
+    .addSize(
+      [0, 0],
+      [
+        [320, 50],
+        [320, 100],
+      ],
+    )
+    .addSize(
+      [980, 200],
+      [
+        [728, 90],
+        [970, 90],
+      ],
+    )
+    .build();
+
+  const mappingSide = window.googletag
+    .sizeMapping()
+    .addSize([0, 0], [])
+    .addSize(
+      [980, 200],
+      [
+        [160, 600],
+        [300, 600],
+      ],
+    )
+    .build();
+
+  const mappingMiddle = window.googletag
+    .sizeMapping()
+    .addSize(
+      [0, 0],
+      [
+        [320, 50],
+        [320, 100],
+        [300, 250],
+        [336, 280],
+      ],
+    )
+    .addSize(
+      [980, 200],
+      [
+        [300, 250],
+        [336, 280],
+      ],
+    )
+    .build();
+
+  const mappingLeaderboard = window.googletag
+    .sizeMapping()
+    .addSize(
+      [0, 0],
+      [
+        [320, 50],
+        [320, 100],
+        [300, 250],
+        [336, 280],
+      ],
+    )
+    .addSize(
+      [980, 200],
+      [
+        [728, 90],
+        [970, 90],
+        [970, 250],
+      ],
+    )
+    .build();
+
+  // this conditional is only for articles
+  if (adLoc.includes('article')) {
+    if (adLoc.includes('side')) return mappingSide;
+    if (adLoc.includes('middle')) return mappingMiddle;
+  }
+
+  if (adLoc.includes('top')) return mappingTop;
+  // for everything else, it returns leaderboard
+  return mappingLeaderboard;
+};
+
+export const sizingArr = (adLoc) => {
+  const sizeSide = [[160, 600]];
+  const sizeTopMid = [[320, 50]];
+  const sizeLeader = [[728, 90]];
+
+  if (adLoc.includes('article')) {
+    if (adLoc.includes('side')) return sizeSide;
+    if (adLoc.includes('bottom')) return sizeLeader;
+    return sizeTopMid;
+  }
+
+  return sizeLeader;
+};
+
+export const isMiddleAd = (type) => {
+  switch (type) {
+    case 'home':
+    case 'article':
+    case 'breeds':
+      return true;
+    case 'category':
+    case 'tags':
+    case 'breed':
+    default:
+      return false;
+  }
 };

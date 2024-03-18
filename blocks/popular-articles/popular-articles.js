@@ -32,7 +32,7 @@ async function fetchArticleData(paths) {
 }
 
 async function getPathsFromSlideshow() {
-  const res = await fetch('/');
+  const res = await fetch(`${window.hlx.contentBasePath}/`);
   const html = await res.text();
 
   // Create a temporary element to extract the content within the <main> tag
@@ -48,7 +48,7 @@ async function getPathsFromSlideshow() {
 }
 
 async function getPopularPosts(block, isAuthorPopularPosts) {
-  const res = await fetch('/fragments/popular-posts');
+  const res = await fetch(`${window.hlx.contentBasePath}/fragments/popular-posts`);
   const text = await res.text();
   const html = document.createElement('div');
   let paths = [];

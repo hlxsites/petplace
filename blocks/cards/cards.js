@@ -1,7 +1,7 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
-import { getCategories } from '../../scripts/scripts.js';
+import { getCategories, getPlaceholder } from '../../scripts/scripts.js';
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const dateFormatter = new Intl.DateTimeFormat(document.documentElement.lang, { month: 'long', day: 'numeric', year: 'numeric' });
 const categories = await getCategories();
 let isAuthorCard = false;
 let isEager = true;
@@ -27,7 +27,7 @@ async function buildPost(post, eager) {
   const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
   postCard.innerHTML = `
     <div class="blogs-card-image">
-      <a href="${post.path}">${createOptimizedPicture(post.image, `Teaser image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
+      <a href="${post.path}">${createOptimizedPicture(post.image, `${getPlaceholder('teaserLabel')} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
       ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}"><span itemprop="about">${category.Category}</span></a>` : ''}
     </div>
     <div>
@@ -56,7 +56,7 @@ async function buildAuthorPost(post, eager) {
   postCard.setAttribute('itemtype', 'https://schema.org/Person');
   postCard.innerHTML = `
       <div class="blogs-card-image">
-        <a href="${post.path}">${createOptimizedPicture(post.avatar, `Avatar image for ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
+        <a href="${post.path}">${createOptimizedPicture(post.avatar, `${getPlaceholder('avatarLabel')} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
       </div>
       <div>              
         <a href="${post.path}">
@@ -71,11 +71,13 @@ async function buildAuthorPost(post, eager) {
   return postCard;
 }
 
-async function createCard(row, eager = false) {
+async function createCard(row, eager) {
   const li = document.createElement('li');
   if (row.dataset.json) {
     const post = JSON.parse(row.dataset.json);
-    li.append(isAuthorCard ? await buildAuthorPost(post, eager) : await buildPost(post, eager));
+    li.append(isAuthorCard
+      ? await buildAuthorPost(post, eager)
+      : await buildPost(post, eager));
   } else {
     li.append(row);
   }

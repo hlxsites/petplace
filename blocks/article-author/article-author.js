@@ -1,9 +1,14 @@
-import { createOptimizedPicture, decorateIcons, getMetadata } from '../../scripts/lib-franklin.js';
+import {
+  createOptimizedPicture,
+  decorateIcons,
+  getMetadata,
+} from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const authorTitle = getMetadata('author');
   const authorTitleLowerCase = authorTitle.toLowerCase();
-  const author = await fetch('/authors/query-index.json')
+  const author = await fetch(`${window.hlx.contentBasePath}/authors/query-index.json`)
     .then((response) => response.json())
     .then((data) => data.data.find(
       (item) => item.title.toLowerCase().includes(authorTitleLowerCase),
@@ -23,14 +28,14 @@ export default async function decorate(block) {
     </div>
     <time itemprop="datePublished" datetime="${date.toISOString().substring(0, 10)}">${date}</time>
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-      <meta itemprop="name" content="PetPlace.com"/>
+      <meta itemprop="name" content="${getPlaceholder('websiteName')}"/>
       <meta itemprop="logo" content="${window.location.origin}/icons/logo.svg"/>
     </div>`;
   block.firstElementChild.prepend(avatarIfExist);
   decorateIcons(block);
   setTimeout(() => {
     window.requestAnimationFrame(() => {
-      block.querySelector('time').textContent = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(new Date(date));
+      block.querySelector('time').textContent = new Intl.DateTimeFormat(document.documentElement.lang, { dateStyle: 'long' }).format(new Date(date));
     });
   });
 }

@@ -1,14 +1,15 @@
 import { sampleRUM } from '../../scripts/lib-franklin.js';
+import { getPlaceholder } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 export default async function decorate(block) {
-  const searchPlaceholder = block.firstElementChild.children[0].textContent || 'Search…';
-  const searchButtonText = block.firstElementChild.children[1].textContent || 'Submit';
+  const searchPlaceholder = block.firstElementChild.children[0].textContent || getPlaceholder('search');
+  const searchButtonText = block.firstElementChild.children[1].textContent || getPlaceholder('submit');
 
   const form = document.createElement('form');
   form.setAttribute('role', 'search');
   form.className = 'search-box-wrapper';
-  form.action = '/search';
+  form.action = `${window.hlx.contentBasePath}/search`;
   form.addEventListener('submit', (ev) => {
     const query = ev.target.querySelector('.search-input').value;
     if (!query) {
