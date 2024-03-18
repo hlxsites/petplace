@@ -81,9 +81,16 @@ function formatAnimalData(apiData) {
   };
   return formattedData;
 }
-function formatSimilarPetData(apiData) {
+async function formatSimilarPetData(apiData) {
   if (apiData && apiData.length > 4) {
-    return getRandomItems(apiData, 4);
+    const { animalId } = await getParametersFromUrl();
+    let animalArray = [];
+    apiData.forEach((pet) => {
+      if (pet.animalId !== animalId) {
+        animalArray.push(pet);
+      }
+    })
+    return getRandomItems(animalArray, 4);
   }
   return apiData;
 }
@@ -196,7 +203,7 @@ async function fetchSimilarPets(zip, animalType, animalListApi) {
     });
     if (resp.ok) {
       const json = await resp.json();
-      result = formatSimilarPetData(json.animal);
+      result = await formatSimilarPetData(json.animal);
     }
   } catch (error) {
     // console.error('Error:', error);
@@ -621,13 +628,11 @@ export default async function decorate(block) {
     const animalApi = `${baseUrl}/animal/${animalId}/client/${clientId}`;
     const petListApi = `${baseUrl}/animal/`;
     const petData = await fetchAnimalData(animalApi);
-
     const similarPetsArr = await fetchSimilarPets(
       petData.zip,
       petData.animalType,
       petListApi,
     );
-
     // Create carousel section
     block.append(
       await createCarouselSection(
