@@ -264,7 +264,7 @@ function getFavorites(animalData) {
 
 export async function createAccountFavoritesPanel(animalData) {
     const panelDiv = document.createElement('div');
-    panelDiv.className = 'tab-pannel-inner';
+    panelDiv.className = 'tab-panel-inner';
     panelDiv.innerHTML = `
         <h3>Favorites</h3>
         <div class="favorites-list"></div>

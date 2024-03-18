@@ -5,6 +5,7 @@ import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
 import { bindAccountDetailsEvents, createAccountDetailsPanel } from './account-details.js';
 import { createAccountFavoritesPanel } from './account-favorites.js';
 import { createSavedSearchPanel } from './account-saved-searches.js';
+import { createAccountSurveyPanel } from './account-survey.js';
 
 import { buildBlock, decorateBlock, loadBlock } from '../../scripts/lib-franklin.js';
 async function createTabComponent() {
@@ -12,7 +13,7 @@ async function createTabComponent() {
         { title: 'Account Details', hash: 'details' },
         { title: 'Search Alerts', hash: 'searchalerts' },
         { title: 'Favorites', hash: 'favorites' },
-        // { title: 'Pet Match Survey', hash: 'survey' },
+        { title: 'Pet Match Survey', hash: 'survey' },
     ];
     const tabs = document.createElement('div');
     tabs.className = 'account-tabs';
@@ -114,12 +115,8 @@ export default async function decorate(block) {
         block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));
         block.querySelector('#favorites').append(await createAccountFavoritesPanel(token));
         block.querySelector('#searchalerts').append(await createSavedSearchPanel(token));
-        await bindAccountDetailsEvents(block, token, initialUserData);
+        block.querySelector('#survey').append(await createAccountSurveyPanel(block, token));
 
-        const surveyContainer =  block.querySelector('#survey')
-        const surveyBlock = buildBlock('pet-survey', '');
-        surveyContainer.append(surveyBlock);
-        decorateBlock(surveyBlock);
-        await loadBlock(surveyBlock);
-    }   
+        await bindAccountDetailsEvents(block, token, initialUserData);
+    }
 }

@@ -21,7 +21,12 @@ export default class TabsManual {
         this.lastTab = tab;
       }
       this.selectNode.addEventListener('change', this.onChange.bind(this));
-      const currentHash = window.location.hash;
+      let currentHash = window.location.hash;
+
+      if (currentHash.includes('?')) {
+        [currentHash] = currentHash.split('?');
+      }
+
       if (currentHash && this.getIndexByHash(currentHash) > -1) {
         this.setSelectedTab(this.tabs[this.getIndexByHash(currentHash)]);
       } else {
@@ -123,4 +128,13 @@ export default class TabsManual {
       }
       return -1;
     }
+
+    getHashFromURL(url) {
+      var hashIndex = url.indexOf('#');
+      if (hashIndex !== -1) {
+          return url.substring(hashIndex + 1);
+      } else {
+          return ''; // Return an empty string if there's no hash
+      }
+  }
 }
