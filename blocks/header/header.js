@@ -1,6 +1,7 @@
 import {
   decorateIcons,
   getMetadata,
+  loadScript,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
 import {
@@ -19,23 +20,7 @@ function isPopoverSupported() {
   return HTMLElement.prototype.hasOwnProperty('popover');
 }
 
-const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
 
-const loadScript = (url, callback, type, section, defer) => {
-  const head = document.querySelector('head');
-  const script = document.createElement('script');
-  script.src = url;
-  if (type) {
-    script.setAttribute('type', type);
-  }
-  if (defer && script.src) {
-    script.defer = defer;
-  }
-  if (section) section.append(script);
-  else head.append(script);
-  script.onload = callback;
-  return script;
-};
 loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', () => {
   console.log('Marked.js loaded');
 });
@@ -268,28 +253,4 @@ export default async function decorate(block) {
   });
 
   decorateIcons(nav);
-
-  const createGenAISearchCTA = () => {
-    const headerSearchButton = document.createElement('div');
-    headerSearchButton.className = 'header-search';
-    headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY >= 68) {
-        headerSearchButton.classList.add('scrolled'); // New position when scrolled to the threshold
-      } else {
-        headerSearchButton.classList.remove('scrolled'); // Original position
-      }
-    });
-
-    headerSearchButton.addEventListener('click', async () => {
-      document.location.pathname = '/discovery';
-    });
-
-    return headerSearchButton;
-  };
-
-  if (document.body.classList.contains('article-page')) {
-    block.append(createGenAISearchCTA());
-  }
 }

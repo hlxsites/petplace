@@ -16,7 +16,7 @@
   }
 }
 .section.genai-search-container:not(.centered) {
-  border-top: 1px solid #BDBDBD;
+  border-top: 1px solid var(--color-gray-lighter-alt);
   padding-top: 1rem;
 
   @media (min-width: 1200px) {
@@ -55,7 +55,7 @@ body.article-page .section.genai-search-container:not(.centered) h2:last-of-type
     color: var(--text-color);
   }
   body.article-page  .section.genai-search-container:not(.centered) h2:first-of-type {
-  color: rgba(68, 0, 66, 1);
+  color: var(--color-purple-dark-alt);
 
 }
 .home-page .section.genai-search-container  {
@@ -177,7 +177,7 @@ body.article-page .section.genai-search-container h2:last-of-type::before {
 .genai-search .search-box-wrapper .search-input{
   font-size: 0.875rem;
   background: var(--background-color);
-  border: 1px solid #E7E7E7;
+  border: 1px solid var(  --color-gray-lighest-alt);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
   /* box-shadow: 0px -3px 4px -2px rgba(0, 0, 0, 0.25); */
   height: 44px;
@@ -200,12 +200,12 @@ body.article-page .section.genai-search-container h2:last-of-type::before {
 }
 .genai-search .search-box-wrapper .search-input:focus-visible{
   outline: none;
-  border-color: #6E6AA4;
+  border-color: var(--color-purple-alt);
 }
 .home-page .genai-search .search-box-wrapper .search-input{
   font-size: 0.875rem;
   background: var(--background-color);
-  border: 1px solid #E7E7E7;
+  border: 1px solid var(--color-gray-lighest-alt);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
 
   /* box-shadow: 0px -3px 4px -2px rgba(0, 0, 0, 0.25); */
@@ -547,7 +547,7 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button{
     width: 74px;
     z-index: 1;
     height: 100%;
-    background: linear-gradient(90deg,  #FFF 64.58%, rgba(255, 255, 255, 0.00) 0%);
+    background: linear-gradient(90deg,  #FFF 64.58%, transparent 0%);
   }
 }
 .genai-search-container .search-card-container .slideshow:after {
@@ -557,7 +557,7 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button{
   width: 74px;
   z-index: 1;
   height: 100%;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%);
+  background: linear-gradient(90deg, transparent 0%, #FFF 100%);
 } 
 
 .genai-search-container .search-card-container .slideshow .slides-container{

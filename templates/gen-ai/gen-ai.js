@@ -424,7 +424,7 @@ async function displaySearchResults(query, resultsBlock) {
     if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
       searchBlock.scrollIntoView({ behavior: 'smooth' });
 
-      window.localStorage.setItem('gen-ai-query', JSON.stringify(event.target.innerText));
+      window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(event.target.innerText));
       searchBox.value = event.target.innerText;
       resultsBlock.innerHTML = '';
       displaySearchResults(event.target.innerText, resultsBlock);
@@ -466,7 +466,7 @@ export async function loadLazy(main) {
   searchResultsDivElement.appendChild(decorateSearch());
   defaultContentWrapper.appendChild(searchResultsDivElement);
 
-  const searchQuery = window.localStorage.getItem('gen-ai-query');
+  const searchQuery = window.localStorage.getItem('aem-gen-ai-query');
   if (searchQuery) {
     if (searchQuery.indexOf('insurance') !== -1) {
       displayInsuranceCTA(searchResultsDivElement);

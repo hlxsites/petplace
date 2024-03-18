@@ -12,6 +12,8 @@ import {
 import { adsenseFunc } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
+const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
+
 export async function getCategoryByKey(key, value) {
   const categories = await getCategories();
   return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
@@ -201,6 +203,30 @@ export async function loadLazy(document) {
   breadcrumb.style.visibility = '';
 
   adsenseFunc('article', 'create');
+
+  const createGenAISearchCTA = () => {
+    const headerSearchButton = document.createElement('div');
+    headerSearchButton.className = 'header-search';
+    headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY >= 68) {
+        headerSearchButton.classList.add('scrolled'); // New position when scrolled to the threshold
+      } else {
+        headerSearchButton.classList.remove('scrolled'); // Original position
+      }
+    });
+
+    headerSearchButton.addEventListener('click', async () => {
+      document.location.pathname = '/discovery';
+    });
+
+    return headerSearchButton;
+  };
+
+  if (document.body.classList.contains('article-page')) {
+    main.append(createGenAISearchCTA());
+  }
 }
 
 export async function loadDelayed() {

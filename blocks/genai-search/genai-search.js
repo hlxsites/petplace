@@ -9,7 +9,7 @@ export default async function decorate(block) {
     const query = ev.target.querySelector('.search-input').value;
     if (query) {
       ev.preventDefault();
-      window.localStorage.setItem('gen-ai-query', JSON.stringify(query));
+      window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(query));
       document.location.pathname = '/discovery';
     }
     // return;
@@ -76,7 +76,7 @@ export default async function decorate(block) {
   block.innerHTML = '';
   block.append(form);
 
-  const query = window.localStorage.getItem('gen-ai-query');
+  const query = window.localStorage.getItem('aem-gen-ai-query');
   if (query && document.location.pathname.indexOf('/discovery') !== -1) {
     block.querySelector('.search-input').value = JSON.parse(query);
   }
