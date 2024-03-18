@@ -130,7 +130,7 @@ export async function saveSearch(token) {
         manageButton.className = 'manage-button';
         manageButton.innerText = manageSearchAlerts;
         manageButton.addEventListener('click', () => {
-            window.location.href = 'account';
+            window.location.href = '/pet-adoption/account#searchalerts';
         });
 
         const continueButton = document.createElement('button');
