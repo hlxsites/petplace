@@ -234,7 +234,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
             .then(() => {
                 pushToDataLayer({
                     event: 'sign_up',
-                    user_id: response.account.username,
+                    user_id: response.account.localAccountId,
                     user_type: 'member',
                     content_group: contentGroup
                     ? contentGroup.content
@@ -252,7 +252,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
         } else {
             pushToDataLayer({
                 event: 'login',
-                user_id: response.account.username,
+                user_id: response.account.localAccountId,
                 user_type: 'member',
                 content_group: contentGroup
                 ? contentGroup.content
