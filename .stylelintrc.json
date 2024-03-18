@@ -1,6 +1,7 @@
 {
   "extends": ["stylelint-config-standard"],
   "rules": {
-    "property-no-vendor-prefix": null
+    "property-no-vendor-prefix": null,
+    "media-feature-range-notation": null
   }
 }

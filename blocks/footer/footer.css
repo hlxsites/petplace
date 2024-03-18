@@ -105,13 +105,13 @@
   .footer-legal > div {
     align-items: center;
     flex-direction: row;
+    justify-content: space-between;
     gap: 0;
     text-align: unset;
     font-size: 13px;
   }
 
   .footer-legal ul {
-    width: 41.667%;
     justify-content: space-between;
     gap: 0 1rem;
     margin: .5rem 0;
@@ -119,11 +119,11 @@
 
   .footer-legal li {
     margin: 0;
+    padding: 0;
     font-size: 13px;
   }
 
   .footer-legal p {
-    width: 58.333%;
     text-align: right;
   }
 

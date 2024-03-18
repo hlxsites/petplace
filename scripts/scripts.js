@@ -22,6 +22,7 @@ import {
 } from './lib-franklin.js';
 import { login, logout, acquireToken, isLoggedIn } from './lib/msal/msal-authentication.js'
 
+export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
@@ -33,6 +34,11 @@ window.hlx.cache = {};
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
   desktop: () => window.innerWidth >= 600,
+};
+
+export const DEFAULT_REGION = 'en-US';
+export const REGIONS = {
+  'en-GB': ['LCY', 'LHR', 'LON', 'MAN'],
 };
 
 window.hlx.templates.add([
@@ -73,6 +79,15 @@ window.hlx.plugins.add('experience-decisioning', {
   load: 'eager',
   options: { audiences: AUDIENCES },
 });
+
+// checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
+export async function getRegion() {
+  const resp = await fetch(window.location.href, { method: 'HEAD' });
+  const locations = resp.headers.get('X-Served-By').split(',');
+  const pops = locations.map((l) => l.split('-').pop());
+  return Object.entries(REGIONS)
+    .find(([, values]) => pops.some((loc) => values.includes(loc)))?.[0] || DEFAULT_REGION;
+}
 
 /**
  * Load fonts.css and set a session storage flag
@@ -606,7 +621,19 @@ function setLocale() {
   const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
   const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
   document.documentElement.lang = locale;
-  window.hlx.contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
+  window.hlx.contentBasePath = locale === DEFAULT_REGION ? '' : `/${locale.toLowerCase()}`;
+}
+
+function redirectToPreferredRegion() {
+  const preferredRegion = localStorage.getItem(PREFERRED_REGION_KEY);
+  if (!preferredRegion) {
+    return;
+  }
+  if (preferredRegion === 'en-GB' && window.hlx.contentBasePath !== '/en-gb') {
+    window.location = '/en-gb/';
+  } else if (preferredRegion === 'us' && window.hlx.contentBasePath) {
+    window.location = '/';
+  }
 }
 
 /**
@@ -615,6 +642,7 @@ function setLocale() {
  */
 async function loadEager(doc) {
   setLocale();
+  redirectToPreferredRegion();
   decorateTemplateAndTheme();
 
   await fetchPlaceholders(window.hlx.contentBasePath || 'default');
@@ -649,6 +677,44 @@ async function loadEager(doc) {
   } catch (e) {
     // do nothing
   }
+}
+
+async function addRegionSelectorPopup() {
+  const region = await getRegion();
+  window.hlx.region = region;
+
+  const span = document.createElement('div');
+  span.textContent = getPlaceholder('changeRegion');
+
+  const dialogContent = document.createElement('div');
+
+  const regionSelector = buildBlock('region-selector', [[]]);
+  dialogContent.append(regionSelector);
+  decorateBlock(regionSelector);
+  await loadBlock(regionSelector);
+
+  const dialog = buildBlock('popup', [[span], [dialogContent]]);
+
+  const li = document.createElement('li');
+  li.append(dialog);
+  document.querySelector('footer .footer-legal ul').append(li);
+  decorateBlock(dialog);
+  await loadBlock(dialog);
+  const popup = document.querySelector('.popup');
+  if (!localStorage.getItem(PREFERRED_REGION_KEY)) {
+    if (window.hlx.contentBasePath === '/en-gb' && region !== 'en-GB') {
+      popup.querySelector('hlx-aria-dialog').open();
+    } else if (!window.hlx.contentBasePath && region !== 'en-US') {
+      popup.querySelector('hlx-aria-dialog').open();
+    }
+    popup.querySelector('hlx-aria-dialog .primary').focus();
+  }
+  popup.addEventListener('click', (ev) => {
+    if (!ev.target.closest('.button')) {
+      return;
+    }
+    localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
+  });
 }
 
 /**
@@ -812,7 +878,12 @@ async function loadLazy(doc) {
   ]);
 
   const footer = doc.querySelector('footer');
-  loadFooter(footer);
+  loadFooter(footer).then(() => {
+    // FIXME: remove conditional on UK website go-live
+    if (window.hlx.contentBasePath) {
+      addRegionSelectorPopup();
+    }
+  });
 
   const FOOTER_SPACING = 'footer-top-spacing';
   footer.id = 'footer';
