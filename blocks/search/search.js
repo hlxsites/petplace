@@ -10,6 +10,7 @@ export default async function decorate(block) {
   form.setAttribute('role', 'search');
   form.className = 'search-box-wrapper';
   form.action = `${window.hlx.contentBasePath}/search`;
+  form.dataset.rumSource = 'main .search';
   form.addEventListener('submit', (ev) => {
     const query = ev.target.querySelector('.search-input').value;
     if (!query) {

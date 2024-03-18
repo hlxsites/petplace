@@ -1,6 +1,7 @@
 import { createForm } from '../form/form.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 import { setNewsletterSignedUp, captureError, DEFAULT_REGION } from '../../scripts/scripts.js';
+import { sampleRUM } from '../../scripts/lib-franklin.js';
 
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
@@ -52,6 +53,9 @@ async function submitForm(block, fd) {
       captureError('newsletter-signup', new Error(`iterable API responded with ${res.status} status code: ${text}`));
       showError(block, fd);
     } else {
+      if (sampleRUM.convert) {
+        sampleRUM.convert('form-submission', baseUri, block.querySelector('form'));
+      }
       setNewsletterSignedUp();
       showMessage(block, fd.Success);
       pushToDataLayer({

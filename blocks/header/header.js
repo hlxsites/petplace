@@ -64,6 +64,7 @@ export default async function decorate(block) {
   searchForm.setAttribute('role', 'search');
   searchForm.action = `${window.hlx.contentBasePath}/search`;
   searchForm.method = 'get';
+  searchForm.dataset.rumSource = '.header .search';
 
   const searchButton = document.createElement('button');
   searchButton.className = 'search-btn';
@@ -159,7 +160,9 @@ export default async function decorate(block) {
   ariaDialog.append(dialogContent);
 
   const sidebarSearch = document.createElement('div');
-  sidebarSearch.append(searchForm.cloneNode(true));
+  const sidebarSearchForm = searchForm.cloneNode(true);
+  sidebarSearchForm.dataset.rumSource = '.nav-sidebar-search .search';
+  sidebarSearch.append(sidebarSearchForm);
   sidebarSearch.querySelector('form button')?.addEventListener('click', (ev) => {
     ev.preventDefault();
     if (sidebarSearch.querySelector('input')?.value !== '') {
