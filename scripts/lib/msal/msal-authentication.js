@@ -3,7 +3,8 @@ import { b2cPolicies } from './policies.js';
 import { initRedirectHandlers } from './login-redirect-handlers.js';
 import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
-import endPoints from '../../../variables/endpoints.js';   
+import endPoints from '../../../variables/endpoints.js';
+import { pushToDataLayer } from '../../utils/helpers.js';
 
 const msalInstance = createDefaultMsalInstance();
 const msalChangePwdInstance = createMsalInstance(msalChangePwdConfig);
@@ -218,6 +219,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
      */
 
     if (response !== null) {
+        const contentGroup = document.querySelector('meta[name="category"]');
         // the 'newUser' flag is present for newly registered users that are logging in for the very first time.
         if (response.account.idTokenClaims.newUser) {
             // New user detected. Send POST request to create user in the database
@@ -230,6 +232,15 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                 body: featureName ? "\"" + featureName + "\"" : null
             })
             .then(() => {
+                pushToDataLayer({
+                    event: 'sign_up',
+                    user_id: response.account.username,
+                    user_type: 'member',
+                    content_group: contentGroup
+                    ? contentGroup.content
+                    : 'N/A - Content Group Not Set'
+                  });
+
                 // invoke custom callback if one was provided
                 if (customCallback) {
                     customCallback(response);
@@ -239,6 +250,15 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                 console.error('/adopt/api/User Error:', error);
             });
         } else {
+            pushToDataLayer({
+                event: 'login',
+                user_id: response.account.username,
+                user_type: 'member',
+                content_group: contentGroup
+                ? contentGroup.content
+                : 'N/A - Content Group Not Set'
+              });
+
             // invoke custom callback if one was provided
             if (customCallback) {
                 customCallback(response);
