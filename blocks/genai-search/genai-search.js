@@ -1,5 +1,3 @@
-import { sampleRUM } from '../../scripts/lib-franklin.js';
-
 export default async function decorate(block) {
   const searchPlaceholder = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[0].textContent : 'Ask a question or enter a topic....';
   const searchButtonText = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[1].textContent : 'Submit';
@@ -63,6 +61,7 @@ export default async function decorate(block) {
   button.textContent = searchButtonText;
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `${window.hlx.codeBasePath}/icons/send.svg`, true);
+  // eslint-disable-next-line func-names
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       // On successful response, create and append the SVG element
@@ -73,7 +72,7 @@ export default async function decorate(block) {
     }
   };
   xhr.send();
-  form.append(button); 
+  form.append(button);
   block.innerHTML = '';
   block.append(form);
 

@@ -6,7 +6,6 @@ import {
 
 const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
 
-
 const isTrueSearch = window.location.pathname === '/discovery';
 let isRequestInProgress = false;
 
@@ -15,7 +14,6 @@ function removeAllEventListeners(element) {
   element.parentNode.replaceChild(clone, element);
 }
 
-
 const fetchStreamingResults = async (index, query, resultsBlock) => {
   if (query === '') {
     return {
@@ -23,9 +21,9 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
     };
   }
 
-  const socket = new WebSocket("wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query");
+  const socket = new WebSocket('wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query');
 
-  socket.addEventListener('open', (event) => {
+  socket.addEventListener('open', () => {
     // console.log('WebSocket connection established');
 
     const messageToSend = JSON.stringify({ query, index });
@@ -124,7 +122,6 @@ const decorateSearch = () => {
 
   // Append the search results <div> element to the search block <div> element
   return stopButtonContainer;
-
 };
 
 function getCurrentSlideIndex($block) {
@@ -320,7 +317,6 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       $sliderNext.className = 'slideshow-next';
       $slideShowContainer.appendChild($sliderNext);
 
-
       $slideShowContainer.addEventListener(Events.SLIDE_CHANGED, (e) => {
         updateSlide(e.detail.currentIndex, e.detail.newIndex, $slideShowContainer);
       });
@@ -363,10 +359,10 @@ function displayInsuranceCTA(resultsBlock) {
   const resultContainer = document.createElement('div');
   resultContainer.className = 'insurance-card';
   resultContainer.innerHTML = `<div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div>`;
-  
+
   const ctaContainer = document.createElement('div');
   ctaContainer.className = 'cta-container';
-  
+
   const ctaTitle = document.createElement('h4');
   ctaTitle.textContent = 'Petplace.com/pet-insurance';
 
@@ -477,5 +473,4 @@ export async function loadLazy(main) {
     }
     // window.localStorage.removeItem('gen-ai-query');
   }
-
 }

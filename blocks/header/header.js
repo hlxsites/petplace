@@ -19,7 +19,7 @@ function isPopoverSupported() {
   return HTMLElement.prototype.hasOwnProperty('popover');
 }
 
-const GENAI_TOOLTIP = "Try our AI powered discovery tool and get all your questions answered";
+const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
 
 const loadScript = (url, callback, type, section, defer) => {
   const head = document.querySelector('head');
@@ -36,14 +36,14 @@ const loadScript = (url, callback, type, section, defer) => {
   script.onload = callback;
   return script;
 };
-loadScript("https://cdn.jsdelivr.net/npm/marked/marked.min.js", () => {
-  console.log("Marked.js loaded");
+loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', () => {
+  console.log('Marked.js loaded');
 });
-loadScript("https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js", () => {
-  console.log("Masonry.js loaded");
+loadScript('https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js', () => {
+  console.log('Masonry.js loaded');
 });
-loadScript("https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js", () => {
-  console.log("ImagesLoaded.js loaded");
+loadScript('https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js', () => {
+  console.log('ImagesLoaded.js loaded');
 });
 
 /**
@@ -274,7 +274,7 @@ export default async function decorate(block) {
     headerSearchButton.className = 'header-search';
     headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
 
-    window.addEventListener('scroll', function () {
+    window.addEventListener('scroll', () => {
       if (window.scrollY >= 68) {
         headerSearchButton.classList.add('scrolled'); // New position when scrolled to the threshold
       } else {
@@ -289,7 +289,7 @@ export default async function decorate(block) {
     return headerSearchButton;
   };
 
-  if(document.body.classList.contains('article-page')){ 
+  if (document.body.classList.contains('article-page')) {
     block.append(createGenAISearchCTA());
   }
 }

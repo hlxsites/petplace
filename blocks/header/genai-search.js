@@ -1,6 +1,6 @@
-const GENAI_SEARCH_TITLE = "Discover PetPlace"; 
-const GENAI_SEARCH_WARNING = "Discover PetPlace is powered by experimental Generative AI, information quality may vary.";
-const GENAI_TOOLTIP = "Try our AI powered discovery tool and get all your questions answered";
+const GENAI_SEARCH_TITLE = 'Discover PetPlace';
+const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
+const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
 
 const sampleQuestions = [
   // "Why Does One of My Cats Jump on the Other's Back and Bite His Neck?",
@@ -21,25 +21,11 @@ const sampleQuestions = [
   // "Should You Board Your Cat or Get a Sitter?",
   // "Is Your Dog Smarter Than a 5th Grader?",
   // "How Long Can a Pet Be Overdue for a Rabies Vaccine and Still Be Protected?"
-  "What are the benefits of pet insurance?",
-  "Where is the best place to adopt a pet?",
-  "Why should i microchip my dog?",
-  "What are the most popular pet names?"
-]
-
-const capabilities = [
-  "Uses semantic search to find relevant answers",
-  "Utilizes trusted data sources to generate responses",
-  "Declines irrelevant and inappropriate queries",
-]
-
-const limitations = [
-  "Does not support keyword matching",
-  "Does not support complex queries",
-  "May occasionally generate incorrect information",
-]
-
-let isRequestInProgress = false;
+  'What are the benefits of pet insurance?',
+  'Where is the best place to adopt a pet?',
+  'Why should i microchip my dog?',
+  'What are the most popular pet names?',
+];
 
 function removeAllEventListeners(element) {
   const clone = element.cloneNode(true);
@@ -65,44 +51,43 @@ function showRegenerateButton(resultsBlock) {
 const fetchStreamingResults = async (index, query, resultsBlock) => {
   if (query === '') {
     return {
-      result: 'Please enter a search query.'
-    }
-  } else {
-    document.getElementById("clearButton").classList.add("show");
-    document.getElementById("vertical-bar").classList.add("show");
+      result: 'Please enter a search query.',
+    };
   }
+  document.getElementById('clearButton').classList.add('show');
+  document.getElementById('vertical-bar').classList.add('show');
 
   // Adobe Internal Endpoint
   // const socket = new WebSocket('wss://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net/api/query');
 
   // Adobe External Endpoint
   // const socket = new WebSocket("wss://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query");
-  
+
   // BambooHR Endpoint
   // const socket = new WebSocket('wss://spire-bhr-temp-pub.ethos14-stage-va7.ethos.adobe.net/api/query');
 
-  //new Adobe Endpoint
-  const socket = new WebSocket("wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query");
+  // new Adobe Endpoint
+  const socket = new WebSocket('wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query');
 
-  socket.addEventListener('open', function(event) {
+  socket.addEventListener('open', (event) => {
     console.log('WebSocket connection established');
 
-    const messageToSend = JSON.stringify({"query": query, "index": index});
+    const messageToSend = JSON.stringify({ query, index });
     socket.send(messageToSend);
   });
 
-  socket.addEventListener('message', function(event) {
+  socket.addEventListener('message', (event) => {
     console.log('Message from server ', event);
     const message = JSON.parse(event.data);
-    
+
     updateStreamingSearchCard(resultsBlock, message, socket);
   });
 
-  socket.addEventListener('error', function(error) {
+  socket.addEventListener('error', (error) => {
     console.error('WebSocket error:', error);
   });
 
-  socket.addEventListener('close', function(event) {
+  socket.addEventListener('close', (event) => {
     console.log('WebSocket connection closed');
   });
 
@@ -147,7 +132,7 @@ const getRandomQuestions = (questions) => {
     }
   }
   return randomQuestions;
-}
+};
 
 const decorateSearch = () => {
   // Create the <main> element
@@ -165,18 +150,18 @@ const decorateSearch = () => {
 
   // Create the <h1> element with id attribute and text content
   const spanElement = document.createElement('span');
-  const spanText = document.createTextNode("PetPlace Discovery")
+  const spanText = document.createTextNode('PetPlace Discovery');
   spanElement.appendChild(spanText);
   const h1Element = document.createElement('h1');
   h1Element.setAttribute('id', 'search');
-  const h1Text = document.createTextNode("AI Powered ");
+  const h1Text = document.createTextNode('AI Powered ');
   h1Element.appendChild(h1Text);
-  h1Element.appendChild(spanElement)
+  h1Element.appendChild(spanElement);
 
   const pElement = document.createElement('p');
   pElement.setAttribute('id', 'searchDescription');
 
-  const pText = document.createTextNode("Use PetPlace’s AI-powered search feature to scan our comprehensive library of pet care, pet health, and pet medication articles and provide concise, on-the-spot information catered to your personalized needs.");
+  const pText = document.createTextNode('Use PetPlace’s AI-powered search feature to scan our comprehensive library of pet care, pet health, and pet medication articles and provide concise, on-the-spot information catered to your personalized needs.');
   pElement.appendChild(pText);
 
   // const xhrLogo = new XMLHttpRequest();
@@ -227,28 +212,28 @@ const decorateSearch = () => {
   verticalBar.setAttribute('id', 'vertical-bar');
   verticalBar.setAttribute('class', 'vertical-bar');
 
-  searchInput.addEventListener("input", () => {
-    if (searchInput.value.trim() !== "") {
-      clearButton.classList.add("show");
-      verticalBar.classList.add("show");
+  searchInput.addEventListener('input', () => {
+    if (searchInput.value.trim() !== '') {
+      clearButton.classList.add('show');
+      verticalBar.classList.add('show');
     } else {
-      clearButton.classList.remove("show");
-      verticalBar.classList.remove("show");
+      clearButton.classList.remove('show');
+      verticalBar.classList.remove('show');
     }
   });
 
-  searchInput.addEventListener("focus", () => {
-    if (searchInput.value.trim() !== "") {
-      clearButton.classList.add("show");
-      verticalBar.classList.add("show");
+  searchInput.addEventListener('focus', () => {
+    if (searchInput.value.trim() !== '') {
+      clearButton.classList.add('show');
+      verticalBar.classList.add('show');
     }
   });
 
-  clearButton.addEventListener("click", () => {
+  clearButton.addEventListener('click', () => {
     searchInput.value = '';
     searchInput.focus();
-    clearButton.classList.remove("show");
-    verticalBar.classList.remove("show");
+    clearButton.classList.remove('show');
+    verticalBar.classList.remove('show');
   });
 
   // Create the search button <button> element with id and image element
@@ -295,7 +280,7 @@ const decorateSearch = () => {
       // On successful response, create and append the SVG element
       const svgElement = document.createElement('svg');
       svgElement.innerHTML = xhr1.responseText;
-      const firstChild = stopButton.firstChild;
+      const { firstChild } = stopButton;
       stopButton.insertBefore(svgElement, firstChild);
     }
   };
@@ -315,7 +300,7 @@ const decorateSearch = () => {
       // On successful response, create and append the SVG element
       const svgElement = document.createElement('svg');
       svgElement.innerHTML = xhr2.responseText;
-      const firstChild = regenerateButton.firstChild;
+      const { firstChild } = regenerateButton;
       regenerateButton.insertBefore(svgElement, firstChild);
     }
   };
@@ -346,7 +331,7 @@ const decorateSearch = () => {
   document.body.appendChild(mainElement);
 
   return mainElement;
-}
+};
 
 const createStreamingSearchCard = (resultsBlock) => {
   const card = document.createElement('div');
@@ -355,9 +340,9 @@ const createStreamingSearchCard = (resultsBlock) => {
   card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><img src="${window.hlx.codeBasePath}/icons/ai_generate.svg"><p>${GENAI_SEARCH_WARNING}</p></div><article></article></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
-}
+};
 
-const updateStreamingSearchCard = (resultsBlock, response, socket) => {  
+const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   const article = resultsBlock.querySelector('.search-card article');
 
   // Create the div if it doesn't exist
@@ -425,19 +410,19 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     showRegenerateButton(resultsBlock);
 
     // Masonry layout
-    const masonry = new Masonry(".links-card-container ul", {
-      itemSelector: ".links-card-container ul li",
-      columnWidth: ".links-card-container ul li", // Set to a specific selector or number if needed
+    const masonry = new Masonry('.links-card-container ul', {
+      itemSelector: '.links-card-container ul li',
+      columnWidth: '.links-card-container ul li', // Set to a specific selector or number if needed
       gutter: 50, // Adjust the gap between items
       horizontalOrder: true, // Preserve the left-to-right order of items
-      fitWidth: true
+      fitWidth: true,
     });
 
     imagesLoaded('.links-card-container', () => {
       masonry.layout();
     });
   }
-}
+};
 
 const createSearchCard = (results) => {
   const card = document.createElement('div');
@@ -463,19 +448,19 @@ const createSearchCard = (results) => {
   card.appendChild(paragraph);
 
   return card.outerHTML;
-}
+};
 
 const createLinksCard = (results) => {
-  const linksContainer = document.createElement("div");
-  linksContainer.className = "links-card-container";
+  const linksContainer = document.createElement('div');
+  linksContainer.className = 'links-card-container';
   linksContainer.classList.add('response-animation');
 
   // Trigger the animation by adding the 'show' class
   linksContainer.classList.add('show');
-  const list = document.createElement("ul");
+  const list = document.createElement('ul');
 
   results.links?.forEach((link) => {
-    const listItem = document.createElement("li");
+    const listItem = document.createElement('li');
     const thumbnailElement = document.createElement('img');
     thumbnailElement.src = link.thumbnail;
     thumbnailElement.alt = link.name;
@@ -489,24 +474,24 @@ const createLinksCard = (results) => {
     } else {
       linkInfoElement.innerHTML = `<a href="${link.url}" target="_blank">${link.name}</a><p>${link.description}</p>`;
     }
-    
+
     listItem.appendChild(linkInfoElement);
     listItem.addEventListener('click', () => {
       window.open(link.url, '_blank');
     });
     list.appendChild(listItem);
-  })
+  });
 
   linksContainer.appendChild(list);
 
   return linksContainer;
-}
+};
 
 const createSummaryColumn = (icon, title, list, type) => {
-  const summaryColumnDiv = document.createElement("div");
-  summaryColumnDiv.className = "summary-column";
+  const summaryColumnDiv = document.createElement('div');
+  summaryColumnDiv.className = 'summary-column';
 
-  const titleElement = document.createElement("h4");
+  const titleElement = document.createElement('h4');
   titleElement.textContent = title;
 
   const xhr = new XMLHttpRequest();
@@ -518,20 +503,20 @@ const createSummaryColumn = (icon, title, list, type) => {
       svgElement.className = 'icon-search';
       svgElement.innerHTML = xhr.responseText;
 
-      const firstChild = titleElement.firstChild;
+      const { firstChild } = titleElement;
       titleElement.insertBefore(svgElement, firstChild);
     }
   };
   xhr.send();
 
-  const items = document.createElement("ul");
-  items.className = "summary-items";
+  const items = document.createElement('ul');
+  items.className = 'summary-items';
 
   list.forEach((text) => {
-    const item = document.createElement("li");
+    const item = document.createElement('li');
     item.className = 'summary-item';
     item.textContent = text;
-    if (type === "button") {
+    if (type === 'button') {
       item.classList.add('hand-cursor');
       item.addEventListener('click', () => {
         if (isRequestInProgress === false) {
@@ -539,23 +524,22 @@ const createSummaryColumn = (icon, title, list, type) => {
           searchBox.value = text;
           displaySearchResults(text, document.querySelector('.search-results'));
         }
-        
-      })
+      });
     }
     items.appendChild(item);
-  })
+  });
 
   summaryColumnDiv.appendChild(titleElement);
   summaryColumnDiv.appendChild(items);
 
   return summaryColumnDiv;
-}
+};
 
 const createSearchSummary = () => {
-  const summaryColumns = document.createElement("div");
-  summaryColumns.className = "summary-columns";
+  const summaryColumns = document.createElement('div');
+  summaryColumns.className = 'summary-columns';
 
-  const summaryColumn1 = createSummaryColumn("examples", "Sample Questions", sampleQuestions, "button");
+  const summaryColumn1 = createSummaryColumn('examples', 'Sample Questions', sampleQuestions, 'button');
   // const summaryColumn2 = createSummaryColumn("capabilities", "Capabilities", capabilities, "list");
   // const summaryColumn3 = createSummaryColumn("limitations", "Limitations", limitations, "list");
 
@@ -564,34 +548,32 @@ const createSearchSummary = () => {
   // summaryColumns.appendChild(summaryColumn3);
 
   return summaryColumns;
-}
+};
 
 const fetchResults = async (index, query) => {
   if (query === '') {
     return {
-      result: 'Please enter a search query.'
-    }
-  } else {
-    document.getElementById("clearButton").classList.add("show");
-    document.getElementById("vertical-bar").classList.add("show");
+      result: 'Please enter a search query.',
+    };
   }
+  document.getElementById('clearButton').classList.add('show');
+  document.getElementById('vertical-bar').classList.add('show');
 
   // const apiURLBase = "https://spire-dev.corp.ethos14-stage-va7.ethos.adobe.net"; // Internal Endpoint
   // const apiURLBase = "https://spire-pp-temp-pub.ethos14-stage-va7.ethos.adobe.net"; // External Endpoint
-  const apiURLBase = "https://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io"; // External Endpoint
-  
-  const apiURL = apiURLBase + `/api/index/${index}/search`;
+  const apiURLBase = 'https://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io'; // External Endpoint
+
+  const apiURL = `${apiURLBase}/api/index/${index}/search`;
   const answer = await fetch(`${apiURL}?q=${query}`).then((response) => {
     if (response.ok) {
       return response.json();
-    } else {
-      throw new Error('Sorry, something went wrong. Please try again later.');
     }
+    throw new Error('Sorry, something went wrong. Please try again later.');
   }).catch((error) => {
     console.log(error);
     return {
-      result: 'Sorry, something went wrong. Please try again later.'
-    }
+      result: 'Sorry, something went wrong. Please try again later.',
+    };
   });
 
   return answer;
@@ -614,12 +596,12 @@ async function displaySearchResults(query, resultsBlock) {
   cursorAnimation.className = 'cursor-animation';
   loadingMessage.appendChild(cursorAnimation);
   // resultsBlock.appendChild(loadingMessage);
-  const firstChild = resultsBlock.firstChild;
+  const { firstChild } = resultsBlock;
   resultsBlock.insertBefore(loadingMessage, firstChild);
 
   const results = await fetchStreamingResults('petplace4', query, resultsBlock);
   isRequestInProgress = false;
-  
+
   // Assuming the response has a `result` property
   if (results && results.result) {
     // console.log(results.result);
@@ -640,4 +622,6 @@ async function displaySearchResults(query, resultsBlock) {
   // }, 100);
 }
 
-export { decorateSearch, showRegenerateButton, removeAllEventListeners, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE, GENAI_TOOLTIP };
+export {
+  decorateSearch, showRegenerateButton, removeAllEventListeners, createSearchSummary, displaySearchResults, isRequestInProgress, GENAI_SEARCH_TITLE, GENAI_TOOLTIP,
+};
