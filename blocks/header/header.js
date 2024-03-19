@@ -321,36 +321,12 @@ export default async function decorate(block) {
   regionSelectorName.classList.add('region-name');
   regionSelectorName.textContent = document.documentElement.lang.toLowerCase() === 'en-us' ? unitedStates : unitedKingdom;
   regionSelector.append(regionSelectorName);
-  if (isPopoverSupported()) {
-    regionMenu.popover = 'auto';
-    regionSelector.popoverTargetElement = regionMenu;
-    regionSelector.popoverTargetAction = 'toggle';
-    regionSelector.addEventListener('click', () => {
-      const currentAction = regionSelector.getAttribute('popovertargetaction');
-
-      if (currentAction === 'show') {
-        regionSelector.classList.remove('active');
-        regionSelector.setAttribute('popovertargetaction', 'hide');
-      } else {
-        regionSelector.classList.add('active');
-        regionSelector.setAttribute('popovertargetaction', 'show');
-      }
-      regionMenu.togglePopover();
-    });
-  } else {
-    const id = getId('dropdown');
-    regionMenu.id = id;
-    regionMenu.setAttribute('aria-hidden', 'true');
-    regionSelector.setAttribute('aria-controls', id);
-    regionSelector.setAttribute('aria-haspopup', true);
-    regionSelector.addEventListener('click', () => {
-      const isHidden = regionMenu.getAttribute('aria-hidden') === 'true';
-      regionMenu.setAttribute('aria-hidden', (!isHidden).toString());
-      if (!isHidden) {
-        regionMenu.querySelector('a').focus();
-      }
-    });
-  }
+  regionSelector.classList.add('btn-regions-list');
+  regionMenu.classList.add('regions-list', 'hidden');
+  regionSelector.addEventListener('click', () => {
+    regionMenu.classList.toggle('hidden');
+    regionSelector.classList.toggle('active');
+  });
 
   regionSelectorWrapper.append(regionSelector);
   regionSelectorWrapper.append(regionMenu);
@@ -381,6 +357,8 @@ export default async function decorate(block) {
       element.nextSibling.style.maxHeight = '';
     });
     document.querySelector('.nav-language-selector').classList.remove('hidden');
+    document.querySelector('.btn-regions-list').classList.remove('active');
+    document.querySelector('.regions-list').classList.add('hidden');
   });
 
   block.querySelector('.nav-close').addEventListener('click', () => {
@@ -394,7 +372,8 @@ export default async function decorate(block) {
     megaNavBg.classList.add('hidden');
     document.querySelector('.nav-language-selector').classList.add('hidden');
     regionSelector.classList.remove('active');
-    regionSelector.setAttribute('popovertargetaction', 'hide');
+    document.querySelector('.btn-regions-list').classList.remove('active');
+    document.querySelector('.regions-list').classList.add('hidden');
   });
 
   block.querySelector('form').addEventListener('submit', (ev) => {
@@ -420,8 +399,8 @@ export default async function decorate(block) {
         megaNav.classList.add('hidden');
         navHamburger.classList.remove('hidden');
         document.querySelector('.nav-language-selector').classList.add('hidden');
-        regionSelector.classList.remove('active');
-        regionSelector.setAttribute('popovertargetaction', 'hide');
+        document.querySelector('.btn-regions-list').classList.remove('active');
+        document.querySelector('.regions-list').classList.add('hidden');
       }
     } else {
       navClose.classList.add('hidden');
