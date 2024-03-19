@@ -1,0 +1,24 @@
+.adoption-landing-page .details-box.rounded {
+  margin-bottom: 0 !important;
+}
+
+.adoption-landing-page .pet-display div > div {
+  text-align: left;
+  border: 1px solid #000;
+  border-radius: 1%;
+}
+
+.adoption-landing-page .pet-display div > div tbody tr:first-child {
+  font-size: 1.5rem;
+  color: white;
+  background-color: red;
+}
+
+.adoption-landing-page .pet-display div > div tbody tr:first-child td {
+  padding: 0.5rem 1rem;
+}
+
+.adoption-landing-page .pet-display div > div table tr:nth-child(2) td > p {
+  font-size: 1rem;
+  padding: 1rem;
+}
