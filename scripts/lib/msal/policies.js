@@ -9,11 +9,11 @@ export const b2cPolicies = {
     },
     authorities: {
         signUpSignIn: {
-            authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/b2c_1_susi",
+            authority: "https://petplaceb2c.b2clogin.com/petplaceb2c.onmicrosoft.com/b2c_1_susi",
         },
         changePassword: {
-            authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE"
+            authority: "https://petplaceb2c.b2clogin.com/petplaceb2c.onmicrosoft.com/B2C_1A_PASSWORDCHANGE"
         }
     },
-    authorityDomain: "petplacepoc.b2clogin.com"
+    authorityDomain: "https://petplaceb2c.b2clogin.com"
 }

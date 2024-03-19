@@ -4,11 +4,11 @@ const developmentEndPoints = {
 };
 
 const productionEndPoints = {
-  apiUrl: '',
+  apiUrl: 'https://api.petplace.com',
 };
 
 // Set the current environment (manually)
-const currentEnvironment = 'development';
+const currentEnvironment = 'production';
 
 // Set the endPoints based on the current environment
 const endPoints = currentEnvironment === 'development' ? developmentEndPoints : productionEndPoints;

@@ -8,9 +8,12 @@
 
 import { b2cPolicies } from "./policies.js";
 
+const clientId = "2cfbc498-eb1d-4802-a14c-983e5b72bd0d";
+const scopes = ["https://petplaceb2c.onmicrosoft.com/api/adopt.all", "openid"];
+
 export const msalConfig = {
     auth: {
-      clientId: "680fcf6c-4c38-4d11-8963-d65de9aec0d9", // This is the ONLY mandatory field; everything else is optional.
+      clientId: clientId, // This is the ONLY mandatory field; everything else is optional.
       authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
       knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
       redirectUri: window.location.origin
@@ -46,7 +49,7 @@ export const msalConfig = {
 
 export const msalChangePwdConfig = {
   auth: {
-      clientId: "680fcf6c-4c38-4d11-8963-d65de9aec0d9",
+      clientId: clientId,
       authority: b2cPolicies.authorities.changePassword.authority,
       knownAuthorities: [b2cPolicies.authorityDomain],
       redirectUri: window.location.origin
@@ -60,7 +63,7 @@ export const msalChangePwdConfig = {
  * https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"],
+  scopes: scopes,
 };
 
 export const logoutRequest = {
@@ -74,10 +77,10 @@ export const logoutRequest = {
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
  */
 export const tokenRequest = {
-  scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"], 
+  scopes: scopes, 
   forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token
 };
 export const changePwdRequest = {
-  scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"],
+  scopes: scopes,
   mainWindowRedirectUri: window.location.href
 };
