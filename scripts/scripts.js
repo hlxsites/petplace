@@ -637,9 +637,7 @@ async function loadEager(doc) {
   window.debugMsal.login = login;
   window.debugMsal.logout = logout;
   window.debugMsal.acquireToken = acquireToken;
-  isLoggedIn().then(isLoggedIn => {
-    window.debugMsal.isLoggedIn = isLoggedIn;
-  });
+  window.debugMsal.isLoggedIn = isLoggedIn;
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */

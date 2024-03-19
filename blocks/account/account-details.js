@@ -242,7 +242,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             initialUserData = payLoad;
         });
     });
-    changePwdButton.addEventListener('click', () => {
-        changePassword();
+    changePwdButton.addEventListener('click', async () => {
+        await changePassword();
     })
 }
