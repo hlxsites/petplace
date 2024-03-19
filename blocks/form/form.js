@@ -45,7 +45,7 @@ async function submitForm(form) {
     body: JSON.stringify({ data: payload }),
   });
   if (sampleRUM.convert) {
-    sampleRUM.convert('form-submission', form.dataset.action, form, []);
+    sampleRUM.convert('form-submission', new URL(form.dataset.action, window.location.origin), form, []);
   }
   await resp.text();
   return payload;
