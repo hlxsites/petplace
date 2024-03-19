@@ -325,6 +325,18 @@ export default async function decorate(block) {
     regionMenu.popover = 'auto';
     regionSelector.popoverTargetElement = regionMenu;
     regionSelector.popoverTargetAction = 'toggle';
+    regionSelector.addEventListener('click', () => {
+      const currentAction = regionSelector.getAttribute('popovertargetaction');
+
+      if (currentAction === 'show') {
+        regionSelector.classList.remove('active');
+        regionSelector.setAttribute('popovertargetaction', 'hide');
+      } else {
+        regionSelector.classList.add('active');
+        regionSelector.setAttribute('popovertargetaction', 'show');
+      }
+      regionMenu.togglePopover();
+    });
   } else {
     const id = getId('dropdown');
     regionMenu.id = id;

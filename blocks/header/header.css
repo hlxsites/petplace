@@ -353,6 +353,10 @@
   display: flex;
 }
 
+#nav .nav-language-selector button.active::after {
+  transform: rotate(0deg) translateY(3px);
+}
+
 #nav .nav-language-selector [popover] a,
 #nav .nav-language-selector button[aria-haspopup] + [aria-hidden] a {
   line-height: 1.3rem;
