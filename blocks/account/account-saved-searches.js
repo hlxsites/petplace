@@ -102,10 +102,10 @@ function getSearches(token) {
 
         if (arrSaveList.length > 0) {
             arrSaveList.forEach((saved) => {
-                console.log(saved);
                 let searchUrl = '/pet-adoption/search?';
                 if (saved.SearchParameters.locationInformation.zipPostal) {
-                    searchUrl += 'zipPostal=' + saved.SearchParameters.locationInformation.zipPostal;
+                    searchUrl += 'zipPostal=' + saved.SearchParameters.locationInformation.zipPostal.replace(' ', '+');
+                    console.log(searchUrl)
                 }
                 if (saved.SearchParameters.locationInformation.milesRadius) {
                     searchUrl += '&milesRadius=' + saved.SearchParameters.locationInformation.milesRadius;
