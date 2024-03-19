@@ -293,7 +293,6 @@ export default async function decorate(block) {
   // region selector
   const regionSelectorWrapper = nav.querySelector('.nav-language-selector');
   const regionSelector = document.createElement('button');
-  console.log('document.documentElement.lang.toLowerCase()', document.documentElement.lang.toLowerCase());
   const regionSelectorName = document.createElement('span');
   const regionMenu = document.createElement('div');
   const regions = [DEFAULT_REGION, ...Object.keys(REGIONS)];
