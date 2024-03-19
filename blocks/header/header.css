@@ -46,7 +46,7 @@
 .nav-tools {
   display: none;
 }
-
+/* stylelint-disable-next-line no-descending-specificity */
 .icon-logo {
   height: 70px;
   width: 190px;
@@ -59,16 +59,17 @@ body.gen-ai .genai-search-container .default-content-wrapper {
   gap: 20px;
   margin-bottom: 10px;
 }
+
 body.gen-ai #search-main .genai-search-container .default-content-wrapper {
   gap: 0;
 }
+
 .header-search img, 
 .header-search .icon svg {
   width: 36px;
   height: 36px;
   object-fit: contain;
   display: inline-block;
-  /* padding: 9px; */
   color: #9CA393;
   box-sizing: border-box;
 }
@@ -81,11 +82,11 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
   flex-direction: column;
   z-index: 1;
   cursor: pointer;
-  transition: right 0.3s ease; /* Add a transition property */
+  transition: right 0.3s ease; 
 }
 
 .header-search.scrolled {
-  right: 2px; /* New position when scrolled to the threshold */
+  right: 2px; 
 }
 
 .header-search.hide {
@@ -137,12 +138,11 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
 .header-search-modal #search-main {
   overflow-y: scroll;
   overflow-x: hidden;
-  /* overflow: hidden;
-  overflow-y: auto; */
   height: 100%;
   background-color: var(--background-color-light);
   border-radius: 6px;
 }
+
 .header-search-modal #search-main::-webkit-scrollbar {
   display:none;
 } 
@@ -201,11 +201,10 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
 
 #search-main .genai-search-container .default-content-wrapper h1 {
   font-size: 36px;
-  /* font-style: italic; */
   text-align: center;
   color: var(--color-purple-gray);
-  /* margin-bottom: 20px; */
   width: auto;
+
   @media (max-width: 600px){
     padding-top: 0;
     margin-top: 0;
@@ -287,9 +286,11 @@ grid-gap: 32px;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Dark transparent background */
-  z-index: 9998; /* Behind the modal */
-  display: none; /* Hide the overlay by default */
+
+  /* stylelint-disable-next-line color-function-notation */
+  background-color: rgba(0, 0, 0, 40%); 
+  z-index: 9998;
+  display: none; 
   pointer-events: none;
 }
 
@@ -477,6 +478,7 @@ grid-gap: 32px;
   from {
     opacity: 0; /* start at 0 opacity */
   }
+
   to {
     opacity: 1; /* end at 1 opacity */
   }
@@ -486,6 +488,7 @@ grid-gap: 32px;
   from {
     transform: translateY(-10%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -503,24 +506,23 @@ grid-gap: 32px;
   position: absolute;
   font-style: normal;
   padding: 10px;
-
   z-index: 1;
   opacity: 0;
   transition: opacity 1s;
   font-size: 14px;
   font-weight: normal;
   line-height: 20px;
-  text-align: center;
   bottom: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);
-  filter: drop-shadow(0 1px 7px rgba(0,0,0, 0.2));
+
+  /*stylelint-disable-next-line color-function-notation */
+  filter: drop-shadow(0 1px 7px rgba(0,0,0, 20%));
 }
 
 .tooltip::after {
   content: "";
   position: absolute;
-
   bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
@@ -529,13 +531,16 @@ grid-gap: 32px;
   border-style: solid;
   border-color:  var( --background-color) transparent transparent transparent;
 }
+
 .header-search:hover a{
   background-color: black;
 }
+
 .header-search:hover .tooltip {
   visibility: visible;
   opacity: 1;
 }
+
 /* scrollable.style.animation = "slide-in 0.5s forwards, fade-in 1s forwards";
 scrollable.style.transform = "translateY(50%)"; */
 
