@@ -136,8 +136,7 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
 }
 
 .header-search-modal #search-main {
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow:hidden scroll;
   height: 100%;
   background-color: var(--background-color-light);
   border-radius: 6px;
@@ -516,7 +515,7 @@ grid-gap: 32px;
   left: 50%;
   transform: translateX(-50%);
 
-  /*stylelint-disable-next-line color-function-notation */
+  /* stylelint-disable-next-line color-function-notation */
   filter: drop-shadow(0 1px 7px rgba(0,0,0, 20%));
 }
 
