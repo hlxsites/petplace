@@ -393,6 +393,8 @@ export default async function decorate(block) {
     megaNav.classList.add('hidden');
     megaNavBg.classList.add('hidden');
     document.querySelector('.nav-language-selector').classList.add('hidden');
+    regionSelector.classList.remove('active');
+    regionSelector.setAttribute('popovertargetaction', 'hide');
   });
 
   block.querySelector('form').addEventListener('submit', (ev) => {
@@ -418,6 +420,8 @@ export default async function decorate(block) {
         megaNav.classList.add('hidden');
         navHamburger.classList.remove('hidden');
         document.querySelector('.nav-language-selector').classList.add('hidden');
+        regionSelector.classList.remove('active');
+        regionSelector.setAttribute('popovertargetaction', 'hide');
       }
     } else {
       navClose.classList.add('hidden');
