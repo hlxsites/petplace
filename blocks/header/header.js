@@ -20,7 +20,6 @@ function isPopoverSupported() {
   return HTMLElement.prototype.hasOwnProperty('popover');
 }
 
-
 loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', () => {
   console.log('Marked.js loaded');
 });
