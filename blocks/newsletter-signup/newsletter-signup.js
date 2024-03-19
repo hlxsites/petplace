@@ -1,6 +1,6 @@
 import { createForm } from '../form/form.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import { setNewsletterSignedUp, captureError } from '../../scripts/scripts.js';
+import { setNewsletterSignedUp, captureError, DEFAULT_REGION } from '../../scripts/scripts.js';
 
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
@@ -21,6 +21,7 @@ async function submitForm(block, fd) {
     dataFields: {
       catnewsletter: formData.get('cats') === 'on',
       dognewsletter: formData.get('dogs') === 'on',
+      country: DEFAULT_REGION, // rework later
     },
     mergeNestedObjects: true,
     createNewFields: true,
