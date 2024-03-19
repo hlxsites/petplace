@@ -661,6 +661,11 @@ window.onload = callBreedList('null').then((data) => {
 
         if (petType?.value === 'Other' || petType?.value === 'null') {
             petBreed.setAttribute('disabled', '');
+        } else {
+            callBreedList(petType?.value).then((data) => {
+                breedList = data;
+                updateBreedListSelect();
+            })
         }
         callAnimalList().then((response) => {
             buildResultsContainer(response);
