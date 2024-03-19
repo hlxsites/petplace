@@ -350,7 +350,10 @@
 
 #nav .nav-language-selector [popover]:popover-open,
 #nav .nav-language-selector [aria-hidden="false"] {
-  display: flex;
+  position: absolute;
+  inset: 0;
+  top: 415px;
+  margin: 0 auto;
 }
 
 #nav .nav-language-selector button.active::after {
