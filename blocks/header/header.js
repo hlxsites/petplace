@@ -1,6 +1,7 @@
 import {
   decorateIcons,
   getMetadata,
+  loadScript,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
 import {
@@ -18,6 +19,16 @@ function isPopoverSupported() {
   // eslint-disable-next-line no-prototype-builtins
   return HTMLElement.prototype.hasOwnProperty('popover');
 }
+
+loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', () => {
+  console.log('Marked.js loaded');
+});
+loadScript('https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js', () => {
+  console.log('Masonry.js loaded');
+});
+loadScript('https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js', () => {
+  console.log('ImagesLoaded.js loaded');
+});
 
 /**
  * decorates the header, mainly the nav
