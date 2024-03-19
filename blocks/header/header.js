@@ -2,6 +2,7 @@ import {
   decorateIcons,
   getMetadata,
   sampleRUM,
+  fetchPlaceholders,
 } from '../../scripts/lib-franklin.js';
 import {
   DEFAULT_REGION,
@@ -15,6 +16,12 @@ import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 import { login, logout, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+
+const placeholders = await fetchPlaceholders('/pet-adoption');
+const {
+  unitedStates,
+  unitedKingdom,
+} = placeholders;
 
 function isPopoverSupported() {
   // eslint-disable-next-line no-prototype-builtins
@@ -284,54 +291,60 @@ export default async function decorate(block) {
   document.querySelector('.header-wrapper').append(megaNavBg);
 
   // region selector
-  // FIXME: remove conditional on UK website go-live
-  if (window.hlx.contentBasePath) {
-    const regionSelectorWrapper = nav.querySelector('.nav-language-selector');
-    const regionSelector = document.createElement('button');
-    const regionMenu = document.createElement('div');
-    const regions = [DEFAULT_REGION, ...Object.keys(REGIONS)];
-    regions
-      .filter((r) => r !== document.documentElement.lang)
-      .forEach((r) => {
-        const regionLink = document.createElement('a');
-        regionLink.setAttribute('hreflang', r);
-        regionLink.setAttribute('href', r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
-        regionLink.title = `Navigate to our ${r} website`;
-        regionLink.addEventListener('click', (ev) => {
-          localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
-        });
-        const regionIcon = document.createElement('span');
-        regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
-        regionLink.append(regionIcon);
-        regionMenu.append(regionLink);
+  const regionSelectorWrapper = nav.querySelector('.nav-language-selector');
+  const regionSelector = document.createElement('button');
+  console.log('document.documentElement.lang.toLowerCase()', document.documentElement.lang.toLowerCase());
+  const regionSelectorName = document.createElement('span');
+  const regionMenu = document.createElement('div');
+  const regions = [DEFAULT_REGION, ...Object.keys(REGIONS)];
+  regions
+    .filter((r) => r !== document.documentElement.lang)
+    .forEach((r) => {
+      const regionLink = document.createElement('a');
+      const regionName = document.createElement('span');
+      regionLink.setAttribute('hreflang', r);
+      regionLink.setAttribute('href', r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
+      regionLink.title = `Navigate to our ${r} website`;
+      regionLink.addEventListener('click', (ev) => {
+        localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
       });
-    const regionSelectorIcon = document.createElement('span');
-    regionSelectorIcon.classList.add('icon', `icon-flag-${document.documentElement.lang.toLowerCase()}`);
-    regionSelector.append(regionSelectorIcon);
-    if (isPopoverSupported()) {
-      regionMenu.popover = 'auto';
-      regionSelector.popoverTargetElement = regionMenu;
-      regionSelector.popoverTargetAction = 'toggle';
-    } else {
-      const id = getId('dropdown');
-      regionMenu.id = id;
-      regionMenu.setAttribute('aria-hidden', 'true');
-      regionSelector.setAttribute('aria-controls', id);
-      regionSelector.setAttribute('aria-haspopup', true);
-      regionSelector.addEventListener('click', () => {
-        const isHidden = regionMenu.getAttribute('aria-hidden') === 'true';
-        regionMenu.setAttribute('aria-hidden', (!isHidden).toString());
-        if (!isHidden) {
-          regionMenu.querySelector('a').focus();
-        }
-      });
-    }
-
-    regionSelectorWrapper.append(regionSelector);
-    regionSelectorWrapper.append(regionMenu);
-    decorateIcons(regionSelectorWrapper);
-    nav.insertBefore(regionSelectorWrapper, navToolsMobile);
+      regionName.classList.add('region-name');
+      regionName.textContent = DEFAULT_REGION === r ? unitedStates : unitedKingdom;
+      const regionIcon = document.createElement('span');
+      regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
+      regionLink.append(regionIcon);
+      regionLink.append(regionName);
+      regionMenu.append(regionLink);
+    });
+  const regionSelectorIcon = document.createElement('span');
+  regionSelectorIcon.classList.add('icon', `icon-flag-${document.documentElement.lang.toLowerCase()}`);
+  regionSelector.append(regionSelectorIcon);
+  regionSelectorName.classList.add('region-name');
+  regionSelectorName.textContent = document.documentElement.lang.toLowerCase() === 'en-us' ? unitedStates : unitedKingdom;
+  regionSelector.append(regionSelectorName);
+  if (isPopoverSupported()) {
+    regionMenu.popover = 'auto';
+    regionSelector.popoverTargetElement = regionMenu;
+    regionSelector.popoverTargetAction = 'toggle';
+  } else {
+    const id = getId('dropdown');
+    regionMenu.id = id;
+    regionMenu.setAttribute('aria-hidden', 'true');
+    regionSelector.setAttribute('aria-controls', id);
+    regionSelector.setAttribute('aria-haspopup', true);
+    regionSelector.addEventListener('click', () => {
+      const isHidden = regionMenu.getAttribute('aria-hidden') === 'true';
+      regionMenu.setAttribute('aria-hidden', (!isHidden).toString());
+      if (!isHidden) {
+        regionMenu.querySelector('a').focus();
+      }
+    });
   }
+
+  regionSelectorWrapper.append(regionSelector);
+  regionSelectorWrapper.append(regionMenu);
+  decorateIcons(regionSelectorWrapper);
+  nav.insertBefore(regionSelectorWrapper, navToolsMobile);
 
   block.querySelector('.collapsible').addEventListener('click', (event) => {
     event.target.classList.toggle('active');
