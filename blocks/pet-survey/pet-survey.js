@@ -33,6 +33,7 @@ export default async function decorate(block) {
     }
     let isLoggedInUser = await isLoggedIn();
     let token;
+    let surveyParentId = null;
     const questions = await fetchSurveyQuestions(surveyId);
     console.log(questions);
 
@@ -148,14 +149,14 @@ export default async function decorate(block) {
       }
     }
     
-    function bindSummaryInquiryEvent(block) {
+    function bindSummaryInquiryEvent(block, surveyParentId) {
       const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
       if (inquiryBtn) {
         inquiryBtn.addEventListener('click', async (event) => {
           event.preventDefault();
           console.log('answers', state, state.surveyAnswers, questions)
           const payload = {
-            "SurveyId": surveyId,
+            "SurveyId": surveyParentId,
             "SurveyResponseAnswers": [...state.surveyAnswers],
           }
           console.log('payload', payload)
@@ -167,13 +168,13 @@ export default async function decorate(block) {
         });
       }
     }
-    function bindSummarySaveEvent(block) {
+    function bindSummarySaveEvent(block, surveyParentId) {
       const saveBtn = block.querySelector('#pet-survey-summary-save');
       if (saveBtn) {
         saveBtn.addEventListener('click', async (event) => {
           event.preventDefault();
           const payload = {
-            "Id": surveyId , 
+            "Id": surveyParentId, 
             "SurveyResponseAnswers": [...state.surveyAnswers],
           }
           console.log('save payload', payload)
@@ -241,6 +242,7 @@ export default async function decorate(block) {
     }
     
     async function fetchSurveyQuestions(surveyId = null) {
+      console.log('surveyId: ', surveyId);
       const questionsApi = `${endPoints.apiUrl}/adopt/api/SurveyQuestion/${surveyId}`;
       let result;
       try {
@@ -254,8 +256,14 @@ export default async function decorate(block) {
       return result;
     }
     async function callSurveyResponse(surveyId, token, method = 'GET', payload = null) {
-      const apiUrl = method === 'GET' ? `${endPoints.apiUrl}/adopt/api/SurveyResponse/survey/${surveyId}` : `${endPoints.apiUrl}/adopt/api/SurveyResponse`;
-      const config = { 
+      let surveyIdValue = surveyId;
+      if (!surveyIdValue && sessionStorage.getItem('surveyTabAnimalType') !== null) {
+        surveyIdValue = sessionStorage.getItem('surveyTabAnimalType');
+      }
+      console.log('surveyIdValue: ', surveyIdValue);
+      const apiUrl = method === 'GET' ? `${endPoints.apiUrl}/adopt/api/SurveyResponse/survey/${surveyIdValue}` : `${endPoints.apiUrl}/adopt/api/SurveyResponse`;
+      console.log('method: ', method, 'apiUrl: ', apiUrl, 'payload: ', payload)
+      const config = {
         method: method,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -279,8 +287,13 @@ export default async function decorate(block) {
 
     async function renderAsUser() {
       token = await acquireToken();
+      console.log(token);
       const result = await callSurveyResponse(surveyId, token);
+      console.log('result: ', result);
+      surveyParentId = result.Id;
+      console.log('surveyParentId: ', surveyParentId);
       if (result && result.Completed) {
+        console.log('results completed');
         const answers = result.SurveyResponseAnswers.map((answer) => ({
           QuestionId : answer.QuestionId, 
           QuestionOptionId : answer.QuestionOptionId,
@@ -288,12 +301,13 @@ export default async function decorate(block) {
           UserResponseText: answer.UserResponseText,
         }));
         if (!block.querySelector('.pet-survey__layout-container--summary')) {
+          console.log('yarp')
           // replace 'questions' in 'createSummaryForm()' with 'result.SurveyResponseAnswers'
           block.append(await createSummaryScreen(surveySummaryHeading, surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
           updateSummaryForm(block, answers); 
           bindSummaryBackButtonEvents(block, true);
           bindSurveySummaryChangeEvents(block);
-          bindSummarySaveEvent(block);
+          bindSummarySaveEvent(block, surveyParentId);
         }
         toggleScreen('summary', block);
       } else {
@@ -308,14 +322,14 @@ export default async function decorate(block) {
         }
         toggleScreen('survey', block);
         if (!block.querySelector('.pet-survey__layout-container--summary')) {
+          console.log('no summary');
           // Add summary
-          block.append(await createSummaryScreen(surveySummaryHeading,surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId)));
+          block.append(await createSummaryScreen(surveySummaryHeading, surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId, 'summary')));
           bindSummaryBackButtonEvents(block, false);
-          // bindSummarySaveEvent(block);
           block.querySelector('form.pet-survey__form').addEventListener('submit', (event) => {
             event.preventDefault();
           });
-          bindSummaryInquiryEvent(block);
+          bindSummaryInquiryEvent(block, surveyParentId);
         }
       }
     }

@@ -22,6 +22,34 @@ function getSurveyStatus(token, animalType) {
     .then((data) => data);
 }
 
+// Route the user to the survey or the survey results
+function routeSurvey(block, token, animalType) {
+  const surveyStatus = getSurveyStatus(token, animalType);
+  let surveyStatusCompleted = null;
+
+
+  surveyStatus.then((data) => {
+    surveyStatusCompleted = data.Completed;
+
+    // if survey IS NOT COMPLETED, set path to survey
+    if (!surveyStatusCompleted) {
+      window.location.href = `/pet-adoption/survey?animalType=${animalType}`;
+    } else {
+      const surveyContainer = block.querySelector('.survey-container');
+      const survey = block.querySelector('.pet-survey');
+
+      if (survey) {
+        survey.remove();
+      }
+      const surveyBlock = buildBlock('pet-survey', '');
+
+      surveyContainer.append(surveyBlock);
+      decorateBlock(surveyBlock);
+      loadBlock(surveyBlock);
+    }
+  });
+}
+
 // Bind the survey events to the account survey panel
 async function bindAccountSurveyEvents(block, token) {
   const panelDiv = document.createElement('div');
@@ -40,33 +68,18 @@ async function bindAccountSurveyEvents(block, token) {
 
   surveyAnimalTypeBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
       const animalType = e.target.classList.contains('survey-animal-type__btn--dog') ? 'dog' : 'cat';
+
+      // set sessionStorage to animalType, 1 for dog, 2 for cat
+      sessionStorage.setItem('surveyTabAnimalType', animalType === 'dog' ? 1 : 2);
+
       routeSurvey(block, token, animalType);
     });
   });
 
   return panelDiv;
-}
-
-// Route the user to the survey or the survey results
-function routeSurvey(block, token, animalType) {
-  const surveyContainer = block.querySelector('.survey-container');
-  const surveyStatus = getSurveyStatus(token, animalType);
-  let surveyStatusCompleted = null;
-
-  surveyStatus.then((data) => {
-    surveyStatusCompleted = data.Completed;
-  });
-
-  // if survey IS NOT COMPLETED, set path to survey
-  if (!surveyStatusCompleted) {
-    window.location.href = `/pet-adoption/survey?animalType=${animalType}`;
-  } else {
-    const surveyBlock = buildBlock('pet-survey', '');
-    surveyContainer.append(surveyBlock);
-    decorateBlock(surveyBlock);
-    loadBlock(surveyBlock);
-  }
 }
 
 // Get the initial status of the survey

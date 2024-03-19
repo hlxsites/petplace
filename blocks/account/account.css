@@ -816,6 +816,10 @@
   gap: 16px;
 }
 
+.survey-animal-type__btn-container + .pet-survey {
+  margin-top: 50px;
+}
+
 .survey-animal-type__btn {
   display: inline-flex;
   align-items: center;

@@ -207,7 +207,7 @@ export async function createSurveySteps(surveyHeading, questions) {
     containerDiv.append(surveyDiv);
     return containerDiv;
 }
-export async function createSummaryForm(animalType, questionArray, animalId = null, clientId = null) {
+export async function createSummaryForm(animalType, questionArray, animalId = null, clientId = null, surveySummaryFlow = null) {
     const formDiv = document.createElement('div');
     formDiv.className = 'pet-survey__form-container';
     const form = document.createElement('form');
@@ -246,6 +246,18 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
         `;
         agreementDiv.append(agreementCheckbox);
         form.append(agreementDiv);
+        // Add Back and Submit Inquiry Button
+        const backBtn = document.createElement('button');
+        backBtn.id = 'pet-survey-summary-back';
+        backBtn.className = 'pet-survey__button secondary';
+        backBtn.innerText = 'Back';
+        const inquiryBtn = document.createElement('button');
+        inquiryBtn.id = 'pet-survey-summary-inquiry';
+        inquiryBtn.className = 'pet-survey__button primary';
+        inquiryBtn.innerText = 'Submit Inquiry';
+        ctaContainer.append(backBtn, inquiryBtn);
+    } else if (animalType && surveySummaryFlow === 'summary') {
+      // Add additional else if statement to check for in summary flow, w/ animalType ... show back button and inquiry button
         // Add Back and Submit Inquiry Button
         const backBtn = document.createElement('button');
         backBtn.id = 'pet-survey-summary-back';
