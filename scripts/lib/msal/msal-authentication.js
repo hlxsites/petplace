@@ -1,7 +1,7 @@
 import { getDefaultMsalInstance, getMsalInstance } from './msal-instance.js';
-import { b2cPolicies } from './policies.js';
+// import { b2cPolicies } from './policies.js';
 import { initRedirectHandlers } from './login-redirect-handlers.js';
-import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig } from './default-msal-config.js';
+import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig, getB2CPolicies } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';
 import { pushToDataLayer } from '../../utils/helpers.js';
@@ -127,7 +127,7 @@ export function acquireToken(featureName) {
                 })
                 .catch(function (error) {
                     //Acquire token silent failure, and send an interactive request
-                    if (error instanceof msal.InteractionRequiredAuthError) {
+                    if (error instanceof msal.InteractionRequiredAuthError || error.name === 'InteractionRequiredAuthError') {
                         if (isMobile()) {
                             msalInstance
                                 .acquireTokenRedirect(tokenRequest)
@@ -161,9 +161,12 @@ export function acquireToken(featureName) {
                         reject(error);
                     }
                 });
-        } else {
+        } else if (accounts.length === 0) {
             // prompt login if no token exists
             login((tokenResponse) => resolve(tokenResponse.accessToken), featureName);
+        } else if (accounts.length > 1) {
+            // Multiple users detected. Logout all to be safe.
+            logout();
         }
     });
 }
@@ -221,7 +224,7 @@ async function selectAccount(msalInstance) {
         // azure user not logged in
         return;
     } else if (currentAccounts.length > 1) {
-
+        let b2cPolicies = getB2CPolicies();
         /**
          * Due to the way MSAL caches account objects, the auth response from initiating a user-flow
          * is cached as a new account, which results in more than one account in the cache. Here we make
