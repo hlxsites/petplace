@@ -196,7 +196,7 @@ async function callBreedList(petType) {
     return null;
 }
 
-function updateBreedListSelect() {
+async function updateBreedListSelect() {
     const breedSelect = document.getElementById('breed');
     let i = 0;
     const L = breedSelect.options.length - 1;
@@ -613,103 +613,107 @@ function buildResultsContainer(data) {
     calculatePagination(1);
 }
 
-window.onload = callBreedList('null').then((data) => {
-    breedList = data;
-    updateBreedListSelect();
-    const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
-    const div = document.createElement('div');
-    div.className = 'pagination hidden';
+window.onload = () => {
+    const petType = document.getElementById('pet-type');
+    
+    callBreedList('null').then((data) => {
+        breedList = data;
+        updateBreedListSelect();
+        const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
+        const div = document.createElement('div');
+        div.className = 'pagination hidden';
 
-    // add pagination
-    const previousButton = document.createElement('button');
-    previousButton.id = ('btn_prev');
-    previousButton.addEventListener('click', prevPage);
-    previousButton.innerText = '<';
-    const nextButton = document.createElement('button');
-    nextButton.id = ('btn_next');
-    nextButton.addEventListener('click', nextPage);
-    nextButton.innerText = '>';
-    div.append(previousButton);
-    const paginationNumbers = document.createElement('div');
-    paginationNumbers.className = 'pagination-numbers';
-    div.append(paginationNumbers);
-    div.append(nextButton);
-    tempResultsContainer.append(div);
+        // add pagination
+        const previousButton = document.createElement('button');
+        previousButton.id = ('btn_prev');
+        previousButton.addEventListener('click', prevPage);
+        previousButton.innerText = '<';
+        const nextButton = document.createElement('button');
+        nextButton.id = ('btn_next');
+        nextButton.addEventListener('click', nextPage);
+        nextButton.innerText = '>';
+        div.append(previousButton);
+        const paginationNumbers = document.createElement('div');
+        paginationNumbers.className = 'pagination-numbers';
+        div.append(paginationNumbers);
+        div.append(nextButton);
+        tempResultsContainer.append(div);
 
-    // When the page loads, check if there are any query parameters in the URL
-    const params = new URLSearchParams(window.location.search);
+        // When the page loads, check if there are any query parameters in the URL
+        const params = new URLSearchParams(window.location.search);
 
-    // If there are, select the corresponding filters - Top filters first
-    if (params.has('zipPostal')) {
-        const petZip = document.getElementById('zip');
-        petZip.value = params.get('zipPostal');
-        const petType = document.getElementById('pet-type');
-        const petTypes = petType.options;
-        for (let i = 0; i < petTypes.length; i += 1) {
-            if (petTypes[i].value === params.get('filterAnimalType')) {
-                petType.selectedIndex = i;
-            }
-        }
-
-        const petBreed = document.getElementById('breed');
-        const petBreeds = petBreed.options;
-        for (let i = 0; i < petBreeds.length; i += 1) {
-            if (petBreeds[i].value === params.get('filterBreed')) {
-                petBreed.selectedIndex = i;
-            }
-        }
-
-        if (petType?.value === 'Other' || petType?.value === 'null') {
-            petBreed.setAttribute('disabled', '');
-        } else {
-            callBreedList(petType?.value).then((data) => {
-                breedList = data;
-                updateBreedListSelect();
-            })
-        }
-        callAnimalList().then((response) => {
-            buildResultsContainer(response);
-            // Populate Sidebar filters
-            const petRadius = document.getElementById('radius');
-            const petRadiusOptions = petRadius.options;
-            for (let i = 0; i < petRadiusOptions.length; i += 1) {
-                if (petRadiusOptions[i].value === params.get('milesRadius')) {
-                    petRadius.selectedIndex = i;
+        // If there are, select the corresponding filters - Top filters first
+        if (params.has('zipPostal')) {
+            const petZip = document.getElementById('zip');
+            petZip.value = params.get('zipPostal');
+            const petTypes = petType.options;
+            for (let i = 0; i < petTypes.length; i += 1) {
+                if (petTypes[i].value === params.get('filterAnimalType')) {
+                    petType.selectedIndex = i;
                 }
             }
-            const genderRadios = document.querySelectorAll('input[name="gender"]');
-            for (let i = 0; i < genderRadios.length; i += 1) {
-                const genderArray = params.get('filterGender')?.split(',');
-                genderArray?.forEach((gender) => {
-                    if (genderRadios[i].value === gender) {
-                        genderRadios[i].checked = true;
-                    }
+
+            if (petType?.value === 'Other' || petType?.value === 'null') {
+                petBreed.setAttribute('disabled', '');
+            } else {
+                callBreedList(petType?.value).then((data) => {
+                    breedList = data;
+                    updateBreedListSelect().then(() => {
+                        const petBreed = document.getElementById('breed');
+                        const petBreeds = petBreed.options;
+                        for (let i = 0; i < petBreeds.length; i += 1) {
+                            if (petBreeds[i].value === params.get('filterBreed')) {
+                                petBreed.selectedIndex = i;
+                            }
+                        }
+                    });
                 })
             }
-            const ageRadios = document.querySelectorAll('input[name="age"]');
-            for (let i = 0; i < ageRadios.length; i += 1) {
-                const ageArray = params.get('filterAge')?.split(',');
-                ageArray?.forEach((age) => {
-                    if (ageRadios[i].value === age) {
-                        ageRadios[i].checked = true;
+
+            callAnimalList().then((response) => {
+                buildResultsContainer(response);
+                // Populate Sidebar filters
+                const petRadius = document.getElementById('radius');
+                const petRadiusOptions = petRadius.options;
+                for (let i = 0; i < petRadiusOptions.length; i += 1) {
+                    if (petRadiusOptions[i].value === params.get('milesRadius')) {
+                        petRadius.selectedIndex = i;
                     }
-                })
-            }
-            const sizeRadios = document.querySelectorAll('input[name="size"]');
-            for (let i = 0; i < sizeRadios.length; i += 1) {
-                const sizeArray = params.get('filterSize')?.split(',');
-                sizeArray?.forEach((size) => {
-                    if (sizeRadios[i].value === size) {
-                        sizeRadios[i].checked = true;
-                    }
-                })
-            }
-            callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                }
+                const genderRadios = document.querySelectorAll('input[name="gender"]');
+                for (let i = 0; i < genderRadios.length; i += 1) {
+                    const genderArray = params.get('filterGender')?.split(',');
+                    genderArray?.forEach((gender) => {
+                        if (genderRadios[i].value === gender) {
+                            genderRadios[i].checked = true;
+                        }
+                    })
+                }
+                const ageRadios = document.querySelectorAll('input[name="age"]');
+                for (let i = 0; i < ageRadios.length; i += 1) {
+                    const ageArray = params.get('filterAge')?.split(',');
+                    ageArray?.forEach((age) => {
+                        if (ageRadios[i].value === age) {
+                            ageRadios[i].checked = true;
+                        }
+                    })
+                }
+                const sizeRadios = document.querySelectorAll('input[name="size"]');
+                for (let i = 0; i < sizeRadios.length; i += 1) {
+                    const sizeArray = params.get('filterSize')?.split(',');
+                    sizeArray?.forEach((size) => {
+                        if (sizeRadios[i].value === size) {
+                            sizeRadios[i].checked = true;
+                        }
+                    })
+                }
+                callAnimalList().then((data) => {
+                    buildResultsContainer(data);
+                });
             });
-        });
-    }
-});
+        }
+    });
+}
 
 export default async function decorate(block) {
     const form = document.createElement('form');
