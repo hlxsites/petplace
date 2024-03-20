@@ -127,7 +127,7 @@ export function acquireToken(featureName) {
                 })
                 .catch(function (error) {
                     //Acquire token silent failure, and send an interactive request
-                    if (error instanceof msal.InteractionRequiredAuthError) {
+                    if (error instanceof msal.InteractionRequiredAuthError || error.name === 'InteractionRequiredAuthError') {
                         if (isMobile()) {
                             msalInstance
                                 .acquireTokenRedirect(tokenRequest)
@@ -161,9 +161,12 @@ export function acquireToken(featureName) {
                         reject(error);
                     }
                 });
-        } else {
+        } else if (accounts.length === 0) {
             // prompt login if no token exists
             login((tokenResponse) => resolve(tokenResponse.accessToken), featureName);
+        } else if (accounts.length > 1) {
+            // Multiple users detected. Logout all to be safe.
+            logout();
         }
     });
 }
