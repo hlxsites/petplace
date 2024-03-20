@@ -85,6 +85,7 @@ const decorateSearch = () => {
   stopButton.textContent = 'Stop generating';
   const xhr1 = new XMLHttpRequest();
   xhr1.open('GET', `${window.hlx.codeBasePath}/icons/stop.svg`, true);
+  // eslint-disable-next-line func-names
   xhr1.onreadystatechange = function () {
     if (xhr1.readyState === 4 && xhr1.status === 200) {
       // On successful response, create and append the SVG element
@@ -262,7 +263,6 @@ const updateStreamingSearchCard = (resultsBlock, response) => {
 
   // Loop through result.questions and create a button for each
   if (response.type === 'end') {
-    console.log('response', response);
     // Remove the cursor animation element
     const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
     cursorAnimation.classList.add('hide');
@@ -408,7 +408,7 @@ async function displaySearchResults(query, resultsBlock) {
   // eslint-disable-next-line no-unused-vars
   const results = await fetchStreamingResults('petplace4', query, resultsBlock);
   isRequestInProgress = false;
-
+  window.localStorage.removeItem('aem-gen-ai-query');
   // Get search-card-container elements
   const cardContainer = resultsBlock.querySelector('.search-card');
   cardContainer?.classList.add('response-animation');
@@ -473,6 +473,5 @@ export async function loadLazy(main) {
     } else {
       displaySearchResults(searchQuery, searchResultsDivElement);
     }
-    // window.localStorage.removeItem('gen-ai-query');
   }
 }

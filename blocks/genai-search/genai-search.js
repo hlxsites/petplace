@@ -27,6 +27,10 @@ export default async function decorate(block) {
   clearButton.setAttribute('id', 'clearButton');
   clearButton.setAttribute('type', 'button');
   clearButton.innerHTML = '&#10005;';
+  if (document.location.pathname.indexOf('/discovery') !== -1) {
+    form.append(clearButton);
+  }
+  form.append(input);
 
   input.addEventListener('input', () => {
     if (input.value.trim() !== '') {
@@ -45,15 +49,12 @@ export default async function decorate(block) {
     clearButton.classList.remove('show');
   });
 
-  clearButton.addEventListener('click', () => {
+  clearButton.addEventListener('mousedown', () => {
     input.value = '';
     input.focus();
     clearButton.classList.remove('show');
+    window.localStorage.removeItem('aem-gen-ai-query');
   });
-
-  // form.append(clearButton);
-
-  form.append(input);
 
   const button = document.createElement('button');
   button.type = 'submit';
