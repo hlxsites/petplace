@@ -19,7 +19,7 @@ async function loadAccessibeWidget() {
     leadColor: HIGHLIGHT_COLOR,
     triggerColor: HIGHLIGHT_COLOR,
     triggerRadius: '50%',
-    triggerPositionX: 'right',
+    triggerPositionX: 'left',
     triggerPositionY: 'bottom',
     triggerIcon: 'wheels',
     triggerSize: 'medium',
@@ -27,7 +27,7 @@ async function loadAccessibeWidget() {
     triggerOffsetY: 20,
     mobile: {
       triggerSize: 'small',
-      triggerPositionX: 'right',
+      triggerPositionX: 'left',
       triggerPositionY: 'bottom',
       triggerOffsetX: 10,
       triggerOffsetY: 10,
