@@ -49,7 +49,7 @@ async function getArticles() {
 
   let results;
   if (searchWorker) {
-    searchWorker.postMessage({ query, operator: isTrueSearch ? 'AND' : 'OR' });
+    searchWorker.postMessage({ query, operator: 'OR' });
     results = await new Promise((resolve) => {
       searchWorker.onmessage = (e) => {
         resolve(e.data);
