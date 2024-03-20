@@ -258,6 +258,18 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
         ctaContainer.append(backBtn, inquiryBtn);
     } else if (animalType && surveySummaryFlow === 'summary') {
       // Add additional else if statement to check for in summary flow, w/ animalType ... show back button and inquiry button
+        // Add agreement checkbox
+        const agreementDiv = document.createElement('div');
+        agreementDiv.className = 'pet-survey__form-control agreement-checkbox'
+        const agreementCheckbox = document.createElement('label');
+        agreementCheckbox.className = 'checkbox-container'
+        agreementCheckbox.innerHTML = `
+        I agree to share my information with the applicable shelter.
+        <input type="checkbox" id='pet-survey-summary-agreement' name="pet-survey-summary-agreement">
+        <span class="checkmark"></span>
+        `;
+        agreementDiv.append(agreementCheckbox);
+        form.append(agreementDiv);
         // Add Back and Submit Inquiry Button
         const backBtn = document.createElement('button');
         backBtn.id = 'pet-survey-summary-back';

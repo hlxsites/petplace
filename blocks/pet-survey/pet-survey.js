@@ -149,14 +149,14 @@ export default async function decorate(block) {
       }
     }
     
-    function bindSummaryInquiryEvent(block, surveyParentId) {
+    function bindSummaryInquiryEvent(block) {
       const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
       if (inquiryBtn) {
         inquiryBtn.addEventListener('click', async (event) => {
           event.preventDefault();
           console.log('answers', state, state.surveyAnswers, questions)
           const payload = {
-            "SurveyId": surveyParentId,
+            "SurveyId": surveyId,
             "SurveyResponseAnswers": [...state.surveyAnswers],
           }
           console.log('payload', payload)
@@ -174,7 +174,7 @@ export default async function decorate(block) {
         saveBtn.addEventListener('click', async (event) => {
           event.preventDefault();
           const payload = {
-            "Id": surveyParentId, 
+            "Id": surveyId , 
             "SurveyResponseAnswers": [...state.surveyAnswers],
           }
           console.log('save payload', payload)
@@ -289,6 +289,7 @@ export default async function decorate(block) {
       token = await acquireToken();
       console.log(token);
       const result = await callSurveyResponse(surveyId, token);
+
       console.log('result: ', result);
       surveyParentId = result.Id;
       console.log('surveyParentId: ', surveyParentId);
@@ -324,12 +325,12 @@ export default async function decorate(block) {
         if (!block.querySelector('.pet-survey__layout-container--summary')) {
           console.log('no summary');
           // Add summary
-          block.append(await createSummaryScreen(surveySummaryHeading, surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId, 'summary')));
+          block.append(await createSummaryScreen(surveySummaryHeading,surveySummarySubheading, await createSummaryForm(animalType, questions, animalId, clientId, 'summary')));
           bindSummaryBackButtonEvents(block, false);
           block.querySelector('form.pet-survey__form').addEventListener('submit', (event) => {
             event.preventDefault();
           });
-          bindSummaryInquiryEvent(block, surveyParentId);
+          bindSummaryInquiryEvent(block);
         }
       }
     }
@@ -348,8 +349,6 @@ export default async function decorate(block) {
       });
       bindSummaryBackButtonEvents(block, false);
       bindSummaryInquiryEvent(block);
-
-
     }
 
     if (isLoggedInUser) {
