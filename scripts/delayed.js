@@ -15,7 +15,7 @@ async function loadAccessibeWidget() {
     hideMobile: false,
     hideTrigger: false,
     language: 'en',
-    position: 'right',
+    position: 'left',
     leadColor: HIGHLIGHT_COLOR,
     triggerColor: HIGHLIGHT_COLOR,
     triggerRadius: '50%',
