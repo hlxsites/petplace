@@ -99,6 +99,12 @@
   margin-top: 32px;
 }
 
+.adopt-checklist-main li a {
+  color: #C74D2F;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
 .adopt-checklist-wrapper + .columns-wrapper {
   margin-top: 40px;
 }

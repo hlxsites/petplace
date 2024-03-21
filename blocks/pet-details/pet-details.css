@@ -35,6 +35,7 @@
 /* .pet-details .modal-cta-button */ {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   margin: 0;
   padding: 12px 50px;
   font-size: 18px;
