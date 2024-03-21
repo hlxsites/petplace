@@ -27,7 +27,7 @@
   :not(.search-container ~ .search-container).search-container {
   position: absolute;
   left: 0;
-  top: 390px;
+  top: 470px;
   display: flex;
   flex-direction: column;
   bottom: 0;
