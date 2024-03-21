@@ -270,7 +270,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
      */
 
     if (response !== null) {
-        const contentGroup = document.querySelector('meta[name="category"]');
+        const contentGroup = document.querySelector('meta[name="template"]');
         // the 'newUser' flag is present for newly registered users that are logging in for the very first time.
         if (response.account.idTokenClaims.newUser) {
             // New user detected. Send POST request to create user in the database
