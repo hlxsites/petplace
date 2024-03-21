@@ -365,7 +365,7 @@ export default async function decorate(block) {
       navClose.classList.remove('hidden');
       navClose.querySelector('button').focus();
       megaNavBg.classList.remove('hidden');
-      document.querySelector('body').classList.add('body-locked');
+      //document.querySelector('body').classList.add('body-locked');
       navToolsDesktop.classList.add('hidden');
       navToolsMobile.classList.remove('hidden');
       megaNav.classList.remove('hidden');
