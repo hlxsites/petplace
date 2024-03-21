@@ -1,6 +1,7 @@
 import {
   decorateIcons,
   getMetadata,
+  loadScript,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
 import {
@@ -18,6 +19,16 @@ function isPopoverSupported() {
   // eslint-disable-next-line no-prototype-builtins
   return HTMLElement.prototype.hasOwnProperty('popover');
 }
+
+loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', () => {
+  console.log('Marked.js loaded');
+});
+loadScript('https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js', () => {
+  console.log('Masonry.js loaded');
+});
+loadScript('https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js', () => {
+  console.log('ImagesLoaded.js loaded');
+});
 
 /**
  * decorates the header, mainly the nav
@@ -64,6 +75,7 @@ export default async function decorate(block) {
   searchForm.setAttribute('role', 'search');
   searchForm.action = `${window.hlx.contentBasePath}/search`;
   searchForm.method = 'get';
+  searchForm.dataset.rumSource = '.header .search';
 
   const searchButton = document.createElement('button');
   searchButton.className = 'search-btn';
@@ -159,7 +171,9 @@ export default async function decorate(block) {
   ariaDialog.append(dialogContent);
 
   const sidebarSearch = document.createElement('div');
-  sidebarSearch.append(searchForm.cloneNode(true));
+  const sidebarSearchForm = searchForm.cloneNode(true);
+  sidebarSearchForm.dataset.rumSource = '.nav-sidebar-search .search';
+  sidebarSearch.append(sidebarSearchForm);
   sidebarSearch.querySelector('form button')?.addEventListener('click', (ev) => {
     ev.preventDefault();
     if (sidebarSearch.querySelector('input')?.value !== '') {

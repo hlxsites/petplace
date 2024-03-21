@@ -46,9 +46,11 @@ window.hlx.templates.add([
   '/templates/ask-author-page',
   '/templates/author-index',
   '/templates/author-page',
+  '/templates/bytetag',
   '/templates/breed-index',
   '/templates/breed-page',
   '/templates/category-index',
+  '/templates/gen-ai',
   '/templates/home-page/',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
@@ -977,7 +979,9 @@ async function loadLazy(doc) {
 
   await window.hlx.plugins.run('loadLazy');
 
-  addNewsletterPopup();
+  if (!window.hlx.contentBasePath) {
+    addNewsletterPopup();
+  }
 
   import('./datalayer.js').then(({ handleDataLayerApproach }) => {
     handleDataLayerApproach();
@@ -1127,6 +1131,7 @@ export async function captureError(source, e) {
 async function loadPage() {
   setLocale();
 
+  window.dataLayer ||= {};
   window.dataLayer.push({ js: new Date() });
   window.dataLayer.push({ config: 'GT-KD23TWW' });
   window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
