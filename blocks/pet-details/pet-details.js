@@ -453,13 +453,14 @@ async function createChecklistSection(inquiryStatus) {
     checklistLabelEl.textContent = checklistLabel;
     checklistContainer.append(checklistLabelEl);
   }
-
-  if (inquiryStatus === true) {
+  // disabling the survey flow from view until survey is ready for launch
+  
+  /* if (inquiryStatus === true) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
         checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
     }
-  }
+  } */
 
   if (checklistItem2Label) {
     let itemContent = null;
