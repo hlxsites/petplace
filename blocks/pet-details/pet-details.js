@@ -666,20 +666,20 @@ export default async function decorate(block) {
       },
     });
 
-    // add inquiry functionality
-    const petCtaContaner = document.querySelector('.about-pet-ctas');
-    petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
+    // add inquiry functionality - temporarily disabling this until survey flow is ready for release
+    // const petCtaContaner = document.querySelector('.about-pet-ctas');
+    // petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
     if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {
       if (petData.email !== null) {
         // if email is available, append createChecklistSection WITH survey content
-        submitInquiryCta.classList.add('visible');
+        submitInquiryCta?.classList.add('visible');
         layoutContainer.append(await createChecklistSection(true));
         const checklistContainer = document.querySelector('.checklist-container');
         checklistContainer.classList.add('visible');
 
-        submitInquiryCta.addEventListener('click', () => {
+        submitInquiryCta?.addEventListener('click', () => {
           // if user is logged in, check if survey is completed
           if (token) {
             // check if survey is completed
