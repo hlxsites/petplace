@@ -698,6 +698,7 @@
 .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
@@ -707,6 +708,7 @@
   margin-bottom: 16px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   background-color: transparent;
   border: 1px solid #222222;
   font-family: "Libre Franklin";
@@ -716,13 +718,15 @@
   padding: 5px 30px;
   text-overflow: unset;
   overflow: visible;
+  margin: 0;
 }
 
 .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .confirm {
+  justify-content: center;
   font-size: 18px;
   font-weight: 600;
   background-color: #C74D2F;
-  background-color: #C74D2F;
+  margin: 0;
 }
 
 @media (min-width: 768px) {
@@ -757,6 +761,15 @@
 @media (min-width: 1024px) {
     .account-tabpanel--favorites .confirm-remove-modal {
         top: 250px;
+    }
+
+    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {
+        flex-direction: row;
+    }
+
+    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .confirm,
+    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .cancel {
+        margin: 16px 0;
     }
 }
 
