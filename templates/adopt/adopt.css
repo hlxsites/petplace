@@ -1,11 +1,16 @@
 body.adopt .hero h1 {
   font-family: Raleway;
-  font-size: 72px;
+  font-size: 48px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   letter-spacing: -1.44px;
   color: #000;
+}
+@media (min-width: 1024px) {
+  body.adopt .hero h1 {
+    font-size: 72px;
+  }
 }
 body.adopt .hero h2 {
   font-family: Raleway;
