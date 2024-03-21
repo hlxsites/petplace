@@ -407,6 +407,7 @@ export default async function decorate(block) {
     });
   
     function checkInterface() {
+      console.log('is tablet?', isTablet())
       if (isTablet()) {
         if (document.querySelector('body').classList.contains('body-locked')) {
           navClose.click();
