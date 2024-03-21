@@ -112,7 +112,7 @@ export async function createAccountDetailsPanel(userData) {
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='zip'>Zip/Postal Code</label>
-                    <input type='text' id='ZipCode' name='ZipCode' value="${ZipCode}" required pattern='^[0-9]{5}(?:-[0-9]{4})?$'>
+                    <input type='text' id='ZipCode' name='ZipCode' value="${ZipCode}" required pattern='^[0-9]{5}$|^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$'>
                     <span class="error-message" id="ZipCode-error">Please enter your zip/postal code.</span>
                 </div>
                 <div class='form-control form-control--submit'>
