@@ -455,8 +455,11 @@ export default async function decorate(block) {
         buttonDropdown.classList.remove('active');
         contentDropdown.style.maxHeight = null;
       }
+      if (!document.querySelector('.regions-list').contains(event.target) && !document.querySelector('.btn-regions-list').contains(event.target)) {
+        document.querySelector('.regions-list').classList.add('hidden');
+      }
     });
-  
+
     decorateIcons(nav);
   } else {
     // build british nav
