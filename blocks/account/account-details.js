@@ -217,7 +217,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             } 
         });
         input.addEventListener('input', () => {
-            if (input.validity.valid && input.value.trim() !== '' && input.value.trim() !== initialUserData[input.name]) {
+            if (input.validity.valid && (input.value.trim() !== '' || input.id === 'PhoneNumber') && input.value.trim() !== initialUserData[input.name]) {
                 disableButtons(submitButtons, false);
             } else {
                 disableButtons(submitButtons, true);
