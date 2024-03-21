@@ -102,6 +102,9 @@
   height: 48px;
   border-radius: 360px;
   padding-left: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  border-color: #000000;
 }
 
 #nav .header-wrapper.search-input::placeholder {
@@ -176,7 +179,8 @@
 
 #nav .menu-item {
   box-sizing: border-box;
-  display: block;
+  display: flex;
+  justify-content: space-between;
   color: #000000;
   font-family: "Libre Franklin";
   font-size: 18px;
@@ -209,7 +213,7 @@
   font-size: 20px;
   color: #000000;
   float: right;
-  transform: rotate(180deg) translateY(6px);
+  transform: rotate(180deg) translateY(2px);
 }
 
 #nav .collapsible.active {
