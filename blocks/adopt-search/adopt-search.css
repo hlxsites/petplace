@@ -405,6 +405,10 @@
   font-size: 18px;
   line-height: 22px;
   font-weight: 600;
+
+  @media (min-width: 768px) {
+    margin-left: 0;
+  }
 }
 
 .adopt-guide-container .default-content-wrapper h2 {
@@ -483,7 +487,7 @@
   font-size: 32px;
   line-height: 36px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     font-size: 49.5px;
     line-height: 58px;
   }
@@ -508,7 +512,7 @@
   font-family: "Libre Franklin";
   font-size: 18px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     margin: 40px 0 0;
   }
 }

@@ -10,15 +10,7 @@ body.adopt .hero h1 {
   letter-spacing: -1.44px;
   color: #000;
 }
-@media (min-width: 1024px) {
-  main .section {
-    padding-top: 40px;
-  }
 
-  body.adopt .hero h1 {
-    font-size: 72px;
-  }
-}
 body.adopt .hero h2 {
   font-family: "Libre Franklin";
   font-size: 22px;
@@ -30,4 +22,18 @@ body.adopt .hero h2 {
 }
 body.adopt .columns.guide .columns-img-col {
   width: auto;
+}
+
+@media (min-width: 1024px) {
+  main .section {
+    padding-top: 40px;
+  }
+
+  body.adopt .hero h1 {
+    font-size: 72px;
+  }
+
+  body.adopt .hero h2 {
+    font-size: 32px;
+  }
 }
