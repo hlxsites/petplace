@@ -45,6 +45,7 @@
   @media (min-width: 900px) {
     margin: 0 auto;
     width: 100%;
+    padding-top: 0;
   }
 }
 
@@ -163,8 +164,26 @@ body.article-page .section.genai-search-container h2:last-of-type::before {
   background-size: cover;
 }
 
-.section.genai-search-container .default-content-wrapper h2 {
-  display: inline;
+body.gen-ai .section.genai-search-container .default-content-wrapper h1 {
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+body.gen-ai .section.genai-search-container .default-content-wrapper h2 {
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+body.gen-ai .section.genai-search-container .default-content-wrapper p {
+  margin-bottom: .75rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
 }
 
 #search-main .section.genai-search-container p {
@@ -557,6 +576,9 @@ article ol {
   @media (max-width: 600px) {
     gap: 0;
   }
+  @media (min-width: 900px) {
+    row-gap: unset;
+  }
 }
 
 .genai-search-container .search-card-container article {
@@ -802,10 +824,13 @@ h6 {
 }
 
 .genai-search-container .search-card-container article ul {
-  padding-left: 1rem;
+  padding-left: 20px;
+  margin: 8px 0 8x;
+  
 }
 
 .genai-search-container .search-card-container article ul li {
+  margin-bottom: 0.5rem;
 }
 
 @media (max-width: 600px) {
