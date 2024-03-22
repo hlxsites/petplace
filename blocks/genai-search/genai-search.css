@@ -409,6 +409,7 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button {
 
 .genai-search-container .insurance-card .search-card-warning {
   margin-bottom: 20px !important;
+  width: 100%;
 }
 
 .genai-search-container .insurance-card .cta-container {
@@ -578,9 +579,13 @@ article ol {
   }
   @media (min-width: 900px) {
     row-gap: unset;
+    justify-content: flex-start;
+    min-width: 100%;
   }
 }
-
+.genai-search-container .search-card {
+  width: 100%;
+}
 .genai-search-container .search-card-container article {
   grid-column: 1 / 2;
   grid-row: 2;
