@@ -41,7 +41,7 @@ let b2cPolicies = {
 }
 
 // if URL contains "www.petplace.com", merge prodConfigs into b2cPolicies
-if (window.location.href.includes("www.petplace.com") || window.location.href.includes("adopt-test--petplace-hlxsites") || window.location.href.includes("main--petplace-hlxsites")) {
+if (window.location.href.includes("www.petplace.com") || window.location.href.includes("adopt-test--petplace--hlxsites") || window.location.href.includes("main--petplace--hlxsites")) {
   b2cPolicies = {...b2cPolicies, ...prodConfigs};
 } else {
   b2cPolicies = {...b2cPolicies, ...stageConfigs};
