@@ -231,6 +231,7 @@
   width: 100%;
   min-width: 300px;
   font-size: 18px;
+  font-family: "Libre Franklin";
 
   @media (min-width: 768px) {
     margin-left: auto;
@@ -256,7 +257,18 @@
   padding: 22px 0 16px;
 }
 
-.adoptable-pets .pet-card {
+.adoptable-pets-container .adoptable-pets-title {
+  font-size: 31px;
+}
+
+.adoptable-pets-container div.pet-card h3.pet-card-name,
+.adoptable-pets-container div.pet-card .pet-card-info.pet-card-info,
+.adoptable-pets-container div.pet-card .pet-card-address.pet-card-address {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.adoptable-pets .pet-card.pet-card {
   width: 250px;
   border-radius: 8px;
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 24%);
@@ -388,17 +400,38 @@
 }
 
 .adopt-guide-container .guide .button {
-  margin: 0;
+  margin: 0 auto;
+  font-family: "Libre Franklin";
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
 }
 
 .adopt-guide-container .default-content-wrapper h2 {
   margin-top: 0;
   max-width: 28ch;
   font-size: 44px;
+  color: #000000;
 
   @media (min-width: 1025px) {
     padding-right: 90px;
   }
+}
+
+.adopt-guide-container .columns-txt-col strong {
+  font-family: Raleway, sans-serif;
+  font-size: 32px;
+  line-height: 36px;
+  color: #000000;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.adopt-guide-container .columns-txt-col p {
+  font-family: "Libre Franklin";
+  font-size: 24px;
+  line-height: 29px;
+  color: #000000;
 }
 
 /* Insurance */
@@ -456,16 +489,24 @@
   }
 }
 
+.adopt .insurance #petplace-more-than-just-an-adoption-site ~ p {
+  font-size: 18px;
+  line-height: 27px;
+  font-weight: 500;
+}
+
 .adopt .insurance .button {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin: 32px 0 0;
+  margin: 32px auto 0;
   padding-block: 13px;
   color: #222;
   background-color: var(--text-color-inverted);
   border: 1px solid #222;
+  font-family: "Libre Franklin";
+  font-size: 18px;
 
   @media (min-width: 1024px) {
     margin: 40px 0 0;
@@ -543,13 +584,13 @@
 }
 
 .adopt div.pet-card h3 {
-  margin-top: 20px;
   margin-bottom: 5px;
   text-overflow: ellipsis;
   font-size: 22px;
   font-weight: 800;
   color: #000;
 }
+
 .adopt div.pet-card h3 a {
   margin-top: 20px;
   margin-bottom: 5px;
@@ -562,13 +603,11 @@
 .adopt div.pet-card .pet-card-info {
   font-size: 16px;
   line-height: 20px;
-  padding-bottom: 16px;
   font-weight: 400;
 }
 
 .adopt div.pet-card .pet-card-address {
   font-size: 18px;
-  padding-bottom: 16px;
 }
 
 .adopt div.pet-card h3,
