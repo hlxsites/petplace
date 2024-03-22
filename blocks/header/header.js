@@ -440,7 +440,6 @@ export default async function decorate(block) {
     }
   
     checkInterface();
-    console.log('this ran')
     if (isTablet()) {
       document.querySelector('.nav-language-selector').classList.add('hidden');
     }

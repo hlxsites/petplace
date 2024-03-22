@@ -107,8 +107,8 @@ export const loginRequest = {
 };
 
 export const logoutRequest = {
-  postLogoutRedirectUri: window.location.href,
-  mainWindowRedirectUri: window.location.href
+  postLogoutRedirectUri: '/',
+  mainWindowRedirectUri: '/',
 };
 
 /**
