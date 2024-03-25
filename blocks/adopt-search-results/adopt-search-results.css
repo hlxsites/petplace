@@ -635,7 +635,10 @@ display: block;
 .adopt-search-results .results div.pet-card object {
     display: block;
     max-width: 100%;
-    height: auto;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
