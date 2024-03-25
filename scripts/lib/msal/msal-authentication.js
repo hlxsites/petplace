@@ -1,38 +1,76 @@
-import { createDefaultMsalInstance, createMsalInstance } from './msal-instance.js';
-import { b2cPolicies } from './policies.js';
+import { getDefaultMsalInstance, getMsalInstance } from './msal-instance.js';
+// import { b2cPolicies } from './policies.js';
 import { initRedirectHandlers } from './login-redirect-handlers.js';
-import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig } from './default-msal-config.js';
+import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig, msalChangePwdConfig, getB2CPolicies } from './default-msal-config.js';
 import { isMobile } from '../../scripts.js';
-import endPoints from '../../../variables/endpoints.js';   
+import endPoints from '../../../variables/endpoints.js';
+import { pushToDataLayer } from '../../utils/helpers.js';
 
-const msalInstance = createDefaultMsalInstance();
-const msalChangePwdInstance = createMsalInstance(msalChangePwdConfig);
+let cachedMsalInstance = null;
+let cachedMsalChangePwdInstance = null;
 
-if (document.querySelector('.account')) {
-    msalChangePwdInstance.initialize().then(() => {
-        msalChangePwdInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
-            console.log(error);
+async function initializeMsalInstances() {
+    if (cachedMsalInstance || cachedMsalChangePwdInstance) {
+        return { msalInstance: cachedMsalInstance, msalChangePwdInstance: cachedMsalChangePwdInstance };
+    }
+
+    let msalInstance;
+    let msalChangePwdInstance;
+
+    if (document.querySelector('.account')) {
+        msalChangePwdInstance = await getMsalInstance(msalChangePwdConfig);
+        msalInstance = await getDefaultMsalInstance();
+        msalChangePwdInstance.initialize().then(() => {
+            msalChangePwdInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
+                console.log(error);
+            });
         });
-    });
-} else {
-    // register a custom callback function (e.g. handleResponse()) once the user has successfully logged in and was redirected back to the site)
-    msalInstance.initialize().then(() => {
-        msalInstance.handleRedirectPromise().then(response => {
-            handleResponse(response, response => initRedirectHandlers(response), localStorage.getItem('featureName'));
-            localStorage.removeItem('featureName');
-        })
-        .catch((error) => {
-            console.log(error);
+    } else {
+        msalInstance = await getDefaultMsalInstance();
+        msalInstance.initialize().then(() => {
+            msalInstance.handleRedirectPromise().then(response => {
+                handleResponse(response, response => initRedirectHandlers(response), localStorage.getItem('featureName'));
+                localStorage.removeItem('featureName');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         });
-    });
+    }
+
+    // in case of page refresh
+    if (msalInstance) {
+        selectAccount(msalInstance);
+    } else {
+        selectAccount(msalChangePwdInstance);        
+    }
+    
+
+    cachedMsalInstance = msalInstance;
+    cachedMsalChangePwdInstance = msalChangePwdInstance;
+
+    return { msalInstance: cachedMsalInstance, msalChangePwdInstance: cachedMsalChangePwdInstance };
 }
+
+function checkFragment() {
+    const hash = window.location.hash;
+    if (hash.startsWith('#state')) {
+      // handle mobile redirect response
+      initializeMsalInstances();
+    }
+  }
+  
+  // When using loginRedirect() flow for mobile, Azure redirects user to the root of the site (i.e. the home page). 
+  // We must include msal.js in this scenario so that we can properly create the user's session and redirect them.
+  checkFragment();
 
 /**
  * 
  * @param {*} callback individual features can pass their own custom callback function to be invoked after the user has successfully logged in, e.g. invoke the Favorite API for a pet.
  * @param {*} featureName name of the feature that is invoking the login function, e.g. "Favorite". Used for logging purposes when a user signs up an account for the first time.
  */
-export function login(callback, featureName) {
+export async function login(callback, featureName) {
+    let msalInstance = await getDefaultMsalInstance();
     // use loginRedirect() for mobile devices, use loginPopup() for desktop.
     if (isMobile()) {
         msalInstance.loginRedirect(loginRequest)
@@ -49,11 +87,13 @@ export function login(callback, featureName) {
     }
 }
 
-export function logout() {
+export async function logout() {
     /**
      * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
      */
+
+    let msalInstance = await getDefaultMsalInstance();
 
     if (isMobile()) {
         msalInstance.logoutRedirect(logoutRequest);
@@ -72,10 +112,12 @@ export function acquireToken(featureName) {
         // save in localStorage for loginRedirect() scenarios
         localStorage.setItem('featureName', featureName);
     }
-    
-    const accounts = msalInstance.getAllAccounts();
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        let { msalInstance } = await initializeMsalInstances();
+
+        const accounts = msalInstance.getAllAccounts();
+
         if (accounts.length === 1) {
             msalInstance.acquireTokenSilent({ account: accounts[0], scopes: tokenRequest.scopes })
                 .then(function (accessTokenResponse) {
@@ -85,7 +127,7 @@ export function acquireToken(featureName) {
                 })
                 .catch(function (error) {
                     //Acquire token silent failure, and send an interactive request
-                    if (error instanceof msal.InteractionRequiredAuthError) {
+                    if (error instanceof msal.InteractionRequiredAuthError || error.name === 'InteractionRequiredAuthError') {
                         if (isMobile()) {
                             msalInstance
                                 .acquireTokenRedirect(tokenRequest)
@@ -119,16 +161,21 @@ export function acquireToken(featureName) {
                         reject(error);
                     }
                 });
-        } else {
+        } else if (accounts.length === 0) {
             // prompt login if no token exists
             login((tokenResponse) => resolve(tokenResponse.accessToken), featureName);
+        } else if (accounts.length > 1) {
+            // Multiple users detected. Logout all to be safe.
+            logout();
         }
     });
 }
 
 // function to check if user is logged in or not
 export function isLoggedIn() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        let { msalInstance } = await initializeMsalInstances();
+        
         const accounts = msalInstance.getAllAccounts();
         msalInstance.acquireTokenSilent({ account: accounts[0], scopes: tokenRequest.scopes })
             .then(function (accessTokenResponse) {
@@ -142,28 +189,40 @@ export function isLoggedIn() {
     });
 }
 
-export function changePassword(callback, featureName) {
-    // use loginRedirect() for mobile devices, use loginPopup() for desktop.
-    if (isMobile()) {
-        msalChangePwdInstance.loginRedirect(changePwdRequest)
-        .then((response) => handleResponse(response, callback, featureName))
-        .catch(error => {
-            console.log(error);
-        });
-    } else {
-        msalChangePwdInstance.loginPopup(changePwdRequest)
-        .then((response) => handleResponse(response, callback, featureName))
-        .catch(error => {
-            console.log(error);
-        });
-    }
+export async function changePassword(callback, featureName) {
+    let msalChangePwdInstance = await getMsalInstance(msalChangePwdConfig);
+
+    isLoggedIn().then(isLoggedIn => {
+        if (isLoggedIn) {
+            // use loginRedirect() for mobile devices, use loginPopup() for desktop.
+            if (isMobile()) {
+                msalChangePwdInstance.loginRedirect(changePwdRequest)
+                .then((response) => handleResponse(response, callback, featureName))
+                .catch(error => {
+                    console.log(error);
+                });
+            } else {
+                msalChangePwdInstance.loginPopup(changePwdRequest)
+                .then((response) => handleResponse(response, callback, featureName))
+                .catch(error => {
+                    console.log(error);
+                });
+            }
+        } else {
+            logout();
+        }
+    });
 }
 
-function selectAccount() {
+async function selectAccount(msalInstance) {
     /**
      * See here for more info on account retrieval: 
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
      */
+
+    if (msalInstance === undefined) {
+        return;
+    }
 
     const currentAccounts = msalInstance.getAllAccounts();
 
@@ -171,7 +230,7 @@ function selectAccount() {
         // azure user not logged in
         return;
     } else if (currentAccounts.length > 1) {
-
+        let b2cPolicies = getB2CPolicies();
         /**
          * Due to the way MSAL caches account objects, the auth response from initiating a user-flow
          * is cached as a new account, which results in more than one account in the cache. Here we make
@@ -204,8 +263,7 @@ function selectAccount() {
     }
 }
 
-// in case of page refresh
-selectAccount();
+
 
 function handleResponse(response, customCallback, featureName = 'PetPlace (Generic)') {
     if (featureName === null) {
@@ -218,7 +276,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
      */
 
     if (response !== null) {
-        console.log('newUser', response.account.idTokenClaims.newUser)
+        const contentGroup = document.querySelector('meta[name="template"]');
         // the 'newUser' flag is present for newly registered users that are logging in for the very first time.
         if (response.account.idTokenClaims.newUser) {
             // New user detected. Send POST request to create user in the database
@@ -231,6 +289,15 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                 body: featureName ? "\"" + featureName + "\"" : null
             })
             .then(() => {
+                pushToDataLayer({
+                    event: 'sign_up',
+                    user_id: response.account.localAccountId,
+                    user_type: 'member',
+                    content_group: contentGroup
+                    ? contentGroup.content
+                    : 'N/A - Content Group Not Set'
+                  });
+
                 // invoke custom callback if one was provided
                 if (customCallback) {
                     customCallback(response);
@@ -240,6 +307,15 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                 console.error('/adopt/api/User Error:', error);
             });
         } else {
+            pushToDataLayer({
+                event: 'login',
+                user_id: response.account.localAccountId,
+                user_type: 'member',
+                content_group: contentGroup
+                ? contentGroup.content
+                : 'N/A - Content Group Not Set'
+              });
+
             // invoke custom callback if one was provided
             if (customCallback) {
                 customCallback(response);

@@ -5,3 +5,5 @@ lite-yt-embed
 lite-tiktok
 plugins/
 pushly-sdk-worker.js
+worker/bin
+worker/pkg

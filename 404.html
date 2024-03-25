@@ -41,6 +41,20 @@
 
     sampleRUM('404', { source: document.referrer, target: window.location.href });
   </script>
+  <script>
+    window.googletag ||= { cmd: [] };
+    window.dataLayer ||= [];
+    window.clarity ||= function() {
+      (window.clarity.q ||= []).push(arguments)
+    }
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied'
+    });
+  </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <link rel="stylesheet" href="/styles/lazy-styles.css">
 </head>

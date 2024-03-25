@@ -1,0 +1,164 @@
+
+.bytetag main .section {
+  @media (max-width: 900px) {
+    padding: 2rem 1rem;
+  }
+}
+
+.bytetag .section.hero-container {
+  padding: 0;
+  display: none;
+}
+
+.bytetag .hero-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    position: relative;
+    min-height: 547px;
+    width: 100%;
+    max-width: 1392px;
+    margin: 0 auto;
+  }
+}
+
+.bytetag .hero-wrapper .img-div {
+  max-width: 100%;
+  @media (min-width: 1024px) {
+    position: absolute;
+    z-index: -1;
+    right: 0;
+  }
+}
+
+.bytetag .hero-wrapper .img-div img {
+  object-fit: cover;
+  height: 300px;
+  width: 100%;
+  object-fit: contain;
+  object-position: top right;
+  @media (min-width: 800px) {
+    min-height: 400px;
+  }
+  @media (min-width: 1024px) {
+    object-position: right;
+    min-height: 547px;
+    object-fit: cover
+  }
+}
+
+.bytetag .hero-wrapper .text-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 30px;
+  width: 100%;
+  text-align: center;
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+    align-items: flex-start;
+    max-width: 1392px;
+    min-height: 547px;
+    margin: 0 auto;
+    text-align:left;
+  }
+}
+
+.bytetag .hero-wrapper .text-div h1 {
+  font-weight: 800;
+  font-size: 0;
+  height: 75px;
+  width: 470px;
+  max-width: 90%;
+  margin: 20px 0 10px;
+  color: black;
+  background: url(../../images/bytetag-logo.svg) no-repeat;
+  background-size: contain;
+}
+
+.bytetag .hero-wrapper .text-div h1 + p {
+  font-family: var(--heading-font-family);
+  font-size: 28px;
+  line-height: 36px;
+  padding: 0 1rem;
+  font-weight: 600;
+  color: #333f48;
+  @media (min-width: 1024px) {
+    padding: 0;
+    max-width: 468px;
+    margin: 1rem 0;
+  }
+}
+
+.bytetag .hero-wrapper .text-div p.button-container {
+  width: 260px;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+}
+
+.bytetag .hero-wrapper .text-div p.button-container > a {
+  font-family: var(--body-font-family);
+  font-weight: 500;
+  padding: 14px 26px;
+  font-size: 1rem;
+  line-height: 1rem;
+  width: 100%;
+  background-color: #c74d2f;
+  @media (max-width: 900px) {
+    margin: 1rem;
+  }
+}
+
+.bytetag .hero-wrapper .text-div p.button-container > a:hover,
+.bytetag .hero-wrapper .text-div p.button-container > a:focus {
+  background-color: var(--link-hover-color);
+  cursor: pointer;
+}
+
+.bytetag .hero-wrapper .text-div p:last-of-type {
+  display: flex;
+  align-items: center;
+}
+.bytetag .hero-wrapper .text-div p:last-of-type::before {
+  display: inline-block;
+  content: "";
+  margin: 0 0.4rem 0 0.8rem;
+  height: 12px;
+  width: 80px;
+  background: var(--text-color);
+  -webkit-mask: url("../../icons/stars-five.svg") no-repeat center center;
+  mask: url("../../icons/stars-five.svg") no-repeat center center;
+  vertical-align: middle;
+}
+
+.bytetag .hero-wrapper .text-div p:last-of-type strong em {
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 28px;
+}
+.bytetag .section h2 {
+  font-size: 48px;
+  line-height: 58px;
+  font-weight: 700;
+  color: #333f48;
+  margin-bottom: 1rem;
+  @media (max-width: 900px) {
+    font-size: 40px;
+    line-height: 50px;
+  }
+}
+
+.bytetag .section .default-content-wrapper h2 {
+  font-size: 35px;
+  line-height: 45px;
+  font-weight: 700;
+  color: #333f48;
+  margin-bottom: 3rem;
+}
+.bytetag footer.footer-top-spacing .footer {
+  border-top: 0;
+}

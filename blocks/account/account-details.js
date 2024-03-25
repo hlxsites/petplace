@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { changePassword } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
+import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 function serialize(data) {
     const obj = {};
@@ -112,7 +113,7 @@ export async function createAccountDetailsPanel(userData) {
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='zip'>Zip/Postal Code</label>
-                    <input type='text' id='ZipCode' name='ZipCode' value="${ZipCode}" required pattern='^[0-9]{5}(?:-[0-9]{4})?$'>
+                    <input type='text' id='ZipCode' name='ZipCode' value="${ZipCode}" required pattern='^[0-9]{5}$|^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$'>
                     <span class="error-message" id="ZipCode-error">Please enter your zip/postal code.</span>
                 </div>
                 <div class='form-control form-control--submit'>
@@ -217,7 +218,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             } 
         });
         input.addEventListener('input', () => {
-            if (input.validity.valid && input.value.trim() !== '' && input.value.trim() !== initialUserData[input.name]) {
+            if (input.validity.valid && (input.value.trim() !== '' || input.id === 'PhoneNumber') && input.value.trim() !== initialUserData[input.name]) {
                 disableButtons(submitButtons, false);
             } else {
                 disableButtons(submitButtons, true);
@@ -234,6 +235,16 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
         });
     });
     submitButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            isLoggedIn().then(isLoggedIn => {
+                if (!isLoggedIn) {
+                    logout();
+                }
+            });
+        });
+    });
+    submitButtons.forEach((button) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
             const payLoad = {...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm)))};
@@ -242,7 +253,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             initialUserData = payLoad;
         });
     });
-    changePwdButton.addEventListener('click', () => {
-        changePassword();
+    changePwdButton.addEventListener('click', async () => {
+        await changePassword();
     })
 }

@@ -196,7 +196,7 @@ async function callBreedList(petType) {
     return null;
 }
 
-function updateBreedListSelect() {
+async function updateBreedListSelect() {
     const breedSelect = document.getElementById('breed');
     let i = 0;
     const L = breedSelect.options.length - 1;
@@ -661,6 +661,17 @@ window.onload = callBreedList('null').then((data) => {
 
         if (petType?.value === 'Other' || petType?.value === 'null') {
             petBreed.setAttribute('disabled', '');
+        } else {
+            callBreedList(petType?.value).then((data) => {
+                breedList = data;
+                updateBreedListSelect().then(() => {
+                for (let i = 0; i < petBreeds.length; i += 1) {
+                    if (petBreeds[i].value === params.get('filterBreed')) {
+                        petBreed.selectedIndex = i;
+                    }
+                }
+                });
+            })
         }
         callAnimalList().then((response) => {
             buildResultsContainer(response);

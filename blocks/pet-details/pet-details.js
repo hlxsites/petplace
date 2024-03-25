@@ -81,9 +81,16 @@ function formatAnimalData(apiData) {
   };
   return formattedData;
 }
-function formatSimilarPetData(apiData) {
+async function formatSimilarPetData(apiData) {
   if (apiData && apiData.length > 4) {
-    return getRandomItems(apiData, 4);
+    const { animalId } = await getParametersFromUrl();
+    let animalArray = [];
+    apiData.forEach((pet) => {
+      if (pet.animalId !== animalId) {
+        animalArray.push(pet);
+      }
+    })
+    return getRandomItems(animalArray, 4);
   }
   return apiData;
 }
@@ -196,7 +203,7 @@ async function fetchSimilarPets(zip, animalType, animalListApi) {
     });
     if (resp.ok) {
       const json = await resp.json();
-      result = formatSimilarPetData(json.animal);
+      result = await formatSimilarPetData(json.animal);
     }
   } catch (error) {
     // console.error('Error:', error);
@@ -446,13 +453,14 @@ async function createChecklistSection(inquiryStatus) {
     checklistLabelEl.textContent = checklistLabel;
     checklistContainer.append(checklistLabelEl);
   }
-
-  if (inquiryStatus === true) {
+  // disabling the survey flow from view until survey is ready for launch
+  
+  /* if (inquiryStatus === true) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
         checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
     }
-  }
+  } */
 
   if (checklistItem2Label) {
     let itemContent = null;
@@ -621,13 +629,11 @@ export default async function decorate(block) {
     const animalApi = `${baseUrl}/animal/${animalId}/client/${clientId}`;
     const petListApi = `${baseUrl}/animal/`;
     const petData = await fetchAnimalData(animalApi);
-
     const similarPetsArr = await fetchSimilarPets(
       petData.zip,
       petData.animalType,
       petListApi,
     );
-
     // Create carousel section
     block.append(
       await createCarouselSection(
@@ -660,20 +666,20 @@ export default async function decorate(block) {
       },
     });
 
-    // add inquiry functionality
-    const petCtaContaner = document.querySelector('.about-pet-ctas');
-    petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
+    // add inquiry functionality - temporarily disabling this until survey flow is ready for release
+    // const petCtaContaner = document.querySelector('.about-pet-ctas');
+    // petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
     if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {
       if (petData.email !== null) {
         // if email is available, append createChecklistSection WITH survey content
-        submitInquiryCta.classList.add('visible');
+        submitInquiryCta?.classList.add('visible');
         layoutContainer.append(await createChecklistSection(true));
         const checklistContainer = document.querySelector('.checklist-container');
         checklistContainer.classList.add('visible');
 
-        submitInquiryCta.addEventListener('click', () => {
+        submitInquiryCta?.addEventListener('click', () => {
           // if user is logged in, check if survey is completed
           if (token) {
             // check if survey is completed

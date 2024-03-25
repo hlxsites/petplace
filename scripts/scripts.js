@@ -22,6 +22,7 @@ import {
 } from './lib-franklin.js';
 import { login, logout, acquireToken, isLoggedIn } from './lib/msal/msal-authentication.js'
 
+export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
 const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 
@@ -35,6 +36,11 @@ const AUDIENCES = {
   desktop: () => window.innerWidth >= 600,
 };
 
+export const DEFAULT_REGION = 'en-US';
+export const REGIONS = {
+  'en-GB': ['LCY', 'LHR', 'LON', 'MAN'],
+};
+
 window.hlx.templates.add([
   '/templates/adopt',
   '/templates/article-page',
@@ -42,9 +48,11 @@ window.hlx.templates.add([
   '/templates/ask-author-page',
   '/templates/author-index',
   '/templates/author-page',
+  '/templates/bytetag',
   '/templates/breed-index',
   '/templates/breed-page',
   '/templates/category-index',
+  '/templates/gen-ai',
   '/templates/home-page/',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
@@ -54,6 +62,8 @@ window.hlx.templates.add([
   '/templates/write-for-us',
   '/templates/insurance-landing-page',
 ]);
+
+const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
 
 window.hlx.plugins.add('rum-conversion', {
   url: '/plugins/rum-conversion/src/index.js',
@@ -71,8 +81,21 @@ window.hlx.plugins.add('experience-decisioning', {
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,
   load: 'eager',
-  options: { audiences: AUDIENCES },
+  options: {
+    audiences: AUDIENCES,
+    storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
+      ? window.localStorage : window.SessionStorage,
+  },
 });
+
+// checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
+export async function getRegion() {
+  const resp = await fetch(window.location.href, { method: 'HEAD' });
+  const locations = resp.headers.get('X-Served-By').split(',');
+  const pops = locations.map((l) => l.split('-').pop());
+  return Object.entries(REGIONS)
+    .find(([, values]) => pops.some((loc) => values.includes(loc)))?.[0] || DEFAULT_REGION;
+}
 
 /**
  * Load fonts.css and set a session storage flag
@@ -142,7 +165,8 @@ export function isTablet() {
  * @returns an array of obejects contained in the json file
  */
 export async function fetchAndCacheJson(url) {
-  const key = url.split('/').pop().split('.')[0];
+  const subkey = url.split('/').pop().split('.')[0];
+  const key = `${window.hlx.contentBasePath}/${subkey}`;
   if (window.hlx.cache[key]) {
     return window.hlx.cache[key];
   }
@@ -161,7 +185,7 @@ export async function fetchAndCacheJson(url) {
  * @returns a promise returning an array of categories
  */
 export async function getCategories() {
-  return fetchAndCacheJson('/article/category/categories.json');
+  return fetchAndCacheJson(`${window.hlx.contentBasePath}/article/category/categories.json`);
 }
 
 /**
@@ -387,15 +411,78 @@ function buildHyperlinkedImages(main) {
     });
 }
 
+function buildCookieConsent(main) {
+  // do not initialize consent logic twice
+  if (window.hlx.consent) {
+    return;
+  }
+  // eslint-disable-next-line prefer-rest-params
+  function gtag() { window.dataLayer.push(arguments); }
+  // US region does not need the cookie consent logic
+  if (document.documentElement.lang === 'en-US') {
+    gtag('consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted',
+    });
+    window.clarity('consent');
+    return;
+  }
+  const updateConsentHandler = (ev) => {
+    gtag('consent', 'update', {
+      ad_storage: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_user_data: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_personalization: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      analytics_storage: ev.detail.categories.includes('CC_ANALYTICS') ? 'granted' : 'denied',
+    });
+    window.clarity('consent', ev.detail.categories.includes('CC_ANALYTICS'));
+  };
+  window.addEventListener('consent', updateConsentHandler);
+  window.addEventListener('consent-updated', updateConsentHandler);
+
+  const ccPath = `${window.hlx.contentBasePath}/fragments/cookie-consent`;
+  window.hlx.consent = { status: 'pending' };
+  const blockHTML = `<div>${ccPath}</div>`;
+  const section = document.createElement('div');
+  const ccBlock = document.createElement('div');
+  ccBlock.innerHTML = blockHTML;
+  section.append(buildBlock('cookie-consent', ccBlock));
+  main.append(section);
+}
+
+function fixHyperLinks(main) {
+  // We only want to fix links on 'en' pages that are not the default US
+  if (!window.hlx.contentBasePath || !document.documentElement.lang.startsWith('en-')) {
+    return;
+  }
+  [...main.querySelectorAll('a[href]')]
+    .filter((a) => !a.href.startsWith(window.hlx.contentBasePath))
+    .forEach(async (a) => {
+      const { pathname } = new URL(a.href);
+      if (pathname.startsWith(window.hlx.contentBasePath)) {
+        return;
+      }
+      const newURL = `${window.hlx.contentBasePath}${pathname}`;
+      // If the localized version of the page exists, let's point to it instead of the US page
+      const resp = await fetch(newURL, { method: 'HEAD' });
+      if (resp.ok) {
+        a.href = newURL;
+      }
+    });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-async function buildAutoBlocks(main) {
+function buildAutoBlocks(main) {
   try {
-    await buildHeroBlock(main);
-    await buildEmbedBlocks(main);
-    await buildHyperlinkedImages(main);
+    buildHeroBlock(main);
+    buildEmbedBlocks(main);
+    buildHyperlinkedImages(main);
+    buildCookieConsent(main);
+    fixHyperLinks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -563,11 +650,11 @@ function animateSkeletons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-export async function decorateMain(main) {
+export function decorateMain(main) {
   main.id = 'main';
   decorateButtons(main);
-  await decorateIcons(main);
-  await buildAutoBlocks(main);
+  decorateIcons(main);
+  buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
@@ -606,7 +693,19 @@ function setLocale() {
   const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
   const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
   document.documentElement.lang = locale;
-  window.hlx.contentBasePath = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
+  window.hlx.contentBasePath = locale === DEFAULT_REGION ? '' : `/${locale.toLowerCase()}`;
+}
+
+function redirectToPreferredRegion() {
+  const preferredRegion = localStorage.getItem(PREFERRED_REGION_KEY);
+  if (!preferredRegion) {
+    return;
+  }
+  if (preferredRegion === 'en-GB' && window.hlx.contentBasePath !== '/en-gb') {
+    window.location = '/en-gb/';
+  } else if (preferredRegion === 'us' && window.hlx.contentBasePath) {
+    window.location = '/';
+  }
 }
 
 /**
@@ -615,6 +714,7 @@ function setLocale() {
  */
 async function loadEager(doc) {
   setLocale();
+  redirectToPreferredRegion();
   decorateTemplateAndTheme();
 
   await fetchPlaceholders(window.hlx.contentBasePath || 'default');
@@ -626,7 +726,7 @@ async function loadEager(doc) {
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
       document.title += ` | ${getPlaceholder('websiteName')}`;
     }
-    await decorateMain(main);
+    decorateMain(main);
     fixLinks();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
@@ -637,9 +737,7 @@ async function loadEager(doc) {
   window.debugMsal.login = login;
   window.debugMsal.logout = logout;
   window.debugMsal.acquireToken = acquireToken;
-  isLoggedIn().then(isLoggedIn => {
-    window.debugMsal.isLoggedIn = isLoggedIn;
-  });
+  window.debugMsal.isLoggedIn = isLoggedIn;
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
@@ -649,6 +747,44 @@ async function loadEager(doc) {
   } catch (e) {
     // do nothing
   }
+}
+
+async function addRegionSelectorPopup() {
+  const region = await getRegion();
+  window.hlx.region = region;
+
+  const span = document.createElement('div');
+  span.textContent = getPlaceholder('changeRegion');
+
+  const dialogContent = document.createElement('div');
+
+  const regionSelector = buildBlock('region-selector', [[]]);
+  dialogContent.append(regionSelector);
+  decorateBlock(regionSelector);
+  await loadBlock(regionSelector);
+
+  const dialog = buildBlock('popup', [[span], [dialogContent]]);
+
+  const li = document.createElement('li');
+  li.append(dialog);
+  document.querySelector('footer .footer-legal ul').append(li);
+  decorateBlock(dialog);
+  await loadBlock(dialog);
+  const popup = document.querySelector('.popup');
+  if (!localStorage.getItem(PREFERRED_REGION_KEY)) {
+    if (window.hlx.contentBasePath === '/en-gb' && region !== 'en-GB') {
+      popup.querySelector('hlx-aria-dialog').open();
+    } else if (!window.hlx.contentBasePath && region !== 'en-US') {
+      popup.querySelector('hlx-aria-dialog').open();
+    }
+    popup.querySelector('hlx-aria-dialog .primary').focus();
+  }
+  popup.addEventListener('click', (ev) => {
+    if (!ev.target.closest('.button')) {
+      return;
+    }
+    localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
+  });
 }
 
 /**
@@ -812,7 +948,12 @@ async function loadLazy(doc) {
   ]);
 
   const footer = doc.querySelector('footer');
-  loadFooter(footer);
+  loadFooter(footer).then(() => {
+    // FIXME: remove conditional on UK website go-live
+    if (window.hlx.contentBasePath) {
+      addRegionSelectorPopup();
+    }
+  });
 
   const FOOTER_SPACING = 'footer-top-spacing';
   footer.id = 'footer';
@@ -823,8 +964,8 @@ async function loadLazy(doc) {
   }
 
   // identify the first item in the menu
-  const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
-  firstMenu.id = 'menu';
+  // const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
+  // firstMenu.id = 'menu';
 
   // Add hidden quick navigation links
   createA11yQuickNav([
@@ -838,16 +979,11 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  const usp = new URLSearchParams(window.location.search);
-  const utmParams = [...usp.entries()]
-    .filter(([key]) => key.startsWith('utm_') && key !== 'utm_id');
-  utmParams.forEach(([key, value]) => {
-    sampleRUM('utm-campaign', { source: key, target: value });
-  });
-
   await window.hlx.plugins.run('loadLazy');
 
-  addNewsletterPopup();
+  if (!window.hlx.contentBasePath) {
+    addNewsletterPopup();
+  }
 
   import('./datalayer.js').then(({ handleDataLayerApproach }) => {
     handleDataLayerApproach();
@@ -995,6 +1131,14 @@ export async function captureError(source, e) {
 }
 
 async function loadPage() {
+  setLocale();
+
+  window.dataLayer ||= {};
+  window.dataLayer.push({ js: new Date() });
+  window.dataLayer.push({ config: 'GT-KD23TWW' });
+  window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
+  window.dataLayer.push({ config: 'AW-11334653569' });
+
   await window.hlx.plugins.load('eager');
   await loadEager(document);
   await window.hlx.plugins.load('lazy');
