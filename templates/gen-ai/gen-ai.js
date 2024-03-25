@@ -16,6 +16,7 @@ function removeAllEventListeners(element) {
 
 // eslint-disable-next-line consistent-return
 const fetchStreamingResults = async (index, query, resultsBlock) => {
+  // console.log('fetchStreamingResults');
   if (query === '') {
     return {
       result: 'Please enter a search query.',
@@ -73,6 +74,15 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
     if (!summaryContainer) {
       // showRegenerateButton(resultsBlock);
     }
+  });
+
+  const searchForm = document.querySelector('.gen-ai .search-box-wrapper');
+  window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(query));
+
+  searchForm.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    // console.log('search input submitted again on the page');
+    socket.close();
   });
 };
 
@@ -385,7 +395,8 @@ function displayInsuranceCTA(resultsBlock) {
   });
 }
 
-async function displaySearchResults(query, resultsBlock) {
+export async function displaySearchResults(query, resultsBlock) {
+  // console.log('displaySearchResults');
   if (isRequestInProgress) {
     // A request is already in progress, so do not proceed.
     return;
@@ -432,6 +443,24 @@ async function displaySearchResults(query, resultsBlock) {
   });
 }
 
+export function setupSearchResults(defaultContentWrapper) {
+  // console.log('defaultContentWrapper', defaultContentWrapper);
+  const searchResultsDivElement = document.createElement('div');
+  searchResultsDivElement.setAttribute('class', 'search-results');
+  searchResultsDivElement.setAttribute('am-region', 'Search');
+  searchResultsDivElement.appendChild(decorateSearch());
+  defaultContentWrapper.innerHTML = '<p></p><p></p>';
+  defaultContentWrapper.appendChild(searchResultsDivElement);
+  const searchQuery = window.localStorage.getItem('aem-gen-ai-query');
+  if (searchQuery) {
+    if (searchQuery.indexOf('insurance') !== -1) {
+      displayInsuranceCTA(searchResultsDivElement);
+    } else {
+      displaySearchResults(searchQuery, searchResultsDivElement);
+    }
+  }
+}
+
 export async function loadLazy(main) {
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
@@ -460,18 +489,5 @@ export async function loadLazy(main) {
   heroContainer.replaceWith(hero);
 
   // Create the search results <div> element with am-region attribute
-  const searchResultsDivElement = document.createElement('div');
-  searchResultsDivElement.setAttribute('class', 'search-results');
-  searchResultsDivElement.setAttribute('am-region', 'Search');
-  searchResultsDivElement.appendChild(decorateSearch());
-  defaultContentWrapper.appendChild(searchResultsDivElement);
-
-  const searchQuery = window.localStorage.getItem('aem-gen-ai-query');
-  if (searchQuery) {
-    if (searchQuery.indexOf('insurance') !== -1) {
-      displayInsuranceCTA(searchResultsDivElement);
-    } else {
-      displaySearchResults(searchQuery, searchResultsDivElement);
-    }
-  }
+  setupSearchResults(defaultContentWrapper);
 }
