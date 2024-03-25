@@ -1195,6 +1195,7 @@ body:not(.gen-ai) .genai-search.large .search-box-wrapper #clearButton {
 
 .gen-ai .default-content-wrapper .summary-columns {
   display: none;
+  align-self: flex-start;
 }
 .gen-ai .default-content-wrapper .summary-columns h2{
   max-widtH: 800px;
