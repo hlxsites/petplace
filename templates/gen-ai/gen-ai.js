@@ -86,52 +86,23 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   });
 };
 
-const decorateSearch = () => {
+const decorateSearch = (socket = false) => {
   // Create the stop generating button <button> element
   const stopButtonContainer = document.createElement('div');
   stopButtonContainer.className = 'stop-button-container';
   const stopButton = document.createElement('button');
   stopButton.className = 'stop-button';
   stopButton.textContent = 'Stop generating';
-  const xhr1 = new XMLHttpRequest();
-  xhr1.open('GET', `${window.hlx.codeBasePath}/icons/stop.svg`, true);
-  // eslint-disable-next-line func-names
-  xhr1.onreadystatechange = function () {
-    if (xhr1.readyState === 4 && xhr1.status === 200) {
-      // On successful response, create and append the SVG element
-      const svgElement = document.createElement('svg');
-      svgElement.innerHTML = xhr1.responseText;
-      const { firstChild } = stopButton;
-      stopButton.insertBefore(svgElement, firstChild);
-    }
-  };
-  xhr1.send();
   stopButtonContainer.appendChild(stopButton);
 
-  // Create the regenerate response button <button> element
-  const regenerateButtonContainer = document.createElement('div');
-  regenerateButtonContainer.className = 'regenerate-button-container';
-  const regenerateButton = document.createElement('button');
-  regenerateButton.className = 'regenerate-button';
-  regenerateButton.textContent = 'Regenerate response';
-  const xhr2 = new XMLHttpRequest();
-  xhr2.open('GET', `${window.hlx.codeBasePath}/icons/regenerate.svg`, true);
-  xhr2.onreadystatechange = function () {
-    if (xhr2.readyState === 4 && xhr2.status === 200) {
-      // On successful response, create and append the SVG element
-      const svgElement = document.createElement('svg');
-      svgElement.innerHTML = xhr2.responseText;
-      const { firstChild } = regenerateButton;
-      regenerateButton.insertBefore(svgElement, firstChild);
-    }
-  };
-  xhr2.send();
-  regenerateButtonContainer.appendChild(regenerateButton);
-
-  // Create the search results <div> element with am-region attribute
-  const searchResultsDivElement = document.createElement('div');
-  searchResultsDivElement.setAttribute('class', 'search-results');
-  searchResultsDivElement.setAttribute('am-region', 'Search');
+  if (socket) {
+    stopButton.addEventListener('click', () => {
+      // Close the WebSocket connection
+      socket.close();
+      const results = document.querySelector('.gen-ai .search-results');
+      results.innerHTML = '';
+    });
+  }
 
   // Append the search results <div> element to the search block <div> element
   return stopButtonContainer;
@@ -232,12 +203,18 @@ const createStreamingSearchCard = (resultsBlock) => {
   const card = document.createElement('div');
   card.className = 'search-card';
   card.classList.add('response-animation');
-  card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div><article></article><div class="slideshow"></div></div>`;
+  card.innerHTML = `
+  <div class="search-card-container">
+  <div class="search-card-warning">
+  <p>${GENAI_SEARCH_WARNING}</p></div>
+  <article></article>
+  <div class="slideshow"></div></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
+  // resultsBlock.appendChild(card.outerHTML);
 };
 
-const updateStreamingSearchCard = (resultsBlock, response) => {
+const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   const article = resultsBlock.querySelector('.search-card article');
 
   // Create the div if it doesn't exist
@@ -254,6 +231,9 @@ const updateStreamingSearchCard = (resultsBlock, response) => {
     const cursorAnimation = document.createElement('span');
     cursorAnimation.className = 'cursor-animation';
     resultsBlock.querySelector('.search-card-container').appendChild(cursorAnimation);
+    //append the stop button to the streaming results
+    resultsBlock.querySelector('.search-card-container').appendChild(decorateSearch(socket));
+    document.querySelector('.gen-ai .genai-search-container .stop-button-container').classList.add('show');
   }
 
   // // If the div already exists, update its content with the new message
@@ -276,7 +256,8 @@ const updateStreamingSearchCard = (resultsBlock, response) => {
     // Remove the cursor animation element
     const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
     cursorAnimation.classList.add('hide');
-
+    const stopButtonContainer = resultsBlock.querySelector('.search-card-container .stop-button-container');
+    stopButtonContainer.remove();
     if (response.links?.length > 0) {
       const $slideShowContainer = document.querySelector('.gen-ai .genai-search-container .slideshow');
 
@@ -456,7 +437,7 @@ export function setupSearchResults(defaultContentWrapper) {
     if (searchQuery.indexOf('insurance') !== -1) {
       displayInsuranceCTA(searchResultsDivElement);
     } else {
-      displaySearchResults(searchQuery, searchResultsDivElement);
+      displaySearchResults(searchQuery, defaultContentWrapper);
     }
   }
 }

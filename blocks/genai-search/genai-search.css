@@ -947,6 +947,12 @@ h6 {
   grid-column: 1;
 }
 
+.search-card-container .stop-button-container.show {
+  grid-row: 4;
+  grid-column: span 2;
+  display:inline-block;
+} 
+
 .cursor-animation.hide {
   display: none;
 }
