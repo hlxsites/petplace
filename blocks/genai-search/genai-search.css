@@ -661,6 +661,7 @@ article ol {
     z-index: 2;
     font-size: 30px;
     line-height: 30px;
+    user-select: none;
     &.hide {
       opacity: 0;
       cursor: default;
