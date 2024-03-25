@@ -1,3 +1,5 @@
+import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
+
 /* eslint-disable indent */
 export default class TabsManual {
     constructor(groupNode, dropdownNode, panelNodes) {
@@ -108,7 +110,13 @@ export default class TabsManual {
 
     onClick(event) {
       event.preventDefault();
-      this.setSelectedTab(event.currentTarget);
+      isLoggedIn().then(isLoggedIn => {
+        if (isLoggedIn) {
+          this.setSelectedTab(event.currentTarget);
+        } else {
+          logout();
+        }
+      });
     }
 
     onChange(event) {
