@@ -56,8 +56,10 @@ body.gen-ai .genai-search-container .default-content-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
   margin-bottom: 10px;
+  @media (min-width: 1024px){
+    gap: 20px;
+  }
 }
 
 body.gen-ai #search-main .genai-search-container .default-content-wrapper {

@@ -42,7 +42,7 @@
     max-width: 1344px;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1024px) {
     margin: 0 auto;
     width: 100%;
     padding-top: 0;
@@ -163,25 +163,36 @@ body.article-page .section.genai-search-container h2:last-of-type::before {
 }
 
 body.gen-ai .section.genai-search-container .default-content-wrapper h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 1.1;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 0.5rem;
   display: inline-block;
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
 }
 
 body.gen-ai .section.genai-search-container .default-content-wrapper h2 {
-  font-size: 2.5rem;
+  font-size: var(--heading-font-size-xl);;
   line-height: 1.1;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 0.5rem;
   display: inline-block;
+  @media (min-width: 768px) {
+    font-size: 2.5rem;
+    font-weight: 800;
+  }
 }
 
 body.gen-ai .section.genai-search-container .default-content-wrapper p {
   margin-bottom: .75rem;
-  font-size: 1.125rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.8;
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
 }
 
 #search-main .section.genai-search-container p {
@@ -567,7 +578,8 @@ article ol {
 
 .genai-search-container .search-card-container {
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: minmax(auto, 60%) minmax(540px, 40%);
+  /* grid-template-columns: 60% 40%; */
   grid-template-rows: auto auto auto;
   row-gap: 20px;
   grid-column: span 2;
@@ -602,6 +614,10 @@ article ol {
   position: relative;
   overflow: hidden;
   touch-action: none;
+  @media (min-width: 1024px) {
+    max-width: 480px;
+    /* margin: 0; */
+  }
 }
 
 @media (min-width: 600px) {
@@ -776,7 +792,7 @@ h5,
 h6 {
   margin-top: 10px !important;
 }
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
   .genai-search-container .search-card-container {
     display: grid;
     grid-template-columns: 1fr;
