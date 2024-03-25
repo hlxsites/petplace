@@ -116,7 +116,7 @@ export default async function decorate(block) {
         block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));
         block.querySelector('#favorites').append(await createAccountFavoritesPanel(token));
         block.querySelector('#searchalerts').append(await createSavedSearchPanel(token));
-        block.querySelector('#survey').append(await createAccountSurveyPanel(block, token));
+        block.querySelector('#survey').append(await createAccountSurveyPanel(block, token, initialUserData));
 
         await bindAccountDetailsEvents(block, token, initialUserData);
     }
