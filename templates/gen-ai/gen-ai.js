@@ -487,10 +487,10 @@ export async function displaySearchResults(query, resultsBlock) {
   resultsBlock.addEventListener('click', (event) => {
     const searchBox = document.getElementById('genai-search-box') || document.getElementById('search-box');
 
-    const searchBlock = document.querySelector('.genai-search-wrapper');
+    // const searchBlock = document.querySelector('.genai-search-wrapper');
 
     if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
-      searchBlock.scrollIntoView({ behavior: 'smooth' });
+      // searchBlock.scrollIntoView({ behavior: 'smooth' });
 
       window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(event.target.innerText));
       searchBox.value = event.target.innerText;
