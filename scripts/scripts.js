@@ -48,9 +48,11 @@ window.hlx.templates.add([
   '/templates/ask-author-page',
   '/templates/author-index',
   '/templates/author-page',
+  '/templates/bytetag',
   '/templates/breed-index',
   '/templates/breed-page',
   '/templates/category-index',
+  '/templates/gen-ai',
   '/templates/home-page/',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
@@ -60,6 +62,8 @@ window.hlx.templates.add([
   '/templates/write-for-us',
   '/templates/insurance-landing-page',
 ]);
+
+const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
 
 window.hlx.plugins.add('rum-conversion', {
   url: '/plugins/rum-conversion/src/index.js',
@@ -77,7 +81,11 @@ window.hlx.plugins.add('experience-decisioning', {
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,
   load: 'eager',
-  options: { audiences: AUDIENCES },
+  options: {
+    audiences: AUDIENCES,
+    storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
+      ? window.localStorage : window.SessionStorage,
+  },
 });
 
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
@@ -157,7 +165,8 @@ export function isTablet() {
  * @returns an array of obejects contained in the json file
  */
 export async function fetchAndCacheJson(url) {
-  const key = url.split('/').pop().split('.')[0];
+  const subkey = url.split('/').pop().split('.')[0];
+  const key = `${window.hlx.contentBasePath}/${subkey}`;
   if (window.hlx.cache[key]) {
     return window.hlx.cache[key];
   }
@@ -176,7 +185,7 @@ export async function fetchAndCacheJson(url) {
  * @returns a promise returning an array of categories
  */
 export async function getCategories() {
-  return fetchAndCacheJson('/article/category/categories.json');
+  return fetchAndCacheJson(`${window.hlx.contentBasePath}/article/category/categories.json`);
 }
 
 /**
@@ -402,15 +411,78 @@ function buildHyperlinkedImages(main) {
     });
 }
 
+function buildCookieConsent(main) {
+  // do not initialize consent logic twice
+  if (window.hlx.consent) {
+    return;
+  }
+  // eslint-disable-next-line prefer-rest-params
+  function gtag() { window.dataLayer.push(arguments); }
+  // US region does not need the cookie consent logic
+  if (document.documentElement.lang === 'en-US') {
+    gtag('consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted',
+    });
+    window.clarity('consent');
+    return;
+  }
+  const updateConsentHandler = (ev) => {
+    gtag('consent', 'update', {
+      ad_storage: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_user_data: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      ad_personalization: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
+      analytics_storage: ev.detail.categories.includes('CC_ANALYTICS') ? 'granted' : 'denied',
+    });
+    window.clarity('consent', ev.detail.categories.includes('CC_ANALYTICS'));
+  };
+  window.addEventListener('consent', updateConsentHandler);
+  window.addEventListener('consent-updated', updateConsentHandler);
+
+  const ccPath = `${window.hlx.contentBasePath}/fragments/cookie-consent`;
+  window.hlx.consent = { status: 'pending' };
+  const blockHTML = `<div>${ccPath}</div>`;
+  const section = document.createElement('div');
+  const ccBlock = document.createElement('div');
+  ccBlock.innerHTML = blockHTML;
+  section.append(buildBlock('cookie-consent', ccBlock));
+  main.append(section);
+}
+
+function fixHyperLinks(main) {
+  // We only want to fix links on 'en' pages that are not the default US
+  if (!window.hlx.contentBasePath || !document.documentElement.lang.startsWith('en-')) {
+    return;
+  }
+  [...main.querySelectorAll('a[href]')]
+    .filter((a) => !a.href.startsWith(window.hlx.contentBasePath))
+    .forEach(async (a) => {
+      const { pathname } = new URL(a.href);
+      if (pathname.startsWith(window.hlx.contentBasePath)) {
+        return;
+      }
+      const newURL = `${window.hlx.contentBasePath}${pathname}`;
+      // If the localized version of the page exists, let's point to it instead of the US page
+      const resp = await fetch(newURL, { method: 'HEAD' });
+      if (resp.ok) {
+        a.href = newURL;
+      }
+    });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-async function buildAutoBlocks(main) {
+function buildAutoBlocks(main) {
   try {
-    await buildHeroBlock(main);
-    await buildEmbedBlocks(main);
-    await buildHyperlinkedImages(main);
+    buildHeroBlock(main);
+    buildEmbedBlocks(main);
+    buildHyperlinkedImages(main);
+    buildCookieConsent(main);
+    fixHyperLinks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -578,11 +650,11 @@ function animateSkeletons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-export async function decorateMain(main) {
+export function decorateMain(main) {
   main.id = 'main';
   decorateButtons(main);
-  await decorateIcons(main);
-  await buildAutoBlocks(main);
+  decorateIcons(main);
+  buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateScreenReaderOnly(main);
@@ -654,7 +726,7 @@ async function loadEager(doc) {
     if (!document.title.match(/[-|] Petplace(\.com)?$/i)) {
       document.title += ` | ${getPlaceholder('websiteName')}`;
     }
-    await decorateMain(main);
+    decorateMain(main);
     fixLinks();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
@@ -907,16 +979,11 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  const usp = new URLSearchParams(window.location.search);
-  const utmParams = [...usp.entries()]
-    .filter(([key]) => key.startsWith('utm_') && key !== 'utm_id');
-  utmParams.forEach(([key, value]) => {
-    sampleRUM('utm-campaign', { source: key, target: value });
-  });
-
   await window.hlx.plugins.run('loadLazy');
 
-  addNewsletterPopup();
+  if (!window.hlx.contentBasePath) {
+    addNewsletterPopup();
+  }
 
   import('./datalayer.js').then(({ handleDataLayerApproach }) => {
     handleDataLayerApproach();
@@ -1064,6 +1131,14 @@ export async function captureError(source, e) {
 }
 
 async function loadPage() {
+  setLocale();
+
+  window.dataLayer ||= {};
+  window.dataLayer.push({ js: new Date() });
+  window.dataLayer.push({ config: 'GT-KD23TWW' });
+  window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
+  window.dataLayer.push({ config: 'AW-11334653569' });
+
   await window.hlx.plugins.load('eager');
   await loadEager(document);
   await window.hlx.plugins.load('lazy');

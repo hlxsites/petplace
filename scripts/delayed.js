@@ -15,11 +15,11 @@ async function loadAccessibeWidget() {
     hideMobile: false,
     hideTrigger: false,
     language: 'en',
-    position: 'right',
+    position: 'left',
     leadColor: HIGHLIGHT_COLOR,
     triggerColor: HIGHLIGHT_COLOR,
     triggerRadius: '50%',
-    triggerPositionX: 'right',
+    triggerPositionX: 'left',
     triggerPositionY: 'bottom',
     triggerIcon: 'wheels',
     triggerSize: 'medium',
@@ -27,7 +27,7 @@ async function loadAccessibeWidget() {
     triggerOffsetY: 20,
     mobile: {
       triggerSize: 'small',
-      triggerPositionX: 'right',
+      triggerPositionX: 'left',
       triggerPositionY: 'bottom',
       triggerOffsetX: 10,
       triggerOffsetY: 10,
@@ -42,7 +42,7 @@ function pushly(...args) {
 
 if (window.hlx.plugins.get('martech')) {
   if (
-    (document.querySelector('.block.ad')
+    (window.location.pathname === `${window.hlx.contentBasePath}/`
     || window.location.pathname.includes('tags')
     || window.location.pathname.includes('article')
     || window.location.pathname.includes('category'))

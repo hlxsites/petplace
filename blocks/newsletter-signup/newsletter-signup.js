@@ -1,6 +1,7 @@
 import { createForm } from '../form/form.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 import { setNewsletterSignedUp, captureError, DEFAULT_REGION } from '../../scripts/scripts.js';
+import { sampleRUM } from '../../scripts/lib-franklin.js';
 
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
@@ -16,26 +17,32 @@ function showError(block, fd) {
 
 async function submitForm(block, fd) {
   const formData = new FormData(block.querySelector('form'));
-  const payload = {
+  const formInfo = {
     email: formData.get('email'),
-    dataFields: {
-      catnewsletter: formData.get('cats') === 'on',
-      dognewsletter: formData.get('dogs') === 'on',
-      country: DEFAULT_REGION, // rework later
-    },
-    mergeNestedObjects: true,
-    createNewFields: true,
+    first_name: formData.get('name'),
+    catnewsletter: formData.get('cats') === 'on',
+    dognewsletter: formData.get('dogs') === 'on',
+    country: DEFAULT_REGION, // rework later
   };
+
+  const apiKey = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
+
+  const payload = {
+    ContactKey: formInfo.email,
+    EventDefinitionKey: apiKey,
+    Data: formInfo,
+  };
+
   const fetchOpts = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Api-Key': '3e7a9624572b4827b156af44e72fceaa',
-    },
     body: JSON.stringify(payload),
+    'Content-Type': 'application/json',
   };
+
   try {
-    const res = await fetch('https://api.iterable.com/api/users/update', fetchOpts);
+    const baseUri = 'https://aem-eds-petplace.edgecompute.app/services/newsletter';
+    const res = await fetch(baseUri, fetchOpts);
+
     if (!res.ok) {
       let text = 'no detail.';
       try {
@@ -46,11 +53,14 @@ async function submitForm(block, fd) {
       captureError('newsletter-signup', new Error(`iterable API responded with ${res.status} status code: ${text}`));
       showError(block, fd);
     } else {
+      if (sampleRUM.convert) {
+        sampleRUM.convert('form-submission', baseUri, block.querySelector('form'));
+      }
       setNewsletterSignedUp();
       showMessage(block, fd.Success);
       pushToDataLayer({
         event: 'sign_up',
-        signup_category: 'newsletter', // Example: 'newsletter'
+        signup_category: 'newsletter',
       });
     }
   } catch (e) {
