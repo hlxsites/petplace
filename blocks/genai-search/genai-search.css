@@ -803,16 +803,6 @@ h6 {
     grid-column: 1;
   }
 
-  .genai-search-container .search-card-container article h1 {
-    font-size: 1.25rem;
-  }
-
-  .genai-search-container .search-card-container article p,
-  .genai-search-container .search-card-container article ul,
-  .genai-search-container .search-card-container article li {
-    font-size: 0.8125rem;
-    line-height: 1.25rem;
-  }
 
   .genai-search-container .search-card-container .slideshow {
     grid-column: 1;
