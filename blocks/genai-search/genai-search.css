@@ -538,8 +538,10 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button {
 .search-card-button:hover,
 .search-card-button:focus {
   background-color: var(--background-color);
-  transform: scale(1.05); /* Zoom effect on hover */
   cursor: pointer !important;
+  @media (min-width: 600px) {
+    transform: scale(1.05); /* Zoom effect on hover */
+  }
 }
 
 .genai-search-container article a {
