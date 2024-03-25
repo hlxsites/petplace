@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { changePassword } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
+import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 function serialize(data) {
     const obj = {};
@@ -231,6 +232,16 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             } else {
                 disableButtons(submitButtons, true);
             }
+        });
+    });
+    submitButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            isLoggedIn().then(isLoggedIn => {
+                if (!isLoggedIn) {
+                    logout();
+                }
+            });
         });
     });
     submitButtons.forEach((button) => {

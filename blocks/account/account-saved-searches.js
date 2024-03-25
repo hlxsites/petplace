@@ -1,8 +1,8 @@
 /* eslint-disable indent */
 import endPoints from '../../variables/endpoints.js';
+import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 const arrSaveList = [];
-
 
 function removeFavoriteSearch(id, token, btn) {
     return fetch(`${endPoints.apiUrl}/adopt/api/UserSearch/${id}`, {
@@ -73,7 +73,13 @@ async function bindSaveEvents(token) {
     removeBtns.forEach((button, index) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-            openRemoveConfirmModal(event, token);
+            isLoggedIn().then(isLoggedIn => {
+                if (isLoggedIn) {
+                    openRemoveConfirmModal(event, token);
+                } else {
+                    logout();
+                }
+            });
         });
     });
 }
@@ -105,7 +111,6 @@ function getSearches(token) {
                 let searchUrl = '/pet-adoption/search?';
                 if (saved.SearchParameters.locationInformation.zipPostal) {
                     searchUrl += 'zipPostal=' + saved.SearchParameters.locationInformation.zipPostal.replace(' ', '+');
-                    console.log(searchUrl)
                 }
                 if (saved.SearchParameters.locationInformation.milesRadius) {
                     searchUrl += '&milesRadius=' + saved.SearchParameters.locationInformation.milesRadius;
