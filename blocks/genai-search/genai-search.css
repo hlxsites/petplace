@@ -57,9 +57,7 @@
 
   @media (max-width: 600px) {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start;
   }
 }
 
@@ -1190,4 +1188,14 @@ body:not(.gen-ai) .genai-search.large .search-box-wrapper #clearButton {
   to {
     transform: translateY(0);
   }
+}
+
+.gen-ai .default-content-wrapper .summary-columns {
+  display: none;
+}
+.gen-ai .default-content-wrapper .summary-columns h2{
+  max-widtH: 800px;
+}
+.gen-ai .default-content-wrapper .summary-columns.show {
+  display: block;
 }

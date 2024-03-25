@@ -6,6 +6,23 @@ import {
 
 const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
 
+const sampleQuestions = [
+  'How do I know if my dog has a broken leg?',
+  'Are dog parks safe for small dogs?',
+  'What toys should I buy for my cat?',
+  'Does my dog need a flea collar',
+  'What do I do if my dog has diarrhea?',
+  'Where can I adopt a Beagle?',
+  'What\'s the best food for an overweight cat?',
+
+];
+
+// const capabilities = [
+//   'Uses semantic search to find relevant answers',
+//   'Utilizes trusted data sources to generate responses',
+//   'Declines irrelevant and inappropriate queries',
+// ];
+
 const isTrueSearch = window.location.pathname === '/discovery';
 let isRequestInProgress = false;
 
@@ -22,6 +39,8 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
       result: 'Please enter a search query.',
     };
   }
+  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  helpContainer.classList.remove('show');
 
   const socket = new WebSocket('wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query');
 
@@ -49,39 +68,37 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   });
   // Show stop button container and add a click event listener
   const stopButtonContainer = document.querySelector('.gen-ai .genai-search-container .stop-button-container');
-  stopButtonContainer.classList.add('show');
-  let stopButton = stopButtonContainer.querySelector('.stop-button');
-  removeAllEventListeners(stopButton);
-  stopButton = stopButtonContainer.querySelector('.stop-button');
-  stopButton.addEventListener('click', () => {
-  //   // Close the WebSocket connection
-    socket.close();
+  if (stopButtonContainer && stopButtonContainer.classList) {
+    stopButtonContainer.classList.add('show');
 
-    // Remove the cursor animation element
-    const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
-    cursorAnimation.classList.add('hide');
+    let stopButton = stopButtonContainer.querySelector('.stop-button');
+    removeAllEventListeners(stopButton);
+    stopButton = stopButtonContainer.querySelector('.stop-button');
+    stopButton.addEventListener('click', () => {
+      // Close the WebSocket connection
+      socket.close();
 
-    // Remove the loading message element
-    const loadingMessage = resultsBlock.querySelector('.loading-message');
-    if (loadingMessage) {
-      resultsBlock.removeChild(loadingMessage);
-    }
+      // Remove the cursor animation element
+      const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
+      cursorAnimation.classList.add('hide');
 
-    // Remove the stop button container
-    stopButtonContainer.classList.remove('show');
+      // Remove the loading message element
+      const loadingMessage = resultsBlock.querySelector('.loading-message');
+      if (loadingMessage) {
+        resultsBlock.removeChild(loadingMessage);
+      }
 
-    const summaryContainer = resultsBlock.querySelector('.summary-columns');
-    if (!summaryContainer) {
-      // showRegenerateButton(resultsBlock);
-    }
-  });
+      // Remove the stop button container
+      stopButtonContainer.classList.remove('show');
 
+      helpContainer.classList.add('show');
+    });
+  }
   const searchForm = document.querySelector('.gen-ai .search-box-wrapper');
   window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(query));
 
   searchForm.addEventListener('submit', (ev) => {
     ev.preventDefault();
-    // console.log('search input submitted again on the page');
     socket.close();
   });
 };
@@ -101,13 +118,72 @@ const decorateSearch = (socket = false) => {
       socket.close();
       const results = document.querySelector('.gen-ai .search-results');
       results.innerHTML = '';
+
+      const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+      helpContainer.classList.add('show');
     });
   }
 
   // Append the search results <div> element to the search block <div> element
   return stopButtonContainer;
 };
+// Randomly select three questions from an array
+const getRandomQuestions = (questions) => {
+  const randomQuestions = [];
+  while (randomQuestions.length < 6) {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    const randomQuestion = questions[randomIndex];
+    if (!randomQuestions.includes(randomQuestion)) {
+      randomQuestions.push(randomQuestion);
+    }
+  }
+  return randomQuestions;
+};
+const createSummaryColumn = (icon, title, list, type) => {
+  const summaryColumnDiv = document.createElement('div');
+  summaryColumnDiv.className = 'summary-column';
 
+  const titleElement = document.createElement('h4');
+  titleElement.textContent = title;
+
+  const items = document.createElement('ul');
+  items.className = 'summary-items';
+
+  list.forEach((text) => {
+    const item = document.createElement('li');
+    item.className = 'summary-item';
+    item.textContent = text;
+    if (type === 'button') {
+      item.classList.add('hand-cursor');
+      item.addEventListener('click', () => {
+        if (isRequestInProgress === false) {
+          const searchBox = document.getElementById('search-box');
+          searchBox.value = text;
+          displaySearchResults(text, document.querySelector('.search-results'));
+        }
+      });
+    }
+    items.appendChild(item);
+  });
+
+  summaryColumnDiv.appendChild(titleElement);
+  summaryColumnDiv.appendChild(items);
+
+  return summaryColumnDiv;
+};
+const createSearchSummary = () => {
+  const summaryColumns = document.createElement('div');
+  summaryColumns.className = 'summary-columns';
+  const summaryTitle = document.createElement('h2');
+  summaryTitle.innerHTML = 'Need help asking a question or just want to test drive the PetPlace Discovery tool?';
+  const summaryColumn1 = createSummaryColumn('examples', 'Try one of these suggested questions:', getRandomQuestions(sampleQuestions), 'button');
+
+  summaryColumns.appendChild(summaryTitle);
+  summaryColumns.appendChild(summaryColumn1);
+  summaryColumns.classList.add('show');
+
+  return summaryColumns;
+};
 function getCurrentSlideIndex($block) {
   // console.log('$block', $block);
   return [...$block.children].findIndex(($child) => $child.getAttribute('active') === 'true');
@@ -231,7 +307,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     const cursorAnimation = document.createElement('span');
     cursorAnimation.className = 'cursor-animation';
     resultsBlock.querySelector('.search-card-container').appendChild(cursorAnimation);
-    //append the stop button to the streaming results
+    // append the stop button to the streaming results
     resultsBlock.querySelector('.search-card-container').appendChild(decorateSearch(socket));
     document.querySelector('.gen-ai .genai-search-container .stop-button-container').classList.add('show');
   }
@@ -377,13 +453,13 @@ function displayInsuranceCTA(resultsBlock) {
 }
 
 export async function displaySearchResults(query, resultsBlock) {
-  // console.log('displaySearchResults');
   if (isRequestInProgress) {
     // A request is already in progress, so do not proceed.
     return;
   }
   isRequestInProgress = true;
-
+  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  helpContainer.classList.add('hide');
   // Create the loading message element
   const loadingMessage = document.createElement('div');
   loadingMessage.className = 'loading-message';
@@ -425,12 +501,14 @@ export async function displaySearchResults(query, resultsBlock) {
 }
 
 export function setupSearchResults(defaultContentWrapper) {
-  // console.log('defaultContentWrapper', defaultContentWrapper);
   const searchResultsDivElement = document.createElement('div');
   searchResultsDivElement.setAttribute('class', 'search-results');
   searchResultsDivElement.setAttribute('am-region', 'Search');
   searchResultsDivElement.appendChild(decorateSearch());
   defaultContentWrapper.innerHTML = '<p></p><p></p>';
+  if (document.querySelector('.gen-ai .genai-search-container .summary-columns') === null) {
+    defaultContentWrapper.appendChild(createSearchSummary());
+  }
   defaultContentWrapper.appendChild(searchResultsDivElement);
   const searchQuery = window.localStorage.getItem('aem-gen-ai-query');
   if (searchQuery) {

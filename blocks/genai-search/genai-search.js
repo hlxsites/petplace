@@ -52,10 +52,10 @@ export default async function decorate(block) {
     }
   });
 
-
   clearButton.addEventListener('mousedown', () => {
     input.value = '';
     input.focus();
+    clearButton.classList.remove('show');
     window.localStorage.removeItem('aem-gen-ai-query');
   });
 
