@@ -96,6 +96,7 @@ export default async function decorate(block) {
     });
   }
   function bindSurveySummaryChangeEvents() {
+    // Selects
     const surveyInputs = block.querySelectorAll(
       ' .pet-survey__form-control select'
     );
@@ -106,6 +107,46 @@ export default async function decorate(block) {
           QuestionOptionId: parseInt(el.target.value),
         };
         state.surveyAnswers.push(data);
+      });
+    });
+
+    // Checkboxes
+    const surveyMultiSelects = block.querySelectorAll(
+      '.pet-survey__form-control.multi-select'
+    );
+
+    surveyMultiSelects.forEach((multiSelect) => {
+      const multiSelectCheckboxes = Array.from(
+        multiSelect.querySelectorAll("input[type='checkbox']")
+      );
+
+      multiSelectCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', (el) => {
+          const data = {
+            QuestionId: parseInt(el.target.getAttribute('data-question-id')),
+            QuestionOptionId: parseInt(
+              el.target.getAttribute('data-option-id')
+            ),
+            ExternalAnswerKey: el.target.getAttribute('data-option-id'),
+            UserResponseText: el.target.getAttribute('data-option-text'),
+          };
+
+          //add the checked item to the state
+          if (el.target.checked) {
+            state.surveyAnswers.push(data);
+          }
+          //remove the unchecked item from the state
+          else {
+            // If the answer exists, mark it as deleted
+            const existingAnswerIndex = state.surveyAnswers.findIndex(
+              (answer) => answer.UserResponseText === data.UserResponseText
+            );
+
+            if (existingAnswerIndex > -1) {
+              state.surveyAnswers[existingAnswerIndex].Deleted = true;
+            }
+          }
+        });
       });
     });
   }
@@ -362,6 +403,9 @@ export default async function decorate(block) {
   async function renderAsUser() {
     token = await acquireToken();
     const result = await callSurveyResponse(surveyId, token);
+
+    //populate state w/ survey answers
+    state.surveyAnswers = result.SurveyResponseAnswers;
 
     surveyParentId = result.Id;
     if (result && result.Completed) {

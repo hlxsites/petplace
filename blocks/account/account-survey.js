@@ -105,7 +105,7 @@ function routeSurvey(block, token, animalType, initialUserData) {
               '.pet-survey__summary-header'
             );
             surveySummaryHeader.innerHTML =
-              '<h3 class="pet-survey__summary-header-title">Pet Preferences</h3><div class="pet-survey__success-message">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message">Close</div>';
+              '<div class="pet-survey__success-message">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message"></div><h3 class="pet-survey__summary-header-title">Pet Preferences</h3>';
 
             const closeBtn = surveySummaryHeader.querySelector(
               '.pet-survey__success-message-close'

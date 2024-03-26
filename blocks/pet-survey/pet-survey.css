@@ -440,6 +440,7 @@ progress[value]::-webkit-progress-value {
 .account-wrapper .pet-survey__success-message {
   display: none;
   align-items: center;
+  margin-bottom: 24px;
   padding: 16px;
   color: #1a6132;
   background-color: #edfcf2;
@@ -451,4 +452,13 @@ progress[value]::-webkit-progress-value {
 
 .account-wrapper .pet-survey__success-message-close {
   margin-left: auto;
+
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background-color: #6e6d73;
+  mask-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 19.5L19.5 4.5' stroke='%2309090D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M4.5 4.5L19.5 19.5' stroke='%2309090D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-size: auto;
+  mask-repeat: no-repeat;
+  mask-position: center;
 }
