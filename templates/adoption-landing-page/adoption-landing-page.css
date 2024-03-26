@@ -2,31 +2,57 @@
   margin-bottom: 0 !important;
 }
 
-.adoption-landing-page .pet-display div > div {
-  text-align: left;
-  border: 1px solid #000;
-  border-radius: 1%;
+.adoption-landing-page .pet-display .pet-card-box {
+  border: 1px black solid;
+  border-radius: 1rem;
+  max-height: 35rem;
 }
 
-.adoption-landing-page .pet-display div > div:nth-child(odd) tbody tr:first-child {
-  background-color: orange;
+.adoption-landing-page .pet-display .pet-card-box img {
+  width: 75%;
+  margin: auto;
 }
 
-.adoption-landing-page .pet-display div > div:nth-child(even) tbody tr:first-child {
-  background-color: blue;
-}
-
-.adoption-landing-page .pet-display div > div tbody tr:first-child {
-  font-size: 1.5rem;
-  color: white;
-  /* background-color: orange; */
-}
-
-.adoption-landing-page .pet-display div > div tbody tr:first-child td {
+.adoption-landing-page .pet-card-box .pet-card-banner-div {
+  display: flex;
+  justify-content: space-around;
   padding: 0.5rem 1rem;
 }
 
-.adoption-landing-page .pet-display div > div table tr:nth-child(2) td > p {
+
+.adoption-landing-page .pet-card-box:nth-child(odd) .pet-card-banner-div {
+  background-color: orange;
+}
+
+.adoption-landing-page .pet-card-box:nth-child(even) .pet-card-banner-div {
+  background-color: blue;
+}
+
+.adoption-landing-page .pet-display .pet-card-banner-div button {
+  -webkit-mask: url("../../icons/next.svg") center / 100% 100%;
+  mask: url("../../icons/arrow.svg") center / 100% 100%;
+  background-color: white;
+}
+
+.adoption-landing-page .pet-display h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  font-weight: bolder;
+  color: white;
+}
+
+.adoption-landing-page .pet-display h4 {
   font-size: 1rem;
-  padding: 1rem;
+  margin: 0;
+  font-weight: normal;
+  color: white;
+}
+
+.adoption-landing-page .pet-display .pet-card-details {
+  font-size: 1rem;
+  margin: 1rem 0.5rem;
+  color: gray;
+  max-height: 10rem;
+  text-overflow: ellipsis;
+  overflow-y: scroll;
 }
