@@ -159,6 +159,7 @@ const createSummaryColumn = (icon, title, list, type) => {
         if (isRequestInProgress === false) {
           const searchBox = document.getElementById('search-box');
           searchBox.value = text;
+          // eslint-disable-next-line no-use-before-define
           displaySearchResults(text, document.querySelector('.search-results'));
         }
       });

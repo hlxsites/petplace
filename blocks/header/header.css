@@ -57,6 +57,7 @@ body.gen-ai .genai-search-container .default-content-wrapper {
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
+
   @media (min-width: 1024px){
     gap: 20px;
   }
@@ -425,7 +426,7 @@ grid-gap: 32px;
     border: 1px solid;
     font-size: 1.5rem;
   }
-
+  /* stylelint-disable-next-line praseError */
   .nav-tools [popover]:popover-open,
   .nav-tools [aria-hidden="false"] {
     display: flex;
