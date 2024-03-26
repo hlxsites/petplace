@@ -426,7 +426,7 @@ grid-gap: 32px;
     border: 1px solid;
     font-size: 1.5rem;
   }
-  /* stylelint-disable-next-line praseError */
+
   .nav-tools [popover]:popover-open,
   .nav-tools [aria-hidden="false"] {
     display: flex;
