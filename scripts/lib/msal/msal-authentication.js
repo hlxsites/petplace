@@ -192,20 +192,26 @@ export function isLoggedIn() {
 export async function changePassword(callback, featureName) {
     let msalChangePwdInstance = await getMsalInstance(msalChangePwdConfig);
 
-    // use loginRedirect() for mobile devices, use loginPopup() for desktop.
-    if (isMobile()) {
-        msalChangePwdInstance.loginRedirect(changePwdRequest)
-        .then((response) => handleResponse(response, callback, featureName))
-        .catch(error => {
-            console.log(error);
-        });
-    } else {
-        msalChangePwdInstance.loginPopup(changePwdRequest)
-        .then((response) => handleResponse(response, callback, featureName))
-        .catch(error => {
-            console.log(error);
-        });
-    }
+    isLoggedIn().then(isLoggedIn => {
+        if (isLoggedIn) {
+            // use loginRedirect() for mobile devices, use loginPopup() for desktop.
+            if (isMobile()) {
+                msalChangePwdInstance.loginRedirect(changePwdRequest)
+                .then((response) => handleResponse(response, callback, featureName))
+                .catch(error => {
+                    console.log(error);
+                });
+            } else {
+                msalChangePwdInstance.loginPopup(changePwdRequest)
+                .then((response) => handleResponse(response, callback, featureName))
+                .catch(error => {
+                    console.log(error);
+                });
+            }
+        } else {
+            logout();
+        }
+    });
 }
 
 async function selectAccount(msalInstance) {
