@@ -244,7 +244,7 @@ export default async function decorate(block) {
     });
     const multiSelects = form.querySelectorAll('.multi-select');
     multiSelects.forEach((el) => {
-      const button = el.querySelector('.multi-select__button');
+      const buttonText = el.querySelector('.multi-select__button-text');
       const selected = Array.from(
         el.querySelectorAll("input[type='checkbox']")
       ).filter((node) => node.checked);
@@ -252,7 +252,7 @@ export default async function decorate(block) {
         selected.length > 0
           ? `${selected.length} selected`
           : 'Select from menu...';
-      button.innerText = displayText;
+      buttonText.innerText = displayText;
     });
   }
 
