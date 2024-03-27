@@ -516,7 +516,7 @@ export function setupSearchResults(defaultContentWrapper) {
     if (searchQuery.indexOf('insurance') !== -1) {
       displayInsuranceCTA(searchResultsDivElement);
     } else {
-      displaySearchResults(searchQuery, defaultContentWrapper);
+      displaySearchResults(searchQuery, searchResultsDivElement);
     }
   }
 }
