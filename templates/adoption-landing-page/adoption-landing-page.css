@@ -1,48 +1,62 @@
 .adoption-landing-page .details-box.rounded {
   margin-bottom: 0 !important;
+  color: white;
+  text-align: left;
 }
 
 .adoption-landing-page .pet-display .pet-card-box {
   border: 1px black solid;
   border-radius: 1rem;
   max-height: 35rem;
+  margin: 1rem auto;
 }
 
 .adoption-landing-page .pet-display .pet-card-box img {
   width: 75%;
   margin: auto;
+  aspect-ratio: 4 / 3;
+  padding: 1rem;
 }
 
 .adoption-landing-page .pet-card-box .pet-card-banner-div {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 0.5rem 1rem;
+  height: 4rem;
+  align-items: center;
 }
 
 
 .adoption-landing-page .pet-card-box:nth-child(odd) .pet-card-banner-div {
-  background-color: orange;
+  background-color: #C74D2F;
 }
 
 .adoption-landing-page .pet-card-box:nth-child(even) .pet-card-banner-div {
-  background-color: blue;
+  background-color: #7369AB;
 }
 
-.adoption-landing-page .pet-display .pet-card-banner-div button {
+.adoption-landing-page .pet-display .pet-card-banner-div a {
   -webkit-mask: url("../../icons/next.svg") center / 100% 100%;
   mask: url("../../icons/arrow.svg") center / 100% 100%;
   background-color: white;
+  padding: 0.75rem;
 }
+
+.adoption-landing-page .pet-display .pet-card-title {
+  width: 75%;
+}
+
 
 .adoption-landing-page .pet-display h2 {
   font-size: 1.25rem;
   margin: 0;
   font-weight: bolder;
   color: white;
+  text-transform: uppercase;
 }
 
 .adoption-landing-page .pet-display h4 {
-  font-size: 1rem;
+  font-size: 0.75rem;
   margin: 0;
   font-weight: normal;
   color: white;

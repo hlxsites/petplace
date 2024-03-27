@@ -1,7 +1,6 @@
 export async function loadEager(document) {
   const cardDiv = document.querySelectorAll('.pet-display div > div');
-  cardDiv.forEach(async (card) => {
-    console.log('card', card);
+  cardDiv.forEach((card) => {
     card.className = 'pet-card-box';
     const cardTitleName = card.querySelector('h2');
     const cardTitleLoc = card.querySelector('h4');
@@ -9,12 +8,15 @@ export async function loadEager(document) {
 
     const bannerDiv = document.createElement('div');
     bannerDiv.className = 'pet-card-banner-div';
+
     const titleDiv = document.createElement('div');
     titleDiv.className = 'pet-card-title';
-    const linkBtn = document.createElement('button');
     titleDiv.append(cardTitleName);
     titleDiv.append(cardTitleLoc);
     bannerDiv.appendChild(titleDiv);
+
+    const linkBtn = document.createElement('a');
+    linkBtn.href = 'https://www.instagram.com/petplace/';
     bannerDiv.appendChild(linkBtn);
 
     const detailsDiv = document.createElement('div');
