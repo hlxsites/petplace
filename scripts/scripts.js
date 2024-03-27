@@ -20,6 +20,7 @@ import {
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
+import { login, logout, acquireToken, isLoggedIn } from './lib/msal/msal-authentication.js'
 
 export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
@@ -41,6 +42,7 @@ export const REGIONS = {
 };
 
 window.hlx.templates.add([
+  '/templates/adopt',
   '/templates/article-page',
   '/templates/article-signup',
   '/templates/ask-author-page',
@@ -325,8 +327,8 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup'];
+async function buildHeroBlock(main) {
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -730,6 +732,13 @@ async function loadEager(doc) {
     await waitForLCP(LCP_BLOCKS);
   }
 
+  // TODO delete this. it is for dev testing only.
+  window.debugMsal = {};
+  window.debugMsal.login = login;
+  window.debugMsal.logout = logout;
+  window.debugMsal.acquireToken = acquireToken;
+  window.debugMsal.isLoggedIn = isLoggedIn;
+
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
     if (!isMobile() || sessionStorage.getItem('fonts-loaded')) {
@@ -738,6 +747,44 @@ async function loadEager(doc) {
   } catch (e) {
     // do nothing
   }
+}
+
+async function addRegionSelectorPopup() {
+  const region = await getRegion();
+  window.hlx.region = region;
+
+  const span = document.createElement('div');
+  span.textContent = getPlaceholder('changeRegion');
+
+  const dialogContent = document.createElement('div');
+
+  const regionSelector = buildBlock('region-selector', [[]]);
+  dialogContent.append(regionSelector);
+  decorateBlock(regionSelector);
+  await loadBlock(regionSelector);
+
+  const dialog = buildBlock('popup', [[span], [dialogContent]]);
+
+  const li = document.createElement('li');
+  li.append(dialog);
+  document.querySelector('footer .footer-legal ul').append(li);
+  decorateBlock(dialog);
+  await loadBlock(dialog);
+  const popup = document.querySelector('.popup');
+  if (!localStorage.getItem(PREFERRED_REGION_KEY)) {
+    if (window.hlx.contentBasePath === '/en-gb' && region !== 'en-GB') {
+      popup.querySelector('hlx-aria-dialog').open();
+    } else if (!window.hlx.contentBasePath && region !== 'en-US') {
+      popup.querySelector('hlx-aria-dialog').open();
+    }
+    popup.querySelector('hlx-aria-dialog .primary').focus();
+  }
+  popup.addEventListener('click', (ev) => {
+    if (!ev.target.closest('.button')) {
+      return;
+    }
+    localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
+  });
 }
 
 /**
@@ -784,44 +831,6 @@ export async function createNewsletterAutoBlock(fragmentUrl, addElement) {
   addElement(newsletterBlock);
   decorateBlock(newsletterBlock);
   return newsletterBlock;
-}
-
-async function addRegionSelectorPopup() {
-  const region = await getRegion();
-  window.hlx.region = region;
-
-  const span = document.createElement('div');
-  span.textContent = getPlaceholder('changeRegion');
-
-  const dialogContent = document.createElement('div');
-
-  const regionSelector = buildBlock('region-selector', [[]]);
-  dialogContent.append(regionSelector);
-  decorateBlock(regionSelector);
-  await loadBlock(regionSelector);
-
-  const dialog = buildBlock('popup', [[span], [dialogContent]]);
-
-  const li = document.createElement('li');
-  li.append(dialog);
-  document.querySelector('footer .footer-legal ul').append(li);
-  decorateBlock(dialog);
-  await loadBlock(dialog);
-  const popup = document.querySelector('.popup');
-  if (!localStorage.getItem(PREFERRED_REGION_KEY)) {
-    if (window.hlx.contentBasePath === '/en-gb' && region !== 'en-GB') {
-      popup.querySelector('hlx-aria-dialog').open();
-    } else if (!window.hlx.contentBasePath && region !== 'en-US') {
-      popup.querySelector('hlx-aria-dialog').open();
-    }
-    popup.querySelector('hlx-aria-dialog .primary').focus();
-  }
-  popup.addEventListener('click', (ev) => {
-    if (!ev.target.closest('.button')) {
-      return;
-    }
-    localStorage.setItem(PREFERRED_REGION_KEY, ev.target.getAttribute('hreflang'));
-  });
 }
 
 async function loadNewsletter(footer) {
@@ -955,8 +964,8 @@ async function loadLazy(doc) {
   }
 
   // identify the first item in the menu
-  const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
-  firstMenu.id = 'menu';
+  // const firstMenu = document.querySelector('.nav-wrapper .nav-sections ul li a');
+  // firstMenu.id = 'menu';
 
   // Add hidden quick navigation links
   createA11yQuickNav([
