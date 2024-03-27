@@ -324,6 +324,7 @@
 }
 
 #nav .nav-language-selector {
+  display: none;
   grid-row: 6/6;
   grid-column: 1/6;
   margin: 32px auto auto;
@@ -392,7 +393,8 @@
   #nav {
     gap: 0 24px;
     grid-template-rows: 8px 72px 8px 67px;
-    grid-template-columns: 16px 197px auto 340px fit-content(10px) 60px 16px;
+    /* grid-template-columns: 16px 197px auto 340px fit-content(10px) 60px 16px; */
+    grid-template-columns: 16px 257px auto 400px fit-content(10px) 0px 0px;
   }
 
   #nav .nav-brand {
@@ -441,6 +443,7 @@
   }
 
   #nav .nav-language-selector {
+    display: none;
     position: relative;
     grid-column: 6/7;
     grid-row: 2/3;
