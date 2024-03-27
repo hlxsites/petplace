@@ -436,7 +436,7 @@ async function createChecklistSection(inquiryStatus) {
   const checklistContainer = document.createElement('div');
   checklistContainer.className = 'checklist-container';
   // fetch placeholders from the 'adopt' folder
-  const placeholders = await fetchPlaceholders('/adopt');
+  const placeholders = await fetchPlaceholders('/pet-adoption');
   // retrieve the value for key 'Checklist Label'
   const {
     checklistLabel,
