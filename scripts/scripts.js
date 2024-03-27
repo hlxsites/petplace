@@ -75,8 +75,8 @@ window.hlx.plugins.add('martech', {
   load: 'lazy',
 });
 
-window.hlx.plugins.add('experience-decisioning', {
-  url: '/plugins/experience-decisioning/src/index.js',
+window.hlx.plugins.add('experimentation', {
+  url: '/plugins/experimentation/src/index.js',
   condition: () => getMetadata('experiment')
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,

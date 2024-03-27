@@ -6,6 +6,23 @@ import {
 
 const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
 
+const sampleQuestions = [
+  'How do I know if my dog has a broken leg?',
+  'Are dog parks safe for small dogs?',
+  'What toys should I buy for my cat?',
+  'Does my dog need a flea collar',
+  'What do I do if my dog has diarrhea?',
+  'Where can I adopt a Beagle?',
+  'What\'s the best food for an overweight cat?',
+
+];
+
+// const capabilities = [
+//   'Uses semantic search to find relevant answers',
+//   'Utilizes trusted data sources to generate responses',
+//   'Declines irrelevant and inappropriate queries',
+// ];
+
 const isTrueSearch = window.location.pathname === '/discovery';
 let isRequestInProgress = false;
 
@@ -16,11 +33,14 @@ function removeAllEventListeners(element) {
 
 // eslint-disable-next-line consistent-return
 const fetchStreamingResults = async (index, query, resultsBlock) => {
+  // console.log('fetchStreamingResults');
   if (query === '') {
     return {
       result: 'Please enter a search query.',
     };
   }
+  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  helpContainer.classList.remove('show');
 
   const socket = new WebSocket('wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query');
 
@@ -48,85 +68,123 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   });
   // Show stop button container and add a click event listener
   const stopButtonContainer = document.querySelector('.gen-ai .genai-search-container .stop-button-container');
-  stopButtonContainer.classList.add('show');
-  let stopButton = stopButtonContainer.querySelector('.stop-button');
-  removeAllEventListeners(stopButton);
-  stopButton = stopButtonContainer.querySelector('.stop-button');
-  stopButton.addEventListener('click', () => {
-  //   // Close the WebSocket connection
+  if (stopButtonContainer && stopButtonContainer.classList) {
+    stopButtonContainer.classList.add('show');
+
+    let stopButton = stopButtonContainer.querySelector('.stop-button');
+    removeAllEventListeners(stopButton);
+    stopButton = stopButtonContainer.querySelector('.stop-button');
+    stopButton.addEventListener('click', () => {
+      // Close the WebSocket connection
+      socket.close();
+
+      // Remove the cursor animation element
+      const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
+      cursorAnimation.classList.add('hide');
+
+      // Remove the loading message element
+      const loadingMessage = resultsBlock.querySelector('.loading-message');
+      if (loadingMessage) {
+        resultsBlock.removeChild(loadingMessage);
+      }
+
+      // Remove the stop button container
+      stopButtonContainer.classList.remove('show');
+
+      helpContainer.classList.add('show');
+    });
+  }
+  const searchForm = document.querySelector('.gen-ai .search-box-wrapper');
+  window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(query));
+
+  searchForm.addEventListener('submit', (ev) => {
+    ev.preventDefault();
     socket.close();
-
-    // Remove the cursor animation element
-    const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
-    cursorAnimation.classList.add('hide');
-
-    // Remove the loading message element
-    const loadingMessage = resultsBlock.querySelector('.loading-message');
-    if (loadingMessage) {
-      resultsBlock.removeChild(loadingMessage);
-    }
-
-    // Remove the stop button container
-    stopButtonContainer.classList.remove('show');
-
-    const summaryContainer = resultsBlock.querySelector('.summary-columns');
-    if (!summaryContainer) {
-      // showRegenerateButton(resultsBlock);
-    }
   });
 };
 
-const decorateSearch = () => {
+const decorateSearch = (socket = false) => {
   // Create the stop generating button <button> element
   const stopButtonContainer = document.createElement('div');
   stopButtonContainer.className = 'stop-button-container';
   const stopButton = document.createElement('button');
   stopButton.className = 'stop-button';
   stopButton.textContent = 'Stop generating';
-  const xhr1 = new XMLHttpRequest();
-  xhr1.open('GET', `${window.hlx.codeBasePath}/icons/stop.svg`, true);
-  // eslint-disable-next-line func-names
-  xhr1.onreadystatechange = function () {
-    if (xhr1.readyState === 4 && xhr1.status === 200) {
-      // On successful response, create and append the SVG element
-      const svgElement = document.createElement('svg');
-      svgElement.innerHTML = xhr1.responseText;
-      const { firstChild } = stopButton;
-      stopButton.insertBefore(svgElement, firstChild);
-    }
-  };
-  xhr1.send();
   stopButtonContainer.appendChild(stopButton);
 
-  // Create the regenerate response button <button> element
-  const regenerateButtonContainer = document.createElement('div');
-  regenerateButtonContainer.className = 'regenerate-button-container';
-  const regenerateButton = document.createElement('button');
-  regenerateButton.className = 'regenerate-button';
-  regenerateButton.textContent = 'Regenerate response';
-  const xhr2 = new XMLHttpRequest();
-  xhr2.open('GET', `${window.hlx.codeBasePath}/icons/regenerate.svg`, true);
-  xhr2.onreadystatechange = function () {
-    if (xhr2.readyState === 4 && xhr2.status === 200) {
-      // On successful response, create and append the SVG element
-      const svgElement = document.createElement('svg');
-      svgElement.innerHTML = xhr2.responseText;
-      const { firstChild } = regenerateButton;
-      regenerateButton.insertBefore(svgElement, firstChild);
-    }
-  };
-  xhr2.send();
-  regenerateButtonContainer.appendChild(regenerateButton);
+  if (socket) {
+    stopButton.addEventListener('click', () => {
+      // Close the WebSocket connection
+      socket.close();
+      const results = document.querySelector('.gen-ai .search-results');
+      results.innerHTML = '';
 
-  // Create the search results <div> element with am-region attribute
-  const searchResultsDivElement = document.createElement('div');
-  searchResultsDivElement.setAttribute('class', 'search-results');
-  searchResultsDivElement.setAttribute('am-region', 'Search');
+      const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+      helpContainer.classList.add('show');
+    });
+  }
 
   // Append the search results <div> element to the search block <div> element
   return stopButtonContainer;
 };
+// Randomly select three questions from an array
+const getRandomQuestions = (questions) => {
+  const randomQuestions = [];
+  while (randomQuestions.length < 6) {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    const randomQuestion = questions[randomIndex];
+    if (!randomQuestions.includes(randomQuestion)) {
+      randomQuestions.push(randomQuestion);
+    }
+  }
+  return randomQuestions;
+};
+const createSummaryColumn = (icon, title, list, type) => {
+  const summaryColumnDiv = document.createElement('div');
+  summaryColumnDiv.className = 'summary-column';
 
+  const titleElement = document.createElement('h4');
+  titleElement.textContent = title;
+
+  const items = document.createElement('ul');
+  items.className = 'summary-items';
+
+  list.forEach((text) => {
+    const item = document.createElement('li');
+    item.className = 'summary-item';
+    item.textContent = text;
+    if (type === 'button') {
+      item.classList.add('hand-cursor');
+      item.addEventListener('click', () => {
+        if (isRequestInProgress === false) {
+          const searchBox = document.getElementById('search-box');
+          searchBox.value = text;
+          // eslint-disable-next-line no-use-before-define
+          displaySearchResults(text, document.querySelector('.search-results'));
+        }
+      });
+    }
+    items.appendChild(item);
+  });
+
+  summaryColumnDiv.appendChild(titleElement);
+  summaryColumnDiv.appendChild(items);
+
+  return summaryColumnDiv;
+};
+const createSearchSummary = () => {
+  const summaryColumns = document.createElement('div');
+  summaryColumns.className = 'summary-columns';
+  const summaryTitle = document.createElement('h2');
+  summaryTitle.innerHTML = 'Need help asking a question or just want to test drive the PetPlace Discovery tool?';
+  const summaryColumn1 = createSummaryColumn('examples', 'Try one of these suggested questions:', getRandomQuestions(sampleQuestions), 'button');
+
+  summaryColumns.appendChild(summaryTitle);
+  summaryColumns.appendChild(summaryColumn1);
+  summaryColumns.classList.add('show');
+
+  return summaryColumns;
+};
 function getCurrentSlideIndex($block) {
   // console.log('$block', $block);
   return [...$block.children].findIndex(($child) => $child.getAttribute('active') === 'true');
@@ -222,12 +280,18 @@ const createStreamingSearchCard = (resultsBlock) => {
   const card = document.createElement('div');
   card.className = 'search-card';
   card.classList.add('response-animation');
-  card.innerHTML = `<div class="search-card-container"><div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div><article></article><div class="slideshow"></div></div>`;
+  card.innerHTML = `
+  <div class="search-card-container">
+  <div class="search-card-warning">
+  <p>${GENAI_SEARCH_WARNING}</p></div>
+  <article></article>
+  <div class="slideshow"></div></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
+  // resultsBlock.appendChild(card.outerHTML);
 };
 
-const updateStreamingSearchCard = (resultsBlock, response) => {
+const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   const article = resultsBlock.querySelector('.search-card article');
 
   // Create the div if it doesn't exist
@@ -244,6 +308,9 @@ const updateStreamingSearchCard = (resultsBlock, response) => {
     const cursorAnimation = document.createElement('span');
     cursorAnimation.className = 'cursor-animation';
     resultsBlock.querySelector('.search-card-container').appendChild(cursorAnimation);
+    // append the stop button to the streaming results
+    resultsBlock.querySelector('.search-card-container').appendChild(decorateSearch(socket));
+    document.querySelector('.gen-ai .genai-search-container .stop-button-container').classList.add('show');
   }
 
   // // If the div already exists, update its content with the new message
@@ -266,7 +333,8 @@ const updateStreamingSearchCard = (resultsBlock, response) => {
     // Remove the cursor animation element
     const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
     cursorAnimation.classList.add('hide');
-
+    const stopButtonContainer = resultsBlock.querySelector('.search-card-container .stop-button-container');
+    stopButtonContainer.remove();
     if (response.links?.length > 0) {
       const $slideShowContainer = document.querySelector('.gen-ai .genai-search-container .slideshow');
 
@@ -385,13 +453,14 @@ function displayInsuranceCTA(resultsBlock) {
   });
 }
 
-async function displaySearchResults(query, resultsBlock) {
+export async function displaySearchResults(query, resultsBlock) {
   if (isRequestInProgress) {
     // A request is already in progress, so do not proceed.
     return;
   }
   isRequestInProgress = true;
-
+  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  helpContainer.classList.add('hide');
   // Create the loading message element
   const loadingMessage = document.createElement('div');
   loadingMessage.className = 'loading-message';
@@ -419,10 +488,10 @@ async function displaySearchResults(query, resultsBlock) {
   resultsBlock.addEventListener('click', (event) => {
     const searchBox = document.getElementById('genai-search-box') || document.getElementById('search-box');
 
-    const searchBlock = document.querySelector('.genai-search-wrapper');
+    // const searchBlock = document.querySelector('.genai-search-wrapper');
 
     if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
-      searchBlock.scrollIntoView({ behavior: 'smooth' });
+      // searchBlock.scrollIntoView({ behavior: 'smooth' });
 
       window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(event.target.innerText));
       searchBox.value = event.target.innerText;
@@ -430,6 +499,26 @@ async function displaySearchResults(query, resultsBlock) {
       displaySearchResults(event.target.innerText, resultsBlock);
     }
   });
+}
+
+export function setupSearchResults(defaultContentWrapper) {
+  const searchResultsDivElement = document.createElement('div');
+  searchResultsDivElement.setAttribute('class', 'search-results');
+  searchResultsDivElement.setAttribute('am-region', 'Search');
+  searchResultsDivElement.appendChild(decorateSearch());
+  defaultContentWrapper.innerHTML = '<p></p><p></p>';
+  if (document.querySelector('.gen-ai .genai-search-container .summary-columns') === null) {
+    defaultContentWrapper.appendChild(createSearchSummary());
+  }
+  defaultContentWrapper.appendChild(searchResultsDivElement);
+  const searchQuery = window.localStorage.getItem('aem-gen-ai-query');
+  if (searchQuery) {
+    if (searchQuery.indexOf('insurance') !== -1) {
+      displayInsuranceCTA(searchResultsDivElement);
+    } else {
+      displaySearchResults(searchQuery, defaultContentWrapper);
+    }
+  }
 }
 
 export async function loadLazy(main) {
@@ -460,18 +549,5 @@ export async function loadLazy(main) {
   heroContainer.replaceWith(hero);
 
   // Create the search results <div> element with am-region attribute
-  const searchResultsDivElement = document.createElement('div');
-  searchResultsDivElement.setAttribute('class', 'search-results');
-  searchResultsDivElement.setAttribute('am-region', 'Search');
-  searchResultsDivElement.appendChild(decorateSearch());
-  defaultContentWrapper.appendChild(searchResultsDivElement);
-
-  const searchQuery = window.localStorage.getItem('aem-gen-ai-query');
-  if (searchQuery) {
-    if (searchQuery.indexOf('insurance') !== -1) {
-      displayInsuranceCTA(searchResultsDivElement);
-    } else {
-      displaySearchResults(searchQuery, searchResultsDivElement);
-    }
-  }
+  setupSearchResults(defaultContentWrapper);
 }
