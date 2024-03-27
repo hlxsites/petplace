@@ -949,10 +949,7 @@ async function loadLazy(doc) {
 
   const footer = doc.querySelector('footer');
   loadFooter(footer).then(() => {
-    // FIXME: remove conditional on UK website go-live
-    if (window.hlx.contentBasePath) {
-      addRegionSelectorPopup();
-    }
+    addRegionSelectorPopup();
   });
 
   const FOOTER_SPACING = 'footer-top-spacing';
