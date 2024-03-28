@@ -25,10 +25,10 @@ const stageAltConfigs = {
   scopes: ["https://petplaceb2cftr.onmicrosoft.com/3b511f9c-7c30-4206-a8cd-803b55f0d779/adopt.all", "openid"],
   authorities: {
     signUpSignIn: {
-      authority: "https://petplaceb2cftr.b2clogin.com/b2c_1_susi"
+      authority: "https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/b2c_1_susi"
     },
     changePassword: {
-      authority: "https://petplaceb2cftr.b2clogin.com/B2C_1A_PASSWORDCHANGE"
+      authority: "https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_PASSWORDCHANGE"
     }
   },
   authorityDomain: "petplaceb2cftr.b2clogin.com"
