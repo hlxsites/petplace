@@ -280,6 +280,7 @@ function getInquiries(animalData) {
 }
 
 export async function createAccountInquiriesPanel(animalData) {
+    console.log('this ran')
   const panelDiv = document.createElement('div');
   panelDiv.className = 'tab-panel-inner';
   panelDiv.innerHTML = `

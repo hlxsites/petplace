@@ -19,6 +19,7 @@ export default async function decorate(block) {
   const animalId = searchParams.get('animalId');
   const clientId = searchParams.get('clientId');
   const surveyId = animalType === 'dog' ? 1 : animalType === 'cat' ? 2 : null; // need to update this to use the surveyId from the query string
+  
 
   // fetch placeholders from the 'adopt' folder
   const placeholders = await fetchPlaceholders('/adopt');
@@ -225,20 +226,34 @@ export default async function decorate(block) {
           token = await acquireToken();
         }
 
-        const payload = {
-          SurveyId: surveyId,
-          SurveyResponseAnswers: [...state.surveyAnswers],
-        };
-        const result = await callSurveyResponse(
-          surveyId,
-          token,
-          'POST',
-          payload
-        );
-        if (result) {
-          window.location.href = `/pet-adoption/inquiry-confirmation`;
-        }
+        const response = await fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            "AnimalReferenceNumber": animalId,
+            "ClientId": clientId
+        })
       });
+      if (response.status === 200) {
+        window.location.href = `/pet-adoption/inquiry-confirmation`;
+      } else {
+          
+      }
+      });
+    }
+
+    const agreementCheckbox = block.querySelector('#pet-survey-summary-agreement');
+    if (agreementCheckbox) {
+      agreementCheckbox.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+          inquiryBtn.disabled = false;
+        } else {
+          inquiryBtn.disabled = true;
+        }
+      })
     }
   }
   function bindSummarySaveEvent(block, surveyId) {
@@ -430,6 +445,9 @@ export default async function decorate(block) {
         bindSummarySaveEvent(block, surveyParentId);
       }
       toggleScreen('summary', block);
+      updateSummaryForm(block, answers);
+      bindSummaryBackButtonEvents(block, true);
+      bindSummaryInquiryEvent(block);
     } else {
       if (block.querySelector('.pet-survey__layout-container--presurvey')) {
         block
@@ -453,11 +471,11 @@ export default async function decorate(block) {
               animalType,
               questions,
               animalId,
-              clientId,
-              'summary'
+              clientId
             )
           )
         );
+        updateSummaryForm(block, answers);
         bindSummaryBackButtonEvents(block, false);
         block
           .querySelector('form.pet-survey__form')
@@ -493,6 +511,7 @@ export default async function decorate(block) {
         await createSummaryForm(animalType, questions, animalId, clientId)
       )
     );
+
     block
       .querySelector('form.pet-survey__form')
       .addEventListener('submit', (event) => {

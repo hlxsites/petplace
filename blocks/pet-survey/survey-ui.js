@@ -255,6 +255,7 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
         inquiryBtn.id = 'pet-survey-summary-inquiry';
         inquiryBtn.className = 'pet-survey__button primary';
         inquiryBtn.innerText = 'Submit Inquiry';
+        inquiryBtn.disabled = 'true';
         ctaContainer.append(backBtn, inquiryBtn);
     } else if (animalType && surveySummaryFlow === 'summary') {
       // Add additional else if statement to check for in summary flow, w/ animalType ... show back button and inquiry button

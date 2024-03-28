@@ -113,13 +113,11 @@ export default async function decorate(block) {
     const token = await acquireToken();
     if (token) {
         initialUserData = await callUserApi(token);
-        console.log('initialUserData', initialUserData);
         block.append(await createTabComponent());
         block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));
         block.querySelector('#favorites').append(await createAccountFavoritesPanel(token));
         block.querySelector('#searchalerts').append(await createSavedSearchPanel(token));
         block.querySelector('#survey').append(await createAccountSurveyPanel(block, token, initialUserData));
-
         block.querySelector('#inquiries').append(await createAccountInquiriesPanel(token));
         await bindAccountDetailsEvents(block, token, initialUserData);
     }
