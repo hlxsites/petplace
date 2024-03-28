@@ -1,0 +1,75 @@
+main .inquiry-confirmation-container {
+    padding: 0;
+    background-color: var(--neutral-50, #FAFAFC);
+}
+.inquiry-confirmation {
+    box-sizing: border-box;
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    min-height: 749px;
+    padding: 48px 16px;
+    color: var(--text-supporting, #2F2F33);
+}
+.inquiry-confirmation__container {
+    align-self: start;
+    padding: 40px;
+    background-color: var(--background-white, #FFFFFF);
+    border: 1px solid var(--border-base, #E4E4EB);
+    border-radius: 12px;
+    text-align: center;
+}
+.inquiry-confirmation__container > h2 {
+    margin: 40px 0 16px;
+}
+.inquiry-confirmation__checkmark {
+    width: 64px;
+    height: 64px;
+    background-color: var(--green-100, #EDFCF2);
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.inquiry-confirmation__checkmark:after {
+    display: inline-block;
+    content: '';
+    width: 30px;
+    height: 30px;
+    margin-top: 17px;
+    mask-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none"%3E%3Cpath d="M32 1.99854L11.8773 30.7439C11.6118 31.1254 11.2595 31.4383 10.8493 31.6569C10.4391 31.8755 9.98287 31.9936 9.51814 32.0012C9.0534 32.0089 8.5935 31.9061 8.17632 31.7011C7.75914 31.4962 7.39663 31.1951 7.11867 30.8225L2 23.9985" stroke="%231A6132" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    background-color: var(--color-success, #1A6132);
+}
+.inquiry-confirmation__cta-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0 auto;
+    margin-top: 32px;
+}
+a.button.inquiry-confirmation__button {
+    margin: 0;
+    padding: 12px 24px;
+    font-family: var(--body-font-family);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+a.button.inquiry-confirmation__button.primary {
+    background-color: var(--orange-300, #C74D2F);
+}
+
+@media (min-width: 768px) {
+    .inquiry-confirmation {
+        min-height: 949px;
+        padding: 140px 24px 48px;
+    }
+    .inquiry-confirmation__container {
+        max-width: 565px;
+    }
+    .inquiry-confirmation__cta-container {
+        display: inline-flex;
+        flex-direction: row;
+    }
+}
