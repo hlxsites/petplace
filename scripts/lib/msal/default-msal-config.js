@@ -20,6 +20,20 @@ const stageConfigs = {
   authorityDomain: "petplacepoc.b2clogin.com"
 };
 
+const stageAltConfigs = {
+  clientId: "294a2117-b48b-41b4-ac9c-33a62737d47f",
+  scopes: ["https://petplaceb2cftr.onmicrosoft.com/3b511f9c-7c30-4206-a8cd-803b55f0d779/adopt.all", "openid"],
+  authorities: {
+    signUpSignIn: {
+      authority: "https:// petplaceb2cftr.b2clogin.com/b2c_1_susi"
+    },
+    changePassword: {
+      authority: "https:// petplaceb2cftr.b2clogin.com/B2C_1A_PASSWORDCHANGE"
+    }
+  },
+  authorityDomain: "petplacepoc.b2clogin.com"
+};
+
 const prodConfigs = {
   clientId: "2cfbc498-eb1d-4802-a14c-983e5b72bd0d",
   scopes: ["https://petplaceb2c.onmicrosoft.com/api/adopt.all", "openid"],
@@ -41,8 +55,10 @@ let b2cPolicies = {
 }
 
 // if URL contains "www.petplace.com", merge prodConfigs into b2cPolicies
-if (window.location.href.includes("www.petplace.com") || window.location.href.includes("adopt-test--petplace--hlxsites") || window.location.href.includes("main--petplace--hlxsites")) {
+if (window.location.href.includes("www.petplace.com") || window.location.href.includes("main--petplace--hlxsites")) {
   b2cPolicies = {...b2cPolicies, ...prodConfigs};
+} else if (window.location.href.includes("adopt-test--petplace--hlxsites")) {
+  b2cPolicies = {...b2cPolicies, ...stageAltConfigs};
 } else {
   b2cPolicies = {...b2cPolicies, ...stageConfigs};
 }
