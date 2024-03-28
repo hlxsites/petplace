@@ -27,7 +27,7 @@
   :not(.search-container ~ .search-container).search-container {
   position: absolute;
   left: 0;
-  top: 390px;
+  top: 470px;
   display: flex;
   flex-direction: column;
   bottom: 0;
@@ -70,14 +70,14 @@
 
 .insurance-landing-page .search-box-wrapper .search-button::before {
   display: inline-block;
-  content: "";
+  content: '';
   margin-right: 0.5rem;
   height: 13px;
   width: 29px;
   background: var(--text-color-inverted);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
-  mask: url("../../icons/arrow.svg") no-repeat center center;
+  -webkit-mask: url('../../icons/arrow.svg') no-repeat center center;
+  mask: url('../../icons/arrow.svg') no-repeat center center;
   vertical-align: middle;
 }
 
@@ -93,8 +93,14 @@
 }
 
 .insurance-landing-page .columns-img-col:nth-child(4) > picture {
-  width: 35%;
+  width: 40%;
 }
+
+.insurance-landing-page .columns-img-col:nth-child(3) > picture,
+  .insurance-landing-page .columns-img-col:nth-child(5) > picture,
+  .insurance-landing-page .columns-img-col:nth-child(6) > picture {
+    width: 60%;
+  }
 
 .insurance-landing-page .columns-txt-col {
   display: flex;
@@ -218,6 +224,7 @@
   font-weight: 700;
   color: var(--pet-insurance-txt-color);
 }
+
 .insurance-landing-page .accordion-section {
   background-color: var(--text-color-inverted);
 }
@@ -235,16 +242,16 @@
 }
 
 .insurance-landing-page .accordion button[aria-expanded]::after {
-  -webkit-mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
-  mask: url("../../icons/long-arrow-down.svg") center / 100% 100%;
+  -webkit-mask: url('../../icons/long-arrow-down.svg') center / 100% 100%;
+  mask: url('../../icons/long-arrow-down.svg') center / 100% 100%;
   background-color: var(--faq-accordion-arrow-bg-color);
   width: 20px;
   height: 20px;
 }
 
-.insurance-landing-page .accordion button[aria-expanded="true"]::after {
-  -webkit-mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
-  mask: url("../../icons/long-arrow-up.svg") center / 100% 100%;
+.insurance-landing-page .accordion button[aria-expanded='true']::after {
+  -webkit-mask: url('../../icons/long-arrow-up.svg') center / 100% 100%;
+  mask: url('../../icons/long-arrow-up.svg') center / 100% 100%;
   background-color: var(--faq-accordion-arrow-bg-color);
   width: 20px;
   height: 20px;
@@ -293,14 +300,14 @@
 
 .insurance-landing-page .find-useful-wrapper .error > div > div::before {
   display: inline-block;
-  content: "";
+  content: '';
   margin-right: 0.5rem;
   height: 22px;
   width: 22px;
   background: var(--error-message-color);
   /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url("../../icons/alert.svg") no-repeat center center;
-  mask: url("../../icons/alert.svg") no-repeat center center;
+  -webkit-mask: url('../../icons/alert.svg') no-repeat center center;
+  mask: url('../../icons/alert.svg') no-repeat center center;
   vertical-align: middle;
 }
 
@@ -363,6 +370,7 @@
   .insurance-landing-page main .hero > div > div:not(:first-child) {
     margin-bottom: 10px;
   }
+
   .insurance-landing-page main .hero > div > div p {
     color: var(--pet-insurance-txt-color);
   }
@@ -476,6 +484,14 @@
     margin: 0;
     margin-left: 20px;
   }
+
+  .insurance-landing-page .columns-container .logos div {
+    gap: 20px;
+  }
+
+  .insurance-landing-page .section.columns-container:has(.logos) {
+    padding-bottom: 0;
+  }
 }
 
 @media (min-width: 600px) {
@@ -508,6 +524,7 @@
     color: var(--text-color-inverted);
     font-size: var(--heading-font-size-xxxl);
   }
+
   .insurance-landing-page .hero picture {
     position: absolute;
     z-index: -1;
@@ -517,25 +534,12 @@
     right: 0;
     object-fit: cover;
     box-sizing: border-box;
+    margin: 0;
   }
 
   .insurance-landing-page .accordion-section h3 button {
     font-size: 24px;
     line-height: 28px;
-  }
-}
-
-@media (min-width: 800px) {
-  .insurance-landing-page .columns-txt-col:not(:first-child) {
-    padding-left: 0;
-    font-size: var(--body-font-size-m);
-    line-height: 24px;
-  }
-
-  .insurance-landing-page .columns-txt-col:not(:first-child)::before {
-    font-size: 1.2rem;
-    line-height: 42px;
-    padding: 5px;
   }
 }
 
@@ -545,15 +549,23 @@
     ~ .section.subhead-container {
     padding-bottom: 1.5rem;
   }
-}
 
-@media (min-width: 900px) {
-  .insurance-landing-page .columns-txt-col:first-child h2 {
-    width: 90%;
+  .insurance-landing-page .columns-img-col picture {
+    width: 35%;
+  }
+  
+  .insurance-landing-page .columns-img-col:nth-child(4) > picture {
+    width: 30%;
+  }
+
+  .insurance-landing-page .columns-img-col:nth-child(3) > picture,
+  .insurance-landing-page .columns-img-col:nth-child(5) > picture,
+  .insurance-landing-page .columns-img-col:nth-child(6) > picture {
+    width: 40%;
   }
 }
 
-@media (min-width: 601px) and (max-width: 1024px) {
+@media (min-width: 601px) and (max-width: 900px) {
   .insurance-landing-page .columns-container .logos div {
     flex: 1 1 40%;
   }
@@ -591,6 +603,24 @@
   }
 }
 
+@media (min-width: 900px) {
+  .insurance-landing-page .columns-txt-col:not(:first-child) {
+    padding-left: 0;
+    font-size: var(--body-font-size-m);
+    line-height: 24px;
+  }
+
+  .insurance-landing-page .columns-txt-col:not(:first-child)::before {
+    font-size: 1.2rem;
+    line-height: 42px;
+    padding: 5px;
+  }
+
+  .insurance-landing-page .columns-txt-col:first-child h2 {
+    width: 90%;
+  }
+}
+
 @media (min-width: 1024px) {
   .insurance-landing-page .columns-txt-col:not(:first-child) {
     font-size: var(--body-font-size-l);
@@ -603,6 +633,7 @@
     padding: 2rem calc((100% - 1344px) / 2);
   }
 }
+
 @media (min-width: 1025px) and (max-width: 1400px) {
   .insurance-landing-page
     :not(.section ~ .section).section

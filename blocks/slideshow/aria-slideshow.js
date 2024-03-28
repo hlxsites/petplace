@@ -338,11 +338,13 @@ function applyAutoRotate(slideshowInfo) {
  *  should be decorated with accessibility functionality.
  * @returns {Promise} Resolves when all decoration is complete.
  */
-export async function decorateSlideshowAria(slideshowInfo) {
+export async function decorateSlideshowAria(slideshowInfo, autoRotate = true) {
   decorateSlideshow(slideshowInfo.slideshowContainer);
   const slides = decorateSlides(slideshowInfo.slides);
   if (slideshowInfo.tabList) {
     decorateTabList(slideshowInfo, slides);
   }
-  applyAutoRotate(slideshowInfo);
+  if (autoRotate) {
+    applyAutoRotate(slideshowInfo);
+  }
 }

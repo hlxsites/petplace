@@ -1,7 +1,7 @@
 import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
 import { getCategories, getPlaceholder } from '../../scripts/scripts.js';
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const dateFormatter = new Intl.DateTimeFormat(document.documentElement.lang, { month: 'long', day: 'numeric', year: 'numeric' });
 const categories = await getCategories();
 let isAuthorCard = false;
 let isEager = true;

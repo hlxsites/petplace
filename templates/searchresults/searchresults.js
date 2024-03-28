@@ -1,13 +1,13 @@
 import { buildBlock, sampleRUM } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, getPlaceholder } from '../../scripts/scripts.js';
 
-const isTrueSearch = window.location.pathname === '/search';
+const isTrueSearch = window.location.pathname === `${window.hlx.contentBasePath}/search`;
 
 let searchWorker;
 // 2G connections are too slow to realistically load the elasticlunr search index
 // instead we'll do a poor man's search on the last 5K articles
 if (!('connection' in window.navigator) || !['slow-2g', '2g'].includes(window.navigator.connection.effectiveType)) {
-  searchWorker = new Worker('/scripts/worker/search.js');
+  searchWorker = new Worker(`/scripts/worker/search.js?locale=${document.documentElement.lang}`);
 }
 
 function createArticleDiv(article) {
@@ -34,7 +34,7 @@ async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
   let query;
   if (isTrueSearch) {
-    query = usp.get('query');
+    query = usp.get('query').trim();
   } else {
     const [, page] = window.location.pathname.match(/([^/]*)(\/page)?(\/(\d+))?\/?$/) || [];
     query = page.replace(/-/g, ' ');
@@ -49,7 +49,7 @@ async function getArticles() {
 
   let results;
   if (searchWorker) {
-    searchWorker.postMessage({ query, operator: isTrueSearch ? 'AND' : 'OR' });
+    searchWorker.postMessage({ query, operator: 'OR' });
     results = await new Promise((resolve) => {
       searchWorker.onmessage = (e) => {
         resolve(e.data);

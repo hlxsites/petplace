@@ -2,6 +2,7 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 import { extractName } from '../../templates/adopt/adopt.js';
+import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 const arrFavList = [];
 
@@ -37,7 +38,6 @@ function openRemoveConfirmModal(petName, element, id, token, btn) {
     const confirmBtn = document.querySelector('.confirm-remove-favorite-modal .confirm');
     const cancelBtn = document.querySelector('.confirm-remove-favorite-modal .cancel');
     modal.classList.remove('hidden');
-    console.log(modal)
     const overlay = document.querySelector('.account-tabpanel--favorites .overlay');
     overlay.classList.add('show');
     confirmBtn.addEventListener('click', () => {
@@ -123,12 +123,17 @@ async function bindAccountFavoritesEvents(block, token, favList) {
     removeBtns.forEach((button, index) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-
-            if (favList[index].Animal.IsAvailable) {
-                openRemoveConfirmModal(extractName(favList[index].Animal.Name), button.closest('.fav-pet-card'), favList[index].Id, token, button);
-            } else {
-                removeFavoritePet(favList[index].Id, token, button);
-            }
+            isLoggedIn().then(isLoggedIn => {
+                if (isLoggedIn) {
+                    if (favList[index].Animal.IsAvailable) {
+                        openRemoveConfirmModal(extractName(favList[index].Animal.Name), button.closest('.fav-pet-card'), favList[index].Id, token, button);
+                    } else {
+                        removeFavoritePet(favList[index].Id, token, button);
+                    }
+                } else {
+                    logout();
+                }
+            });
         });
     });
 }
@@ -264,7 +269,7 @@ function getFavorites(animalData) {
 
 export async function createAccountFavoritesPanel(animalData) {
     const panelDiv = document.createElement('div');
-    panelDiv.className = 'tab-pannel-inner';
+    panelDiv.className = 'tab-panel-inner';
     panelDiv.innerHTML = `
         <h3>Favorites</h3>
         <div class="favorites-list"></div>
