@@ -36,6 +36,15 @@ main .section {
   padding: 5rem 1.5rem;
 }
 
+main .section.attributes-container,
+main .section.well {
+  padding: 2rem 1.5rem;
+}
+
+main .section.well .default-content-wrapper {
+  padding: 0;
+}
+
 main .section:nth-of-type(2n) {
   background: var(--background-color-light);
 }
@@ -44,10 +53,13 @@ main .section.centered p {
   text-align: left;
 }
 
-
 @media (min-width: 900px) {
   main .hero-container .hero {
     padding: 0 0 31.8182%;
+  }
+
+  main .section .blade-wrapper {
+    margin: 1rem auto;
   }
 }
 
@@ -61,5 +73,14 @@ main .section.centered p {
     padding-top: 245px;
     background: url('/images/cat_footer.png') no-repeat top center;
     background-size: 600px;
+  }
+
+  main .section.slide-cards-container .slide-card {
+    margin-bottom:50px;
+  }
+
+  main .care-tabs-container.section {
+    padding: 2rem 1.5rem;
+    margin-top: 2rem;
   }
 }

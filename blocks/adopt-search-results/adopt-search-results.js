@@ -196,7 +196,7 @@ async function callBreedList(petType) {
     return null;
 }
 
-function updateBreedListSelect() {
+async function updateBreedListSelect() {
     const breedSelect = document.getElementById('breed');
     let i = 0;
     const L = breedSelect.options.length - 1;
@@ -483,7 +483,7 @@ function buildFilterSidebar(sidebar) {
 
     // check if size should be hidden
     const params = new URLSearchParams(window.location.search);
-    if (params.get('filterAnimalType') === 'Cat') {
+    if (params.get('filterAnimalType') === 'Cat' || params.get('filterAnimalType') === 'Other') {
         sizeBlock.classList.add('hidden');
     }
 
@@ -661,6 +661,17 @@ window.onload = callBreedList('null').then((data) => {
 
         if (petType?.value === 'Other' || petType?.value === 'null') {
             petBreed.setAttribute('disabled', '');
+        } else {
+            callBreedList(petType?.value).then((data) => {
+                breedList = data;
+                updateBreedListSelect().then(() => {
+                for (let i = 0; i < petBreeds.length; i += 1) {
+                    if (petBreeds[i].value === params.get('filterBreed')) {
+                        petBreed.selectedIndex = i;
+                    }
+                }
+                });
+            })
         }
         callAnimalList().then((response) => {
             buildResultsContainer(response);
@@ -699,6 +710,9 @@ window.onload = callBreedList('null').then((data) => {
                     }
                 })
             }
+            callAnimalList().then((data) => {
+                buildResultsContainer(data);
+            });
         });
     }
 });

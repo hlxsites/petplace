@@ -38,8 +38,7 @@
 
 .article-navigation-previous {
   grid-area: previous;
-  align-self: center;
-  justify-self: right;
+  place-self: center right;
 }
 
 .article-navigation-next-thumbnail {

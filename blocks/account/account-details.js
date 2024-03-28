@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { changePassword } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
+import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 function serialize(data) {
     const obj = {};
@@ -94,25 +95,25 @@ export async function createAccountDetailsPanel(userData) {
             <form class='account-form account-form--personal' id='personal-info-form'>
                 <div class='form-control form-control--text half-width'>
                     <label for='fname'>First Name</label>
-                    <input type='text' id='FirstName' name='FirstName' value=${FirstName} required>
+                    <input type='text' id='FirstName' name='FirstName' value="${FirstName}" required>
                     <span class="error-message" id="FirstName-error">Please enter your first name.</span>
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='lname'>Last Name</label>
-                    <input type='text' id='LastName' name='LastName' value=${LastName} required>
+                    <input type='text' id='LastName' name='LastName' value="${LastName}" required>
                     <span class="error-message" id="LastName-error">Please enter your last name.</span>
                 </div>
                 <div class='form-control form-control--text'>
                     <label for='email'>Email</label>
-                    <input type='text' id='Email' name='email' value=${Email} disabled>
+                    <input type='text' id='Email' name='email' value="${Email}" disabled>
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='phone'>Phone Number</label>
-                    <input type='text' id='PhoneNumber' name='PhoneNumber' placeholder='Enter your phone number' value=${PhoneNumber || ''}>
+                    <input type='text' id='PhoneNumber' name='PhoneNumber' placeholder='Enter your phone number' value="${PhoneNumber || ''}">
                 </div>
                 <div class='form-control form-control--text half-width'>
                     <label for='zip'>Zip/Postal Code</label>
-                    <input type='text' id='ZipCode' name='ZipCode' value=${ZipCode} required pattern='^[0-9]{5}(?:-[0-9]{4})?$'>
+                    <input type='text' id='ZipCode' name='ZipCode' value="${ZipCode}" required pattern='^[0-9]{5}$|^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$'>
                     <span class="error-message" id="ZipCode-error">Please enter your zip/postal code.</span>
                 </div>
                 <div class='form-control form-control--submit'>
@@ -217,7 +218,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             } 
         });
         input.addEventListener('input', () => {
-            if (input.validity.valid && input.value.trim() !== '' && input.value.trim() !== initialUserData[input.name]) {
+            if (input.validity.valid && (input.value.trim() !== '' || input.id === 'PhoneNumber') && input.value.trim() !== initialUserData[input.name]) {
                 disableButtons(submitButtons, false);
             } else {
                 disableButtons(submitButtons, true);
@@ -234,14 +235,25 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
         });
     });
     submitButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            isLoggedIn().then(isLoggedIn => {
+                if (!isLoggedIn) {
+                    logout();
+                }
+            });
+        });
+    });
+    submitButtons.forEach((button) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
             const payLoad = {...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm)))};
             await callUserApi(token, 'PUT', payLoad);
             disableButtons(submitButtons, true);
+            initialUserData = payLoad;
         });
     });
-    changePwdButton.addEventListener('click', () => {
-        changePassword();
+    changePwdButton.addEventListener('click', async () => {
+        await changePassword();
     })
 }

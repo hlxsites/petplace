@@ -13,8 +13,8 @@ export default async function decorate(block) {
 
   if (!articles) {
     const data = await Promise.all([
-      fetch('/article/query-index.json?sheet=article&limit=500'),
-      fetch('/article/query-index.json?sheet=breed'),
+      fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=article&limit=500`),
+      fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=breed`),
     ].map((fetch) => fetch.then((res) => res.json())));
     [articles, breed] = data.map((json) => json?.data);
   }
@@ -63,9 +63,7 @@ export default async function decorate(block) {
   }));
 
   data.forEach((dta, index) => {
-    const tileTitle = dta.title.endsWith(' - PetPlace')
-      ? dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'))
-      : dta.title;
+    const tileTitle = dta.title.replace(/[-|] Petplace(\.com)?$/i, '');
     // Create tile div for each individual tile
     const tile = document.createElement('div');
     tile.classList.add('tile');
