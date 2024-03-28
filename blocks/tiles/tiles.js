@@ -63,9 +63,7 @@ export default async function decorate(block) {
   }));
 
   data.forEach((dta, index) => {
-    const tileTitle = dta.title.endsWith(' - PetPlace')
-      ? dta.title.substring(0, dta.title.lastIndexOf(' - PetPlace'))
-      : dta.title;
+    const tileTitle = dta.title.replace(/[-|] Petplace(\.com)?$/i, '');
     // Create tile div for each individual tile
     const tile = document.createElement('div');
     tile.classList.add('tile');
