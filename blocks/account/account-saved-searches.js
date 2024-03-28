@@ -124,7 +124,7 @@ function getSearches(token) {
                             ageFilterList += age;
                         }
                     });
-                    searchUrl += '&filterAge=' + ageFilterList
+                    searchUrl += '&filterAge=' + ageFilterList;
                 }
                 if (saved.SearchParameters.animalFilters.filterAnimalType) {
                     searchUrl += '&filterAnimalType=' + saved.SearchParameters.animalFilters.filterAnimalType;
@@ -144,7 +144,7 @@ function getSearches(token) {
                             sizeFilterList += size;
                         }
                     });
-                    searchUrl += '&filterSize=' + sizeFilterList
+                    searchUrl += '&filterSize=' + sizeFilterList;
                 }
                 builtHml += `
                 <div class='saved-search-layout-row'>
@@ -155,10 +155,9 @@ function getSearches(token) {
                     <a class='saved-search__cta account-button' href=${searchUrl}>Launch Search</a>
                     <button class='saved-search__delete' data-save-id=${saved.Id} data-description=${saved.SearchParameters.animalFilters.filterAnimalType ? encodeURIComponent(saved.Name) : encodeURIComponent(('Pets near ' + saved.SearchParameters.locationInformation.zipPostal))} aria-label='Delete this search item'></button>
                 </div>
-                `
-            })
+                `;
+            });
             elFavList.innerHTML = builtHml;
-            
         } else {
             elFavList.innerHTML = emptyFavList;
         }
@@ -166,6 +165,7 @@ function getSearches(token) {
         await bindSaveEvents(token);
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
         const elFavList = document.querySelector('.saved-search-layout-container');
 

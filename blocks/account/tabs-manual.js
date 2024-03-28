@@ -125,14 +125,14 @@ export default class TabsManual {
     }
 
     onChange(event) {
-      const selectedIndex = parseInt(event.currentTarget.value);
+      const selectedIndex = parseInt(event.currentTarget.value, 10);
       this.setSelectedTab(this.tabs[selectedIndex]);
     }
 
     getIndexByHash(hashStr) {
       const targetTab = this.tabs.find((tab) => tab.href.endsWith(hashStr));
       if (targetTab) {
-        return parseInt(targetTab.getAttribute('data-tab-index'));
+        return parseInt(targetTab.getAttribute('data-tab-index'), 10);
       }
       return -1;
     }

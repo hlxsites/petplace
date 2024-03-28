@@ -27,6 +27,7 @@ export default class MultiSelect {
           }
         };
     }
+
     onButtonClick(button, state) {
         const btn = button;
         // force the options group to collapse
@@ -38,11 +39,13 @@ export default class MultiSelect {
           btn.setAttribute('aria-expanded', 'false');
         }
     }
-    onChange(event) {
+
+    onChange() {
         const selected = this.checkboxNodes.filter((node) => node.checked);
         const displayText = selected.length > 0 ? `${selected.length} selected` : this.defaultButtonText;
         this.toggleButtonTextNode.innerText = displayText;
     }
+
     handleFocusOut(event) {
       const containsFocus = this.containerNode.contains(event.relatedTarget);
       if (!containsFocus) {

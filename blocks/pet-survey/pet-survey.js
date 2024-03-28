@@ -66,7 +66,7 @@ export default async function decorate(block) {
   }
   function setActiveQuestion(block, currentIndex, targetIndex) {
     const questionDivs = Array.from(
-      block.querySelectorAll('.pet-survey__survey .pet-survey__question')
+      block.querySelectorAll('.pet-survey__survey .pet-survey__question'),
     );
     if (targetIndex >= 0 && targetIndex < questionDivs.length) {
       questionDivs[currentIndex].classList.remove('active');
@@ -98,13 +98,13 @@ export default async function decorate(block) {
   function bindSurveySummaryChangeEvents() {
     // Selects
     const surveyInputs = block.querySelectorAll(
-      ' .pet-survey__form-control select'
+      ' .pet-survey__form-control select',
     );
     surveyInputs.forEach((inputEl) => {
       inputEl.addEventListener('change', (el) => {
         const data = {
-          QuestionId: parseInt(el.target.getAttribute('data-question-id')),
-          QuestionOptionId: parseInt(el.target.value),
+          QuestionId: parseInt(el.target.getAttribute('data-question-id'), 10),
+          QuestionOptionId: parseInt(el.target.value, 10),
         };
         state.surveyAnswers.push(data);
       });
@@ -112,30 +112,26 @@ export default async function decorate(block) {
 
     // Checkboxes
     const surveyMultiSelects = block.querySelectorAll(
-      '.pet-survey__form-control.multi-select'
+      '.pet-survey__form-control.multi-select',
     );
 
     surveyMultiSelects.forEach((multiSelect) => {
       const multiSelectCheckboxes = Array.from(
-        multiSelect.querySelectorAll("input[type='checkbox']")
+        multiSelect.querySelectorAll("input[type='checkbox']"),
       );
 
       multiSelectCheckboxes.forEach((checkbox) => {
         checkbox.addEventListener('change', (el) => {
           const data = {
-            QuestionId: parseInt(el.target.getAttribute('data-question-id')),
-            QuestionOptionId: parseInt(
-              el.target.getAttribute('data-option-id')
-            ),
+            QuestionId: parseInt(el.target.getAttribute('data-question-id'), 10),
+            QuestionOptionId: parseInt(el.target.getAttribute('data-option-id'), 10),
             ExternalAnswerKey: el.target.getAttribute('data-option-id'),
             UserResponseText: el.target.getAttribute('data-option-text'),
           };
 
-          //add the checked item to the state
-          if (el.target.checked) {
-            state.surveyAnswers.push(data);
-          }
-          //remove the unchecked item from the state
+          // add the checked item to the state
+          if (el.target.checked) { state.surveyAnswers.push(data); }
+          // remove the unchecked item from the state
           else {
             // If the answer exists, mark it as deleted
             const existingAnswerIndex = state.surveyAnswers.findIndex(
@@ -176,6 +172,7 @@ export default async function decorate(block) {
           block
             .querySelector('.pet-survey .pet-survey__question.active')
             .getAttribute('data-q-index')
+        , 10,
         );
         setActiveQuestion(block, currentActiveIndex, currentActiveIndex - 1);
       });
@@ -185,14 +182,14 @@ export default async function decorate(block) {
         const currentActiveIndex = parseInt(
           block
             .querySelector('.pet-survey .pet-survey__question.active')
-            .getAttribute('data-q-index')
+            .getAttribute('data-q-index'),
+         10,
         );
         // make sure a question has been checked before moving to the next
         if (
           block.querySelector(
-            '.pet-survey .pet-survey__question.active input:checked'
-          ) ||
-          !block.querySelector('.pet-survey .pet-survey__question.active input')
+            '.pet-survey .pet-survey__question.active input:checked')
+          || !block.querySelector('.pet-survey .pet-survey__question.active input')
         ) {
           setActiveQuestion(block, currentActiveIndex, currentActiveIndex + 1);
         }
@@ -261,12 +258,8 @@ export default async function decorate(block) {
   }
 
   function updateSummaryForm(block, answers) {
-    const form = block.querySelector(
-      '.pet-survey__layout-container--summary form'
-    );
-    const multiSelectCheckboxes = Array.from(
-      form.querySelectorAll(".multi-select input[type='checkbox']")
-    );
+    const form = block.querySelector('.pet-survey__layout-container--summary form');
+    const multiSelectCheckboxes = Array.from(form.querySelectorAll(".multi-select input[type='checkbox']"));
     multiSelectCheckboxes.forEach((checkbox) => {
       checkbox.checked = false;
     });
@@ -422,7 +415,7 @@ export default async function decorate(block) {
             surveySummaryHeading,
             surveySummarySubheading,
             await createSummaryForm(animalType, questions, animalId, clientId)
-          )
+          ),
         );
         updateSummaryForm(block, answers);
         bindSummaryBackButtonEvents(block, true);
@@ -454,9 +447,9 @@ export default async function decorate(block) {
               questions,
               animalId,
               clientId,
-              'summary'
-            )
-          )
+              'summary',
+            ),
+          ),
         );
         bindSummaryBackButtonEvents(block, false);
         block
@@ -476,8 +469,8 @@ export default async function decorate(block) {
         preSurveySubheading,
         preSurveySignInLabel,
         surveyCancelLabel,
-        surveyStartLabel
-      )
+        surveyStartLabel,
+      ),
     );
     bindPresurveyButtonEvents(block);
     toggleScreen('presurvey', block);
@@ -491,7 +484,7 @@ export default async function decorate(block) {
         surveySummaryHeading,
         surveySummarySubheading,
         await createSummaryForm(animalType, questions, animalId, clientId)
-      )
+      ),
     );
     block
       .querySelector('form.pet-survey__form')

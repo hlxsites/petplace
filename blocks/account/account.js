@@ -100,6 +100,7 @@ export async function callUserApi(token, method = 'GET', payload = null) {
             result = await resp.json();
         }
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
     }
     return result;
@@ -111,6 +112,7 @@ export default async function decorate(block) {
     const token = await acquireToken();
     if (token) {
         initialUserData = await callUserApi(token);
+        // eslint-disable-next-line no-console
         console.log('initialUserData', initialUserData);
         block.append(await createTabComponent());
         block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));

@@ -116,7 +116,7 @@ async function callAnimalList() {
         radius = 10;
     }
     const genderElements = document.querySelectorAll('input[name="gender"]:checked');
-    let gender = "";
+    let gender = '';
         if (genderElements.length === 1) {
             gender = genderElements[0]?.value;
         }
@@ -126,8 +126,8 @@ async function callAnimalList() {
         ageList = null;
     } else {
         age?.forEach((item) => {
-            ageList.push(item.value)
-        })
+            ageList.push(item.value);
+        });
     }
     const size = document.querySelectorAll('input[name="size"]:checked');
     let sizeList = [];
@@ -136,7 +136,7 @@ async function callAnimalList() {
     } else {
         size?.forEach((item) => {
             sizeList.push(item.value);
-        })
+        });
     }
 
     const response = await fetch(`${endPoints.apiUrl}/animal`, {
@@ -237,9 +237,10 @@ function getFavorites(response) {
             const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
             favoriteButton?.classList.add('favorited');
             favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
-        })
+        });
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
     });
 }
@@ -260,11 +261,12 @@ function buildResultsList(animalList) {
             // if logged in set pet as favorite
             acquireToken()
             .then(response => {
-                getFavorites(response);            
+                getFavorites(response);
             })
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.error('Error:', error);
-            });;
+            });
         } else {
           // not logged in or token is expired without ability to silently refresh its validity
         }
@@ -340,7 +342,7 @@ function clearFilters() {
     const radiusSelect = document.getElementById('radius');
     if (radiusSelect) {
         radiusSelect.selectedIndex = 0;
-    };
+    }
     const radioButtons = document.querySelectorAll('input:checked');
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
@@ -356,6 +358,7 @@ function openModal() {
     const overlay = document.querySelector('.overlay');
     overlay.classList.add('show');
 }
+
 function closeModal() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.remove('show');
@@ -671,7 +674,7 @@ window.onload = callBreedList('null').then((data) => {
                     }
                 }
                 });
-            })
+            });
         }
         callAnimalList().then((response) => {
             buildResultsContainer(response);
@@ -690,7 +693,7 @@ window.onload = callBreedList('null').then((data) => {
                     if (genderRadios[i].value === gender) {
                         genderRadios[i].checked = true;
                     }
-                })
+                });
             }
             const ageRadios = document.querySelectorAll('input[name="age"]');
             for (let i = 0; i < ageRadios.length; i += 1) {
@@ -699,7 +702,7 @@ window.onload = callBreedList('null').then((data) => {
                     if (ageRadios[i].value === age) {
                         ageRadios[i].checked = true;
                     }
-                })
+                });
             }
             const sizeRadios = document.querySelectorAll('input[name="size"]');
             for (let i = 0; i < sizeRadios.length; i += 1) {
@@ -708,7 +711,7 @@ window.onload = callBreedList('null').then((data) => {
                     if (sizeRadios[i].value === size) {
                         sizeRadios[i].checked = true;
                     }
-                })
+                });
             }
             callAnimalList().then((data) => {
                 buildResultsContainer(data);
@@ -724,7 +727,7 @@ export default async function decorate(block) {
     form.action = ' ';
     form.addEventListener('submit', (ev) => {
         ev.preventDefault();
-        
+
         const zipInput = document.getElementById('zip');
         const errorSpan = document.getElementById('zip-error');
         const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
@@ -889,7 +892,7 @@ export default async function decorate(block) {
         ${createSearchAlert}`;
     saveButton.addEventListener('click', (event) => {
         setSaveSearch(event);
-    })
+    });
     form.append(petTypeContainer);
 
     form.append(breedContainer);

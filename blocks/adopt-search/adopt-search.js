@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |

@@ -89,7 +89,7 @@ async function formatSimilarPetData(apiData) {
       if (pet.animalId !== animalId) {
         animalArray.push(pet);
       }
-    })
+    });
     return getRandomItems(animalArray, 4);
   }
   return apiData;
@@ -454,7 +454,7 @@ async function createChecklistSection(inquiryStatus) {
     checklistContainer.append(checklistLabelEl);
   }
   // disabling the survey flow from view until survey is ready for launch
-  
+
   /* if (inquiryStatus === true) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));

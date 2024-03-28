@@ -28,6 +28,7 @@ function removeFavoritePet(id, token, btn) {
         btn.closest('.fav-pet-card').remove();
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error deleting favorite', error);
         throw error;
     });
@@ -181,10 +182,7 @@ function getFavorites(animalData) {
             let builtHtml = '';
 
             arrFavList.forEach((favorited, index) => {
-                const {
-                    Animal,
-                    UserId
-                } = favorited;
+                const { Animal } = favorited;
 
                 const {
                     Breed,
@@ -217,7 +215,7 @@ function getFavorites(animalData) {
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
                     <div class="fp-img">
-                    ${createImageObject(ImageUrl, fallBackImg,'').outerHTML}                        
+                    ${createImageObject(ImageUrl, fallBackImg ,'').outerHTML}
                     </div>
                     <div class="fp-info">
                         <div class="fp-info-header">

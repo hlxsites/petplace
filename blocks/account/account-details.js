@@ -1,7 +1,6 @@
 /* eslint-disable indent */
-import { changePassword } from '../../scripts/lib/msal/msal-authentication.js';
+import { changePassword, isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
-import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 function serialize(data) {
     const obj = {};
@@ -215,7 +214,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
         input.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault();
-            } 
+            }
         });
         input.addEventListener('input', () => {
             if (input.validity.valid && (input.value.trim() !== '' || input.id === 'PhoneNumber') && input.value.trim() !== initialUserData[input.name]) {
@@ -227,7 +226,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     });
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener('change', () => {
-            if(checkbox.checked !== initialUserData[checkbox.name]) {
+            if (checkbox.checked !== initialUserData[checkbox.name]) {
                 disableButtons(submitButtons, false);
             } else {
                 disableButtons(submitButtons, true);
@@ -247,7 +246,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     submitButtons.forEach((button) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-            const payLoad = {...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm)))};
+            const payLoad = { ...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm))) };
             await callUserApi(token, 'PUT', payLoad);
             disableButtons(submitButtons, true);
             initialUserData = payLoad;
@@ -255,5 +254,5 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     });
     changePwdButton.addEventListener('click', async () => {
         await changePassword();
-    })
+    });
 }
