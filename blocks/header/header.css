@@ -729,7 +729,7 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
 .header-search {
   position: fixed;
   right: 1.5rem;
-  bottom: 2rem;
+  bottom: 6rem;
   display: flex;
   flex-direction: column;
   z-index: 1;
