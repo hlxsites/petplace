@@ -31,7 +31,7 @@ const stageAltConfigs = {
       authority: "https:// petplaceb2cftr.b2clogin.com/B2C_1A_PASSWORDCHANGE"
     }
   },
-  authorityDomain: "petplacepoc.b2clogin.com"
+  authorityDomain: "petplaceb2cftr.b2clogin.com"
 };
 
 const prodConfigs = {
