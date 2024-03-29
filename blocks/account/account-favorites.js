@@ -114,7 +114,7 @@ async function bindAccountFavoritesEvents(block, token, favList) {
                 }
             });
             currentHiddenCards = block.querySelectorAll('.fav-pet-card.fp-hidden');
-    
+
             if (currentHiddenCards.length < 1) {
                 viewMoreBtn.classList.add('hidden');
             }
@@ -215,7 +215,7 @@ function getFavorites(animalData) {
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
                     <div class="fp-img">
-                    ${createImageObject(ImageUrl, fallBackImg ,'').outerHTML}
+                    ${createImageObject(ImageUrl, fallBackImg,'').outerHTML}
                     </div>
                     <div class="fp-info">
                         <div class="fp-info-header">

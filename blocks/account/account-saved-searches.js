@@ -16,6 +16,7 @@ function removeFavoriteSearch(id, token, btn) {
         btn.closest('.saved-search-layout-row').remove();
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error deleting favorite', error);
         throw error;
     });
@@ -69,7 +70,6 @@ function createRemoveConfirmModal() {
 async function bindSaveEvents(token) {
     const removeBtns = document.querySelectorAll('button.saved-search__delete');
 
-
     removeBtns.forEach((button, index) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
@@ -85,7 +85,7 @@ async function bindSaveEvents(token) {
 }
 
 function getSearches(token) {
-    let builtHml = ''
+    let builtHml = '';
     const emptyFavList = `
         <div class='account-layout-container no-fav-pets'>
             You don’t currently have any saved searches.
@@ -102,7 +102,6 @@ function getSearches(token) {
         data.forEach((favorite) => {
             arrSaveList.push(favorite);
         });
-
 
         const elFavList = document.querySelector('.saved-search-layout-container');
 

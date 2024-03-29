@@ -738,7 +738,8 @@ export default async function decorate(block) {
         });
       })
       .catch((error) => {
-        // console.error('Error:', error);
+        // eslint-disable-next-line no-console
+        console.error('Error:', error);
       });
   }
 

@@ -68,7 +68,7 @@ export default class TabsManual {
     }
 
     moveFocusToNextTab(currentTab) {
-      let index; 
+      let index;
       if (currentTab === this.lastTab) {
         this.moveFocusToTab(this.firstTab);
       } else {

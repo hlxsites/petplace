@@ -86,9 +86,7 @@ export default async function decorate(block) {
     }
   }
   function bindSurveyChangeEvents() {
-    const surveyInputs = block.querySelectorAll(
-      '.pet-survey__survey .pet-survey__question input'
-    );
+    const surveyInputs = block.querySelectorAll('.pet-survey__survey .pet-survey__question input');
     surveyInputs.forEach((inputEl) => {
       inputEl.addEventListener('change', () => {
         state.surveyAnswers = updateSurveyProgress(block);
@@ -135,7 +133,7 @@ export default async function decorate(block) {
           else {
             // If the answer exists, mark it as deleted
             const existingAnswerIndex = state.surveyAnswers.findIndex(
-              (answer) => answer.UserResponseText === data.UserResponseText
+              (answer) => answer.UserResponseText === data.UserResponseText,
             );
 
             if (existingAnswerIndex > -1) {
@@ -230,7 +228,7 @@ export default async function decorate(block) {
           surveyId,
           token,
           'POST',
-          payload
+          payload,
         );
         if (result) {
           window.location.href = `/pet-adoption/inquiry-confirmation`;
@@ -251,7 +249,7 @@ export default async function decorate(block) {
           surveyId,
           token,
           'PUT',
-          payload
+          payload,
         );
       });
     }
@@ -279,11 +277,8 @@ export default async function decorate(block) {
     const multiSelects = form.querySelectorAll('.multi-select');
     multiSelects.forEach((el) => {
       const buttonText = el.querySelector('.multi-select__button-text');
-      const selected = Array.from(
-        el.querySelectorAll("input[type='checkbox']")
-      ).filter((node) => node.checked);
-      const displayText =
-        selected.length > 0
+      const selected = Array.from(el.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+      const displayText = selected.length > 0
           ? `${selected.length} selected`
           : 'Select from menu...';
       buttonText.innerText = displayText;
@@ -292,7 +287,7 @@ export default async function decorate(block) {
 
   function updateSurveyProgress(block) {
     const surveyQuestions = block.querySelectorAll(
-      '.pet-survey__survey .pet-survey__question'
+      '.pet-survey__survey .pet-survey__question',
     );
     const progressBar = block.querySelector('#pet-survey-progress');
     let progress = 0;
@@ -346,21 +341,17 @@ export default async function decorate(block) {
     surveyId,
     token,
     method = 'GET',
-    payload = null
+    payload = null,
   ) {
     let surveyIdValue = surveyId;
-    if (
-      !surveyIdValue &&
-      sessionStorage.getItem('surveyTabAnimalType') !== null
-    ) {
+    if (!surveyIdValue && sessionStorage.getItem('surveyTabAnimalType') !== null) {
       surveyIdValue = sessionStorage.getItem('surveyTabAnimalType');
     }
-    const apiUrl =
-      method === 'GET'
+    const apiUrl = method === 'GET'
         ? `${endPoints.apiUrl}/adopt/api/SurveyResponse/survey/${surveyIdValue}`
         : `${endPoints.apiUrl}/adopt/api/SurveyResponse`;
     const config = {
-      method: method,
+      method,
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -378,9 +369,7 @@ export default async function decorate(block) {
         const accountWrapper = document.querySelector('.account-wrapper');
 
         if (accountWrapper) {
-          const surveySuccessMessage = accountWrapper.querySelector(
-            '.pet-survey__success-message'
-          );
+          const surveySuccessMessage = accountWrapper.querySelector('.pet-survey__success-message');
           surveySuccessMessage.classList.add('show');
           const saveBtn = block.querySelector('#pet-survey-summary-save');
 
@@ -397,7 +386,7 @@ export default async function decorate(block) {
     token = await acquireToken();
     const result = await callSurveyResponse(surveyId, token);
 
-    //populate state w/ survey answers
+    // populate state w/ survey answers
     state.surveyAnswers = result.SurveyResponseAnswers;
 
     surveyParentId = result.Id;
@@ -414,7 +403,7 @@ export default async function decorate(block) {
           await createSummaryScreen(
             surveySummaryHeading,
             surveySummarySubheading,
-            await createSummaryForm(animalType, questions, animalId, clientId)
+            await createSummaryForm(animalType, questions, animalId, clientId),
           ),
         );
         updateSummaryForm(block, answers);
@@ -483,7 +472,7 @@ export default async function decorate(block) {
       await createSummaryScreen(
         surveySummaryHeading,
         surveySummarySubheading,
-        await createSummaryForm(animalType, questions, animalId, clientId)
+        await createSummaryForm(animalType, questions, animalId, clientId),
       ),
     );
     block

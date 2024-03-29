@@ -36,7 +36,7 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
   return container;
 }
 
-export function createSingleSelect(questionId, options, defaultValue = null, label = null, className = null, attributes = null, prefix =null, errorMessage = null) {
+export function createSingleSelect(questionId, options, defaultValue = null, label = null, className = null, attributes = null, prefix = null, errorMessage = null) {
   const containerDiv = document.createElement('div');
   containerDiv.className = `single-select ${className || ''}`;
   if (label) {

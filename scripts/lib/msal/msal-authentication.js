@@ -1,5 +1,4 @@
 import { getDefaultMsalInstance, getMsalInstance } from './msal-instance.js';
-// import { b2cPolicies } from './policies.js';
 import { initRedirectHandlers } from './login-redirect-handlers.js';
 import {
   loginRequest,
@@ -30,6 +29,7 @@ async function initializeMsalInstances() {
     msalInstance = await getDefaultMsalInstance();
     msalChangePwdInstance.initialize().then(() => {
       msalChangePwdInstance.handleRedirectPromise().then(handleResponse).catch((error) => {
+        // eslint-disable-next-line no-console
         console.log(error);
       });
     });
@@ -146,6 +146,7 @@ export function acquireToken(featureName) {
                 })
                 .catch(function (error) {
                   // Acquire token interactive failure
+                  // eslint-disable-next-line no-console
                   console.error(error);
                   reject(error);
                 });
@@ -163,7 +164,6 @@ export function acquireToken(featureName) {
                   reject(error);
                 });
             }
-
           } else {
             console.log(error);
             reject(error);
@@ -247,11 +247,8 @@ async function selectAccount(msalInstance) {
          */
     const accounts = currentAccounts.filter(account =>
       account.homeAccountId.toUpperCase().includes(b2cPolicies.names.signUpSignIn.toUpperCase())
-            &&
-            account.idTokenClaims.iss.toUpperCase().includes(b2cPolicies.authorityDomain.toUpperCase())
-            &&
-            account.idTokenClaims.aud === msalConfig.auth.clientId
-    );
+            && account.idTokenClaims.iss.toUpperCase().includes(b2cPolicies.authorityDomain.toUpperCase())
+            && account.idTokenClaims.aud === msalConfig.auth.clientId);
     if (accounts.length > 1) {
       // localAccountId identifies the entity for which the token asserts information.
       if (accounts.every(account => account.localAccountId === accounts[0].localAccountId)) {
@@ -289,9 +286,9 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + response.accessToken,
+          Authorization: 'Bearer ' + response.accessToken,
         },
-        body: featureName ? "\"" + featureName + "\"" : null,
+        body: featureName ? '\"' + featureName + '\"' : null,
       })
         .then(() => {
           pushToDataLayer({

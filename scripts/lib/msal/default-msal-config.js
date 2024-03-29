@@ -37,14 +37,14 @@ const prodConfigs = {
 let b2cPolicies = {
   names: {
     signUpSignIn: 'B2C_1_susi',
-  }
-}
+  },
+};
 
 // if URL contains "www.petplace.com", merge prodConfigs into b2cPolicies
 if (window.location.href.includes('www.petplace.com') || window.location.href.includes('adopt-test--petplace--hlxsites') || window.location.href.includes('main--petplace--hlxsites')) {
-  b2cPolicies = {...b2cPolicies, ...prodConfigs};
+  b2cPolicies = { ...b2cPolicies, ...prodConfigs };
 } else {
-  b2cPolicies = {...b2cPolicies, ...stageConfigs};
+  b2cPolicies = { ...b2cPolicies, ...stageConfigs };
 }
 
 export function getB2CPolicies() {
@@ -52,47 +52,47 @@ export function getB2CPolicies() {
 }
 
 export const msalConfig = {
-    auth: {
-      clientId: b2cPolicies.clientId, // This is the ONLY mandatory field; everything else is optional.
-      authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
-      knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
-      redirectUri: window.location.origin,
-    },
-    cache: {
-      cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
-      storeAuthStateInCookie: false, // If you wish to store cache items in cookies as well as browser cache, set this to "true".
-    },
-    system: {
-      loggerOptions: {
-        loggerCallback: (level, message, containsPii) => {
-          if (containsPii) {
+  auth: {
+    clientId: b2cPolicies.clientId, // This is the ONLY mandatory field; everything else is optional.
+    authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
+    knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
+    redirectUri: window.location.origin,
+  },
+  cache: {
+    cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
+    storeAuthStateInCookie: false, // If you wish to store cache items in cookies as well as browser cache, set this to "true".
+  },
+  system: {
+    loggerOptions: {
+      loggerCallback: (level, message, containsPii) => {
+        if (containsPii) {
+          return;
+        }
+        switch (level) {
+          case msal.LogLevel.Error:
+            console.error(message);
             return;
-          }
-          switch (level) {
-            case msal.LogLevel.Error:
-              console.error(message);
-              return;
-            case msal.LogLevel.Info:
-              console.info(message);
-              return;
-            case msal.LogLevel.Verbose:
-              console.debug(message);
-              return;
-            case msal.LogLevel.Warning:
-              console.warn(message);
-              return;
-          }
-        },
-      }
-    },
+          case msal.LogLevel.Info:
+            console.info(message);
+            return;
+          case msal.LogLevel.Verbose:
+            console.debug(message);
+            return;
+          case msal.LogLevel.Warning:
+            console.warn(message);
+            return;
+        }
+      },
+    }
+  },
 };
 
 export const msalChangePwdConfig = {
   auth: {
-      clientId: b2cPolicies.clientId,
-      authority: b2cPolicies.authorities.changePassword.authority,
-      knownAuthorities: [b2cPolicies.authorityDomain],
-      redirectUri: window.location.origin,
+    clientId: b2cPolicies.clientId,
+    authority: b2cPolicies.authorities.changePassword.authority,
+    knownAuthorities: [b2cPolicies.authorityDomain],
+    redirectUri: window.location.origin,
   },
 };
 
