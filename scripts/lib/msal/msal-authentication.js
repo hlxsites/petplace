@@ -265,7 +265,7 @@ async function selectAccount(msalInstance) {
 
 
 
-function handleResponse(response, customCallback, featureName = 'PetPlace (Generic)') {
+async function handleResponse(response, customCallback, featureName = 'PetPlace (Generic)') {
     if (featureName === null) {
         featureName = 'PetPlace (Generic)';
     }
@@ -279,6 +279,10 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
         const contentGroup = document.querySelector('meta[name="template"]');
         // the 'newUser' flag is present for newly registered users that are logging in for the very first time.
         if (response.account.idTokenClaims.newUser) {
+            // intentional 5 second blocking delay
+            console.log('intentional 5 second blocking delay');
+            await new Promise(resolve => setTimeout(resolve, 5000));
+
             // New user detected. Send POST request to create user in the database
             fetch(`${endPoints.apiUrl}/adopt/api/User`, {
                 method: 'POST',
