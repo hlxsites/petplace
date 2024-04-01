@@ -19,7 +19,6 @@ export default async function decorate(block) {
   const animalId = searchParams.get('animalId');
   const clientId = searchParams.get('clientId');
   const surveyId = animalType === 'dog' ? 1 : animalType === 'cat' ? 2 : null; // need to update this to use the surveyId from the query string
-  
 
   // fetch placeholders from the 'adopt' folder
   const placeholders = await fetchPlaceholders('/adopt');
@@ -224,7 +223,6 @@ export default async function decorate(block) {
         if (!token) {
           token = await acquireToken();
         }
-
         const payload = {
           SurveyId: surveyId,
           SurveyResponseAnswers: [...state.surveyAnswers],
@@ -252,6 +250,20 @@ export default async function decorate(block) {
           token = await acquireToken();
         }
 
+        const surveyResponse = await callSurveyResponse(surveyId, token);
+
+        if (surveyResponse && !surveyResponse.Completed) {
+          const payload = {
+            SurveyId: surveyId,
+            SurveyResponseAnswers: [...state.surveyAnswers],
+          };
+          const result = await callSurveyResponse(
+            surveyId,
+            token,
+            'POST',
+            payload
+          );
+        }
         const response = await fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
           method: 'POST',
           headers: {
@@ -374,7 +386,7 @@ export default async function decorate(block) {
 
   async function fetchSurveyQuestions(surveyId = null) {
     let surveyIdValue = surveyId;
-    if (sessionStorage.getItem('surveyTabAnimalType') !== null) {
+    if (!surveyIdValue && sessionStorage.getItem('surveyTabAnimalType') !== null) {
       surveyIdValue = sessionStorage.getItem('surveyTabAnimalType');
     }
     const questionsApi = `${endPoints.apiUrl}/adopt/api/SurveyQuestion/${surveyIdValue}`;
