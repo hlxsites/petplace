@@ -216,6 +216,32 @@ export default async function decorate(block) {
     }
   }
 
+  function bindSummarySaveNewEvent(block) {
+    const inquiryBtn = block.querySelector('#pet-survey-summary-save');
+    if (inquiryBtn) {
+      inquiryBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        if (!token) {
+          token = await acquireToken();
+        }
+
+        const payload = {
+          SurveyId: surveyId,
+          SurveyResponseAnswers: [...state.surveyAnswers],
+        };
+        const result = await callSurveyResponse(
+          surveyId,
+          token,
+          'POST',
+          payload
+        );
+        if (result) {
+          window.location.href = `/pet-adoption/inquiry-confirmation`;
+        }
+      });
+    }
+  }
+
   function bindSummaryInquiryEvent(block) {
     const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
     if (inquiryBtn) {
@@ -447,7 +473,12 @@ export default async function decorate(block) {
       toggleScreen('summary', block);
       updateSummaryForm(block, answers);
       bindSummaryBackButtonEvents(block, true);
-      bindSummaryInquiryEvent(block);
+      
+      if (animalId && clientId) {
+        bindSummaryInquiryEvent(block);
+      } else {
+        bindSummarySaveNewEvent(block);
+      }
     } else {
       if (block.querySelector('.pet-survey__layout-container--presurvey')) {
         block
@@ -471,18 +502,23 @@ export default async function decorate(block) {
               animalType,
               questions,
               animalId,
-              clientId
+              clientId,
+              'summary'
             )
           )
         );
-        updateSummaryForm(block, answers);
         bindSummaryBackButtonEvents(block, false);
         block
           .querySelector('form.pet-survey__form')
           .addEventListener('submit', (event) => {
             event.preventDefault();
+            event.stopPropagation();
           });
-        bindSummaryInquiryEvent(block);
+          if (animalId && clientId) {
+            bindSummaryInquiryEvent(block);
+          } else {
+            bindSummarySaveNewEvent(block);
+          }
       }
     }
   }

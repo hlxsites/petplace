@@ -257,7 +257,7 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
         inquiryBtn.innerText = 'Submit Inquiry';
         inquiryBtn.disabled = 'true';
         ctaContainer.append(backBtn, inquiryBtn);
-    } else if (animalType && surveySummaryFlow === 'summary') {
+    } else if (animalType && animalId && surveySummaryFlow === 'summary') {
       // Add additional else if statement to check for in summary flow, w/ animalType ... show back button and inquiry button
         // Add agreement checkbox
         const agreementDiv = document.createElement('div');
