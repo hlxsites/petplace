@@ -6,12 +6,14 @@ import { bindAccountDetailsEvents, createAccountDetailsPanel } from './account-d
 import { createAccountFavoritesPanel } from './account-favorites.js';
 import { createSavedSearchPanel } from './account-saved-searches.js';
 import { createAccountSurveyPanel } from './account-survey.js';
+import { createAccountInquiriesPanel } from './account-inquiries.js';
 
 async function createTabComponent() {
     const tabArray = [
         { title: 'Account Details', hash: 'details' },
         { title: 'Search Alerts', hash: 'searchalerts' },
         { title: 'Favorites', hash: 'favorites' },
+        { title: 'Inquiries', hash: 'inquiries' },
         { title: 'Pet Match Survey', hash: 'survey' },
     ];
     const tabs = document.createElement('div');
@@ -112,14 +114,12 @@ export default async function decorate(block) {
     const token = await acquireToken();
     if (token) {
         initialUserData = await callUserApi(token);
-        // eslint-disable-next-line no-console
-        console.log('initialUserData', initialUserData);
         block.append(await createTabComponent());
         block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));
         block.querySelector('#favorites').append(await createAccountFavoritesPanel(token));
         block.querySelector('#searchalerts').append(await createSavedSearchPanel(token));
         block.querySelector('#survey').append(await createAccountSurveyPanel(block, token, initialUserData));
-
+        block.querySelector('#inquiries').append(await createAccountInquiriesPanel(token));
         await bindAccountDetailsEvents(block, token, initialUserData);
     }
 }

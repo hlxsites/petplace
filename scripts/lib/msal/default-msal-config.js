@@ -9,17 +9,31 @@
  */
 
 const stageConfigs = {
-  clientId: '680fcf6c-4c38-4d11-8963-d65de9aec0d9',
-  scopes: ['https://petplacepoc.onmicrosoft.com/api/adopt.all', 'openid'],
+  clientId: "680fcf6c-4c38-4d11-8963-d65de9aec0d9",
+  scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"],
   authorities: {
     signUpSignIn: {
-      authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/b2c_1_susi',
+      authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/b2c_1_susi"
     },
     changePassword: {
-      authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
-    },
+      authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE"
+    }
   },
-  authorityDomain: 'petplacepoc.b2clogin.com',
+  authorityDomain: "petplacepoc.b2clogin.com"
+};
+
+const stageAltConfigs = {
+  clientId: "294a2117-b48b-41b4-ac9c-33a62737d47f",
+  scopes: ["https://petplaceb2cftr.onmicrosoft.com/3b511f9c-7c30-4206-a8cd-803b55f0d779/adopt.all", "openid"],
+  authorities: {
+    signUpSignIn: {
+      authority: "https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/b2c_1_susi"
+    },
+    changePassword: {
+      authority: "https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_PASSWORDCHANGE"
+    }
+  },
+  authorityDomain: "petplaceb2cftr.b2clogin.com"
 };
 
 const prodConfigs = {
@@ -43,8 +57,10 @@ let b2cPolicies = {
 };
 
 // if URL contains "www.petplace.com", merge prodConfigs into b2cPolicies
-if (window.location.href.includes('www.petplace.com') || window.location.href.includes('adopt-test--petplace--hlxsites') || window.location.href.includes('main--petplace--hlxsites')) {
-  b2cPolicies = { ...b2cPolicies, ...prodConfigs };
+if (window.location.href.includes("www.petplace.com") || window.location.href.includes("main--petplace--hlxsites")) {
+  b2cPolicies = {...b2cPolicies, ...prodConfigs};
+} else if (window.location.href.includes("adopt-test--petplace--hlxsites")) {
+  b2cPolicies = {...b2cPolicies, ...stageAltConfigs};
 } else {
   b2cPolicies = { ...b2cPolicies, ...stageConfigs };
 }

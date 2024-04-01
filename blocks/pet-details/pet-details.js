@@ -458,9 +458,8 @@ async function createChecklistSection(inquiryStatus) {
     checklistLabelEl.textContent = checklistLabel;
     checklistContainer.append(checklistLabelEl);
   }
-  // disabling the survey flow from view until survey is ready for launch
-
-  /* if (inquiryStatus === true) {
+  
+  if (inquiryStatus === true) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
         checklistContainer.append(createCta('',
@@ -470,7 +469,7 @@ async function createChecklistSection(inquiryStatus) {
           )
         );
     }
-  } */
+  }
 
   if (checklistItem2Label) {
     let itemContent = null;
@@ -677,9 +676,8 @@ export default async function decorate(block) {
     });
 
     // add inquiry functionality - temporarily disabling this until survey flow is ready for release
-    // const petCtaContaner = document.querySelector('.about-pet-ctas');
-    // eslint-disable-next-line max-len
-    // petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
+    const petCtaContaner = document.querySelector('.about-pet-ctas');
+    petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
     if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {

@@ -131,6 +131,62 @@
   cursor: initial;
 }
 
+/* custom checkbox */
+.account .checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: var(--text-main, #09090d);
+}
+.account .checkbox-container input {
+  position: absolute;
+  height: 0;
+  width: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+.account .checkbox-container .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ffffff;
+  border: 2px solid var(--neutral-600, #6e6d73);
+  border-radius: 6px;
+}
+.account .checkbox-container .checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.account .checkbox-container input:checked ~ .checkmark {
+  background-color: var(--number-background-color);
+}
+.account .checkbox-container input:checked ~ .checkmark {
+  border-color: var(--number-background-color);
+}
+.account .checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+.account .checkbox-container .checkmark:after {
+  left: 6px;
+  top: 0px;
+  width: 5px;
+  height: 15px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(40deg);
+  -ms-transform: rotate(40deg);
+  transform: rotate(40deg);
+}
+
 /* switch */
 .switch-container {
   display: block;
@@ -283,6 +339,9 @@
 .account-tab--favorites .account-tab-icon {
   mask-image: url('data:image/svg+xml,<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 21.315L2.91202 11.315C2.06935 10.473 1.51318 9.38709 1.32238 8.21124C1.13158 7.03538 1.31584 5.82929 1.84902 4.76404C2.25108 3.96016 2.83839 3.26331 3.56257 2.73092C4.28674 2.19853 5.12706 1.84583 6.01427 1.70189C6.90149 1.55794 7.81021 1.62687 8.66557 1.90298C9.52092 2.1791 10.2984 2.65451 10.934 3.29004L12.5 4.85504L14.066 3.29004C14.7016 2.65451 15.4791 2.1791 16.3345 1.90298C17.1898 1.62687 18.0985 1.55794 18.9858 1.70189C19.873 1.84583 20.7133 2.19853 21.4375 2.73092C22.1617 3.26331 22.749 3.96016 23.151 4.76404C23.6835 5.82888 23.8674 7.03425 23.6768 8.20944C23.4862 9.38463 22.9307 10.4701 22.089 11.312L12.5 21.315Z" stroke="%2309090D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
+.account-tab--inquiries .account-tab-icon {
+  mask-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="none" stroke="%23302280" stroke-width="2" stroke-linejoin="round"%3E%3Cpath d="M11.749 17.723a6 6 0 0 0 1.757 4.243 6 6 0 0 0 4.243 1.757 6 6 0 0 0 4.243-1.757 6 6 0 0 0 1.757-4.243 6 6 0 0 0-6-6 6 6 0 0 0-6 6z"/%3E%3Cg stroke-linecap="round"%3E%3Cpath d="M14.749 17.723h6m0 0l-2.25 2.25m2.25-2.25l-2.25-2.25m-9.75.75h-6a1.5 1.5 0 0 1-1.5-1.5v-12a1.5 1.5 0 0 1 1.5-1.5h18a1.5 1.5 0 0 1 1.5 1.5v6.748"/%3E%3Cpath d="M21.909 1.771l-8.144 6.266c-.578.445-1.287.686-2.017.686s-1.438-.241-2.017-.686L1.588 1.771"/%3E%3C/g%3E%3C/svg%3E');
+}
 .account-tab--survey .account-tab-icon {
   mask-image: url('data:image/svg+xml,<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(%23clip0_214_8405)"><path d="M23.13 15.3409L15.5 22.9709L11.75 23.7209L12.5 19.9709L20.131 12.3409C20.5276 11.9443 21.0656 11.7214 21.6265 11.7214C22.1874 11.7214 22.7254 11.9443 23.122 12.3409L23.131 12.3499C23.5275 12.7467 23.7501 13.2847 23.7499 13.8456C23.7498 14.4065 23.5268 14.9444 23.13 15.3409Z" stroke="%232F2F33" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.74902 10.981H14.749" stroke="%232F2F33" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.74902 14.731H11.749" stroke="%232F2F33" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.74902 18.481H8.74902" stroke="%232F2F33" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.74902 23.7209H2.74902C2.3512 23.7209 1.96967 23.5629 1.68836 23.2816C1.40706 23.0003 1.24902 22.6187 1.24902 22.2209V6.47095C1.24902 6.07313 1.40706 5.69159 1.68836 5.41029C1.96967 5.12899 2.3512 4.97095 2.74902 4.97095H6.50002C6.50002 3.97639 6.89511 3.02256 7.59837 2.3193C8.30163 1.61604 9.25546 1.22095 10.25 1.22095C11.2446 1.22095 12.1984 1.61604 12.9017 2.3193C13.6049 3.02256 14 3.97639 14 4.97095H17.75C18.1478 4.97095 18.5294 5.12899 18.8107 5.41029C19.092 5.69159 19.25 6.07313 19.25 6.47095V8.72095" stroke="%232F2F33" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.249 4.98096C10.0419 4.98096 9.87402 4.81307 9.87402 4.60596C9.87402 4.39885 10.0419 4.23096 10.249 4.23096" stroke="%232F2F33" stroke-width="1.5"/><path d="M10.249 4.98096C10.4561 4.98096 10.624 4.81307 10.624 4.60596C10.624 4.39885 10.4561 4.23096 10.249 4.23096" stroke="%232F2F33" stroke-width="1.5"/></g><defs><clipPath id="clip0_214_8405"><rect width="24" height="24" fill="white" transform="translate(0.5 0.470947)"/></clipPath></defs></svg>');
 }
@@ -392,27 +451,33 @@
 }
 
 /* favorites details */
-.account-tabpanel--favorites .no-fav-pets {
+.account-tabpanel--favorites .no-fav-pets,
+.account-tabpanel--inquiries .no-inquiry-pets {
   text-align: center;
 }
 
-.account-tabpanel--favorites .new-search-btn-wrapper {
+.account-tabpanel--favorites .new-search-btn-wrapper,
+.account-tabpanel--inquiries .new-search-btn-wrapper {
   display: flex;
   justify-content: center;
   margin-top: 52px;
 }
 
-.account-tabpanel--favorites .account-button--new-search {
+.account-tabpanel--favorites .account-button--new-search,
+.account-tabpanel--inquiries .account-button--new-search {
   display: flex;
   align-items: center;
 }
 
-.account-tabpanel--favorites .account-button--new-search svg {
+.account-tabpanel--favorites .account-button--new-search svg,
+.account-tabpanel--inquiries .account-button--new-search svg {
   margin-right: 16px;
 }
 
 .account-tabpanel--favorites .fav-pet-card,
-.account-tabpanel--favorites .confirm-remove-modal {
+.account-tabpanel--favorites .confirm-remove-modal,
+.account-tabpanel--inquiries .inquiry-pet-card,
+.account-tabpanel--inquiries .confirm-remove-modal {
   margin-bottom: 16px;
   border: 1px solid var(--border-base-color);
   border-radius: 8px;
@@ -422,25 +487,30 @@
   color: var(--color-black);
 }
 
-.account-tabpanel--favorites .fav-pet-card:last-of-type {
+.account-tabpanel--favorites .fav-pet-card:last-of-type,
+.account-tabpanel--inquiries .inquiry-pet-card:last-of-type {
   margin-bottom: 0;
 }
 
-.account-tabpanel--favorites .fav-pet-card a {
+.account-tabpanel--favorites .fav-pet-card a,
+.account-tabpanel--inquiries .inquiry-pet-card a {
   color: var(--color-black);
 }
 
-.account-tabpanel--favorites .fav-pet-card .fp-info {
+.account-tabpanel--favorites .fav-pet-card .fp-info,
+.account-tabpanel--inquiries .inquiry-pet-card .fp-info {
   padding: 24px;
 }
 
-.account-tabpanel--favorites .fav-pet-card .fp-img img {
+.account-tabpanel--favorites .fav-pet-card .fp-img img,
+.account-tabpanel--inquiries .inquiry-pet-card .fp-img img {
   object-fit: cover;
   max-height: 229px;
   margin: 0 auto;
 }
 
-.account-tabpanel--favorites .fav-pet-card .fp-name {
+.account-tabpanel--favorites .fav-pet-card .fp-name,
+.account-tabpanel--inquiries .inquiry-pet-card .fp-name {
   font-family: Raleway, sans-serif;
   font-weight: 800;
   font-size: 22px;
@@ -449,7 +519,8 @@
   display: flex;
 }
 
-.account-tabpanel--favorites .fav-pet-card .fp-details {
+.account-tabpanel--favorites .fav-pet-card .fp-details,
+.account-tabpanel--inquiries .inquiry-pet-card .fp-details {
   font-size: 16px;
   line-height: 18px;
   font-weight: 400;
@@ -457,7 +528,8 @@
   align-items: center;
 }
 
-.account-tabpanel--favorites .fav-pet-card .fp-separator {
+.account-tabpanel--favorites .fav-pet-card .fp-separator,
+.account-tabpanel--inquiries .inquiry-pet-card .fp-separator {
   display: inline-block;
   margin: 0 12px;
   width: 4px;
@@ -466,7 +538,8 @@
   background-color: var(--color-black);
 }
 
-.account-tabpanel--favorites .fav-pet-card .remove-fav {
+.account-tabpanel--favorites .fav-pet-card .remove-fav,
+.account-tabpanel--inquiries .inquiry-pet-card .remove-inquiry {
   background-color: transparent;
   padding: 0;
   margin: 0;
@@ -474,18 +547,21 @@
   height: 24px;
 }
 
-.account-tabpanel--favorites .fav-pet-card .fp-info-header {
+.account-tabpanel--favorites .fav-pet-card .fp-info-header,
+.account-tabpanel--inquiries .inquiry-pet-card .fp-info-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
 }
 
-.account-tabpanel--favorites .fav-pet-card.no-image .fp-img img {
+.account-tabpanel--favorites .fav-pet-card.no-image .fp-img img,
+.account-tabpanel--inquiries .inquiry-pet-card.no-image .fp-img img {
   object-fit: contain;
   background-color: #f7f7fa;
 }
 
-.account-tabpanel--favorites .hidden {
+.account-tabpanel--favorites .hidden,
+.account-tabpanel--inquiries .hidden {
   display: none !important;
 }
 .account-tabpanel--searchalerts .hidden {
@@ -494,15 +570,21 @@
 
 .account-tabpanel--favorites .fav-pet-card.fp-hidden,
 .account-tabpanel--favorites .fav-pet-card .unavailable-tag,
-.account-tabpanel--favorites .fav-pet-card.unavailable .fp-img {
+.account-tabpanel--favorites .fav-pet-card.unavailable .fp-img,
+.account-tabpanel--inquiries .inquiry-pet-card.fp-hidden,
+.account-tabpanel--inquiries .inquiry-pet-card .unavailable-tag,
+.account-tabpanel--inquiries .inquiry-pet-card.unavailable .fp-img,
+.account-tabpanel--inquiries .inquiry-pet-card .available-tag {
   display: none;
 }
 
-.account-tabpanel--favorites .prevent-click {
+.account-tabpanel--favorites .prevent-click,
+.account-tabpanel--inquiries .prevent-click {
   pointer-events: none;
 }
 
-.account-tabpanel--favorites .fav-pet-card.unavailable .unavailable-tag {
+.account-tabpanel--favorites .fav-pet-card.unavailable .unavailable-tag,
+.account-tabpanel--inquiries .inquiry-pet-card.unavailable .unavailable-tag {
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -515,7 +597,21 @@
   margin-left: 16px;
 }
 
-.account-tabpanel--favorites #view-more-btn {
+.account-tabpanel--inquiries .inquiry-pet-card.available .available-tag {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 40;
+  color: #054f31;
+  background-color: #ecfdf3;
+  padding: 4px 8px;
+  border-radius: 16px;
+  margin-left: 16px;
+}
+
+.account-tabpanel--favorites #view-more-btn,
+.account-tabpanel--inquiries #view-more-btn {
   display: block;
   margin: 24px auto 0;
   font-size: 18px;
@@ -523,7 +619,8 @@
   height: 48px;
 }
 
-.account-tabpanel--favorites .overlay {
+.account-tabpanel--favorites .overlay,
+.account-tabpanel--inquiries .overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -537,11 +634,13 @@
   z-index: 20;
 }
 
-.account-tabpanel--favorites .overlay.show {
+.account-tabpanel--favorites .overlay.show,
+.account-tabpanel--inquiries .overlay.show {
   display: block;
 }
 
-.account-tabpanel--favorites .confirm-remove-favorite-modal {
+.account-tabpanel--favorites .confirm-remove-favorite-modal,
+.account-tabpanel--inquiries .confirm-remove-inquiry-modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -555,13 +654,15 @@
   text-align: center;
 }
 
-.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-title {
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-title,
+.account-tabpanel--inquiries .confirm-remove-inquiry-modal .modal-title {
   font-size: 32px;
   font-weight: 700;
   line-height: 36px;
 }
 
-.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns {
+.account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns,
+.account-tabpanel--inquiries .confirm-remove-inquiry-modal .modal-action-btns {
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -571,6 +672,10 @@
 
 .account-tabpanel--favorites
   .confirm-remove-favorite-modal
+  .modal-action-btns
+  .cancel,
+.account-tabpanel--inquiries
+  .confirm-remove-inquiry-modal
   .modal-action-btns
   .cancel {
   margin-bottom: 16px;
@@ -589,6 +694,10 @@
 
 .account-tabpanel--favorites
   .confirm-remove-favorite-modal
+  .modal-action-btns
+  .confirm,
+.account-tabpanel--inquiries
+  .confirm-remove-inquiry-modal
   .modal-action-btns
   .confirm {
   font-size: 18px;
@@ -639,6 +748,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  flex-direction: column;
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
@@ -673,26 +783,32 @@
 }
 
 @media (min-width: 768px) {
-  .account-tabpanel--favorites .fav-pet-card {
+  .account-tabpanel--favorites .fav-pet-card,
+  .account-tabpanel--inquiries .inquiry-pet-card {
     min-height: 183px;
   }
 
-  .account-tabpanel--favorites .fav-pet-card {
+  .account-tabpanel--favorites .fav-pet-card,
+  .account-tabpanel--inquiries .inquiry-pet-card {
     flex-direction: row;
   }
 
-  .account-tabpanel--favorites .fav-pet-card .fp-info {
+  .account-tabpanel--favorites .fav-pet-card .fp-info,
+  .account-tabpanel--inquiries .inquiry-pet-card .fp-info {
     width: 100%;
     flex: 1;
   }
 
-  .account-tabpanel--favorites .fav-pet-card .fp-img {
+  .account-tabpanel--favorites .fav-pet-card .fp-img,
+  .account-tabpanel--inquiries .inquiry-pet-card .fp-img {
     width: 343px;
     height: 200px;
   }
 
   .account-tabpanel--favorites .fav-pet-card .fp-img img,
-  .account-tabpanel--favorites .fav-pet-card .fp-img object {
+  .account-tabpanel--favorites .fav-pet-card .fp-img object,
+  .account-tabpanel--inquiries .inquiry-pet-card .fp-img img,
+  .account-tabpanel--inquiries .inquiry-pet-card .fp-img object {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -704,6 +820,15 @@
 @media (min-width: 1024px) {
     .account-tabpanel--favorites .confirm-remove-modal {
         top: 250px;
+    }
+
+    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {
+        flex-direction: row;
+    }
+
+    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .confirm,
+    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .cancel {
+        margin: 16px 0;
     }
 
     .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {

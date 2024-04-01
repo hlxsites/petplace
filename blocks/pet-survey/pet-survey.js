@@ -209,16 +209,14 @@ export default async function decorate(block) {
     }
   }
 
-  function bindSummaryInquiryEvent(block) {
-    const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
+  function bindSummarySaveNewEvent(block) {
+    const inquiryBtn = block.querySelector('#pet-survey-summary-save');
     if (inquiryBtn) {
       inquiryBtn.addEventListener('click', async (event) => {
         event.preventDefault();
-
         if (!token) {
           token = await acquireToken();
         }
-
         const payload = {
           SurveyId: surveyId,
           SurveyResponseAnswers: [...state.surveyAnswers],
@@ -233,6 +231,61 @@ export default async function decorate(block) {
           window.location.href = '/pet-adoption/inquiry-confirmation';
         }
       });
+    }
+  }
+
+  function bindSummaryInquiryEvent(block) {
+    const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
+    if (inquiryBtn) {
+      inquiryBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        if (!token) {
+          token = await acquireToken();
+        }
+
+        const surveyResponse = await callSurveyResponse(surveyId, token);
+
+        if (surveyResponse && !surveyResponse.Completed) {
+          const payload = {
+            SurveyId: surveyId,
+            SurveyResponseAnswers: [...state.surveyAnswers],
+          };
+          const result = await callSurveyResponse(
+            surveyId,
+            token,
+            'POST',
+            payload
+          );
+        }
+        const response = await fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            "AnimalReferenceNumber": animalId,
+            "ClientId": clientId
+        })
+      });
+      if (response.status === 200) {
+        window.location.href = `/pet-adoption/inquiry-confirmation`;
+      } else {
+          
+      }
+      });
+    }
+
+    const agreementCheckbox = block.querySelector('#pet-survey-summary-agreement');
+    if (agreementCheckbox) {
+      agreementCheckbox.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+          inquiryBtn.disabled = false;
+        } else {
+          inquiryBtn.disabled = true;
+        }
+      })
     }
   }
   function bindSummarySaveEvent(block, surveyId) {
@@ -320,7 +373,7 @@ export default async function decorate(block) {
 
   async function fetchSurveyQuestions(surveyId = null) {
     let surveyIdValue = surveyId;
-    if (sessionStorage.getItem('surveyTabAnimalType') !== null) {
+    if (!surveyIdValue && sessionStorage.getItem('surveyTabAnimalType') !== null) {
       surveyIdValue = sessionStorage.getItem('surveyTabAnimalType');
     }
     const questionsApi = `${endPoints.apiUrl}/adopt/api/SurveyQuestion/${surveyIdValue}`;
@@ -411,6 +464,14 @@ export default async function decorate(block) {
         bindSummarySaveEvent(block, surveyParentId);
       }
       toggleScreen('summary', block);
+      updateSummaryForm(block, answers);
+      bindSummaryBackButtonEvents(block, true);
+      
+      if (animalId && clientId) {
+        bindSummaryInquiryEvent(block);
+      } else {
+        bindSummarySaveNewEvent(block);
+      }
     } else {
       if (block.querySelector('.pet-survey__layout-container--presurvey')) {
         block
@@ -444,8 +505,13 @@ export default async function decorate(block) {
           .querySelector('form.pet-survey__form')
           .addEventListener('submit', (event) => {
             event.preventDefault();
+            event.stopPropagation();
           });
-        bindSummaryInquiryEvent(block);
+          if (animalId && clientId) {
+            bindSummaryInquiryEvent(block);
+          } else {
+            bindSummarySaveNewEvent(block);
+          }
       }
     }
   }
@@ -474,6 +540,7 @@ export default async function decorate(block) {
         await createSummaryForm(animalType, questions, animalId, clientId),
       ),
     );
+
     block
       .querySelector('form.pet-survey__form')
       .addEventListener('submit', (event) => {
