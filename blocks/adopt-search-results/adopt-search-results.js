@@ -45,18 +45,18 @@ function getFilters() {
     let genderFilterList = '';
     genderFilters?.forEach((gender) => {
         if (genderFilterList !== '') {
-            genderFilterList += ',' + gender?.value;
+            genderFilterList += `,${gender?.value}`;
         } else {
-            genderFilterList += gender?.value;
+            genderFilterList += gender?.value || '';
         }
     });
     const ageFilters = document.querySelectorAll('input[name="age"]:checked');
     let ageFilterList = '';
     ageFilters?.forEach((age) => {
         if (ageFilterList !== '') {
-            ageFilterList += ',' + age?.value;
+            ageFilterList += `,${age?.value || ''}`;
         } else {
-            ageFilterList += age?.value;
+            ageFilterList += age?.value || 0;
         }
     });
 
@@ -64,9 +64,9 @@ function getFilters() {
     let sizeFilterList = '';
     sizeFilters?.forEach((size) => {
         if (sizeFilterList !== '') {
-            sizeFilterList += ',' + size?.value;
+            sizeFilterList += `,${size?.value || 0}`;
         } else {
-            sizeFilterList += size?.value;
+            sizeFilterList += size?.value || 0;
         }
     });
     const filters = {
@@ -116,7 +116,7 @@ async function callAnimalList() {
         radius = 10;
     }
     const genderElements = document.querySelectorAll('input[name="gender"]:checked');
-    let gender = "";
+    let gender = '';
         if (genderElements.length === 1) {
             gender = genderElements[0]?.value;
         }
@@ -126,8 +126,8 @@ async function callAnimalList() {
         ageList = null;
     } else {
         age?.forEach((item) => {
-            ageList.push(item.value)
-        })
+            ageList.push(item.value);
+        });
     }
     const size = document.querySelectorAll('input[name="size"]:checked');
     let sizeList = [];
@@ -136,7 +136,7 @@ async function callAnimalList() {
     } else {
         size?.forEach((item) => {
             sizeList.push(item.value);
-        })
+        });
     }
 
     const response = await fetch(`${endPoints.apiUrl}/animal`, {
@@ -218,6 +218,7 @@ async function updateBreedListSelect() {
 }
 
 function numPages() {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     return Math.ceil(animalArray?.length / recordsPerPage);
 }
 
@@ -227,19 +228,21 @@ function getFavorites(response) {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${response}`,
-        }
-    }).then(response => {
-        //console.log('Success:', response.status);
-        return response.json();
+        },
+    }).then((responseData) => {
+        // eslint-disable-next-line no-console
+        console.log('Success:', responseData.status);
+        return responseData.json();
     }).then((data) => {
         // favorite Pet in the UI
         data.forEach((favorite) => {
             const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
             favoriteButton?.classList.add('favorited');
             favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
-        })
+        });
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
     });
 }
@@ -255,16 +258,17 @@ function buildResultsList(animalList) {
         tempResultsBlock.append(div);
     });
     // check if user is logged in
-    isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+    isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
             // if logged in set pet as favorite
             acquireToken()
-            .then(response => {
-                getFavorites(response);            
+            .then((response) => {
+                getFavorites(response);
             })
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.error('Error:', error);
-            });;
+            });
         } else {
           // not logged in or token is expired without ability to silently refresh its validity
         }
@@ -340,7 +344,7 @@ function clearFilters() {
     const radiusSelect = document.getElementById('radius');
     if (radiusSelect) {
         radiusSelect.selectedIndex = 0;
-    };
+    }
     const radioButtons = document.querySelectorAll('input:checked');
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
@@ -356,6 +360,7 @@ function openModal() {
     const overlay = document.querySelector('.overlay');
     overlay.classList.add('show');
 }
+
 function closeModal() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.remove('show');
@@ -500,7 +505,7 @@ function buildFilterSidebar(sidebar) {
         sizeRadio.type = 'checkbox';
         sizeRadio.name = 'size';
         sizeRadio.id = size;
-        sizeRadio.value = placeholders[size.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+        sizeRadio.value = placeholders[size.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => {
             if (+match === 0) return '';
             return index === 0 ? match.toLowerCase() : match.toUpperCase();
         })];
@@ -662,8 +667,8 @@ window.onload = callBreedList('null').then((data) => {
         if (petType?.value === 'Other' || petType?.value === 'null') {
             petBreed.setAttribute('disabled', '');
         } else {
-            callBreedList(petType?.value).then((data) => {
-                breedList = data;
+            callBreedList(petType?.value).then((outputData) => {
+                breedList = outputData;
                 updateBreedListSelect().then(() => {
                 for (let i = 0; i < petBreeds.length; i += 1) {
                     if (petBreeds[i].value === params.get('filterBreed')) {
@@ -671,7 +676,7 @@ window.onload = callBreedList('null').then((data) => {
                     }
                 }
                 });
-            })
+            });
         }
         callAnimalList().then((response) => {
             buildResultsContainer(response);
@@ -690,7 +695,7 @@ window.onload = callBreedList('null').then((data) => {
                     if (genderRadios[i].value === gender) {
                         genderRadios[i].checked = true;
                     }
-                })
+                });
             }
             const ageRadios = document.querySelectorAll('input[name="age"]');
             for (let i = 0; i < ageRadios.length; i += 1) {
@@ -699,7 +704,7 @@ window.onload = callBreedList('null').then((data) => {
                     if (ageRadios[i].value === age) {
                         ageRadios[i].checked = true;
                     }
-                })
+                });
             }
             const sizeRadios = document.querySelectorAll('input[name="size"]');
             for (let i = 0; i < sizeRadios.length; i += 1) {
@@ -708,10 +713,10 @@ window.onload = callBreedList('null').then((data) => {
                     if (sizeRadios[i].value === size) {
                         sizeRadios[i].checked = true;
                     }
-                })
+                });
             }
-            callAnimalList().then((data) => {
-                buildResultsContainer(data);
+            callAnimalList().then((resultData) => {
+                buildResultsContainer(resultData);
             });
         });
     }
@@ -724,7 +729,7 @@ export default async function decorate(block) {
     form.action = ' ';
     form.addEventListener('submit', (ev) => {
         ev.preventDefault();
-        
+
         const zipInput = document.getElementById('zip');
         const errorSpan = document.getElementById('zip-error');
         const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
@@ -809,6 +814,11 @@ export default async function decorate(block) {
     zipLabelElem.setAttribute('for', 'zipCode');
     zipLabelElem.innerText = zipLabel;
 
+    const errorSpan = document.createElement('span');
+    errorSpan.className = 'error-message';
+    errorSpan.id = 'zip-error';
+    errorSpan.textContent = zipErrorMessage;
+
     const zipInput = document.createElement('input');
     zipInput.setAttribute('aria-label', zipPlaceholder);
     zipInput.className = 'zipCode';
@@ -834,11 +844,6 @@ export default async function decorate(block) {
         zipInput.ariaInvalid = 'true';
         }
     });
-
-    const errorSpan = document.createElement('span');
-    errorSpan.className = 'error-message';
-    errorSpan.id = 'zip-error';
-    errorSpan.textContent = zipErrorMessage;
 
     zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
@@ -889,7 +894,7 @@ export default async function decorate(block) {
         ${createSearchAlert}`;
     saveButton.addEventListener('click', (event) => {
         setSaveSearch(event);
-    })
+    });
     form.append(petTypeContainer);
 
     form.append(breedContainer);

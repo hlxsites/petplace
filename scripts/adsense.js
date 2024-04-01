@@ -117,6 +117,7 @@ const adsenseSetup = (adArgs, catVal) => {
       .setTargeting(REFRESH_KEY, REFRESH_VALUE)
       .setTargeting(REFRESH_SLOT, !REFRESH_VALUE)
       .addService(window.googletag.pubads());
+  // eslint-disable-next-line no-console
   } else console.log('Anchor not loaded');
 
   // refresh subroutine

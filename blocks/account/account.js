@@ -8,7 +8,6 @@ import { createSavedSearchPanel } from './account-saved-searches.js';
 import { createAccountSurveyPanel } from './account-survey.js';
 import { createAccountInquiriesPanel } from './account-inquiries.js';
 
-import { buildBlock, decorateBlock, loadBlock } from '../../scripts/lib-franklin.js';
 async function createTabComponent() {
     const tabArray = [
         { title: 'Account Details', hash: 'details' },
@@ -78,6 +77,7 @@ async function createTabComponent() {
     const tabListEl = tabs.querySelector('[role=\'tablist\']');
     const dropdownEl = tabs.querySelector('select.account-select');
     const tabPanelEls = tabs.querySelectorAll('[role=\'tabpanel\']');
+    // eslint-disable-next-line no-new
     new TabsManual(tabListEl, dropdownEl, tabPanelEls);
     return tabs;
 }
@@ -87,7 +87,7 @@ export async function callUserApi(token, method = 'GET', payload = null) {
     const userApi = `${baseUrl}/adopt/api/User`;
     let result = null;
     const config = {
-        method: method,
+        method,
         headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -102,6 +102,7 @@ export async function callUserApi(token, method = 'GET', payload = null) {
             result = await resp.json();
         }
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
     }
     return result;

@@ -1,12 +1,9 @@
-import { getMetadata } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
-import { extractName } from '../../templates/adopt/adopt.js';
 import {
   buildBlock,
   decorateBlock,
   loadBlock,
 } from '../../scripts/lib-franklin.js';
-import { callUserApi } from './account.js';
 
 function disableButtons(button, disabled = true) {
   if (disabled) {
@@ -27,7 +24,7 @@ function getSurveyStatus(token, animalType) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   )
     .then((response) => response.json())
     .then((data) => data);
@@ -45,14 +42,13 @@ function routeSurvey(block, token, animalType, initialUserData) {
     const surveyContainer = block.querySelector('.survey-container');
     const surveyTitle = block.querySelector('.survey-title');
     const surveyBtnContainer = block.querySelector(
-      '.survey-animal-type__btn-container'
+      '.survey-animal-type__btn-container',
     );
     const survey = block.querySelector('.pet-survey');
 
     const backBtnDiv = document.createElement('div');
     backBtnDiv.className = 'survey-back-btn';
-    backBtnDiv.innerHTML =
-      '<a href="/pet-adoption/account#survey" class="survey-back-btn__link" aria-label="Back to Survey Selection">Back</a>';
+    backBtnDiv.innerHTML = '<a href="/pet-adoption/account#survey" class="survey-back-btn__link" aria-label="Back to Survey Selection">Back</a>';
     const backBtn = backBtnDiv.querySelector('.survey-back-btn__link');
     surveyTitle.textContent = `${animalType === 'dog' ? 'Dog' : 'Cat'} Survey`;
 
@@ -80,9 +76,7 @@ function routeSurvey(block, token, animalType, initialUserData) {
 
       surveyContainer.append(surveyIncompleteDiv);
 
-      const surveyIncompleteBtn = surveyIncompleteDiv.querySelector(
-        '.survey-incomplete__btn'
-      );
+      const surveyIncompleteBtn = surveyIncompleteDiv.querySelector('.survey-incomplete__btn');
       surveyIncompleteBtn.addEventListener('click', (e) => {
         e.preventDefault();
         window.location.href = `/pet-adoption/survey?animalType=${animalType}`;
@@ -97,42 +91,34 @@ function routeSurvey(block, token, animalType, initialUserData) {
       decorateBlock(surveyBlock);
       loadBlock(surveyBlock);
 
-      // use mutationObserve to know when the pet survey is loaded into the DOM, then set the save changes button to disabled
+      // use mutationObserve to know when the pet survey is loaded into the DOM
+      // then set the save changes button to disabled
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (mutation.addedNodes.length) {
-            const surveySummaryHeader = block.querySelector(
-              '.pet-survey__summary-header'
-            );
-            surveySummaryHeader.innerHTML =
-              '<div class="pet-survey__success-message">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message"></div><h3 class="pet-survey__summary-header-title">Pet Preferences</h3>';
+            const surveySummaryHeader = block.querySelector('.pet-survey__summary-header');
+            surveySummaryHeader.innerHTML = '<div class="pet-survey__success-message">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message"></div><h3 class="pet-survey__summary-header-title">Pet Preferences</h3>';
 
-            const closeBtn = surveySummaryHeader.querySelector(
-              '.pet-survey__success-message-close'
-            );
+            const closeBtn = surveySummaryHeader.querySelector('.pet-survey__success-message-close');
 
             closeBtn.addEventListener('click', () => {
-              surveySummaryHeader.querySelector(
-                '.pet-survey__success-message'
-              ).style.display = 'none';
+              surveySummaryHeader.querySelector('.pet-survey__success-message').style.display = 'none';
             });
 
             const saveBtn = block.querySelector('#pet-survey-summary-save');
 
             saveBtn.disabled = true;
 
-            const textInputs = block.querySelectorAll(
-              "input[type='text']:not(:disabled)"
-            );
+            const textInputs = block.querySelectorAll("input[type='text']:not(:disabled)");
             const checkboxes = block.querySelectorAll("input[type='checkbox']");
             const selects = block.querySelectorAll('select');
 
             textInputs.forEach((input) => {
               input.addEventListener('input', () => {
                 if (
-                  input.validity.valid &&
-                  input.value.trim() !== '' &&
-                  input.value.trim() !== initialUserData[input.name]
+                  input.validity.valid
+                  && input.value.trim() !== ''
+                  && input.value.trim() !== initialUserData[input.name]
                 ) {
                   disableButtons(saveBtn, false);
                 } else {
@@ -185,25 +171,18 @@ async function bindAccountSurveyEvents(block, token, initialUserData) {
     </div>
   `;
 
-  const surveyAnimalTypeBtns = panelDiv.querySelectorAll(
-    '.survey-animal-type__btn'
-  );
+  const surveyAnimalTypeBtns = panelDiv.querySelectorAll('.survey-animal-type__btn');
 
   surveyAnimalTypeBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
 
-      const animalType = e.target.classList.contains(
-        'survey-animal-type__btn--dog'
-      )
+      const animalType = e.target.classList.contains('survey-animal-type__btn--dog')
         ? 'dog'
         : 'cat';
 
       // set sessionStorage to animalType, 1 for dog, 2 for cat
-      sessionStorage.setItem(
-        'surveyTabAnimalType',
-        animalType === 'dog' ? 1 : 2
-      );
+      sessionStorage.setItem('surveyTabAnimalType', animalType === 'dog' ? 1 : 2);
 
       routeSurvey(block, token, animalType, initialUserData);
     });
@@ -215,7 +194,7 @@ async function bindAccountSurveyEvents(block, token, initialUserData) {
 // Get the initial status of the survey
 function initialStatus(block, token) {
   // check url for ?saved=dog or ?saved=cat
-  const hash = window.location.hash;
+  const { hash } = window.location;
 
   if (hash.includes('saved')) {
     const animalType = hash.split('=')[1];

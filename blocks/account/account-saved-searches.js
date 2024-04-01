@@ -16,6 +16,7 @@ function removeFavoriteSearch(id, token, btn) {
         btn.closest('.saved-search-layout-row').remove();
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error deleting favorite', error);
         throw error;
     });
@@ -42,7 +43,6 @@ function openRemoveConfirmModal(e, token) {
         modal.classList.add('hidden');
         overlay.classList.remove('show');
     });
-
 }
 
 function createRemoveConfirmModal() {
@@ -69,12 +69,11 @@ function createRemoveConfirmModal() {
 async function bindSaveEvents(token) {
     const removeBtns = document.querySelectorAll('button.saved-search__delete');
 
-
-    removeBtns.forEach((button, index) => {
+    removeBtns.forEach((button) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-            isLoggedIn().then(isLoggedIn => {
-                if (isLoggedIn) {
+            isLoggedIn().then((isLoggedInParam) => {
+                if (isLoggedInParam) {
                     openRemoveConfirmModal(event, token);
                 } else {
                     logout();
@@ -85,7 +84,7 @@ async function bindSaveEvents(token) {
 }
 
 function getSearches(token) {
-    let builtHml = ''
+    let builtHml = '';
     const emptyFavList = `
         <div class='account-layout-container no-fav-pets'>
             You don’t currently have any saved searches.
@@ -103,62 +102,60 @@ function getSearches(token) {
             arrSaveList.push(favorite);
         });
 
-
         const elFavList = document.querySelector('.saved-search-layout-container');
 
         if (arrSaveList.length > 0) {
             arrSaveList.forEach((saved) => {
                 let searchUrl = '/pet-adoption/search?';
                 if (saved.SearchParameters.locationInformation.zipPostal) {
-                    searchUrl += 'zipPostal=' + saved.SearchParameters.locationInformation.zipPostal.replace(' ', '+');
+                    searchUrl += `zipPostal=${saved.SearchParameters.locationInformation.zipPostal.replace(' ', '+')}`;
                 }
                 if (saved.SearchParameters.locationInformation.milesRadius) {
-                    searchUrl += '&milesRadius=' + saved.SearchParameters.locationInformation.milesRadius;
+                    searchUrl += `&milesRadius=${saved.SearchParameters.locationInformation.milesRadius}`;
                 }
                 if (saved.SearchParameters.animalFilters.filterAge?.length) {
                     let ageFilterList = '';
                     saved.SearchParameters.animalFilters.filterAge?.forEach((age) => {
                         if (ageFilterList !== '') {
-                            ageFilterList += ',' + age;
+                            ageFilterList += `,${age}`;
                         } else {
                             ageFilterList += age;
                         }
                     });
-                    searchUrl += '&filterAge=' + ageFilterList
+                    searchUrl += `&filterAge=${ageFilterList}`;
                 }
                 if (saved.SearchParameters.animalFilters.filterAnimalType) {
-                    searchUrl += '&filterAnimalType=' + saved.SearchParameters.animalFilters.filterAnimalType;
+                    searchUrl += `&filterAnimalType=${saved.SearchParameters.animalFilters.filterAnimalType}`;
                 }
                 if (saved.SearchParameters.animalFilters.filterBreed.length) {
-                    searchUrl += '&filterBreed=' + saved.SearchParameters.animalFilters.filterBreed[0].replace(' ', '+');
+                    searchUrl += `&filterBreed=${saved.SearchParameters.animalFilters.filterBreed[0].replace(' ', '+')}`;
                 }
                 if (saved.SearchParameters.animalFilters.filterGender !== '') {
-                    searchUrl += '&filterGender=' + saved.SearchParameters.animalFilters.filterGender;
+                    searchUrl += `&filterGender=${saved.SearchParameters.animalFilters.filterGender}`;
                 }
                 if (saved.SearchParameters.animalFilters.filterSize?.length) {
                     let sizeFilterList = '';
                     saved.SearchParameters.animalFilters.filterSize?.forEach((size) => {
                         if (sizeFilterList !== '') {
-                            sizeFilterList += ',' + size;
+                            sizeFilterList += `,${size}`;
                         } else {
                             sizeFilterList += size;
                         }
                     });
-                    searchUrl += '&filterSize=' + sizeFilterList
+                    searchUrl += `&filterSize=${sizeFilterList}`;
                 }
                 builtHml += `
                 <div class='saved-search-layout-row'>
                     <div class='saved-search__content'>
-                        <div class='saved-search__title'>${saved.SearchParameters.animalFilters.filterAnimalType ? saved.Name : ('Pets near ' + saved.SearchParameters.locationInformation.zipPostal)}</div>
+                        <div class='saved-search__title'>${saved.SearchParameters.animalFilters.filterAnimalType ? saved.Name : (`Pets near ${saved.SearchParameters.locationInformation.zipPostal}`)}</div>
                         <div class='saved-search__timestamp'>Created on ${new Date(saved.DateCreated).toLocaleDateString()}</div>
                     </div>
                     <a class='saved-search__cta account-button' href=${searchUrl}>Launch Search</a>
-                    <button class='saved-search__delete' data-save-id=${saved.Id} data-description=${saved.SearchParameters.animalFilters.filterAnimalType ? encodeURIComponent(saved.Name) : encodeURIComponent(('Pets near ' + saved.SearchParameters.locationInformation.zipPostal))} aria-label='Delete this search item'></button>
+                    <button class='saved-search__delete' data-save-id=${saved.Id} data-description=${saved.SearchParameters.animalFilters.filterAnimalType ? encodeURIComponent(saved.Name) : encodeURIComponent((`Pets near ${saved.SearchParameters.locationInformation.zipPostal}`))} aria-label='Delete this search item'></button>
                 </div>
-                `
-            })
+                `;
+            });
             elFavList.innerHTML = builtHml;
-            
         } else {
             elFavList.innerHTML = emptyFavList;
         }
@@ -166,6 +163,7 @@ function getSearches(token) {
         await bindSaveEvents(token);
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
         const elFavList = document.querySelector('.saved-search-layout-container');
 

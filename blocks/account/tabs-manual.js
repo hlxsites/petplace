@@ -68,7 +68,7 @@ export default class TabsManual {
     }
 
     moveFocusToNextTab(currentTab) {
-      let index; 
+      let index;
       if (currentTab === this.lastTab) {
         this.moveFocusToTab(this.firstTab);
       } else {
@@ -115,8 +115,8 @@ export default class TabsManual {
 
     onClick(event) {
       event.preventDefault();
-      isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+      isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
           this.setSelectedTab(event.currentTarget);
         } else {
           logout();
@@ -125,24 +125,24 @@ export default class TabsManual {
     }
 
     onChange(event) {
-      const selectedIndex = parseInt(event.currentTarget.value);
+      const selectedIndex = parseInt(event.currentTarget.value, 10);
       this.setSelectedTab(this.tabs[selectedIndex]);
     }
 
     getIndexByHash(hashStr) {
       const targetTab = this.tabs.find((tab) => tab.href.endsWith(hashStr));
       if (targetTab) {
-        return parseInt(targetTab.getAttribute('data-tab-index'));
+        return parseInt(targetTab.getAttribute('data-tab-index'), 10);
       }
       return -1;
     }
 
     getHashFromURL(url) {
-      var hashIndex = url.indexOf('#');
+      const hashIndex = url.indexOf('#');
       if (hashIndex !== -1) {
           return url.substring(hashIndex + 1);
-      } else {
-          return ''; // Return an empty string if there's no hash
       }
+
+      return ''; // Return an empty string if there's no hash
   }
 }
