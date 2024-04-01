@@ -14,7 +14,7 @@ export default class MultiSelect {
         this.containerNodes.forEach((container) => {
           container.addEventListener('focusout', this.handleFocusOut.bind(this));
         });
-        document.onkeydown = function(event) {
+        document.onkeydown = (event) => {
           const evt = event;
           let isEscape = false;
           if ('key' in evt) {

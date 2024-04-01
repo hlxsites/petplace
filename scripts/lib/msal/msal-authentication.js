@@ -53,7 +53,6 @@ async function initializeMsalInstances() {
     selectAccount(msalChangePwdInstance);
   }
 
-
   cachedMsalInstance = msalInstance;
   cachedMsalChangePwdInstance = msalChangePwdInstance;
 
@@ -83,13 +82,13 @@ export async function login(callback, featureName) {
   if (isMobile()) {
     msalInstance.loginRedirect(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   } else {
     msalInstance.loginPopup(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -165,6 +164,7 @@ export function acquireToken(featureName) {
                 });
             }
           } else {
+            // eslint-disable-next-line no-console
             console.log(error);
             reject(error);
           }
@@ -207,12 +207,14 @@ export async function changePassword(callback, featureName) {
         msalChangePwdInstance.loginRedirect(changePwdRequest)
           .then((response) => handleResponse(response, callback, featureName))
           .catch(error => {
+            // eslint-disable-next-line no-console
             console.log(error);
           });
       } else {
         msalChangePwdInstance.loginPopup(changePwdRequest)
           .then((response) => handleResponse(response, callback, featureName))
           .catch(error => {
+            // eslint-disable-next-line no-console
             console.log(error);
           });
       }
@@ -286,8 +288,9 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + response.accessToken,
+          Authorization: `Bearer${response.accessToken}`,
         },
+        // eslint-disable-next-line no-useless-escape
         body: featureName ? '\"' + featureName + '\"' : null,
       })
         .then(() => {

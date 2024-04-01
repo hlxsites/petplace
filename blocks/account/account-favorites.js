@@ -124,8 +124,8 @@ async function bindAccountFavoritesEvents(block, token, favList) {
     removeBtns.forEach((button, index) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-            isLoggedIn().then(isLoggedIn => {
-                if (isLoggedIn) {
+            isLoggedIn().then((isLoggedInParam) => {
+                if (isLoggedInParam) {
                     if (favList[index].Animal.IsAvailable) {
                         openRemoveConfirmModal(extractName(favList[index].Animal.Name), button.closest('.fav-pet-card'), favList[index].Id, token, button);
                     } else {
@@ -215,7 +215,7 @@ function getFavorites(animalData) {
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
                     <div class="fp-img">
-                    ${createImageObject(ImageUrl, fallBackImg,'').outerHTML}
+                    ${createImageObject(ImageUrl, fallBackImg, '').outerHTML}
                     </div>
                     <div class="fp-info">
                         <div class="fp-info-header">
@@ -258,6 +258,7 @@ function getFavorites(animalData) {
         await bindAccountFavoritesEvents(elFavList, animalData, arrFavList);
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
         const elFavList = document.querySelector('.favorites-list');
 

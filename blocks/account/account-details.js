@@ -4,6 +4,7 @@ import { callUserApi } from './account.js';
 
 function serialize(data) {
     const obj = {};
+    // eslint-disable-next-line no-restricted-syntax
     for (const [key, value] of data) {
         obj[key] = value;
     }
@@ -236,8 +237,8 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     submitButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
             event.preventDefault();
-            isLoggedIn().then(isLoggedIn => {
-                if (!isLoggedIn) {
+            isLoggedIn().then((isLoggedInParam) => {
+                if (!isLoggedInParam) {
                     logout();
                 }
             });
@@ -246,7 +247,10 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     submitButtons.forEach((button) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-            const payLoad = { ...serialize(new FormData(personalInfoForm)), ...refactorPreferenceForm(serialize(new FormData(preferencesForm))) };
+            const payLoad = {
+                ...serialize(new FormData(personalInfoForm)),
+                ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
+            };
             await callUserApi(token, 'PUT', payLoad);
             disableButtons(submitButtons, true);
             initialUserData = payLoad;

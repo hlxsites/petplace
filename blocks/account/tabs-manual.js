@@ -115,8 +115,8 @@ export default class TabsManual {
 
     onClick(event) {
       event.preventDefault();
-      isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+      isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
           this.setSelectedTab(event.currentTarget);
         } else {
           logout();
@@ -138,11 +138,11 @@ export default class TabsManual {
     }
 
     getHashFromURL(url) {
-      var hashIndex = url.indexOf('#');
+      const hashIndex = url.indexOf('#');
       if (hashIndex !== -1) {
           return url.substring(hashIndex + 1);
-      } else {
-          return ''; // Return an empty string if there's no hash
       }
+
+      return ''; // Return an empty string if there's no hash
   }
 }

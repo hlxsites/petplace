@@ -409,6 +409,7 @@ export default async function decorate(block) {
       sampleRUM('search', { source: '.search-input', target: query });
     });
 
+    // eslint-disable-next-line no-inner-declarations
     function checkInterface() {
       if (isTablet()) {
         /* if (document.querySelector('body').classList.contains('body-locked')) {
@@ -431,8 +432,8 @@ export default async function decorate(block) {
         document.querySelector('.nav-language-selector').classList.remove('hidden');
       }
 
-      isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+      isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
           navLogin.querySelector('.user-btn').classList.remove('hidden');
           navLogin.querySelector('.login-btn').classList.add('hidden');
         } else {
@@ -472,15 +473,15 @@ export default async function decorate(block) {
 
     navMeta = getMetadata('nav');
     navPath = navMeta ? new URL(navMeta).pathname : `${window.hlx.contentBasePath}/fragments/nav`;
-    let resp = await fetch(`${navPath}.plain.html`);
-    if (!resp.ok) {
+    let response = await fetch(`${navPath}.plain.html`);
+    if (!response.ok) {
       return;
     }
 
     const headerWrapper = document.querySelector('.header-wrapper');
     headerWrapper.classList.add('header-wrapper-gb');
 
-    let html = await resp.text();
+    let html = await response.text();
 
     // decorate nav DOM
     const nav = document.createElement('nav');
@@ -585,12 +586,12 @@ export default async function decorate(block) {
 
     const navSidebar = document.createElement('div');
     navSidebar.classList.add('nav-sidebar');
-    resp = await fetch(`${window.hlx.contentBasePath}/fragments/sidenav.plain.html`);
-    if (!resp.ok) {
+    response = await fetch(`${window.hlx.contentBasePath}/fragments/sidenav.plain.html`);
+    if (!response.ok) {
       return;
     }
 
-    html = await resp.text();
+    html = await response.text();
 
     const ariaDialog = document.createElement(AriaDialog.tagName);
     ariaDialog.setAttribute('modal', true);

@@ -5,6 +5,7 @@ import endPoints from '../../variables/endpoints.js';
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
+// eslint-disable-next-line import/first
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 
 const {

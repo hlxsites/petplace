@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable indent */
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { ImageCarousel } from './image-carousel.js';
@@ -81,9 +82,25 @@ function formatAnimalData(apiData) {
   };
   return formattedData;
 }
+
+async function getParametersFromUrl() {
+  const { pathname } = window.location;
+  const pathArr = pathname.split('/');
+  const pagePathString = getMetadata('pet-profile-page-paths') || '/pet-adoption/dogs/,/pet-adoption/cats/,/pet-adoption/others/';
+  const pagePaths = pagePathString.split(',');
+  if (pagePaths.some((el) => pathname.startsWith(el)) && pathArr.length >= 4) {
+    const [animalId, clientId] = pathname.endsWith('/')
+      ? pathArr.slice(pathArr.length - 3, pathArr.length - 1)
+      : pathArr.slice(-2);
+    return { animalId, clientId };
+  }
+  return {};
+}
+
 async function formatSimilarPetData(apiData) {
   if (apiData && apiData.length > 4) {
     const { animalId } = await getParametersFromUrl();
+    // eslint-disable-next-line prefer-const
     let animalArray = [];
     apiData.forEach((pet) => {
       if (pet.animalId !== animalId) {
@@ -153,19 +170,7 @@ function createChecklistItem(index, label, text) {
   }
   return checklistItemContainer;
 }
-async function getParametersFromUrl() {
-  const { pathname } = window.location;
-  const pathArr = pathname.split('/');
-  const pagePathString = getMetadata('pet-profile-page-paths') || '/pet-adoption/dogs/,/pet-adoption/cats/,/pet-adoption/others/';
-  const pagePaths = pagePathString.split(',');
-  if (pagePaths.some((el) => pathname.startsWith(el)) && pathArr.length >= 4) {
-    const [animalId, clientId] = pathname.endsWith('/')
-      ? pathArr.slice(pathArr.length - 3, pathArr.length - 1)
-      : pathArr.slice(-2);
-    return { animalId, clientId };
-  }
-  return {};
-}
+
 async function fetchAnimalData(animalApi) {
   let result = {};
   try {
@@ -179,6 +184,7 @@ async function fetchAnimalData(animalApi) {
   }
   return result;
 }
+
 async function fetchSimilarPets(zip, animalType, animalListApi) {
   const payload = {
     locationInformation: {
@@ -307,6 +313,7 @@ async function createCarouselSection(petName, images) {
   }
   return sectionContainer;
 }
+
 async function createAboutPetSection(aboutPet) {
   const {
     petName,
@@ -440,8 +447,6 @@ async function createChecklistSection(inquiryStatus) {
   // retrieve the value for key 'Checklist Label'
   const {
     checklistLabel,
-    checklistItem1Label,
-    checklistItem1Text,
     checklistItem2Label,
     checklistItem2Text,
     checklistItem3Label,
@@ -458,7 +463,12 @@ async function createChecklistSection(inquiryStatus) {
   /* if (inquiryStatus === true) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
-        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
+        checklistContainer.append(createCta('',
+          'Start Pet Match Survey',
+          'pet-details-button button primary right-arrow',
+          true
+          )
+        );
     }
   } */
 
@@ -668,6 +678,7 @@ export default async function decorate(block) {
 
     // add inquiry functionality - temporarily disabling this until survey flow is ready for release
     // const petCtaContaner = document.querySelector('.about-pet-ctas');
+    // eslint-disable-next-line max-len
     // petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
@@ -726,7 +737,7 @@ export default async function decorate(block) {
         Authorization: `Bearer ${response}`,
       },
     })
-      .then((response) => response.json())
+      .then((responseData) => responseData.json())
       .then((data) => {
         // favorite Pet in the UI
         data.forEach((favorite) => {
@@ -744,15 +755,16 @@ export default async function decorate(block) {
   }
 
   // check if user is logged in
-  isLoggedIn().then((isLoggedIn) => {
-     if (isLoggedIn) {
+  isLoggedIn().then((isLoggedInParam) => {
+     if (isLoggedInParam) {
          // if logged in set pet as favorite
          acquireToken()
          .then((response) => {
              getFavorites(response);
          })
          .catch((error) => {
-             // console.error('Error:', error);
+             // eslint-disable-next-line no-console
+             console.error('Error:', error);
          });
      } else {
        // not logged in or token is expired without ability to silently refresh its validity

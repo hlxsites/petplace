@@ -185,8 +185,7 @@ export default async function decorate(block) {
         );
         // make sure a question has been checked before moving to the next
         if (
-          block.querySelector(
-            '.pet-survey .pet-survey__question.active input:checked')
+          block.querySelector('.pet-survey .pet-survey__question.active input:checked')
           || !block.querySelector('.pet-survey .pet-survey__question.active input')
         ) {
           setActiveQuestion(block, currentActiveIndex, currentActiveIndex + 1);
@@ -231,7 +230,7 @@ export default async function decorate(block) {
           payload,
         );
         if (result) {
-          window.location.href = `/pet-adoption/inquiry-confirmation`;
+          window.location.href = '/pet-adoption/inquiry-confirmation';
         }
       });
     }

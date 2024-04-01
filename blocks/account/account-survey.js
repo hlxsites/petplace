@@ -194,7 +194,7 @@ async function bindAccountSurveyEvents(block, token, initialUserData) {
 // Get the initial status of the survey
 function initialStatus(block, token) {
   // check url for ?saved=dog or ?saved=cat
-  const hash = window.location.hash;
+  const { hash } = window.location;
 
   if (hash.includes('saved')) {
     const animalType = hash.split('=')[1];

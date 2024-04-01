@@ -186,7 +186,7 @@ export async function saveSearch(token) {
 
     const filters = document.createElement('div');
     filters.className = 'saved-filters';
-    filters.innerText = `${petType !== 'null' ? petType + 's' : 'Pets'} near ${zip} ${filterString}`;
+    filters.innerText = `${petType !== 'null' ? `${petType}s` : 'Pets'} near ${zip} ${filterString}`;
 
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
@@ -220,7 +220,7 @@ export async function saveSearch(token) {
 export function setSaveSearch(e) {
   e.preventDefault();
 
-  acquireToken('Save Search').then(token => {
+  acquireToken('Save Search').then((token) => {
     saveSearch(token);
   });
 }

@@ -1,6 +1,6 @@
 import MultiSelect from './multi-select.js';
 
-export function createInput(wrapperClass = '', type, questionId, option, isExternal, prefix = null) {
+export function createInput(type, questionId, option, isExternal, prefix = null, wrapperClass = '') {
   const div = document.createElement('div');
   if (wrapperClass) {
     div.className = wrapperClass;
@@ -8,9 +8,9 @@ export function createInput(wrapperClass = '', type, questionId, option, isExter
   const input = document.createElement('input');
   input.type = type;
   if (type === 'radio') {
-    input.name = `${prefix ? prefix + '-' : ''}question-${questionId}`;
+    input.name = `${prefix ? `${prefix}-` : ''}question-${questionId}`;
   }
-  input.id = `${prefix ? prefix + '-' : ''}question-${questionId}-option-${option.Id}`;
+  input.id = `${prefix ? `${prefix}-` : ''}question-${questionId}-option-${option.Id}`;
   input.setAttribute('data-question-id', questionId);
   input.setAttribute('data-option-id', option.Id);
   input.setAttribute('data-option-text', option.AnswerText);
@@ -18,7 +18,7 @@ export function createInput(wrapperClass = '', type, questionId, option, isExter
     input.setAttribute('data-is-external', 'true');
   }
   const label = document.createElement('label');
-  label.setAttribute('for', `${prefix ? prefix + '-' : ''}question-${questionId}-option-${option.Id}`);
+  label.setAttribute('for', `${prefix ? `${prefix}-` : ''}question-${questionId}-option-${option.Id}`);
   label.innerText = option.AnswerText;
   div.append(input, label);
   return div;
@@ -36,18 +36,27 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
   return container;
 }
 
-export function createSingleSelect(questionId, options, defaultValue = null, label = null, className = null, attributes = null, prefix = null, errorMessage = null) {
+export function createSingleSelect(
+  questionId,
+  options,
+  defaultValue = null,
+  label = null,
+  className = null,
+  attributes = null,
+  prefix = null,
+  errorMessage = null,
+) {
   const containerDiv = document.createElement('div');
   containerDiv.className = `single-select ${className || ''}`;
   if (label) {
     const labelEl = document.createElement('label');
-    labelEl.setAttribute('for', `${prefix ? prefix + '-' : ''}question-${questionId}`);
+    labelEl.setAttribute('for', `${prefix ? `${prefix}-` : ''}question-${questionId}`);
     labelEl.innerText = label;
     containerDiv.append(labelEl);
   }
   const select = document.createElement('select');
-  select.name = `${prefix ? prefix + '-' : ''}question-${questionId}`;
-  select.id = `${prefix ? prefix + '-' : ''}question-${questionId}`;
+  select.name = `${prefix ? `${prefix}-` : ''}question-${questionId}`;
+  select.id = `${prefix ? `${prefix}-` : ''}question-${questionId}`;
   select.setAttribute('data-question-id', questionId);
   if (attributes) {
     const keys = Object.keys(attributes);
@@ -79,10 +88,17 @@ export function createSingleSelect(questionId, options, defaultValue = null, lab
   }
   return containerDiv;
 }
-export function createMultiSelect(questionId, options, isExternal, label = null, className = null, prefix = null) {
+export function createMultiSelect(
+  questionId,
+  options,
+  isExternal,
+  label = null,
+  className = null,
+  prefix = null,
+) {
   const containerDiv = document.createElement('div');
   containerDiv.className = `multi-select ${className || ''}`;
-  containerDiv.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}`;
+  containerDiv.id = `${prefix ? `${prefix}-` : ''}multi-select-question-${questionId}`;
   if (label) {
     const labelEl = document.createElement('div');
     labelEl.className = 'label';
@@ -90,11 +106,11 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
     containerDiv.append(labelEl);
   }
   const button = document.createElement('button');
-  button.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-button`;
+  button.id = `${prefix ? `${prefix}-` : ''}multi-select-question-${questionId}-button`;
   button.className = 'multi-select__button';
   button.type = 'button';
   button.setAttribute('aria-expanded', 'false');
-  button.setAttribute('aria-controls', `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-options`);
+  button.setAttribute('aria-controls', `${prefix ? `${prefix}-` : ''}multi-select-question-${questionId}-options`);
   const text = document.createElement('span');
   text.className = 'multi-select__button-text';
   text.innerText = 'Select from menu...';
@@ -103,14 +119,15 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
   button.append(text, icon);
   const groupDiv = document.createElement('div');
   groupDiv.setAttribute('role', 'group');
-  groupDiv.setAttribute('aria-labelledby', `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-button`);
+  groupDiv.setAttribute('aria-labelledby', `${prefix ? `${prefix}-` : ''}multi-select-question-${questionId}-button`);
   groupDiv.setAttribute('tabindex', '0');
   groupDiv.className = 'multi-select__options';
-  groupDiv.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-options`;
+  groupDiv.id = `${prefix ? `${prefix}-` : ''}multi-select-question-${questionId}-options`;
   options.forEach((option) => {
     groupDiv.append(createInput('multi-select__input', 'checkbox', questionId, option, isExternal, prefix));
   });
   containerDiv.append(button, groupDiv);
+  // eslint-disable-next-line no-new
   new MultiSelect(containerDiv);
   return containerDiv;
 }
@@ -132,7 +149,9 @@ export function createQuestion(item, index) {
     if (IsMultiAnswer) {
       optionsDiv.append(createMultiSelect(Id, QuestionOptions, isExternal, null, null, 'survey'));
     } else {
-      optionsDiv.append(createSingleSelect(Id, QuestionOptions, Label, null, isExternal ? { 'data-is-external': 'true' } : null, 'survey'));
+      optionsDiv.append(
+        createSingleSelect(Id, QuestionOptions, Label, null, isExternal ? { 'data-is-external': 'true' } : null, 'survey'),
+      );
     }
   } else {
     optionsDiv.append(createControlGroup(Id, IsMultiAnswer, isExternal, Label, QuestionOptions));
@@ -140,7 +159,13 @@ export function createQuestion(item, index) {
   itemDiv.append(optionsDiv);
   return itemDiv;
 }
-export async function createPresurvey(preSurveyHeading, preSurveySubheading, preSurveySignInLabel, surveyCancelLabel, surveyStartLabel) {
+export async function createPresurvey(
+  preSurveyHeading,
+  preSurveySubheading,
+  preSurveySignInLabel,
+  surveyCancelLabel,
+  surveyStartLabel,
+) {
   const containerDiv = document.createElement('div');
   containerDiv.className = 'pet-survey__layout-container pet-survey__layout-container--presurvey';
   const presurveyDiv = document.createElement('div');
@@ -210,7 +235,13 @@ export async function createSurveySteps(surveyHeading, questions) {
   containerDiv.append(surveyDiv);
   return containerDiv;
 }
-export async function createSummaryForm(animalType, questionArray, animalId = null, clientId = null, surveySummaryFlow = null) {
+export async function createSummaryForm(
+  animalType,
+  questionArray,
+  animalId = null,
+  clientId = null,
+  surveySummaryFlow = null,
+) {
   const formDiv = document.createElement('div');
   formDiv.className = 'pet-survey__form-container';
   const form = document.createElement('form');
@@ -219,7 +250,7 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
   form.className = 'pet-survey__form';
   questionArray.forEach((item) => {
     const { Question } = item;
-    const isExternal = Question.ExternalAnswerSource ? true : false;
+    const isExternal = !!Question.ExternalAnswerSource;
     if (Question.IsMultiAnswer) {
       form.append(createMultiSelect(Question.Id, Question.QuestionOptions, isExternal, Question.Label, 'pet-survey__form-control', 'summary'));
     } else {
@@ -260,7 +291,8 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
     inquiryBtn.innerText = 'Submit Inquiry';
     ctaContainer.append(backBtn, inquiryBtn);
   } else if (animalType && surveySummaryFlow === 'summary') {
-    // Add additional else if statement to check for in summary flow, w/ animalType ... show back button and inquiry button
+    // Add additional else if statement to check for in summary flow,
+    // w/ animalType ... show back button and inquiry button
     // Add agreement checkbox
     const agreementDiv = document.createElement('div');
     agreementDiv.className = 'pet-survey__form-control agreement-checkbox';
@@ -301,7 +333,12 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
   formDiv.append(form);
   return formDiv;
 }
-export async function createSummaryScreen(surveySummaryHeading, surveySummarySubheading, summaryForm) {
+
+export async function createSummaryScreen(
+  surveySummaryHeading,
+  surveySummarySubheading,
+  summaryForm,
+) {
   const containerDiv = document.createElement('div');
   containerDiv.className = 'pet-survey__layout-container pet-survey__layout-container--summary hide';
   const headerDiv = document.createElement('div');

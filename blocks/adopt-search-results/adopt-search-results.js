@@ -45,18 +45,18 @@ function getFilters() {
     let genderFilterList = '';
     genderFilters?.forEach((gender) => {
         if (genderFilterList !== '') {
-            genderFilterList += ',' + gender?.value;
+            genderFilterList += `,${gender?.value}`;
         } else {
-            genderFilterList += gender?.value;
+            genderFilterList += gender?.value || '';
         }
     });
     const ageFilters = document.querySelectorAll('input[name="age"]:checked');
     let ageFilterList = '';
     ageFilters?.forEach((age) => {
         if (ageFilterList !== '') {
-            ageFilterList += ',' + age?.value;
+            ageFilterList += `,${age?.value || ''}`;
         } else {
-            ageFilterList += age?.value;
+            ageFilterList += age?.value || 0;
         }
     });
 
@@ -64,9 +64,9 @@ function getFilters() {
     let sizeFilterList = '';
     sizeFilters?.forEach((size) => {
         if (sizeFilterList !== '') {
-            sizeFilterList += ',' + size?.value;
+            sizeFilterList += `,${size?.value || 0}`;
         } else {
-            sizeFilterList += size?.value;
+            sizeFilterList += size?.value || 0;
         }
     });
     const filters = {
@@ -218,6 +218,7 @@ async function updateBreedListSelect() {
 }
 
 function numPages() {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     return Math.ceil(animalArray?.length / recordsPerPage);
 }
 
@@ -227,10 +228,11 @@ function getFavorites(response) {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${response}`,
-        }
-    }).then(response => {
-        //console.log('Success:', response.status);
-        return response.json();
+        },
+    }).then((responseData) => {
+        // eslint-disable-next-line no-console
+        console.log('Success:', responseData.status);
+        return responseData.json();
     }).then((data) => {
         // favorite Pet in the UI
         data.forEach((favorite) => {
@@ -256,11 +258,11 @@ function buildResultsList(animalList) {
         tempResultsBlock.append(div);
     });
     // check if user is logged in
-    isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+    isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
             // if logged in set pet as favorite
             acquireToken()
-            .then(response => {
+            .then((response) => {
                 getFavorites(response);
             })
             .catch((error) => {
@@ -503,7 +505,7 @@ function buildFilterSidebar(sidebar) {
         sizeRadio.type = 'checkbox';
         sizeRadio.name = 'size';
         sizeRadio.id = size;
-        sizeRadio.value = placeholders[size.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+        sizeRadio.value = placeholders[size.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => {
             if (+match === 0) return '';
             return index === 0 ? match.toLowerCase() : match.toUpperCase();
         })];
@@ -665,8 +667,8 @@ window.onload = callBreedList('null').then((data) => {
         if (petType?.value === 'Other' || petType?.value === 'null') {
             petBreed.setAttribute('disabled', '');
         } else {
-            callBreedList(petType?.value).then((data) => {
-                breedList = data;
+            callBreedList(petType?.value).then((outputData) => {
+                breedList = outputData;
                 updateBreedListSelect().then(() => {
                 for (let i = 0; i < petBreeds.length; i += 1) {
                     if (petBreeds[i].value === params.get('filterBreed')) {
@@ -713,8 +715,8 @@ window.onload = callBreedList('null').then((data) => {
                     }
                 });
             }
-            callAnimalList().then((data) => {
-                buildResultsContainer(data);
+            callAnimalList().then((resultData) => {
+                buildResultsContainer(resultData);
             });
         });
     }
@@ -812,6 +814,11 @@ export default async function decorate(block) {
     zipLabelElem.setAttribute('for', 'zipCode');
     zipLabelElem.innerText = zipLabel;
 
+    const errorSpan = document.createElement('span');
+    errorSpan.className = 'error-message';
+    errorSpan.id = 'zip-error';
+    errorSpan.textContent = zipErrorMessage;
+
     const zipInput = document.createElement('input');
     zipInput.setAttribute('aria-label', zipPlaceholder);
     zipInput.className = 'zipCode';
@@ -837,11 +844,6 @@ export default async function decorate(block) {
         zipInput.ariaInvalid = 'true';
         }
     });
-
-    const errorSpan = document.createElement('span');
-    errorSpan.className = 'error-message';
-    errorSpan.id = 'zip-error';
-    errorSpan.textContent = zipErrorMessage;
 
     zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
