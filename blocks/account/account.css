@@ -560,6 +560,7 @@
   background-color: #f7f7fa;
 }
 
+.account-tabpanel--details .hidden,
 .account-tabpanel--favorites .hidden,
 .account-tabpanel--inquiries .hidden {
   display: none !important;
@@ -634,11 +635,13 @@
   z-index: 20;
 }
 
+.account-tabpanel--details .overlay.show,
 .account-tabpanel--favorites .overlay.show,
 .account-tabpanel--inquiries .overlay.show {
   display: block;
 }
 
+.account-tabpanel--details .optout-email-modal,
 .account-tabpanel--favorites .confirm-remove-favorite-modal,
 .account-tabpanel--inquiries .confirm-remove-inquiry-modal {
   position: fixed;
@@ -654,6 +657,7 @@
   text-align: center;
 }
 
+.account-tabpanel--details .optout-email-modal .modal-title,
 .account-tabpanel--favorites .confirm-remove-favorite-modal .modal-title,
 .account-tabpanel--inquiries .confirm-remove-inquiry-modal .modal-title {
   font-size: 32px;
@@ -661,6 +665,7 @@
   line-height: 36px;
 }
 
+.account-tabpanel--details .optout-email-favorite-modal .modal-action-btns,
 .account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns,
 .account-tabpanel--inquiries .confirm-remove-inquiry-modal .modal-action-btns {
   margin: 0 auto;
@@ -670,6 +675,10 @@
   margin-top: 20px;
 }
 
+.account-tabpanel--details
+  .optout-email-modal
+  .modal-action-btns
+  .cancel,
 .account-tabpanel--favorites
   .confirm-remove-favorite-modal
   .modal-action-btns
@@ -690,8 +699,12 @@
   padding: 5px 30px;
   text-overflow: unset;
   overflow: visible;
+  justify-content: center;
 }
 
+.account-tabpanel--details
+  .optout-email-modal
+  .confirm,
 .account-tabpanel--favorites
   .confirm-remove-favorite-modal
   .modal-action-btns
@@ -706,6 +719,7 @@
   background-color: #c74d2f;
 }
 
+.account-tabpanel--details .overlay,
 .account-tabpanel--searchalerts .overlay {
   display: none;
   position: fixed;
@@ -744,16 +758,20 @@
   line-height: 36px;
 }
 
+.account-tabpanel--details .optout-email-modal .modal-action-btns,
 .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
   flex-direction: column;
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
 }
 
+.account-tabpanel--details
+  .optout-email-modal
+  .modal-action-btns
+  .cancel,
 .account-tabpanel--searchalerts
   .confirm-remove-modal
   .modal-action-btns
@@ -774,6 +792,7 @@
   margin: 0;
 }
 
+.account-tabpanel--details .optout-email-modal .modal-action-btns .confirm,
 .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .confirm {
   justify-content: center;
   font-size: 18px;
@@ -822,19 +841,13 @@
         top: 250px;
     }
 
+    .account-tabpanel--details .optout-email-modal .modal-action-btns,
     .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {
         flex-direction: row;
     }
 
-    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .confirm,
-    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .cancel {
-        margin: 16px 0;
-    }
-
-    .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns {
-        flex-direction: row;
-    }
-
+    .account-tabpanel--details .optout-email-modal .modal-action-btns .confirm,
+    .account-tabpanel--details .optout-email-modal .modal-action-btns .cancel,
     .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .confirm,
     .account-tabpanel--searchalerts .confirm-remove-modal .modal-action-btns .cancel {
         margin: 16px 0;

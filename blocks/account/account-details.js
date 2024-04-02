@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { changePassword, isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
+import endPoints from '../../variables/endpoints.js';
 
 function serialize(data) {
     const obj = {};
@@ -71,6 +72,87 @@ function createSwitch(inputId, accessibilityLabel, isOn = false) {
         });
     }
     return switchDiv;
+}
+
+function removeSearchAlerts(id, token) {
+    // change here to delete all search alerts at once
+    return fetch(`${endPoints.apiUrl}/adopt/api/UserSearch/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Error deleting favorite', error);
+        throw error;
+    });
+}
+
+function openOptOutModal(token) {
+    const modal = document.querySelector('.optout-email-modal');
+    const confirmBtn = document.querySelector('.optout-email-modal .confirm');
+    const cancelBtn = document.querySelector('.optout-email-modal .cancel');
+    modal.classList.remove('hidden');
+    const overlay = document.querySelector('.overlay');
+    overlay.classList.add('show');
+    confirmBtn.addEventListener('click', () => {
+        isLoggedIn().then((isLoggedInParam) => {
+            if (isLoggedInParam) {
+                removeSearchAlerts(token);
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            } else {
+                logout();
+            }
+        });
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        overlay.classList.remove('show');
+        document.querySelector('#EmailOptIn').checked = true;
+    });
+}
+
+function emailOptOutConfirmModal() {
+    const optOutModalStructure = `
+        <div class="modal optout-email-modal hidden">
+            <div class="modal-header">
+            <h3 class="modal-title">Remove Email Notifications?</h3>
+            </div>
+            <div class="modal-body">
+                <p>By opting out of email communications you will not be able to receive any search alerts.</p>
+                <p>Are you sure you want to remove your Email notifications?</p>
+                <div class="modal-action-btns">
+                    <button class="cancel">Cancel</button>
+                    <button class="confirm">Opt-out and delete all search alerts</button>
+                </div>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    `;
+
+    return optOutModalStructure;
+}
+
+function searchAlertsCheck(token) {
+    fetch(`${endPoints.apiUrl}/adopt/api/UserSearch`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((response) => response.json()).then(async (data) => {
+        if (data.length > 0) {
+            openOptOutModal(token);
+        }
+    })
+    .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Error:', error);
+    });
 }
 
 export async function createAccountDetailsPanel(userData) {
@@ -170,7 +252,7 @@ export async function createAccountDetailsPanel(userData) {
                         <div class='form-control form-control--switch'>
                             ${createSwitch('PartnerOffer', 'Partner Offers', PartnerOffer).outerHTML}
                         </div>
-                    </div>                
+                    </div>
                 </div>
                 <h3>Notifications</h3>
                 <div class='account-layout-row'>
@@ -201,6 +283,7 @@ export async function createAccountDetailsPanel(userData) {
             </form>
         </div>
     `;
+    panelDiv.innerHTML += emailOptOutConfirmModal();
     return panelDiv;
 }
 
@@ -228,6 +311,9 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener('change', () => {
             if (checkbox.checked !== initialUserData[checkbox.name]) {
+                if (checkbox.id === 'EmailOptIn') {
+                    searchAlertsCheck(token);
+                }
                 disableButtons(submitButtons, false);
             } else {
                 disableButtons(submitButtons, true);
