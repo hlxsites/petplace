@@ -55,11 +55,12 @@ function routeSurvey(block, token, animalType, initialUserData) {
     backBtn.addEventListener('click', (e) => {
       e.preventDefault();
       window.location.href = '/pet-adoption/account#survey';
-
       const currentSurvey = block.querySelector('.pet-survey');
+      const startSurvey = block.querySelector('.survey-incomplete');
       surveyBtnContainer.style.display = 'flex';
       backBtnDiv.remove();
-      currentSurvey.remove();
+      currentSurvey?.remove();
+      startSurvey?.remove();
     });
 
     surveyTabPanel.prepend(backBtnDiv);
