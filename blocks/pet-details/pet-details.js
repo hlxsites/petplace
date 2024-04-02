@@ -447,6 +447,8 @@ async function createChecklistSection(inquiryStatus) {
   // retrieve the value for key 'Checklist Label'
   const {
     checklistLabel,
+    checklistItem1Label,
+    checklistItem1Text,
     checklistItem2Label,
     checklistItem2Text,
     checklistItem3Label,
