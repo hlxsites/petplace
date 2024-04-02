@@ -29,10 +29,25 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
     container.setAttribute('role', 'group');
     container.setAttribute('aria-label', Label);
     container.setAttribute('tabindex', '0');
-    options.forEach((option) => {
+    options.forEach((option, index) => {
         const input = createInput('custom-input', type, Id, option, isExternal, 'survey');
         container.append(input);
     });
+    if (isMultiAnswer) {
+        const checkboxArray = container.querySelectorAll('input');
+        checkboxArray?.forEach((checkbox, index) => {
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked && index === 0) {
+                    checkboxArray.forEach((input) => {
+                        input.checked = false;
+                    })
+                    checkboxArray[0].checked = true;
+                } else if (checkbox.checked && index !== 0) {
+                    checkboxArray[0].checked = false;
+                }
+            })
+        })
+    }
     return container;
 }
 export function createSingleSelect(questionId, options, defaultValue= null, label = null, className = null, attributes = null, prefix=null, errorMessage = null) {
