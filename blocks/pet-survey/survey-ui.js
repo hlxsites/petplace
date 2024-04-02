@@ -97,11 +97,15 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
     const containerDiv = document.createElement('div');
     containerDiv.className = `multi-select ${className || ''}`;
     containerDiv.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}`;
+    let checkboxOverride = false;
     if (label) {
         const labelEl = document.createElement('div');
         labelEl.className = 'label';
         labelEl.innerText = label;
         containerDiv.append(labelEl);
+        if (label === 'Other Requirements') {
+            checkboxOverride = true;
+        }
     }
     const button = document.createElement('button');
     button.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-button`;
@@ -126,6 +130,21 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
     });
     containerDiv.append(button, groupDiv);
     new MultiSelect(containerDiv);
+    if (checkboxOverride) {
+        const checkboxArray = groupDiv.querySelectorAll('input');
+        checkboxArray?.forEach((checkbox, index) => {
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked && index === 0) {
+                    checkboxArray.forEach((input) => {
+                        input.checked = false;
+                    })
+                    checkboxArray[0].checked = true;
+                } else if (checkbox.checked && index !== 0) {
+                    checkboxArray[0].checked = false;
+                }
+            })
+        })
+    }
     return containerDiv;
 }
 export function createQuestion(item, index) {
