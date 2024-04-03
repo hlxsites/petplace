@@ -74,20 +74,37 @@ function createSwitch(inputId, accessibilityLabel, isOn = false) {
     return switchDiv;
 }
 
-function removeSearchAlerts(id, token) {
-    // change here to delete all search alerts at once
-    return fetch(`${endPoints.apiUrl}/adopt/api/UserSearch/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    })
-    .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error('Error deleting favorite', error);
-        throw error;
+function removeAllSearchAlerts(token) {
+    const savedSearchesList = document.querySelectorAll('button[data-save-id]');
+
+    savedSearchesList.forEach((savedSearch) => {
+        const savedSearchId = savedSearch.getAttribute('data-save-id');
+
+        return fetch(`${endPoints.apiUrl}/adopt/api/UserSearch/${savedSearchId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error('Error deleting favorite', error);
+            throw error;
+        });
     });
+
+    const searchAlertsTab = document.querySelector('#searchalerts');
+    searchAlertsTab.innerHTML = `
+        <h3>Search Alerts</h3>
+        <div class='saved-search-layout-container'>
+            <div class='account-layout-container no-fav-pets'>
+                You don’t currently have any saved searches.
+            </div>
+        </div>
+
+        <a class="saved-search__cta-new-search" href="/pet-adoption/">Start New Search</a>
+    `;
 }
 
 function openOptOutModal(token) {
@@ -100,7 +117,7 @@ function openOptOutModal(token) {
     confirmBtn.addEventListener('click', () => {
         isLoggedIn().then((isLoggedInParam) => {
             if (isLoggedInParam) {
-                removeSearchAlerts(token);
+                removeAllSearchAlerts(token);
                 modal.classList.add('hidden');
                 overlay.classList.remove('show');
             } else {
@@ -311,9 +328,6 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener('change', () => {
             if (checkbox.checked !== initialUserData[checkbox.name]) {
-                if (checkbox.id === 'EmailOptIn') {
-                    searchAlertsCheck(token);
-                }
                 disableButtons(submitButtons, false);
             } else {
                 disableButtons(submitButtons, true);
@@ -333,6 +347,17 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     submitButtons.forEach((button) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
+
+            if (button.form.id === 'preferences-form') {
+                const emailNotificationsCheckbox = document.querySelector('#EmailOptIn');
+                if (
+                    initialUserData[emailNotificationsCheckbox.name] === true
+                    && emailNotificationsCheckbox.checked === false
+                ) {
+                    searchAlertsCheck(token);
+                }
+            }
+
             const payLoad = {
                 ...serialize(new FormData(personalInfoForm)),
                 ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
