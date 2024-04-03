@@ -15,10 +15,6 @@ export async function loadEager(document) {
     titleDiv.append(cardTitleLoc);
     bannerDiv.appendChild(titleDiv);
 
-    const linkBtn = document.createElement('a');
-    linkBtn.href = 'https://www.instagram.com/petplace/';
-    bannerDiv.appendChild(linkBtn);
-
     const detailsDiv = document.createElement('div');
     detailsDiv.className = 'pet-card-details';
     cardDesc.forEach((desc, index) => {
@@ -27,7 +23,16 @@ export async function loadEager(document) {
       }
     });
 
+    const learnMore = card.querySelector('h3');
+    const linkArrow = document.createElement('p');
+    learnMore.append(linkArrow);
+
+    card.addEventListener('click', () => {
+      window.open(learnMore.querySelector('a').href, '_blank');
+    });
+
     card.append(bannerDiv);
     card.append(detailsDiv);
+    card.append(learnMore);
   });
 }
