@@ -142,6 +142,13 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
                 } else if (checkbox.checked && index !== 0) {
                     checkboxArray[0].checked = false;
                 }
+                // updating label
+                const buttonText = containerDiv.querySelector('.multi-select__button-text');
+                const selected = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+                const displayText = selected.length > 0
+                    ? `${selected.length} selected`
+                    : 'Select from menu...';
+                buttonText.innerText = displayText;
             })
         })
     }
