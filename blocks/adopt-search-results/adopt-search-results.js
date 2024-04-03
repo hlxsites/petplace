@@ -322,6 +322,9 @@ function calculatePagination(page) {
         }
     }
     buildResultsList(filteredArray);
+    document.querySelector('.adopt-search-results-container').scrollIntoView({
+        behavior: 'smooth'
+    });
 }
 
 function prevPage() {
