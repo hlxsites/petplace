@@ -248,7 +248,7 @@ export default async function decorate(block) {
 
         if (surveyResponse && !surveyResponse.Completed) {
           const payload = {
-            SurveyId: surveyId,
+            SurveyId: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
           };
           const result = await callSurveyResponse(
@@ -256,6 +256,17 @@ export default async function decorate(block) {
             token,
             'POST',
             payload
+          );
+        } else {
+          const payload = {
+            Id: surveyResponse.Id,
+            SurveyResponseAnswers: [...state.surveyAnswers],
+          };
+          const result = await callSurveyResponse(
+            surveyId,
+            token,
+            'PUT',
+            payload,
           );
         }
         const response = await fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
