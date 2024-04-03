@@ -272,6 +272,7 @@ function getInquiries(animalData) {
     await bindAccountInquiryEvents(elInquiryList, animalData, arrInquiryList);
 })
 .catch((error) => {
+    // eslint-disable-next-line no-console
     console.error('Error:', error);
     const elInquiryList = document.querySelector('.inquiry-list');
 
@@ -280,7 +281,6 @@ function getInquiries(animalData) {
 }
 
 export async function createAccountInquiriesPanel(animalData) {
-    console.log('this ran')
   const panelDiv = document.createElement('div');
   panelDiv.className = 'tab-panel-inner';
   panelDiv.innerHTML = `
