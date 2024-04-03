@@ -434,8 +434,14 @@
 }
 .pet-details .pet-card-image object,
 .pet-details .pet-card-image img {
-  border-radius: 8px 8px 0 0;
+  display: block;
+  max-width: 100%;
   width: 100%;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .pet-details .pet-card-info {

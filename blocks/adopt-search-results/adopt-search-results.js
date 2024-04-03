@@ -230,8 +230,6 @@ function getFavorites(response) {
             Authorization: `Bearer ${response}`,
         },
     }).then((responseData) => {
-        // eslint-disable-next-line no-console
-        console.log('Success:', responseData.status);
         return responseData.json();
     }).then((data) => {
         // favorite Pet in the UI
