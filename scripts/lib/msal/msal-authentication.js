@@ -288,7 +288,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer${response.accessToken}`,
+          Authorization: `Bearer ${response.accessToken}`,
         },
         // eslint-disable-next-line no-useless-escape
         body: featureName ? '\"' + featureName + '\"' : null,
