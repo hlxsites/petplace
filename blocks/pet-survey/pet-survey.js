@@ -247,8 +247,9 @@ export default async function decorate(block) {
         const surveyResponse = await callSurveyResponse(surveyId, token);
 
         if (surveyResponse && !surveyResponse.Completed) {
+          console.log('new survey')
           const payload = {
-            SurveyId: surveyResponse.Id,
+            SurveyId: surveyId,
             SurveyResponseAnswers: [...state.surveyAnswers],
           };
           const result = await callSurveyResponse(
@@ -258,6 +259,8 @@ export default async function decorate(block) {
             payload
           );
         } else {
+
+          console.log('old survey')
           const payload = {
             Id: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
