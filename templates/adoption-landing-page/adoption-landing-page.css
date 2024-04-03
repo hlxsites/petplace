@@ -1,3 +1,18 @@
+@media (max-width: 900px) {
+  .adoption-landing-page main .hero {
+    min-height: auto;
+  }
+  .adoption-landing-page main .details-box-container {
+    padding: 0rem 1.5rem;
+  }
+  .adoption-landing-page .details-box.rounded {
+    padding: 0;
+  }
+  .adoption-landing-page .pet-display .pet-card-box {
+    border: 1px solid black;
+  }
+}
+
 .adoption-landing-page .details-box.rounded {
   margin-bottom: 0 !important;
   color: black;
@@ -11,11 +26,9 @@
 
 .adoption-landing-page .pet-display .pet-card-box {
   border-radius: 1rem;
-  height: 37.5rem;
   margin: 1rem auto;
   cursor: pointer;
   box-shadow: 0 1px 6px 0 rgba(0,0,0,0.15);
-
 }
 
 .adoption-landing-page .pet-display .pet-card-box:hover {
@@ -27,14 +40,11 @@
 }
 
 .adoption-landing-page .pet-display .pet-card-box picture {
-  height: 20rem;
   display: block;
 }
 
 .adoption-landing-page .pet-display .pet-card-box img {
   border-radius: 15px 15px 0 0;
-  height: 100%;
-  width: 100%;
   object-fit: cover;
   object-position: top;
 }
@@ -42,9 +52,8 @@
 .adoption-landing-page .pet-card-box .pet-card-banner-div {
   display: flex;
   align-items: center;
-  border-top: 1px solid #E0DFE5;
   border-bottom: 1px solid #E0DFE5;
-  height: 6rem;
+  height: 5rem;
 }
 
 .adoption-landing-page .pet-display .pet-card-title {
