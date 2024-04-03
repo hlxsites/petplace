@@ -107,32 +107,6 @@ function removeAllSearchAlerts(token) {
     `;
 }
 
-function openOptOutModal(token) {
-    const modal = document.querySelector('.optout-email-modal');
-    const confirmBtn = document.querySelector('.optout-email-modal .confirm');
-    const cancelBtn = document.querySelector('.optout-email-modal .cancel');
-    modal.classList.remove('hidden');
-    const overlay = document.querySelector('.overlay');
-    overlay.classList.add('show');
-    confirmBtn.addEventListener('click', () => {
-        isLoggedIn().then((isLoggedInParam) => {
-            if (isLoggedInParam) {
-                removeAllSearchAlerts(token);
-                modal.classList.add('hidden');
-                overlay.classList.remove('show');
-            } else {
-                logout();
-            }
-        });
-    });
-
-    cancelBtn.addEventListener('click', () => {
-        modal.classList.add('hidden');
-        overlay.classList.remove('show');
-        document.querySelector('#EmailOptIn').checked = true;
-    });
-}
-
 function emailOptOutConfirmModal() {
     const optOutModalStructure = `
         <div class="modal optout-email-modal hidden">
@@ -152,24 +126,6 @@ function emailOptOutConfirmModal() {
     `;
 
     return optOutModalStructure;
-}
-
-function searchAlertsCheck(token) {
-    fetch(`${endPoints.apiUrl}/adopt/api/UserSearch`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    }).then((response) => response.json()).then(async (data) => {
-        if (data.length > 0) {
-            openOptOutModal(token);
-        }
-    })
-    .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error('Error:', error);
-    });
 }
 
 export async function createAccountDetailsPanel(userData) {
@@ -311,6 +267,69 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     const checkboxes = block.querySelectorAll('input[type=\'checkbox\']');
     const submitButtons = block.querySelectorAll('button[type=\'submit\']');
     const changePwdButton = block.querySelector('#change-pwd');
+
+    function openOptOutModal(tokenInfo) {
+        const modal = document.querySelector('.optout-email-modal');
+        const confirmBtn = document.querySelector('.optout-email-modal .confirm');
+        const cancelBtn = document.querySelector('.optout-email-modal .cancel');
+        modal.classList.remove('hidden');
+        const overlay = document.querySelector('.overlay');
+        overlay.classList.add('show');
+        confirmBtn.addEventListener('click', () => {
+            isLoggedIn().then(async (isLoggedInParam) => {
+                if (isLoggedInParam) {
+                    removeAllSearchAlerts(tokenInfo);
+                    modal.classList.add('hidden');
+                    overlay.classList.remove('show');
+
+                    const payLoad = {
+                        ...serialize(new FormData(personalInfoForm)),
+                        ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
+                    };
+                    await callUserApi(tokenInfo, 'PUT', payLoad);
+                    disableButtons(submitButtons, true);
+                    // eslint-disable-next-line no-param-reassign
+                    initialUserData = payLoad;
+                } else {
+                    logout();
+                }
+            });
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            overlay.classList.remove('show');
+            document.querySelector('#EmailOptIn').checked = true;
+        });
+    }
+
+    function searchAlertsCheck(tokenPassed) {
+        fetch(`${endPoints.apiUrl}/adopt/api/UserSearch`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${tokenPassed}`,
+            },
+        }).then((response) => response.json()).then(async (data) => {
+            if (data.length > 0) {
+                openOptOutModal(tokenPassed);
+            } else {
+                const payLoad = {
+                    ...serialize(new FormData(personalInfoForm)),
+                    ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
+                };
+                await callUserApi(tokenPassed, 'PUT', payLoad);
+                disableButtons(submitButtons, true);
+                // eslint-disable-next-line no-param-reassign
+                initialUserData = payLoad;
+            }
+        })
+        .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error('Error:', error);
+        });
+    }
+
     textInputs.forEach((input) => {
         input.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
@@ -348,23 +367,34 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
 
+            const emailNotificationsCheckbox = document.querySelector('#EmailOptIn');
+
             if (button.form.id === 'preferences-form') {
-                const emailNotificationsCheckbox = document.querySelector('#EmailOptIn');
                 if (
                     initialUserData[emailNotificationsCheckbox.name] === true
                     && emailNotificationsCheckbox.checked === false
                 ) {
                     searchAlertsCheck(token);
+                } else {
+                    const payLoad = {
+                        ...serialize(new FormData(personalInfoForm)),
+                        ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
+                    };
+                    await callUserApi(token, 'PUT', payLoad);
+                    disableButtons(submitButtons, true);
+                    // eslint-disable-next-line no-param-reassign
+                    initialUserData = payLoad;
                 }
+            } else {
+                const payLoad = {
+                    ...serialize(new FormData(personalInfoForm)),
+                    ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
+                };
+                await callUserApi(token, 'PUT', payLoad);
+                disableButtons(submitButtons, true);
+                // eslint-disable-next-line no-param-reassign
+                initialUserData = payLoad;
             }
-
-            const payLoad = {
-                ...serialize(new FormData(personalInfoForm)),
-                ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
-            };
-            await callUserApi(token, 'PUT', payLoad);
-            disableButtons(submitButtons, true);
-            initialUserData = payLoad;
         });
     });
     changePwdButton.addEventListener('click', async () => {
