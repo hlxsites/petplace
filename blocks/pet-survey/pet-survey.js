@@ -133,7 +133,7 @@ export default async function decorate(block) {
           else {
             // If the answer exists, mark it as deleted
             const existingAnswerIndex = state.surveyAnswers.findIndex(
-              (answer) => answer.UserResponseText === data.UserResponseText,
+              (answer) => answer.UserResponseText === data.UserResponseText || answer?.QuestionOption?.AnswerText === data.UserResponseText,
             );
 
             if (existingAnswerIndex > -1) {
@@ -342,8 +342,17 @@ export default async function decorate(block) {
     });
     const multiSelects = form.querySelectorAll('.multi-select');
     multiSelects.forEach((el) => {
-      const buttonText = el.querySelector('.multi-select__button-text');
+      const label = el.querySelector('.label');
+      if (label.innerText === 'Other Requirements') {
+        // this field cannot have all 3 selected at a time even though API will return 3
+        const checkboxes = el.querySelectorAll("input[type='checkbox']");
+        if (checkboxes[0].checked && (checkboxes[1].checked || checkboxes[2].checked)) {
+          checkboxes[0].checked = false;
+        }
+      }
+
       const selected = Array.from(el.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+      const buttonText = el.querySelector('.multi-select__button-text');
       const displayText = selected.length > 0
           ? `${selected.length} selected`
           : 'Select from menu...';

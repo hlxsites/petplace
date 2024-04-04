@@ -137,10 +137,12 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
                 if (checkbox.checked && index === 0) {
                     checkboxArray.forEach((input) => {
                         input.checked = false;
+                        input.dispatchEvent(new window.Event('change', {'bubbles': true}));
                     })
                     checkboxArray[0].checked = true;
                 } else if (checkbox.checked && index !== 0) {
                     checkboxArray[0].checked = false;
+                    checkboxArray[0].dispatchEvent(new window.Event('change', {'bubbles': true}));
                 }
                 // updating label
                 const buttonText = containerDiv.querySelector('.multi-select__button-text');
