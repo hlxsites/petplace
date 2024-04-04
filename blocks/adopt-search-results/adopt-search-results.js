@@ -4,6 +4,8 @@ import endPoints from '../../variables/endpoints.js';
 import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
+import { callUserApi } from '../account/account.js';
+
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
@@ -33,7 +35,6 @@ const {
     zipErrorMessage,
 } = placeholders;
 
-// console.log(placeholders);
 let breedList = [];
 let currentPage = 1;
 const recordsPerPage = 16;
@@ -543,6 +544,26 @@ function buildFilterSidebar(sidebar) {
     sidebar.append(mobileContainer);
 }
 
+function emailOptInConfirmModal() {
+    const emailOptInModalStructure = `
+        <div class="modal optin-email-modal hidden">
+            <div class="modal-header">
+            <h3 class="modal-title">Allow Email Notifications?</h3>
+            </div>
+            <div class="modal-body">
+                <p>You must opt-in to e-mail communications in order to create a search alert.</p>
+                <div class="modal-action-btns">
+                    <button class="cancel">Cancel</button>
+                    <button class="confirm">Allow Email notifications and create search alert</button>
+                </div>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    `;
+
+    return emailOptInModalStructure;
+}
+
 function buildResultsContainer(data) {
     // clear any previous results
     const block = document.querySelector('.adopt-search-results.block');
@@ -641,6 +662,8 @@ window.onload = callBreedList('null').then((data) => {
     div.append(paginationNumbers);
     div.append(nextButton);
     tempResultsContainer.append(div);
+
+    document.querySelector('#main').innerHTML += emailOptInConfirmModal();
 
     // When the page loads, check if there are any query parameters in the URL
     const params = new URLSearchParams(window.location.search);
@@ -880,6 +903,31 @@ export default async function decorate(block) {
     zipContainer.append(clearButton);
     //   form.append(clearButton);
 
+    function openOptInModal(tokenInfo) {
+        const modal = document.querySelector('.optin-email-modal');
+        const confirmBtn = document.querySelector('.optin-email-modal .confirm');
+        const cancelBtn = document.querySelector('.optin-email-modal .cancel');
+        modal.classList.remove('hidden');
+        const overlay = document.querySelector('.overlay');
+        overlay.classList.add('show');
+        confirmBtn.addEventListener('click', () => {
+            alert('click confirm')
+            isLoggedIn().then(async (isLoggedInParam) => {
+                if (isLoggedInParam) {
+                    modal.classList.add('hidden');
+                    overlay.classList.remove('show');
+                } else {
+                }
+            });
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            alert('click cancel')
+            modal.classList.add('hidden');
+            overlay.classList.remove('show');
+        });
+    }
+
     const button = document.createElement('button');
     button.type = 'submit';
     button.className = 'adopt-search-button';
@@ -893,8 +941,18 @@ export default async function decorate(block) {
         <path d="M12 3.47104C13.9891 3.47104 15.8968 4.26122 17.3033 5.66774C18.7098 7.07426 19.5 8.98192 19.5 10.971C19.5 18.017 21 19.221 21 19.221H3C3 19.221 4.5 17.305 4.5 10.971C4.5 8.98192 5.29018 7.07426 6.6967 5.66774C8.10322 4.26122 10.0109 3.47104 12 3.47104Z" stroke="#09090D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs>
         <clipPath id="clip0_1997_2586"><rect width="24" height="24" fill="white" transform="translate(0 0.471039)"/></clipPath></defs></svg>
         ${createSearchAlert}`;
-    saveButton.addEventListener('click', (event) => {
-        setSaveSearch(event);
+    saveButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        let initialUserData = {};
+        const token = await acquireToken();
+        if (token) {
+            initialUserData = await callUserApi(token);
+            if (initialUserData.EmailOptIn) {
+                setSaveSearch(event);
+            } else {
+                openOptInModal(token);
+            }
+        }
     });
     form.append(petTypeContainer);
 
