@@ -467,7 +467,7 @@ async function createChecklistSection(inquiryStatus) {
         checklistContainer.append(createCta('',
           'Start Pet Match Survey',
           'pet-details-button button primary right-arrow',
-          true
+          false
           )
         );
     }
