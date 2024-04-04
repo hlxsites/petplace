@@ -297,7 +297,7 @@ export default async function decorate(block) {
   const payload = {
     locationInformation: {
       clientId: null,
-      zipPostal: '92102',
+      zipPostal: '90210',
       milesRadius: 10,
     },
     animalFilters: {
