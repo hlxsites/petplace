@@ -17,11 +17,17 @@
   margin-bottom: 0 !important;
   color: black;
   text-align: left;
+  padding-top: 0;
+  padding-bottom: 0;
   background-color: transparent;
 }
 
 .adoption-landing-page .details-box.rounded p:first-child {
   padding-bottom: 1rem;
+}
+
+.adoption-landing-page main .section.columns-container {
+  padding-top: 0;
 }
 
 .adoption-landing-page .pet-display .pet-card-box {
