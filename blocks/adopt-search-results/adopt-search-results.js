@@ -640,6 +640,47 @@ function buildResultsContainer(data) {
     calculatePagination(1);
 }
 
+function populateSidebarFilters(params) {
+    // Populate Sidebar filters
+    const petRadius = document.getElementById('radius');
+    const petRadiusOptions = petRadius.options;
+    for (let i = 0; i < petRadiusOptions.length; i += 1) {
+        if (petRadiusOptions[i].value === params.get('milesRadius')) {
+            petRadius.selectedIndex = i;
+        }
+    }
+    const genderRadios = document.querySelectorAll('input[name="gender"]');
+    for (let i = 0; i < genderRadios.length; i += 1) {
+        const genderArray = params.get('filterGender')?.split(',');
+        genderArray?.forEach((gender) => {
+            if (genderRadios[i].value === gender) {
+                genderRadios[i].checked = true;
+            }
+        });
+    }
+    const ageRadios = document.querySelectorAll('input[name="age"]');
+    for (let i = 0; i < ageRadios.length; i += 1) {
+        const ageArray = params.get('filterAge')?.split(',');
+        ageArray?.forEach((age) => {
+            if (ageRadios[i].value === age) {
+                ageRadios[i].checked = true;
+            }
+        });
+    }
+    const sizeRadios = document.querySelectorAll('input[name="size"]');
+    for (let i = 0; i < sizeRadios.length; i += 1) {
+        const sizeArray = params.get('filterSize')?.split(',');
+        sizeArray?.forEach((size) => {
+            if (sizeRadios[i].value === size) {
+                sizeRadios[i].checked = true;
+            }
+        });
+    }
+    callAnimalList().then((resultData) => {
+        buildResultsContainer(resultData);
+    });
+}
+
 window.onload = callBreedList('null').then((data) => {
     breedList = data;
     updateBreedListSelect();
@@ -702,47 +743,15 @@ window.onload = callBreedList('null').then((data) => {
                 });
             });
         }
-        callAnimalList().then((response) => {
-            buildResultsContainer(response);
-            // Populate Sidebar filters
-            const petRadius = document.getElementById('radius');
-            const petRadiusOptions = petRadius.options;
-            for (let i = 0; i < petRadiusOptions.length; i += 1) {
-                if (petRadiusOptions[i].value === params.get('milesRadius')) {
-                    petRadius.selectedIndex = i;
-                }
-            }
-            const genderRadios = document.querySelectorAll('input[name="gender"]');
-            for (let i = 0; i < genderRadios.length; i += 1) {
-                const genderArray = params.get('filterGender')?.split(',');
-                genderArray?.forEach((gender) => {
-                    if (genderRadios[i].value === gender) {
-                        genderRadios[i].checked = true;
-                    }
-                });
-            }
-            const ageRadios = document.querySelectorAll('input[name="age"]');
-            for (let i = 0; i < ageRadios.length; i += 1) {
-                const ageArray = params.get('filterAge')?.split(',');
-                ageArray?.forEach((age) => {
-                    if (ageRadios[i].value === age) {
-                        ageRadios[i].checked = true;
-                    }
-                });
-            }
-            const sizeRadios = document.querySelectorAll('input[name="size"]');
-            for (let i = 0; i < sizeRadios.length; i += 1) {
-                const sizeArray = params.get('filterSize')?.split(',');
-                sizeArray?.forEach((size) => {
-                    if (sizeRadios[i].value === size) {
-                        sizeRadios[i].checked = true;
-                    }
-                });
-            }
-            callAnimalList().then((resultData) => {
-                buildResultsContainer(resultData);
-            });
-        });
+        buildResultsContainer([]);
+        let resultsContainer = document.querySelector('.default-content-wrapper.results');
+        if (!resultsContainer) {
+            resultsContainer = document.querySelector('.default-content-wrapper');
+        }
+        const paginationBlock = document.querySelector('.pagination');
+        paginationBlock.classList.add('hide');
+        resultsContainer.innerHTML = noResults;
+        populateSidebarFilters(params);
     }
 });
 
