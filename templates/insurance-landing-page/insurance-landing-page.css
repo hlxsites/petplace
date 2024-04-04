@@ -92,13 +92,13 @@
   width: 50%;
 }
 
-.insurance-landing-page .columns-img-col:nth-child(4) > picture {
+
+.insurance-landing-page .columns-img-col:nth-child(5) > picture {
   width: 40%;
 }
 
 .insurance-landing-page .columns-img-col:nth-child(3) > picture,
-  .insurance-landing-page .columns-img-col:nth-child(5) > picture,
-  .insurance-landing-page .columns-img-col:nth-child(6) > picture {
+  .insurance-landing-page .columns-img-col:nth-child(4) > picture {
     width: 60%;
   }
 
@@ -486,7 +486,14 @@
   }
 
   .insurance-landing-page .columns-container .logos div {
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
+  }
+
+  .insurance-landing-page .columns-container .logos div div{
+    width: 100%;
+    max-width: 45%;
   }
 
   .insurance-landing-page .section.columns-container:has(.logos) {
@@ -550,19 +557,6 @@
     padding-bottom: 1.5rem;
   }
 
-  .insurance-landing-page .columns-img-col picture {
-    width: 35%;
-  }
-  
-  .insurance-landing-page .columns-img-col:nth-child(4) > picture {
-    width: 30%;
-  }
-
-  .insurance-landing-page .columns-img-col:nth-child(3) > picture,
-  .insurance-landing-page .columns-img-col:nth-child(5) > picture,
-  .insurance-landing-page .columns-img-col:nth-child(6) > picture {
-    width: 40%;
-  }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
@@ -601,6 +595,18 @@
     p {
     margin-left: 20px;
   }
+
+  .insurance-landing-page .columns-container .logos div {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 33px;
+  }
+
+  .insurance-landing-page .columns-container .logos div div{
+    width: 100%;
+    max-width: 30%;
+  }
+
 }
 
 @media (min-width: 900px) {
