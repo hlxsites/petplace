@@ -115,7 +115,7 @@ function emailOptOutConfirmModal() {
             </div>
             <div class="modal-body">
                 <p>By opting out of email communications you will not be able to receive any search alerts.</p>
-                <p>Are you sure you want to remove your Email notifications?</p>
+                <p>Are you sure you want to remove your email notifications?</p>
                 <div class="modal-action-btns">
                     <button class="cancel">Cancel</button>
                     <button class="confirm">Opt-out and delete all search alerts</button>
@@ -267,6 +267,8 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
     const checkboxes = block.querySelectorAll('input[type=\'checkbox\']');
     const submitButtons = block.querySelectorAll('button[type=\'submit\']');
     const changePwdButton = block.querySelector('#change-pwd');
+    // eslint-disable-next-line no-unused-vars
+    let hasEventSet = false;
 
     function openOptOutModal(tokenInfo) {
         const modal = document.querySelector('.optout-email-modal');
@@ -275,32 +277,36 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
         modal.classList.remove('hidden');
         const overlay = document.querySelector('.overlay');
         overlay.classList.add('show');
-        confirmBtn.addEventListener('click', () => {
-            isLoggedIn().then(async (isLoggedInParam) => {
-                if (isLoggedInParam) {
-                    removeAllSearchAlerts(tokenInfo);
-                    modal.classList.add('hidden');
-                    overlay.classList.remove('show');
+        if (!hasEventSet) {
+            hasEventSet = true;
+            confirmBtn.addEventListener('click', () => {
+                isLoggedIn().then(async (isLoggedInParam) => {
+                    if (isLoggedInParam) {
+                        removeAllSearchAlerts(tokenInfo);
+                        modal.classList.add('hidden');
+                        overlay.classList.remove('show');
 
-                    const payLoad = {
-                        ...serialize(new FormData(personalInfoForm)),
-                        ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
-                    };
-                    await callUserApi(tokenInfo, 'PUT', payLoad);
-                    disableButtons(submitButtons, true);
-                    // eslint-disable-next-line no-param-reassign
-                    initialUserData = payLoad;
-                } else {
-                    logout();
-                }
+                        const payLoad = {
+                            ...serialize(new FormData(personalInfoForm)),
+                            ...refactorPreferenceForm(serialize(new FormData(preferencesForm))),
+                        };
+                        await callUserApi(tokenInfo, 'PUT', payLoad);
+                        disableButtons(submitButtons, true);
+                        // eslint-disable-next-line no-param-reassign
+                        initialUserData = payLoad;
+                    } else {
+                        logout();
+                    }
+                });
             });
-        });
 
-        cancelBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            overlay.classList.remove('show');
-            document.querySelector('#EmailOptIn').checked = true;
-        });
+            cancelBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+                document.querySelector('#EmailOptIn').checked = true;
+                disableButtons(submitButtons, true);
+            });
+        }
     }
 
     function searchAlertsCheck(tokenPassed) {

@@ -755,8 +755,12 @@ display: block;
     margin-top: 10px;
 }
 
-.optin-email-modal {
+.optin-email-modal.hidden {
     display: none;
+}
+
+.optin-email-modal {
+    display: block;
     position: fixed;
     top: 50%;
     left: 50%;

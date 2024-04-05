@@ -545,23 +545,31 @@ function buildFilterSidebar(sidebar) {
 }
 
 function emailOptInConfirmModal() {
+    const optInModalEl = document.createElement('div');
     const emailOptInModalStructure = `
-        <div class="modal optin-email-modal hidden">
-            <div class="modal-header">
-            <h3 class="modal-title">Allow Email Notifications?</h3>
-            </div>
-            <div class="modal-body">
-                <p>You must opt-in to e-mail communications in order to create a search alert.</p>
-                <div class="modal-action-btns">
-                    <button class="cancel">Cancel</button>
-                    <button class="confirm">Allow Email notifications and create search alert</button>
-                </div>
+        <div class="modal-header">
+        <h3 class="modal-title">Allow Email Notifications?</h3>
+        </div>
+        <div class="modal-body">
+            <p>You must opt-in to email communications in order to create a search alert.</p>
+            <div class="modal-action-btns">
+                <button class="cancel">Cancel</button>
+                <button class="confirm">Allow email notifications and create search alert</button>
             </div>
         </div>
-        <div class="overlay"></div>
     `;
+    optInModalEl.classList.add('modal', 'optin-email-modal', 'hidden');
 
-    return emailOptInModalStructure;
+    optInModalEl.innerHTML = emailOptInModalStructure;
+
+    return optInModalEl;
+}
+
+function emailOptInOverlay() {
+    const optInOverlaylEl = document.createElement('div');
+    optInOverlaylEl.classList.add('overlay');
+
+    return optInOverlaylEl;
 }
 
 function buildResultsContainer(data) {
@@ -704,7 +712,8 @@ window.onload = callBreedList('null').then((data) => {
     div.append(nextButton);
     tempResultsContainer.append(div);
 
-    document.querySelector('#main').innerHTML += emailOptInConfirmModal();
+    document.querySelector('body').append(emailOptInConfirmModal());
+    document.querySelector('body').append(emailOptInOverlay());
 
     // When the page loads, check if there are any query parameters in the URL
     const params = new URLSearchParams(window.location.search);
@@ -912,29 +921,36 @@ export default async function decorate(block) {
     zipContainer.append(clearButton);
     //   form.append(clearButton);
 
-    function openOptInModal(tokenInfo) {
+    let hasEventSet = false;
+
+    function openOptInModal(tokenInfo, initialUserData) {
         const modal = document.querySelector('.optin-email-modal');
         const confirmBtn = document.querySelector('.optin-email-modal .confirm');
         const cancelBtn = document.querySelector('.optin-email-modal .cancel');
         modal.classList.remove('hidden');
         const overlay = document.querySelector('.overlay');
         overlay.classList.add('show');
-        confirmBtn.addEventListener('click', () => {
-            alert('click confirm')
-            isLoggedIn().then(async (isLoggedInParam) => {
-                if (isLoggedInParam) {
-                    modal.classList.add('hidden');
-                    overlay.classList.remove('show');
-                } else {
-                }
-            });
-        });
+        if (!hasEventSet) {
+            hasEventSet = true;
 
-        cancelBtn.addEventListener('click', () => {
-            alert('click cancel')
-            modal.classList.add('hidden');
-            overlay.classList.remove('show');
-        });
+            confirmBtn.addEventListener('click', () => {
+                isLoggedIn().then(async (isLoggedInParam) => {
+                    if (isLoggedInParam) {
+                        initialUserData.EmailOptIn = true;
+                        await callUserApi(tokenInfo, 'PUT', initialUserData);
+                        setSaveSearch(event);
+                        modal.classList.add('hidden');
+                        overlay.classList.remove('show');
+                    } else {
+                    }
+                });
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            });
+        }
     }
 
     const button = document.createElement('button');
@@ -957,9 +973,13 @@ export default async function decorate(block) {
         if (token) {
             initialUserData = await callUserApi(token);
             if (initialUserData.EmailOptIn) {
+                console.log('initialUserData', initialUserData);
+                console.log('tem optin', );
                 setSaveSearch(event);
             } else {
-                openOptInModal(token);
+                console.log('initialUserData', initialUserData);
+                console.log('nao tem optin', );
+                openOptInModal(token, initialUserData);
             }
         }
     });
