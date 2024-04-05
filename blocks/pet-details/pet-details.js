@@ -728,6 +728,13 @@ export default async function decorate(block) {
      // add favorite functionality
      const favoriteCta = document.getElementById(animalId);
      favoriteCta.addEventListener('click', (e) => { setFavorite(e, petData); });
+
+    // check if hash exists and if so favorite the pet
+    const hash = getHashFromURL();
+    if (hash === 'favorite') {
+      setFavorite(null, petData);
+    }
+
   }
 
   function getFavorites(response) {
@@ -757,18 +764,27 @@ export default async function decorate(block) {
 
   // check if user is logged in
   isLoggedIn().then((isLoggedInParam) => {
-     if (isLoggedInParam) {
-         // if logged in set pet as favorite
-         acquireToken()
-         .then((response) => {
-             getFavorites(response);
-         })
-         .catch((error) => {
-             // eslint-disable-next-line no-console
-             console.error('Error:', error);
-         });
-     } else {
-       // not logged in or token is expired without ability to silently refresh its validity
-     }
-   });
+    if (isLoggedInParam) {
+        // if logged in set pet as favorite
+        acquireToken()
+        .then((response) => {
+            getFavorites(response);
+        })
+        .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error('Error:', error);
+        });
+    } else {
+      // not logged in or token is expired without ability to silently refresh its validity
+    }
+  });
+}
+
+function getHashFromURL() {
+  const hashIndex = window.location.href.indexOf('#');
+  if (hashIndex !== -1) {
+      return window.location.href.substring(hashIndex + 1);
+  }
+
+  return ''; // Return an empty string if there's no hash
 }

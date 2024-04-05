@@ -78,7 +78,7 @@ export function deleteFavorite(token, animal, favoriteId) {
 
 // set a favorite pet for user
 export function setFavorite(e, animal) {
-  e.preventDefault();
+  e?.preventDefault();
   const isFavorite = document.getElementById(animal.animalId).classList.contains('favorited');
 
   // save in localStorage for loginRedirect() scenarios
