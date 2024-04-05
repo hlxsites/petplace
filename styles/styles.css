@@ -103,6 +103,9 @@
 
   /* nav height */
   --nav-height: 64px;
+  
+  --card-details-mask: linear-gradient(to bottom, #fff 44.33%,
+  rgba(255, 255, 255, 0.88) 67.03%, rgba(255, 255, 255, 0.00) 100.9%);
 }
 
 @media (min-width: 600px) {

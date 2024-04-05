@@ -1,0 +1,153 @@
+@media (max-width: 800px) {
+  .adoption-landing-page main .details-box-container {
+    padding: 1.5rem;
+  }
+  .adoption-landing-page .details-box.rounded {
+    padding: 0;
+  }
+  .adoption-landing-page .pet-display .pet-card-box {
+    border: 1px solid black;
+  }
+}
+
+.adoption-landing-page main .hero {
+  min-height: 0;
+  height: auto;
+}
+
+.adoption-landing-page main .hero picture {
+  position: static;
+}
+
+.adoption-landing-page main .hero img {
+  max-height: fit-content;
+}
+
+.adoption-landing-page .details-box.rounded {
+  margin-bottom: 0 !important;
+  color: black;
+  text-align: left;
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: transparent;
+}
+
+.adoption-landing-page .details-box.rounded p:first-child {
+  padding-bottom: 1rem;
+}
+
+.adoption-landing-page main .section.columns-container {
+  padding-top: 0;
+}
+
+.adoption-landing-page .pet-display .pet-card-box {
+  border-radius: 1rem;
+  margin: 1rem auto;
+  cursor: pointer;
+  box-shadow: 0 1px 6px 0 rgba(0,0,0,0.15);
+}
+
+.adoption-landing-page .pet-display .pet-card-box:hover {
+  box-shadow: 0 1px 10px 2px rgba(0,0,0,0.15);
+}
+
+.adoption-landing-page .pet-display .pet-card-box:hover h3 {
+  text-decoration: underline var(--link-color);
+}
+
+.adoption-landing-page .pet-display .pet-card-box picture {
+  display: block;
+}
+
+.adoption-landing-page .pet-display .pet-card-box img {
+  border-radius: 15px 15px 0 0;
+  object-fit: cover;
+  object-position: top;
+}
+
+.adoption-landing-page .pet-card-box .pet-card-banner-div {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #E0DFE5;
+  height: 5rem;
+}
+
+.adoption-landing-page .pet-display .pet-card-title {
+  padding: 0.5rem;
+}
+
+.adoption-landing-page .pet-display .pet-card-box h3 {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.adoption-landing-page .pet-display .pet-card-box h3 p {
+  -webkit-mask: url("../../icons/next.svg") center / 100% 100%;
+  mask: url("../../icons/arrow.svg") center / 100% 100%;
+  background-color: var(--link-color);
+  padding: 0.75rem;
+}
+
+.adoption-landing-page .pet-card-title h2,
+.adoption-landing-page .pet-card-title h4 {
+  margin: 0;
+  color: black;
+}
+
+.adoption-landing-page .pet-card-title h2 {
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+
+.adoption-landing-page .pet-card-title h4 {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.adoption-landing-page .pet-display .pet-card-details {
+  font-size: 1rem;
+  margin: 0.5rem;
+  color: #000;
+  max-height: 7.5rem;
+  overflow: hidden;
+  -webkit-mask: var(--card-details-mask); 
+  mask: var(--card-details-mask);
+}
+
+/* BANNER ONLY */
+
+@media (max-width: 800px)  { 
+  .adoption-landing-page .hero.banner-mobile {
+    display: block;
+  }
+
+  .adoption-landing-page .hero.banner-desktop,
+  .adoption-landing-page .hero.banner-tablet {
+    display: none;
+  }
+}
+
+@media (min-width: 801px) and (max-width: 1024px) {
+  .adoption-landing-page .hero.banner-tablet {
+    display: block;
+  }
+
+  .adoption-landing-page .hero.banner-desktop,
+  .adoption-landing-page .hero.banner-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) {
+  .adoption-landing-page .hero.banner-desktop {
+    display: block;
+  }
+  
+  .adoption-landing-page .hero.banner-tablet,
+  .adoption-landing-page .hero.banner-mobile {
+    display: none;
+  }
+}
