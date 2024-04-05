@@ -439,7 +439,7 @@ async function createShelterSection(aboutShelter) {
     `;
   return shelterContainer;
 }
-async function createChecklistSection(inquiryStatus) {
+async function createChecklistSection(inquiryStatus, petData) {
   const checklistContainer = document.createElement('div');
   checklistContainer.className = 'checklist-container';
   // fetch placeholders from the 'adopt' folder
@@ -464,7 +464,8 @@ async function createChecklistSection(inquiryStatus) {
   if (inquiryStatus === true) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
-        checklistContainer.append(createCta('',
+        checklistContainer.append(createCta(
+          `/pet-adoption/survey?animalType=${petData.animalType}`,
           'Start Pet Match Survey',
           'pet-details-button button primary right-arrow',
           false
@@ -686,7 +687,7 @@ export default async function decorate(block) {
       if (petData.email !== null) {
         // if email is available, append createChecklistSection WITH survey content
         submitInquiryCta?.classList.add('visible');
-        layoutContainer.append(await createChecklistSection(true));
+        layoutContainer.append(await createChecklistSection(true, petData));
         const checklistContainer = document.querySelector('.checklist-container');
         checklistContainer.classList.add('visible');
 
@@ -715,7 +716,7 @@ export default async function decorate(block) {
         });
       } else {
         // if email is not available, append createChecklistSection W/OUT survey content
-        layoutContainer.append(await createChecklistSection(false));
+        layoutContainer.append(await createChecklistSection(false, petData));
         const checklistContainer = document.querySelector('.checklist-container');
         checklistContainer.classList.add('visible');
       }
