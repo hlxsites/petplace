@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
-import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import { acquireToken, login, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
 import { callUserApi } from '../account/account.js';
@@ -923,7 +923,7 @@ export default async function decorate(block) {
 
     let hasEventSet = false;
 
-    function openOptInModal(tokenInfo, initialUserData) {
+    function openOptInModal(tokenInfo, initialUserData, event) {
         const modal = document.querySelector('.optin-email-modal');
         const confirmBtn = document.querySelector('.optin-email-modal .confirm');
         const cancelBtn = document.querySelector('.optin-email-modal .cancel');
@@ -933,17 +933,12 @@ export default async function decorate(block) {
         if (!hasEventSet) {
             hasEventSet = true;
 
-            confirmBtn.addEventListener('click', () => {
-                isLoggedIn().then(async (isLoggedInParam) => {
-                    if (isLoggedInParam) {
-                        initialUserData.EmailOptIn = true;
-                        await callUserApi(tokenInfo, 'PUT', initialUserData);
-                        setSaveSearch(event);
-                        modal.classList.add('hidden');
-                        overlay.classList.remove('show');
-                    } else {
-                    }
-                });
+            confirmBtn.addEventListener('click', async () => {
+                initialUserData.EmailOptIn = true;
+                await callUserApi(tokenInfo, 'PUT', initialUserData);
+                setSaveSearch(event);
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
             });
 
             cancelBtn.addEventListener('click', () => {
@@ -969,19 +964,29 @@ export default async function decorate(block) {
     saveButton.addEventListener('click', async (event) => {
         event.preventDefault();
         let initialUserData = {};
-        const token = await acquireToken();
-        if (token) {
-            initialUserData = await callUserApi(token);
-            if (initialUserData.EmailOptIn) {
-                console.log('initialUserData', initialUserData);
-                console.log('tem optin', );
-                setSaveSearch(event);
+        isLoggedIn().then(async (isLoggedInParam) => {
+            if (isLoggedInParam) {
+                const token = await acquireToken();
+                if (token) {
+                    initialUserData = await callUserApi(token);
+                    if (initialUserData.EmailOptIn) {
+                        setSaveSearch(event);
+                    } else {
+                        openOptInModal(token, initialUserData, event);
+                    }
+                }
             } else {
-                console.log('initialUserData', initialUserData);
-                console.log('nao tem optin', );
-                openOptInModal(token, initialUserData);
+                login(async (eventParam) => {
+                    if (initialUserData.EmailOptIn) {
+                        setSaveSearch(eventParam);
+                    } else {
+                        const token = await acquireToken();
+                        initialUserData = await callUserApi(token);
+                        openOptInModal(token, initialUserData, event);
+                    }
+                });
             }
-        }
+        });
     });
     form.append(petTypeContainer);
 
