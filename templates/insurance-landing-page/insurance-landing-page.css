@@ -27,7 +27,7 @@
   :not(.search-container ~ .search-container).search-container {
   position: absolute;
   left: 0;
-  top: 390px;
+  top: 470px;
   display: flex;
   flex-direction: column;
   bottom: 0;
@@ -92,12 +92,13 @@
   width: 50%;
 }
 
-.insurance-landing-page .columns-img-col:nth-child(4) > picture {
-  width: 35%;
+
+.insurance-landing-page .columns-img-col:nth-child(5) > picture {
+  width: 40%;
 }
 
 .insurance-landing-page .columns-img-col:nth-child(3) > picture,
-  .insurance-landing-page .columns-img-col:nth-child(5) > picture {
+  .insurance-landing-page .columns-img-col:nth-child(4) > picture {
     width: 60%;
   }
 
@@ -484,12 +485,15 @@
     margin-left: 20px;
   }
 
-  .insurance-landing-page .logos div div:last-child {
-    display: none;
+  .insurance-landing-page .columns-container .logos div {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
-  .insurance-landing-page .columns-container .logos div {
-    gap: 20px;
+  .insurance-landing-page .columns-container .logos div div{
+    width: 100%;
+    max-width: 45%;
   }
 
   .insurance-landing-page .section.columns-container:has(.logos) {
@@ -553,18 +557,6 @@
     padding-bottom: 1.5rem;
   }
 
-  .insurance-landing-page .columns-img-col picture {
-    width: 35%;
-  }
-  
-  .insurance-landing-page .columns-img-col:nth-child(4) > picture {
-    width: 30%;
-  }
-
-  .insurance-landing-page .columns-img-col:nth-child(3) > picture,
-  .insurance-landing-page .columns-img-col:nth-child(5) > picture {
-    width: 40%;
-  }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
@@ -603,6 +595,18 @@
     p {
     margin-left: 20px;
   }
+
+  .insurance-landing-page .columns-container .logos div {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 33px;
+  }
+
+  .insurance-landing-page .columns-container .logos div div{
+    width: 100%;
+    max-width: 30%;
+  }
+
 }
 
 @media (min-width: 900px) {
@@ -620,10 +624,6 @@
 
   .insurance-landing-page .columns-txt-col:first-child h2 {
     width: 90%;
-  }
-  
-  .insurance-landing-page .logos div div:last-child {
-    display: none;
   }
 }
 
