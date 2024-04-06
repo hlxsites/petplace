@@ -5,6 +5,8 @@ import { acquireToken, login, isLoggedIn } from '../../scripts/lib/msal/msal-aut
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
 import { callUserApi } from '../account/account.js';
+import { initRedirectHandlers } from '../../scripts/lib/msal/login-redirect-handlers.js';
+import { isMobile } from '../../scripts/scripts.js';
 
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
@@ -689,7 +691,36 @@ function populateSidebarFilters(params) {
     });
 }
 
-window.onload = callBreedList('null').then((data) => {
+let hasEventSet = false;
+
+export function openOptInModal(tokenInfo, initialUserData, event) {
+    const modal = document.querySelector('.optin-email-modal');
+    if (modal) {
+        const confirmBtn = document.querySelector('.optin-email-modal .confirm');
+        const cancelBtn = document.querySelector('.optin-email-modal .cancel');
+        modal.classList.remove('hidden');
+        const overlay = document.querySelector('.overlay');
+        overlay.classList.add('show');
+        if (!hasEventSet) {
+            hasEventSet = true;
+
+            confirmBtn.addEventListener('click', async () => {
+                initialUserData.EmailOptIn = true;
+                await callUserApi(tokenInfo, 'PUT', initialUserData);
+                setSaveSearch(event);
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            });
+        }
+    }
+}
+
+window.onload = callBreedList('null').then((data, event) => {
     breedList = data;
     updateBreedListSelect();
     const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
@@ -711,9 +742,6 @@ window.onload = callBreedList('null').then((data) => {
     div.append(paginationNumbers);
     div.append(nextButton);
     tempResultsContainer.append(div);
-
-    document.querySelector('body').append(emailOptInConfirmModal());
-    document.querySelector('body').append(emailOptInOverlay());
 
     // When the page loads, check if there are any query parameters in the URL
     const params = new URLSearchParams(window.location.search);
@@ -765,6 +793,11 @@ window.onload = callBreedList('null').then((data) => {
 });
 
 export default async function decorate(block) {
+    if (document.readyState === 'complete') {
+        document.querySelector('body').append(emailOptInConfirmModal());
+        document.querySelector('body').append(emailOptInOverlay());
+    }
+
     const form = document.createElement('form');
     form.setAttribute('role', 'search');
     form.className = 'adopt-search-results-box-wrapper';
@@ -921,32 +954,6 @@ export default async function decorate(block) {
     zipContainer.append(clearButton);
     //   form.append(clearButton);
 
-    let hasEventSet = false;
-
-    function openOptInModal(tokenInfo, initialUserData, event) {
-        const modal = document.querySelector('.optin-email-modal');
-        const confirmBtn = document.querySelector('.optin-email-modal .confirm');
-        const cancelBtn = document.querySelector('.optin-email-modal .cancel');
-        modal.classList.remove('hidden');
-        const overlay = document.querySelector('.overlay');
-        overlay.classList.add('show');
-        if (!hasEventSet) {
-            hasEventSet = true;
-
-            confirmBtn.addEventListener('click', async () => {
-                initialUserData.EmailOptIn = true;
-                await callUserApi(tokenInfo, 'PUT', initialUserData);
-                setSaveSearch(event);
-                modal.classList.add('hidden');
-                overlay.classList.remove('show');
-            });
-
-            cancelBtn.addEventListener('click', () => {
-                modal.classList.add('hidden');
-                overlay.classList.remove('show');
-            });
-        }
-    }
 
     const button = document.createElement('button');
     button.type = 'submit';
@@ -976,15 +983,23 @@ export default async function decorate(block) {
                     }
                 }
             } else {
-                login(async (eventParam) => {
-                    if (initialUserData.EmailOptIn) {
-                        setSaveSearch(eventParam);
-                    } else {
-                        const token = await acquireToken();
+                // eslint-disable-next-line no-lonely-if
+                if (isMobile()) {
+                    localStorage.setItem('featureName2', 'openSavedSearchesPopUp');
+                    const token = await acquireToken();
+                    initRedirectHandlers(token, event);
+                } else {
+                    acquireToken('openSavedSearchesPopUp').then(async (token) => {
                         initialUserData = await callUserApi(token);
-                        openOptInModal(token, initialUserData, event);
-                    }
-                });
+                        if (initialUserData.EmailOptIn) {
+                            setSaveSearch(event);
+                        } else {
+                            const token = await acquireToken();
+                            initialUserData = await callUserApi(token);
+                            openOptInModal(token, initialUserData, event);
+                        }
+                    });
+                }
             }
         });
     });

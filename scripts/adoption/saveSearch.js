@@ -218,7 +218,7 @@ export async function saveSearch(token) {
 
 // set a Saved Search for user
 export function setSaveSearch(e) {
-  e.preventDefault();
+  e?.preventDefault();
 
   acquireToken('Save Search').then((token) => {
     saveSearch(token);
