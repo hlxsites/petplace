@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
-import { acquireToken, login, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
 import { callUserApi } from '../account/account.js';
@@ -232,9 +232,7 @@ function getFavorites(response) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${response}`,
         },
-    }).then((responseData) => {
-        return responseData.json();
-    }).then((data) => {
+    }).then((responseData) => responseData.json()).then((data) => {
         // favorite Pet in the UI
         data.forEach((favorite) => {
             const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
@@ -326,7 +324,7 @@ function calculatePagination(page) {
     }
     buildResultsList(filteredArray);
     document.querySelector('.adopt-search-results-container').scrollIntoView({
-        behavior: 'smooth'
+        behavior: 'smooth',
     });
 }
 
@@ -953,7 +951,6 @@ export default async function decorate(block) {
     });
     zipContainer.append(clearButton);
     //   form.append(clearButton);
-
 
     const button = document.createElement('button');
     button.type = 'submit';
