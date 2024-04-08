@@ -16,7 +16,7 @@
   min-height: 0;
   height: auto;
 }
-@media (min-width: 1024px){
+@media (min-width: 800px){
   .adoption-landing-page main .hero {
     min-height: 318px;
   }
