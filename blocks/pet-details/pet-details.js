@@ -461,7 +461,7 @@ async function createChecklistSection(inquiryStatus, petData) {
     checklistContainer.append(checklistLabelEl);
   }
   
-  if (inquiryStatus === true) {
+  if (inquiryStatus) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
         checklistContainer.append(createCta(
@@ -477,7 +477,7 @@ async function createChecklistSection(inquiryStatus, petData) {
   if (checklistItem2Label) {
     let itemContent = null;
 
-    if (inquiryStatus === 'true') {
+    if (inquiryStatus) {
       itemContent = createChecklistItem(2, checklistItem2Label, checklistItem2Text);
     } else {
       itemContent = createChecklistItem(1, checklistItem2Label, checklistItem2Text);
@@ -489,7 +489,7 @@ async function createChecklistSection(inquiryStatus, petData) {
   if (checklistItem3Label) {
     let itemContent = null;
 
-    if (inquiryStatus === 'true') {
+    if (inquiryStatus) {
       itemContent = createChecklistItem(3, checklistItem3Label, checklistItem3Text);
     } else {
       itemContent = createChecklistItem(2, checklistItem3Label, checklistItem3Text);
