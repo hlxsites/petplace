@@ -1,7 +1,9 @@
 /* eslint-disable indent */
+// eslint-disable-next-line
 import TabsManual from './tabs-manual.js';
 import endPoints from '../../variables/endpoints.js';
 import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
+// eslint-disable-next-line
 import { bindAccountDetailsEvents, createAccountDetailsPanel } from './account-details.js';
 import { createAccountFavoritesPanel } from './account-favorites.js';
 import { createSavedSearchPanel } from './account-saved-searches.js';

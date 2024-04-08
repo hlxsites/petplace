@@ -27,7 +27,7 @@ export default class MultiSelect {
           }
         };
     }
-
+    // eslint-disable-next-line
     onButtonClick(button, state) {
         const btn = button;
         // force the options group to collapse

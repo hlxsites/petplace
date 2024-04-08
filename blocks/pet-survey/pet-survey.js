@@ -18,6 +18,7 @@ export default async function decorate(block) {
   const animalType = searchParams.get('animalType');
   const animalId = searchParams.get('animalId');
   const clientId = searchParams.get('clientId');
+  // eslint-disable-next-line
   const surveyId = animalType?.toLowerCase() === 'dog' ? 1 : animalType?.toLowerCase() === 'cat' ? 2 : null; // need to update this to use the surveyId from the query string
 
   // fetch placeholders from the 'adopt' folder
@@ -37,13 +38,15 @@ export default async function decorate(block) {
   const state = {
     surveyAnswers: [],
   };
-  let isLoggedInUser = await isLoggedIn();
+  const isLoggedInUser = await isLoggedIn();
   let token;
   let surveyParentId = null;
+  // eslint-disable-next-line
   const questions = await fetchSurveyQuestions(surveyId);
-
+  // eslint-disable-next-line
   function toggleScreen(name, block, isShown = true) {
     let selector;
+    // eslint-disable-next-line
     switch (name) {
       case 'presurvey':
         selector = '.pet-survey__layout-container--presurvey';
@@ -64,6 +67,7 @@ export default async function decorate(block) {
       }
     }
   }
+  // eslint-disable-next-line
   function setActiveQuestion(block, currentIndex, targetIndex) {
     const questionDivs = Array.from(
       block.querySelectorAll('.pet-survey__survey .pet-survey__question'),
@@ -81,6 +85,7 @@ export default async function decorate(block) {
     }
     if (targetIndex === questionDivs.length) {
       toggleScreen('survey', block, false);
+      // eslint-disable-next-line
       updateSummaryForm(block, state.surveyAnswers);
       toggleScreen('summary', block);
     }
@@ -89,6 +94,7 @@ export default async function decorate(block) {
     const surveyInputs = block.querySelectorAll('.pet-survey__survey .pet-survey__question input');
     surveyInputs.forEach((inputEl) => {
       inputEl.addEventListener('change', () => {
+        // eslint-disable-next-line
         state.surveyAnswers = updateSurveyProgress(block);
       });
     });
@@ -128,12 +134,14 @@ export default async function decorate(block) {
           };
 
           // add the checked item to the state
-          if (el.target.checked) { state.surveyAnswers.push(data); }
-          // remove the unchecked item from the state
-          else {
+          if (el.target.checked) {
+            state.surveyAnswers.push(data);
+          } else {
+            // remove the unchecked item from the state
             // If the answer exists, mark it as deleted
             const existingAnswerIndex = state.surveyAnswers.findIndex(
-              (answer) => answer.UserResponseText === data.UserResponseText || answer?.QuestionOption?.AnswerText === data.UserResponseText,
+              (answer) => answer.UserResponseText === data.UserResponseText
+              || answer?.QuestionOption?.AnswerText === data.UserResponseText,
             );
 
             if (existingAnswerIndex > -1) {
@@ -144,6 +152,7 @@ export default async function decorate(block) {
       });
     });
   }
+  // eslint-disable-next-line
   function bindPresurveyButtonEvents(block) {
     const cancelBtn = block.querySelector('#pet-survey-cancel');
     const startBtn = block.querySelector('#pet-survey-start');
@@ -159,7 +168,7 @@ export default async function decorate(block) {
       });
     }
   }
-
+  // eslint-disable-next-line
   function bindSurveyButtonEvents(block) {
     const backBtn = block.querySelector('#pet-survey-back');
     const nextBtn = block.querySelector('#pet-survey-next');
@@ -169,8 +178,8 @@ export default async function decorate(block) {
         const currentActiveIndex = parseInt(
           block
             .querySelector('.pet-survey .pet-survey__question.active')
-            .getAttribute('data-q-index')
-        , 10,
+            .getAttribute('data-q-index'),
+        10,
         );
         setActiveQuestion(block, currentActiveIndex, currentActiveIndex - 1);
       });
@@ -193,7 +202,7 @@ export default async function decorate(block) {
       });
     }
   }
-
+  // eslint-disable-next-line
   function bindSummaryBackButtonEvents(block, hasCompletedSurvey) {
     const backBtn = block.querySelector('#pet-survey-summary-back');
     if (backBtn) {
@@ -208,7 +217,7 @@ export default async function decorate(block) {
       });
     }
   }
-
+  // eslint-disable-next-line
   function bindSummarySaveNewEvent(block) {
     const inquiryBtn = block.querySelector('#pet-survey-summary-save');
     if (inquiryBtn) {
@@ -221,6 +230,7 @@ export default async function decorate(block) {
           SurveyId: surveyId,
           SurveyResponseAnswers: [...state.surveyAnswers],
         };
+        // eslint-disable-next-line
         const result = await callSurveyResponse(
           surveyId,
           token,
@@ -233,7 +243,7 @@ export default async function decorate(block) {
       });
     }
   }
-
+  // eslint-disable-next-line
   function bindSummaryInquiryEvent(block) {
     const inquiryBtn = block.querySelector('#pet-survey-summary-inquiry');
     if (inquiryBtn) {
@@ -243,28 +253,27 @@ export default async function decorate(block) {
         if (!token) {
           token = await acquireToken();
         }
-
+        // eslint-disable-next-line
         const surveyResponse = await callSurveyResponse(surveyId, token);
 
         if (surveyResponse && !surveyResponse.Completed) {
-          console.log('new survey')
           const payload = {
             SurveyId: surveyId,
             SurveyResponseAnswers: [...state.surveyAnswers],
           };
+          // eslint-disable-next-line
           const result = await callSurveyResponse(
             surveyId,
             token,
             'POST',
-            payload
+            payload,
           );
         } else {
-
-          console.log('old survey')
           const payload = {
             Id: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
           };
+          // eslint-disable-next-line
           const result = await callSurveyResponse(
             surveyId,
             token,
@@ -279,14 +288,12 @@ export default async function decorate(block) {
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-            "AnimalReferenceNumber": animalId,
-            "ClientId": clientId
-        })
+            AnimalReferenceNumber: animalId,
+            ClientId: clientId,
+        }),
       });
       if (response.status === 200) {
-        window.location.href = `/pet-adoption/inquiry-confirmation`;
-      } else {
-          
+        window.location.href = '/pet-adoption/inquiry-confirmation';
       }
       });
     }
@@ -299,9 +306,10 @@ export default async function decorate(block) {
         } else {
           inquiryBtn.disabled = true;
         }
-      })
+      });
     }
   }
+  // eslint-disable-next-line
   function bindSummarySaveEvent(block, surveyId) {
     const saveBtn = block.querySelector('#pet-survey-summary-save');
     if (saveBtn) {

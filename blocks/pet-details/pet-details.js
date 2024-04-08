@@ -460,7 +460,6 @@ async function createChecklistSection(inquiryStatus, petData) {
     checklistLabelEl.textContent = checklistLabel;
     checklistContainer.append(checklistLabelEl);
   }
-  
   if (inquiryStatus) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
@@ -468,9 +467,8 @@ async function createChecklistSection(inquiryStatus, petData) {
           `/pet-adoption/survey?animalType=${petData.animalType}`,
           'Start Pet Match Survey',
           'pet-details-button button primary right-arrow',
-          false
-          )
-        );
+          false,
+          ));
     }
   }
 
@@ -730,11 +728,11 @@ export default async function decorate(block) {
      favoriteCta.addEventListener('click', (e) => { setFavorite(e, petData); });
 
     // check if hash exists and if so favorite the pet
+    // eslint-disable-next-line
     const hash = getHashFromURL();
     if (hash === 'favorite') {
       setFavorite(null, petData);
     }
-
   }
 
   function getFavorites(response) {

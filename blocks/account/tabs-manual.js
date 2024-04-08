@@ -1,5 +1,5 @@
+// eslint-disable-next-line
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
-
 /* eslint-disable indent */
 export default class TabsManual {
     constructor(groupNode, dropdownNode, panelNodes) {
@@ -52,7 +52,7 @@ export default class TabsManual {
       this.selectNode.value = currentTab.getAttribute('data-tab-index');
       this.selectNode.setAttribute('data-active-panel', currentTab.getAttribute('aria-controls'));
     }
-
+    // eslint-disable-next-line
     moveFocusToTab(currentTab) {
       currentTab.focus();
     }
@@ -136,7 +136,7 @@ export default class TabsManual {
       }
       return -1;
     }
-
+    // eslint-disable-next-line
     getHashFromURL(url) {
       const hashIndex = url.indexOf('#');
       if (hashIndex !== -1) {

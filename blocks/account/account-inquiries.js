@@ -5,7 +5,6 @@ import { extractName } from '../../templates/adopt/adopt.js';
 
 const arrInquiryList = [];
 
-
 const emptyInquiryList = `
 <div class='account-layout-container no-inquiry-pets'>
     You don’t currently have any inquiries.
@@ -162,7 +161,6 @@ async function bindAccountInquiryEvents(block, token, inquiryList) {
 }
 
 function getInquiries(animalData) {
-
   fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
     method: 'GET',
     headers: {

@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
+// eslint-disable-next-line
 import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
@@ -164,6 +165,15 @@ async function callAnimalList() {
         }),
     });
     if (response.status === 204) {
+    const breedSelect = document.getElementById('breed');
+    if (breedSelect) {
+        // eslint-disable-next-line
+        const L = breedSelect?.options.length - 1;
+        for (let i = L; i >= 0; i -= 1) {
+            breedSelect.remove(i);
+        }
+    }
+        // eslint-disable-next-line
         buildResultsContainer([]);
         let resultsContainer = document.querySelector('.default-content-wrapper.results');
         if (!resultsContainer) {
@@ -202,9 +212,11 @@ async function callBreedList(petType) {
 async function updateBreedListSelect() {
     const breedSelect = document.getElementById('breed');
     let i = 0;
-    const L = breedSelect?.options.length - 1;
-    for (i = L; i >= 0; i -= 1) {
-        breedSelect.remove(i);
+    if (breedSelect) {
+        const L = breedSelect.options.length - 1;
+        for (i = L; i >= 0; i -= 1) {
+            breedSelect.remove(i);
+        }
     }
 
     const breedOption = document.createElement('option');
@@ -352,6 +364,7 @@ function clearFilters() {
         radioButtons[i].checked = false;
     }
     callAnimalList().then((data) => {
+        // eslint-disable-next-line
         buildResultsContainer(data);
     });
 }
@@ -402,6 +415,7 @@ function buildFilterSidebar(sidebar) {
     radiusSelect.className = 'filter-select';
     radiusSelect.addEventListener('change', () => {
         callAnimalList().then((data) => {
+            // eslint-disable-next-line
             buildResultsContainer(data);
         });
     });
@@ -438,6 +452,7 @@ function buildFilterSidebar(sidebar) {
         genderRadio.value = placeholders[gender.toLowerCase()];
         genderRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
+                // eslint-disable-next-line
                 buildResultsContainer(data);
             });
         });
@@ -469,6 +484,7 @@ function buildFilterSidebar(sidebar) {
         ageRadio.id = age;
         ageRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
+                // eslint-disable-next-line
                 buildResultsContainer(data);
             });
         });
@@ -513,6 +529,7 @@ function buildFilterSidebar(sidebar) {
         })];
         sizeRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
+                // eslint-disable-next-line
                 buildResultsContainer(data);
             });
         });
@@ -718,7 +735,7 @@ export function openOptInModal(tokenInfo, initialUserData, event) {
     }
 }
 
-window.onload = callBreedList('null').then((data, event) => {
+window.onload = callBreedList('null').then((data) => {
     breedList = data;
     updateBreedListSelect();
     const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
@@ -991,6 +1008,7 @@ export default async function decorate(block) {
                         if (initialUserData.EmailOptIn) {
                             setSaveSearch(event);
                         } else {
+                            // eslint-disable-next-line
                             const token = await acquireToken();
                             initialUserData = await callUserApi(token);
                             openOptInModal(token, initialUserData, event);

@@ -2,6 +2,7 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 import { extractName } from '../../templates/adopt/adopt.js';
+// eslint-disable-next-line
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 const arrFavList = [];

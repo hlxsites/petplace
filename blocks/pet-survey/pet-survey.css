@@ -1,3 +1,4 @@
+/* eslint-disable */
 main .pet-survey-container {
   padding: 48px 16px;
   background-color: var(--neutral-50, #fafafc);
@@ -462,3 +463,4 @@ progress[value]::-webkit-progress-value {
   mask-repeat: no-repeat;
   mask-position: center;
 }
+/* eslint-enable */

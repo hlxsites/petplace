@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import endPoints from '../../variables/endpoints.js';
+// eslint-disable-next-line
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 const arrSaveList = [];

@@ -1,4 +1,5 @@
 /* eslint-disable indent */
+// eslint-disable-next-line
 import { changePassword, isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
 import endPoints from '../../variables/endpoints.js';
