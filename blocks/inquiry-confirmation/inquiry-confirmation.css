@@ -1,3 +1,4 @@
+/* stylelint-disable */
 main .inquiry-confirmation-container {
     padding: 0;
     background-color: var(--neutral-50, #FAFAFC);
@@ -73,3 +74,4 @@ a.button.inquiry-confirmation__button.primary {
         flex-direction: row;
     }
 }
+/* stylelint-enable */

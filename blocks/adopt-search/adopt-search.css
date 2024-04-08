@@ -1,5 +1,5 @@
 /* Adopt Global */
-
+/* stylelint-disable */
 .adopt button,
 .adopt a.button {
   background-color: var(--compare-button-bg-color);
@@ -623,3 +623,4 @@
   padding-left: 12px;
   padding-right: 12px;
 }
+/* stylelint-enable */

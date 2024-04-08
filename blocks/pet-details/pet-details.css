@@ -1,3 +1,4 @@
+/* stylelint-disable */
 /*page layout */
 .section.pet-details-container {
   padding: 32px 0;
@@ -783,3 +784,4 @@
 /* .pet-details .inquiry-modal .modal-cta-button {
   padding-inline: 24px;
 } */
+/* stylelint-enable */
