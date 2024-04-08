@@ -3,7 +3,6 @@
 import { changePassword, isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
 import endPoints from '../../variables/endpoints.js';
-import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 
 function serialize(data) {
     const obj = {};
