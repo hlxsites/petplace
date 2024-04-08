@@ -5,6 +5,29 @@ import { extractName } from '../../templates/adopt/adopt.js';
 
 const arrInquiryList = [];
 
+
+const emptyInquiryList = `
+<div class='account-layout-container no-inquiry-pets'>
+    You don’t currently have any inquiries.
+</div>
+<div class="new-search-btn-wrapper">
+    <a href="/pet-adoption/search" class='account-button account-button--new-search' id='new-search'>
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+            <g clip-path="url(#clip0_2839_4223)">
+                <path d="M12.5 23C18.5751 23 23.5 18.0751 23.5 11.9999C23.5 5.92481 18.5751 1 12.5 1C6.42484 1 1.5 5.92481 1.5 11.9999C1.5 18.0751 6.42484 23 12.5 23Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12.4512 6.47559V17.5245" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.97559 11.9512H17.9267" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+                <clipPath id="clip0_2839_4223">
+                    <rect width="24" height="24" fill="white" transform="translate(0.5)"/>
+                </clipPath>
+            </defs>
+        </svg>
+        Start New Search
+    </a>
+</div>`;
+
 function orderByAvailability(a, b) {
   if (a.Animal.IsAvailable && !b.Animal.IsAvailable) {
       return -1;
@@ -44,6 +67,11 @@ function openRemoveConfirmModal(petName, element, id, token, btn) {
       element.remove();
       modal.classList.add('hidden');
       overlay.classList.remove('show');
+      const remainingInquiries = document.querySelectorAll('.inquiry-pet-card');
+      if (remainingInquiries.length < 1) {
+        const elInquiryList = document.querySelector('.inquiries-list');
+        elInquiryList.innerHTML = emptyInquiryList;
+      }
   });
 
   cancelBtn.addEventListener('click', () => {
@@ -134,27 +162,6 @@ async function bindAccountInquiryEvents(block, token, inquiryList) {
 }
 
 function getInquiries(animalData) {
-  const emptyInquiryList = `
-      <div class='account-layout-container no-inquiry-pets'>
-          You don’t currently have any inquiries.
-      </div>
-      <div class="new-search-btn-wrapper">
-          <a href="/pet-adoption/search" class='account-button account-button--new-search' id='new-search'>
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                  <g clip-path="url(#clip0_2839_4223)">
-                      <path d="M12.5 23C18.5751 23 23.5 18.0751 23.5 11.9999C23.5 5.92481 18.5751 1 12.5 1C6.42484 1 1.5 5.92481 1.5 11.9999C1.5 18.0751 6.42484 23 12.5 23Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M12.4512 6.47559V17.5245" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M6.97559 11.9512H17.9267" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                  </g>
-                  <defs>
-                      <clipPath id="clip0_2839_4223">
-                          <rect width="24" height="24" fill="white" transform="translate(0.5)"/>
-                      </clipPath>
-                  </defs>
-              </svg>
-              Start New Search
-          </a>
-      </div>`;
 
   fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
     method: 'GET',
