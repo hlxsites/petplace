@@ -202,7 +202,7 @@ async function callBreedList(petType) {
 async function updateBreedListSelect() {
     const breedSelect = document.getElementById('breed');
     let i = 0;
-    const L = breedSelect.options.length - 1;
+    const L = breedSelect?.options.length - 1;
     for (i = L; i >= 0; i -= 1) {
         breedSelect.remove(i);
     }
@@ -721,7 +721,7 @@ export function openOptInModal(tokenInfo, initialUserData, event) {
 window.onload = callBreedList('null').then((data, event) => {
     breedList = data;
     updateBreedListSelect();
-    const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
+    const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
     const div = document.createElement('div');
     div.className = 'pagination hidden';
 
@@ -739,7 +739,7 @@ window.onload = callBreedList('null').then((data, event) => {
     paginationNumbers.className = 'pagination-numbers';
     div.append(paginationNumbers);
     div.append(nextButton);
-    tempResultsContainer.append(div);
+    tempResultsContainer?.append(div);
 
     // When the page loads, check if there are any query parameters in the URL
     const params = new URLSearchParams(window.location.search);
