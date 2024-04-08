@@ -1,15 +1,18 @@
-import MultiSelect from "./multi-select.js";
-
+/* eslint-disable indent */
+import MultiSelect from './multi-select.js';
+// eslint-disable-next-line
 export function createInput(wrapperClass = '', type, questionId, option, isExternal, prefix = null) {
     const div = document.createElement('div');
     if (wrapperClass) {
-        div.className = wrapperClass;        
+        div.className = wrapperClass;
     }
     const input = document.createElement('input');
     input.type = type;
     if (type === 'radio') {
+        // eslint-disable-next-line
         input.name = `${prefix ? prefix + '-' : ''}question-${questionId}`;
     }
+    // eslint-disable-next-line
     input.id = `${prefix ? prefix + '-' : ''}question-${questionId}-option-${option.Id}`;
     input.setAttribute('data-question-id', questionId);
     input.setAttribute('data-option-id', option.Id);
@@ -18,6 +21,7 @@ export function createInput(wrapperClass = '', type, questionId, option, isExter
         input.setAttribute('data-is-external', 'true');
     }
     const label = document.createElement('label');
+    // eslint-disable-next-line
     label.setAttribute('for', `${prefix ? prefix + '-' : ''}question-${questionId}-option-${option.Id}`);
     label.innerText = option.AnswerText;
     div.append(input, label);
@@ -29,7 +33,7 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
     container.setAttribute('role', 'group');
     container.setAttribute('aria-label', Label);
     container.setAttribute('tabindex', '0');
-    options.forEach((option, index) => {
+    options.forEach((option) => {
         const input = createInput('custom-input', type, Id, option, isExternal, 'survey');
         container.append(input);
     });
@@ -40,27 +44,39 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
                 if (checkbox.checked && index === 0) {
                     checkboxArray.forEach((input) => {
                         input.checked = false;
-                    })
+                    });
                     checkboxArray[0].checked = true;
                 } else if (checkbox.checked && index !== 0) {
                     checkboxArray[0].checked = false;
                 }
-            })
-        })
+            });
+        });
     }
     return container;
 }
-export function createSingleSelect(questionId, options, defaultValue= null, label = null, className = null, attributes = null, prefix=null, errorMessage = null) {
+export function createSingleSelect(
+    questionId,
+    options,
+    defaultValue = null,
+    label = null,
+    className = null,
+    attributes = null,
+    prefix = null,
+    errorMessage = null,
+    ) {
     const containerDiv = document.createElement('div');
     containerDiv.className = `single-select ${className || ''}`;
     if (label) {
         const labelEl = document.createElement('label');
+        // eslint-disable-next-line
         labelEl.setAttribute('for', `${prefix ? prefix + '-' : ''}question-${questionId}`);
         labelEl.innerText = label;
         containerDiv.append(labelEl);
     }
     const select = document.createElement('select');
+    // eslint-disable-next-line
     select.name = `${prefix ? prefix + '-' : ''}question-${questionId}`;
+    // eslint-disable-next-line
     select.id = `${prefix ? prefix + '-' : ''}question-${questionId}`;
     select.setAttribute('data-question-id', questionId);
     if (attributes) {
@@ -79,7 +95,7 @@ export function createSingleSelect(questionId, options, defaultValue= null, labe
         const op = document.createElement('option');
         op.innerText = option.AnswerText;
         op.value = option.Id;
-        if (defaultValue && option.AnswerText.toLowerCase() === defaultValue.toLowerCase() ) {
+        if (defaultValue && option.AnswerText.toLowerCase() === defaultValue.toLowerCase()) {
             op.setAttribute('selected', 'selected');
         }
         select.append(op);
@@ -93,9 +109,17 @@ export function createSingleSelect(questionId, options, defaultValue= null, labe
     }
     return containerDiv;
 }
-export function createMultiSelect(questionId, options, isExternal, label = null, className = null, prefix = null) {
+export function createMultiSelect(
+    questionId,
+    options,
+    isExternal,
+    label = null,
+    className = null,
+    prefix = null,
+    ) {
     const containerDiv = document.createElement('div');
     containerDiv.className = `multi-select ${className || ''}`;
+    // eslint-disable-next-line
     containerDiv.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}`;
     let checkboxOverride = false;
     if (label) {
@@ -108,10 +132,12 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
         }
     }
     const button = document.createElement('button');
+    // eslint-disable-next-line
     button.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-button`;
     button.className = 'multi-select__button';
     button.type = 'button';
     button.setAttribute('aria-expanded', 'false');
+    // eslint-disable-next-line
     button.setAttribute('aria-controls', `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-options`);
     const text = document.createElement('span');
     text.className = 'multi-select__button-text';
@@ -121,15 +147,17 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
     button.append(text, icon);
     const groupDiv = document.createElement('div');
     groupDiv.setAttribute('role', 'group');
+    // eslint-disable-next-line
     groupDiv.setAttribute('aria-labelledby', `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-button`);
     groupDiv.setAttribute('tabindex', '0');
     groupDiv.className = 'multi-select__options';
+    // eslint-disable-next-line
     groupDiv.id = `${prefix ? prefix + '-' : ''}multi-select-question-${questionId}-options`;
     options.forEach((option) => {
         groupDiv.append(createInput('multi-select__input', 'checkbox', questionId, option, isExternal, prefix));
     });
     containerDiv.append(button, groupDiv);
-    new MultiSelect(containerDiv);
+    MultiSelect(containerDiv);
     if (checkboxOverride) {
         const checkboxArray = groupDiv.querySelectorAll('input');
         checkboxArray?.forEach((checkbox, index) => {
@@ -137,12 +165,12 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
                 if (checkbox.checked && index === 0) {
                     checkboxArray.forEach((input) => {
                         input.checked = false;
-                        input.dispatchEvent(new window.Event('change', {'bubbles': true}));
-                    })
+                        input.dispatchEvent(new window.Event('change', { bubbles: true }));
+                    });
                     checkboxArray[0].checked = true;
                 } else if (checkbox.checked && index !== 0) {
                     checkboxArray[0].checked = false;
-                    checkboxArray[0].dispatchEvent(new window.Event('change', {'bubbles': true}));
+                    checkboxArray[0].dispatchEvent(new window.Event('change', { bubbles: true }));
                 }
                 // updating label
                 const buttonText = containerDiv.querySelector('.multi-select__button-text');
@@ -151,13 +179,20 @@ export function createMultiSelect(questionId, options, isExternal, label = null,
                     ? `${selected.length} selected`
                     : 'Select from menu...';
                 buttonText.innerText = displayText;
-            })
-        })
+            });
+        });
     }
     return containerDiv;
 }
 export function createQuestion(item, index) {
-    const { ExternalAnswerSource, Id, IsMultiAnswer, Label, QuestionText, QuestionOptions } = item.Question;
+    const {
+        ExternalAnswerSource,
+        Id,
+        IsMultiAnswer,
+        Label,
+        QuestionText,
+        QuestionOptions,
+    } = item.Question;
     const itemDiv = document.createElement('div');
     itemDiv.className = `pet-survey__question${index === 0 ? ' active' : ''}`;
     itemDiv.setAttribute('data-q-index', index);
@@ -172,15 +207,27 @@ export function createQuestion(item, index) {
         if (IsMultiAnswer) {
             optionsDiv.append(createMultiSelect(Id, QuestionOptions, isExternal, null, null, 'survey'));
         } else {
-            optionsDiv.append(createSingleSelect(Id, QuestionOptions, Label, null, isExternal ? {'data-is-external' : 'true'} : null, 'survey'));
+            optionsDiv.append(createSingleSelect(Id, QuestionOptions, Label, null, isExternal ? { 'data-is-external': 'true' } : null, 'survey'));
         }
     } else {
-        optionsDiv.append(createControlGroup(Id, IsMultiAnswer, isExternal, Label, QuestionOptions));
+        optionsDiv.append(createControlGroup(
+            Id,
+            IsMultiAnswer,
+            isExternal,
+            Label,
+            QuestionOptions,
+            ));
     }
     itemDiv.append(optionsDiv);
     return itemDiv;
 }
-export async function createPresurvey(preSurveyHeading, preSurveySubheading, preSurveySignInLabel, surveyCancelLabel, surveyStartLabel) {
+export async function createPresurvey(
+    preSurveyHeading,
+    preSurveySubheading,
+    preSurveySignInLabel,
+    surveyCancelLabel,
+    surveyStartLabel,
+    ) {
     const containerDiv = document.createElement('div');
     containerDiv.className = 'pet-survey__layout-container pet-survey__layout-container--presurvey';
     const presurveyDiv = document.createElement('div');
@@ -250,7 +297,13 @@ export async function createSurveySteps(surveyHeading, questions) {
     containerDiv.append(surveyDiv);
     return containerDiv;
 }
-export async function createSummaryForm(animalType, questionArray, animalId = null, clientId = null, surveySummaryFlow = null) {
+export async function createSummaryForm(
+    animalType,
+    questionArray,
+    animalId = null,
+    clientId = null,
+    surveySummaryFlow = null,
+    ) {
     const formDiv = document.createElement('div');
     formDiv.className = 'pet-survey__form-container';
     const form = document.createElement('form');
@@ -258,100 +311,106 @@ export async function createSummaryForm(animalType, questionArray, animalId = nu
     form.name = `${animalType}-survey-form`;
     form.className = 'pet-survey__form';
     questionArray.forEach((item) => {
-        const { Question } = item;
-        const isExternal = Question.ExternalAnswerSource ? true: false;
-        if (Question.IsMultiAnswer) {
-            form.append(createMultiSelect(Question.Id, Question.QuestionOptions, isExternal, Question.Label, 'pet-survey__form-control', 'summary'));
-        } else {
-            const isPetTypeField = Question.Label === 'Desired Pet Type';
-            const attributes = {required: true};
-            if (isPetTypeField) {
-                attributes['disabled'] = 'disabled';
-            }
-            if (isExternal) {
-                attributes['data-is-external'] = 'true';
-            }
-           form.append(createSingleSelect(Question.Id, Question.QuestionOptions, isPetTypeField ? animalType : null, Question.Label, 'pet-survey__form-control', attributes, 'summary'));
-        }
-    });
-    const ctaContainer = document.createElement('div');
-    ctaContainer.className = 'pet-survey__cta-container';
-    if (animalId && clientId) {
-        // Add agreement checkbox
-        const agreementDiv = document.createElement('div');
-        agreementDiv.className = 'pet-survey__form-control agreement-checkbox'
-        const agreementCheckbox = document.createElement('label');
-        agreementCheckbox.className = 'checkbox-container'
-        agreementCheckbox.innerHTML = `
-        I agree to share my information with the applicable shelter.
-        <input type="checkbox" id='pet-survey-summary-agreement' name="pet-survey-summary-agreement">
-        <span class="checkmark"></span>
-        `;
-        agreementDiv.append(agreementCheckbox);
-        form.append(agreementDiv);
-        // Add Back and Submit Inquiry Button
-        const backBtn = document.createElement('button');
-        backBtn.id = 'pet-survey-summary-back';
-        backBtn.className = 'pet-survey__button secondary';
-        backBtn.innerText = 'Back';
-        const inquiryBtn = document.createElement('button');
-        inquiryBtn.id = 'pet-survey-summary-inquiry';
-        inquiryBtn.className = 'pet-survey__button primary';
-        inquiryBtn.innerText = 'Submit Inquiry';
-        inquiryBtn.disabled = 'true';
-        ctaContainer.append(backBtn, inquiryBtn);
-    } else if (animalType && animalId && surveySummaryFlow === 'summary') {
-      // Add additional else if statement to check for in summary flow, w/ animalType ... show back button and inquiry button
-        // Add agreement checkbox
-        const agreementDiv = document.createElement('div');
-        agreementDiv.className = 'pet-survey__form-control agreement-checkbox'
-        const agreementCheckbox = document.createElement('label');
-        agreementCheckbox.className = 'checkbox-container'
-        agreementCheckbox.innerHTML = `
-        I agree to share my information with the applicable shelter.
-        <input type="checkbox" id='pet-survey-summary-agreement' name="pet-survey-summary-agreement">
-        <span class="checkmark"></span>
-        `;
-        agreementDiv.append(agreementCheckbox);
-        form.append(agreementDiv);
-        // Add Back and Submit Inquiry Button
-        const backBtn = document.createElement('button');
-        backBtn.id = 'pet-survey-summary-back';
-        backBtn.className = 'pet-survey__button secondary';
-        backBtn.innerText = 'Back';
-        const inquiryBtn = document.createElement('button');
-        inquiryBtn.id = 'pet-survey-summary-inquiry';
-        inquiryBtn.className = 'pet-survey__button primary';
-        inquiryBtn.innerText = 'Submit Inquiry';
-        ctaContainer.append(backBtn, inquiryBtn);
+    const { Question } = item;
+    // eslint-disable-next-line
+    const isExternal = Question.ExternalAnswerSource ? true : false;
+    if (Question.IsMultiAnswer) {
+      form.append(createMultiSelect(Question.Id, Question.QuestionOptions, isExternal, Question.Label, 'pet-survey__form-control', 'summary'));
     } else {
-        // add back button to summary screen with save changes
-        const backBtn = document.createElement('button');
-        backBtn.id = 'pet-survey-summary-back';
-        backBtn.className = 'pet-survey__button secondary';
-        backBtn.innerText = 'Back';
-        // Add Save Changes button
-        const saveBtn = document.createElement('button');
-        saveBtn.id = 'pet-survey-summary-save';
-        // saveBtn.setAttribute('disabled', 'disabled');
-        saveBtn.className = 'pet-survey__button secondary';
-        saveBtn.innerText = 'Save Changes';
-        ctaContainer.append(backBtn, saveBtn);
+      const isPetTypeField = Question.Label === 'Desired Pet Type';
+      const attributes = { required: true };
+      if (isPetTypeField) {
+        attributes.disabled = 'disabled';
+      }
+      if (isExternal) {
+        attributes['data-is-external'] = 'true';
+      }
+      form.append(createSingleSelect(Question.Id, Question.QuestionOptions, isPetTypeField ? animalType : null, Question.Label, 'pet-survey__form-control', attributes, 'summary'));
     }
-    form.append(ctaContainer);
-    formDiv.append(form);
-    return formDiv;
+  });
+  const ctaContainer = document.createElement('div');
+  ctaContainer.className = 'pet-survey__cta-container';
+  if (animalId && clientId) {
+    // Add agreement checkbox
+    const agreementDiv = document.createElement('div');
+    agreementDiv.className = 'pet-survey__form-control agreement-checkbox';
+    const agreementCheckbox = document.createElement('label');
+    agreementCheckbox.className = 'checkbox-container';
+    agreementCheckbox.innerHTML = `
+    I agree to share my information with the applicable shelter.
+    <input type="checkbox" id='pet-survey-summary-agreement' name="pet-survey-summary-agreement">
+    <span class="checkmark"></span>
+    `;
+    agreementDiv.append(agreementCheckbox);
+    form.append(agreementDiv);
+    // Add Back and Submit Inquiry Button
+    const backBtn = document.createElement('button');
+    backBtn.id = 'pet-survey-summary-back';
+    backBtn.className = 'pet-survey__button secondary';
+    backBtn.innerText = 'Back';
+    const inquiryBtn = document.createElement('button');
+    inquiryBtn.id = 'pet-survey-summary-inquiry';
+    inquiryBtn.className = 'pet-survey__button primary';
+    inquiryBtn.innerText = 'Submit Inquiry';
+    inquiryBtn.disabled = 'true';
+    ctaContainer.append(backBtn, inquiryBtn);
+  } else if (animalType && animalId && surveySummaryFlow === 'summary') {
+    // Add additional else if statement to check for in summary flow,
+    // w/ animalType ... show back button and inquiry button
+    // Add agreement checkbox
+    const agreementDiv = document.createElement('div');
+    agreementDiv.className = 'pet-survey__form-control agreement-checkbox';
+    const agreementCheckbox = document.createElement('label');
+    agreementCheckbox.className = 'checkbox-container';
+    agreementCheckbox.innerHTML = `
+    I agree to share my information with the applicable shelter.
+    <input type="checkbox" id='pet-survey-summary-agreement' name="pet-survey-summary-agreement">
+    <span class="checkmark"></span>
+    `;
+    agreementDiv.append(agreementCheckbox);
+    form.append(agreementDiv);
+    // Add Back and Submit Inquiry Button
+    const backBtn = document.createElement('button');
+    backBtn.id = 'pet-survey-summary-back';
+    backBtn.className = 'pet-survey__button secondary';
+    backBtn.innerText = 'Back';
+    const inquiryBtn = document.createElement('button');
+    inquiryBtn.id = 'pet-survey-summary-inquiry';
+    inquiryBtn.className = 'pet-survey__button primary';
+    inquiryBtn.innerText = 'Submit Inquiry';
+    ctaContainer.append(backBtn, inquiryBtn);
+  } else {
+    // add back button to summary screen with save changes
+    const backBtn = document.createElement('button');
+    backBtn.id = 'pet-survey-summary-back';
+    backBtn.className = 'pet-survey__button secondary';
+    backBtn.innerText = 'Back';
+    // Add Save Changes button
+    const saveBtn = document.createElement('button');
+    saveBtn.id = 'pet-survey-summary-save';
+    // saveBtn.setAttribute('disabled', 'disabled');
+    saveBtn.className = 'pet-survey__button secondary';
+    saveBtn.innerText = 'Save Changes';
+    ctaContainer.append(backBtn, saveBtn);
+  }
+  form.append(ctaContainer);
+  formDiv.append(form);
+  return formDiv;
 }
-export async function createSummaryScreen(surveySummaryHeading, surveySummarySubheading, summaryForm) {
-    const containerDiv = document.createElement('div');
-    containerDiv.className = 'pet-survey__layout-container pet-survey__layout-container--summary hide';
-    const headerDiv = document.createElement('div');
-    headerDiv.className = 'pet-survey__summary-header';
-    const heading = document.createElement('h2');
-    heading.innerText = surveySummaryHeading || 'Almost Done!';
-    const subheading = document.createElement('p');
-    subheading.innerText = surveySummarySubheading || 'Confirm the following information before submitting your inquiry.';
-    headerDiv.append(heading, subheading);
-    containerDiv.append(headerDiv, summaryForm);
-    return containerDiv;
+export async function createSummaryScreen(
+  surveySummaryHeading,
+  surveySummarySubheading,
+  summaryForm,
+) {
+  const containerDiv = document.createElement('div');
+  containerDiv.className = 'pet-survey__layout-container pet-survey__layout-container--summary hide';
+  const headerDiv = document.createElement('div');
+  headerDiv.className = 'pet-survey__summary-header';
+  const heading = document.createElement('h2');
+  heading.innerText = surveySummaryHeading || 'Almost Done!';
+  const subheading = document.createElement('p');
+  subheading.innerText = surveySummarySubheading || 'Confirm the following information before submitting your inquiry.';
+  headerDiv.append(heading, subheading);
+  containerDiv.append(headerDiv, summaryForm);
+  return containerDiv;
 }
