@@ -18,7 +18,7 @@ export default async function decorate(block) {
   const animalType = searchParams.get('animalType');
   const animalId = searchParams.get('animalId');
   const clientId = searchParams.get('clientId');
-  const surveyId = animalType.toLowerCase() === 'dog' ? 1 : animalType.toLowerCase() === 'cat' ? 2 : null; // need to update this to use the surveyId from the query string
+  const surveyId = animalType?.toLowerCase() === 'dog' ? 1 : animalType?.toLowerCase() === 'cat' ? 2 : null; // need to update this to use the surveyId from the query string
 
   // fetch placeholders from the 'adopt' folder
   const placeholders = await fetchPlaceholders('/adopt');
@@ -311,6 +311,7 @@ export default async function decorate(block) {
           Id: surveyId,
           SurveyResponseAnswers: [...state.surveyAnswers],
         };
+        // eslint-disable-next-line
         const result = await callSurveyResponse(
           surveyId,
           token,
@@ -320,7 +321,7 @@ export default async function decorate(block) {
       });
     }
   }
-
+  // eslint-disable-next-line
   function updateSummaryForm(block, answers) {
     const form = block.querySelector('.pet-survey__layout-container--summary form');
     const multiSelectCheckboxes = Array.from(form.querySelectorAll(".multi-select input[type='checkbox']"));
@@ -359,14 +360,14 @@ export default async function decorate(block) {
       buttonText.innerText = displayText;
     });
   }
-
+  // eslint-disable-next-line
   function updateSurveyProgress(block) {
     const surveyQuestions = block.querySelectorAll(
       '.pet-survey__survey .pet-survey__question',
     );
     const progressBar = block.querySelector('#pet-survey-progress');
     let progress = 0;
-    let surveyAnswers = [];
+    const surveyAnswers = [];
     surveyQuestions.forEach((question) => {
       const checked = Array.from(question.querySelectorAll('input:checked'));
       if (checked.length > 0) {
@@ -380,7 +381,9 @@ export default async function decorate(block) {
               : el.getAttribute('data-option-id'),
           };
           if (isExternal) {
+            // eslint-disable-next-line
             data['ExternalAnswerKey'] = el.getAttribute('data-option-id');
+            // eslint-disable-next-line
             data['UserResponseText'] = el.getAttribute('data-option-text');
           }
           surveyAnswers.push(data);
@@ -394,8 +397,8 @@ export default async function decorate(block) {
     return surveyAnswers;
   }
 
-  async function fetchSurveyQuestions(surveyId = null) {
-    let surveyIdValue = surveyId;
+  async function fetchSurveyQuestions(surveyReponseId = null) {
+    let surveyIdValue = surveyReponseId;
     if (!surveyIdValue && sessionStorage.getItem('surveyTabAnimalType') !== null) {
       surveyIdValue = sessionStorage.getItem('surveyTabAnimalType');
     }
@@ -407,18 +410,19 @@ export default async function decorate(block) {
         result = await resp.json();
       }
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error:', error);
     }
     return result;
   }
 
   async function callSurveyResponse(
-    surveyId,
-    token,
+    surveyReponseId,
+    tokenResponse,
     method = 'GET',
     payload = null,
   ) {
-    let surveyIdValue = surveyId;
+    let surveyIdValue = surveyReponseId;
     if (!surveyIdValue && sessionStorage.getItem('surveyTabAnimalType') !== null) {
       surveyIdValue = sessionStorage.getItem('surveyTabAnimalType');
     }
@@ -428,7 +432,7 @@ export default async function decorate(block) {
     const config = {
       method,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenResponse}`,
         'Content-Type': 'application/json',
       },
     };
@@ -452,6 +456,7 @@ export default async function decorate(block) {
         }
       }
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error:', error);
     }
     return result;
@@ -489,7 +494,7 @@ export default async function decorate(block) {
       toggleScreen('summary', block);
       updateSummaryForm(block, answers);
       bindSummaryBackButtonEvents(block, true);
-      
+
       if (animalId && clientId) {
         bindSummaryInquiryEvent(block);
       } else {
