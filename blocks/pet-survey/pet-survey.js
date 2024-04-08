@@ -255,7 +255,7 @@ export default async function decorate(block) {
         }
         // eslint-disable-next-line
         const surveyResponse = await callSurveyResponse(surveyId, token);
-
+        let surveyNumber = '';
         if (surveyResponse && !surveyResponse.Completed) {
           const payload = {
             SurveyId: surveyId,
@@ -268,7 +268,10 @@ export default async function decorate(block) {
             'POST',
             payload,
           );
+          const survey = await callSurveyResponse(surveyId, token);
+          surveyNumber = survey.Id;
         } else {
+          surveyNumber = surveyResponse.Id;
           const payload = {
             Id: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
@@ -290,6 +293,7 @@ export default async function decorate(block) {
         body: JSON.stringify({
             AnimalReferenceNumber: animalId,
             ClientId: clientId,
+            SurveyResponseId: surveyNumber,
         }),
       });
       if (response.status === 200) {
