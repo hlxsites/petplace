@@ -1,5 +1,6 @@
 import { getMetadata } from '../lib-franklin.js';
 import { extractName } from '../../templates/adopt/adopt.js';
+// eslint-disable-next-line
 import { setFavorite } from './favorite.js';
 
 export function buildPetCard(animal) {

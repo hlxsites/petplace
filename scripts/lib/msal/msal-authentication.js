@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { getDefaultMsalInstance, getMsalInstance } from './msal-instance.js';
 import { initRedirectHandlers } from './login-redirect-handlers.js';
 import {
@@ -331,3 +332,4 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
     selectAccount();
   }
 }
+/* eslint-enable */

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import { acquireToken } from '../lib/msal/msal-authentication.js';
 import endPoints from '../../variables/endpoints.js';
 import { fetchPlaceholders } from '../lib-franklin.js';

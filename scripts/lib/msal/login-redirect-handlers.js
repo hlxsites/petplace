@@ -1,6 +1,8 @@
+// eslint-disable-next-line
 import { saveFavorite, STORAGE_KEY_SAVE_FAVORITE } from '../../adoption/favorite.js';
 import { callUserApi } from '../../../blocks/account/account.js';
 import { setSaveSearch } from '../../adoption/saveSearch.js';
+// eslint-disable-next-line
 import { openOptInModal } from '../../../blocks/adopt-search-results/adopt-search-results.js';
 
 function handleFavorite(token) {

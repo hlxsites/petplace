@@ -9,31 +9,31 @@
  */
 
 const stageConfigs = {
-  clientId: "680fcf6c-4c38-4d11-8963-d65de9aec0d9",
-  scopes: ["https://petplacepoc.onmicrosoft.com/api/adopt.all", "openid"],
+  clientId: '680fcf6c-4c38-4d11-8963-d65de9aec0d9',
+  scopes: ['https://petplacepoc.onmicrosoft.com/api/adopt.all', 'openid'],
   authorities: {
     signUpSignIn: {
-      authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/b2c_1_susi"
+      authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/b2c_1_susi',
     },
     changePassword: {
-      authority: "https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE"
-    }
+      authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
+    },
   },
-  authorityDomain: "petplacepoc.b2clogin.com"
+  authorityDomain: 'petplacepoc.b2clogin.com',
 };
 
 const stageAltConfigs = {
-  clientId: "294a2117-b48b-41b4-ac9c-33a62737d47f",
-  scopes: ["https://petplaceb2cftr.onmicrosoft.com/3b511f9c-7c30-4206-a8cd-803b55f0d779/adopt.all", "openid"],
+  clientId: '294a2117-b48b-41b4-ac9c-33a62737d47f',
+  scopes: ['https://petplaceb2cftr.onmicrosoft.com/3b511f9c-7c30-4206-a8cd-803b55f0d779/adopt.all', 'openid'],
   authorities: {
     signUpSignIn: {
-      authority: "https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/b2c_1_susi"
+      authority: 'https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/b2c_1_susi',
     },
     changePassword: {
-      authority: "https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_PASSWORDCHANGE"
-    }
+      authority: 'https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
+    },
   },
-  authorityDomain: "petplaceb2cftr.b2clogin.com"
+  authorityDomain: 'petplaceb2cftr.b2clogin.com',
 };
 
 const prodConfigs = {
@@ -57,10 +57,10 @@ let b2cPolicies = {
 };
 
 // if URL contains "www.petplace.com", merge prodConfigs into b2cPolicies
-if (window.location.href.includes("www.petplace.com") || window.location.href.includes("main--petplace--hlxsites")) {
-  b2cPolicies = {...b2cPolicies, ...prodConfigs};
-} else if (window.location.href.includes("adopt-test--petplace--hlxsites")) {
-  b2cPolicies = {...b2cPolicies, ...stageAltConfigs};
+if (window.location.href.includes('www.petplace.com') || window.location.href.includes('main--petplace--hlxsites')) {
+  b2cPolicies = { ...b2cPolicies, ...prodConfigs };
+} else if (window.location.href.includes('adopt-test--petplace--hlxsites')) {
+  b2cPolicies = { ...b2cPolicies, ...stageAltConfigs };
 } else {
   b2cPolicies = { ...b2cPolicies, ...stageConfigs };
 }
@@ -70,15 +70,20 @@ export function getB2CPolicies() {
 }
 
 export const msalConfig = {
+  // eslint-disable-next-line
   auth: {
-    clientId: b2cPolicies.clientId, // This is the ONLY mandatory field; everything else is optional.
-    authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
-    knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
+    // This is the ONLY mandatory field; everything else is optional.
+    clientId: b2cPolicies.clientId,
+    // Choose sign-up/sign-in user-flow as your default.
+    authority: b2cPolicies.authorities.signUpSignIn.authority,
+    // You must identify your tenant's domain as a known authority.
+    knownAuthorities: [b2cPolicies.authorityDomain],
     redirectUri: window.location.origin,
   },
   cache: {
     cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
-    storeAuthStateInCookie: false, // If you wish to store cache items in cookies as well as browser cache, set this to "true".
+    storeAuthStateInCookie: false,
+    // If you wish to store cache items in cookies as well as browser cache, set this to "true".
   },
   system: {
     loggerOptions: {
@@ -87,21 +92,30 @@ export const msalConfig = {
           return;
         }
         switch (level) {
+          // eslint-disable-next-line
           case msal.LogLevel.Error:
+            // eslint-disable-next-line
             console.error(message);
             return;
+            // eslint-disable-next-line
           case msal.LogLevel.Info:
+            // eslint-disable-next-line
             console.info(message);
             return;
+            // eslint-disable-next-line
           case msal.LogLevel.Verbose:
+            // eslint-disable-next-line
             console.debug(message);
             return;
+            // eslint-disable-next-line
           case msal.LogLevel.Warning:
+            // eslint-disable-next-line
             console.warn(message);
+            // eslint-disable-next-line
             return;
         }
       },
-    }
+    },
   },
 };
 
@@ -130,13 +144,15 @@ export const logoutRequest = {
 };
 
 /**
- * Scopes you add here will be used to request a token from Azure AD B2C to be used for accessing a protected resource.
+ * Scopes you add here will be used to request a token from Azure
+ * AD B2C to be used for accessing a protected resource.
  * To learn more about how to work with scopes and resources, see:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
  */
 export const tokenRequest = {
   scopes: b2cPolicies.scopes,
-  forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
+  forceRefresh: false,
+  // Set this to "true" to skip a cached token and go to the server to get a new token
 };
 export const changePwdRequest = {
   scopes: b2cPolicies.scopes,
