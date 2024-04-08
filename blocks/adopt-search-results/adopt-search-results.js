@@ -4,6 +4,10 @@ import endPoints from '../../variables/endpoints.js';
 import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
+import { callUserApi } from '../account/account.js';
+import { initRedirectHandlers } from '../../scripts/lib/msal/login-redirect-handlers.js';
+import { isMobile } from '../../scripts/scripts.js';
+
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
@@ -33,7 +37,6 @@ const {
     zipErrorMessage,
 } = placeholders;
 
-// console.log(placeholders);
 let breedList = [];
 let currentPage = 1;
 const recordsPerPage = 16;
@@ -229,9 +232,7 @@ function getFavorites(response) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${response}`,
         },
-    }).then((responseData) => {
-        return responseData.json();
-    }).then((data) => {
+    }).then((responseData) => responseData.json()).then((data) => {
         // favorite Pet in the UI
         data.forEach((favorite) => {
             const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
@@ -323,7 +324,7 @@ function calculatePagination(page) {
     }
     buildResultsList(filteredArray);
     document.querySelector('.adopt-search-results-container').scrollIntoView({
-        behavior: 'smooth'
+        behavior: 'smooth',
     });
 }
 
@@ -543,6 +544,34 @@ function buildFilterSidebar(sidebar) {
     sidebar.append(mobileContainer);
 }
 
+function emailOptInConfirmModal() {
+    const optInModalEl = document.createElement('div');
+    const emailOptInModalStructure = `
+        <div class="modal-header">
+        <h3 class="modal-title">Allow Email Notifications?</h3>
+        </div>
+        <div class="modal-body">
+            <p>You must opt-in to email communications in order to create a search alert.</p>
+            <div class="modal-action-btns">
+                <button class="cancel">Cancel</button>
+                <button class="confirm">Allow email notifications and create search alert</button>
+            </div>
+        </div>
+    `;
+    optInModalEl.classList.add('modal', 'optin-email-modal', 'hidden');
+
+    optInModalEl.innerHTML = emailOptInModalStructure;
+
+    return optInModalEl;
+}
+
+function emailOptInOverlay() {
+    const optInOverlaylEl = document.createElement('div');
+    optInOverlaylEl.classList.add('overlay');
+
+    return optInOverlaylEl;
+}
+
 function buildResultsContainer(data) {
     // clear any previous results
     const block = document.querySelector('.adopt-search-results.block');
@@ -660,7 +689,36 @@ function populateSidebarFilters(params) {
     });
 }
 
-window.onload = callBreedList('null').then((data) => {
+let hasEventSet = false;
+
+export function openOptInModal(tokenInfo, initialUserData, event) {
+    const modal = document.querySelector('.optin-email-modal');
+    if (modal) {
+        const confirmBtn = document.querySelector('.optin-email-modal .confirm');
+        const cancelBtn = document.querySelector('.optin-email-modal .cancel');
+        modal.classList.remove('hidden');
+        const overlay = document.querySelector('.overlay');
+        overlay.classList.add('show');
+        if (!hasEventSet) {
+            hasEventSet = true;
+
+            confirmBtn.addEventListener('click', async () => {
+                initialUserData.EmailOptIn = true;
+                await callUserApi(tokenInfo, 'PUT', initialUserData);
+                setSaveSearch(event);
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            });
+        }
+    }
+}
+
+window.onload = callBreedList('null').then((data, event) => {
     breedList = data;
     updateBreedListSelect();
     const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
@@ -733,6 +791,11 @@ window.onload = callBreedList('null').then((data) => {
 });
 
 export default async function decorate(block) {
+    if (document.readyState === 'complete') {
+        document.querySelector('body').append(emailOptInConfirmModal());
+        document.querySelector('body').append(emailOptInOverlay());
+    }
+
     const form = document.createElement('form');
     form.setAttribute('role', 'search');
     form.className = 'adopt-search-results-box-wrapper';
@@ -902,8 +965,40 @@ export default async function decorate(block) {
         <path d="M12 3.47104C13.9891 3.47104 15.8968 4.26122 17.3033 5.66774C18.7098 7.07426 19.5 8.98192 19.5 10.971C19.5 18.017 21 19.221 21 19.221H3C3 19.221 4.5 17.305 4.5 10.971C4.5 8.98192 5.29018 7.07426 6.6967 5.66774C8.10322 4.26122 10.0109 3.47104 12 3.47104Z" stroke="#09090D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs>
         <clipPath id="clip0_1997_2586"><rect width="24" height="24" fill="white" transform="translate(0 0.471039)"/></clipPath></defs></svg>
         ${createSearchAlert}`;
-    saveButton.addEventListener('click', (event) => {
-        setSaveSearch(event);
+    saveButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        let initialUserData = {};
+        isLoggedIn().then(async (isLoggedInParam) => {
+            if (isLoggedInParam) {
+                const token = await acquireToken();
+                if (token) {
+                    initialUserData = await callUserApi(token);
+                    if (initialUserData.EmailOptIn) {
+                        setSaveSearch(event);
+                    } else {
+                        openOptInModal(token, initialUserData, event);
+                    }
+                }
+            } else {
+                // eslint-disable-next-line no-lonely-if
+                if (isMobile()) {
+                    localStorage.setItem('featureName2', 'openSavedSearchesPopUp');
+                    const token = await acquireToken();
+                    initRedirectHandlers(token, event);
+                } else {
+                    acquireToken('openSavedSearchesPopUp').then(async (token) => {
+                        initialUserData = await callUserApi(token);
+                        if (initialUserData.EmailOptIn) {
+                            setSaveSearch(event);
+                        } else {
+                            const token = await acquireToken();
+                            initialUserData = await callUserApi(token);
+                            openOptInModal(token, initialUserData, event);
+                        }
+                    });
+                }
+            }
+        });
     });
     form.append(petTypeContainer);
 
