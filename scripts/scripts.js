@@ -47,6 +47,7 @@ export const REGIONS = {
 };
 
 window.hlx.templates.add([
+  '/templates/adoption-landing-page',
   '/templates/adopt',
   '/templates/article-page',
   '/templates/article-signup',
