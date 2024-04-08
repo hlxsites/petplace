@@ -1,10 +1,11 @@
 /* eslint-disable indent */
-import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
+// eslint-disable-next-line import/first
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 
 const {
@@ -296,7 +297,7 @@ export default async function decorate(block) {
   const payload = {
     locationInformation: {
       clientId: null,
-      zipPostal: '92102',
+      zipPostal: '90210',
       milesRadius: 10,
     },
     animalFilters: {

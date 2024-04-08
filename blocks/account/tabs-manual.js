@@ -1,5 +1,5 @@
+// eslint-disable-next-line
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
-
 /* eslint-disable indent */
 export default class TabsManual {
     constructor(groupNode, dropdownNode, panelNodes) {
@@ -23,7 +23,12 @@ export default class TabsManual {
         this.lastTab = tab;
       }
       this.selectNode.addEventListener('change', this.onChange.bind(this));
-      const currentHash = window.location.hash;
+      let currentHash = window.location.hash;
+
+      if (currentHash.includes('?')) {
+        [currentHash] = currentHash.split('?');
+      }
+
       if (currentHash && this.getIndexByHash(currentHash) > -1) {
         this.setSelectedTab(this.tabs[this.getIndexByHash(currentHash)]);
       } else {
@@ -47,7 +52,7 @@ export default class TabsManual {
       this.selectNode.value = currentTab.getAttribute('data-tab-index');
       this.selectNode.setAttribute('data-active-panel', currentTab.getAttribute('aria-controls'));
     }
-
+    // eslint-disable-next-line
     moveFocusToTab(currentTab) {
       currentTab.focus();
     }
@@ -63,7 +68,7 @@ export default class TabsManual {
     }
 
     moveFocusToNextTab(currentTab) {
-      let index; 
+      let index;
       if (currentTab === this.lastTab) {
         this.moveFocusToTab(this.firstTab);
       } else {
@@ -110,8 +115,8 @@ export default class TabsManual {
 
     onClick(event) {
       event.preventDefault();
-      isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+      isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
           this.setSelectedTab(event.currentTarget);
         } else {
           logout();
@@ -120,15 +125,24 @@ export default class TabsManual {
     }
 
     onChange(event) {
-      const selectedIndex = parseInt(event.currentTarget.value);
+      const selectedIndex = parseInt(event.currentTarget.value, 10);
       this.setSelectedTab(this.tabs[selectedIndex]);
     }
 
     getIndexByHash(hashStr) {
       const targetTab = this.tabs.find((tab) => tab.href.endsWith(hashStr));
       if (targetTab) {
-        return parseInt(targetTab.getAttribute('data-tab-index'));
+        return parseInt(targetTab.getAttribute('data-tab-index'), 10);
       }
       return -1;
     }
+    // eslint-disable-next-line
+    getHashFromURL(url) {
+      const hashIndex = url.indexOf('#');
+      if (hashIndex !== -1) {
+          return url.substring(hashIndex + 1);
+      }
+
+      return ''; // Return an empty string if there's no hash
+  }
 }

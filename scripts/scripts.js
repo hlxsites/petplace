@@ -20,7 +20,13 @@ import {
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
-import { login, logout, acquireToken, isLoggedIn } from './lib/msal/msal-authentication.js'
+// eslint-disable-next-line
+import {
+  login,
+  logout,
+  acquireToken,
+  isLoggedIn,
+} from './lib/msal/msal-authentication.js';
 
 export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
@@ -42,6 +48,7 @@ export const REGIONS = {
 };
 
 window.hlx.templates.add([
+  '/templates/adoption-landing-page',
   '/templates/adopt',
   '/templates/article-page',
   '/templates/article-signup',
@@ -75,8 +82,8 @@ window.hlx.plugins.add('martech', {
   load: 'lazy',
 });
 
-window.hlx.plugins.add('experience-decisioning', {
-  url: '/plugins/experience-decisioning/src/index.js',
+window.hlx.plugins.add('experimentation', {
+  url: '/plugins/experimentation/src/index.js',
   condition: () => getMetadata('experiment')
     || Object.keys(getAllMetadata('campaign')).length
     || Object.keys(getAllMetadata('audience')).length,

@@ -30,12 +30,15 @@ function isPopoverSupported() {
 }
 
 loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', () => {
+  // eslint-disable-next-line no-console
   console.log('Marked.js loaded');
 });
 loadScript('https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js', () => {
+  // eslint-disable-next-line no-console
   console.log('Masonry.js loaded');
 });
 loadScript('https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js', () => {
+  // eslint-disable-next-line no-console
   console.log('ImagesLoaded.js loaded');
 });
 
@@ -54,27 +57,27 @@ export default async function decorate(block) {
     navMeta = getMetadata('mega-nav');
     navPath = navMeta ? new URL(navMeta).pathname : `${window.hlx.contentBasePath}/fragments/mega-nav`;
     resp = await fetch(`${navPath}.plain.html`);
-  
+
     if (!resp.ok) {
       return;
     }
-  
+
     const html = await resp.text();
-  
+
     // decorate nav DOM
     const nav = document.createElement('nav');
     nav.id = 'nav';
     nav.innerHTML = html;
-  
+
     const classes = ['brand', 'tools', 'login', 'hamburger', 'close', 'meganav', 'featured-article', 'language-selector'];
     classes.forEach((c, i) => {
       const section = nav.children[i];
       if (section) section.classList.add(`nav-${c}`);
     });
-  
+
     // logo
     nav.querySelector('.nav-brand a').setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
-  
+
     // search bar
     const navTools = nav.querySelector('.nav-tools');
     const searchField = document.createElement('input');
@@ -87,7 +90,7 @@ export default async function decorate(block) {
     searchForm.setAttribute('role', 'search');
     searchForm.action = '/search';
     searchForm.method = 'get';
-  
+
     const searchButton = document.createElement('button');
     searchButton.className = 'search-btn';
     searchButton.setAttribute('aria-label', 'submit search');
@@ -95,29 +98,29 @@ export default async function decorate(block) {
     const searchIcon = document.createElement('span');
     searchIcon.className = 'icon icon-search';
     searchButton.append(searchIcon);
-  
+
     searchForm.append(searchField, searchButton);
-  
+
     navTools.innerHTML = '';
-  
+
     const navToolsDesktop = document.createElement('div');
     navToolsDesktop.classList.add('nav-tools-desktop', 'hidden');
     navToolsDesktop.append(searchForm);
-  
+
     const mobileSearchForm = searchForm.cloneNode(true);
     const navToolsMobile = document.createElement('div');
     navToolsMobile.classList.add('nav-tools-mobile', 'hidden');
     navToolsMobile.append(mobileSearchForm);
-  
+
     navTools.append(navToolsDesktop);
-  
+
     searchButton.addEventListener('click', (ev) => {
       ev.preventDefault();
       if (searchField.value !== '') {
         searchForm.submit();
       }
     });
-  
+
     // login
     const navLogin = nav.querySelector('.nav-login');
     const userMenu = document.createElement('button');
@@ -131,7 +134,7 @@ export default async function decorate(block) {
         loginBtn.textContent = item.textContent;
         navLogin.append(loginBtn);
       }
-  
+
       if (index > 0) {
         if (item.querySelector('a')) {
           const userLinks = item.querySelector('a');
@@ -152,7 +155,7 @@ export default async function decorate(block) {
     });
     navLogin.querySelector('ul').remove();
     navLogin.append(loginBtnsContainer);
-  
+
     navLogin.querySelector('.login-btn').addEventListener('click', (event) => {
       login(() => {
         if (isLoggedIn()) {
@@ -164,11 +167,11 @@ export default async function decorate(block) {
         }
       });
     });
-  
+
     navLogin.querySelector('.user-btn').addEventListener('click', () => {
       navLogin.querySelector('.account-options').classList.toggle('hidden');
     });
-  
+
     navLogin.querySelector('.sign-out-btn').addEventListener('click', () => {
       logout(() => {
         if (!isLoggedIn()) {
@@ -177,23 +180,23 @@ export default async function decorate(block) {
         }
       });
     });
-  
+
     // hamburguer menu
     const navHamburger = nav.querySelector('.nav-hamburger');
     navHamburger.innerHTML = `
       <button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">
         ${navHamburger.innerHTML}
       </button>`;
-  
+
     nav.querySelector('.nav-brand a').setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
-  
+
     const navClose = nav.querySelector('.nav-close');
     navClose.innerHTML = `
       <button type="button" aria-controls="nav" aria-label="${getPlaceholder('closeNavigation')}">
         ${navClose.innerHTML}
       </button>`;
     navClose.classList.add('hidden');
-  
+
     // meganav and featuredArticle
     const megaNav = nav.querySelector('.nav-meganav');
     const megaNavContent = nav.querySelector('.nav-meganav div');
@@ -201,7 +204,7 @@ export default async function decorate(block) {
     megaNavWrapper.className = 'nav-wrapper';
     megaNavWrapper.append(nav);
     block.append(nav);
-  
+
     // featuredArticle
     const featuredArticle = nav.querySelector('.nav-featured-article');
     const articleTitle = document.createElement('span');
@@ -217,28 +220,28 @@ export default async function decorate(block) {
     articleUrl.setAttribute('href', featuredArticle.querySelector('a').getAttribute('href'));
     articleUrl.innerText = featuredArticle.querySelector('a').innerText;
     articleUrl.classList.add('article-url');
-  
+
     featuredArticle.innerHTML = '';
     featuredArticle.append(articleTitle);
     featuredArticle.append(articleImg);
     featuredArticle.append(articleDescription);
     featuredArticle.append(articleUrl);
-  
+
     const petMenuList = document.createElement('ul');
     const ulEl = document.createElement('ul');
     let tempLI;
     let tempDiv;
-  
+
     [...megaNavContent.children].forEach((item, index) => {
       const listItem = document.createElement('li');
       const petSubMenuList = document.createElement('div');
       petSubMenuList.classList.add('content', 'content-dropdown');
-  
+
       if (item.children.length === 1) {
         let menuTitle = document.createElement('button');
         menuTitle.innerHTML = item.innerHTML;
         menuTitle.querySelector('a');
-  
+
         if (menuTitle.querySelector('a') !== null) {
           menuTitle = menuTitle.querySelector('a');
           menuTitle.classList.add('menu-item');
@@ -257,27 +260,27 @@ export default async function decorate(block) {
         const picEl = item.querySelector('picture');
         const pEl = item.querySelectorAll('p')[1];
         pEl.classList.add('pet-topic-description');
-  
+
         const aEl = document.createElement('a');
         aEl.setAttribute('href', aHref);
         aEl.classList.add('pet-topic');
-  
+
         const spanEl = document.createElement('span');
         spanEl.innerText = aText;
         spanEl.classList.add('pet-topic-title');
-  
+
         const divEl = document.createElement('div');
         divEl.classList.add('pet-topic-info');
-  
+
         const breakLi = document.createElement('li');
         breakLi.classList.add('break');
-  
+
         aEl.append(picEl);
         aEl.append(divEl);
         divEl.append(spanEl);
         divEl.append(pEl);
         listItem.append(aEl);
-  
+
         tempDiv.append(ulEl);
         tempDiv.append(featuredArticle);
         ulEl.append(listItem);
@@ -286,7 +289,7 @@ export default async function decorate(block) {
         }
         tempLI.append(tempDiv);
         tempDiv.previousElementSibling.classList.add('collapsible', 'menu-item');
-  
+
         const parentEl = tempDiv.previousElementSibling;
         if (parentEl.tagName === 'A') {
           const newButton = document.createElement('button');
@@ -298,7 +301,7 @@ export default async function decorate(block) {
         }
       }
     });
-  
+
     megaNav.innerHTML = '';
     megaNav.append(petMenuList);
     megaNav.classList.add('hidden');
@@ -306,7 +309,7 @@ export default async function decorate(block) {
     const megaNavBg = document.createElement('div');
     megaNavBg.classList.add('meganav-bg', 'hidden');
     document.querySelector('.header-wrapper').append(megaNavBg);
-  
+
     // region selector
     const regionSelectorWrapper = nav.querySelector('.nav-language-selector');
     const regionSelector = document.createElement('button');
@@ -344,12 +347,12 @@ export default async function decorate(block) {
       regionMenu.classList.toggle('hidden');
       regionSelector.classList.toggle('active');
     });
-  
+
     regionSelectorWrapper.append(regionSelector);
     regionSelectorWrapper.append(regionMenu);
     decorateIcons(regionSelectorWrapper);
     nav.insertBefore(regionSelectorWrapper, navToolsMobile);
-  
+
     block.querySelector('.collapsible').addEventListener('click', (event) => {
       event.target.classList.toggle('active');
       const content = event.target.nextElementSibling;
@@ -359,13 +362,13 @@ export default async function decorate(block) {
         content.style.maxHeight = `${content.scrollHeight}px`;
       }
     });
-  
+
     block.querySelector('.nav-hamburger').addEventListener('click', () => {
       navHamburger.classList.add('hidden');
       navClose.classList.remove('hidden');
       navClose.querySelector('button').focus();
       megaNavBg.classList.remove('hidden');
-      //document.querySelector('body').classList.add('body-locked');
+      // document.querySelector('body').classList.add('body-locked');
       navToolsDesktop.classList.add('hidden');
       navToolsMobile.classList.remove('hidden');
       megaNav.classList.remove('hidden');
@@ -377,7 +380,7 @@ export default async function decorate(block) {
       document.querySelector('.btn-regions-list').classList.remove('active');
       document.querySelector('.regions-list').classList.add('hidden');
     });
-  
+
     block.querySelector('.nav-close').addEventListener('click', () => {
       navClose.classList.add('hidden');
       navHamburger.classList.remove('hidden');
@@ -392,7 +395,7 @@ export default async function decorate(block) {
       document.querySelector('.btn-regions-list').classList.remove('active');
       document.querySelector('.regions-list').classList.add('hidden');
     });
-  
+
     block.querySelector('form').addEventListener('submit', (ev) => {
       const query = ev.target.querySelector('.search-input').value;
       if (!query) {
@@ -405,7 +408,8 @@ export default async function decorate(block) {
       });
       sampleRUM('search', { source: '.search-input', target: query });
     });
-  
+
+    // eslint-disable-next-line no-inner-declarations
     function checkInterface() {
       if (isTablet()) {
         /* if (document.querySelector('body').classList.contains('body-locked')) {
@@ -427,9 +431,9 @@ export default async function decorate(block) {
         megaNav.classList.remove('hidden');
         document.querySelector('.nav-language-selector').classList.remove('hidden');
       }
-  
-      isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+
+      isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
           navLogin.querySelector('.user-btn').classList.remove('hidden');
           navLogin.querySelector('.login-btn').classList.add('hidden');
         } else {
@@ -438,16 +442,16 @@ export default async function decorate(block) {
         }
       });
     }
-  
+
     checkInterface();
     if (isTablet()) {
       document.querySelector('.nav-language-selector').classList.add('hidden');
     }
-  
+
     window.addEventListener('resize', () => {
       checkInterface();
     });
-  
+
     document.addEventListener('click', (event) => {
       if (!document.querySelector('.account-options').contains(event.target) && !document.querySelector('.user-btn').contains(event.target)) {
         document.querySelector('.account-options').classList.add('hidden');
@@ -469,15 +473,15 @@ export default async function decorate(block) {
 
     navMeta = getMetadata('nav');
     navPath = navMeta ? new URL(navMeta).pathname : `${window.hlx.contentBasePath}/fragments/nav`;
-    let resp = await fetch(`${navPath}.plain.html`);
-    if (!resp.ok) {
+    let response = await fetch(`${navPath}.plain.html`);
+    if (!response.ok) {
       return;
     }
 
     const headerWrapper = document.querySelector('.header-wrapper');
     headerWrapper.classList.add('header-wrapper-gb');
 
-    let html = await resp.text();
+    let html = await response.text();
 
     // decorate nav DOM
     const nav = document.createElement('nav');
@@ -582,12 +586,12 @@ export default async function decorate(block) {
 
     const navSidebar = document.createElement('div');
     navSidebar.classList.add('nav-sidebar');
-    resp = await fetch(`${window.hlx.contentBasePath}/fragments/sidenav.plain.html`);
-    if (!resp.ok) {
+    response = await fetch(`${window.hlx.contentBasePath}/fragments/sidenav.plain.html`);
+    if (!response.ok) {
       return;
     }
 
-    html = await resp.text();
+    html = await response.text();
 
     const ariaDialog = document.createElement(AriaDialog.tagName);
     ariaDialog.setAttribute('modal', true);
@@ -689,6 +693,5 @@ export default async function decorate(block) {
     });
 
     decorateIcons(nav);
-    }
-  
+  }
 }

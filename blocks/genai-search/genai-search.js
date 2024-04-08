@@ -1,3 +1,5 @@
+import { setupSearchResults } from '../../templates/gen-ai/gen-ai.js';
+
 export default async function decorate(block) {
   const searchPlaceholder = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[0].textContent : 'Ask a question or enter a topic....';
   const searchButtonText = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[1].textContent : 'Submit';
@@ -10,9 +12,13 @@ export default async function decorate(block) {
     if (query) {
       ev.preventDefault();
       window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(query));
-      document.location.pathname = '/discovery';
+      if (document.location.pathname.indexOf('/discovery') === -1) {
+        document.location.pathname = '/discovery';
+      } else {
+        const searchResultsDivElement = document.querySelector('.search-results');
+        setupSearchResults(searchResultsDivElement);
+      }
     }
-    // return;
   });
 
   const input = document.createElement('input');
@@ -44,9 +50,6 @@ export default async function decorate(block) {
     if (input.value.trim() !== '') {
       clearButton.classList.add('show');
     }
-  });
-  input.addEventListener('focusout', () => {
-    clearButton.classList.remove('show');
   });
 
   clearButton.addEventListener('mousedown', () => {
