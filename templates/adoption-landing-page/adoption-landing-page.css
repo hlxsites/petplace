@@ -21,7 +21,7 @@
     min-height: 318px;
   }
   .adoption-landing-page main .hero img {
-    object-position: top left;
+    object-position: center left;
   }
 }
 @media (min-width: 1400px){
