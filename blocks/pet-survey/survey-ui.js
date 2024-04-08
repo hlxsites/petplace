@@ -157,7 +157,7 @@ export function createMultiSelect(
         groupDiv.append(createInput('multi-select__input', 'checkbox', questionId, option, isExternal, prefix));
     });
     containerDiv.append(button, groupDiv);
-    MultiSelect(containerDiv);
+    new MultiSelect(containerDiv);
     if (checkboxOverride) {
         const checkboxArray = groupDiv.querySelectorAll('input');
         checkboxArray?.forEach((checkbox, index) => {
