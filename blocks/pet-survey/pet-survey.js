@@ -238,7 +238,15 @@ export default async function decorate(block) {
           payload,
         );
         if (result) {
-          window.location.href = '/pet-adoption/inquiry-confirmation';
+          const surveySummaryHeader = block.querySelector('.pet-survey__summary-header');
+          surveySummaryHeader.innerHTML = '<div class="pet-survey__success-message show">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message"></div><h3 class="pet-survey__summary-header-title">Pet Preferences</h3>';
+          surveySummaryHeader.scrollIntoView({
+            behavior: 'smooth',
+          });
+          const closeBtn = surveySummaryHeader.querySelector('.pet-survey__success-message-close');
+          closeBtn.addEventListener('click', () => {
+          surveySummaryHeader.querySelector('.pet-survey__success-message').style.display = 'none';
+        });
         }
       });
     }
