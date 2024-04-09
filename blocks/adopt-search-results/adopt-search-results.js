@@ -166,13 +166,6 @@ async function callAnimalList() {
     });
     if (response.status === 204) {
     const breedSelect = document.getElementById('breed');
-    if (breedSelect) {
-        // eslint-disable-next-line
-        const L = breedSelect?.options.length - 1;
-        for (let i = L; i >= 0; i -= 1) {
-            breedSelect.remove(i);
-        }
-    }
         // eslint-disable-next-line
         buildResultsContainer([]);
         let resultsContainer = document.querySelector('.default-content-wrapper.results');
