@@ -14,7 +14,6 @@ import {
   loadBlock,
   loadBlocks,
   loadCSS,
-  loadScript,
   loadFooter,
   loadHeader,
   sampleRUM,

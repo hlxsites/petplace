@@ -1,4 +1,3 @@
-import { adsenseFunc } from '../../scripts/adsense.js';
 import { getMetadata, decorateIcons } from '../../scripts/lib-franklin.js';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -19,10 +18,12 @@ export async function loadEager(document) {
   h1.insertAdjacentElement('afterend', p);
 }
 
-export function loadLazy() {
+export async function loadLazy() {
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('breeds', 'create');
 }
 
-export function loadDelayed() {
+export async function loadDelayed() {
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('breeds');
 }

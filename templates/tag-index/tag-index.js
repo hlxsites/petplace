@@ -11,7 +11,6 @@ import {
   meterCalls,
 } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import { adsenseFunc } from '../../scripts/adsense.js';
 
 const PAGINATE_ON = 12;
 
@@ -157,8 +156,10 @@ export async function loadEager(document) {
   createTemplateBlock(main, 'pagination');
 }
 
-export function loadLazy() {
+export async function loadLazy() {
   renderArticles(getArticles());
+
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('tag', 'create');
 }
 
@@ -170,5 +171,6 @@ export async function loadDelayed() {
     category: pageTag.Slug,
   });
 
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('tag', pageTag.Slug);
 }
