@@ -29,16 +29,6 @@ function isPopoverSupported() {
   return HTMLElement.prototype.hasOwnProperty('popover');
 }
 
-loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js', () => {
-  console.log('Marked.js loaded');
-});
-loadScript('https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js', () => {
-  console.log('Masonry.js loaded');
-});
-loadScript('https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js', () => {
-  console.log('ImagesLoaded.js loaded');
-});
-
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -54,7 +44,7 @@ export default async function decorate(block) {
     navMeta = getMetadata('mega-nav');
     navPath = navMeta ? new URL(navMeta).pathname : `${window.hlx.contentBasePath}/fragments/mega-nav`;
     resp = await fetch(`${navPath}.plain.html`);
-  
+
     if (!resp.ok) {
       return;
     }
