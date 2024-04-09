@@ -13,6 +13,7 @@ import {
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';
 import { pushToDataLayer } from '../../utils/helpers.js';
+import { captureError } from '../../scripts.js';
 
 let cachedMsalInstance = null;
 let cachedMsalChangePwdInstance = null;
@@ -310,6 +311,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
           }
         })
         .catch((error) => {
+          captureError('account creation', error);
           // eslint-disable-next-line no-console
           console.error('/adopt/api/User Error:', error);
         });
