@@ -5,6 +5,7 @@ import { loginRequest, logoutRequest, tokenRequest, changePwdRequest, msalConfig
 import { isMobile } from '../../scripts.js';
 import endPoints from '../../../variables/endpoints.js';
 import { pushToDataLayer } from '../../utils/helpers.js';
+import { captureError } from '../../scripts.js';
 
 let cachedMsalInstance = null;
 let cachedMsalChangePwdInstance = null;
@@ -298,23 +299,25 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                     : 'N/A - Content Group Not Set'
                   });
 
-                // invoke custom callback if one was provided
-                if (customCallback) {
-                    customCallback(response);
-                }
-            })
-            .catch((error) => {
-                console.error('/adopt/api/User Error:', error);
-            });
-        } else {
-            pushToDataLayer({
-                event: 'login',
-                user_id: response.account.localAccountId,
-                user_type: 'member',
-                content_group: contentGroup
-                ? contentGroup.content
-                : 'N/A - Content Group Not Set'
-              });
+          // invoke custom callback if one was provided
+          if (customCallback) {
+            customCallback(response);
+          }
+        })
+        .catch((error) => {
+          captureError('account creation', error);
+          // eslint-disable-next-line no-console
+          console.error('/adopt/api/User Error:', error);
+        });
+    } else {
+      pushToDataLayer({
+        event: 'login',
+        user_id: response.account.localAccountId,
+        user_type: 'member',
+        content_group: contentGroup
+          ? contentGroup.content
+          : 'N/A - Content Group Not Set',
+      });
 
             // invoke custom callback if one was provided
             if (customCallback) {
