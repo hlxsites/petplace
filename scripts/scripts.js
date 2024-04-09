@@ -709,16 +709,16 @@ function redirectToPreferredRegion() {
   }
 }
 
+let placeholdersPromise;
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  setLocale();
-  redirectToPreferredRegion();
   decorateTemplateAndTheme();
 
-  await fetchPlaceholders(window.hlx.contentBasePath || 'default');
+  await placeholdersPromise;
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
@@ -1125,6 +1125,9 @@ export async function captureError(source, e) {
 
 async function loadPage() {
   setLocale();
+  redirectToPreferredRegion();
+
+  placeholdersPromise = fetchPlaceholders(window.hlx.contentBasePath || 'default');
 
   window.dataLayer ||= {};
   window.dataLayer.push({ js: new Date() });

@@ -1,4 +1,4 @@
-import { loadScript } from './lib-franklin.js';
+import { getMetadata, loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import { isMobile } from './scripts.js';
 
@@ -56,7 +56,7 @@ async function loadAccessibeWidget() {
 
 export async function loadEager() {
   // Handle eager martech
-  if (!document.body.classList.contains('experiment-delayed-martech')
+  if (getMetadata('experiment') !== 'delayed-martech'
     || !document.body.classList.contains('variant-challenger-1')) {
     loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
     loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
@@ -65,7 +65,7 @@ export async function loadEager() {
 
 export async function loadLazy() {
   // Handle delayed martech
-  if (!isMobile() && document.body.classList.contains('experiment-delayed-martech')
+  if (!isMobile() && getMetadata('experiment') === 'delayed-martech'
     && document.body.classList.contains('variant-challenger-1')) {
     loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
     loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
@@ -87,7 +87,7 @@ export async function loadLazy() {
 
 export function loadDelayed() {
   // Handle delayed martech
-  if (isMobile() && document.body.classList.contains('experiment-delayed-martech')
+  if (isMobile() && getMetadata('experiment') === 'delayed-martech'
     && document.body.classList.contains('variant-challenger-1')) {
     loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
     loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
