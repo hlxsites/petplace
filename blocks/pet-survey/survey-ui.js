@@ -40,16 +40,18 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
     if (isMultiAnswer) {
         const checkboxArray = container.querySelectorAll('input');
         checkboxArray?.forEach((checkbox, index) => {
-            checkbox.addEventListener('change', () => {
-                if (checkbox.checked && index === 0) {
-                    checkboxArray.forEach((input) => {
-                        input.checked = false;
-                    });
-                    checkboxArray[0].checked = true;
-                } else if (checkbox.checked && index !== 0) {
-                    checkboxArray[0].checked = false;
-                }
-            });
+            if (Label !== 'Household Age Groups') {
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked && index === 0) {
+                        checkboxArray.forEach((input) => {
+                            input.checked = false;
+                        });
+                        checkboxArray[0].checked = true;
+                    } else if (checkbox.checked && index !== 0) {
+                        checkboxArray[0].checked = false;
+                    }
+                });
+            }
         });
     }
     return container;
