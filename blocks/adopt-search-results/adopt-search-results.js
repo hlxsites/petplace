@@ -165,7 +165,6 @@ async function callAnimalList() {
         }),
     });
     if (response.status === 204) {
-    const breedSelect = document.getElementById('breed');
         // eslint-disable-next-line
         buildResultsContainer([]);
         let resultsContainer = document.querySelector('.default-content-wrapper.results');
@@ -964,7 +963,6 @@ export default async function decorate(block) {
     //   const usp = new URLSearchParams(window.location.search);
     //   block.querySelector('.search-input').value = usp.get('q') || '';
     window.onload = callBreedList('null').then((data) => {
-        console.log('this ran')
         breedList = data;
         updateBreedListSelect();
         const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
