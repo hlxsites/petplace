@@ -1,4 +1,3 @@
-import globRegex from './glob-regex/glob-regex.js';
 import {
   buildBlock,
   createOptimizedPicture,
@@ -897,7 +896,11 @@ export async function getConfiguration(sheet) {
 }
 
 async function addNewsletterPopup() {
-  const newsletterConfig = await getConfiguration('newsletter-popup');
+  const [globRegex, newsletterConfig] = await Promise.all([
+    import('./glob-regex/glob-regex.js'),
+    await getConfiguration('newsletter-popup'),
+  ]);
+
   if (!newsletterConfig) {
     return;
   }
