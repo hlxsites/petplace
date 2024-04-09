@@ -976,12 +976,11 @@ async function loadLazy(doc) {
   await window.hlx.plugins.run('loadLazy');
 
   if (!window.hlx.contentBasePath) {
-    addNewsletterPopup();
+    await addNewsletterPopup();
   }
 
-  import('./datalayer.js').then(({ handleDataLayerApproach }) => {
-    handleDataLayerApproach();
-  });
+  const { handleDataLayerApproach } = await import('./datalayer.js');
+  handleDataLayerApproach();
 }
 
 /**
