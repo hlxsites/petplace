@@ -1,3 +1,4 @@
+import { loadScript } from '../../scripts/lib-franklin.js';
 import {
   Events,
   decorateSlideshowAria,
@@ -538,6 +539,7 @@ export function setupSearchResults(defaultContentWrapper) {
 }
 
 export async function loadLazy(main) {
+  await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const contentDiv = document.createElement('div');
