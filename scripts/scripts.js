@@ -911,7 +911,7 @@ async function addNewsletterPopup() {
     if (item.Key !== 'exclude-pattern') {
       return false;
     }
-    const regexp = globRegex(item.Value);
+    const regexp = globRegex.default(item.Value);
     return regexp.test(window.location.pathname);
   });
   if (excluded.length) {
