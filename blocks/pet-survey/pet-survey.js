@@ -249,7 +249,6 @@ export default async function decorate(block) {
     if (inquiryBtn) {
       inquiryBtn.addEventListener('click', async (event) => {
         event.preventDefault();
-
         if (!token) {
           token = await acquireToken();
         }
@@ -319,6 +318,9 @@ export default async function decorate(block) {
     const saveBtn = block.querySelector('#pet-survey-summary-save');
     if (saveBtn) {
       saveBtn.addEventListener('click', async (event) => {
+        if (!token) {
+          token = await acquireToken();
+        }
         event.preventDefault();
         const payload = {
           Id: surveyId,
@@ -517,7 +519,6 @@ export default async function decorate(block) {
       toggleScreen('summary', block);
       updateSummaryForm(block, answers);
       bindSummaryBackButtonEvents(block, true);
-
       if (animalId && clientId) {
         bindSummaryInquiryEvent(block);
       } else {
@@ -598,7 +599,11 @@ export default async function decorate(block) {
         event.preventDefault();
       });
     bindSummaryBackButtonEvents(block, false);
-    bindSummaryInquiryEvent(block);
+    if (animalId && clientId) {
+      bindSummaryInquiryEvent(block);
+    } else {
+      bindSummarySaveNewEvent(block);
+    }
   }
 
   if (isLoggedInUser) {

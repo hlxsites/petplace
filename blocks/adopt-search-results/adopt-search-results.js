@@ -165,7 +165,6 @@ async function callAnimalList() {
         }),
     });
     if (response.status === 204) {
-    const breedSelect = document.getElementById('breed');
         // eslint-disable-next-line
         buildResultsContainer([]);
         let resultsContainer = document.querySelector('.default-content-wrapper.results');
