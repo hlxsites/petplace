@@ -11,6 +11,7 @@ import endPoints from '../../variables/endpoints.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setFavorite } from '../../scripts/adoption/favorite.js';
 import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 
 /* const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
@@ -759,6 +760,7 @@ export default async function decorate(block) {
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.error('Error:', error);
+        errorPage();
       });
   }
 

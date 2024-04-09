@@ -1,6 +1,7 @@
 import { acquireToken } from '../lib/msal/msal-authentication.js';
 import endPoints from '../../variables/endpoints.js';
 import { fetchPlaceholders } from '../lib-franklin.js';
+import errorPage from './errorPage.js';
 
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
@@ -240,5 +241,6 @@ export function deleteSearch(token, animal, favoriteId) {
     .catch((error) => {
       // eslint-disable-next-line no-console
       console.error('Error deleting favorite', error);
+      errorPage();
     });
 }

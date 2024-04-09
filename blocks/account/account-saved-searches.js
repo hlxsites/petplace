@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import endPoints from '../../variables/endpoints.js';
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 
 const arrSaveList = [];
 
@@ -18,6 +19,7 @@ function removeFavoriteSearch(id, token, btn) {
     .catch((error) => {
         // eslint-disable-next-line no-console
         console.error('Error deleting favorite', error);
+        errorPage();
         throw error;
     });
 }

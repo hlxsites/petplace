@@ -1,5 +1,6 @@
 import { acquireToken } from '../lib/msal/msal-authentication.js';
 import endPoints from '../../variables/endpoints.js';
+import errorPage from './errorPage.js';
 
 export const STORAGE_KEY_SAVE_FAVORITE = 'saveFavorite';
 
@@ -44,6 +45,7 @@ export function saveFavorite(token, animal) {
       })
         .catch((error) => {
           // eslint-disable-next-line no-console
+          errorPage();
           console.error('Error:', error);
         });
 
@@ -53,6 +55,7 @@ export function saveFavorite(token, animal) {
     .catch((error) => {
       // eslint-disable-next-line no-console
       console.error('Error saving favorite', error);
+      errorPage();
       throw error;
     });
 }
@@ -72,6 +75,7 @@ export function deleteFavorite(token, animal, favoriteId) {
     .catch((error) => {
       // eslint-disable-next-line no-console
       console.error('Error deleting favorite', error);
+      errorPage();
       throw error;
     });
 }
