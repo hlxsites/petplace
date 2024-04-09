@@ -953,7 +953,7 @@ async function loadLazy(doc) {
   footer.id = 'footer';
   footer.classList.add(FOOTER_SPACING);
   if (!isNewsletterSignedUp() && getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
-    loadNewsletter(footer);
+    await loadNewsletter(footer);
     footer.classList.remove(FOOTER_SPACING);
   }
 
