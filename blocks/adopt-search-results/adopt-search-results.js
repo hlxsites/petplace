@@ -881,7 +881,6 @@ export default async function decorate(block) {
         clearFilters();
     });
 
-    debugger
     breedSelect.append(option);
 
     breedContainer.append(breedLabelElement);
