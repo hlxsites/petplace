@@ -3,6 +3,7 @@ import { getMetadata } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 import { extractName } from '../../templates/adopt/adopt.js';
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 
 const arrFavList = [];
 
@@ -28,6 +29,8 @@ function removeFavoritePet(id, token, btn) {
         btn.closest('.fav-pet-card').remove();
     })
     .catch((error) => {
+        errorPage();
+
         // eslint-disable-next-line no-console
         console.error('Error deleting favorite', error);
         throw error;

@@ -2,6 +2,7 @@
 import { changePassword, isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 import { callUserApi } from './account.js';
 import endPoints from '../../variables/endpoints.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 
 function serialize(data) {
     const obj = {};
@@ -88,6 +89,7 @@ function removeAllSearchAlerts(token) {
             },
         })
         .catch((error) => {
+            errorPage();
             // eslint-disable-next-line no-console
             console.error('Error deleting favorite', error);
             throw error;
@@ -331,6 +333,7 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
             }
         })
         .catch((error) => {
+            errorPage();
             // eslint-disable-next-line no-console
             console.error('Error:', error);
         });
