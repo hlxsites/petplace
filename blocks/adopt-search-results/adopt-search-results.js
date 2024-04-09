@@ -970,76 +970,75 @@ export default async function decorate(block) {
 
     //   const usp = new URLSearchParams(window.location.search);
     //   block.querySelector('.search-input').value = usp.get('q') || '';
-}
+    window.onload = callBreedList('null').then((data) => {
+        breedList = data;
+        updateBreedListSelect();
+        const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
+        const div = document.createElement('div');
+        div.className = 'pagination hidden';
 
-window.onload = callBreedList('null').then((data) => {
-    breedList = data;
-    updateBreedListSelect();
-    const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
-    const div = document.createElement('div');
-    div.className = 'pagination hidden';
+        // add pagination
+        const previousButton = document.createElement('button');
+        previousButton.id = ('btn_prev');
+        previousButton.addEventListener('click', prevPage);
+        previousButton.innerText = '<';
+        const nextButton = document.createElement('button');
+        nextButton.id = ('btn_next');
+        nextButton.addEventListener('click', nextPage);
+        nextButton.innerText = '>';
+        div.append(previousButton);
+        const paginationNumbers = document.createElement('div');
+        paginationNumbers.className = 'pagination-numbers';
+        div.append(paginationNumbers);
+        div.append(nextButton);
+        tempResultsContainer?.append(div);
 
-    // add pagination
-    const previousButton = document.createElement('button');
-    previousButton.id = ('btn_prev');
-    previousButton.addEventListener('click', prevPage);
-    previousButton.innerText = '<';
-    const nextButton = document.createElement('button');
-    nextButton.id = ('btn_next');
-    nextButton.addEventListener('click', nextPage);
-    nextButton.innerText = '>';
-    div.append(previousButton);
-    const paginationNumbers = document.createElement('div');
-    paginationNumbers.className = 'pagination-numbers';
-    div.append(paginationNumbers);
-    div.append(nextButton);
-    tempResultsContainer?.append(div);
+        // When the page loads, check if there are any query parameters in the URL
+        const params = new URLSearchParams(window.location.search);
 
-    // When the page loads, check if there are any query parameters in the URL
-    const params = new URLSearchParams(window.location.search);
-
-    // If there are, select the corresponding filters - Top filters first
-    if (params.has('zipPostal')) {
-        const petZip = document.getElementById('zip');
-        petZip.value = params.get('zipPostal');
-        const petType = document.getElementById('pet-type');
-        const petTypes = petType.options;
-        for (let i = 0; i < petTypes.length; i += 1) {
-            if (petTypes[i].value === params.get('filterAnimalType')) {
-                petType.selectedIndex = i;
-            }
-        }
-
-        const petBreed = document.getElementById('breed');
-        const petBreeds = petBreed.options;
-        for (let i = 0; i < petBreeds.length; i += 1) {
-            if (petBreeds[i].value === params.get('filterBreed')) {
-                petBreed.selectedIndex = i;
-            }
-        }
-
-        if (petType?.value === 'Other' || petType?.value === 'null') {
-            petBreed.setAttribute('disabled', '');
-        } else {
-            callBreedList(petType?.value).then((outputData) => {
-                breedList = outputData;
-                updateBreedListSelect().then(() => {
-                for (let i = 0; i < petBreeds.length; i += 1) {
-                    if (petBreeds[i].value === params.get('filterBreed')) {
-                        petBreed.selectedIndex = i;
-                    }
+        // If there are, select the corresponding filters - Top filters first
+        if (params.has('zipPostal')) {
+            const petZip = document.getElementById('zip');
+            petZip.value = params.get('zipPostal');
+            const petType = document.getElementById('pet-type');
+            const petTypeOptions = petType.options;
+            for (let i = 0; i < petTypeOptions.length; i += 1) {
+                if (petTypeOptions[i].value === params.get('filterAnimalType')) {
+                    petType.selectedIndex = i;
                 }
+            }
+
+            const petBreed = document.getElementById('breed');
+            const petBreeds = petBreed.options;
+            for (let i = 0; i < petBreeds.length; i += 1) {
+                if (petBreeds[i].value === params.get('filterBreed')) {
+                    petBreed.selectedIndex = i;
+                }
+            }
+
+            if (petType?.value === 'Other' || petType?.value === 'null') {
+                petBreed.setAttribute('disabled', '');
+            } else {
+                callBreedList(petType?.value).then((outputData) => {
+                    breedList = outputData;
+                    updateBreedListSelect().then(() => {
+                    for (let i = 0; i < petBreeds.length; i += 1) {
+                        if (petBreeds[i].value === params.get('filterBreed')) {
+                            petBreed.selectedIndex = i;
+                        }
+                    }
+                    });
                 });
-            });
+            }
+            buildResultsContainer([]);
+            let resultsContainer = document.querySelector('.default-content-wrapper.results');
+            if (!resultsContainer) {
+                resultsContainer = document.querySelector('.default-content-wrapper');
+            }
+            const paginationBlock = document.querySelector('.pagination');
+            paginationBlock.classList.add('hide');
+            resultsContainer.innerHTML = noResults;
+            populateSidebarFilters(params);
         }
-        buildResultsContainer([]);
-        let resultsContainer = document.querySelector('.default-content-wrapper.results');
-        if (!resultsContainer) {
-            resultsContainer = document.querySelector('.default-content-wrapper');
-        }
-        const paginationBlock = document.querySelector('.pagination');
-        paginationBlock.classList.add('hide');
-        resultsContainer.innerHTML = noResults;
-        populateSidebarFilters(params);
-    }
-});
+    });
+}
