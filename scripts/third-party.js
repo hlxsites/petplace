@@ -56,8 +56,8 @@ async function loadAccessibeWidget() {
 
 export async function loadEager() {
   // Handle eager martech
-  if (document.body.classList.contains('experiment-delayed-martech')
-    && document.body.classList.contains('variant-control')) {
+  if (!document.body.classList.contains('experiment-delayed-martech')
+    || !document.body.classList.contains('variant-variant-1')) {
     loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
     loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
   }
