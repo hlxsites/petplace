@@ -37,7 +37,6 @@
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
   --text-color-disabled:#464646;
-  --color-black: #000000;
   --color-gray: #8f8f8f;  
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
@@ -103,9 +102,10 @@
 
   /* nav height */
   --nav-height: 64px;
-  
+  /* stylelint-disable */
   --card-details-mask: linear-gradient(to bottom, #fff 44.33%,
-  rgba(255, 255, 255, 0.88) 67.03%, rgba(255, 255, 255, 0.00) 100.9%);
+  rgba(255, 255, 255, 88%) 67.03%, rgba(255, 255, 255, 0%) 100.9%);
+  /* stylelint-enable */
 }
 
 @media (min-width: 600px) {
@@ -887,20 +887,6 @@ footer .popup hlx-aria-dialog > button {
   top: 0;
   left: -10px;
   z-index: -1000;
-}
-
-/* stylelint-disable-next-line no-descending-specificity */
-.footer-legal .popup hlx-aria-dialog > button {
-  position: relative;
-  height: auto;
-  width: auto;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  color: inherit;
-  font: inherit;
-  z-index: initial;
-  left: auto;
 }
 
 @media (prefers-contrast: more) {

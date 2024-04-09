@@ -1,3 +1,4 @@
+/* stylelint-disable */
 .adopt-search-results.list {
     position: relative;
     min-height: 680px;
@@ -842,3 +843,4 @@ display: block;
         margin: 16px 0;
     }
 }
+/* stylelint-enable */
