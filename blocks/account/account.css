@@ -1,3 +1,4 @@
+/* stylelint-disable */
 /* section layout */
 
 .section.account-container {
@@ -1073,3 +1074,4 @@
   mask-repeat: no-repeat;
   mask-position: center;
 }
+/* stylelint-enable */

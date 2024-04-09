@@ -268,6 +268,7 @@ export default async function decorate(block) {
             'POST',
             payload,
           );
+          // eslint-disable-next-line
           const survey = await callSurveyResponse(surveyId, token);
           surveyNumber = survey.Id;
         } else {
@@ -340,7 +341,6 @@ export default async function decorate(block) {
           'PUT',
           payload,
         );
-        
       });
     }
   }
