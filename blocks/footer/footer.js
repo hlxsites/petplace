@@ -21,14 +21,14 @@ export default async function decorate(block) {
     const footer = document.createElement('div');
     footer.innerHTML = html;
 
-    decorateIcons(footer);
+    await decorateIcons(footer);
 
     const sections = ['nav', 'legal'];
-    [...footer.children].forEach((child, i) => {
+    [...footer.children].forEach(async (child, i) => {
       const container = document.createElement('div');
       container.classList.add(sections[i] ? `footer-${sections[i]}` : '');
       container.append(child);
-      decorateIcons(container);
+      await decorateIcons(container);
       block.append(container);
     });
 
