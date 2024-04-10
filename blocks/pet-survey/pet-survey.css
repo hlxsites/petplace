@@ -4,7 +4,7 @@ main .pet-survey-container {
   background-color: var(--neutral-50, #fafafc);
 }
 .pet-survey {
-  width: 100%;
+  max-width: 100%;
   display: grid;
   min-height: 653px;
 }
