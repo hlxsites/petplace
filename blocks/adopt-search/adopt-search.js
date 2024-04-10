@@ -1,6 +1,8 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable indent */
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
+import MultiSelect from '../pet-survey/multi-select.js';
 
 // fetch placeholders from the /pet-adoption folder currently, but placeholders should |
 // be moved into the root' folder eventually
@@ -70,18 +72,25 @@ async function createSearchForm(block) {
   }
 
   function updateBreedOptions(petType, options) {
-    const breedSelect = document.querySelector('#breed');
-
-    breedSelect.innerHTML = '<option value>Any</option>';
+    const breedSelect = document.querySelector('#breeds');
 
     if (petType !== 'Other') {
       breedSelect.disabled = false;
       options.forEach((item) => {
-        const optionEl = document.createElement('option');
-        optionEl.value = item.breedKey;
-        optionEl.textContent = item.breedValue;
+        const div = document.createElement('div');
 
-        breedSelect.append(optionEl);
+        const inputOption = document.createElement('input');
+        inputOption.type = 'checkbox';
+        inputOption.id = `${item.breedValue.toLowerCase().replace(/\s/g, '')}`;
+        inputOption.value = item.breedKey;
+        inputOption.textContent = item.breedValue;
+        div.classList.add('multi-select__input');
+        const label = document.createElement('label');
+        label.setAttribute('for', `${inputOption.id}`);
+        label.innerText = item.breedValue;
+        div.append(inputOption, label);
+
+        breedSelect.append(div);
       });
     }
   }
@@ -110,18 +119,44 @@ async function createSearchForm(block) {
   breedLabelElement.innerText = breedLabel;
   breedLabelElement.setAttribute('for', 'breed');
 
-  const breedSelect = document.createElement('select');
-  breedSelect.name = 'breed';
-  breedSelect.id = 'breed';
-  breedSelect.className = 'form-select-wrapper';
-  breedSelect.disabled = true;
+  const containerDiv = document.createElement('div');
+  containerDiv.className = 'multi-select breed';
+  containerDiv.id = 'breed';
+  containerDiv.append(breedLabelElement);
+
+  const breedButton = document.createElement('button');
+  breedButton.id = 'breed-button';
+  breedButton.className = 'multi-select__button';
+  breedButton.type = 'button';
+  breedButton.setAttribute('aria-expanded', 'false');
+  breedButton.setAttribute('aria-controls', 'breeds');
+
+  const text = document.createElement('span');
+  text.className = 'multi-select__button-text';
+  text.innerText = 'Select from menu...';
+
+  const icon = document.createElement('span');
+  icon.className = 'multi-select__button-icon';
+  breedButton.append(text, icon);
+
+  const groupDiv = document.createElement('div');
+  groupDiv.setAttribute('role', 'group');
+  groupDiv.setAttribute('aria-labelledby', 'breed-button');
+  groupDiv.setAttribute('tabindex', '0');
+  groupDiv.className = 'multi-select__options';
+  groupDiv.id = 'breeds';
+
+  containerDiv.append(breedButton, groupDiv);
+  // eslint-disable-next-line
+  new MultiSelect(containerDiv);
+
+  // marromeno aqui
+
   const option = document.createElement('option');
   option.innerText = breedPlaceholder;
   option.value = '';
 
-  breedSelect.append(option);
-  breedContainer.append(breedLabelElement);
-  breedContainer.append(breedSelect);
+  breedContainer.append(containerDiv);
 
   const zipContainer = document.createElement('div');
   const zipLabelElem = document.createElement('label');
@@ -178,7 +213,20 @@ async function createSearchForm(block) {
   });
 
   form.addEventListener('submit', (ev) => {
-    const selectedBreed = breedSelect.value;
+    // const selectedBreed = breedSelect.value;
+
+    // const selectedBreed = [];
+    // const { options } = breedSelect;
+    // let opt;
+
+    // for (let i=0, iLen=options.length; i < options.length; i++) {
+    //   opt = options[i];
+
+    //   if (opt.selected) {
+    //     selectedBreed.push(opt.value || opt.text);
+    //   }
+    // }
+
     const zipCode = zipInput.value;
     let selectedAnimalType = null;
 
@@ -215,10 +263,16 @@ async function createSearchForm(block) {
       }
 
       if (selectedBreed !== '') {
-        searchParams.set('filterBreed', selectedBreed);
+        // searchParams.set('filterBreed', selectedBreed);
+        selectedBreed.forEach((breed) => {
+          searchParams.append('filterBreed', breed);
+        });
       }
 
+      console.log('selectedBreed ', selectedBreed);
+
       const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
+      console.log('searchUrl ', searchUrl);
       window.location.href = searchUrl;
     }
   });

@@ -134,6 +134,7 @@
   color: var(--text-supporting, #2f2f33);
   border: 1px solid var(--border-strong, #d0d0d6);
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .adopt-search-box-wrapper fieldset input {
@@ -624,3 +625,79 @@
   padding-right: 12px;
 }
 /* stylelint-enable */
+
+/* multi select element */
+.multi-select .multi-select__button {
+  width: 100%;
+  margin: 0;
+  padding: 14px 32px 14px 16px;
+  text-align: left;
+  border: 1px solid var(--background-dark, #3b092c);
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: var(--text-default, #28061e);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  /** for the dropdown indicator */
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="18" height="17" viewBox="0 0 18 17" fill="none"%3E%3Cpath d="M16.5 5.34521L9.35333 12.4912C9.30693 12.5377 9.25187 12.5745 9.19127 12.5996C9.1306 12.6248 9.0656 12.6377 9 12.6377C8.9344 12.6377 8.8694 12.6248 8.80873 12.5996C8.74813 12.5745 8.69307 12.5377 8.64667 12.4912L1.5 5.34521" stroke="%2328061E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+.multi-select__button:hover,
+.multi-select__button:focus {
+  background-color: #ffffff;
+}
+.pet-survey__question .multi-select__button {
+  border-color: var(--border-base, #e4e4eb);
+}
+.multi-select__options {
+  background-color: #ffffff;
+  padding: 14px 32px 16px 14px;
+  border: 1px solid var(--border-base, #e4e4eb);
+  border-radius: 0px 0px 8px 8px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.multi-select {
+  position: relative;
+}
+.multi-select label {
+  display: block;
+}
+.multi-select__options {
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+.multi-select__options .multi-select__input input,
+.multi-select__options .multi-select__input label {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 0;
+}
+.multi-select__options .multi-select__input + .multi-select__input {
+  margin-top: 12px;
+}
+.multi-select__options .multi-select__input input {
+  margin: 0;
+  margin-right: 16px;
+  height: 13px;
+}
+.multi-select__options .multi-select__input label {
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.multi-select__button[aria-expanded='true'] + .multi-select__options {
+  z-index: 1;
+}
+/* .multi-select input[type='checkbox'] {
+  font-size: var(--body-font-size-default);
+  font-family: var(--body-font-family);
+  line-height: 1.5;
+} */
+/* multi select element */
