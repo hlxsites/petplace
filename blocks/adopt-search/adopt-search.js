@@ -76,6 +76,21 @@ async function createSearchForm(block) {
 
     if (petType !== 'Other') {
       breedSelect.disabled = false;
+
+      const divAny = document.createElement('div');
+      const inputOptionAny = document.createElement('input');
+      inputOptionAny.type = 'checkbox';
+      inputOptionAny.id = 'any';
+      inputOptionAny.value = 'ANY';
+      inputOptionAny.textContent = 'Any';
+      divAny.classList.add('multi-select__input');
+      const labelAny = document.createElement('label');
+      labelAny.setAttribute('for', 'any');
+      labelAny.innerText = 'Any';
+      divAny.append(inputOptionAny, labelAny);
+
+      breedSelect.append(divAny);
+
       options.forEach((item) => {
         const div = document.createElement('div');
 
@@ -92,6 +107,33 @@ async function createSearchForm(block) {
 
         breedSelect.append(div);
       });
+
+      const groupDiv = document.querySelector('.multi-select__options');
+      const containerDiv = document.querySelector('.multi-select.breed');
+      const breedButton = document.querySelector('.multi-select__button');
+      const checkboxArray = groupDiv.querySelectorAll('input');
+      checkboxArray?.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked && index === 0) {
+              checkboxArray.forEach((input) => {
+                  input.checked = false;
+                  input.dispatchEvent(new window.Event('change', { bubbles: true }));
+              });
+              checkboxArray[0].checked = true;
+          } else if (checkbox.checked && index !== 0) {
+              checkboxArray[0].checked = false;
+              checkboxArray[0].dispatchEvent(new window.Event('change', { bubbles: true }));
+          }
+          // updating label
+          const buttonText = containerDiv.querySelector('.multi-select__button-text');
+          const selected = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+          const displayText = selected.length > 0
+              ? `${selected.length} selected`
+              : 'Select from menu...';
+          buttonText.innerText = displayText;
+        });
+      });
+      breedButton.classList.remove('no-pointer-events');
     }
   }
 
@@ -126,7 +168,7 @@ async function createSearchForm(block) {
 
   const breedButton = document.createElement('button');
   breedButton.id = 'breed-button';
-  breedButton.className = 'multi-select__button';
+  breedButton.classList.add('multi-select__button', 'no-pointer-events');
   breedButton.type = 'button';
   breedButton.setAttribute('aria-expanded', 'false');
   breedButton.setAttribute('aria-controls', 'breeds');
@@ -149,8 +191,6 @@ async function createSearchForm(block) {
   containerDiv.append(breedButton, groupDiv);
   // eslint-disable-next-line
   new MultiSelect(containerDiv);
-
-  // marromeno aqui
 
   const option = document.createElement('option');
   option.innerText = breedPlaceholder;
@@ -213,20 +253,6 @@ async function createSearchForm(block) {
   });
 
   form.addEventListener('submit', (ev) => {
-    // const selectedBreed = breedSelect.value;
-
-    // const selectedBreed = [];
-    // const { options } = breedSelect;
-    // let opt;
-
-    // for (let i=0, iLen=options.length; i < options.length; i++) {
-    //   opt = options[i];
-
-    //   if (opt.selected) {
-    //     selectedBreed.push(opt.value || opt.text);
-    //   }
-    // }
-
     const zipCode = zipInput.value;
     let selectedAnimalType = null;
 
@@ -262,14 +288,16 @@ async function createSearchForm(block) {
         searchParams.set('filterAnimalType', selectedAnimalType);
       }
 
-      if (selectedBreed !== '') {
-        // searchParams.set('filterBreed', selectedBreed);
-        selectedBreed.forEach((breed) => {
-          searchParams.append('filterBreed', breed);
-        });
-      }
+      const checkboxArray = groupDiv.querySelectorAll('input');
 
-      console.log('selectedBreed ', selectedBreed);
+      let selectedBreedsString = '';
+
+      checkboxArray?.forEach((input) => {
+        if (input.checked) {
+          selectedBreedsString += `${input.value}%2C`;
+        }
+      });
+      searchParams.set('filterBreed', selectedBreedsString);
 
       const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
       console.log('searchUrl ', searchUrl);

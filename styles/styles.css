@@ -1088,3 +1088,7 @@ html > ins[data-google-query-id] {
 .social-share-container .publi-wrapper {
   margin: 0;
 }
+
+.no-pointer-events {
+  pointer-events: none;
+}
