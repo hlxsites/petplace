@@ -106,11 +106,29 @@ export default async function decorate(block) {
     );
     surveyInputs.forEach((inputEl) => {
       inputEl.addEventListener('change', (el) => {
+        console.log(inputEl)
         const data = {
           QuestionId: parseInt(el.target.getAttribute('data-question-id'), 10),
           QuestionOptionId: parseInt(el.target.value, 10),
         };
         state.surveyAnswers.push(data);
+        const otherOptions = inputEl.querySelectorAll(`option:not([value="${el.target.value}"]):not([value=""])`);
+        if (otherOptions.length > 0) {
+
+          console.log(state.surveyAnswers)
+          otherOptions.forEach((option) => {
+            // remove the unchecked item from the state
+            // If the answer exists, mark it as deleted
+            const existingAnswerIndex = state.surveyAnswers.findIndex(
+              (answer) => answer.QuestionOption?.Id === option.value
+            );
+
+            console.log(existingAnswerIndex)
+            if (existingAnswerIndex > -1) {
+              state.surveyAnswers[existingAnswerIndex].Deleted = true;
+            }
+          })
+        }
       });
     });
 
@@ -522,7 +540,6 @@ export default async function decorate(block) {
         updateSummaryForm(block, answers);
         bindSummaryBackButtonEvents(block, true);
         bindSurveySummaryChangeEvents(block);
-        bindSummarySaveEvent(block, surveyParentId);
       }
       toggleScreen('summary', block);
       updateSummaryForm(block, answers);
@@ -530,7 +547,7 @@ export default async function decorate(block) {
       if (animalId && clientId) {
         bindSummaryInquiryEvent(block);
       } else {
-        bindSummarySaveNewEvent(block);
+        bindSummarySaveEvent(block, surveyParentId);
       }
     } else {
       if (block.querySelector('.pet-survey__layout-container--presurvey')) {
