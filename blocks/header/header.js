@@ -1,7 +1,6 @@
 import {
   decorateIcons,
   getMetadata,
-  loadScript,
   sampleRUM,
   fetchPlaceholders,
 } from '../../scripts/lib-franklin.js';

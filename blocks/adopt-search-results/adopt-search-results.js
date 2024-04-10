@@ -8,6 +8,7 @@ import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
 import { callUserApi } from '../account/account.js';
 import { initRedirectHandlers } from '../../scripts/lib/msal/login-redirect-handlers.js';
 import { isMobile } from '../../scripts/scripts.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
@@ -245,6 +246,7 @@ function getFavorites(response) {
         });
     })
     .catch((error) => {
+        errorPage();
         // eslint-disable-next-line no-console
         console.error('Error:', error);
     });
@@ -269,6 +271,7 @@ function buildResultsList(animalList) {
                 getFavorites(response);
             })
             .catch((error) => {
+                errorPage();
                 // eslint-disable-next-line no-console
                 console.error('Error:', error);
             });
@@ -807,6 +810,7 @@ export default async function decorate(block) {
     breedSelect.name = 'breed';
     breedSelect.id = 'breed';
     breedSelect.className = 'form-select-wrapper';
+
     const option = document.createElement('option');
     option.innerText = breedPlaceholder;
     option.value = '';
