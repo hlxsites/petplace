@@ -51,6 +51,13 @@ export function createControlGroup(Id, isMultiAnswer, isExternal, Label, options
                         checkboxArray[0].checked = false;
                     }
                 });
+            } else {
+                checkbox.addEventListener('change', (e) => {
+                    const selectedInputs = container.querySelectorAll('input:checked');
+                    if (!checkbox.checked && selectedInputs.length === 0 && e.isTrusted) {
+                        checkbox.checked = true;
+                    }
+                });
             }
         });
     }
@@ -164,7 +171,8 @@ export function createMultiSelect(
     if (checkboxOverride) {
         const checkboxArray = groupDiv.querySelectorAll('input');
         checkboxArray?.forEach((checkbox, index) => {
-            checkbox.addEventListener('change', () => {
+            checkbox.addEventListener('change', (e) => {
+                const selectedInputs = groupDiv.querySelectorAll('input:checked');
                 if (checkbox.checked && index === 0) {
                     checkboxArray.forEach((input) => {
                         input.checked = false;
@@ -174,6 +182,25 @@ export function createMultiSelect(
                 } else if (checkbox.checked && index !== 0) {
                     checkboxArray[0].checked = false;
                     checkboxArray[0].dispatchEvent(new window.Event('change', { bubbles: true }));
+                } else if (!checkbox.checked && selectedInputs.length === 0 && e.isTrusted) {
+                    checkbox.checked = true;
+                }
+                // updating label
+                const buttonText = containerDiv.querySelector('.multi-select__button-text');
+                const selected = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+                const displayText = selected.length > 0
+                    ? `${selected.length} selected`
+                    : 'Select from menu...';
+                buttonText.innerText = displayText;
+            });
+        });
+    } else {
+        const checkboxArray = groupDiv.querySelectorAll('input');
+        checkboxArray?.forEach((checkbox) => {
+            checkbox.addEventListener('change', (e) => {
+                const selectedInputs = groupDiv.querySelectorAll('input:checked');
+                if (!checkbox.checked && selectedInputs.length === 0 && e.isTrusted) {
+                    checkbox.checked = true;
                 }
                 // updating label
                 const buttonText = containerDiv.querySelector('.multi-select__button-text');
