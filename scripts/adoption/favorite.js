@@ -45,8 +45,8 @@ export function saveFavorite(token, animal) {
         });
       })
         .catch((error) => {
-          // eslint-disable-next-line no-console
           errorPage();
+          // eslint-disable-next-line no-console
           console.error('Error:', error);
         });
 

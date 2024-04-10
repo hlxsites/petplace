@@ -1105,8 +1105,8 @@ html > ins[data-google-query-id] {
 }
 
 .error-page h1 {
-  font-family: 'Libre Franklin';
-  color: #000000;
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
+  color: #000;
   font-size: 28px;
   line-height: 35px;
 }
@@ -1122,9 +1122,10 @@ html > ins[data-google-query-id] {
   gap: 16px;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .error-page .action-btns a,
 .error-page .action-btns button {
-  font-family: 'Libre Franklin';
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
   margin: 0;
   padding: 13px 24px;
   font-size: 18px;
