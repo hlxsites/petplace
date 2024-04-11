@@ -647,6 +647,10 @@
   background-position: right 1rem center;
   background-size: 1em;
 }
+.multi-select .multi-select__button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
 .multi-select__button:hover,
 .multi-select__button:focus {
   background-color: #ffffff;

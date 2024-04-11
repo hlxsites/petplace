@@ -1105,6 +1105,10 @@ export default async function decorate(block) {
                                 input.checked = true;
                             }
                         });
+                        const displayText = selectedBreeds.length > 0
+                            ? `${selectedBreeds.length} selected`
+                            : 'Select from menu...';
+                        breedSelect.innerText = displayText;
                         callAnimalList().then((initialData) => {
                             buildResultsContainer(initialData);
                         });

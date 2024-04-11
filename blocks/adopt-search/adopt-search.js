@@ -144,10 +144,15 @@ async function createSearchForm(block) {
   radioBtns.forEach((radio) => {
     radio.addEventListener('change', () => {
       const selectedPetType = radio.value;
-      const breedSelect = document.querySelector('#breed');
+      const breedButton = document.querySelector('#breed-button');
       const updatedPath = `breed/${selectedPetType}`;
 
-      breedSelect.disabled = true;
+      if (selectedPetType === 'Other') {
+        breedButton.disabled = true;
+        breedButton.innerText = 'Any';
+      } else {
+        breedButton.innerText = 'Select from menu...';
+      }
 
       callAnimalList('GET', updatedPath).then((data) => {
         updateBreedOptions(selectedPetType, data);
