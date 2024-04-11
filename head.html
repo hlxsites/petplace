@@ -1,6 +1,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<script src="/scripts/lib-franklin.js" type="module"></script>
-<script src="/scripts/scripts.js" type="module"></script>
+<script type="module" src="/scripts/lib-franklin.js"></script>
+<script type="module" src="/scripts/scripts.js"></script>
 <link rel="stylesheet" href="/styles/styles.css"/>
 <link rel="icon" href="data:,">
 <link rel="alternate" type="application/rss+xml" hreflang="en-US" href="/rss.xml">
@@ -13,6 +13,7 @@
   window.clarity ||= function() {
     (window.clarity.q ||= []).push(arguments)
   }
+  window.PushlySDK ||= [];
   function gtag() { window.dataLayer.push(arguments); }
   gtag('consent', 'default', {
     'ad_storage': 'denied',
