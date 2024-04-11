@@ -401,20 +401,20 @@
 .pet-details .pet-card .like-button svg {
   fill: var(--text-color-disabled);
 }
-.pet-details div.pet-card .like-button .favorite {
+.pet-details a.pet-card .like-button .favorite {
   display: none;
 }
-.pet-details div.pet-card .like-button.favorited .default {
+.pet-details a.pet-card .like-button.favorited .default {
   display: none;
 }
-.pet-details div.pet-card .like-button.favorited .favorite {
+.pet-details a.pet-card .like-button.favorited .favorite {
   display: block;
   position: relative;
   background-color: #f8d1ca;
   top: 0;
   right: -6px;
 }
-.pet-details div.pet-card .like-button.favorited {
+.pet-details a.pet-card .like-button.favorited {
   background-color: #f8d1ca;
 }
 

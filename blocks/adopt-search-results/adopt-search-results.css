@@ -584,33 +584,32 @@ display: block;
     }
 }
 
-.adopt-search-results .results div.pet-card {
+.adopt-search-results .results a.pet-card {
     width: 100%;
     border-radius: 12px;
     filter: drop-shadow(rgba(0, 0, 0, 24%) 1px 2px 4px);
     background-color: #fff;
     position: relative;
-    
 }
 
 @media screen and (min-width: 600px) {
-    .adopt-search-results .results div.pet-card {
+    .adopt-search-results .results a.pet-card {
         width: calc((50% - 30px))
     }
 }
 @media screen and (min-width: 1024px) {
-    .adopt-search-results .results div.pet-card {
+    .adopt-search-results .results a.pet-card {
         width: calc((25% - 15px))
     }
 }
 
-.adopt-search-results .results div.pet-card img {
+.adopt-search-results .results a.pet-card img {
 
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     width: 100%;
 }
-.adopt-search-results .results div.pet-card .like-button {
+.adopt-search-results .results a.pet-card .like-button {
     background-color: #fff;
     border-radius: 50%;
     padding: 8px 5px 3px;
@@ -619,22 +618,22 @@ display: block;
     top: 15px;
     right: 15px;
 }
-.adopt-search-results .results div.pet-card .like-button .favorite {
+.adopt-search-results .results a.pet-card .like-button .favorite {
     display: none;
 }
-.adopt-search-results .results div.pet-card .like-button.favorited .default {
+.adopt-search-results .results a.pet-card .like-button.favorited .default {
     display: none;
 }
-.adopt-search-results .results div.pet-card .like-button.favorited .favorite {
+.adopt-search-results .results a.pet-card .like-button.favorited .favorite {
     display: block;
     background-color: #F8D1CA;
     top: 0;
     right: 0;
 }
-.adopt-search-results .results div.pet-card .like-button.favorited {
+.adopt-search-results .results a.pet-card .like-button.favorited {
     background-color: #F8D1CA;
 }
-.adopt-search-results .results div.pet-card object {
+.adopt-search-results .results a.pet-card object {
     display: block;
     max-width: 100%;
     width: 100%;
@@ -645,7 +644,7 @@ display: block;
     border-top-right-radius: 12px;
 }
 
-.adopt-search-results .results div.pet-card h3 {
+.adopt-search-results .results a.pet-card h3 {
     margin-top: 20px;
     margin-bottom: 5px;
     text-overflow: ellipsis;
@@ -653,7 +652,7 @@ display: block;
     font-weight: 800;
     color: #000;
 }
-.adopt-search-results .results div.pet-card h3 a {
+.adopt-search-results .results a.pet-card h3 a {
     margin-top: 20px;
     margin-bottom: 5px;
     text-overflow: ellipsis;
@@ -662,23 +661,24 @@ display: block;
     color: #000;
 }
 
-.adopt-search-results .results div.pet-card .pet-card-info {
+.adopt-search-results .results a.pet-card .pet-card-info {
     font-size: 16px;
     line-height: 20px;
     padding-bottom: 16px;
     font-weight: 400;
 }
 
-.adopt-search-results .results div.pet-card .pet-card-address {
+.adopt-search-results .results a.pet-card .pet-card-address {
     font-size: 18px;
     padding-bottom: 16px;
 }
 
-.adopt-search-results .results div.pet-card h3,
-.adopt-search-results .results div.pet-card .pet-card-info,
-.adopt-search-results .results div.pet-card .pet-card-address {
+.adopt-search-results .results a.pet-card h3,
+.adopt-search-results .results a.pet-card .pet-card-info,
+.adopt-search-results .results a.pet-card .pet-card-address {
     padding-left: 12px;
     padding-right: 12px;
+    color: #000000;
 }
 
 .adopt-search-results .save-search-modal {

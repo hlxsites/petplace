@@ -262,11 +262,12 @@
   font-size: 31px;
 }
 
-.adoptable-pets-container div.pet-card h3.pet-card-name,
-.adoptable-pets-container div.pet-card .pet-card-info.pet-card-info,
-.adoptable-pets-container div.pet-card .pet-card-address.pet-card-address {
+.adoptable-pets-container a.pet-card h3.pet-card-name,
+.adoptable-pets-container a.pet-card .pet-card-info.pet-card-info,
+.adoptable-pets-container a.pet-card .pet-card-address.pet-card-address {
   padding-left: 0;
   padding-right: 0;
+  color: #000000;
 }
 
 .adoptable-pets .pet-card.pet-card {
@@ -530,7 +531,7 @@
   background-position: center center;
   background-size: 1em;
 }
-.adopt div.pet-card {
+.adopt a.pet-card {
   width: 100%;
   border-radius: 12px;
   filter: drop-shadow(rgba(0, 0, 0, 24%) 1px 2px 4px);
@@ -540,23 +541,23 @@
 }
 
 @media screen and (min-width: 600px) {
-  .adopt div.pet-card {
+  .adopt a.pet-card {
       width: calc((50% - 30px))
   }
 }
 @media screen and (min-width: 1024px) {
-  .adopt div.pet-card {
+  .adopt a.pet-card {
       width: calc((25% - 15px))
   }
 }
 
-.adopt div.pet-card img {
+.adopt a.pet-card img {
 
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   width: 100%;
 }
-.adopt div.pet-card .like-button {
+.adopt a.pet-card .like-button {
   background-color: #fff;
   border-radius: 50%;
   padding: 8px 5px 3px;
@@ -565,22 +566,22 @@
   top: 15px;
   right: 15px;
 }
-.adopt div.pet-card .like-button .favorite {
+.adopt a.pet-card .like-button .favorite {
   display: none;
 }
-.adopt div.pet-card .like-button.favorited .default {
+.adopt a.pet-card .like-button.favorited .default {
   display: none;
 }
-.adopt div.pet-card .like-button.favorited .favorite {
+.adopt a.pet-card .like-button.favorited .favorite {
   display: block;
   background-color: #F8D1CA;
   top: 0;
   right: 0;
 }
-.adopt div.pet-card .like-button.favorited {
+.adopt a.pet-card .like-button.favorited {
   background-color: #F8D1CA;
 }
-.adopt div.pet-card object {
+.adopt a.pet-card object {
   display: block;
   max-width: 100%;
   width: 100%;
@@ -591,7 +592,7 @@
   border-top-right-radius: 12px;
 }
 
-.adopt div.pet-card h3 {
+.adopt a.pet-card h3 {
   margin-bottom: 5px;
   text-overflow: ellipsis;
   font-size: 22px;
@@ -599,7 +600,7 @@
   color: #000;
 }
 
-.adopt div.pet-card h3 a {
+.adopt a.pet-card h3 a {
   margin-top: 20px;
   margin-bottom: 5px;
   text-overflow: ellipsis;
@@ -608,19 +609,19 @@
   color: #000;
 }
 
-.adopt div.pet-card .pet-card-info {
+.adopt a.pet-card .pet-card-info {
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
 }
 
-.adopt div.pet-card .pet-card-address {
+.adopt a.pet-card .pet-card-address {
   font-size: 18px;
 }
 
-.adopt div.pet-card h3,
-.adopt div.pet-card .pet-card-info,
-.adopt div.pet-card .pet-card-address {
+.adopt a.pet-card h3,
+.adopt a.pet-card .pet-card-info,
+.adopt a.pet-card .pet-card-address {
   padding-left: 12px;
   padding-right: 12px;
 }
