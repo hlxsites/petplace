@@ -148,7 +148,7 @@ async function createSearchForm(block) {
       const updatedPath = `breed/${selectedPetType}`;
 
       if (selectedPetType === 'Other') {
-        breedButton.disabled = true;
+        breedButton.setAttribute('disabled', '');
         breedButton.innerText = 'Any';
       } else {
         breedButton.innerText = 'Select from menu...';
