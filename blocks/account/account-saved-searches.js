@@ -130,8 +130,16 @@ function getSearches(token) {
                 if (saved.SearchParameters.animalFilters.filterAnimalType) {
                     searchUrl += `&filterAnimalType=${saved.SearchParameters.animalFilters.filterAnimalType}`;
                 }
-                if (saved.SearchParameters.animalFilters.filterBreed.length) {
-                    searchUrl += `&filterBreed=${saved.SearchParameters.animalFilters.filterBreed[0].replace(' ', '+')}`;
+                if (saved.SearchParameters.animalFilters.filterBreed?.length) {
+                    let breedFilterList = '';
+                    saved.SearchParameters.animalFilters.filterBreed?.forEach((breed) => {
+                        if (breedFilterList !== '') {
+                            breedFilterList += `,${breed.replace(' ', '+')}`;
+                        } else {
+                            breedFilterList += breed.replace(' ', '+');
+                        }
+                    });
+                    searchUrl += `&filterBreed=${breedFilterList}`;
                 }
                 if (saved.SearchParameters.animalFilters.filterGender !== '') {
                     searchUrl += `&filterGender=${saved.SearchParameters.animalFilters.filterGender}`;

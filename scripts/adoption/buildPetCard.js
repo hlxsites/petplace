@@ -40,8 +40,9 @@ export function buildPetCard(animal) {
   }
 
   const petDetailPageUrl = `/pet-adoption/${animalType.toLowerCase()}s/${animalId}/${clientId}`;
-  const petCard = document.createElement('div');
+  const petCard = document.createElement('a');
   petCard.className = 'pet-card';
+  petCard.setAttribute('href', petDetailPageUrl);
   const pictureContainer = document.createElement('div');
   pictureContainer.className = 'pet-card-image';
   pictureContainer.append(createImageObject(coverImagePath, null));
