@@ -625,7 +625,6 @@
   padding-left: 12px;
   padding-right: 12px;
 }
-/* stylelint-enable */
 
 /* multi select element */
 .multi-select .multi-select__button {
@@ -698,3 +697,5 @@
   z-index: 1;
 }
 /* multi select element */
+
+/* stylelint-enable */

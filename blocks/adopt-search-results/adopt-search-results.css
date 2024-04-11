@@ -843,7 +843,6 @@ display: block;
         margin: 16px 0;
     }
 }
-/* stylelint-enable */
 
 /* multi select element */
 .multi-select .multi-select__button {
@@ -931,3 +930,5 @@ display: block;
     z-index: 1;
 }
 /* multi select element */
+
+/* stylelint-enable */
