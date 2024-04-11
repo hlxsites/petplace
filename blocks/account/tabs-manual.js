@@ -34,6 +34,7 @@ export default class TabsManual {
       } else {
         this.setSelectedTab(this.firstTab);
       }
+      this.urlChangeListener();
     }
 
     setSelectedTab(currentTab) {
@@ -144,5 +145,19 @@ export default class TabsManual {
       }
 
       return ''; // Return an empty string if there's no hash
-  }
+    }
+
+    urlChangeListener() {
+      window.addEventListener('hashchange', () => {
+        let currentHash = window.location.hash;
+
+        if (currentHash.includes('?')) {
+          [currentHash] = currentHash.split('?');
+        }
+
+        if (currentHash && this.getIndexByHash(currentHash) > -1) {
+          this.setSelectedTab(this.tabs[this.getIndexByHash(currentHash)]);
+        }
+      });
+    }
 }
