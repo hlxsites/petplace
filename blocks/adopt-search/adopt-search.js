@@ -125,7 +125,7 @@ async function createSearchForm(block) {
               checkboxArray[0].dispatchEvent(new window.Event('change', { bubbles: true }));
           }
           // updating label
-          const buttonText = containerDiv.querySelector('.multi-select__button-text');
+          const buttonText = containerDiv.querySelector('#breed-button');
           const selected = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
           const displayText = selected.length > 0
               ? `${selected.length} selected`

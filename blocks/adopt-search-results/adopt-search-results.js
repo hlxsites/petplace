@@ -1138,7 +1138,23 @@ export default async function decorate(block) {
             paginationBlock.classList.add('hide');
             resultsContainer.innerHTML = noResults;
         }
+        // check if hash exists and if so save the search
+        // eslint-disable-next-line
+        const hash = getHashFromURL();
+        setTimeout(() => {
+            // eslint-disable-next-line
+            if (hash === 'saveSearch') {
+                saveButton.click();
+            }
+        }, '1000');
     });
-    
+}
+function getHashFromURL() {
+    const hashIndex = window.location.href.indexOf('#');
+    if (hashIndex !== -1) {
+        return window.location.href.substring(hashIndex + 1);
+    }
+
+    return ''; // Return an empty string if there's no hash
 }
 
