@@ -400,7 +400,6 @@ function nextPage() {
 
 function clearFilters() {
     selectedBreeds = [];
-    // aqui
     const radiusSelect = document.getElementById('radius');
     if (radiusSelect) {
         radiusSelect.selectedIndex = 0;
@@ -1092,6 +1091,7 @@ export default async function decorate(block) {
             if (petType?.value === 'Other' || petType?.value === 'null') {
                 breedSelect.setAttribute('disabled', '');
                 breedSelect.innerText = 'Any';
+                buildResultsContainer([]);
             } else {
                 breedSelect.removeAttribute('disabled');
                 breedSelect.innerText = 'Select from menu...';
@@ -1104,7 +1104,6 @@ export default async function decorate(block) {
                                 selectedBreeds.push(input.value);
                                 input.checked = true;
                             }
-                            // aqui
                         });
                         callAnimalList().then((initialData) => {
                             buildResultsContainer(initialData);
