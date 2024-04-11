@@ -17,27 +17,27 @@ function createSpanBlock(main) {
   const searchButton = insuranceSearch.querySelector('.search-button');
   const errorMsg = main.querySelector('.find-useful-wrapper');
 
-    // Eventlistener to redirect user to aggregator site.
-    searchButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      const code = searchInput.value;
-      if (isValidZipcode(code)) {
-        errorMsg.style.display = 'none';
-        searchInput.classList.remove('error-state');
-        formEl.classList.remove('error-spacing');
-        searchInput.value = '';
-        window.open(
-          `https://quote.petplace.com/questionnaire?zipCode=${code}`,
-          '_blank',
-        );
-      } else {
-        errorMsg.style.display = 'block';
-        searchInput.classList.add('error-state');
-        formEl.classList.add('error-spacing');
-        searchInput.value = '';
-      }
-    });
-  }
+  // Eventlistener to redirect user to aggregator site.
+  searchButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const code = searchInput.value;
+    if (isValidZipcode(code)) {
+      errorMsg.style.display = 'none';
+      searchInput.classList.remove('error-state');
+      formEl.classList.remove('error-spacing');
+      searchInput.value = '';
+      window.open(
+        `https://quote.petplace.com/questionnaire?zipCode=${code}`,
+        '_blank',
+      );
+    } else {
+      errorMsg.style.display = 'block';
+      searchInput.classList.add('error-state');
+      formEl.classList.add('error-spacing');
+      searchInput.value = '';
+    }
+  });
+}
 
 export function loadLazy() {
   const main = document.querySelector('#main');
