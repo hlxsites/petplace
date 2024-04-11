@@ -650,9 +650,6 @@
 .multi-select__button:focus {
   background-color: #ffffff;
 }
-.pet-survey__question .multi-select__button {
-  border-color: var(--border-base, #e4e4eb);
-}
 .multi-select__options {
   background-color: #ffffff;
   padding: 14px 32px 16px 14px;
@@ -695,9 +692,4 @@
 .multi-select__button[aria-expanded='true'] + .multi-select__options {
   z-index: 1;
 }
-/* .multi-select input[type='checkbox'] {
-  font-size: var(--body-font-size-default);
-  font-family: var(--body-font-family);
-  line-height: 1.5;
-} */
 /* multi select element */

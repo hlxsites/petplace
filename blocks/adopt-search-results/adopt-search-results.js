@@ -8,6 +8,7 @@ import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
 import { callUserApi } from '../account/account.js';
 import { initRedirectHandlers } from '../../scripts/lib/msal/login-redirect-handlers.js';
 import { isMobile } from '../../scripts/scripts.js';
+import MultiSelect from '../pet-survey/multi-select.js';
 
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
@@ -42,6 +43,7 @@ let breedList = [];
 let currentPage = 1;
 const recordsPerPage = 16;
 let animalArray = [];
+let selectedBreeds = [];
 
  // Get filters
 function getFilters() {
@@ -78,7 +80,7 @@ function getFilters() {
         filterGender: genderFilterList,
         filterAge: ageFilterList,
         filterAnimalType: document.getElementById('pet-type')?.value,
-        filterBreed: document.getElementById('breed')?.value,
+        filterBreed: selectedBreeds,
         zipPostal: document.getElementById('zip')?.value,
         // Add more filters as needed
     };
@@ -106,11 +108,11 @@ async function callAnimalList() {
     if (petType !== 'null') {
         animalType = petType;
     }
-    const breedType = document.getElementById('breed')?.value;
+    const breedType = selectedBreeds;
     const breeds = [];
-    if (breedType !== '') {
-        breeds.push(breedType);
-    }
+    breedType.forEach((breed) => {
+        breeds.push(breed);
+    });
     let zip = document.getElementById('zip')?.value;
     if (!zip) {
         zip = null;
@@ -157,7 +159,7 @@ async function callAnimalList() {
             animalFilters: {
                 startIndex: 0,
                 filterAnimalType: animalType,
-                filterBreed: breeds,
+                filterBreed: selectedBreeds,
                 filterGender: gender,
                 filterAge: ageList,
                 filterSize: sizeList,
@@ -182,12 +184,14 @@ async function callAnimalList() {
 }
 
 async function callBreedList(petType) {
-    const breedSelect = document.getElementById('breed');
+    const breedSelect = document.getElementById('breed-button');
     if (breedSelect && (petType === 'other' || petType === 'null')) {
         breedSelect.setAttribute('disabled', '');
+        document.querySelector('#breed-button').innerText = 'Any';
     } else {
         if (breedSelect) {
             breedSelect.removeAttribute('disabled');
+            document.querySelector('#breed-button').innerText = 'Select from menu...';
         }
         let endpoint = `${endPoints.apiUrl}/breed`;
         if (petType !== 'null') {
@@ -202,25 +206,73 @@ async function callBreedList(petType) {
 }
 
 async function updateBreedListSelect() {
-    const breedSelect = document.getElementById('breed');
-    let i = 0;
-    if (breedSelect) {
-        const L = breedSelect.options.length - 1;
-        for (i = L; i >= 0; i -= 1) {
-            breedSelect.remove(i);
-        }
-    }
+    const breedSelect = document.querySelector('#breeds');
+    breedSelect.innerHTML = '';
 
-    const breedOption = document.createElement('option');
-    breedOption.innerText = breedPlaceholder;
-    breedOption.value = '';
-    breedSelect?.append(breedOption);
+    const divAny = document.createElement('div');
+    const inputOptionAny = document.createElement('input');
+    inputOptionAny.type = 'checkbox';
+    inputOptionAny.id = 'any';
+    inputOptionAny.value = '';
+    inputOptionAny.textContent = 'Any';
+    divAny.classList.add('multi-select__input');
+    const labelAny = document.createElement('label');
+    labelAny.setAttribute('for', 'any');
+    labelAny.innerText = 'Any';
+    divAny.append(inputOptionAny, labelAny);
+
+    breedSelect.append(divAny);
     breedList?.forEach((breed) => {
-        const option = document.createElement('option');
-        option.innerText = breed?.breedValue;
-        option.value = breed?.breedKey;
+        const div = document.createElement('div');
 
-        breedSelect?.append(option);
+        const inputOption = document.createElement('input');
+        inputOption.type = 'checkbox';
+        inputOption.id = `${breed.breedValue.toLowerCase().replace(/\s/g, '')}`;
+        inputOption.value = breed.breedKey;
+        inputOption.textContent = breed.breedValue;
+        div.classList.add('multi-select__input');
+        const label = document.createElement('label');
+        label.setAttribute('for', `${inputOption.id}`);
+        label.innerText = breed.breedValue;
+        div.append(inputOption, label);
+
+        breedSelect.append(div);
+    });
+
+    const groupDiv = document.querySelector('#breeds');
+    const containerDiv = document.querySelector('.multi-select.breed');
+    const breedButton = document.querySelector('.multi-select__button');
+    const checkboxArray = groupDiv.querySelectorAll('input');
+    checkboxArray?.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked && index === 0) {
+                const selectedCheckboxes = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+                selectedCheckboxes.forEach((input) => {
+                    input.checked = false;
+                });
+                checkboxArray[0].checked = true;
+            } else if (checkbox.checked && index !== 0) {
+                checkboxArray[0].checked = false;
+            }
+            // updating label
+            const buttonText = containerDiv.querySelector('#breed-button');
+            const selected = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+            selectedBreeds = [];
+            selected.forEach((select) => {
+                if (select.value !== '') {
+                    selectedBreeds.push(select.value);
+                }
+            });
+            const displayText = selected.length > 0
+                ? `${selected.length} selected`
+                : 'Select from menu...';
+            buttonText.innerText = displayText;
+            getFilters();
+            callAnimalList().then((data) => {
+                // eslint-disable-next-line
+                buildResultsContainer(data);
+            });
+        });
     });
 }
 
@@ -347,6 +399,8 @@ function nextPage() {
 }
 
 function clearFilters() {
+    selectedBreeds = [];
+    // aqui
     const radiusSelect = document.getElementById('radius');
     if (radiusSelect) {
         radiusSelect.selectedIndex = 0;
@@ -660,10 +714,12 @@ function buildResultsContainer(data) {
 function populateSidebarFilters(params) {
     // Populate Sidebar filters
     const petRadius = document.getElementById('radius');
-    const petRadiusOptions = petRadius.options;
-    for (let i = 0; i < petRadiusOptions.length; i += 1) {
-        if (petRadiusOptions[i].value === params.get('milesRadius')) {
-            petRadius.selectedIndex = i;
+    const petRadiusOptions = petRadius?.options;
+    if (petRadiusOptions) {
+        for (let i = 0; i < petRadiusOptions.length; i += 1) {
+            if (petRadiusOptions[i].value === params.get('milesRadius')) {
+                petRadius.selectedIndex = i;
+            }
         }
     }
     const genderRadios = document.querySelectorAll('input[name="gender"]');
@@ -793,31 +849,60 @@ export default async function decorate(block) {
             } else {
                 radioSize?.classList.remove('hidden');
             }
+            if (petTypeSelect.value.toLowerCase() === 'other' || petTypeSelect.value.toLowerCase() === 'null') {
+                document.querySelector('#breed-button').setAttribute('disabled', '');
+                document.querySelector('#breed-button').innerText = 'Any';
+            } else {
+                document.querySelector('#breed-button').removeAttribute('disabled', '');
+                document.querySelector('#breed-button').innerText = 'Select from menu...';
+            }
             updateBreedListSelect();
         });
     });
 
-    // Building Breed List select element
+    // Building Breed List custom multi select element
     const breedContainer = document.createElement('div');
     const breedLabelElement = document.createElement('label');
     breedLabelElement.for = 'breed';
     breedLabelElement.innerText = breedLabel;
+    breedLabelElement.setAttribute('for', 'breed');
 
-    const breedSelect = document.createElement('select');
-    breedSelect.name = 'breed';
-    breedSelect.id = 'breed';
-    breedSelect.className = 'form-select-wrapper';
+    const containerDiv = document.createElement('div');
+    containerDiv.className = 'multi-select breed';
+    containerDiv.id = 'breed';
+    containerDiv.append(breedLabelElement);
+
+    const breedButton = document.createElement('button');
+    breedButton.id = 'breed-button';
+    breedButton.classList.add('multi-select__button');
+    breedButton.type = 'button';
+    breedButton.setAttribute('aria-expanded', 'false');
+    breedButton.setAttribute('aria-controls', 'breeds');
+
+    const multiSelectPlaceholder = document.createElement('span');
+    multiSelectPlaceholder.className = 'multi-select__button-text';
+    multiSelectPlaceholder.innerText = 'Select from menu...';
+
+    const icon = document.createElement('span');
+    icon.className = 'multi-select__button-icon';
+    breedButton.append(multiSelectPlaceholder, icon);
+
+    const groupDiv = document.createElement('div');
+    groupDiv.setAttribute('role', 'group');
+    groupDiv.setAttribute('aria-labelledby', 'breed-button');
+    groupDiv.setAttribute('tabindex', '0');
+    groupDiv.className = 'multi-select__options';
+    groupDiv.id = 'breeds';
+
+    containerDiv.append(breedButton, groupDiv);
+    // eslint-disable-next-line
+    new MultiSelect(containerDiv);
+
     const option = document.createElement('option');
     option.innerText = breedPlaceholder;
     option.value = '';
-    breedSelect.addEventListener('change', () => {
-        clearFilters();
-    });
 
-    breedSelect.append(option);
-
-    breedContainer.append(breedLabelElement);
-    breedContainer.append(breedSelect);
+    breedContainer.append(containerDiv);
 
     const zipContainer = document.createElement('div');
     const zipLabelElem = document.createElement('label');
@@ -1000,29 +1085,33 @@ export default async function decorate(block) {
                 }
             }
 
-            const petBreed = document.getElementById('breed');
-            const petBreeds = petBreed.options;
-            for (let i = 0; i < petBreeds.length; i += 1) {
-                if (petBreeds[i].value === params.get('filterBreed')) {
-                    petBreed.selectedIndex = i;
-                }
-            }
+            const breedSelect = document.getElementById('breed-button');
+            const petBreed = document.querySelector('#breeds');
+            const paramsSelected = params.get('filterBreed');
 
             if (petType?.value === 'Other' || petType?.value === 'null') {
-                petBreed.setAttribute('disabled', '');
+                breedSelect.setAttribute('disabled', '');
+                breedSelect.innerText = 'Any';
             } else {
+                breedSelect.removeAttribute('disabled');
+                breedSelect.innerText = 'Select from menu...';
                 callBreedList(petType?.value).then((outputData) => {
                     breedList = outputData;
                     updateBreedListSelect().then(() => {
-                    for (let i = 0; i < petBreeds.length; i += 1) {
-                        if (petBreeds[i].value === params.get('filterBreed')) {
-                            petBreed.selectedIndex = i;
-                        }
-                    }
+                        const inputs = petBreed.querySelectorAll('input');
+                        inputs.forEach((input) => {
+                            if (paramsSelected.includes(input.value) && input.value !== '') {
+                                selectedBreeds.push(input.value);
+                                input.checked = true;
+                            }
+                            // aqui
+                        });
+                        callAnimalList().then((initialData) => {
+                            buildResultsContainer(initialData);
+                        });
                     });
                 });
             }
-            buildResultsContainer([]);
             let resultsContainer = document.querySelector('.default-content-wrapper.results');
             if (!resultsContainer) {
                 resultsContainer = document.querySelector('.default-content-wrapper');

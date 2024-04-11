@@ -133,7 +133,7 @@ async function createSearchForm(block) {
           buttonText.innerText = displayText;
         });
       });
-      breedButton.classList.remove('no-pointer-events');
+      breedButton.removeAttribute('disabled');
     }
   }
 
@@ -168,10 +168,11 @@ async function createSearchForm(block) {
 
   const breedButton = document.createElement('button');
   breedButton.id = 'breed-button';
-  breedButton.classList.add('multi-select__button', 'no-pointer-events');
+  breedButton.classList.add('multi-select__button');
   breedButton.type = 'button';
   breedButton.setAttribute('aria-expanded', 'false');
   breedButton.setAttribute('aria-controls', 'breeds');
+  breedButton.setAttribute('disabled', '');
 
   const text = document.createElement('span');
   text.className = 'multi-select__button-text';
