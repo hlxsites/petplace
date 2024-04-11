@@ -100,8 +100,20 @@ function applyFilters() {
     const params = new URLSearchParams(filters);
     window.history.replaceState({}, '', `?${params.toString()}`);
 }
+let callInProgress = false;
+
+function waitFor(conditionFunction) {
+    const poll = (resolve) => {
+        if (conditionFunction()) resolve();
+        else setTimeout(() => poll(resolve), 400);
+    };
+
+    return new Promise(poll);
+}
 
 async function callAnimalList() {
+    await waitFor(() => callInProgress === false);
+    callInProgress = true;
     applyFilters();
     const petType = document.getElementById('pet-type')?.value;
     let animalType = null;
@@ -166,6 +178,7 @@ async function callAnimalList() {
             },
         }),
     });
+    callInProgress = false;
     if (response.status === 204) {
         // eslint-disable-next-line
         buildResultsContainer([]);
@@ -241,7 +254,6 @@ async function updateBreedListSelect() {
 
     const groupDiv = document.querySelector('#breeds');
     const containerDiv = document.querySelector('.multi-select.breed');
-    const breedButton = document.querySelector('.multi-select__button');
     const checkboxArray = groupDiv.querySelectorAll('input');
     checkboxArray?.forEach((checkbox, index) => {
         checkbox.addEventListener('change', () => {
@@ -1087,7 +1099,6 @@ export default async function decorate(block) {
             const breedSelect = document.getElementById('breed-button');
             const petBreed = document.querySelector('#breeds');
             const paramsSelected = params.get('filterBreed');
-
             if (petType?.value === 'Other' || petType?.value === 'null') {
                 breedSelect.setAttribute('disabled', '');
                 breedSelect.innerText = 'Any';
@@ -1100,7 +1111,7 @@ export default async function decorate(block) {
                     updateBreedListSelect().then(() => {
                         const inputs = petBreed.querySelectorAll('input');
                         inputs.forEach((input) => {
-                            if (paramsSelected.includes(input.value) && input.value !== '') {
+                            if (paramsSelected?.includes(input.value) && input.value !== '') {
                                 selectedBreeds.push(input.value);
                                 input.checked = true;
                             }
@@ -1111,6 +1122,7 @@ export default async function decorate(block) {
                         breedSelect.innerText = displayText;
                         callAnimalList().then((initialData) => {
                             buildResultsContainer(initialData);
+                            populateSidebarFilters(params);
                         });
                     });
                 });
@@ -1122,7 +1134,6 @@ export default async function decorate(block) {
             const paginationBlock = document.querySelector('.pagination');
             paginationBlock.classList.add('hide');
             resultsContainer.innerHTML = noResults;
-            populateSidebarFilters(params);
         }
     });
 }

@@ -33,10 +33,15 @@ export async function saveSearch(token) {
   if (petType !== 'null') {
     animalType = petType;
   }
-  const breedType = document.getElementById('breed')?.value;
-  const breeds = [];
-  if (breedType !== '') {
-    breeds.push(breedType);
+  const breedSelect = document.getElementById('breed');
+  const breedSelectedOptions = breedSelect.querySelectorAll('input:checked');
+  let breeds = [];
+  if (breedSelectedOptions && breedSelectedOptions?.length === 0) {
+    breeds = null;
+  } else {
+    breedSelectedOptions?.forEach((item) => {
+      breeds.push(item.value);
+    });
   }
   let zip = document.getElementById('zip')?.value;
   if (!zip) {
@@ -169,10 +174,10 @@ export async function saveSearch(token) {
     // build filter string
 
     const filterArray = [];
-    const breedSelect = document.getElementById('breed');
-    const breedText = breedSelect.options[breedSelect.selectedIndex].text;
+    breedSelectedOptions.forEach((filter) => {
+      filterArray.push(filter.value);
+    });
     const ageFilters = document.querySelectorAll('input:checked');
-    filterArray.push(breedText);
     ageFilters.forEach((filter) => {
       filterArray.push(filter.parentElement.innerText);
     });

@@ -306,7 +306,6 @@ async function createSearchForm(block) {
       searchParams.set('filterBreed', selectedBreedsString);
 
       const searchUrl = `/pet-adoption/search?${searchParams.toString()}`;
-      console.log('searchUrl ', searchUrl);
       window.location.href = searchUrl;
     }
   });
