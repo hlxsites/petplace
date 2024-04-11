@@ -1,5 +1,7 @@
 import { setupSearchResults } from '../../templates/gen-ai/gen-ai.js';
 
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+
 export default async function decorate(block) {
   const searchPlaceholder = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[0].textContent : 'Ask a question or enter a topic....';
   const searchButtonText = block.firstElementChild.children && block.firstElementChild.children[0] && block.firstElementChild.children[0].textContent ? block.firstElementChild.children[1].textContent : 'Submit';
@@ -13,9 +15,17 @@ export default async function decorate(block) {
       ev.preventDefault();
       window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(query));
       if (document.location.pathname.indexOf('/discovery') === -1) {
+        pushToDataLayer({
+          event: 'genai_cta_form',
+          search_term: query,
+        });
         document.location.pathname = '/discovery';
       } else {
         const searchResultsDivElement = document.querySelector('.search-results');
+        pushToDataLayer({
+          event: 'genai_discovery_form',
+          search_term: query,
+        });
         setupSearchResults(searchResultsDivElement);
       }
     }

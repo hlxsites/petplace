@@ -8,21 +8,31 @@
   .adoption-landing-page .pet-display .pet-card-box {
     border: 1px solid black;
   }
+  .adoption-landing-page main .hero img {
+    max-height: unset;
+  }
+}  
+.adoption-landing-page main .hero-container {
+  padding: 0;
 }
-
 .adoption-landing-page main .hero {
   min-height: 0;
   height: auto;
 }
-
-.adoption-landing-page main .hero picture {
-  position: static;
+@media (min-width: 800px){
+  .adoption-landing-page main .hero {
+    min-height: 318px;
+  }
+  .adoption-landing-page main .hero img {
+    object-position: center left;
+  }
 }
-
-.adoption-landing-page main .hero img {
-  max-height: fit-content;
+@media (min-width: 1400px){
+  .adoption-landing-page main .hero img {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
 }
-
 .adoption-landing-page .details-box.rounded {
   margin-bottom: 0 !important;
   color: black;

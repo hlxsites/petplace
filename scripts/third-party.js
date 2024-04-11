@@ -15,6 +15,45 @@ function loadMSClarity() {
   })(window, document, 'clarity', 'script', 'hz6a0je2i3');
 }
 
+async function loadPushlySdk() {
+  function pushly(...args) { window.PushlySDK.push(args); }
+  pushly('load', {
+    domainKey: 'cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq',
+    sw: '/scripts/pushly-sdk-worker.js',
+  });
+  return loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', { async: true });
+}
+
+async function loadAccessibeWidget() {
+  await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', { async: true });
+  const HIGHLIGHT_COLOR = '#FF7D5A';
+  window.acsbJS.init({
+    statementLink: '',
+    footerHtml: '',
+    hideMobile: false,
+    hideTrigger: false,
+    language: 'en',
+    position: 'left',
+    leadColor: HIGHLIGHT_COLOR,
+    triggerColor: HIGHLIGHT_COLOR,
+    triggerRadius: '50%',
+    triggerPositionX: 'left',
+    triggerPositionY: 'bottom',
+    triggerIcon: 'wheels',
+    triggerSize: 'medium',
+    triggerOffsetX: 20,
+    triggerOffsetY: 20,
+    mobile: {
+      triggerSize: 'small',
+      triggerPositionX: 'left',
+      triggerPositionY: 'bottom',
+      triggerOffsetX: 10,
+      triggerOffsetY: 10,
+      triggerRadius: '50%',
+    },
+  });
+}
+
 export async function loadLazy() {
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
@@ -33,7 +72,24 @@ export async function loadLazy() {
 
 export function loadDelayed() {
   loadMSClarity();
+  if (
+    (window.location.pathname === `${window.hlx.contentBasePath}/`
+    || window.location.pathname.includes('tags')
+    || window.location.pathname.includes('article')
+    || window.location.pathname.includes('category'))
+    && isMobile()
+  ) {
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', { async: true });
+  }
+
+  loadPushlySdk();
+
+  if (window.location.hostname === 'www.petplace.com'
+    || window.location.hostname.startsWith('main--petplace--hlxsites.hlx.')) {
+    loadAccessibeWidget();
+  }
 }
+
 let shopifyReadyPromise;
 export async function loadShopifyBuy(id, node, accessToken) {
   const scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
