@@ -111,6 +111,20 @@ export default async function decorate(block) {
           QuestionOptionId: parseInt(el.target.value, 10),
         };
         state.surveyAnswers.push(data);
+        const otherOptions = inputEl.querySelectorAll(`option:not([value="${el.target.value}"]):not([value=""])`);
+        if (otherOptions.length > 0) {
+          otherOptions.forEach((option) => {
+            // remove the unchecked item from the state
+            // If the answer exists, mark it as deleted
+            const existingAnswerIndex = state.surveyAnswers.findIndex(
+              (answer) => answer.QuestionOption?.Id === option.value
+              || answer.QuestionOptionId === option.value,
+            );
+            if (existingAnswerIndex > -1) {
+              state.surveyAnswers[existingAnswerIndex].Deleted = true;
+            }
+          });
+        }
       });
     });
 
@@ -238,15 +252,7 @@ export default async function decorate(block) {
           payload,
         );
         if (result) {
-          const surveySummaryHeader = block.querySelector('.pet-survey__summary-header');
-          surveySummaryHeader.innerHTML = '<div class="pet-survey__success-message show">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message"></div><h3 class="pet-survey__summary-header-title">Pet Preferences</h3>';
-          surveySummaryHeader.scrollIntoView({
-            behavior: 'smooth',
-          });
-          const closeBtn = surveySummaryHeader.querySelector('.pet-survey__success-message-close');
-          closeBtn.addEventListener('click', () => {
-          surveySummaryHeader.querySelector('.pet-survey__success-message').style.display = 'none';
-        });
+          window.location.href = '/pet-adoption/survey-confirmation';
         }
       });
     }
@@ -522,7 +528,6 @@ export default async function decorate(block) {
         updateSummaryForm(block, answers);
         bindSummaryBackButtonEvents(block, true);
         bindSurveySummaryChangeEvents(block);
-        bindSummarySaveEvent(block, surveyParentId);
       }
       toggleScreen('summary', block);
       updateSummaryForm(block, answers);
@@ -530,7 +535,7 @@ export default async function decorate(block) {
       if (animalId && clientId) {
         bindSummaryInquiryEvent(block);
       } else {
-        bindSummarySaveNewEvent(block);
+        bindSummarySaveEvent(block, surveyParentId);
       }
     } else {
       if (block.querySelector('.pet-survey__layout-container--presurvey')) {

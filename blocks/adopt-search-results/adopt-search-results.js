@@ -8,6 +8,7 @@ import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
 import { callUserApi } from '../account/account.js';
 import { initRedirectHandlers } from '../../scripts/lib/msal/login-redirect-handlers.js';
 import { isMobile } from '../../scripts/scripts.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 import MultiSelect from '../pet-survey/multi-select.js';
 
 // fetch placeholders from the /adopt folder currently, but placeholders should |
@@ -309,6 +310,7 @@ function getFavorites(response) {
         });
     })
     .catch((error) => {
+        errorPage();
         // eslint-disable-next-line no-console
         console.error('Error:', error);
     });
@@ -333,6 +335,7 @@ function buildResultsList(animalList) {
                 getFavorites(response);
             })
             .catch((error) => {
+                errorPage();
                 // eslint-disable-next-line no-console
                 console.error('Error:', error);
             });

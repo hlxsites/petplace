@@ -72,16 +72,6 @@ window.hlx.templates.add([
 
 const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
 
-window.hlx.plugins.add('rum-conversion', {
-  url: '/plugins/rum-conversion/src/index.js',
-  load: 'lazy',
-});
-window.hlx.plugins.add('martech', {
-  url: './third-party.js',
-  condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
-  load: 'lazy',
-});
-
 window.hlx.plugins.add('experimentation', {
   url: '/plugins/experimentation/src/index.js',
   condition: () => getMetadata('experiment')
@@ -93,6 +83,17 @@ window.hlx.plugins.add('experimentation', {
     storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
       ? window.localStorage : window.SessionStorage,
   },
+});
+
+window.hlx.plugins.add('martech', {
+  url: './third-party.js',
+  condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
+  load: 'lazy',
+});
+
+window.hlx.plugins.add('rum-conversion', {
+  url: '/plugins/rum-conversion/src/index.js',
+  load: 'lazy',
 });
 
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
@@ -738,13 +739,6 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
-
-  // TODO delete this. it is for dev testing only.
-  window.debugMsal = {};
-  window.debugMsal.login = login;
-  window.debugMsal.logout = logout;
-  window.debugMsal.acquireToken = acquireToken;
-  window.debugMsal.isLoggedIn = isLoggedIn;
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */

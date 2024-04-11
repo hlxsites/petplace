@@ -1,8 +1,10 @@
+import { loadScript } from '../../scripts/lib-franklin.js';
 import {
   Events,
   decorateSlideshowAria,
   changeSlide,
 } from '../../blocks/slideshow/aria-slideshow.js';
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 const GENAI_SEARCH_WARNING = 'Discover PetPlace is powered by experimental Generative AI, information quality may vary.';
 
@@ -80,7 +82,9 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
     stopButton.addEventListener('click', () => {
       // Close the WebSocket connection
       socket.close();
-
+      pushToDataLayer({
+        event: 'genai_stop_generating_cta',
+      });
       // Remove the cursor animation element
       const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
       cursorAnimation.classList.add('hide');
@@ -162,6 +166,10 @@ const createSummaryColumn = (icon, title, list, type) => {
         if (isRequestInProgress === false) {
           const searchBox = document.getElementById('search-box');
           searchBox.value = text;
+          pushToDataLayer({
+            event: 'genai_further_questions_cta',
+            search_term: text,
+          });
           // eslint-disable-next-line no-use-before-define
           displaySearchResults(text, document.querySelector('.search-results'));
         }
@@ -239,6 +247,9 @@ function initializeTouch($block, slideshowInfo) {
 
   $block.addEventListener('touchend', (e) => {
     const { tagName } = e.target;
+    pushToDataLayer({
+      event: 'genai_suggested_article_cta',
+    });
     if (tagName === 'A' || tagName === 'use') return;
 
     const index = getCurrentSlideIndex($slidesContainer);
@@ -451,6 +462,10 @@ function displayInsuranceCTA(resultsBlock) {
   resultsBlock.appendChild(resultContainer);
 
   ctaContainer.addEventListener('click', () => {
+    pushToDataLayer({
+      event: 'genai_insurance_cta',
+      element_type: 'button',
+    });
     const petInsurancePath = `${window.location.protocol}//${window.location.host}${insuranceCtaPath}`;
     window.location.href = petInsurancePath;
   });
@@ -495,7 +510,9 @@ export async function displaySearchResults(query, resultsBlock) {
 
     if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
       // searchBlock.scrollIntoView({ behavior: 'smooth' });
-
+      pushToDataLayer({
+        event: 'genai_suggested_questions_cta',
+      });
       window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(event.target.innerText));
       searchBox.value = event.target.innerText;
       resultsBlock.innerHTML = '';
@@ -525,6 +542,7 @@ export function setupSearchResults(defaultContentWrapper) {
 }
 
 export async function loadLazy(main) {
+  await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
   const hero = document.createElement('div');
   const imgDiv = document.createElement('div');
   const contentDiv = document.createElement('div');

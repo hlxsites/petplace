@@ -218,6 +218,10 @@ export async function loadLazy(document) {
     });
 
     headerSearchButton.addEventListener('click', async () => {
+      await pushToDataLayer({
+        event: 'genai_floater',
+        element_type: 'button',
+      });
       document.location.pathname = '/discovery';
     });
 
