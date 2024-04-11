@@ -1,7 +1,6 @@
 import {
   decorateIcons,
   getMetadata,
-  loadScript,
   sampleRUM,
   fetchPlaceholders,
 } from '../../scripts/lib-franklin.js';
@@ -16,7 +15,6 @@ import {
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import { login, logout, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
@@ -143,7 +141,8 @@ export default async function decorate(block) {
     navLogin.querySelector('ul').remove();
     navLogin.append(loginBtnsContainer);
   
-    navLogin.querySelector('.login-btn').addEventListener('click', (event) => {
+    navLogin.querySelector('.login-btn').addEventListener('click', async (event) => {
+      const { login, isLoggedIn } = await import('../../scripts/lib/msal/msal-authentication.js');
       login(() => {
         if (isLoggedIn()) {
           event.target.classList.add('hidden');
@@ -159,7 +158,8 @@ export default async function decorate(block) {
       navLogin.querySelector('.account-options').classList.toggle('hidden');
     });
   
-    navLogin.querySelector('.sign-out-btn').addEventListener('click', () => {
+    navLogin.querySelector('.sign-out-btn').addEventListener('click', async () => {
+      const { logout, isLoggedIn } = await import('../../scripts/lib/msal/msal-authentication.js');
       logout(() => {
         if (!isLoggedIn()) {
           navLogin.querySelector('.login-btn').classList.remove('hidden');
@@ -417,16 +417,6 @@ export default async function decorate(block) {
         megaNav.classList.remove('hidden');
         document.querySelector('.nav-language-selector').classList.remove('hidden');
       }
-  
-      isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
-          navLogin.querySelector('.user-btn').classList.remove('hidden');
-          navLogin.querySelector('.login-btn').classList.add('hidden');
-        } else {
-          navLogin.querySelector('.user-btn').classList.add('hidden');
-          navLogin.querySelector('.login-btn').classList.remove('hidden');
-        }
-      });
     }
   
     checkInterface();
