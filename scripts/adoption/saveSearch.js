@@ -178,7 +178,7 @@ export async function saveSearch(token) {
     breedSelectedOptions.forEach((filter) => {
       filterArray.push(filter.value);
     });
-    const ageFilters = document.querySelectorAll('input:checked');
+    const ageFilters = document.querySelectorAll('.sidebar input:checked');
     ageFilters.forEach((filter) => {
       filterArray.push(filter.parentElement.innerText);
     });
