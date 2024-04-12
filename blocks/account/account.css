@@ -871,6 +871,7 @@
   align-items: flex-start;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
   gap: 24px;
   padding: 32px 16px 40px;
 
@@ -885,12 +886,29 @@
 
 .account .saved-search__title {
   font-weight: 600;
+  margin-bottom: 4px;
+}
+
+@media (min-width: 1024px) {
+  .account .saved-search__content {
+    max-width: 70%;
+  }
 }
 
 .account .saved-search__timestamp {
   margin-top: 4px;
   font-size: 16px;
   line-height: 1.5;
+}
+
+.account .saved-search__info {
+  font-size: 16px;
+  color: #6E6D73;
+  text-transform: capitalize;
+}
+
+.account .saved-search__info-item + .saved-search__info-item::before {
+  content: ' | ';
 }
 
 .account .saved-search__cta {
@@ -935,8 +953,9 @@
   font-weight: 700;
   color: #2f2f33;
   background: #fff;
-  border: 1px solid #2f2f33;
   border-radius: 50px;
+  background-color: var(--compare-button-bg-color);
+  color: var(--text-color-inverted);
 
   @media (min-width: 768px) {
     margin-left: auto;
@@ -950,7 +969,7 @@
   width: 24px;
   height: 24px;
 
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='none'%3E%3Cg clip-path='url(%23A)' stroke='%2309090d' stroke-width='1.5' stroke-miterlimit='10' stroke-linejoin='round'%3E%3Cpath d='M12.5 23.471c6.075 0 11-4.925 11-11s-4.925-11-11-11-11 4.925-11 11 4.925 11 11 11z'/%3E%3Cg stroke-linecap='round'%3E%3Cpath d='M12.451 6.947v11.049'/%3E%3Cpath d='M6.976 12.422h10.951'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='A'%3E%3Cpath fill='%23fff' transform='translate(.5 .471)' d='M0 0h24v24H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='none'%3E%3Cg clip-path='url(%23A)' stroke='%23FFFFFF' stroke-width='1.5' stroke-miterlimit='10' stroke-linejoin='round'%3E%3Cpath d='M12.5 23.471c6.075 0 11-4.925 11-11s-4.925-11-11-11-11 4.925-11 11 4.925 11 11 11z'/%3E%3Cg stroke-linecap='round'%3E%3Cpath d='M12.451 6.947v11.049'/%3E%3Cpath d='M6.976 12.422h10.951'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='A'%3E%3Cpath fill='%23fff' transform='translate(.5 .471)' d='M0 0h24v24H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 24px;
