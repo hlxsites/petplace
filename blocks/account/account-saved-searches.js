@@ -1,8 +1,15 @@
 /* eslint-disable indent */
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 // eslint-disable-next-line
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
 import errorPage from '../../scripts/adoption/errorPage.js';
+
+const placeholders = await fetchPlaceholders('/pet-adoption');
+
+function getKeyByValue(object, value) {
+    return Object.keys(object).find((key) => object[key] === value);
+}
 
 const arrSaveList = [];
 
@@ -110,6 +117,14 @@ function getSearches(token) {
         if (arrSaveList.length > 0) {
             arrSaveList.forEach((saved) => {
                 let searchUrl = '/pet-adoption/search?';
+                let breedFilterCardInfo = '';
+                let ageFilterCardInfo = '';
+                const milesRadiusCardInfo = `${saved.SearchParameters.locationInformation.milesRadius} miles`;
+                let sizeFilterCardInfo = '';
+                // eslint-disable-next-line max-len
+                const genderInfo = saved.SearchParameters.animalFilters.filterGender;
+                const genderFilterCardInfo = getKeyByValue(placeholders, genderInfo);
+
                 if (saved.SearchParameters.locationInformation.zipPostal) {
                     searchUrl += `zipPostal=${saved.SearchParameters.locationInformation.zipPostal.replace(' ', '+')}`;
                 }
@@ -121,8 +136,22 @@ function getSearches(token) {
                     saved.SearchParameters.animalFilters.filterAge?.forEach((age) => {
                         if (ageFilterList !== '') {
                             ageFilterList += `,${age}`;
+                            ageFilterCardInfo += ` | ${getKeyByValue(placeholders, age)
+                                .toLowerCase()
+                                .replace('-', ' - ')
+                                .replace('years', ' years')
+                                .replace('kitten', '/kitten')
+                                .replace('small', '7+ years')
+                            }`;
                         } else {
                             ageFilterList += age;
+                            ageFilterCardInfo += `${getKeyByValue(placeholders, age)
+                                .toLowerCase()
+                                .replace('-', ' - ')
+                                .replace('years', ' years')
+                                .replace('kitten', '/kitten')
+                                .replace('small', '7+ years')
+                            }`;
                         }
                     });
                     searchUrl += `&filterAge=${ageFilterList}`;
@@ -134,9 +163,12 @@ function getSearches(token) {
                     let breedFilterList = '';
                     saved.SearchParameters.animalFilters.filterBreed?.forEach((breed) => {
                         if (breedFilterList !== '') {
-                            breedFilterList += `,${breed.replace(' ', '+')}`;
+                            breedFilterList += `,${breed?.replace(' ', '+')}`;
+                            breedFilterCardInfo += ` | ${breed?.toLowerCase()}`;
                         } else {
-                            breedFilterList += breed.replace(' ', '+');
+                            // eslint-disable-next-line no-unsafe-optional-chaining
+                            breedFilterList += breed?.replace(' ', '+');
+                            breedFilterCardInfo += `${breed?.toLowerCase()}`;
                         }
                     });
                     searchUrl += `&filterBreed=${breedFilterList}`;
@@ -149,8 +181,16 @@ function getSearches(token) {
                     saved.SearchParameters.animalFilters.filterSize?.forEach((size) => {
                         if (sizeFilterList !== '') {
                             sizeFilterList += `,${size}`;
+                            sizeFilterCardInfo += ` | ${getKeyByValue(placeholders, size)
+                                .replace('extraLarge', 'extra large')
+                                .replace('male', 'medium')
+                            }`;
                         } else {
                             sizeFilterList += size;
+                            sizeFilterCardInfo += `${getKeyByValue(placeholders, size)
+                                .replace('extraLarge', 'extra large')
+                                .replace('male', 'medium')
+                            }`;
                         }
                     });
                     searchUrl += `&filterSize=${sizeFilterList}`;
@@ -159,7 +199,14 @@ function getSearches(token) {
                 <div class='saved-search-layout-row'>
                     <div class='saved-search__content'>
                         <div class='saved-search__title'>${saved.SearchParameters.animalFilters.filterAnimalType ? saved.Name : (`Pets near ${saved.SearchParameters.locationInformation.zipPostal}`)}</div>
-                        <div class='saved-search__timestamp'>Created on ${new Date(saved.DateCreated).toLocaleDateString()}</div>
+                        <div class='saved-search__info'>
+                            <span class='saved-search__info-item saved-search__timestamp'>Created on ${new Date(saved.DateCreated).toLocaleDateString()}</span>
+                            ${breedFilterCardInfo !== '' ? `<span class='saved-search__info-item'> ${breedFilterCardInfo}</span>` : ''}
+                            ${milesRadiusCardInfo !== '' ? `<span class='saved-search__info-item'> ${milesRadiusCardInfo}</span>` : ''}
+                            ${ageFilterCardInfo !== '' ? `<span class='saved-search__info-item'> ${ageFilterCardInfo}</span>` : ''}
+                            ${sizeFilterCardInfo !== '' ? `<span class='saved-search__info-item'> ${sizeFilterCardInfo}</span>` : ''}
+                            ${genderInfo !== '' ? `<span class='saved-search__info-item'> ${genderFilterCardInfo}</span>` : ''}
+                        </div>
                     </div>
                     <a class='saved-search__cta account-button' href=${searchUrl}>Launch Search</a>
                     <button class='saved-search__delete' data-save-id=${saved.Id} data-description=${saved.SearchParameters.animalFilters.filterAnimalType ? encodeURIComponent(saved.Name) : encodeURIComponent((`Pets near ${saved.SearchParameters.locationInformation.zipPostal}`))} aria-label='Delete this search item'></button>
