@@ -190,6 +190,7 @@ async function callAnimalList() {
         const paginationBlock = document.querySelector('.pagination');
         paginationBlock.classList.add('hide');
         resultsContainer.innerHTML = noResults;
+        return null;
     } else {
         const paginationBlock = document.querySelector('.pagination');
         paginationBlock?.classList.remove('hide');
@@ -678,7 +679,7 @@ function buildResultsContainer(data) {
     tempResultsBlock.classList.add('results');
     tempResultsBlock.innerHTML = '';
     tempResultsBlock.id = 'results-block';
-    animalArray = data.animal;
+    animalArray = data?.animal;
 
     // adding filter sidebar
 
