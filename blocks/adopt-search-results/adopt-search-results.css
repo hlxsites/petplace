@@ -562,6 +562,9 @@ display: block;
     overflow: visible;
     margin-top: 30px;
 }
+.adopt-search-results-wrapper form button.adopt-save-search-button:disabled {
+    opacity: 50%;
+}
 .adopt-search-results-wrapper form button.adopt-save-search-button svg {
     height: 24px;
     width: 24px;
