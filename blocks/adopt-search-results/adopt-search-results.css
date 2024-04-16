@@ -23,7 +23,7 @@
 .adopt-search-results .sidebar {
     margin: 0 0 20px 0;
     padding: 0;
-    overflow: hidden;
+    overflow-y: visible;
     display: none;
     padding: 1.3rem;
     min-height: 250px;
@@ -928,7 +928,7 @@ display: block;
     cursor: pointer;
     }
 .multi-select .multi-select__button[aria-expanded='true'] + .multi-select__options {
-    z-index: 1;
+    z-index: 999;
 }
 /* multi select element */
 
