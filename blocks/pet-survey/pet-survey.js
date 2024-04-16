@@ -116,13 +116,12 @@ export default async function decorate(block) {
           otherOptions.forEach((option) => {
             // remove the unchecked item from the state
             // If the answer exists, mark it as deleted
-            const existingAnswerIndex = state.surveyAnswers.findIndex(
-              (answer) => answer.QuestionOption?.Id === option.value
-              || answer.QuestionOptionId === option.value,
-            );
-            if (existingAnswerIndex > -1) {
-              state.surveyAnswers[existingAnswerIndex].Deleted = true;
-            }
+            state.surveyAnswers.forEach((answer) => {
+              if (answer.QuestionOptionId?.toString() === option.value
+                || answer.QuestionOption?.Id.toString() === option.value) {
+                answer.Deleted = true;
+                }
+            });
           });
         }
       });
