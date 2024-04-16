@@ -827,21 +827,24 @@ export default async function decorate(block) {
         ev.preventDefault();
 
         const zipInput = document.getElementById('zip');
+        const saveSearchButton = document.querySelector('.adopt-save-search-button');
         const errorSpan = document.getElementById('zip-error');
         const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
         if (isValidZip) {
         zipInput.classList.remove('error');
         errorSpan.classList.remove('active');
+        saveSearchButton.disabled = false;
         zipInput.setAttribute('aria-describedby', '');
         zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
-                if (resultData) {
-                    buildResultsContainer(resultData);
+                if (data) {
+                    buildResultsContainer(data);
                 }
             });
         } else {
         zipInput.classList.add('error');
         errorSpan.classList.add('active');
+        saveSearchButton.disabled = true;
         zipInput.setAttribute('aria-describedby', 'zip-error');
         zipInput.ariaInvalid = 'true';
         }
@@ -955,20 +958,23 @@ export default async function decorate(block) {
     zipInput.title = zipErrorMessage;
     zipInput.placeholder = zipPlaceholder;
     zipInput.addEventListener('blur', () => {
+        const saveSearchButton = document.querySelector('.adopt-save-search-button');
         const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
         if (isValidZip) {
         zipInput.classList.remove('error');
         errorSpan.classList.remove('active');
+        saveSearchButton.disabled = false;
         zipInput.setAttribute('aria-describedby', '');
         zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
-                if (resultData) {
-                    buildResultsContainer(resultData);
+                if (data) {
+                    buildResultsContainer(data);
                 }
             });
         } else {
         zipInput.classList.add('error');
         errorSpan.classList.add('active');
+        saveSearchButton.disabled = true;
         zipInput.setAttribute('aria-describedby', 'zip-error');
         zipInput.ariaInvalid = 'true';
         }
