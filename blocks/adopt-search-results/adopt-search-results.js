@@ -284,8 +284,10 @@ async function updateBreedListSelect() {
             buttonText.innerText = displayText;
             getFilters();
             callAnimalList().then((data) => {
-                // eslint-disable-next-line
-                buildResultsContainer(data);
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
             });
         });
     });
@@ -426,8 +428,10 @@ function clearFilters() {
         radioButtons[i].checked = false;
     }
     callAnimalList().then((data) => {
-        // eslint-disable-next-line
-        buildResultsContainer(data);
+        if (data) {
+            // eslint-disable-next-line
+            buildResultsContainer(data);
+        }
     });
 }
 
@@ -477,8 +481,10 @@ function buildFilterSidebar(sidebar) {
     radiusSelect.className = 'filter-select';
     radiusSelect.addEventListener('change', () => {
         callAnimalList().then((data) => {
-            // eslint-disable-next-line
-            buildResultsContainer(data);
+            if (data) {
+                // eslint-disable-next-line
+                buildResultsContainer(data);
+            }
         });
     });
     const radiusList = radiusOptions.split(',');
@@ -514,8 +520,10 @@ function buildFilterSidebar(sidebar) {
         genderRadio.value = placeholders[gender.toLowerCase()];
         genderRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
-                // eslint-disable-next-line
-                buildResultsContainer(data);
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
             });
         });
         genderListLabel.append(genderRadio);
@@ -546,8 +554,10 @@ function buildFilterSidebar(sidebar) {
         ageRadio.id = age;
         ageRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
-                // eslint-disable-next-line
-                buildResultsContainer(data);
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
             });
         });
         const formattedAge = age[0].toLowerCase() + age.slice(1);
@@ -591,8 +601,10 @@ function buildFilterSidebar(sidebar) {
         })];
         sizeRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
-                // eslint-disable-next-line
-                buildResultsContainer(data);
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
             });
         });
         sizeListLabel.append(sizeRadio);
@@ -766,7 +778,9 @@ function populateSidebarFilters(params) {
         });
     }
     callAnimalList().then((resultData) => {
-        buildResultsContainer(resultData);
+        if (resultData) {
+            buildResultsContainer(resultData);
+        }
     });
 }
 
@@ -821,7 +835,9 @@ export default async function decorate(block) {
         zipInput.setAttribute('aria-describedby', '');
         zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                if (resultData) {
+                    buildResultsContainer(resultData);
+                }
             });
         } else {
         zipInput.classList.add('error');
@@ -946,7 +962,9 @@ export default async function decorate(block) {
         zipInput.setAttribute('aria-describedby', '');
         zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                if (resultData) {
+                    buildResultsContainer(resultData);
+                }
             });
         } else {
         zipInput.classList.add('error');
@@ -1126,8 +1144,10 @@ export default async function decorate(block) {
                             : 'Select from menu...';
                         breedSelect.innerText = displayText;
                         callAnimalList().then((initialData) => {
-                            buildResultsContainer(initialData);
-                            populateSidebarFilters(params);
+                            if (initialData) {
+                                buildResultsContainer(initialData);
+                                populateSidebarFilters(params);
+                            }
                         });
                     });
                 });
