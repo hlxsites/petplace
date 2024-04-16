@@ -85,14 +85,14 @@ function getSanitizedTextContent(el) {
     .trim();
 }
 
-async function adminOperation(url, op) {
+async function adminOperation(url, op, method = 'POST') {
   const [ref, repo, org] = new URL(FRANKLIN_DOMAIN).hostname.split('.')[0].split('--');
   const orgRepoRef = `/${org}/${repo}/${ref}`;
 
   const { pathname } = new URL(url.href);
   const response = await fetch(
     `${FRANKLIN_ADMIN_API}/${op}${orgRepoRef}${pathname.replace(/\/$/, '')}`,
-    { method: 'POST' },
+    { method },
   );
   return response.ok;
 }
@@ -181,8 +181,18 @@ async function preview(url) {
 }
 
 // eslint-disable-next-line no-unused-vars
+async function unpreview(url) {
+  return adminOperation(url, 'preview', 'DELETE');
+}
+
+// eslint-disable-next-line no-unused-vars
 async function publish(url) {
   return adminOperation(url, 'live');
+}
+
+// eslint-disable-next-line no-unused-vars
+async function unpublish(url) {
+  return adminOperation(url, 'live', 'DELETE');
 }
 
 // eslint-disable-next-line no-unused-vars
