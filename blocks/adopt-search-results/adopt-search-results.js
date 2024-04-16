@@ -1068,7 +1068,7 @@ export default async function decorate(block) {
         const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
         const div = document.createElement('div');
         div.className = 'pagination hidden';
-
+    
         // add pagination
         const previousButton = document.createElement('button');
         previousButton.id = ('btn_prev');
@@ -1084,18 +1084,18 @@ export default async function decorate(block) {
         div.append(paginationNumbers);
         div.append(nextButton);
         tempResultsContainer?.append(div);
-
+    
         // When the page loads, check if there are any query parameters in the URL
         const params = new URLSearchParams(window.location.search);
-
+    
         // If there are, select the corresponding filters - Top filters first
         if (params.has('zipPostal')) {
             const petZip = document.getElementById('zip');
             petZip.value = params.get('zipPostal');
             const petType = document.getElementById('pet-type');
-            const petTypeOptions = petType.options;
-            for (let i = 0; i < petTypeOptions.length; i += 1) {
-                if (petTypeOptions[i].value === params.get('filterAnimalType')) {
+            const petTypes = petType.options;
+            for (let i = 0; i < petTypes.length; i += 1) {
+                if (petTypes[i].value === params.get('filterAnimalType')) {
                     petType.selectedIndex = i;
                 }
             }
@@ -1158,3 +1158,4 @@ function getHashFromURL() {
 
     return ''; // Return an empty string if there's no hash
 }
+
