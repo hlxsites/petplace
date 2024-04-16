@@ -163,11 +163,11 @@ function getSearches(token) {
                     let breedFilterList = '';
                     saved.SearchParameters.animalFilters.filterBreed?.forEach((breed) => {
                         if (breedFilterList !== '') {
-                            breedFilterList += `,${breed?.replace(' ', '+')}`;
+                            breedFilterList += `%2C${breed?.replace(/ /g, '+')}`;
                             breedFilterCardInfo += ` | ${breed?.toLowerCase()}`;
                         } else {
                             // eslint-disable-next-line no-unsafe-optional-chaining
-                            breedFilterList += breed?.replace(' ', '+');
+                            breedFilterList += breed?.replace(/ /g, '+');
                             breedFilterCardInfo += `${breed?.toLowerCase()}`;
                         }
                     });
