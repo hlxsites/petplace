@@ -282,6 +282,11 @@
   }
 }
 
+.adoptable-pets .pet-card-image {
+  max-height: 250px;
+  overflow: hidden;
+}
+
 .adoptable-pets .pet-card-body {
   padding: 24px 16px 16px;
 }
