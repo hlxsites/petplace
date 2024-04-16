@@ -149,7 +149,7 @@ function getFavorites(animalData) {
             You don’t currently have any favorited pets.
         </div>
         <div class="new-search-btn-wrapper">
-            <a href="/pet-adoption/search" class='account-button account-button--new-search' id='new-search'>
+            <a href="/pet-adoption/" class='account-button account-button--new-search' id='new-search'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
                     <g clip-path="url(#clip0_2839_4223)">
                         <path d="M12.5 23C18.5751 23 23.5 18.0751 23.5 11.9999C23.5 5.92481 18.5751 1 12.5 1C6.42484 1 1.5 5.92481 1.5 11.9999C1.5 18.0751 6.42484 23 12.5 23Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
