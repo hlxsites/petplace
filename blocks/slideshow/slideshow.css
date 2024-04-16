@@ -61,6 +61,10 @@ main .slideshow-container {
     pointer-events: initial;
 }
 
+.slideshow-container button.control-button {
+    background-color: transparent;
+}
+
 .control-button:hover {
     background: none;
 }
