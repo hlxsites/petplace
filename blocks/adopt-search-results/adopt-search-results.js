@@ -1118,6 +1118,8 @@ export default async function decorate(block) {
         if (params.has('zipPostal')) {
             const petZip = document.getElementById('zip');
             petZip.value = params.get('zipPostal');
+            const saveSearchButton = document.querySelector('.adopt-save-search-button');
+            saveSearchButton.disabled = false;
             const petType = document.getElementById('pet-type');
             const petTypeOptions = petType.options;
             for (let i = 0; i < petTypeOptions.length; i += 1) {
