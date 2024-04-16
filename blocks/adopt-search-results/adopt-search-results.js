@@ -191,6 +191,7 @@ async function callAnimalList() {
         paginationBlock.classList.add('hide');
         resultsContainer.innerHTML = noResults;
         return null;
+        // eslint-disable-next-line
     } else {
         const paginationBlock = document.querySelector('.pagination');
         paginationBlock?.classList.remove('hide');

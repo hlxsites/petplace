@@ -315,35 +315,37 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
           // eslint-disable-next-line no-console
           console.error('/adopt/api/User Error:', error);
           // trying a second time in case of a network error
-          fetch(`${endPoints.apiUrl}/adopt/api/User`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${response.accessToken}`,
-            },
-            // eslint-disable-next-line no-useless-escape
-            body: featureName ? '\"' + featureName + '\"' : null,
-          })
-            .then(() => {
-              pushToDataLayer({
-                event: 'sign_up',
-                user_id: response.account.localAccountId,
-                user_type: 'member',
-                content_group: contentGroup
-                  ? contentGroup.content
-                  : 'N/A - Content Group Not Set',
-              });
-    
-              // invoke custom callback if one was provided
-              if (customCallback) {
-                customCallback(response);
-              }
+          setTimeout(() => {
+            fetch(`${endPoints.apiUrl}/adopt/api/User`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${response.accessToken}`,
+              },
+              // eslint-disable-next-line no-useless-escape
+              body: featureName ? '\"' + featureName + '\"' : null,
             })
-            .catch((error) => {
-              captureError('account creation', error);
-              // eslint-disable-next-line no-console
-              console.error('/adopt/api/User Error:', error);
-            });
+              .then(() => {
+                pushToDataLayer({
+                  event: 'sign_up',
+                  user_id: response.account.localAccountId,
+                  user_type: 'member',
+                  content_group: contentGroup
+                    ? contentGroup.content
+                    : 'N/A - Content Group Not Set',
+                });
+      
+                // invoke custom callback if one was provided
+                if (customCallback) {
+                  customCallback(response);
+                }
+              })
+              .catch((error) => {
+                captureError('account creation', error);
+                // eslint-disable-next-line no-console
+                console.error('/adopt/api/User Error:', error);
+              });
+          }, 1000);
         });
     } else {
       pushToDataLayer({
