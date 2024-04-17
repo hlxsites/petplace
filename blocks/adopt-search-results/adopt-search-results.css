@@ -580,12 +580,41 @@ display: block;
     margin-top: 40px;
 }
 
+.adopt-search-results .results.no-results {
+    max-width: 80%;
+    margin: 80px auto 24px;
+    font-family: Raleway, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+    .adopt-search-results .results.no-results {
+        margin-top: 100px;
+    }
+}
+
 @media screen and (min-width: 1024px) {
     .adopt-search-results .results {
         margin-left: 270px;
         max-width: calc(100% - 270px);
     }
+
+    .adopt-search-results .results.no-results {
+        max-width: 60%;
+        margin-left: 320px;
+    }
 }
+
+@media screen and (min-width: 1440px) {
+    .adopt-search-results .results.no-results {
+        margin-left: 400px;
+    }
+}
+
 
 .adopt-search-results .results a.pet-card {
     width: 100%;
