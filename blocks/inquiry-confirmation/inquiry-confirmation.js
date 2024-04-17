@@ -6,7 +6,7 @@ export default async function decorate(block) {
     const searchUrl = cfg['pet-search-results-page-url'];
     const checklistUrl = cfg['adoption-checklist-page-url'];
     // fetch placeholders from the 'adopt' folder
-    const placeholders = await fetchPlaceholders('/adopt');
+    const placeholders = await fetchPlaceholders('/pet-adoption');
     // retrieve the value for Pet Survey
     const {
         inquiryConfirmationHeading,

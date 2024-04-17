@@ -22,7 +22,7 @@ export default async function decorate(block) {
   const surveyId = animalType?.toLowerCase() === 'dog' ? 1 : animalType?.toLowerCase() === 'cat' ? 2 : null; // need to update this to use the surveyId from the query string
 
   // fetch placeholders from the 'adopt' folder
-  const placeholders = await fetchPlaceholders('/adopt');
+  const placeholders = await fetchPlaceholders('/pet-adoption');
   // retrieve the value for Pet Survey
   const {
     preSurveyHeading,
