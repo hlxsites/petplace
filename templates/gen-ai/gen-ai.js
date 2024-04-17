@@ -54,6 +54,7 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   });
 
   socket.addEventListener('message', (event) => {
+    // eslint-disable-next-line no-console
     console.log('Message from server ', event);
     const message = JSON.parse(event.data);
 
@@ -62,10 +63,12 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
   });
 
   socket.addEventListener('error', (error) => {
+    // eslint-disable-next-line no-console
     console.error('WebSocket error:', error);
   });
 
   socket.addEventListener('close', () => {
+    // eslint-disable-next-line no-console
     console.log('WebSocket connection closed');
   });
   // Show stop button container and add a click event listener

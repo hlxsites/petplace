@@ -2,7 +2,9 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
 import { extractName } from '../../templates/adopt/adopt.js';
+// eslint-disable-next-line
 import { isLoggedIn, logout } from '../../scripts/lib/msal/msal-authentication.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 
 const arrFavList = [];
 
@@ -28,6 +30,9 @@ function removeFavoritePet(id, token, btn) {
         btn.closest('.fav-pet-card').remove();
     })
     .catch((error) => {
+        errorPage();
+
+        // eslint-disable-next-line no-console
         console.error('Error deleting favorite', error);
         throw error;
     });
@@ -113,7 +118,7 @@ async function bindAccountFavoritesEvents(block, token, favList) {
                 }
             });
             currentHiddenCards = block.querySelectorAll('.fav-pet-card.fp-hidden');
-    
+
             if (currentHiddenCards.length < 1) {
                 viewMoreBtn.classList.add('hidden');
             }
@@ -123,8 +128,8 @@ async function bindAccountFavoritesEvents(block, token, favList) {
     removeBtns.forEach((button, index) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-            isLoggedIn().then(isLoggedIn => {
-                if (isLoggedIn) {
+            isLoggedIn().then((isLoggedInParam) => {
+                if (isLoggedInParam) {
                     if (favList[index].Animal.IsAvailable) {
                         openRemoveConfirmModal(extractName(favList[index].Animal.Name), button.closest('.fav-pet-card'), favList[index].Id, token, button);
                     } else {
@@ -144,7 +149,7 @@ function getFavorites(animalData) {
             You don’t currently have any favorited pets.
         </div>
         <div class="new-search-btn-wrapper">
-            <a href="/pet-adoption/search" class='account-button account-button--new-search' id='new-search'>
+            <a href="/pet-adoption/" class='account-button account-button--new-search' id='new-search'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
                     <g clip-path="url(#clip0_2839_4223)">
                         <path d="M12.5 23C18.5751 23 23.5 18.0751 23.5 11.9999C23.5 5.92481 18.5751 1 12.5 1C6.42484 1 1.5 5.92481 1.5 11.9999C1.5 18.0751 6.42484 23 12.5 23Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -181,10 +186,7 @@ function getFavorites(animalData) {
             let builtHtml = '';
 
             arrFavList.forEach((favorited, index) => {
-                const {
-                    Animal,
-                    UserId
-                } = favorited;
+                const { Animal } = favorited;
 
                 const {
                     Breed,
@@ -217,7 +219,7 @@ function getFavorites(animalData) {
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
                     <div class="fp-img">
-                    ${createImageObject(ImageUrl, fallBackImg,'').outerHTML}                        
+                    ${createImageObject(ImageUrl, fallBackImg, '').outerHTML}
                     </div>
                     <div class="fp-info">
                         <div class="fp-info-header">
@@ -260,6 +262,7 @@ function getFavorites(animalData) {
         await bindAccountFavoritesEvents(elFavList, animalData, arrFavList);
     })
     .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
         const elFavList = document.querySelector('.favorites-list');
 
@@ -269,7 +272,7 @@ function getFavorites(animalData) {
 
 export async function createAccountFavoritesPanel(animalData) {
     const panelDiv = document.createElement('div');
-    panelDiv.className = 'tab-pannel-inner';
+    panelDiv.className = 'tab-panel-inner';
     panelDiv.innerHTML = `
         <h3>Favorites</h3>
         <div class="favorites-list"></div>

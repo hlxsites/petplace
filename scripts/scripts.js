@@ -20,7 +20,6 @@ import {
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
-import { login, logout, acquireToken, isLoggedIn } from './lib/msal/msal-authentication.js'
 
 export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';

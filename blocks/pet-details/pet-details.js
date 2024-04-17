@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable indent */
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { ImageCarousel } from './image-carousel.js';
@@ -10,6 +11,7 @@ import endPoints from '../../variables/endpoints.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setFavorite } from '../../scripts/adoption/favorite.js';
 import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
 
 /* const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
@@ -81,15 +83,31 @@ function formatAnimalData(apiData) {
   };
   return formattedData;
 }
+
+async function getParametersFromUrl() {
+  const { pathname } = window.location;
+  const pathArr = pathname.split('/');
+  const pagePathString = getMetadata('pet-profile-page-paths') || '/pet-adoption/dogs/,/pet-adoption/cats/,/pet-adoption/others/';
+  const pagePaths = pagePathString.split(',');
+  if (pagePaths.some((el) => pathname.startsWith(el)) && pathArr.length >= 4) {
+    const [animalId, clientId] = pathname.endsWith('/')
+      ? pathArr.slice(pathArr.length - 3, pathArr.length - 1)
+      : pathArr.slice(-2);
+    return { animalId, clientId };
+  }
+  return {};
+}
+
 async function formatSimilarPetData(apiData) {
   if (apiData && apiData.length > 4) {
     const { animalId } = await getParametersFromUrl();
+    // eslint-disable-next-line prefer-const
     let animalArray = [];
     apiData.forEach((pet) => {
       if (pet.animalId !== animalId) {
         animalArray.push(pet);
       }
-    })
+    });
     return getRandomItems(animalArray, 4);
   }
   return apiData;
@@ -153,19 +171,7 @@ function createChecklistItem(index, label, text) {
   }
   return checklistItemContainer;
 }
-async function getParametersFromUrl() {
-  const { pathname } = window.location;
-  const pathArr = pathname.split('/');
-  const pagePathString = getMetadata('pet-profile-page-paths') || '/pet-adoption/dogs/,/pet-adoption/cats/,/pet-adoption/others/';
-  const pagePaths = pagePathString.split(',');
-  if (pagePaths.some((el) => pathname.startsWith(el)) && pathArr.length >= 4) {
-    const [animalId, clientId] = pathname.endsWith('/')
-      ? pathArr.slice(pathArr.length - 3, pathArr.length - 1)
-      : pathArr.slice(-2);
-    return { animalId, clientId };
-  }
-  return {};
-}
+
 async function fetchAnimalData(animalApi) {
   let result = {};
   try {
@@ -179,6 +185,7 @@ async function fetchAnimalData(animalApi) {
   }
   return result;
 }
+
 async function fetchSimilarPets(zip, animalType, animalListApi) {
   const payload = {
     locationInformation: {
@@ -307,6 +314,7 @@ async function createCarouselSection(petName, images) {
   }
   return sectionContainer;
 }
+
 async function createAboutPetSection(aboutPet) {
   const {
     petName,
@@ -432,7 +440,7 @@ async function createShelterSection(aboutShelter) {
     `;
   return shelterContainer;
 }
-async function createChecklistSection(inquiryStatus) {
+async function createChecklistSection(inquiryStatus, petData) {
   const checklistContainer = document.createElement('div');
   checklistContainer.className = 'checklist-container';
   // fetch placeholders from the 'adopt' folder
@@ -453,19 +461,22 @@ async function createChecklistSection(inquiryStatus) {
     checklistLabelEl.textContent = checklistLabel;
     checklistContainer.append(checklistLabelEl);
   }
-  // disabling the survey flow from view until survey is ready for launch
-  
-  /* if (inquiryStatus === true) {
+  if (inquiryStatus) {
     if (checklistItem1Label) {
         checklistContainer.append(createChecklistItem(1, checklistItem1Label, checklistItem1Text));
-        checklistContainer.append(createCta('', 'Start Pet Match Survey', 'pet-details-button button primary right-arrow', true));
+        checklistContainer.append(createCta(
+          `/pet-adoption/survey?animalType=${petData.animalType}`,
+          'Start Pet Match Survey',
+          'pet-details-button button primary right-arrow',
+          false,
+          ));
     }
-  } */
+  }
 
   if (checklistItem2Label) {
     let itemContent = null;
 
-    if (inquiryStatus === 'true') {
+    if (inquiryStatus) {
       itemContent = createChecklistItem(2, checklistItem2Label, checklistItem2Text);
     } else {
       itemContent = createChecklistItem(1, checklistItem2Label, checklistItem2Text);
@@ -477,7 +488,7 @@ async function createChecklistSection(inquiryStatus) {
   if (checklistItem3Label) {
     let itemContent = null;
 
-    if (inquiryStatus === 'true') {
+    if (inquiryStatus) {
       itemContent = createChecklistItem(3, checklistItem3Label, checklistItem3Text);
     } else {
       itemContent = createChecklistItem(2, checklistItem3Label, checklistItem3Text);
@@ -667,15 +678,15 @@ export default async function decorate(block) {
     });
 
     // add inquiry functionality - temporarily disabling this until survey flow is ready for release
-    // const petCtaContaner = document.querySelector('.about-pet-ctas');
-    // petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
+    const petCtaContaner = document.querySelector('.about-pet-ctas');
+    petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
     if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {
       if (petData.email !== null) {
         // if email is available, append createChecklistSection WITH survey content
         submitInquiryCta?.classList.add('visible');
-        layoutContainer.append(await createChecklistSection(true));
+        layoutContainer.append(await createChecklistSection(true, petData));
         const checklistContainer = document.querySelector('.checklist-container');
         checklistContainer.classList.add('visible');
 
@@ -704,7 +715,7 @@ export default async function decorate(block) {
         });
       } else {
         // if email is not available, append createChecklistSection W/OUT survey content
-        layoutContainer.append(await createChecklistSection(false));
+        layoutContainer.append(await createChecklistSection(false, petData));
         const checklistContainer = document.querySelector('.checklist-container');
         checklistContainer.classList.add('visible');
       }
@@ -716,6 +727,13 @@ export default async function decorate(block) {
      // add favorite functionality
      const favoriteCta = document.getElementById(animalId);
      favoriteCta.addEventListener('click', (e) => { setFavorite(e, petData); });
+
+    // check if hash exists and if so favorite the pet
+    // eslint-disable-next-line
+    const hash = getHashFromURL();
+    if (hash === 'favorite') {
+      setFavorite(null, petData);
+    }
   }
 
   function getFavorites(response) {
@@ -726,7 +744,7 @@ export default async function decorate(block) {
         Authorization: `Bearer ${response}`,
       },
     })
-      .then((response) => response.json())
+      .then((responseData) => responseData.json())
       .then((data) => {
         // favorite Pet in the UI
         data.forEach((favorite) => {
@@ -738,23 +756,35 @@ export default async function decorate(block) {
         });
       })
       .catch((error) => {
-        // console.error('Error:', error);
+        // eslint-disable-next-line no-console
+        console.error('Error:', error);
+        errorPage();
       });
   }
 
   // check if user is logged in
-  isLoggedIn().then((isLoggedIn) => {
-     if (isLoggedIn) {
-         // if logged in set pet as favorite
-         acquireToken()
-         .then((response) => {
-             getFavorites(response);
-         })
-         .catch((error) => {
-             // console.error('Error:', error);
-         });
-     } else {
-       // not logged in or token is expired without ability to silently refresh its validity
-     }
-   });
+  isLoggedIn().then((isLoggedInParam) => {
+    if (isLoggedInParam) {
+        // if logged in set pet as favorite
+        acquireToken()
+        .then((response) => {
+            getFavorites(response);
+        })
+        .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error('Error:', error);
+        });
+    } else {
+      // not logged in or token is expired without ability to silently refresh its validity
+    }
+  });
+}
+
+function getHashFromURL() {
+  const hashIndex = window.location.href.indexOf('#');
+  if (hashIndex !== -1) {
+      return window.location.href.substring(hashIndex + 1);
+  }
+
+  return ''; // Return an empty string if there's no hash
 }
