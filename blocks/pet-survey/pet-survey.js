@@ -285,6 +285,13 @@ export default async function decorate(block) {
           surveyNumber = survey.Id;
         } else {
           surveyNumber = surveyResponse.Id;
+          // delete all multi-select answers as they will be replaced with new survey answers
+          surveyResponse?.SurveyResponseAnswers?.forEach((answer) => {
+            if (answer.Question?.IsMultiAnswer) {
+              answer.Deleted = true;
+              state.surveyAnswers.push(answer);
+            }
+          });
           const payload = {
             Id: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
