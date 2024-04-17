@@ -5,7 +5,6 @@ main .pet-survey-container {
 }
 .pet-survey {
   max-width: 100%;
-  display: grid;
   min-height: 653px;
 }
 .pet-survey__layout-container {
@@ -36,7 +35,7 @@ main .pet-survey-container {
 }
 a.pet-survey__button,
 button.pet-survey__button {
-  min-width: 175px;
+  width: 50%;
   margin: 0;
   padding: 12px 20px;
   border-width: 1px;
@@ -412,6 +411,11 @@ progress[value]::-webkit-progress-value {
   .pet-survey {
     max-width: 753px;
     margin: 0 auto;
+  }
+
+  a.pet-survey__button,
+  button.pet-survey__button {
+    width: 175px;
   }
 }
 
