@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM } from './lib-franklin.js';
+// eslint-disable-next-line import/no-cycle
 import { isLoggedIn } from './lib/msal/msal-authentication.js';
 
 function showLoginOrProfileButton() {
