@@ -124,6 +124,7 @@ const handleCtaClicks = () => {
 const handleExperiments = () => {
   if (getMetadata('experiment')) {
     pushToDataLayer({
+      event: 'experiment',
       experiment: window.hlx.experiment.id,
       variant: window.hlx.experiment.selectedVariant,
     });
