@@ -81,12 +81,13 @@ main .slideshow-container {
 }
 
 .tab-bar-container {
-    height: var(--tab-bar-height);
     position: absolute;
-    bottom: 50px;
-    width: 100%;
     display: flex;
+    height: var(--tab-bar-height);
+    left: 50%;
+    bottom: 50px;
     justify-content: center;
+    transform: translateX(-50%);
     z-index: 1;
 }
 
