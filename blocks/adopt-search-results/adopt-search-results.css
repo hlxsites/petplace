@@ -930,6 +930,17 @@ display: block;
 .multi-select .multi-select__button[aria-expanded='true'] + .multi-select__options {
     z-index: 999;
 }
+.shelter-clear {
+    font-family: "Libre Franklin";
+    font-weight: 400;
+    font-size: 16px;
+    text-decoration: underline;
+    color: #2F2F33;
+    background-color: transparent;
+}
+.shelter-clear:hover, .shelter-clear:focus {
+    background-color: transparent;
+}
 /* multi select element */
 
 /* stylelint-enable */

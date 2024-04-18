@@ -195,6 +195,18 @@ function getSearches(token) {
                     });
                     searchUrl += `&filterSize=${sizeFilterList}`;
                 }
+                if (saved.SearchParameters.animalFilters.filterShelter?.length) {
+                    let shelterFilterList = '';
+                    saved.SearchParameters.animalFilters.filterShelter?.forEach((shelter) => {
+                        if (shelterFilterList !== '') {
+                            shelterFilterList += `,${shelter}`;
+                        } else {
+                            // eslint-disable-next-line no-unsafe-optional-chaining
+                            shelterFilterList += shelter;
+                        }
+                    });
+                    searchUrl += `&filterShelter=${shelterFilterList}`;
+                }
                 builtHml += `
                 <div class='saved-search-layout-row'>
                     <div class='saved-search__content'>

@@ -38,6 +38,7 @@ const {
     createSearchAlert,
     noResults,
     zipErrorMessage,
+    clearShelterFilters,
 } = placeholders;
 
 let breedList = [];
@@ -247,6 +248,21 @@ async function callShelterList() {
         }),
     });
     return response.json();
+}
+
+function clearShelterSelections() {
+    const shelterSelect = document.getElementById('shelter');
+    const checkboxes = shelterSelect.querySelectorAll('input');
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            checkbox.checked = false;
+            // Create a new 'change' event
+            var event = new Event('change');
+            // Dispatch it.
+            checkbox.dispatchEvent(event);
+        }
+        });
+    selectedShelters = [];
 }
 
 async function updateBreedListSelect() {
@@ -500,6 +516,11 @@ function clearFilters() {
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
     }
+    const shelterSelect = document.getElementById('shelter');
+    const shelterCheckboxes = shelterSelect.querySelectorAll('input');
+    shelterCheckboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+    });
     callAnimalList().then((data) => {
         // eslint-disable-next-line
         buildResultsContainer(data);
@@ -554,6 +575,12 @@ function buildFilterSidebar(sidebar) {
         callAnimalList().then((data) => {
             // eslint-disable-next-line
             buildResultsContainer(data);
+            callShelterList().then((data) => {
+                // eslint-disable-next-line
+                shelterList = data;
+                clearShelterSelections();
+                updateShelterListSelect();
+            });
         });
     });
     const radiusList = radiusOptions.split(',');
@@ -714,6 +741,12 @@ function buildFilterSidebar(sidebar) {
     groupDiv.id = 'shelters';
 
     containerDiv.append(shelterButton, groupDiv);
+    // create clear shelter filters button
+    const clearSheltersButton = document.createElement('button');
+    clearSheltersButton.className = 'shelter-clear';
+    clearSheltersButton.innerHTML = clearShelterFilters;
+    clearSheltersButton.addEventListener('click', clearShelterSelections);
+    containerDiv.append(clearSheltersButton);
     // eslint-disable-next-line
     new MultiSelect(containerDiv);
     shelterContainer.append(containerDiv);
@@ -887,7 +920,19 @@ function populateSidebarFilters(params) {
         callShelterList().then((data) => {
             // eslint-disable-next-line
             shelterList = data;
-            updateShelterListSelect();
+            updateShelterListSelect().then(() => {
+                const shelterArray = params.get('filterShelter')?.split(',');
+                if (shelterArray.length > 0) {
+                    shelterArray?.forEach((shelter) => {
+                        const checkbox = document.getElementById(shelter);
+                        checkbox.checked = true;
+                        // Create a new 'change' event
+                        var event = new Event('change');
+                        // Dispatch it.
+                        checkbox.dispatchEvent(event);
+                    });
+                }
+            });
         }).catch((error) => {
             console.log(error);
         });
@@ -1067,6 +1112,12 @@ export default async function decorate(block) {
         zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
                 buildResultsContainer(data);
+                callShelterList().then((data) => {
+                    // eslint-disable-next-line
+                    shelterList = data;
+                    clearShelterSelections();
+                    updateShelterListSelect();
+                });
             });
         } else {
         zipInput.classList.add('error');
