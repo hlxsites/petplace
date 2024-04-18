@@ -11,28 +11,29 @@
   .adoption-landing-page main .hero img {
     max-height: unset;
   }
-}  
-.adoption-landing-page main .hero-container {
-  padding: 0;
 }
-.adoption-landing-page main .hero {
-  min-height: 0;
-  height: auto;
-}
-@media (min-width: 800px){
-  .adoption-landing-page main .hero {
-    min-height: 318px;
-  }
+
+@media (min-width: 901px) {
   .adoption-landing-page main .hero img {
     object-position: center left;
   }
 }
-@media (min-width: 1400px){
+
+@media (min-width: 1400px) {
   .adoption-landing-page main .hero img {
     max-width: 1600px;
     margin: 0 auto;
   }
 }
+
+.adoption-landing-page main .hero-container {
+  padding: 0;
+}
+
+.adoption-landing-page main .hero {
+  height: auto;
+}
+
 .adoption-landing-page .details-box.rounded {
   margin-bottom: 0 !important;
   color: black;
@@ -121,13 +122,13 @@
   font-size: 1rem;
   margin: 0.5rem;
   color: #000;
-  max-height: 7.5rem;
   overflow: hidden;
-  -webkit-mask: var(--card-details-mask); 
-  mask: var(--card-details-mask);
+  height: 10.5rem;
+  /* -webkit-mask: var(--card-details-mask); 
+  mask: var(--card-details-mask); */
 }
 
-/* BANNER ONLY */
+/* BANNER AND CARDS ONLY */
 
 @media (max-width: 800px)  { 
   .adoption-landing-page .hero.banner-mobile {
@@ -137,6 +138,29 @@
   .adoption-landing-page .hero.banner-desktop,
   .adoption-landing-page .hero.banner-tablet {
     display: none;
+  }
+
+  .adoption-landing-page main .pet-display.mobile-view {
+    display: block;
+    margin: auto;
+    width: 95%;
+  }
+
+  .adoption-landing-page main .pet-display.desktop-view {
+    display: none;
+  }
+
+  .adoption-landing-page .pet-display .pet-card-details {
+    height: auto;
+  }
+
+  .adoption-landing-page .pet-display .pet-card-title {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .adoption-landing-page .pet-card-box .pet-card-banner-div {
+    height: auto;
   }
 }
 
@@ -149,6 +173,18 @@
   .adoption-landing-page .hero.banner-mobile {
     display: none;
   }
+
+  .adoption-landing-page main .pet-display.mobile-view {
+    display: block;
+  }
+
+  .adoption-landing-page main .pet-display.desktop-view {
+    display: none;
+  }
+
+  .adoption-landing-page .pet-display .pet-card-details {
+    height: 15rem;
+  }
 }
 
 @media (min-width: 1025px) {
@@ -159,5 +195,18 @@
   .adoption-landing-page .hero.banner-tablet,
   .adoption-landing-page .hero.banner-mobile {
     display: none;
+  }
+
+  .adoption-landing-page main .pet-display.mobile-view {
+    display: none;
+  }
+
+  .adoption-landing-page main .pet-display.desktop-view {
+    display: block;
+  }
+
+  .adoption-landing-page .pet-display .pet-card-details {
+    text-overflow: ellipsis;
+    overflow-y: scroll;
   }
 }

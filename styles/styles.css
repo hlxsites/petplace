@@ -37,7 +37,6 @@
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
   --text-color-disabled:#464646;
-  --color-black: #000000;
   --color-gray: #8f8f8f;  
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
@@ -103,9 +102,10 @@
 
   /* nav height */
   --nav-height: 64px;
-  
+  /* stylelint-disable */
   --card-details-mask: linear-gradient(to bottom, #fff 44.33%,
-  rgba(255, 255, 255, 0.88) 67.03%, rgba(255, 255, 255, 0.00) 100.9%);
+  rgba(255, 255, 255, 88%) 67.03%, rgba(255, 255, 255, 0%) 100.9%);
+  /* stylelint-enable */
 }
 
 @media (min-width: 600px) {
@@ -889,20 +889,6 @@ footer .popup hlx-aria-dialog > button {
   z-index: -1000;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-.footer-legal .popup hlx-aria-dialog > button {
-  position: relative;
-  height: auto;
-  width: auto;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  color: inherit;
-  font: inherit;
-  z-index: initial;
-  left: auto;
-}
-
 @media (prefers-contrast: more) {
   :root {
     --high-contrast-color: #ab2400;
@@ -1101,4 +1087,72 @@ html > ins[data-google-query-id] {
 
 .social-share-container .publi-wrapper {
   margin: 0;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+/* Error Page */
+.error-page {
+  padding: 80px 16px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.error-page h1 {
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
+  color: #000;
+  font-size: 28px;
+  line-height: 35px;
+}
+
+.error-page .error-description {
+  margin-bottom: 32px;
+  font-size: 20px;
+  line-height: 35px;
+}
+
+.error-page .action-btns {
+  display: flex;
+  gap: 16px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.error-page .action-btns a,
+.error-page .action-btns button {
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
+  margin: 0;
+  padding: 13px 24px;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.error-page .reload-btn {
+  background-color: #C74D2F;
+}
+
+.error-page .home-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #2F2F33;
+  color: #2F2F33;
+  text-overflow: unset;
+  overflow: visible;
+  justify-content: center;
+  border-radius: 30px;
+}
+
+@media (min-width: 768px) {
+  .error-page {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    max-width: 60%;
+  }
 }
