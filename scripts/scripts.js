@@ -72,6 +72,7 @@ window.hlx.plugins.add('experimentation', {
   load: 'eager',
   options: {
     audiences: AUDIENCES,
+    prodHost: 'www.petplace.com',
     storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
       ? window.localStorage : window.SessionStorage,
   },
