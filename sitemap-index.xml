@@ -3,9 +3,4 @@
   <sitemap>
     <loc>https://www.petplace.com/sitemap.xml</loc>
   </sitemap>
-  <!-- Commented out until go-live
-  <sitemap>
-    <loc>https://www.example.com/sitemap-en-gb.xml</loc>
-  </sitemap>
-   -->
 </sitemapindex>
