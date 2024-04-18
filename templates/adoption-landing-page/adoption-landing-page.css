@@ -1,4 +1,4 @@
-@media (max-width: 900px) {
+@media (max-width: 800px) {
   .adoption-landing-page main .details-box-container {
     padding: 1.5rem;
   }
@@ -13,10 +13,7 @@
   }
 }
 
-@media (min-width: 900px) {
-  .adoption-landing-page main .hero {
-    min-height: 318px;
-  }
+@media (min-width: 901px) {
   .adoption-landing-page main .hero img {
     object-position: center left;
   }
@@ -34,7 +31,6 @@
 }
 
 .adoption-landing-page main .hero {
-  min-height: 0;
   height: auto;
 }
 
@@ -134,7 +130,7 @@
 
 /* BANNER AND CARDS ONLY */
 
-@media (max-width: 900px)  { 
+@media (max-width: 800px)  { 
   .adoption-landing-page .hero.banner-mobile {
     display: block;
   }
@@ -159,7 +155,7 @@
   }
 }
 
-@media (min-width: 901px) and (max-width: 1024px) {
+@media (min-width: 801px) and (max-width: 1024px) {
   .adoption-landing-page .hero.banner-tablet {
     display: block;
   }
