@@ -9,7 +9,6 @@ import {
   createBreadCrumbs,
   getCategories,
 } from '../../scripts/scripts.js';
-import { adsenseFunc } from '../../scripts/adsense.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
@@ -202,6 +201,7 @@ export async function loadLazy(document) {
   await loadBlock(breadcrumb);
   breadcrumb.style.visibility = '';
 
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('article', 'create');
 
   const createGenAISearchCTA = () => {
@@ -241,5 +241,6 @@ export async function loadDelayed() {
     category: articleCat,
   });
 
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('article', articleCat);
 }

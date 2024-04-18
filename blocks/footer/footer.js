@@ -21,16 +21,16 @@ export default async function decorate(block) {
     const footer = document.createElement('div');
     footer.innerHTML = html;
 
-    decorateIcons(footer);
+    await decorateIcons(footer);
 
     const sections = ['nav', 'legal'];
-    [...footer.children].forEach((child, i) => {
+    await Promise.all([...footer.children].map(async (child, i) => {
       const container = document.createElement('div');
       container.classList.add(sections[i] ? `footer-${sections[i]}` : '');
       container.append(child);
-      decorateIcons(container);
+      await decorateIcons(container);
       block.append(container);
-    });
+    }));
 
     block.querySelector('.footer-nav ul:first-of-type').classList.add('footer-social');
     block.querySelectorAll('.footer-social a').forEach((a) => {

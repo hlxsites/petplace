@@ -1,4 +1,3 @@
-import globRegex from './glob-regex/glob-regex.js';
 import {
   buildBlock,
   createOptimizedPicture,
@@ -82,7 +81,7 @@ window.hlx.plugins.add('experimentation', {
 window.hlx.plugins.add('martech', {
   url: './third-party.js',
   condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
-  load: 'lazy',
+  load: 'eager',
 });
 
 window.hlx.plugins.add('rum-conversion', {
@@ -710,16 +709,16 @@ function redirectToPreferredRegion() {
   }
 }
 
+let placeholdersPromise;
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  setLocale();
-  redirectToPreferredRegion();
   decorateTemplateAndTheme();
 
-  await fetchPlaceholders(window.hlx.contentBasePath || 'default');
+  await placeholdersPromise;
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
@@ -898,7 +897,11 @@ export async function getConfiguration(sheet) {
 }
 
 async function addNewsletterPopup() {
-  const newsletterConfig = await getConfiguration('newsletter-popup');
+  const [globRegex, newsletterConfig] = await Promise.all([
+    import('./glob-regex/glob-regex.js'),
+    await getConfiguration('newsletter-popup'),
+  ]);
+
   if (!newsletterConfig) {
     return;
   }
@@ -909,7 +912,7 @@ async function addNewsletterPopup() {
     if (item.Key !== 'exclude-pattern') {
       return false;
     }
-    const regexp = globRegex(item.Value);
+    const regexp = globRegex.default(item.Value);
     return regexp.test(window.location.pathname);
   });
   if (excluded.length) {
@@ -954,7 +957,7 @@ async function loadLazy(doc) {
   footer.id = 'footer';
   footer.classList.add(FOOTER_SPACING);
   if (!isNewsletterSignedUp() && getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
-    loadNewsletter(footer);
+    await loadNewsletter(footer);
     footer.classList.remove(FOOTER_SPACING);
   }
 
@@ -976,12 +979,11 @@ async function loadLazy(doc) {
   await window.hlx.plugins.run('loadLazy');
 
   if (!window.hlx.contentBasePath) {
-    addNewsletterPopup();
+    await addNewsletterPopup();
   }
 
-  import('./datalayer.js').then(({ handleDataLayerApproach }) => {
-    handleDataLayerApproach();
-  });
+  const { handleDataLayerApproach } = await import('./datalayer.js');
+  handleDataLayerApproach();
 }
 
 /**
@@ -1126,6 +1128,9 @@ export async function captureError(source, e) {
 
 async function loadPage() {
   setLocale();
+  redirectToPreferredRegion();
+
+  placeholdersPromise = fetchPlaceholders(window.hlx.contentBasePath || 'default');
 
   window.dataLayer ||= {};
   window.dataLayer.push({ js: new Date() });
