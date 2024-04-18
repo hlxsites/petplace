@@ -484,6 +484,10 @@ background-position: left center;
 display: block;
 }
 
+.adopt-search-results-wrapper .zipCode.error + .error-message.active {
+    margin-top: 0;
+}
+
 .adopt-search-results-wrapper form select {
     /** for the dropdown indicator */
     appearance: none;

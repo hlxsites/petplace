@@ -862,11 +862,11 @@ export default async function decorate(block) {
         const errorSpan = document.getElementById('zip-error');
         const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
         if (isValidZip) {
-        zipInput.classList.remove('error');
-        errorSpan.classList.remove('active');
-        saveSearchButton.disabled = false;
-        zipInput.setAttribute('aria-describedby', '');
-        zipInput.ariaInvalid = 'false';
+            zipInput.classList.remove('error');
+            errorSpan.classList.remove('active');
+            saveSearchButton.disabled = false;
+            zipInput.setAttribute('aria-describedby', '');
+            zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
                 if (data) {
                     buildResultsContainer(data);
@@ -1061,6 +1061,22 @@ export default async function decorate(block) {
     saveButton.disabled = true;
     saveButton.addEventListener('click', async (event) => {
         event.preventDefault();
+
+        const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
+
+        if (!isValidZip) {
+            zipInput.classList.add('error');
+            errorSpan.classList.add('active');
+            zipInput.setAttribute('aria-describedby', 'zip-error');
+            zipInput.ariaInvalid = 'true';
+            zipInput.focus();
+        } else {
+            zipInput.classList.remove('error');
+            errorSpan.classList.remove('active');
+            zipInput.setAttribute('aria-describedby', '');
+            zipInput.ariaInvalid = 'false';
+        }
+
         let initialUserData = {};
         isLoggedIn().then(async (isLoggedInParam) => {
             if (isLoggedInParam) {
