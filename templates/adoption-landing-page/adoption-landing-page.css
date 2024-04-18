@@ -143,7 +143,7 @@
   .adoption-landing-page main .pet-display.mobile-view {
     display: block;
     margin: auto;
-    width: 80%;
+    width: 95%;
   }
 
   .adoption-landing-page main .pet-display.desktop-view {
@@ -151,6 +151,15 @@
   }
 
   .adoption-landing-page .pet-display .pet-card-details {
+    height: auto;
+  }
+
+  .adoption-landing-page .pet-display .pet-card-title {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .adoption-landing-page .pet-card-box .pet-card-banner-div {
     height: auto;
   }
 }
