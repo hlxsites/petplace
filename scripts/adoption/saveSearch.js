@@ -75,6 +75,15 @@ export async function saveSearch(token) {
       sizeList.push(item.value);
     });
   }
+  const shelter = document.querySelectorAll('#shelters input:checked');
+  let shelterList = [];
+  if (shelter && shelter?.length === 0) {
+    shelterList = null;
+  } else {
+    shelter?.forEach((item) => {
+      shelterList.push(item.value);
+    });
+  }
 
   const response = await fetch(`${endPoints.apiUrl}/adopt/api/UserSearch`, {
     method: 'POST',
@@ -97,6 +106,7 @@ export async function saveSearch(token) {
           filterGender: gender,
           filterAge: ageList,
           filterSize: sizeList,
+          filterShelter: shelterList,
         },
       },
     }),

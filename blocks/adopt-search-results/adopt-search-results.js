@@ -18,7 +18,7 @@ const {
     petTypeLabel,
     petTypeValues,
     breedLabel,
-    breedPlaceholder,
+    shelterLabel,
     zipLabel,
     zipPlaceholder,
     searchAlertText,
@@ -37,14 +37,17 @@ const {
     filterCta,
     createSearchAlert,
     zipErrorMessage,
+    clearShelterFilters,
     noResultsConsiderExpandRadius,
 } = placeholders;
 
 let breedList = [];
+let shelterList = [];
 let currentPage = 1;
 const recordsPerPage = 16;
 let animalArray = [];
 let selectedBreeds = [];
+let selectedShelters = [];
 
 const noResultsContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="81" viewBox="0 0 80 81" fill="none">
@@ -111,6 +114,7 @@ function getFilters() {
         filterAge: ageFilterList,
         filterAnimalType: document.getElementById('pet-type')?.value,
         filterBreed: selectedBreeds,
+        filterShelter: selectedShelters,
         zipPostal: document.getElementById('zip')?.value,
         // Add more filters as needed
     };
@@ -186,6 +190,13 @@ async function callAnimalList() {
             sizeList.push(item.value);
         });
     }
+    let shelters = null
+    if (selectedShelters.length > 0) {
+        shelters = selectedShelters;
+    }
+    breedType.forEach((breed) => {
+        breeds.push(breed);
+    });
 
     const response = await fetch(`${endPoints.apiUrl}/animal`, {
         method: 'POST',
@@ -194,7 +205,7 @@ async function callAnimalList() {
         },
         body: JSON.stringify({
             locationInformation: {
-                clientId: null,
+                clientId: shelters,
                 zipPostal: zip,
                 milesRadius: radius,
             },
@@ -252,6 +263,40 @@ async function callBreedList(petType) {
     return null;
 }
 
+async function callShelterList() {
+    let zip = document.getElementById('zip')?.value;
+    let radius = document.getElementById('radius')?.value;
+    let endpoint = `${endPoints.apiUrl}/shelter/search`;
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            locationInformation: {
+                zipPostal: zip,
+                milesRadius: radius,
+            },
+        }),
+    });
+    return response.json();
+}
+
+function clearShelterSelections() {
+    const shelterSelect = document.getElementById('shelter');
+    const checkboxes = shelterSelect.querySelectorAll('input');
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            checkbox.checked = false;
+            // Create a new 'change' event
+            var event = new Event('change');
+            // Dispatch it.
+            checkbox.dispatchEvent(event);
+        }
+        });
+    selectedShelters = [];
+}
+
 async function updateBreedListSelect() {
     const breedSelect = document.querySelector('#breeds');
     breedSelect.innerHTML = '';
@@ -307,6 +352,55 @@ async function updateBreedListSelect() {
             selected.forEach((select) => {
                 if (select.value !== '') {
                     selectedBreeds.push(select.value);
+                }
+            });
+            const displayText = selected.length > 0
+                ? `${selected.length} selected`
+                : 'Select from menu...';
+            buttonText.innerText = displayText;
+            getFilters();
+            callAnimalList().then((data) => {
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
+            });
+        });
+    });
+}
+
+async function updateShelterListSelect() {
+    const shelterSelect = document.querySelector('#shelters');
+    shelterSelect.innerHTML = '';
+    shelterList?.forEach((shelter) => {
+        const div = document.createElement('div');
+
+        const inputOption = document.createElement('input');
+        inputOption.type = 'checkbox';
+        inputOption.id = `${shelter.ClientId}`;
+        inputOption.value = shelter.ClientId;
+        inputOption.textContent = shelter.ClientName;
+        div.classList.add('multi-select__input');
+        const label = document.createElement('label');
+        label.setAttribute('for', `${inputOption.id}`);
+        label.innerText = shelter.ClientName;
+        div.append(inputOption, label);
+
+        shelterSelect.append(div);
+    });
+
+    const groupDiv = document.querySelector('#shelters');
+    const containerDiv = document.querySelector('.multi-select.shelter');
+    const checkboxArray = groupDiv.querySelectorAll('input');
+    checkboxArray?.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+            // updating label
+            const buttonText = containerDiv.querySelector('#shelter-button');
+            const selected = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+            selectedShelters = [];
+            selected.forEach((select) => {
+                if (select.value !== '') {
+                    selectedShelters.push(select.value);
                 }
             });
             const displayText = selected.length > 0
@@ -450,6 +544,7 @@ function nextPage() {
 
 function clearFilters() {
     selectedBreeds = [];
+    clearShelterSelections();
     const radiusSelect = document.getElementById('radius');
     if (radiusSelect) {
         radiusSelect.selectedIndex = 0;
@@ -458,6 +553,11 @@ function clearFilters() {
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
     }
+    const shelterSelect = document.getElementById('shelter');
+    const shelterCheckboxes = shelterSelect.querySelectorAll('input');
+    shelterCheckboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+    });
     callAnimalList().then((data) => {
         if (data) {
             // eslint-disable-next-line
@@ -512,10 +612,14 @@ function buildFilterSidebar(sidebar) {
     radiusSelect.className = 'filter-select';
     radiusSelect.addEventListener('change', () => {
         callAnimalList().then((data) => {
-            if (data) {
+            // eslint-disable-next-line
+            buildResultsContainer(data);
+            callShelterList().then((data) => {
                 // eslint-disable-next-line
-                buildResultsContainer(data);
-            }
+                shelterList = data;
+                clearShelterSelections();
+                updateShelterListSelect();
+            });
         });
     });
     const radiusList = radiusOptions.split(',');
@@ -644,6 +748,54 @@ function buildFilterSidebar(sidebar) {
         sizeListLabel.append(checkmark);
         sizeBlock.append(sizeListLabel);
     });
+
+    // Building Shelter List custom multi select element
+    const shelterContainer = document.createElement('div');
+    shelterContainer.className = 'radio-block';
+    const shelterLabelElement = document.createElement('label');
+    shelterLabelElement.for = 'shelter';
+    shelterLabelElement.innerText = shelterLabel;
+    shelterLabelElement.setAttribute('for', 'shelter');
+    shelterLabelElement.className = 'sidebar-header';
+
+    const containerDiv = document.createElement('div');
+    containerDiv.className = 'multi-select shelter';
+    containerDiv.id = 'shelter';
+    containerDiv.append(shelterLabelElement);
+
+    const shelterButton = document.createElement('button');
+    shelterButton.id = 'shelter-button';
+    shelterButton.classList.add('multi-select__button');
+    shelterButton.type = 'button';
+    shelterButton.setAttribute('aria-expanded', 'false');
+    shelterButton.setAttribute('aria-controls', 'shelters');
+
+    const multiSelectPlaceholder = document.createElement('span');
+    multiSelectPlaceholder.className = 'multi-select__button-text';
+    multiSelectPlaceholder.innerText = 'Select from menu...';
+
+    const icon = document.createElement('span');
+    icon.className = 'multi-select__button-icon';
+    shelterButton.append(multiSelectPlaceholder, icon);
+
+    const groupDiv = document.createElement('div');
+    groupDiv.setAttribute('role', 'group');
+    groupDiv.setAttribute('aria-labelledby', 'shelter-button');
+    groupDiv.setAttribute('tabindex', '0');
+    groupDiv.className = 'multi-select__options';
+    groupDiv.id = 'shelters';
+
+    containerDiv.append(shelterButton, groupDiv);
+    // create clear shelter filters button
+    const clearSheltersButton = document.createElement('button');
+    clearSheltersButton.className = 'shelter-clear';
+    clearSheltersButton.innerHTML = clearShelterFilters;
+    clearSheltersButton.addEventListener('click', clearShelterSelections);
+    containerDiv.append(clearSheltersButton);
+    // eslint-disable-next-line
+    new MultiSelect(containerDiv);
+    shelterContainer.append(containerDiv);
+    sidebar.append(shelterContainer);
 
     // create mobile filter buttons
     const mobileContainer = document.createElement('div');
@@ -811,6 +963,25 @@ function populateSidebarFilters(params) {
     callAnimalList().then((resultData) => {
         if (resultData) {
             buildResultsContainer(resultData);
+        callShelterList().then((data) => {
+            // eslint-disable-next-line
+            shelterList = data;
+            updateShelterListSelect().then(() => {
+                const shelterArray = params.get('filterShelter')?.split(',');
+                if (shelterArray.length > 0) {
+                    shelterArray?.forEach((shelter) => {
+                        const checkbox = document.getElementById(shelter);
+                        checkbox.checked = true;
+                        // Create a new 'change' event
+                        var event = new Event('change');
+                        // Dispatch it.
+                        checkbox.dispatchEvent(event);
+                    });
+                }
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
         }
     });
 }
@@ -964,10 +1135,6 @@ export default async function decorate(block) {
     // eslint-disable-next-line
     new MultiSelect(containerDiv);
 
-    const option = document.createElement('option');
-    option.innerText = breedPlaceholder;
-    option.value = '';
-
     breedContainer.append(containerDiv);
 
     const zipContainer = document.createElement('div');
@@ -1000,6 +1167,12 @@ export default async function decorate(block) {
             callAnimalList().then((data) => {
                 if (data) {
                     buildResultsContainer(data);
+                callShelterList().then((data) => {
+                    // eslint-disable-next-line
+                    shelterList = data;
+                    clearShelterSelections();
+                    updateShelterListSelect();
+                });
                 }
             });
         } else {
