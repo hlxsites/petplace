@@ -7,8 +7,8 @@ function showLoginOrProfileButton() {
   isLoggedIn().then((status) => {
     const userBtn = document.querySelector('.nav .nav-login .user-btn');
     const loginBtn = document.querySelector('.nav .nav-login .login-btn');
-    userBtn.classList.toggle('hidden', !status);
-    loginBtn.classList.toggle('hidden', status);
+    userBtn?.classList.toggle('hidden', !status);
+    loginBtn?.classList.toggle('hidden', status);
   });
 }
 
