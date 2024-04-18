@@ -239,19 +239,46 @@ export default async function decorate(block) {
         if (!token) {
           token = await acquireToken();
         }
-        const payload = {
-          SurveyId: surveyId,
-          SurveyResponseAnswers: [...state.surveyAnswers],
-        };
         // eslint-disable-next-line
-        const result = await callSurveyResponse(
-          surveyId,
-          token,
-          'POST',
-          payload,
-        );
-        if (result) {
-          window.location.href = '/pet-adoption/survey-confirmation';
+        const surveyResponse = await callSurveyResponse(surveyId, token);
+        if (surveyResponse && !surveyResponse.Completed) {
+          const payload = {
+            SurveyId: surveyId,
+            SurveyResponseAnswers: [...state.surveyAnswers],
+          };
+          // eslint-disable-next-line
+          const result = await callSurveyResponse(
+            surveyId,
+            token,
+            'POST',
+            payload,
+          );
+          if (result) {
+            window.location.href = '/pet-adoption/survey-confirmation';
+          }
+        } else {
+          const payload = {
+            Id: surveyResponse.Id,
+            SurveyResponseAnswers: [...state.surveyAnswers],
+          };
+          // eslint-disable-next-line
+          const result = await callSurveyResponse(
+            surveyId,
+            token,
+            'PUT',
+            payload,
+          );
+
+        const surveySummaryHeader = block.querySelector('.pet-survey__summary-header');
+        surveySummaryHeader.innerHTML = '<div class="pet-survey__success-message show">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message"></div><h3 class="pet-survey__summary-header-title">Pet Preferences</h3>';
+        surveySummaryHeader.scrollIntoView({
+            behavior: 'smooth',
+        });
+          const closeBtn = surveySummaryHeader.querySelector('.pet-survey__success-message-close');
+
+          closeBtn.addEventListener('click', () => {
+            surveySummaryHeader.querySelector('.pet-survey__success-message').style.display = 'none';
+          });
         }
       });
     }
@@ -296,6 +323,7 @@ export default async function decorate(block) {
             'PUT',
             payload,
           );
+          
         }
         const response = await fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
           method: 'POST',
