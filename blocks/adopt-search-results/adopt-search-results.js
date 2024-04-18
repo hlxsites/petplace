@@ -36,7 +36,6 @@ const {
     applyFiltersLabel,
     filterCta,
     createSearchAlert,
-    noResults,
     zipErrorMessage,
     noResultsConsiderExpandRadius,
 } = placeholders;
@@ -224,6 +223,7 @@ async function callAnimalList() {
         return null;
         // eslint-disable-next-line
     } else {
+        document.querySelector('.default-content-wrapper').classList.remove('no-results');
         const paginationBlock = document.querySelector('.pagination');
         paginationBlock?.classList.remove('hide');
     }
