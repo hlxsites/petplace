@@ -1,9 +1,16 @@
 /* eslint-disable indent */
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import endPoints from '../../variables/endpoints.js';
+// eslint-disable-next-line
 import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import { buildPetCard } from '../../scripts/adoption/buildPetCard.js';
 import { setSaveSearch } from '../../scripts/adoption/saveSearch.js';
+import { callUserApi } from '../account/account.js';
+import { initRedirectHandlers } from '../../scripts/lib/msal/login-redirect-handlers.js';
+import { isMobile } from '../../scripts/scripts.js';
+import errorPage from '../../scripts/adoption/errorPage.js';
+import MultiSelect from '../pet-survey/multi-select.js';
+
 // fetch placeholders from the /adopt folder currently, but placeholders should |
 // be moved into the root' folder eventually
 const placeholders = await fetchPlaceholders('/pet-adoption');
@@ -33,11 +40,11 @@ const {
     zipErrorMessage,
 } = placeholders;
 
-// console.log(placeholders);
 let breedList = [];
 let currentPage = 1;
 const recordsPerPage = 16;
 let animalArray = [];
+let selectedBreeds = [];
 
  // Get filters
 function getFilters() {
@@ -45,18 +52,18 @@ function getFilters() {
     let genderFilterList = '';
     genderFilters?.forEach((gender) => {
         if (genderFilterList !== '') {
-            genderFilterList += ',' + gender?.value;
+            genderFilterList += `,${gender?.value}`;
         } else {
-            genderFilterList += gender?.value;
+            genderFilterList += gender?.value || '';
         }
     });
     const ageFilters = document.querySelectorAll('input[name="age"]:checked');
     let ageFilterList = '';
     ageFilters?.forEach((age) => {
         if (ageFilterList !== '') {
-            ageFilterList += ',' + age?.value;
+            ageFilterList += `,${age?.value || ''}`;
         } else {
-            ageFilterList += age?.value;
+            ageFilterList += age?.value || 0;
         }
     });
 
@@ -64,9 +71,9 @@ function getFilters() {
     let sizeFilterList = '';
     sizeFilters?.forEach((size) => {
         if (sizeFilterList !== '') {
-            sizeFilterList += ',' + size?.value;
+            sizeFilterList += `,${size?.value || 0}`;
         } else {
-            sizeFilterList += size?.value;
+            sizeFilterList += size?.value || 0;
         }
     });
     const filters = {
@@ -74,7 +81,7 @@ function getFilters() {
         filterGender: genderFilterList,
         filterAge: ageFilterList,
         filterAnimalType: document.getElementById('pet-type')?.value,
-        filterBreed: document.getElementById('breed')?.value,
+        filterBreed: selectedBreeds,
         zipPostal: document.getElementById('zip')?.value,
         // Add more filters as needed
     };
@@ -94,19 +101,31 @@ function applyFilters() {
     const params = new URLSearchParams(filters);
     window.history.replaceState({}, '', `?${params.toString()}`);
 }
+let callInProgress = false;
+
+function waitFor(conditionFunction) {
+    const poll = (resolve) => {
+        if (conditionFunction()) resolve();
+        else setTimeout(() => poll(resolve), 400);
+    };
+
+    return new Promise(poll);
+}
 
 async function callAnimalList() {
+    await waitFor(() => callInProgress === false);
+    callInProgress = true;
     applyFilters();
     const petType = document.getElementById('pet-type')?.value;
     let animalType = null;
     if (petType !== 'null') {
         animalType = petType;
     }
-    const breedType = document.getElementById('breed')?.value;
+    const breedType = selectedBreeds;
     const breeds = [];
-    if (breedType !== '') {
-        breeds.push(breedType);
-    }
+    breedType.forEach((breed) => {
+        breeds.push(breed);
+    });
     let zip = document.getElementById('zip')?.value;
     if (!zip) {
         zip = null;
@@ -116,7 +135,7 @@ async function callAnimalList() {
         radius = 10;
     }
     const genderElements = document.querySelectorAll('input[name="gender"]:checked');
-    let gender = "";
+    let gender = '';
         if (genderElements.length === 1) {
             gender = genderElements[0]?.value;
         }
@@ -126,8 +145,8 @@ async function callAnimalList() {
         ageList = null;
     } else {
         age?.forEach((item) => {
-            ageList.push(item.value)
-        })
+            ageList.push(item.value);
+        });
     }
     const size = document.querySelectorAll('input[name="size"]:checked');
     let sizeList = [];
@@ -136,7 +155,7 @@ async function callAnimalList() {
     } else {
         size?.forEach((item) => {
             sizeList.push(item.value);
-        })
+        });
     }
 
     const response = await fetch(`${endPoints.apiUrl}/animal`, {
@@ -153,14 +172,16 @@ async function callAnimalList() {
             animalFilters: {
                 startIndex: 0,
                 filterAnimalType: animalType,
-                filterBreed: breeds,
+                filterBreed: selectedBreeds,
                 filterGender: gender,
                 filterAge: ageList,
                 filterSize: sizeList,
             },
         }),
     });
+    callInProgress = false;
     if (response.status === 204) {
+        // eslint-disable-next-line
         buildResultsContainer([]);
         let resultsContainer = document.querySelector('.default-content-wrapper.results');
         if (!resultsContainer) {
@@ -169,6 +190,8 @@ async function callAnimalList() {
         const paginationBlock = document.querySelector('.pagination');
         paginationBlock.classList.add('hide');
         resultsContainer.innerHTML = noResults;
+        return null;
+        // eslint-disable-next-line
     } else {
         const paginationBlock = document.querySelector('.pagination');
         paginationBlock?.classList.remove('hide');
@@ -177,12 +200,14 @@ async function callAnimalList() {
 }
 
 async function callBreedList(petType) {
-    const breedSelect = document.getElementById('breed');
+    const breedSelect = document.getElementById('breed-button');
     if (breedSelect && (petType === 'other' || petType === 'null')) {
         breedSelect.setAttribute('disabled', '');
+        document.querySelector('#breed-button').innerText = 'Any';
     } else {
         if (breedSelect) {
             breedSelect.removeAttribute('disabled');
+            document.querySelector('#breed-button').innerText = 'Select from menu...';
         }
         let endpoint = `${endPoints.apiUrl}/breed`;
         if (petType !== 'null') {
@@ -197,27 +222,79 @@ async function callBreedList(petType) {
 }
 
 async function updateBreedListSelect() {
-    const breedSelect = document.getElementById('breed');
-    let i = 0;
-    const L = breedSelect.options.length - 1;
-    for (i = L; i >= 0; i -= 1) {
-        breedSelect.remove(i);
-    }
+    const breedSelect = document.querySelector('#breeds');
+    breedSelect.innerHTML = '';
 
-    const breedOption = document.createElement('option');
-    breedOption.innerText = breedPlaceholder;
-    breedOption.value = '';
-    breedSelect?.append(breedOption);
+    const divAny = document.createElement('div');
+    const inputOptionAny = document.createElement('input');
+    inputOptionAny.type = 'checkbox';
+    inputOptionAny.id = 'any';
+    inputOptionAny.value = '';
+    inputOptionAny.textContent = 'Any';
+    divAny.classList.add('multi-select__input');
+    const labelAny = document.createElement('label');
+    labelAny.setAttribute('for', 'any');
+    labelAny.innerText = 'Any';
+    divAny.append(inputOptionAny, labelAny);
+
+    breedSelect.append(divAny);
     breedList?.forEach((breed) => {
-        const option = document.createElement('option');
-        option.innerText = breed?.breedValue;
-        option.value = breed?.breedKey;
+        const div = document.createElement('div');
 
-        breedSelect?.append(option);
+        const inputOption = document.createElement('input');
+        inputOption.type = 'checkbox';
+        inputOption.id = `${breed.breedValue.toLowerCase().replace(/\s/g, '')}`;
+        inputOption.value = breed.breedKey;
+        inputOption.textContent = breed.breedValue;
+        div.classList.add('multi-select__input');
+        const label = document.createElement('label');
+        label.setAttribute('for', `${inputOption.id}`);
+        label.innerText = breed.breedValue;
+        div.append(inputOption, label);
+
+        breedSelect.append(div);
+    });
+
+    const groupDiv = document.querySelector('#breeds');
+    const containerDiv = document.querySelector('.multi-select.breed');
+    const checkboxArray = groupDiv.querySelectorAll('input');
+    checkboxArray?.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked && index === 0) {
+                const selectedCheckboxes = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+                selectedCheckboxes.forEach((input) => {
+                    input.checked = false;
+                });
+                checkboxArray[0].checked = true;
+            } else if (checkbox.checked && index !== 0) {
+                checkboxArray[0].checked = false;
+            }
+            // updating label
+            const buttonText = containerDiv.querySelector('#breed-button');
+            const selected = Array.from(groupDiv.querySelectorAll("input[type='checkbox']")).filter((node) => node.checked);
+            selectedBreeds = [];
+            selected.forEach((select) => {
+                if (select.value !== '') {
+                    selectedBreeds.push(select.value);
+                }
+            });
+            const displayText = selected.length > 0
+                ? `${selected.length} selected`
+                : 'Select from menu...';
+            buttonText.innerText = displayText;
+            getFilters();
+            callAnimalList().then((data) => {
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
+            });
+        });
     });
 }
 
 function numPages() {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     return Math.ceil(animalArray?.length / recordsPerPage);
 }
 
@@ -227,19 +304,18 @@ function getFavorites(response) {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${response}`,
-        }
-    }).then(response => {
-        //console.log('Success:', response.status);
-        return response.json();
-    }).then((data) => {
+        },
+    }).then((responseData) => responseData.json()).then((data) => {
         // favorite Pet in the UI
         data.forEach((favorite) => {
             const favoriteButton = document.getElementById(favorite?.Animal.ReferenceNumber);
             favoriteButton?.classList.add('favorited');
             favoriteButton?.setAttribute('data-favorite-id', favorite?.Id);
-        })
+        });
     })
     .catch((error) => {
+        errorPage();
+        // eslint-disable-next-line no-console
         console.error('Error:', error);
     });
 }
@@ -255,16 +331,18 @@ function buildResultsList(animalList) {
         tempResultsBlock.append(div);
     });
     // check if user is logged in
-    isLoggedIn().then(isLoggedIn => {
-        if (isLoggedIn) {
+    isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
             // if logged in set pet as favorite
             acquireToken()
-            .then(response => {
-                getFavorites(response);            
+            .then((response) => {
+                getFavorites(response);
             })
             .catch((error) => {
+                errorPage();
+                // eslint-disable-next-line no-console
                 console.error('Error:', error);
-            });;
+            });
         } else {
           // not logged in or token is expired without ability to silently refresh its validity
         }
@@ -320,6 +398,9 @@ function calculatePagination(page) {
         }
     }
     buildResultsList(filteredArray);
+    document.querySelector('.adopt-search-results-container').scrollIntoView({
+        behavior: 'smooth',
+    });
 }
 
 function prevPage() {
@@ -337,16 +418,20 @@ function nextPage() {
 }
 
 function clearFilters() {
+    selectedBreeds = [];
     const radiusSelect = document.getElementById('radius');
     if (radiusSelect) {
         radiusSelect.selectedIndex = 0;
-    };
+    }
     const radioButtons = document.querySelectorAll('input:checked');
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
     }
     callAnimalList().then((data) => {
-        buildResultsContainer(data);
+        if (data) {
+            // eslint-disable-next-line
+            buildResultsContainer(data);
+        }
     });
 }
 
@@ -356,6 +441,7 @@ function openModal() {
     const overlay = document.querySelector('.overlay');
     overlay.classList.add('show');
 }
+
 function closeModal() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.remove('show');
@@ -395,7 +481,10 @@ function buildFilterSidebar(sidebar) {
     radiusSelect.className = 'filter-select';
     radiusSelect.addEventListener('change', () => {
         callAnimalList().then((data) => {
-            buildResultsContainer(data);
+            if (data) {
+                // eslint-disable-next-line
+                buildResultsContainer(data);
+            }
         });
     });
     const radiusList = radiusOptions.split(',');
@@ -431,7 +520,10 @@ function buildFilterSidebar(sidebar) {
         genderRadio.value = placeholders[gender.toLowerCase()];
         genderRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
             });
         });
         genderListLabel.append(genderRadio);
@@ -462,7 +554,10 @@ function buildFilterSidebar(sidebar) {
         ageRadio.id = age;
         ageRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
             });
         });
         const formattedAge = age[0].toLowerCase() + age.slice(1);
@@ -500,13 +595,16 @@ function buildFilterSidebar(sidebar) {
         sizeRadio.type = 'checkbox';
         sizeRadio.name = 'size';
         sizeRadio.id = size;
-        sizeRadio.value = placeholders[size.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+        sizeRadio.value = placeholders[size.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => {
             if (+match === 0) return '';
             return index === 0 ? match.toLowerCase() : match.toUpperCase();
         })];
         sizeRadio.addEventListener('click', () => {
             callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                if (data) {
+                    // eslint-disable-next-line
+                    buildResultsContainer(data);
+                }
             });
         });
         sizeListLabel.append(sizeRadio);
@@ -535,6 +633,34 @@ function buildFilterSidebar(sidebar) {
     mobileContainer.append(mobileFilterButton);
 
     sidebar.append(mobileContainer);
+}
+
+function emailOptInConfirmModal() {
+    const optInModalEl = document.createElement('div');
+    const emailOptInModalStructure = `
+        <div class="modal-header">
+        <h3 class="modal-title">Allow Email Notifications?</h3>
+        </div>
+        <div class="modal-body">
+            <p>You must opt-in to email communications in order to create a search alert.</p>
+            <div class="modal-action-btns">
+                <button class="cancel">Cancel</button>
+                <button class="confirm">Allow email notifications and create search alert</button>
+            </div>
+        </div>
+    `;
+    optInModalEl.classList.add('modal', 'optin-email-modal', 'hidden');
+
+    optInModalEl.innerHTML = emailOptInModalStructure;
+
+    return optInModalEl;
+}
+
+function emailOptInOverlay() {
+    const optInOverlaylEl = document.createElement('div');
+    optInOverlaylEl.classList.add('overlay');
+
+    return optInOverlaylEl;
 }
 
 function buildResultsContainer(data) {
@@ -566,7 +692,7 @@ function buildResultsContainer(data) {
     tempResultsBlock.classList.add('results');
     tempResultsBlock.innerHTML = '';
     tempResultsBlock.id = 'results-block';
-    animalArray = data.animal;
+    animalArray = data?.animal;
 
     // adding filter sidebar
 
@@ -613,132 +739,112 @@ function buildResultsContainer(data) {
     calculatePagination(1);
 }
 
-window.onload = callBreedList('null').then((data) => {
-    breedList = data;
-    updateBreedListSelect();
-    const tempResultsContainer = document.querySelector('.section.adopt-search-results-container').closest('.section').nextElementSibling;
-    const div = document.createElement('div');
-    div.className = 'pagination hidden';
-
-    // add pagination
-    const previousButton = document.createElement('button');
-    previousButton.id = ('btn_prev');
-    previousButton.addEventListener('click', prevPage);
-    previousButton.innerText = '<';
-    const nextButton = document.createElement('button');
-    nextButton.id = ('btn_next');
-    nextButton.addEventListener('click', nextPage);
-    nextButton.innerText = '>';
-    div.append(previousButton);
-    const paginationNumbers = document.createElement('div');
-    paginationNumbers.className = 'pagination-numbers';
-    div.append(paginationNumbers);
-    div.append(nextButton);
-    tempResultsContainer.append(div);
-
-    // When the page loads, check if there are any query parameters in the URL
-    const params = new URLSearchParams(window.location.search);
-
-    // If there are, select the corresponding filters - Top filters first
-    if (params.has('zipPostal')) {
-        const petZip = document.getElementById('zip');
-        petZip.value = params.get('zipPostal');
-        const petType = document.getElementById('pet-type');
-        const petTypes = petType.options;
-        for (let i = 0; i < petTypes.length; i += 1) {
-            if (petTypes[i].value === params.get('filterAnimalType')) {
-                petType.selectedIndex = i;
+function populateSidebarFilters(params) {
+    // Populate Sidebar filters
+    const petRadius = document.getElementById('radius');
+    const petRadiusOptions = petRadius?.options;
+    if (petRadiusOptions) {
+        for (let i = 0; i < petRadiusOptions.length; i += 1) {
+            if (petRadiusOptions[i].value === params.get('milesRadius')) {
+                petRadius.selectedIndex = i;
             }
         }
-
-        const petBreed = document.getElementById('breed');
-        const petBreeds = petBreed.options;
-        for (let i = 0; i < petBreeds.length; i += 1) {
-            if (petBreeds[i].value === params.get('filterBreed')) {
-                petBreed.selectedIndex = i;
+    }
+    const genderRadios = document.querySelectorAll('input[name="gender"]');
+    for (let i = 0; i < genderRadios.length; i += 1) {
+        const genderArray = params.get('filterGender')?.split(',');
+        genderArray?.forEach((gender) => {
+            if (genderRadios[i].value === gender) {
+                genderRadios[i].checked = true;
             }
-        }
-
-        if (petType?.value === 'Other' || petType?.value === 'null') {
-            petBreed.setAttribute('disabled', '');
-        } else {
-            callBreedList(petType?.value).then((data) => {
-                breedList = data;
-                updateBreedListSelect().then(() => {
-                for (let i = 0; i < petBreeds.length; i += 1) {
-                    if (petBreeds[i].value === params.get('filterBreed')) {
-                        petBreed.selectedIndex = i;
-                    }
-                }
-                });
-            })
-        }
-        callAnimalList().then((response) => {
-            buildResultsContainer(response);
-            // Populate Sidebar filters
-            const petRadius = document.getElementById('radius');
-            const petRadiusOptions = petRadius.options;
-            for (let i = 0; i < petRadiusOptions.length; i += 1) {
-                if (petRadiusOptions[i].value === params.get('milesRadius')) {
-                    petRadius.selectedIndex = i;
-                }
-            }
-            const genderRadios = document.querySelectorAll('input[name="gender"]');
-            for (let i = 0; i < genderRadios.length; i += 1) {
-                const genderArray = params.get('filterGender')?.split(',');
-                genderArray?.forEach((gender) => {
-                    if (genderRadios[i].value === gender) {
-                        genderRadios[i].checked = true;
-                    }
-                })
-            }
-            const ageRadios = document.querySelectorAll('input[name="age"]');
-            for (let i = 0; i < ageRadios.length; i += 1) {
-                const ageArray = params.get('filterAge')?.split(',');
-                ageArray?.forEach((age) => {
-                    if (ageRadios[i].value === age) {
-                        ageRadios[i].checked = true;
-                    }
-                })
-            }
-            const sizeRadios = document.querySelectorAll('input[name="size"]');
-            for (let i = 0; i < sizeRadios.length; i += 1) {
-                const sizeArray = params.get('filterSize')?.split(',');
-                sizeArray?.forEach((size) => {
-                    if (sizeRadios[i].value === size) {
-                        sizeRadios[i].checked = true;
-                    }
-                })
-            }
-            callAnimalList().then((data) => {
-                buildResultsContainer(data);
-            });
         });
     }
-});
+    const ageRadios = document.querySelectorAll('input[name="age"]');
+    for (let i = 0; i < ageRadios.length; i += 1) {
+        const ageArray = params.get('filterAge')?.split(',');
+        ageArray?.forEach((age) => {
+            if (ageRadios[i].value === age) {
+                ageRadios[i].checked = true;
+            }
+        });
+    }
+    const sizeRadios = document.querySelectorAll('input[name="size"]');
+    for (let i = 0; i < sizeRadios.length; i += 1) {
+        const sizeArray = params.get('filterSize')?.split(',');
+        sizeArray?.forEach((size) => {
+            if (sizeRadios[i].value === size) {
+                sizeRadios[i].checked = true;
+            }
+        });
+    }
+    callAnimalList().then((resultData) => {
+        if (resultData) {
+            buildResultsContainer(resultData);
+        }
+    });
+}
+
+let hasEventSet = false;
+
+export function openOptInModal(tokenInfo, initialUserData, event) {
+    const modal = document.querySelector('.optin-email-modal');
+    if (modal) {
+        const confirmBtn = document.querySelector('.optin-email-modal .confirm');
+        const cancelBtn = document.querySelector('.optin-email-modal .cancel');
+        modal.classList.remove('hidden');
+        const overlay = document.querySelector('.overlay');
+        overlay.classList.add('show');
+        if (!hasEventSet) {
+            hasEventSet = true;
+
+            confirmBtn.addEventListener('click', async () => {
+                initialUserData.EmailOptIn = true;
+                await callUserApi(tokenInfo, 'PUT', initialUserData);
+                setSaveSearch(event);
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                overlay.classList.remove('show');
+            });
+        }
+    }
+}
 
 export default async function decorate(block) {
+    if (document.readyState === 'complete') {
+        document.querySelector('body').append(emailOptInConfirmModal());
+        document.querySelector('body').append(emailOptInOverlay());
+    }
+
     const form = document.createElement('form');
     form.setAttribute('role', 'search');
     form.className = 'adopt-search-results-box-wrapper';
     form.action = ' ';
     form.addEventListener('submit', (ev) => {
         ev.preventDefault();
-        
+
         const zipInput = document.getElementById('zip');
+        const saveSearchButton = document.querySelector('.adopt-save-search-button');
         const errorSpan = document.getElementById('zip-error');
         const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
         if (isValidZip) {
         zipInput.classList.remove('error');
         errorSpan.classList.remove('active');
+        saveSearchButton.disabled = false;
         zipInput.setAttribute('aria-describedby', '');
         zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                if (data) {
+                    buildResultsContainer(data);
+                }
             });
         } else {
         zipInput.classList.add('error');
         errorSpan.classList.add('active');
+        saveSearchButton.disabled = true;
         zipInput.setAttribute('aria-describedby', 'zip-error');
         zipInput.ariaInvalid = 'true';
         }
@@ -778,36 +884,70 @@ export default async function decorate(block) {
             } else {
                 radioSize?.classList.remove('hidden');
             }
+            if (petTypeSelect.value.toLowerCase() === 'other' || petTypeSelect.value.toLowerCase() === 'null') {
+                document.querySelector('#breed-button').setAttribute('disabled', '');
+                document.querySelector('#breed-button').innerText = 'Any';
+            } else {
+                document.querySelector('#breed-button').removeAttribute('disabled', '');
+                document.querySelector('#breed-button').innerText = 'Select from menu...';
+            }
             updateBreedListSelect();
         });
     });
 
-    // Building Breed List select element
+    // Building Breed List custom multi select element
     const breedContainer = document.createElement('div');
     const breedLabelElement = document.createElement('label');
     breedLabelElement.for = 'breed';
     breedLabelElement.innerText = breedLabel;
+    breedLabelElement.setAttribute('for', 'breed');
 
-    const breedSelect = document.createElement('select');
-    breedSelect.name = 'breed';
-    breedSelect.id = 'breed';
-    breedSelect.className = 'form-select-wrapper';
+    const containerDiv = document.createElement('div');
+    containerDiv.className = 'multi-select breed';
+    containerDiv.id = 'breed';
+    containerDiv.append(breedLabelElement);
+
+    const breedButton = document.createElement('button');
+    breedButton.id = 'breed-button';
+    breedButton.classList.add('multi-select__button');
+    breedButton.type = 'button';
+    breedButton.setAttribute('aria-expanded', 'false');
+    breedButton.setAttribute('aria-controls', 'breeds');
+
+    const multiSelectPlaceholder = document.createElement('span');
+    multiSelectPlaceholder.className = 'multi-select__button-text';
+    multiSelectPlaceholder.innerText = 'Select from menu...';
+
+    const icon = document.createElement('span');
+    icon.className = 'multi-select__button-icon';
+    breedButton.append(multiSelectPlaceholder, icon);
+
+    const groupDiv = document.createElement('div');
+    groupDiv.setAttribute('role', 'group');
+    groupDiv.setAttribute('aria-labelledby', 'breed-button');
+    groupDiv.setAttribute('tabindex', '0');
+    groupDiv.className = 'multi-select__options';
+    groupDiv.id = 'breeds';
+
+    containerDiv.append(breedButton, groupDiv);
+    // eslint-disable-next-line
+    new MultiSelect(containerDiv);
+
     const option = document.createElement('option');
     option.innerText = breedPlaceholder;
     option.value = '';
-    breedSelect.addEventListener('change', () => {
-        clearFilters();
-    });
 
-    breedSelect.append(option);
-
-    breedContainer.append(breedLabelElement);
-    breedContainer.append(breedSelect);
+    breedContainer.append(containerDiv);
 
     const zipContainer = document.createElement('div');
     const zipLabelElem = document.createElement('label');
     zipLabelElem.setAttribute('for', 'zipCode');
     zipLabelElem.innerText = zipLabel;
+
+    const errorSpan = document.createElement('span');
+    errorSpan.className = 'error-message';
+    errorSpan.id = 'zip-error';
+    errorSpan.textContent = zipErrorMessage;
 
     const zipInput = document.createElement('input');
     zipInput.setAttribute('aria-label', zipPlaceholder);
@@ -818,27 +958,27 @@ export default async function decorate(block) {
     zipInput.title = zipErrorMessage;
     zipInput.placeholder = zipPlaceholder;
     zipInput.addEventListener('blur', () => {
+        const saveSearchButton = document.querySelector('.adopt-save-search-button');
         const isValidZip = /^(\d{5}|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)$/.test(zipInput.value);
         if (isValidZip) {
         zipInput.classList.remove('error');
         errorSpan.classList.remove('active');
+        saveSearchButton.disabled = false;
         zipInput.setAttribute('aria-describedby', '');
         zipInput.ariaInvalid = 'false';
             callAnimalList().then((data) => {
-                buildResultsContainer(data);
+                if (data) {
+                    buildResultsContainer(data);
+                }
             });
         } else {
         zipInput.classList.add('error');
         errorSpan.classList.add('active');
+        saveSearchButton.disabled = true;
         zipInput.setAttribute('aria-describedby', 'zip-error');
         zipInput.ariaInvalid = 'true';
         }
     });
-
-    const errorSpan = document.createElement('span');
-    errorSpan.className = 'error-message';
-    errorSpan.id = 'zip-error';
-    errorSpan.textContent = zipErrorMessage;
 
     zipContainer.append(zipLabelElem);
     zipContainer.append(zipInput);
@@ -887,9 +1027,43 @@ export default async function decorate(block) {
         <path d="M12 3.47104C13.9891 3.47104 15.8968 4.26122 17.3033 5.66774C18.7098 7.07426 19.5 8.98192 19.5 10.971C19.5 18.017 21 19.221 21 19.221H3C3 19.221 4.5 17.305 4.5 10.971C4.5 8.98192 5.29018 7.07426 6.6967 5.66774C8.10322 4.26122 10.0109 3.47104 12 3.47104Z" stroke="#09090D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs>
         <clipPath id="clip0_1997_2586"><rect width="24" height="24" fill="white" transform="translate(0 0.471039)"/></clipPath></defs></svg>
         ${createSearchAlert}`;
-    saveButton.addEventListener('click', (event) => {
-        setSaveSearch(event);
-    })
+    saveButton.disabled = true;
+    saveButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        let initialUserData = {};
+        isLoggedIn().then(async (isLoggedInParam) => {
+            if (isLoggedInParam) {
+                const token = await acquireToken();
+                if (token) {
+                    initialUserData = await callUserApi(token);
+                    if (initialUserData.EmailOptIn) {
+                        setSaveSearch(event);
+                    } else {
+                        openOptInModal(token, initialUserData, event);
+                    }
+                }
+            } else {
+                // eslint-disable-next-line no-lonely-if
+                if (isMobile()) {
+                    localStorage.setItem('featureName2', 'openSavedSearchesPopUp');
+                    const token = await acquireToken();
+                    initRedirectHandlers(token, event);
+                } else {
+                    acquireToken('openSavedSearchesPopUp').then(async (token) => {
+                        initialUserData = await callUserApi(token);
+                        if (initialUserData.EmailOptIn) {
+                            setSaveSearch(event);
+                        } else {
+                            // eslint-disable-next-line
+                            const token = await acquireToken();
+                            initialUserData = await callUserApi(token);
+                            openOptInModal(token, initialUserData, event);
+                        }
+                    });
+                }
+            }
+        });
+    });
     form.append(petTypeContainer);
 
     form.append(breedContainer);
@@ -914,4 +1088,103 @@ export default async function decorate(block) {
 
     //   const usp = new URLSearchParams(window.location.search);
     //   block.querySelector('.search-input').value = usp.get('q') || '';
+    window.onload = callBreedList('null').then((data) => {
+        breedList = data;
+        updateBreedListSelect();
+        const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
+        const div = document.createElement('div');
+        div.className = 'pagination hidden';
+
+        // add pagination
+        const previousButton = document.createElement('button');
+        previousButton.id = ('btn_prev');
+        previousButton.addEventListener('click', prevPage);
+        previousButton.innerText = '<';
+        const nextButton = document.createElement('button');
+        nextButton.id = ('btn_next');
+        nextButton.addEventListener('click', nextPage);
+        nextButton.innerText = '>';
+        div.append(previousButton);
+        const paginationNumbers = document.createElement('div');
+        paginationNumbers.className = 'pagination-numbers';
+        div.append(paginationNumbers);
+        div.append(nextButton);
+        tempResultsContainer?.append(div);
+
+        // When the page loads, check if there are any query parameters in the URL
+        const params = new URLSearchParams(window.location.search);
+
+        // If there are, select the corresponding filters - Top filters first
+        if (params.has('zipPostal')) {
+            const petZip = document.getElementById('zip');
+            petZip.value = params.get('zipPostal');
+            const saveSearchButton = document.querySelector('.adopt-save-search-button');
+            saveSearchButton.disabled = false;
+            const petType = document.getElementById('pet-type');
+            const petTypeOptions = petType.options;
+            for (let i = 0; i < petTypeOptions.length; i += 1) {
+                if (petTypeOptions[i].value === params.get('filterAnimalType')) {
+                    petType.selectedIndex = i;
+                }
+            }
+
+            const breedSelect = document.getElementById('breed-button');
+            const petBreed = document.querySelector('#breeds');
+            const paramsSelected = params.get('filterBreed');
+            if (petType?.value === 'Other' || petType?.value === 'null') {
+                breedSelect.setAttribute('disabled', '');
+                breedSelect.innerText = 'Any';
+                buildResultsContainer([]);
+            } else {
+                breedSelect.removeAttribute('disabled');
+                breedSelect.innerText = 'Select from menu...';
+                callBreedList(petType?.value).then((outputData) => {
+                    breedList = outputData;
+                    updateBreedListSelect().then(() => {
+                        const inputs = petBreed.querySelectorAll('input');
+                        inputs.forEach((input) => {
+                            if (paramsSelected?.includes(input.value) && input.value !== '') {
+                                selectedBreeds.push(input.value);
+                                input.checked = true;
+                            }
+                        });
+                        const displayText = selectedBreeds.length > 0
+                            ? `${selectedBreeds.length} selected`
+                            : 'Select from menu...';
+                        breedSelect.innerText = displayText;
+                        callAnimalList().then((initialData) => {
+                            if (initialData) {
+                                buildResultsContainer(initialData);
+                                populateSidebarFilters(params);
+                            }
+                        });
+                    });
+                });
+            }
+            let resultsContainer = document.querySelector('.default-content-wrapper.results');
+            if (!resultsContainer) {
+                resultsContainer = document.querySelector('.default-content-wrapper');
+            }
+            const paginationBlock = document.querySelector('.pagination');
+            paginationBlock.classList.add('hide');
+            resultsContainer.innerHTML = noResults;
+        }
+        // check if hash exists and if so save the search
+        // eslint-disable-next-line
+        const hash = getHashFromURL();
+        setTimeout(() => {
+            // eslint-disable-next-line
+            if (hash === 'saveSearch') {
+                saveButton.click();
+            }
+        }, '1000');
+    });
+}
+function getHashFromURL() {
+    const hashIndex = window.location.href.indexOf('#');
+    if (hashIndex !== -1) {
+        return window.location.href.substring(hashIndex + 1);
+    }
+
+    return ''; // Return an empty string if there's no hash
 }

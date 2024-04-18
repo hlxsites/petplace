@@ -1,3 +1,4 @@
+/* stylelint-disable */
 /*page layout */
 .section.pet-details-container {
   padding: 32px 0;
@@ -9,7 +10,7 @@
 .pet-details {
   display: grid;
   position: relative;
-  grid-template-columns: 16px 1fr 16px;
+  grid-template-columns: 16px minmax(0, 1fr) 16px;
   grid-auto-rows: auto;
 }
 .pet-details .image-section,
@@ -400,20 +401,20 @@
 .pet-details .pet-card .like-button svg {
   fill: var(--text-color-disabled);
 }
-.pet-details div.pet-card .like-button .favorite {
+.pet-details a.pet-card .like-button .favorite {
   display: none;
 }
-.pet-details div.pet-card .like-button.favorited .default {
+.pet-details a.pet-card .like-button.favorited .default {
   display: none;
 }
-.pet-details div.pet-card .like-button.favorited .favorite {
+.pet-details a.pet-card .like-button.favorited .favorite {
   display: block;
   position: relative;
   background-color: #f8d1ca;
   top: 0;
   right: -6px;
 }
-.pet-details div.pet-card .like-button.favorited {
+.pet-details a.pet-card .like-button.favorited {
   background-color: #f8d1ca;
 }
 
@@ -434,8 +435,14 @@
 }
 .pet-details .pet-card-image object,
 .pet-details .pet-card-image img {
-  border-radius: 8px 8px 0 0;
+  display: block;
+  max-width: 100%;
   width: 100%;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .pet-details .pet-card-info {
@@ -777,3 +784,4 @@
 /* .pet-details .inquiry-modal .modal-cta-button {
   padding-inline: 24px;
 } */
+/* stylelint-enable */
