@@ -84,12 +84,20 @@ export async function login(callback, featureName) {
   if (isMobile()) {
     msalInstance.loginRedirect(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
+      .then(() => {
+        document.querySelector('.nav-login .user-btn').classList.remove('hidden');
+        document.querySelector('.nav-login .login-btn').classList.add('hidden');
+      })
       .catch((error) => {
         console.log(error);
       });
   } else {
     msalInstance.loginPopup(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
+      .then(() => {
+        document.querySelector('.nav-login .user-btn').classList.remove('hidden');
+        document.querySelector('.nav-login .login-btn').classList.add('hidden');
+      })
       .catch((error) => {
         console.log(error);
       });
