@@ -1,6 +1,7 @@
 import { getMetadata, loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import { isMobile } from './scripts.js';
+import { pushToDataLayer } from './utils/helpers.js';
 
 async function loadAccessibeWidget() {
   await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', { async: true });
@@ -46,6 +47,7 @@ async function loadPushlySdk() {
 }
 
 export async function loadEager() {
+  pushToDataLayer({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
   // Handle eager martech
   if (getMetadata('experiment') !== 'delayed-martech'
     || !document.body.classList.contains('variant-challenger-1')) {
