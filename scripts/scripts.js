@@ -89,6 +89,9 @@ window.hlx.plugins.add('rum-conversion', {
   load: 'lazy',
 });
 
+// eslint-disable-next-line prefer-rest-params
+function gtag() { window.dataLayer.push(arguments); }
+
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
 export async function getRegion() {
   const resp = await fetch(window.location.href, { method: 'HEAD' });
@@ -417,8 +420,6 @@ function buildCookieConsent(main) {
   if (window.hlx.consent) {
     return;
   }
-  // eslint-disable-next-line prefer-rest-params
-  function gtag() { window.dataLayer.push(arguments); }
   // US region does not need the cookie consent logic
   if (document.documentElement.lang === 'en-US') {
     gtag('consent', 'update', {
@@ -1133,10 +1134,10 @@ async function loadPage() {
   placeholdersPromise = fetchPlaceholders(window.hlx.contentBasePath || 'default');
 
   window.dataLayer ||= {};
-  window.dataLayer.push({ js: new Date() });
-  window.dataLayer.push({ config: 'GT-KD23TWW' });
-  window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
-  window.dataLayer.push({ config: 'AW-11334653569' });
+  gtag('js', new Date());
+  gtag('config', 'GT-KD23TWW');
+  gtag('config', 'G-V3CZKM4K6N');
+  gtag('config', 'AW-11334653569');
 
   await window.hlx.plugins.load('eager');
   await loadEager(document);
