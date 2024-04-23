@@ -1,7 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { test } from '@playwright/test';
 
-const baseURL = process.env.CI ? `https://${process.env.GITHUB_REF_NAME}--${process.env.GITHUB_REPOSITORY.split('/')[1]}--hlxsites.hlx.live` : 'http://127.0.0.1:3000';
+const [org, repo] = process.env.GITHUB_REPOSITORY?.split('/') || [];
+const ref = process.env.GITHUB_REF_NAME;
+const baseURL = process.env.CI ? `https://${ref}--${repo}--${org}.hlx.live/` : 'http://127.0.0.1:3000/';
 
 test('Google Tag Manager is properly loaded', async ({ page }) => {
   await page.goto(baseURL);
