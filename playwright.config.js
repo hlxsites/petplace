@@ -7,6 +7,11 @@ import { defineConfig, devices } from '@playwright/test';
  */
 // require('dotenv').config();
 
+console.log('CI', process.env.CI);
+console.log('ref', process.env.GITHUB_REF_NAME);
+console.log('head', process.env.GITHUB_HEAD_REF);
+console.log('base', process.env.GITHUB_BASE_REF);
+console.log('repo', process.env.GITHUB_REPOSITORY);
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -25,7 +30,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.CI ? `https://${process.env.GITHUB_REF_NAME}--${process.env.GITHUB_REPOSITORY.split('/')[1]}--hlxsites.hlx.live` : 'http://127.0.0.1:3000',
+    baseURL: process.env.CI ? `https://${process.env.GITHUB_REF_NAME}--${process.env.GITHUB_REPOSITORY.split('/')[1]}--hlxsites.hlx.live/` : 'http://127.0.0.1:3000/',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
