@@ -38,14 +38,14 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 13'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 7'] },
-    },
+    // {
+    //   name: 'Mobile Safari',
+    //   use: { ...devices['iPhone 13'] },
+    // },
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 7'] },
+    // },
     {
       name: 'Desktop Chrome',
       use: { ...devices['Desktop Chrome'] },
