@@ -28,7 +28,9 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.CI ? `https://${ref}--${repo}--${org}.hlx.live/` : 'http://127.0.0.1:3000/',
+    baseURL: process.env.CI
+      ? `https://${ref}--${repo}--${org}.hlx.live/` // in the CI we test against the branch environment
+      : 'http://127.0.0.1:3000/', // on localhost we check against the dev server
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -36,14 +38,14 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 13'] },
-    // },
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 7'] },
-    // },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 13'] },
+    },
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 7'] },
+    },
     {
       name: 'Desktop Chrome',
       use: { ...devices['Desktop Chrome'] },
