@@ -2,7 +2,7 @@
 import { test } from '@playwright/test';
 
 const [org, repo] = process.env.GITHUB_REPOSITORY?.split('/') || [];
-const ref = process.env.GITHUB_REF_NAME;
+const ref = process.env.GITHUB_HEAD_REF;
 const baseURL = process.env.CI ? `https://${ref}--${repo}--${org}.hlx.live/` : 'http://127.0.0.1:3000/';
 
 test('Google Tag Manager is properly loaded', async ({ page }) => {

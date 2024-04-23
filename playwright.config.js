@@ -8,7 +8,7 @@ import { defineConfig, devices } from '@playwright/test';
 // require('dotenv').config();
 
 const [org, repo] = process.env.GITHUB_REPOSITORY?.split('/') || [];
-const ref = process.env.GITHUB_REF_NAME;
+const ref = process.env.GITHUB_HEAD_REF;
 
 /**
  * @see https://playwright.dev/docs/test-configuration
