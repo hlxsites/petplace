@@ -1,4 +1,4 @@
-name: Linting
+name: Linting & E2E tests
 
 on: [pull_request]
 
