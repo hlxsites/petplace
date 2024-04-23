@@ -714,13 +714,15 @@ display: block;
     color: #000000;
 }
 
-.adopt-search-results .save-search-modal {
+.adopt-search-results .save-search-modal,
+.adopt-search-results #duplicated-search-modal {
     display: none;
     z-index: 21;
     padding: 20px;
     border-radius: 15px;
 }
-.adopt-search-results .save-search-modal.show {
+.adopt-search-results .save-search-modal.show,
+.adopt-search-results #duplicated-search-modal.show {
     display: block;
     position: absolute;
     top: 0px;
@@ -731,32 +733,38 @@ display: block;
     color: black;
 }
 @media screen and (min-width: 1024px) {
-    .adopt-search-results .save-search-modal.show {
+    .adopt-search-results .save-search-modal.show,
+    .adopt-search-results #duplicated-search-modal.show {
         top: 250px;
     }
 }
-.adopt-search-results .save-search-modal .success-icon {
+.adopt-search-results .save-search-modal .success-icon,
+.adopt-search-results #duplicated-search-modal .success-icon {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.adopt-search-results .save-search-modal .modal-title {
+.adopt-search-results .save-search-modal .modal-title,
+.adopt-search-results #duplicated-search-modal .modal-title {
     text-align: center;
     font-size: 32px;
     font-weight: 700;
     line-height: 36px;
 }
-.adopt-search-results .save-search-modal .modal-subtitle {
+.adopt-search-results .save-search-modal .modal-subtitle,
+.adopt-search-results #duplicated-search-modal .modal-subtitle {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
     line-height: 20px;
 }
-.adopt-search-results .save-search-modal .button-container {
+.adopt-search-results .save-search-modal .button-container,
+.adopt-search-results #duplicated-search-modal .button-container {
     display: block;
     text-align: center;
 }
-.adopt-search-results .save-search-modal .manage-button {
+.adopt-search-results .save-search-modal .manage-button,
+.adopt-search-results #duplicated-search-modal .manage-button {
     display: inline-flex;
     align-items: center;
     background-color: transparent;
@@ -771,17 +779,20 @@ display: block;
     margin-top: 30px;
 }
 @media screen and (min-width: 1024px) {
-    .adopt-search-results .save-search-modal .manage-button {
+    .adopt-search-results .save-search-modal .manage-button,
+    .adopt-search-results #duplicated-search-modal .manage-button {
         margin-right: 20px;
     }
 }
-.adopt-search-results .save-search-modal .continue-button {
+.adopt-search-results .save-search-modal .continue-button,
+.adopt-search-results #duplicated-search-modal .continue-button {
     height: 43px;
     font-size: 18px;
     font-weight: 600;
     background-color: #C74D2F;
 }
-.adopt-search-results .save-search-modal .saved-filters {
+.adopt-search-results .save-search-modal .saved-filters,
+.adopt-search-results #duplicated-search-modal .saved-filters {
     text-align: center;
     font-family: "Libre Franklin";
     font-size: 18px;
