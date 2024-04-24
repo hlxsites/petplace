@@ -948,6 +948,7 @@ async function loadLazy(doc) {
 
   const footer = doc.querySelector('footer');
   loadFooter(footer).then(() => {
+    decorateScreenReaderOnly(footer);
     // FIXME: remove conditional on UK website go-live
     if (window.hlx.contentBasePath) {
       addRegionSelectorPopup();
