@@ -38,6 +38,7 @@
   gap: 0 15px;
   display: grid;
   position: fixed;
+  width: 100%;
   grid-template-columns: 1px 145px auto 25px 1px;
   grid-template-rows: 7px auto 7px auto auto 20px;
 }
