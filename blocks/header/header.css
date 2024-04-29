@@ -39,6 +39,7 @@
   display: grid;
   position: fixed;
   width: 100%;
+  background-color: #fff;
   grid-template-columns: 1px 145px auto 25px 1px;
   grid-template-rows: 7px auto 7px auto auto 20px;
 }
