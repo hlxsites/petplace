@@ -3,6 +3,10 @@
   position: relative;
 }
 
+header .header {
+  z-index: 5;
+}
+
 .meganav-bg {
   background-color: #FFF;
   width: 100%;
@@ -554,6 +558,9 @@
   #nav button.menu-item:hover::after {
     background-color: #FFF;
     color: #000;
+  }
+
+  #nav .collapsible.active::after {
     transform: translateY(3px);
   }
 
