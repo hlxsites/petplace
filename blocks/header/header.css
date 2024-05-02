@@ -3,6 +3,10 @@
   position: relative;
 }
 
+header .header {
+  z-index: 5;
+}
+
 .meganav-bg {
   background-color: #FFF;
   width: 100%;
@@ -37,7 +41,9 @@
   height: var(--nav-height);
   gap: 0 15px;
   display: grid;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  background-color: #fff;
   grid-template-columns: 1px 145px auto 25px 1px;
   grid-template-rows: 7px auto 7px auto auto 20px;
 }
@@ -552,6 +558,9 @@
   #nav button.menu-item:hover::after {
     background-color: #FFF;
     color: #000;
+  }
+
+  #nav .collapsible.active::after {
     transform: translateY(3px);
   }
 
