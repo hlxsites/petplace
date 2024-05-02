@@ -349,9 +349,9 @@ export default async function decorate(block) {
     });
 
     window.addEventListener('scroll', () => {
-      var collapsible = block.querySelector('.collapsible');
-      var content = collapsible.nextElementSibling;
-      var isActive = collapsible.classList.value.includes('active');
+      const collapsible = block.querySelector('.collapsible');
+      const content = collapsible.nextElementSibling;
+      const isActive = collapsible.classList.value.includes('active');
 
       if (content.style.maxHeight) {
         content.style.maxHeight = null;
