@@ -64,7 +64,8 @@ main .newsletter-signup input {
 .newsletter-signup > div > div h2 {
   margin: 0;
   padding: 0;
-  font-size: var(--body-font-size-l);
+  font-size: 1rem;
+  text-align: left;
 }
 
 .newsletter-signup > div > div p:not(:last-child) {
@@ -158,4 +159,19 @@ main .newsletter-signup input {
   .newsletter-signup.horizontal input[type="text"], .newsletter-signup.horizontal button {
     width: 250px;
   }
+}
+
+/* popup button */
+
+.newsletter-signup .popup-close {
+  background-color: var(--background-color-dark);
+  line-height: 1;
+  width: 40px;
+  float: right;
+}
+
+.newsletter-signup .popup-close::before {
+  content: 'X';
+  font-weight: 800;
+  font-size: 1.5rem;
 }
