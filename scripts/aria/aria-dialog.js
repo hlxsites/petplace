@@ -80,12 +80,11 @@ export class AriaDialog extends HTMLElement {
     dialog.append(button.nextElementSibling);
 
     const nlBlock = dialog.querySelector('.newsletter-signup div');
-    console.log(nlBlock);
     const heading = document.createElement('div');
     heading.appendChild(closeBtn);
     heading.appendChild(nlBlock.querySelector('h2'));
     nlBlock.firstElementChild.prepend(heading);
-    
+
     this.append(dialog);
   }
 
