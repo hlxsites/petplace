@@ -189,7 +189,11 @@ const createSearchSummary = () => {
   const summaryTitle = document.createElement('h2');
   summaryTitle.innerHTML = 'Need help asking a question or just want to test drive the PetPlace Discovery tool?';
   const summaryColumn1 = createSummaryColumn('examples', 'Try one of these suggested questions:', getRandomQuestions(sampleQuestions), 'button');
+  const summaryDisclaimer = document.createElement('div');
+  summaryDisclaimer.className = 'search-card-warning';
+  summaryDisclaimer.innerHTML = `<p>${GENAI_SEARCH_WARNING}</p>`;
 
+  summaryColumns.appendChild(summaryDisclaimer);
   summaryColumns.appendChild(summaryTitle);
   summaryColumns.appendChild(summaryColumn1);
   summaryColumns.classList.add('show');
