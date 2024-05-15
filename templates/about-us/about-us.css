@@ -1,3 +1,11 @@
+.about-us #main h2,
+.about-us #main h3,
+.about-us #main h5,
+.about-us #main p,
+.about-us #main a {
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif !important;
+}
+
 .about-us #main .section:first-child {
   width: 100%;
 }
@@ -5,6 +13,26 @@
 .about-us #main .section {
   margin: auto;
   width: 80%;
+}
+
+.about-us #main .section.hero-container {
+  padding-top: 0;
+}
+
+.about-us #main .section.details-box-container,
+.about-us #main .section.columns-container {
+  padding: 0;
+  padding-bottom: 1rem;
+}
+
+.about-us #main .hero {
+  padding-top: 0;
+}
+
+.about-us #main .hero > div {
+  margin: 0;
+  padding: 0;
+  max-width: none;
 }
 
 .about-us #main .hero picture {
@@ -18,6 +46,7 @@
 
 .about-us #main h2 {
   color: #3c0040;
+  font-size: 3rem;
 }
 
 .about-us #main .details-box p {
@@ -27,10 +56,9 @@
 .about-us #main .about-card-box {
   border-radius: 1rem;
   margin: 1rem auto;
-  cursor: pointer;
   display: flex;
   flex-direction: row-reverse;
-  height: 12.5rem;
+  height: 15rem;
   padding: 2rem 1.5rem;
   align-items: center;
   box-shadow: 0 1px 6px 0 rgba(0,0,0,0.15);
@@ -46,7 +74,7 @@
 }
 
 .about-us #main .about-card-box h3 {
-  font-weight: bold;
+  font-weight: 500;
   font-size: 2rem;
   color: #2B273F;
 }
@@ -54,6 +82,7 @@
 .about-us #main .about-card-box h5 {
   font-size: 1rem;
   font-weight: normal;
+  line-height: 1.25;
 }
 
 .about-us #main .about-card-box a {
@@ -75,6 +104,14 @@
   .about-us #main .section .hero {
     padding: 0;
     min-height: auto;
+  }
+
+  .about-us #main .section .hero picture {
+    margin: 0;
+  }
+
+  .about-us #main h2 {
+    font-size: 1.75rem;
   }
   
   .about-us #main .about-card-box {
