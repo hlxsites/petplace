@@ -65,9 +65,8 @@ export class AriaDialog extends HTMLElement {
     button.append(this.firstElementChild);
     this.prepend(button);
 
-    const closeBtn = document.createElement('button');
-    closeBtn.setAttribute('aria-controls', id2);
-    closeBtn.className = 'popup-close';
+    const close = document.createElement('button');
+    close.setAttribute('aria-controls', id2);
 
     const dialog = document.createElement('div');
     dialog.id = id2;
@@ -78,13 +77,7 @@ export class AriaDialog extends HTMLElement {
       && this.attributes.getNamedItem('modal').value === 'true');
     dialog.innerHTML = '';
     dialog.append(button.nextElementSibling);
-
-    const nlBlock = dialog.querySelector('.newsletter-signup div');
-    const heading = document.createElement('div');
-    heading.appendChild(closeBtn);
-    heading.appendChild(nlBlock.querySelector('h2'));
-    nlBlock.firstElementChild.prepend(heading);
-
+    dialog.firstElementChild.prepend(close);
     this.append(dialog);
   }
 
