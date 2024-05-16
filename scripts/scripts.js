@@ -853,17 +853,31 @@ async function loadNewsletterPopup(footer) {
   if (localStorage.getItem(NEWSLETTER_POPUP_KEY)) {
     return;
   }
+
   localStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
   const popupContainer = document.createElement('div');
-  const newsletterBlock = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-popup`, (block) => {
-    popupContainer.append(block);
-  });
+  const newsletterBlock = await createNewsletterAutoBlock(
+    `${window.hlx.contentBasePath}/fragments/newsletter-popup`,
+    (block) => {
+      popupContainer.append(block);
+    },
+  );
   await loadBlock(newsletterBlock);
 
   const popupBlock = buildBlock('popup', popupContainer);
   footer.append(popupBlock);
   decorateBlock(popupBlock);
   await loadBlock(popupBlock);
+
+  const dialog = footer.querySelector('hlx-aria-dialog');
+  const closeBtn = dialog.children[1].children[0].children[0];
+  closeBtn.className = 'popup-close';
+
+  const nlBlock = dialog.querySelector('.newsletter-signup div');
+  const heading = document.createElement('div');
+  heading.appendChild(closeBtn);
+  heading.appendChild(nlBlock.querySelector('h2'));
+  nlBlock.firstElementChild.prepend(heading);
 }
 
 /**
