@@ -866,7 +866,7 @@ async function loadNewsletterPopup(footer) {
 
   const popupBlock = buildBlock('popup', popupContainer);
   footer.append(popupBlock);
-  await decorateBlock(popupBlock);
+  decorateBlock(popupBlock);
   await loadBlock(popupBlock);
 
   const dialog = footer.querySelector('hlx-aria-dialog');

@@ -68,8 +68,10 @@ main .newsletter-signup input {
   text-align: left;
 }
 
-.newsletter-signup > div > div p:not(:last-child) {
-  color: var(--highlight-color);
+.newsletter-signup > div > div p {
+  margin: 0;
+  padding: 0;
+  color: #fff;
 }
 
 .newsletter-signup > div > div > p:last-child {
