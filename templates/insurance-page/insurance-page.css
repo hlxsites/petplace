@@ -1,0 +1,98 @@
+/**
+ * Typography
+ */
+.insurance-page main h1 {
+  font-size: 2.5rem;
+  line-height: 1.175;
+  color: var(--color-black);
+}
+
+.insurance-page main p {
+  font-size: var(--body-font-size-s);
+  margin-bottom: 1rem;
+}
+
+/* Sponsor */
+.insurance-page main>.section>.default-content-wrapper em {
+  font-size: 0.625rem;
+  line-height: 1.6;
+  color: var(--text-color-subtle);
+}
+
+.insurance-page main>.section>.default-content-wrapper em a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/**
+ * Global
+ */
+.insurance-page img {
+  width: 100%;
+  padding: 2.5rem 0;
+}
+
+/**
+ * Layout
+ */
+.insurance-page main {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+    ". side-section"
+    ". side-section";
+}
+
+.insurance-page main>.side-section {
+  grid-area: side-section;
+}
+
+.insurance-page main>.section:nth-child(n+3) {
+  grid-column: 1 / 1;
+}
+
+/**
+ * Article Author
+ */
+.insurance-page .article-author {
+  margin-bottom: 32px;
+}
+
+.insurance-page .article-author [itemprop="author"] {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-template-areas:
+    "author-image author-name"
+    "author-image author-date";
+}
+
+.insurance-page .article-author p {
+  margin-bottom: 0;
+}
+
+.insurance-page .article-author time {
+  margin-bottom: 0;
+  font-size: 1rem;
+  color: var(--text-color-subtle);
+}
+
+.insurance-page .article-author [itemprop="author"] .icon {
+  grid-area: author-image;
+  width: 48px;
+  height: 48px;
+}
+
+.insurance-page .article-author [itemprop="name"] {
+  grid-area: author-name;
+}
+
+.insurance-page .article-author [itemprop="datePublished"] {
+  grid-area: author-date;
+}
+
+/**
+ * Social Share
+ */
+.insurance-page .social-share {
+  margin-bottom: 48px;
+}

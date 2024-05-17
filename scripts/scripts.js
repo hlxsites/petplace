@@ -53,13 +53,14 @@ window.hlx.templates.add([
   '/templates/category-index',
   '/templates/gen-ai',
   '/templates/home-page/',
+  '/templates/insurance-landing-page',
+  '/templates/insurance-page',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
   '/templates/tag-index',
   '/templates/travel-guide-page',
   '/templates/traveling-page',
   '/templates/write-for-us',
-  '/templates/insurance-landing-page',
 ]);
 
 const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
