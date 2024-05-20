@@ -52,6 +52,10 @@ main .slideshow-container {
     margin: 0 auto;
 }
 
+.slide .text-div :is(h1, h2)::after {
+    display: none;
+}
+
 .slides-container [aria-hidden="true"] .text-div {
     display: none;
 }
@@ -85,12 +89,13 @@ main .slideshow-container {
 }
 
 .tab-bar-container {
-    height: var(--tab-bar-height);
     position: absolute;
-    bottom: 50px;
-    width: 100%;
     display: flex;
+    height: var(--tab-bar-height);
+    left: 50%;
+    bottom: 50px;
     justify-content: center;
+    transform: translateX(-50%);
     z-index: 1;
 }
 
@@ -122,10 +127,6 @@ main .slideshow-container {
         color: var(--text-color-inverted);
         line-height: 1.1;
         border: none;
-    }
-
-    .slide .text-div :is(h1, h2)::after {
-        display: none;
     }
 
     .slides-container .slide .button {

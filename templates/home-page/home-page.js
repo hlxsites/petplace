@@ -1,5 +1,3 @@
-import { adsenseFunc } from '../../scripts/adsense.js';
-
 function isValidZipcode(code) {
   const regex = /^[0-9]{5}(?:-[0-9]{4})?$/;
 
@@ -39,9 +37,10 @@ function createSpanBlock(main) {
   });
 }
 
-export function loadLazy() {
+export async function loadLazy() {
   const main = document.querySelector('#main');
   createSpanBlock(main);
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('home', 'create');
 }
 
@@ -50,6 +49,7 @@ export function loadEager() {
   return false;
 }
 
-export function loadDelayed() {
+export async function loadDelayed() {
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('home');
 }

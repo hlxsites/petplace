@@ -1,4 +1,3 @@
-import globRegex from './glob-regex/glob-regex.js';
 import {
   buildBlock,
   createOptimizedPicture,
@@ -41,8 +40,9 @@ export const REGIONS = {
 };
 
 window.hlx.templates.add([
-  '/templates/adoption-landing-page',
+  '/templates/about-us',
   '/templates/adopt',
+  '/templates/adoption-landing-page',
   '/templates/article-page',
   '/templates/article-signup',
   '/templates/ask-author-page',
@@ -73,6 +73,7 @@ window.hlx.plugins.add('experimentation', {
   load: 'eager',
   options: {
     audiences: AUDIENCES,
+    prodHost: 'www.petplace.com',
     storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
       ? window.localStorage : window.SessionStorage,
   },
@@ -81,13 +82,16 @@ window.hlx.plugins.add('experimentation', {
 window.hlx.plugins.add('martech', {
   url: './third-party.js',
   condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
-  load: 'lazy',
+  load: 'eager',
 });
 
 window.hlx.plugins.add('rum-conversion', {
   url: '/plugins/rum-conversion/src/index.js',
   load: 'lazy',
 });
+
+// eslint-disable-next-line prefer-rest-params
+function gtag() { window.dataLayer.push(arguments); }
 
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
 export async function getRegion() {
@@ -417,8 +421,6 @@ function buildCookieConsent(main) {
   if (window.hlx.consent) {
     return;
   }
-  // eslint-disable-next-line prefer-rest-params
-  function gtag() { window.dataLayer.push(arguments); }
   // US region does not need the cookie consent logic
   if (document.documentElement.lang === 'en-US') {
     gtag('consent', 'update', {
@@ -709,16 +711,16 @@ function redirectToPreferredRegion() {
   }
 }
 
+let placeholdersPromise;
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  setLocale();
-  redirectToPreferredRegion();
   decorateTemplateAndTheme();
 
-  await fetchPlaceholders(window.hlx.contentBasePath || 'default');
+  await placeholdersPromise;
   await window.hlx.plugins.run('loadEager');
 
   const main = doc.querySelector('main');
@@ -852,17 +854,31 @@ async function loadNewsletterPopup(footer) {
   if (localStorage.getItem(NEWSLETTER_POPUP_KEY)) {
     return;
   }
+
   localStorage.setItem(NEWSLETTER_POPUP_KEY, 'true');
   const popupContainer = document.createElement('div');
-  const newsletterBlock = await createNewsletterAutoBlock(`${window.hlx.contentBasePath}/fragments/newsletter-popup`, (block) => {
-    popupContainer.append(block);
-  });
+  const newsletterBlock = await createNewsletterAutoBlock(
+    `${window.hlx.contentBasePath}/fragments/newsletter-popup`,
+    (block) => {
+      popupContainer.append(block);
+    },
+  );
   await loadBlock(newsletterBlock);
 
   const popupBlock = buildBlock('popup', popupContainer);
   footer.append(popupBlock);
   decorateBlock(popupBlock);
   await loadBlock(popupBlock);
+
+  const dialog = footer.querySelector('hlx-aria-dialog');
+  const closeBtn = dialog.children[1].children[0].children[0];
+  closeBtn.className = 'popup-close';
+
+  const nlBlock = dialog.querySelector('.newsletter-signup div');
+  const heading = document.createElement('div');
+  heading.appendChild(closeBtn);
+  heading.appendChild(nlBlock.querySelector('h2'));
+  nlBlock.firstElementChild.prepend(heading);
 }
 
 /**
@@ -897,7 +913,11 @@ export async function getConfiguration(sheet) {
 }
 
 async function addNewsletterPopup() {
-  const newsletterConfig = await getConfiguration('newsletter-popup');
+  const [globRegex, newsletterConfig] = await Promise.all([
+    import('./glob-regex/glob-regex.js'),
+    await getConfiguration('newsletter-popup'),
+  ]);
+
   if (!newsletterConfig) {
     return;
   }
@@ -908,7 +928,7 @@ async function addNewsletterPopup() {
     if (item.Key !== 'exclude-pattern') {
       return false;
     }
-    const regexp = globRegex(item.Value);
+    const regexp = globRegex.default(item.Value);
     return regexp.test(window.location.pathname);
   });
   if (excluded.length) {
@@ -943,6 +963,7 @@ async function loadLazy(doc) {
 
   const footer = doc.querySelector('footer');
   loadFooter(footer).then(() => {
+    decorateScreenReaderOnly(footer);
     // FIXME: remove conditional on UK website go-live
     if (window.hlx.contentBasePath) {
       addRegionSelectorPopup();
@@ -953,7 +974,7 @@ async function loadLazy(doc) {
   footer.id = 'footer';
   footer.classList.add(FOOTER_SPACING);
   if (!isNewsletterSignedUp() && getMetadata('show-newsletter-footer').toLowerCase() !== 'false') {
-    loadNewsletter(footer);
+    await loadNewsletter(footer);
     footer.classList.remove(FOOTER_SPACING);
   }
 
@@ -968,7 +989,6 @@ async function loadLazy(doc) {
     { id: 'footer', label: getPlaceholder('skipFooter') },
   ]);
 
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
@@ -976,12 +996,11 @@ async function loadLazy(doc) {
   await window.hlx.plugins.run('loadLazy');
 
   if (!window.hlx.contentBasePath) {
-    addNewsletterPopup();
+    await addNewsletterPopup();
   }
 
-  import('./datalayer.js').then(({ handleDataLayerApproach }) => {
-    handleDataLayerApproach();
-  });
+  const { handleDataLayerApproach } = await import('./datalayer.js');
+  handleDataLayerApproach();
 }
 
 /**
@@ -1126,12 +1145,15 @@ export async function captureError(source, e) {
 
 async function loadPage() {
   setLocale();
+  redirectToPreferredRegion();
+
+  placeholdersPromise = fetchPlaceholders(window.hlx.contentBasePath || 'default');
 
   window.dataLayer ||= {};
-  window.dataLayer.push({ js: new Date() });
-  window.dataLayer.push({ config: 'GT-KD23TWW' });
-  window.dataLayer.push({ config: 'G-V3CZKM4K6N' });
-  window.dataLayer.push({ config: 'AW-11334653569' });
+  gtag('js', new Date());
+  gtag('config', 'GT-KD23TWW');
+  gtag('config', 'G-V3CZKM4K6N');
+  gtag('config', 'AW-11334653569');
 
   await window.hlx.plugins.load('eager');
   await loadEager(document);

@@ -1,4 +1,3 @@
-import { adsenseFunc } from '../../scripts/adsense.js';
 import ffetch from '../../scripts/ffetch.js';
 import { buildBlock } from '../../scripts/lib-franklin.js';
 import { decorateResponsiveImages, getId, isTablet } from '../../scripts/scripts.js';
@@ -147,9 +146,11 @@ export async function loadLazy(document) {
     });
   }
 
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('breed', 'create');
 }
 
-export function loadDelayed() {
+export async function loadDelayed() {
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('breed');
 }

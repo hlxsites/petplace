@@ -9,8 +9,8 @@ sitemaps:
           - en
           - en-US
         lastmod: YYYY-MM-DD
-      en-gb:
-        source: /en-gb/query-index.json
-        destination: /sitemap-en-gb.xml
-        hreflang: en-GB
-        lastmod: YYYY-MM-DD
+      # en-gb:
+      #   source: /en-gb/query-index.json
+      #   destination: /sitemap-en-gb.xml
+      #   hreflang: en-GB
+      #   lastmod: YYYY-MM-DD

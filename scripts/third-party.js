@@ -1,28 +1,6 @@
-import { loadScript } from './lib-franklin.js';
+import { getMetadata, loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import { isMobile } from './scripts.js';
-
-function loadMSClarity() {
-  ((c, l, a, r, i, t, y) => {
-    c[a] = c[a] || ((...args) => { (c[a].q = c[a].q || []).push(args); });
-    // eslint-disable-next-line no-param-reassign
-    t = l.createElement(r);
-    t.async = 1;
-    t.src = `https://www.clarity.ms/tag/${i}?ref=gtm2`;
-    // eslint-disable-next-line no-param-reassign
-    [y] = l.getElementsByTagName(r);
-    y.parentNode.insertBefore(t, y);
-  })(window, document, 'clarity', 'script', 'hz6a0je2i3');
-}
-
-async function loadPushlySdk() {
-  function pushly(...args) { window.PushlySDK.push(args); }
-  pushly('load', {
-    domainKey: 'cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq',
-    sw: '/scripts/pushly-sdk-worker.js',
-  });
-  return loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', { async: true });
-}
 
 async function loadAccessibeWidget() {
   await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', { async: true });
@@ -54,7 +32,35 @@ async function loadAccessibeWidget() {
   });
 }
 
+function loadMSClarity() {
+  return loadScript('https://www.clarity.ms/tag/hz6a0je2i3?ref=gtm2', { async: true });
+}
+
+async function loadPushlySdk() {
+  function pushly(...args) { window.PushlySDK.push(args); }
+  pushly('load', {
+    domainKey: 'cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq',
+    sw: '/scripts/pushly-sdk-worker.js',
+  });
+  return loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', { async: true });
+}
+
+export async function loadEager() {
+  // Handle eager martech
+  if (getMetadata('experiment') !== 'delayed-martech'
+    || !document.body.classList.contains('variant-challenger-1')) {
+    loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
+    loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
+  }
+}
+
 export async function loadLazy() {
+  // Handle delayed martech
+  if (!isMobile() && getMetadata('experiment') === 'delayed-martech'
+    && document.body.classList.contains('variant-challenger-1')) {
+    loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
+    loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
+  }
   // Load ads early on desktop since the impact is minimal there and
   // this helps reduce CLS and loading animation duration
   if (
@@ -64,14 +70,23 @@ export async function loadLazy() {
     || window.location.pathname.includes('category'))
     && !isMobile()
   ) {
-    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', {
-      async: '',
-    });
+    loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', { async: true });
   }
 }
 
 export function loadDelayed() {
-  loadMSClarity();
+  if (window.location.hostname === 'www.petplace.com'
+    || window.location.hostname.startsWith('main--petplace--hlxsites.hlx.')) {
+    loadAccessibeWidget();
+  }
+
+  // Handle delayed martech
+  if (isMobile() && getMetadata('experiment') === 'delayed-martech'
+    && document.body.classList.contains('variant-challenger-1')) {
+    loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
+    loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
+  }
+
   if (
     (window.location.pathname === `${window.hlx.contentBasePath}/`
     || window.location.pathname.includes('tags')
@@ -82,12 +97,8 @@ export function loadDelayed() {
     loadScript('https://securepubads.g.doubleclick.net/tag/js/gpt.js', { async: true });
   }
 
+  loadMSClarity();
   loadPushlySdk();
-
-  if (window.location.hostname === 'www.petplace.com'
-    || window.location.hostname.startsWith('main--petplace--hlxsites.hlx.')) {
-    loadAccessibeWidget();
-  }
 }
 
 let shopifyReadyPromise;
