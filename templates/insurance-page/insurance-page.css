@@ -14,6 +14,12 @@
   margin-bottom: 0;
 }
 
+.insurance-page main h2 {
+  font-size: 1.625rem;
+  line-height: 1.175;
+  color: var(--color-black);
+}
+
 .insurance-page main p {
   font-size: var(--body-font-size-s);
   margin-bottom: 1rem;
