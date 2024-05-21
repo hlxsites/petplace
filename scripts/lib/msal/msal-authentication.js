@@ -294,8 +294,8 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
     // the 'newUser' flag is present for newly registered users that are logging in for the very first time.
     if (response.account.idTokenClaims.newUser) {
       // New user detected. Send POST request to create user in the database
-      fetch(`${endPoints.apiUrl}/adopt/api/User`, {
-        method: 'POST',
+      fetch(`${endPoints.apiUrl}/adopt/api/user/source`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${response.accessToken}`,
