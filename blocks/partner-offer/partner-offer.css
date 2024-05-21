@@ -1,0 +1,139 @@
+.partner-offer {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas:
+        "partner-name partner-logo"
+        "partner-data partner-cta";
+    row-gap: 24px;
+    border: 2px solid var(--number-background-color);
+    border-radius: 16px;
+    padding: 32px 24px;
+}
+
+/**
+ * Featured Title
+ */
+.partner-offer.featured:before {
+    content: attr(data-featured-title);
+
+    position: absolute;
+    top: 0;
+    left: 2.25rem;
+    transform: translateY(-50%);
+
+    background-color: var(--number-background-color);
+    color: var(--text-color-inverted);
+    border-radius: 16px;
+    font-size: var(--body-font-size-xs);
+    padding: 4px 12px;
+    text-transform: uppercase;
+}
+
+/* Hide the authored title container to prevent it occupying grid space */
+.partner-offer .partner-featured-title {
+    display: none;
+}
+
+/**
+ * Partner Logo
+ */
+.partner-offer .partner-logo {
+    grid-area: partner-logo;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.partner-offer .partner-logo img {
+    padding: 0;
+    max-height: 40px;
+    width: auto;
+}
+
+/**
+ * Partner Name
+ */
+.partner-offer .partner-name {
+    grid-area: partner-name;
+}
+
+.partner-offer .partner-name p {
+    margin-bottom: 0;
+}
+
+.partner-offer .partner-name p:first-child {
+    font-family: var(--heading-font-family);
+    font-size: var(--heading-font-size-s);
+    line-height: 1.25;
+    margin-bottom: 4px;
+}
+
+.partner-offer .partner-name p:not(:first-child) {
+    font-size: var(--body-font-size-s);
+    line-height: 1.25;
+}
+
+/**
+ * Partner Data
+ */
+.partner-offer .partner-data {
+    grid-area: partner-data;
+    display: flex;
+    align-items: center;
+    --partner-data-padding: 1.25rem;
+    --partner-data-border-color: 1px solid var(--border-color);
+}
+
+.partner-offer .partner-data>div:not(:first-child) {
+    padding-left: var(--partner-data-padding);
+    border-left: var(--partner-data-border-color);
+}
+
+.partner-offer .partner-data>div:not(:last-child) {
+    padding-right: var(--partner-data-padding);
+    border-right: var(--partner-data-border-color);
+}
+
+.partner-offer .partner-data .partner-data-title {
+    color: var(--color-black);
+    font-size: 0.7rem;
+}
+
+.partner-offer .partner-data p {
+    color: #71717a;
+    font-size: var(--body-font-size-m);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/**
+ * Partner CTA
+ */
+.partner-offer .partner-cta {
+    grid-area: partner-cta;
+}
+
+.partner-offer .partner-cta .button-container {
+    display: block;
+}
+
+.partner-offer .partner-cta a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.75rem;
+
+    font-family: var(--body-font-family);
+    font-size: 1rem;
+    background-color: var(--compare-button-bg-color);
+    border-radius: 18px;
+    padding: 10px 24px;
+}
+
+.partner-offer .partner-cta .icon {
+    display: flex;
+    stroke-width: 1.5;
+    width: 14px;
+    height: 14px;
+}
