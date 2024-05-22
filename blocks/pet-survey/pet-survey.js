@@ -237,7 +237,7 @@ export default async function decorate(block) {
       inquiryBtn.addEventListener('click', async (event) => {
         event.preventDefault();
         if (!token) {
-          token = await acquireToken();
+          token = await acquireToken('Survey');
         }
         // eslint-disable-next-line
         const surveyResponse = await callSurveyResponse(surveyId, token);
@@ -290,7 +290,7 @@ export default async function decorate(block) {
       inquiryBtn.addEventListener('click', async (event) => {
         event.preventDefault();
         if (!token) {
-          token = await acquireToken();
+          token = await acquireToken('Inquiry');
         }
         // eslint-disable-next-line
         const surveyResponse = await callSurveyResponse(surveyId, token);
@@ -360,7 +360,7 @@ export default async function decorate(block) {
     if (saveBtn) {
       saveBtn.addEventListener('click', async (event) => {
         if (!token) {
-          token = await acquireToken();
+          token = await acquireToken('Survey');
         }
         event.preventDefault();
         const payload = {
