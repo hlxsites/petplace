@@ -1253,7 +1253,7 @@ export default async function decorate(block) {
                     const token = await acquireToken();
                     initRedirectHandlers(token, event);
                 } else {
-                    acquireToken('openSavedSearchesPopUp').then(async (token) => {
+                    acquireToken('Save Search').then(async (token) => {
                         initialUserData = await callUserApi(token);
                         if (initialUserData.EmailOptIn) {
                             setSaveSearch(event);
