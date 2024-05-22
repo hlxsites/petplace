@@ -34,10 +34,15 @@ function createSpanBlock(main) {
       const code = searchInput.value;
       if (isValidZipcode(code)) {
         removeAllErrorMessage(searchContainers);
-        window.open(
-          `https://quote.petplace.com/questionnaire?zipCode=${code}`,
-          '_blank',
-        );
+        let pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}`;
+        if (document.body.classList.contains('experiment-aggregator-split-testing')) {
+          if (document.body.classList.contains('variant-control')) {
+            pageUrl = `https://quote.petplace.com/?zipCode=${code}&source=OldSite&campaign=TestA`;
+          } else if (document.body.classList.contains('variant-challenger-1')) {
+            pageUrl = `https://quote.petpremium.com/petplace?zipCode=${code}&source=NewSite&campaign=TestB`;
+          }
+        }
+        window.open(pageUrl);
       } else {
         errorMsg.style.display = 'block';
         searchInput.classList.add('error-state');
