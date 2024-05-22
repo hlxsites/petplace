@@ -25,6 +25,20 @@
   margin-bottom: 1rem;
 }
 
+.insurance-page main ul {
+  padding: 0;
+}
+
+.insurance-page main li {
+  font-size: var(--body-font-size-s);
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.insurance-page main li::marker {
+  font-size: 14px;
+}
+
 /* Sponsor */
 .insurance-page main>.section>.default-content-wrapper em {
   font-size: 0.625rem;
@@ -40,6 +54,15 @@
 /**
  * Global
  */
+/* Remove excessive spacing between title and first image */
+.insurance-page main>.section:nth-child(2) {
+  padding-bottom: 0;
+}
+
+.insurance-page main>.section:nth-child(3) {
+  padding-top: 0;
+}
+
 .insurance-page img {
   width: 100%;
   padding: 2.5rem 0 2rem;
@@ -70,7 +93,6 @@
   }
 
   @media (max-width: 1023px) {
-    padding-top: 0;
     padding-bottom: 0;
   }
 }
@@ -140,4 +162,20 @@
   @media (min-width: 1024px) {
     display: block;
   }
+}
+
+/**
+ * Emphasized List
+ */
+.insurance-page .emphasized-list ul {
+  list-style: none;
+}
+
+.insurance-page .emphasized-list li {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='25' fill='none'%3E%3Ccircle cx='8' cy='12.962' r='4' fill='%23C74D2F'/%3E%3C/svg%3E");
+  background-position: 0px 0;
+  background-size: 16px 24px;
+  background-repeat: no-repeat;
+  margin-left: -24px;
+  padding-left: 24px;
 }
