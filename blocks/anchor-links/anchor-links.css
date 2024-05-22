@@ -1,20 +1,18 @@
 .anchor-links>div {
   font-family: var(--heading-font-family);
-  font-size: var(--body-font-size-xl);
+  font-size: 1.5rem;
   line-height: 1.175;
-  margin-bottom: 24px;
+  margin-bottom: 1.25rem;
 }
 
 .anchor-links ul {
   list-style: none;
-  padding: 0;
 }
 
 .anchor-links li {
-  font-size: var(--body-font-size-l);
-  line-height: 1.3;
+  font-size: 1.375rem;
+  line-height: normal;
   margin-bottom: 1.25rem;
-  padding: 0;
 }
 
 .anchor-links a:hover {

@@ -2,40 +2,49 @@
  * Typography
  */
 /* Page Title */
-.insurance-page main h1 {
+.insurance-page h1 {
   font-size: 2.5rem;
-  line-height: 1.175;
+  line-height: normal;
   color: var(--color-black);
   margin-top: 0;
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
 }
 
-.insurance-page main h1+p {
+.insurance-page h1+p {
   margin-bottom: 0;
 }
 
-.insurance-page main h2 {
+.insurance-page h2 {
   font-size: 1.625rem;
-  line-height: 1.175;
+  line-height: normal;
   color: var(--color-black);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
 }
 
-.insurance-page main p {
+.insurance-page h3 {
+  font-size: var(--heading-font-size-m);
+  color: var(--color-black);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.insurance-page p {
   font-size: var(--body-font-size-s);
   margin-bottom: 1rem;
 }
 
-.insurance-page main ul {
+.insurance-page ul {
   padding: 0;
 }
 
-.insurance-page main li {
+.insurance-page li {
   font-size: var(--body-font-size-s);
   padding: 0;
   margin-bottom: 20px;
 }
 
-.insurance-page main li::marker {
+.insurance-page li::marker {
   font-size: 14px;
 }
 
