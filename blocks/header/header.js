@@ -15,6 +15,7 @@ import {
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+import { login, logout, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
@@ -429,6 +430,15 @@ export default async function decorate(block) {
         megaNav.classList.remove('hidden');
         document.querySelector('.nav-language-selector').classList.remove('hidden');
       }
+      isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
+          navLogin.querySelector('.user-btn').classList.remove('hidden');
+          navLogin.querySelector('.login-btn').classList.add('hidden');
+        } else {
+          navLogin.querySelector('.user-btn').classList.add('hidden');
+          navLogin.querySelector('.login-btn').classList.remove('hidden');
+        }
+      });
     }
 
     checkInterface();
