@@ -166,6 +166,7 @@ const createSummaryColumn = (icon, title, list, type) => {
         if (isRequestInProgress === false) {
           const searchBox = document.getElementById('search-box');
           searchBox.value = text;
+          document.getElementById('clearButton').classList.add('show');
           pushToDataLayer({
             event: 'genai_further_questions_cta',
             search_term: text,
@@ -523,6 +524,7 @@ export async function displaySearchResults(query, resultsBlock) {
       window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(event.target.innerText));
       searchBox.value = event.target.innerText;
       resultsBlock.innerHTML = '';
+      document.getElementById('ai-powered-petplace-discovery').scrollIntoView();
       displaySearchResults(event.target.innerText, resultsBlock);
     }
   });
