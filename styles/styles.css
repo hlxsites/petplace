@@ -59,6 +59,7 @@
   --color-purple-light-alt: #8e8199;
   --color-purple-dark: #302280;
   --color-purple-dark-alt: #440042;
+  --color-purple-300: #7369ab;
   --color-dark-maroon: #5d3450;
   --color-red: #ff6662;
   --color-gold: #d8c46c;
@@ -76,6 +77,7 @@
   --color-green-transparent: rgb(120 166 141 / 60%);
   --color-magenta-transparent: rgb(169 77 143 / 60%);
   --color-mauve-transparent: rgb(106 55 90 / 60%);
+  --color-neutral-300: #e4e4e7;
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;

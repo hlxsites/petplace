@@ -81,6 +81,71 @@
   }
 }
 
+/* Tables */
+.insurance-page .table table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  --insurance-table-border: 1px solid var(--color-neutral-300);
+  --insurance-table-border-radius: 8px;
+}
+
+.insurance-page .table thead {
+  background-color: var(--color-purple-300);
+  color: var(--text-color-inverted);
+}
+
+.insurance-page .table th {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 1rem 1.5rem;
+}
+
+.insurance-page .table th:first-child {
+  border-top-left-radius: var(--insurance-table-border-radius);
+}
+
+.insurance-page .table th:last-child {
+  border-top-right-radius: var(--insurance-table-border-radius);
+}
+
+.insurance-page .table tr:last-child td:first-child {
+  border-bottom-left-radius: var(--insurance-table-border-radius);
+}
+
+.insurance-page .table tr:last-child td:last-child {
+  border-bottom-right-radius: var(--insurance-table-border-radius);
+}
+
+.insurance-page .table td {
+  border-top: var(--insurance-table-border);
+  border-left: var(--insurance-table-border);
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.insurance-page .table td:last-child {
+  border-right: var(--insurance-table-border);
+}
+
+.insurance-page .table tr:first-child td {
+  border-top-width: 2px;
+}
+
+.insurance-page .table tr:last-child td {
+  border-bottom: var(--insurance-table-border);
+}
+
+.insurance-page .table :is(th:first-child, td:first-child) {
+  text-align: left;
+}
+
+.insurance-page .table :is(th:not(:first-child), td:not(:first-child)) {
+  text-align: right;
+}
+
 /**
  * Layout
  */
@@ -97,6 +162,7 @@
   grid-row: 2 / 2;
 
   @media (min-width: 1024px) {
+    margin-left: 16px;
     grid-column: 2 / 2;
     grid-row: 1 / span 2;
   }
