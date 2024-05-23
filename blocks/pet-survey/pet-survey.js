@@ -12,7 +12,66 @@ import {
   createSummaryScreen,
 } from './survey-ui.js';
 
+function previousInquirySubmittedModal() {
+  const optInModalEl = document.createElement('div');
+  const emailOptInModalStructure = `
+      <div class="modal-header">
+      <h3 class="modal-title">Previous Inquiry Submitted</h3>
+      </div>
+      <div class="modal-body">
+          <p>It looks like you've already submitted an inquiry for this pet. Continue exploring adoptable pets or view your inquiries below.</p>
+          <div class="modal-action-btns">
+              <button class="cancel">View My Inquiries</button>
+              <button class="confirm">Continue Browsing</button>
+          </div>
+      </div>
+  `;
+  optInModalEl.classList.add('modal', 'previous-inquiry-submitted-modal', 'hidden');
+
+  optInModalEl.innerHTML = emailOptInModalStructure;
+
+  return optInModalEl;
+}
+
+function previousInquirySubmittedOverlay() {
+  const optInOverlaylEl = document.createElement('div');
+  optInOverlaylEl.classList.add('overlay');
+
+  return optInOverlaylEl;
+}
+
+function mountPreviousInquirySubmittedModal() {
+  if (document.readyState === 'complete') {
+    document.querySelector('body').append(previousInquirySubmittedModal());
+    document.querySelector('body').append(previousInquirySubmittedOverlay());
+}
+}
+
+export function openPreviousInquirySubmittedModal() {
+  const modal = document.querySelector('.previous-inquiry-submitted-modal');
+  if (modal) {
+      const confirmBtn = document.querySelector('.previous-inquiry-submitted-modal .confirm');
+      const cancelBtn = document.querySelector('.previous-inquiry-submitted-modal .cancel');
+      modal.classList.remove('hidden');
+      const overlay = document.querySelector('.overlay');
+      overlay.classList.add('show');
+
+      confirmBtn.addEventListener('click', async () => {
+          modal.classList.add('hidden');
+          overlay.classList.remove('show');
+            window.history.back(-2);
+      });
+
+      cancelBtn.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          overlay.classList.remove('show');
+          window.location.href = '/pet-adoption/account#inquiries';
+      });
+  }
+}
+
 export default async function decorate(block) {
+  mountPreviousInquirySubmittedModal();
   block.textContent = '';
   const searchParams = new URLSearchParams(window.location.search);
   const animalType = searchParams.get('animalType');
@@ -323,7 +382,6 @@ export default async function decorate(block) {
             'PUT',
             payload,
           );
-          
         }
         const response = await fetch(`${endPoints.apiUrl}/adopt/api/Inquiry`, {
           method: 'POST',
@@ -339,6 +397,8 @@ export default async function decorate(block) {
       });
       if (response.status === 200) {
         window.location.href = '/pet-adoption/inquiry-confirmation';
+      } else {
+        openPreviousInquirySubmittedModal();
       }
       });
     }
