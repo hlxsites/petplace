@@ -304,3 +304,33 @@
     padding: 2rem;
   }
 }
+
+/**
+ * Insurance Plans
+ */
+.insurance-page .insurance-plans {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+  margin-top: 2rem;
+}
+
+.insurance-page .insurance-plans>div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.insurance-page .insurance-plans>div>div:first-child {
+  width: 56px;
+  height: 56px;
+}
+
+.insurance-page .insurance-plans>div>div :is(h1, h2, h3) {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+
+.insurance-page .insurance-plans>div>div p:last-of-type {
+  margin-bottom: 0;
+}
