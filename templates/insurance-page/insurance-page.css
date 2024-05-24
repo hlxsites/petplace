@@ -405,3 +405,53 @@
 .insurance-page .compare-quotes>div img {
   height: 100%;
 }
+
+/**
+ * FAQ Accordion
+ */
+.insurance-page .accordion-section {
+  background-color: var(--text-color-inverted);
+  border-radius: 8px;
+  border: 1px solid var(--border-base-color);
+  margin-bottom: 1.5rem;
+}
+
+.insurance-page .accordion-section:last-child {
+  margin-bottom: 0;
+}
+
+.insurance-page .accordion-section>h3 {
+  margin-top: 0;
+}
+
+.insurance-page .accordion-section :is(button, .text) {
+  background-color: var(--text-color-inverted);
+  color: var(--faq-accordion-txt-color);
+  padding: 1rem 1.5rem;
+}
+
+.insurance-page .accordion-section button {
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  min-height: unset;
+}
+
+.insurance-page .accordion-section .text {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  padding-top: 8px;
+}
+
+.insurance-page .accordion button[aria-expanded]::after {
+  -webkit-mask: url(../../icons/long-arrow-down.svg) center / 100% 100%;
+  mask: url(../../icons/long-arrow-down.svg) center / 100% 100%;
+  background-color: var(--faq-accordion-arrow-bg-color);
+  width: 20px;
+  height: 20px;
+}
+
+.insurance-page .accordion button[aria-expanded='true']::after {
+  -webkit-mask: url(../../icons/long-arrow-up.svg) center / 100% 100%;
+  mask: url(../../icons/long-arrow-up.svg) center / 100% 100%;
+}
