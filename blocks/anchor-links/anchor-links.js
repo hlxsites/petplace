@@ -16,6 +16,6 @@ export default async function decorate(block) {
   });
 
   const linkList = document.createElement('ul');
-  linkList.innerHTML = anchorLinks;
+  linkList.innerHTML = anchorLinks.join('');
   block.append(linkList);
 }
