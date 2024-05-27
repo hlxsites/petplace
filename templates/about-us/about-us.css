@@ -1,0 +1,132 @@
+.about-us #main h2,
+.about-us #main h3,
+.about-us #main h5,
+.about-us #main p,
+.about-us #main a {
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif !important;
+}
+
+.about-us #main .section:first-child {
+  width: 100%;
+}
+
+.about-us #main .section {
+  margin: auto;
+  width: 80%;
+}
+
+.about-us #main .section.hero-container {
+  padding-top: 0;
+}
+
+.about-us #main .section.details-box-container,
+.about-us #main .section.columns-container {
+  padding: 0;
+  padding-bottom: 1rem;
+}
+
+.about-us #main .hero {
+  padding-top: 0;
+}
+
+.about-us #main .hero > div {
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
+.about-us #main .hero picture {
+  height: auto;
+  position: relative;
+}
+
+.about-us #main .hero img {
+  max-height: 500px;
+}
+
+.about-us #main h2 {
+  color: #3c0040;
+  font-size: 3rem;
+}
+
+.about-us #main .details-box p {
+  margin-bottom: 0.5rem;
+}
+
+.about-us #main .about-card-box {
+  border-radius: 1rem;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: row-reverse;
+  height: 15rem;
+  padding: 2rem 1.5rem;
+  align-items: center;
+  box-shadow: 0 1px 6px 0 rgba(0,0,0,0.15);
+}
+
+.about-us #main .about-card-box div {
+  flex: 7 0 0%;
+  margin-right: 0.5rem;
+}
+
+.about-us #main .about-card-box p {
+  flex: 6 0 0%;
+}
+
+.about-us #main .about-card-box h3 {
+  font-weight: 500;
+  font-size: 2rem;
+  color: #2B273F;
+}
+
+.about-us #main .about-card-box h5 {
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.25;
+}
+
+.about-us #main .about-card-box a {
+  text-decoration: underline;
+}
+
+.about-us #main .about-card-box img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media (max-width: 800px)  {
+  .about-us #main .section {
+    padding-top: 0;
+    width: 90%;
+  }
+
+  .about-us #main .section .hero {
+    padding: 0;
+    min-height: auto;
+  }
+
+  .about-us #main .section .hero picture {
+    margin: 0;
+  }
+
+  .about-us #main h2 {
+    font-size: 1.75rem;
+  }
+  
+  .about-us #main .about-card-box {
+    flex-direction: column;
+    height: auto;
+    text-align: center;
+  }
+
+  .about-us #main .about-card-box div {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 1024px)  {
+  .columns > div {
+    flex-direction: column !important;
+  }
+}

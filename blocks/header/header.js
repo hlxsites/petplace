@@ -348,6 +348,19 @@ export default async function decorate(block) {
       }
     });
 
+    window.addEventListener('scroll', () => {
+      const collapsible = block.querySelector('.collapsible');
+      const content = collapsible.nextElementSibling;
+      const isActive = collapsible.classList.value.includes('active');
+
+      if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+      }
+      if (isActive) {
+        collapsible.classList.remove('active');
+      }
+    });
+
     block.querySelector('.nav-hamburger').addEventListener('click', () => {
       navHamburger.classList.add('hidden');
       navClose.classList.remove('hidden');

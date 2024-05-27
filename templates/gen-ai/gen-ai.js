@@ -440,6 +440,9 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 };
 
 function displayInsuranceCTA(resultsBlock) {
+  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  helpContainer.classList.add('hide');
+  helpContainer.classList.remove('show');
   const insuranceCtaCopy = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness, Click to learn more.';
   const insuranceCtaPath = document.head.querySelector('insurance-page-path')?.content || '/pet-insurance';
 
