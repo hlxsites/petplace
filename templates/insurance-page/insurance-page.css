@@ -287,6 +287,20 @@
 }
 
 /**
+ * Resources List
+ */
+.insurance-page .resources-list li {
+  list-style-position: inside;
+  font-size: 1.125rem;
+  line-height: 1.625rem;
+  margin-bottom: 10px;
+}
+
+.insurance-page .resources-list li::marker {
+  color: var(--compare-button-bg-color);
+}
+
+/**
  * Section Separators
  */
 .insurance-page .section[data-separator="regular"] {
