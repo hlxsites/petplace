@@ -39,7 +39,7 @@ function createSpanBlock(main) {
           if (document.body.classList.contains('variant-control')) {
             pageUrl = `https://quote.petplace.com/?zipCode=${code}&source=OldSite&campaign=TestA`;
           } else if (document.body.classList.contains('variant-challenger-1')) {
-            pageUrl = `https://quote.petpremium.com/petplace?zipCode=${code}&source=NewSite&campaign=TestB`;
+            pageUrl = `https://quote.petpremium.com/petplace/wizard?zipCode=${code}&source=NewSite&campaign=TestB`;
           }
         }
         window.open(pageUrl);
