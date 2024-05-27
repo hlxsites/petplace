@@ -30,10 +30,14 @@ export async function loadEager(document) {
 
   // Build side section page links
   createTemplateBlock(sideSection, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);
+
+  // Move subhead to the footer
+  const subhead = document.querySelector('.subhead');
+  document.querySelector('footer').appendChild(subhead);
 }
 
 export async function loadLazy(document) {
-  // XXX: Move this to separate function
+  // Adjust structure of article author for styling
   const authorContainer = document.querySelector('.article-author [itemprop="author"]');
   const timePublished = document.querySelector('.article-author [itemprop="datePublished"]');
   authorContainer.appendChild(timePublished);

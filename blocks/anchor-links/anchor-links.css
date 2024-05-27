@@ -14,8 +14,3 @@
   line-height: normal;
   margin-bottom: 1.25rem;
 }
-
-.anchor-links a:hover {
-  font-weight: 600;
-  text-decoration: underline;
-}

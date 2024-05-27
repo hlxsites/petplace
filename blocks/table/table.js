@@ -39,7 +39,7 @@ export default function decorate(block) {
   const firstRow = table.querySelector(':scope tr:first-child');
   const isHeaderRow = [...firstRow.children].every((td) => {
     const child = td.firstElementChild;
-    return child.nodeName === 'STRONG' && td.textContent === child.textContent;
+    return child && child.nodeName === 'STRONG' && td.textContent === child.textContent;
   });
   if (isHeaderRow) {
     [...firstRow.children].forEach((td) => {

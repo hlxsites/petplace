@@ -29,7 +29,7 @@
   margin-bottom: 1rem;
 }
 
-.insurance-page p {
+.insurance-page main p {
   font-size: var(--body-font-size-s);
   margin-bottom: 1rem;
 }
@@ -50,6 +50,11 @@
 
 .insurance-page li::marker {
   font-size: 14px;
+}
+
+.insurance-page a:hover {
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 /* Sponsor */
@@ -160,6 +165,13 @@
 
 .insurance-page .table :is(th:not(:first-child), td:not(:first-child)) {
   text-align: right;
+}
+
+/**
+ * Footer
+ */
+.insurance-page .footer-top-spacing .footer {
+  border-top: unset;
 }
 
 /**
@@ -454,4 +466,27 @@
 .insurance-page .accordion button[aria-expanded='true']::after {
   -webkit-mask: url(../../icons/long-arrow-up.svg) center / 100% 100%;
   mask: url(../../icons/long-arrow-up.svg) center / 100% 100%;
+}
+
+/**
+ * Subhead (disclaimer)
+ */
+.insurance-page .subhead.disclaimer {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-inverted);
+  margin-top: 3rem;
+  padding-bottom: 0;
+  padding: 2.5rem 5rem;
+
+  font-size: 0.625rem;
+  line-height: 1rem;
+}
+
+.insurance-page .subhead.disclaimer>div {
+  max-width: 1344px;
+  margin: auto;
+}
+
+.insurance-page .subhead.disclaimer p:not(:last-child) {
+  margin-bottom: 1rem;
 }
