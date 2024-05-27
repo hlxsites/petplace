@@ -34,14 +34,12 @@
 /**
  * Featured Title
  */
-.partner-offer.featured:before {
+.partner-offer.featured::before {
     content: attr(data-featured-title);
-
     position: absolute;
     top: 0;
     left: 1rem;
     transform: translateY(-50%);
-
     background-color: var(--number-background-color);
     color: var(--text-color-inverted);
     border-radius: 16px;
@@ -52,7 +50,7 @@
 }
 
 @media (min-width: 1024px) {
-    .partner-offer.featured:before {
+    .partner-offer.featured::before {
         left: 1.5rem;
     }
 }
@@ -82,41 +80,19 @@
 }
 
 /**
- * Partner Name
- */
-.partner-offer .partner-name {
-    grid-area: partner-name;
-}
-
-.partner-offer .partner-name p {
-    margin-bottom: 0;
-}
-
-.partner-offer .partner-name p:first-child {
-    font-family: var(--heading-font-family);
-    font-size: var(--heading-font-size-m);
-    line-height: 1.15;
-    margin-bottom: 4px;
-}
-
-.partner-offer .partner-name p:not(:first-child) {
-    font-size: var(--body-font-size-xs);
-    line-height: 1.6;
-    color: var(--text-color-accent);
-}
-
-/**
  * Partner Data
  */
 .partner-offer .partner-data {
     grid-area: partner-data;
     display: flex;
     flex-direction: column;
+
     --partner-data-padding: 1rem;
     --partner-data-border-color: 1px solid var(--border-color);
 
     @media (min-width: 1024px) {
         --partner-data-padding: 1.25rem;
+
         flex-direction: row;
         align-items: center;
     }
@@ -167,6 +143,30 @@
 }
 
 /**
+ * Partner Name
+ */
+.partner-offer .partner-name {
+    grid-area: partner-name;
+}
+
+.partner-offer .partner-name p {
+    margin-bottom: 0;
+}
+
+.partner-offer .partner-name p:first-child {
+    font-family: var(--heading-font-family);
+    font-size: var(--heading-font-size-m);
+    line-height: 1.15;
+    margin-bottom: 4px;
+}
+
+.partner-offer .partner-name p:not(:first-child) {
+    font-size: var(--body-font-size-xs);
+    line-height: 1.6;
+    color: var(--text-color-accent);
+}
+
+/**
  * Partner CTA
  */
 .partner-offer .partner-cta {
@@ -182,7 +182,6 @@
     align-items: center;
     justify-content: center;
     column-gap: 0.75rem;
-
     font-family: var(--body-font-family);
     font-size: 1rem;
     background-color: var(--compare-button-bg-color);
