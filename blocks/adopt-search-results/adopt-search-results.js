@@ -1077,6 +1077,12 @@ export default async function decorate(block) {
     petTypeContainer.append(petTypeLabelElement);
     petTypeContainer.append(petTypeSelect);
     petTypeSelect.addEventListener('change', () => {
+        callAnimalList().then((data) => {
+            if (data) {
+                // eslint-disable-next-line
+                buildResultsContainer(data);
+            }
+        });
         callBreedList(petTypeSelect.value.toLowerCase()).then((data) => {
             breedList = data;
             const radioSize = document.querySelector('.radio-size');
