@@ -26,7 +26,7 @@ export async function loadEager(document) {
 
   // Add side section blocks
   createTemplateBlock(sideSection, 'article-author');
-  createTemplateBlock(sideSection, 'social-share');
+  createTemplateBlock(sideSection, 'social-share', ['<div>facebook</div>', '<div>instagram</div>', '<div>tiktok</div>']);
 
   // Build side section page links
   createTemplateBlock(sideSection, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);

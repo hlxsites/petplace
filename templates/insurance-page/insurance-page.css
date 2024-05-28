@@ -259,6 +259,11 @@
   }
 }
 
+.insurance-page .social-share :is(li, .icon) {
+  width: 24px;
+  height: 24px;
+}
+
 /**
  * Anchor Links
  */
