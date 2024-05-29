@@ -158,6 +158,11 @@ export default async function decorate(block) {
       });
     });
   }
+  function enableSaveButton() {
+    // Get save button
+    const saveBtn = block.querySelector('#pet-survey-summary-save');
+    if (saveBtn.disabled) saveBtn.disabled = false;
+  }
   function bindSurveySummaryChangeEvents() {
     // Selects
     const surveyInputs = block.querySelectorAll(
@@ -170,10 +175,7 @@ export default async function decorate(block) {
           QuestionOptionId: parseInt(el.target.value, 10),
         };
         state.surveyAnswers.push(data);
-        const saveBtn = block.querySelector('#pet-survey-summary-save');
-        if (saveBtn.disabled) {
-          saveBtn.disabled = false;
-        }
+        enableSaveButton();
         const otherOptions = inputEl.querySelectorAll(`option:not([value="${el.target.value}"]):not([value=""])`);
         if (otherOptions.length > 0) {
           otherOptions.forEach((option) => {
@@ -208,7 +210,7 @@ export default async function decorate(block) {
             ExternalAnswerKey: el.target.getAttribute('data-option-id'),
             UserResponseText: el.target.getAttribute('data-option-text'),
           };
-
+          enableSaveButton();
           // add the checked item to the state
           if (el.target.checked) {
             state.surveyAnswers.push(data);
