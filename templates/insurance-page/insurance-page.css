@@ -467,6 +467,7 @@
 
 .insurance-page .accordion-section :is(button, .text) {
   background-color: var(--text-color-inverted);
+  border-radius: 8px;
   color: var(--faq-accordion-txt-color);
   padding: 1rem 1.5rem;
 }
