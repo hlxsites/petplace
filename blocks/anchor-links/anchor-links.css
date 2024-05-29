@@ -14,3 +14,11 @@
   line-height: normal;
   margin-bottom: 1.25rem;
 }
+
+.anchor-links a {
+  text-decoration: none;
+}
+
+.anchor-links a:hover {
+  text-decoration: underline;
+}

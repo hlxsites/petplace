@@ -190,6 +190,10 @@
     padding: 10px 24px;
 }
 
+.partner-offer .partner-cta a:hover {
+    text-decoration: none;
+}
+
 .partner-offer .partner-cta .icon {
     display: flex;
     stroke-width: 1.5;
