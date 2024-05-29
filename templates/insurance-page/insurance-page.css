@@ -35,7 +35,7 @@
 }
 
 .insurance-page main p {
-  font-size: var(--body-font-size-s);
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -237,7 +237,10 @@
 }
 
 .insurance-page .article-author p {
+  color: var(--compare-button-bg-color);
+  font-weight: 500;
   margin-bottom: 0;
+  text-decoration: underline;
 }
 
 .insurance-page .article-author time {
