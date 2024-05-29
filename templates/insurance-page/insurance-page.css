@@ -2,10 +2,17 @@
  * Typography
  */
 /* Page Title */
+.insurance-page main {
+  color: var(--color-black);
+}
+
+.insurance-page :is(h1,h2,h3,strong) {
+  color: var(--color-black)
+}
+
 .insurance-page h1 {
   font-size: 2.5rem;
   line-height: normal;
-  color: var(--color-black);
   margin-top: 0;
   margin-bottom: 0.25rem;
 }
@@ -17,14 +24,12 @@
 .insurance-page h2 {
   font-size: 1.625rem;
   line-height: normal;
-  color: var(--color-black);
   margin-top: 0;
   margin-bottom: 1.5rem;
 }
 
 .insurance-page h3 {
   font-size: var(--heading-font-size-m);
-  color: var(--color-black);
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
@@ -142,9 +147,14 @@
 .insurance-page .table td {
   border-top: var(--insurance-table-border);
   border-left: var(--insurance-table-border);
+  color: #3f3f46;
   font-size: 0.875rem;
   line-height: 1.5rem;
   padding: 0.75rem 1.5rem;
+}
+
+.insurance-page .table td strong {
+  color: #3f3f46;
 }
 
 .insurance-page .table td:last-child {
