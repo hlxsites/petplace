@@ -584,7 +584,7 @@ export default async function decorate(block) {
           surveySuccessMessage.classList.add('show');
         }
         const saveBtn = block.querySelector('#pet-survey-summary-save');
-        saveBtn.disabled = true;
+        if (saveBtn) saveBtn.disabled = true;
       }
     } catch (error) {
       // eslint-disable-next-line
@@ -697,7 +697,7 @@ export default async function decorate(block) {
         await createSummaryForm(animalType, questions, animalId, clientId),
       ),
     );
-
+    bindSurveySummaryChangeEvents();
     block
       .querySelector('form.pet-survey__form')
       .addEventListener('submit', (event) => {
