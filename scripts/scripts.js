@@ -54,6 +54,7 @@ window.hlx.templates.add([
   '/templates/category-index',
   '/templates/gen-ai',
   '/templates/home-page/',
+  '/templates/homepage-new/',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
   '/templates/tag-index',
