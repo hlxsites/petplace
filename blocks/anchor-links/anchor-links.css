@@ -1,0 +1,24 @@
+.anchor-links>div {
+  font-family: var(--heading-font-family);
+  font-size: 1.5rem;
+  line-height: 1.175;
+  margin-bottom: 1.25rem;
+}
+
+.anchor-links ul {
+  list-style: none;
+}
+
+.anchor-links li {
+  font-size: 1.375rem;
+  line-height: normal;
+  margin-bottom: 1.25rem;
+}
+
+.anchor-links a {
+  text-decoration: none;
+}
+
+.anchor-links a:hover {
+  text-decoration: underline;
+}
