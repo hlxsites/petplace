@@ -173,7 +173,7 @@ main .newsletter-signup input {
   }
 
   .newsletter-signup.horizontal form .form-submit-wrapper {
-    /* justify-self: flex-start; */
+    grid-area: signup;
   }
 
   .newsletter-signup.horizontal form .newsletter-message {
