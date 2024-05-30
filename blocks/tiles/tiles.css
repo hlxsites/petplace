@@ -9,7 +9,7 @@
 
 .section.tiles-container h2 {
   margin-bottom: 2rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #000;
   text-align: center;
@@ -111,10 +111,6 @@
 }
 
 @media (min-width: 400px) {
-  main .section {
-    margin-bottom: 2rem;
-  }
-
   .tile .tile-contents {
     padding: 1rem;
   }

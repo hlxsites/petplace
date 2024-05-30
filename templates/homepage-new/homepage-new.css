@@ -8,7 +8,7 @@ main img {
 }
 
 main .section {
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 main a:hover {
@@ -28,7 +28,7 @@ main a:hover {
   content: "";
   width: 100%;
   height: 10rem;
-  margin-top: -45px;
+  margin-top: -10px;
   position: absolute;
   left: 0;
   background: url("../../icons/home-bg-desktop.svg") center / 100% 100%;
@@ -44,7 +44,7 @@ main a:hover {
 }
 
 .pre-footer {
-  margin-bottom: -400px;
+  margin-bottom: -500px;
 }
 
 .pre-footer .columns-img-col img {
@@ -77,11 +77,6 @@ main a:hover {
   }  
 
   .home-banner-bg::after {
-    content: "";
-    width: 100%;
-    height: 10rem;
-    margin-top: -10px;
-    position: absolute;
     background: url("../../icons/home-bg-mobile.svg") center / 100% 100%;
   }
 
@@ -90,7 +85,7 @@ main a:hover {
   }
 
   .pre-footer {
-    margin-bottom: -100px;
+    margin-bottom: -125px;
   }
 
   .pre-footer > div > div:last-child {
