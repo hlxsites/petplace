@@ -37,9 +37,19 @@ function createSpanBlock(main) {
   });
 }
 
-export async function loadLazy() {
+export async function loadLazy(document) {
+  // adding wave background
   const main = document.querySelector('#main');
+  const bgWaveDiv = document.createElement('div');
+  bgWaveDiv.append(main.children[0]);
+  // add this in for when "explore" is live
+  // bgWaveDiv.append(main.children[0]);
+  bgWaveDiv.className = 'home-banner-bg';
+  main.prepend(bgWaveDiv);
+
+  // insurance form
   createSpanBlock(main);
+
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('home', 'create');
 }

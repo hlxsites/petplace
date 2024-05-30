@@ -1,6 +1,9 @@
+.footer-wrapper {
+  position: relative;
+}
+
 .footer-top-spacing .footer {
   margin: auto;
-  border-top: 6rem solid var(--background-color-dark);
 }
 
 .footer p {
