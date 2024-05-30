@@ -1,5 +1,10 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { getCategories, getCategory, getPlaceholder } from '../../scripts/scripts.js';
+import {
+  getCategories,
+  getCategory,
+  getPlaceholder,
+  isMobile,
+} from '../../scripts/scripts.js';
 
 let articles;
 let breed;
@@ -8,59 +13,81 @@ export default async function decorate(block) {
   await getCategories();
 
   // Create containing div of three tiles (one big, two small)
-  const tileContainer = document.createElement('div');
-  tileContainer.className = 'tiles-block-container';
+  const tileBlockContainer = document.createElement('div');
+  tileBlockContainer.className = 'tiles-block-container';
 
   if (!articles) {
-    const data = await Promise.all([
-      fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=article&limit=500`),
-      fetch(`${window.hlx.contentBasePath}/article/query-index.json?sheet=breed`),
-    ].map((fetch) => fetch.then((res) => res.json())));
+    const data = await Promise.all(
+      [
+        fetch(
+          `${window.hlx.contentBasePath}/article/query-index.json?sheet=article&limit=500`,
+        ),
+        fetch(
+          `${window.hlx.contentBasePath}/article/query-index.json?sheet=breed`,
+        ),
+      ].map((fetch) => fetch.then((res) => res.json())),
+    );
     [articles, breed] = data.map((json) => json?.data);
   }
 
-  const data = (await Promise.all([...block.children].map(async (row) => {
-    const path = new URL(row.firstElementChild.firstElementChild.href).pathname;
+  const data = (
+    await Promise.all(
+      [...block.children].map(async (row) => {
+        const path = new URL(row.querySelector('a').href).pathname;
 
-    for (let i = 0; i < articles.length; i += 1) {
-      if (articles[i].path === path) {
-        return articles[i];
-      }
-    }
+        for (let i = 0; i < articles.length; i += 1) {
+          if (articles[i].path === path) {
+            return articles[i];
+          }
+        }
 
-    for (let i = 0; i < breed.length; i += 1) {
-      if (breed[i].path === path) {
-        return breed[i];
-      }
-    }
+        for (let i = 0; i < breed.length; i += 1) {
+          if (breed[i].path === path) {
+            return breed[i];
+          }
+        }
 
-    const res = await fetch(path);
-    if (res.ok) {
-      const html = await res.text();
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      return {
-        path,
-        category: doc.querySelector('head > meta[name="category"]')?.content,
-        title: doc.querySelector('head > title').textContent,
-        description: doc.querySelector('head > meta[name="description"]')?.content,
-        image: doc.querySelector('head > meta[property="og:image"]')?.content,
-        imageAlt: doc.querySelector('head > meta[property="og:image:alt"]')?.content,
-        author: doc.querySelector('head > meta[name="author"]')?.content,
-        date: Math.floor(new Date(doc.querySelector('head > meta[name="publication-date"]')?.content).getTime() / 1000),
-      };
-    }
+        const res = await fetch(path);
+        if (res.ok) {
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          return {
+            path,
+            category: doc.querySelector('head > meta[name="category"]')
+              ?.content,
+            title: doc.querySelector('head > title').textContent,
+            description: doc.querySelector('head > meta[name="description"]')
+              ?.content,
+            image: doc.querySelector('head > meta[property="og:image"]')
+              ?.content,
+            imageAlt: doc.querySelector('head > meta[property="og:image:alt"]')
+              ?.content,
+            author: doc.querySelector('head > meta[name="author"]')?.content,
+            date: Math.floor(
+              new Date(
+                doc.querySelector(
+                  'head > meta[name="publication-date"]',
+                )?.content,
+              ).getTime() / 1000,
+            ),
+          };
+        }
 
-    // eslint-disable-next-line no-console
-    console.error(`No article in index found for ${path}`);
-    return null;
-  }))).filter((item) => item); // filter out null values returned from the for loop
+        // eslint-disable-next-line no-console
+        console.error(`No article in index found for ${path}`);
+        return null;
+      }),
+    )
+  ).filter((item) => item); // filter out null values returned from the for loop
 
-  const categories = await Promise.all(data.map(async (dta) => {
-    const category = await getCategory(dta.path.split('/').slice(-2).shift());
-    const metaCat = await getCategory(dta.category);
+  const categories = await Promise.all(
+    data.map(async (dta) => {
+      const category = await getCategory(dta.path.split('/').slice(-2).shift());
+      const metaCat = await getCategory(dta.category);
 
-    return category || metaCat || null;
-  }));
+      return category || metaCat || null;
+    }),
+  );
 
   data.forEach((dta, index) => {
     const tileTitle = dta.title.replace(/[-|] Petplace(\.com)?$/i, '');
@@ -71,10 +98,6 @@ export default async function decorate(block) {
     tile.setAttribute('itemtype', 'https://schema.org/Article');
 
     const imgPadding = document.createElement('div');
-    if (index === 0) {
-      tile.classList.add('tile-0');
-      imgPadding.classList.add('img-padding');
-    }
 
     const imgContainer = document.createElement('div');
     imgContainer.className = 'img-container';
@@ -82,54 +105,55 @@ export default async function decorate(block) {
     // Create Image tag.. future will be <picture> tag
     let picture;
     let img;
-    if (index === 0) {
-      picture = createOptimizedPicture(
-        dta.image,
-        dta?.imageAlt || tileTitle,
-        false,
-        [
-          { media: '(min-width: 1024px)', width: 760 },
-          { media: '(min-width: 600px)', width: 1200 },
-          { width: 900 },
-        ],
-      );
-      img = picture.querySelector('img');
-      img.width = 768;
-      img.height = 432;
-    } else {
-      picture = document.createElement('a');
-      picture.href = dta.path;
-      picture.append(createOptimizedPicture(
-        dta.image,
-        dta?.imageAlt || tileTitle,
-        false,
-        [
-          { media: '(min-width: 768px)', width: 500 },
-          { width: 300 },
-        ],
-      ));
-      img = picture.querySelector('img');
-      img.width = 200;
-      img.height = 200;
-      img.setAttribute('itemprop', 'image');
-    }
+    // if (index === 0) {
+    //   picture = createOptimizedPicture(
+    //     dta.image,
+    //     dta?.imageAlt || tileTitle,
+    //     false,
+    //     [
+    //       { media: '(min-width: 1024px)', width: 760 },
+    //       { media: '(min-width: 600px)', width: 1200 },
+    //       { width: 900 },
+    //     ],
+    //   );
+    //   img = picture.querySelector('img');
+    //   img.width = 768;
+    //   img.height = 432;
+    // } else {
+    picture = document.createElement('a');
+    picture.href = dta.path;
+    picture.append(
+      createOptimizedPicture(dta.image, dta?.imageAlt || tileTitle, false, [
+        { media: '(min-width: 768px)', width: 500 },
+        { width: 300 },
+      ]),
+    );
+    img = picture.querySelector('img');
+    img.width = 200;
+    img.height = 200;
+    img.setAttribute('itemprop', 'image');
+    // }
 
     // Create content div.  This contains title, author, date etc..
     const content = document.createElement('div');
     content.className = 'tile-contents';
-    if (index === 0) {
-      content.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color}-transparent)`);
-    }
+    // if (index === 0) {
+    //   content.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color}-transparent)`);
+    // }
 
     const categoryLink = document.createElement('a');
     categoryLink.classList.add('category-link-btn');
     categoryLink.href = categories[index]?.Path;
-    categoryLink.innerHTML = `<span itemprop="about">${categories[index]?.Category}</span>`;
-    categoryLink.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color})`);
 
-    if (index !== 0) {
-      categoryLink.classList.add('category-link-btn-transparent');
-    }
+    categoryLink.innerHTML = `<span itemprop="about">${categories[index]?.Category}</span>`;
+    categoryLink.style.setProperty(
+      '--bg-color',
+      `var(--color-${categories[index]?.Color})`,
+    );
+
+    // if (index !== 0) {
+    categoryLink.classList.add('category-link-btn-transparent');
+    // }
 
     const monthNames = [
       getPlaceholder('january'),
@@ -149,6 +173,7 @@ export default async function decorate(block) {
     const categoryLinkMobile = categoryLink.cloneNode(true);
     categoryLinkMobile.classList.add('category-link-btn-mobile');
 
+    const titleDiv = document.createElement('div');
     const title = document.createElement('a');
     title.href = dta.path;
     const titleHeader = document.createElement('h3');
@@ -159,53 +184,97 @@ export default async function decorate(block) {
     link.setAttribute('itemprop', 'url');
     link.setAttribute('href', dta.path);
     title.append(link);
+    // titleDiv.className = 'article-title-container';
+    titleDiv.append(title);
+
     const dateAuthorContainer = document.createElement('div');
     dateAuthorContainer.classList.add('date-author-container');
 
     const date = new Date(dta.date * 1000);
-    date.setHours(date.getHours() + (date.getTimezoneOffset() / 60));
+    date.setHours(date.getHours() + date.getTimezoneOffset() / 60);
     const formattedDate = document.createElement('span');
     formattedDate.setAttribute('itemprop', 'datePublished');
     formattedDate.setAttribute('content', date.toISOString().substring(0, 10));
-    formattedDate.textContent = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    formattedDate.textContent = `${
+      monthNames[date.getMonth()]
+    } ${date.getDate()}, ${date.getFullYear()}`;
 
-    const author = document.createElement('span');
-    author.setAttribute('itemprop', 'author');
-    author.textContent = dta.author;
+    const authorText = document.createElement('span');
+    authorText.setAttribute('itemprop', 'author');
+    authorText.textContent = dta.author;
 
-    dateAuthorContainer.append(formattedDate);
-    dateAuthorContainer.append(' · ');
-    dateAuthorContainer.append(author);
+    const authorDiv = document.createElement('div');
+    const authorIcon = document.createElement('img');
+    authorIcon.src = '/icons/pencil.svg';
+    authorDiv.append(authorIcon);
+    authorDiv.append(authorText);
 
+    const dateDiv = document.createElement('div');
+    const dateIcon = document.createElement('img');
+    dateIcon.src = '/icons/calendar.svg';
+    dateDiv.append(dateIcon);
+    dateDiv.append(formattedDate);
+
+    dateAuthorContainer.append(authorDiv);
+    dateAuthorContainer.append(dateDiv);
+
+    imgContainer.append(categoryLink);
     imgContainer.append(imgPadding);
     imgContainer.append(picture);
-    content.append(categoryLink);
-    content.append(title);
+    content.append(titleDiv);
     content.append(dateAuthorContainer);
 
+    // if (index === 0) {
+    //   tile.append(categoryLinkMobile);
+    // }
     tile.append(imgContainer);
-    if (index === 0) {
-      tile.append(categoryLinkMobile);
-    }
     tile.append(content);
-
-    tileContainer.append(tile);
+    tileBlockContainer.append(tile);
   });
 
-  // Check if there are enough child nodes in tileContainer
-  if (tileContainer.children.length >= 3) {
-    const smallTilesWrapper = document.createElement('div');
-    smallTilesWrapper.className = 'small-tiles-wrapper';
-    // Move the second and third child nodes into the smallTilesWrapper
-    // Not a mistake using index 1 two times.  When we appended smallTilesWrapper
-    // with the first child
-    // then that child is removed... leaving us with just two.
-    smallTilesWrapper.append(tileContainer.children[1]);
-    smallTilesWrapper.append(tileContainer.children[1]);
-    // Replace the second and third child nodes in tileContainer with the smallTilesWrapper
-    tileContainer.append(smallTilesWrapper);
+  block.textContent = '';
+  block.append(tileBlockContainer);
+
+  if (tileBlockContainer.closest('.spotlight') && !isMobile()) {
+    const tile0 = tileBlockContainer.children[0];
+    tile0.classList.add('tile-0');
+
+    const content = tile0.querySelector('.tile-contents');
+    const titleDiv = content.children[0];
+    const dateAuthor = content.children[1];
+    content.append(dateAuthor);
+    content.append(titleDiv);
+
+    const linkContainer = document.createElement('p');
+    const linkBtn = document.createElement('a');
+    linkContainer.className = 'button-container';
+    linkBtn.textContent = 'Read Article';
+    linkBtn.href = titleDiv.querySelector('a').href;
+    linkBtn.className = 'button primary';
+    linkContainer.appendChild(linkBtn);
+    content.append(linkContainer);
+
+    // main spotlight div to show featured item
+    const spotlightDiv = document.createElement('div');
+    spotlightDiv.className = 'tile-spotlight';
+    spotlightDiv.append(tile0);
+
+    // rest of the tiles go back into row setup
+    const othersDiv = document.createElement('div');
+    othersDiv.className = 'tiles-featured';
+    othersDiv.append(tileBlockContainer.children[0]);
+    othersDiv.append(tileBlockContainer.children[0]);
+    othersDiv.append(tileBlockContainer.children[0]);
+
+    tileBlockContainer.append(spotlightDiv);
+    tileBlockContainer.append(othersDiv);
   }
 
-  block.textContent = '';
-  block.append(tileContainer);
+  if (!tileBlockContainer.closest('.spotlight')) {
+    const tileContainer = tileBlockContainer.closest('.tiles-container');
+    tileContainer.classList.add('tiles-with-bg');
+  } else {
+    const tileContainer = tileBlockContainer.closest('.tiles-container');
+    tileContainer.classList.add('tiles-without-bg');
+  }
 }
