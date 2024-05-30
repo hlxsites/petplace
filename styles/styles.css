@@ -15,7 +15,8 @@
 :root {
   /* colors */
   --highlight-color: #ff7d5a;
-  --compare-button-bg-color: #c74d2f;
+  --cta-button-color: #c74d2f;
+  --compare-button-bg-color: var(--cta-button-color);
   --number-background-color: #7369ab;
   --faq-background-color: #f1f0f7;
   --faq-accordion-txt-color: #2f2f33;
@@ -24,19 +25,22 @@
   --pet-insurance-txt-color: #09090d;
   --error-message-bg-color: #fcefed;
   --error-message-color: #ba271a;
-  --link-color: var(--highlight-color);
+  --link-color: var(--cta-button-color);
   --link-hover-color: var(--highlight-color);
   --link-color-alt: var(--color-blue);
   --link-hover-color-alt: var(--text-color-alt);
   --background-color: #fff;
   --background-color-light: #f2f6fc;
   --background-color-dark: #3b092c;
+  --background-inactive: #F4F4F5;
   --border-base-color: #E4E4EB;
   --border-color: #D9D9D9;
   --text-color: #28061e;
   --text-color-inverted: #fff;
   --text-color-alt: #363636;
   --text-color-disabled:#464646;
+  --text-color-subtle: #696770;
+  --text-color-accent: #3c0040;
   --color-gray: #8f8f8f;  
   --color-gray-light: #b9c2cc;
   --color-gray-light-alt: #e4e4e4;
@@ -57,7 +61,10 @@
   --color-purple-light-alt: #8e8199;
   --color-purple-dark: #302280;
   --color-purple-dark-alt: #440042;
+  --color-purple-300: #7369ab;
+  --color-purple-500: #3c3759;
   --color-dark-maroon: #5d3450;
+  --color-maroon-300: #3C0040;
   --color-red: #ff6662;
   --color-gold: #d8c46c;
   --color-green: #97baa7;
@@ -74,6 +81,7 @@
   --color-green-transparent: rgb(120 166 141 / 60%);
   --color-magenta-transparent: rgb(169 77 143 / 60%);
   --color-mauve-transparent: rgb(106 55 90 / 60%);
+  --color-neutral-300: #e4e4e7;
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
@@ -99,6 +107,10 @@
   --heading-font-size-s: 1em;
   --heading-font-size-xs: 0.875em;
   --heading-font-size-xxs: 0.75em;
+
+  /* elevations */
+  /* stylelint-disable-next-line */
+  --elevation-height-xs: 0 1px 3px 1px rgba(0 0 0 / 0.15), 0 1px 2px 0 rgba(0 0 0 / 0.30);
 
   /* nav height */
   --nav-height: 64px;
@@ -1049,6 +1061,10 @@ html > ins[data-google-query-id] {
 
 .publi-container {
   padding: 1rem;
+}
+
+.publi-container:has(iframe) {
+  padding: 2.5rem;
 }
 
 .publi-container-bottom {
