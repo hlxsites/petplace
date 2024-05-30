@@ -1052,6 +1052,10 @@ html > ins[data-google-query-id] {
   padding: 1rem;
 }
 
+.publi-container:has(iframe) {
+  padding: 2.5rem;
+}
+
 .publi-container-bottom {
   padding-top: 1rem;
   padding-bottom: 1rem;
