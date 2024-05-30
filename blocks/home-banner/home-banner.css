@@ -38,6 +38,11 @@
   align-items: center;
 }
 
+/* .home-banner.image-left > div div, */
+.home-banner.image-right > div div {
+  flex: 1 0 0%;
+}
+
 .home-banner.image-hero > div div:first-child {
   padding-left: 2rem;
   flex: 3 0 0%;
@@ -60,8 +65,6 @@
   margin-bottom: 1rem;
 }
 
-/* cta's */
-
 /* .home-banner.image-left > div {
   flex-direction: row-reverse;
 } */
@@ -81,11 +84,6 @@
 .home-banner.image-right img {
   height: 100%;
   object-fit: cover;
-}
-
-/* .home-banner.image-left > div div, */
-.home-banner.image-right > div div {
-  flex: 1 0 0%;
 }
 
 /* .home-banner.image-left > div div:first-child, */
