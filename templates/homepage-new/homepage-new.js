@@ -6,7 +6,6 @@ export default function loadLazy(document) {
   decorateResponsiveImages(imgDiv);
 
   const main = document.querySelector('main');
-  console.log(main);
   const bgWaveDiv = document.createElement('div');
   bgWaveDiv.append(main.children[0]);
   // add this in for when "explore" is live

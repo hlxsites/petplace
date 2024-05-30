@@ -103,24 +103,7 @@ export default async function decorate(block) {
     imgContainer.className = 'img-container';
 
     // Create Image tag.. future will be <picture> tag
-    let picture;
-    let img;
-    // if (index === 0) {
-    //   picture = createOptimizedPicture(
-    //     dta.image,
-    //     dta?.imageAlt || tileTitle,
-    //     false,
-    //     [
-    //       { media: '(min-width: 1024px)', width: 760 },
-    //       { media: '(min-width: 600px)', width: 1200 },
-    //       { width: 900 },
-    //     ],
-    //   );
-    //   img = picture.querySelector('img');
-    //   img.width = 768;
-    //   img.height = 432;
-    // } else {
-    picture = document.createElement('a');
+    const picture = document.createElement('a');
     picture.href = dta.path;
     picture.append(
       createOptimizedPicture(dta.image, dta?.imageAlt || tileTitle, false, [
@@ -128,18 +111,14 @@ export default async function decorate(block) {
         { width: 300 },
       ]),
     );
-    img = picture.querySelector('img');
+    const img = picture.querySelector('img');
     img.width = 200;
     img.height = 200;
     img.setAttribute('itemprop', 'image');
-    // }
 
     // Create content div.  This contains title, author, date etc..
     const content = document.createElement('div');
     content.className = 'tile-contents';
-    // if (index === 0) {
-    //   content.style.setProperty('--bg-color', `var(--color-${categories[index]?.Color}-transparent)`);
-    // }
 
     const categoryLink = document.createElement('a');
     categoryLink.classList.add('category-link-btn');
@@ -150,10 +129,7 @@ export default async function decorate(block) {
       '--bg-color',
       `var(--color-${categories[index]?.Color})`,
     );
-
-    // if (index !== 0) {
     categoryLink.classList.add('category-link-btn-transparent');
-    // }
 
     const monthNames = [
       getPlaceholder('january'),
@@ -184,7 +160,6 @@ export default async function decorate(block) {
     link.setAttribute('itemprop', 'url');
     link.setAttribute('href', dta.path);
     title.append(link);
-    // titleDiv.className = 'article-title-container';
     titleDiv.append(title);
 
     const dateAuthorContainer = document.createElement('div');
@@ -224,9 +199,6 @@ export default async function decorate(block) {
     content.append(titleDiv);
     content.append(dateAuthorContainer);
 
-    // if (index === 0) {
-    //   tile.append(categoryLinkMobile);
-    // }
     tile.append(imgContainer);
     tile.append(content);
     tileBlockContainer.append(tile);
