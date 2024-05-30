@@ -1,0 +1,144 @@
+.home-banner {
+  border-radius: 1rem;
+}
+
+.home-banner > div {
+  display: flex;
+  flex-direction: row;
+}
+
+.home-banner a {
+  border-radius: 0.5rem !important;
+  font-weight: normal !important;
+}
+
+/* .home-banner .button-container p { */
+.home-banner a::after {
+  content: '';
+  -webkit-mask: url("../../icons/arrow.svg") center / 100% 100%;
+  mask: url("../../icons/arrow.svg") center / 100% 100%;
+  background-color: #fff;
+  padding: 0.5rem;
+  margin-left: 1rem;
+}
+
+/* banner */
+
+.home-banner.image-hero {
+  background: #7369AB;
+}
+
+.home-banner.image-hero img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-banner.image-hero > div div:first-child {
+  padding-left: 2rem;
+  flex: 3 0 0%;
+}
+
+.home-banner.image-hero > div div:last-child {
+  flex: 2 0 0%;
+}
+
+.home-banner h2,
+.home-banner h4 {
+  color: white;
+}
+
+.home-banner h2 {
+  font-size: 3rem;
+}
+
+.home-banner h4 {
+  margin-bottom: 1rem;
+}
+
+/* cta's */
+
+.home-banner.image-hero > div,
+.home-banner.image-left > div,
+.home-banner.image-right > div {
+  align-items: center;
+}
+
+.home-banner.image-left > div {
+  flex-direction: row-reverse;
+}
+
+.home-banner.image-left,
+.home-banner.image-right {
+  background: #EBE8FC;
+}
+
+.home-banner h3 {
+  color: black;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.home-banner.image-left img,
+.home-banner.image-right img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-banner.image-left > div div,
+.home-banner.image-right > div div {
+  flex: 1 0 0%;
+}
+
+.home-banner.image-left > div div:first-child,
+.home-banner.image-right > div div:first-child {
+  padding: 1.5rem;
+}
+
+.home-banner.image-right picture,
+.home-banner.image-hero picture {
+  float: right;
+}
+
+.home-banner.desktop-banner {
+  display: block;
+}
+.home-banner.mobile-banner {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .home-banner.desktop-banner {
+    display: none;
+  }
+  .home-banner.mobile-banner {
+    display: block;
+  }
+
+  .home-banner > div,
+  .home-banner.image-left > div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .home-banner.image-hero > div div:first-child {
+    padding: 0;
+    margin: auto;
+    width: 90%;
+  }
+
+  .home-banner h2, .home-banner h3 {
+    font-size: 2rem;
+  }
+
+  .home-banner a {
+    font-size: 1.25rem;
+    padding: 1rem;
+    width: 100%;
+    margin: 2rem auto;
+  }
+
+  .home-banner.image-left > div div:first-child,
+  .home-banner.image-right > div div:first-child {
+    padding: 1.5rem;
+  }
+}
