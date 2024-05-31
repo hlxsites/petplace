@@ -112,6 +112,10 @@
 }
 
 /* Tables */
+.insurance-page .table {
+  overflow-x: scroll;
+}
+
 .insurance-page .table table {
   table-layout: fixed;
   border-collapse: separate;
