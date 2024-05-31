@@ -79,6 +79,7 @@
   background-color: var(--bg-color);
   display: flex;
   flex-direction: column;
+  padding: 1rem;
 }
 
 .tile .tile-contents h3 {
@@ -112,10 +113,6 @@
 }
 
 @media (min-width: 400px) {
-  .tile .tile-contents {
-    padding: 1rem;
-  }
-
   .tile .tile-contents h3 {
     font-size: 1.25rem;
     line-height: 1.1;
