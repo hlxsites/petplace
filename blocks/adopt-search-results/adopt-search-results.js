@@ -190,14 +190,13 @@ async function callAnimalList() {
             sizeList.push(item.value);
         });
     }
-    let shelters = null
+    let shelters = null;
     if (selectedShelters.length > 0) {
         shelters = selectedShelters;
     }
     breedType.forEach((breed) => {
         breeds.push(breed);
     });
-
     const response = await fetch(`${endPoints.apiUrl}/animal`, {
         method: 'POST',
         headers: {
@@ -264,9 +263,9 @@ async function callBreedList(petType) {
 }
 
 async function callShelterList() {
-    let zip = document.getElementById('zip')?.value;
-    let radius = document.getElementById('radius')?.value;
-    let endpoint = `${endPoints.apiUrl}/shelter/search`;
+    const zip = document.getElementById('zip')?.value;
+    const radius = document.getElementById('radius')?.value;
+    const endpoint = `${endPoints.apiUrl}/shelter/search`;
     const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -289,7 +288,7 @@ function clearShelterSelections() {
         if (checkbox.checked) {
             checkbox.checked = false;
             // Create a new 'change' event
-            var event = new Event('change');
+            const event = new Event('change');
             // Dispatch it.
             checkbox.dispatchEvent(event);
         }
@@ -392,7 +391,7 @@ async function updateShelterListSelect() {
     const groupDiv = document.querySelector('#shelters');
     const containerDiv = document.querySelector('.multi-select.shelter');
     const checkboxArray = groupDiv.querySelectorAll('input');
-    checkboxArray?.forEach((checkbox, index) => {
+    checkboxArray?.forEach((checkbox) => {
         checkbox.addEventListener('change', () => {
             // updating label
             const buttonText = containerDiv.querySelector('#shelter-button');
@@ -614,9 +613,9 @@ function buildFilterSidebar(sidebar) {
         callAnimalList().then((data) => {
             // eslint-disable-next-line
             buildResultsContainer(data);
-            callShelterList().then((data) => {
+            callShelterList().then((innerData) => {
                 // eslint-disable-next-line
-                shelterList = data;
+                shelterList = innerData;
                 clearShelterSelections();
                 updateShelterListSelect();
             });
@@ -973,7 +972,7 @@ function populateSidebarFilters(params) {
                         const checkbox = document.getElementById(shelter);
                         checkbox.checked = true;
                         // Create a new 'change' event
-                        var event = new Event('change');
+                        const event = new Event('change');
                         // Dispatch it.
                         checkbox.dispatchEvent(event);
                     });
@@ -1172,9 +1171,9 @@ export default async function decorate(block) {
             callAnimalList().then((data) => {
                 if (data) {
                     buildResultsContainer(data);
-                callShelterList().then((data) => {
+                callShelterList().then((innerData) => {
                     // eslint-disable-next-line
-                    shelterList = data;
+                    shelterList = innerData;
                     clearShelterSelections();
                     updateShelterListSelect();
                 });
@@ -1303,7 +1302,7 @@ export default async function decorate(block) {
         const tempResultsContainer = document.querySelector('.section.adopt-search-results-container')?.closest('.section').nextElementSibling;
         const div = document.createElement('div');
         div.className = 'pagination hidden';
-    
+
         // add pagination
         const previousButton = document.createElement('button');
         previousButton.id = ('btn_prev');
@@ -1319,10 +1318,10 @@ export default async function decorate(block) {
         div.append(paginationNumbers);
         div.append(nextButton);
         tempResultsContainer?.append(div);
-    
+
         // When the page loads, check if there are any query parameters in the URL
         const params = new URLSearchParams(window.location.search);
-    
+
         // If there are, select the corresponding filters - Top filters first
         if (params.has('zipPostal') && params.get('zipPostal') !== '') {
             const petZip = document.getElementById('zip');
@@ -1330,46 +1329,44 @@ export default async function decorate(block) {
             const saveSearchButton = document.querySelector('.adopt-save-search-button');
             saveSearchButton.disabled = false;
             const petType = document.getElementById('pet-type');
-            const petTypes = petType.options;
+            const petTypeParam = String(params.get('filterAnimalType'));
+            const petTypesOptions = petType.options;
             for (let i = 0; i < petTypes.length; i += 1) {
-                if (petTypes[i].value === params.get('filterAnimalType')) {
+                if (petTypesOptions[i].value === petTypeParam) {
                     petType.selectedIndex = i;
                 }
             }
-
             const breedSelect = document.getElementById('breed-button');
             const petBreed = document.querySelector('#breeds');
             const paramsSelected = params.get('filterBreed');
-            if (petType?.value === 'Other' || petType?.value === 'null') {
-                breedSelect.setAttribute('disabled', '');
-                breedSelect.innerText = 'Any';
-                buildResultsContainer([]);
-            } else {
-                breedSelect.removeAttribute('disabled');
-                breedSelect.innerText = 'Select from menu...';
-                callBreedList(petType?.value).then((outputData) => {
-                    breedList = outputData;
-                    updateBreedListSelect().then(() => {
-                        const inputs = petBreed.querySelectorAll('input');
-                        inputs.forEach((input) => {
-                            if (paramsSelected?.includes(input.value) && input.value !== '') {
-                                selectedBreeds.push(input.value);
-                                input.checked = true;
-                            }
-                        });
-                        const displayText = selectedBreeds.length > 0
-                            ? `${selectedBreeds.length} selected`
-                            : 'Select from menu...';
-                        breedSelect.innerText = displayText;
-                        callAnimalList().then((initialData) => {
-                            if (initialData) {
-                                buildResultsContainer(initialData);
-                                populateSidebarFilters(params);
-                            }
-                        });
+            callBreedList(petType?.value).then((outputData) => {
+                breedList = outputData;
+                updateBreedListSelect().then(() => {
+                    const inputs = petBreed.querySelectorAll('input');
+                    inputs.forEach((input) => {
+                        if (paramsSelected?.includes(input.value) && input.value !== '') {
+                            selectedBreeds.push(input.value);
+                            input.checked = true;
+                        }
+                    });
+
+                    let displayText = 'Select from menu...';
+                    if (selectedBreeds.length > 0) {
+                        displayText = `${selectedBreeds.length} selected`;
+                    } else if (petType?.value === 'null' || petType?.value === 'Other') {
+                        displayText = 'Any';
+                    }
+
+                    breedSelect.innerText = displayText;
+                    callAnimalList().then((initialData) => {
+                        if (initialData) {
+                            buildResultsContainer(initialData);
+                            populateSidebarFilters(params);
+                        }
                     });
                 });
-            }
+            });
+
             let resultsContainer = document.querySelector('.default-content-wrapper.results');
             if (!resultsContainer) {
                 resultsContainer = document.querySelector('.default-content-wrapper');
@@ -1397,4 +1394,3 @@ function getHashFromURL() {
 
     return ''; // Return an empty string if there's no hash
 }
-
