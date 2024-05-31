@@ -8,11 +8,13 @@
 }
 
 .home-banner a {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
   border-radius: 0.5rem !important;
   font-weight: normal !important;
 }
 
-/* .home-banner .button-container p { */
 .home-banner a::after {
   content: '';
   -webkit-mask: url("../../icons/arrow.svg") center / 100% 100%;
@@ -20,6 +22,7 @@
   background-color: #fff;
   padding: 0.5rem;
   margin-left: 1rem;
+  display: inline-block;
 }
 
 /* banner */
