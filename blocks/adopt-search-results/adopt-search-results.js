@@ -1324,7 +1324,7 @@ export default async function decorate(block) {
         const params = new URLSearchParams(window.location.search);
     
         // If there are, select the corresponding filters - Top filters first
-        if (params.has('zipPostal')) {
+        if (params.has('zipPostal') && params.get('zipPostal') !== '') {
             const petZip = document.getElementById('zip');
             petZip.value = params.get('zipPostal');
             const saveSearchButton = document.querySelector('.adopt-save-search-button');
