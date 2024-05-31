@@ -377,6 +377,21 @@ export default async function decorate(block) {
           surveyNumber = survey.Id;
         } else {
           surveyNumber = surveyResponse.Id;
+
+          // delete all responses that aren't found in new survey
+          surveyResponse.SurveyResponseAnswers.forEach((answer) => {
+            // only search through multiselects and non deleted answers
+            if (answer.Question.IsMultiAnswer && !answer.Deleted) {
+              const found = state.surveyAnswers.find(
+                (a) => (a.QuestionOptionId && a.QuestionOptionId === answer.QuestionOptionId) || a.UserResponseText === answer.UserResponseText,
+              );
+              if (!found) {
+                answer.Deleted = true;
+                state.surveyAnswers.push(answer);
+              }
+            }
+          
+          })
           const payload = {
             Id: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
