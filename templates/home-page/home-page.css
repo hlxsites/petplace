@@ -194,4 +194,8 @@ main a:hover {
     font-size: 2rem;
     font-weight: bolder;
   }
+
+  .insurance-search .search-input {
+    border: 1px solid #000 !important;
+  }
 }
