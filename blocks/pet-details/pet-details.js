@@ -428,7 +428,7 @@ async function createShelterSection(aboutShelter) {
             ? `
             <a href='https://maps.google.com/?q=${
               shelterAddress + lastAddressLine
-            }'><span>${shelterName}</br>${shelterAddress}</br>${lastAddressLine}</span></a>
+            }' target='_blank'><span>${shelterName}</br>${shelterAddress}</br>${lastAddressLine}</span></a>
         `
             : 'Shelter Location N/A'
         }</div>
