@@ -18,9 +18,8 @@ async function createTemplateBlock(container, blockName, elems = []) {
 
 function injectAggregator(document, selector) {
   const widgetContainer = document.createElement('div');
+  widgetContainer.classList.add('widget', 'aggregator');
   widgetContainer.setAttribute('id', 'widgetTarget');
-  widgetContainer.style.width = '100%';
-  widgetContainer.style.height = '1000px';
 
   const widget = document.createElement('script');
   widget.setAttribute('brand', 'petplace');
