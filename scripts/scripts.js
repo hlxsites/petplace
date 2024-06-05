@@ -1089,7 +1089,8 @@ export function initializeTouch(block, slideWrapper) {
  * @param {Array<CrumbData>} crumbData Information about the crumbs to add.
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
-export async function createBreadCrumbs(crumbData, chevronAll = false) {
+export async function createBreadCrumbs(crumbData, options = {}) {
+  const { chevronAll = false, chevronIcon = 'chevron', useHomeLabel = false } = options;
   const { color } = crumbData[crumbData.length - 1];
   const breadcrumbContainer = document.createElement('nav');
   breadcrumbContainer.setAttribute('aria-label', getPlaceholder('breadcrumb'));
@@ -1099,8 +1100,16 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
   homeLink.href = window.hlx.contentBasePath || '/';
-  homeLink.innerHTML = '<span class="icon icon-home"></span>';
-  homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
+  if (useHomeLabel) {
+    homeLink.innerText = getPlaceholder('homeNavigation');
+    homeLink.classList.add('category-link-btn');
+    homeLink.style.setProperty('--bg-color', 'var(--background-color)');
+    homeLink.style.setProperty('--border-color', `var(--color-${color})`);
+    homeLink.style.setProperty('--text-color', `var(--color-${color})`);
+  } else {
+    homeLink.innerHTML = '<span class="icon icon-home"></span>';
+    homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
+  }
   homeLi.append(homeLink);
   ol.append(homeLi);
 
@@ -1108,7 +1117,7 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
     const li = document.createElement('li');
     if (i > 0 || chevronAll) {
       const chevron = document.createElement('span');
-      chevron.classList.add('icon', 'icon-chevron');
+      chevron.classList.add('icon', `icon-${chevronIcon}`);
       li.append(chevron);
     }
     const linkButton = document.createElement('a');
