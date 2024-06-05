@@ -28,7 +28,6 @@ const adsDivCreator = (adLoc) => {
 
   if (adLoc.includes('top')) {
     if (adLoc.includes('home')) {
-      console.log('test');
       const adSection = document.querySelectorAll('.tiles-container')[0];
       adSection.before(mainAdsDiv);
     } else if (adLoc.includes('breeds')) {
