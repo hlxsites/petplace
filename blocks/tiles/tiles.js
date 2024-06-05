@@ -96,7 +96,6 @@ export default async function decorate(block) {
     tile.classList.add('tile');
     tile.setAttribute('itemscope', '');
     tile.setAttribute('itemtype', 'https://schema.org/Article');
-    tile.style = 'cursor: pointer';
 
     // Make entire tile clickable
     tile.addEventListener('click', (e) => {
