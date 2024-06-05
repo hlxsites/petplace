@@ -1,5 +1,5 @@
 export default function decorate(block) {
-  const cols = [...block.firstElementChild.children];
+  // const cols = [...block.firstElementChild.children];
 
   // eslint-disable-next-line no-unused-vars
   let rowIndex = 0;
