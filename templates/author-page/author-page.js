@@ -85,7 +85,7 @@ export async function loadEager(document) {
     path: heading.innerText,
     color: 'purple',
     label: heading.innerText,
-  }], true);
+  }], { chevronAll: true });
   createTemplateBlock(main, 'breadcrumb', 'breadcrumb', [breadcrumbData]);
   createTemplateBlock(main, 'social-links');
   createTemplateBlock(main, 'cards');
