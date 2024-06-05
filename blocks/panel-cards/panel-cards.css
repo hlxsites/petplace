@@ -30,9 +30,11 @@
   line-height: 34px;
 }
 
-.panel-card h2 {
+.panel-cards h2 {
   font-size: 24px;
+  font-weight: 800;
   margin-top: 0;
+  text-align: left !important;
 }
 
 .panel-card p:not(:last-of-type) {
@@ -77,7 +79,7 @@
 }
 
 @media (min-width: 768px) and (max-width: 1215px) {
-  .panel-card h2 {
+  .panel-cards h2 {
     min-height: 4rem;
   }
 }

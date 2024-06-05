@@ -156,6 +156,10 @@ main a:hover {
   vertical-align: middle;
 }
 
+.home-page .panel-cards-container .default-content-wrapper h2 {
+  font-weight: 800;
+  text-align: center;
+}
 
 @media (max-width: 768px) {
   .home-banner-bg {
