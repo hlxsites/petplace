@@ -1,9 +1,11 @@
 export default function decorate(block) {
+  const ctaContainer = block.querySelector('.button-container');
+  const ctaLink = ctaContainer.querySelector('a');
+
   // Make entire block clickable.
   block.onclick = () => {
-    const link = ctaLink.querySelector('a');
-    if (link) {
-      link.click();
+    if (ctaLink) {
+      ctaLink.click();
     }
   };
 }
