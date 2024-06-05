@@ -1,6 +1,7 @@
 .panel-card .button-container {
   padding: 16px;
   padding-left: 0;
+  display: block;
 }
 
 .panel-cards {
@@ -15,7 +16,7 @@
   display: flex;
   gap: 16px;
   padding: 24px 16px;
-  background-color: #FFFFFF;
+  background-color: #fff;
   border: 1px solid #E4E4EB;
   border-radius: 16px;
   box-shadow: 5px 5px 16px 0 rgb(0 0 0 / 10%);
@@ -39,10 +40,6 @@
 
 .panel-card p:not(:last-of-type) {
   margin-bottom: 8px;
-}
-
-.panel-card .button-container {
-  display: block;
 }
 
 .panel-card .button-container a.button {
