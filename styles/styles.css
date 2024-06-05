@@ -82,6 +82,7 @@
   --color-magenta-transparent: rgb(169 77 143 / 60%);
   --color-mauve-transparent: rgb(106 55 90 / 60%);
   --color-neutral-300: #e4e4e7;
+  --color-neutral-600: #6e6d73;
 
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
