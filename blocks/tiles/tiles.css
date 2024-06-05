@@ -170,6 +170,7 @@
 .tile-spotlight .tile-0 .img-container img {
   border-top-right-radius: 0;
   border-bottom-left-radius: 0.5rem;
+  height: 100%;
 }
 
 .tile-spotlight .tile-0 .date-author-container {

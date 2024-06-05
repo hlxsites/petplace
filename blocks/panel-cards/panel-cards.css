@@ -1,0 +1,94 @@
+.panel-card .button-container {
+  padding: 16px;
+  padding-left: 0;
+  display: block;
+}
+
+.panel-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.panel-card {
+  display: flex;
+  gap: 16px;
+  padding: 24px 16px;
+  background-color: #fff;
+  border: 1px solid #E4E4EB;
+  border-radius: 16px;
+  box-shadow: 5px 5px 16px 0 rgb(0 0 0 / 10%);
+}
+
+.panel-card-img {
+  min-width: 64px;
+}
+
+.panel-card p {
+  font-size: 20px;
+  line-height: 34px;
+}
+
+.panel-cards h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-top: 0;
+  text-align: left !important;
+}
+
+.panel-card p:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.panel-card .button-container a.button {
+  background-color: transparent;
+  color: var(--link-color);
+  padding: 0;
+  margin: 0;
+  border: none;
+  font-weight: normal;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panel-card .button-container a.button:hover {
+  background-color: #fff !important;
+}
+
+.panel-card .button-container a.button::after {
+  content: '';
+  width: 17px;
+  height: 16px;
+  background: var(--link-color);
+  display: inline-block;
+  -webkit-mask: url("../../icons/arrow.svg") center / 100% 100%;
+  mask: url("../../icons/arrow.svg") center / 100% 100%;
+}
+
+.panel-card-txt {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) and (max-width: 1215px) {
+  .panel-cards h2 {
+    min-height: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .panel-cards {
+    flex-direction: row;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
+.adopt .panel-cards-container {
+  background-color: #F2F6FC;
+}
