@@ -4,7 +4,6 @@ export default function decorate(block) {
   ctaLink.append(arrow);
 
   // Make entire block clickable.
-  block.style = 'cursor: pointer';
   block.onclick = () => {
     const link = ctaLink.querySelector('a');
     if (link) {
