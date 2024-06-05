@@ -1,5 +1,6 @@
 .home-banner {
   border-radius: 1rem;
+  cursor: pointer;
 }
 
 .home-banner > div {
