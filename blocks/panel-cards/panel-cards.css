@@ -35,7 +35,7 @@
 .panel-cards h2 {
   font-size: 24px;
   margin-top: 0;
-  font-family: 'Libre Franklin';
+  font-family: var(--body-font-family);
 }
 
 .panel-card p:not(:last-of-type) {
