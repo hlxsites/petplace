@@ -1,5 +1,6 @@
 .home-banner {
   border-radius: 1rem;
+  cursor: pointer;
 }
 
 .home-banner > div {
@@ -8,11 +9,13 @@
 }
 
 .home-banner a {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
   border-radius: 0.5rem !important;
   font-weight: normal !important;
 }
 
-/* .home-banner .button-container p { */
 .home-banner a::after {
   content: '';
   -webkit-mask: url("../../icons/arrow.svg") center / 100% 100%;
@@ -20,6 +23,7 @@
   background-color: #fff;
   padding: 0.5rem;
   margin-left: 1rem;
+  display: inline-block;
 }
 
 /* banner */
@@ -28,9 +32,16 @@
   background: #7369AB;
 }
 
+.home-banner.image-hero > div {
+  gap: 80px;
+}
+
 .home-banner.image-hero img {
   height: 100%;
+  max-width: 100%;
   object-fit: cover;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
 
 .home-banner.image-hero > div,
@@ -119,8 +130,13 @@
     flex-direction: column-reverse;
   }
 
+  .home-banner.image-hero > div {
+    gap: 1rem;
+  }
+
   .home-banner.image-hero > div div:first-child {
     padding: 0;
+    padding-bottom: 1.5rem;
     margin: auto;
     width: 90%;
   }
@@ -139,5 +155,11 @@
   /* .home-banner.image-left > div div:first-child, */
   .home-banner.image-right > div div:first-child {
     padding: 1.5rem;
+  }
+
+  .home-banner.image-hero img {
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+    border-bottom-right-radius: none;
   }
 }

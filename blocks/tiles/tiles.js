@@ -97,6 +97,12 @@ export default async function decorate(block) {
     tile.setAttribute('itemscope', '');
     tile.setAttribute('itemtype', 'https://schema.org/Article');
 
+    // Make entire tile clickable
+    tile.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = dta.path;
+    });
+
     const imgPadding = document.createElement('div');
 
     const imgContainer = document.createElement('div');

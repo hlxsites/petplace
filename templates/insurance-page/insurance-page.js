@@ -3,6 +3,7 @@ import {
   decorateBlock,
   loadBlock,
 } from '../../scripts/lib-franklin.js';
+import { createBreadCrumbs } from '../../scripts/scripts.js';
 
 async function createTemplateBlock(container, blockName, elems = []) {
   const wrapper = document.createElement('div');
@@ -17,9 +18,8 @@ async function createTemplateBlock(container, blockName, elems = []) {
 
 function injectAggregator(document, selector) {
   const widgetContainer = document.createElement('div');
+  widgetContainer.classList.add('widget', 'aggregator');
   widgetContainer.setAttribute('id', 'widgetTarget');
-  widgetContainer.style.width = '100%';
-  widgetContainer.style.height = '1000px';
 
   const widget = document.createElement('script');
   widget.setAttribute('brand', 'petplace');
@@ -54,6 +54,29 @@ export async function loadEager(document) {
 }
 
 export async function loadLazy(document) {
+  // Create breadcrumbs
+  const main = document.querySelector('main');
+  const body = main.parentNode;
+  const breadcrumbContainer = document.createElement('div');
+  body.insertBefore(breadcrumbContainer, main);
+
+  const heading = main.querySelector('h1');
+  const breadcrumbData = await createBreadCrumbs([{
+    url: `${window.hlx.contentBasePath}/pet-insurance`,
+    path: 'Pet Insurance',
+    color: 'black',
+    label: 'Pet Insurance',
+  }, {
+    url: window.location,
+    path: heading.innerText,
+    color: 'black',
+    label: heading.innerText,
+  }], { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true });
+  breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
+    icon.classList.replace('icon-chevron', 'icon-chevron-large');
+  });
+  createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
+
   // Adjust structure of article author for styling
   const authorContainer = document.querySelector('.article-author [itemprop="author"]');
   const timePublished = document.querySelector('.article-author [itemprop="datePublished"]');

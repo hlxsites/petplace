@@ -1,5 +1,11 @@
 export default function decorate(block) {
-  const ctaLink = block.querySelector('.button-container');
-  const arrow = document.createElement('p');
-  ctaLink.append(arrow);
+  const ctaContainer = block.querySelector('.button-container');
+  const ctaLink = ctaContainer.querySelector('a');
+
+  // Make entire block clickable.
+  block.onclick = () => {
+    if (ctaLink) {
+      ctaLink.click();
+    }
+  };
 }
