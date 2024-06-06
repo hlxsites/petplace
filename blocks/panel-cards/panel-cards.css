@@ -15,6 +15,7 @@
 .panel-card {
   display: flex;
   gap: 16px;
+  cursor: pointer;
   padding: 24px 16px;
   background-color: #fff;
   border: 1px solid #E4E4EB;
@@ -33,9 +34,8 @@
 
 .panel-cards h2 {
   font-size: 24px;
-  font-weight: 800;
   margin-top: 0;
-  text-align: left !important;
+  font-family: var(--body-font-family);
 }
 
 .panel-card p:not(:last-of-type) {

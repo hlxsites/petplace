@@ -7,7 +7,11 @@ main .section {
 }
 
 main .section:is(.home-banner-container) {
-  margin-bottom: 0;
+  margin-bottom: -1.5rem;
+}
+
+main .section:is(.panel-cards-container) {
+  margin-bottom: 1.5rem;
 }
 
 main .section:is(.columns-container) {

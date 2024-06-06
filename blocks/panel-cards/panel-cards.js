@@ -7,6 +7,14 @@ export default function decorate(block) {
   // setup image columns
   [...block.children].forEach((row) => {
     row.classList.add('panel-card');
+    const link = row.querySelector('a');
+
+    // Make entire panel clickable
+    row.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = link.href;
+    });
+
     [...row.children].forEach((col) => {
       const pic = col.querySelector('picture');
       if (pic) {
