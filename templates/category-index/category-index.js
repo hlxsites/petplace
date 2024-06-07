@@ -1,10 +1,12 @@
 import ffetch from '../../scripts/ffetch.js';
 import {
   buildBlock,
-  createOptimizedPicture,
+  decorateBlock,
+  loadBlock,
   toClassName,
 } from '../../scripts/lib-franklin.js';
 import {
+  createBreadCrumbs,
   getCategories,
   getCategory,
   getPlaceholder,
@@ -147,12 +149,15 @@ function buildSidebar() {
   return section;
 }
 
-function createTemplateBlock(main, blockName) {
+function createTemplateBlock(main, blockName, elems = []) {
   const section = document.createElement('div');
 
-  const block = buildBlock(blockName, { elems: [] });
+  const block = buildBlock(blockName, { elems });
   section.append(block);
   main.append(section);
+
+  decorateBlock(block);
+  loadBlock(block);
 }
 
 async function updateMetadata() {
@@ -161,7 +166,7 @@ async function updateMetadata() {
     throw new Error(404);
   }
   const {
-    Category, Color, Image, Path,
+    Category, Path,
   } = category;
   document.title = Category;
   document.head.querySelector('link[rel="canonical"]').href = `${window.location.origin}${Path}`;
@@ -170,21 +175,16 @@ async function updateMetadata() {
   const h1 = document.querySelector('h1');
   h1.textContent = Category;
   h1.id = toClassName(Category);
-  const heroColorDiv = document.querySelector('.category-index .hero > div');
-  heroColorDiv?.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
-  if (Image && heroColorDiv) {
-    const picture = document.querySelector('.category-index .hero picture');
-    picture.replaceWith(createOptimizedPicture(picture.querySelector('img').src, '', true, [{ width: 1600 }]));
-  }
 }
 
 export async function loadEager(document) {
   const main = document.querySelector('main');
+  const h1 = document.createElement('h1');
+  main.prepend(h1);
   await updateMetadata();
   const h2 = document.createElement('h2');
   h2.classList.add('sr-only');
   h2.textContent = getPlaceholder('articles');
-  const h1 = main.querySelector('h1');
   h1.after(h2);
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(1)'));
   createTemplateBlock(main, 'pagination');
@@ -201,11 +201,23 @@ export async function loadLazy() {
     return;
   }
 
-  const { Color } = category;
-  const heroColorDiv = document.querySelector('.category-index .hero > div');
-  heroColorDiv.style.setProperty('--bg-color', `var(--color-${Color}-transparent)`);
+  const { Category, Path } = category;
 
   renderArticles(getArticles());
+
+  // Create breadcrumbs
+  const main = document.querySelector('main');
+  const body = main.parentNode;
+  const breadcrumbContainer = document.createElement('div');
+  body.insertBefore(breadcrumbContainer, main);
+
+  const breadcrumbData = await createBreadCrumbs([{
+    url: window.hlx.contentBasePath + Path,
+    path: Category,
+    color: 'black',
+    label: Category,
+  }], { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true });
+  createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
 
   // Softnav progressive enhancement for browsers that support it
   // if (window.navigation) {

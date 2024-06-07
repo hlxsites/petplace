@@ -33,6 +33,9 @@ const adsDivCreator = (adLoc) => {
     } else if (adLoc.includes('breeds')) {
       const attrSection = document.querySelector('.blade-wrapper');
       attrSection.before(mainAdsDiv);
+    } else if (adLoc.includes('category')) {
+      const heading = document.querySelector(':scope h1');
+      heading.after(mainAdsDiv);
     } else {
       const hero = document.querySelector('.hero-wrapper');
       hero.after(mainAdsDiv);

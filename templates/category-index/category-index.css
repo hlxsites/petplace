@@ -1,44 +1,76 @@
+/**
+ * Typography
+ */
+.category-index h1 {
+  margin: 0;
+  color: var(--color-black);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: normal;
 
-.category-index .hero {
-  box-sizing: border-box;
-  height: 62.5vw;
-  min-height: 0;
-  max-height: 326px;
+  @media (min-width: 1024px) {
+    font-size: 2.5rem;
+  }
+}
+
+/**
+ * Global
+ */
+ /* Add top margin to page heading */
+.category-index h1:first-child {
+  margin-top: 2.5rem;
+}
+
+/**
+ * Breadcrumbs
+ */
+.category-index .breadcrumb-wrapper {
+  max-width: 1200px;
+  margin: 1.5rem auto 0.5rem;
+  padding: 0 1rem;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
+}
+
+.category-index .breadcrumb ol {
+  column-gap: 0.5rem;
+  margin: 0;
+}
+
+.category-index .breadcrumb ol li {
+  column-gap: 0.5rem;
+}
+
+.category-index .breadcrumb ol li:first-child {
+  margin-right: 0;
+}
+
+.category-index .breadcrumb .icon-chevron-large {
+  fill: var(--color-black);
+  width: 16px;
+  height: 16px;
+}
+
+.category-index .breadcrumb .category-link-btn {
+  background: unset;
+  border: none;
+  border-radius: unset;
+  display: -webkit-box;
+  max-width: 150px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  flex-shrink: 0;
+  font-size: var(--body-font-size-s);
+  line-height: normal;
+  text-align: left;
+  text-decoration: none;
   padding: 0;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
 }
 
-.category-index .hero picture {
-  margin: 0;
-}
-
-.category-index .hero img {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  object-fit: cover;
-}
-
-.category-index .hero > div {
-  --bg-color: inherit;
-
-  max-width: none;
-  background: var(--bg-color);
-}
-
-.category-index .hero > div > div {
-  max-width: 1392px;
-  margin: 0 auto;
-}
-
-.category-index .hero h1 {
-  margin: 0;
-  padding: 2rem 1.5rem;
-  color: var(--text-color-inverted);
-  text-shadow: 2px 3px 5px rgb(0 0 0 / 50%);
+.category-index .breadcrumb .category-link-btn[aria-current="page"] {
+  color: var(--color-neutral-600);
 }
 
 .category-index .sidebar {
@@ -91,12 +123,8 @@
 
 @media (min-width: 1024px) {
   .category-index main {
-    display: grid;
-    grid-template:
-      'hero hero hero hero' min-content
-      '. sidebar content .' 1fr
-      '. sidebar pagination .' min-content / 1fr minmax(250px, 318px) minmax(750px, 1026px) 1fr;
-    gap: 0 1.5rem;
+    max-width: 1200px;
+    margin: auto;
   }
 
   .category-index .hero-container {
