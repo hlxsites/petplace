@@ -32,6 +32,10 @@ main .pet-survey-container {
   flex-direction: row;
   gap: 16px;
   margin-top: 24px;
+  @media screen and (max-width: 461px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
 }
 a.pet-survey__button,
 button.pet-survey__button {
@@ -43,6 +47,9 @@ button.pet-survey__button {
   font-family: var(--body-font-family);
   font-size: 18px;
   line-height: 1.2;
+  @media screen and (max-width: 461px) {
+    width: 100%;
+  }
 }
 .pet-survey__button.primary {
   background-color: var(--orange-300, #c74d2f);
