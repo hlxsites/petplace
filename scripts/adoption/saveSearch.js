@@ -51,6 +51,8 @@ export async function saveSearch(token) {
   let animalType = null;
   if (petType !== 'null') {
     animalType = petType;
+  } else {
+    animalType = 'Pet'
   }
   const breedSelect = document.getElementById('breed');
   const breedSelectedOptions = breedSelect.querySelectorAll('input:checked');
