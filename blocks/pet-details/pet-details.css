@@ -360,6 +360,9 @@
   display: inline-flex;
   color: var(--color-black);
 }
+.pet-details .shelter-extra-info {
+  margin-top: 24px;
+}
 
 /* Similar Pets section */
 
