@@ -10,8 +10,6 @@ import {
   getCategories,
   getCategory,
   getPlaceholder,
-  getId,
-  isTablet,
   meterCalls,
 } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
@@ -101,54 +99,6 @@ async function getArticles() {
     .slice(offset, offset + limit);
 }
 
-function buildSidebar() {
-  const section = document.createElement('div');
-  section.classList.add('sidebar');
-  section.setAttribute('role', 'complementary');
-
-  const id1 = getId();
-  const id2 = getId();
-  const filterToggle = document.createElement('button');
-  filterToggle.disabled = !isTablet();
-  filterToggle.setAttribute('aria-controls', `${id1} ${id2}`);
-  filterToggle.textContent = getPlaceholder('filters');
-  section.append(filterToggle);
-
-  const subCategories = buildBlock('sub-categories', { elems: [] });
-  subCategories.id = id1;
-  subCategories.setAttribute('aria-hidden', isTablet());
-  section.append(subCategories);
-
-  const popularTags = buildBlock('popular-tags', { elems: [] });
-  popularTags.id = id2;
-  popularTags.setAttribute('aria-hidden', isTablet());
-  section.append(popularTags);
-
-  filterToggle.addEventListener('click', () => {
-    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
-    if (!isVisible) {
-      filterToggle.dataset.mobileVisible = true;
-    }
-    subCategories.setAttribute('aria-hidden', isVisible);
-    popularTags.setAttribute('aria-hidden', isVisible);
-  });
-
-  window.addEventListener('resize', () => {
-    const isVisible = subCategories.getAttribute('aria-hidden') === 'false';
-    if (!isVisible && !isTablet()) {
-      filterToggle.disabled = true;
-      subCategories.setAttribute('aria-hidden', false);
-      popularTags.setAttribute('aria-hidden', false);
-    } else if (isVisible && isTablet() && !filterToggle.dataset.mobileVisible) {
-      filterToggle.disabled = false;
-      subCategories.setAttribute('aria-hidden', true);
-      popularTags.setAttribute('aria-hidden', true);
-    }
-  }, { passive: true });
-
-  return section;
-}
-
 function createTemplateBlock(main, blockName, elems = []) {
   const section = document.createElement('div');
 
@@ -178,6 +128,13 @@ async function updateMetadata() {
 }
 
 export async function loadEager(document) {
+  // List of max popular tags to display per viewport
+  const maxTagsObj = {
+    desktop: 5,
+    tablet: 3,
+    mobile: 0,
+  };
+
   const main = document.querySelector('main');
   const h1 = document.createElement('h1');
   main.prepend(h1);
@@ -186,13 +143,14 @@ export async function loadEager(document) {
   h2.classList.add('sr-only');
   h2.textContent = getPlaceholder('articles');
   h1.after(h2);
-  main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(1)'));
+  const popularTagsContainer = document.createElement('div');
+  h2.after(popularTagsContainer);
+  const popularTags = buildBlock('popular-tags', { elems: [] });
+  Object.entries(maxTagsObj).forEach(([viewport, maxTags]) => {
+    popularTags.setAttribute(`data-max-tags-${viewport}`, maxTags);
+  });
+  popularTagsContainer.append(popularTags);
   createTemplateBlock(main, 'pagination');
-  // eslint-disable-next-line no-restricted-globals
-  const heroImg = await getCategoryImage(location.pathname);
-  if (heroImg) {
-    main.querySelector('picture').replaceWith(heroImg);
-  }
 }
 
 export async function loadLazy() {
@@ -218,31 +176,6 @@ export async function loadLazy() {
     label: Category,
   }], { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true });
   createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
-
-  // Softnav progressive enhancement for browsers that support it
-  // if (window.navigation) {
-  //   const categories = await getCategories();
-  //   const subCategories = document.querySelector('.sub-categories');
-  //   window.addEventListener('popstate', () => {
-  //     articleLoadingPromise.interrupt();
-  //     updateMetadata();
-  //     renderCategories(subCategories, categories);
-  //     renderArticles(getArticles());
-  //   });
-
-  //   subCategories.addEventListener('click', (ev) => {
-  //     const link = ev.target.closest('a');
-  //     if (!link) {
-  //       return;
-  //     }
-  //     ev.preventDefault();
-  //     articleLoadingPromise.interrupt();
-  //     window.history.pushState({}, '', link.href);
-  //     updateMetadata();
-  //     renderCategories(subCategories, categories);
-  //     renderArticles(getArticles());
-  //   });
-  // }
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('category', 'create');

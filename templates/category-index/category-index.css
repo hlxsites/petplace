@@ -16,9 +16,16 @@
 /**
  * Global
  */
- /* Add top margin to page heading */
-.category-index h1:first-child {
-  margin-top: 2.5rem;
+.category-index main {
+  padding: 1.5rem 1rem;
+
+  @media (min-width: 1024px) {
+    padding: 3rem 3rem 5rem;
+  }
+}
+
+.category-index main .section {
+  padding: 0;
 }
 
 /**
