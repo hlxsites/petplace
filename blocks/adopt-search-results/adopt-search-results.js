@@ -197,6 +197,12 @@ async function callAnimalList() {
     breedType.forEach((breed) => {
         breeds.push(breed);
     });
+    // remove 'ANY' from breed selection
+    for (let i = 0; i < selectedBreeds.length; i++) {
+        if (selectedBreeds[i] === 'ANY') {
+            selectedBreeds.splice(i, 1);
+        }
+    }
     const response = await fetch(`${endPoints.apiUrl}/animal`, {
         method: 'POST',
         headers: {
@@ -304,7 +310,7 @@ async function updateBreedListSelect() {
     const inputOptionAny = document.createElement('input');
     inputOptionAny.type = 'checkbox';
     inputOptionAny.id = 'any';
-    inputOptionAny.value = '';
+    inputOptionAny.value = 'ANY';
     inputOptionAny.textContent = 'Any';
     divAny.classList.add('multi-select__input');
     const labelAny = document.createElement('label');
