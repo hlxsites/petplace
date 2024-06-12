@@ -379,19 +379,25 @@ export default async function decorate(block) {
           surveyNumber = surveyResponse.Id;
 
           // delete all responses that aren't found in new survey
+          const itemsToDelete = [];
           surveyResponse.SurveyResponseAnswers.forEach((answer) => {
             // only search through multiselects and non deleted answers
             if (answer.Question.IsMultiAnswer && !answer.Deleted) {
-              const found = state.surveyAnswers.find(
-                (a) => (a.QuestionOptionId && a.QuestionOptionId === answer.QuestionOptionId) || a.UserResponseText === answer.UserResponseText,
-              );
+              let found = false;
+              state.surveyAnswers.forEach((a) => {
+                if (answer.QuestionOptionId && answer.QuestionOptionId?.toString() === a.QuestionOptionId || a.UserResponseText === answer.UserResponseText) {
+                  found = true;
+                }
+              });
               if (!found) {
-                answer.Deleted = true;
-                state.surveyAnswers.push(answer);
+                itemsToDelete.push(answer);
               }
             }
-          
-          })
+          });              
+          itemsToDelete.forEach((item) => {
+            item.Deleted = true;
+            state.surveyAnswers.push(item);
+          });
           const payload = {
             Id: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
