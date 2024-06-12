@@ -6,7 +6,14 @@
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "build:react": "npm run build --workspace=react-client",
+    "postbuild:react": "npm run update:react:js && npm run update:react:css && npm run update:react:import && npm run update:react:import:css",
+    "update:react:js": "rm -f scripts/react-index-*.js && cp react-client/dist/assets/*.js scripts",
+    "update:react:css": "rm -f styles/react-index-*.css && cp react-client/dist/assets/*.css styles",
+    "update:react:import": "filename=$(ls scripts | grep 'react-index-.*.js') && sed -i '' \"s|react-index-.*.js|$filename|g\" scripts/scripts.js",
+    "update:react:import:css": "filename=$(ls styles | grep 'react-index-.*.css') && sed -i '' \"s|react-index-.*.css|$filename|g\" scripts/scripts.js",
+    "test": "npm run test --workspaces --if-present"
   },
   "repository": {
     "type": "git",
@@ -28,5 +35,6 @@
     "stylelint-config-standard": "36.0.0"
   },
   "dependencies": {
-  }
+  },
+  "workspaces": [ "react-client" ]
 }

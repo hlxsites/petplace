@@ -26,6 +26,17 @@
       window.location.replace('/rss.xml');
     }
 
+    // Redirect React app
+    if (window.location.pathname.includes('/react-test')) {
+      const subpath = window.location.pathname.split('/react-test')[1];
+      redirecting = true;
+
+      sampleRUM('redirect-react-app', { source: document.referrer, target: window.location.href });
+      window.location.href = `${window.location.origin}/react-test?redirectFrom=${subpath}`;
+    }
+
+    // if (redirecting) return;
+
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
@@ -66,7 +77,7 @@
       let f = d.getElementsByTagName(s)[0],
         j = d.createElement(s),
         dl = l != 'dataLayer' ? '&l=' + l : '';
-  
+
       j.async = true;
       j.type = 'text/javascript';
       j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;

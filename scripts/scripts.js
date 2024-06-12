@@ -476,6 +476,15 @@ function fixHyperLinks(main) {
     });
 }
 
+async function buildReactBlock(main) {
+  if (!main.innerText.includes('– react –')) return;
+
+  main.id = 'react-root';
+  import('./react-index-Bmp5dskb.js');
+
+  await loadCSS(`${window.hlx.codeBasePath}/styles/react-index-DiwrgTda.css`);
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -487,6 +496,7 @@ function buildAutoBlocks(main) {
     buildHyperlinkedImages(main);
     buildCookieConsent(main);
     fixHyperLinks(main);
+    buildReactBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
