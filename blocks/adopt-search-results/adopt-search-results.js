@@ -1331,7 +1331,7 @@ export default async function decorate(block) {
             const petType = document.getElementById('pet-type');
             const petTypeParam = String(params.get('filterAnimalType'));
             const petTypesOptions = petType.options;
-            for (let i = 0; i < petTypes.length; i += 1) {
+            for (let i = 0; i < petTypesOptions.length; i += 1) {
                 if (petTypesOptions[i].value === petTypeParam) {
                     petType.selectedIndex = i;
                 }
