@@ -163,6 +163,10 @@ progress[value]::-webkit-progress-value {
   text-align: center;
 }
 
+.pet-survey__question .pet-survey__options .multi-select {
+  margin-bottom: 270px;
+}
+
 /* fieldset */
 
 .pet-survey__options fieldset {
