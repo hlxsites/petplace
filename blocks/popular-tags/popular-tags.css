@@ -1,7 +1,7 @@
 .popular-tags {
   --link-color: var(--color-black);
 
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .popular-tags h3 {
@@ -11,7 +11,7 @@
   margin: 0;
 }
 
-.popular-tags > div {
+.popular-tags>div {
   display: flex;
   align-items: center;
   column-gap: 1rem;
