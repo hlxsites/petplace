@@ -480,7 +480,7 @@ async function buildReactBlock(main) {
   if (!main.innerText.includes('– react –')) return;
 
   main.id = 'react-root';
-  import('./react-index-RwLAO5rD.js');
+  import('./react-index-CqVpFGpH.js');
 
   await loadCSS(`${window.hlx.codeBasePath}/styles/react-index-DiwrgTda.css`);
 }

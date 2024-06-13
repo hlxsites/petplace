@@ -14,9 +14,12 @@ const Home = () => {
   useEffect(() => {
     const redirectFrom = searchParams.get("redirectFrom");
     if (redirectFrom) {
-      navigate(redirectFrom);
+      navigate({
+        pathname: redirectFrom,
+        search: searchParams.get("search") ?? ''
+    });
     }
-  }, [searchParams, navigate]);
+  }, []);
 
   return (
     <div>
