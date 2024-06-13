@@ -554,7 +554,7 @@ function clearFilters() {
     if (radiusSelect) {
         radiusSelect.selectedIndex = 0;
     }
-    const radioButtons = document.querySelectorAll('input:checked');
+    const radioButtons = document.querySelectorAll('.sidebar input:checked');
     for (let i = 0; i < radioButtons.length; i += 1) {
         radioButtons[i].checked = false;
     }
