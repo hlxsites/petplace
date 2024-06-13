@@ -488,6 +488,11 @@
   color: var(--color-black);
 }
 
+.account-tabpanel--inquiries .inquiry-pet-card .image-object,
+.account-tabpanel--favorites .fav-pet-card .image-object{
+  width: 100%;
+}
+
 .account-tabpanel--favorites .fav-pet-card:last-of-type,
 .account-tabpanel--inquiries .inquiry-pet-card:last-of-type {
   margin-bottom: 0;
