@@ -213,7 +213,15 @@ export default async function decorate(block) {
           enableSaveButton();
           // add the checked item to the state
           if (el.target.checked) {
-            state.surveyAnswers.push(data);
+            // check if data already exists in the state
+            const existingAnswerIndex = state.surveyAnswers.findIndex(
+              (answer) => (answer.QuestionOptionId === data.QuestionOptionId && !answer.Deleted)
+              || (answer?.UserResponseText === data.UserResponseText && !answer.Deleted),
+            );
+            // only add if it doesn't exist already
+            if (existingAnswerIndex === -1) {
+              state.surveyAnswers.push(data);
+            }
           } else {
             // remove the unchecked item from the state
             // If the answer exists, mark it as deleted
