@@ -145,8 +145,7 @@ function getSearches(token) {
                             }`;
                         } else {
                             ageFilterList += age;
-                            ageFilterCardInfo += `${getKeyByValue(placeholders, age)
-                                .toLowerCase()
+                            ageFilterCardInfo += `${getKeyByValue(placeholders, age)?.toLowerCase()
                                 .replace('-', ' - ')
                                 .replace('years', ' years')
                                 .replace('kitten', '/kitten')

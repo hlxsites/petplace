@@ -702,6 +702,9 @@ function buildFilterSidebar(sidebar) {
         });
         const formattedAge = age[0].toLowerCase() + age.slice(1);
         ageRadio.value = placeholders[formattedAge?.replace(/\s+/g, '')?.replace(/\+/g, '')?.replace(/\//g, '')];
+        if (formattedAge === 'under 1 Year') {
+            ageRadio.value = 'PK';
+        }
         ageListLabel.append(ageRadio);
         const checkmark = document.createElement('span');
         checkmark.className = 'checkmark';
