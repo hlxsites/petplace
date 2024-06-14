@@ -7,3 +7,5 @@ plugins/
 pushly-sdk-worker.js
 worker/bin
 worker/pkg
+
+react-client/
