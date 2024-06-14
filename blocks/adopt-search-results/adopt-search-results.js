@@ -957,7 +957,7 @@ function populateSidebarFilters(params) {
     for (let i = 0; i < genderRadios.length; i += 1) {
         const genderArray = params.get('filterGender')?.split(',');
         genderArray?.forEach((gender) => {
-            if (genderRadios[i].value === gender) {
+            if (genderRadios[i].value.toLowerCase() === gender.toLowerCase()) {
                 genderRadios[i].checked = true;
             }
         });
@@ -966,7 +966,7 @@ function populateSidebarFilters(params) {
     for (let i = 0; i < ageRadios.length; i += 1) {
         const ageArray = params.get('filterAge')?.split(',');
         ageArray?.forEach((age) => {
-            if (ageRadios[i].value === age) {
+            if (ageRadios[i].value.toLowerCase() === age.toLowerCase()) {
                 ageRadios[i].checked = true;
             }
         });
@@ -975,7 +975,7 @@ function populateSidebarFilters(params) {
     for (let i = 0; i < sizeRadios.length; i += 1) {
         const sizeArray = params.get('filterSize')?.split(',');
         sizeArray?.forEach((size) => {
-            if (sizeRadios[i].value === size) {
+            if (sizeRadios[i].value.toLowerCase() === size.toLowerCase()) {
                 sizeRadios[i].checked = true;
             }
         });
@@ -991,11 +991,13 @@ function populateSidebarFilters(params) {
                 if (shelterArray.length > 0) {
                     shelterArray?.forEach((shelter) => {
                         const checkbox = document.getElementById(shelter);
-                        checkbox.checked = true;
-                        // Create a new 'change' event
-                        const event = new Event('change');
-                        // Dispatch it.
-                        checkbox.dispatchEvent(event);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            // Create a new 'change' event
+                            const event = new Event('change');
+                            // Dispatch it.
+                            checkbox.dispatchEvent(event)
+                        };
                     });
                 }
             });
@@ -1353,7 +1355,7 @@ export default async function decorate(block) {
             const petTypeParam = String(params.get('filterAnimalType'));
             const petTypesOptions = petType.options;
             for (let i = 0; i < petTypesOptions.length; i += 1) {
-                if (petTypesOptions[i].value === petTypeParam) {
+                if (petTypesOptions[i].value.toLowerCase() === petTypeParam.toLowerCase()) {
                     petType.selectedIndex = i;
                 }
             }
@@ -1365,7 +1367,7 @@ export default async function decorate(block) {
                 updateBreedListSelect().then(() => {
                     const inputs = petBreed.querySelectorAll('input');
                     inputs.forEach((input) => {
-                        if (paramsSelected?.includes(input.value) && input.value !== '') {
+                        if (paramsSelected?.toLowerCase().includes(input.value.toLowerCase()) && input.value !== '') {
                             selectedBreeds.push(input.value);
                             input.checked = true;
                         }
