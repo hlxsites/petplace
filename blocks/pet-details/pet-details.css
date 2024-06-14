@@ -46,6 +46,10 @@
   white-space: nowrap;
 }
 
+.pet-details .no-pet-found h1 {
+  color: black;
+}
+
 .pet-details .submit-inquiry-button {
   display: none;
 
