@@ -488,6 +488,18 @@ function calculatePagination(page) {
         tempPage = page.currentTarget?.myParam;
         currentPage = page.currentTarget?.myParam;
     }
+    const prevButton = document.querySelector('#btn_prev');
+    const nextButton = document.querySelector('#btn_next');
+    if (currentPage === 1) {
+        prevButton.disabled = true;
+    } else {
+        prevButton.disabled = false;
+    }
+    if (currentPage === numPages()) {
+        nextButton.disabled = true;
+    } else {
+        nextButton.disabled = false;
+    }
     const filteredArray = [];
     // Validate page
     if (tempPage < 1) tempPage = 1;

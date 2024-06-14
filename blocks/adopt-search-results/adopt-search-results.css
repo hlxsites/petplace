@@ -342,6 +342,11 @@
     padding: 10px;
 
 }
+
+.adopt-search-results .pagination #btn_prev:disabled, .adopt-search-results .pagination #btn_next:disabled {
+    opacity: 0.5;
+}
+
 .adopt-search-results .pagination #btn_next {
     background-color: transparent;
     font-family: "Libre Franklin";
