@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import {
   createBrowserRouter,
+  Link,
   Outlet,
   RouterProvider,
   useNavigate,
@@ -16,15 +17,18 @@ const Home = () => {
     if (redirectFrom) {
       navigate({
         pathname: redirectFrom,
-        search: searchParams.get("search") ?? ''
-    });
+        search: searchParams.get("search") ?? "",
+      });
     }
   }, []);
 
   return (
-    <div>
-      Hello world!
-      <Outlet />
+    <div style={{ padding: 16 }}>
+      This is the Root route.
+      <div style={{ padding: `20px 0` }}>
+        <hr />
+        <Outlet />
+      </div>
     </div>
   );
 };
@@ -36,8 +40,12 @@ const routes = [
     errorElement: <p>Not found</p>,
     children: [
       {
+        index: true,
+        element: <Link to="account">Go to account</Link>,
+      },
+      {
         path: "account",
-        element: <p>Account</p>,
+        element: <p>This is the Account route</p>,
       },
     ],
   },
