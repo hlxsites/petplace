@@ -8,4 +8,6 @@ pushly-sdk-worker.js
 worker/bin
 worker/pkg
 
+# Ignore the react-client directory & build generated files
 react-client/
+scripts/react-index*

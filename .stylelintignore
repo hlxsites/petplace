@@ -1,1 +1,4 @@
 lite-yt-embed
+
+# Ignore the react-client directory & build generated files
+styles/react-index*.css
