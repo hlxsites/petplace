@@ -362,6 +362,11 @@ export default async function decorate(block) {
     if (inquiryBtn) {
       inquiryBtn.addEventListener('click', async (event) => {
         event.preventDefault();
+        const consent = block.querySelector('#pet-survey-summary-agreement');
+        if (!consent.checked) {
+          window.alert('Please agree to share your information with the shelter.');
+          return;
+        }
         if (!token) {
           token = await acquireToken('Inquiry');
         }
