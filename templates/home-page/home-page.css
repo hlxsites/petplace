@@ -165,6 +165,10 @@ main a:hover {
   text-align: center;
 }
 
+.aggregator-tool {
+  height: 500px;
+}
+
 @media (max-width: 768px) {
   .home-banner-bg {
     margin-bottom: 6rem !important;
@@ -199,5 +203,11 @@ main a:hover {
 
   .insurance-search .search-input {
     border: 1px solid #000 !important;
+  }
+}
+
+@media (max-width: 468px) {
+  .aggregator-tool {
+    height: 1199px;
   }
 }
