@@ -8,11 +8,10 @@
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
     "build:react": "npm run build --workspace=react-client",
-    "postbuild:react": "npm run update:react:js && npm run update:react:css && npm run update:react:import && npm run update:react:import:css",
-    "update:react:js": "rm -f scripts/react-index-*.js && cp react-client/dist/assets/*.js scripts",
-    "update:react:css": "rm -f styles/react-index-*.css && cp react-client/dist/assets/*.css styles",
-    "update:react:import": "filename=$(ls scripts | grep 'react-index-.*.js') && sed -i '' \"s|react-index-.*.js|$filename|g\" scripts/scripts.js",
-    "update:react:import:css": "filename=$(ls styles | grep 'react-index-.*.css') && sed -i '' \"s|react-index-.*.css|$filename|g\" scripts/scripts.js",
+    "postbuild:react": "npm run update:react:js && npm run update:react:css && npm run update:react:import",
+    "update:react:js": "rm -f blocks/react/react-index-*.js && cp react-client/dist/assets/*.js blocks/react",
+    "update:react:css": "cp react-client/dist/assets/*.css blocks/react",
+    "update:react:import": "filename=$(ls blocks/react | grep 'react-index-.*.js') && sed -i '' \"s|react-index-.*.js|$filename|g\" blocks/react/react.js",
     "test": "npm run test --workspaces --if-present"
   },
   "repository": {

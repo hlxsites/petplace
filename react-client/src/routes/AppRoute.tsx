@@ -45,7 +45,13 @@ const routes = [
       },
       {
         path: "account",
-        element: <p>This is the Account route</p>,
+        element: (
+          <>
+            <p>This is the Account route</p>
+            <br />
+            <Link to="..">Back</Link>
+          </>
+        ),
       },
     ],
   },

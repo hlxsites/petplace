@@ -9,7 +9,7 @@ export default defineConfig({
       output: {
         entryFileNames: 'assets/react-[name]-[hash].js',
         chunkFileNames: 'assets/react-[name]-[hash].js',
-        assetFileNames: 'assets/react-[name]-[hash].[ext]',
+        assetFileNames: 'assets/react.[ext]',
       }
     }
   },
