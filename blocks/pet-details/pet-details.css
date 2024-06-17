@@ -44,6 +44,9 @@
   font-weight: 600;
   line-height: 1.2;
   white-space: nowrap;
+  @media (max-width: 468px) { 
+    padding: 12px 24px;
+  }
 }
 
 .pet-details .no-pet-found h1 {
