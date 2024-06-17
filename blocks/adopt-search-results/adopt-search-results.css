@@ -376,6 +376,16 @@
         flex-wrap: nowrap;
     }
 }
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+    .adopt-search-results-wrapper form {
+        display: grid;
+        grid-template-columns: 35% 17% 1fr;
+        grid-template-rows: auto auto;
+    }
+    .adopt-search-results form .box-wrapper-breed {
+        grid-column: span 2;
+    }
+}
 
 .adopt-search-results-wrapper .adopt-search.results form {
     display: flex;
