@@ -45,6 +45,7 @@ async function buildPost(post, eager) {
               <time itemprop="datePublished" datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time>
             </span>
           </p>` : ''}
+          <div class="card-cta">Read Article</div>
         </div>
       </a>
     </div>
