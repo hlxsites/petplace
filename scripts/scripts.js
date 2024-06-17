@@ -1002,6 +1002,7 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  sampleRUM('lang', { source: document.documentElement.lang, target: navigator.languages.join(',') });
   const getRegionPromise = getRegion();
   getRegionPromise
     .then((region) => {
