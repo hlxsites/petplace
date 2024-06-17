@@ -1126,6 +1126,7 @@ export default async function decorate(block) {
 
     // Building Breed List custom multi select element
     const breedContainer = document.createElement('div');
+    breedContainer.className = 'box-wrapper-breed';
     const breedLabelElement = document.createElement('label');
     breedLabelElement.for = 'breed';
     breedLabelElement.innerText = breedLabel;
