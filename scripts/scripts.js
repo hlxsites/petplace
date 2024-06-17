@@ -94,6 +94,15 @@ window.hlx.plugins.add('rum-conversion', {
 // eslint-disable-next-line prefer-rest-params
 function gtag() { window.dataLayer.push(arguments); }
 
+/**
+ * Logs the information about an error encountered by the site.
+ * @param {string} source Description of the source that generated the error.
+ * @param {Error} e Error information to log.
+ */
+export async function captureError(source, e) {
+  sampleRUM('error', { source, target: e.message });
+}
+
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
 export async function getRegion() {
   const resp = await fetch(window.location.href, { method: 'HEAD' });
@@ -993,6 +1002,14 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  const getRegionPromise = getRegion();
+  getRegionPromise
+    .then((region) => {
+      sampleRUM('region', { source: region });
+    })
+    .catch((error) => {
+      captureError('Error fetching region:', error);
+    });
 
   await window.hlx.plugins.run('loadLazy');
 
@@ -1142,15 +1159,6 @@ export async function createBreadCrumbs(crumbData, options = {}) {
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
-}
-
-/**
- * Logs the information about an error encountered by the site.
- * @param {string} source Description of the source that generated the error.
- * @param {Error} e Error information to log.
- */
-export async function captureError(source, e) {
-  sampleRUM('error', { source, target: e.message });
 }
 
 async function loadPage() {
