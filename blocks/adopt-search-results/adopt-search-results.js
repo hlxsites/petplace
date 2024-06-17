@@ -48,6 +48,7 @@ const recordsPerPage = 16;
 let animalArray = [];
 let selectedBreeds = [];
 let selectedShelters = [];
+let shelterMultiSelect = null;
 
 const noResultsContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="81" viewBox="0 0 80 81" fill="none">
@@ -413,6 +414,7 @@ async function updateShelterListSelect() {
                 : 'Select from menu...';
             buttonText.innerText = displayText;
             getFilters();
+            if (shelterMultiSelect) shelterMultiSelect.close();
             callAnimalList().then((data) => {
                 if (data) {
                     // eslint-disable-next-line
@@ -813,7 +815,7 @@ function buildFilterSidebar(sidebar) {
     clearSheltersButton.addEventListener('click', clearShelterSelections);
     containerDiv.append(clearSheltersButton);
     // eslint-disable-next-line
-    new MultiSelect(containerDiv);
+    shelterMultiSelect = new MultiSelect(containerDiv);
     shelterContainer.append(containerDiv);
     sidebar.append(shelterContainer);
 
@@ -996,8 +998,8 @@ function populateSidebarFilters(params) {
                             // Create a new 'change' event
                             const event = new Event('change');
                             // Dispatch it.
-                            checkbox.dispatchEvent(event)
-                        };
+                            checkbox.dispatchEvent(event);
+                        }
                     });
                 }
             });
