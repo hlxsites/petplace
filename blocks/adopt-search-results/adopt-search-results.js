@@ -540,6 +540,7 @@ function calculatePagination(page) {
         }
     }
     buildResultsList(filteredArray);
+    if (isMobile()) return;
     document.querySelector('.adopt-search-results-container').scrollIntoView({
         behavior: 'smooth',
     });
