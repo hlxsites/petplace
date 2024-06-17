@@ -993,8 +993,14 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
-  const region = await getRegion();
-  sampleRUM('region', {source: region});
+  const getRegionPromise = getRegion();
+  getRegionPromise
+    .then((region) => {
+      sampleRUM('region', { source: region });
+    })
+    .catch((error) => {
+      console.error('Error fetching region:', error);
+    });
 
   await window.hlx.plugins.run('loadLazy');
 
