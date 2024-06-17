@@ -583,6 +583,7 @@ display: block;
     gap: 20px;
     flex-wrap: wrap;
     margin-top: 40px;
+    height: fit-content;
 }
 
 .adopt-search-results .results.no-results {
