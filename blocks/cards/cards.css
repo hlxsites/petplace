@@ -190,12 +190,17 @@
   }
 
   .cards.featured >ul > li:first-child .blogs-card-body .card-cta {
+    box-sizing: border-box;
     display: block;
     align-self: end;
     background-color: var(--cta-button-color);
     border-radius: 12px;
     color: var(--text-color-inverted);
+    font-weight: 600;
+    line-height: normal;
+    min-width: 175px;
     padding: 0.875rem 1.5rem;
+    text-align: center;
     height: fit-content;
     width: fit-content;
   }
