@@ -1,10 +1,11 @@
 import "./App.css";
+import "../../styles/styles.css";
 import { AppRouter } from "./routes/AppRoute";
 
 function App() {
   return (
     <>
-      <h1>PetPlace React project</h1>
+      <h1 className="text-black">PetPlace React project</h1>
       <AppRouter />
     </>
   );
