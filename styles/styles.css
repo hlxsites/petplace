@@ -84,6 +84,52 @@
   --color-neutral-300: #e4e4e7;
   --color-neutral-600: #6e6d73;
 
+  /* Style from library (https://www.figma.com/design/PF2x6COOknHJpdFOMNw9KE/Style-Library-[PP-Team]?node-id=7-671&t=SixuBfEkq2og7mjp-0) */
+  /* colors */
+  --purple-500: #302280;
+  --purple-300: #7369ab;
+  --purple-100: #f1effc;
+  --orange-500: #803522;
+  --orange-300-contrast: #c74d2f;
+  --orange-300-main: #fA7d59;
+  --orange-100: #fcf2ef;
+  --blue-500: #224680;
+  --blue-300: #5273a8;
+  --blue-100: #eff4fc;
+  --maroon-500: #220426;
+  --maroon-300: #3c0040;
+  --maroon-100: #fbeffc;
+  --green-500: #1a6132;
+  --green-300: #4ba669;
+  --green-100: #edfcf2;
+  --yellow-500: #664e1c;
+  --yellow-300: #deb459;
+  --yellow-100: #fcf6e8;
+  --red-500: #731911;
+  --red-300: #ba271a;
+  --red-100: #fcefed;
+  --neutral-950: #09090d;
+  --neutral-900: #121114;
+  --neutral-800: #1c1c1f;
+  --neutral-700: #2f2f33;
+  --neutral-600: #6e6d73;
+  --neutral-500: #85848a;
+  --neutral-400: #b3b3ba;
+  --neutral-300: #d0d0d6;
+  --neutral-200: #e4e4eb;
+  --neutral-100: #f1f0f7;
+  --neutral-50: #fafafc;
+  --neutral-white: #ffffff;
+
+  /* padding */
+  --xxlarge: 40px;
+  --xlarge: 32px;
+  --large: 24px;
+  --base: 16px;
+  --small: 8px;
+  --xsmall: 4px;
+  /* end of styles from library */
+
   /* fonts */
   --body-font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
   --heading-font-family: 'Raleway', 'Raleway Fallback', sans-serif;
