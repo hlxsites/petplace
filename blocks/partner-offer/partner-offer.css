@@ -1,0 +1,202 @@
+.partner-offer-wrapper:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.partner-offer {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-areas:
+        "partner-logo"
+        "partner-name"
+        "partner-cta"
+        "partner-data";
+    row-gap: 24px;
+    border: 1px solid #d4d4d8;
+    border-radius: 16px;
+    box-shadow: var(--elevation-height-xs);
+    padding: 2.5rem 1rem;
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 3fr 1fr;
+        grid-template-areas:
+            "partner-name partner-logo"
+            "partner-data partner-cta";
+        padding: 2rem 1.5rem;
+    }
+}
+
+.partner-offer.featured {
+    border: 2px solid var(--number-background-color);
+    box-shadow: none;
+}
+
+/**
+ * Featured Title
+ */
+.partner-offer.featured::before {
+    content: attr(data-featured-title);
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    transform: translateY(-50%);
+    background-color: var(--number-background-color);
+    color: var(--text-color-inverted);
+    border-radius: 16px;
+    font-size: var(--body-font-size-xs);
+    padding: 4px 12px;
+    text-transform: uppercase;
+
+}
+
+@media (min-width: 1024px) {
+    .partner-offer.featured::before {
+        left: 1.5rem;
+    }
+}
+
+/* Hide the authored title container to prevent it occupying grid space */
+.partner-offer .partner-featured-title {
+    display: none;
+}
+
+/**
+ * Partner Logo
+ */
+.partner-offer .partner-logo {
+    grid-area: partner-logo;
+    display: flex;
+    justify-content: flex-start;
+
+    @media (min-width: 1024px) {
+        justify-content: flex-end;
+    }
+}
+
+.partner-offer .partner-logo img {
+    padding: 0;
+    max-height: 40px;
+    width: auto;
+}
+
+/**
+ * Partner Data
+ */
+.partner-offer .partner-data {
+    grid-area: partner-data;
+    display: flex;
+    flex-direction: column;
+
+    --partner-data-padding: 1rem;
+    --partner-data-border-color: 1px solid var(--border-color);
+
+    @media (min-width: 1024px) {
+        --partner-data-padding: 1.25rem;
+
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.partner-offer .partner-data>div:not(:first-child) {
+    padding-top: var(--partner-data-padding);
+    border-top: var(--partner-data-border-color);
+
+    @media (min-width: 1024px) {
+        padding-top: 0;
+        border-top: none;
+        padding-left: var(--partner-data-padding);
+        border-left: var(--partner-data-border-color);
+    }
+}
+
+.partner-offer .partner-data>div:not(:last-child) {
+    padding-bottom: var(--partner-data-padding);
+    border-bottom: var(--partner-data-border-color);
+
+    @media (min-width: 1024px) {
+        padding-bottom: 0;
+        border-bottom: none;
+        padding-right: var(--partner-data-padding);
+        border-right: var(--partner-data-border-color);
+    }
+}
+
+.partner-offer .partner-data .partner-data-title {
+    color: var(--color-black);
+    font-size: 1.0625rem;
+
+    @media (min-width: 1024px) {
+        font-size: 0.7rem;
+    }
+}
+
+.partner-offer .partner-data p {
+    color: #71717a;
+    font-size: 1.1875rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+
+    @media (min-width: 1024px) {
+        font-size: 0.8rem;
+    }
+}
+
+/**
+ * Partner Name
+ */
+.partner-offer .partner-name {
+    grid-area: partner-name;
+}
+
+.partner-offer .partner-name p {
+    margin-bottom: 0;
+}
+
+.partner-offer .partner-name p:first-child {
+    font-family: var(--heading-font-family);
+    font-size: var(--heading-font-size-m);
+    line-height: 1.15;
+    margin-bottom: 4px;
+}
+
+.partner-offer .partner-name p:not(:first-child) {
+    font-size: var(--body-font-size-xs);
+    line-height: 1.6;
+    color: var(--text-color-accent);
+}
+
+/**
+ * Partner CTA
+ */
+.partner-offer .partner-cta {
+    grid-area: partner-cta;
+}
+
+.partner-offer .partner-cta .button-container {
+    display: block;
+}
+
+.partner-offer .partner-cta a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.75rem;
+    font-family: var(--body-font-family);
+    font-size: 1rem;
+    background-color: var(--compare-button-bg-color);
+    border-radius: 18px;
+    margin: 0;
+    padding: 10px 24px;
+}
+
+.partner-offer .partner-cta a:hover {
+    text-decoration: none;
+}
+
+.partner-offer .partner-cta .icon {
+    display: flex;
+    stroke-width: 1.5;
+    width: 14px;
+    height: 14px;
+}

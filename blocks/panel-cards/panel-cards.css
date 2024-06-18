@@ -59,6 +59,8 @@ main h2::after {
 }
 
 .panel-card .button-container {
+    padding: 16px;
+    padding-left: 0;
     display: block;
 }
 
@@ -104,4 +106,37 @@ main h2::after {
         padding-top: 8px;
         padding-bottom: 8px;
     }
+}
+
+.panel-cards h2 {
+    font-size: 24px;
+    margin-top: 0;
+    font-family: var(--body-font-family);
+}
+
+.panel-card .button-container a.button:hover {
+    background-color: #fff !important;
+}
+
+.panel-card-txt {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) and (max-width: 1215px) {
+    .panel-cards h2 {
+        min-height: 4rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .panel-cards {
+        flex-direction: row;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
+.adopt .panel-cards-container {
+    background-color: #F2F6FC;
 }

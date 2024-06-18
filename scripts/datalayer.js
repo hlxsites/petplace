@@ -103,14 +103,15 @@ const handleComparePlanClicks = (className) => {
 // CTA - carousel button, insurance button
 const handleCtaClicks = () => {
   if (window.location.pathname === `${window.hlx.contentBasePath}/`) {
-    document
-      .querySelector('.slides-container')
-      .addEventListener('click', (ev) => {
-        const btn = ev.target.closest('a');
-        if (!btn) return;
+    // slides removed, modify this later (todo)
+    // document
+    //   .querySelector('.slides-container')
+    //   .addEventListener('click', (ev) => {
+    //     const btn = ev.target.closest('a');
+    //     if (!btn) return;
 
-        clickHelper('CTA Button', btn.title, 'button', btn.href);
-      });
+    //     clickHelper('CTA Button', btn.title, 'button', btn.href);
+    //   });
 
     handleComparePlanClicks('.insurance-search');
   }

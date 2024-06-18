@@ -1,218 +1,119 @@
-.home-page .section:nth-of-type(2n + 1) {
-  background: var(--background-color-light);
+* {
+  font-family: 'Raleway', sans-serif;
 }
 
-.home-page main h2 {
-  position: relative;
-  font-size: 1.7rem;
-  padding-bottom: 0.2em;
-  margin: 0 0 2rem;
-  border-bottom: 2px solid var(--color-gray);
+main .section {
+  margin-bottom: 2rem;
 }
 
-.home-page main h2::after {
-  position: absolute;
+main .section:is(.home-banner-container) {
+  margin-bottom: -1.5rem;
+}
+
+main .section:is(.panel-cards-container) {
+  margin-bottom: 1.5rem;
+}
+
+main .section:is(.columns-container) {
+  margin-bottom: -3rem;
+}
+
+main a:hover {
+  background-color: var(--link-color) !important;
+}
+
+.section .default-content-wrapper h2 {
+  font-size: 2rem;
+}
+
+.home-banner-bg {
+  background-color: #EBE8FC;
+  margin-bottom: 5rem;
+}
+
+.home-banner-bg::after {
   content: "";
-  display: block;
-  bottom: -2px;
-  width: 15%;
-  min-width: 100px;
-  max-width: 200px;
-  border-bottom: 2px solid var(--highlight-color);
-}
-
-.home-page .centered :is(h1, h2) {
-  border: none;
-}
-
-.home-page .centered :is(h1, h2)::after {
-  display: none;
-}
-
-.home-page h4 {
-  font-weight: 800;
-  margin: 0;
-  padding-bottom: 10px;
-  line-height: 1;
-}
-
-.home-page .columns h2 {
-  border-bottom: none;
-}
-
-.home-page .columns h2::after {
-  display: none;
-}
-
-.home-page .columns h3 {
-  position: relative;
-  color: var(--highlight-color);
-}
-
-.home-page .columns h3::after {
+  width: 100%;
+  height: 10rem;
+  margin-top: -80px;
   position: absolute;
-  bottom: -0.5rem;
-  left: 50%;
-  margin-left: -0.5rem;
-  width: 1rem;
-  height: 1px;
-  background: var(--color-blue-dark);
-  display: block;
-  content: "";
+  left: 0;
+  background: url("../../icons/home-bg-desktop.svg") center / 100% 100%;
 }
 
-.home-page .columns [data-align="center"] p {
-  text-align: left;
-}
+/* pre footer */
 
-.home-page .columns [data-align="center"] picture {
-  display: block;
+.columns-container h2 {
+  margin-top: 25px;
+  margin-bottom: 50px;
   text-align: center;
+  font-weight: 800;
 }
 
-.home-page .columns > div > div:first-child {
-  flex: 1.5;
+.pre-footer .columns-img-col img {
+  border-radius: 3rem;
 }
 
-.home-page .slide > .text-div > p a {
+.pre-footer a {
+  border-radius: 0.5rem !important;
+  font-weight: normal !important;
+  margin: auto !important;
+}
+
+.pre-footer > div {
+  margin-bottom: 3rem;
+}
+
+.pre-footer > div > div {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-top: 5px;
+  align-items: start;
+  gap: 1rem;
 }
 
-.home-page .slides-container .slide .button::before {
-  display: inline-block;
-  content: "";
-  margin-right: 0.5rem;
-  height: 13px;
-  width: 29px;
-  background: var(--text-color-inverted);
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
-  mask: url("../../icons/arrow.svg") no-repeat center center;
-  vertical-align: middle;
+.pre-footer > div:first-child > div img {
+  max-width: none;
 }
 
-.home-page .slide > .text-div > p a {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-top: 5px;
-}
+/* insurance form */
 
-.home-page .slides-container .slide .button::before {
-  display: inline-block;
-  content: "";
-  margin-right: 0.5rem;
-  height: 13px;
-  width: 29px;
-  background: var(--text-color-inverted);
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
-  mask: url("../../icons/arrow.svg") no-repeat center center;
-  vertical-align: middle;
-}
-
-/* .section.genai-search-container :is(h1, h2), */
-.section.search-container :is(h1, h2) {
+.section.search-container h2 {
   position: relative;
-  display: inline-block;
-  top: -60px;
-  background-color: var(--text-color-inverted);
-  border-radius: 40px;
-  padding: 40px 30px 0;
-  margin: 0;
-  bottom: 60px;
+  margin: auto 5rem;
   width: 60%;
   color: inherit;
-  font-size: 2.25em;
+  font-size: 2.5rem;
+  font-weight: bolder;
 }
 
-.section.search-container :is(h1, h2)::before,
-.section.search-container :is(h1, h2)::after {
-  --radius: 10px;
-
-  content: "";
-  position: absolute;
-  width: calc(2 * var(--radius));
-  height: var(--radius);
-  top: calc(28px - var(--radius));
-  z-index: 10;
-  left: calc(5px - 2 * var(--radius));
-  box-shadow: 0.5rem 0.25rem 0 0 white;
-  border-radius: 0 0 var(--radius) 0;
-}
-
-.section.search-container :is(h1, h2)::after {
-  display: block;
-  right: calc(5px - 2 * var(--radius));
-  left: initial;
-  border-bottom: none;
-  min-width: 0;
-  box-shadow: -0.5rem 0.25rem 0 0 white;
-  border-radius: 0 0 0 var(--radius);
-}
-
-.section.search-container p {
-  margin-top: -40px;
-  max-width: 726px;
-}
-
-.home-page .subhead {
-  padding: 0 1.5rem;
-
-  h2 {
-    margin: 0;
-  }
-}
-
-.home-page .insurance-search .search-box-wrapper {
+.insurance-search .search-box-wrapper {
   margin-bottom: 0;
 }
 
-.home-page .section.search-container ~ .section.search-container {
-  background-color: unset;
-  padding: 0;
-  width: 80%;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.home-page .insurance-search .search-input {
+.insurance-search .search-input {
   box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
-
 }
 
 .home-page .insurance-search .search-button {
-  width: fit-content;
-  text-transform: capitalize;
-  font-size: 1.125rem;
+  font-size: 1rem;
+  text-transform: none;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row-reverse;
-  gap: 12px;
-  background-color: var(--compare-button-bg-color);
-
+  gap: 1rem;
+  background-color: var(--link-color);
 }
 
-.home-page .insurance-search .search-button::before {
+.insurance-search .search-button::before {
   display: inline-block;
   content: "";
-  margin-right: 0.5rem;
   height: 13px;
   width: 29px;
   background: var(--text-color-inverted);
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-mask: url("../../icons/arrow.svg") no-repeat center center;
   mask: url("../../icons/arrow.svg") no-repeat center center;
-  vertical-align: middle;
 }
 
 .error-state {
@@ -227,17 +128,17 @@
   color: var(--error-message-color);
 }
 
-.home-page .find-useful-wrapper {
+.find-useful-wrapper {
   display: none;
 }
 
-.home-page .find-useful-wrapper .error {
+.find-useful-wrapper .error {
   display: flex;
   justify-content: center;
   margin-left: -250px;
 }
 
-.home-page .find-useful-wrapper .error > div > div {
+.find-useful-wrapper .error > div > div {
   display: flex;
   align-items: center;
   width: auto;
@@ -246,7 +147,7 @@
   background-color: var(--error-message-bg-color);
 }
 
-.home-page .find-useful-wrapper .error > div > div::before {
+.find-useful-wrapper .error > div > div::before {
   display: inline-block;
   content: "";
   margin-right: 0.5rem;
@@ -259,81 +160,44 @@
   vertical-align: middle;
 }
 
-@media (max-width: 600px) {
-  .home-page .button-container {
-    padding: 1rem;
+.home-page .panel-cards-container .default-content-wrapper h2 {
+  font-weight: 800;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .home-banner-bg {
+    margin-bottom: 6rem !important;
+  }  
+
+  .home-banner-bg::after {
+    background: url("../../icons/home-bg-mobile.svg") center / 100% 100%;
   }
 
-  .home-page .section.search-container ~ .section.search-container {
-    width: 75%;
-    margin: 0 auto;
-    border-radius: 24px;
-    padding: 0.5rem 1.5rem;
-    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.24);
+  .columns-container {
+    margin-top: -2rem;
   }
 
-  .home-page .insurance-search .search-input {
-    border: 1px solid var(--background-color-dark);
+  .pre-footer > div > div:last-child {
+    margin-bottom: 0 !important;
   }
 
-  .home-page .insurance-search .search-button {
+  .pre-footer .button-container {
+    align-self: center;
+  }
+
+  .pre-footer > div {
+    margin-bottom: 0;
+  }
+
+  .section.search-container h2 {
+    margin: auto;
     width: 100%;
+    font-size: 2rem;
+    font-weight: bolder;
   }
 
-  .home-page .find-useful-wrapper .error {
-    margin-left: 0;
-    position: absolute;
-    margin-top: -115px;
-    width: 75%;
-  }
-}
-
-@media (min-width: 600px) {
-  .home-page .hero h1 {
-    font-size: 2.667em;
-  }
-
-  .home-page main h2 {
-    font-size: 1.75em;
-  }
-}
-
-@media (min-width: 900px) {
-  .home-page .hero h1 {
-    font-size: 3.222em;
-  }
-
-  .home-page main h2 {
-    font-size: 2em;
-  }
-
-  .home-page .ad-container.tiles-container .ad {
-    margin-top: 2rem;
-  }
-
-  .home-page .ad-container.columns-container {
-    display: flex;
-    max-width: 1344px;
-    margin: 0 auto;
-  }
-
-  .home-page .ad-container.columns-container .columns-wrapper {
-    flex-basis: 75%;
-    max-width: 1008px;
-  }
-
-  .home-page .ad-container.columns-container .ad-wrapper {
-    flex-basis: 25%;
-    max-width: 336px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .home-page .hero h1 {
-    font-size: 3.667em;
-  }
-
-  .home-page main h2 {
-    font-size: 2.25em;
+  .insurance-search .search-input {
+    border: 1px solid #000 !important;
   }
 }

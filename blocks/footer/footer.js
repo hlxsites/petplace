@@ -12,7 +12,10 @@ export default async function decorate(block) {
 
   // fetch footer content
   const footerPath = cfg.footer || `${window.hlx.contentBasePath}/fragments/footer`;
-  const resp = await fetch(`${footerPath}.plain.html`, window.location.pathname.endsWith('/footer') ? { cache: 'reload' } : {});
+  const resp = await fetch(
+    `${footerPath}.plain.html`,
+    window.location.pathname.endsWith('/footer') ? { cache: 'reload' } : {},
+  );
 
   if (resp.ok) {
     const html = await resp.text();
@@ -24,19 +27,28 @@ export default async function decorate(block) {
     await decorateIcons(footer);
 
     const sections = ['nav', 'legal'];
-    await Promise.all([...footer.children].map(async (child, i) => {
-      const container = document.createElement('div');
-      container.classList.add(sections[i] ? `footer-${sections[i]}` : '');
-      container.append(child);
-      await decorateIcons(container);
-      block.append(container);
-    }));
+    await Promise.all(
+      [...footer.children].map(async (child, i) => {
+        const container = document.createElement('div');
+        container.classList.add(sections[i] ? `footer-${sections[i]}` : '');
+        container.append(child);
+        await decorateIcons(container);
+        block.append(container);
+      }),
+    );
 
-    block.querySelector('.footer-nav ul:first-of-type').classList.add('footer-social');
+    block
+      .querySelector('.footer-nav ul:first-of-type')
+      .classList.add('footer-social');
     block.querySelectorAll('.footer-social a').forEach((a) => {
       a.setAttribute('target', '_blank');
       a.setAttribute('rel', 'noopener noreferrer');
-      a.setAttribute('aria-label', getPlaceholder('socialLinkLabel', { page: a.firstElementChild.classList[1].substring(5) }));
+      a.setAttribute(
+        'aria-label',
+        getPlaceholder('socialLinkLabel', {
+          page: a.firstElementChild.classList[1].substring(5),
+        }),
+      );
     });
 
     const nav = document.createElement('nav');
@@ -46,8 +58,15 @@ export default async function decorate(block) {
     links.replaceWith(nav);
     nav.append(links);
 
+    const footerLegal = block.querySelector('.footer-legal');
+    const footerNav = block.querySelector('.footer-nav');
+    block.appendChild(footerNav);
+    block.appendChild(footerLegal);
+
     const consentLinkText = getPlaceholder('cookiePreferences');
-    const consentLink = [...block.querySelectorAll('.footer-legal li')].find((li) => li.textContent === consentLinkText);
+    const consentLink = [...block.querySelectorAll('.footer-legal li')].find(
+      (li) => li.textContent === consentLinkText,
+    );
     if (consentLink) {
       const button = document.createElement('button');
       button.classList.add('button', 'silent');
@@ -56,7 +75,9 @@ export default async function decorate(block) {
       consentLink.append(button);
       consentLink.addEventListener('click', (e) => {
         e.preventDefault();
-        showUpdateConsent(`${window.hlx.contentBasePath}/fragments/cookie-consent`);
+        showUpdateConsent(
+          `${window.hlx.contentBasePath}/fragments/cookie-consent`,
+        );
       });
     }
   }

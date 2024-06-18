@@ -3,12 +3,12 @@ import { isMiddleAd, mappingHelper, sizingArr } from './utils/helpers.js';
 window.googletag ||= { cmd: [] };
 
 const adsDivCreator = (adLoc) => {
-  const mainDiv = document.createElement('div');
-  mainDiv.className = 'publi-container';
+  const mainAdsDiv = document.createElement('div');
+  mainAdsDiv.className = 'publi-container';
 
   const subDiv = document.createElement('div');
   subDiv.className = 'sub-container';
-  mainDiv.appendChild(subDiv);
+  mainAdsDiv.appendChild(subDiv);
 
   const adDiv = document.createElement('div');
   adDiv.className = 'publi-wrapper publi-wrapper-bg';
@@ -23,31 +23,29 @@ const adsDivCreator = (adLoc) => {
 
   if (adLoc === 'article_side') {
     const aside = document.querySelector('.social-share-wrapper');
-    aside.after(mainDiv);
+    aside.after(mainAdsDiv);
   }
 
   if (adLoc.includes('top')) {
     if (adLoc.includes('home')) {
-      const adSection = document
-        .querySelectorAll('.tiles-container')[0]
-        .querySelectorAll('.default-content-wrapper')[0];
-      adSection.before(mainDiv);
+      const adSection = document.querySelectorAll('.tiles-container')[0];
+      adSection.before(mainAdsDiv);
     } else if (adLoc.includes('breeds')) {
       const attrSection = document.querySelector('.blade-wrapper');
-      attrSection.before(mainDiv);
+      attrSection.before(mainAdsDiv);
     } else {
       const hero = document.querySelector('.hero-wrapper');
-      hero.after(mainDiv);
+      hero.after(mainAdsDiv);
     }
   }
 
   if (adLoc.includes('bottom')) {
     if (adLoc.includes('breeds')) {
       const refs = document.querySelector('.section.well');
-      refs.after(mainDiv);
+      refs.after(mainAdsDiv);
     } else {
       const footer = document.querySelector('footer');
-      footer.before(mainDiv);
+      footer.before(mainAdsDiv);
     }
   }
 
@@ -55,21 +53,21 @@ const adsDivCreator = (adLoc) => {
     if (adLoc.includes('home')) {
       const adSection = document
         .querySelectorAll('.tiles-container')[1]
-        .querySelectorAll('.default-content-wrapper')[1];
+        .querySelector('.tiles-wrapper');
 
-      adSection.before(mainDiv);
+      adSection.after(mainAdsDiv);
     }
 
     if (adLoc.includes('breeds')) {
       const adSection = document.querySelector('.blade-container');
-      adSection.after(mainDiv);
+      adSection.after(mainAdsDiv);
     }
 
     if (adLoc.includes('article')) {
       const allParas = document.querySelectorAll('p');
       const parasLength = allParas.length;
       if (parasLength >= 4) {
-        allParas[Math.ceil(parasLength / 2)].after(mainDiv);
+        allParas[Math.ceil(parasLength / 2)].after(mainAdsDiv);
       }
     }
   }
@@ -117,7 +115,7 @@ const adsenseSetup = (adArgs, catVal) => {
       .setTargeting(REFRESH_KEY, REFRESH_VALUE)
       .setTargeting(REFRESH_SLOT, !REFRESH_VALUE)
       .addService(window.googletag.pubads());
-  // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console
   } else console.log('Anchor not loaded');
 
   // refresh subroutine

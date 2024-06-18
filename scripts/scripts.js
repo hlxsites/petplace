@@ -54,13 +54,14 @@ window.hlx.templates.add([
   '/templates/category-index',
   '/templates/gen-ai',
   '/templates/home-page/',
+  '/templates/insurance-landing-page',
+  '/templates/insurance-page',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
   '/templates/tag-index',
   '/templates/travel-guide-page',
   '/templates/traveling-page',
   '/templates/write-for-us',
-  '/templates/insurance-landing-page',
 ]);
 
 const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
@@ -92,6 +93,15 @@ window.hlx.plugins.add('rum-conversion', {
 
 // eslint-disable-next-line prefer-rest-params
 function gtag() { window.dataLayer.push(arguments); }
+
+/**
+ * Logs the information about an error encountered by the site.
+ * @param {string} source Description of the source that generated the error.
+ * @param {Error} e Error information to log.
+ */
+export async function captureError(source, e) {
+  sampleRUM('error', { source, target: e.message });
+}
 
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
 export async function getRegion() {
@@ -992,6 +1002,15 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  sampleRUM('lang', { source: document.documentElement.lang, target: navigator.languages.join(',') });
+  const getRegionPromise = getRegion();
+  getRegionPromise
+    .then((region) => {
+      sampleRUM('region', { source: region });
+    })
+    .catch((error) => {
+      captureError('Error fetching region:', error);
+    });
 
   await window.hlx.plugins.run('loadLazy');
 
@@ -1088,7 +1107,8 @@ export function initializeTouch(block, slideWrapper) {
  * @param {Array<CrumbData>} crumbData Information about the crumbs to add.
  * @returns {Promise<Element>} Resolves with the crumb element.
  */
-export async function createBreadCrumbs(crumbData, chevronAll = false) {
+export async function createBreadCrumbs(crumbData, options = {}) {
+  const { chevronAll = false, chevronIcon = 'chevron', useHomeLabel = false } = options;
   const { color } = crumbData[crumbData.length - 1];
   const breadcrumbContainer = document.createElement('nav');
   breadcrumbContainer.setAttribute('aria-label', getPlaceholder('breadcrumb'));
@@ -1098,8 +1118,16 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
   const homeLi = document.createElement('li');
   const homeLink = document.createElement('a');
   homeLink.href = window.hlx.contentBasePath || '/';
-  homeLink.innerHTML = '<span class="icon icon-home"></span>';
-  homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
+  if (useHomeLabel) {
+    homeLink.innerText = getPlaceholder('homeNavigation');
+    homeLink.classList.add('category-link-btn');
+    homeLink.style.setProperty('--bg-color', 'var(--background-color)');
+    homeLink.style.setProperty('--border-color', `var(--color-${color})`);
+    homeLink.style.setProperty('--text-color', `var(--color-${color})`);
+  } else {
+    homeLink.innerHTML = '<span class="icon icon-home"></span>';
+    homeLink.setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
+  }
   homeLi.append(homeLink);
   ol.append(homeLi);
 
@@ -1107,7 +1135,7 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
     const li = document.createElement('li');
     if (i > 0 || chevronAll) {
       const chevron = document.createElement('span');
-      chevron.classList.add('icon', 'icon-chevron');
+      chevron.classList.add('icon', `icon-${chevronIcon}`);
       li.append(chevron);
     }
     const linkButton = document.createElement('a');
@@ -1132,15 +1160,6 @@ export async function createBreadCrumbs(crumbData, chevronAll = false) {
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
-}
-
-/**
- * Logs the information about an error encountered by the site.
- * @param {string} source Description of the source that generated the error.
- * @param {Error} e Error information to log.
- */
-export async function captureError(source, e) {
-  sampleRUM('error', { source, target: e.message });
 }
 
 async function loadPage() {
