@@ -8,7 +8,6 @@ import errorPage from '../../scripts/adoption/errorPage.js';
 
 const arrFavList = [];
 
-
 const emptyFavList = `
 <div class='account-layout-container no-fav-pets'>
     You don’t currently have any favorited pets.
@@ -173,7 +172,6 @@ async function bindAccountFavoritesEvents(block, token, favList) {
 }
 
 function getFavorites(animalData) {
-
     fetch(`${endPoints.apiUrl}/adopt/api/Favorite`, {
         method: 'GET',
         headers: {

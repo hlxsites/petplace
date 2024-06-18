@@ -15,7 +15,7 @@ import {
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import { login, logout, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import { isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
@@ -142,6 +142,7 @@ export default async function decorate(block) {
     navLogin.querySelector('ul').remove();
     navLogin.append(loginBtnsContainer);
     navLogin.querySelector('.login-btn').addEventListener('click', async (event) => {
+      // eslint-disable-next-line
       const { login, isLoggedIn } = await import('../../scripts/lib/msal/msal-authentication.js');
       login(() => {
         if (isLoggedIn()) {
@@ -158,6 +159,7 @@ export default async function decorate(block) {
       navLogin.querySelector('.account-options').classList.toggle('hidden');
     });
     navLogin.querySelector('.sign-out-btn').addEventListener('click', async () => {
+      // eslint-disable-next-line
       const { logout, isLoggedIn } = await import('../../scripts/lib/msal/msal-authentication.js');
       logout(() => {
         if (!isLoggedIn()) {
@@ -445,7 +447,7 @@ export default async function decorate(block) {
 
     setTimeout(() => {
       checkInterface();
-    }, "1000");
+    }, '1000');
     if (isTablet()) {
       document.querySelector('.nav-language-selector').classList.add('hidden');
     }

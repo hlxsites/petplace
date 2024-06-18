@@ -504,7 +504,6 @@ progress[value]::-webkit-progress-value {
   mask-repeat: no-repeat;
   mask-position: center;
 }
-/* stylelint-enable */
 
 /* Previous Inquiry Submitted Modal */
 .previous-inquiry-submitted-modal.hidden {
@@ -542,13 +541,12 @@ progress[value]::-webkit-progress-value {
 }
 
 .previous-inquiry-submitted-modal .modal-action-btns .cancel {
-  margin-bottom: 16px;
   display: inline-flex;
   align-items: center;
   background-color: transparent;
-  border: 1px solid #222222;
-  font-family: 'Libre Franklin';
-  color: #222222;
+  border: 1px solid #222;
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
+  color: #222;
   font-size: 18px;
   font-weight: 600;
   padding: 5px 30px;
@@ -594,3 +592,4 @@ progress[value]::-webkit-progress-value {
       margin: 16px 0;
   }
 }
+/* stylelint-enable */

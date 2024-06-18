@@ -409,10 +409,12 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
 
             const accountSummaryHeader = block.querySelector('.account__summary-header');
             accountSummaryHeader.innerHTML = '<div class="account__success-message show">Your changes have been saved. <button class="account__success-message-close" aria-label="close message"></div><h3 class="account__summary-header-title">Pet Preferences</h3>';
-            var headerOffset = 150;
-            var elementPosition = accountSummaryHeader.getBoundingClientRect().top;
-            var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-  
+            // eslint-disable-next-line
+            const headerOffset = 150;
+            // eslint-disable-next-line
+            const elementPosition = accountSummaryHeader.getBoundingClientRect().top;
+            // eslint-disable-next-line
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
             window.scrollTo({
                 top: offsetPosition,
                 behavior: 'smooth',

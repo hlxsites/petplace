@@ -199,7 +199,7 @@ async function callAnimalList() {
         breeds.push(breed);
     });
     // remove 'ANY' from breed selection
-    for (let i = 0; i < selectedBreeds.length; i++) {
+    for (let i = 0; i < selectedBreeds.length; i += 1) {
         if (selectedBreeds[i] === 'ANY') {
             selectedBreeds.splice(i, 1);
         }
@@ -1005,6 +1005,7 @@ function populateSidebarFilters(params) {
                 }
             });
         }).catch((error) => {
+            // eslint-disable-next-line
             console.log(error);
         });
         }

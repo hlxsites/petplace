@@ -447,7 +447,6 @@ export async function createSummaryScreen(
   } else {
     subheading.innerText = 'Confirm the following information before updating your survey.';
   }
-  
   headerDiv.append(heading, subheading);
   containerDiv.append(headerDiv, summaryForm);
   return containerDiv;

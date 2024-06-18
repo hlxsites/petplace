@@ -25,7 +25,12 @@ function isEmptyObject(obj) {
   return typeof obj === 'object' && Object.keys(obj).length === 0;
 }
 function formatAnimalData(apiData) {
-  const { imageURL, ppRequired, animalDetail, clientDetail } = apiData;
+  const {
+    imageURL,
+    ppRequired,
+    animalDetail,
+    clientDetail,
+  } = apiData;
   const {
     AnimalId: animalId,
     ClientId: clientId,
@@ -325,17 +330,17 @@ function createNoPetFound() {
 }
 
 async function createExtraContent(contentArray) {
-  let contentContainer = document.createElement('div');
+  const contentContainer = document.createElement('div');
   contentContainer.innerHTML = '';
   Object.entries(contentArray).forEach(([key, value]) => {
-    if (value !== '' && 
-        key !== 'Name' && 
-        key !== 'Color' &&
-        key !== 'Breed' &&
-        key !== 'More Info' &&
-        key !== 'Bio' &&
-        key !== 'Data Updated') {
-      contentContainer.innerHTML += `<div class='shelter-extra-info'>${key}: ${value}</div>`
+    if (value !== ''
+        && key !== 'Name'
+        && key !== 'Color'
+        && key !== 'Breed'
+        && key !== 'More Info'
+        && key !== 'Bio'
+        && key !== 'Data Updated') {
+      contentContainer.innerHTML += `<div class='shelter-extra-info'>${key}: ${value}</div>`;
     }
   });
   return contentContainer;
@@ -436,7 +441,7 @@ async function createAboutPetSection(aboutPet) {
 }
 async function createShelterSection(aboutShelter) {
   const {
- shelterName, shelterAddress, shelterPhone, city, state, zip, clientDetail
+ shelterName, shelterAddress, shelterPhone, city, state, zip,
 } = aboutShelter;
   const lastAddressLine = city && state && zip ? `${city}, ${state} ${zip}` : '';
   const shelterContainer = document.createElement('div');

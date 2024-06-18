@@ -364,6 +364,7 @@ export default async function decorate(block) {
         event.preventDefault();
         const consent = block.querySelector('#pet-survey-summary-agreement');
         if (!consent.checked) {
+          // eslint-disable-next-line
           window.alert('Please agree to share your information with the shelter.');
           return;
         }
@@ -398,7 +399,9 @@ export default async function decorate(block) {
             if (answer.Question.IsMultiAnswer && !answer.Deleted) {
               let found = false;
               state.surveyAnswers.forEach((a) => {
-                if (answer.QuestionOptionId && answer.QuestionOptionId?.toString() === a.QuestionOptionId || a.UserResponseText === answer.UserResponseText) {
+                if ((answer.QuestionOptionId
+                    && answer.QuestionOptionId?.toString() === a.QuestionOptionId)
+                    || a.UserResponseText === answer.UserResponseText) {
                   found = true;
                 }
               });
@@ -406,7 +409,7 @@ export default async function decorate(block) {
                 itemsToDelete.push(answer);
               }
             }
-          });              
+          });
           itemsToDelete.forEach((item) => {
             item.Deleted = true;
             state.surveyAnswers.push(item);

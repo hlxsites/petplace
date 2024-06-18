@@ -1,6 +1,6 @@
 main h2 {
     position: relative;
-    margin: 0 0 32px 0;
+    margin: 0 0 32px;
     padding-bottom: 13px;
 }
 
@@ -35,7 +35,7 @@ main h2::after {
     display: flex;
     gap: 16px;
     padding: 24px 16px;
-    background-color: #FFFFFF;
+    background-color: #FFF;
     border: 1px solid #E4E4EB;
     border-radius: 16px;
     box-shadow: 5px 5px 16px 0 rgb(0 0 0 / 10%);
@@ -68,7 +68,6 @@ main h2::after {
     padding: 0;
     margin: 0;
     border: none;
-    font-weight: normal;
     line-height: 22px;
     cursor: pointer;
     display: flex;

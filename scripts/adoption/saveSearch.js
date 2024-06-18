@@ -52,7 +52,7 @@ export async function saveSearch(token) {
   if (petType !== 'null') {
     animalType = petType;
   } else {
-    animalType = 'Pet'
+    animalType = 'Pet';
   }
   const breedSelect = document.getElementById('breed');
   const breedSelectedOptions = breedSelect.querySelectorAll('input:checked');

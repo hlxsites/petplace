@@ -1,4 +1,5 @@
 export default function decorate(block) {
+  // eslint-disable-next-line no-unused-vars
   const cols = [...block.firstElementChild.children];
 
   // eslint-disable-next-line no-unused-vars
