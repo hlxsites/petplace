@@ -442,6 +442,10 @@ export default async function decorate(block) {
     }
 
     checkInterface();
+
+    setTimeout(() => {
+      checkInterface();
+    }, "1000");
     if (isTablet()) {
       document.querySelector('.nav-language-selector').classList.add('hidden');
     }
