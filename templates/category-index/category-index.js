@@ -46,10 +46,10 @@ async function renderArticles(articles) {
     div.classList.add('skeleton');
     block.append(div);
   }
-  document.querySelector('.pagination').dataset.total = '…';
+  document.querySelector('.article-pagination').dataset.total = '…';
   articleLoadingPromise = await articles;
   let articleCount = 0;
-  const pagination = document.querySelector('.pagination.block');
+  const pagination = document.querySelector('.article-pagination.block');
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of articleLoadingPromise) {
     const div = document.createElement('div');
@@ -70,7 +70,7 @@ async function renderArticles(articles) {
       pagination.style.display = 'none';
     }
   }
-  document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
+  document.querySelector('.article-pagination').dataset.total = articleLoadingPromise.total();
   window.requestAnimationFrame(() => {
     block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
   });
@@ -150,7 +150,7 @@ export async function loadEager(document) {
     popularTags.setAttribute(`data-max-tags-${viewport}`, maxTags);
   });
   popularTagsContainer.append(popularTags);
-  createTemplateBlock(main, 'pagination');
+  createTemplateBlock(main, 'article-pagination');
 }
 
 export async function loadLazy() {
