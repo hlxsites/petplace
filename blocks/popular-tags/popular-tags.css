@@ -66,7 +66,7 @@
   border-radius: 12px;
   border: 1px solid var(--border-base-color);
   background: #fff;
-  box-shadow: 0px 2px 4px 0px rgba(0 0 0 / 24%);
+  box-shadow: 0 2px 4px 0 rgba(0 0 0 / 24%);
 
   /* Override applied positioning on mobile to stretch to viewport width */
   @media (max-width: 767px) {
