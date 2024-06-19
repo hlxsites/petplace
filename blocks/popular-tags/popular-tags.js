@@ -12,18 +12,14 @@ import { getPlaceholder } from '../../scripts/scripts.js';
 function getMaxTags(block) {
   // List of supported viewports
   const mediaObj = {
-    mobile: 0,
-    tablet: 768,
     desktop: 1024,
+    tablet: 768,
+    mobile: 0,
   };
 
   // Check the block's data attributes to determine the max tags amount to be applied.
-  const { viewport } = Object.entries(mediaObj).reduce((acc, [val, minWidth]) => {
-    if (minWidth > acc.minWidth && document.documentElement.clientWidth >= minWidth) {
-      return { viewport: val, minWidth };
-    }
-    return acc;
-  }, { minWidth: -1 });
+  const viewport = Object.entries(mediaObj)
+    .find(([, width]) => width <= document.documentElement.clientWidth)[0];
 
   const maxTags = block.getAttribute(`data-max-tags-${viewport}`);
   return maxTags;
@@ -102,7 +98,7 @@ export default async function decorate(block) {
     const dropdownTag = tag.cloneNode(true);
     dropdownList.append(dropdownTag);
   });
-  document.querySelector('body').append(dropdownContainer);
+  document.body.append(dropdownContainer);
 
   // Hide the tags depending on the current viewport.
   updateTagDisplay(block, dropdownContainer);
