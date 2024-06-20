@@ -439,7 +439,14 @@ export async function createSummaryScreen(
   const heading = document.createElement('h2');
   heading.innerText = surveySummaryHeading || 'Almost Done!';
   const subheading = document.createElement('p');
-  subheading.innerText = surveySummarySubheading || 'Confirm the following information before submitting your inquiry.';
+  const searchParams = new URLSearchParams(window.location.search);
+  const animalId = searchParams.get('animalId');
+  const clientId = searchParams.get('clientId');
+  if (animalId && clientId) {
+    subheading.innerText = surveySummarySubheading || 'Confirm the following information before submitting your inquiry.';
+  } else {
+    subheading.innerText = 'Confirm the following information before updating your survey.';
+  }
   headerDiv.append(heading, subheading);
   containerDiv.append(headerDiv, summaryForm);
   return containerDiv;

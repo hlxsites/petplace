@@ -25,7 +25,12 @@ function isEmptyObject(obj) {
   return typeof obj === 'object' && Object.keys(obj).length === 0;
 }
 function formatAnimalData(apiData) {
-  const { imageURL, ppRequired, animalDetail } = apiData;
+  const {
+    imageURL,
+    ppRequired,
+    animalDetail,
+    clientDetail,
+  } = apiData;
   const {
     AnimalId: animalId,
     ClientId: clientId,
@@ -80,6 +85,8 @@ function formatAnimalData(apiData) {
     ageDescription,
     moreInfo,
     dataUpdated,
+    clientDetail: clientDetail ? clientDetail[0] : {},
+    animalDetail: animalDetail ? animalDetail[0] : {},
   };
   return formattedData;
 }
@@ -315,6 +322,30 @@ async function createCarouselSection(petName, images) {
   return sectionContainer;
 }
 
+function createNoPetFound() {
+  const noPetFoundContainer = document.createElement('div');
+  noPetFoundContainer.innerHTML = '<h1>Sorry, we could not find the pet you are looking for.</h1>';
+  noPetFoundContainer.className = 'no-pet-found';
+  return noPetFoundContainer;
+}
+
+async function createExtraContent(contentArray) {
+  const contentContainer = document.createElement('div');
+  contentContainer.innerHTML = '';
+  Object.entries(contentArray).forEach(([key, value]) => {
+    if (value !== ''
+        && key !== 'Name'
+        && key !== 'Color'
+        && key !== 'Breed'
+        && key !== 'More Info'
+        && key !== 'Bio'
+        && key !== 'Data Updated') {
+      contentContainer.innerHTML += `<div class='shelter-extra-info'>${key}: ${value}</div>`;
+    }
+  });
+  return contentContainer;
+}
+
 async function createAboutPetSection(aboutPet) {
   const {
     petName,
@@ -404,6 +435,8 @@ async function createAboutPetSection(aboutPet) {
         ${dataUpdated ? `<div>Data Updated: ${dataUpdated}</div>` : ''}
     </div>
     `;
+
+    aboutPetContainer.append(await createExtraContent(aboutPet.animalDetail));
   return aboutPetContainer;
 }
 async function createShelterSection(aboutShelter) {
@@ -428,7 +461,7 @@ async function createShelterSection(aboutShelter) {
             ? `
             <a href='https://maps.google.com/?q=${
               shelterAddress + lastAddressLine
-            }'><span>${shelterName}</br>${shelterAddress}</br>${lastAddressLine}</span></a>
+            }' target='_blank'><span>${shelterName}</br>${shelterAddress}</br>${lastAddressLine}</span></a>
         `
             : 'Shelter Location N/A'
         }</div>
@@ -438,6 +471,8 @@ async function createShelterSection(aboutShelter) {
             : 'Phone Number N/A'
         }</div>
     `;
+
+    shelterContainer.append(await createExtraContent(aboutShelter.clientDetail));
   return shelterContainer;
 }
 async function createChecklistSection(inquiryStatus, petData) {
@@ -656,9 +691,13 @@ export default async function decorate(block) {
     // Create containing div of 'about-pet', 'shelter', and 'checklist' sections
     const layoutContainer = document.createElement('div');
     layoutContainer.className = 'contents-section';
+    if (Object.keys(petData).length === 0) {
+      layoutContainer.append(createNoPetFound());
+    } else {
+      layoutContainer.append(await createAboutPetSection(petData));
+      layoutContainer.append(await createShelterSection(petData));
+    }
 
-    layoutContainer.append(await createAboutPetSection(petData));
-    layoutContainer.append(await createShelterSection(petData));
     block.append(layoutContainer);
 
     block.append(
@@ -679,7 +718,9 @@ export default async function decorate(block) {
 
     // add inquiry functionality - temporarily disabling this until survey flow is ready for release
     const petCtaContaner = document.querySelector('.about-pet-ctas');
-    petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
+    if (petCtaContaner) {
+      petCtaContaner.innerHTML += '<button class=\'submit-inquiry-button button secondary\'>Submit An Inquiry</button>';
+    }
     const submitInquiryCta = document.querySelector('.submit-inquiry-button');
 
     if (petData.animalType === 'Dog' || petData.animalType === 'Cat') {
@@ -725,8 +766,10 @@ export default async function decorate(block) {
     }
 
      // add favorite functionality
-     const favoriteCta = document.getElementById(animalId);
-     favoriteCta.addEventListener('click', (e) => { setFavorite(e, petData); });
+    const favoriteCta = document.getElementById(animalId);
+    if (favoriteCta) {
+      favoriteCta.addEventListener('click', (e) => { setFavorite(e, petData); });
+    }
 
     // check if hash exists and if so favorite the pet
     // eslint-disable-next-line

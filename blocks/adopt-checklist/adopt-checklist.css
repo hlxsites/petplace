@@ -105,6 +105,27 @@
   font-weight: 600;
 }
 
+.adopt-checklist-container .breadcrumb {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.adopt-checklist-container .breadcrumb h4 a, .adopt-checklist-container .breadcrumb h4 {
+  font-size: 18px;
+  color: #85848A;
+  display: inline-block;
+}
+
+.adopt-checklist-container .breadcrumb h4 a::after {
+  content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxNiAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMuNjY2NjYgMS41TDEwLjgxMzMgOC42NDY2N0MxMC44NTk4IDguNjkzMDQgMTAuODk2NiA4Ljc0ODEyIDEwLjkyMTcgOC44MDg3NUMxMC45NDY5IDguODY5MzggMTAuOTU5OCA4LjkzNDM3IDEwLjk1OTggOUMxMC45NTk4IDkuMDY1NjMgMTAuOTQ2OSA5LjEzMDYyIDEwLjkyMTcgOS4xOTEyNUMxMC44OTY2IDkuMjUxODggMTAuODU5OCA5LjMwNjk2IDEwLjgxMzMgOS4zNTMzM0wzLjY2NjY2IDE2LjUiIHN0cm9rZT0iIzZFNkQ3MyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K');
+  margin-left: 20px;
+  margin-right: 12px;
+  font-size: 30px;
+  position: relative;
+  top: 3px;
+}
+
 .adopt-checklist-wrapper + .columns-wrapper {
   margin-top: 40px;
 }

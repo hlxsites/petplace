@@ -1,94 +1,142 @@
-.panel-card .button-container {
-  padding: 16px;
-  padding-left: 0;
-  display: block;
+main h2 {
+    position: relative;
+    margin: 0 0 32px;
+    padding-bottom: 13px;
+}
+
+main h2::after {
+    position: absolute;
+    content: "";
+    display: block;
+    bottom: -2px;
+    width: 15%;
+    min-width: 100px;
+    max-width: 200px;
+    border-bottom: 2px solid var(--highlight-color);
+}
+
+.button-container {
+    padding: 16px;
+}
+
+.panel-cards-container {
+    background-color: #F2F6FC;
 }
 
 .panel-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 16px;
+    padding-bottom: 16px;
 }
 
 .panel-card {
-  display: flex;
-  gap: 16px;
-  cursor: pointer;
-  padding: 24px 16px;
-  background-color: #fff;
-  border: 1px solid #E4E4EB;
-  border-radius: 16px;
-  box-shadow: 5px 5px 16px 0 rgb(0 0 0 / 10%);
+    display: flex;
+    gap: 16px;
+    padding: 24px 16px;
+    background-color: #FFF;
+    border: 1px solid #E4E4EB;
+    border-radius: 16px;
+    box-shadow: 5px 5px 16px 0 rgb(0 0 0 / 10%);
 }
 
 .panel-card-img {
-  min-width: 64px;
+    min-width: 64px;
 }
 
 .panel-card p {
-  font-size: 20px;
-  line-height: 34px;
+    font-size: 20px;
+    line-height: 34px;
 }
 
-.panel-cards h2 {
-  font-size: 24px;
-  margin-top: 0;
-  font-family: var(--body-font-family);
+.panel-card p:first-of-type {
+    font-size: 24px;
 }
 
 .panel-card p:not(:last-of-type) {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
+}
+
+.panel-card .button-container {
+    padding: 16px;
+    padding-left: 0;
+    display: block;
 }
 
 .panel-card .button-container a.button {
-  background-color: transparent;
-  color: var(--link-color);
-  padding: 0;
-  margin: 0;
-  border: none;
-  font-weight: normal;
-  line-height: 22px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.panel-card .button-container a.button:hover {
-  background-color: #fff !important;
+    background-color: transparent;
+    color: var(--orange-300, #c74d2f);
+    padding: 0;
+    margin: 0;
+    border: none;
+    line-height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
 }
 
 .panel-card .button-container a.button::after {
-  content: '';
-  width: 17px;
-  height: 16px;
-  background: var(--link-color);
-  display: inline-block;
-  -webkit-mask: url("../../icons/arrow.svg") center / 100% 100%;
-  mask: url("../../icons/arrow.svg") center / 100% 100%;
+    content: '';
+    width: 17px;
+    height: 16px;
+
+    /** for the arrow icon */
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='17' fill='none' %3E%3Cg clip-path='url(%23A)' stroke='%23c74d2f' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M.5 8.471h15m-7 7l7-7-7-7'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='A'%3E%3Cpath fill='%23c74d2f' transform='translate(0 .471)' d='M0 0h16v16H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 1em;
+    font-size: 17px;
 }
 
-.panel-card-txt {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 768px) and (max-width: 1215px) {
-  .panel-cards h2 {
-    min-height: 4rem;
-  }
+.slideshow-container .slides-container .slide .button {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--link-color);
+    margin-top: 5px;
 }
 
 @media (min-width: 1024px) {
-  .panel-cards {
-    flex-direction: row;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
+    .panel-cards {
+        flex-direction: row;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
+.panel-cards h2 {
+    font-size: 24px;
+    margin-top: 0;
+    font-family: var(--body-font-family);
+}
+
+.panel-card .button-container a.button:hover {
+    background-color: #fff !important;
+}
+
+.panel-card-txt {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) and (max-width: 1215px) {
+    .panel-cards h2 {
+        min-height: 4rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .panel-cards {
+        flex-direction: row;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
 }
 
 .adopt .panel-cards-container {
-  background-color: #F2F6FC;
+    background-color: #F2F6FC;
 }
