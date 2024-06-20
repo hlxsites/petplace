@@ -1041,9 +1041,9 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
-  sampleRUM('audiences', { source: 'page-language', target: document.documentElement.lang });
-  sampleRUM('audiences', { source: 'preferred-languages', target: navigator.languages.join(',') });
-  getRegion().then((region) => sampleRUM('audiences', { source: 'user-region', target: region }));
+  sampleRUM('variant', { source: 'page-language', target: document.documentElement.lang });
+  sampleRUM('variant', { source: 'preferred-languages', target: navigator.languages.join(',') });
+  getRegion().then((region) => sampleRUM('variant', { source: 'user-region', target: region }));
 
   await window.hlx.plugins.run('loadLazy');
 
