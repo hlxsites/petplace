@@ -15,6 +15,7 @@ import {
 import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
 import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+import { isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const {
@@ -141,6 +142,7 @@ export default async function decorate(block) {
     navLogin.querySelector('ul').remove();
     navLogin.append(loginBtnsContainer);
     navLogin.querySelector('.login-btn').addEventListener('click', async (event) => {
+      // eslint-disable-next-line
       const { login, isLoggedIn } = await import('../../scripts/lib/msal/msal-authentication.js');
       login(() => {
         if (isLoggedIn()) {
@@ -157,6 +159,7 @@ export default async function decorate(block) {
       navLogin.querySelector('.account-options').classList.toggle('hidden');
     });
     navLogin.querySelector('.sign-out-btn').addEventListener('click', async () => {
+      // eslint-disable-next-line
       const { logout, isLoggedIn } = await import('../../scripts/lib/msal/msal-authentication.js');
       logout(() => {
         if (!isLoggedIn()) {
@@ -429,9 +432,22 @@ export default async function decorate(block) {
         megaNav.classList.remove('hidden');
         document.querySelector('.nav-language-selector').classList.remove('hidden');
       }
+      isLoggedIn().then((isLoggedInParam) => {
+        if (isLoggedInParam) {
+          navLogin.querySelector('.user-btn').classList.remove('hidden');
+          navLogin.querySelector('.login-btn').classList.add('hidden');
+        } else {
+          navLogin.querySelector('.user-btn').classList.add('hidden');
+          navLogin.querySelector('.login-btn').classList.remove('hidden');
+        }
+      });
     }
 
     checkInterface();
+
+    setTimeout(() => {
+      checkInterface();
+    }, '1000');
     if (isTablet()) {
       document.querySelector('.nav-language-selector').classList.add('hidden');
     }

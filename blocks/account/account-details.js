@@ -150,6 +150,7 @@ export async function createAccountDetailsPanel(userData) {
     panelDiv.innerHTML = `
         <h3>Personal Information</h3>
         <div class='account-layout-container'>
+        <div class='account__summary-header'></div>
             <form class='account-form account-form--personal' id='personal-info-form'>
                 <div class='form-control form-control--text half-width'>
                     <label for='fname'>First Name</label>
@@ -405,6 +406,24 @@ export async function bindAccountDetailsEvents(block, token, initialUserData) {
                 // eslint-disable-next-line no-param-reassign
                 initialUserData = payLoad;
             }
+
+            const accountSummaryHeader = block.querySelector('.account__summary-header');
+            accountSummaryHeader.innerHTML = '<div class="account__success-message show">Your changes have been saved. <button class="account__success-message-close" aria-label="close message"></div><h3 class="account__summary-header-title">Pet Preferences</h3>';
+            // eslint-disable-next-line
+            const headerOffset = 150;
+            // eslint-disable-next-line
+            const elementPosition = accountSummaryHeader.getBoundingClientRect().top;
+            // eslint-disable-next-line
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth',
+            });
+            const closeBtn = accountSummaryHeader.querySelector('.account__success-message-close');
+
+            closeBtn.addEventListener('click', () => {
+                accountSummaryHeader.querySelector('.account__success-message').style.display = 'none';
+            });
         });
     });
     changePwdButton.addEventListener('click', async () => {

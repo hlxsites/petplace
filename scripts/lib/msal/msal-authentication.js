@@ -84,12 +84,20 @@ export async function login(callback, featureName) {
   if (isMobile()) {
     msalInstance.loginRedirect(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
+      .then(() => {
+        document.querySelector('.nav-login .user-btn').classList.remove('hidden');
+        document.querySelector('.nav-login .login-btn').classList.add('hidden');
+      })
       .catch((error) => {
         console.log(error);
       });
   } else {
     msalInstance.loginPopup(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
+      .then(() => {
+        document.querySelector('.nav-login .user-btn').classList.remove('hidden');
+        document.querySelector('.nav-login .login-btn').classList.add('hidden');
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -286,8 +294,8 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
     // the 'newUser' flag is present for newly registered users that are logging in for the very first time.
     if (response.account.idTokenClaims.newUser) {
       // New user detected. Send POST request to create user in the database
-      fetch(`${endPoints.apiUrl}/adopt/api/User`, {
-        method: 'POST',
+      fetch(`${endPoints.apiUrl}/adopt/api/user/source`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${response.accessToken}`,

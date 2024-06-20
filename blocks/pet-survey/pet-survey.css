@@ -5,7 +5,6 @@ main .pet-survey-container {
 }
 .pet-survey {
   max-width: 100%;
-  display: grid;
   min-height: 653px;
 }
 .pet-survey__layout-container {
@@ -33,10 +32,14 @@ main .pet-survey-container {
   flex-direction: row;
   gap: 16px;
   margin-top: 24px;
+  @media screen and (max-width: 461px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
 }
 a.pet-survey__button,
 button.pet-survey__button {
-  min-width: 175px;
+  width: 50%;
   margin: 0;
   padding: 12px 20px;
   border-width: 1px;
@@ -44,6 +47,9 @@ button.pet-survey__button {
   font-family: var(--body-font-family);
   font-size: 18px;
   line-height: 1.2;
+  @media screen and (max-width: 461px) {
+    width: 100%;
+  }
 }
 .pet-survey__button.primary {
   background-color: var(--orange-300, #c74d2f);
@@ -155,6 +161,10 @@ progress[value]::-webkit-progress-value {
 .pet-survey__question > h2 {
   margin: 0 12px 32px 12px;
   text-align: center;
+}
+
+.pet-survey__question .pet-survey__options .multi-select {
+  margin-bottom: 270px;
 }
 
 /* fieldset */
@@ -413,6 +423,11 @@ progress[value]::-webkit-progress-value {
     max-width: 753px;
     margin: 0 auto;
   }
+
+  a.pet-survey__button,
+  button.pet-survey__button {
+    width: 175px;
+  }
 }
 
 .account-wrapper .pet-survey {
@@ -488,5 +503,93 @@ progress[value]::-webkit-progress-value {
   mask-size: auto;
   mask-repeat: no-repeat;
   mask-position: center;
+}
+
+/* Previous Inquiry Submitted Modal */
+.previous-inquiry-submitted-modal.hidden {
+  display: none;
+}
+
+.previous-inquiry-submitted-modal {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -80%);
+  width: 33%;
+  background-color: white;
+  color: black;
+  z-index: 21;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.previous-inquiry-submitted-modal .modal-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.previous-inquiry-submitted-modal .modal-action-btns {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.previous-inquiry-submitted-modal .modal-action-btns .cancel {
+  display: inline-flex;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #222;
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
+  color: #222;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 5px 30px;
+  text-overflow: unset;
+  overflow: visible;
+  justify-content: center;
+  margin: 0;
+}
+
+.previous-inquiry-submitted-modal .modal-action-btns .confirm {
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: #C74D2F;
+  margin: 0;
+}
+
+.previous-inquiry-submitted-modal ~ .overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 20;
+}
+
+.previous-inquiry-submitted-modal ~ .overlay.show {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .previous-inquiry-submitted-modal .modal-action-btns {
+      flex-direction: row;
+  }
+
+  .previous-inquiry-submitted-modal .modal-action-btns .confirm,
+  .previous-inquiry-submitted-modal .modal-action-btns .cancel {
+      margin: 16px 0;
+  }
 }
 /* stylelint-enable */

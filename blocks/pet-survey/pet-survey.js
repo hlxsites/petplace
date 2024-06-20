@@ -12,7 +12,66 @@ import {
   createSummaryScreen,
 } from './survey-ui.js';
 
+function previousInquirySubmittedModal() {
+  const optInModalEl = document.createElement('div');
+  const emailOptInModalStructure = `
+      <div class="modal-header">
+      <h3 class="modal-title">Previous Inquiry Submitted</h3>
+      </div>
+      <div class="modal-body">
+          <p>It looks like you've already submitted an inquiry for this pet. Continue exploring adoptable pets or view your inquiries below.</p>
+          <div class="modal-action-btns">
+              <button class="cancel">View My Inquiries</button>
+              <button class="confirm">Continue Browsing</button>
+          </div>
+      </div>
+  `;
+  optInModalEl.classList.add('modal', 'previous-inquiry-submitted-modal', 'hidden');
+
+  optInModalEl.innerHTML = emailOptInModalStructure;
+
+  return optInModalEl;
+}
+
+function previousInquirySubmittedOverlay() {
+  const optInOverlaylEl = document.createElement('div');
+  optInOverlaylEl.classList.add('overlay');
+
+  return optInOverlaylEl;
+}
+
+function mountPreviousInquirySubmittedModal() {
+  if (document.readyState === 'complete') {
+    document.querySelector('body').append(previousInquirySubmittedModal());
+    document.querySelector('body').append(previousInquirySubmittedOverlay());
+}
+}
+
+export function openPreviousInquirySubmittedModal() {
+  const modal = document.querySelector('.previous-inquiry-submitted-modal');
+  if (modal) {
+      const confirmBtn = document.querySelector('.previous-inquiry-submitted-modal .confirm');
+      const cancelBtn = document.querySelector('.previous-inquiry-submitted-modal .cancel');
+      modal.classList.remove('hidden');
+      const overlay = document.querySelector('.overlay');
+      overlay.classList.add('show');
+
+      confirmBtn.addEventListener('click', async () => {
+          modal.classList.add('hidden');
+          overlay.classList.remove('show');
+            window.history.back(-2);
+      });
+
+      cancelBtn.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          overlay.classList.remove('show');
+          window.location.href = '/pet-adoption/account#inquiries';
+      });
+  }
+}
+
 export default async function decorate(block) {
+  mountPreviousInquirySubmittedModal();
   block.textContent = '';
   const searchParams = new URLSearchParams(window.location.search);
   const animalType = searchParams.get('animalType');
@@ -99,6 +158,11 @@ export default async function decorate(block) {
       });
     });
   }
+  function enableSaveButton() {
+    // Get save button
+    const saveBtn = block.querySelector('#pet-survey-summary-save');
+    if (saveBtn.disabled) saveBtn.disabled = false;
+  }
   function bindSurveySummaryChangeEvents() {
     // Selects
     const surveyInputs = block.querySelectorAll(
@@ -111,6 +175,7 @@ export default async function decorate(block) {
           QuestionOptionId: parseInt(el.target.value, 10),
         };
         state.surveyAnswers.push(data);
+        enableSaveButton();
         const otherOptions = inputEl.querySelectorAll(`option:not([value="${el.target.value}"]):not([value=""])`);
         if (otherOptions.length > 0) {
           otherOptions.forEach((option) => {
@@ -145,10 +210,18 @@ export default async function decorate(block) {
             ExternalAnswerKey: el.target.getAttribute('data-option-id'),
             UserResponseText: el.target.getAttribute('data-option-text'),
           };
-
+          enableSaveButton();
           // add the checked item to the state
           if (el.target.checked) {
-            state.surveyAnswers.push(data);
+            // check if data already exists in the state
+            const existingAnswerIndex = state.surveyAnswers.findIndex(
+              (answer) => (answer.QuestionOptionId === data.QuestionOptionId && !answer.Deleted)
+              || (answer?.UserResponseText === data.UserResponseText && !answer.Deleted),
+            );
+            // only add if it doesn't exist already
+            if (existingAnswerIndex === -1) {
+              state.surveyAnswers.push(data);
+            }
           } else {
             // remove the unchecked item from the state
             // If the answer exists, mark it as deleted
@@ -237,21 +310,48 @@ export default async function decorate(block) {
       inquiryBtn.addEventListener('click', async (event) => {
         event.preventDefault();
         if (!token) {
-          token = await acquireToken();
+          token = await acquireToken('Survey');
         }
-        const payload = {
-          SurveyId: surveyId,
-          SurveyResponseAnswers: [...state.surveyAnswers],
-        };
         // eslint-disable-next-line
-        const result = await callSurveyResponse(
-          surveyId,
-          token,
-          'POST',
-          payload,
-        );
-        if (result) {
-          window.location.href = '/pet-adoption/survey-confirmation';
+        const surveyResponse = await callSurveyResponse(surveyId, token);
+        if (surveyResponse && !surveyResponse.Completed) {
+          const payload = {
+            SurveyId: surveyId,
+            SurveyResponseAnswers: [...state.surveyAnswers],
+          };
+          // eslint-disable-next-line
+          const result = await callSurveyResponse(
+            surveyId,
+            token,
+            'POST',
+            payload,
+          );
+          if (result) {
+            window.location.href = '/pet-adoption/survey-confirmation';
+          }
+        } else {
+          const payload = {
+            Id: surveyResponse.Id,
+            SurveyResponseAnswers: [...state.surveyAnswers],
+          };
+          // eslint-disable-next-line
+          const result = await callSurveyResponse(
+            surveyId,
+            token,
+            'PUT',
+            payload,
+          );
+
+        const surveySummaryHeader = block.querySelector('.pet-survey__summary-header');
+        surveySummaryHeader.innerHTML = '<div class="pet-survey__success-message show">Your changes have been saved. <button class="pet-survey__success-message-close" aria-label="close message"></div><h3 class="pet-survey__summary-header-title">Pet Preferences</h3>';
+        surveySummaryHeader.scrollIntoView({
+            behavior: 'smooth',
+        });
+          const closeBtn = surveySummaryHeader.querySelector('.pet-survey__success-message-close');
+
+          closeBtn.addEventListener('click', () => {
+            surveySummaryHeader.querySelector('.pet-survey__success-message').style.display = 'none';
+          });
         }
       });
     }
@@ -262,8 +362,14 @@ export default async function decorate(block) {
     if (inquiryBtn) {
       inquiryBtn.addEventListener('click', async (event) => {
         event.preventDefault();
+        const consent = block.querySelector('#pet-survey-summary-agreement');
+        if (!consent.checked) {
+          // eslint-disable-next-line
+          window.alert('Please agree to share your information with the shelter.');
+          return;
+        }
         if (!token) {
-          token = await acquireToken();
+          token = await acquireToken('Inquiry');
         }
         // eslint-disable-next-line
         const surveyResponse = await callSurveyResponse(surveyId, token);
@@ -285,6 +391,29 @@ export default async function decorate(block) {
           surveyNumber = survey.Id;
         } else {
           surveyNumber = surveyResponse.Id;
+
+          // delete all responses that aren't found in new survey
+          const itemsToDelete = [];
+          surveyResponse.SurveyResponseAnswers.forEach((answer) => {
+            // only search through multiselects and non deleted answers
+            if (answer.Question.IsMultiAnswer && !answer.Deleted) {
+              let found = false;
+              state.surveyAnswers.forEach((a) => {
+                if ((answer.QuestionOptionId
+                    && answer.QuestionOptionId?.toString() === a.QuestionOptionId)
+                    || a.UserResponseText === answer.UserResponseText) {
+                  found = true;
+                }
+              });
+              if (!found) {
+                itemsToDelete.push(answer);
+              }
+            }
+          });
+          itemsToDelete.forEach((item) => {
+            item.Deleted = true;
+            state.surveyAnswers.push(item);
+          });
           const payload = {
             Id: surveyResponse.Id,
             SurveyResponseAnswers: [...state.surveyAnswers],
@@ -311,6 +440,8 @@ export default async function decorate(block) {
       });
       if (response.status === 200) {
         window.location.href = '/pet-adoption/inquiry-confirmation';
+      } else {
+        openPreviousInquirySubmittedModal();
       }
       });
     }
@@ -332,7 +463,7 @@ export default async function decorate(block) {
     if (saveBtn) {
       saveBtn.addEventListener('click', async (event) => {
         if (!token) {
-          token = await acquireToken();
+          token = await acquireToken('Survey');
         }
         event.preventDefault();
         const payload = {
@@ -488,10 +619,9 @@ export default async function decorate(block) {
         if (accountWrapper) {
           const surveySuccessMessage = accountWrapper.querySelector('.pet-survey__success-message');
           surveySuccessMessage.classList.add('show');
-          const saveBtn = block.querySelector('#pet-survey-summary-save');
-
-          saveBtn.disabled = true;
         }
+        const saveBtn = block.querySelector('#pet-survey-summary-save');
+        if (saveBtn) saveBtn.disabled = true;
       }
     } catch (error) {
       // eslint-disable-next-line
@@ -604,7 +734,7 @@ export default async function decorate(block) {
         await createSummaryForm(animalType, questions, animalId, clientId),
       ),
     );
-
+    bindSurveySummaryChangeEvents();
     block
       .querySelector('form.pet-survey__form')
       .addEventListener('submit', (event) => {
