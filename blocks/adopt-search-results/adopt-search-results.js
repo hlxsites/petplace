@@ -249,7 +249,7 @@ async function callAnimalList() {
 
 async function callBreedList(petType) {
     const breedSelect = document.getElementById('breed-button');
-    if (breedSelect && (petType === 'other' || petType === 'null')) {
+    if (breedSelect && (petType.toLowerCase() === 'other' || petType === 'null')) {
         breedSelect.setAttribute('disabled', '');
         document.querySelector('#breed-button').innerText = 'Any';
     } else {
