@@ -63,8 +63,10 @@ function setDropdownStatus(status, buttonEl, containerEl) {
   if (status) {
     buttonEl.classList.add('active');
     containerEl.removeAttribute('hidden');
-    containerEl.style.top = `${buttonEl.getBoundingClientRect().top + buttonEl.clientHeight + 8}px`;
-    containerEl.style.right = `${document.documentElement.clientWidth - buttonEl.getBoundingClientRect().right}px`;
+    const top = buttonEl.getBoundingClientRect().top + window.scrollY;
+    containerEl.style.top = `${top + buttonEl.clientHeight + 8}px`;
+    const right = buttonEl.getBoundingClientRect().right + window.scrollX;
+    containerEl.style.right = `${document.documentElement.clientWidth - right}px`;
   } else {
     buttonEl.classList.remove('active');
     containerEl.setAttribute('hidden', true);
@@ -84,7 +86,7 @@ export default async function decorate(block) {
   block.innerHTML = html;
 
   const moreTagsTrigger = document.createElement('button');
-  moreTagsTrigger.innerHTML = `${getPlaceholder('morePopularTags')} <span class="icon icon-chevron-large"></span>`;
+  moreTagsTrigger.innerHTML = `<span>${getPlaceholder('morePopularTags')}</span><span class="icon icon-chevron-large"></span>`;
   block.querySelector('ul').append(moreTagsTrigger);
   decorateIcons(block);
 

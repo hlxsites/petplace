@@ -49,6 +49,12 @@
   padding: 0;
 }
 
+.popular-tags button span:first-child {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
 .popular-tags button .icon {
   width: 1rem;
   height: 1rem;
