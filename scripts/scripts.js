@@ -36,7 +36,46 @@ const AUDIENCES = {
 
 export const DEFAULT_REGION = 'en-US';
 export const REGIONS = {
-  'en-GB': ['LCY', 'LHR', 'LON', 'MAN'],
+  // Africa:
+  en_GH: ['ACC'],
+  en_ZA: ['CPT', 'JNB'],
+  // North America:
+  en_CA: ['YUL', 'YVR', 'YYC', 'YYZ'],
+  en_US: ['ADS', 'BFI', 'BOS', 'BUR', 'CHI', 'CMH', 'DCA', 'DEN', 'DFW', 'DTW', 'EWR', 'GNV', 'HNL', 'IAD', 'IAH', 'LAX', 'LCK', 'LGA', 'MCI', 'MIA', 'MSP', 'NYC', 'PAO', 'PDK', 'PDX', 'PHX', 'SJC', 'STL', 'STP', 'WVI'],
+  // South America:
+  es_AR: ['EZE'],
+  es_BR: ['CWB', 'FOR', 'GIG', 'GRU'],
+  es_CL: ['SCL'],
+  es_CO: ['BOG'],
+  es_PE: ['LIM'],
+  // Asia:
+  ko_KR: ['ICN'],
+  ar_AE: ['DXB', 'FJR'],
+  en_PH: ['MNL'],
+  en_SG: ['QPG'],
+  en_IN: ['BOM', 'CCU', 'DEL', 'HYD', 'MAA'],
+  ja_JP: ['HND', 'ITM', 'NRT', 'TYO'],
+  ms_MY: ['KUL'],
+  th_TH: ['BKK'],
+  zh_HK: ['HKG'],
+  // Europe:
+  bg_BG: ['SOF'],
+  da_DK: ['CPH'],
+  de_AT: ['VIE'],
+  de_DE: ['FRA', 'MUC', 'WIE'],
+  en_GB: ['LCY', 'LHR', 'LON', 'MAN'],
+  es_ES: ['MAD'],
+  fi_FI: ['HEL'],
+  fr_BE: ['BRU'],
+  fr_FR: ['PAR', 'MRS'],
+  ga_IE: ['DUB'],
+  it_IT: ['FCO', 'LIN', 'MXP', 'PMO'],
+  nl_NL: ['AMS'],
+  pt_PT: ['LIS'],
+  sv_SE: ['BMA', 'OSL'],
+  // Oceania:
+  en_AU: ['ADL', 'BNE', 'MEL', 'PER', 'SYD'],
+  en_NZ: ['AKL', 'CHC', 'WLG'],
 };
 
 window.hlx.templates.add([
@@ -93,6 +132,15 @@ window.hlx.plugins.add('rum-conversion', {
 
 // eslint-disable-next-line prefer-rest-params
 function gtag() { window.dataLayer.push(arguments); }
+
+/**
+ * Logs the information about an error encountered by the site.
+ * @param {string} source Description of the source that generated the error.
+ * @param {Error} e Error information to log.
+ */
+export async function captureError(source, e) {
+  sampleRUM('error', { source, target: e.message });
+}
 
 // checks against Fastly pop locations: https://www.fastly.com/documentation/guides/concepts/pop/
 export async function getRegion() {
@@ -993,6 +1041,9 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  sampleRUM('variant', { source: 'page-language', target: document.documentElement.lang });
+  sampleRUM('variant', { source: 'preferred-languages', target: navigator.languages.join(',') });
+  getRegion().then((region) => sampleRUM('variant', { source: 'user-region', target: region }));
 
   await window.hlx.plugins.run('loadLazy');
 
@@ -1142,15 +1193,6 @@ export async function createBreadCrumbs(crumbData, options = {}) {
 
   await decorateIcons(breadcrumbContainer);
   return breadcrumbContainer;
-}
-
-/**
- * Logs the information about an error encountered by the site.
- * @param {string} source Description of the source that generated the error.
- * @param {Error} e Error information to log.
- */
-export async function captureError(source, e) {
-  sampleRUM('error', { source, target: e.message });
 }
 
 async function loadPage() {
