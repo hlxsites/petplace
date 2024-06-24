@@ -130,4 +130,12 @@ export default async function decorate(block) {
       setDropdownStatus(true, moreTagsTrigger, dropdownContainer);
     }
   });
+
+  // Close the dialog on scroll
+  window.addEventListener('scroll', () => {
+    const isActive = moreTagsTrigger.classList.contains('active');
+    if (isActive) {
+      setDropdownStatus(false, moreTagsTrigger, dropdownContainer);
+    }
+  });
 }
