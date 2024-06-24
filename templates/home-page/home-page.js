@@ -55,7 +55,7 @@ function addWidgetScript(block) {
             });
         }
         let c = "https://quote.petpremium.com" + r;
-        t.innerHTML = \`<iframe style='width: 100%; height: 100%; border: none' src='\${c}'></iframe>\`;
+        t.innerHTML = \`<iframe loading="lazy" style='width: 100%; height: 100%; border: none' src='\${c}'></iframe>\`;
     })();
   `;
 
