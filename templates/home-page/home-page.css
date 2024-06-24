@@ -166,7 +166,7 @@ main a:hover {
 }
 
 .aggregator-tool {
-  height: 500px;
+  height: 380px;
 }
 
 @media (max-width: 768px) {
@@ -208,6 +208,6 @@ main a:hover {
 
 @media (max-width: 468px) {
   .aggregator-tool {
-    height: 1199px;
+    height: 800px;
   }
 }

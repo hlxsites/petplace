@@ -90,8 +90,28 @@ export async function loadLazy(document) {
   // insurance form
   createSpanBlock(main);
 
-  // Add p3 aggregator widget script.
-  addWidgetScript(main);
+  // Lazy-loading iframe to improve page performance.
+
+  const targetElements = document.querySelectorAll('.aggregator-tool');
+
+  const options = {
+    threshold: 0.1,
+  };
+
+  // Create an Intersection Observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        addWidgetScript(main);
+
+        // Stop observing
+        observer.unobserve(targetElements[0]);
+      }
+    });
+  }, options);
+
+  // Start Observing
+  observer.observe(targetElements[0]);
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('home', 'create');
