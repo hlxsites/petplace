@@ -12,6 +12,16 @@
 
 .cards {
   --offset-left: 16px;
+  --article-color-blue: #3E71D0;
+  --article-color-blue-dark: #465C86;
+  --article-color-gold: #877524;
+  --article-color-green: #547E67;
+  --article-color-magenta: #A94D8F;
+  --article-color-mauve: #8C4877;
+  --article-color-orange: #A72300;
+  --article-color-purple: #6f69a8;
+  --article-color-purple-light: #7364D5;
+  --article-color-red: #E20600;
 }
 
 .cards > ul {
@@ -104,7 +114,7 @@
   padding: 0 14px;
   background: var(--bg-color);
   border: 1px solid var(--border-color);
-  color: var(--text-color-accent);
+  color: var(--text-color-inverted);
   max-width: calc(100% - 2 * var(--offset-left));
   box-sizing: border-box; 
 }

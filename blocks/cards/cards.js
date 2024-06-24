@@ -24,7 +24,7 @@ async function buildPost(post, eager) {
   postCard.setAttribute('itemtype', 'https://schema.org/Article');
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
-  const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
+  const style = `--bg-color: var(--article-color-${category.Color}); --border-color: var(--article-color-${category.Color}); `;
   postCard.innerHTML = `
     <div class="blogs-card-image">
       <a href="${post.path}">${createOptimizedPicture(post.image, `${getPlaceholder('teaserLabel')} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
