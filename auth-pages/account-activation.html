@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Account Activation</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+        background-color: #FFFFFF;
+        margin: 0px;
+      }
+
+      header {
+        height: 88px;
+        margin: 0px;
+        width: 100%;
+      }
+
+      main {
+        height: 931px;
+        width: 100%;
+      }
+
+      footer {
+        background: #3B092C;
+        height: 224px;
+        width: 100%;
+      }
+
+      .header-logo {
+        padding: 16px 40px 16px 64px;
+      }
+
+      .panel-background {  
+        display: flex;
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
+
+      .panel-background::after{
+        background: url(https://s3-alpha-sig.figma.com/img/d4c2/96c6/cc82827f7947931d8d080264889da34c?Expires=1719792000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I0BgY1lAoBFLP1XdgnUy~PU-OrEwvZJtlGJUSSozlO7NaWyQWaAH8dz-3-nRHg-clf1pzEXH5k3RsJqXuMnVVTeAVWcNh5i5S069WWhkDOHTNpvPEzU7EwTf8D6K3~s8y9FJ2aFxKT7iXfECg72f85UdUtw1ciOknPPpUFS4xOEPzWvUvlhyRSJsLsSKGJDvyxkGRNUHSmS4M04FM97oq8M-Yo4e3UA7iA3tBUXld6XR3J2AdQkonFrUWOKLf6oGd88M~rHAANdAoUWwd5WEmA8kYniMA3o4apc6Xa6TEirtUEBliO2wSVI~HWHnc7MjROu4fzlWZXYpHuaPtWIbcQ__) no-repeat;
+        background-color: #D3D3D3;     
+        background-size: cover;
+        bottom: 0;
+        content: "";
+        left: 0;
+        opacity: 0.2;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+      }
+
+      .panel-container {
+        display: flex;
+        gap: 64px;
+        height: 87%;
+        margin: auto;
+        width: 84%;
+      }
+
+      .panel-greeting-container {
+        align-items: center;
+        display: flex;
+        height: 100%;
+        width: 100%;
+      }
+
+      .panel-greeting-item {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        height: 43%;
+        margin: 0;
+        width: 100%;
+      }
+      
+      .panel-pet-image {
+        border-radius: 50%;
+        height: 276px;
+        overflow: hidden;
+        width: 276px;
+      }
+
+      .panel-pet-image img {
+        max-width: 100%;
+      }
+
+      .panel-greeting-message {
+        color: #000000;
+        font-family: "Raleway", sans-serif;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -0.64px;
+        line-height: 36px;
+        text-align: center;
+      }
+
+      .pet-name {
+        color: #302280;
+      }
+
+      .panel-form-container {
+        display: flex;
+        flex-direction: column;
+        float: left;
+        height: 100%;
+        width: 100%;
+      }
+
+      .panel-form-card {
+        align-items: flex-start;
+        background-color: #FFFFFF;
+        border: 1px solid #e4e4eb;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        height: 461px;
+        margin: auto;
+        width: 100%;
+      }
+      
+      .footer-container {
+        background-color: #FFFFFF;
+        padding: 48px 80px;
+      }
+
+      .footer-container p {
+        color: #28061E;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0;
+      }
+
+      #api {
+        padding: 40px;
+      }
+
+      @media screen and (max-width: 1120px) {
+        header {
+          height: 74px;
+        }
+
+        .header-logo {
+          padding: 16px;
+        }
+
+        .panel-container {
+          align-items: center;
+          flex-direction: column;
+          gap: 32px;
+          justify-content: center;          
+        }
+
+        .panel-greeting-container {
+          align-items: normal;
+          height: 40%;
+        }
+
+        .panel-greeting-item {
+          gap: 24px;
+          height: 100%;
+        }
+
+        .panel-pet-image {
+          height: 160px;
+          width: 160px;
+        }
+
+        .panel-form-container {
+          display: table-column;
+          float: none;
+        }
+
+        .footer-container {
+          padding: 48px 16px;
+        }
+      }
+
+      @media screen and (max-width: 375px) {
+        .panel-container {
+          width: 88%;
+        }
+      }
+    </style>
+    
+  </head>
+  <body>
+    <header>
+        <img class="header-logo" src="LogoPetPlaceLogo.png"/>
+    </header>
+
+    <main>
+      <div class="panel-background">
+        <div class="panel-container">
+          <div class="panel-greeting-container">
+            <div class="panel-greeting-item">
+              <div class="panel-pet-image">
+                <img src="https://s3-alpha-sig.figma.com/img/0a37/3345/129273018f9a0717a2423a8d6bd58717?Expires=1719792000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ag4l96cWefBgXEf0mSNPUK0btpJoScbKKEE1P1KczVr8QeQc5NbEM2UWEEMSJWrdq3Z~04EVwggeYcdS1c-sZhVjgimx5Qvsn~NOph6YBWTRfO40fdtkVZb~gdXFbIUDrh~pNRDXd7~rsfJcXDhZYKu1Zm6nC3cObDI3Z70fdppHj-yYaX2ihpmgAoYFq~Lm-QUT78eDlsMhpDy7-3cFrUxB5XpcUbFPWUbSGIrsrs2gHTMQCCU0hMq6ezpy9UvRRQhhM5P9V7euR3xYuDhJCyvgYoCGbtS52QqwPulA~WX4hIYTSDnitxF~LlzfiNTCSqrYXrHfD2kGJ86k2UOVxg__"/>
+              </div>
+              <div class="panel-greeting-message">
+                <div>
+                  <span role="img" aria-label="waving-hand-emoji">👋</span>
+                  <span role="text">Say hello to <span class="pet-name" id="petName" role="text">[Pet Name]</span>!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-form-container">
+            <div class="panel-form-card">
+             <div id="api"> Azure form </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <img src="LogoPetPlaceLogo.png"/>
+        <p>By Vets. For Pets.</p>
+      </div>
+      
+    </footer>
+  </body>
+</html>
