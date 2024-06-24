@@ -7,6 +7,7 @@ import {
 } from '../../scripts/lib-franklin.js';
 import {
   createBreadCrumbs,
+  fetchAndCacheJson,
   getCategories,
   getCategory,
   getPlaceholder,
@@ -31,10 +32,25 @@ export async function getCategoryImage(path) {
   return [...column.children].find((el) => el.children[0].textContent.trim() === path)?.children[1].children[0];
 }
 
-export async function getCategoryForUrl() {
+export async function getCategoryOrTagForUrl() {
   const { pathname } = window.location;
   const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
-  return getCategory(category);
+  const catResult = await getCategory(category);
+  if (catResult) {
+    return {
+      Name: catResult.Category,
+      Path: catResult.Path
+    }
+  }
+
+  const tags = await fetchAndCacheJson(`${window.hlx.contentBasePath}/tags/tags.json`);
+  const tagResult = tags.find((tag) => tag.Path === pathname);
+  if (tagResult) {
+    return {
+      Name: tagResult.Name,
+      Path: tagResult.Path
+    }
+  }
 }
 
 let articleLoadingPromise;
@@ -77,25 +93,37 @@ async function renderArticles(articles) {
 }
 
 async function getArticles() {
+  let filterFn = () => false;
   const categories = await getCategories();
   const categoryPath = new URL(document.head.querySelector('link[rel="canonical"]').href).pathname;
   const applicableCategories = categories
     .filter((c) => c.Path === categoryPath
       || c['Parent Path'].startsWith(categoryPath))
     .map((c) => ({ id: c.Slug, name: toClassName(c.Category) }));
+
+  if (applicableCategories.length > 0) {
+    filterFn = (article) => {
+      const articleCategories = article.category !== '0'
+        ? article.category.split(',').map((c) => toClassName(c))
+        : article.path.split('/').splice(-2, 1);
+      return applicableCategories.some((c) => articleCategories.includes(c.name)
+        || articleCategories.includes(c.id));
+    };
+  } else {
+    const tag = await getCategoryOrTagForUrl();
+    const tagName = toClassName(tag.Name);
+    if (tagName) {
+      filterFn = (article) => JSON.parse(article.tags).map((t) => toClassName(t)).includes(tagName);
+    }
+  }
+
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
     .sheet('article')
     .withTotal(true)
-    .filter((article) => {
-      const articleCategories = article.category !== '0'
-        ? article.category.split(',').map((c) => toClassName(c))
-        : article.path.split('/').splice(-2, 1);
-      return applicableCategories.some((c) => articleCategories.includes(c.name)
-        || articleCategories.includes(c.id));
-    })
+    .filter(filterFn)
     .slice(offset, offset + limit);
 }
 
@@ -111,20 +139,18 @@ function createTemplateBlock(main, blockName, elems = []) {
 }
 
 async function updateMetadata() {
-  const category = await getCategoryForUrl();
-  if (!category) {
+  const result = await getCategoryOrTagForUrl();
+  if (!result) {
     throw new Error(404);
   }
-  const {
-    Category, Path,
-  } = category;
-  document.title = Category;
+  const { Name, Path } = result;
+  document.title = Name;
   document.head.querySelector('link[rel="canonical"]').href = `${window.location.origin}${Path}`;
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
   const h1 = document.querySelector('h1');
-  h1.textContent = Category;
-  h1.id = toClassName(Category);
+  h1.textContent = Name;
+  h1.id = toClassName(Name);
 }
 
 export async function loadEager(document) {
@@ -154,12 +180,12 @@ export async function loadEager(document) {
 }
 
 export async function loadLazy() {
-  const category = await getCategoryForUrl();
-  if (!category) {
+  const result = await getCategoryOrTagForUrl();
+  if (!result) {
     return;
   }
 
-  const { Category, Path } = category;
+  const { Name, Path } = result;
 
   renderArticles(getArticles());
 
@@ -171,9 +197,9 @@ export async function loadLazy() {
 
   const breadcrumbData = await createBreadCrumbs([{
     url: window.hlx.contentBasePath + Path,
-    path: Category,
+    path: Name,
     color: 'black',
-    label: Category,
+    label: Name,
   }], { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true });
   createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
 
@@ -182,13 +208,13 @@ export async function loadLazy() {
 }
 
 export async function loadDelayed() {
-  const pageCat = await getCategoryForUrl();
+  const pageCat = await getCategoryOrTagForUrl();
   await pushToDataLayer({
     event: 'adsense',
     type: 'category',
-    category: pageCat.Slug,
+    category: pageCat.Name,
   });
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
-  adsenseFunc('category', pageCat.Slug);
+  adsenseFunc('category', pageCat.Name);
 }
