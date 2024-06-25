@@ -1,8 +1,7 @@
-import classNames from "classnames";
 import { forwardRef } from "react";
-import type { IconKeys, IconProps } from "../icon/Icon";
-import { Icon } from "../icon/Icon";
+import { Icon, type IconKeys, type IconProps } from "../icon/Icon";
 import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
+import { classNames } from "../../util/util";
 
 export type IconButtonProps = IUseButtonBase &
   Omit<JSX.IntrinsicElements["button"], "children"> & {
@@ -39,7 +38,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         aria-label={label}
         className={classNames(
           baseClassName,
-          "btn-square mx-1 min-w-0 px-[12px] py-0",
+          "btn-square py-0 mx-1 min-w-0 px-[12px]",
           className
         )}
         type={type}

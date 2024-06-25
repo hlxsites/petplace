@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { classNames } from "../../util/util";
 
 export interface IUseButtonBase {
   isFullWidth?: boolean;

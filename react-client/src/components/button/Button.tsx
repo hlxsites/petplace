@@ -1,6 +1,6 @@
-import classNames from "classnames";
 import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
 import { Icon } from "../icon/Icon";
+import { classNames } from "../../util/util";
 
 export type IButtonProps = IUseButtonBase &
   JSX.IntrinsicElements["button"] & {
