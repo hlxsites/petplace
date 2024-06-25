@@ -24,11 +24,11 @@ const Switch = ({
 }: SwitchProps) => {
   const [isChecked, setIsChecked] = useState(checked);
 
-  const handleCheckedChange = (checked: boolean) => {
+  const handleCheckedChange = (checkedState: boolean) => {
     if (onCheckedChange) {
-      onCheckedChange(checked);
+      onCheckedChange(checkedState);
     }
-    setIsChecked(checked);
+    setIsChecked(checkedState);
   };
 
   return (
