@@ -30,17 +30,14 @@ const Button = ({
       type={type}
       {...rest}
     >
-      <>
-        {iconLeft && getIcon("pr-base")}
-        {children}
-        {iconRight && getIcon("pl-base")}
-      </>
+      {iconLeft && getIcon("pr-base")}
+      {children}
+      {iconRight && getIcon("pl-base")}
     </button>
   );
 
   function getIcon(classes?: string) {
-    const className = children ? classes : "";
-    return <Icon className={className} />;
+    return <Icon className={classes} display="heart" />;
   }
 };
 

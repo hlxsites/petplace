@@ -7,7 +7,7 @@ import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
 export type IconButtonProps = IUseButtonBase &
   Omit<JSX.IntrinsicElements["button"], "children"> & {
     label: string;
-    icon?: IconKeys;
+    icon: IconKeys;
     iconProps?: Omit<IconProps, "display">;
     type?: "button" | "submit" | "reset";
     onClick?: () => void;
@@ -48,7 +48,6 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       >
         <Icon
           display={icon}
-          fixedWidth
           {...iconProps}
           style={{ maxHeight: "100%", maxWidth: "100%" }}
         />
