@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import * as RadixSwitch from "@radix-ui/react-switch";
-import "./styles.css";
+import { useState } from "react";
 
 type SwitchProps = {
   asChild?: boolean;
@@ -10,21 +10,46 @@ type SwitchProps = {
   disabled?: boolean;
   label: string;
   name: string;
-  onCheckedChange: () => void;
+  onCheckedChange: (checkState: boolean) => void;
   required?: boolean;
   value: string;
 };
 
-const Switch = ({ className, label, ...props }: SwitchProps) => (
-  <div className="space-between items-center flex-row">
-    <RadixSwitch.Root
-      className={classNames("SwitchRoot", className)}
-      {...props}
-    >
-      <RadixSwitch.Thumb className="SwitchThumb" />
-    </RadixSwitch.Root>
-    <p>{label}</p>
-  </div>
-);
+const Switch = ({
+  className,
+  label,
+  checked,
+  onCheckedChange,
+  ...props
+}: SwitchProps) => {
+  const [isChecked, setIsChecked] = useState(checked);
 
+  const handleCheckedChange = (checked: boolean) => {
+    if (onCheckedChange) {
+      onCheckedChange(checked);
+    }
+    setIsChecked(checked);
+  };
+
+  return (
+    <div className="space-between flex-row items-center">
+      <RadixSwitch.Root
+        className={classNames(
+          `relative h-6 w-[52px] rounded-[21px] border-[1px] border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none ${isChecked ? "border-none bg-orange-300-contrast focus:bg-orange-300-contrast" : ""}`,
+          className
+        )}
+        checked={isChecked}
+        onCheckedChange={handleCheckedChange}
+        {...props}
+      >
+        <RadixSwitch.Thumb
+          className={`transition:transform block h-5 w-[21px] rounded-full bg-white transition-[2000ms] ${
+            isChecked ? "switch-thumb-checked" : "translate-x-[1px]"
+          }`}
+        />
+      </RadixSwitch.Root>
+      <p>{label}</p>
+    </div>
+  );
+};
 export default Switch;

@@ -71,3 +71,9 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+@layer components {
+  .switch-thumb-checked {
+    @apply translate-x-[29px];
+  }
+}
