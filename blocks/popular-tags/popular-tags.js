@@ -131,11 +131,16 @@ export default async function decorate(block) {
     }
   });
 
-  // Close the dialog on scroll
-  window.addEventListener('scroll', () => {
-    const isActive = moreTagsTrigger.classList.contains('active');
-    if (isActive) {
-      setDropdownStatus(false, moreTagsTrigger, dropdownContainer);
-    }
-  });
+  // Set an observer to close dialog when scrolling past it
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const isActive = moreTagsTrigger.classList.contains('active');
+
+      if (isActive && !entry.isIntersecting) {
+        setDropdownStatus(false, moreTagsTrigger, dropdownContainer);
+      }
+    });
+  }, { threshold: 0.35 });
+
+  observer.observe(dropdownContainer);
 }

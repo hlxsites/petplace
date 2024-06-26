@@ -39,18 +39,16 @@ export async function getCategoryOrTagForUrl() {
   if (catResult) {
     return {
       Name: catResult.Category,
-      Path: catResult.Path
-    }
+      Path: catResult.Path,
+    };
   }
 
   const tags = await fetchAndCacheJson(`${window.hlx.contentBasePath}/tags/tags.json`);
   const tagResult = tags.find((tag) => tag.Path === pathname);
-  if (tagResult) {
-    return {
-      Name: tagResult.Name,
-      Path: tagResult.Path
-    }
-  }
+  return tagResult ? {
+    Name: tagResult.Name,
+    Path: tagResult.Path,
+  } : undefined;
 }
 
 let articleLoadingPromise;

@@ -7,9 +7,11 @@
   font-size: 2rem;
   font-weight: 700;
   line-height: normal;
+  margin-bottom: 1.5rem;
 
   @media (min-width: 1024px) {
     font-size: 2.5rem;
+    margin-bottom: 2rem;
   }
 }
 

@@ -137,10 +137,17 @@
   display: none;
 }
 
+/* Handles martech ads loaded inside the grid */
+.cards .publi-container {
+  grid-area: ad;
+  padding-top: 0;
+}
+
 @media (min-width: 768px) {
   .cards > ul {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: "ad ad";
     column-gap: 32px;
     min-height: 0;
   }
@@ -149,6 +156,9 @@
 @media (min-width: 1024px) {
   .cards > ul {
     grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+      "featured featured featured"
+      "ad ad ad";
   }
 
   .cards.search > ul > li img {
@@ -160,36 +170,36 @@
   }
 
   /* Featured */
-  .cards.featured > ul > li:first-child {
-    grid-column: span 3;
+  .cards.featured > ul > li:first-of-type {
+    grid-area: featured;
     /* stylelint-disable-next-line */
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.25);
   }
 
-  .cards.featured > ul > li:first-child .blog-cards {
+  .cards.featured > ul > li:first-of-type .blog-cards {
     flex-direction: row;
   }
 
-  .cards.featured > ul > li:first-child .blogs-card-image {
+  .cards.featured > ul > li:first-of-type .blogs-card-image {
     flex: 50% 1 1;
   }
 
-  .cards.featured > ul > li:first-child .blogs-card-image img {
+  .cards.featured > ul > li:first-of-type .blogs-card-image img {
     border-top-right-radius: unset;
     border-bottom-left-radius: 8px;
   }
 
-  .cards.featured > ul > li:first-child .blogs-card-content {
+  .cards.featured > ul > li:first-of-type .blogs-card-content {
     flex: 50% 1 1;
   }
 
-  .cards.featured > ul > li:first-child .blogs-card-category {
+  .cards.featured > ul > li:first-of-type .blogs-card-category {
     --offset-left: 24px;
 
     top: 24px;
   }
 
-  .cards.featured > ul > li:first-child .blogs-card-body {
+  .cards.featured > ul > li:first-of-type .blogs-card-body {
     display: grid;
     grid-template:
       "card-metadata"
@@ -197,19 +207,19 @@
     padding: 3rem;
   }
 
-  .cards.featured > ul > li:first-child .blogs-card-body > h3 {
+  .cards.featured > ul > li:first-of-type .blogs-card-body > h3 {
     grid-area: card-title;
     font-size: 30px;
     margin-bottom: 0;
   }
 
-  .cards.featured > ul > li:first-child .blogs-card-body .card-metadata {
+  .cards.featured > ul > li:first-of-type .blogs-card-body .card-metadata {
     grid-area: card-metadata;
     flex-direction: row;
     column-gap: 1rem;
   }
 
-  .cards.featured >ul > li:first-child .blogs-card-body .card-cta {
+  .cards.featured >ul > li:first-of-type .blogs-card-body .card-cta {
     box-sizing: border-box;
     display: block;
     align-self: end;
