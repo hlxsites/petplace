@@ -1,23 +1,22 @@
-import type { FC, ComponentType, SVGProps } from 'react';
-import { IconCheck, IconHeart } from './icons';
+import CheckIcon from "./assets/check-icon.svg";
 
 export const IconMap = Object.freeze({
-  check: IconCheck,
-  heart: IconHeart,
+  check: <CheckIcon />,
 });
 
 export type IconKeys = keyof typeof IconMap;
 
-export interface IconProps extends SVGProps<SVGSVGElement> {
-  'data-testid'?: string;
+export type IconProps = {
+  className?: string;
+  color?: string;
   display: IconKeys;
-}
+  size?: number;
+};
 
-export const Icon: FC<IconProps> = ({
-  'data-testid': testId,
-  display,
-  ...rest
-}) => {
-  const SvgIcon: ComponentType<SVGProps<SVGSVGElement>> = IconMap[display];
-  return <SvgIcon data-testid={testId ?? `Icon-${display}`} {...rest} />;
+export const Icon = ({ color, display, size, ...rest }: IconProps) => {
+  return (
+    <div {...rest} style={{ color, width: size }}>
+      {IconMap[display]}
+    </div>
+  );
 };

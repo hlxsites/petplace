@@ -1,3 +1,4 @@
+import Button from "./components/button/Button";
 import "./index.css";
 import { AppRouter } from "./routes/AppRoute";
 
@@ -5,7 +6,7 @@ function App() {
   return (
     <>
       <h1 className="text-primary-color">PetPlace React project</h1>
-      <p className="text-primary-color">Teste</p>
+      <Button iconLeft={{ display: "check" }}>test</Button>
       <AppRouter />
     </>
   );

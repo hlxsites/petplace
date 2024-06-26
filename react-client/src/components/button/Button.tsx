@@ -1,6 +1,6 @@
-import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
-import { Icon } from "../icon/Icon";
 import { classNames } from "../../util/util";
+import { Icon, IconProps } from "../icon/Icon";
+import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
 
 export type IButtonProps = IUseButtonBase &
   JSX.IntrinsicElements["button"] & {
@@ -30,14 +30,14 @@ const Button = ({
       type={type}
       {...rest}
     >
-      {iconLeft && getIcon("pr-base")}
+      {iconLeft && renderIcon(iconLeft, "pr-base")}
       {children}
-      {iconRight && getIcon("pl-base")}
+      {iconRight && renderIcon(iconRight, "pl-base")}
     </button>
   );
 
-  function getIcon(classes?: string) {
-    return <Icon className={classes} display="heart" />;
+  function renderIcon(props: IconProps, className?: string) {
+    return <Icon className={className} {...props} />;
   }
 };
 
