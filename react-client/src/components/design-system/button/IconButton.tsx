@@ -1,12 +1,12 @@
 import { forwardRef } from "react";
-import { classNames } from "../../util/styleUtil";
-import { Icon, type IconKeys, type IconProps } from "../icon/Icon";
+import { classNames } from "~/util/styleUtil";
+import { Icon, IconProps } from "../icon/Icon";
 import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
 
 export type IconButtonProps = IUseButtonBase &
-  Omit<JSX.IntrinsicElements["button"], "children"> & {
+  Omit<JSX.IntrinsicElements["button"], "children" | "fullWidth"> & {
     label: string;
-    icon: IconKeys;
+    icon: IconProps["display"];
     iconProps?: Omit<IconProps, "display">;
     type?: "button" | "submit" | "reset";
     onClick?: () => void;
@@ -18,7 +18,6 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       className,
       icon,
       iconProps,
-      isFullWidth,
       isLoading,
       label,
       type = "button",
@@ -28,7 +27,6 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     ref
   ) => {
     const { className: baseClassName } = useButtonBase({
-      isFullWidth,
       isLoading,
       variant,
     });

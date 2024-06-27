@@ -1,8 +1,9 @@
 import * as RadixCheckbox from "@radix-ui/react-checkbox";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
-import { classNames } from "../../util/styleUtil";
-import { CommonInputProps } from "../design-system/types/FormTypes";
+
+import { classNames } from "~/util/styleUtil";
 import { Icon } from "../icon/Icon";
+import { CommonInputProps } from "../types/FormTypes";
 
 type CheckboxProps = Omit<
   ComponentPropsWithoutRef<typeof RadixCheckbox.Root>,

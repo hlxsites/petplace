@@ -1,16 +1,13 @@
-import { classNames } from "../../util/styleUtil";
-import { IconProps } from "../icon/Icon";
+import { classNames } from "~/util/styleUtil";
 
 export interface IUseButtonBase {
-  isFullWidth?: boolean;
+  fullWidth?: boolean;
   isLoading?: boolean;
-  iconLeft?: IconProps;
-  iconRight?: IconProps;
   variant?: "primary" | "secondary" | "ghost" | "error";
 }
 
 function useButtonBase({
-  isFullWidth,
+  fullWidth,
   isLoading,
   variant = "primary",
 }: IUseButtonBase) {
@@ -26,7 +23,7 @@ function useButtonBase({
       "bg-white border-1 border-neutral-700 text-neutral-700": isSecondary,
       "bg-neutral-100 text-neutral-500": isGhost,
       "bg-red-300 text-white": isError,
-      "w-full": isFullWidth,
+      "w-full": fullWidth,
       loading: isLoading,
     }
   );
