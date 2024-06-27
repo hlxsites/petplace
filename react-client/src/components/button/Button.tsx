@@ -30,9 +30,9 @@ const Button = ({
       type={type}
       {...rest}
     >
-      {iconLeft && renderIcon(iconLeft, "pr-base")}
+      {iconLeft && renderIcon(iconLeft, "mr-base")}
       {children}
-      {iconRight && renderIcon(iconRight, "pl-base")}
+      {iconRight && renderIcon(iconRight, "ml-base")}
     </button>
   );
 

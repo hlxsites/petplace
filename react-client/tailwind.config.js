@@ -42,6 +42,14 @@ module.exports = {
       black: "#000000",
       transparent: "transparent",
     },
+    margin: {
+      xxlarge: "var(--xxlarge)",
+      xlarge: "var(--xlarge)",
+      large: "var(--large)",
+      base: "var(--base)",
+      small: "var(--small)",
+      xsmall: "var(--xsmall)",
+    },
     padding: {
       xxlarge: "var(--xxlarge)",
       xlarge: "var(--xlarge)",
