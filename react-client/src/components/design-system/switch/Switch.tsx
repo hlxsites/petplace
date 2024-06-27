@@ -1,7 +1,7 @@
 import * as RadixSwitch from "@radix-ui/react-switch";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
-import { classNames } from "../../util/styleUtil";
-import { CommonInputProps } from "../design-system/types/FormTypes";
+import { classNames } from "~/util/styleUtil";
+import { CommonInputProps } from "../types/FormTypes";
 
 type SwitchProps = Omit<
   ComponentPropsWithoutRef<typeof RadixSwitch.Root>,
@@ -26,9 +26,13 @@ export const Switch = forwardRef<
         {...props}
       >
         <RadixSwitch.Thumb
-          className={`transition:transform block h-5 w-[21px] rounded-full bg-white transition-[2000ms] ${
-            isChecked ? "switch-thumb-checked" : "translate-x-[1px]"
-          }`}
+          className={classNames(
+            "transition:transform block h-5 w-[21px] rounded-full bg-white transition-[2000ms]",
+            {
+              "switch-thumb-checked": isChecked,
+              "translate-x-[1px]": !isChecked,
+            }
+          )}
         />
       </RadixSwitch.Root>
       {!hideLabel && <label htmlFor={props.id}>{label}</label>}
