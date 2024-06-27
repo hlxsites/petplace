@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
+import { classNames } from "../../util/styleUtil";
 import { Icon, type IconKeys, type IconProps } from "../icon/Icon";
 import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
-import { classNames } from "../../util/util";
 
 export type IconButtonProps = IUseButtonBase &
   Omit<JSX.IntrinsicElements["button"], "children"> & {

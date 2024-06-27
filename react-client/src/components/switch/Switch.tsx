@@ -1,6 +1,6 @@
 import * as RadixSwitch from "@radix-ui/react-switch";
 import { useState } from "react";
-import { classNames } from "../../util/util";
+import { classNames } from "../../util/styleUtil";
 
 type SwitchProps = {
   asChild?: boolean;

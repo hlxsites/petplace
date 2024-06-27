@@ -1,4 +1,4 @@
-import { classNames } from "../../util/util";
+import { classNames } from "../../util/styleUtil";
 import { IconProps } from "../icon/Icon";
 
 export interface IUseButtonBase {

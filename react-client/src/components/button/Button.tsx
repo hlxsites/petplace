@@ -1,4 +1,4 @@
-import { classNames } from "../../util/util";
+import { classNames } from "../../util/styleUtil";
 import { Icon, IconProps } from "../icon/Icon";
 import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
 

@@ -1,6 +1,6 @@
 import * as RadixCheckbox from "@radix-ui/react-checkbox";
+import { classNames } from "../../util/styleUtil";
 import { Icon } from "../icon/Icon";
-import { classNames } from "../../util/util";
 
 export type CheckboxProps = {
   asChild?: boolean;

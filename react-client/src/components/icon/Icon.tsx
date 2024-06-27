@@ -1,4 +1,4 @@
-import { classNames } from "../../util/util";
+import { classNames } from "../../util/styleUtil";
 import CheckIcon from "./assets/check-icon.svg";
 
 const IconMap = Object.freeze({
