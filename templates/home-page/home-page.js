@@ -37,6 +37,47 @@ function createSpanBlock(main) {
   });
 }
 
+function addWidgetScript(block) {
+  const scriptContent = `
+    (() => {
+        const e = document.currentScript.getAttributeNames(),
+            t = document.getElementById("widgetTarget");
+        document.createElement("object");
+        let r = "";
+        if (e && e.length > 0) {
+            let t = e.find((e) => "brand" === e.toLocaleLowerCase());
+            t && (r = "/" + document.currentScript.getAttribute(t)), (r += "/widget");
+            let c = !0;
+            e.forEach((e) => {
+                if ("brand" === e.toLocaleLowerCase()) return;
+                let t = \`\${e}=\${document.currentScript.getAttribute(e)}\`;
+                c ? ((c = !1), (r += "?")) : (t = "&" + t), (r += t);
+            });
+        }
+        let c = "https://quote.petpremium.com" + r;
+        t.innerHTML = \`<iframe loading="lazy" style='width: 100%; height: 100%; border: none' src='\${c}'></iframe>\`;
+    })();
+  `;
+
+  // Select the target div
+  const widgetDiv = block.querySelector('.aggregator-tool');
+  if (widgetDiv) {
+    // Append the HTML content
+    widgetDiv.innerHTML = `
+      <div id="widgetTarget" style="height: 100%; width: 100%"></div>
+    `;
+
+    // Create a new script element
+    const scriptElement = document.createElement('script');
+    scriptElement.setAttribute('brand', 'petplace');
+    scriptElement.setAttribute('source', 'petplace_home');
+    scriptElement.textContent = scriptContent;
+
+    // Append the script element to the target div
+    widgetDiv.querySelector('#widgetTarget').appendChild(scriptElement);
+  }
+}
+
 export async function loadLazy(document) {
   // adding wave background
   const main = document.querySelector('#main');
@@ -48,6 +89,29 @@ export async function loadLazy(document) {
 
   // insurance form
   createSpanBlock(main);
+
+  // Lazy-loading iframe to improve page performance.
+
+  const targetElements = document.querySelectorAll('.aggregator-tool');
+
+  const options = {
+    threshold: 0.1,
+  };
+
+  // Create an Intersection Observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        addWidgetScript(main);
+
+        // Stop observing
+        observer.unobserve(targetElements[0]);
+      }
+    });
+  }, options);
+
+  // Start Observing
+  observer.observe(targetElements[0]);
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('home', 'create');
