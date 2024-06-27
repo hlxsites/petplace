@@ -137,6 +137,12 @@ function createTemplateBlock(main, blockName, elems = []) {
 }
 
 async function updateMetadata() {
+  // We're skipping validation for default template pages
+  // to allow publishing new template updates
+  const defaultPages = ['/article/category/default', '/tags/default'];
+  if (defaultPages.find((path) => path === window.location.pathname)) {
+    return;
+  }
   const result = await getCategoryOrTagForUrl();
   if (!result) {
     throw new Error(404);
