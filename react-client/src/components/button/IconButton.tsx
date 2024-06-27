@@ -12,7 +12,7 @@ export type IconButtonProps = IUseButtonBase &
     onClick?: () => void;
   };
 
-const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   (
     {
       className,
@@ -45,16 +45,8 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         ref={ref}
         {...rest}
       >
-        <Icon
-          display={icon}
-          {...iconProps}
-          style={{ maxHeight: "100%", maxWidth: "100%" }}
-        />
+        <Icon className="max-h-full max-w-full" display={icon} {...iconProps} />
       </button>
     );
   }
 );
-
-IconButton.displayName = "IconButton";
-
-export default IconButton;
