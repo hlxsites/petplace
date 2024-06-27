@@ -6,3 +6,7 @@ node_modules
 
 helix-importer-ui
 .DS_Store
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
