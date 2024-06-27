@@ -16,22 +16,6 @@ async function createTemplateBlock(container, blockName, elems = []) {
   await loadBlock(block);
 }
 
-function injectAggregator(document, selector) {
-  const widgetContainer = document.createElement('div');
-  widgetContainer.classList.add('widget', 'aggregator');
-  widgetContainer.setAttribute('id', 'widgetTarget');
-
-  const widget = document.createElement('script');
-  widget.setAttribute('brand', 'petplace');
-  widget.setAttribute('source', 'california_insurance_lp');
-  widget.text = `
-    (()=>{const e=document.currentScript.getAttributeNames(),t=document.getElementById("widgetTarget");document.createElement("object");let r="";if(e&&e.length>0){let t=e.find((e=>"brand"===e.toLocaleLowerCase()));t&&(r="/"+document.currentScript.getAttribute(t)),r+="/widget";let c=!0;e.forEach((e=>{if("brand"===e.toLocaleLowerCase())return;let t=\`\${e}=\${document.currentScript.getAttribute(e)}\`;c?(c=!1,r+="?"):t="&"+t,r+=t}))}let c="https://quote.petpremium.com"+r;t.innerHTML=\`<iframe style='width: 100%; height: 100%; border: none' src='\${c}'></object>\`})();
-  `;
-
-  widgetContainer.appendChild(widget);
-  document.querySelector(selector).appendChild(widgetContainer);
-}
-
 export async function loadEager(document) {
   const main = document.querySelector('main');
 
@@ -78,7 +62,4 @@ export async function loadLazy(document) {
   const authorContainer = document.querySelector('.article-author [itemprop="author"]');
   const timePublished = document.querySelector('.article-author [itemprop="datePublished"]');
   authorContainer.appendChild(timePublished);
-
-  // Inject aggregator widget
-  injectAggregator(document, '[data-inject-widget-name="p3-aggregator"]');
 }

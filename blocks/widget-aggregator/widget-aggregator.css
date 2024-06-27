@@ -1,0 +1,12 @@
+ .widget-aggregator {
+  width: 100%;
+  height: 760px;
+
+  @media (min-width: 800px) {
+    height: 400px;
+  }
+
+  @media (min-width: 1024px) {
+    height: 760px;
+  }
+ }
