@@ -1,45 +1,28 @@
 import * as RadixSwitch from "@radix-ui/react-switch";
-import { useState } from "react";
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import { classNames } from "../../util/styleUtil";
+import { CommonInputProps } from "../design-system/types/FormTypes";
 
-type SwitchProps = {
-  asChild?: boolean;
-  checked: boolean;
-  className?: string;
-  defaultChecked?: boolean;
-  disabled?: boolean;
-  label: string;
-  name: string;
-  onCheckedChange: (checkState: boolean) => void;
-  required?: boolean;
-  value: string;
-};
+type SwitchProps = Omit<
+  ComponentPropsWithoutRef<typeof RadixSwitch.Root>,
+  "children"
+> &
+  CommonInputProps;
 
-const Switch = ({
-  className,
-  label,
-  checked,
-  onCheckedChange,
-  ...props
-}: SwitchProps) => {
-  const [isChecked, setIsChecked] = useState(checked);
-
-  const handleCheckedChange = (checkedState: boolean) => {
-    if (onCheckedChange) {
-      onCheckedChange(checkedState);
-    }
-    setIsChecked(checkedState);
-  };
-
+export const Switch = forwardRef<
+  ElementRef<typeof RadixSwitch.Root>,
+  SwitchProps
+>(({ className, hideLabel, label, ...props }, ref) => {
+  const isChecked = props.checked;
   return (
-    <div className="space-between flex-row items-center">
+    <div className="space-between flex items-center gap-2">
       <RadixSwitch.Root
+        aria-label={hideLabel ? label : undefined}
         className={classNames(
           `relative h-6 w-[52px] rounded-[21px] border-[1px] border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none ${isChecked ? "border-none bg-orange-300-contrast focus:bg-orange-300-contrast" : ""}`,
           className
         )}
-        checked={isChecked}
-        onCheckedChange={handleCheckedChange}
+        ref={ref}
         {...props}
       >
         <RadixSwitch.Thumb
@@ -48,8 +31,7 @@ const Switch = ({
           }`}
         />
       </RadixSwitch.Root>
-      <p>{label}</p>
+      {!hideLabel && <label htmlFor={props.id}>{label}</label>}
     </div>
   );
-};
-export default Switch;
+});
