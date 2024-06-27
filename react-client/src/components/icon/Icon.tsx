@@ -1,6 +1,7 @@
+import { classNames } from "../../util/util";
 import CheckIcon from "./assets/check-icon.svg";
 
-export const IconMap = Object.freeze({
+const IconMap = Object.freeze({
   check: <CheckIcon />,
 });
 
@@ -8,14 +9,20 @@ export type IconKeys = keyof typeof IconMap;
 
 export type IconProps = {
   className?: string;
-  color?: string;
   display: IconKeys;
   size?: number;
 };
 
-export const Icon = ({ color, display, size, ...rest }: IconProps) => {
+export const Icon = ({ className, display, size, ...rest }: IconProps) => {
   return (
-    <div {...rest} style={{ color, width: size }}>
+    <div
+      className={classNames("icon", className)}
+      {...rest}
+      style={{
+        height: size,
+        width: size,
+      }}
+    >
       {IconMap[display]}
     </div>
   );
