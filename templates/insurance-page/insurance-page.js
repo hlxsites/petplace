@@ -72,9 +72,6 @@ export async function loadLazy(document) {
     color: 'black',
     label: heading.innerText,
   }], { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true });
-  breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
-    icon.classList.replace('icon-chevron', 'icon-chevron-large');
-  });
   createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
 
   // Adjust structure of article author for styling
