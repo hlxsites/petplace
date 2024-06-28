@@ -1,43 +1,5 @@
-import {
-  buildBlock,
-  decorateBlock,
-  loadBlock,
-  getMetadata,
-  toClassName,
-} from '../../scripts/lib-franklin.js';
-import {
-  createBreadCrumbs,
-  getCategories,
-} from '../../scripts/scripts.js';
-import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+import { buildBlock, getMetadata } from '../../scripts/lib-franklin.js';
 
-const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
-
-export async function getCategoryByKey(key, value) {
-  const categories = await getCategories();
-  return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
-}
-
-function createAutoBlockSection(main, blockName, gridName) {
-  const gridNameValue = gridName || blockName;
-  const section = document.createElement('div');
-  section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
-
-  main.append(section);
-  return section;
-}
-
-function createTemplateBlock(main, blockName, gridName, elems = []) {
-  const section = createAutoBlockSection(main, blockName, gridName);
-
-  const block = buildBlock(blockName, { elems });
-  section.append(block);
-}
-
-/**
- * Creates the table of contents for an article.
- * @param {Element} main Element to which table of contents will be added.
- */
 function createTableOfContents(main) {
   const hasToc = getMetadata('has-toc');
   if (!hasToc) {
@@ -56,191 +18,47 @@ function createTableOfContents(main) {
   }
 }
 
-/**
- * Convert snake case to title case
- * @param str
- * @returns {*}
- */
-function convertToTitleCase(str) {
-  const words = str.split('-');
-  const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
-  return capitalizedWords.join(' ');
+function createAutoBlockSection(main, blockName, gridName) {
+  const gridNameValue = gridName || blockName;
+  const section = document.createElement('div');
+  // section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
+  section.classList.add(gridNameValue);
+
+  main.append(section);
+  return section;
 }
 
-/**
- * Fetches page category.  If parent path exists, recursively fetches parent data and so on.
- * @returns {Promise<*[]>}
- * @param categorySlug snake case value of category
- */
-async function getBreadcrumbs(categorySlug) {
-  const breadcrumbs = [];
+function createTemplateBlock(main, blockName, gridName, elems = []) {
+  const section = createAutoBlockSection(main, blockName, gridName);
 
-  async function fetchSegmentData(slug) {
-    const categoryData = await getCategoryByKey('Slug', slug);
-    breadcrumbs.push({
-      color: categoryData.Color,
-      url: categoryData.Path,
-      label: convertToTitleCase(categoryData.Slug),
-    });
-
-    if (categoryData['Parent Path'] !== `${window.hlx.contentBasePath}/article/category/` && categoryData['Parent Path']) {
-      const { Slug } = await getCategoryByKey('Path', categoryData['Parent Path']);
-      await fetchSegmentData(Slug);
-    }
-  }
-
-  await fetchSegmentData(categorySlug);
-
-  return breadcrumbs.reverse();
+  const block = buildBlock(blockName, { elems });
+  section.append(block);
 }
 
-/**
- * Adds all blocks specific to the template to a page.
- * @param {Element} main Element to which template blocks will be added.
- */
-// eslint-disable-next-line import/prefer-default-export
-export async function loadEager(document) {
+export function loadEager(document) {
   const main = document.querySelector('main');
   createTemplateBlock(main, 'article-author');
-  createTemplateBlock(main, 'social-share');
-  createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-navigation');
+
   createTableOfContents(main);
-
-  main.setAttribute('itemscope', '');
-  const articleType = toClassName(getMetadata('type'));
-  if (articleType === 'faq') {
-    main.setAttribute('itemtype', 'https://schema.org/FAQPage');
-    [...main.querySelectorAll(':scope > div > :is(h1,h2,h3)')]
-      .filter((h) => h.textContent.endsWith('?') || h.textContent.match(/#\d+/))
-      .forEach((h) => {
-        if (h.nodeName === 'H1') {
-          const meta = document.createElement('meta');
-          meta.setAttribute('itemprop', 'name');
-          meta.setAttribute('content', h.textContent);
-          h.after(meta);
-        } else {
-          h.setAttribute('itemprop', 'name');
-        }
-        const question = document.createElement('div');
-        question.setAttribute('itemscope', '');
-        question.setAttribute('itemprop', 'mainEntity');
-        question.setAttribute('itemtype', 'https://schema.org/Question');
-        if (h.nodeName === 'H1') {
-          h.after(question);
-          question.append(question.nextElementSibling);
-        } else {
-          h.replaceWith(question);
-          question.append(h);
-        }
-        const answer = document.createElement('div');
-        answer.setAttribute('itemscope', '');
-        answer.setAttribute('itemprop', 'acceptedAnswer');
-        answer.setAttribute('itemtype', 'https://schema.org/Answer');
-        question.append(answer);
-        const div = document.createElement('div');
-        div.setAttribute('itemprop', 'text');
-        answer.append(div);
-        while (question.nextElementSibling && question.nextElementSibling.tagName !== h.nodeName) {
-          div.append(question.nextElementSibling);
-        }
-      });
-  } else {
-    main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
-  }
 }
 
-export async function loadLazy(document) {
+export function loadLazy(document) {
   const main = document.querySelector('main');
-  const hero = main.querySelector('.hero');
-  hero.querySelector('h1').setAttribute('itemprop', 'headline');
-  const meta = document.createElement('meta');
-  meta.setAttribute('itemprop', 'description');
-  meta.setAttribute('content', document.head.querySelector('meta[name="description"]').content);
-  hero.append(meta);
-  hero.querySelector('img').setAttribute('itemprop', 'image');
-  const articleType = toClassName(getMetadata('type'));
-  if (articleType !== 'faq') {
-    main.querySelector('.section:nth-of-type(2)').setAttribute('itemprop', 'articleBody');
-  }
+  const heroTitleSection = document.createElement('div');
+  heroTitleSection.classList.add('hero-title-container', 'section');
 
-  const genAIDiv = document.createElement('div');
-  genAIDiv.classList.add('section');
-  genAIDiv.classList.add('genai-search');
+  const articleTitle = main.querySelectorAll('h1')[0];
+  const authorDiv = main.querySelector('.article-author-container');
+  authorDiv.classList.remove('section');
+  const heroImgContainer = main.querySelectorAll('p')[0];
+  heroImgContainer.classList.add('hero-pic-div');
+  heroTitleSection.append(articleTitle);
+  heroTitleSection.append(authorDiv);
+  heroTitleSection.append(heroImgContainer);
+  main.prepend(heroTitleSection);
 
-  const genAIMeta = document.createElement('meta');
-  genAIMeta.setAttribute('itemprop', 'description');
-  genAIMeta.setAttribute('content', document.head.querySelector('meta[name="description"]').content);
-  genAIDiv.append(genAIMeta);
-
-  const articleContainer = main.querySelector('.section:nth-of-type(2)');
-  const genaiBlock = buildBlock('genai-search', '');
-  const genAITitle = document.createElement('h2');
-  const genAISubtitle = document.createElement('h2');
-  genAITitle.innerText = 'Learn even more with...  ';
-  genAISubtitle.innerText = 'AI Powered PetPlace Discovery';
-
-  genAIDiv.append(genAITitle);
-  genAIDiv.append(genAISubtitle);
-  genAIDiv.append(genaiBlock);
-  articleContainer.append(genAIDiv);
-
-  decorateBlock(genaiBlock);
-  await loadBlock(genaiBlock);
-
-  // genAIBlock.insertBefore(secondHeadline);
-  const breadCrumbs = hero.querySelector(':scope > div > div');
-  const categorySlugs = getMetadata('category').split(',').map((slug) => toClassName(slug.trim()));
-  const crumbData = await getBreadcrumbs(categorySlugs[0]);
-
-  const breadcrumbContainer = await createBreadCrumbs(crumbData);
-  const breadcrumb = buildBlock('breadcrumb', { elems: [breadcrumbContainer] });
-  breadcrumb.style.visibility = 'hidden';
-  breadCrumbs.append(breadcrumb);
-  decorateBlock(breadcrumb);
-  await loadBlock(breadcrumb);
-  breadcrumb.style.visibility = '';
-
-  const { adsenseFunc } = await import('../../scripts/adsense.js');
-  adsenseFunc('article', 'create');
-
-  const createGenAISearchCTA = () => {
-    const headerSearchButton = document.createElement('div');
-    headerSearchButton.className = 'header-search';
-    headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY >= 68) {
-        headerSearchButton.classList.add('scrolled'); // New position when scrolled to the threshold
-      } else {
-        headerSearchButton.classList.remove('scrolled'); // Original position
-      }
-    });
-
-    headerSearchButton.addEventListener('click', async () => {
-      await pushToDataLayer({
-        event: 'genai_floater',
-        element_type: 'button',
-      });
-      document.location.pathname = '/discovery';
-    });
-
-    return headerSearchButton;
-  };
-
-  if (document.body.classList.contains('article-page')) {
-    main.append(createGenAISearchCTA());
-  }
-}
-
-export async function loadDelayed() {
-  const articleCat = toClassName(getMetadata('category').split(',')[0]?.trim());
-  await pushToDataLayer({
-    event: 'adsense',
-    type: 'article',
-    category: articleCat,
-  });
-
-  const { adsenseFunc } = await import('../../scripts/adsense.js');
-  adsenseFunc('article', articleCat);
+  // const contentSection = main.querySelectorAll('.section')[1];
+  // console.log(main.querySelectorAll('.section'))
+  // contentSection.classList.add('article-content-container')
 }
