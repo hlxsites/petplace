@@ -93,6 +93,7 @@ function createImageObject(imagePath, fallBackSrc, fallBackAlt, width, height) {
       img = document.createElement('object');
       img.data = imagePath;
       img.type = 'image/jpg';
+      img.classList.add('image-object');
       if (width) {
           img.width = width;
       }

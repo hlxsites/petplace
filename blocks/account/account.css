@@ -488,6 +488,11 @@
   color: var(--color-black);
 }
 
+.account-tabpanel--inquiries .inquiry-pet-card .image-object,
+.account-tabpanel--favorites .fav-pet-card .image-object{
+  width: 100%;
+}
+
 .account-tabpanel--favorites .fav-pet-card:last-of-type,
 .account-tabpanel--inquiries .inquiry-pet-card:last-of-type {
   margin-bottom: 0;
@@ -674,7 +679,19 @@
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
+  flex-direction: row;
 }
+@media (max-width: 600px) {
+  .account-tabpanel--details .optout-email-favorite-modal .modal-action-btns,
+  .account-tabpanel--favorites .confirm-remove-favorite-modal .modal-action-btns,
+  .account-tabpanel--inquiries .confirm-remove-inquiry-modal .modal-action-btns {
+    flex-direction: column-reverse;
+  }
+  .account-tabpanel--inquiries .confirm-remove-inquiry-modal .modal-action-btns .cancel,
+  .account-tabpanel--inquiries .confirm-remove-inquiry-modal .modal-action-btns .confirm {
+    margin: 0;
+  }
+ }
 
 .account-tabpanel--details
   .optout-email-modal
@@ -1093,4 +1110,58 @@
   mask-repeat: no-repeat;
   mask-position: center;
 }
+
+
+.account-layout-container .account__success-message {
+  display: none;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  color: #1a6132;
+  background-color: #edfcf2;
+}
+
+.account-layout-container .account__success-message.show {
+  display: flex;
+}
+
+.account-layout-container .account__success-message-close {
+  margin-left: auto;
+
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background-color: #6e6d73;
+  mask-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 19.5L19.5 4.5' stroke='%2309090D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M4.5 4.5L19.5 19.5' stroke='%2309090D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-size: auto;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.account__summary-header .account__success-message {
+  display: none;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  color: #1a6132;
+  background-color: #edfcf2;
+}
+
+.account__summary-header .account__success-message.show {
+  display: flex;
+}
+
+.account__summary-header .account__success-message-close {
+  margin-left: auto;
+
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background-color: #6e6d73;
+  mask-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 19.5L19.5 4.5' stroke='%2309090D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M4.5 4.5L19.5 19.5' stroke='%2309090D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-size: auto;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
 /* stylelint-enable */
