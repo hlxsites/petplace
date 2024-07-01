@@ -84,6 +84,14 @@
   text-align: center;
 }
 
+.footer-legal p:first-child {
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-weight: 400;
+  text-align: justify;
+  line-height: 16px;;
+}
+
 .footer-legal ul {
   display: flex;
   flex-wrap: wrap;
@@ -107,9 +115,9 @@
 @media (min-width: 900px) {
   .footer-legal > div {
     align-items: center;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: space-between;
-    gap: 0;
+    gap: 1rem;
     text-align: unset;
     font-size: 13px;
   }
@@ -124,10 +132,6 @@
     margin: 0;
     padding: 0;
     font-size: 13px;
-  }
-
-  .footer-legal p {
-    text-align: right;
   }
 
   .footer-nav > div {
@@ -149,6 +153,10 @@
 
   .footer-nav p + p {
     grid-area: text;
+  }
+
+  .footer-legal p:last-child {
+    text-align: right;
   }
 
   .footer-nav .footer-social {

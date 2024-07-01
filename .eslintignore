@@ -7,4 +7,10 @@ plugins/
 pushly-sdk-worker.js
 worker/bin
 worker/pkg
-auth-pages
+
+# Ignore auth pages directory
+auth-pages/
+
+# Ignore the react-client directory & build generated files
+react-client/
+blocks/react/react-index*

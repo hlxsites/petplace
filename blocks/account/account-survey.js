@@ -61,6 +61,7 @@ function routeSurvey(block, token, animalType, initialUserData) {
       backBtnDiv.remove();
       currentSurvey?.remove();
       startSurvey?.remove();
+      surveyTitle.textContent = 'Pet Match Survey';
     });
 
     surveyTabPanel.prepend(backBtnDiv);

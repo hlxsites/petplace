@@ -23,7 +23,7 @@
   box-shadow: 5px 5px 16px 0 rgb(0 0 0 / 10%);
 }
 
-.panel-card-img {
+.panel-card-img, .panel-card svg {
   min-width: 64px;
 }
 

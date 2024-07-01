@@ -145,8 +145,7 @@ function getSearches(token) {
                             }`;
                         } else {
                             ageFilterList += age;
-                            ageFilterCardInfo += `${getKeyByValue(placeholders, age)
-                                .toLowerCase()
+                            ageFilterCardInfo += `${getKeyByValue(placeholders, age)?.toLowerCase()
                                 .replace('-', ' - ')
                                 .replace('years', ' years')
                                 .replace('kitten', '/kitten')
@@ -194,6 +193,18 @@ function getSearches(token) {
                         }
                     });
                     searchUrl += `&filterSize=${sizeFilterList}`;
+                }
+                if (saved.SearchParameters.animalFilters.filterShelter?.length) {
+                    let shelterFilterList = '';
+                    saved.SearchParameters.animalFilters.filterShelter?.forEach((shelter) => {
+                        if (shelterFilterList !== '') {
+                            shelterFilterList += `,${shelter}`;
+                        } else {
+                            // eslint-disable-next-line no-unsafe-optional-chaining
+                            shelterFilterList += shelter;
+                        }
+                    });
+                    searchUrl += `&filterShelter=${shelterFilterList}`;
                 }
                 builtHml += `
                 <div class='saved-search-layout-row'>

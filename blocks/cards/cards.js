@@ -1,4 +1,4 @@
-import { createOptimizedPicture, toClassName } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, decorateIcons, toClassName } from '../../scripts/lib-franklin.js';
 import { getCategories, getPlaceholder } from '../../scripts/scripts.js';
 
 const dateFormatter = new Intl.DateTimeFormat(document.documentElement.lang, { month: 'long', day: 'numeric', year: 'numeric' });
@@ -24,23 +24,28 @@ async function buildPost(post, eager) {
   postCard.setAttribute('itemtype', 'https://schema.org/Article');
   const postDate = new Date(0);
   postDate.setUTCSeconds(post.date);
-  const style = `--bg-color: var(--color-${category.Color}); --border-color: var(--color-${category.Color}); `;
+  const style = `--bg-color: var(--article-color-${category.Color}); --border-color: var(--article-color-${category.Color}); `;
   postCard.innerHTML = `
     <div class="blogs-card-image">
       <a href="${post.path}">${createOptimizedPicture(post.image, `${getPlaceholder('teaserLabel')} ${post.title}`, eager, [{ width: 800 }]).outerHTML}</a>
       ${category.Category !== 'Breeds' ? `<a class="blogs-card-category" href=${category.Path} style ="${style}"><span itemprop="about">${category.Category}</span></a>` : ''}
     </div>
-    <div>
-      <a href="${post.path}">
+    <div class="blogs-card-content">
+      <a class="blogs-card-link" href="${post.path}">
         <div class="blogs-card-body">
           <link itemprop="url" href="${post.path}"/>
           <h3 itemprop="name">${post.title.replace(/[-|] Petplace(\.com)?$/i, '')}</h3>
-          ${category.Category !== 'Breeds' ? `<p>
-            <span class="card-date">
-              <time itemprop="datePublished" datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time> · 
+          ${category.Category !== 'Breeds' ? `<p class="card-metadata">
+            <span class="card-author">
+              <span class="icon icon-pencil"></span>
               <span itemprop="author">${post.author}</span>
             </span>
+            <span class="card-date">
+              <span class="icon icon-calendar"></span>
+              <time itemprop="datePublished" datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time>
+            </span>
           </p>` : ''}
+          <div class="card-cta">Read Article</div>
         </div>
       </a>
     </div>
@@ -81,6 +86,7 @@ async function createCard(row, eager) {
   } else {
     li.append(row);
   }
+  await decorateIcons(li);
   return li;
 }
 
