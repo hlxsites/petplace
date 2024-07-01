@@ -1,9 +1,5 @@
 import { classNames } from "../../util/util";
-import CheckIcon from "./assets/check-icon.svg";
-
-const IconMap = Object.freeze({
-  check: <CheckIcon />,
-});
+import IconMap from "./IconMap";
 
 export type IconKeys = keyof typeof IconMap;
 

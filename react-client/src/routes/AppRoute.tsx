@@ -7,6 +7,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import PetCard from "../components/card/PetCard";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -28,6 +29,12 @@ const Home = () => {
       <div style={{ padding: `20px 0` }}>
         <hr />
         <Outlet />
+        <PetCard>
+          <h3 className="text-2xl">Romã Cobi</h3>
+          <p>Mixed Race</p>
+          <br />
+          <p>Salvador, BA</p>
+        </PetCard>
       </div>
     </div>
   );
