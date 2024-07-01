@@ -52,4 +52,8 @@ export default class MultiSelect {
         this.onButtonClick(this.toggleButtonNode, 'close');
       }
     }
+
+    close() {
+      this.onButtonClick(this.toggleButtonNode, 'close');
+    }
 }

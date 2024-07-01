@@ -13,7 +13,7 @@ const stageConfigs = {
   scopes: ['https://petplacepoc.onmicrosoft.com/api/adopt.all', 'openid'],
   authorities: {
     signUpSignIn: {
-      authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/b2c_1_susi',
+      authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_SIGNUP_SIGNIN',
     },
     changePassword: {
       authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
@@ -27,7 +27,7 @@ const stageAltConfigs = {
   scopes: ['https://petplaceb2cftr.onmicrosoft.com/3b511f9c-7c30-4206-a8cd-803b55f0d779/adopt.all', 'openid'],
   authorities: {
     signUpSignIn: {
-      authority: 'https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/b2c_1_susi',
+      authority: 'https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_SIGNUP_SIGNIN',
     },
     changePassword: {
       authority: 'https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
@@ -41,7 +41,7 @@ const prodConfigs = {
   scopes: ['https://petplaceb2c.onmicrosoft.com/api/adopt.all', 'openid'],
   authorities: {
     signUpSignIn: {
-      authority: 'https://petplaceb2c.b2clogin.com/petplaceb2c.onmicrosoft.com/b2c_1_susi',
+      authority: 'https://petplaceb2c.b2clogin.com/petplaceb2c.onmicrosoft.com/B2C_1A_SIGNUP_SIGNIN',
     },
     changePassword: {
       authority: 'https://petplaceb2c.b2clogin.com/petplaceb2c.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
@@ -52,7 +52,7 @@ const prodConfigs = {
 
 let b2cPolicies = {
   names: {
-    signUpSignIn: 'B2C_1_susi',
+    signUpSignIn: 'B2C_1A_SIGNUP_SIGNIN',
   },
 };
 
