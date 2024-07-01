@@ -85,15 +85,32 @@
         width: 100%;
       }
       
-      .panel-pet-image {
+      .panel-pet-single-image {
         border-radius: 50%;
         height: 276px;
-        overflow: hidden;
+        object-fit: cover;
         width: 276px;
       }
 
-      .panel-pet-image img {
-        max-width: 100%;
+      .panel-pets-pictures {
+        border: 4px solid #F1F0F7;
+        border-radius: 50%;
+        height: 158px;
+        margin-left: -64px;
+        object-fit: cover;
+        overflow: hidden;
+        width: 158px;
+      }
+
+      .panel-pets-count {
+        color: #000000;
+        font-family: "Raleway", sans-serif;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -0.97px;
+        line-height: 27px;
+        margin-left: 6px;
       }
 
       .panel-greeting-message {
@@ -105,10 +122,6 @@
         letter-spacing: -0.64px;
         line-height: 36px;
         text-align: center;
-      }
-
-      .pet-name {
-        color: #302280;
       }
 
       .panel-form-container {
@@ -144,8 +157,19 @@
         margin: 0;
       }
 
+      #pet-image {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
       #api {
         padding: 40px;
+      }
+
+      #pet-name {
+        color: #302280;
       }
 
       @media screen and (max-width: 1120px) {
@@ -161,7 +185,8 @@
           align-items: center;
           flex-direction: column;
           gap: 32px;
-          justify-content: center;          
+          justify-content: center;
+          max-width: 480px;      
         }
 
         .panel-greeting-container {
@@ -169,14 +194,28 @@
           height: 40%;
         }
 
-        .panel-greeting-item {
-          gap: 24px;
-          height: 100%;
+        .panel-greeting-message {
+          font-size: 24px;
+          letter-spacing: -0.48px;
+          line-height: 28px;
+          max-width: 340px;
         }
 
-        .panel-pet-image {
+        .panel-pet-single-image {
           height: 160px;
           width: 160px;
+        }
+
+        .panel-pets-pictures {
+          height: 102px;
+          margin-left: -44px;
+          width: 102px;
+        }
+
+        .panel-pets-count{
+          font-size: 27px;
+          letter-spacing: -0.557px;
+          line-height: 31px;
         }
 
         .panel-form-container {
@@ -195,6 +234,8 @@
         }
       }
     </style>
+
+    <script src="account-activation.js" async></script>
     
   </head>
   <body>
@@ -207,13 +248,13 @@
         <div class="panel-container">
           <div class="panel-greeting-container">
             <div class="panel-greeting-item">
-              <div class="panel-pet-image">
-                <img src="https://s3-alpha-sig.figma.com/img/0a37/3345/129273018f9a0717a2423a8d6bd58717?Expires=1719792000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ag4l96cWefBgXEf0mSNPUK0btpJoScbKKEE1P1KczVr8QeQc5NbEM2UWEEMSJWrdq3Z~04EVwggeYcdS1c-sZhVjgimx5Qvsn~NOph6YBWTRfO40fdtkVZb~gdXFbIUDrh~pNRDXd7~rsfJcXDhZYKu1Zm6nC3cObDI3Z70fdppHj-yYaX2ihpmgAoYFq~Lm-QUT78eDlsMhpDy7-3cFrUxB5XpcUbFPWUbSGIrsrs2gHTMQCCU0hMq6ezpy9UvRRQhhM5P9V7euR3xYuDhJCyvgYoCGbtS52QqwPulA~WX4hIYTSDnitxF~LlzfiNTCSqrYXrHfD2kGJ86k2UOVxg__"/>
+              <div id="pet-image">
+                <!-- images will be injected here dynamically  -->
               </div>
               <div class="panel-greeting-message">
                 <div>
                   <span role="img" aria-label="waving-hand-emoji">👋</span>
-                  <span role="text">Say hello to <span class="pet-name" id="petName" role="text">[Pet Name]</span>!</span>
+                  <span role="text"> Say hello to <span id="pet-name" role="text">your pet</span>!</span>
                 </div>
               </div>
             </div>
