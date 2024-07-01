@@ -18,22 +18,32 @@
 })();
 
 function renderPetsNames(petsList) {
-	const getPetsNames = petsList?.map((item) => item.name);
+	if (!petsList) return;
+
+	const getPetsNames = petsList.filter((item) => item.name.length).map((item) => item.name);
 
 	const petsNames =
-		getPetsNames && petsList.length > 1
-			? getPetsNames.slice(0, -1).join(", ") + " & " + getPetsNames.at(-1)
-			: getPetsNames;
-	if (!petsNames || !petsNames.length) return;
+		getPetsNames?.length > 1 ? getPetsNames.slice(0, -1).join(", ") + " & " + getPetsNames.at(-1) : getPetsNames;
+	if (!petsNames?.length) return;
 
 	document.getElementById("pet-name").innerHTML = petsNames;
 }
 
 function renderPetsPictures(petsList) {
-	const petsPictures = petsList?.map((item) => item.photo);
-	const petsPicturesLength = petsPictures.length;
+	if (!petsList) return;
 
-	if (!petsPictures || !petsPicturesLength) return;
+	const petsPictures = petsList
+		.filter((item) => {
+			if (!item.photo.length) {
+				item.photo = getImagePlaceholder(item.animalType);
+			}
+			return item.photo;
+		})
+		.map((item) => item.photo);
+
+	const petsPicturesLength = petsPictures?.length || 0;
+
+	if (!petsPictures) return;
 
 	const imageContainer = document.getElementById("pet-image");
 
@@ -42,7 +52,7 @@ function renderPetsPictures(petsList) {
 
 		const imageTag = document.createElement("img");
 		imageTag.src = src;
-
+		imageTag.alt = "Pet image";
 		imageTag.classList.add(petsPicturesLength === 1 ? "panel-pet-single-image" : "panel-pets-pictures");
 
 		if (petsPicturesLength > 1) {
@@ -58,4 +68,14 @@ function renderPetsPictures(petsList) {
 		textTag.classList.add("panel-pets-count");
 		imageContainer.appendChild(textTag);
 	}
+}
+
+function getImagePlaceholder(animalType) {
+	const AnimalType = {
+		cat: "images/cat-placeholder.svg",
+		default: "images/dog-placeholder.svg",
+		dog: "images/dog-placeholder.svg",
+	};
+
+	return AnimalType[animalType?.length ? animalType : "default"] || AnimalType["default"];
 }
