@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Account Activation</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin&family=Raleway:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+        background-color: #FFFFFF;
+        margin: 0px;
+      }
+
+      header {
+        height: 88px;
+        margin: 0px;
+        width: 100%;
+      }
+
+      main {
+        height: 931px;
+        width: 100%;
+      }
+
+      footer {
+        background: #3B092C;
+        height: 224px;
+        width: 100%;
+      }
+
+      .header-logo {
+        padding: 16px 40px 16px 64px;
+      }
+
+      .panel-background {  
+        display: flex;
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
+
+      .panel-background::after{
+        background: url(https://s3-alpha-sig.figma.com/img/d4c2/96c6/cc82827f7947931d8d080264889da34c?Expires=1719792000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I0BgY1lAoBFLP1XdgnUy~PU-OrEwvZJtlGJUSSozlO7NaWyQWaAH8dz-3-nRHg-clf1pzEXH5k3RsJqXuMnVVTeAVWcNh5i5S069WWhkDOHTNpvPEzU7EwTf8D6K3~s8y9FJ2aFxKT7iXfECg72f85UdUtw1ciOknPPpUFS4xOEPzWvUvlhyRSJsLsSKGJDvyxkGRNUHSmS4M04FM97oq8M-Yo4e3UA7iA3tBUXld6XR3J2AdQkonFrUWOKLf6oGd88M~rHAANdAoUWwd5WEmA8kYniMA3o4apc6Xa6TEirtUEBliO2wSVI~HWHnc7MjROu4fzlWZXYpHuaPtWIbcQ__) no-repeat;
+        background-color: #D3D3D3;     
+        background-size: cover;
+        bottom: 0;
+        content: "";
+        left: 0;
+        opacity: 0.2;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+      }
+
+      .panel-container {
+        display: flex;
+        gap: 64px;
+        height: 87%;
+        margin: auto;
+        width: 84%;
+      }
+
+      .panel-greeting-container {
+        align-items: center;
+        display: flex;
+        height: 100%;
+        width: 100%;
+      }
+
+      .panel-greeting-item {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+      }
+      
+      .panel-pet-single-image {
+        background-color: #EBE8FC;
+        border-radius: 50%;
+        height: 276px;
+        object-fit: cover;
+        width: 276px;
+      }
+
+      .panel-pets-pictures {
+        background-color: #EBE8FC;
+        border: 4px solid #F1F0F7;
+        border-radius: 50%;
+        height: 158px;
+        margin-left: -64px;
+        object-fit: cover;
+        overflow: hidden;
+        width: 158px;
+      }
+
+      .panel-pets-count {
+        color: #000000;
+        font-family: "Raleway", sans-serif;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -0.97px;
+        line-height: 27px;
+        margin-left: 6px;
+      }
+
+      .panel-greeting-message {
+        color: #000000;
+        font-family: "Raleway", sans-serif;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -0.64px;
+        line-height: 36px;
+        text-align: center;
+      }
+
+      .panel-form-container {
+        display: flex;
+        flex-direction: column;
+        float: left;
+        height: 100%;
+        width: 100%;
+      }
+
+      .panel-form-card {
+        align-items: flex-start;
+        background-color: #FFFFFF;
+        border: 1px solid #e4e4eb;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        height: 461px;
+        margin: auto;
+        width: 100%;
+      }
+      
+      .footer-container {
+        background-color: #FFFFFF;
+        padding: 48px 80px;
+      }
+
+      .footer-container p {
+        color: #28061E;
+        font-family: "Libre Franklin", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0;
+      }
+
+      #pet-image {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      #api {
+        padding: 40px;
+      }
+
+      #pet-name {
+        color: #302280;
+      }
+
+      @media screen and (max-width: 1120px) {
+        header {
+          height: 74px;
+        }
+
+        .header-logo {
+          padding: 16px;
+        }
+
+        .panel-container {
+          align-items: center;
+          flex-direction: column;
+          gap: 32px;
+          justify-content: center;
+          max-width: 480px;      
+        }
+
+        .panel-greeting-container {
+          align-items: center;
+          height: 40%;
+        }
+
+        .panel-greeting-message {
+          font-size: 24px;
+          letter-spacing: -0.48px;
+          line-height: 28px;
+          max-width: 340px;
+        }
+
+        .panel-pet-single-image {
+          height: 160px;
+          width: 160px;
+        }
+
+        .panel-pets-pictures {
+          height: 102px;
+          margin-left: -44px;
+          width: 102px;
+        }
+
+        .panel-pets-count{
+          font-size: 27px;
+          letter-spacing: -0.557px;
+          line-height: 31px;
+        }
+
+        .panel-form-container {
+          display: table-column;
+          float: none;
+        }
+
+        .footer-container {
+          padding: 48px 16px;
+        }
+      }
+
+      @media screen and (max-width: 375px) {
+        .panel-container {
+          width: 88%;
+        }
+      }
+    </style>
+
+    <script src="account-activation.js" async></script>
+    
+  </head>
+  <body>
+    <header>
+        <img alt="Pet Place Logo" class="header-logo" src="images/logo.svg" />
+    </header>
+
+    <main>
+      <div class="panel-background">
+        <div class="panel-container">
+          <div class="panel-greeting-container">
+            <div class="panel-greeting-item">
+              <div id="pet-image">
+                <!-- images will be injected here dynamically  -->
+              </div>
+              <div class="panel-greeting-message">
+                <div>
+                  <span role="img" aria-label="waving-hand-emoji">👋</span>
+                  <span role="text"> Say hello to <span id="pet-name" role="text">your pet</span>!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-form-container">
+            <div class="panel-form-card">
+             <div id="api"> Azure form </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <img alt="Pet Place Logo" src="images/logo.svg" />
+        <p>By Vets. For Pets.</p>
+      </div>
+      
+    </footer>
+  </body>
+</html>
