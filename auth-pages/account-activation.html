@@ -10,7 +10,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin&family=Raleway:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
       body {
@@ -115,7 +115,8 @@
         margin-left: 6px;
       }
 
-      .panel-greeting-message {
+      .panel-greeting-message,
+      .panel-form-heading {
         color: #000000;
         font-family: "Raleway", sans-serif;
         font-size: 32px;
@@ -143,9 +144,35 @@
         flex-direction: column;
         height: 461px;
         margin: auto;
-        width: 100%;
+        padding: 40px;
+        max-width: 593px;
       }
-      
+
+      .panel-form-message {
+        font-family: "Libre Franklin", sans-serif;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+        padding-top: 24px;
+      }
+
+      .agreement-message {
+        font-family: "Libre Franklin",  sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        padding-top: 16px;
+        word-break: break-word;
+      }
+
+      .terms-and-conditions {
+        color: #C74D2F;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
       .footer-container {
         background-color: #FFFFFF;
         padding: 48px 80px;
@@ -165,10 +192,6 @@
         display: flex;
         justify-content: center;
         width: 100%;
-      }
-
-      #api {
-        padding: 40px;
       }
 
       #pet-name {
@@ -226,6 +249,17 @@
           float: none;
         }
 
+        .panel-form-heading {
+          font-size: 18px;
+          letter-spacing: -0.36px;
+          line-height: 20px;
+        }
+
+        .panel-form-message {
+          font-size: 14px;
+          line-height: 20px
+        }
+
         .footer-container {
           padding: 48px 16px;
         }
@@ -264,7 +298,35 @@
           </div>
           <div class="panel-form-container">
             <div class="panel-form-card">
-             <div id="api"> Azure form </div>
+              <div class="panel-form-heading">
+                <span role="heading">Hi
+                  <span id="owner-name" role="heading">
+                    <!-- owner name will be injected dynamically here -->
+                  </span>
+                !</span>
+              </div>
+              <div class="panel-form-message">
+                <span role="text">
+                  Access all the important 
+                  <span id="pets-names" role="text">
+                    <!-- pets names will be injected dynamically here -->
+                    pet
+                  </span>'s documents and information by creating a password, and activating your PetPlace account.
+                </span>
+              </div>
+
+              
+              <div id="api" data-name="Unified"></div>
+                
+                <!-- Azure Form -->
+                
+                <div class="agreement-message">
+                  <span>
+                    By clicking Sign Up you're confirming that you agree with our 
+                    <span class="terms-and-conditions">Terms and Conditions.</span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
