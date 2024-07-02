@@ -74,6 +74,8 @@ async function createSearchForm(block) {
   function updateBreedOptions(petType, options) {
     const breedSelect = document.querySelector('#breeds');
 
+    breedSelect.innerHTML = '';
+
     if (petType !== 'Other') {
       breedSelect.disabled = false;
 
