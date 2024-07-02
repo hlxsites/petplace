@@ -32,18 +32,16 @@ function renderPetsNames(petsList) {
 function renderPetsPictures(petsList) {
 	if (!petsList) return;
 
-	const petsPictures = petsList
-		.filter((item) => {
-			if (!item.photo.length) {
-				item.photo = getImagePlaceholder(item.animalType);
-			}
+	const petsPictures = petsList.map((item) => {
+		if (item?.photo?.length) {
 			return item.photo;
-		})
-		.map((item) => item.photo);
+		}
 
-	const petsPicturesLength = petsPictures?.length || 0;
+		return getImagePlaceholder(item.animalType);
+	});
 
 	if (!petsPictures) return;
+	const petsPicturesLength = petsPictures?.length || 0;
 
 	const imageContainer = document.getElementById("pet-image");
 
