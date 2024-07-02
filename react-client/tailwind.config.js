@@ -59,6 +59,11 @@ module.exports = {
       small: "var(--small)",
       xsmall: "var(--xsmall)",
     },
+    screens: {
+      'tablet': '640px',
+      'laptop': '1024px',
+      'desktop': '1280px',
+    },
     extend: {
       boxShadow: {
         "shadow-elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
