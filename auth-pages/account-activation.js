@@ -9,48 +9,52 @@
 			return response.json();
 		})
 		.then((data) => {
-			renderPetsNames(data["node"]);
-			renderPetsPictures(data["node"]);
+			renderPetInfo(data["node"])
 		})
 		.catch((error) => console.log("There was a problem on network: ", error));
 
 	return response;
 })();
 
-function renderPetsNames(petsList) {
-	if (!petsList) return;
+function renderPetInfo(petsList) {
+	if(!petsList) return;
 
 	const getPetsNames = petsList.filter((item) => item.name.length).map((item) => item.name);
-
-	const petsNames =
-		getPetsNames?.length > 1 ? getPetsNames.slice(0, -1).join(", ") + " & " + getPetsNames.at(-1) : getPetsNames;
-	if (!petsNames?.length) return;
-
-	document.getElementById("pet-name").innerHTML = petsNames;
-}
-
-function renderPetsPictures(petsList) {
-	if (!petsList) return;
-
-	const petsPictures = petsList.map((item) => {
+	const getPetsPictures = petsList.map((item) => {
 		if (item?.photo?.length) {
 			return item.photo;
 		}
-
 		return getImagePlaceholder(item.animalType);
 	});
+	
 
+	renderPetsNames(getPetsNames);
+	renderPetsPictures(getPetsPictures, getPetsNames);
+}
+
+function renderPetsNames(petsNames) {
+	if (!petsNames) return;
+
+	const greetingMessage =
+		petsNames?.length > 1 ? petsNames.slice(0, -1).join(", ") + " & " + petsNames.at(-1) : petsNames;
+	if (!greetingMessage?.length) return;
+
+	document.getElementById("pet-name").innerHTML = greetingMessage;
+}
+
+function renderPetsPictures(petsPictures, petsNames) {
 	if (!petsPictures) return;
+
 	const petsPicturesLength = petsPictures?.length || 0;
 
 	const imageContainer = document.getElementById("pet-image");
 
-	petsPictures.slice(0, 3).forEach((src) => {
+	petsPictures.slice(0, 3).forEach((src, index) => {
 		if (!src) return;
 
 		const imageTag = document.createElement("img");
 		imageTag.src = src;
-		imageTag.alt = "Pet image";
+		imageTag.alt = `Image of pet: ${petsNames[index]}`;
 		imageTag.classList.add(petsPicturesLength === 1 ? "panel-pet-single-image" : "panel-pets-pictures");
 
 		if (petsPicturesLength > 1) {
