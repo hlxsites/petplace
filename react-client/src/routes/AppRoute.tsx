@@ -1,65 +1,34 @@
-import { useEffect } from "react";
-import {
-  createBrowserRouter,
-  Link,
-  Outlet,
-  RouterProvider,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { PetPlaceRouteObject } from "~/types/routerTypes";
+import { AppRoutePaths } from "./AppRoutePaths";
+import { MyPetsIndex } from "./my-pets/MyPetsIndex";
+import { Root } from "./root";
+import { RootErrorPage } from "./root-error-page";
 
-const Home = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const redirectFrom = searchParams.get("redirectFrom");
-    if (redirectFrom) {
-      navigate({
-        pathname: redirectFrom,
-        search: searchParams.get("search") ?? "",
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div style={{ padding: 16 }}>
-      This is the Root route.
-      <div style={{ padding: `20px 0` }}>
-        <hr />
-        <Outlet />
-      </div>
-    </div>
-  );
-};
-
-const routes = [
+const routes: PetPlaceRouteObject[] = [
   {
-    path: "/",
-    element: <Home />,
-    errorElement: <p>Not found</p>,
+    id: "root",
+    path: AppRoutePaths.root,
+    element: <Root />,
+    errorElement: <RootErrorPage />,
     children: [
       {
-        index: true,
-        element: <Link to="account">Go to account</Link>,
-      },
-      {
-        path: "account",
-        element: (
-          <>
-            <p>This is the Account route</p>
-            <br />
-            <Link to="..">Back</Link>
-          </>
-        ),
+        id: "myPets",
+        path: AppRoutePaths.myPets,
+        children: [
+          {
+            id: "myPetsIndex",
+            index: true,
+            element: <MyPetsIndex />,
+          },
+        ],
       },
     ],
   },
 ];
 
 const router = createBrowserRouter(routes, {
-  basename: "/react-test",
+  basename: "/account",
 });
 
 export const AppRouter = (): JSX.Element => {

@@ -43,6 +43,7 @@ module.exports = {
       transparent: "transparent",
     },
     margin: {
+      auto: "auto",
       xxlarge: "var(--xxlarge)",
       xlarge: "var(--xlarge)",
       large: "var(--large)",
