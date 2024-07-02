@@ -16,5 +16,11 @@ export const Root = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <Outlet />;
+  return (
+    <div className="min-h-dvh w-dvw">
+      <div className="py-xxlarge m-auto w-full xl:w-[1080px]">
+        <Outlet />
+      </div>
+    </div>
+  );
 };
