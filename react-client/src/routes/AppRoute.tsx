@@ -59,7 +59,7 @@ const routes = [
 ];
 
 const router = createBrowserRouter(routes, {
-  basename: "/react-test",
+  basename: "/account",
 });
 
 export const AppRouter = (): JSX.Element => {
