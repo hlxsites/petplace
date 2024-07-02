@@ -10,7 +10,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin&family=Raleway:wght@700&display=swap" rel="stylesheet">
 
     <style>
       body {
@@ -80,12 +80,13 @@
         display: flex;
         flex-direction: column;
         gap: 32px;
-        height: 43%;
+        justify-content: center;
         margin: 0;
         width: 100%;
       }
       
       .panel-pet-single-image {
+        background-color: #EBE8FC;
         border-radius: 50%;
         height: 276px;
         object-fit: cover;
@@ -93,6 +94,7 @@
       }
 
       .panel-pets-pictures {
+        background-color: #EBE8FC;
         border: 4px solid #F1F0F7;
         border-radius: 50%;
         height: 158px;
@@ -151,6 +153,7 @@
 
       .footer-container p {
         color: #28061E;
+        font-family: "Libre Franklin", sans-serif;
         font-size: 14px;
         font-weight: 400;
         line-height: normal;
@@ -190,7 +193,7 @@
         }
 
         .panel-greeting-container {
-          align-items: normal;
+          align-items: center;
           height: 40%;
         }
 
@@ -240,7 +243,7 @@
   </head>
   <body>
     <header>
-        <img class="header-logo" src="LogoPetPlaceLogo.png"/>
+        <img alt="Pet Place Logo" class="header-logo" src="images/logo.svg" />
     </header>
 
     <main>
@@ -272,7 +275,7 @@
 
     <footer>
       <div class="footer-container">
-        <img src="LogoPetPlaceLogo.png"/>
+        <img alt="Pet Place Logo" src="images/logo.svg" />
         <p>By Vets. For Pets.</p>
       </div>
       

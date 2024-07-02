@@ -9,40 +9,52 @@
 			return response.json();
 		})
 		.then((data) => {
-			renderPetsNames(data["node"]);
-			renderPetsPictures(data["node"]);
+			renderPetInfo(data["node"])
 		})
 		.catch((error) => console.log("There was a problem on network: ", error));
 
 	return response;
 })();
 
-function renderPetsNames(petsList) {
-	const getPetsNames = petsList?.map((item) => item.name);
+function renderPetInfo(petsList) {
+	if(!petsList) return;
 
-	const petsNames =
-		getPetsNames && petsList.length > 1
-			? getPetsNames.slice(0, -1).join(", ") + " & " + getPetsNames.at(-1)
-			: getPetsNames;
-	if (!petsNames || !petsNames.length) return;
+	const getPetsNames = petsList.filter((item) => item.name.length).map((item) => item.name);
+	const getPetsPictures = petsList.map((item) => {
+		if (item?.photo?.length) {
+			return item.photo;
+		}
+		return getImagePlaceholder(item.animalType);
+	});
+	
 
-	document.getElementById("pet-name").innerHTML = petsNames;
+	getPetsNames(getPetsNames);
+	getPetsPictures(getPetsPictures, getPetsNames);
 }
 
-function renderPetsPictures(petsList) {
-	const petsPictures = petsList?.map((item) => item.photo);
-	const petsPicturesLength = petsPictures.length;
+function getPetsNames(petsNames) {
+	if (!petsNames) return;
 
-	if (!petsPictures || !petsPicturesLength) return;
+	const greetingMessage =
+		petsNames?.length > 1 ? petsNames.slice(0, -1).join(", ") + " & " + petsNames.at(-1) : petsNames;
+	if (!greetingMessage?.length) return;
+
+	document.getElementById("pet-name").innerHTML = greetingMessage;
+}
+
+function getPetsPictures(petsPictures, petsNames) {
+	if (!petsPictures) return;
+
+	const petsPicturesLength = petsPictures?.length || 0;
 
 	const imageContainer = document.getElementById("pet-image");
 
-	petsPictures.slice(0, 3).forEach((src) => {
+	petsPictures.slice(0, 3).forEach((src, index) => {
 		if (!src) return;
 
 		const imageTag = document.createElement("img");
 		imageTag.src = src;
-
+		imageTag.alt = `Image of pet: ${petsNames[index]}`;
 		imageTag.classList.add(petsPicturesLength === 1 ? "panel-pet-single-image" : "panel-pets-pictures");
 
 		if (petsPicturesLength > 1) {
@@ -58,4 +70,14 @@ function renderPetsPictures(petsList) {
 		textTag.classList.add("panel-pets-count");
 		imageContainer.appendChild(textTag);
 	}
+}
+
+function getImagePlaceholder(animalType) {
+	const AnimalType = {
+		cat: "images/cat-placeholder.svg",
+		default: "images/dog-placeholder.svg",
+		dog: "images/dog-placeholder.svg",
+	};
+
+	return AnimalType[animalType?.length ? animalType : "default"] || AnimalType["default"];
 }
