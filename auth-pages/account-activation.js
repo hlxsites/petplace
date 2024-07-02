@@ -28,11 +28,11 @@ function renderPetInfo(petsList) {
 	});
 	
 
-	renderPetsNames(getPetsNames);
-	renderPetsPictures(getPetsPictures, getPetsNames);
+	getPetsNames(getPetsNames);
+	getPetsPictures(getPetsPictures, getPetsNames);
 }
 
-function renderPetsNames(petsNames) {
+function getPetsNames(petsNames) {
 	if (!petsNames) return;
 
 	const greetingMessage =
@@ -42,7 +42,7 @@ function renderPetsNames(petsNames) {
 	document.getElementById("pet-name").innerHTML = greetingMessage;
 }
 
-function renderPetsPictures(petsPictures, petsNames) {
+function getPetsPictures(petsPictures, petsNames) {
 	if (!petsPictures) return;
 
 	const petsPicturesLength = petsPictures?.length || 0;
