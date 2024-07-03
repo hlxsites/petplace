@@ -62,7 +62,7 @@ export const articlePopularHelper = () => {
 };
 
 export const articlePrevNextHelper = () => {
-  const articleNav = document.querySelector('.article-navigation-wrapper');
+  const articleNav = document.querySelector('.related-reading-wrapper');
   if (!articleNav) return;
 
   articleNav.addEventListener('click', (ev) => {

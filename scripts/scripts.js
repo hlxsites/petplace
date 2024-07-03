@@ -343,7 +343,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt', 'article-page'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
