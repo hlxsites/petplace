@@ -25,22 +25,6 @@ const monthNames = [
   getPlaceholder('december'),
 ];
 
-// function createAutoBlockSection(main, blockName, gridName) {
-//   const gridNameValue = gridName || blockName;
-//   const section = document.createElement('div');
-//   section.classList.add(gridNameValue);
-
-//   main.append(section);
-//   return section;
-// }
-
-// function createTemplateBlock(main, blockName, gridName, elems = []) {
-//   const section = createAutoBlockSection(main, blockName, gridName);
-
-//   const block = buildBlock(blockName, { elems });
-//   section.append(block);
-// }
-
 export async function getCategoriesPath(path) {
   const categories = await getCategories();
   return categories.filter(
@@ -60,14 +44,13 @@ async function getAllParentCategories(category) {
 }
 
 function ifArticleBelongsToCategories(article, categories) {
-  const articleCategories =
-    article.category !== '0'
-      ? article.category.split(',').map((c) => c.trim().toLowerCase())
-      : article.path.split('/').splice(-2, 1);
+  const articleCategories = article.category !== '0'
+    ? article.category.split(',').map((c) => c.trim().toLowerCase())
+    : article.path.split('/').splice(-2, 1);
   return categories.some(
     (c) =>
-      articleCategories.includes(c.Category.toLowerCase()) ||
-      articleCategories.map((ac) => toClassName(ac)).includes(c.Slug),
+      articleCategories.includes(c.Category.toLowerCase())
+      || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug),
   );
 }
 
@@ -185,7 +168,6 @@ async function createNavigation(block) {
       parentCategory.Slug,
     );
     parentCategoryArticles.forEach((article) => {
-      console.log('article', article);
       createArticleDetails(block, article);
     });
   }
