@@ -35,11 +35,15 @@ function createSpanBlock(main) {
       if (isValidZipcode(code)) {
         removeAllErrorMessage(searchContainers);
         let pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}`;
-        if (document.body.classList.contains('experiment-aggregator-split-testing')) {
+        if (
+          document.body.classList.contains(
+            'experiment-aggregator-split-testing',
+          )
+        ) {
           if (document.body.classList.contains('variant-control')) {
             pageUrl = `https://quote.petplace.com/?zipCode=${code}&source=OldSite&campaign=TestA`;
           } else if (document.body.classList.contains('variant-challenger-1')) {
-            pageUrl = `https://quote.petpremium.com/petplace/wizard?zipCode=${code}&source=NewSite&campaign=TestB`;
+            pageUrl = `https://quote.petpremium.com/petplace?zipCode=${code}&source=NewSite&campaign=Test_widget`;
           }
         }
         window.open(pageUrl);
