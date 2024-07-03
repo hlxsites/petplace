@@ -25,8 +25,28 @@
       }
 
       main {
+        font-family: "Libre Franklin", sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
         height: 931px;
         width: 100%;
+      }
+
+      input {
+        align-items: center;
+        background-color: #FFF;
+        border: solid, 1px, #3B092C;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 16px;
+        height: auto;
+        padding: 14px 16px;
+        width: 100%;
+      }
+
+      input:focus {
+        outline: none;
       }
 
       footer {
@@ -104,6 +124,13 @@
         width: 158px;
       }
 
+      .pet-image {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
       .panel-pets-count {
         color: #000000;
         font-family: "Raleway", sans-serif;
@@ -113,6 +140,10 @@
         letter-spacing: -0.97px;
         line-height: 27px;
         margin-left: 6px;
+      }
+
+      .pet-name {
+        color: #302280;
       }
 
       .panel-greeting-message,
@@ -142,25 +173,20 @@
         border-radius: 16px;
         display: flex;
         flex-direction: column;
-        height: 461px;
+        height: auto;
         margin: auto;
         padding: 40px;
         max-width: 593px;
       }
 
       .panel-form-message {
-        font-family: "Libre Franklin", sans-serif;
         font-size: 18px;
-        font-style: normal;
-        font-weight: 400;
         line-height: 28px;
         padding-top: 24px;
       }
 
       .agreement-message {
-        font-family: "Libre Franklin",  sans-serif;
         font-size: 12px;
-        font-style: normal;
         font-weight: 400;
         line-height: 16px;
         padding-top: 16px;
@@ -187,15 +213,39 @@
         margin: 0;
       }
 
-      #pet-image {
-        align-items: center;
+      .password-container {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+        padding-top: 48px;
         width: 100%;
       }
 
-      #pet-name {
-        color: #302280;
+      .password-message {
+        color: #4162A0;
+        display: flex;
+        font-size: 14px;
+        gap: 8px;
+        padding-bottom: 48px;
+        padding-top: 12px;
+      }
+
+      .password-message p {
+        margin: 0px;
+      }
+
+      .submit-button {
+        background-color: #C74D2F;
+        border-radius: 360px;
+        border: solid, 1px, #C74D2F;
+        color: #FFF;
+        font-size: 18px;
+        height: 48px;
+        width: 100%;
+      }
+
+      #api {
+        width: 100%;
       }
 
       @media screen and (max-width: 1120px) {
@@ -285,13 +335,13 @@
         <div class="panel-container">
           <div class="panel-greeting-container">
             <div class="panel-greeting-item">
-              <div id="pet-image">
+              <div class="pet-image" id="pet-image">
                 <!-- images will be injected here dynamically  -->
               </div>
               <div class="panel-greeting-message">
                 <div>
                   <span role="img" aria-label="waving-hand-emoji">👋</span>
-                  <span role="text"> Say hello to <span id="pet-name" role="text">your pet</span>!</span>
+                  <span role="text"> Say hello to <span class="pet-name" id="pet-name" role="text">your pet</span>!</span>
                 </div>
               </div>
             </div>
@@ -308,17 +358,48 @@
               <div class="panel-form-message">
                 <span role="text">
                   Access all the important 
-                  <span id="pets-names" role="text">
+                  <strong id="pets-names" role="text">
                     <!-- pets names will be injected dynamically here -->
                     pet
-                  </span><strong>'s</strong> documents and information by creating a password, and activating your PetPlace account.
+                  </strong><strong role="text">'s</strong> documents and information by creating a password, and activating your PetPlace account.
                 </span>
               </div>
 
-              
-              <div id="api" data-name="Unified"></div>
-                
-                <!-- Azure Form -->
+              <!-- Azure Form starts here -->
+              <div id="api" data-name="Unified">
+                <form aria-label="Activate your account" id="account-activation-form" >
+                  <div class="password-container">
+                    <div class="password-item">
+                      <input 
+                      aria-label="Enter new password"
+                      aria-required="true"
+                      autofocus="true"
+                      id="enter-password"
+                      name="enter-new-password"
+                      placeholder="Enter new password"
+                      type="text" >
+                    </div>
+                    <div class="password-item">
+                      <input 
+                      aria-label="Confirm new password"
+                      aria-required="true"
+                      autofocus="false"
+                      id="confirm-password"
+                      name="confirm-new-password"
+                      placeholder="Confirm new password"
+                      type="text" >
+                    </div>
+                  </div> 
+                  <div class="password-message">
+                    <img alt="information icon" src="images/information-icon.svg">
+                    <p>Your password must have at least 8 characters.</p>
+                  </div>
+                  <button class="submit-button" id="next" type="submit">
+                    Confirm account activation 
+                  </button>
+                </form>
+              </div>
+              <!-- Azure Form ends here -->
                 
                 <div class="agreement-message">
                   <span>

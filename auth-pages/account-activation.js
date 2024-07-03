@@ -94,5 +94,4 @@ function getFormInfo(petsNames, ownerName) {
 
 	document.getElementById("owner-name").innerHTML = ownerName
 	petsText.innerHTML = formatPetsNames(petsNames)
-	petsText.style.fontWeight = "700"
 }
