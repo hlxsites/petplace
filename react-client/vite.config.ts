@@ -6,7 +6,7 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/react-test/",
+  base: "/account/",
   build: {
     rollupOptions: {
       output: {
