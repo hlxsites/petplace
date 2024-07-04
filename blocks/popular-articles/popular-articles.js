@@ -91,8 +91,7 @@ async function getPopularPosts(block, isAuthorPopularPosts) {
 }
 
 export default async function decorate(block) {
-  const isAuthorPopularPosts =
-    block.querySelector('.author-popular-posts') !== null;
+  const isAuthorPopularPosts = block.querySelector('.author-popular-posts') !== null;
   const PopularPostsData = await getPopularPosts(block, isAuthorPopularPosts);
 
   if (!isAuthorPopularPosts) {
@@ -147,11 +146,7 @@ export default async function decorate(block) {
     const row = `
       <div>
         <div>
-          ${
-            createOptimizedPicture(post.image, post.imageAlt, false, [
-              { width: '768' },
-            ]).outerHTML
-          }
+          ${createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '768' }]).outerHTML}
         </div>
         <div class="button-container">
           <a href="${post.path}" title="${post.title}" class="button primary">
