@@ -1,7 +1,10 @@
 import { RouteObject } from "react-router-dom";
 
-import { AppRoutePathIds, AppRoutePaths } from "~/routes/AppRoutePaths";
+import { AppRoutePaths, AppRoutePathsIndexes } from "~/routes/AppRoutePaths";
 import { Modify } from "./misc";
+
+type AppRoutePathIds = keyof typeof AppRoutePaths;
+type AppRouteIndexPathIds = keyof typeof AppRoutePathsIndexes;
 
 type RouteHandle = {
   ignorePageLayout?: boolean;
@@ -13,8 +16,9 @@ type CommonRoute = {
   id: AppRoutePathIds;
 };
 
-type PetPlaceIndexRoute = CommonRoute & {
+type PetPlaceIndexRoute = Omit<CommonRoute, "id"> & {
   children?: undefined;
+  id: AppRouteIndexPathIds;
   index: true;
   path?: undefined;
 };
