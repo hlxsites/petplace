@@ -4,6 +4,7 @@ import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
+import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
 
 const routes: PetPlaceRouteObject[] = [
   {
@@ -20,6 +21,17 @@ const routes: PetPlaceRouteObject[] = [
             id: "myPetsIndex",
             index: true,
             element: <MyPetsIndex />,
+          },
+        ],
+      },
+      {
+        id: "petProfile",
+        path: AppRoutePaths.petProfile,
+        children: [
+          {
+            id: "petProfileIndex",
+            index: true,
+            element: <PetProfileIndex />,
           },
         ],
       },
