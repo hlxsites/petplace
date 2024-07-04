@@ -17,7 +17,7 @@ export const Root = () => {
   }, []);
 
   return (
-    <div className="min-h-dvh w-dvw">
+    <div className="w-full">
       <div className="py-xxlarge m-auto w-full xl:w-[1080px]">
         <Outlet />
       </div>
