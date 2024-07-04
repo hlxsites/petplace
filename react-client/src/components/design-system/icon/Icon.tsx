@@ -1,12 +1,16 @@
 import { classNames } from "~/util/styleUtil";
+import AddIcon from "./assets/add-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
-import ShieldGood from "./assets/shield-good-icon.svg";
-import ShieldOff from "./assets/shield-off-icon.svg";
+import ShieldGoodIcon from "./assets/shield-good-icon.svg";
+import ShieldOffIcon from "./assets/shield-off-icon.svg";
+import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 
 const IconMap = Object.freeze({
+  add: <AddIcon />,
   check: <CheckIcon />,
-  shieldGood: <ShieldGood />,
-  shieldOff: <ShieldOff />,
+  shieldGood: <ShieldGoodIcon />,
+  shieldOff: <ShieldOffIcon />,
+  warningTriangle: <WarningTriangleIcon />,
 });
 
 export type IconKeys = keyof typeof IconMap;
