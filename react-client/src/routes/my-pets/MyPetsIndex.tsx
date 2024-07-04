@@ -1,7 +1,10 @@
 import PetCard from "~/components/card/PetCard";
 import { Title } from "~/components/design-system";
+import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
-export const MyPetsIndex = ({ pets }: { pets: any[] }) => {
+export const MyPetsIndex = () => {
+  const { pets } = useMyPetsIndexViewModel();
+
   return (
     <>
       <Title>My Pets</Title>
