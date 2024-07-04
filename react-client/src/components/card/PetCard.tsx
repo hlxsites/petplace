@@ -1,5 +1,5 @@
 import { classNames } from "~/util/styleUtil";
-import { Icon } from "../icon/Icon";
+import { Icon } from "../design-system";
 import Card from "./Card";
 
 type PetCardProps = {
@@ -17,11 +17,17 @@ const PetCard = ({ name, img, isProtected, ...props }: PetCardProps) => {
             <div className="p-base relative z-10 flex justify-end">
               <div
                 className={classNames(
-                  "p-base flex h-8 w-8 items-center justify-center rounded-full bg-white",
-                  isProtected ? "text-green-500" : "text-red-500"
+                  "m-xsmall flex h-8 w-8 items-center justify-center rounded-full bg-white",
+                  {
+                    "bg-success-background text-success-contrast": isProtected,
+                    "bg-error-background text-error-contrast": !isProtected,
+                  }
                 )}
               >
-                <Icon display={isProtected ? "shieldGood" : "shieldOff"} />
+                <Icon
+                  display={isProtected ? "shieldGood" : "shieldOff"}
+                  size={16}
+                />
               </div>
             </div>
             <img
