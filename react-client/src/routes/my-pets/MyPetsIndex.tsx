@@ -5,7 +5,7 @@ export const MyPetsIndex = ({ pets }: { pets: any[] }) => {
   return (
     <>
       <Title>My Pets</Title>
-      <div className="mt-base grid w-full grid-flow-row grid-cols-1 justify-center gap-6 px-base tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4">
+      <div className="mt-base px-base tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 grid w-full grid-flow-row grid-cols-1 justify-center gap-6">
         {pets.map((pet) => {
           return (
             <div key={pet.name} className="flex w-full justify-center">
