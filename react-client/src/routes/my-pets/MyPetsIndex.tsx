@@ -1,4 +1,4 @@
-import PetCard from "~/components/card/PetCard";
+import PetCard from "~/components/design-system/card/PetCard";
 import { Title } from "~/components/design-system";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
