@@ -1,5 +1,5 @@
 import PetCard from "~/components/design-system/card/PetCard";
-import { Title } from "~/components/design-system";
+import { Button, Title } from "~/components/design-system";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
@@ -7,8 +7,9 @@ export const MyPetsIndex = () => {
 
   return (
     <>
-      <Title>My Pets</Title>
-      <div className="mt-base px-base tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 grid w-full grid-flow-row grid-cols-1 justify-center gap-6">
+      {getHeader()}
+
+      <div className="mt-base grid w-full grid-flow-row grid-cols-1 justify-center gap-6 px-base tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4">
         {pets.map((pet) => {
           return (
             <div key={pet.name} className="flex w-full justify-center">
@@ -19,4 +20,45 @@ export const MyPetsIndex = () => {
       </div>
     </>
   );
+
+  function getHeader() {
+    return (
+      <div className="mx-xlarge my-large tablet:mx-[0px] tablet:my-[0px]">
+        <div className="tablet:mt-base flex justify-between tablet:px-base">
+          <Title className="text-xl flex items-center tablet:text-2xl">My Pets</Title>
+          <div className="flex">
+            <Button
+              variant="secondary"
+              iconLeft={{
+                display: "warningTriangle",
+                size: 16,
+                className: "mr-small",
+              }}
+              className="mr-small hidden h-[40px] py-[12px] text-[16px] tablet:flex"
+            >
+              Report a lost or found pet
+            </Button>
+            <Button
+              iconLeft={{ display: "add", size: 16, className: "mr-small" }}
+              className="px-small h-[30px] w-[148px] tablet:w-auto py-small text-[14px] tablet:h-[40px] tablet:py-[12px] tablet:text-[16px]"
+            >
+              Add a new pet
+            </Button>
+          </div>
+        </div>
+
+        <Button
+          variant="secondary"
+          iconLeft={{
+            display: "warningTriangle",
+            size: 16,
+            className: "mr-small",
+          }}
+          className="visible mt-large h-[30px] w-full py-small text-[14px] tablet:hidden tablet:h-[40px] tablet:py-[12px] tablet:text-[16px]"
+        >
+          Report a lost or found pet
+        </Button>
+      </div>
+    );
+  }
 };
