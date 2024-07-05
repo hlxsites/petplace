@@ -46,6 +46,7 @@
       }
 
       input:focus {
+        border: solid, 2px, #6F69A8;
         outline: none;
       }
 
@@ -197,6 +198,7 @@
         color: #C74D2F;
         font-size: 12px;
         font-weight: 700;
+        text-decoration: none;
       }
 
       .footer-container {
@@ -242,6 +244,16 @@
         font-size: 18px;
         height: 48px;
         width: 100%;
+      }
+
+      /* This class must be injected on input field by Azure after form validation */
+      .on-error {
+        border: solid, 1px, #D31510;
+        color: #D31510;
+      }
+      .on-error:focus {
+        border: solid, 1px, #D31510;
+        color: #D31510;
       }
 
       #api {
@@ -370,24 +382,32 @@
                 <form aria-label="Activate your account" id="account-activation-form" >
                   <div class="password-container">
                     <div class="password-item">
+                      <label for="enter-new-password" hidden="true">Enter new password</label>
                       <input 
-                      aria-label="Enter new password"
-                      aria-required="true"
-                      autofocus="true"
-                      id="enter-password"
-                      name="enter-new-password"
-                      placeholder="Enter new password"
-                      type="text" >
+                        aria-label="Enter new password"
+                        aria-required="true"
+                        autofocus="true"
+                        form="account-activation-form"
+                        id="enter-new-password"
+                        name="enter-new-password"
+                        placeholder="Enter new password"
+                        type="text" 
+                      />
                     </div>
                     <div class="password-item">
+                      <label for="confirm-new-password" hidden="true">Confirm new password</label>
                       <input 
-                      aria-label="Confirm new password"
-                      aria-required="true"
-                      autofocus="false"
-                      id="confirm-password"
-                      name="confirm-new-password"
-                      placeholder="Confirm new password"
-                      type="text" >
+                        aria-label="Confirm new password"
+                        aria-required="true"
+                        autofocus="false"
+                        form="account-activation-form"
+                        id="confirm-new-password"
+                        name="confirm-new-password"
+                        placeholder="Confirm new password"
+                        aria-invalid="true"
+                        type="text" 
+                        
+                      />
                     </div>
                   </div> 
                   <div class="password-message">
@@ -404,7 +424,14 @@
                 <div class="agreement-message">
                   <span>
                     By clicking Sign Up you're confirming that you agree with our 
-                    <span class="terms-and-conditions">Terms and Conditions.</span>
+                    <a 
+                      class="terms-and-conditions" 
+                      href="https://www.petplace.com/terms-of-use"
+                      rel="license noopener noreferrer"
+                      target="_blank"
+                    >
+                      Terms and Conditions.
+                    </a>
                   </span>
                 </div>
               </div>
