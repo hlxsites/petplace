@@ -4,9 +4,9 @@ import { PetPlaceRouteObject } from "~/types/routerTypes";
 import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
+import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
 import { loader as PetProfileIndexLoader } from "./pet-profile/usePetProfileIndexViewModel";
 import { RootErrorPage } from "./root-error-page";
-import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
 
 const routes: PetPlaceRouteObject[] = [
   {
@@ -26,19 +26,19 @@ const routes: PetPlaceRouteObject[] = [
               !isEqual(currentParams, nextParams),
             element: <MyPetsIndex />,
           },
-        ],
-      },
-      {
-        id: "petProfile",
-        path: AppRoutePaths.petProfile,
-        children: [
           {
-            id: "petProfileIndex",
-            index: true,
-            loader: PetProfileIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
-            element: <PetProfileIndex />,
+            id: "petProfile",
+            path: AppRoutePaths.petProfile,
+            children: [
+              {
+                id: "petProfileIndex",
+                index: true,
+                loader: PetProfileIndexLoader,
+                shouldRevalidate: ({ currentParams, nextParams }) =>
+                  !isEqual(currentParams, nextParams),
+                element: <PetProfileIndex />,
+              },
+            ],
           },
         ],
       },
