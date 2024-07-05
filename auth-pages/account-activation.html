@@ -10,7 +10,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin&family=Raleway:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
       body {
@@ -25,8 +25,29 @@
       }
 
       main {
+        font-family: "Libre Franklin", sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
         height: 931px;
         width: 100%;
+      }
+
+      input {
+        align-items: center;
+        background-color: #FFF;
+        border: solid, 1px, #3B092C;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 16px;
+        height: auto;
+        padding: 14px 16px;
+        width: 100%;
+      }
+
+      input:focus {
+        border: solid, 2px, #6F69A8;
+        outline: none;
       }
 
       footer {
@@ -104,6 +125,13 @@
         width: 158px;
       }
 
+      .pet-image {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
       .panel-pets-count {
         color: #000000;
         font-family: "Raleway", sans-serif;
@@ -115,7 +143,12 @@
         margin-left: 6px;
       }
 
-      .panel-greeting-message {
+      .pet-name {
+        color: #302280;
+      }
+
+      .panel-greeting-message,
+      .panel-form-heading {
         color: #000000;
         font-family: "Raleway", sans-serif;
         font-size: 32px;
@@ -141,11 +174,33 @@
         border-radius: 16px;
         display: flex;
         flex-direction: column;
-        height: 461px;
+        height: auto;
         margin: auto;
-        width: 100%;
+        padding: 40px;
+        max-width: 593px;
       }
-      
+
+      .panel-form-message {
+        font-size: 18px;
+        line-height: 28px;
+        padding-top: 24px;
+      }
+
+      .agreement-message {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        padding-top: 16px;
+        word-break: break-word;
+      }
+
+      .terms-and-conditions {
+        color: #C74D2F;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
       .footer-container {
         background-color: #FFFFFF;
         padding: 48px 80px;
@@ -160,19 +215,49 @@
         margin: 0;
       }
 
-      #pet-image {
-        align-items: center;
+      .password-container {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+        padding-top: 48px;
         width: 100%;
       }
 
-      #api {
-        padding: 40px;
+      .password-message {
+        color: #4162A0;
+        display: flex;
+        font-size: 14px;
+        gap: 8px;
+        padding-bottom: 48px;
+        padding-top: 12px;
       }
 
-      #pet-name {
-        color: #302280;
+      .password-message p {
+        margin: 0px;
+      }
+
+      .submit-button {
+        background-color: #C74D2F;
+        border-radius: 360px;
+        border: solid, 1px, #C74D2F;
+        color: #FFF;
+        font-size: 18px;
+        height: 48px;
+        width: 100%;
+      }
+
+      /* This class must be injected on input field by Azure after form validation */
+      .on-error {
+        border: solid, 1px, #D31510;
+        color: #D31510;
+      }
+      .on-error:focus {
+        border: solid, 1px, #D31510;
+        color: #D31510;
+      }
+
+      #api {
+        width: 100%;
       }
 
       @media screen and (max-width: 1120px) {
@@ -226,6 +311,17 @@
           float: none;
         }
 
+        .panel-form-heading {
+          font-size: 18px;
+          letter-spacing: -0.36px;
+          line-height: 20px;
+        }
+
+        .panel-form-message {
+          font-size: 14px;
+          line-height: 20px
+        }
+
         .footer-container {
           padding: 48px 16px;
         }
@@ -251,20 +347,94 @@
         <div class="panel-container">
           <div class="panel-greeting-container">
             <div class="panel-greeting-item">
-              <div id="pet-image">
+              <div class="pet-image" id="pet-image">
                 <!-- images will be injected here dynamically  -->
               </div>
               <div class="panel-greeting-message">
                 <div>
                   <span role="img" aria-label="waving-hand-emoji">👋</span>
-                  <span role="text"> Say hello to <span id="pet-name" role="text">your pet</span>!</span>
+                  <span role="text"> Say hello to <span class="pet-name" id="pet-name" role="text">your pet</span>!</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="panel-form-container">
             <div class="panel-form-card">
-             <div id="api"> Azure form </div>
+              <div class="panel-form-heading">
+                <span role="heading">Hi
+                  <span id="owner-name" role="heading">
+                    <!-- owner name will be injected dynamically here -->
+                  </span>
+                !</span>
+              </div>
+              <div class="panel-form-message">
+                <span role="text">
+                  Access all the important 
+                  <strong id="pets-names" role="text">
+                    <!-- pets names will be injected dynamically here -->
+                    pet
+                  </strong><strong role="text">'s</strong> documents and information by creating a password, and activating your PetPlace account.
+                </span>
+              </div>
+
+              <!-- Azure Form starts here -->
+              <div id="api" data-name="Unified">
+                <form aria-label="Activate your account" id="account-activation-form" >
+                  <div class="password-container">
+                    <div class="password-item">
+                      <label for="enter-new-password" hidden="true">Enter new password</label>
+                      <input 
+                        aria-label="Enter new password"
+                        aria-required="true"
+                        autofocus="true"
+                        form="account-activation-form"
+                        id="enter-new-password"
+                        name="enter-new-password"
+                        placeholder="Enter new password"
+                        type="text" 
+                      />
+                    </div>
+                    <div class="password-item">
+                      <label for="confirm-new-password" hidden="true">Confirm new password</label>
+                      <input 
+                        aria-label="Confirm new password"
+                        aria-required="true"
+                        autofocus="false"
+                        form="account-activation-form"
+                        id="confirm-new-password"
+                        name="confirm-new-password"
+                        placeholder="Confirm new password"
+                        aria-invalid="true"
+                        type="text" 
+                        
+                      />
+                    </div>
+                  </div> 
+                  <div class="password-message">
+                    <img alt="information icon" src="images/information-icon.svg">
+                    <p>Your password must have at least 8 characters.</p>
+                  </div>
+                  <button class="submit-button" id="next" type="submit">
+                    Confirm account activation 
+                  </button>
+                </form>
+              </div>
+              <!-- Azure Form ends here -->
+                
+                <div class="agreement-message">
+                  <span>
+                    By clicking Sign Up you're confirming that you agree with our 
+                    <a 
+                      class="terms-and-conditions" 
+                      href="https://www.petplace.com/terms-of-use"
+                      rel="license noopener noreferrer"
+                      target="_blank"
+                    >
+                      Terms and Conditions.
+                    </a>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

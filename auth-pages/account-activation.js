@@ -9,18 +9,18 @@
 			return response.json();
 		})
 		.then((data) => {
-			renderPetInfo(data["node"])
+			renderPageInfo(data["petsInfo"], data["ownerName"])
 		})
 		.catch((error) => console.log("There was a problem on network: ", error));
 
 	return response;
 })();
 
-function renderPetInfo(petsList) {
+function renderPageInfo(petsList, ownerName) {
 	if(!petsList) return;
 
-	const getPetsNames = petsList.filter((item) => item.name.length).map((item) => item.name);
-	const getPetsPictures = petsList.map((item) => {
+	const petsNames = petsList.filter((item) => item.name.length).map((item) => item.name);
+	const petsPictures = petsList.map((item) => {
 		if (item?.photo?.length) {
 			return item.photo;
 		}
@@ -28,15 +28,20 @@ function renderPetInfo(petsList) {
 	});
 	
 
-	getPetsNames(getPetsNames);
-	getPetsPictures(getPetsPictures, getPetsNames);
+	getPetsNames(petsNames);
+	getPetsPictures(petsPictures, petsNames);
+	getFormInfo(petsNames, ownerName);
+}
+
+function formatPetsNames (petsNames) {
+	return petsNames?.length > 1 ? petsNames.slice(0, -1).join(", ") + " & " + petsNames.at(-1) : petsNames;
 }
 
 function getPetsNames(petsNames) {
 	if (!petsNames) return;
 
-	const greetingMessage =
-		petsNames?.length > 1 ? petsNames.slice(0, -1).join(", ") + " & " + petsNames.at(-1) : petsNames;
+	const greetingMessage = formatPetsNames(petsNames)
+		
 	if (!greetingMessage?.length) return;
 
 	document.getElementById("pet-name").innerHTML = greetingMessage;
@@ -80,4 +85,13 @@ function getImagePlaceholder(animalType) {
 	};
 
 	return AnimalType[animalType?.length ? animalType : "default"] || AnimalType["default"];
+}
+
+function getFormInfo(petsNames, ownerName) {
+	if(!ownerName?.length) return;
+
+	const petsText = document.getElementById("pets-names")
+
+	document.getElementById("owner-name").innerHTML = ownerName
+	petsText.innerHTML = formatPetsNames(petsNames)
 }
