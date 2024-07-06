@@ -1,22 +1,45 @@
-import PetCard from "~/components/card/PetCard";
-import { Title } from "~/components/design-system";
+import { PetCard } from "~/components/Pet/PetCard";
+import { Button, ButtonProps, Title } from "~/components/design-system";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
 
   return (
-    <>
-      <Title>My Pets</Title>
-      <div className="mt-base px-base tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 grid w-full grid-flow-row grid-cols-1 justify-center gap-6">
-        {pets.map((pet) => {
-          return (
-            <div key={pet.name} className="flex w-full justify-center">
-              <PetCard {...pet} />
-            </div>
-          );
-        })}
+    <div className="px-base">
+      {getHeader()}
+
+      <div className="sm:grid-cols-2 lg:grid-cols-3 grid w-full grid-flow-row grid-cols-1 justify-center gap-6">
+        {pets.map((pet) => (
+          <PetCard key={pet.name} {...pet} />
+        ))}
       </div>
-    </>
+    </div>
   );
+
+  function getHeader() {
+    return (
+      <div className="lg:mb-xxlarge mb-large">
+        <div className="lg:m-0 mb-large flex items-center justify-between">
+          <Title>My Pets</Title>
+          <div className="flex gap-2">
+            {renderReportLostOrFound({
+              className: "hidden md:block",
+            })}
+            <Button iconLeft="add">Add a new pet</Button>
+          </div>
+        </div>
+
+        {renderReportLostOrFound({ className: "md:hidden w-full" })}
+      </div>
+    );
+  }
+
+  function renderReportLostOrFound(props: Pick<ButtonProps, "className">) {
+    return (
+      <Button variant="secondary" iconLeft="warningTriangle" {...props}>
+        Report a lost or found pet
+      </Button>
+    );
+  }
 };
