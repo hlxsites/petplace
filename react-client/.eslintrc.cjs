@@ -15,6 +15,7 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+    "@typescript-eslint/unbound-method": "off",
   },
   parserOptions: {
     ecmaVersion: "latest",
