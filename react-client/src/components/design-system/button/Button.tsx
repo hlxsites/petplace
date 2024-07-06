@@ -1,12 +1,14 @@
 import { forwardRef } from "react";
 import { classNames } from "~/util/styleUtil";
 import { Icon, IconProps } from "../icon/Icon";
-import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
+import useButtonBase, { type UseButtonBase } from "./useButtonBase";
 
-export type ButtonProps = IUseButtonBase &
+type ButtonIcon = IconProps["display"];
+
+export type ButtonProps = UseButtonBase &
   JSX.IntrinsicElements["button"] & {
-    iconLeft?: IconProps;
-    iconRight?: IconProps;
+    iconLeft?: ButtonIcon;
+    iconRight?: ButtonIcon;
     onClick?: () => void;
   };
 
@@ -38,14 +40,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         {...rest}
       >
-        {iconLeft && renderIcon(iconLeft, "mr-base")}
+        {iconLeft && renderIcon({ display: iconLeft, className: "mr-small" })}
         {children}
-        {iconRight && renderIcon(iconRight, "ml-base")}
+        {iconRight && renderIcon({ display: iconRight, className: "ml-small" })}
       </button>
     );
 
-    function renderIcon(props: IconProps, className?: string) {
-      return <Icon className={className} {...props} />;
+    function renderIcon(props: IconProps) {
+      return <Icon size={16} {...props} />;
     }
   }
 );

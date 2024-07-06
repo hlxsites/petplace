@@ -1,27 +1,29 @@
 import { classNames } from "~/util/styleUtil";
 
-export interface IUseButtonBase {
+export type UseButtonBase = {
   fullWidth?: boolean;
   isLoading?: boolean;
-  variant?: "primary" | "secondary" | "ghost" | "error";
-}
+  variant?: "primary" | "secondary" | "link" | "error";
+};
 
 function useButtonBase({
   fullWidth,
   isLoading,
   variant = "primary",
-}: IUseButtonBase) {
+}: UseButtonBase) {
   const isPrimary = variant === "primary";
   const isSecondary = variant === "secondary";
-  const isGhost = variant === "ghost";
+  const isLink = variant === "link";
   const isError = variant === "error";
 
   const className = classNames(
-    "rounded-full font-semibold h-[48px] py-3.5 px-large outline outline-transparent focus:outline-orange-300-contrast outline-2 outline-offset-2 items-center flex justify-center",
+    "rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-[12px]",
     {
-      "bg-orange-300-contrast text-white hover:bg-orange-500": isPrimary,
-      "bg-white border-1 border-neutral-700 text-neutral-700": isSecondary,
-      "bg-neutral-100 text-neutral-500": isGhost,
+      "bg-orange-300-contrast text-white hover:bg-orange-500 focus:bg-orange-300-contrast focus:outline-orange-100":
+        isPrimary,
+      "bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100":
+        isSecondary,
+      "bg-transparent border- text-neutral-700": isLink,
       "bg-red-300 text-white": isError,
       "w-full": fullWidth,
       loading: isLoading,

@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
 import { classNames } from "~/util/styleUtil";
 import { Icon, IconProps } from "../icon/Icon";
-import useButtonBase, { type IUseButtonBase } from "./useButtonBase";
+import useButtonBase, { type UseButtonBase } from "./useButtonBase";
 
-export type IconButtonProps = IUseButtonBase &
+type IconButtonProps = UseButtonBase &
   Omit<JSX.IntrinsicElements["button"], "children" | "fullWidth"> & {
     label: string;
     icon: IconProps["display"];
