@@ -6,12 +6,14 @@ import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
 import { loader as PetProfileIndexLoader } from "./pet-profile/usePetProfileIndexViewModel";
+import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
 
 const routes: PetPlaceRouteObject[] = [
   {
     id: "root",
     path: AppRoutePaths.root,
+    element: <Root />,
     errorElement: <RootErrorPage />,
     children: [
       {
