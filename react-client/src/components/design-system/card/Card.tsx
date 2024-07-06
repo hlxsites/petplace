@@ -7,11 +7,11 @@ type CardProps = {
   radius?: "sm" | "base";
 };
 
-const Card = ({ children, hasShadow, radius = "base" }: CardProps) => {
+export const Card = ({ children, hasShadow, radius = "base" }: CardProps) => {
   return (
     <div
       className={classNames(
-        "bg-neutral-white w-fit border border-solid border-[#d0d0d6]",
+        "overflow-hidden border border-solid border-[#d0d0d6] bg-neutral-white",
         {
           "rounded-2xl": radius === "base",
           "rounded-xl": radius === "sm",
@@ -23,5 +23,3 @@ const Card = ({ children, hasShadow, radius = "base" }: CardProps) => {
     </div>
   );
 };
-
-export default Card;
