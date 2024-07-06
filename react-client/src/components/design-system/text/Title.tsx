@@ -7,6 +7,8 @@ export const Title = ({ children, level = "h1" }: TitleProps) => {
   const Comp = level;
 
   return (
-    <Comp className="text-3xl font-bold text-neutral-950">{children}</Comp>
+    <Comp className="lg:text-3xl text-xl font-bold text-neutral-950">
+      {children}
+    </Comp>
   );
 };

@@ -55,6 +55,7 @@ module.exports = {
       "3xl": "2rem",
     },
     margin: {
+      0: "0",
       auto: "auto",
       xxlarge: "var(--xxlarge)",
       xlarge: "var(--xlarge)",
@@ -64,17 +65,13 @@ module.exports = {
       xsmall: "var(--xsmall)",
     },
     padding: {
+      0: "0",
       xxlarge: "var(--xxlarge)",
       xlarge: "var(--xlarge)",
       large: "var(--large)",
       base: "var(--base)",
       small: "var(--small)",
       xsmall: "var(--xsmall)",
-    },
-    screens: {
-      tablet: "640px",
-      laptop: "1024px",
-      desktop: "1280px",
     },
     boxShadow: {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
