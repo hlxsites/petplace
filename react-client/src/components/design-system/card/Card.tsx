@@ -1,35 +1,25 @@
 import type { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 
-interface CardProps {
-  "aria-label"?: string;
+type CardProps = {
   children: ReactNode;
-  "data-testid"?: string;
-  onClick?: () => void;
   hasShadow?: boolean;
   radius?: "sm" | "base";
-}
+};
 
-const Card = ({
-  "aria-label": ariaLabel,
-  children,
-  "data-testid": testId = "Card",
-  onClick,
-  hasShadow,
-  radius = "base"
-}: CardProps) => {
-  const borderRadius = radius === "base" ? "rounded-2xl" : "rounded-xl"
+export const Card = ({ children, hasShadow, radius = "base" }: CardProps) => {
   return (
     <div
-      aria-label={ariaLabel}
-      className={classNames("border border-solid border-[#d0d0d6] bg-neutral-white w-fit", borderRadius, hasShadow && "shadow-elevation-1")}
-      data-testid={testId}
-      onClick={onClick}
-      role={onClick && "button"}
+      className={classNames(
+        "w-fit border border-solid border-[#d0d0d6] bg-neutral-white",
+        {
+          "rounded-2xl": radius === "base",
+          "rounded-xl": radius === "sm",
+          "shadow-elevation-1": hasShadow,
+        }
+      )}
     >
-        {children}
+      {children}
     </div>
   );
 };
-
-export default Card;
