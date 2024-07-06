@@ -68,10 +68,8 @@ module.exports = {
       laptop: "1024px",
       desktop: "1280px",
     },
-    extend: {
-      boxShadow: {
-        "shadow-elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
-      },
+    boxShadow: {
+      "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
     },
   },
   plugins: [],
