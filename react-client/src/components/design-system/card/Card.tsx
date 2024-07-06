@@ -11,7 +11,7 @@ export const Card = ({ children, hasShadow, radius = "base" }: CardProps) => {
   return (
     <div
       className={classNames(
-        "w-fit border border-solid border-[#d0d0d6] bg-neutral-white",
+        "w-fit overflow-hidden border border-solid border-[#d0d0d6] bg-neutral-white",
         {
           "rounded-2xl": radius === "base",
           "rounded-xl": radius === "sm",
