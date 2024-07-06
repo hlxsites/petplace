@@ -46,6 +46,13 @@ module.exports = {
       black: "#000000",
       transparent: "transparent",
     },
+    fontSize: {
+      xs: "0.75rem",
+      sm: "0.875rem",
+      base: "1rem",
+      xl: "1.25rem",
+      "2xl": "1.5rem",
+    },
     margin: {
       auto: "auto",
       xxlarge: "var(--xxlarge)",
