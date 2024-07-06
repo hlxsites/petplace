@@ -25,9 +25,7 @@ export const MyPetsIndex = () => {
     return (
       <div className="mx-xlarge my-large tablet:mx-[0px] tablet:my-[0px]">
         <div className="flex justify-between tablet:mt-base tablet:px-base">
-          <Title className="flex items-center text-xl tablet:text-2xl">
-            My Pets
-          </Title>
+          <Title>My Pets</Title>
           <div className="flex">
             <Button
               variant="secondary"
