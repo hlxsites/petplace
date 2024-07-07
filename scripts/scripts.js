@@ -8,7 +8,6 @@ import {
   decorateSections,
   decorateTemplateAndTheme,
   fetchPlaceholders,
-  getAllMetadata,
   getMetadata,
   loadBlock,
   loadBlocks,
@@ -110,7 +109,14 @@ window.hlx.plugins.add('experimentation', {
     || document.head.querySelector('[property^="campaign:-"],[property^="audience:-"]')
     || document.querySelector('.section[class*="experiment-"],.section[class*="audience-"],.section[class*="campaign-"]')
     || [...document.querySelectorAll('.section-metadata div')].some((d) => d.textContent.match(/Experiment|Campaign|Audience/i)),
-  options: { audiences: AUDIENCES },
+  options: {
+    audiences: AUDIENCES,
+    prodHost: 'www.petplace.com',
+    storage:
+        consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
+          ? window.localStorage
+          : window.SessionStorage,
+  },
   load: 'eager',
   url: '/plugins/experimentation/src/index.js',
 });
