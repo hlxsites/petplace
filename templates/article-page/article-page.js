@@ -1,4 +1,4 @@
-import { buildBlock, getMetadata } from '../../scripts/lib-franklin.js';
+import { buildBlock, getMetadata, toClassName } from '../../scripts/lib-franklin.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 function createTableOfContents(main) {
@@ -38,10 +38,10 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
 
 export function loadEager(document) {
   const main = document.querySelector('main');
+  createTableOfContents(main);
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'related-reading');
-
 }
 
 export async function loadLazy(document) {
