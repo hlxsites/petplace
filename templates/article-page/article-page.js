@@ -36,16 +36,15 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
   section.append(block);
 }
 
-export async function loadEager(document) {
+export function loadEager(document) {
   const main = document.querySelector('main');
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'related-reading');
 
-  createTableOfContents(main);
 }
 
-export function loadLazy(document) {
+export async function loadLazy(document) {
   const main = document.querySelector('main');
   const heroTitleSection = document.createElement('div');
   heroTitleSection.classList.add('hero-title-container', 'section');
