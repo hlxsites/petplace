@@ -48,8 +48,7 @@ function ifArticleBelongsToCategories(article, categories) {
     ? article.category.split(',').map((c) => c.trim().toLowerCase())
     : article.path.split('/').splice(-2, 1);
   return categories.some(
-    (c) =>
-      articleCategories.includes(c.Category.toLowerCase())
+    (c) => articleCategories.includes(c.Category.toLowerCase())
       || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug),
   );
 }
