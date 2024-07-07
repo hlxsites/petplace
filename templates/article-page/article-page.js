@@ -40,7 +40,7 @@ export function loadEager(document) {
   const main = document.querySelector('main');
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'popular-articles');
-  createTemplateBlock(main, 'article-navigation');
+  createTemplateBlock(main, 'related-reading');
 
   createTableOfContents(main);
 }
