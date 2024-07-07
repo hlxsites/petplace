@@ -36,7 +36,7 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
   section.append(block);
 }
 
-export function loadEager(document) {
+export async function loadEager(document) {
   const main = document.querySelector('main');
   createTemplateBlock(main, 'article-author');
   createTemplateBlock(main, 'popular-articles');
