@@ -1,4 +1,5 @@
-import { buildBlock, getMetadata } from '../../scripts/lib-franklin.js';
+import { buildBlock, getMetadata, toClassName } from '../../scripts/lib-franklin.js';
+import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 function createTableOfContents(main) {
   const hasToc = getMetadata('has-toc');
@@ -37,13 +38,13 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
 
 export function loadEager(document) {
   const main = document.querySelector('main');
-  createTemplateBlock(main, 'article-author');
-  createTemplateBlock(main, 'related-reading');
-
   createTableOfContents(main);
+  createTemplateBlock(main, 'article-author');
+  createTemplateBlock(main, 'popular-articles');
+  createTemplateBlock(main, 'related-reading');
 }
 
-export function loadLazy(document) {
+export async function loadLazy(document) {
   const main = document.querySelector('main');
   const heroTitleSection = document.createElement('div');
   heroTitleSection.classList.add('hero-title-container', 'section');
@@ -58,7 +59,20 @@ export function loadLazy(document) {
   heroTitleSection.append(heroImgContainer);
   main.prepend(heroTitleSection);
 
-  // const contentSection = main.querySelectorAll('.section')[1];
-  // console.log(main.querySelectorAll('.section'))
-  // contentSection.classList.add('article-content-container')
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
+  adsenseFunc('article', 'create');
+
+  // genai block will go here below
+}
+
+export async function loadDelayed() {
+  const articleCat = toClassName(getMetadata('category').split(',')[0]?.trim());
+  await pushToDataLayer({
+    event: 'adsense',
+    type: 'article',
+    category: articleCat,
+  });
+
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
+  adsenseFunc('article', articleCat);
 }
