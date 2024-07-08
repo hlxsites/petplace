@@ -67,6 +67,7 @@ const Input = ({
           disabled={disabled}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          type={type}
           {...props}
         />
         {iconRight && renderIcon(iconRight, "ml-base")}
