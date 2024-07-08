@@ -3,7 +3,6 @@ import { Icon, IconProps } from "../icon/Icon";
 import { useState } from "react";
 
 interface InputProps {
-  className?: string;
   "data-testid"?: string;
   disabled?: boolean;
   error?: any;
@@ -19,7 +18,6 @@ interface InputProps {
 }
 
 const Input = ({
-  className,
   "data-testid": testId,
   disabled,
   error,
