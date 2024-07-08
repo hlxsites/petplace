@@ -38,9 +38,16 @@ function createTemplateBlock(main, blockName, gridName, elems = []) {
 
 export function loadEager(document) {
   const main = document.querySelector('main');
+
+  // content
   createTableOfContents(main);
   createTemplateBlock(main, 'article-author');
+
+  // sidebar
   createTemplateBlock(main, 'popular-articles');
+  createTemplateBlock(main, 'article-cta');
+
+  // bottom
   createTemplateBlock(main, 'related-reading');
 }
 
