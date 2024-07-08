@@ -1,3 +1,4 @@
+// TODO: this will come in as a fragment at a later date
 export default async function decorate(block) {
   const heading = document.createElement('h2');
   const img = document.createElement('img');
