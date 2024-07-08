@@ -1,4 +1,4 @@
-const azureApiKey = "4f6ead39e9b5437ca19657e6826fe475";  // Replace with your actual Azure OpenAI API key
+const azureApiKey = "keyfe475";  // Replace with your actual Azure OpenAI API key
 const azureEndpoint = "https://pr-review-bot.openai.azure.com";  // Replace with your Azure OpenAI endpoint
 
 export async function generateContentWithAzureRestApi(keywords) {
