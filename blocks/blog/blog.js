@@ -53,6 +53,8 @@ export default async function decorate(block) {
     articleTitle.textContent = getPlaceholder("title");
 
     var articleImage = document.createElement('img');
+    articleImage.classList.add('article-image');
+
     var keywords = "cat health, pet care"; 
 
    // var htmlString = await generateContentWithAzureRestApi(keywords);
