@@ -8,7 +8,7 @@ export async function generateContentWithAzureRestApi(keywords) {
     
 
 // Define the keywords list variable (replace with actual keywords)
- keywords = "cat health, pet care";
+ 
 
 // Construct the prompt string with the keywordsList placeholder
 let prompt = `For the keywords ${keywords} i need to get an output in form of a json which has following key values pairs
@@ -52,7 +52,7 @@ console.log(prompt);
                         type: "text",
                         text: `For the keywords ${keywords} i need to get an output in form of a json which has following key values pairs
                         key :content
-                        value: Some content relevant to the given keywords
+                        value: Some content relevant to the given keywords formmated as HTML div
                         
                         key: title
                         value: Title which can be given to the generated content
@@ -66,7 +66,7 @@ console.log(prompt);
                 ]
             }
         ],
-        max_tokens: 500,  // Adjust the token count as needed
+        max_tokens: 1000,  // Adjust the token count as needed
         temperature: 0.7
     };
 
@@ -83,20 +83,28 @@ console.log(prompt);
             const responseBody = await response.json();
             console.log(responseBody);
             const htmlString = responseBody.choices[0].message.content.trim();
+           
+            let startIndex = htmlString.indexOf('{');
+            let endIndex = htmlString.lastIndexOf('}') + 1;
+            
+            // Extract the JSON substring
+            let jsonSubstring = htmlString.substring(startIndex, endIndex);
+            return jsonSubstring;
+
             // Regular expression pattern to extract content within <div> tags
 
-            let pattern = /<div>([\s\S]*?)(<\/div>|$)/;
-            // Using match() method to find the content within <div> tags
-            let matches = htmlString.match(pattern);
+            // let pattern = /<div>([\s\S]*?)(<\/div>|$)/;
+            // // Using match() method to find the content within <div> tags
+            // let matches = htmlString.match(pattern);
 
-            // Output the matched content
-            if (matches) {
-                let divContent = matches[1].trim();  // Get the content captured by the first group and trim leading/trailing whitespace
-                console.log(divContent);
-                return divContent;
-            } else {
-                console.log("No <div> content found.");
-            }
+            // // Output the matched content
+            // if (matches) {
+            //     let divContent = matches[1].trim();  // Get the content captured by the first group and trim leading/trailing whitespace
+            //     console.log(divContent);
+            //     return divContent;
+            // } else {
+            //     console.log("No <div> content found.");
+            // }
             return content;
         } else {
             return `Error: ${response.status} - ${response.statusText}`;

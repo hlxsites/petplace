@@ -13,24 +13,26 @@ function insertJsonLd(jsonLdString, div, name) {
 function createJsonLd(){
     let websitename = getPlaceholder("websiteName");
     let description = getPlaceholder("description");
+    let today = new Date();
+
+// Format the date as YYYY-MM-DD
+let year = today.getFullYear();
+let month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0, so we add 1
+let day = String(today.getDate()).padStart(2, '0');
+
+// Formatted date string
+let formattedDate = `${year}-${month}-${day}`;
+
     let currentUrl = window.location.href;
     let json = `{
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Comprehensive Guide to Cat Health and Pet Care",
-        "description": "Learn how to maintain your cat's health with our comprehensive guide on pet care. Get tips on nutrition, grooming, vaccinations, and more.",
-        "author": {
-          "@type": "Person",
-          "name": "Your Name"
-        },
-        "datePublished": "2023-10-01",
+        "description": ${ description},
+        "datePublished": ${ formattedDate},
         "publisher": {
           "@type": "Organization",
-          "name": ${ description},
-          "logo": {
-            "@type": "ImageObject",
-            "url": "http://www.yourorganization.com/logo.jpg"
-          }
+          "name": ${ websitename},
         },
         "mainEntityOfPage": {
           "@type": "WebPage",
@@ -51,9 +53,10 @@ export default async function decorate(block) {
     articleTitle.textContent = getPlaceholder("title");
 
     var articleImage = document.createElement('img');
-    var keywords = "cat health"; 
+    var keywords = "cat health, pet care"; 
 
-    var htmlString = await generateContentWithAzureRestApi(keywords);
+   // var htmlString = await generateContentWithAzureRestApi(keywords);
+   //var url = await generateImage(keywords); 
 
    // articleImage.src = await generateImage(keywords); // Replace with your image path
    //articleImage.alt = 'Image Description'; // Replace with image description
@@ -64,7 +67,9 @@ export default async function decorate(block) {
     //var htmlString = await generateContentWithAzureRestApi(keywords); // Replace with your content
 
     //articleContent.innerHTML = "<div>"+htmlString+"</div>";
-    articleContent.innerText = getPlaceholder("content");
+     let htmlstr = getPlaceholder("content");
+    htmlstr = htmlstr.replace(/\\n/g, '<br>');
+    articleContent.innerHTML = htmlstr;
     articleImage.src = getPlaceholder("imageurl");
     articleImage.alt = getPlaceholder("description");
     articleDiv.appendChild(articleTitle);
