@@ -1,5 +1,3 @@
-// import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-
 export default async function decorate(block) {
   const heading = document.createElement('h2');
   const img = document.createElement('img');
@@ -7,8 +5,7 @@ export default async function decorate(block) {
   const button = document.createElement('button');
 
   heading.textContent = 'Pet Insurance: A Pet Care Must Have';
-  details.textContent =
-    'Compare the top pet insurance plans all in one place to find the one that works best for you and your pet';
+  details.textContent = 'Compare the top pet insurance plans all in one place to find the one that works best for you and your pet';
 
   img.classList.add('article-cta-img');
   img.src = '/icons/compare-plans.svg';
