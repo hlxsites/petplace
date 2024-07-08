@@ -112,6 +112,53 @@ export function loadEager(document) {
 
   // bottom
   createTemplateBlock(main, 'related-reading');
+
+  // same attribute setting as earlier
+  main.setAttribute('itemscope', '');
+  const articleType = toClassName(getMetadata('type'));
+
+  if (articleType === 'faq') {
+    main.setAttribute('itemtype', 'https://schema.org/FAQPage');
+    [...main.querySelectorAll(':scope > div > :is(h1,h2,h3)')]
+      .filter((h) => h.textContent.endsWith('?') || h.textContent.match(/#\d+/))
+      .forEach((h) => {
+        if (h.nodeName === 'H1') {
+          const meta = document.createElement('meta');
+          meta.setAttribute('itemprop', 'name');
+          meta.setAttribute('content', h.textContent);
+          h.after(meta);
+        } else {
+          h.setAttribute('itemprop', 'name');
+        }
+        const question = document.createElement('div');
+        question.setAttribute('itemscope', '');
+        question.setAttribute('itemprop', 'mainEntity');
+        question.setAttribute('itemtype', 'https://schema.org/Question');
+        if (h.nodeName === 'H1') {
+          h.after(question);
+          question.append(question.nextElementSibling);
+        } else {
+          h.replaceWith(question);
+          question.append(h);
+        }
+        const answer = document.createElement('div');
+        answer.setAttribute('itemscope', '');
+        answer.setAttribute('itemprop', 'acceptedAnswer');
+        answer.setAttribute('itemtype', 'https://schema.org/Answer');
+        question.append(answer);
+        const div = document.createElement('div');
+        div.setAttribute('itemprop', 'text');
+        answer.append(div);
+        while (
+          question.nextElementSibling &&
+          question.nextElementSibling.tagName !== h.nodeName
+        ) {
+          div.append(question.nextElementSibling);
+        }
+      });
+  } else {
+    main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
+  }
 }
 
 export async function loadLazy(document) {
