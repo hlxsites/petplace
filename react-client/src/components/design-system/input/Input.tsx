@@ -12,6 +12,7 @@ interface InputProps {
   iconRight?: IconProps;
   label?: string;
   message?: string;
+  onChange?: () => void;
   placeholder?: string;
   squared?: boolean;
   type?: string;
