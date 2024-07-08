@@ -52,6 +52,7 @@ const Input = ({
             "border-text-danger-default": hasError,
           }
         )}
+        data-testid="input-container"
       >
         {iconLeft && renderIcon(iconLeft)}
 
