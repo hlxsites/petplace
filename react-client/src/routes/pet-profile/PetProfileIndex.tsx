@@ -1,13 +1,14 @@
-import { Title } from "~/components/design-system";
+import { Layout } from "~/components/design-system/layout/Layout";
 import { usePetProfileIndexViewModel } from "./usePetProfileIndexViewModel";
+import { Header } from "~/components/design-system/header/Header";
 
 export const PetProfileIndex = () => {
   const { petInfo } = usePetProfileIndexViewModel();
 
   return (
-    <>
-      <Title>Pet Profile</Title>
+    <Layout>
+      <Header pageTitle="Pet Profile" shouldRenderBackButton />
       <div>{petInfo}</div>
-    </>
+    </Layout>
   );
 };
