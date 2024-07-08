@@ -36,11 +36,37 @@ describe("Header", () => {
     }
   );
 
-  it("should render back link icon when shouldRenderBackButton is set to true", async () => {
+  it("should render link icon button as chevron-left by default when shouldRenderBackButton is set to true", async () => {
     getRenderer({ shouldRenderBackButton: true });
 
     await waitFor(() => {
       expect(getByLabelText("Back button")).toBeInTheDocument();
+      expect(document.querySelector("svg")).toHaveAttribute(
+        "data-file-name",
+        "SvgChevronLeftIcon"
+      );
+    });
+  });
+
+  it("should pass props to linkIconButton when shouldRenderBackButton is set to true", async () => {
+    getRenderer({
+      linkIconButtonProps: {
+        buttonProps: {
+          label: "Check icon",
+          icon: "check",
+        },
+        to: "/test",
+      },
+      shouldRenderBackButton: true,
+    });
+
+    await waitFor(() => {
+      expect(getByLabelText("Check icon")).toBeInTheDocument();
+      expect(document.querySelector("svg")).toHaveAttribute(
+        "data-file-name",
+        "SvgCheckIcon"
+      );
+      expect(getByRole("link")).toHaveAttribute("href", "/test");
     });
   });
 
@@ -52,6 +78,7 @@ describe("Header", () => {
 });
 
 function getRenderer({
+  linkIconButtonProps,
   pageTitle = "Test Title",
   primaryElement = <div>Primary</div>,
   secondaryElement = <div>Secondary</div>,
@@ -60,6 +87,7 @@ function getRenderer({
   return render(
     <Router>
       <Header
+        linkIconButtonProps={linkIconButtonProps}
         pageTitle={pageTitle}
         primaryElement={primaryElement}
         secondaryElement={secondaryElement}

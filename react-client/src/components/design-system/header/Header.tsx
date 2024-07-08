@@ -1,8 +1,9 @@
 import { Title } from "../text/Title";
 import { LinkIconButton } from "../button/LinkIconButton";
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 
 type HeaderProps = {
+  linkIconButtonProps?: ComponentProps<typeof LinkIconButton>;
   pageTitle: string;
   primaryElement?: ReactNode;
   secondaryElement?: ReactNode;
@@ -10,6 +11,14 @@ type HeaderProps = {
 };
 
 export const Header = ({
+  linkIconButtonProps = {
+    buttonProps: {
+      label: "Back button",
+      icon: "chevronLeft",
+    },
+    relative: "path",
+    to: "..",
+  },
   pageTitle,
   primaryElement,
   secondaryElement,
@@ -20,11 +29,7 @@ export const Header = ({
       <div className="mb-large flex items-center justify-between lg:m-0">
         <div className="flex items-center">
           {shouldRenderBackButton && (
-            <LinkIconButton
-              buttonProps={{ label: "Back button", icon: "chevronLeft" }}
-              to=".."
-              relative="path"
-            />
+            <LinkIconButton {...linkIconButtonProps} />
           )}
           <Title>{pageTitle}</Title>
         </div>
