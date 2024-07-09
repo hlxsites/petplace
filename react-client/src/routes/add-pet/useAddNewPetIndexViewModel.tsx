@@ -1,17 +1,16 @@
 import { LoaderFunction, useLoaderData } from "react-router-dom";
-import { getPetsList } from "~/mocks/MockRestApiServer";
 import { LoaderData } from "~/types/LoaderData";
 
 export const loader = (() => {
   return {
-    pets: getPetsList(),
+    petRegistration: [],
   };
 }) satisfies LoaderFunction;
 
-export const useMyPetsIndexViewModel = () => {
-  const { pets } = useLoaderData() as LoaderData<typeof loader>;
+export const useAddNewPetIndexViewModel = () => {
+  const { petRegistration } = useLoaderData() as LoaderData<typeof loader>;
 
   return {
-    pets,
+    petRegistration,
   };
 };

@@ -3,9 +3,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PetPlaceRouteObject } from "~/types/routerTypes";
 import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
-import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
+import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
+import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { loader as PetProfileIndexLoader } from "./pet-profile/usePetProfileIndexViewModel";
+import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
 
@@ -39,6 +41,20 @@ const routes: PetPlaceRouteObject[] = [
                 shouldRevalidate: ({ currentParams, nextParams }) =>
                   !isEqual(currentParams, nextParams),
                 element: <PetProfileIndex />,
+              },
+            ],
+          },
+          {
+            id: "addNewPet",
+            path: AppRoutePaths.addNewPet,
+            children: [
+              {
+                id: "addNewPetIndex",
+                index: true,
+                loader: AddNewPetIndexLoader,
+                shouldRevalidate: ({ currentParams, nextParams }) =>
+                  !isEqual(currentParams, nextParams),
+                element: <AddNewPetIndex />,
               },
             ],
           },

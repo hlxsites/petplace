@@ -12,7 +12,7 @@ export const LinkIconButton = ({
 }: LinkIconButtonProps) => {
   return (
     <Link {...linkProps}>
-      <IconButton {...buttonProps} />
+      <IconButton {...buttonProps} variant="link" />
     </Link>
   );
 };
