@@ -1,8 +1,3 @@
-.related-reading {
-  display: flex;
-  gap: .75rem;
-}
-
 .related-reading-hidden {
   display: none;
 }
@@ -21,7 +16,7 @@
 }
 
 .related-reading-title {
-  height: 7rem;
+  height: 3rem;
   font-size: 1rem;
   font-weight: 700;
   font-family: var(--heading-font-family);
@@ -35,9 +30,11 @@
 @media (min-width: 1024px) {
   .related-reading-title {
     font-size: 1.5rem;
+    height: 7rem;
   }
 
   .related-reading {
+    display: flex;
     gap: 2rem;
   }
 

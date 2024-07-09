@@ -171,7 +171,7 @@ export function isMobile() {
  * @returns true if we are on a tablet, and false otherwise
  */
 export function isTablet() {
-  return window.innerWidth < 1024;
+  return window.innerWidth > 600 && window.innerWidth < 1024;
 }
 
 /**
