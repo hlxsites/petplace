@@ -1175,7 +1175,7 @@ body:not(.gen-ai) .genai-search.large .search-box-wrapper #clearButton {
 .header-search:hover a {
   background-color: black;
 }
- 
+
 .header-search:hover .tooltip {
   visibility: visible;
   opacity: 1;
