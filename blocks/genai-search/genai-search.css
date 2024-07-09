@@ -1162,10 +1162,6 @@ body:not(.gen-ai) .genai-search.large .search-box-wrapper #clearButton {
   border-color: var(--background-color) transparent transparent transparent;
 }
 
-.article-page .header-search {
-  width: auto !important;
-}
-
 .header-search:hover a {
   background-color: black;
 }
