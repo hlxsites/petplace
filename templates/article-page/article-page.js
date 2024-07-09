@@ -5,9 +5,11 @@ import {
   loadBlock,
   toClassName,
 } from '../../scripts/lib-franklin.js';
+import { isMobile } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
-const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
+const GENAI_TOOLTIP =
+  'Try our AI powered discovery tool and get all your questions answered';
 
 function createTableOfContents(main) {
   const hasToc = getMetadata('has-toc');
@@ -102,7 +104,7 @@ const createGenAISearchCTA = () => {
 export function loadEager(document) {
   const main = document.querySelector('main');
 
-  // content
+  // top
   createTableOfContents(main);
   createTemplateBlock(main, 'article-author');
 
@@ -171,22 +173,44 @@ export async function loadLazy(document) {
   authorDiv.classList.remove('section');
   const heroImgContainer = main.querySelectorAll('p')[0];
   heroImgContainer.classList.add('hero-pic-div');
+
   heroTitleSection.append(articleTitle);
   heroTitleSection.append(authorDiv);
   heroTitleSection.append(heroImgContainer);
   main.prepend(heroTitleSection);
 
-  const { adsenseFunc } = await import('../../scripts/adsense.js');
-  adsenseFunc('article', 'create');
-
   const contentSection = main.querySelectorAll('.section')[1];
   contentSection.classList.add('article-content-container');
+
+  const { adsenseFunc } = await import('../../scripts/adsense.js');
+  adsenseFunc('article', 'create');
 
   // genai block code is unchanged from before
   sectionGenAi(main);
 
+  if (!isMobile()) {
+    const contentDiv = document.createElement('div');
+    contentDiv.classList.add('content-left');
+    const heroTitleDiv = document.querySelector('.hero-title-container');
+    const blogSection = document.querySelector('.article-content-container');
+    contentDiv.append(heroTitleDiv);
+    contentDiv.append(blogSection);
+
+    const sidebarDiv = document.createElement('div');
+    sidebarDiv.classList.add('sidebar-right');
+    const popularDiv = document.querySelector('.popular-articles-container');
+    const compareDiv = document.querySelector('.article-cta-container');
+    sidebarDiv.append(popularDiv);
+    sidebarDiv.append(compareDiv);
+
+    main.append(contentDiv);
+    main.append(sidebarDiv);
+  }
+
+
   if (document.body.classList.contains('article-page')) {
-    main.append(createGenAISearchCTA());
+    const contentDiv = document.querySelector('.default-content-wrapper');
+    contentDiv.append(createGenAISearchCTA());
   }
 }
 
@@ -200,4 +224,10 @@ export async function loadDelayed() {
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('article', articleCat);
+
+  if (!isMobile()) {
+    const sidebarDiv = document.querySelector('.sidebar-right');
+    const skyscraperAd = document.querySelector('.skyscraper');
+    sidebarDiv.append(skyscraperAd);
+  }
 }
