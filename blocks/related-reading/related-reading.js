@@ -149,7 +149,7 @@ async function createNavigation(block) {
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, article] of articles.entries()) {
-    if (index === 4) break;
+    if (index === 3) break;
     if (ifArticleBelongsToCategories(article, parentCategories)) {
       if (parentCategoryArticlesMap.has(article['category slug'])) {
         parentCategoryArticlesMap.get(article['category slug']).push(article);
@@ -179,10 +179,12 @@ export default async function decorate(block) {
   extraDiv.className = 'extra-div';
   extraDiv.remove();
 
-  // const combinedHeader = document.createElement('div');
-  // combinedHeader.classList.add('related-reading-header');
-  // combinedHeader.innerText = getPlaceholder('previousNextArticle');
-  // block.prepend(combinedHeader);
+  const header = document.createElement('h2');
+  const relatedReadingDiv = document.querySelector('.related-reading-wrapper');
+  header.classList.add('related-reading-header');
+  header.innerText = getPlaceholder('relatedReading');
+  relatedReadingDiv.prepend(header);
+
   const isVisible = await createNavigation(block);
 
   // createTemplateBlock(block, 'tiles');
