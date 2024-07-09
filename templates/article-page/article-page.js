@@ -5,11 +5,10 @@ import {
   loadBlock,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { isMobile } from '../../scripts/scripts.js';
+import { isMobile, createBreadCrumbs } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
-const GENAI_TOOLTIP =
-  'Try our AI powered discovery tool and get all your questions answered';
+const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
 
 function createTableOfContents(main) {
   const hasToc = getMetadata('has-toc');
@@ -29,21 +28,15 @@ function createTableOfContents(main) {
   }
 }
 
-function createAutoBlockSection(main, blockName, gridName) {
-  const gridNameValue = gridName || blockName;
-  const section = document.createElement('div');
-  // section.classList.add('article-template-autoblock', `article-template-grid-${gridNameValue}`);
-  section.classList.add(gridNameValue);
-
-  main.append(section);
-  return section;
-}
-
-function createTemplateBlock(main, blockName, gridName, elems = []) {
-  const section = createAutoBlockSection(main, blockName, gridName);
+async function createTemplateBlock(container, blockName, elems = []) {
+  const wrapper = document.createElement('div');
+  container.append(wrapper);
 
   const block = buildBlock(blockName, { elems });
-  section.append(block);
+  wrapper.append(block);
+
+  decorateBlock(block);
+  await loadBlock(block);
 }
 
 async function sectionGenAi(main) {
@@ -152,8 +145,8 @@ export function loadEager(document) {
         div.setAttribute('itemprop', 'text');
         answer.append(div);
         while (
-          question.nextElementSibling &&
-          question.nextElementSibling.tagName !== h.nodeName
+          question.nextElementSibling
+          && question.nextElementSibling.tagName !== h.nodeName
         ) {
           div.append(question.nextElementSibling);
         }
@@ -207,6 +200,32 @@ export async function loadLazy(document) {
     main.append(sidebarDiv);
   }
 
+  const body = main.parentNode;
+  const breadcrumbContainer = document.createElement('div');
+  body.insertBefore(breadcrumbContainer, main);
+
+  const heading = main.querySelector('h1');
+  const breadcrumbData = await createBreadCrumbs(
+    [
+      {
+        url: `${window.hlx.contentBasePath}/pet-insurance`,
+        path: 'Pet Insurance',
+        color: 'black',
+        label: 'Pet Insurance',
+      },
+      {
+        url: window.location,
+        path: heading.innerText,
+        color: 'black',
+        label: heading.innerText,
+      },
+    ],
+    { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true },
+  );
+  breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
+    icon.classList.replace('icon-chevron', 'icon-chevron-large');
+  });
+  createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
 
   if (document.body.classList.contains('article-page')) {
     const contentDiv = document.querySelector('.default-content-wrapper');
