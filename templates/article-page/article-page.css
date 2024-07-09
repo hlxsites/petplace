@@ -2,10 +2,30 @@
   display: grid;
   grid-template:
     "details"
-    "blog-body"
+    "article"
     "related"
     "popular"
     "compare"
+}
+
+.hero-title-container {
+  grid-area: details;
+}
+
+.article-content-container {
+  grid-area: article;
+}
+
+.popular-articles-container {
+  grid-area: popular;
+}
+
+.related-reading-container {
+  grid-area: related;
+}
+
+.article-cta-container {
+  grid-area: compare;
 }
 
 .article-page .hero-title-container {
@@ -17,19 +37,91 @@
   color: #000;
 }
 
-/* .article-author-container {
-  grid-area: author;
-} */
+.article-content-container .publi-container {
+  padding: 1rem 0;
+  padding-bottom: 2rem;
+}
 
-/* .section:not(.hero-title-container) {
-  grid-area: blog-body;
+.section:is(.hero-title-container) {
+  padding-bottom: 0;
+}
+
+.article-content-container .default-content-wrapper {
+  margin-bottom: 2rem;
+}
+
+/* @media (max-width: 768px) {
+  .related-reading-container {
+    display: flex;
+    overflow-x: scroll;
+  }
 } */
 
 @media (min-width: 768px) {
+  .content-left {
+    grid-area: left-side;
+  }
+
+  .sidebar-right {
+    grid-area: right-side;
+  }
+
   .article-page main {
     display: grid;
-    /* grid-template:
-      "left-side right-side"
-      "related related" */
+    grid-template:
+      ". left-side .. right-side ." min-content
+      "related related related related related" min-content
+      / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 350px minmax(1rem, 1fr);
   }
+}
+
+
+/* Breadcrumbs */
+.article-page .breadcrumb-wrapper {
+  max-width: 1200px;
+  margin: 1.5rem auto 0.5rem;
+  padding: 0 1rem;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
+}
+
+.article-page .breadcrumb ol {
+  column-gap: 0.5rem;
+  margin: 0;
+}
+
+.article-page .breadcrumb ol li {
+  column-gap: 0.5rem;
+}
+
+.article-page .breadcrumb ol li:first-child {
+  margin-right: 0;
+}
+
+.article-page .breadcrumb .icon-chevron-large {
+  fill: var(--color-black);
+  width: 16px;
+  height: 16px;
+}
+
+.article-page .breadcrumb .category-link-btn {
+  background: unset;
+  border: none;
+  border-radius: unset;
+  display: -webkit-box;
+  max-width: 150px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  flex-shrink: 0;
+  font-size: var(--body-font-size-s);
+  line-height: normal;
+  text-align: left;
+  text-decoration: none;
+  padding: 0;
+}
+
+.article-page .breadcrumb .category-link-btn[aria-current="page"] {
+  color: var(--color-neutral-600);
 }
