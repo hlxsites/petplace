@@ -78,6 +78,12 @@ describe("<Button />", () => {
       expect(getByRole("button")).toHaveAttribute("aria-label", expected);
     }
   );
+
+  it("should match snapshot to assure that the component is being rendered correctly", () => {
+    const { container } = getRenderer();
+
+    expect(container).toMatchSnapshot();
+  });
 });
 
 // Helpers
