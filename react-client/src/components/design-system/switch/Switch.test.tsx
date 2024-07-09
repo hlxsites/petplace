@@ -4,36 +4,51 @@ import userEvent from "@testing-library/user-event";
 
 import { Switch } from "./Switch";
 
-const { getByLabelText, queryByText } = screen;
+const { queryByText, getByRole } = screen;
 
 describe("<Switch />", () => {
   it(`should render switch`, () => {
     getRenderer();
-    expect(getByLabelText("Test label")).toBeInTheDocument();
+    expect(getByRole("switch")).toBeInTheDocument();
   });
 
-  it(`should hide switch label`, () => {
+  it(`should hide switch label when hideLabel is true`, () => {
     getRenderer({ hideLabel: true });
     expect(queryByText("Test label")).not.toBeInTheDocument();
   });
+
+  it.each([false, undefined])(
+    `should render switch label when hideLabel is %s`,
+    (expected) => {
+      getRenderer({ hideLabel: expected });
+      expect(queryByText("Test label")).toBeInTheDocument();
+    }
+  );
 
   it.each(["a-class", "another-class"])(
     `should render custom class '%s'`,
     (expected) => {
       getRenderer({ className: expected });
-      expect(getByLabelText("Test label")).toHaveClass(expected);
+      expect(getByRole("switch")).toHaveClass(expected);
     }
   );
 
-  it(`should render disabled switch`, () => {
+  it(`should render disabled switch when disabled is true`, () => {
     getRenderer({ disabled: true });
-    expect(getByLabelText("Test label")).toBeDisabled();
+    expect(getByRole("switch")).toBeDisabled();
+  });
+
+  it(`should render switch unchecked by default`, () => {
+    getRenderer();
+    const switchElement = getByRole("switch");
+    expect(switchElement).not.toBeChecked();
   });
 
   it(`should call event callbacks`, async () => {
     const switchHandler = jest.fn();
     getRenderer({ onCheckedChange: switchHandler });
-    const switchElement = getByLabelText("Test label");
+    const switchElement = getByRole("switch");
+    expect(switchElement).not.toBeChecked();
 
     await userEvent.click(switchElement);
     expect(switchElement).toBeChecked();

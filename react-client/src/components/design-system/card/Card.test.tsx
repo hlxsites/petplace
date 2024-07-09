@@ -21,16 +21,25 @@ describe("<Card />", () => {
   });
 
   it(`should render radius=sm`, () => {
-    getRenderer({ radius: "sm"});
+    getRenderer({ radius: "sm" });
     const card = getByText("Test children").parentElement;
     expect(card).toHaveClass("rounded-xl");
   });
 
-  it(`should render shadowbox`, () => {
+  it(`should render shadowbox when hasShadow true`, () => {
     getRenderer({ hasShadow: true });
     const card = getByText("Test children").parentElement;
     expect(card).toHaveClass("shadow-elevation-1");
   });
+
+  it.each([false, undefined])(
+    `should NOT render shadowbox when hasShadow is %s`,
+    (expected) => {
+      getRenderer({ hasShadow: expected });
+      const card = getByText("Test children").parentElement;
+      expect(card).not.toHaveClass("shadow-elevation-1");
+    }
+  );
 });
 
 // Helpers

@@ -19,15 +19,13 @@ describe("<Title />", () => {
     expect(getByRole("heading").tagName).toBe("H1");
   });
 
-  it.each([
-    ["H2", "h2"],
-    ["H3", "h3"],
-    ["H4", "h4"],
-    ["H5", "h5"],
-    ["H6", "h6"],
-  ])(`should render a '%s' tag`, (expectedName, expectedTag) => {
-    getRenderer({ level: expectedTag as Props["level"] });
-    expect(getByRole("heading").tagName).toBe(expectedName);
+  it.each(["H2", "H3", "H4", "H5", "H6"])(
+    `should render a '%s' tag`,
+    (expected) => {
+      getRenderer({ level: expected.toLowerCase() as Props["level"] });
+      expect(getByRole("heading").tagName).toBe(expected);
+    }
+  );
   });
 });
 

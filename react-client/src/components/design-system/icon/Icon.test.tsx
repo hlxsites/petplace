@@ -4,15 +4,19 @@ import { ComponentProps } from "react";
 import { Icon } from "./Icon";
 
 describe("<Icon />", () => {
-  it.each(["add", "check"])(`should render an icon '%s'`, (expected) => {
+  it.each(["Add", "Check"])(`should render an icon '%s'`, (expected) => {
     const { container } = getRenderer({
-      display: expected as Props["display"],
+      display: expected.toLowerCase() as Props["display"],
     });
     expect(container.querySelector("svg")).toBeInTheDocument();
+    expect(container.querySelector("svg")).toHaveAttribute(
+      "data-file-name",
+      `Svg${expected}Icon`
+    );
   });
 
   it.each(["a-class", "another-class"])(
-    `should render an icon '%s'`,
+    `should render an icon with custom class'%s'`,
     (expected) => {
       const { container } = getRenderer({
         className: expected,

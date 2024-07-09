@@ -4,36 +4,51 @@ import userEvent from "@testing-library/user-event";
 
 import { Checkbox } from "./Checkbox";
 
-const { getByLabelText, queryByText } = screen;
+const { queryByText, getByRole } = screen;
 
 describe("<Checkbox />", () => {
   it(`should render checkbox`, () => {
     getRenderer();
-    expect(getByLabelText("Test label")).toBeInTheDocument();
+    expect(getByRole("checkbox")).toBeInTheDocument();
   });
 
-  it(`should hide checkbox label`, () => {
+  it(`should hide checkbox label when hideLabel is true`, () => {
     getRenderer({ hideLabel: true });
     expect(queryByText("Test label")).not.toBeInTheDocument();
   });
+
+  it.each([false, undefined])(
+    `should render checkbox label when hideLabel is %s`,
+    (expected) => {
+      getRenderer({ hideLabel: expected });
+      expect(queryByText("Test label")).toBeInTheDocument();
+    }
+  );
 
   it.each(["a-class", "another-class"])(
     `should render custom class '%s'`,
     (expected) => {
       getRenderer({ className: expected });
-      expect(getByLabelText("Test label")).toHaveClass(expected);
+      expect(getByRole("checkbox")).toHaveClass(expected);
     }
   );
 
-  it(`should render disabled checkbox`, () => {
+  it(`should render checkbox disabled when disabled is true`, () => {
     getRenderer({ disabled: true });
-    expect(getByLabelText("Test label")).toBeDisabled();
+    expect(getByRole("checkbox")).toBeDisabled();
+  });
+
+  it(`should render checkbox unchecked by default`, () => {
+    getRenderer();
+    const checkbox = getByRole("checkbox");
+    expect(checkbox).not.toBeChecked();
   });
 
   it(`should call event callbacks`, async () => {
     const checkHandler = jest.fn();
     getRenderer({ onCheckedChange: checkHandler });
-    const checkbox = getByLabelText("Test label");
+    const checkbox = getByRole("checkbox");
+    expect(checkbox).not.toBeChecked();
 
     await userEvent.click(checkbox);
     expect(checkbox).toBeChecked();
