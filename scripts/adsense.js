@@ -35,10 +35,9 @@ const adsDivCreator = (adLoc) => {
   }
 
   if (adLoc === 'article_side') {
-    console.log('made it, side ad');
-    const aside = document.querySelector('.article-content-container');
+    const content = document.querySelector('.article-content-container');
     mainAdsDiv.classList.add('skyscraper');
-    aside.after(mainAdsDiv);
+    content.append(mainAdsDiv);
   }
 
   if (adLoc.includes('bottom')) {

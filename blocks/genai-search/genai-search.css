@@ -203,12 +203,6 @@ body.gen-ai .section.genai-search-container .default-content-wrapper p {
   color: var(--text-color);
 }
 
-.genai-search.block {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
 .genai-search.block.center {
   justify-content: center;
 }
