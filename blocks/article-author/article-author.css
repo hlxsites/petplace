@@ -24,4 +24,9 @@
   display: flex;
   margin: 1.5rem 0;
   align-items: center;
+  gap: 1rem;
+}
+
+.article-author p > a {
+  text-decoration: underline;
 }
