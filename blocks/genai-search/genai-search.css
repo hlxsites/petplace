@@ -774,14 +774,10 @@ article ol {
   display: block;
 }
 
-.genai-search-container .search-card-container h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.genai-search-container .search-card-container :is(h1, h2, h3, h4, h5, h6) {
   margin-top: 10px !important;
 }
+
 @media (max-width: 1024px) {
   .genai-search-container .search-card-container {
     display: grid;
