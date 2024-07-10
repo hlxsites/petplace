@@ -5,7 +5,11 @@ import {
   loadBlock,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { isMobile, createBreadCrumbs } from '../../scripts/scripts.js';
+import {
+  isMobile,
+  createBreadCrumbs,
+  getCategories,
+} from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
@@ -93,6 +97,53 @@ const createGenAISearchCTA = () => {
 
   return headerSearchButton;
 };
+
+export async function getCategoryByKey(key, value) {
+  const categories = await getCategories();
+  return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
+}
+
+function convertToTitleCase(str) {
+  const words = str.split('-');
+  const capitalizedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1),
+  );
+  return capitalizedWords.join(' ');
+}
+
+/**
+ * Fetches page category.  If parent path exists, recursively fetches parent data and so on.
+ * @returns {Promise<*[]>}
+ * @param categorySlug snake case value of category
+ */
+async function getBreadcrumbs(categorySlug) {
+  const breadcrumbs = [];
+
+  async function fetchSegmentData(slug) {
+    const categoryData = await getCategoryByKey('Slug', slug);
+    breadcrumbs.push({
+      color: categoryData.Color,
+      url: categoryData.Path,
+      label: convertToTitleCase(categoryData.Slug),
+    });
+
+    if (
+      categoryData['Parent Path']
+      !== `${window.hlx.contentBasePath}/article/category/`
+      && categoryData['Parent Path']
+    ) {
+      const { Slug } = await getCategoryByKey(
+        'Path',
+        categoryData['Parent Path'],
+      );
+      await fetchSegmentData(Slug);
+    }
+  }
+
+  await fetchSegmentData(categorySlug);
+
+  return breadcrumbs.reverse();
+}
 
 export function loadEager(document) {
   const main = document.querySelector('main');
@@ -204,13 +255,17 @@ export async function loadLazy(document) {
   }
 
   const heading = main.querySelector('h1');
+  const categorySlugs = getMetadata('category')
+    .split(',')
+    .map((slug) => toClassName(slug.trim()));
+  const category = await getBreadcrumbs(categorySlugs[0]);
   const breadcrumbData = await createBreadCrumbs(
     [
       {
-        url: `${window.hlx.contentBasePath}/pet-insurance`,
-        path: 'Pet Insurance',
+        url: `${window.hlx.contentBasePath}/${category[0].url}`,
+        path: category[0].label,
         color: 'black',
-        label: 'Pet Insurance',
+        label: category[0].label,
       },
       {
         url: window.location,
