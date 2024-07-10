@@ -26,8 +26,10 @@ jobs:
         env:
           NODE_OPTIONS: "--use-openssl-ca"
         with:
-          node-version: '18'
+          node-version: '18.17.0'
       - run: npm install
+        env:
+          NODE_OPTIONS: "--use-openssl-ca"
       - name: Create Variations along with main page
         run: npm run generate-variations
         env:
