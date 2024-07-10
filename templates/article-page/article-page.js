@@ -102,6 +102,7 @@ export function loadEager(document) {
   createTemplateBlock(main, 'article-author');
 
   // sidebar
+  createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-cta');
 
