@@ -109,7 +109,7 @@ function createArticleDetails(block, article) {
   const detailsContainer = document.createElement('div');
   detailsContainer.classList.add('related-reading-details');
   detailsContainer.append(titleDiv);
-  detailsContainer.append(dateAuthorContainer);
+  // detailsContainer.append(dateAuthorContainer);
 
   const articleDiv = document.createElement('div');
   articleDiv.classList.add('tile');
@@ -179,7 +179,7 @@ export default async function decorate(block) {
   extraDiv.className = 'extra-div';
   extraDiv.remove();
 
-  const header = document.createElement('h2');
+  const header = document.createElement('div');
   const relatedReadingDiv = document.querySelector('.related-reading-wrapper');
   header.classList.add('related-reading-header');
   header.innerText = getPlaceholder('relatedReading');
