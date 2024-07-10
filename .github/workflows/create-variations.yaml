@@ -20,7 +20,7 @@ jobs:
       - run: |
           echo "Status: ${{ github.event.client_payload.status }}"
           echo "Path: ${{ github.event.client_payload.path }}"
-          echo "Path: ${{ github.event.client_payload.keywords }}"
+          echo "Keywords: ${{ github.event.client_payload.keywords }}"
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
