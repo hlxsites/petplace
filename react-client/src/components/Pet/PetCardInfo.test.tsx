@@ -52,8 +52,9 @@ describe("PetCardInfo", () => {
 });
 
 function getRenderer({
+  id = "testId",
   name = "Test pet card info",
   ...rest
 }: Partial<ComponentProps<typeof PetCardInfo>> = {}) {
-  return render(<PetCardInfo name={name} {...rest} />);
+  return render(<PetCardInfo id={id} name={name} {...rest} />);
 }
