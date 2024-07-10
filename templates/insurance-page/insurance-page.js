@@ -56,6 +56,22 @@ export async function loadEager(document) {
 export async function loadLazy(document) {
   // Create breadcrumbs
   const main = document.querySelector('main');
+  const sideSection = document.createElement('section');
+  sideSection.classList.add('section', 'side-section');
+
+  main.prepend(sideSection);
+
+  // Add side section blocks
+  createTemplateBlock(sideSection, 'article-author');
+  createTemplateBlock(sideSection, 'social-share', ['<div>facebook</div>', '<div>instagram</div>', '<div>tiktok</div>']);
+
+  // Build side section page links
+  createTemplateBlock(sideSection, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);
+
+  // Move subhead to the footer
+  const subhead = document.querySelector('.subhead');
+  document.querySelector('footer').appendChild(subhead);
+
   const body = main.parentNode;
   const breadcrumbContainer = document.createElement('div');
   body.insertBefore(breadcrumbContainer, main);
@@ -77,7 +93,7 @@ export async function loadLazy(document) {
   // Adjust structure of article author for styling
   const authorContainer = document.querySelector('.article-author [itemprop="author"]');
   const timePublished = document.querySelector('.article-author [itemprop="datePublished"]');
-  authorContainer.appendChild(timePublished);
+  // authorContainer.appendChild(timePublished);
 
   // Inject aggregator widget
   injectAggregator(document, '[data-inject-widget-name="p3-aggregator"]');
