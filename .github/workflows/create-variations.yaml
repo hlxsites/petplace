@@ -1,0 +1,40 @@
+name: Generate Variations
+
+on:
+  repository_dispatch:
+    types:
+      - create-variations
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "Status: ${{ github.event.client_payload.status }}"
+          echo "Path: ${{ github.event.client_payload.path }}"
+          echo "Path: ${{ github.event.client_payload.keywords }}"
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm install
+      - name: Create Variations along with main page
+        run: npm run generate-variations
+        env:
+          keywords: ${{ github.event.client_payload.keywords }}
+          sharepointAccessToken: ${{ secrets.SHAREPOINTACCESSTOKEN }}
+      - name: Convert markdown to docx
+        run: node node_modules/@adobe/helix-md2docx/src/cli/convert2docx.js variant1.md
+      - name: Upload Variations
+        run: npm run upload-variations
+        env:
+          sharepointAccessToken: ${{ secrets.SHAREPOINTACCESSTOKEN }}
+

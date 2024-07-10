@@ -3,10 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "description": "Starter project for Adobe Helix",
+  "type": "module",
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "generate-variations": "node scripts/generate-variation.js",
+    "upload-variations": "node scripts/upload-variation.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +31,7 @@
     "stylelint-config-standard": "36.0.0"
   },
   "dependencies": {
+    "@adobe/helix-md2docx": "2.1.65",
+    "@aem-screens/franklin-variation-creator": "1.0.0-B002"
   }
 }
