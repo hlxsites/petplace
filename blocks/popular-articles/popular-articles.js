@@ -116,11 +116,7 @@ export default async function decorate(block) {
     const row = `
       <div>
         <div>
-          ${
-            createOptimizedPicture(post.image, post.imageAlt, false, [
-              { width: '768' },
-            ]).outerHTML
-          }
+          ${createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '768' }]).outerHTML}
         </div>
         <div class="button-container">
           <a href="${post.path}" title="${post.title}" class="button primary">
