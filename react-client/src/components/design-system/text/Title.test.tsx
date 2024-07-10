@@ -27,6 +27,17 @@ describe("<Title />", () => {
     }
   );
 
+  it.each([
+    ["lg:text-[44px] text-[32px]/[36px]", "h1"],
+    ["lg:text-[32px]/[36px] text-[24px]/[28px]", "h2"],
+    ["lg:text-[24px]/[28px] text-[18px]/[20px]", "h3"],
+    ["lg:text-[18px]/[20px] text-[16px]/[20px]", "h4"],
+    ["lg:text-[16px]/[20px] text-[14px]/[16px]", "h5"],
+  ])(`should manage classes and levels accordingly`, (classes, level) => {
+    getRenderer({ level: level as Props["level"] });
+    expect(getByRole("heading")).toHaveClass(`font-bold text-neutral-950 ${classes}`);
+  });
+
   it("should match snapshot to assure that the component is being rendered correctly", () => {
     const { container } = getRenderer();
 
