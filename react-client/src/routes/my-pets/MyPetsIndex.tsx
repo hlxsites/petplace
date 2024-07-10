@@ -11,20 +11,6 @@ export const MyPetsIndex = () => {
 
   return (
     <Layout>
-      {getHeader()}
-
-      <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {pets.map((pet) => (
-          <Link to={pet.id}>
-            <PetCard key={pet.name} {...pet} />
-          </Link>
-        ))}
-      </div>
-    </Layout>
-  );
-
-  function getHeader() {
-    return (
       <Header
         pageTitle="My Pets"
         primaryElement={renderMyPetsHeadButtons()}
@@ -32,8 +18,20 @@ export const MyPetsIndex = () => {
           className: "md:hidden w-full",
         })}
       />
-    );
-  }
+
+      <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {pets.map((pet) => (
+          <Link key={`link-${pet.id}`} to={pet.id}>
+            <PetCard hasShadow={true} key={pet.name} {...pet}>
+              <div className="p-base text-2xl font-bold leading-none text-black">
+                {pet.name}
+              </div>
+            </PetCard>
+          </Link>
+        ))}
+      </div>
+    </Layout>
+  );
 
   function renderReportLostOrFound(props: Pick<ButtonProps, "className">) {
     return (
