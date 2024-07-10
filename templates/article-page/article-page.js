@@ -5,7 +5,11 @@ import {
   loadBlock,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { isMobile, createBreadCrumbs } from '../../scripts/scripts.js';
+import {
+  isMobile,
+  createBreadCrumbs,
+  getCategories,
+} from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
@@ -94,6 +98,53 @@ const createGenAISearchCTA = () => {
   return headerSearchButton;
 };
 
+export async function getCategoryByKey(key, value) {
+  const categories = await getCategories();
+  return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
+}
+
+function convertToTitleCase(str) {
+  const words = str.split('-');
+  const capitalizedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1),
+  );
+  return capitalizedWords.join(' ');
+}
+
+/**
+ * Fetches page category.  If parent path exists, recursively fetches parent data and so on.
+ * @returns {Promise<*[]>}
+ * @param categorySlug snake case value of category
+ */
+async function getBreadcrumbs(categorySlug) {
+  const breadcrumbs = [];
+
+  async function fetchSegmentData(slug) {
+    const categoryData = await getCategoryByKey('Slug', slug);
+    breadcrumbs.push({
+      color: categoryData.Color,
+      url: categoryData.Path,
+      label: convertToTitleCase(categoryData.Slug),
+    });
+
+    if (
+      categoryData['Parent Path']
+      !== `${window.hlx.contentBasePath}/article/category/`
+      && categoryData['Parent Path']
+    ) {
+      const { Slug } = await getCategoryByKey(
+        'Path',
+        categoryData['Parent Path'],
+      );
+      await fetchSegmentData(Slug);
+    }
+  }
+
+  await fetchSegmentData(categorySlug);
+
+  return breadcrumbs.reverse();
+}
+
 export function loadEager(document) {
   const main = document.querySelector('main');
 
@@ -102,6 +153,7 @@ export function loadEager(document) {
   createTemplateBlock(main, 'article-author');
 
   // sidebar
+  createTemplateBlock(main, 'social-share');
   createTemplateBlock(main, 'popular-articles');
   createTemplateBlock(main, 'article-cta');
 
@@ -191,8 +243,10 @@ export async function loadLazy(document) {
 
     const sidebarDiv = document.createElement('div');
     sidebarDiv.classList.add('sidebar-right');
+    const socialDiv = document.querySelector('.social-share-container');
     const popularDiv = document.querySelector('.popular-articles-container');
     const compareDiv = document.querySelector('.article-cta-container');
+    sidebarDiv.append(socialDiv);
     sidebarDiv.append(popularDiv);
     sidebarDiv.append(compareDiv);
 
@@ -200,18 +254,18 @@ export async function loadLazy(document) {
     main.append(sidebarDiv);
   }
 
-  const body = main.parentNode;
-  const breadcrumbContainer = document.createElement('div');
-  body.insertBefore(breadcrumbContainer, main);
-
   const heading = main.querySelector('h1');
+  const categorySlugs = getMetadata('category')
+    .split(',')
+    .map((slug) => toClassName(slug.trim()));
+  const category = await getBreadcrumbs(categorySlugs[0]);
   const breadcrumbData = await createBreadCrumbs(
     [
       {
-        url: `${window.hlx.contentBasePath}/pet-insurance`,
-        path: 'Pet Insurance',
+        url: `${window.hlx.contentBasePath}/${category[0].url}`,
+        path: category[0].label,
         color: 'black',
-        label: 'Pet Insurance',
+        label: category[0].label,
       },
       {
         url: window.location,
@@ -225,7 +279,7 @@ export async function loadLazy(document) {
   breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
     icon.classList.replace('icon-chevron', 'icon-chevron-large');
   });
-  createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
+  createTemplateBlock(main, 'breadcrumb', [breadcrumbData]);
 
   if (document.body.classList.contains('article-page')) {
     const contentDiv = document.querySelector('.default-content-wrapper');

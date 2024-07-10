@@ -4,22 +4,7 @@ import {
   loadBlock,
   toClassName,
 } from '../../scripts/lib-franklin.js';
-import { getCategory, getPlaceholder } from '../../scripts/scripts.js';
-
-const monthNames = [
-  getPlaceholder('january'),
-  getPlaceholder('february'),
-  getPlaceholder('march'),
-  getPlaceholder('april'),
-  getPlaceholder('may'),
-  getPlaceholder('june'),
-  getPlaceholder('july'),
-  getPlaceholder('august'),
-  getPlaceholder('september'),
-  getPlaceholder('october'),
-  getPlaceholder('november'),
-  getPlaceholder('december'),
-];
+import { getCategory } from '../../scripts/scripts.js';
 
 async function fetchArticleData(paths) {
   const PromiseArray = paths.map(async (path) => {
@@ -99,24 +84,9 @@ export default async function decorate(block) {
     cardWrapper.classList.add('popular-cards-wrapper');
 
     PopularPostsData.forEach((post, i) => {
-      const date = new Date(post.publicationDate);
-      const formattedDate = `${
-        monthNames[date.getMonth()]
-      } ${date.getDate()}, ${date.getFullYear()}`;
-
       const popularPostsWrapper = `
         <a href="${post.path}">
           <div class="popular-posts-card">
-            <div class="author-date-div">
-              <div>
-                <img src="/icons/pencil.svg" />
-                <p>${post.author}</p>
-              </div>
-              <div>
-                <img src="/icons/calendar.svg" />
-                <p>${formattedDate}</p>
-              </div>
-            </div>
             <div class="img-title-div">
               <div class="img-div"></div>
               <div class="title-div">
