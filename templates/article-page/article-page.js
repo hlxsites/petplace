@@ -192,18 +192,16 @@ export async function loadLazy(document) {
 
     const sidebarDiv = document.createElement('div');
     sidebarDiv.classList.add('sidebar-right');
+    const socialDiv = document.querySelector('.social-share-container');
     const popularDiv = document.querySelector('.popular-articles-container');
     const compareDiv = document.querySelector('.article-cta-container');
+    sidebarDiv.append(socialDiv);
     sidebarDiv.append(popularDiv);
     sidebarDiv.append(compareDiv);
 
     main.append(contentDiv);
     main.append(sidebarDiv);
   }
-
-  const body = main.parentNode;
-  const breadcrumbContainer = document.createElement('div');
-  body.insertBefore(breadcrumbContainer, main);
 
   const heading = main.querySelector('h1');
   const breadcrumbData = await createBreadCrumbs(
@@ -226,7 +224,7 @@ export async function loadLazy(document) {
   breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
     icon.classList.replace('icon-chevron', 'icon-chevron-large');
   });
-  createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
+  createTemplateBlock(main, 'breadcrumb', [breadcrumbData]);
 
   if (document.body.classList.contains('article-page')) {
     const contentDiv = document.querySelector('.default-content-wrapper');

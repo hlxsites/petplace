@@ -1,11 +1,21 @@
 .article-page main {
   display: grid;
   grid-template:
+    "breadcrumb"
     "details"
     "article"
     "related"
+    "social"
     "popular"
     "compare"
+}
+
+.content-left .section, .sidebar-right .section {
+  padding: 1rem;
+}
+
+.breadcrumb-wrapper {
+  grid-area: breadcrumb;
 }
 
 .hero-title-container {
@@ -14,6 +24,10 @@
 
 .article-content-container {
   grid-area: article;
+}
+
+.article-page .social-share-container.section {
+  grid-area: social;
 }
 
 .popular-articles-container {
@@ -35,6 +49,9 @@
 
 .article-page .hero-title-container h1 {
   color: #000;
+  margin-top: 0;
+  font-size: 3rem;
+  font-weight: bolder;
 }
 
 .article-content-container .publi-container {
@@ -46,16 +63,17 @@
   padding-bottom: 0;
 }
 
+.section:is(.related-reading-container) {
+  padding-left: 1rem !important;
+}
+
 .article-content-container .default-content-wrapper {
   margin-bottom: 2rem;
 }
 
-/* @media (max-width: 768px) {
-  .related-reading-container {
-    display: flex;
-    overflow-x: scroll;
-  }
-} */
+.sidebar-right h2 {
+  font-size: 1.5rem;
+}
 
 @media (min-width: 768px) {
   .content-left {
@@ -66,20 +84,27 @@
     grid-area: right-side;
   }
 
+  /* .bottom-grid {
+    grid-area: bottom-grid;
+  } */
+
+  .related-reading-container {
+    padding-left: 3.5rem !important;
+  }
+
   .article-page main {
     display: grid;
     grid-template:
+      ". breadcrumb breadcrumb breadcrumb ." min-content
       ". left-side .. right-side ." min-content
-      "related related related related related" min-content
+      ". related related related ." min-content
       / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 350px minmax(1rem, 1fr);
   }
 }
 
-
 /* Breadcrumbs */
 .article-page .breadcrumb-wrapper {
-  max-width: 1200px;
-  margin: 1.5rem auto 0.5rem;
+  margin: 1.5rem 0;
   padding: 0 1rem;
 
   @media (max-width: 1023px) {
