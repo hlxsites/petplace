@@ -1,13 +1,35 @@
-.article-page main {
-  display: grid;
-  grid-template:
-    "breadcrumb"
-    "details"
-    "article"
-    "related"
-    "social"
-    "popular"
-    "compare"
+@media (max-width: 768px) {
+  .article-page main {
+    display: grid;
+    grid-template:
+      "breadcrumb"
+      "details"
+      "article"
+      "related"
+      "social"
+      "popular"
+      "compare"
+  }
+
+  .article-content-container {
+    grid-area: article;
+  }
+
+  .article-page .social-share-container.section {
+    grid-area: social;
+  }
+
+  .popular-articles-container {
+    grid-area: popular;
+  }
+
+  .article-cta-container {
+    grid-area: compare;
+  }
+
+  .article-page .section {
+    padding: 1rem;
+  }
 }
 
 .content-left .section, .sidebar-right .section {
@@ -18,28 +40,8 @@
   grid-area: breadcrumb;
 }
 
-.hero-title-container {
-  grid-area: details;
-}
-
-.article-content-container {
-  grid-area: article;
-}
-
-.article-page .social-share-container.section {
-  grid-area: social;
-}
-
-.popular-articles-container {
-  grid-area: popular;
-}
-
 .related-reading-container {
   grid-area: related;
-}
-
-.article-cta-container {
-  grid-area: compare;
 }
 
 .article-page .hero-title-container {
@@ -65,6 +67,7 @@
 
 .section:is(.related-reading-container) {
   padding-left: 1rem !important;
+  padding-bottom: 0;
 }
 
 .article-content-container .default-content-wrapper {
@@ -84,10 +87,6 @@
     grid-area: right-side;
   }
 
-  /* .bottom-grid {
-    grid-area: bottom-grid;
-  } */
-
   .related-reading-container {
     padding-left: 3.5rem !important;
   }
@@ -103,26 +102,18 @@
 }
 
 /* Breadcrumbs */
-.article-page .breadcrumb-wrapper {
-  margin: 1.5rem 0;
-  padding: 0 1rem;
+.article-page .breadcrumb-container {
+  margin-top: 1rem;
+  padding: 0.5rem;
 
-  @media (max-width: 1023px) {
+  @media (max-width:768px) {
     display: none;
   }
 }
 
-.article-page .breadcrumb ol {
-  column-gap: 0.5rem;
-  margin: 0;
-}
-
 .article-page .breadcrumb ol li {
   column-gap: 0.5rem;
-}
-
-.article-page .breadcrumb ol li:first-child {
-  margin-right: 0;
+  margin: 0.5rem;
 }
 
 .article-page .breadcrumb .icon-chevron-large {

@@ -40,7 +40,6 @@ async function createTemplateBlock(container, blockName, elems = []) {
   wrapper.append(block);
 
   decorateBlock(block);
-  await loadBlock(block);
 }
 
 async function sectionGenAi(main) {
@@ -145,8 +144,36 @@ async function getBreadcrumbs(categorySlug) {
   return breadcrumbs.reverse();
 }
 
-export function loadEager(document) {
+export async function loadEager(document) {
   const main = document.querySelector('main');
+
+  // breadcrumb
+  const heading = main.querySelector('h1');
+  const categorySlugs = getMetadata('category')
+    .split(',')
+    .map((slug) => toClassName(slug.trim()));
+  const category = await getBreadcrumbs(categorySlugs[0]);
+  const breadcrumbData = await createBreadCrumbs(
+    [
+      {
+        url: `${window.hlx.contentBasePath}${category[0].url}`,
+        path: category[0].label,
+        color: 'black',
+        label: category[0].label,
+      },
+      {
+        url: window.location,
+        path: heading.innerText,
+        color: 'black',
+        label: heading.innerText,
+      },
+    ],
+    { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true },
+  );
+  breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
+    icon.classList.replace('icon-chevron', 'icon-chevron-large');
+  });
+  createTemplateBlock(main, 'breadcrumb', [breadcrumbData]);
 
   // top
   createTableOfContents(main);
@@ -253,33 +280,6 @@ export async function loadLazy(document) {
     main.append(contentDiv);
     main.append(sidebarDiv);
   }
-
-  const heading = main.querySelector('h1');
-  const categorySlugs = getMetadata('category')
-    .split(',')
-    .map((slug) => toClassName(slug.trim()));
-  const category = await getBreadcrumbs(categorySlugs[0]);
-  const breadcrumbData = await createBreadCrumbs(
-    [
-      {
-        url: `${window.hlx.contentBasePath}/${category[0].url}`,
-        path: category[0].label,
-        color: 'black',
-        label: category[0].label,
-      },
-      {
-        url: window.location,
-        path: heading.innerText,
-        color: 'black',
-        label: heading.innerText,
-      },
-    ],
-    { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true },
-  );
-  breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
-    icon.classList.replace('icon-chevron', 'icon-chevron-large');
-  });
-  createTemplateBlock(main, 'breadcrumb', [breadcrumbData]);
 
   if (document.body.classList.contains('article-page')) {
     const contentDiv = document.querySelector('.default-content-wrapper');
