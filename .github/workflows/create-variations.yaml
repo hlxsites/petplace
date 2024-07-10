@@ -21,10 +21,10 @@ jobs:
           echo "Status: ${{ github.event.client_payload.status }}"
           echo "Path: ${{ github.event.client_payload.path }}"
           echo "Keywords: ${{ github.event.client_payload.keywords }}"
-      - name: Use Node.js 18.17.0
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20'
       - run: npm install
       - name: Create Variations along with main page
         run: npm run generate-variations
