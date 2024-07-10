@@ -16,20 +16,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           echo "Status: ${{ github.event.client_payload.status }}"
           echo "Path: ${{ github.event.client_payload.path }}"
           echo "Keywords: ${{ github.event.client_payload.keywords }}"
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        env:
-          NODE_OPTIONS: "--use-openssl-ca"
+      - name: Use Node.js 18.17.0
+        uses: actions/setup-node@v4
         with:
           node-version: '18.17.0'
       - run: npm install
-        env:
-          NODE_OPTIONS: "--use-openssl-ca"
       - name: Create Variations along with main page
         run: npm run generate-variations
         env:
