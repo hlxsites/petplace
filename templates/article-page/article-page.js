@@ -40,7 +40,6 @@ async function createTemplateBlock(container, blockName, elems = []) {
   wrapper.append(block);
 
   decorateBlock(block);
-  await loadBlock(block);
 }
 
 async function sectionGenAi(main) {
