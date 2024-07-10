@@ -1,6 +1,7 @@
 export default async function decorate(block) {
   const blockMetadata = {};
 
+  // eslint-disable-next-line no-restricted-syntax
   for (const row of block.children) {
     const key = row.children[0].textContent;
     const value = row.children[1].innerText;
