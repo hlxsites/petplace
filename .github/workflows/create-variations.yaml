@@ -31,6 +31,7 @@ jobs:
         env:
           keywords: ${{ github.event.client_payload.keywords }}
           sharepointAccessToken: ${{ secrets.SHAREPOINTACCESSTOKEN }}
+          azureApiKey: ${{ secrets.AZUREAPIKEY }}
       - name: Convert markdown to docx
         run: node node_modules/@adobe/helix-md2docx/src/cli/convert2docx.js variant1.md
       - name: Upload Variations
