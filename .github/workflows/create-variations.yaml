@@ -23,8 +23,10 @@ jobs:
           echo "Keywords: ${{ github.event.client_payload.keywords }}"
       - name: Use Node.js
         uses: actions/setup-node@v3
+        env:
+          NODE_OPTIONS: "--use-openssl-ca"
         with:
-          node-version: '14'
+          node-version: '18'
       - run: npm install
       - name: Create Variations along with main page
         run: npm run generate-variations
