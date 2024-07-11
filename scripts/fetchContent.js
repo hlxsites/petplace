@@ -50,23 +50,27 @@ console.log(prompt);
                 content: [
                     {
                         type: "text",
-                        text: `For the keywords ${keywords} i need to get an output in form of a json which has following key values pairs
+                       
+                        text: `For the keywords ${keywords} i need to get an output in form of a json which has 3 objects with with each object having following key values pairs
                         key :content
-                        value: Some content relevant to the given keywords formmated as HTML div
+                        value: Some content relevant to the all the given keywords which can be used to generate a blog post or article
                         
                         key: title
-                        value: Title which can be given to the generated content
+                        value: Title which can be given to the generated content with max length of 100 characters
+
+                        key: description
+                        value: description which can be given to the generated content and added as a meta tag with max length of 180 characters
                         
-                        key:metaTag
-                        value: html meta tags that can be used for the generated content
+                        key:alttext
+                        value: alt text which can be given to the image generated using same keywords
                         
-                        key:jsonLD
-                        value: json ld which can be injected in the html doc for the generated content`
+                        key:url
+                        value: url which can be given to the image generated using same keywords excluding the domain and subdomain`
                     }
                 ]
             }
         ],
-        max_tokens: 1000,  // Adjust the token count as needed
+        max_tokens: 3000,  // Adjust the token count as needed
         temperature: 0.7
     };
 
@@ -84,8 +88,8 @@ console.log(prompt);
             console.log(responseBody);
             const htmlString = responseBody.choices[0].message.content.trim();
            
-            let startIndex = htmlString.indexOf('{');
-            let endIndex = htmlString.lastIndexOf('}') + 1;
+            let startIndex = htmlString.indexOf('[');
+            let endIndex = htmlString.lastIndexOf(']') + 1;
             
             // Extract the JSON substring
             let jsonSubstring = htmlString.substring(startIndex, endIndex);
