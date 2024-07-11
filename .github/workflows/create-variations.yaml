@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install --no-package-lock 
+      - run: npm install --no-package-lock
       - name: Create Variations along with main page
         run: npm run generate-variations
         env:
@@ -33,7 +33,10 @@ jobs:
           sharepointAccessToken: ${{ secrets.SHAREPOINTACCESSTOKEN }}
           azureApiKey: ${{ secrets.AZUREAPIKEY }}
       - name: Convert markdown to docx
-        run: node node_modules/@adobe/helix-md2docx/src/cli/convert2docx.js variant1.md
+        run: |
+          node node_modules/@adobe/helix-md2docx/src/cli/convert2docx.js variant1.md
+          node node_modules/@adobe/helix-md2docx/src/cli/convert2docx.js variant2.md
+          node node_modules/@adobe/helix-md2docx/src/cli/convert2docx.js variant3.md
       - name: Upload Variations
         run: npm run upload-variations
         env:

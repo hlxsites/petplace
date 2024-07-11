@@ -32,6 +32,6 @@
   },
   "dependencies": {
     "@adobe/helix-md2docx": "2.1.65",
-    "@aem-screens/franklin-variation-creator": "1.0.0-B002"
+    "@aem-screens/franklin-variation-creator": "1.0.0-B004"
   }
 }
