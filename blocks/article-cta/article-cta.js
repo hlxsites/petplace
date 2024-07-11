@@ -1,4 +1,4 @@
-import { isTablet } from '../../scripts/scripts.js';
+import { isMobile, isTablet } from '../../scripts/scripts.js';
 
 // TODO: this will come in as a fragment at a later date
 export default async function decorate(block) {
@@ -11,11 +11,15 @@ export default async function decorate(block) {
   details.textContent = 'Compare the top pet insurance plans all in one place to find the one that works best for you and your pet';
 
   img.classList.add('article-cta-img');
-  img.src = isTablet()
-    ? '/icons/compare-plans-tablet.svg'
-    : '/icons/compare-plans-screen.svg';
-  button.textContent = 'Compare Plans';
+  if (isMobile()) {
+    img.src = '/icons/compare-plans-screen.svg';
+  } else if (isTablet()) {
+    img.src = '/icons/compare-plans-tablet.svg';
+  } else {
+    img.src = '/icons/compare-plans-screen.svg';
+  }
 
+  button.textContent = 'Compare Plans';
   button.addEventListener('click', (e) => {
     e.preventDefault();
     window.location.href = '/pet-insurance';
