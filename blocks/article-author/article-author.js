@@ -31,7 +31,9 @@ export default async function decorate(block) {
       <meta itemprop="name" content="${getPlaceholder('websiteName')}"/>
       <meta itemprop="logo" content="${window.location.origin}/icons/logo.svg"/>
     </div>`;
-  block.prepend(avatarIfExist);
+  
+  if (avatar) block.prepend(avatarIfExist);
+  
   decorateIcons(block);
   setTimeout(() => {
     window.requestAnimationFrame(() => {
