@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 
-import { IconButton } from "./IconButton";
 import { IconKeys } from "../icon/Icon";
+import { IconButton } from "./IconButton";
 
 const { getByRole, getByLabelText } = screen;
 
@@ -85,10 +85,38 @@ describe("<IconButton />", () => {
     }
   );
 
-  it("should match snapshot to assure that the component is being rendered correctly", () => {
-    const { container } = getRenderer();
+  it('should render button with "primary" variant by default', () => {
+    getRenderer();
+    expect(getByRole("button")).toHaveClass(
+      "bg-orange-300-contrast text-white"
+    );
+  });
 
-    expect(container).toMatchSnapshot();
+  it('should render button with "secondary" variant', () => {
+    getRenderer({ variant: "secondary" });
+    expect(getByRole("button")).toHaveClass("text-neutral-700");
+  });
+
+  it('should render button with "link" variant', () => {
+    getRenderer({ variant: "link" });
+    expect(getByRole("button")).toHaveClass(
+      "bg-transparent border-0 text-neutral-700"
+    );
+  });
+
+  it('should render button with "error" variant', () => {
+    getRenderer({ variant: "error" });
+    expect(getByRole("button")).toHaveClass("bg-red-300 text-white");
+  });
+
+  it("should not be loading by default", () => {
+    getRenderer();
+    expect(getByRole("button")).not.toHaveClass("loading");
+  });
+
+  it("should render button with loading state", () => {
+    getRenderer({ isLoading: true });
+    expect(getByRole("button")).toHaveClass("loading");
   });
 });
 
