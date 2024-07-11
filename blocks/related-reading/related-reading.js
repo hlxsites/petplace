@@ -114,6 +114,9 @@ async function createNavigation(block) {
     const parentCategoryArticles = parentCategoryArticlesMap.get(c.Slug);
     return parentCategoryArticles.length;
   });
+
+  if (!parentCategory) return false;
+
   if (parentCategory) {
     const parentCategoryArticles = parentCategoryArticlesMap.get(
       parentCategory.Slug,
