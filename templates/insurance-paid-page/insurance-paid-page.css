@@ -1,0 +1,74 @@
+@media (max-width: 768px) {
+  .insurance-paid-page main {
+    display: grid;
+    grid-template:
+      'details'
+      'article'
+      'compare';
+  }
+
+  .article-content-container {
+    grid-area: article;
+  }
+
+  .article-cta-container {
+    grid-area: compare;
+  }
+
+  .insurance-paid-page .section {
+    padding: 1rem;
+  }
+}
+
+.insurance-paid-page .hero-title-container {
+  grid-area: details;
+  min-height: fit-content;
+}
+
+.insurance-paid-page .hero-title-container h1 {
+  color: #000;
+  margin-top: 0;
+  font-size: 3rem;
+  font-weight: bolder;
+}
+
+.article-content-container .publi-container {
+  padding: 1rem 0;
+  padding-bottom: 2rem;
+}
+
+.section:is(.hero-title-container) {
+  padding-bottom: 0;
+}
+
+.article-content-container .default-content-wrapper {
+  margin-bottom: 2rem;
+}
+
+.sidebar-right h2 {
+  font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .content-left {
+    grid-area: left-side;
+  }
+
+  .sidebar-right {
+    grid-area: right-side;
+  }
+
+  .insurance-paid-page main {
+    display: grid;
+    grid-template:
+      '. left-side .. right-side .' min-content
+      / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 350px minmax(1rem, 1fr);
+  }
+
+  .article-cta-wrapper {
+    /* stylelint-disable-next-line value-no-vendor-prefix */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 125px;
+  }
+}
