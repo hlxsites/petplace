@@ -77,3 +77,24 @@ button:focus-visible {
     @apply translate-x-[29px];
   }
 }
+
+.fade-in-element {
+  opacity: 0;
+  animation: fadeIn .5s;
+  transition:  1s;
+}
+
+.fade-unfaded {
+  opacity: 1;
+}
+
+.ease-in-out {
+  position: relative;
+  top: 0;
+  right: 0;
+  transition: right 1s cubic-bezier(0.820, 0.085, 0.395, 0.895);
+}
+
+.inactive {
+  right: -550px;
+}
