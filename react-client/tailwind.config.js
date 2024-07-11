@@ -42,6 +42,7 @@ module.exports = {
       "neutral-100": "var(--neutral-100)",
       "neutral-50": "var(--neutral-50)",
       "neutral-white": "var(--neutral-white)",
+      "border-secondary": "var(--border-secondary)",
       white: "#ffffff",
       black: "#000000",
       transparent: "transparent",
