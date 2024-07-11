@@ -32,14 +32,6 @@
   }
 }
 
-.content-left .section, .sidebar-right .section {
-  padding: 1rem;
-}
-
-.breadcrumb-wrapper {
-  grid-area: breadcrumb;
-}
-
 .related-reading-container {
   grid-area: related;
 }
@@ -105,6 +97,7 @@
 .article-page .breadcrumb-container {
   margin-top: 1rem;
   padding: 0.5rem;
+  grid-area: breadcrumb;
 
   @media (max-width:768px) {
     display: none;

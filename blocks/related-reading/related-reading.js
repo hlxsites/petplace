@@ -10,21 +10,6 @@ import {
   getPlaceholder,
 } from '../../scripts/scripts.js';
 
-const monthNames = [
-  getPlaceholder('january'),
-  getPlaceholder('february'),
-  getPlaceholder('march'),
-  getPlaceholder('april'),
-  getPlaceholder('may'),
-  getPlaceholder('june'),
-  getPlaceholder('july'),
-  getPlaceholder('august'),
-  getPlaceholder('september'),
-  getPlaceholder('october'),
-  getPlaceholder('november'),
-  getPlaceholder('december'),
-];
-
 export async function getCategoriesPath(path) {
   const categories = await getCategories();
   return categories.filter(
@@ -75,41 +60,9 @@ function createArticleDetails(block, article) {
     </a>
   `;
 
-  const dateAuthorContainer = document.createElement('div');
-  dateAuthorContainer.classList.add('date-author-container');
-
-  const date = new Date(article.date * 1000);
-  date.setHours(date.getHours() + date.getTimezoneOffset() / 60);
-  const formattedDate = document.createElement('span');
-  formattedDate.setAttribute('itemprop', 'datePublished');
-  formattedDate.setAttribute('content', date.toISOString().substring(0, 10));
-  formattedDate.textContent = `${
-    monthNames[date.getMonth()]
-  } ${date.getDate()}, ${date.getFullYear()}`;
-
-  const authorText = document.createElement('span');
-  authorText.setAttribute('itemprop', 'author');
-  authorText.textContent = article.author;
-
-  const authorDiv = document.createElement('div');
-  const authorIcon = document.createElement('img');
-  authorIcon.src = '/icons/pencil.svg';
-  authorDiv.append(authorIcon);
-  authorDiv.append(authorText);
-
-  const dateDiv = document.createElement('div');
-  const dateIcon = document.createElement('img');
-  dateIcon.src = '/icons/calendar.svg';
-  dateDiv.append(dateIcon);
-  dateDiv.append(formattedDate);
-
-  dateAuthorContainer.append(authorDiv);
-  dateAuthorContainer.append(dateDiv);
-
   const detailsContainer = document.createElement('div');
   detailsContainer.classList.add('related-reading-details');
   detailsContainer.append(titleDiv);
-  // detailsContainer.append(dateAuthorContainer);
 
   const articleDiv = document.createElement('div');
   articleDiv.classList.add('tile');
@@ -154,7 +107,6 @@ async function createNavigation(block) {
       if (parentCategoryArticlesMap.has(article['category slug'])) {
         parentCategoryArticlesMap.get(article['category slug']).push(article);
       }
-      // console.log('date', new Date(article.date * 1000));
     }
   }
 
@@ -162,6 +114,9 @@ async function createNavigation(block) {
     const parentCategoryArticles = parentCategoryArticlesMap.get(c.Slug);
     return parentCategoryArticles.length;
   });
+
+  if (!parentCategory) return false;
+
   if (parentCategory) {
     const parentCategoryArticles = parentCategoryArticlesMap.get(
       parentCategory.Slug,
@@ -187,7 +142,6 @@ export default async function decorate(block) {
 
   const isVisible = await createNavigation(block);
 
-  // createTemplateBlock(block, 'tiles');
   if (!isVisible) {
     // ensure the extra spacing for the block isn't present if
     // nothing was rendered
