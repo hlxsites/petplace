@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Competitor Websites</title>
+  <link rel="stylesheet" href="/_next/static/css/ffe4cad04ff8995e.css" data-precedence="next">
+  <link rel="stylesheet" href="https://quote.petpremium.com/_next/static/css/a20596ffc1d8bb60.css" data-precedence="next">
+  <link rel="stylesheet" href="https://quote.petpremium.com/_next/static/css/df88ff5f95041dfd.css" data-precedence="next">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: rgba(0, 0, 0, 0.87);
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+    }
+    h1 {
+      color: #C74D2F;
+      text-align: center;
+      font-size: 2.5em;
+      margin: 40px 0;
+      position: relative;
+    }
+    h1:before, h1:after {
+      content: '';
+      width: 50px;
+      height: 4px;
+      background-color: #C74D2F;
+      position: absolute;
+      top: 50%;
+    }
+    h1:before {
+      left: -60px;
+    }
+    h1:after {
+      right: -60px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+      align-self: flex-start;
+    }
+    input {
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+    }
+    .add-competitor {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .add-competitor button {
+      background-color: #C74D2F; /* Use the same color as the submit button */
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button[type="submit"] {
+      background-color: #C74D2F;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      align-self: stretch;
+    }
+    button[type="submit"]:hover {
+      background-color: #b03d27;
+    }
+    .add-competitor-btn {
+            background-color: #797573;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+        align-self: end;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="petplace.webp" alt="PetPlace Logo" class="logo">
+    <h1>Register Competitor Websites</h1>
+    <form action="/register-competitors.html" method="post">
+      <div class="add-competitor">
+        <label for="competitor1">Competitor Website 1</label>
+        <input type="url" id="competitor1" name="competitor1" placeholder="https://example.com">
+      </div>
+
+      <button type="button" class="add-competitor-btn">Add Competitor</button>
+
+      <input type="hidden" id="num_competitors" name="num_competitors" value="1">
+
+      <button type="submit">Register Competitors</button>
+    </form>
+  </div>
+  
+  <script>
+    const addCompetitorBtn = document.querySelector('.add-competitor-btn');
+    const competitorForm = document.querySelector('form');
+    const numCompetitorsInput = document.getElementById('num_competitors');
+
+    // Function to create a new competitor input field
+    function addCompetitorField() {
+      const newCompetitorNum = parseInt(numCompetitorsInput.value) + 1;
+      const newLabel = document.createElement('label');
+      newLabel.textContent = `Competitor Website ${newCompetitorNum}`;
+      newLabel.setAttribute('for', `competitor${newCompetitorNum}`);
+
+      const newInput = document.createElement('input');
+      newInput.type = 'url';
+      newInput.id = `competitor${newCompetitorNum}`;
+      newInput.name = `competitor${newCompetitorNum}`;
+      newInput.placeholder = 'https://example.com';
+
+      const newCompetitorDiv = document.createElement('div');
+      newCompetitorDiv.classList.add('add-competitor');
+      newCompetitorDiv.appendChild(newLabel);
+      newCompetitorDiv.appendChild(newInput);
+
+      competitorForm.insertBefore(newCompetitorDiv, addCompetitorBtn);
+
+      numCompetitorsInput.value = newCompetitorNum;
+    }
+
+    // Add click event listener to the "Add Competitor" button
+    addCompetitorBtn.addEventListener('click', addCompetitorField);
+  </script>
+</body>
+</html>
