@@ -41,6 +41,7 @@ const routes: PetPlaceRouteObject[] = [
                 shouldRevalidate: ({ currentParams, nextParams }) =>
                   !isEqual(currentParams, nextParams),
                 element: <PetProfileIndex />,
+                errorElement: <RootErrorPage />,
               },
             ],
           },
