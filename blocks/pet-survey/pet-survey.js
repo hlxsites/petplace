@@ -1,15 +1,15 @@
 /* eslint-disable indent */
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import {
-  isLoggedIn,
   acquireToken,
+  isLoggedIn,
 } from '../../scripts/lib/msal/msal-authentication.js';
 import endPoints from '../../variables/endpoints.js';
 import {
   createPresurvey,
-  createSurveySteps,
   createSummaryForm,
   createSummaryScreen,
+  createSurveySteps,
 } from './survey-ui.js';
 
 function previousInquirySubmittedModal() {
@@ -97,6 +97,9 @@ export default async function decorate(block) {
   const state = {
     surveyAnswers: [],
   };
+
+  console.log('state', state);
+
   const isLoggedInUser = await isLoggedIn();
   let token;
   let surveyParentId = null;
@@ -174,6 +177,7 @@ export default async function decorate(block) {
           QuestionId: parseInt(el.target.getAttribute('data-question-id'), 10),
           QuestionOptionId: parseInt(el.target.value, 10),
         };
+        console.log('state.surveyAnswers push #0', data);
         state.surveyAnswers.push(data);
         enableSaveButton();
         const otherOptions = inputEl.querySelectorAll(`option:not([value="${el.target.value}"]):not([value=""])`);
@@ -220,6 +224,7 @@ export default async function decorate(block) {
             );
             // only add if it doesn't exist already
             if (existingAnswerIndex === -1) {
+              console.log('state.surveyAnswers push #1', data);
               state.surveyAnswers.push(data);
             }
           } else {
@@ -412,6 +417,7 @@ export default async function decorate(block) {
           });
           itemsToDelete.forEach((item) => {
             item.Deleted = true;
+            console.log('state.surveyAnswers push #2', item);
             state.surveyAnswers.push(item);
           });
           const payload = {
