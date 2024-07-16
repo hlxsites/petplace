@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { classNames as cx } from "~/util/styleUtil";
 import { Card, CardProps, Icon } from "../design-system";
-import useCardBase, { UseCardBase } from "../design-system/card/useCardBase";
+import usePetCardBase, { UsePetCardBase } from "./useCardBase";
 
-type PetCardProps = UseCardBase &
+type PetCardProps = UsePetCardBase &
   CardProps & {
     children: ReactNode;
     classNames?: {
@@ -25,7 +25,7 @@ export const PetCard = ({
   variant,
   ...props
 }: PetCardProps) => {
-  const { className: baseClassName } = useCardBase({
+  const { className: baseClassName } = usePetCardBase({
     variant,
   });
 
