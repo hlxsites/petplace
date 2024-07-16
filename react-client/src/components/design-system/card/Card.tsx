@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 
-type CardProps = {
+export type CardProps = {
   children: ReactNode;
   hasShadow?: boolean;
   radius?: "sm" | "base";
