@@ -3,10 +3,10 @@
 exports[`PetCardInfo should match snapshot to assure that the component is being rendered correctly 1`] = `
 <div>
   <div
-    class="w-full p-[24px] lg:p-[40px]"
+    class="w-full p-large lg:p-xxlarge"
   >
     <div
-      class="mb-[8px] flex max-h-[48px] w-full items-center justify-between"
+      class="mb-small flex max-h-[48px] w-full items-center justify-between"
     >
       <h1
         class="lg:text-3xl text-xl font-bold text-neutral-950"
