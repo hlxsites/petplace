@@ -5,8 +5,8 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   const { breed, microchipNumber, name, sex } = petInfo;
 
   return (
-    <div className="w-full p-[24px] lg:p-[40px]">
-      <div className="mb-[8px] flex max-h-[48px] w-full items-center justify-between">
+    <div className="w-full p-large lg:p-xxlarge">
+      <div className="mb-small flex max-h-[48px] w-full items-center justify-between">
         <Title level="h1">{name}</Title>
 
         <Button iconLeft="shieldGood" variant="secondary">

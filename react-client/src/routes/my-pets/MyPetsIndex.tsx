@@ -1,10 +1,10 @@
+import { Link } from "react-router-dom";
 import { PetCard } from "~/components/Pet/PetCard";
 import { Button, ButtonProps } from "~/components/design-system";
-import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
-import { Layout } from "~/components/design-system/layout/Layout";
 import { Header } from "~/components/design-system/header/Header";
-import { Link } from "react-router-dom";
+import { Layout } from "~/components/design-system/layout/Layout";
 import { AppRoutePaths } from "../AppRoutePaths";
+import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
@@ -20,11 +20,16 @@ export const MyPetsIndex = () => {
       />
 
       <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {pets.map((pet) => (
-          <Link key={`link-${pet.id}`} to={pet.id}>
-            <PetCard hasShadow={true} key={pet.name} {...pet}>
+        {pets.map(({ isProtected, ...rest }) => (
+          <Link key={`link-${rest.id}`} to={rest.id}>
+            <PetCard
+              hasShadow
+              key={rest.name}
+              displayProtectedBadge={{ isProtected: !!isProtected }}
+              {...rest}
+            >
               <div className="p-base text-2xl font-bold leading-none text-black">
-                {pet.name}
+                {rest.name}
               </div>
             </PetCard>
           </Link>

@@ -1,10 +1,10 @@
 import { classNames } from "~/util/styleUtil";
 
-export type UseCardBase = {
-  variant?: "sm" | "md" | "lg" | undefined;
+export type UsePetCardBase = {
+  variant?: "sm" | "md" | "lg";
 };
 
-function useCardBase({ variant = "sm" }: UseCardBase) {
+function usePetCardBase({ variant = "sm" }: UsePetCardBase) {
   const isSmall = variant === "sm";
   const isRegular = variant === "md";
   const isLarge = variant === "lg";
@@ -18,4 +18,4 @@ function useCardBase({ variant = "sm" }: UseCardBase) {
   return { className };
 }
 
-export default useCardBase;
+export default usePetCardBase;
