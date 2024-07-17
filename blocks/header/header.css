@@ -962,15 +962,22 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
 * Header - Minimal 
 * Styling for the minimal header, which consists of the logo and the get a quote cta
 */
+
+header:has(.header-content--minimal) {
+  --nav-height: 80px;
+  position: fixed;
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--background-color);
+}
+
 .header-content--minimal {
   display: grid;
   grid-template-columns: 1fr auto;
-  position: fixed;
-  padding: 1rem 1.5rem;
-  width: calc(100% - 3rem);
+  align-items: center;
+  padding: 0 1.5rem;
   max-width: 1440px;
-  background: var(--background-color);
-  z-index: 2;
+  height: var(--nav-height);
 
   .header-brand .icon-logo {
     width: 150px;
@@ -981,6 +988,7 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
     display: inline-flex;
     padding: 0.5rem 1.5rem;
     color: var(--text-color-inverted);
+    font-family: var(--body-font-family);
     font-size: 1rem;
     font-weight: 500;
     line-height: 28px;
