@@ -20,7 +20,7 @@ export const Checkbox = forwardRef<
       <RadixCheckbox.Root
         aria-label={hideLabel ? label : undefined}
         className={classNames(
-          "p-0 flex h-5 w-5 items-center justify-center rounded-md border-solid border-[#6E6D73] bg-white focus:outline-none",
+          "flex h-5 w-5 items-center justify-center rounded-md border-solid border-[#6E6D73] bg-white p-0 focus:outline-none",
           className
         )}
         ref={ref}
@@ -30,11 +30,7 @@ export const Checkbox = forwardRef<
           <Icon display="check" />
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
-      {!hideLabel && (
-        <label className="Label" htmlFor={props.id}>
-          {label}
-        </label>
-      )}
+      {!hideLabel && <label htmlFor={props.id}>{label}</label>}
     </div>
   );
 });

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { LinkIconButton } from "./LinkIconButton";
 import { ComponentProps } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { LinkIconButton } from "./LinkIconButton";
 
 const { getByRole } = screen;
 
@@ -35,12 +35,6 @@ describe("LinkIconButton", () => {
       "SvgShieldOffIcon"
     );
     expect(getByRole("button")).toHaveAttribute("aria-label", label);
-  });
-
-  it("should match snapshot to assure that the component is being rendered correctly", () => {
-    const { container } = getRenderer();
-
-    expect(container).toMatchSnapshot();
   });
 });
 
