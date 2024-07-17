@@ -16,8 +16,8 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
         shouldRenderBackButton
       />
-      <PetCard img={petInfo?.img} name={petInfo?.name} variant="lg">
-        <PetCardInfo {...petInfo} name={petInfo?.name} />
+      <PetCard img={petInfo.img} name={petInfo.name} variant="lg">
+        <PetCardInfo {...petInfo} name={petInfo.name} />
       </PetCard>
     </Layout>
   );
