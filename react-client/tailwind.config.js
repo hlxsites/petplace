@@ -2,6 +2,12 @@
 module.exports = {
   mode: "jit",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  plugins: [],
+  safelist: [
+    {
+      pattern: /aria-selected:.*/,
+    },
+  ],
   theme: {
     colors: {
       "purple-500": "var(--purple-500)",
@@ -54,6 +60,15 @@ module.exports = {
       "2xl": "1.5rem",
       "3xl": "2rem",
     },
+    gap: {
+      0: "0",
+      xxlarge: "var(--xxlarge)",
+      xlarge: "var(--xlarge)",
+      large: "var(--large)",
+      base: "var(--base)",
+      small: "var(--small)",
+      xsmall: "var(--xsmall)",
+    },
     margin: {
       0: "0",
       auto: "auto",
@@ -77,5 +92,4 @@ module.exports = {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
     },
   },
-  plugins: [],
 };
