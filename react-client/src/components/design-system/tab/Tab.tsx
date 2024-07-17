@@ -21,7 +21,7 @@ export const Tab = ({ tabs }: TabProps) => {
             <RadixTab.Trigger
               aria-label={`Tab option: ${label}`}
               className={
-                "flex w-full justify-center rounded-none border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+                "flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
               }
               key={label}
               value={label}
