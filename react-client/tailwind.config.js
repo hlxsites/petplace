@@ -61,6 +61,10 @@ module.exports = {
       black: "#000000",
       transparent: "transparent",
     },
+    fontFamily: {
+      franklin: "var(--body-font-family)",
+      raleway: "var(--heading-font-family)",
+    },
     fontSize: {
       xs: "0.75rem",
       sm: "0.875rem",
