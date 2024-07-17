@@ -15,7 +15,7 @@ export const Switch = forwardRef<
 >(({ className, hideLabel, label, ...props }, ref) => {
   const isChecked = props.checked;
   return (
-    <div className="space-between gap-xsmall flex items-center">
+    <div className="gap-xsmall flex items-center">
       <RadixSwitch.Root
         aria-label={hideLabel ? label : undefined}
         className={classNames(
