@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drawer should match snapshot to assure that the component is being rendered correctly 1`] = `
+<div>
+  <div
+    aria-hidden="false"
+    data-testid="drawer-container"
+  />
+  <button
+    data-testid="SampleId"
+    id="SampleId"
+  >
+    Test opening button
+  </button>
+</div>
+`;
