@@ -43,11 +43,14 @@ describe("Text", () => {
     expect(getByText("Sample test")).toHaveClass("font-franklin");
   });
 
-  it("should render component with raleway font-family", () => {
-    getRenderer({ fontFamily: "raleway" });
+  it.each(["raleway", "roboto"] as ComponentProps<typeof Text>["fontFamily"][])(
+    "should render component with raleway font-family",
+    (fontFamily) => {
+      getRenderer({ fontFamily });
 
-    expect(getByText("Sample test")).toHaveClass("font-raleway");
-  });
+      expect(getByText("Sample test")).toHaveClass(`font-${fontFamily}`);
+    }
+  );
 
   it("should render component with size large by default", () => {
     getRenderer();
