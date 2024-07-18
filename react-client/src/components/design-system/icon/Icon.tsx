@@ -1,5 +1,6 @@
 import { classNames } from "~/util/styleUtil";
 import AddIcon from "./assets/add-icon.svg";
+import AlertIcon from "./assets/alert-diamond-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
@@ -10,6 +11,7 @@ import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 
 const IconMap = Object.freeze({
   add: <AddIcon />,
+  alert: <AlertIcon />,
   apps: <AppsIcon />,
   check: <CheckIcon />,
   chevronLeft: <ChevronLeftIcon />,
@@ -30,7 +32,7 @@ export type IconProps = {
 export const Icon = ({ className, display, size, ...rest }: IconProps) => {
   return (
     <div
-      className={classNames("icon w-[16px] lg:w-[24px]", className)}
+      className={classNames("icon w-base lg:w-large", className)}
       {...rest}
       style={{
         height: size,

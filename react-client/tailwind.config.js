@@ -3,10 +3,14 @@
 const SPACING_DEFAULTS = {
   0: "0",
   auto: "auto",
+  xxxxxlarge: "var(--xxxxxlarge)",
+  xxxxlarge: "var(--xxxxlarge)",
+  xxxlarge: "var(--xxxlarge)",
   xxlarge: "var(--xxlarge)",
   xlarge: "var(--xlarge)",
   large: "var(--large)",
   base: "var(--base)",
+  medium: "var(--medium)",
   small: "var(--small)",
   xsmall: "var(--xsmall)",
 };
@@ -75,11 +79,14 @@ module.exports = {
       "3xl": "2rem",
     },
     gap: SPACING_DEFAULTS,
-    inset: SPACING_DEFAULTS,
     margin: SPACING_DEFAULTS,
     padding: SPACING_DEFAULTS,
     space: SPACING_DEFAULTS,
     translate: SPACING_DEFAULTS,
+    extend: {
+      height: SPACING_DEFAULTS,
+      width: SPACING_DEFAULTS,
+    },
   },
   plugins: [],
 };
