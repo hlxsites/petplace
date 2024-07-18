@@ -1059,7 +1059,7 @@ function trackPageView() {
             || (hostname.endsWith('.live') && 'live')
             || 'prod',
           language: document.documentElement.getAttribute('lang') || 'en',
-          template: document.head.querySelector('meta[name="template"]')?.content || 'default',
+          template: document.head.querySelector('meta[name="template"]')?.content?.toLowerCase() || 'default',
         },
       },
     },
