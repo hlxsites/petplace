@@ -1,52 +1,55 @@
-import { classNames } from "~/util/styleUtil";
-import { Card, Icon } from "../design-system";
-import useCardBase, { UseCardBase } from "../design-system/card/useCardBase";
-import { isBoolean } from "lodash";
 import { ReactNode } from "react";
+import { classNames as cx } from "~/util/styleUtil";
+import { Card, CardProps, Icon } from "../design-system";
+import usePetCardBase, { UsePetCardBase } from "./useCardBase";
 
-type PetCardProps = UseCardBase & {
-  children: ReactNode;
-  hasShadow?: boolean;
-  img?: string;
-  isProtected?: boolean;
-  name: string;
-};
+type PetCardProps = UsePetCardBase &
+  CardProps & {
+    children: ReactNode;
+    classNames?: {
+      root?: string;
+    };
+    displayProtectedBadge?: {
+      isProtected: boolean;
+    };
+    img?: string;
+    name: string;
+  };
 
 export const PetCard = ({
   children,
-  hasShadow,
+  classNames,
+  displayProtectedBadge,
   img,
-  isProtected,
   name,
   variant,
   ...props
 }: PetCardProps) => {
-  const { className: baseClassName } = useCardBase({
+  const { className: baseClassName } = usePetCardBase({
     variant,
   });
-  const isSimpleCard = isBoolean(isProtected);
 
   return (
-    <Card {...props} hasShadow={hasShadow} radius="sm">
-      <div className={`${isSimpleCard ? "" : "lg:flex"}`}>
-        <div className={classNames(baseClassName)}>
-          <img
-            src={img}
-            alt={name}
-            className={`inset-0 w-full ${isSimpleCard ? "rounded-t-xl" : ""} object-cover`}
-          />
-          {isSimpleCard && (
+    <Card {...props} radius="sm">
+      <div className={classNames?.root}>
+        <div className={cx(baseClassName)}>
+          <img src={img} alt={name} className="inset-0 w-full object-cover" />
+          {displayProtectedBadge && (
             <div
-              className={classNames(
-                "absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full",
+              className={cx(
+                "right-4 top-4 absolute flex h-8 w-8 items-center justify-center rounded-full",
                 {
-                  "bg-success-background text-success-contrast": isProtected,
-                  "bg-error-background text-error-contrast": !isProtected,
+                  "bg-success-background text-success-contrast":
+                    displayProtectedBadge.isProtected,
+                  "bg-error-background text-error-contrast":
+                    !displayProtectedBadge.isProtected,
                 }
               )}
             >
               <Icon
-                display={isProtected ? "shieldGood" : "shieldOff"}
+                display={
+                  displayProtectedBadge.isProtected ? "shieldGood" : "shieldOff"
+                }
                 size={16}
               />
             </div>

@@ -16,11 +16,11 @@ export const Checkbox = forwardRef<
   CheckboxProps
 >(({ className, hideLabel, label, ...props }, ref) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className="gap-xsmall flex items-center">
       <RadixCheckbox.Root
         aria-label={hideLabel ? label : undefined}
         className={classNames(
-          "p-0 flex h-5 w-5 items-center justify-center rounded-md border-solid border-[#6E6D73] bg-white focus:outline-none",
+          "flex h-5 w-5 items-center justify-center rounded-md border-solid border-[#6E6D73] bg-white p-0 focus:outline-none",
           className
         )}
         ref={ref}
