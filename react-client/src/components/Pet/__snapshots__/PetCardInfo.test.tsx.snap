@@ -33,7 +33,6 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
     >
       <span
         aria-label="Microchip number: "
-        role="text"
       >
         Microchip#: 
       </span>
@@ -46,7 +45,6 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
       >
         <span
           aria-label="Animal sex: undefined"
-          role="text"
         />
         <div
           class="px-medium flex"
@@ -62,7 +60,6 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         </div>
         <span
           aria-label="Animal breed: undefined"
-          role="text"
         />
       </div>
     </div>
