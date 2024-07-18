@@ -4,9 +4,9 @@ type TextProps = {
   ariaDescribedby?: string;
   ariaLabel?: string;
   ariaLabelledBy?: string;
-  ariaLive?: "assertive" | "off" | "polite";
+  ariaLive?: JSX.IntrinsicElements["p"]["aria-live"];
   children: string;
-  fontFamily?: "franklin" | "raleway";
+  fontFamily?: "franklin" | "raleway" | "roboto";
   isHidden?: boolean;
   size?: "lg" | "base" | "sm" | "xs";
 };
