@@ -153,7 +153,7 @@ window.hlx.plugins.add('experimentation', {
 window.hlx.plugins.add('martech', {
   url: './third-party.js',
   condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
-  load: 'eager',
+  load: 'lazy',
 });
 
 window.hlx.plugins.add('rum-conversion', {

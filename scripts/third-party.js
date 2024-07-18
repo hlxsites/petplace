@@ -45,10 +45,6 @@ async function loadPushlySdk() {
   return loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', { async: true });
 }
 
-export async function loadEager() {
-  // Handle eager martech
-}
-
 export async function loadLazy() {
   // Handle delayed martech
   if (!isMobile()) {
