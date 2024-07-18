@@ -35,6 +35,7 @@ const AUDIENCES = {
 };
 
 export const DEFAULT_REGION = 'en-US';
+export const ACTIVE_REGIONS = ['en-US'];
 export const REGIONS = {
   // Africa:
   en_GH: ['ACC'],
