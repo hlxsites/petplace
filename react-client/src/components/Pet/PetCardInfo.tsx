@@ -35,7 +35,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
             <span aria-label={`Animal sex: ${sex}`} role="text">
               {sex}
             </span>
-            <div className="flex px-[12px]">
+            <div className="px-medium flex">
               <Icon display="ellipse" size={4} />
             </div>
             <span aria-label={`Animal breed: ${breed}`} role="text">
