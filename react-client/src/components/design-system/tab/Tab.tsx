@@ -4,7 +4,7 @@ import { Icon, IconProps } from "../icon/Icon";
 
 type Tab = {
   content: ReactNode;
-  icon: IconProps["display"];
+  icon?: IconProps["display"];
   label: string;
 };
 
@@ -26,9 +26,9 @@ export const Tab = ({ tabs }: TabProps) => {
               key={label}
               value={label}
             >
-              <div className="gap-small flex place-items-center">
-                <Icon display={icon} size={16} />
-                <span role="text">{label}</span>
+              <div className="flex place-items-center gap-small">
+                {!!icon && <Icon display={icon} size={16} />}
+                <span>{label}</span>
               </div>
             </RadixTab.Trigger>
           ))}
