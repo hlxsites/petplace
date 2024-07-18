@@ -1,6 +1,21 @@
 /** @type {import('tailwindcss').Config} */
+
+const SPACING_DEFAULTS = {
+  0: "0",
+  auto: "auto",
+  xxxxxlarge: "var(--xxxxxlarge)",
+  xxxxlarge: "var(--xxxxlarge)",
+  xxxlarge: "var(--xxxlarge)",
+  xxlarge: "var(--xxlarge)",
+  xlarge: "var(--xlarge)",
+  large: "var(--large)",
+  base: "var(--base)",
+  medium: "var(--medium)",
+  small: "var(--small)",
+  xsmall: "var(--xsmall)",
+};
+
 module.exports = {
-  mode: "jit",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   plugins: [],
   safelist: [
@@ -8,7 +23,11 @@ module.exports = {
       pattern: /aria-selected:.*/,
     },
   ],
+  mode: "jit",
   theme: {
+    boxShadow: {
+      "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
+    },
     colors: {
       "purple-500": "var(--purple-500)",
       "purple-300": "var(--purple-300)",
@@ -52,6 +71,11 @@ module.exports = {
       black: "#000000",
       transparent: "transparent",
     },
+    fontFamily: {
+      franklin: "var(--body-font-family)",
+      raleway: "var(--heading-font-family)",
+      roboto: "var(--fixed-font-family)",
+    },
     fontSize: {
       xs: "0.75rem",
       sm: "0.875rem",
@@ -60,36 +84,14 @@ module.exports = {
       "2xl": "1.5rem",
       "3xl": "2rem",
     },
-    gap: {
-      0: "0",
-      xxlarge: "var(--xxlarge)",
-      xlarge: "var(--xlarge)",
-      large: "var(--large)",
-      base: "var(--base)",
-      small: "var(--small)",
-      xsmall: "var(--xsmall)",
-    },
-    margin: {
-      0: "0",
-      auto: "auto",
-      xxlarge: "var(--xxlarge)",
-      xlarge: "var(--xlarge)",
-      large: "var(--large)",
-      base: "var(--base)",
-      small: "var(--small)",
-      xsmall: "var(--xsmall)",
-    },
-    padding: {
-      0: "0",
-      xxlarge: "var(--xxlarge)",
-      xlarge: "var(--xlarge)",
-      large: "var(--large)",
-      base: "var(--base)",
-      small: "var(--small)",
-      xsmall: "var(--xsmall)",
-    },
-    boxShadow: {
-      "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
+    gap: SPACING_DEFAULTS,
+    margin: SPACING_DEFAULTS,
+    padding: SPACING_DEFAULTS,
+    space: SPACING_DEFAULTS,
+    translate: SPACING_DEFAULTS,
+    extend: {
+      height: SPACING_DEFAULTS,
+      width: SPACING_DEFAULTS,
     },
   },
 };

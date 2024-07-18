@@ -3,10 +3,10 @@
 exports[`PetCardInfo should match snapshot to assure that the component is being rendered correctly 1`] = `
 <div>
   <div
-    class="w-full p-[24px] lg:p-[40px]"
+    class="w-full p-large lg:p-xxlarge"
   >
     <div
-      class="mb-[8px] flex max-h-[48px] w-full items-center justify-between"
+      class="max-h-xxxlarge mb-small flex w-full items-center justify-between"
     >
       <h1
         class="lg:text-3xl text-xl font-bold text-neutral-950"
@@ -14,11 +14,11 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         Test pet card info
       </h1>
       <button
-        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-[12px] bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100"
+        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100"
         type="button"
       >
         <div
-          class="icon w-[16px] lg:w-[24px] mr-small"
+          class="icon w-base lg:w-large mr-small"
           style="height: 16px; width: 16px;"
         >
           <svg
@@ -49,10 +49,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
           role="text"
         />
         <div
-          class="flex px-[12px]"
+          class="px-medium flex"
         >
           <div
-            class="icon w-[16px] lg:w-[24px]"
+            class="icon w-base lg:w-large"
             style="height: 4px; width: 4px;"
           >
             <svg
