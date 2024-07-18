@@ -77,6 +77,46 @@ module.exports = {
     boxShadow: {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
     },
+    extend: {
+      maxHeight: {
+        '90vh': '90vh',
+        '80vh': '80vh',
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+        slideInFromBottom: {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        slideOutToBottom: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(100%)" },
+        },
+        slideInFromRight: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        slideOutToRight: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 300ms ease-in-out",
+        fadeOut: "fadeOut 300ms ease-in-out",
+        slideInFromBottom: "slideInFromBottom 300ms forwards",
+        slideOutToBottom: "slideOutToBottom 300ms forwards",
+        slideInFromRight: "slideInFromRight 300ms forwards",
+        slideOutToRight: "slideOutToRight 300ms forwards",
+      },
+    },
   },
   plugins: [],
 };
