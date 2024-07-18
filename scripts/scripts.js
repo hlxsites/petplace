@@ -19,6 +19,14 @@ import {
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
+import {
+  initMartech,
+  updateUserConsent,
+  martechEager,
+  martechLazy,
+  martechDelayed,
+// eslint-disable-next-line import/no-relative-packages
+} from '../plugins/martech/src/index.js';
 
 export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
@@ -105,6 +113,19 @@ window.hlx.templates.add([
 ]);
 
 const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
+
+const martechLoadedPromise = initMartech(
+  {
+    // eslint-disable-next-line no-nested-ternary
+    datastreamId: window.location.origin === 'localhost'
+      ? '17e9e2de-4a10-40e0-8ea8-3cb636776970'
+      : (window.location.origin.endsWith('.page')
+        ? '1b0ec0ce-b541-4d0f-a78f-fb2a6ca8713c'
+        : '3843429b-2a2d-43ce-9227-6aa732ddf7da'),
+    orgId: '53E06E76604280A10A495E65@AdobeOrg',
+  },
+  { personalization: !!getMetadata('target') },
+);
 
 window.hlx.plugins.add('experimentation', {
   url: '/plugins/experimentation/src/index.js',
@@ -483,13 +504,20 @@ function buildCookieConsent(main) {
     return;
   }
   const updateConsentHandler = (ev) => {
-    gtag('consent', 'update', {
-      ad_storage: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
-      ad_user_data: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
-      ad_personalization: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
-      analytics_storage: ev.detail.categories.includes('CC_ANALYTICS') ? 'granted' : 'denied',
+    const collect = ev.detail.categories.includes('CC_ANALYTICS');
+    const marketing = ev.detail.categories.includes('CC_MARKETING');
+    const personalize = ev.detail.categories.includes('CC_TARGETING');
+    const share = ev.detail.categories.includes('CC_SHARING');
+    updateUserConsent({
+      collect, marketing, personalize, share,
     });
-    window.clarity('consent', ev.detail.categories.includes('CC_ANALYTICS'));
+    gtag('consent', 'update', {
+      ad_storage: marketing ? 'granted' : 'denied',
+      ad_user_data: marketing ? 'granted' : 'denied',
+      ad_personalization: personalize ? 'granted' : 'denied',
+      analytics_storage: collect ? 'granted' : 'denied',
+    });
+    window.clarity('consent', collect);
   };
   window.addEventListener('consent', updateConsentHandler);
   window.addEventListener('consent-updated', updateConsentHandler);
@@ -782,7 +810,10 @@ async function loadEager(doc) {
     decorateMain(main);
     fixLinks();
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+    await Promise.all([
+      martechLoadedPromise.then(martechEager),
+      waitForLCP(LCP_BLOCKS),
+    ]);
   }
 
   try {
@@ -1039,6 +1070,7 @@ async function loadLazy(doc) {
     { id: 'footer', label: getPlaceholder('skipFooter') },
   ]);
 
+  await martechLazy();
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
@@ -1065,6 +1097,7 @@ function loadDelayed() {
   window.setTimeout(() => {
     window.hlx.plugins.load('delayed');
     window.hlx.plugins.run('loadDelayed');
+    martechDelayed();
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
