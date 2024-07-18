@@ -117,13 +117,13 @@ const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
 
 const martechLoadedPromise = initMartech(
   {
+    orgId: '53E06E76604280A10A495E65@AdobeOrg',
     // eslint-disable-next-line no-nested-ternary
     datastreamId: window.location.origin === 'localhost'
       ? '17e9e2de-4a10-40e0-8ea8-3cb636776970'
       : (window.location.origin.endsWith('.page')
         ? '1b0ec0ce-b541-4d0f-a78f-fb2a6ca8713c'
         : '3843429b-2a2d-43ce-9227-6aa732ddf7da'),
-    orgId: '53E06E76604280A10A495E65@AdobeOrg',
   },
   {
     personalization: !!getMetadata('target'),
