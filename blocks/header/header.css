@@ -1010,7 +1010,7 @@ header:has(.header-content--minimal) {
     grid-template-columns: 1fr auto;
 
     .header-container {
-      padding: 0 4rem;
+      padding: 0 1rem;
     }
 
     .header-brand .icon-logo {

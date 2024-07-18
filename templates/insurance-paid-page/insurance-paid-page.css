@@ -128,7 +128,7 @@
         370px
       )
       minmax(1rem, 1fr);
-    padding: 2.5rem 5rem;
+    padding: 2.5rem 0;
   }
 
   .section.article-content-container {
