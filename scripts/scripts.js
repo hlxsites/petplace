@@ -498,6 +498,9 @@ function buildCookieConsent(main) {
   }
   // US region does not need the cookie consent logic
   if (document.documentElement.lang === 'en-US') {
+    updateUserConsent({
+      collect: true, marketing: true, personalize: true, share: true,
+    });
     gtag('consent', 'update', {
       ad_storage: 'granted',
       ad_user_data: 'granted',
