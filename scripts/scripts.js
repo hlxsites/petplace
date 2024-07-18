@@ -25,6 +25,7 @@ import {
   martechEager,
   martechLazy,
   martechDelayed,
+  pushEventToDataLayer,
 // eslint-disable-next-line import/no-relative-packages
 } from '../plugins/martech/src/index.js';
 
@@ -1022,6 +1023,44 @@ async function addNewsletterPopup() {
   document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
 }
 
+function trackPageView() {
+  const { pathname, hostname } = window.location;
+  const canonicalMeta = document.head.querySelector('link[rel="canonical"]');
+  const url = canonicalMeta ? new URL(canonicalMeta.href).pathname : pathname;
+  const is404 = window.isErrorPage;
+  pushEventToDataLayer('web.webpagedetails.pageViews', {
+    web: {
+      webPageDetails: {
+        pageViews: {
+          value: is404 ? 0 : 1,
+        },
+        isHomePage: pathname === '/',
+      },
+    },
+  }, {
+    __adobe: {
+      analytics: {
+        channel: !is404 ? pathname.split('/')[1] || 'home' : '404',
+        cookiesEnabled: navigator.cookieEnabled ? 'Y' : 'N',
+        pageName: !is404
+          ? pathname.split('/').slice(1).join(':') + (pathname.endsWith('/') ? 'home' : '')
+          : undefined,
+        pageType: is404 ? 'errorPage' : undefined,
+        server: window.location.hostname,
+        contextData: {
+          canonical: !is404 ? url : '/404',
+          environment: (hostname === 'localhost' && 'dev')
+            || (hostname.endsWith('.page') && 'preview')
+            || (hostname.endsWith('.live') && 'live')
+            || 'prod',
+          language: document.documentElement.getAttribute('lang') || 'en',
+          template: document.head.querySelector('meta[name="template"]')?.content || 'default',
+        },
+      },
+    },
+  });
+}
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -1072,6 +1111,7 @@ async function loadLazy(doc) {
 
   await martechLazy();
   sampleRUM('lazy');
+  trackPageView();
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
   sampleRUM('variant', { source: 'page-language', target: document.documentElement.lang });
