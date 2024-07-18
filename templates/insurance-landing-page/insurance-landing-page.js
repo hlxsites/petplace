@@ -34,7 +34,7 @@ function createSpanBlock(main) {
       const code = searchInput.value;
       if (isValidZipcode(code)) {
         removeAllErrorMessage(searchContainers);
-        const pageUrl = `https://quote.petplace.com/?zipCode=${code}`;
+        const pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}`;
         window.open(pageUrl);
       } else {
         errorMsg.style.display = 'block';
