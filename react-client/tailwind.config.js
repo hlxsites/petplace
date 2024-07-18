@@ -70,7 +70,6 @@ module.exports = {
       "3xl": "2rem",
     },
     gap: SPACING_DEFAULTS,
-    inset: SPACING_DEFAULTS,
     margin: SPACING_DEFAULTS,
     padding: SPACING_DEFAULTS,
     space: SPACING_DEFAULTS,

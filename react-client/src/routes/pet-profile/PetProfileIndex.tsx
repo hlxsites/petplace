@@ -1,9 +1,9 @@
-import { Layout } from "~/components/design-system/layout/Layout";
-import { usePetProfileIndexViewModel } from "./usePetProfileIndexViewModel";
-import { Header } from "~/components/design-system/header/Header";
 import { Button } from "~/components/design-system";
+import { Header } from "~/components/design-system/header/Header";
+import { Layout } from "~/components/design-system/layout/Layout";
 import { PetCard } from "~/components/Pet/PetCard";
 import { PetCardInfo } from "~/components/Pet/PetCardInfo";
+import { usePetProfileIndexViewModel } from "./usePetProfileIndexViewModel";
 
 export const PetProfileIndex = () => {
   const { petInfo } = usePetProfileIndexViewModel();

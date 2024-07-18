@@ -7,6 +7,10 @@ export const loader = (({ params }) => {
 
   const petInfo = getPetsList()?.find((pet) => pet.id === petId);
 
+  if (!petInfo) {
+    throw new Response("Pet not found", { status: 404 });
+  }
+
   return {
     petInfo,
   };
