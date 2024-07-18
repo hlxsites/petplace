@@ -125,7 +125,10 @@ const martechLoadedPromise = initMartech(
         : '3843429b-2a2d-43ce-9227-6aa732ddf7da'),
     orgId: '53E06E76604280A10A495E65@AdobeOrg',
   },
-  { personalization: !!getMetadata('target') },
+  {
+    dataLayerInstanceName: 'dataLayer',
+    personalization: !!getMetadata('target'),
+  },
 );
 
 window.hlx.plugins.add('experimentation', {

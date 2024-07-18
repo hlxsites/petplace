@@ -74,8 +74,8 @@ export default async function decorate(block) {
     '/newsletter.json',
     (fd) => submitForm(block, fd),
   );
-  form.querySelector('label[for="email"]').classList.add('sr-only');
-  form.querySelector('label[for="name"]').classList.add('sr-only');
+  form.querySelector('label[for="email"]')?.classList.add('sr-only');
+  form.querySelector('label[for="name"]')?.classList.add('sr-only');
 
   const messageContainer = document.createElement('div');
   messageContainer.classList.add('newsletter-message');
