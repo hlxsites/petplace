@@ -37,6 +37,13 @@ const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
 
+const IMS_ORG = '53E06E76604280A10A495E65@AdobeOrg';
+const DATASTREAM_IDS = {
+  dev: '17e9e2de-4a10-40e0-8ea8-3cb636776970',
+  stage: '1b0ec0ce-b541-4d0f-a78f-fb2a6ca8713c',
+  prod: '3843429b-2a2d-43ce-9227-6aa732ddf7da',
+};
+
 // Define the custom audiences mapping for experience decisioning
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
@@ -117,13 +124,12 @@ const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
 
 const martechLoadedPromise = initMartech(
   {
-    orgId: '53E06E76604280A10A495E65@AdobeOrg',
+    orgId: IMS_ORG,
     // eslint-disable-next-line no-nested-ternary
-    datastreamId: window.location.origin === 'localhost'
-      ? '17e9e2de-4a10-40e0-8ea8-3cb636776970'
-      : (window.location.origin.endsWith('.page')
-        ? '1b0ec0ce-b541-4d0f-a78f-fb2a6ca8713c'
-        : '3843429b-2a2d-43ce-9227-6aa732ddf7da'),
+    datastreamId:
+      (window.location.origin === 'localhost' && DATASTREAM_IDS.dev)
+      || (window.location.origin.endsWith('.page') && DATASTREAM_IDS.stage)
+      || DATASTREAM_IDS.prod,
   },
   {
     personalization: !!getMetadata('target'),
