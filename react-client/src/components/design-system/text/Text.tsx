@@ -1,35 +1,29 @@
 import { classNames } from "~/util/styleUtil";
 
 type TextProps = {
-  ariaDescribedby?: string;
   ariaLabel?: string;
-  ariaLabelledBy?: string;
-  ariaLive?: JSX.IntrinsicElements["p"]["aria-live"];
   children: string;
   fontFamily?: "franklin" | "raleway" | "roboto";
+  id?: string;
   isHidden?: boolean;
   size?: "lg" | "base" | "sm" | "xs";
 };
 
 export const Text = ({
-  ariaDescribedby,
   ariaLabel,
-  ariaLabelledBy,
-  ariaLive = "polite",
   children,
   fontFamily = "franklin",
   isHidden,
   size,
+  ...rest
 }: TextProps) => {
   const { className } = useTextBase(size, fontFamily);
   return (
     <p
-      aria-describedby={ariaDescribedby}
       aria-hidden={isHidden}
       aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledBy}
-      aria-live={ariaLive}
       className={className}
+      {...rest}
     >
       {children}
     </p>
