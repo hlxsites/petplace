@@ -1,45 +1,46 @@
 import { classNames } from "~/util/styleUtil";
 
-type TextProps = {
+type StyleProps = {
+  fontFamily?: "franklin" | "raleway" | "roboto";
+  size?: "lg" | "base" | "sm" | "xs";
+  srOnly?: boolean;
+};
+
+type TextProps = StyleProps & {
+  ariaHidden?: boolean;
   ariaLabel?: string;
   children: string;
-  fontFamily?: "franklin" | "raleway" | "roboto";
   id?: string;
-  isHidden?: boolean;
-  size?: "lg" | "base" | "sm" | "xs";
 };
 
 export const Text = ({
+  ariaHidden,
   ariaLabel,
   children,
-  fontFamily = "franklin",
-  isHidden,
-  size,
-  ...rest
+  id,
+  ...styleProps
 }: TextProps) => {
-  const { className } = useTextBase(size, fontFamily);
+  const { className } = useTextBase(styleProps);
   return (
     <p
-      aria-hidden={isHidden}
+      aria-hidden={ariaHidden}
       aria-label={ariaLabel}
       className={className}
-      {...rest}
+      id={id}
     >
       {children}
     </p>
   );
 };
 
-function useTextBase(
-  size: TextProps["size"],
-  fontFamily: TextProps["fontFamily"]
-) {
+function useTextBase({ fontFamily = "franklin", size, srOnly }: StyleProps) {
   const className = classNames(
     `font-${fontFamily} font-normal text-lg leading-7 inline-block`,
     {
       "text-base leading-6": size === "base",
       "text-sm leading-5": size === "sm",
       "text-xs leading-4": size === "xs",
+      "sr-only": srOnly,
     }
   );
 

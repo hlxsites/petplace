@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { Text } from "./Text";
 import { ComponentProps } from "react";
+import { Text } from "./Text";
 
-const { getByRole, getByText, queryByText } = screen;
+const { getByRole, getByText } = screen;
+
+const DEFAULT_CHILDREN = "Sample test";
 
 describe("Text", () => {
   it.each(["My cool test", "Hello world"])(
@@ -14,33 +16,20 @@ describe("Text", () => {
     }
   );
 
-  it("should render component with aria-live='polite' by default", () => {
-    getRenderer();
-
-    expect(getByText("Sample test")).toHaveAttribute("aria-live", "polite");
+  it.each(["a-id", "another-id"])('should render with id="%s"', (id) => {
+    getRenderer({ id });
+    expect(getByRole("paragraph")).toHaveAttribute("id", id);
   });
 
-  it("should component accept all props to improve accessibility", () => {
-    getRenderer({
-      ariaDescribedby: "description",
-      ariaLabel: "Label for test",
-      ariaLabelledBy: "labelledby-id",
-      ariaLive: "assertive",
-      isHidden: true,
-    });
-
-    const element = getByText("Sample test");
-    expect(element).toHaveAttribute("aria-describedby", "description");
-    expect(element).toHaveAttribute("aria-label", "Label for test");
-    expect(element).toHaveAttribute("aria-labelledby", "labelledby-id");
-    expect(element).toHaveAttribute("aria-live", "assertive");
-    expect(queryByText("Sample Test")).not.toBeInTheDocument();
+  it("should not render when ariaHidden=true", () => {
+    getRenderer({ ariaHidden: true });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveAttribute("aria-hidden");
   });
 
   it("should render component with font-family as 'franklin' by default", () => {
     getRenderer();
 
-    expect(getByText("Sample test")).toHaveClass("font-franklin");
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("font-franklin");
   });
 
   it.each(["raleway", "roboto"] as ComponentProps<typeof Text>["fontFamily"][])(
@@ -48,14 +37,14 @@ describe("Text", () => {
     (fontFamily) => {
       getRenderer({ fontFamily });
 
-      expect(getByText("Sample test")).toHaveClass(`font-${fontFamily}`);
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`font-${fontFamily}`);
     }
   );
 
   it("should render component with size large by default", () => {
     getRenderer();
 
-    expect(getByText("Sample test")).toHaveClass("text-lg");
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-lg");
   });
 
   it.each(["base", "sm", "xs"] as ComponentProps<typeof Text>["size"][])(
@@ -63,13 +52,23 @@ describe("Text", () => {
     (size) => {
       getRenderer({ size });
 
-      expect(getByText("Sample test")).toHaveClass(`text-${size}`);
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${size}`);
     }
   );
+
+  it("should not be screen reader only by default", () => {
+    getRenderer();
+    expect(getByText(DEFAULT_CHILDREN)).not.toHaveClass("sr-only");
+  });
+
+  it("should be screen reader only when srOnly=true", () => {
+    getRenderer({ srOnly: true });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("sr-only");
+  });
 });
 
 function getRenderer({
-  children = "Sample test",
+  children = DEFAULT_CHILDREN,
   ...props
 }: Partial<ComponentProps<typeof Text>> = {}) {
   return render(<Text {...props}>{children}</Text>);
