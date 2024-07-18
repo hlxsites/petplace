@@ -22,25 +22,18 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
     return (
       <>
         <div className="hidden md:block">
-          <span
-            aria-label={`Microchip number: ${getMicrochipNumber}`}
-            role="text"
-          >
+          <span aria-label={`Microchip number: ${getMicrochipNumber}`}>
             Microchip#: {getMicrochipNumber}
           </span>
         </div>
 
         <div className="block md:hidden">
           <div className="flex items-center">
-            <span aria-label={`Animal sex: ${sex}`} role="text">
-              {sex}
-            </span>
+            <span aria-label={`Animal sex: ${sex}`}>{sex}</span>
             <div className="px-medium flex">
               <Icon display="ellipse" size={4} />
             </div>
-            <span aria-label={`Animal breed: ${breed}`} role="text">
-              {breed}
-            </span>
+            <span aria-label={`Animal breed: ${breed}`}>{breed}</span>
           </div>
         </div>
       </>

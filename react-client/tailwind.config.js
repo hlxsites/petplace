@@ -18,6 +18,12 @@ const SPACING_DEFAULTS = {
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   mode: "jit",
+  plugins: [],
+  safelist: [
+    {
+      pattern: /aria-selected:.*/,
+    },
+  ],
   theme: {
     boxShadow: {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
@@ -88,5 +94,4 @@ module.exports = {
       width: SPACING_DEFAULTS,
     },
   },
-  plugins: [],
 };
