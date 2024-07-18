@@ -1,13 +1,13 @@
 import isEqual from "lodash/isEqual";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PetPlaceRouteObject } from "~/types/routerTypes";
+import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
+import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
-import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
-import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
+import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
 import { loader as PetProfileIndexLoader } from "./pet-profile/usePetProfileIndexViewModel";
-import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
 
@@ -41,7 +41,6 @@ const routes: PetPlaceRouteObject[] = [
                 shouldRevalidate: ({ currentParams, nextParams }) =>
                   !isEqual(currentParams, nextParams),
                 element: <PetProfileIndex />,
-                errorElement: <RootErrorPage />,
               },
             ],
           },

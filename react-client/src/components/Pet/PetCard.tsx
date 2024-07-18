@@ -33,7 +33,7 @@ export const PetCard = ({
     <Card {...props} radius="sm">
       <div className={classNames?.root}>
         <div className={cx(baseClassName)}>
-          <img src={img} alt={name} className="inset-0 w-full object-cover" />
+          <img src={img} alt={name} className="w-full object-cover" />
           {displayProtectedBadge && (
             <div
               className={cx(
