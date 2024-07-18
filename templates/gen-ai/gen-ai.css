@@ -65,7 +65,6 @@
   display: inline-block;
   margin-right: 5px;
   background-size: cover;
-
 }
 
 /* Search Actions */
@@ -82,9 +81,9 @@
 .gen-ai .action-cta {
   display: grid;
   grid-template-areas:
-    "action-image"
-    "action-title"
-    "action-button";
+    'action-image'
+    'action-title'
+    'action-button';
   gap: 2rem 2.5rem;
   border-radius: 12px;
   border: 2px solid #e8e8e8;
@@ -93,8 +92,8 @@
 
   @media (min-width: 768px) {
     grid-template-areas:
-      "action-image action-title"
-      "action-image action-button";
+      'action-image action-title'
+      'action-image action-button';
   }
 }
 
@@ -111,7 +110,7 @@
   }
 }
 
-.gen-ai .action-cta [itemprop="name"] {
+.gen-ai .action-cta [itemprop='name'] {
   grid-area: action-title;
   display: flex;
   align-items: center;
@@ -147,7 +146,7 @@
 }
 
 @media (min-width: 600px) {
-.gen-ai .hero-wrapper .text-div h1::before {
+  .gen-ai .hero-wrapper .text-div h1::before {
     height: 58px;
     width: 58px;
   }
@@ -158,7 +157,7 @@
 }
 
 .gen-ai .sortbtn .search-select {
-  padding: 1px 2.5rem 2px 1rem;        
+  padding: 1px 2.5rem 2px 1rem;
   background-image: url('../../icons/down-chevron.svg');
   background-position: calc(100% - 13px) 50%;
   background-repeat: no-repeat;
@@ -175,7 +174,7 @@
   min-width: 318px;
 }
 
-@media (max-width: 600px){
+@media (max-width: 600px) {
   .gen-ai .hero-wrapper .text-div p {
     font-size: 0.8125rem;
   }

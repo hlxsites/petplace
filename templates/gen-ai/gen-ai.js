@@ -361,7 +361,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
           const actionCtaBtn = document.createElement('span');
           actionCtaBtn.classList.add('action-button');
-          actionCtaBtn.innerHTML = action.text + '<span class="icon icon-arrow-right"></span>';
+          actionCtaBtn.innerHTML = `${action.text}<span class="icon icon-arrow-right"></span>`;
           decorateIcons(actionCtaBtn);
           actionCta.append(actionCtaBtn);
 
@@ -369,7 +369,6 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
         }
       });
     }
-
   }
 
   // // If the div already exists, update its content with the new message
