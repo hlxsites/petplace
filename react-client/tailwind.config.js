@@ -78,6 +78,10 @@ module.exports = {
     padding: SPACING_DEFAULTS,
     space: SPACING_DEFAULTS,
     translate: SPACING_DEFAULTS,
+    extend: {
+      height: SPACING_DEFAULTS,
+      width: SPACING_DEFAULTS,
+    },
   },
   plugins: [],
 };
