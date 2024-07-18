@@ -274,8 +274,8 @@ header .header {
 }
 
 #nav .nav-hamburger button,
-#nav .nav-close button/*,
-#nav .nav-language-selector button*/ {
+#nav .nav-close button,
+#nav .nav-language-selector button {
   background-color: transparent;
   border: 0;
   border-radius: 0;
@@ -286,12 +286,12 @@ header .header {
   justify-content: center;
 }
 
-/* .nav-language-selector-desktop {
+.nav-language-selector-desktop {
   grid-row: 6/7;
   grid-column: 1/6;
   z-index: 3;
   margin: 32px auto 0;
-} */
+}
 
 #nav .account-options {
   display: flex;
@@ -331,7 +331,7 @@ header .header {
   display: none;
 }
 
-/* #nav .nav-language-selector {
+#nav .nav-language-selector {
   display: none;
   grid-row: 6/6;
   grid-column: 1/6;
@@ -383,7 +383,7 @@ header .header {
   margin-left: 8px;
   color: #000;
   font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
-} */
+}
 
 @media (min-width: 768px) {
   #nav .nav-login,
