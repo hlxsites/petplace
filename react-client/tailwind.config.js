@@ -64,6 +64,7 @@ module.exports = {
     fontFamily: {
       franklin: "var(--body-font-family)",
       raleway: "var(--heading-font-family)",
+      roboto: "var(--fixed-font-family)",
     },
     fontSize: {
       xs: "0.75rem",
