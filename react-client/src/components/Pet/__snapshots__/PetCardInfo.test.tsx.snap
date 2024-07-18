@@ -6,7 +6,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
     class="w-full p-large lg:p-xxlarge"
   >
     <div
-      class="mb-small flex max-h-xxxlarge w-full items-center justify-between"
+      class="max-h-xxxlarge mb-small flex w-full items-center justify-between"
     >
       <h1
         class="lg:text-3xl text-xl font-bold text-neutral-950"
@@ -49,7 +49,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
           role="text"
         />
         <div
-          class="flex px-medium"
+          class="px-medium flex"
         >
           <div
             class="icon w-base lg:w-large"
