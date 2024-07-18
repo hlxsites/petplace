@@ -1,4 +1,4 @@
-import { getMetadata, loadScript } from './lib-franklin.js';
+import { loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import { isMobile } from './scripts.js';
 
