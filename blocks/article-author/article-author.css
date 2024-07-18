@@ -4,8 +4,8 @@
 }
 
 .article-author img {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -16,7 +16,17 @@
 
 .article-author time {
   display: block;
-  margin-bottom: .5rem;
-  color: var(--color-blue-light);
+  color: #696770;
   font-size: var(--body-font-size-xs);
+}
+
+.article-author {
+  display: flex;
+  margin: 1.5rem 0;
+  align-items: center;
+  gap: 1rem;
+}
+
+.article-author p > a {
+  text-decoration: underline;
 }

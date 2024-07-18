@@ -1,8 +1,23 @@
 /** @type {import('tailwindcss').Config} */
+
+const SPACING_DEFAULTS = {
+  0: "0",
+  auto: "auto",
+  xxlarge: "var(--xxlarge)",
+  xlarge: "var(--xlarge)",
+  large: "var(--large)",
+  base: "var(--base)",
+  small: "var(--small)",
+  xsmall: "var(--xsmall)",
+};
+
 module.exports = {
-  mode: "jit",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  mode: "jit",
   theme: {
+    boxShadow: {
+      "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
+    },
     colors: {
       "purple-500": "var(--purple-500)",
       "purple-300": "var(--purple-300)",
@@ -54,28 +69,12 @@ module.exports = {
       "2xl": "1.5rem",
       "3xl": "2rem",
     },
-    margin: {
-      0: "0",
-      auto: "auto",
-      xxlarge: "var(--xxlarge)",
-      xlarge: "var(--xlarge)",
-      large: "var(--large)",
-      base: "var(--base)",
-      small: "var(--small)",
-      xsmall: "var(--xsmall)",
-    },
-    padding: {
-      0: "0",
-      xxlarge: "var(--xxlarge)",
-      xlarge: "var(--xlarge)",
-      large: "var(--large)",
-      base: "var(--base)",
-      small: "var(--small)",
-      xsmall: "var(--xsmall)",
-    },
-    boxShadow: {
-      "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
-    },
+    gap: SPACING_DEFAULTS,
+    inset: SPACING_DEFAULTS,
+    margin: SPACING_DEFAULTS,
+    padding: SPACING_DEFAULTS,
+    space: SPACING_DEFAULTS,
+    translate: SPACING_DEFAULTS,
   },
   plugins: [],
 };
