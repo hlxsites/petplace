@@ -3,10 +3,14 @@
 const SPACING_DEFAULTS = {
   0: "0",
   auto: "auto",
+  xxxxxlarge: "var(--xxxxxlarge)",
+  xxxxlarge: "var(--xxxxlarge)",
+  xxxlarge: "var(--xxxlarge)",
   xxlarge: "var(--xxlarge)",
   xlarge: "var(--xlarge)",
   large: "var(--large)",
   base: "var(--base)",
+  medium: "var(--medium)",
   small: "var(--small)",
   xsmall: "var(--xsmall)",
 };
