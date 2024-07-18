@@ -1,26 +1,50 @@
-import { ReactNode } from "react";
-import { classNames } from "~/util/styleUtil";
+import { ReactNode, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface BackdropProps {
-  children: ReactNode;
+  children?: ReactNode;
   isOn: boolean;
   turnOff?: () => void;
 }
 
-const Backdrop = ({ children, isOn, turnOff }: BackdropProps) => {
-  return (
+export const Backdrop = ({ children, isOn, turnOff }: BackdropProps) => {
+  const [isRendered, setIsRendered] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (isOn) {
+      setIsRendered(true);
+    } else if (isRendered) {
+      timeoutId = setTimeout(() => {
+        setIsRendered(false);
+      }, 300);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isOn, isRendered]);
+
+  const portalContent = (
     <div
-      className={classNames(
-        "fade-in-element absolute right-0 top-0 flex h-screen items-end justify-center overflow-hidden backdrop-blur-sm lg:justify-end",
-        {
-          "fade-unfaded w-full": isOn,
-        }
-      )}
-      onClick={() => (turnOff ? turnOff() : () => {})}
+      className="fixed inset-0 overflow-hidden"
+      onClick={turnOff}
+      data-testid="backdrop"
     >
+      <div
+        className={`fixed inset-0 h-screen w-screen backdrop-blur-sm ${
+          isOn ? "animate-fadeIn bg-black/30" : "animate-fadeOut"
+        }`}
+        data-testid="backdrop-blur"
+      />
       {children}
     </div>
   );
-};
 
-export default Backdrop;
+  if (isRendered) {
+    return createPortal(portalContent, document.body);
+  }
+
+  return null;
+};
