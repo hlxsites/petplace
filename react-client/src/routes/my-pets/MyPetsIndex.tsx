@@ -19,7 +19,7 @@ export const MyPetsIndex = () => {
         })}
       />
 
-      <div className="gap-large grid w-full grid-flow-row grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-large sm:grid-cols-2 lg:grid-cols-3">
         {pets.map(({ isProtected, ...rest }) => (
           <Link key={`link-${rest.id}`} to={rest.id}>
             <PetCard
@@ -48,7 +48,7 @@ export const MyPetsIndex = () => {
 
   function renderMyPetsHeadButtons() {
     return (
-      <div className="gap-xsmall flex">
+      <div className="flex gap-xsmall">
         {renderReportLostOrFound({
           className: "hidden md:block",
         })}

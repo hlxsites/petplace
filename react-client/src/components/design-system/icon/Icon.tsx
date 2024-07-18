@@ -1,5 +1,6 @@
 import { classNames } from "~/util/styleUtil";
 import AddIcon from "./assets/add-icon.svg";
+import AlertIcon from "./assets/alert-diamond-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
@@ -10,6 +11,7 @@ import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 
 const IconMap = Object.freeze({
   add: <AddIcon />,
+  alert: <AlertIcon />,
   apps: <AppsIcon />,
   check: <CheckIcon />,
   chevronLeft: <ChevronLeftIcon />,
