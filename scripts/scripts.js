@@ -126,7 +126,6 @@ const martechLoadedPromise = initMartech(
     orgId: '53E06E76604280A10A495E65@AdobeOrg',
   },
   {
-    dataLayerInstanceName: 'dataLayer',
     personalization: !!getMetadata('target'),
   },
 );

@@ -3,7 +3,12 @@ window.dataLayer ||= [];
 
 /** DATALAYER */
 
-export const pushToDataLayer = (layer) => window.dataLayer.push(layer);
+export const pushToDataLayer = (layer) => {
+  // Push for GTM
+  window.dataLayer.push(layer);
+  // Push for ACDL/Analytics/Target
+  window.adobeDataLayer.push(layer);
+};
 
 export const clickHelper = (...args) => {
   pushToDataLayer({
