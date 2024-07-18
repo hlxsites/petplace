@@ -40,6 +40,42 @@ const handleArticleClicks = () => {
   articlePopularHelper();
 };
 
+// INSURANCE PAID PAGE - body CTAs
+const handleHeaderCtaClicks = () => {
+  const headerQuoteCTA = document.querySelector('.header-quote-cta');
+  if (!headerQuoteCTA) return;
+  pushToDataLayer({
+    cta_location: 'header_cta',
+  });
+};
+
+const handleBodyCtaClicks = () => {
+  const callOuts = document.querySelectorAll('.callout-get-a-quote');
+  if (!callOuts) return;
+  callOuts.forEach((callOut, i) =>  {
+    callOut.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('button');
+      if (!btn) return;
+
+      pushToDataLayer({
+        cta_location: `body_${i + 1}_cta`,
+      });
+    });
+  });
+};
+
+const handleSidebarLinks = () => {
+  const sidebarLinks = document.querySelectorAll('.sidebar-right a');
+  if (!sidebarLinks) return;
+  sidebarLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      pushToDataLayer({
+        cta_location: 'right_margin_cta',
+      });
+    });
+  });
+};
+
 // HEADER - nav, menu, sidebar, social
 const handleHeaderClicks = () => {
   document.querySelector('header').addEventListener('click', (ev) => {
@@ -137,6 +173,13 @@ export const handleDataLayerApproach = () => {
   if (window.location.pathname.includes('article')) {
     handleArticleShare();
     handleArticleClicks();
+  }
+
+  // additional check to only run on insurance paid pages
+  if (window.location.pathname.includes('insurance-paid-page')) {
+    handleHeaderCtaClicks();
+    handleBodyCtaClicks();
+    handleSidebarLinks();
   }
 
   // ELEMENT CLICKS
