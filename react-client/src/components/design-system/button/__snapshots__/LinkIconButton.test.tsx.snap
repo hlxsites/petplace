@@ -7,11 +7,11 @@ exports[`LinkIconButton should match snapshot to assure that the component is be
   >
     <button
       aria-label="Check button"
-      class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-[12px] px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent border- text-neutral-700 lg:px-small lg:py-small btn-square py-0 mx-1 min-w-0 px-[12px]"
+      class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent border- text-neutral-700 lg:px-small lg:py-small btn-square py-0 mx-1 min-w-0 px-medium"
       type="button"
     >
       <div
-        class="icon w-[16px] lg:w-[24px] max-h-full max-w-full"
+        class="icon w-base lg:w-large max-h-full max-w-full"
       >
         <svg
           data-file-name="SvgCheckIcon"

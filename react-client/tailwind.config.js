@@ -3,10 +3,14 @@
 const SPACING_DEFAULTS = {
   0: "0",
   auto: "auto",
+  xxxxxlarge: "var(--xxxxxlarge)",
+  xxxxlarge: "var(--xxxxlarge)",
+  xxxlarge: "var(--xxxlarge)",
   xxlarge: "var(--xxlarge)",
   xlarge: "var(--xlarge)",
   large: "var(--large)",
   base: "var(--base)",
+  medium: "var(--medium)",
   small: "var(--small)",
   xsmall: "var(--xsmall)",
 };
@@ -74,6 +78,10 @@ module.exports = {
     padding: SPACING_DEFAULTS,
     space: SPACING_DEFAULTS,
     translate: SPACING_DEFAULTS,
+    extend: {
+      height: SPACING_DEFAULTS,
+      width: SPACING_DEFAULTS,
+    },
   },
   plugins: [],
 };

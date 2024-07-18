@@ -32,7 +32,7 @@ export type IconProps = {
 export const Icon = ({ className, display, size, ...rest }: IconProps) => {
   return (
     <div
-      className={classNames("icon w-[16px] lg:w-[24px]", className)}
+      className={classNames("icon w-base lg:w-large", className)}
       {...rest}
       style={{
         height: size,
