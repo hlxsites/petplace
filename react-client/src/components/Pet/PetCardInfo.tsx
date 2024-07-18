@@ -6,7 +6,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
 
   return (
     <div className="w-full p-large lg:p-xxlarge">
-      <div className="mb-small flex max-h-[48px] w-full items-center justify-between">
+      <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
         <Title level="h1">{name}</Title>
 
         <Button iconLeft="shieldGood" variant="secondary">

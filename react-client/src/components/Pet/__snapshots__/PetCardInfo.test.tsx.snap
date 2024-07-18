@@ -6,7 +6,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
     class="w-full p-large lg:p-xxlarge"
   >
     <div
-      class="mb-small flex max-h-[48px] w-full items-center justify-between"
+      class="mb-small flex max-h-xxxlarge w-full items-center justify-between"
     >
       <h1
         class="lg:text-3xl text-xl font-bold text-neutral-950"
@@ -18,7 +18,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         type="button"
       >
         <div
-          class="icon w-[16px] lg:w-[24px] mr-small"
+          class="icon w-base lg:w-large mr-small"
           style="height: 16px; width: 16px;"
         >
           <svg
@@ -52,7 +52,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
           class="flex px-medium"
         >
           <div
-            class="icon w-[16px] lg:w-[24px]"
+            class="icon w-base lg:w-large"
             style="height: 4px; width: 4px;"
           >
             <svg
