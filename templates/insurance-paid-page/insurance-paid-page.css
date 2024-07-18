@@ -128,7 +128,7 @@
         370px
       )
       minmax(1rem, 1fr);
-    padding-bottom: 5rem;
+    padding: 2.5rem 5rem;
   }
 
   .section.article-content-container {
@@ -139,7 +139,7 @@
     /* stylelint-disable-next-line value-no-vendor-prefix */
     position: -webkit-sticky;
     position: sticky;
-    top: 125px;
+    top: 120px;
   }
 
   .callout-get-a-quote {
