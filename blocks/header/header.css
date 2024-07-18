@@ -965,19 +965,28 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
 
 header:has(.header-content--minimal) {
   --nav-height: 80px;
-  position: fixed;
+  position: relative;
+  z-index: 5;
   width: 100%;
   height: var(--nav-height);
   background: var(--background-color);
 }
 
 .header-content--minimal {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: 0 1.5rem;
-  max-width: 1440px;
+  position: fixed;
+  width: 100%;
   height: var(--nav-height);
+  background: var(--background-color);
+
+  .header-container {
+    display: grid;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    max-width: 1440px;
+    height: var(--nav-height);
+  }
 
   .header-brand .icon-logo {
     width: 150px;
@@ -999,8 +1008,10 @@ header:has(.header-content--minimal) {
 
   @media (min-width: 1024px) {
     grid-template-columns: 1fr auto;
-    padding: 1rem 4rem;
-    width: calc(100% - 8rem);
+
+    .header-container {
+      padding: 0 4rem;
+    }
 
     .header-brand .icon-logo {
       width: 219px;

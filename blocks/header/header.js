@@ -59,24 +59,28 @@ export default async function decorate(block) {
       const headerContent = document.createElement('div');
       headerContent.classList.add('header-content--minimal');
 
-      headerContent.innerHTML = html;
+      const headerContainer = document.createElement('div');
+      headerContainer.classList.add('header-container');
+
+      headerContainer.innerHTML = html;
 
       const classes = ['brand', 'quote-cta'];
       classes.forEach((c, i) => {
-        const section = headerContent.children[i];
+        const section = headerContainer.children[i];
         if (section) section.classList.add(`header-${c}`);
       });
 
       // logo
-      headerContent
+      headerContainer
         .querySelector('.header-brand a')
         .setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
 
       // cta button
-      headerContent.querySelector('.header-quote-cta a').innerText =
+      headerContainer.querySelector('.header-quote-cta a').innerText =
         getPlaceholder('getQuoteLabel');
 
-      decorateIcons(headerContent);
+      decorateIcons(headerContainer);
+      headerContent.append(headerContainer);
       headerWrapper.append(headerContent);
     } else {
       // build new mega nav for US clients
