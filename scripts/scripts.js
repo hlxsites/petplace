@@ -129,6 +129,7 @@ const martechLoadedPromise = initMartech(
     datastreamId:
       (window.location.origin === 'localhost' && DATASTREAM_IDS.dev)
       || (window.location.origin.endsWith('.page') && DATASTREAM_IDS.stage)
+      || (window.location.origin.endsWith('.live') && DATASTREAM_IDS.stage)
       || DATASTREAM_IDS.prod,
   },
   {
