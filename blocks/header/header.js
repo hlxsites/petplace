@@ -5,6 +5,7 @@ import {
   fetchPlaceholders,
 } from '../../scripts/lib-franklin.js';
 import {
+  ACTIVE_REGIONS,
   DEFAULT_REGION,
   PREFERRED_REGION_KEY,
   REGIONS,
@@ -374,52 +375,45 @@ export default async function decorate(block) {
       const regionSelector = document.createElement('button');
       const regionSelectorName = document.createElement('span');
       const regionMenu = document.createElement('div');
-      const regions = [DEFAULT_REGION, ...Object.keys(REGIONS)];
-      regions
-        .filter((r) => r !== document.documentElement.lang)
-        .forEach((r) => {
-          const regionLink = document.createElement('a');
-          const regionName = document.createElement('span');
-          regionLink.setAttribute('hreflang', r);
-          regionLink.setAttribute(
-            'href',
-            r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`,
-          );
-          regionLink.title = `Navigate to our ${r} website`;
-          regionLink.addEventListener('click', (ev) => {
-            localStorage.setItem(
-              PREFERRED_REGION_KEY,
-              ev.target.closest('a').getAttribute('hreflang'),
-            );
+      const regions = new Set([DEFAULT_REGION, ...Object.keys(ACTIVE_REGIONS)]).entries();
+      if (regions.length > 1) {
+        regions
+          .filter((r) => r !== document.documentElement.lang)
+          .forEach((r) => {
+            const regionLink = document.createElement('a');
+            const regionName = document.createElement('span');
+            regionLink.setAttribute('hreflang', r);
+            regionLink.setAttribute('href', r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`);
+            regionLink.title = `Navigate to our ${r} website`;
+            regionLink.addEventListener('click', (ev) => {
+              localStorage.setItem(PREFERRED_REGION_KEY, ev.target.closest('a').getAttribute('hreflang'));
+            });
+            regionName.classList.add('region-name');
+            regionName.textContent = DEFAULT_REGION === r ? unitedStates : unitedKingdom;
+            const regionIcon = document.createElement('span');
+            regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
+            regionLink.append(regionIcon);
+            regionLink.append(regionName);
+            regionMenu.append(regionLink);
           });
-          regionName.classList.add('region-name');
-          regionName.textContent = DEFAULT_REGION === r ? unitedStates : unitedKingdom;
-          const regionIcon = document.createElement('span');
-          regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
-          regionLink.append(regionIcon);
-          regionLink.append(regionName);
-          regionMenu.append(regionLink);
+        const regionSelectorIcon = document.createElement('span');
+        regionSelectorIcon.classList.add('icon', `icon-flag-${document.documentElement.lang.toLowerCase()}`);
+        regionSelector.append(regionSelectorIcon);
+        regionSelectorName.classList.add('region-name');
+        regionSelectorName.textContent = document.documentElement.lang.toLowerCase() === 'en-us' ? unitedStates : unitedKingdom;
+        regionSelector.append(regionSelectorName);
+        regionSelector.classList.add('btn-regions-list');
+        regionMenu.classList.add('regions-list', 'hidden');
+        regionSelector.addEventListener('click', () => {
+          regionMenu.classList.toggle('hidden');
+          regionSelector.classList.toggle('active');
         });
-      const regionSelectorIcon = document.createElement('span');
-      regionSelectorIcon.classList.add(
-        'icon',
-        `icon-flag-${document.documentElement.lang.toLowerCase()}`,
-      );
-      regionSelector.append(regionSelectorIcon);
-      regionSelectorName.classList.add('region-name');
-      regionSelectorName.textContent = document.documentElement.lang.toLowerCase() === 'en-us' ? unitedStates : unitedKingdom;
-      regionSelector.append(regionSelectorName);
-      regionSelector.classList.add('btn-regions-list');
-      regionMenu.classList.add('regions-list', 'hidden');
-      regionSelector.addEventListener('click', () => {
-        regionMenu.classList.toggle('hidden');
-        regionSelector.classList.toggle('active');
-      });
 
-      regionSelectorWrapper.append(regionSelector);
-      regionSelectorWrapper.append(regionMenu);
-      decorateIcons(regionSelectorWrapper);
-      nav.insertBefore(regionSelectorWrapper, navToolsMobile);
+        regionSelectorWrapper.append(regionSelector);
+        regionSelectorWrapper.append(regionMenu);
+        decorateIcons(regionSelectorWrapper);
+        nav.insertBefore(regionSelectorWrapper, navToolsMobile);
+      }
 
       block.querySelector('.collapsible').addEventListener('click', (event) => {
         event.target.classList.toggle('active');
@@ -464,22 +458,20 @@ export default async function decorate(block) {
         document.querySelector('.regions-list').classList.add('hidden');
       });
 
-      block.querySelector('.nav-close').addEventListener('click', () => {
-        navClose.classList.add('hidden');
-        navHamburger.classList.remove('hidden');
-        navHamburger.querySelector('button').focus();
-        document.querySelector('body').classList.remove('body-locked');
-        navToolsDesktop.classList.add('hidden');
-        navToolsMobile.classList.add('hidden');
-        megaNav.classList.add('hidden');
-        megaNavBg.classList.add('hidden');
-        document
-          .querySelector('.nav-language-selector')
-          .classList.add('hidden');
-        regionSelector.classList.remove('active');
-        document.querySelector('.btn-regions-list').classList.remove('active');
-        document.querySelector('.regions-list').classList.add('hidden');
-      });
+    block.querySelector('.nav-close').addEventListener('click', () => {
+      navClose.classList.add('hidden');
+      navHamburger.classList.remove('hidden');
+      navHamburger.querySelector('button').focus();
+      document.querySelector('body').classList.remove('body-locked');
+      navToolsDesktop.classList.add('hidden');
+      navToolsMobile.classList.add('hidden');
+      megaNav.classList.add('hidden');
+      megaNavBg.classList.add('hidden');
+      document.querySelector('.nav-language-selector').classList.add('hidden');
+      regionSelector.classList.remove('active');
+      document.querySelector('.btn-regions-list')?.classList.remove('active');
+      document.querySelector('.regions-list')?.classList.add('hidden');
+    });
 
       block.querySelector('form').addEventListener('submit', (ev) => {
         const query = ev.target.querySelector('.search-input').value;
@@ -545,22 +537,16 @@ export default async function decorate(block) {
       });
 
       document.addEventListener('click', (event) => {
-        if (
-          !document.querySelector('.account-options').contains(event.target) && !document.querySelector('.user-btn').contains(event.target)
-        ) {
+        if (!document.querySelector('.account-options').contains(event.target) && !document.querySelector('.user-btn').contains(event.target)) {
           document.querySelector('.account-options').classList.add('hidden');
         }
         const buttonDropdown = document.querySelector('.button-dropdown');
         const contentDropdown = document.querySelector('.content-dropdown');
-        if (
-          !document.querySelector('.content-dropdown').contains(event.target) && !document.querySelector('.button-dropdown').contains(event.target)
-        ) {
+        if (!document.querySelector('.content-dropdown').contains(event.target) && !document.querySelector('.button-dropdown').contains(event.target)) {
           buttonDropdown.classList.remove('active');
           contentDropdown.style.maxHeight = null;
         }
-        if (
-          !document.querySelector('.regions-list').contains(event.target) && !document.querySelector('.btn-regions-list').contains(event.target)
-        ) {
+        if (!document.querySelector('.regions-list')?.contains(event.target) && !document.querySelector('.btn-regions-list')?.contains(event.target)) {
           document.querySelector('.regions-list').classList.add('hidden');
         }
       });
