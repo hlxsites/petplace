@@ -13,7 +13,7 @@ export const Switch = forwardRef<
   ElementRef<typeof RadixSwitch.Root>,
   SwitchProps
 >(({ className, hideLabel, label, ...props }, ref) => {
-  const isChecked = props.checked;
+  const isChecked = props.checked || props.defaultChecked;
   return (
     <div className="space-between flex items-center gap-2">
       <RadixSwitch.Root
