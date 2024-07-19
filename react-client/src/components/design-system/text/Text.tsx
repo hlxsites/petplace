@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 
 type StyleProps = {
@@ -9,7 +10,7 @@ type StyleProps = {
 type TextProps = StyleProps & {
   ariaHidden?: boolean;
   ariaLabel?: string;
-  children: string;
+  children: ReactNode;
   id?: string;
 };
 
@@ -35,11 +36,11 @@ export const Text = ({
 
 function useTextBase({ fontFamily = "franklin", size, srOnly }: StyleProps) {
   const className = classNames(
-    `font-${fontFamily} font-normal text-lg leading-7 inline-block`,
+    `font-${fontFamily} font-normal text-xs leading-4 inline-block`,
     {
+      "text-lg leading-7": size === "lg",
       "text-base leading-6": size === "base",
       "text-sm leading-5": size === "sm",
-      "text-xs leading-4": size === "xs",
       "sr-only": srOnly,
     }
   );

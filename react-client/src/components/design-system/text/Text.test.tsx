@@ -41,13 +41,13 @@ describe("Text", () => {
     }
   );
 
-  it("should render component with size large by default", () => {
+  it("should render component with size xs by default", () => {
     getRenderer();
 
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-lg");
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-xs");
   });
 
-  it.each(["base", "sm", "xs"] as ComponentProps<typeof Text>["size"][])(
+  it.each(["base", "sm", "lg"] as ComponentProps<typeof Text>["size"][])(
     "should render component with size %s",
     (size) => {
       getRenderer({ size });

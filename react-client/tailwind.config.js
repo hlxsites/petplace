@@ -19,11 +19,8 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   mode: "jit",
   plugins: [],
-  safelist: [
-    {
-      pattern: /aria-selected:.*/,
-    },
-  ],
+  safelist: ["aria-selected:true", "aria-selected:false"],
+
   theme: {
     boxShadow: {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
