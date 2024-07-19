@@ -31,11 +31,11 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
     <div
       class="hidden md:block"
     >
-      <span
-        aria-label="Microchip number: "
+      <p
+        class="font-franklin font-normal inline-block text-base leading-6"
       >
         Microchip#: 
-      </span>
+      </p>
     </div>
     <div
       class="block md:hidden"
@@ -43,11 +43,11 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
       <div
         class="flex items-center"
       >
-        <span
-          aria-label="Animal sex: undefined"
+        <p
+          class="font-franklin font-normal inline-block text-base leading-6"
         />
         <div
-          class="px-medium flex"
+          class="flex px-medium"
         >
           <div
             class="icon w-base lg:w-large"
@@ -58,8 +58,8 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
             />
           </div>
         </div>
-        <span
-          aria-label="Animal breed: undefined"
+        <p
+          class="font-franklin font-normal inline-block text-base leading-6"
         />
       </div>
     </div>

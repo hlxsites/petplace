@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { PetCardInfo } from "./PetCardInfo";
 import { ComponentProps } from "react";
 
-const { getByRole } = screen;
+const { getByRole, getByText } = screen;
 
 describe("PetCardInfo", () => {
   it.each(["Mark", "Joy"])("should render Title with given value", (name) => {
@@ -24,9 +24,7 @@ describe("PetCardInfo", () => {
     (microchipNumber) => {
       getRenderer({ microchipNumber });
 
-      expect(
-        getByRole("text", { name: `Microchip number: ${microchipNumber}` })
-      ).toBeInTheDocument();
+      expect(getByText(`Microchip#: ${microchipNumber}`)).toBeInTheDocument();
     }
   );
 
@@ -36,12 +34,8 @@ describe("PetCardInfo", () => {
 
     getRenderer({ breed, sex });
 
-    expect(
-      getByRole("text", { name: `Animal sex: ${sex}` })
-    ).toBeInTheDocument();
-    expect(
-      getByRole("text", { name: `Animal breed: ${breed}` })
-    ).toBeInTheDocument();
+    expect(getByText(breed)).toBeInTheDocument();
+    expect(getByText(sex)).toBeInTheDocument();
   });
 
   it("should match snapshot to assure that the component is being rendered correctly", () => {

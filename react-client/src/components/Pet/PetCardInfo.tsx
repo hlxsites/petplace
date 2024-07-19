@@ -1,5 +1,6 @@
 import { PetInfo } from "~/mocks/MockRestApiServer";
 import { Button, Icon, Title } from "../design-system";
+import { Text } from "../design-system/text/Text";
 
 export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   const { breed, microchipNumber, name, sex } = petInfo;
@@ -22,18 +23,20 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
     return (
       <>
         <div className="hidden md:block">
-          <span aria-label={`Microchip number: ${getMicrochipNumber}`}>
-            Microchip#: {getMicrochipNumber}
-          </span>
+          <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
         </div>
 
         <div className="block md:hidden">
           <div className="flex items-center">
-            <span aria-label={`Animal sex: ${sex}`}>{sex}</span>
-            <div className="px-medium flex">
+            <Text aria-label={"Animal sex"} size="base">
+              {sex}
+            </Text>
+            <div className="flex px-medium">
               <Icon display="ellipse" size={4} />
             </div>
-            <span aria-label={`Animal breed: ${breed}`}>{breed}</span>
+            <Text aria-label={"Animal breed"} size="base">
+              {breed}
+            </Text>
           </div>
         </div>
       </>

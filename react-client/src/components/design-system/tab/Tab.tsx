@@ -1,6 +1,7 @@
 import * as RadixTab from "@radix-ui/react-tabs";
 import { ReactNode } from "react";
 import { Icon, IconProps } from "../icon/Icon";
+import { Text } from "../text/Text";
 
 type Tab = {
   content: ReactNode;
@@ -28,7 +29,7 @@ export const Tab = ({ tabs }: TabProps) => {
             >
               <div className="flex place-items-center gap-small">
                 {!!icon && <Icon display={icon} size={16} />}
-                <span>{label}</span>
+                <Text size="base">{label}</Text>
               </div>
             </RadixTab.Trigger>
           ))}
