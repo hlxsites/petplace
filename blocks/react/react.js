@@ -2,5 +2,5 @@ export default async function decorate(block) {
   block.id = 'react-root';
   block.innerHTML = '';
 
-  import('./react-index-CQXIcKpq.js');
+  import('./react-index-Dk7uquGQ.js');
 }
