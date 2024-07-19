@@ -26,6 +26,7 @@ module.exports = {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
     },
     colors: {
+      "brand-secondary": "var(--orange-300-contrast)",
       "purple-500": "var(--purple-500)",
       "purple-300": "var(--purple-300)",
       "purple-100": "var(--purple-100)",
