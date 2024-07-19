@@ -6,45 +6,92 @@ import { Switch } from "./Switch";
 
 const { queryByText, getByRole } = screen;
 
+const DEFAULT_LABEL = "Test label";
+const DEFAULT_CLASSES = "h-6 w-[52px] rounded-[21px]";
+
 describe("<Switch />", () => {
-  it(`should render switch`, () => {
+  it("should render switch", () => {
     getRenderer();
     expect(getByRole("switch")).toBeInTheDocument();
   });
 
-  it(`should hide switch label when hideLabel is true`, () => {
+  it("should hide switch label when hideLabel is true", () => {
     getRenderer({ hideLabel: true });
-    expect(queryByText("Test label")).not.toBeInTheDocument();
+    expect(queryByText(DEFAULT_LABEL)).not.toBeInTheDocument();
   });
 
   it.each([false, undefined])(
-    `should render switch label when hideLabel is %s`,
+    "should render switch label when hideLabel is %s",
     (expected) => {
       getRenderer({ hideLabel: expected });
-      expect(queryByText("Test label")).toBeInTheDocument();
+      expect(queryByText(DEFAULT_LABEL)).toBeInTheDocument();
     }
   );
+
+  it("should render default classes", () => {
+    getRenderer();
+    expect(getByRole("switch")).toHaveClass(DEFAULT_CLASSES);
+  });
+
+  it("should render checkbox with accessible aria-label when hideLabel is true", () => {
+    getRenderer({ hideLabel: true });
+    expect(getByRole("switch", { name: DEFAULT_LABEL })).toBeInTheDocument();
+  });
+
 
   it.each(["a-class", "another-class"])(
     `should render custom class '%s'`,
     (expected) => {
       getRenderer({ className: expected });
-      expect(getByRole("switch")).toHaveClass(expected);
+      expect(getByRole("switch")).toHaveClass(`${DEFAULT_CLASSES} ${expected}`);
     }
   );
 
-  it(`should render disabled switch when disabled is true`, () => {
+  it.each(["an-id", "another-id"])('should render with id "%s"', (expected) => {
+    getRenderer({ id: expected });
+    expect(getByRole("switch")).toHaveAttribute("id", expected);
+  });
+
+  it.each(["a label", "another label"])("should render with label '%s'", (expected) => {
+    getRenderer({ label: expected });
+    expect(getByRole("switch", { name: expected})).toBeInTheDocument();
+  });
+
+  it("should be enabled by default", () => {
+    getRenderer();
+    expect(getByRole("switch")).toBeEnabled();
+  });
+
+  it("should render switch disabled when disabled is true", () => {
     getRenderer({ disabled: true });
     expect(getByRole("switch")).toBeDisabled();
   });
 
-  it(`should render switch unchecked by default`, () => {
+  it("should render switch unchecked by default", () => {
     getRenderer();
     const switchElement = getByRole("switch");
     expect(switchElement).not.toBeChecked();
   });
 
-  it(`should call event callbacks`, async () => {
+  it("should render switch checked", () => {
+    getRenderer({ defaultChecked: true });
+    const switchElement = getByRole("switch");
+    expect(switchElement).toBeChecked();
+  });
+
+  it("should render switch checked classes", () => {
+    getRenderer({ defaultChecked: true });
+    const switchElement = getByRole("switch");
+    expect(switchElement).toHaveClass("border-none bg-orange-300-contrast focus:bg-orange-300-contrast");
+  });
+
+  it("should render switch checked classes", () => {
+    getRenderer({ defaultChecked: false });
+    const switchElement = getByRole("switch");
+    expect(switchElement).not.toHaveClass("border-none bg-orange-300-contrast focus:bg-orange-300-contrast");
+  });
+
+  it("should call event callbacks", async () => {
     const switchHandler = jest.fn();
     getRenderer({ onCheckedChange: switchHandler });
     const switchElement = getByRole("switch");
@@ -68,7 +115,7 @@ describe("<Switch />", () => {
 // Helpers
 type Props = ComponentProps<typeof Switch>;
 function getRenderer({
-  label = "Test label",
+  label = DEFAULT_LABEL,
   id = "Test id",
   ...rest
 }: Partial<Props> = {}) {
