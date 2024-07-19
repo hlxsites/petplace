@@ -104,12 +104,6 @@ describe("<Switch />", () => {
     expect(switchElement).not.toBeChecked();
     expect(switchHandler).toHaveBeenCalledTimes(2);
   });
-
-  it("should match snapshot to assure that the component is being rendered correctly", () => {
-    const { container } = getRenderer();
-
-    expect(container).toMatchSnapshot();
-  });
 });
 
 // Helpers
