@@ -5,6 +5,8 @@ import { Card } from "./Card";
 
 const { getByText } = screen;
 
+const DEFAULT_CHILDREN = "Test children";
+
 describe("<Card />", () => {
   it.each(["A children", "Another children"])(
     `should render '%s'`,
@@ -16,28 +18,32 @@ describe("<Card />", () => {
 
   it(`should render radius=base by default`, () => {
     getRenderer();
-    const card = getByText("Test children").parentElement;
-    expect(card).toHaveClass("rounded-2xl");
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("rounded-2xl");
   });
 
   it(`should render radius=sm`, () => {
     getRenderer({ radius: "sm" });
-    const card = getByText("Test children").parentElement;
-    expect(card).toHaveClass("rounded-xl");
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("rounded-xl");
+  });
+
+  it(`should render default classes`, () => {
+    getRenderer({ radius: "sm" });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(
+      "overflow-hidden border border-solid"
+    );
   });
 
   it(`should render shadowbox when hasShadow true`, () => {
     getRenderer({ hasShadow: true });
-    const card = getByText("Test children").parentElement;
-    expect(card).toHaveClass("shadow-elevation-1");
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("shadow-elevation-1");
   });
 
   it.each([false, undefined])(
     `should NOT render shadowbox when hasShadow is %s`,
     (expected) => {
       getRenderer({ hasShadow: expected });
-      const card = getByText("Test children").parentElement;
-      expect(card).not.toHaveClass("shadow-elevation-1");
+
+      expect(getByText(DEFAULT_CHILDREN)).not.toHaveClass("shadow-elevation-1");
     }
   );
 });
@@ -45,7 +51,7 @@ describe("<Card />", () => {
 // Helpers
 type Props = ComponentProps<typeof Card>;
 function getRenderer({
-  children = <p>Test children</p>,
+  children = DEFAULT_CHILDREN,
   ...rest
 }: Partial<Props> = {}) {
   return render(<Card {...rest}>{children}</Card>);
