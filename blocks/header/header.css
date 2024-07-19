@@ -37,6 +37,71 @@ header .header {
   position: fixed;
 }
 
+/* 
+* Header - Minimal 
+* Styling for the minimal header, which consists of the logo and the get a quote cta
+*/
+
+/* stylelint-disable-next-line selector-class-pattern */
+header:has(.header-content--minimal) {
+  --nav-height: 80px;
+
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--background-color);
+}
+
+/* stylelint-disable selector-class-pattern */
+.header-content--minimal {
+  position: fixed;
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--background-color);
+
+  .header-container {
+    display: grid;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    max-width: 1440px;
+    height: var(--nav-height);
+  }
+
+  .header-brand .icon-logo {
+    width: 150px;
+    height: 32px;
+  }
+
+  .header-quote-cta a {
+    display: inline-flex;
+    padding: 0.5rem 1.5rem;
+    color: var(--text-color-inverted);
+    font-family: var(--body-font-family);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 28px;
+    text-decoration: none;
+    background-color: var(--cta-button-color);
+    border-radius: 30px;
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr auto;
+
+    .header-container {
+      padding: 0 1rem;
+    }
+
+    .header-brand .icon-logo {
+      width: 219px;
+      height: 40px;
+    }
+  }
+}
+
 #nav {
   height: var(--nav-height);
   gap: 0 15px;
@@ -956,68 +1021,6 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
   z-index: 9998;
   display: none;
   pointer-events: none;
-}
-
-/* 
-* Header - Minimal 
-* Styling for the minimal header, which consists of the logo and the get a quote cta
-*/
-
-header:has(.header-content--minimal) {
-  --nav-height: 80px;
-  position: relative;
-  z-index: 5;
-  width: 100%;
-  height: var(--nav-height);
-  background: var(--background-color);
-}
-
-.header-content--minimal {
-  position: fixed;
-  width: 100%;
-  height: var(--nav-height);
-  background: var(--background-color);
-
-  .header-container {
-    display: grid;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    max-width: 1440px;
-    height: var(--nav-height);
-  }
-
-  .header-brand .icon-logo {
-    width: 150px;
-    height: 32px;
-  }
-
-  .header-quote-cta a {
-    display: inline-flex;
-    padding: 0.5rem 1.5rem;
-    color: var(--text-color-inverted);
-    font-family: var(--body-font-family);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 28px;
-    text-decoration: none;
-    background-color: var(--cta-button-color);
-    border-radius: 30px;
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: 1fr auto;
-
-    .header-container {
-      padding: 0 1rem;
-    }
-
-    .header-brand .icon-logo {
-      width: 219px;
-      height: 40px;
-    }
-  }
 }
 
 @media (min-width: 1024px) {

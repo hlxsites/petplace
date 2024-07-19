@@ -76,8 +76,7 @@ export default async function decorate(block) {
         .setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
 
       // cta button
-      headerContainer.querySelector('.header-quote-cta a').innerText =
-        getPlaceholder('getQuoteLabel');
+      headerContainer.querySelector('.header-quote-cta a').innerText = getPlaceholder('getQuoteLabel');
 
       decorateIcons(headerContainer);
       headerContent.append(headerContainer);
@@ -237,24 +236,14 @@ export default async function decorate(block) {
 
       // hamburguer menu
       const navHamburger = nav.querySelector('.nav-hamburger');
-      navHamburger.innerHTML = `
-        <button type="button" aria-controls="nav" aria-label="${getPlaceholder(
-          'openNavigation'
-        )}">
-          ${navHamburger.innerHTML}
-        </button>`;
+      navHamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">${navHamburger.innerHTML}</button>`;
 
       nav
         .querySelector('.nav-brand a')
         .setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
 
       const navClose = nav.querySelector('.nav-close');
-      navClose.innerHTML = `
-        <button type="button" aria-controls="nav" aria-label="${getPlaceholder(
-          'closeNavigation'
-        )}">
-          ${navClose.innerHTML}
-        </button>`;
+      navClose.innerHTML = `<button type="button" aria-controls="nav" aria-label="${getPlaceholder('closeNavigation')}">${navClose.innerHTML}</button>`;
       navClose.classList.add('hidden');
 
       // meganav and featuredArticle
@@ -279,7 +268,7 @@ export default async function decorate(block) {
       const articleUrl = document.createElement('a');
       articleUrl.setAttribute(
         'href',
-        featuredArticle.querySelector('a').getAttribute('href')
+        featuredArticle.querySelector('a').getAttribute('href'),
       );
       articleUrl.innerText = featuredArticle.querySelector('a').innerText;
       articleUrl.classList.add('article-url');
@@ -314,7 +303,7 @@ export default async function decorate(block) {
             menuTitle.classList.add(
               'collapsible',
               'menu-item',
-              'button-dropdown'
+              'button-dropdown',
             );
           }
           listItem.appendChild(menuTitle);
@@ -357,7 +346,7 @@ export default async function decorate(block) {
           tempLI.append(tempDiv);
           tempDiv.previousElementSibling.classList.add(
             'collapsible',
-            'menu-item'
+            'menu-item',
           );
 
           const parentEl = tempDiv.previousElementSibling;
@@ -394,18 +383,17 @@ export default async function decorate(block) {
           regionLink.setAttribute('hreflang', r);
           regionLink.setAttribute(
             'href',
-            r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`
+            r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`,
           );
           regionLink.title = `Navigate to our ${r} website`;
           regionLink.addEventListener('click', (ev) => {
             localStorage.setItem(
               PREFERRED_REGION_KEY,
-              ev.target.closest('a').getAttribute('hreflang')
+              ev.target.closest('a').getAttribute('hreflang'),
             );
           });
           regionName.classList.add('region-name');
-          regionName.textContent =
-            DEFAULT_REGION === r ? unitedStates : unitedKingdom;
+          regionName.textContent = DEFAULT_REGION === r ? unitedStates : unitedKingdom;
           const regionIcon = document.createElement('span');
           regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
           regionLink.append(regionIcon);
@@ -415,14 +403,11 @@ export default async function decorate(block) {
       const regionSelectorIcon = document.createElement('span');
       regionSelectorIcon.classList.add(
         'icon',
-        `icon-flag-${document.documentElement.lang.toLowerCase()}`
+        `icon-flag-${document.documentElement.lang.toLowerCase()}`,
       );
       regionSelector.append(regionSelectorIcon);
       regionSelectorName.classList.add('region-name');
-      regionSelectorName.textContent =
-        document.documentElement.lang.toLowerCase() === 'en-us'
-          ? unitedStates
-          : unitedKingdom;
+      regionSelectorName.textContent = document.documentElement.lang.toLowerCase() === 'en-us' ? unitedStates : unitedKingdom;
       regionSelector.append(regionSelectorName);
       regionSelector.classList.add('btn-regions-list');
       regionMenu.classList.add('regions-list', 'hidden');
@@ -561,23 +546,20 @@ export default async function decorate(block) {
 
       document.addEventListener('click', (event) => {
         if (
-          !document.querySelector('.account-options').contains(event.target) &&
-          !document.querySelector('.user-btn').contains(event.target)
+          !document.querySelector('.account-options').contains(event.target) && !document.querySelector('.user-btn').contains(event.target)
         ) {
           document.querySelector('.account-options').classList.add('hidden');
         }
         const buttonDropdown = document.querySelector('.button-dropdown');
         const contentDropdown = document.querySelector('.content-dropdown');
         if (
-          !document.querySelector('.content-dropdown').contains(event.target) &&
-          !document.querySelector('.button-dropdown').contains(event.target)
+          !document.querySelector('.content-dropdown').contains(event.target) && !document.querySelector('.button-dropdown').contains(event.target)
         ) {
           buttonDropdown.classList.remove('active');
           contentDropdown.style.maxHeight = null;
         }
         if (
-          !document.querySelector('.regions-list').contains(event.target) &&
-          !document.querySelector('.btn-regions-list').contains(event.target)
+          !document.querySelector('.regions-list').contains(event.target) && !document.querySelector('.btn-regions-list').contains(event.target)
         ) {
           document.querySelector('.regions-list').classList.add('hidden');
         }
@@ -615,9 +597,7 @@ export default async function decorate(block) {
 
     const navHamburger = nav.querySelector('.nav-hamburger');
     navHamburger.innerHTML = `
-      <button type="button" aria-controls="nav" aria-label="${getPlaceholder(
-        'openNavigation'
-      )}">
+      <button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">
         ${navHamburger.innerHTML}
       </button>`;
 
@@ -668,13 +648,13 @@ export default async function decorate(block) {
           regionLink.setAttribute('hreflang', r);
           regionLink.setAttribute(
             'href',
-            r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`
+            r === DEFAULT_REGION ? '/' : `/${r.toLowerCase()}/`,
           );
           regionLink.title = `Navigate to our ${r} website`;
           regionLink.addEventListener('click', (ev) => {
             localStorage.setItem(
               PREFERRED_REGION_KEY,
-              ev.target.closest('a').getAttribute('hreflang')
+              ev.target.closest('a').getAttribute('hreflang'),
             );
           });
           const regionIcon = document.createElement('span');
@@ -685,7 +665,7 @@ export default async function decorate(block) {
       const regionSelectorIcon = document.createElement('span');
       regionSelectorIcon.classList.add(
         'icon',
-        `icon-flag-${document.documentElement.lang.toLowerCase()}`
+        `icon-flag-${document.documentElement.lang.toLowerCase()}`,
       );
       regionSelector.append(regionSelectorIcon);
       if (isPopoverSupported()) {
@@ -719,7 +699,7 @@ export default async function decorate(block) {
     const navSidebar = document.createElement('div');
     navSidebar.classList.add('nav-sidebar');
     response = await fetch(
-      `${window.hlx.contentBasePath}/fragments/sidenav.plain.html`
+      `${window.hlx.contentBasePath}/fragments/sidenav.plain.html`,
     );
     if (!response.ok) {
       return;
@@ -739,7 +719,7 @@ export default async function decorate(block) {
     const ariaTreeView = document.createElement(AriaTreeView.tagName);
     ariaTreeView.setAttribute(
       'label',
-      getPlaceholder('secondaryNavigationLabel')
+      getPlaceholder('secondaryNavigationLabel'),
     );
     ariaTreeView.append(dialogContent.querySelector('ul'));
     treeViewWrapper.replaceWith(ariaTreeView);
@@ -799,11 +779,11 @@ export default async function decorate(block) {
       .querySelectorAll('[role="tree"] button[aria-controls]')
       .forEach((toggle) => {
         const item = navSidebar.querySelector(
-          `#${toggle.getAttribute('aria-controls')}`
+          `#${toggle.getAttribute('aria-controls')}`,
         );
         toggle.setAttribute(
           'aria-label',
-          getPlaceholder('openNavItem', { item: item.textContent })
+          getPlaceholder('openNavItem', { item: item.textContent }),
         );
       });
     const observer = new MutationObserver((entries) => {
@@ -811,15 +791,13 @@ export default async function decorate(block) {
       if (attributeName !== 'aria-expanded') {
         return;
       }
-      const toggle = navSidebar.querySelector(
-        `button[aria-controls="${target.id}"]`
-      );
+      const toggle = navSidebar.querySelector(`button[aria-controls="${target.id}"]`);
       const isExpanded = target.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute(
         'aria-label',
         isExpanded
           ? getPlaceholder('closeNavItem')
-          : getPlaceholder('openNavItem', { item: target.textContent })
+          : getPlaceholder('openNavItem', { item: target.textContent }),
       );
     });
     navSidebar
@@ -835,7 +813,7 @@ export default async function decorate(block) {
         'aria-label',
         getPlaceholder('socialLinkLabel', {
           page: a.firstElementChild.classList[1].substring(5),
-        })
+        }),
       );
     });
 

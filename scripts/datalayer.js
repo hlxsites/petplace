@@ -40,22 +40,27 @@ const handleArticleClicks = () => {
   articlePopularHelper();
 };
 
-// INSURANCE PAID PAGE - body CTAs
+// INSURANCE PAID PAGE
+
+// Header Quote CTA
 const handleHeaderCtaClicks = () => {
   const headerQuoteCTA = document.querySelector('.header-quote-cta');
   if (!headerQuoteCTA) return;
-  pushToDataLayer({
-    cta_location: 'header_cta',
+  headerQuoteCTA.addEventListener('click', () => {
+    pushToDataLayer({
+      cta_location: 'header_cta',
+    });
   });
 };
 
+// Body CTAs
 const handleBodyCtaClicks = () => {
   const callOuts = document.querySelectorAll('.callout-get-a-quote');
   if (!callOuts) return;
-  callOuts.forEach((callOut, i) =>  {
+  callOuts.forEach((callOut, i) => {
     callOut.addEventListener('click', (ev) => {
-      const btn = ev.target.closest('button');
-      if (!btn) return;
+      const link = ev.target.closest('a');
+      if (!link) return;
 
       pushToDataLayer({
         cta_location: `body_${i + 1}_cta`,
@@ -64,11 +69,12 @@ const handleBodyCtaClicks = () => {
   });
 };
 
-const handleSidebarLinks = () => {
-  const sidebarLinks = document.querySelectorAll('.sidebar-right a');
-  if (!sidebarLinks) return;
-  sidebarLinks.forEach((link) => {
-    link.addEventListener('click', () => {
+// Sidebar Btns
+const handleSidebarBtns = () => {
+  const sidebarBtns = document.querySelectorAll('.sidebar-right button');
+  if (!sidebarBtns) return;
+  sidebarBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
       pushToDataLayer({
         cta_location: 'right_margin_cta',
       });
@@ -179,7 +185,7 @@ export const handleDataLayerApproach = () => {
   if (window.location.pathname.includes('insurance-paid-page')) {
     handleHeaderCtaClicks();
     handleBodyCtaClicks();
-    handleSidebarLinks();
+    handleSidebarBtns();
   }
 
   // ELEMENT CLICKS
