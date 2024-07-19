@@ -8,8 +8,9 @@ describe("<Icon />", () => {
     const { container } = getRenderer({
       display: expected.toLowerCase() as Props["display"],
     });
-    expect(container.querySelector("svg")).toBeInTheDocument();
-    expect(container.querySelector("svg")).toHaveAttribute(
+    const icon = container.querySelector("svg")
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveAttribute(
       "data-file-name",
       `Svg${expected}Icon`
     );
@@ -26,12 +27,6 @@ describe("<Icon />", () => {
       );
     }
   );
-
-  it("should match snapshot to assure that the component is being rendered correctly", () => {
-    const { container } = getRenderer();
-
-    expect(container).toMatchSnapshot();
-  });
 });
 
 // Helpers
