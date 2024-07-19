@@ -1,10 +1,10 @@
-import { Title } from "../text/Title";
-import { LinkIconButton } from "../button/LinkIconButton";
 import { ComponentProps, ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
+import { LinkIconButton } from "../button/LinkIconButton";
+import { Title } from "../text/Title";
 
 type HeaderProps = {
-  mbHeader?: "large" | "small";
+  mb?: "large" | "small";
   linkIconButtonProps?: ComponentProps<typeof LinkIconButton>;
   pageTitle: string;
   primaryElement?: ReactNode;
@@ -21,13 +21,13 @@ export const Header = ({
     relative: "path",
     to: "..",
   },
-  mbHeader = "large",
+  mb = "large",
   pageTitle,
   primaryElement,
   secondaryElement,
   shouldRenderBackButton,
 }: HeaderProps) => {
-  const { className } = useHeaderBase(mbHeader);
+  const { className } = useHeaderBase(mb);
 
   return (
     <div className={className}>
@@ -45,7 +45,7 @@ export const Header = ({
   );
 };
 
-function useHeaderBase(mb: HeaderProps["mbHeader"]) {
+function useHeaderBase(mb: HeaderProps["mb"]) {
   const className = classNames({
     "mb-large lg:mb-xxlarge": mb === "large",
     "mb-small": mb === "small",
