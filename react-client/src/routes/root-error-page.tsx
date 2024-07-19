@@ -23,7 +23,7 @@ export const RootErrorPage = (): JSX.Element => {
 
   return (
     <Layout>
-      <div className="gap-4 m-auto grid max-w-[464px] place-items-center">
+      <div className="gap-base m-auto grid max-w-[464px] place-items-center">
         <Icon display="alert" size={80} />
         <span
           className="text-center text-[28px] font-semibold"
