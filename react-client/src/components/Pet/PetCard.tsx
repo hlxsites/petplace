@@ -10,11 +10,11 @@ type PetCardProps = {
 export const PetCard = ({ name, img, isProtected, ...props }: PetCardProps) => {
   return (
     <Card {...props} hasShadow={true} radius="sm">
-      <div className="lg:max-h-[306px] max-h-[251px] w-full">
+      <div className="lg:max-h-[306px] max-h-[251px] w-full" data-testid="pet-card">
         <div className="lg:h-[246px] relative flex h-[191px] w-full justify-end">
           <img
             src={img}
-            alt={name}
+            alt={`Pet's name: ${name}`}
             className="lg:h-[246px] inset-0 h-[191px] w-full rounded-t-xl object-cover"
           />
           <div

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PetCard should match snapshot to assure correct rendering 1`] = `
+<div>
+  <div
+    class="overflow-hidden border border-solid border-[#d0d0d6] bg-neutral-white rounded-xl shadow-elevation-1"
+  >
+    <div
+      class="lg:max-h-[306px] max-h-[251px] w-full"
+      data-testid="pet-card"
+    >
+      <div
+        class="lg:h-[246px] relative flex h-[191px] w-full justify-end"
+      >
+        <img
+          alt="Pet's name: Romã"
+          class="lg:h-[246px] inset-0 h-[191px] w-full rounded-t-xl object-cover"
+        />
+        <div
+          class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-success-background text-success-contrast"
+        >
+          <div
+            class="icon"
+            style="height: 16px; width: 16px;"
+          >
+            <svg
+              data-file-name="SvgShieldGoodIcon"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="p-base text-2xl font-bold leading-none text-black"
+      >
+        Romã
+      </div>
+    </div>
+  </div>
+</div>
+`;
