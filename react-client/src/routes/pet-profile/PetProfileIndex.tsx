@@ -16,7 +16,12 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
         shouldRenderBackButton
       />
-      <PetCard img={petInfo.img} name={petInfo.name} variant="lg">
+      <PetCard
+        classNames={{ root: "lg:flex" }}
+        img={petInfo.img}
+        name={petInfo.name}
+        variant="lg"
+      >
         <PetCardInfo {...petInfo} name={petInfo.name} />
       </PetCard>
     </Layout>
@@ -25,7 +30,11 @@ export const PetProfileIndex = () => {
 
 function renderActionsButton() {
   return (
-    <Button iconLeft="apps" variant="secondary">
+    <Button
+      iconLeft="apps"
+      variant="secondary"
+      iconProps={{ className: "text-brand-secondary" }}
+    >
       Actions
     </Button>
   );

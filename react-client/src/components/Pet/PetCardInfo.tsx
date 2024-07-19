@@ -10,7 +10,11 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
       <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
         <Title level="h1">{name}</Title>
 
-        <Button iconLeft="shieldGood" variant="secondary">
+        <Button
+          iconLeft="shieldGood"
+          iconProps={{ className: "text-brand-secondary" }}
+          variant="secondary"
+        >
           Report lost pet
         </Button>
       </div>
@@ -31,7 +35,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
             <Text aria-label={"Animal sex"} size="base">
               {sex}
             </Text>
-            <div className="flex px-medium">
+            <div className="px-medium flex">
               <Icon display="ellipse" size={4} />
             </div>
             <Text aria-label={"Animal breed"} size="base">
