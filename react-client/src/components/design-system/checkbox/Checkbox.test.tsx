@@ -89,7 +89,7 @@ describe("<Checkbox />", () => {
     expect(container.querySelector("svg")).not.toBeInTheDocument();
   });
 
-  it("should render check icon whe checked", () => {
+  it("should render check icon when checked", () => {
     const { container } = getRenderer({ defaultChecked: true });
 
     expect(container.querySelector("svg")).toHaveAttribute(
