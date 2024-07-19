@@ -34,7 +34,7 @@ export const Header = ({
       <div className="mb-large flex items-center justify-between lg:m-0">
         <div className="flex items-center">
           {shouldRenderBackButton && (
-            <LinkIconButton {...linkIconButtonProps} />
+            <LinkIconButton {...linkIconButtonProps} className="ml-[-12px]" />
           )}
           <Title>{pageTitle}</Title>
         </div>
