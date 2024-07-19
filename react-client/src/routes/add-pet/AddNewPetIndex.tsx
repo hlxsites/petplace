@@ -14,20 +14,20 @@ export const AddNewPetIndex = () => {
   return (
     <Layout>
       <Header mb="small" pageTitle="Add new pet" shouldRenderBackButton />
-      <div className="mb-[32px] ml-[12px] w-full lg:mb-[40px]">
+      <div className="mb-[32px] w-full lg:mb-[40px]">
         <span className="text-base" role="text">
           Is this a new or previously registered Pet? You have three options
           bellow:
         </span>
       </div>
-      <div className="gap-6 grid max-h-[492] max-w-[800px] grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid max-h-[492] max-w-[800px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-base">
         {getCardsContent().map((card) => {
           return (
             <div className="lg:w-[256px]">
               <Card>
-                <div className="gap-6 grid p-[24px]">
+                <div className="grid p-large">
                   <Icon display={card.icon} />
-                  <div className="grid sm:h-[88px] lg:h-auto">
+                  <div className="grid sm:h-[88px] lg:h-auto my-large">
                     <strong className="text-lg mb-[8px]">{card.title}</strong>
                     <span className="text-sm" role="text">
                       {card.message}
