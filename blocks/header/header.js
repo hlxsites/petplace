@@ -458,20 +458,20 @@ export default async function decorate(block) {
         document.querySelector('.regions-list').classList.add('hidden');
       });
 
-    block.querySelector('.nav-close').addEventListener('click', () => {
-      navClose.classList.add('hidden');
-      navHamburger.classList.remove('hidden');
-      navHamburger.querySelector('button').focus();
-      document.querySelector('body').classList.remove('body-locked');
-      navToolsDesktop.classList.add('hidden');
-      navToolsMobile.classList.add('hidden');
-      megaNav.classList.add('hidden');
-      megaNavBg.classList.add('hidden');
-      document.querySelector('.nav-language-selector').classList.add('hidden');
-      regionSelector.classList.remove('active');
-      document.querySelector('.btn-regions-list')?.classList.remove('active');
-      document.querySelector('.regions-list')?.classList.add('hidden');
-    });
+      block.querySelector('.nav-close').addEventListener('click', () => {
+        navClose.classList.add('hidden');
+        navHamburger.classList.remove('hidden');
+        navHamburger.querySelector('button').focus();
+        document.querySelector('body').classList.remove('body-locked');
+        navToolsDesktop.classList.add('hidden');
+        navToolsMobile.classList.add('hidden');
+        megaNav.classList.add('hidden');
+        megaNavBg.classList.add('hidden');
+        document.querySelector('.nav-language-selector').classList.add('hidden');
+        regionSelector.classList.remove('active');
+        document.querySelector('.btn-regions-list')?.classList.remove('active');
+        document.querySelector('.regions-list')?.classList.add('hidden');
+      });
 
       block.querySelector('form').addEventListener('submit', (ev) => {
         const query = ev.target.querySelector('.search-input').value;
