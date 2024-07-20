@@ -1,4 +1,4 @@
-import { getMetadata, loadScript } from './lib-franklin.js';
+import { loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import { isMobile } from './scripts.js';
 
@@ -45,19 +45,9 @@ async function loadPushlySdk() {
   return loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', { async: true });
 }
 
-export async function loadEager() {
-  // Handle eager martech
-  if (getMetadata('experiment') !== 'delayed-martech'
-    || !document.body.classList.contains('variant-challenger-1')) {
-    loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
-    loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
-  }
-}
-
 export async function loadLazy() {
   // Handle delayed martech
-  if (!isMobile() && getMetadata('experiment') === 'delayed-martech'
-    && document.body.classList.contains('variant-challenger-1')) {
+  if (!isMobile()) {
     loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
     loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
   }
@@ -81,8 +71,7 @@ export function loadDelayed() {
   }
 
   // Handle delayed martech
-  if (isMobile() && getMetadata('experiment') === 'delayed-martech'
-    && document.body.classList.contains('variant-challenger-1')) {
+  if (isMobile()) {
     loadScript('https://www.googletagmanager.com/gtm.js?id=GTM-WP2SGNL', { async: true });
     loadScript('https://www.googletagmanager.com/gtag/js?id=AW-11334653569', { async: true });
   }
