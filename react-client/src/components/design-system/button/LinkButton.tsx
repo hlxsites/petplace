@@ -22,6 +22,7 @@ export const LinkButton = ({
       preventScrollReset={preventScrollReset}
       relative={relative}
       replace={replace}
+      tabIndex={-1}
       to={to}
     >
       <Button {...buttonProps} />
