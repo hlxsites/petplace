@@ -48,13 +48,17 @@ export const MyPetsIndex = () => {
 
   function renderMyPetsHeadButtons() {
     return (
-      <div className="flex gap-xsmall">
+      <div className="flex gap-small">
         {renderReportLostOrFound({
-          className: "hidden md:block",
+          className: "hidden md:flex",
         })}
-        <Link to={AppRoutePaths.addNewPet}>
-          <Button iconLeft="add">Add a new pet</Button>
-        </Link>
+        <LinkButton
+          iconLeft="add"
+          to={AppRoutePaths.addNewPet}
+          variant="primary"
+        >
+          Add a new pet
+        </LinkButton>
       </div>
     );
   }

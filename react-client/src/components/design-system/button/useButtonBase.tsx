@@ -23,7 +23,7 @@ function useButtonBase({
         isPrimary,
       "bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100":
         isSecondary,
-      "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent border- text-neutral-700 lg:px-small lg:py-small":
+      "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent border- text-neutral-700 lg:px-small lg:py-small focus:bg-transparent":
         isLink,
       "bg-red-300 text-white": isError,
       "w-full": fullWidth,

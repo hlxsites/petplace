@@ -25,7 +25,7 @@ export const LinkButton = ({
       tabIndex={-1}
       to={to}
     >
-      <Button {...buttonProps} />
+      <Button variant="link" {...buttonProps} />
     </Link>
   );
 };
