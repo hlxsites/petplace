@@ -54,14 +54,21 @@ export const Drawer = ({
   const hasTitle = !!title;
   const titleId = hasTitle ? `${id}-title` : undefined;
 
+  const handleOnClose = () => {
+    if (isClosing) return;
+
+    onCloseWithAnimation();
+  };
+
   const portalContent = (
-    <FocusTrap>
-      <div>
-        <Backdrop
-          isClosing={isClosing}
-          isOpen={isOpen}
-          onClick={onCloseWithAnimation}
-        />
+    <>
+      <Backdrop isClosing={isClosing} isOpen={isOpen} onClick={handleOnClose} />
+      <FocusTrap
+        focusTrapOptions={{
+          clickOutsideDeactivates: true,
+          returnFocusOnDeactivate: true,
+        }}
+      >
         <div
           aria-label={ariaLabel}
           aria-labelledby={titleId}
@@ -90,14 +97,14 @@ export const Drawer = ({
               icon="closeXMark"
               iconProps={{ size: 14 }}
               label="Close drawer"
-              onClick={onCloseWithAnimation}
+              onClick={handleOnClose}
               variant="link"
             />
           </div>
           <div className="max-h-full overflow-y-auto">{children}</div>
         </div>
-      </div>
-    </FocusTrap>
+      </FocusTrap>
+    </>
   );
 
   return createPortal(portalContent, document.body);
