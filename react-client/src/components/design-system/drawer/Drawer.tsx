@@ -1,91 +1,104 @@
-import { ReactNode, useEffect, useRef } from "react";
-import { Title } from "../text/Title";
-import { IconButton } from "../button/IconButton";
+import FocusTrap from "focus-trap-react";
+import { ReactNode, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
 import { classNames } from "~/util/styleUtil";
 import { Backdrop } from "../backdrop/Backdrop";
+import { IconButton } from "../button/IconButton";
+import { Title } from "../text/Title";
 
-interface DrawerProps {
+type TitleProps =
+  | {
+      ariaLabel?: undefined;
+      title: string;
+    }
+  | {
+      ariaLabel: string;
+      title?: undefined;
+    };
+
+type DrawerProps = TitleProps & {
   children: ReactNode;
-  openingButtonId: string;
-  title: string;
-  onClose: () => void;
+  id: string;
   isOpen: boolean;
-}
+  onClose: () => void;
+};
 
 export const Drawer = ({
+  ariaLabel,
   children,
-  openingButtonId,
-  title,
-  onClose,
+  id,
   isOpen,
+  onClose,
+  title,
 }: DrawerProps) => {
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => closeButtonRef.current?.focus(), 100);
-    } else {
-      const openingButton = document.getElementById(openingButtonId);
-      openingButton?.focus();
-    }
-  }, [isOpen, openingButtonId]);
+  const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
+    onClose,
+  });
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (isOpen && event.key === "Escape") {
         onClose();
       }
     }
 
-    if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-    }
-
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
 
-  return (
-    <div aria-hidden={!isOpen} data-testid="drawer-container">
-      <Backdrop isOn={isOpen}>
+  if (!isOpen) return null;
+
+  const hasTitle = !!title;
+  const titleId = hasTitle ? `${id}-title` : undefined;
+
+  const portalContent = (
+    <FocusTrap>
+      <div>
+        <Backdrop
+          isClosing={isClosing}
+          isOpen={isOpen}
+          onClick={onCloseWithAnimation}
+        />
         <div
-          className="fixed inset-0 flex items-end lg:items-stretch lg:justify-end"
-          onClick={onClose}
+          aria-label={ariaLabel}
+          aria-labelledby={titleId}
+          aria-modal="true"
+          className={classNames(
+            "max-h-90vh fixed bottom-0 left-0 right-0 z-50 w-full rounded-t-2xl bg-neutral-white p-xlarge duration-300 ease-in-out lg:left-auto lg:top-0 lg:max-h-screen lg:w-[336px] lg:rounded-none",
+            {
+              "animate-slideInFromBottom lg:animate-slideInFromRight":
+                !isClosing,
+              "animate-slideOutToBottom lg:animate-slideOutToRight": isClosing,
+            }
+          )}
+          id={id}
+          role="dialog"
+          tabIndex={-1}
         >
           <div
-            className={classNames(
-              "max-h-90vh w-full rounded-t-2xl border border-border-secondary bg-neutral-white p-xlarge duration-300 ease-in-out lg:max-h-screen lg:w-[336px] lg:rounded-none",
-              {
-                "animate-slideInFromBottom lg:animate-slideInFromRight": isOpen,
-                "animate-slideOutToBottom lg:animate-slideOutToRight": !isOpen,
-              }
-            )}
-            role="dialog"
-            aria-labelledby={title}
-            aria-modal="true"
-            tabIndex={-1}
-            onClick={handleClick}
+            className={classNames("mb-small flex items-center", {
+              "justify-end": !hasTitle,
+              "justify-between": hasTitle,
+            })}
           >
-            <div className="mb-small flex items-center justify-between">
-              <Title id={title}>{title}</Title>
-              <IconButton
-                icon="closeXMark"
-                label="Close drawer"
-                className="text-neutral-600"
-                variant="link"
-                onClick={onClose}
-                ref={closeButtonRef}
-              />
-            </div>
-            <div className="max-h-80vh overflow-y-auto">{children}</div>
+            {title && <Title id={titleId}>{title}</Title>}
+            <IconButton
+              className="text-neutral-600"
+              icon="closeXMark"
+              iconProps={{ size: 14 }}
+              label="Close drawer"
+              onClick={onCloseWithAnimation}
+              variant="link"
+            />
           </div>
+          <div className="max-h-full overflow-y-auto">{children}</div>
         </div>
-      </Backdrop>
-    </div>
+      </div>
+    </FocusTrap>
   );
 
-  function handleClick(event: React.MouseEvent<HTMLDivElement>) {
-    event.stopPropagation();
-  }
+  return createPortal(portalContent, document.body);
 };
