@@ -4,7 +4,9 @@ import AlertIcon from "./assets/alert-diamond-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down.svg";
 import CheckIcon from "./assets/check-icon.svg";
+import ChevronDown from "./assets/chevron-down.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
+import ChevronUp from "./assets/chevron-up.svg";
 import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CpuChipIcon from "./assets/cpu-chip-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
@@ -20,7 +22,9 @@ const IconMap = Object.freeze({
   apps: <AppsIcon />,
   bendArrowDown: <BendArrowDownIcon />,
   check: <CheckIcon />,
+  chevronDown: <ChevronDown />,
   chevronLeft: <ChevronLeftIcon />,
+  chevronUp: <ChevronUp />,
   closeXMark: <CloseXMarkIcon />,
   cpuChip: <CpuChipIcon />,
   ellipse: <EllipseIcon />,
