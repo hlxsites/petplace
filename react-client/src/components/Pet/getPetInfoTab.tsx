@@ -1,7 +1,7 @@
 import { PetInfo } from "~/mocks/MockRestApiServer";
 import { Text } from "../design-system/text/Text";
 
-type GetPetInfoTabProps = Omit<
+export type GetPetInfoTabProps = Omit<
   PetInfo,
   "id" | "img" | "isProtected" | "microchipNumber" | "name"
 >;
@@ -47,9 +47,9 @@ export function getPetInfoTab({
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2">
+    <div className="grid grid-cols-1 md:grid-cols-2" role="list">
       {getFields.map(({ label, value }) => (
-        <div className="pb-xsmall" key={label}>
+        <div className="pb-xsmall" key={label} role="listitem">
           <span>
             <Text size="sm" fontFamily="raleway" fontWeight="bold">
               {label}
