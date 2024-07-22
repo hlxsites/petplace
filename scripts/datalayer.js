@@ -101,9 +101,10 @@ const handleComparePlanClicks = (className) => {
 // CTA - hero banner, insurance button
 const handleCtaClicks = () => {
   if (window.location.pathname === `${window.hlx.contentBasePath}/`) {
-    document
-      .querySelector('.home-banner.image-hero')
-      .addEventListener('click', (ev) => {
+    handleComparePlanClicks('.insurance-search');
+
+    document.querySelectorAll('.home-banner.image-hero').forEach((banner) => {
+      banner.addEventListener('click', (ev) => {
         const btn = ev.target.closest('div');
         if (!btn) return;
         const title = btn.querySelector('h2').innerHTML;
@@ -111,7 +112,7 @@ const handleCtaClicks = () => {
 
         clickHelper('hero_cta_button', title, 'button', link);
       });
-    handleComparePlanClicks('.insurance-search');
+    });
   }
 
   if (
