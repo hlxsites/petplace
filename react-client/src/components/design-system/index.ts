@@ -4,6 +4,8 @@ export * from "./button/LinkButton";
 export * from "./button/LinkIconButton";
 export * from "./card/Card";
 export * from "./checkbox/Checkbox";
+export * from "./form/DisplayForm";
 export * from "./icon/Icon";
 export * from "./switch/Switch";
+export * from "./text/Text";
 export * from "./text/Title";
