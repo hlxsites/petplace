@@ -1,9 +1,43 @@
 import { PetInfo } from "~/mocks/MockRestApiServer";
 import { Button, Icon, Title } from "../design-system";
 import { Text } from "../design-system/text/Text";
+import { Tab } from "../design-system/tab/Tab";
+import { getPetInfoTab } from "./getPetInfoTab";
+import { getPetDocumentsTab } from "./getPetDocumentsTab";
 
 export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
-  const { breed, microchipNumber, name, sex } = petInfo;
+  const {
+    age,
+    breed,
+    dateOfBirth,
+    microchipNumber,
+    name,
+    mixedBreed,
+    sex,
+    spayedNeutered,
+    species,
+  } = petInfo;
+
+  const tabOptions: Tab[] = [
+    {
+      content: getPetInfoTab({
+        age,
+        breed,
+        dateOfBirth,
+        mixedBreed,
+        sex,
+        spayedNeutered,
+        species,
+      }),
+      icon: "paw",
+      label: "Pet info",
+    },
+    {
+      content: getPetDocumentsTab(),
+      icon: "file",
+      label: "Pet documents",
+    },
+  ];
 
   return (
     <div className="w-full p-large lg:p-xxlarge">
@@ -35,13 +69,17 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
             <Text aria-label={"Animal sex"} size="base">
               {sex}
             </Text>
-            <div className="px-medium flex">
+            <div className="flex px-medium">
               <Icon display="ellipse" size={4} />
             </div>
             <Text aria-label={"Animal breed"} size="base">
               {breed}
             </Text>
           </div>
+        </div>
+
+        <div className="mt-base">
+          <Tab tabs={tabOptions}></Tab>
         </div>
       </>
     );

@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Icon, IconProps } from "../icon/Icon";
 import { Text } from "../text/Text";
 
-type Tab = {
+export type Tab = {
   content: ReactNode;
   icon?: IconProps["display"];
   label: string;
