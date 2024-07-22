@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { PetCard } from "~/components/Pet/PetCard";
-import { Button, ButtonProps } from "~/components/design-system";
+import { Button, ButtonProps, LinkButton } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
 import { AppRoutePaths } from "../AppRoutePaths";
