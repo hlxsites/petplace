@@ -134,3 +134,7 @@
 .article-page .breadcrumb .category-link-btn[aria-current="page"] {
   color: var(--color-neutral-600);
 }
+
+.article-page :is(h3, h4, h5, h6, p, span) {
+  margin-top: 10px;
+}
