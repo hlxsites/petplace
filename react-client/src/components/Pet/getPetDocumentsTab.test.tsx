@@ -3,7 +3,7 @@ import { getPetDocumentsTab } from "./getPetDocumentsTab";
 
 const { getByText, getAllByRole } = screen;
 
-describe("getPetDocumentTab", () => {
+describe("getPetDocumentsTab", () => {
   it("should render all number of cards defined on the function", () => {
     getRenderer();
 
