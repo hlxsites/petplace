@@ -37,7 +37,7 @@ export const PetCard = ({
           {displayProtectedBadge && (
             <div
               className={cx(
-                "right-4 top-4 absolute flex h-8 w-8 items-center justify-center rounded-full",
+                "absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full",
                 {
                   "bg-success-background text-success-contrast":
                     displayProtectedBadge.isProtected,
