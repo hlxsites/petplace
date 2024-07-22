@@ -10,6 +10,8 @@ export const useCloseWithAnimation = ({
   const [isClosing, setIsClosing] = useState(false);
 
   const onCloseWithAnimation = () => {
+    if (isClosing) return;
+
     setIsClosing(true);
 
     setTimeout(() => {

@@ -6,8 +6,9 @@ import { Drawer } from "./Drawer";
 jest.mock(
   "focus-trap-react",
   () =>
-    ({ children }: { children: JSX.Element }) =>
-      children
+    ({ children }: { children: JSX.Element }) => (
+      <div data-testid="FocusTrap">{children}</div>
+    )
 );
 
 const { getByText, getByRole, getByTestId } = screen;
@@ -16,6 +17,11 @@ describe("<Drawer />", () => {
   it("should render the drawer", () => {
     getRenderer();
     expect(getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("should use FocusTrap", () => {
+    getRenderer();
+    expect(getByTestId("FocusTrap")).toBeInTheDocument();
   });
 
   it("should render drawer with opening animations", () => {
@@ -66,7 +72,7 @@ describe("<Drawer />", () => {
     getRenderer({ onClose });
 
     await userEvent.keyboard("[Escape]");
-    expect(onClose).toHaveBeenCalled();
+    await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
 
   it("should call onClose callbacks when clicking the drawer's backdrop", async () => {

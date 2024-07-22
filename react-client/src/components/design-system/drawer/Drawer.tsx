@@ -38,8 +38,8 @@ export const Drawer = ({
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (isOpen && event.key === "Escape") {
-        onClose();
+      if (!isClosing && isOpen && event.key === "Escape") {
+        onCloseWithAnimation();
       }
     }
 
@@ -47,22 +47,16 @@ export const Drawer = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isClosing, isOpen, onCloseWithAnimation]);
 
   if (!isOpen) return null;
 
   const hasTitle = !!title;
   const titleId = hasTitle ? `${id}-title` : undefined;
 
-  const handleOnClose = () => {
-    if (isClosing) return;
-
-    onCloseWithAnimation();
-  };
-
   const portalContent = (
     <>
-      <Backdrop isClosing={isClosing} isOpen={isOpen} onClick={handleOnClose} />
+      <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
       <FocusTrap
         focusTrapOptions={{
           clickOutsideDeactivates: true,
@@ -97,7 +91,7 @@ export const Drawer = ({
               icon="closeXMark"
               iconProps={{ size: 14 }}
               label="Close drawer"
-              onClick={handleOnClose}
+              onClick={onCloseWithAnimation}
               variant="link"
             />
           </div>
