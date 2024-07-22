@@ -105,7 +105,7 @@ const handleCtaClicks = () => {
 
     document.querySelectorAll('.home-banner.image-hero').forEach((banner) => {
       banner.addEventListener('click', (ev) => {
-        const btn = ev.target.closest('div');
+        const btn = ev.target.closest('.image-hero');
         if (!btn) return;
         const title = btn.querySelector('h2').innerHTML;
         const link = btn.querySelector('a').href;
