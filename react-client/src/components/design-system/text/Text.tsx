@@ -5,6 +5,7 @@ type StyleProps = {
   fontFamily?: "franklin" | "raleway" | "roboto";
   size?: "lg" | "base" | "sm" | "xs";
   srOnly?: boolean;
+  fontWeight?: "normal" | "bold";
 };
 
 type TextProps = StyleProps & {
@@ -34,9 +35,14 @@ export const Text = ({
   );
 };
 
-function useTextBase({ fontFamily = "franklin", size, srOnly }: StyleProps) {
+function useTextBase({
+  fontFamily = "franklin",
+  fontWeight = "normal",
+  size,
+  srOnly,
+}: StyleProps) {
   const className = classNames(
-    `font-${fontFamily} font-normal text-xs leading-4 inline-block`,
+    `font-${fontFamily} font-${fontWeight} text-xs leading-4 inline-block`,
     {
       "text-lg leading-7": size === "lg",
       "text-base leading-6": size === "base",
