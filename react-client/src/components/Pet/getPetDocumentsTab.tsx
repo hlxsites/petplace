@@ -32,10 +32,13 @@ export function getPetDocumentsTab() {
   ];
 
   return (
-    <div className="grid w-full grid-cols-2 gap-small lg:flex" role="list">
+    <div
+      className="grid w-full grid-cols-2 gap-small lg:grid-cols-4"
+      role="list"
+    >
       {petDocumentsList.map(({ label, icon, iconColor }) => (
         <Card key={label} role="listitem">
-          <div className="flex h-[116px] w-[142px] flex-col justify-between p-base">
+          <div className="flex h-[116px] flex-col justify-between p-base">
             <Icon className={`text-${iconColor}`} display={icon} />
             <Text size="sm" fontFamily="raleway" fontWeight="bold">
               {label}
