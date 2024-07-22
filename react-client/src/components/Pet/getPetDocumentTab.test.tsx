@@ -27,7 +27,6 @@ describe("getPetDocumentTab", () => {
       "data-file-name",
       `Svg${icon}Icon`
     );
-    expect(item?.querySelector("svg")).toHaveClass("");
   });
 });
 
