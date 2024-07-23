@@ -10,7 +10,6 @@ export type ButtonProps = UseButtonBase &
     iconLeft?: ButtonIcon;
     iconProps?: Omit<IconProps, "display">;
     iconRight?: ButtonIcon;
-    onClick?: () => void;
   };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
