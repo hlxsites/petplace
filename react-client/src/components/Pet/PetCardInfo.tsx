@@ -1,5 +1,5 @@
 import { PetInfo } from "~/mocks/MockRestApiServer";
-import { Button, Icon, Title } from "../design-system";
+import { Button, Title } from "../design-system";
 import { Text } from "../design-system/text/Text";
 import { Tab } from "../design-system/tab/Tab";
 import { getPetInfoTab } from "./getPetInfoTab";
@@ -69,19 +69,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
     const getMicrochipNumber = microchipNumber ?? "";
     return (
       <>
-        <div className="hidden md:block">
-          <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
-        </div>
-
-        <div className="block md:hidden">
-          <div aria-label="Animal sex and breed" className="flex items-center">
-            <Text size="base">{sex}</Text>
-            <div className="flex px-medium">
-              <Icon display="ellipse" size={4} />
-            </div>
-            <Text size="base">{breed}</Text>
-          </div>
-        </div>
+        <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
 
         <div className="mt-base">
           <Tab tabs={tabOptions}></Tab>

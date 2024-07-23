@@ -1,8 +1,8 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { PetCardInfo } from "./PetCardInfo";
 import { ComponentProps } from "react";
 
-const { getByRole, getByText, getByLabelText } = screen;
+const { getByRole, getByText } = screen;
 
 describe("PetCardInfo", () => {
   it.each(["Mark", "Joy"])("should render Title with given value", (name) => {
@@ -27,17 +27,6 @@ describe("PetCardInfo", () => {
       expect(getByText(`Microchip#: ${microchipNumber}`)).toBeInTheDocument();
     }
   );
-
-  it("should render sex and breed info", () => {
-    const breed = "Dino";
-    const sex = "Female";
-
-    getRenderer({ breed, sex });
-
-    const parentElement = getByLabelText("Animal sex and breed");
-    expect(within(parentElement).getByText(breed)).toBeInTheDocument();
-    expect(within(parentElement).getByText(sex)).toBeInTheDocument();
-  });
 
   it("should match snapshot to assure that the component is being rendered correctly", () => {
     const { container } = getRenderer();
