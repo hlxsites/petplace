@@ -6,7 +6,6 @@ import {
   pushToDataLayer,
   articleLinksHelper,
   articlePopularHelper,
-  articlePrevNextHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -39,7 +38,6 @@ const handleArticleShare = () => {
 const handleArticleClicks = () => {
   articleLinksHelper();
   articlePopularHelper();
-  articlePrevNextHelper();
 };
 
 // HEADER - nav, menu, sidebar, social

@@ -36,7 +36,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         aria-label={label}
         className={classNames(
           baseClassName,
-          "btn-square py-0 mx-1 min-w-0 px-[12px]",
+          "btn-square mx-1 px-medium min-w-0 py-0",
           className
         )}
         type={type}

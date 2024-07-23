@@ -1,9 +1,32 @@
 /** @type {import('tailwindcss').Config} */
+
+const SPACING_DEFAULTS = {
+  0: "0",
+  auto: "auto",
+  xxxxxlarge: "var(--xxxxxlarge)",
+  xxxxlarge: "var(--xxxxlarge)",
+  xxxlarge: "var(--xxxlarge)",
+  xxlarge: "var(--xxlarge)",
+  xlarge: "var(--xlarge)",
+  large: "var(--large)",
+  base: "var(--base)",
+  medium: "var(--medium)",
+  small: "var(--small)",
+  xsmall: "var(--xsmall)",
+};
+
 module.exports = {
-  mode: "jit",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  mode: "jit",
+  plugins: [],
+  safelist: ["aria-selected:true", "aria-selected:false"],
+
   theme: {
+    boxShadow: {
+      "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
+    },
     colors: {
+      "brand-secondary": "var(--orange-300-contrast)",
       "purple-500": "var(--purple-500)",
       "purple-300": "var(--purple-300)",
       "purple-100": "var(--purple-100)",
@@ -50,9 +73,15 @@ module.exports = {
       "neutral-50": "var(--neutral-50)",
       "neutral-white": "var(--neutral-white)",
       "background-disabled": "var(--background-disabled)",
+      "border-secondary": "var(--border-secondary)",
       white: "#ffffff",
       black: "#000000",
       transparent: "transparent",
+    },
+    fontFamily: {
+      franklin: "var(--body-font-family)",
+      raleway: "var(--heading-font-family)",
+      roboto: "var(--fixed-font-family)",
     },
     fontSize: {
       xs: "0.75rem",
@@ -62,28 +91,54 @@ module.exports = {
       "2xl": "1.5rem",
       "3xl": "2rem",
     },
-    margin: {
-      0: "0",
-      auto: "auto",
-      xxlarge: "var(--xxlarge)",
-      xlarge: "var(--xlarge)",
-      large: "var(--large)",
-      base: "var(--base)",
-      small: "var(--small)",
-      xsmall: "var(--xsmall)",
+    gap: SPACING_DEFAULTS,
+    margin: SPACING_DEFAULTS,
+    padding: SPACING_DEFAULTS,
+    space: SPACING_DEFAULTS,
+    translate: SPACING_DEFAULTS,
+    extend: {
+      height: SPACING_DEFAULTS,
+      width: SPACING_DEFAULTS,
     },
-    padding: {
-      0: "0",
-      xxlarge: "var(--xxlarge)",
-      xlarge: "var(--xlarge)",
-      large: "var(--large)",
-      base: "var(--base)",
-      small: "var(--small)",
-      xsmall: "var(--xsmall)",
-    },
-    boxShadow: {
-      "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
+    extend: {
+      maxHeight: {
+        '90vh': '90vh',
+        '80vh': '80vh',
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+        slideInFromBottom: {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        slideOutToBottom: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(100%)" },
+        },
+        slideInFromRight: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        slideOutToRight: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 300ms ease-in-out",
+        fadeOut: "fadeOut 300ms ease-in-out",
+        slideInFromBottom: "slideInFromBottom 300ms forwards",
+        slideOutToBottom: "slideOutToBottom 300ms forwards",
+        slideInFromRight: "slideInFromRight 300ms forwards",
+        slideOutToRight: "slideOutToRight 300ms forwards",
+      },
     },
   },
-  plugins: [],
 };
