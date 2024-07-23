@@ -14,7 +14,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         Test pet card info
       </h1>
       <button
-        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100"
+        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 hidden lg:block"
         type="button"
       >
         <div
@@ -26,6 +26,20 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
           />
         </div>
         Report lost pet
+      </button>
+      <button
+        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 block lg:hidden"
+        type="button"
+      >
+        <div
+          class="icon w-base lg:w-large mr-small text-brand-secondary"
+          style="height: 16px; width: 16px;"
+        >
+          <svg
+            data-file-name="SvgAppsIcon"
+          />
+        </div>
+        Actions
       </button>
     </div>
     <div
@@ -41,6 +55,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
       class="block md:hidden"
     >
       <div
+        aria-label="Animal sex and breed"
         class="flex items-center"
       >
         <p

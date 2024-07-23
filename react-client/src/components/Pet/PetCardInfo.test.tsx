@@ -1,8 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { PetCardInfo } from "./PetCardInfo";
 import { ComponentProps } from "react";
 
-const { getByRole, getByText } = screen;
+const { getByRole, getByText, getByLabelText } = screen;
 
 describe("PetCardInfo", () => {
   it.each(["Mark", "Joy"])("should render Title with given value", (name) => {
@@ -34,8 +34,9 @@ describe("PetCardInfo", () => {
 
     getRenderer({ breed, sex });
 
-    expect(getByText(breed)).toBeInTheDocument();
-    expect(getByText(sex)).toBeInTheDocument();
+    const parentElement = getByLabelText("Animal sex and breed");
+    expect(within(parentElement).getByText(breed)).toBeInTheDocument();
+    expect(within(parentElement).getByText(sex)).toBeInTheDocument();
   });
 
   it("should match snapshot to assure that the component is being rendered correctly", () => {
