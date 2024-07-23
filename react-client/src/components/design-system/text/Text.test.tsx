@@ -47,7 +47,7 @@ describe("Text", () => {
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-xs");
   });
 
-  it.each(["base", "sm", "lg"] as ComponentProps<typeof Text>["size"][])(
+  it.each(["base", "sm"] as ComponentProps<typeof Text>["size"][])(
     "should render component with size %s",
     (size) => {
       getRenderer({ size });
@@ -55,6 +55,12 @@ describe("Text", () => {
       expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${size}`);
     }
   );
+
+  it("should render component with size large", () => {
+    getRenderer({ size: "lg" });
+
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-xl`);
+  });
 
   it("should not be screen reader only by default", () => {
     getRenderer();
