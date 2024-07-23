@@ -18,7 +18,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         type="button"
       >
         <div
-          class="icon w-base lg:w-large mr-small"
+          class="icon w-base lg:w-large mr-small text-brand-secondary"
           style="height: 16px; width: 16px;"
         >
           <svg
@@ -47,7 +47,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
           class="font-franklin font-normal inline-block text-base leading-6"
         />
         <div
-          class="flex px-medium"
+          class="px-medium flex"
         >
           <div
             class="icon w-base lg:w-large"
