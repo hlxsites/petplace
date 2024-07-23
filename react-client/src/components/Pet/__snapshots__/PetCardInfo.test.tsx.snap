@@ -14,7 +14,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         Test pet card info
       </h1>
       <button
-        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100"
+        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 hidden lg:block"
         type="button"
       >
         <div
@@ -27,39 +27,243 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         </div>
         Report lost pet
       </button>
-    </div>
-    <div
-      class="hidden md:block"
-    >
-      <p
-        class="font-franklin font-normal inline-block text-base leading-6"
+      <button
+        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 block lg:hidden"
+        type="button"
       >
-        Microchip#: 
-      </p>
+        <div
+          class="icon w-base lg:w-large mr-small text-brand-secondary"
+          style="height: 16px; width: 16px;"
+        >
+          <svg
+            data-file-name="SvgAppsIcon"
+          />
+        </div>
+        Actions
+      </button>
     </div>
+    <p
+      class="inline-block font-franklin font-normal text-base leading-6"
+    >
+      Microchip#: 
+    </p>
     <div
-      class="block md:hidden"
+      class="mt-base"
     >
       <div
-        class="flex items-center"
+        data-orientation="horizontal"
+        dir="ltr"
       >
-        <p
-          class="font-franklin font-normal inline-block text-base leading-6"
-        />
         <div
-          class="px-medium flex"
+          aria-orientation="horizontal"
+          class="flex"
+          data-orientation="horizontal"
+          role="tablist"
+          style="outline: none;"
+          tabindex="0"
+        >
+          <button
+            aria-controls="radix-:rf:-content-Pet info"
+            aria-label="Tab option: Pet info"
+            aria-selected="true"
+            class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+            data-orientation="horizontal"
+            data-radix-collection-item=""
+            data-state="active"
+            id="radix-:rf:-trigger-Pet info"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            <div
+              class="flex place-items-center gap-small"
+            >
+              <div
+                class="icon w-base lg:w-large"
+                style="height: 16px; width: 16px;"
+              >
+                <svg
+                  data-file-name="SvgPawIcon"
+                />
+              </div>
+              <p
+                class="inline-block font-franklin font-normal text-base leading-6"
+              >
+                Pet info
+              </p>
+            </div>
+          </button>
+          <button
+            aria-controls="radix-:rf:-content-Pet documents"
+            aria-label="Tab option: Pet documents"
+            aria-selected="false"
+            class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+            data-orientation="horizontal"
+            data-radix-collection-item=""
+            data-state="inactive"
+            id="radix-:rf:-trigger-Pet documents"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            <div
+              class="flex place-items-center gap-small"
+            >
+              <div
+                class="icon w-base lg:w-large"
+                style="height: 16px; width: 16px;"
+              >
+                <svg
+                  data-file-name="SvgFileIcon"
+                />
+              </div>
+              <p
+                class="inline-block font-franklin font-normal text-base leading-6"
+              >
+                Pet documents
+              </p>
+            </div>
+          </button>
+        </div>
+        <div
+          aria-label="Tab content of: Pet info"
+          aria-labelledby="radix-:rf:-trigger-Pet info"
+          class="pt-large"
+          data-orientation="horizontal"
+          data-state="active"
+          id="radix-:rf:-content-Pet info"
+          role="tabpanel"
+          style="animation-duration: 0s;"
+          tabindex="0"
         >
           <div
-            class="icon w-base lg:w-large"
-            style="height: 4px; width: 4px;"
+            class="grid grid-cols-1 md:grid-cols-2"
+            role="list"
           >
-            <svg
-              data-file-name="SvgEllipseIcon"
-            />
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Age
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Species
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Sex
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Breed
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  DOB
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Mixed breed
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Spayed/Neutered
+                  :
+                </span>
+                 
+              </p>
+            </div>
           </div>
         </div>
-        <p
-          class="font-franklin font-normal inline-block text-base leading-6"
+        <div
+          aria-label="Tab content of: Pet documents"
+          aria-labelledby="radix-:rf:-trigger-Pet documents"
+          class="pt-large"
+          data-orientation="horizontal"
+          data-state="inactive"
+          hidden=""
+          id="radix-:rf:-content-Pet documents"
+          role="tabpanel"
+          tabindex="0"
         />
       </div>
     </div>

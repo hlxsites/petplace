@@ -30,12 +30,23 @@ export const PetProfileIndex = () => {
 
 function renderActionsButton() {
   return (
-    <Button
-      iconLeft="apps"
-      variant="secondary"
-      iconProps={{ className: "text-brand-secondary" }}
-    >
-      Actions
-    </Button>
+    <>
+      <Button
+        className="hidden lg:block"
+        iconLeft="apps"
+        variant="secondary"
+        iconProps={{ className: "text-brand-secondary" }}
+      >
+        Actions
+      </Button>
+      <Button
+        className="block lg:hidden"
+        iconLeft="shieldGood"
+        iconProps={{ className: "text-brand-secondary" }}
+        variant="secondary"
+      >
+        Report lost pet
+      </Button>
+    </>
   );
 }

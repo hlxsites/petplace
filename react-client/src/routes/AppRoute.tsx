@@ -11,6 +11,10 @@ import { loader as PetProfileIndexLoader } from "./pet-profile/usePetProfileInde
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
 
+import { lazy } from "react";
+
+const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
+
 const routes: PetPlaceRouteObject[] = [
   {
     id: "root",
@@ -63,6 +67,23 @@ const routes: PetPlaceRouteObject[] = [
     ],
   },
 ];
+
+// We don't want to include the playground route in production
+if (window.location.hostname.includes("localhost")) {
+  const playgroundRoute: PetPlaceRouteObject = {
+    id: "playground",
+    path: AppRoutePaths.playground,
+    children: [
+      {
+        id: "playgroundIndex",
+        element: <PlaygroundPage />,
+        index: true,
+      },
+    ],
+  };
+
+  routes[0].children?.push(playgroundRoute);
+}
 
 const router = createBrowserRouter(routes, {
   basename: "/account",

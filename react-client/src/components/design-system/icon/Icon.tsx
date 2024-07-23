@@ -10,9 +10,13 @@ import ChevronUp from "./assets/chevron-up.svg";
 import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CpuChipIcon from "./assets/cpu-chip-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
+import FileIcon from "./assets/file-icon.svg";
+import MedicineIcon from "./assets/medicine-icon.svg";
 import PawIcon from "./assets/paw-icon.svg";
+import PippetIcon from "./assets/pippet-icon.svg";
 import ShieldGoodIcon from "./assets/shield-good-icon.svg";
 import ShieldOffIcon from "./assets/shield-off-icon.svg";
+import SyringeIcon from "./assets/syringe-icon.svg";
 import TransferIcon from "./assets/transfer-icon.svg";
 import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 
@@ -28,9 +32,13 @@ const IconMap = Object.freeze({
   closeXMark: <CloseXMarkIcon />,
   cpuChip: <CpuChipIcon />,
   ellipse: <EllipseIcon />,
+  file: <FileIcon />,
+  medicine: <MedicineIcon />,
   paw: <PawIcon />,
+  pippet: <PippetIcon />,
   shieldGood: <ShieldGoodIcon />,
   shieldOff: <ShieldOffIcon />,
+  syringe: <SyringeIcon />,
   transfer: <TransferIcon />,
   warningTriangle: <WarningTriangleIcon />,
 });
