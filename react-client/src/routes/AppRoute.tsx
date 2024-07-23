@@ -15,21 +15,6 @@ import { lazy } from "react";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
-const playgroundRoute = (() => {
-  if (process.env.isProdEnv) return undefined;
-  return {
-    id: "playground",
-    path: AppRoutePaths.playground,
-    children: [
-      {
-        id: "playgroundIndex",
-        element: <PlaygroundPage />,
-        index: true,
-      },
-    ],
-  };
-})();
-
 const routes: PetPlaceRouteObject[] = [
   {
     id: "root",
@@ -79,11 +64,26 @@ const routes: PetPlaceRouteObject[] = [
           },
         ],
       },
-      // @ts-expect-error - asdfasd
-      playgroundRoute,
     ],
   },
 ];
+
+// We don't want to include the playground route in production
+if (window.location.hostname.includes("localhost")) {
+  const playgroundRoute: PetPlaceRouteObject = {
+    id: "playground",
+    path: AppRoutePaths.playground,
+    children: [
+      {
+        id: "playgroundIndex",
+        element: <PlaygroundPage />,
+        index: true,
+      },
+    ],
+  };
+
+  routes[0].children?.push(playgroundRoute);
+}
 
 const router = createBrowserRouter(routes, {
   basename: "/account",
