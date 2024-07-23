@@ -11,6 +11,25 @@ import { loader as PetProfileIndexLoader } from "./pet-profile/usePetProfileInde
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
 
+import { lazy } from "react";
+
+const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
+
+const playgroundRoute = (() => {
+  if (process.env.isProdEnv) return undefined;
+  return {
+    id: "playground",
+    path: AppRoutePaths.playground,
+    children: [
+      {
+        id: "playgroundIndex",
+        element: <PlaygroundPage />,
+        index: true,
+      },
+    ],
+  };
+})();
+
 const routes: PetPlaceRouteObject[] = [
   {
     id: "root",
@@ -60,6 +79,8 @@ const routes: PetPlaceRouteObject[] = [
           },
         ],
       },
+      // @ts-expect-error - asdfasd
+      playgroundRoute,
     ],
   },
 ];
