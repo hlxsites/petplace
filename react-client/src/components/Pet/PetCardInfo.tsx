@@ -45,11 +45,20 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
         <Title level="h1">{name}</Title>
 
         <Button
+          className="hidden lg:block"
           iconLeft="shieldGood"
           iconProps={{ className: "text-brand-secondary" }}
           variant="secondary"
         >
           Report lost pet
+        </Button>
+        <Button
+          className="block lg:hidden"
+          iconLeft="apps"
+          variant="secondary"
+          iconProps={{ className: "text-brand-secondary" }}
+        >
+          Actions
         </Button>
       </div>
       {renderSubInfo()}
@@ -65,16 +74,12 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
         </div>
 
         <div className="block md:hidden">
-          <div className="flex items-center">
-            <Text aria-label={"Animal sex"} size="base">
-              {sex}
-            </Text>
+          <div aria-label="Animal sex and breed" className="flex items-center">
+            <Text size="base">{sex}</Text>
             <div className="flex px-medium">
               <Icon display="ellipse" size={4} />
             </div>
-            <Text aria-label={"Animal breed"} size="base">
-              {breed}
-            </Text>
+            <Text size="base">{breed}</Text>
           </div>
         </div>
 
