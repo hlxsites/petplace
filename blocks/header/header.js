@@ -77,7 +77,9 @@ export default async function decorate(block) {
         .setAttribute('aria-label', getPlaceholder('logoLinkLabel'));
 
       // cta button
-      headerContainer.querySelector('.header-quote-cta a').innerText = getPlaceholder('getQuoteLabel');
+      const ctaButton = headerContainer.querySelector('.header-quote-cta a');
+      ctaButton.innerText = getPlaceholder('getQuoteLabel');
+      ctaButton.setAttribute('target', '_blank');
 
       decorateIcons(headerContainer);
       headerContent.append(headerContainer);

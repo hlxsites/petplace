@@ -22,7 +22,7 @@ export default async function decorate(block) {
   button.textContent = 'Compare Plans';
   button.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/pet-insurance';
+    window.open('/pet-insurance', '_blank');
   });
 
   block.append(heading);
