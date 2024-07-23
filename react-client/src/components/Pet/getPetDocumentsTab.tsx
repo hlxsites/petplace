@@ -12,22 +12,22 @@ export function getPetDocumentsTab() {
     {
       label: "Medical Records",
       icon: "medicine",
-      iconColor: "green-300",
+      iconColor: "text-green-300",
     },
     {
       label: "Vaccines",
       icon: "syringe",
-      iconColor: "purple-300",
+      iconColor: "text-purple-300",
     },
     {
       label: "Tests",
       icon: "pippet",
-      iconColor: "blue-300",
+      iconColor: "text-blue-300",
     },
     {
       label: "Other documents",
       icon: "file",
-      iconColor: "orange-300-contrast",
+      iconColor: "text-orange-300-contrast",
     },
   ];
 
@@ -39,7 +39,7 @@ export function getPetDocumentsTab() {
       {petDocumentsList.map(({ label, icon, iconColor }) => (
         <Card key={label} role="listitem">
           <div className="flex h-[116px] flex-col justify-between p-base">
-            <Icon className={`text-${iconColor}`} display={icon} />
+            <Icon className={iconColor} display={icon} />
             <Text size="sm" fontFamily="raleway" fontWeight="bold">
               {label}
             </Text>
