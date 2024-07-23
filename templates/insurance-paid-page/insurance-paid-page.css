@@ -12,7 +12,8 @@
     grid-area: article;
   }
 
-  .sidebar-right {
+  .sidebar-right,
+  .article-cta-container {
     display: none;
   }
 
