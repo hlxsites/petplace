@@ -1,22 +1,26 @@
 import * as RadixTab from "@radix-ui/react-tabs";
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 import { Icon, IconProps } from "../icon/Icon";
 import { Text } from "../text/Text";
 
 export type Tab = {
-  content: ReactNode;
+  content: () => ReactNode;
   icon?: IconProps["display"];
   label: string;
 };
 
-type TabProps = {
+type RadixTabProps = ComponentProps<typeof RadixTab.Root>;
+
+export type TabsProps = Pick<RadixTabProps, "value"> & {
+  "aria-label"?: string;
+  onChange: RadixTabProps["onValueChange"];
   tabs: Tab[];
 };
 
-export const Tab = ({ tabs }: TabProps) => {
+export const Tabs = ({ onChange, tabs, ...rest }: TabsProps) => {
   return (
     <>
-      <RadixTab.Root defaultValue={tabs[0].label}>
+      <RadixTab.Root {...rest} onValueChange={onChange}>
         <RadixTab.List className="flex">
           {tabs.map(({ label, icon }) => (
             <RadixTab.Trigger
@@ -34,16 +38,19 @@ export const Tab = ({ tabs }: TabProps) => {
             </RadixTab.Trigger>
           ))}
         </RadixTab.List>
-        {tabs.map(({ content, label }) => (
-          <RadixTab.Content
-            aria-label={`Tab content of: ${label}`}
-            className="pt-large"
-            key={label}
-            value={label}
-          >
-            {content}
-          </RadixTab.Content>
-        ))}
+        {tabs.map(({ content, label }) => {
+          const isSelected = rest.value === label;
+          return (
+            <RadixTab.Content
+              aria-label={`Tab content of: ${label}`}
+              className="pt-large"
+              key={label}
+              value={label}
+            >
+              {isSelected && content()}
+            </RadixTab.Content>
+          );
+        })}
       </RadixTab.Root>
     </>
   );

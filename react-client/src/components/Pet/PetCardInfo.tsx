@@ -1,7 +1,5 @@
 import { PetInfo } from "~/mocks/MockRestApiServer";
-import { Button, Title } from "../design-system";
-import { Tab } from "../design-system/tab/Tab";
-import { Text } from "../design-system/text/Text";
+import { Button, Tab, Text, Title, UncontrolledTabs } from "../design-system";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 
@@ -20,20 +18,21 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
 
   const tabOptions: Tab[] = [
     {
-      content: PetInfoTabContent({
-        age,
-        breed,
-        dateOfBirth,
-        mixedBreed,
-        sex,
-        spayedNeutered,
-        species,
-      }),
+      content: () =>
+        PetInfoTabContent({
+          age,
+          breed,
+          dateOfBirth,
+          mixedBreed,
+          sex,
+          spayedNeutered,
+          species,
+        }),
       icon: "paw",
       label: "Pet info",
     },
     {
-      content: PetDocumentsTabContent(),
+      content: () => <PetDocumentsTabContent />,
       icon: "file",
       label: "Pet documents",
     },
@@ -72,7 +71,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
         <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
 
         <div className="mt-base">
-          <Tab tabs={tabOptions}></Tab>
+          <UncontrolledTabs tabs={tabOptions} />
         </div>
       </>
     );

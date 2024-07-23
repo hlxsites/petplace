@@ -1,18 +1,18 @@
 import { render, screen } from "@testing-library/react";
-import { Tab } from "./Tab";
-import { ComponentProps } from "react";
 import userEvent from "@testing-library/user-event";
+import { ComponentProps } from "react";
+import { Tabs, TabsProps } from "./Tabs";
 
-const { getByRole, getByText, queryByText } = screen;
+const { getByRole, getByText } = screen;
 
-const testTabs: ComponentProps<typeof Tab>["tabs"] = [
+const testTabs: ComponentProps<typeof Tabs>["tabs"] = [
   {
-    content: <p>Content 1</p>,
+    content: () => <p>Content 1</p>,
     icon: "check",
     label: "Tab 1",
   },
   {
-    content: <p>Content 2</p>,
+    content: () => <p>Content 2</p>,
     icon: "ellipse",
     label: "Tab 2",
   },
@@ -23,11 +23,12 @@ describe("Tab", () => {
     getRenderer({
       tabs: [
         {
-          content: <p>Hello world</p>,
+          content: () => <p>Hello world</p>,
           icon: "apps",
           label: "My super tab",
         },
       ],
+      value: "My super tab",
     });
 
     expect(
@@ -38,7 +39,7 @@ describe("Tab", () => {
     ).toHaveTextContent("Hello world");
   });
 
-  it("should render first tab as active by default", () => {
+  it("should render first tab as active", () => {
     getRenderer();
 
     expect(getByRole("tab", { name: "Tab option: Tab 1" })).toHaveAttribute(
@@ -51,53 +52,20 @@ describe("Tab", () => {
     );
   });
 
-  it("should be able to switch between on tabs", async () => {
-    getRenderer();
-
-    expect(getByRole("tab", { name: "Tab option: Tab 2" })).toHaveAttribute(
-      "aria-selected",
-      "false"
-    );
-
-    // selecting TAB 2
-    await userEvent.click(getByText("Tab 2"));
-    expect(getByRole("tab", { name: "Tab option: Tab 2" })).toHaveAttribute(
-      "aria-selected",
-      "true"
-    );
-    expect(getByRole("tab", { name: "Tab option: Tab 1" })).toHaveAttribute(
-      "aria-selected",
-      "false"
-    );
-
-    // selecting TAB 1
-    await userEvent.click(getByText("Tab 1"));
-    expect(getByRole("tab", { name: "Tab option: Tab 1" })).toHaveAttribute(
-      "aria-selected",
-      "true"
-    );
-    expect(getByRole("tab", { name: "Tab option: Tab 2" })).toHaveAttribute(
-      "aria-selected",
-      "false"
-    );
-  });
-
-  it("should switch content when clicking on tabs", async () => {
-    getRenderer();
-
-    expect(getByText("Content 1")).toBeInTheDocument();
-    expect(queryByText("Content 2")).not.toBeInTheDocument();
+  it("should call onChange callback", async () => {
+    const onChange = jest.fn();
+    getRenderer({ onChange });
+    expect(onChange).not.toHaveBeenCalled();
 
     await userEvent.click(getByText("Tab 2"));
-    expect(queryByText("Content 1")).not.toBeInTheDocument();
-    expect(getByText("Content 2")).toBeInTheDocument();
+    expect(onChange).toHaveBeenCalledWith("Tab 2");
   });
 
   it("should render the tab label option with the given icon", () => {
     getRenderer({
       tabs: [
         {
-          content: <p>warning message</p>,
+          content: () => <p>warning message</p>,
           icon: "warningTriangle",
           label: "Warning tab",
         },
@@ -135,7 +103,12 @@ describe("Tab", () => {
 });
 
 function getRenderer({
+  onChange = jest.fn(),
   tabs = testTabs,
-}: Partial<ComponentProps<typeof Tab>> = {}) {
-  return render(<Tab tabs={tabs} />);
+  value = testTabs[0].label,
+  ...rest
+}: Partial<TabsProps> = {}) {
+  return render(
+    <Tabs onChange={onChange} tabs={tabs} value={value} {...rest} />
+  );
 }
