@@ -5,5 +5,5 @@ LICENSE
 package.json
 package-lock.json
 test/*
-
+auth-pages/*
 react-client/*
