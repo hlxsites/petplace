@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { getPetInfoTab, GetPetInfoTabProps } from "./getPetInfoTab";
+import { GetPetInfoTabProps, PetInfoTabContent } from "./PetInfoTabContent";
 
 const mockPetInfo = {
   age: "2 years",
@@ -54,5 +54,5 @@ describe("getPetInfoTab", () => {
 });
 
 function getRenderer(petInfo: GetPetInfoTabProps) {
-  return render(getPetInfoTab(petInfo));
+  return render(PetInfoTabContent(petInfo));
 }

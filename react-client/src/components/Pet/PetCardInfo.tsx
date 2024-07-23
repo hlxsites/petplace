@@ -1,9 +1,9 @@
 import { PetInfo } from "~/mocks/MockRestApiServer";
 import { Button, Title } from "../design-system";
-import { Text } from "../design-system/text/Text";
 import { Tab } from "../design-system/tab/Tab";
-import { getPetInfoTab } from "./getPetInfoTab";
-import { getPetDocumentsTab } from "./getPetDocumentsTab";
+import { Text } from "../design-system/text/Text";
+import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
+import { PetInfoTabContent } from "./PetInfoTabContent";
 
 export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   const {
@@ -20,7 +20,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
 
   const tabOptions: Tab[] = [
     {
-      content: getPetInfoTab({
+      content: PetInfoTabContent({
         age,
         breed,
         dateOfBirth,
@@ -33,7 +33,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
       label: "Pet info",
     },
     {
-      content: getPetDocumentsTab(),
+      content: PetDocumentsTabContent(),
       icon: "file",
       label: "Pet documents",
     },

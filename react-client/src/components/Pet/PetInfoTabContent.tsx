@@ -6,7 +6,7 @@ export type GetPetInfoTabProps = Omit<
   "id" | "img" | "isProtected" | "microchipNumber" | "name"
 >;
 
-export function getPetInfoTab({
+export function PetInfoTabContent({
   age,
   breed,
   dateOfBirth,

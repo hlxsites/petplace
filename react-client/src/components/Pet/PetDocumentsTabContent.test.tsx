@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { getPetDocumentsTab } from "./getPetDocumentsTab";
+import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 
 const { getByText, getAllByRole } = screen;
 
@@ -31,5 +31,5 @@ describe("getPetDocumentsTab", () => {
 });
 
 function getRenderer() {
-  return render(getPetDocumentsTab());
+  return render(PetDocumentsTabContent());
 }

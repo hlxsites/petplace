@@ -7,7 +7,7 @@ type PetDocument = {
   iconColor: string;
 };
 
-export function getPetDocumentsTab() {
+export function PetDocumentsTabContent() {
   const petDocumentsList: PetDocument[] = [
     {
       label: "Medical Records",
