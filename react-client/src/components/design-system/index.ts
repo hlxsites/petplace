@@ -6,4 +6,6 @@ export * from "./card/Card";
 export * from "./checkbox/Checkbox";
 export * from "./icon/Icon";
 export * from "./switch/Switch";
+export * from "./text/Text";
+export * from "./text/TextSpan";
 export * from "./text/Title";

@@ -1,9 +1,43 @@
 import { PetInfo } from "~/mocks/MockRestApiServer";
-import { Button, Icon, Title } from "../design-system";
+import { Button, Title } from "../design-system";
+import { Tab } from "../design-system/tab/Tab";
 import { Text } from "../design-system/text/Text";
+import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
+import { PetInfoTabContent } from "./PetInfoTabContent";
 
 export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
-  const { breed, microchipNumber, name, sex } = petInfo;
+  const {
+    age,
+    breed,
+    dateOfBirth,
+    microchipNumber,
+    name,
+    mixedBreed,
+    sex,
+    spayedNeutered,
+    species,
+  } = petInfo;
+
+  const tabOptions: Tab[] = [
+    {
+      content: PetInfoTabContent({
+        age,
+        breed,
+        dateOfBirth,
+        mixedBreed,
+        sex,
+        spayedNeutered,
+        species,
+      }),
+      icon: "paw",
+      label: "Pet info",
+    },
+    {
+      content: PetDocumentsTabContent(),
+      icon: "file",
+      label: "Pet documents",
+    },
+  ];
 
   return (
     <div className="w-full p-large lg:p-xxlarge">
@@ -11,11 +45,20 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
         <Title level="h1">{name}</Title>
 
         <Button
+          className="hidden lg:block"
           iconLeft="shieldGood"
           iconProps={{ className: "text-brand-secondary" }}
           variant="secondary"
         >
           Report lost pet
+        </Button>
+        <Button
+          className="block lg:hidden"
+          iconLeft="apps"
+          variant="secondary"
+          iconProps={{ className: "text-brand-secondary" }}
+        >
+          Actions
         </Button>
       </div>
       {renderSubInfo()}
@@ -26,22 +69,10 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
     const getMicrochipNumber = microchipNumber ?? "";
     return (
       <>
-        <div className="hidden md:block">
-          <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
-        </div>
+        <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
 
-        <div className="block md:hidden">
-          <div className="flex items-center">
-            <Text aria-label={"Animal sex"} size="base">
-              {sex}
-            </Text>
-            <div className="px-medium flex">
-              <Icon display="ellipse" size={4} />
-            </div>
-            <Text aria-label={"Animal breed"} size="base">
-              {breed}
-            </Text>
-          </div>
+        <div className="mt-base">
+          <Tab tabs={tabOptions}></Tab>
         </div>
       </>
     );

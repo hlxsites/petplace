@@ -28,16 +28,6 @@ describe("PetCardInfo", () => {
     }
   );
 
-  it("should render sex and breed info", () => {
-    const breed = "Dino";
-    const sex = "Female";
-
-    getRenderer({ breed, sex });
-
-    expect(getByText(breed)).toBeInTheDocument();
-    expect(getByText(sex)).toBeInTheDocument();
-  });
-
   it("should match snapshot to assure that the component is being rendered correctly", () => {
     const { container } = getRenderer();
 
