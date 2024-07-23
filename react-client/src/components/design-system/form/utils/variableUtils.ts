@@ -1,6 +1,7 @@
 import {
   type ConditionCriteria,
   type ConditionExpression,
+  type ElementUnion,
   type FormSchema,
   type FormVariable,
   type InputValue,
@@ -14,45 +15,51 @@ export function replaceVariablesInSettings(
 ): FormSchema {
   if (!variables) return schema;
 
+  const replaceElementVariables = (childElement: ElementUnion) => {
+    const clonedElement = { ...childElement };
+
+    // The elements that has children doesn't have options, so we need to replace the variables in the children instead
+    if ("children" in clonedElement) {
+      clonedElement.children = clonedElement.children.map(
+        replaceElementVariables
+      );
+    } else if (
+      "options" in clonedElement &&
+      clonedElement.optionsType === "dynamic" &&
+      typeof clonedElement.options === "string" &&
+      VARIABLE_TEMPLATE_STRING_REGEX.test(clonedElement.options)
+    ) {
+      const [variableName] = getVariableNameAndType(clonedElement.options);
+      const value = getVariableValue(variableName, variables);
+      // @ts-expect-error - We want to replace the variable here
+      clonedElement.options = value;
+    }
+
+    // Replace variable in disabled condition value
+    if ("disabledCondition" in clonedElement) {
+      replaceConditionCriteriaVariables(
+        clonedElement.disabledCondition,
+        variables
+      );
+    }
+
+    // Replace variable in required condition value
+    if ("requiredCondition" in clonedElement) {
+      replaceConditionCriteriaVariables(
+        clonedElement.requiredCondition,
+        variables
+      );
+    }
+
+    // Replace variable in shouldDisplay condition value
+    replaceConditionCriteriaVariables(clonedElement.shouldDisplay, variables);
+
+    return clonedElement;
+  };
+
   return {
     ...schema,
-    children: schema.children.map((childElement) => {
-      const clonedElement = { ...childElement };
-
-      // Replace variable in options
-      if (
-        "options" in clonedElement &&
-        clonedElement.optionsType === "dynamic" &&
-        typeof clonedElement.options === "string" &&
-        VARIABLE_TEMPLATE_STRING_REGEX.test(clonedElement.options)
-      ) {
-        const [variableName] = getVariableNameAndType(clonedElement.options);
-        const value = getVariableValue(variableName, variables);
-        // @ts-expect-error - We want to replace the variable here
-        clonedElement.options = value;
-      }
-
-      // Replace variable in disabled condition value
-      if ("disabledCondition" in clonedElement) {
-        replaceConditionCriteriaVariables(
-          clonedElement.disabledCondition,
-          variables
-        );
-      }
-
-      // Replace variable in required condition value
-      if ("requiredCondition" in clonedElement) {
-        replaceConditionCriteriaVariables(
-          clonedElement.requiredCondition,
-          variables
-        );
-      }
-
-      // Replace variable in shouldDisplay condition value
-      replaceConditionCriteriaVariables(clonedElement.shouldDisplay, variables);
-
-      return clonedElement;
-    }),
+    children: schema.children.map(replaceElementVariables),
   };
 }
 
