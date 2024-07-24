@@ -6,6 +6,7 @@ import {
   type ElementInputText,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
+import { INPUT_ROOT_CLASSNAMES } from "./utils/formStyleUtils";
 
 type InputProps = InputWithoutFormBuilderProps<ElementInputText> & {
   iconLeft?: IconProps;
@@ -37,13 +38,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {({ hasError, inputProps }) => {
           return (
             <div
-              className={classNames(
-                "focus-within:border-brand-main flex w-full rounded-lg border-[1px] border-solid bg-neutral-white focus-within:border-2",
-                {
-                  "bg-background-disabled": rest.disabled,
-                  "border-text-danger-default": hasError,
-                }
-              )}
+              className={classNames(INPUT_ROOT_CLASSNAMES, {
+                "bg-background-disabled": rest.disabled,
+                "border-text-danger-default": hasError,
+              })}
               data-testid="input-container"
             >
               {iconLeft && renderIcon(iconLeft, "ml-base")}
@@ -51,7 +49,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               <input
                 autoFocus={autoFocus}
                 className={classNames(
-                  "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none",
+                  "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white px-base outline-none",
                   {
                     "text-text-danger-default": hasError,
                   }
