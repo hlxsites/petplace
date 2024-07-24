@@ -6,7 +6,7 @@ import {
   type ElementInputText,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
-import { INPUT_ROOT_CLASSNAMES } from "./utils/formStyleUtils";
+import { FORM_STYLES } from "./utils/formStyleUtils";
 
 type InputProps = InputWithoutFormBuilderProps<ElementInputText> & {
   iconLeft?: IconProps;
@@ -38,7 +38,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {({ hasError, inputProps }) => {
           return (
             <div
-              className={classNames(INPUT_ROOT_CLASSNAMES, {
+              className={classNames(FORM_STYLES.inputRoot, {
                 "bg-background-disabled": rest.disabled,
                 "border-text-danger-default": hasError,
               })}
@@ -51,7 +51,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 className={classNames(
                   "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white px-base outline-none",
                   {
-                    "text-text-danger-default": hasError,
+                    [FORM_STYLES.inputError]: hasError,
                   }
                 )}
                 id={id}

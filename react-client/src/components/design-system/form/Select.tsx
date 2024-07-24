@@ -8,7 +8,7 @@ import {
   type ElementInputSingleSelect,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
-import { INPUT_ROOT_CLASSNAMES } from "./utils/formStyleUtils";
+import { FORM_STYLES } from "./utils/formStyleUtils";
 
 export type SelectProps = Omit<
   InputWithoutFormBuilderProps<ElementInputSingleSelect>,
@@ -92,13 +92,13 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       <InputAccessibilityWrapper id={id} {...rest} labelProps={getLabelProps()}>
         {({ hasError, inputProps }) => (
           <div className="relative">
-            <div className={INPUT_ROOT_CLASSNAMES}>
+            <div className={FORM_STYLES.inputRoot}>
               <input
                 autoFocus={autoFocus}
                 className={clsx(
                   "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none",
                   {
-                    "input-error": hasError,
+                    [FORM_STYLES.inputError]: hasError,
                   }
                 )}
                 placeholder={placeholder ?? "Select..."}
