@@ -2,21 +2,27 @@ import * as RadixCheckbox from "@radix-ui/react-checkbox";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 
 import { classNames } from "~/util/styleUtil";
+import {
+  ElementInputCheckboxGroup,
+  InputWithoutFormBuilderProps,
+} from "../form/types/formTypes";
 import { Icon } from "../icon/Icon";
-import { CommonInputProps } from "../types/FormTypes";
+
+type CheckboxGroupType =
+  InputWithoutFormBuilderProps<ElementInputCheckboxGroup>;
 
 type CheckboxProps = Omit<
-  ComponentPropsWithoutRef<typeof RadixCheckbox.Root>,
+  Omit<ComponentPropsWithoutRef<typeof RadixCheckbox.Root>, "onChange">,
   "children"
 > &
-  CommonInputProps;
+  Omit<CheckboxGroupType, "value" | "options" | "onChange">;
 
 export const Checkbox = forwardRef<
   ElementRef<typeof RadixCheckbox.Root>,
   CheckboxProps
 >(({ className, hideLabel, label, ...props }, ref) => {
   return (
-    <div className="gap-xsmall flex items-center">
+    <div className="grid grid-cols-[auto,_1fr] items-center gap-small">
       <RadixCheckbox.Root
         aria-label={hideLabel ? label : undefined}
         className={classNames(
@@ -31,7 +37,7 @@ export const Checkbox = forwardRef<
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
       {!hideLabel && (
-        <label className="Label" htmlFor={props.id}>
+        <label className="font-franklin text-sm" htmlFor={props.id}>
           {label}
         </label>
       )}
