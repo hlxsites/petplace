@@ -23,11 +23,11 @@ const PlaygroundIndex = () => {
   const SelectedComponent: JSX.Element = ComponentsPlaygroundList[selected];
 
   return (
-    <div className="flex w-full">
-      <div className="flex w-[200px] flex-col gap-base p-small">
+    <div className="flex w-full gap-xlarge p-base">
+      <div className="flex w-[300px] flex-col gap-small">
         {ComponentsKeysList.map(renderMenuItem)}
       </div>
-      <div className="flex min-h-full w-full flex-col gap-base p-base">
+      <div className="flex min-h-full w-full flex-col gap-base">
         {/* @ts-expect-error - TS doesn't understand the hacky way we are importing the component */}
         <SelectedComponent />
       </div>
