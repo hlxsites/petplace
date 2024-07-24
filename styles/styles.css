@@ -33,6 +33,7 @@
     --background-color-light: #f2f6fc;
     --background-color-dark: #3b092c;
     --background-inactive: #f4f4f5;
+    --background-color-tertiary: #444444;
     --border-base-color: #e4e4eb;
     --border-color: #d9d9d9;
     --border-color-strong: #d0d0d6;
@@ -96,6 +97,7 @@
     --orange-300-contrast: #c74d2f;
     --orange-300-main: #fa7d59;
     --orange-100: #fcf2ef;
+    --brand-blue: #4162a0;
     --blue-500: #224680;
     --blue-300: #5273a8;
     --blue-100: #eff4fc;
@@ -108,6 +110,8 @@
     --yellow-500: #664e1c;
     --yellow-300: #deb459;
     --yellow-100: #fcf6e8;
+    --text-danger-default: #930000;
+    --icon-danger: #d31510;
     --red-500: #731911;
     --red-300: #ba271a;
     --red-100: #fcefed;
@@ -123,6 +127,8 @@
     --neutral-100: #f1f0f7;
     --neutral-50: #fafafc;
     --neutral-white: #fff;
+    --text-hinted: #909090;
+    --background-disabled: #e6e6e6;
     --border-secondary: #e4e7ec;
 
     /* spacing tokens */

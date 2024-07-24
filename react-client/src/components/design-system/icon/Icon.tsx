@@ -1,6 +1,9 @@
 import { classNames } from "~/util/styleUtil";
 import AddIcon from "./assets/add-icon.svg";
-import AlertIcon from "./assets/alert-diamond-icon.svg";
+import {
+  default as AlertDiamondIcon,
+  default as AlertIcon,
+} from "./assets/alert-diamond-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down.svg";
 import CheckIcon from "./assets/check-icon.svg";
@@ -11,9 +14,11 @@ import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CpuChipIcon from "./assets/cpu-chip-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
+import InformationIcon from "./assets/information-icon.svg";
 import MedicineIcon from "./assets/medicine-icon.svg";
 import PawIcon from "./assets/paw-icon.svg";
 import PippetIcon from "./assets/pippet-icon.svg";
+import SearchIcon from "./assets/search-icon.svg";
 import ShieldGoodIcon from "./assets/shield-good-icon.svg";
 import ShieldOffIcon from "./assets/shield-off-icon.svg";
 import SyringeIcon from "./assets/syringe-icon.svg";
@@ -23,6 +28,7 @@ import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 const IconMap = Object.freeze({
   add: <AddIcon />,
   alert: <AlertIcon />,
+  alertDiamond: <AlertDiamondIcon />,
   apps: <AppsIcon />,
   bendArrowDown: <BendArrowDownIcon />,
   check: <CheckIcon />,
@@ -34,7 +40,9 @@ const IconMap = Object.freeze({
   ellipse: <EllipseIcon />,
   file: <FileIcon />,
   medicine: <MedicineIcon />,
+  information: <InformationIcon />,
   paw: <PawIcon />,
+  search: <SearchIcon />,
   pippet: <PippetIcon />,
   shieldGood: <ShieldGoodIcon />,
   shieldOff: <ShieldOffIcon />,
