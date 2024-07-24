@@ -45,7 +45,7 @@ export const InputAccessibilityWrapper = ({
   };
 
   return (
-    <div className={classNames("form-control", className)}>
+    <div className={classNames("flex flex-col gap-medium", className)}>
       {!hideLabel && (
         <FormLabel htmlFor={id} {...labelProps}>
           {required ? label : `${label} (optional)`}
@@ -56,7 +56,7 @@ export const InputAccessibilityWrapper = ({
         inputProps,
       })}
       {(hasDescription || hasError) && (
-        <div className="label">
+        <div className="flex justify-between gap-small">
           <InputDescriptionMessage id={descriptionId} message={description} />
           <InputErrorMessage id={errorId} message={errorMessage} />
         </div>

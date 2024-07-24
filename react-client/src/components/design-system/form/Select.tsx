@@ -97,7 +97,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
                 className={clsx("input input-bordered pr-12 w-full", {
                   "input-error": hasError,
                 })}
-                placeholder={placeholder ?? "Selecione..."}
+                placeholder={placeholder ?? "Select..."}
                 {...inputProps}
                 {...getInputProps({ ref })}
               />

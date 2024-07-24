@@ -1,5 +1,6 @@
 import { forwardRef, type ChangeEvent } from "react";
 import { classNames } from "~/util/styleUtil";
+import { Icon, IconProps } from "../icon/Icon";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import {
   type ElementInputText,
@@ -7,12 +8,24 @@ import {
 } from "./types/formTypes";
 
 type InputProps = InputWithoutFormBuilderProps<ElementInputText> & {
+  iconLeft?: IconProps;
+  iconRight?: IconProps;
   type?: "text" | "email" | "password" | "number";
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { autoFocus, id, onChange, placeholder, type = "text", value, ...rest },
+    {
+      autoFocus,
+      iconLeft,
+      iconRight,
+      id,
+      onChange,
+      placeholder,
+      type = "text",
+      value,
+      ...rest
+    },
     ref
   ) => {
     const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -21,22 +34,56 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <InputAccessibilityWrapper id={id} {...rest}>
-        {({ hasError, inputProps }) => (
-          <input
-            autoFocus={autoFocus}
-            className={classNames("input input-md input-bordered w-full", {
-              "input-error": hasError,
-            })}
-            id={id}
-            name={id}
-            onChange={handleOnChange}
-            placeholder={placeholder}
-            ref={ref}
-            type={type}
-            value={value}
-            {...inputProps}
-          />
-        )}
+        {({ hasError, inputProps }) => {
+          return (
+            <div
+              className={classNames(
+                "focus-within:border-brand-main flex w-full rounded-lg border-[1px] border-solid bg-neutral-white focus-within:border-2",
+                {
+                  "bg-background-disabled": rest.disabled,
+                  "border-text-danger-default": hasError,
+                }
+              )}
+              data-testid="input-container"
+            >
+              {iconLeft && renderIcon(iconLeft, "ml-base")}
+
+              <input
+                autoFocus={autoFocus}
+                className={classNames(
+                  "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none",
+                  {
+                    "text-text-danger-default": hasError,
+                  }
+                )}
+                id={id}
+                name={id}
+                onChange={handleOnChange}
+                placeholder={placeholder}
+                ref={ref}
+                type={type}
+                value={value}
+                {...inputProps}
+              />
+              {iconRight && renderIcon(iconRight, "mr-base")}
+            </div>
+          );
+
+          function renderIcon(props: IconProps, className?: string) {
+            return (
+              <div
+                className={classNames(
+                  "flex items-center rounded-full bg-transparent",
+                  {
+                    "text-text-danger-default": hasError,
+                  }
+                )}
+              >
+                <Icon className={className} {...props} size={20} />
+              </div>
+            );
+          }
+        }}
       </InputAccessibilityWrapper>
     );
   }

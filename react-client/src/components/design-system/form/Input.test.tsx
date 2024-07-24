@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { type ComponentProps } from "react";
+import { IconKeys } from "../icon/Icon";
 import Input from "./Input";
 
 type InputProps = ComponentProps<typeof Input>;
@@ -59,7 +60,6 @@ describe("<Input />", () => {
       const textbox = getByRole("textbox");
       expect(textbox).toHaveAttribute("aria-invalid", "true");
       expect(textbox).toHaveAccessibleErrorMessage(expected);
-      expect(textbox).toHaveClass("input-error");
     }
   );
 
@@ -89,11 +89,13 @@ describe("<Input />", () => {
     expect(getByRole("textbox")).toHaveFocus();
   });
 
-  it("should render an input with some classes", () => {
-    getRenderer();
-    expect(getByRole("textbox")).toHaveClass(
-      "input input-bordered input-md w-full"
-    );
+  it.each([
+    { iconLeft: { display: "search" as IconKeys } },
+    { iconRight: { display: "add" as IconKeys } },
+  ])("should display input icon", (expected) => {
+    const { container } = getRenderer(expected);
+    const svgElement = container.querySelector("svg");
+    expect(svgElement).toBeInTheDocument();
   });
 });
 

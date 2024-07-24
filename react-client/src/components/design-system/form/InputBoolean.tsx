@@ -14,30 +14,29 @@ export const InputBoolean = ({
   value,
   ...rest
 }: InputBooleanProps) => {
-  const handleOnClick = (newValue: boolean) => () => {
-    return (event: MouseEvent<HTMLButtonElement>) => {
+  const handleOnClick =
+    (newValue: boolean) => (event: MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
 
       if (value === newValue) return;
       onChange?.(newValue);
     };
-  };
 
   const hasValue = value !== undefined;
   return (
     <InputAccessibilityWrapper id={id} {...rest}>
       {({ inputProps }) => (
         <>
-          <div aria-hidden="true" className="join">
+          <div className="flex">
             <Button
-              className="join-item"
+              className="rounded-lg rounded-br-none rounded-tr-none"
               onClick={handleOnClick(false)}
               variant={hasValue ? "secondary" : "primary"}
             >
               No
             </Button>
             <Button
-              className="join-item"
+              className="rounded-lg rounded-bl-none rounded-tl-none"
               onClick={handleOnClick(true)}
               variant={hasValue ? "primary" : "secondary"}
             >

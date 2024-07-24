@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import  { type ComponentProps } from "react";
+import { type ComponentProps } from "react";
 import FormLabel from "./FormLabel";
 
 const { getByTestId, getByText } = screen;
@@ -15,7 +15,7 @@ describe("<FormLabel />", () => {
     (expected) => {
       getRenderer({ className: expected });
       expect(getByTestId("FormLabel")).toHaveClass(
-        `label label-text ${expected}`
+        `text-base font-medium ${expected}`
       );
     }
   );

@@ -3,7 +3,7 @@ import { classNames } from "~/util/styleUtil";
 const FormLabel = ({ className, ...props }: JSX.IntrinsicElements["label"]) => {
   return (
     <label
-      className={classNames("label label-text", className)}
+      className={classNames("font-franklin text-base font-medium", className)}
       data-testid="FormLabel"
       {...props}
     />

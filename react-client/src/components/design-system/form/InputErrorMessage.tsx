@@ -7,7 +7,7 @@ export const InputErrorMessage = ({ id, message }: InputErrorMessageProps) => {
   if (!message) return null;
 
   return (
-    <span className="label-text-alt animate-slide-top text-red-700" id={id}>
+    <span className="text-text-danger-default block text-xs" id={id}>
       {message}
     </span>
   );
