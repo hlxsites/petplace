@@ -34,18 +34,20 @@ type RenderedInput = Omit<
 
 export type FormBuilderProps = {
   schema: FormSchema;
-  isDevEnvironment: boolean;
   onChange?: (values: FormValues) => void;
   onSubmit?: (props: OnSubmitProps) => void;
+  values?: Record<string, InputValue>;
 };
 
 export const FormBuilder = ({
   schema,
-  isDevEnvironment,
   onChange,
   onSubmit,
+  values: defaultValues,
 }: FormBuilderProps) => {
-  const [values, setValues] = useState<FormValues>({});
+  const initialDefaultValues = useRef<FormValues>(defaultValues || {});
+
+  const [values, setValues] = useState<FormValues>(defaultValues || {});
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
@@ -55,7 +57,10 @@ export const FormBuilder = ({
   const hasValidationError = renderedFields.some((f) => !!f.errorMessage);
 
   useDeepCompareEffect(() => {
-    if (onChange) onChange(values);
+    // Notify onChange callback only if the values have changed
+    if (!!onChange && !isEqual(initialDefaultValues.current, values)) {
+      onChange(values);
+    }
   }, [onChange, values]);
 
   return (
