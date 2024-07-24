@@ -1,5 +1,6 @@
 import { Fragment, useState, type FormEvent, type ReactNode } from "react";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
+import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import Input from "./Input";
 import { InputBoolean } from "./InputBoolean";
@@ -83,6 +84,8 @@ export const FormBuilder = ({
   }
 
   function renderElement(element: ElementUnion) {
+    if (!matchConditionExpression(element.shouldDisplay ?? true)) return null;
+
     switch (element.elementType) {
       case "section":
         return <Fragment key={element.id}>{renderSection(element)}</Fragment>;
@@ -91,7 +94,10 @@ export const FormBuilder = ({
       case "row":
         return (
           <div
-            className="flg:flex-row gap-base lg:flex [&>*]:grow [&>*]:basis-0"
+            className={classNames(
+              "flg:flex-row gap-base lg:flex [&>*]:grow [&>*]:basis-0",
+              element.className
+            )}
             key={element.id}
           >
             {element.children.map(renderElement)}

@@ -22,7 +22,6 @@ export const InputBoolean = ({
       onChange?.(newValue);
     };
 
-  const hasValue = value !== undefined;
   return (
     <InputAccessibilityWrapper id={id} {...rest}>
       {({ inputProps }) => (
@@ -31,14 +30,14 @@ export const InputBoolean = ({
             <Button
               className="rounded-lg rounded-br-none rounded-tr-none"
               onClick={handleOnClick(false)}
-              variant={hasValue ? "secondary" : "primary"}
+              variant={value ? "secondary" : "primary"}
             >
               No
             </Button>
             <Button
               className="rounded-lg rounded-bl-none rounded-tl-none"
               onClick={handleOnClick(true)}
-              variant={hasValue ? "primary" : "secondary"}
+              variant={value ? "primary" : "secondary"}
             >
               Yes
             </Button>

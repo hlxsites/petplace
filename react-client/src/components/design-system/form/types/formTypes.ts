@@ -72,6 +72,7 @@ export type ElementSection = ElementCommon & {
 };
 
 export type ElementRow = ElementCommon & {
+  className?: string;
   children: ElementUnion[];
   elementType: "row";
 };
