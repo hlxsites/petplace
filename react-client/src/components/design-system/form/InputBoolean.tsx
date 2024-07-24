@@ -26,7 +26,7 @@ export const InputBoolean = ({
     <InputAccessibilityWrapper id={id} {...rest}>
       {({ inputProps }) => (
         <>
-          <div className="flex">
+          <div className="flex h-12">
             <Button
               className="rounded-lg rounded-br-none rounded-tr-none"
               onClick={handleOnClick(false)}

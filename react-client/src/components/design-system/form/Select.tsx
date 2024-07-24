@@ -8,6 +8,7 @@ import {
   type ElementInputSingleSelect,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
+import { INPUT_ROOT_CLASSNAMES } from "./utils/formStyleUtils";
 
 export type SelectProps = Omit<
   InputWithoutFormBuilderProps<ElementInputSingleSelect>,
@@ -91,12 +92,15 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       <InputAccessibilityWrapper id={id} {...rest} labelProps={getLabelProps()}>
         {({ hasError, inputProps }) => (
           <div className="relative">
-            <div className="gap-0.5 flex items-center">
+            <div className={INPUT_ROOT_CLASSNAMES}>
               <input
                 autoFocus={autoFocus}
-                className={clsx("input input-bordered pr-12 w-full", {
-                  "input-error": hasError,
-                })}
+                className={clsx(
+                  "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none",
+                  {
+                    "input-error": hasError,
+                  }
+                )}
                 placeholder={placeholder ?? "Select..."}
                 {...inputProps}
                 {...getInputProps({ ref })}
@@ -107,7 +111,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
             <ul
               {...getMenuProps({ ref: listRef })}
               className={clsx(
-                "bg-base-100 shadow absolute z-50 ml-[1px] mt-[-10px] max-h-60 w-[calc(100%-2px)] flex-row overflow-scroll rounded-b-md border border-t-0 p-0",
+                "shadow absolute z-50 ml-[1px] mt-[-10px] max-h-60 w-[calc(100%-2px)] flex-row overflow-scroll rounded-b-md border border-t-0 bg-neutral-white p-0",
                 {
                   hidden: !(isOpen && filterOptions.length),
                 }
@@ -123,7 +127,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
     function renderButton() {
       if (value && clearable) {
         return renderIconButton({
-          icon: "closeXMark",
+          icon: "closeXMarkRegular",
           label: "Clear",
           onClick: () => {
             selectItem(null);
@@ -133,7 +137,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       }
       return renderIconButton({
         ...getToggleButtonProps(),
-        label: "Abrir a lista",
+        label: "Open dropdown list",
         icon: isOpen ? "chevronUp" : "chevronDown",
       });
     }
@@ -146,8 +150,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
     ) {
       return (
         <IconButton
-          className="absolute right-0 mx-0"
-          iconProps={{ className: "w-4 h-4" }}
+          className="absolute right-0 mx-0 mr-small text-brand-secondary"
+          iconProps={{ size: 20 }}
           variant="link"
           {...props}
         />
