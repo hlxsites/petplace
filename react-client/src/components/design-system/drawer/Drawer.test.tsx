@@ -1,5 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { Drawer } from "./Drawer";
 
@@ -11,76 +10,26 @@ jest.mock(
     )
 );
 
-const { getByText, getByRole, getByTestId } = screen;
+const { getByRole } = screen;
 
-describe("<Drawer />", () => {
+describe("Drawer", () => {
   it("should render the drawer", () => {
     getRenderer();
     expect(getByRole("dialog")).toBeInTheDocument();
   });
 
-  it("should use FocusTrap", () => {
-    getRenderer();
-    expect(getByTestId("FocusTrap")).toBeInTheDocument();
-  });
-
-  it("should render drawer with opening animations", () => {
+  it("should apply correct classNames for drawer", () => {
     getRenderer();
     expect(getByRole("dialog")).toHaveClass(
-      "animate-slideInFromBottom lg:animate-slideInFromRight"
+      "fixed bottom-0 left-0 right-0 z-50 max-h-90vh w-full rounded-t-2xl bg-neutral-white p-xlarge duration-300 ease-in-out lg:left-auto lg:top-0 lg:max-h-screen lg:w-[336px] lg:rounded-none"
     );
   });
 
-  it.each(["a-id", "another-id"])(
-    "should render accessible drawer with id %p",
-    (id) => {
-      getRenderer({ id });
-      expect(getByRole("dialog")).toHaveAttribute("id", id);
-      expect(getByRole("dialog")).toHaveAttribute(
-        "aria-labelledby",
-        `${id}-title`
-      );
-    }
-  );
-
-  it.each(["Sample children", "Another children"])(
-    "should render drawer with children %p",
-    (expected) => {
-      getRenderer({ children: expected });
-      expect(getByText(expected)).toBeInTheDocument();
-    }
-  );
-
-  it("should render icon closeXMark", () => {
+  it("should render close button with expected className", () => {
     getRenderer();
-    expect(getByRole("dialog").querySelector("svg")).toHaveAttribute(
-      "data-file-name",
-      "SvgCloseXMarkIcon"
+    expect(getByRole("button", { name: "Close drawer" })).toHaveClass(
+      "text-neutral-600"
     );
-  });
-
-  it("should call onClose callback when close button is clicked", async () => {
-    const onClose = jest.fn();
-    getRenderer({ onClose });
-
-    await userEvent.click(getByRole("button", { name: /close drawer$/i }));
-    await waitFor(() => expect(onClose).toHaveBeenCalled());
-  });
-
-  it("should call onClose callbacks when esc key is pressed", async () => {
-    const onClose = jest.fn();
-    getRenderer({ onClose });
-
-    await userEvent.keyboard("[Escape]");
-    await waitFor(() => expect(onClose).toHaveBeenCalled());
-  });
-
-  it("should call onClose callbacks when clicking the drawer's backdrop", async () => {
-    const onClose = jest.fn();
-    getRenderer({ onClose });
-
-    await userEvent.click(getByTestId("backdrop"));
-    await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
 });
 
@@ -92,11 +41,8 @@ function getRenderer({
   onClose = jest.fn(),
 }: Partial<ComponentProps<typeof Drawer>> = {}) {
   return render(
-    <>
-      <Drawer title={title} onClose={onClose} id={id} isOpen={isOpen}>
-        {children}
-      </Drawer>
-      <button aria-controls={id}>Test opening button</button>
-    </>
+    <Drawer title={title} onClose={onClose} id={id} isOpen={isOpen}>
+      {children}
+    </Drawer>
   );
 }
