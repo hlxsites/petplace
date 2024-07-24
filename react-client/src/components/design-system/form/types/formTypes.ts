@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
 
-export type ElementType = "button" | "section" | "input" | "html";
+export type ElementType = "button" | "html" | "input" | "row" | "section";
 
 export type InputValue = string | number | Date | boolean | string[];
 
@@ -69,6 +69,11 @@ export type ElementSection = ElementCommon & {
   description?: string;
   elementType: "section";
   title?: string;
+};
+
+export type ElementRow = ElementCommon & {
+  children: ElementUnion[];
+  elementType: "row";
 };
 
 export type ElementHtml = ElementCommon & {
@@ -194,6 +199,7 @@ export type InputsUnion =
 export type ElementUnion =
   | ElementButton
   | ElementHtml
+  | ElementRow
   | ElementSection
   | InputsUnion;
 

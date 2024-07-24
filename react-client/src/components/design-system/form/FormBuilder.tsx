@@ -60,7 +60,9 @@ export const FormBuilder = ({
   return (
     <div className="bg-background p-8 m-auto max-w-screen-lg">
       <form id={schema.id} noValidate onSubmit={onSubmitHandler}>
-        <div className="space-y-4">{schema.children.map(renderElement)}</div>
+        <div className="space-y-large">
+          {schema.children.map(renderElement)}
+        </div>
       </form>
     </div>
   );
@@ -86,6 +88,15 @@ export const FormBuilder = ({
         return <Fragment key={element.id}>{renderSection(element)}</Fragment>;
       case "html":
         return <Fragment key={element.id}>{element.content}</Fragment>;
+      case "row":
+        return (
+          <div
+            className="flg:flex-row gap-base lg:flex [&>*]:grow [&>*]:basis-0"
+            key={element.id}
+          >
+            {element.children.map(renderElement)}
+          </div>
+        );
       case "button":
         return (
           <Button
@@ -99,6 +110,10 @@ export const FormBuilder = ({
       case "input":
         return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
       default:
+        if (isDevEnvironment) {
+          // @ts-expect-error - we expect it to throw an error when a new element is added in the form builder types but not implemented here yet
+          throw new Error(`Unsupported element type: ${element.elementType}`);
+        }
         return null;
     }
   }
@@ -124,7 +139,7 @@ export const FormBuilder = ({
 
     // Validate the input and add the error message to the props if necessary
     const errorMessage = didSubmit ? validateInput(commonProps) : null;
-    if (errorMessage) commonProps["errorMessage"] = errorMessage;
+    commonProps["errorMessage"] = errorMessage || undefined;
 
     renderedFields.push({
       ...commonProps,
@@ -221,12 +236,14 @@ export const FormBuilder = ({
   }: ElementSection) {
     if (!matchConditionExpression(shouldDisplay || true)) return;
     return (
-      <section className="my-8" id={id}>
+      <section className="my-small" id={id}>
         {!!title && <h2 className="text-h2">{title}</h2>}
         {!!description && (
           <p className="text-lg text-muted-foreground">{description}</p>
         )}
-        <div className="mt-4 space-y-4">{children.map(renderElement)}</div>
+        <div className="mt-xsmall space-y-xsmall">
+          {children.map(renderElement)}
+        </div>
       </section>
     );
   }
