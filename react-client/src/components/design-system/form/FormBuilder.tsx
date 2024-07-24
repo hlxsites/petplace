@@ -1,4 +1,11 @@
-import { Fragment, useState, type FormEvent, type ReactNode } from "react";
+import { isEqual } from "lodash";
+import {
+  Fragment,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
@@ -18,6 +25,8 @@ import {
   type InputsUnion,
 } from "./types/formTypes";
 type FormValues = { [key: string]: InputValue };
+
+const isDevEnvironment = window.location.hostname === "localhost";
 
 type OnSubmitProps = {
   event: FormEvent<HTMLFormElement>;

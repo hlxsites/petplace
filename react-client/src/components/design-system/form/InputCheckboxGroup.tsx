@@ -41,6 +41,7 @@ export const InputCheckboxGroup = forwardRef<
 
             return (
               <Checkbox
+                checked={value?.includes(option)}
                 id={optionId}
                 key={optionId}
                 label={option}

@@ -16,20 +16,26 @@ export const FormBuilderPlayground = () => {
         type: "text",
       },
       {
-        elementType: "input",
-        id: "type",
-        label: "Is your pet a",
-        options: ["Dog", "Cat"],
-        requiredCondition: true,
-        type: "select",
-      },
-      {
-        elementType: "input",
-        id: "gender",
-        label: "What's their gender?",
-        options: ["Male", "Female"],
-        requiredCondition: true,
-        type: "select",
+        elementType: "row",
+        id: "row-1",
+        children: [
+          {
+            elementType: "input",
+            id: "type",
+            label: "Is your pet a",
+            options: ["Dog", "Cat"],
+            requiredCondition: true,
+            type: "select",
+          },
+          {
+            elementType: "input",
+            id: "gender",
+            label: "What's their gender?",
+            options: ["Male", "Female"],
+            requiredCondition: true,
+            type: "select",
+          },
+        ],
       },
       {
         id: "breed-row",
@@ -79,32 +85,40 @@ export const FormBuilderPlayground = () => {
         ],
       },
       {
-        elementType: "input",
-        id: "birth-month",
-        label: "Birth month",
-        requiredCondition: true,
-        options: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
+        elementType: "row",
+        id: "birth-date-row",
+        children: [
+          {
+            elementType: "input",
+            id: "birth-month",
+            label: "Birth month",
+            placeholder: "Month",
+            requiredCondition: true,
+            options: [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ],
+            type: "select",
+          },
+          {
+            elementType: "input",
+            id: "birth-year",
+            label: "Birth year",
+            placeholder: "Year",
+            requiredCondition: true,
+            type: "number",
+          },
         ],
-        type: "select",
-      },
-      {
-        elementType: "input",
-        id: "birth-year",
-        label: "Birth year",
-        requiredCondition: true,
-        type: "number",
       },
       {
         content: (
@@ -142,7 +156,6 @@ export const FormBuilderPlayground = () => {
 
   return (
     <DisplayForm
-      isDevEnvironment
       onChange={(props) => {
         console.log("onChange values", props);
       }}
@@ -163,6 +176,11 @@ export const FormBuilderPlayground = () => {
         ],
         breedTypeOptions: [],
         colorOptions: ["Black", "White", "Brown", "Grey", "Golden"],
+      }}
+      values={{
+        breed: "Poodle",
+        gender: "Male",
+        name: "Lili",
       }}
     />
   );
