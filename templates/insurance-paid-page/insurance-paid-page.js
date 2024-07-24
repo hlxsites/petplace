@@ -44,29 +44,26 @@ export async function loadEager(document) {
 
   // same attribute setting as earlier
   main.setAttribute('itemscope', '');
-
-  const heroTitleSection = document.createElement('div');
-  heroTitleSection.classList.add('hero-title-container', 'section');
-
-  const articleTitle = main.querySelector('h1');
-  const heroImgContainer = main.querySelectorAll('p')[0];
-  heroImgContainer.classList.add('hero-pic-div');
-
-  heroTitleSection.append(articleTitle);
-  heroTitleSection.append(heroImgContainer);
-  main.prepend(heroTitleSection);
 }
 
 export async function loadLazy(document) {
   const main = document.querySelector('main');
+  const heroTitleSection = document.createElement('div');
+  heroTitleSection.classList.add('hero-title-container', 'section');
+
+  const articleTitle = main.querySelector('h1');
   const authorDiv = main.querySelector('.article-author-container');
   authorDiv.classList.remove('section');
-  const heroTitleSection = main.querySelector('.hero-title-container');
+  const heroImgContainer = main.querySelectorAll('p')[0];
+  heroImgContainer.classList.add('hero-pic-div');
+
+  heroTitleSection.append(articleTitle);
+  heroTitleSection.append(authorDiv);
+  heroTitleSection.append(heroImgContainer);
+  main.prepend(heroTitleSection);
 
   const contentSection = main.querySelectorAll('.section')[1];
   contentSection.classList.add('article-content-container');
-
-  heroTitleSection.prepend(authorDiv);
 
   if (!isMobile()) {
     const contentDiv = document.createElement('div');
