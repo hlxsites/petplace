@@ -51,7 +51,7 @@ export async function loadLazy(document) {
   const heroTitleSection = document.createElement('div');
   heroTitleSection.classList.add('hero-title-container', 'section');
 
-  const articleTitle = main.querySelectorAll('h1')[0];
+  const articleTitle = main.querySelector('h1');
   const authorDiv = main.querySelector('.article-author-container');
   authorDiv.classList.remove('section');
   const heroImgContainer = main.querySelectorAll('p')[0];

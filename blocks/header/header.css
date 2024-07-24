@@ -43,7 +43,7 @@ header .header {
 */
 
 /* stylelint-disable-next-line selector-class-pattern */
-header:has(.header-content--minimal) {
+.insurance-paid-page header {
   --nav-height: 80px;
 
   position: relative;
