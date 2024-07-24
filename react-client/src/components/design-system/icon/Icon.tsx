@@ -24,6 +24,7 @@ import ShieldOffIcon from "./assets/shield-off-icon.svg";
 import SyringeIcon from "./assets/syringe-icon.svg";
 import TransferIcon from "./assets/transfer-icon.svg";
 import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
+import CloseXMarkIconRegular from "./assets/x-mark-icon-regular.svg";
 
 const IconMap = Object.freeze({
   add: <AddIcon />,
@@ -36,6 +37,7 @@ const IconMap = Object.freeze({
   chevronLeft: <ChevronLeftIcon />,
   chevronUp: <ChevronUp />,
   closeXMark: <CloseXMarkIcon />,
+  closeXMarkRegular: <CloseXMarkIconRegular />,
   cpuChip: <CpuChipIcon />,
   ellipse: <EllipseIcon />,
   file: <FileIcon />,
