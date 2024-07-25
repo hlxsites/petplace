@@ -27,7 +27,7 @@ describe("Loading", () => {
     expect(getByRole("paragraph")).toHaveClass("sr-only");
   });
 
-  it(`should make the text: ${srOnlyText} available for accessible readers`, () => {
+  it(`should make the text: ${srOnlyText} available for screen readers`, () => {
     getRenderer();
     expect(getByRole("paragraph")).toHaveTextContent(srOnlyText);
   });
