@@ -8,6 +8,7 @@ export * from "./dialog/Dialog";
 export * from "./drawer/Drawer";
 export * from "./form/DisplayForm";
 export * from "./icon/Icon";
+export * from "./loading/Loading";
 export * from "./switch/Switch";
 export * from "./tab/Tabs";
 export * from "./tab/UncontrolledTabs";
