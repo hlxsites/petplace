@@ -98,23 +98,26 @@ const handleComparePlanClicks = (className) => {
   });
 };
 
-// CTA - carousel button, insurance button
+// CTA - hero banner, insurance button
 const handleCtaClicks = () => {
   if (window.location.pathname === `${window.hlx.contentBasePath}/`) {
-    // slides removed, modify this later (todo)
-    // document
-    //   .querySelector('.slides-container')
-    //   .addEventListener('click', (ev) => {
-    //     const btn = ev.target.closest('a');
-    //     if (!btn) return;
-
-    //     clickHelper('CTA Button', btn.title, 'button', btn.href);
-    //   });
-
     handleComparePlanClicks('.insurance-search');
+
+    document.querySelectorAll('.home-banner.image-hero').forEach((banner) => {
+      banner.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('.image-hero');
+        if (!btn) return;
+        const title = btn.querySelector('h2').innerHTML;
+        const link = btn.querySelector('a').href;
+
+        clickHelper('hero_cta_button', title, 'button', link);
+      });
+    });
   }
 
-  if (window.location.pathname === `${window.hlx.contentBasePath}/pet-insurance`) {
+  if (
+    window.location.pathname === `${window.hlx.contentBasePath}/pet-insurance`
+  ) {
     handleComparePlanClicks('.top-search');
     handleComparePlanClicks('.bottom-search');
   }
