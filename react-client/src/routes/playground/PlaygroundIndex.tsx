@@ -23,11 +23,11 @@ const PlaygroundIndex = () => {
   const SelectedComponent: JSX.Element = ComponentsPlaygroundList[selected];
 
   return (
-    <div className="flex w-full gap-xlarge p-base">
-      <div className="flex w-[300px] flex-col gap-small">
+    <div className="flex min-h-screen w-full">
+      <div className="flex flex-col gap-small border-r-[1px] border-r-border-secondary p-base">
         {ComponentsKeysList.map(renderMenuItem)}
       </div>
-      <div className="flex min-h-full w-full flex-col gap-base">
+      <div className="flex min-h-full w-full flex-col gap-base p-base">
         {/* @ts-expect-error - TS doesn't understand the hacky way we are importing the component */}
         <SelectedComponent />
       </div>
@@ -39,7 +39,7 @@ const PlaygroundIndex = () => {
     return (
       <Button
         key={item}
-        className="text-sm"
+        className="h-6 text-sm"
         fullWidth
         onClick={onSelect(item)}
         variant={isSelected ? "primary" : "secondary"}

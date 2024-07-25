@@ -82,7 +82,7 @@ if (window.location.hostname.includes("localhost")) {
     ],
   };
 
-  routes[0].children?.push(playgroundRoute);
+  routes.push(playgroundRoute);
 }
 
 const router = createBrowserRouter(routes, {
