@@ -56,7 +56,7 @@ describe("<Select />", () => {
   it("should render an input with some classes", () => {
     getRenderer();
     expect(getByRole("combobox")).toHaveClass(
-      "input-bordered input w-full pr-12"
+      "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none"
     );
   });
 
@@ -70,7 +70,7 @@ describe("<Select />", () => {
     "should render an input with error message",
     (errorMessage) => {
       getRenderer({ errorMessage });
-      expect(getByRole("combobox")).toHaveClass("input-error");
+      expect(getByRole("combobox")).toHaveClass("text-text-danger-default");
       expect(getByRole("combobox")).toHaveAccessibleErrorMessage(errorMessage);
     }
   );
