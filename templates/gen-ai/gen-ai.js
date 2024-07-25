@@ -304,6 +304,7 @@ const createStreamingSearchCard = (resultsBlock) => {
   <div class="search-card-warning">
   <p>${GENAI_SEARCH_WARNING}</p></div>
   <article></article>
+  <h5 class="slideshow-title">Suggested Articles</h5>
   <div class="slideshow"></div></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
