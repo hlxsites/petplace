@@ -23,7 +23,7 @@ export const RootErrorPage = (): JSX.Element => {
 
   return (
     <Layout>
-      <div className="gap-base m-auto grid max-w-[464px] place-items-center">
+      <div className="m-auto grid max-w-[464px] place-items-center gap-base">
         <Icon display="alert" size={80} />
         <span
           className="text-center text-[28px] font-semibold"
@@ -41,6 +41,7 @@ export const RootErrorPage = (): JSX.Element => {
         <div className="mt-[16px] flex max-w-[366px] gap-small">
           {errorButtons.map((button) => (
             <LinkButton
+              key={button.name}
               to={button.to}
               fullWidth={true}
               variant={button.variant}

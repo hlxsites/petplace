@@ -3,7 +3,7 @@ import { classNames } from "~/util/styleUtil";
 import { Icon, IconProps } from "../icon/Icon";
 import useButtonBase, { type UseButtonBase } from "./useButtonBase";
 
-type IconButtonProps = UseButtonBase &
+export type IconButtonProps = UseButtonBase &
   Omit<JSX.IntrinsicElements["button"], "children" | "fullWidth"> & {
     label: string;
     icon: IconProps["display"];
@@ -36,7 +36,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         aria-label={label}
         className={classNames(
           baseClassName,
-          "btn-square mx-1 px-medium min-w-0 py-0",
+          "btn-square mx-1 min-w-0 px-medium py-0",
           className
         )}
         type={type}

@@ -27,6 +27,8 @@ module.exports = {
     },
     colors: {
       "brand-secondary": "var(--orange-300-contrast)",
+      "brand-blue": "var(--brand-blue)",
+      "brand-main": "var(--color-purple)",
       "purple-500": "var(--purple-500)",
       "purple-300": "var(--purple-300)",
       "purple-100": "var(--purple-100)",
@@ -65,7 +67,14 @@ module.exports = {
       "neutral-100": "var(--neutral-100)",
       "neutral-50": "var(--neutral-50)",
       "neutral-white": "var(--neutral-white)",
+      "background-disabled": "var(--background-disabled)",
       "border-secondary": "var(--border-secondary)",
+      "text-danger-default": "var(--text-danger-default)",
+      "text-disabled": "var(--text-color-disabled)",
+      "text-hinted": "var(--text-hinted)",
+      "text-color": "var(--text-color)",
+      "icon-danger": "var(--icon-danger)",
+      "background-color-tertiary": "var(--background-color-tertiary)",
       white: "#ffffff",
       black: "#000000",
       transparent: "transparent",
@@ -94,8 +103,8 @@ module.exports = {
     },
     extend: {
       maxHeight: {
-        '90vh': '90vh',
-        '80vh': '80vh',
+        "90vh": "90vh",
+        "80vh": "80vh",
       },
       keyframes: {
         fadeIn: {
