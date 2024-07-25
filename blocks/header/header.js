@@ -627,12 +627,7 @@ export default async function decorate(block) {
     });
 
     const navHamburger = nav.querySelector('.nav-hamburger');
-    navHamburger.innerHTML = `
-      <button type="button" aria-controls="nav" aria-label="${getPlaceholder(
-        'openNavigation',
-      )}">
-        ${navHamburger.innerHTML}
-      </button>`;
+    navHamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="${getPlaceholder('openNavigation')}">${navHamburger.innerHTML}</button>`;
 
     nav
       .querySelector('.nav-brand a')
