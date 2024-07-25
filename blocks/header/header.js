@@ -404,8 +404,7 @@ export default async function decorate(block) {
               );
             });
             regionName.classList.add('region-name');
-            regionName.textContent =
-              DEFAULT_REGION === r ? unitedStates : unitedKingdom;
+            regionName.textContent = DEFAULT_REGION === r ? unitedStates : unitedKingdom;
             const regionIcon = document.createElement('span');
             regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
             regionLink.append(regionIcon);
@@ -419,10 +418,9 @@ export default async function decorate(block) {
         );
         regionSelector.append(regionSelectorIcon);
         regionSelectorName.classList.add('region-name');
-        regionSelectorName.textContent =
-          document.documentElement.lang.toLowerCase() === 'en-us'
-            ? unitedStates
-            : unitedKingdom;
+        regionSelectorName.textContent = document.documentElement.lang.toLowerCase() === 'en-us'
+          ? unitedStates
+          : unitedKingdom;
         regionSelector.append(regionSelectorName);
         regionSelector.classList.add('btn-regions-list');
         regionMenu.classList.add('regions-list', 'hidden');
@@ -460,7 +458,7 @@ export default async function decorate(block) {
         }
       });
 
-      block.querySelector('.nav-hamburger').addEventListener('click', () => {
+      block.querySelector('.nav-hamburger').addEventListener('click', (event) => {
         navHamburger.classList.add('hidden');
         navClose.classList.remove('hidden');
         navClose.querySelector('button').focus();
@@ -480,15 +478,15 @@ export default async function decorate(block) {
         const buttonDropdown = document.querySelector('.button-dropdown');
         const contentDropdown = document.querySelector('.content-dropdown');
         if (
-          !document.querySelector('.content-dropdown').contains(event.target) &&
-          !document.querySelector('.button-dropdown').contains(event.target)
+          !document.querySelector('.content-dropdown').contains(event.target)
+          && !document.querySelector('.button-dropdown').contains(event.target)
         ) {
           buttonDropdown.classList.remove('active');
           contentDropdown.style.maxHeight = null;
         }
         if (
-          !document.querySelector('.regions-list')?.contains(event.target) &&
-          !document.querySelector('.btn-regions-list')?.contains(event.target)
+          !document.querySelector('.regions-list')?.contains(event.target)
+          && !document.querySelector('.btn-regions-list')?.contains(event.target)
         ) {
           document.querySelector('.regions-list').classList.add('hidden');
         }
@@ -576,23 +574,23 @@ export default async function decorate(block) {
 
       document.addEventListener('click', (event) => {
         if (
-          !document.querySelector('.account-options').contains(event.target) &&
-          !document.querySelector('.user-btn').contains(event.target)
+          !document.querySelector('.account-options').contains(event.target)
+          && !document.querySelector('.user-btn').contains(event.target)
         ) {
           document.querySelector('.account-options').classList.add('hidden');
         }
         const buttonDropdown = document.querySelector('.button-dropdown');
         const contentDropdown = document.querySelector('.content-dropdown');
         if (
-          !document.querySelector('.content-dropdown').contains(event.target) &&
-          !document.querySelector('.button-dropdown').contains(event.target)
+          !document.querySelector('.content-dropdown').contains(event.target)
+          && !document.querySelector('.button-dropdown').contains(event.target)
         ) {
           buttonDropdown.classList.remove('active');
           contentDropdown.style.maxHeight = null;
         }
         if (
-          !document.querySelector('.regions-list')?.contains(event.target) &&
-          !document.querySelector('.btn-regions-list')?.contains(event.target)
+          !document.querySelector('.regions-list')?.contains(event.target)
+          && !document.querySelector('.btn-regions-list')?.contains(event.target)
         ) {
           document.querySelector('.regions-list').classList.add('hidden');
         }
