@@ -69,7 +69,7 @@ export const DialogBase = ({
           tabIndex={-1}
         >
           <div
-            className={classNames("mb-small flex items-center", {
+            className={classNames("mb-small flex items-start", {
               "justify-end": !hasTitle,
               "justify-between": hasTitle,
             })}
