@@ -1,19 +1,18 @@
 import { LoaderFunction, useLoaderData } from "react-router-dom";
-import { getPetsList } from "~/mocks/MockRestApiServer";
+import { getPetById } from "~/mocks/MockRestApiServer";
 import { LoaderData } from "~/types/LoaderData";
+import { invariantResponse } from "~/util/invariant";
 
 export const loader = (({ params }) => {
   const { petId } = params;
+  invariantResponse(petId, "Pet ID is required in this route");
 
-  const petInfo = getPetsList()?.find((pet) => pet.id === petId);
+  const petInfo = getPetById(petId);
+  invariantResponse(petInfo, "Pet not found", {
+    status: 404,
+  });
 
-  if (!petInfo) {
-    throw new Response("Pet not found", { status: 404 });
-  }
-
-  return {
-    petInfo,
-  };
+  return { petInfo };
 }) satisfies LoaderFunction;
 
 export const usePetProfileIndexViewModel = () => {
