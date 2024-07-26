@@ -43,7 +43,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
       </button>
     </div>
     <p
-      class="inline-block font-franklin font-normal text-base leading-6"
+      class="inline-block text-black font-franklin font-normal text-base leading-6"
     >
       Microchip#: 
     </p>
@@ -87,7 +87,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 />
               </div>
               <p
-                class="inline-block font-franklin font-normal text-base leading-6"
+                class="inline-block text-black font-franklin font-normal text-base leading-6"
               >
                 Pet info
               </p>
@@ -118,7 +118,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 />
               </div>
               <p
-                class="inline-block font-franklin font-normal text-base leading-6"
+                class="inline-block text-black font-franklin font-normal text-base leading-6"
               >
                 Pet documents
               </p>
@@ -145,10 +145,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
               role="listitem"
             >
               <p
-                class="inline-block font-franklin font-normal text-sm leading-5"
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block font-raleway font-bold"
+                  class="inline-block text-black font-raleway font-bold"
                 >
                   Age
                   :
@@ -161,10 +161,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
               role="listitem"
             >
               <p
-                class="inline-block font-franklin font-normal text-sm leading-5"
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block font-raleway font-bold"
+                  class="inline-block text-black font-raleway font-bold"
                 >
                   Species
                   :
@@ -177,10 +177,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
               role="listitem"
             >
               <p
-                class="inline-block font-franklin font-normal text-sm leading-5"
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block font-raleway font-bold"
+                  class="inline-block text-black font-raleway font-bold"
                 >
                   Sex
                   :
@@ -193,10 +193,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
               role="listitem"
             >
               <p
-                class="inline-block font-franklin font-normal text-sm leading-5"
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block font-raleway font-bold"
+                  class="inline-block text-black font-raleway font-bold"
                 >
                   Breed
                   :
@@ -209,10 +209,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
               role="listitem"
             >
               <p
-                class="inline-block font-franklin font-normal text-sm leading-5"
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block font-raleway font-bold"
+                  class="inline-block text-black font-raleway font-bold"
                 >
                   DOB
                   :
@@ -225,10 +225,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
               role="listitem"
             >
               <p
-                class="inline-block font-franklin font-normal text-sm leading-5"
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block font-raleway font-bold"
+                  class="inline-block text-black font-raleway font-bold"
                 >
                   Mixed breed
                   :
@@ -241,10 +241,10 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
               role="listitem"
             >
               <p
-                class="inline-block font-franklin font-normal text-sm leading-5"
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block font-raleway font-bold"
+                  class="inline-block text-black font-raleway font-bold"
                 >
                   Spayed/Neutered
                   :
