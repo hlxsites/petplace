@@ -1,0 +1,165 @@
+@media (max-width: 768px) {
+  .insurance-paid-page main {
+    display: grid;
+    grid-template:
+      'details'
+      'article'
+      'compare';
+    padding: 1.5rem 1rem 0;
+  }
+
+  .article-content-container {
+    grid-area: article;
+  }
+
+  .sidebar-right,
+  .article-cta-container {
+    display: none;
+  }
+
+  .article-cta-container {
+    grid-area: compare;
+  }
+
+  .insurance-paid-page .section {
+    padding: 1rem;
+  }
+}
+
+.insurance-paid-page .hero-title-container {
+  grid-area: details;
+  min-height: fit-content;
+}
+
+.insurance-paid-page .hero-title-container h1 {
+  color: #000;
+  margin-top: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.17;
+}
+
+.section.article-content-container {
+  padding: 2rem 0;
+}
+
+.section.article-cta-container {
+  padding: 0;
+
+  > .article-cta-wrapper {
+    width: auto;
+  }
+}
+
+.section:is(.hero-title-container) {
+  padding: 0;
+}
+
+.article-content-container .default-content-wrapper {
+  margin-bottom: 2rem;
+
+  ~ .default-content-wrapper {
+    margin-top: 2rem;
+  }
+
+  h2 {
+    font-family: var(--heading-font-family);
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.614;
+  }
+
+  ol + p {
+    margin-top: 2rem;
+  }
+}
+
+.sidebar-right h2 {
+  font-size: 1.5rem;
+}
+
+.callout-get-a-quote {
+  padding: 1.5rem;
+  background-color: #d6d8f0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
+
+  h2 {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-size: var(--body-font-size-xl);
+    font-weight: 700;
+    line-height: 1.5;
+    color: #333;
+  }
+
+  .button-container {
+    margin-top: 1.5rem;
+  }
+
+  a.button {
+    margin: 0;
+    padding: 0.625rem 1.5rem;
+    width: 100%;
+    color: var(--text-color-inverted);
+    font-family: var(--body-font-family);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 28px;
+    text-decoration: none;
+    background-color: var(--cta-button-color);
+  }
+}
+
+@media (min-width: 768px) {
+  .content-left {
+    grid-area: left-side;
+  }
+
+  .sidebar-right {
+    grid-area: right-side;
+  }
+
+  .insurance-paid-page main {
+    display: grid;
+    grid-template:
+      '. left-side .. right-side .' min-content
+      / minmax(1rem, 1fr) minmax(420px, 670px) minmax(1rem, 80px) minmax(
+        280px,
+        370px
+      )
+      minmax(1rem, 1fr);
+    padding: 2.5rem 0 5rem;
+  }
+
+  .section.article-content-container {
+    padding-bottom: 0;
+  }
+
+  .article-cta-wrapper {
+    /* stylelint-disable-next-line value-no-vendor-prefix */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 120px;
+  }
+
+  .callout-get-a-quote {
+    > div > div {
+      display: flex;
+      align-items: center;
+    }
+
+    h2 {
+      font-size: 1.625rem;
+      line-height: 1.908;
+    }
+
+    .button-container {
+      margin: 0 0 0 auto;
+    }
+
+    a.button {
+      width: auto;
+    }
+  }
+}

@@ -36,7 +36,7 @@
 }
 .section.genai-search-container:not(.centered) {
   border-top: 2px solid var(--border-color);
-  padding: 0;
+  padding: 0 1rem;
 
   @media (min-width: 1200px) {
     max-width: 1344px;
@@ -44,7 +44,7 @@
 
   @media (min-width: 1024px) {
     margin: 0 auto;
-    width: 100%;
+    width: auto;
     padding-top: 0;
   }
 }

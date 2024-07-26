@@ -1,3 +1,5 @@
+import { clickHelper } from '../../scripts/utils/helpers.js';
+
 export default function decorate(block) {
   // const cols = [...block.firstElementChild.children];
 
@@ -13,6 +15,8 @@ export default function decorate(block) {
     row.addEventListener('click', (e) => {
       e.preventDefault();
       window.location.href = link.href;
+      const h2 = row.querySelector('h2');
+      clickHelper('hero_card_cta', h2.innerHTML, 'button', link.href);
     });
 
     [...row.children].forEach((col) => {
