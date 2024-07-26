@@ -26,6 +26,7 @@ module.exports = {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
     },
     colors: {
+      "brand-main": "var(--purple-300)",
       "brand-secondary": "var(--orange-300-contrast)",
       "brand-blue": "var(--brand-blue)",
       "brand-main": "var(--color-purple)",
@@ -68,6 +69,10 @@ module.exports = {
       "neutral-50": "var(--neutral-50)",
       "neutral-white": "var(--neutral-white)",
       "background-disabled": "var(--background-disabled)",
+      "primary-900": "var(--text-primary-900)",
+      "secondary-700": "var(--text-secondary-700)",
+      "tertiary-600": "var(--text-tertiary-600)",
+      main: "var(--text-main)",
       "border-secondary": "var(--border-secondary)",
       "text-danger-default": "var(--text-danger-default)",
       "text-disabled": "var(--text-color-disabled)",
