@@ -71,6 +71,31 @@ describe("Text", () => {
     getRenderer({ srOnly: true });
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass("sr-only");
   });
+
+  it("should render component with color black", () => {
+    getRenderer({ color: "black" });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-black");
+  });
+
+  it("should render component with color neutral", () => {
+    getRenderer({ color: "neutral" });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-neutral-950");
+  });
+
+  it("should render component with color primary", () => {
+    getRenderer({ color: "primary" });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-primary-900");
+  });
+
+  it("should render component with color secondary", () => {
+    getRenderer({ color: "secondary" });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-secondary-700");
+  });
+
+  it("should render component with color tertiary", () => {
+    getRenderer({ color: "tertiary" });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-tertiary-600");
+  });
 });
 
 function getRenderer({
