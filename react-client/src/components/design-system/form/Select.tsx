@@ -1,7 +1,14 @@
 import { useVirtualizer, type VirtualItem } from "@tanstack/react-virtual";
 import clsx from "clsx";
 import { useCombobox } from "downshift";
-import { forwardRef, useCallback, useMemo, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IconButton, IconButtonProps } from "../button/IconButton";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import {
@@ -88,6 +95,12 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       selectedItem: value ?? null,
     });
 
+    // Hacky way to fix initial render value, not sure why Downshift doesn't get it correctly
+    useEffect(() => {
+      if (value) selectItem(value);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
       <InputAccessibilityWrapper id={id} {...rest} labelProps={getLabelProps()}>
         {({ hasError, inputProps }) => (
@@ -104,7 +117,6 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
                 placeholder={placeholder ?? "Select..."}
                 {...inputProps}
                 {...getInputProps({ ref })}
-                value={value}
               />
               {renderButton()}
             </div>
