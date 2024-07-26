@@ -96,6 +96,7 @@ window.hlx.templates.add([
   '/templates/home-page/',
   '/templates/insurance-landing-page',
   '/templates/insurance-page',
+  '/templates/insurance-paid-page',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
   '/templates/tag-index',
@@ -383,7 +384,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt', 'article-page'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt', 'article-page', 'insurance-paid-page'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
