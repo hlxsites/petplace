@@ -2,10 +2,11 @@ import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 
 type StyleProps = {
+  color?: "black" | "neutral" | "primary" | "secondary" | "tertiary";
   fontFamily?: "franklin" | "raleway" | "roboto";
+  fontWeight?: "normal" | "bold";
   size?: "lg" | "base" | "sm" | "xs" | "inherit";
   srOnly?: boolean;
-  fontWeight?: "normal" | "bold";
 };
 
 type TextProps = StyleProps & {
@@ -41,12 +42,18 @@ export const Text = ({
 };
 
 function useTextBase({
+  color = "black",
   fontFamily = "franklin",
   fontWeight = "normal",
   size = "xs",
   srOnly,
 }: StyleProps) {
   const className = classNames("inline-block", {
+    "text-black": color === "black",
+    "text-neutral-950": color === "neutral",
+    "text-primary-900": color === "primary",
+    "text-secondary-700": color === "secondary",
+    "text-tertiary-600": color === "tertiary",
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
     "font-roboto": fontFamily === "roboto",
