@@ -109,7 +109,7 @@ export const FormBuilder = ({
         return (
           <div
             className={classNames(
-              "flg:flex-row gap-base lg:flex [&>*]:grow [&>*]:basis-0",
+              "flex flex-col gap-base lg:flex-row [&>*]:grow [&>*]:basis-0",
               element.className
             )}
             key={element.id}
