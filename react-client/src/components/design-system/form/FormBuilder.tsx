@@ -73,13 +73,9 @@ export const FormBuilder = ({
   }, [onChange, values]);
 
   return (
-    <div className="bg-background p-8 m-auto max-w-screen-lg">
-      <form id={schema.id} noValidate onSubmit={onSubmitHandler}>
-        <div className="space-y-large">
-          {schema.children.map(renderElement)}
-        </div>
-      </form>
-    </div>
+    <form id={schema.id} noValidate onSubmit={onSubmitHandler}>
+      <div className="space-y-large">{schema.children.map(renderElement)}</div>
+    </form>
   );
 
   function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
