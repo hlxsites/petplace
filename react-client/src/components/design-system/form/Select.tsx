@@ -96,7 +96,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
               <input
                 autoFocus={autoFocus}
                 className={clsx(
-                  "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none",
+                  "h-full w-full rounded-full bg-neutral-white p-base outline-none placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled",
                   {
                     [FORM_STYLES.inputError]: hasError,
                   }
@@ -104,6 +104,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
                 placeholder={placeholder ?? "Select..."}
                 {...inputProps}
                 {...getInputProps({ ref })}
+                value={value}
               />
               {renderButton()}
             </div>
