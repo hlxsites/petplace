@@ -15,7 +15,7 @@ export const loader = (({ params }) => {
   return { petInfo };
 }) satisfies LoaderFunction;
 
-export const usePetProfileIndexViewModel = () => {
+export const usePetProfileLayoutViewModel = () => {
   const { petInfo } = useLoaderData() as LoaderData<typeof loader>;
 
   return {
