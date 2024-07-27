@@ -1,4 +1,8 @@
-import { LoaderFunction, useLoaderData } from "react-router-dom";
+import {
+  LoaderFunction,
+  useLoaderData,
+  useOutletContext,
+} from "react-router-dom";
 import { getPetById } from "~/mocks/MockRestApiServer";
 import { LoaderData } from "~/types/LoaderData";
 import { invariantResponse } from "~/util/invariant";
@@ -22,3 +26,6 @@ export const usePetProfileLayoutViewModel = () => {
     petInfo,
   };
 };
+
+export const usePetProfileContext = () =>
+  useOutletContext<ReturnType<typeof usePetProfileLayoutViewModel>>();

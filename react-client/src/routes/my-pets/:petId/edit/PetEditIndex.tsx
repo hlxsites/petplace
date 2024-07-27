@@ -1,4 +1,4 @@
-import { usePetProfileContext } from "../PetProfileLayout";
+import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 
 export const PetEditIndex = () => {
   const { petInfo } = usePetProfileContext();
