@@ -24,7 +24,13 @@ describe("PetCardRecord", () => {
 
   it("should render the correct icons for download and delete actions", () => {
     getRenderer();
-    expect(document.querySelector("svg[data-file-name]"));
+
+    expect(
+      getByLabelText(/download file/i).querySelector("svg")
+    ).toHaveAttribute("data-file-name", "SvgDownloadIcon");
+    expect(
+      getByRole("button", { name: /delete file/i }).querySelector("svg")
+    ).toHaveAttribute("data-file-name", "SvgTrashIcon");
   });
 
   it.each(["Medical", "Vaccines"])(
