@@ -6,7 +6,8 @@ import {
   Loading,
   Text,
 } from "../design-system";
-import { PetCardRecordProps } from "../design-system/types/PetRecordsTypes";
+import { PetCardRecordProps } from "./types/PetRecordsTypes";
+import { downloadFile } from "../../util/downloadFunctions";
 
 export const PetCardRecord = ({
   downloadPath,
@@ -29,18 +30,16 @@ export const PetCardRecord = ({
           <Loading />
         ) : (
           <div className="flex items-center">
-            <a
-              aria-label="download file"
-              download={fileName}
-              href={downloadPath}
-              rel="noopener noreferrer"
-            >
-              <Icon
-                display="download"
-                className="text-orange-300-contrast"
-                size={16}
-              />
-            </a>
+            <IconButton
+              label="download file"
+              icon="download"
+              iconProps={{
+                className: "text-orange-300-contrast lg:mr-[-8px]",
+                size: 16,
+              }}
+              onClick={handleOnDownload}
+              variant="link"
+            />
             <IconButton
               label="delete file"
               icon="trash"
@@ -60,5 +59,11 @@ export const PetCardRecord = ({
     }
 
     return fileType === "docx" ? "docFile" : `${fileType}File`;
+  }
+
+  function handleOnDownload() {
+    downloadFile({ downloadPath, fileName, fileType }).catch((error) => {
+      console.warn("Error handling the download: ", error);
+    });
   }
 };
