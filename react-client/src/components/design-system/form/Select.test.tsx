@@ -83,11 +83,6 @@ describe("<Select />", () => {
     }
   );
 
-  it("should render an input without a value when the value is not in the options", () => {
-    getRenderer({ options: getOptions(), value: "d" });
-    expect(getByRole("combobox")).toHaveValue("");
-  });
-
   it("should be clearable by default", () => {
     getRenderer({ options: getOptions(), value: "Option A" });
     expect(getByRole("button", { name: "Clear" })).toBeInTheDocument();
@@ -96,6 +91,11 @@ describe("<Select />", () => {
   it("should not be clearable when required is true", () => {
     getRenderer({ required: true, options: getOptions(), value: "Option A" });
     expect(queryByRole("button", { name: "Clear" })).not.toBeInTheDocument();
+  });
+
+  it.each(['Option A', "Option B"])('should render with pre-selected value %p', (expected) => {
+    getRenderer({ options: getOptions(), value: expected });
+    expect(getByRole("combobox")).toHaveValue(expected);
   });
 
   describe("onChange callback", () => {

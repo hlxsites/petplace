@@ -1,7 +1,14 @@
 import { useVirtualizer, type VirtualItem } from "@tanstack/react-virtual";
 import clsx from "clsx";
 import { useCombobox } from "downshift";
-import { forwardRef, useCallback, useMemo, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IconButton, IconButtonProps } from "../button/IconButton";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import {
@@ -88,6 +95,12 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       selectedItem: value ?? null,
     });
 
+    // Hacky way to fix initial render value, not sure why Downshift doesn't get it correctly
+    useEffect(() => {
+      if (value) selectItem(value);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
       <InputAccessibilityWrapper id={id} {...rest} labelProps={getLabelProps()}>
         {({ hasError, inputProps }) => (
@@ -96,7 +109,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
               <input
                 autoFocus={autoFocus}
                 className={clsx(
-                  "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none",
+                  "h-full w-full rounded-full bg-neutral-white p-base outline-none placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled",
                   {
                     [FORM_STYLES.inputError]: hasError,
                   }
