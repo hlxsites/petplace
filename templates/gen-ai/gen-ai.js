@@ -365,17 +365,11 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       .querySelector('.search-card-container')
       .appendChild(cursorAnimation);
     // append the stop button to the streaming results
-    resultsBlock
-      .querySelector('.search-card-container')
-      .appendChild(decorateSearch(socket));
-    document
-      .querySelector('.gen-ai .genai-search-container .stop-button-container')
-      .classList.add('show');
+    resultsBlock.querySelector('.search-card-container').appendChild(decorateSearch(socket));
+    document.querySelector('.gen-ai .genai-search-container .stop-button-container').classList.add('show');
 
     // Add trigger words actions
-    if (
-      response.actions?.length && !document.querySelector('.search-actions')
-    ) {
+    if (response.actions?.length && !document.querySelector('.search-actions')) {
       const searchContainer = resultsBlock.querySelector('.search-card');
       const actionsContainer = document.createElement('div');
       actionsContainer.classList.add('search-actions');
@@ -397,8 +391,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
           actionCtaImg.setAttribute('src', action.background_url);
           actionCta.append(actionCtaImg);
 
-          const actionCtaTitle = document.createElement('h2');
-          actionCtaTitle.className = 'action-cta-title';
+          const actionCtaTitle = document.createElement('h3');
           actionCtaTitle.setAttribute('itemprop', 'name');
           actionCtaTitle.textContent = action.title;
           actionCta.append(actionCtaTitle);
