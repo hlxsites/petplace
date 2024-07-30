@@ -12,7 +12,7 @@ export * from "./icon/Icon";
 export * from "./loading/Loading";
 export * from "./switch/Switch";
 export * from "./tab/Tabs";
-export * from "./tab/UncontrolledTabs";
+export * from "./table/Table";
 export * from "./text/Text";
 export * from "./text/TextSpan";
 export * from "./text/Title";
