@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 
 type StyleProps = {
+  align?: "center" | "left" | "right" | "justify" ;
   fontFamily?: "franklin" | "raleway" | "roboto";
   size?: "lg" | "base" | "sm" | "xs" | "inherit";
   srOnly?: boolean;
@@ -11,6 +12,7 @@ type StyleProps = {
 type TextProps = StyleProps & {
   ariaHidden?: boolean;
   ariaLabel?: string;
+  align?: string;
   children: ReactNode;
   element?: "p" | "span";
   id?: string;
@@ -44,6 +46,7 @@ function useTextBase({
   fontFamily = "franklin",
   fontWeight = "normal",
   size = "xs",
+  align = "center",
   srOnly,
 }: StyleProps) {
   const className = classNames("inline-block", {
@@ -56,8 +59,13 @@ function useTextBase({
     "text-base leading-6": size === "base",
     "text-sm leading-5": size === "sm",
     "text-xs leading-4": size === "xs",
+    "text-left": align === "left",
+    "text-center": align === "center",
+    "text-right": align === "right",
+    "text-justify": align === "justify",
     "sr-only": srOnly,
   });
 
   return { className };
 }
+
