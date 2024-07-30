@@ -30,6 +30,7 @@ import SyringeIcon from "./assets/syringe-icon.svg";
 import TransferIcon from "./assets/transfer-icon.svg";
 import TrashIcon from "./assets/trash-icon.svg";
 import TxtFileIcon from "./assets/txt-file-icon.svg";
+import UploadCloudIcon from "./assets/upload-cloud-icon.svg";
 import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 import CloseXMarkIconRegular from "./assets/x-mark-icon-regular.svg";
 
@@ -64,6 +65,7 @@ const IconMap = Object.freeze({
   transfer: <TransferIcon />,
   trash: <TrashIcon />,
   txtFile: <TxtFileIcon />,
+  uploadCloud: <UploadCloudIcon />,
   warningTriangle: <WarningTriangleIcon />,
 });
 
