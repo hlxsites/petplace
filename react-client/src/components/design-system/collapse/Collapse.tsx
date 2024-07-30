@@ -1,7 +1,8 @@
 import * as Collapsible from "@radix-ui/react-collapsible";
+import { useSpring, animated } from "react-spring";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 import { Icon } from "../icon/Icon";
-import { ReactNode } from "react";
 
 type CollapseProps = {
   children: ReactNode;
@@ -19,6 +20,20 @@ export const Collapse = ({
   trigger,
   ...rest
 }: CollapseProps) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setContentHeight(contentRef.current.scrollHeight);
+    }
+  }, [isOpen, children]);
+
+  const style = useSpring({
+    height: isOpen ? contentHeight : 0,
+    overflow: 'hidden'
+  });
+
   return (
     <Collapsible.Root {...rest} data-testid="collapse" open={isOpen}>
       <Collapsible.Trigger
@@ -33,7 +48,9 @@ export const Collapse = ({
           className="text-orange-300-contrast"
         />
       </Collapsible.Trigger>
-      <Collapsible.Content>{children}</Collapsible.Content>
+      <Collapsible.Content>
+        <animated.div style={style} ref={contentRef}>{children}</animated.div>
+      </Collapsible.Content>
     </Collapsible.Root>
   );
 };
