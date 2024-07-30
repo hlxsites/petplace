@@ -1,4 +1,4 @@
-import { Button } from "../design-system";
+import { Button, ButtonProps } from "../design-system";
 import { Card } from "../design-system/card/Card";
 import { Icon } from "../design-system/icon/Icon";
 import { Title } from "../design-system/text/Title";
@@ -20,10 +20,7 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
               Secure Your Pet's Future
             </Title>
           </div>
-
-          <Button className="hidden h-[30px] lg:flex" onClick={onClick}>
-            Get Quote Now
-          </Button>
+          {renderGetQuoteButton({ className: "hidden h-[30px] lg:flex" })}
         </div>
         <div className="pl-xxlarge">
           <Text
@@ -31,14 +28,16 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
             size="base"
           >{`Get a personalized insurance quote and ensure the best care for ${petName}`}</Text>
         </div>
-        {renderGetQuoteButton()}
+        {renderGetQuoteButton({
+          className: "h-[30px] w-full lg:hidden",
+        })}
       </div>
     </Card>
   );
 
-  function renderGetQuoteButton() {
+  function renderGetQuoteButton(props: Pick<ButtonProps, "className">) {
     return (
-      <Button className="h-[30px] w-full lg:hidden" onClick={onClick}>
+      <Button {...props} onClick={onClick}>
         Get Quote Now
       </Button>
     );
