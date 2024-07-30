@@ -44,6 +44,7 @@ export interface TableCommonProps<T> {
   rows: TableRow<T>[];
   sortBy?: string | null;
   totalSelectedItems?: number;
+  wrapper?: (table: ReactNode) => ReactNode;
 }
 
 export type BulkSelectionAction = { label: string; onClick?: () => void };
@@ -63,6 +64,7 @@ export const Table = <T,>({
   bulkSelectionActions,
   totalSelectedItems = 0,
   didSelectRowAction,
+  wrapper
 }: TableCommonProps<T>) => {
   const isThereAnyRowAction = (rowActions?.length ?? 0) > 0;
   const { className: cellClassName } = useCellBase();
@@ -83,7 +85,7 @@ export const Table = <T,>({
       </Conditional>
       {renderNoResultsView()}
       <Conditional when={!isEmptyState && !isLoading}>
-        {renderTableContent()}
+      {wrapper ? wrapper(renderTableContent()) : renderTableContent()}
       </Conditional>
     </>
   );
