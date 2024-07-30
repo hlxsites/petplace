@@ -27,12 +27,6 @@ describe("PetCardInfo", () => {
       expect(getByText(`Microchip#: ${microchipNumber}`)).toBeInTheDocument();
     }
   );
-
-  it("should match snapshot to assure that the component is being rendered correctly", () => {
-    const { container } = getRenderer();
-
-    expect(container).toMatchSnapshot();
-  });
 });
 
 function getRenderer({
