@@ -27,7 +27,7 @@ export const TablePlayground = () => {
   ];
 
   return (
-    <div className="max-w-[500px]">
+    <div className="">
       <Table
         columns={columns}
         rows={rows}
