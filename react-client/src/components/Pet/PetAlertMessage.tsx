@@ -26,10 +26,10 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
           </Button>
         </div>
         <div className="pl-xxlarge">
-          {/* TODO: fix the size, should be 14px 
-          TODO: insert new color,
-          should be blue-500 */}
-          <Text size="base">{`Get a personalized insurance quote and ensure the best care for ${petName}`}</Text>
+          <Text
+            color="blue-500"
+            size="base"
+          >{`Get a personalized insurance quote and ensure the best care for ${petName}`}</Text>
         </div>
         {renderGetQuoteButton()}
       </div>
