@@ -4,3 +4,4 @@ export * from "./FormBuilderPlayground";
 export * from "./ConditionalPlayground";
 export * from "./TextPlayground";
 export * from "./TablePlayground";
+export * from "./PetCardRecordPlayground";
