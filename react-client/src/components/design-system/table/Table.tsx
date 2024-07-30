@@ -141,7 +141,7 @@ export const Table = <T,>({
                       id={row.key}
                       label="Selecionar item"
                       checked={!!row.isSelected}
-                      onChange={didSelectRow(row.key as keyof T)}
+                      onCheckedChange={didSelectRow(row.key as keyof T)}
                     />
                   </td>
                 </Conditional>
@@ -199,7 +199,7 @@ export const Table = <T,>({
             hideLabel
             id="select-all"
             label="Selecionar todos os itens"
-            onChange={didSelectRow("allOrNone")}
+            onCheckedChange={didSelectRow("allOrNone")}
           />
         ),
         width: 24,
