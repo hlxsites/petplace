@@ -89,11 +89,7 @@ export default async function decorate(block) {
     renderContent(block);
   });
 
-  if (document.querySelector('.cards ul')) {
+  if (document.querySelector('#main')) {
     observer.observe(document.querySelector('.cards ul'), { childList: true });
-  } else {
-    setTimeout(() => {
-      observer.observe(document.querySelector('.cards ul'), { childList: true });
-    });
   }
 }
