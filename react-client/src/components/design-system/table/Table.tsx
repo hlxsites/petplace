@@ -221,8 +221,8 @@ export const Table = <T,>({
             >
               {plural({
                 countFrom: totalSelectedItems,
-                one: "Um item selecionado",
-                other: `${totalSelectedItems} items selecionados`,
+                one: "One selected item",
+                other: `${totalSelectedItems} selected items`,
               })}
             </span>
             {bulkSelectionActions?.map(({ label, onClick }) => (
