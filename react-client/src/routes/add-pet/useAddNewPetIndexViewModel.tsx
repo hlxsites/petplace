@@ -3,14 +3,14 @@ import { LoaderData } from "~/types/LoaderData";
 
 export const loader = (() => {
   return {
-    petInfo: [],
+    petRegistration: [],
   };
 }) satisfies LoaderFunction;
 
-export const usePetProfileIndexViewModel = () => {
-  const { petInfo } = useLoaderData() as LoaderData<typeof loader>;
+export const useAddNewPetIndexViewModel = () => {
+  const { petRegistration } = useLoaderData() as LoaderData<typeof loader>;
 
   return {
-    petInfo,
+    petRegistration,
   };
 };

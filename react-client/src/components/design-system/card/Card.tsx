@@ -1,13 +1,19 @@
 import type { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 
-type CardProps = {
+export type CardProps = {
   children: ReactNode;
   hasShadow?: boolean;
   radius?: "sm" | "base";
+  role?: JSX.IntrinsicElements["div"]["role"];
 };
 
-export const Card = ({ children, hasShadow, radius = "base" }: CardProps) => {
+export const Card = ({
+  children,
+  hasShadow,
+  radius = "base",
+  role,
+}: CardProps) => {
   return (
     <div
       className={classNames(
@@ -18,6 +24,7 @@ export const Card = ({ children, hasShadow, radius = "base" }: CardProps) => {
           "shadow-elevation-1": hasShadow,
         }
       )}
+      role={role}
     >
       {children}
     </div>

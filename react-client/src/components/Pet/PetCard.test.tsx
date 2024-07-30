@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { PetCard } from "./PetCard";
 import { ComponentProps } from "react";
+import { PetCard } from "./PetCard";
 
 const { getByRole, getByText, getByTestId } = screen;
 
@@ -37,7 +37,7 @@ describe("PetCard", () => {
   ])(
     "should render icon according to isProtected status",
     ({ isProtected, name }) => {
-      const { container } = getRenderer({ isProtected });
+      const { container } = getRenderer({ displayProtectedBadge: { isProtected } });
 
       expect(container.querySelector("svg")).toHaveAttribute(
         "data-file-name",
@@ -55,7 +55,7 @@ describe("PetCard", () => {
   ])(
     "should render classes according to isProtected status",
     ({ isProtected, classes }) => {
-      const { container } = getRenderer({ isProtected });
+      const { container } = getRenderer({ displayProtectedBadge: { isProtected } });
 
       expect(
         container.querySelector("svg")?.parentElement?.parentElement
@@ -70,9 +70,10 @@ describe("PetCard", () => {
 });
 
 function getRenderer({
-  isProtected = true,
+  children,
+  displayProtectedBadge = { isProtected: true },
   name = DEFAULT_NAME,
   ...rest
 }: Partial<ComponentProps<typeof PetCard>> = {}) {
-  return render(<PetCard isProtected={isProtected} name={name} {...rest} />);
+  return render(<PetCard displayProtectedBadge={displayProtectedBadge} name={name} {...rest}>{children}</PetCard>);
 }

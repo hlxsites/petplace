@@ -1,4 +1,4 @@
-import { loadScript } from '../../scripts/lib-franklin.js';
+import { decorateIcons, loadScript } from '../../scripts/lib-franklin.js';
 import {
   Events,
   decorateSlideshowAria,
@@ -330,6 +330,45 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     // append the stop button to the streaming results
     resultsBlock.querySelector('.search-card-container').appendChild(decorateSearch(socket));
     document.querySelector('.gen-ai .genai-search-container .stop-button-container').classList.add('show');
+
+    // Add trigger words actions
+    if (response.actions?.length && !document.querySelector('.search-actions')) {
+      const searchContainer = resultsBlock.querySelector('.search-card');
+      const actionsContainer = document.createElement('div');
+      actionsContainer.classList.add('search-actions');
+      searchContainer.prepend(actionsContainer);
+
+      response.actions.forEach((action) => {
+        if (action.type === 'cta') {
+          const actionCta = document.createElement('a');
+          actionCta.classList.add('action-cta');
+          actionCta.setAttribute('href', action.href || '#');
+
+          const actionCtaLink = document.createElement('link');
+          actionCtaLink.setAttribute('itemprop', 'url');
+          actionCtaLink.setAttribute('href', action.href);
+          actionCta.append(actionCtaLink);
+
+          const actionCtaImg = document.createElement('img');
+          actionCtaImg.setAttribute('alt', action.title);
+          actionCtaImg.setAttribute('src', action.background_url);
+          actionCta.append(actionCtaImg);
+
+          const actionCtaTitle = document.createElement('h3');
+          actionCtaTitle.setAttribute('itemprop', 'name');
+          actionCtaTitle.textContent = action.title;
+          actionCta.append(actionCtaTitle);
+
+          const actionCtaBtn = document.createElement('span');
+          actionCtaBtn.classList.add('action-button');
+          actionCtaBtn.innerHTML = `${action.text}<span class="icon icon-arrow-right"></span>`;
+          decorateIcons(actionCtaBtn);
+          actionCta.append(actionCtaBtn);
+
+          actionsContainer.append(actionCta);
+        }
+      });
+    }
   }
 
   // // If the div already exists, update its content with the new message

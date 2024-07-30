@@ -2,14 +2,15 @@ import { classNames } from "~/util/styleUtil";
 
 type TitleProps = {
   children: string;
+  id?: string;
   level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 };
 
-export const Title = ({ children, level = "h1" }: TitleProps) => {
+export const Title = ({ children, level = "h1", id }: TitleProps) => {
   const Comp = level;
   const { className } = useTitleBase(level);
 
-  return <Comp className={className}>{children}</Comp>;
+  return <Comp className={className} id={id}>{children}</Comp>;
 };
 
 function useTitleBase(level: TitleProps["level"]) {

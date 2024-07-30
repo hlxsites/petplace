@@ -6,7 +6,6 @@ import {
   pushToDataLayer,
   articleLinksHelper,
   articlePopularHelper,
-  articlePrevNextHelper,
 } from './utils/helpers.js';
 
 // GLOBAL VARIABLES
@@ -39,7 +38,48 @@ const handleArticleShare = () => {
 const handleArticleClicks = () => {
   articleLinksHelper();
   articlePopularHelper();
-  articlePrevNextHelper();
+};
+
+// INSURANCE PAID PAGE
+
+// Header Quote CTA
+const handleHeaderCtaClicks = () => {
+  const headerQuoteCTA = document.querySelector('.header-quote-cta');
+  if (!headerQuoteCTA) return;
+  headerQuoteCTA.addEventListener('click', () => {
+    pushToDataLayer({
+      cta_location: 'header_cta',
+    });
+  });
+};
+
+// Body CTAs
+const handleBodyCtaClicks = () => {
+  const callOuts = document.querySelectorAll('.callout-get-a-quote');
+  if (!callOuts) return;
+  callOuts.forEach((callOut, i) => {
+    callOut.addEventListener('click', (ev) => {
+      const link = ev.target.closest('a');
+      if (!link) return;
+
+      pushToDataLayer({
+        cta_location: `body_${i + 1}_cta`,
+      });
+    });
+  });
+};
+
+// Sidebar Btns
+const handleSidebarBtns = () => {
+  const sidebarBtns = document.querySelectorAll('.sidebar-right button');
+  if (!sidebarBtns) return;
+  sidebarBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      pushToDataLayer({
+        cta_location: 'right_margin_cta',
+      });
+    });
+  });
 };
 
 // HEADER - nav, menu, sidebar, social
@@ -100,23 +140,26 @@ const handleComparePlanClicks = (className) => {
   });
 };
 
-// CTA - carousel button, insurance button
+// CTA - hero banner, insurance button
 const handleCtaClicks = () => {
   if (window.location.pathname === `${window.hlx.contentBasePath}/`) {
-    // slides removed, modify this later (todo)
-    // document
-    //   .querySelector('.slides-container')
-    //   .addEventListener('click', (ev) => {
-    //     const btn = ev.target.closest('a');
-    //     if (!btn) return;
-
-    //     clickHelper('CTA Button', btn.title, 'button', btn.href);
-    //   });
-
     handleComparePlanClicks('.insurance-search');
+
+    document.querySelectorAll('.home-banner.image-hero').forEach((banner) => {
+      banner.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('.image-hero');
+        if (!btn) return;
+        const title = btn.querySelector('h2').innerHTML;
+        const link = btn.querySelector('a').href;
+
+        clickHelper('hero_cta_button', title, 'button', link);
+      });
+    });
   }
 
-  if (window.location.pathname === `${window.hlx.contentBasePath}/pet-insurance`) {
+  if (
+    window.location.pathname === `${window.hlx.contentBasePath}/pet-insurance`
+  ) {
     handleComparePlanClicks('.top-search');
     handleComparePlanClicks('.bottom-search');
   }
@@ -139,6 +182,13 @@ export const handleDataLayerApproach = () => {
   if (window.location.pathname.includes('article')) {
     handleArticleShare();
     handleArticleClicks();
+  }
+
+  // additional check to only run on insurance paid pages
+  if (window.location.pathname.includes('insurance-paid-page')) {
+    handleHeaderCtaClicks();
+    handleBodyCtaClicks();
+    handleSidebarBtns();
   }
 
   // ELEMENT CLICKS

@@ -8,8 +8,8 @@ type ButtonIcon = IconProps["display"];
 export type ButtonProps = UseButtonBase &
   JSX.IntrinsicElements["button"] & {
     iconLeft?: ButtonIcon;
+    iconProps?: Omit<IconProps, "display">;
     iconRight?: ButtonIcon;
-    onClick?: () => void;
   };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -22,6 +22,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       type = "button",
       variant,
       iconLeft,
+      iconProps,
       iconRight,
       ...rest
     },
@@ -47,7 +48,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     );
 
     function renderIcon(props: IconProps) {
-      return <Icon size={16} {...props} />;
+      return (
+        <Icon
+          size={16}
+          {...props}
+          {...iconProps}
+          className={classNames(props.className, iconProps?.className)}
+        />
+      );
     }
   }
 );
