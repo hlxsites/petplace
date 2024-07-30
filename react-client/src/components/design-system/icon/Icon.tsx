@@ -26,6 +26,7 @@ import PngFileIcon from "./assets/png-file-icon.svg";
 import SearchIcon from "./assets/search-icon.svg";
 import ShieldGoodIcon from "./assets/shield-good-icon.svg";
 import ShieldOffIcon from "./assets/shield-off-icon.svg";
+import StethoscopeIcon from "./assets/stethoscope-icon.svg";
 import SyringeIcon from "./assets/syringe-icon.svg";
 import TransferIcon from "./assets/transfer-icon.svg";
 import TrashIcon from "./assets/trash-icon.svg";
@@ -60,6 +61,7 @@ const IconMap = Object.freeze({
   search: <SearchIcon />,
   shieldGood: <ShieldGoodIcon />,
   shieldOff: <ShieldOffIcon />,
+  stethoscope: <StethoscopeIcon />,
   syringe: <SyringeIcon />,
   transfer: <TransferIcon />,
   trash: <TrashIcon />,
