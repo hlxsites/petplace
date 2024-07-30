@@ -6,8 +6,8 @@ import * as downloadFunctions from "../../util/downloadFunctions";
 
 const { getByRole, queryByRole } = screen;
 
-const deleteButton = /delete file/i;
-const downloadButton = /download file/i;
+const DELETE_BUTTON = /delete file/i;
+const DOWNLOAD_BUTTON = /download file/i;
 
 describe("PetCardRecord", () => {
   beforeEach(() => {
@@ -46,10 +46,10 @@ describe("PetCardRecord", () => {
     getRenderer();
 
     expect(
-      getByRole("button", { name: downloadButton }).querySelector("svg")
+      getByRole("button", { name: DOWNLOAD_BUTTON }).querySelector("svg")
     ).toHaveAttribute("data-file-name", "SvgDownloadIcon");
     expect(
-      getByRole("button", { name: deleteButton }).querySelector("svg")
+      getByRole("button", { name: DELETE_BUTTON }).querySelector("svg")
     ).toHaveAttribute("data-file-name", "SvgTrashIcon");
   });
 
@@ -81,18 +81,18 @@ describe("PetCardRecord", () => {
   it("should render download and delete actions when isUploading=false", () => {
     getRenderer();
 
-    expect(getByRole("button", { name: downloadButton })).toBeInTheDocument();
-    expect(getByRole("button", { name: deleteButton })).toBeInTheDocument();
+    expect(getByRole("button", { name: DOWNLOAD_BUTTON })).toBeInTheDocument();
+    expect(getByRole("button", { name: DELETE_BUTTON })).toBeInTheDocument();
   });
 
   it("should NOT render download and delete actions when isUploading=true", () => {
     getRenderer({ isUploadingFile: true });
 
     expect(
-      queryByRole("button", { name: downloadButton })
+      queryByRole("button", { name: DOWNLOAD_BUTTON })
     ).not.toBeInTheDocument();
     expect(
-      queryByRole("button", { name: deleteButton })
+      queryByRole("button", { name: DELETE_BUTTON })
     ).not.toBeInTheDocument();
   });
 
@@ -101,7 +101,7 @@ describe("PetCardRecord", () => {
     getRenderer({ onClick });
 
     expect(onClick).not.toHaveBeenCalled();
-    await userEvent.click(getByRole("button", { name: deleteButton }));
+    await userEvent.click(getByRole("button", { name: DELETE_BUTTON }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
@@ -111,7 +111,7 @@ describe("PetCardRecord", () => {
     getRenderer();
     expect(downloadFileSpy).not.toHaveBeenCalled();
 
-    await userEvent.click(getByRole("button", { name: downloadButton }));
+    await userEvent.click(getByRole("button", { name: DOWNLOAD_BUTTON }));
 
     expect(downloadFileSpy).toHaveBeenCalledTimes(1);
     expect(downloadFileSpy).toHaveBeenCalledWith({
