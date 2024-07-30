@@ -4,14 +4,16 @@ import { PetPlaceRouteObject } from "~/types/routerTypes";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
+import { PetProfileIndex } from "./my-pets/:petId/PetProfileIndex";
+import { loader as PetProfileLayoutLoader } from "./my-pets/:petId/usePetProfileLayoutViewModel";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
-import { PetProfileIndex } from "./pet-profile/PetProfileIndex";
-import { loader as PetProfileIndexLoader } from "./pet-profile/usePetProfileIndexViewModel";
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
 
 import { lazy } from "react";
+import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
+import { PetProfileLayout } from "./my-pets/:petId/PetProfileLayout";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -35,16 +37,22 @@ const routes: PetPlaceRouteObject[] = [
             element: <MyPetsIndex />,
           },
           {
+            element: <PetProfileLayout/>,
             id: "petProfile",
+            loader: PetProfileLayoutLoader,
             path: AppRoutePaths.petProfile,
+            shouldRevalidate: ({ currentParams, nextParams }) =>
+              !isEqual(currentParams, nextParams),
             children: [
               {
+                element: <PetProfileIndex />,
                 id: "petProfileIndex",
                 index: true,
-                loader: PetProfileIndexLoader,
-                shouldRevalidate: ({ currentParams, nextParams }) =>
-                  !isEqual(currentParams, nextParams),
-                element: <PetProfileIndex />,
+              },
+              {
+                id: "petEdit",
+                path: AppRoutePaths.petEdit,
+                element: <PetEditIndex />,
               },
             ],
           },

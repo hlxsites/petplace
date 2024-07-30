@@ -58,3 +58,7 @@ const PETS_LIST: PetInfo[] = [
 export const getPetsList = () => {
   return PETS_LIST;
 };
+
+export const getPetById = (id: string) => {
+  return getPetsList()?.find((pet) => pet.id === id);
+};

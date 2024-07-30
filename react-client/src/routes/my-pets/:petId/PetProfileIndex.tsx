@@ -3,11 +3,10 @@ import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
 import { PetCard } from "~/components/Pet/PetCard";
 import { PetCardInfo } from "~/components/Pet/PetCardInfo";
-import { usePetProfileIndexViewModel } from "./usePetProfileIndexViewModel";
+import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 
 export const PetProfileIndex = () => {
-  const { petInfo } = usePetProfileIndexViewModel();
-  if (!petInfo) return;
+  const { petInfo } = usePetProfileContext();
 
   return (
     <Layout>
