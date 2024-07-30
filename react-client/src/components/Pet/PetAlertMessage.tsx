@@ -37,6 +37,10 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
   );
 
   function renderGetQuoteButton() {
-    return <Button className="h-[30px] w-full lg:hidden">Get Quote Now</Button>;
+    return (
+      <Button className="h-[30px] w-full lg:hidden" onClick={onClick}>
+        Get Quote Now
+      </Button>
+    );
   }
 };
