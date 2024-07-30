@@ -6,7 +6,7 @@ export const PetCardRecordPlayground = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   return (
-    <div className="grid max-w-[200px] gap-xlarge">
+    <div className="grid max-w-[300px] gap-xlarge">
       <div className="grid gap-small">
         <PetCardRecord
           fileName="Dog image"
