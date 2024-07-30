@@ -10,12 +10,11 @@ import { PetCardRecordProps } from "./types/PetRecordsTypes";
 import { downloadFile } from "../../util/downloadFunctions";
 
 export const PetCardRecord = ({
-  downloadPath,
-  fileName,
-  fileType,
+  record,
   isUploadingFile,
-  onClick,
+  onDelete,
 }: PetCardRecordProps) => {
+  const { downloadPath, fileName, fileType } = record;
   return (
     <Card role="listitem">
       <div className="flex justify-between p-base">
@@ -44,7 +43,7 @@ export const PetCardRecord = ({
               label="delete file"
               icon="trash"
               iconProps={{ className: "text-orange-300-contrast", size: 16 }}
-              onClick={onClick}
+              onClick={onDelete}
               variant="link"
             />
           </div>
