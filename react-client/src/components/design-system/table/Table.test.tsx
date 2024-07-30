@@ -203,7 +203,7 @@ describe("<Table />", () => {
             rows: createRows(20),
             totalSelectedItems: 1,
           });
-          expect(getByText(/um item selecionado/i)).toBeInTheDocument();
+          expect(getByText(/one selected item/i)).toBeInTheDocument();
         });
 
         it.each([2, 15])("should display '%i items selected'", (expected) => {
@@ -214,7 +214,7 @@ describe("<Table />", () => {
             totalSelectedItems: expected,
           });
           expect(
-            getByText(`${expected} items selecionados`)
+            getByText(`${expected} selected items`)
           ).toBeInTheDocument();
         });
 
