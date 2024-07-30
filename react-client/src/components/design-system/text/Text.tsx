@@ -2,7 +2,13 @@ import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 
 type StyleProps = {
-  color?: "black" | "neutral" | "primary" | "secondary" | "tertiary";
+  color?:
+    | "black"
+    | "neutral"
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "blue-500";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
   size?: "lg" | "base" | "sm" | "xs" | "inherit";
@@ -50,6 +56,7 @@ function useTextBase({
 }: StyleProps) {
   const className = classNames("inline-block", {
     "text-black": color === "black",
+    "text-blue-500": color === "blue-500",
     "text-neutral-950": color === "neutral",
     "text-primary-900": color === "primary",
     "text-secondary-700": color === "secondary",

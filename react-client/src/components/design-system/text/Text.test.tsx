@@ -96,6 +96,11 @@ describe("Text", () => {
     getRenderer({ color: "tertiary" });
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-tertiary-600");
   });
+
+  it("should render component with color blue-500", () => {
+    getRenderer({ color: "blue-500" });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-blue-500");
+  });
 });
 
 function getRenderer({
