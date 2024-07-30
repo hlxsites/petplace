@@ -5,7 +5,7 @@ import { Title } from "./Title";
 
 const { getByRole, getByText } = screen;
 
-describe("<Title />", () => {
+describe("Title", () => {
   it.each(["A heading", "Another heading"])(
     `should render '%s'`,
     (expected) => {
@@ -35,13 +35,29 @@ describe("<Title />", () => {
     ["lg:text-[16px]/[20px] text-[14px]/[16px]", "h5"],
   ])(`should manage classes and levels accordingly`, (classes, level) => {
     getRenderer({ level: level as Props["level"] });
-    expect(getByRole("heading")).toHaveClass(`font-bold text-neutral-950 ${classes}`);
+    expect(getByRole("heading")).toHaveClass(
+      `font-bold text-neutral-950 ${classes}`
+    );
   });
 
   it("should match snapshot to assure that the component is being rendered correctly", () => {
     const { container } = getRenderer();
 
     expect(container).toMatchSnapshot();
+  });
+
+  it.each(["blue-500", "neutral-950"] as ComponentProps<
+    typeof Title
+  >["color"][])("should render with colors", (color) => {
+    getRenderer({ color });
+
+    expect(getByRole("heading")).toHaveClass(`text-${color}`);
+  });
+
+  it("should render component with neutral-950 color class by default", () => {
+    getRenderer();
+
+    expect(getByRole("heading")).toHaveClass("text-neutral-950");
   });
 });
 
