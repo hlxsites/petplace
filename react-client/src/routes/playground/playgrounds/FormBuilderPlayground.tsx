@@ -17,7 +17,6 @@ export const FormBuilderPlayground = () => {
       },
       {
         elementType: "row",
-        id: "row-1",
         children: [
           {
             elementType: "input",
@@ -38,7 +37,6 @@ export const FormBuilderPlayground = () => {
         ],
       },
       {
-        id: "breed-row",
         elementType: "row",
         children: [
           {
@@ -63,7 +61,6 @@ export const FormBuilderPlayground = () => {
         ],
       },
       {
-        id: "breed-type-spayed",
         elementType: "row",
         children: [
           {
@@ -86,7 +83,6 @@ export const FormBuilderPlayground = () => {
       },
       {
         elementType: "row",
-        id: "birth-date-row",
         children: [
           {
             elementType: "input",
@@ -129,7 +125,6 @@ export const FormBuilderPlayground = () => {
           </Text>
         ),
         elementType: "html",
-        id: "text-note",
       },
       {
         elementType: "input",

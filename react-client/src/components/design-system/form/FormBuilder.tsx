@@ -92,14 +92,31 @@ export const FormBuilder = ({
     return values;
   }
 
-  function renderElement(element: ElementUnion) {
+  function renderElement(element: ElementUnion, index: number) {
     if (!matchConditionExpression(element.shouldDisplay ?? true)) return null;
 
-    switch (element.elementType) {
+    const { elementType } = element;
+
+    if (elementType === "input") {
+      return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
+    } else if (elementType === "button") {
+      return (
+        <Button
+          className={element.className}
+          key={element.id}
+          type={element.type}
+        >
+          {element.label}
+        </Button>
+      );
+    }
+
+    const elementKey = `${elementType}-${index}`;
+    switch (elementType) {
       case "section":
-        return <Fragment key={element.id}>{renderSection(element)}</Fragment>;
+        return <Fragment key={elementKey}>{renderSection(element)}</Fragment>;
       case "html":
-        return <Fragment key={element.id}>{element.content}</Fragment>;
+        return <Fragment key={elementKey}>{element.content}</Fragment>;
       case "row":
         return (
           <div
@@ -107,23 +124,12 @@ export const FormBuilder = ({
               "flex flex-col gap-base lg:flex-row [&>*]:grow [&>*]:basis-0",
               element.className
             )}
-            key={element.id}
+            key={elementKey}
+            id={element.id}
           >
             {element.children.map(renderElement)}
           </div>
         );
-      case "button":
-        return (
-          <Button
-            className={element.className}
-            key={element.id}
-            type={element.type}
-          >
-            {element.label}
-          </Button>
-        );
-      case "input":
-        return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
       default:
         if (isDevEnvironment) {
           // @ts-expect-error - we expect it to throw an error when a new element is added in the form builder types but not implemented here yet
