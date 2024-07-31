@@ -31,17 +31,30 @@ describe("Drawer", () => {
       "text-neutral-600"
     );
   });
+
+  it("should hide close button when hideCloseButton=true", () => {
+    getRenderer({ hideCloseButton: true });
+
+    expect(getByRole("button", { name: "Close drawer" })).toHaveClass("hidden");
+  });
 });
 
 function getRenderer({
-  title = "Test title",
   children = "Test children",
+  hideCloseButton,
   id = "SampleId",
   isOpen = true,
   onClose = jest.fn(),
+  title = "Test title",
 }: Partial<ComponentProps<typeof Drawer>> = {}) {
   return render(
-    <Drawer title={title} onClose={onClose} id={id} isOpen={isOpen}>
+    <Drawer
+      hideCloseButton={hideCloseButton}
+      id={id}
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+    >
       {children}
     </Drawer>
   );
