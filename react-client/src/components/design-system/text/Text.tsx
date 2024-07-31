@@ -13,7 +13,6 @@ type StyleProps = {
 type TextProps = StyleProps & {
   ariaHidden?: boolean;
   ariaLabel?: string;
-  align?: string;
   children: ReactNode;
   element?: "p" | "span";
   id?: string;
@@ -48,7 +47,7 @@ function useTextBase({
   fontFamily = "franklin",
   fontWeight = "normal",
   size = "xs",
-  align = "center",
+  align,
   srOnly,
 }: StyleProps) {
   const className = classNames("inline-block", {
