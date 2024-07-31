@@ -102,7 +102,7 @@ export const Table = <T,>({
                   <td className={classNames(cellClassName({ isEven }))}>
                     <Checkbox
                       id={row.key}
-                      label="Selecionar item"
+                      label="Select item"
                       checked={!!row.isSelected}
                       onCheckedChange={didSelectRow(row.key as keyof T)}
                     />
@@ -145,7 +145,7 @@ export const Table = <T,>({
     const actionsColumn: TableColumn = {
       align: "right",
       key: "actionsColumn",
-      label: "Ações",
+      label: "Actions",
       width: "5%",
     };
 
@@ -161,7 +161,7 @@ export const Table = <T,>({
             checked={isAllSelected}
             hideLabel
             id="select-all"
-            label="Selecionar todos os itens"
+            label="Select all items"
             onCheckedChange={didSelectRow("allOrNone")}
           />
         ),
@@ -209,7 +209,7 @@ export const Table = <T,>({
       return null;
     }
 
-    const message = noResultsMessage ?? "Nenhum resultado encontrado para";
+    const message = noResultsMessage ?? "No results were found";
     return (
       <p>
         {message} <strong>{noResultsSearchTerm}</strong>

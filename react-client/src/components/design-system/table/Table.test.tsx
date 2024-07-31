@@ -19,10 +19,10 @@ const {
   queryByText,
 } = screen;
 
-const NO_RESULTS_MESSAGE = "Nenhum resultado encontrado para";
+const NO_RESULTS_MESSAGE = "No results were found";
 
-const SELECT_ALL_CHECKBOX = /^selecionar todos os itens$/i;
-const SELECT_ITEM_CHECKBOX = /^selecionar item$/i;
+const SELECT_ALL_CHECKBOX = /^select all items$/i;
+const SELECT_ITEM_CHECKBOX = /^select item$/i;
 
 const NAME_COLUMN = /^name$/i;
 const AGE_COLUMN = /^age$/i;
@@ -330,7 +330,7 @@ describe("<Table />", () => {
             rows: createRows(5),
           });
           expect(
-            queryByRole("columnheader", { name: "Ações" })
+            queryByRole("columnheader", { name: "Actions" })
           ).not.toBeInTheDocument();
         });
 
@@ -340,7 +340,7 @@ describe("<Table />", () => {
             rows: createRows(5),
           });
           expect(
-            getByRole("columnheader", { name: "Ações" })
+            getByRole("columnheader", { name: "Actions" })
           ).toBeInTheDocument();
         });
       });
