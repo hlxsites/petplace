@@ -1,4 +1,4 @@
-import { Button } from "~/components/design-system";
+import { Button, Card, Text } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
 import { PetCard } from "~/components/Pet/PetCard";
@@ -15,14 +15,17 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
         shouldRenderBackButton
       />
-      <PetCard
-        classNames={{ root: "lg:flex" }}
-        img={petInfo.img}
-        name={petInfo.name}
-        variant="lg"
-      >
-        <PetCardInfo {...petInfo} name={petInfo.name} />
-      </PetCard>
+      <div className="grid gap-large">
+        <PetCard
+          classNames={{ root: "lg:flex" }}
+          img={petInfo.img}
+          name={petInfo.name}
+          variant="lg"
+        >
+          <PetCardInfo {...petInfo} name={petInfo.name} />
+        </PetCard>
+        {renderPetInsuranceSection()}
+      </div>
     </Layout>
   );
 };
@@ -47,5 +50,19 @@ function renderActionsButton() {
         Report lost pet
       </Button>
     </>
+  );
+}
+
+function renderPetInsuranceSection() {
+  return (
+    <Card>
+      <div className="grid gap-large p-large">
+        <Text fontFamily="raleway" fontWeight="bold" size="lg">
+          See pet's insurance in MyPetHealth
+        </Text>
+
+        <Button variant="secondary">View insurance details</Button>
+      </div>
+    </Card>
   );
 }
