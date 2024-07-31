@@ -5,7 +5,7 @@ type StyleProps = {
   color?: "black" | "neutral" | "primary" | "secondary" | "tertiary";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
-  size?: "lg" | "base" | "sm" | "xs" | "inherit";
+  size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";
   srOnly?: boolean;
 };
 
@@ -59,7 +59,8 @@ function useTextBase({
     "font-roboto": fontFamily === "roboto",
     "font-normal": fontWeight === "normal",
     "font-bold": fontWeight === "bold",
-    "text-xl leading-7": size === "lg",
+    "text-xl leading-8": size === "xlg",
+    "text-lg leading-7": size === "lg",
     "text-base leading-6": size === "base",
     "text-sm leading-5": size === "sm",
     "text-xs leading-4": size === "xs",
