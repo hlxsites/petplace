@@ -2,8 +2,8 @@ import { classNames } from "~/util/styleUtil";
 import { CardProps } from "../types/CardTypes";
 
 export const Card = ({
-  backgroundColor = "neutral-white",
-  border = "neutral-300",
+  backgroundColor = "bg-neutral-white",
+  border = "border-neutral-300",
   children,
   radius = "base",
   role,

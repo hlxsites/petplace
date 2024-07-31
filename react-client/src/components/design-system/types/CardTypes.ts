@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
 
+type BackgroundColor = `bg-${string}`;
+type BorderColor = `border-${string}`;
+
 export type CardProps = {
-  backgroundColor?: string;
-  border?: string;
+  backgroundColor?: BackgroundColor;
+  border?: BorderColor;
   children: ReactNode;
   radius?: "sm" | "base";
   role?: JSX.IntrinsicElements["div"]["role"];
