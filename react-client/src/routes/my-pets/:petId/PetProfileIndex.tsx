@@ -4,12 +4,16 @@ import { Layout } from "~/components/design-system/layout/Layout";
 import { PetCard } from "~/components/Pet/PetCard";
 import { PetCardInfo } from "~/components/Pet/PetCardInfo";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
+import { PetAlertMessage } from "~/components/Pet/PetAlertMessage";
 
 export const PetProfileIndex = () => {
   const { petInfo } = usePetProfileContext();
 
   return (
     <Layout>
+      <div className="pb-xxlarge">
+        <PetAlertMessage petName={petInfo.name} />
+      </div>
       <Header
         pageTitle="Pet Profile"
         primaryElement={renderActionsButton()}
