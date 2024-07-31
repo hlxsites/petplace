@@ -57,9 +57,15 @@ describe("Text", () => {
   );
 
   it("should render component with size large", () => {
-    getRenderer({ size: "lg" });
+    getRenderer({ size: "xlg" });
 
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-xl`);
+  });
+
+  it("should render component with size large", () => {
+    getRenderer({ size: "lg" });
+
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-lg`);
   });
 
   it("should not be screen reader only by default", () => {
