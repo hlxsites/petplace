@@ -29,19 +29,20 @@ export const TableHeader = <ColumnKey,>({
 
   const canBeSorted = !!didSort && !!column.isSortable;
   const isSorted = canBeSorted && sortBy === column.key;
-  const sortIcon = isSorted ? (desc ? "sortDownS" : "sortUpS") : "sortS";
+  const sortOrder = desc ? "descending" : "ascending"
+  const sortedIcon = desc ? "sortDownS" : "sortUpS"
+  const sortIcon = isSorted ? sortedIcon : "sortS";
 
   const headerLabel = <span className={column.className}>{column.label}</span>;
-
   return (
     <th
-      aria-sort={isSorted ? (desc ? "descending" : "ascending") : undefined}
+      aria-sort={isSorted ? sortOrder : undefined}
       colSpan={colSpan}
       data-testid="table_thead_th"
       className={className({ isHeader: true })}
       key={column.key}
       scope="col"
-      style={{ textAlign: column.align || "left", width: column.width }}
+      style={{ textAlign: column.align ?? "left", width: column.width }}
     >
       <Conditional ifFalse={headerLabel} when={canBeSorted}>
         <button
