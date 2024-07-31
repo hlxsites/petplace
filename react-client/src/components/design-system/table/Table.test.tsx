@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { getByTextContent } from "~/util/testingFunctions";
 import { mockNamesList } from "~/mocks/mockNames";
-import type { TableCommonProps, TableRow } from "./Table";
+import type { TableCommonProps, TableRow } from "../types/TableTypes";
 import { Table } from "./Table";
 
 const {

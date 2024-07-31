@@ -7,47 +7,8 @@ import { TableHeader } from "./TableHeader";
 import { TableRowActions } from "./TableRowActions";
 import { classNames } from "~/util/styleUtil";
 import { useCellBase } from "./useCellBase";
+import { RowAction, TableColumn, TableCommonProps, TableRow } from "../types/TableTypes";
 
-export interface TableColumn {
-  align?: "left" | "center" | "right";
-  className?: string;
-  isSortable?: boolean;
-  key: string;
-  label?: ReactNode;
-  width?: number | string;
-}
-
-export interface TableRow<T> {
-  data: T;
-  isSelected?: boolean;
-  key: string;
-}
-
-export interface RowAction {
-  icon: IconKeys;
-  id: string;
-  label: string;
-}
-
-export interface TableCommonProps<T> {
-  bulkSelectionActions?: BulkSelectionAction[];
-  columns: TableColumn[];
-  desc?: boolean;
-  didSelect?: (key: keyof T | "allOrNone") => void;
-  didSelectRowAction?: (row: TableRow<T>, actionId: string) => void;
-  didSort?: (key: keyof T | null, desc: boolean) => void;
-  isLoading?: boolean;
-  isSelectable?: boolean;
-  noResultsMessage?: string;
-  noResultsSearchTerm?: string;
-  rowActions?: RowAction[];
-  rows: TableRow<T>[];
-  sortBy?: string | null;
-  totalSelectedItems?: number;
-  wrapper?: (table: ReactNode) => ReactNode;
-}
-
-export type BulkSelectionAction = { label: string; onClick?: () => void };
 
 export const Table = <T,>({
   columns,

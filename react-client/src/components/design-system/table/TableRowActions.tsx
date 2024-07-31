@@ -1,10 +1,5 @@
 import { IconButton } from "~/components/design-system";
-import type { RowAction } from "./Table";
-
-interface TableRowActionsProps {
-  onSelect: (actionId: RowAction["id"]) => void;
-  rowActions?: RowAction[];
-}
+import { RowAction, TableRowActionsProps } from "../types/TableTypes";
 
 export const TableRowActions = ({
   onSelect,

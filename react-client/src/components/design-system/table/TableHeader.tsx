@@ -1,16 +1,9 @@
 import { useCallback } from "react";
 import { Conditional } from "../conditional/Conditional";
 import { Icon, IconKeys } from "~/components/design-system";
-import type { TableColumn } from "./Table";
 import { useCellBase } from "./useCellBase";
+import { ITableHeaderProps } from "../types/TableTypes";
 
-interface ITableHeaderProps<ColumnKey> {
-  colSpan?: number;
-  column: TableColumn;
-  desc?: boolean;
-  didSort?: (key: ColumnKey | null, desc: boolean) => void;
-  sortBy?: string | null;
-}
 
 export const TableHeader = <ColumnKey,>({
   colSpan = 1,
