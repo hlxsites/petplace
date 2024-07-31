@@ -21,10 +21,9 @@ import {
   type ElementSection,
   type ElementUnion,
   type FormSchema,
-  type InputValue,
+  type FormValues,
   type InputsUnion,
 } from "./types/formTypes";
-type FormValues = { [key: string]: InputValue };
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -45,7 +44,7 @@ export type FormBuilderProps = {
   schema: FormSchema;
   onChange?: (values: FormValues) => void;
   onSubmit?: (props: OnSubmitProps) => void;
-  values?: Record<string, InputValue>;
+  values?: FormValues;
 };
 
 export const FormBuilder = ({

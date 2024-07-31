@@ -3,6 +3,9 @@ import { ReactNode } from "react";
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
 
+export type FormVariableValues = Record<string, InputValue>;
+export type FormValues = Record<string, InputValue>;
+
 export type ElementType = "button" | "html" | "input" | "row" | "section";
 
 export type InputValue = string | number | Date | boolean | string[];
