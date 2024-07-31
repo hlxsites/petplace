@@ -2,7 +2,7 @@ import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { getByTextContent } from "~/util/testingFunctions";
-import { mockNamesList } from "~/__mocks__/mockNames";
+import { mockNamesList } from "~/mocks/mockNames";
 import type { TableCommonProps, TableRow } from "./Table";
 import { Table } from "./Table";
 
