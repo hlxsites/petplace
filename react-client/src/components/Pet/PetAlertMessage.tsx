@@ -1,8 +1,8 @@
 import { Button, ButtonProps } from "../design-system";
-import { Card } from "../design-system/card/Card";
 import { Icon } from "../design-system/icon/Icon";
 import { Title } from "../design-system/text/Title";
 import { Text } from "../design-system/text/Text";
+import { CardWrapper } from "../design-system/card/CardWrapper";
 
 type AlertMessageProps = {
   onClick?: () => void;
@@ -11,7 +11,11 @@ type AlertMessageProps = {
 
 export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
   return (
-    <Card backgroundColor="blue-100" border="blue-100" shadow="elevation-3">
+    <CardWrapper
+      backgroundColor="bg-blue-100"
+      border="border-blue-100"
+      shadow="elevation-3"
+    >
       <div className="grid gap-small p-base">
         <div className="flex justify-between">
           <div className="flex gap-[10px]">
@@ -32,7 +36,7 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
           className: "h-[30px] w-full lg:hidden",
         })}
       </div>
-    </Card>
+    </CardWrapper>
   );
 
   function renderGetQuoteButton(props: Pick<ButtonProps, "className">) {
