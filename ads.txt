@@ -1,5 +1,7 @@
-# ads.txt (last update: 21-06-2024)
+# ads.txt (last update: 07-31-2024)
 # OFFICIAL PETPLACE Ad Sense
 google.com, pub-0827704052812365, DIRECT, f08c47fec0942fa0
 # OFFICIAL PETPLACE Ad Exchange
 google.com, pub-5915072357508663, DIRECT, f08c47fec0942fa0
+#IndexExchange OB
+indexexchange.com, 209361, DIRECT, 50b1c356f2c5c8fc
