@@ -60,11 +60,11 @@ describe("<Table />", () => {
 
   describe("with isLoading={false}", () => {
     it("should NOT display LoadingView", () => {
-      getRenderer({
+      const { container } = getRenderer({
         isLoading: false,
         rows: createRows(2),
       });
-      expect(queryByTestId("LoadingView")).not.toBeInTheDocument();
+      expect(container.querySelector("svg")).not.toBeInTheDocument();
     });
 
     describe("with rows", () => {
