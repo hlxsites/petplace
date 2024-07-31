@@ -1,5 +1,4 @@
-import { DisplayForm, Text } from "~/components/design-system";
-import { FormSchema } from "~/components/design-system/form/types/formTypes";
+import { DisplayForm, FormSchema, Text } from "~/components/design-system";
 
 export const FormBuilderPlayground = () => {
   const schema: FormSchema = {
