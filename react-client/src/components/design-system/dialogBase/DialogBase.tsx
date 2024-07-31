@@ -7,14 +7,18 @@ import { Backdrop } from "../backdrop/Backdrop";
 import { IconButton } from "../button/IconButton";
 import { Title } from "../text/Title";
 import { DialogBaseProps } from "../types/DialogBaseTypes";
+import { Icon } from "../icon/Icon";
 
 export const DialogBase = ({
   ariaLabel,
   children,
   className,
   element,
+  icon,
+  iconProps,
   id,
   isOpen,
+  level,
   onClose,
   title,
 }: DialogBaseProps) => {
@@ -68,23 +72,33 @@ export const DialogBase = ({
           role="dialog"
           tabIndex={-1}
         >
-          <div
-            className={classNames("mb-small flex items-start", {
-              "justify-end": !hasTitle,
-              "justify-between": hasTitle,
-            })}
-          >
-            {title && <Title id={titleId}>{title}</Title>}
-            <IconButton
-              className={className?.closeButton}
-              icon="closeXMark"
-              iconProps={{ size: 14 }}
-              label={`Close ${element}`}
-              onClick={onCloseWithAnimation}
-              variant="link"
+          {icon && (
+            <Icon
+              className={iconProps?.className}
+              display={icon}
+              size={iconProps?.size}
             />
+          )}
+          <div className="mb-small">
+            {title && (
+              <Title id={titleId} level={level}>
+                {title}
+              </Title>
+            )}
           </div>
-          <div className="max-h-full overflow-y-auto">{children}</div>
+
+          <IconButton
+            className={className?.closeButton}
+            icon="closeXMark"
+            iconProps={{ size: 14 }}
+            label={`Close ${element}`}
+            onClick={onCloseWithAnimation}
+            variant="link"
+          />
+
+          <div className="scrolling-touch max- h-90vh grid overflow-auto">
+            {children}
+          </div>
         </div>
       </FocusTrap>
     </>

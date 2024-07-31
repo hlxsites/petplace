@@ -87,12 +87,22 @@ describe("DialogBase", () => {
     await userEvent.click(getByTestId("backdrop"));
     await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
+
+  it("should render the icon when the icon prop is provided", () => {
+    getRenderer({ icon: "alert" });
+
+    expect(document.querySelector("svg")).toHaveAttribute(
+      "data-file-name",
+      "SvgAlertDiamondIcon"
+    );
+  });
 });
 
 function getRenderer({
   ariaLabel = "Aria label test",
   children = "Test children",
   element = "dialog",
+  icon,
   id = "SampleId",
   isOpen = true,
   onClose = jest.fn(),
@@ -103,6 +113,7 @@ function getRenderer({
       <DialogBase
         ariaLabel={ariaLabel}
         element={element}
+        icon={icon}
         id={id}
         isOpen={isOpen}
         onClose={onClose}
