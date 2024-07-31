@@ -9,7 +9,6 @@ import {
   TextSpan,
 } from "~/components/design-system";
 import { Conditional } from "../conditional/Conditional";
-import type { IconKeys } from "../icon/Icon";
 import { TableHeader } from "./TableHeader";
 import { TableRowActions } from "./TableRowActions";
 import { classNames } from "~/util/styleUtil";
@@ -18,6 +17,7 @@ import { RowAction, TableColumn, TableCommonProps, TableRow } from "../types/Tab
 
 
 export const Table = <T,>({
+  ariaLabel,
   columns,
   desc = false,
   didSelect,
@@ -73,10 +73,8 @@ export const Table = <T,>({
   function renderAsTable() {
     const tableColumns = getColumns();
     return (
-      <table aria-label="table" className="min-w-full table-auto">
-        <Conditional
-          when={tableColumns.filter(({ label }) => !!label).length > 0}
-        >
+      <table aria-label={ariaLabel} className="min-w-full table-auto">
+        <Conditional when={tableColumns.some(({ label }) => !!label)}>
           <thead>
             <tr>
               {tableColumns.map((column) => {

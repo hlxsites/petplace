@@ -28,6 +28,8 @@ const NAME_COLUMN = /^name$/i;
 const AGE_COLUMN = /^age$/i;
 const EMAIL_COLUMN = /^email$/i;
 
+const DEFAULT_LABEL = "test-table";
+
 describe("<Table />", () => {
   const testRows = createRows(6);
 
@@ -79,7 +81,7 @@ describe("<Table />", () => {
           isLoading: false,
           rows: createRows(2),
         });
-        expect(getByLabelText("table")).toBeInTheDocument();
+        expect(getByLabelText(DEFAULT_LABEL)).toBeInTheDocument();
       });
 
       it("should display Columns", () => {
@@ -213,9 +215,7 @@ describe("<Table />", () => {
             rows: createRows(20),
             totalSelectedItems: expected,
           });
-          expect(
-            getByText(`${expected} selected items`)
-          ).toBeInTheDocument();
+          expect(getByText(`${expected} selected items`)).toBeInTheDocument();
         });
 
         it("should NOT display bulk selection actions when totalSelectedItems = 0", () => {
@@ -524,7 +524,7 @@ describe("<Table />", () => {
       expect(
         getByTestId("TableWrapper").firstChild?.firstChild?.firstChild
           ?.firstChild?.firstChild
-      ).toHaveAttribute("aria-label", "table");
+      ).toHaveAttribute("aria-label", DEFAULT_LABEL);
     });
 
     it("should NOT render table", () => {
@@ -554,15 +554,16 @@ type TableObject = {
 type Props = TableCommonProps<TableObject>;
 
 function getRenderer({
+  ariaLabel = DEFAULT_LABEL,
   columns,
   rows = [],
   ...rest
 }: Partial<Props>) {
-
   return render(
     <Table<TableObject>
       columns={columns || defaultTestColumns()}
       rows={rows}
+      ariaLabel={ariaLabel}
       {...rest}
     />
   );
