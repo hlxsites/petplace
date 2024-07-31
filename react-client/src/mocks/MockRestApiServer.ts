@@ -9,7 +9,7 @@ export type PetInfo = {
   microchipNumber?: number;
   name: string;
   sex?: string;
-  spayedNeutered?: string;
+  spayedNeutered?: boolean;
   species?: string;
 };
 
@@ -25,7 +25,7 @@ const PETS_LIST: PetInfo[] = [
     mixedBreed: "Yes",
     name: "Buddy",
     sex: "Male",
-    spayedNeutered: "No",
+    spayedNeutered: false,
     species: "Dog",
   },
   {
@@ -39,7 +39,7 @@ const PETS_LIST: PetInfo[] = [
     mixedBreed: "No",
     name: "Lily",
     sex: "Female",
-    spayedNeutered: "Yes",
+    spayedNeutered: true,
     species: "Cat",
   },
   {
@@ -50,7 +50,7 @@ const PETS_LIST: PetInfo[] = [
     microchipNumber: 3856,
     name: "Charlie",
     sex: "Male",
-    spayedNeutered: "Yes",
+    spayedNeutered: true,
     species: "Dog",
   },
 ];
