@@ -56,12 +56,14 @@ function renderActionsButton() {
 function renderPetInsuranceSection() {
   return (
     <Card>
-      <div className="grid gap-large p-large">
+      <div className="grid grid-cols-1 items-center justify-items-center gap-large p-large md:items-start md:justify-items-start">
         <Text fontFamily="raleway" fontWeight="bold" size="lg">
           See pet's insurance in MyPetHealth
         </Text>
 
-        <Button variant="secondary">View insurance details</Button>
+        <Button fullWidth={true} variant="secondary">
+          View insurance details
+        </Button>
       </div>
     </Card>
   );
