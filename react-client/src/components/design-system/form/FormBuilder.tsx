@@ -53,9 +53,9 @@ export const FormBuilder = ({
   onSubmit,
   values: defaultValues,
 }: FormBuilderProps) => {
-  const initialDefaultValues = useRef<FormValues>(defaultValues || {});
+  const defaultValuesRef = useRef<FormValues>(defaultValues || {});
 
-  const [values, setValues] = useState<FormValues>(defaultValues || {});
+  const [values, setValues] = useState(defaultValuesRef.current);
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
@@ -66,7 +66,7 @@ export const FormBuilder = ({
 
   useDeepCompareEffect(() => {
     // Notify onChange callback only if the values have changed
-    if (!!onChange && !isEqual(initialDefaultValues.current, values)) {
+    if (!!onChange && !isEqual(defaultValuesRef.current, values)) {
       onChange(values);
     }
   }, [onChange, values]);
