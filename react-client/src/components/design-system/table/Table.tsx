@@ -1,6 +1,13 @@
 import { type ReactNode } from "react";
 import { plural } from "~/util/stringUtils";
-import { Button, Card, Checkbox, Loading } from "~/components/design-system";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Loading,
+  Text,
+  TextSpan,
+} from "~/components/design-system";
 import { Conditional } from "../conditional/Conditional";
 import type { IconKeys } from "../icon/Icon";
 import { TableHeader } from "./TableHeader";
@@ -211,9 +218,9 @@ export const Table = <T,>({
 
     const message = noResultsMessage ?? "No results were found";
     return (
-      <p>
-        {message} <strong>{noResultsSearchTerm}</strong>
-      </p>
+      <Text>
+        {message} <TextSpan fontWeight="bold">{noResultsSearchTerm}</TextSpan>
+      </Text>
     );
   }
 
