@@ -8,7 +8,6 @@ import {
 import {
   createBreadCrumbs,
   fetchAndCacheJson,
-  getCategories,
   getCategory,
   getPlaceholder,
   meterCalls,
