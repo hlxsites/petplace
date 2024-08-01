@@ -1,9 +1,9 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { PetDocumentsView } from "./PetDocumentsView";
-import userEvent from "@testing-library/user-event";
 
-const MOCK_DOCUMENTS: ComponentProps<typeof PetDocumentsView>["documents"] = [
+const MOCK_DOCUMENTS: Props["documents"] = [
   { fileName: "Test", fileType: "doc" },
   { fileName: "Vaccine 2024", fileType: "pdf" },
   { fileName: "MEDICAL RECORDS", fileType: "txt" },
@@ -13,9 +13,7 @@ const UPLOAD_DOCUMENT_LABEL = /WIP - testing purposes/i;
 const { getByText, getAllByRole, queryByText, getByRole } = screen;
 
 describe("PetDocumentsView", () => {
-  it.each(["medical", "vaccines", "test"] as ComponentProps<
-    typeof PetDocumentsView
-  >["recordType"][])(
+  it.each(["medical", "vaccines", "test"] as Props["recordType"][])(
     "should render text message containing the %s recordType",
     (recordType) => {
       getRenderer({ recordType });
@@ -38,7 +36,7 @@ describe("PetDocumentsView", () => {
     expect(getByText("Upload and attach files")).toBeInTheDocument();
   });
 
-  it("should render the right icon on the upload area", () => {
+  it("should render the correct icon on the upload area", () => {
     getRenderer();
 
     expect(
@@ -51,7 +49,7 @@ describe("PetDocumentsView", () => {
 
     expect(getByText("Click to upload or drag and drop")).toBeInTheDocument();
     expect(
-      getByText("PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)")
+      getByText(/^PNG, JPG, PDF, TXT, DOC, DOCX \(max 10Mb\)$/i)
     ).toBeInTheDocument();
   });
 
@@ -88,11 +86,13 @@ describe("PetDocumentsView", () => {
   });
 });
 
+// Test utils
+type Props = ComponentProps<typeof PetDocumentsView>;
 function getRenderer({
   documents = MOCK_DOCUMENTS,
   onDelete = jest.fn(),
   recordType = "test",
-}: Partial<ComponentProps<typeof PetDocumentsView>> = {}) {
+}: Partial<Props> = {}) {
   return render(
     <PetDocumentsView
       documents={documents}

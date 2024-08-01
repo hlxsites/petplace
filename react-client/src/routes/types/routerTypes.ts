@@ -1,7 +1,7 @@
 import { RouteObject } from "react-router-dom";
 
 import { AppRoutePaths, AppRoutePathsIndexes } from "~/routes/AppRoutePaths";
-import { Modify } from "../../types/misc";
+import { Modify } from "~/types/misc";
 
 type AppRoutePathIds = keyof typeof AppRoutePaths;
 type AppRouteIndexPathIds = keyof typeof AppRoutePathsIndexes;
