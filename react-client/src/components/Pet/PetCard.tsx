@@ -34,7 +34,11 @@ export const PetCard = ({
             "h-[240px] lg:h-[343px] lg:max-w-[368px]": variant === "lg",
           })}
         >
-          <img src={img} alt={name} className="w-full object-cover" />
+          <img
+            src={img}
+            alt={`Image of ${name}`}
+            className="w-full object-cover"
+          />
           {displayProtectedBadge && (
             <div
               className={cx(

@@ -17,25 +17,29 @@ describe("PetCard", () => {
   );
 
   it.each(["a-src", "another-src"])(
-    "should render img with alt '%s'",
+    "should render pet image with correct source",
     (expected) => {
       getRenderer({ img: expected });
-
-      expect(getByRole("img")).toHaveAttribute("src", expected);
+      expect(getByRole("img", { name: "Image of Buddy" })).toHaveAttribute(
+        "src",
+        expected
+      );
     }
   );
 
-  it.each(["a name", "another name"])(
-    "should render img with alt '%s'",
+  it.each(["Bob", "Lilly"])(
+    "should render pet image with correct alt text %p",
     (expected) => {
       getRenderer({ name: expected });
 
-      expect(getByRole("img")).toHaveAttribute("alt", expected);
+      expect(
+        getByRole("img", { name: `Image of ${expected}` })
+      ).toBeInTheDocument();
     }
   );
 
   it.each(["a-class", "another-class"])(
-    "should render with custom class '%s'",
+    "should render with custom class %p",
     (expected) => {
       getRenderer({ classNames: { root: expected } });
       expect(getByText(DEFAULT_CHILDREN)).toHaveClass(expected);
@@ -87,7 +91,7 @@ describe("PetCard", () => {
     ["sm", "h-[191px] lg:h-[246px]"],
     ["md", "h-[246px] lg:max-h-[306px]"],
     ["lg", "h-[240px]  lg:h-[343px] lg:max-w-[368px]"],
-  ])("should match variant classes", (variant, expected) => {
+  ])("should match variant classes %p", (variant, expected) => {
     // @ts-expect-error - ignoring for test purposes only
     getRenderer({ variant });
 
@@ -99,7 +103,7 @@ type Props = Partial<ComponentProps<typeof PetCard>>;
 
 function getRenderer({
   children = DEFAULT_CHILDREN,
-  name = "Test pet card name",
+  name = "Buddy",
   ...rest
 }: Props = {}) {
   return render(
