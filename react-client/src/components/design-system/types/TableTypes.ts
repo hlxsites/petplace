@@ -40,8 +40,6 @@ export type TableCommonProps<T> = {
   didSort?: (key: keyof T | null, desc: boolean) => void;
   isLoading?: boolean;
   isSelectable?: boolean;
-  noResultsMessage?: string;
-  noResultsSearchTerm?: string;
   rowActions?: RowAction[];
   rows: TableRow<T>[];
   sortBy?: string | null;

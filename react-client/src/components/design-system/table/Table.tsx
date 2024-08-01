@@ -5,8 +5,6 @@ import {
   Card,
   Checkbox,
   Loading,
-  Text,
-  TextSpan,
 } from "~/components/design-system";
 import { Conditional } from "../conditional/Conditional";
 import { TableHeader } from "./TableHeader";
@@ -31,8 +29,6 @@ export const Table = <T,>({
   rowActions,
   rows,
   sortBy,
-  noResultsMessage,
-  noResultsSearchTerm,
   bulkSelectionActions,
   totalSelectedItems = 0,
   didSelectRowAction,
@@ -55,7 +51,6 @@ export const Table = <T,>({
       <Conditional when={isLoading}>
         <Loading />
       </Conditional>
-      {renderNoResultsView()}
       <Conditional when={!isEmptyState && !isLoading}>
         {wrapper ? wrapper(renderTableContent()) : renderTableContent()}
       </Conditional>
@@ -211,24 +206,6 @@ export const Table = <T,>({
       return [...columnsList, actionsColumn];
     }
     return columnsList;
-  }
-
-  function renderNoResultsView() {
-    if (!isEmptyState || isLoading) {
-      return null;
-    }
-
-    const message = noResultsMessage ?? "No results were found";
-    return (
-      <div className="flex h-24 w-full flex-col items-center justify-center">
-        <Text>
-          {message} {"   "}
-          <TextSpan fontWeight="bold">
-            {noResultsSearchTerm}
-          </TextSpan>
-        </Text>
-      </div>
-    );
   }
 
   function onSelectRowAction(row: TableRow<T>) {
