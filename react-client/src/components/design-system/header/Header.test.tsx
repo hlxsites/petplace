@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { Header } from "./Header";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Header } from "./Header";
 
 const { getByRole, getByLabelText, queryByLabelText, getByText } = screen;
 
@@ -28,7 +28,7 @@ describe("Header", () => {
   });
 
   it.each([false, undefined])(
-    "should NOT render back link icon when shouldRenderBackButton is set to %s",
+    "should NOT render back link icon when shouldRenderBackButton is set to %p",
     (shouldRenderBackButton) => {
       getRenderer({ shouldRenderBackButton });
 

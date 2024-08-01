@@ -24,12 +24,14 @@ module.exports = {
   theme: {
     boxShadow: {
       "elevation-1": "0px 2px 4px 0px rgba(0, 0, 0, 0.24)",
+      "elevation-3": "0px 10px 14px 0px rgba(0, 0, 0, 0.08)",
     },
     colors: {
       "brand-main": "var(--purple-300)",
       "brand-secondary": "var(--orange-300-contrast)",
       "brand-blue": "var(--brand-blue)",
       "brand-main": "var(--color-purple)",
+      "border-strong": "var(--border-color-strong)",
       "purple-500": "var(--purple-500)",
       "purple-300": "var(--purple-300)",
       "purple-100": "var(--purple-100)",
@@ -79,6 +81,7 @@ module.exports = {
       "text-hinted": "var(--text-hinted)",
       "text-color": "var(--text-color)",
       "icon-danger": "var(--icon-danger)",
+      "text-color-supporting": "var(--text-color-supporting)",
       "background-color-tertiary": "var(--background-color-tertiary)",
       white: "#ffffff",
       black: "#000000",
@@ -103,10 +106,12 @@ module.exports = {
     space: SPACING_DEFAULTS,
     translate: SPACING_DEFAULTS,
     extend: {
+      bottom: SPACING_DEFAULTS,
       height: SPACING_DEFAULTS,
+      left: SPACING_DEFAULTS,
+      right: SPACING_DEFAULTS,
+      top: SPACING_DEFAULTS,
       width: SPACING_DEFAULTS,
-    },
-    extend: {
       maxHeight: {
         "90vh": "90vh",
         "80vh": "80vh",

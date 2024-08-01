@@ -16,7 +16,7 @@ describe("Text", () => {
     }
   );
 
-  it.each(["a-id", "another-id"])('should render with id="%s"', (id) => {
+  it.each(["a-id", "another-id"])("should render with id=%p", (id) => {
     getRenderer({ id });
     expect(getByRole("paragraph")).toHaveAttribute("id", id);
   });
@@ -48,7 +48,7 @@ describe("Text", () => {
   });
 
   it.each(["base", "sm"] as ComponentProps<typeof Text>["size"][])(
-    "should render component with size %s",
+    "should render component with size %p",
     (size) => {
       getRenderer({ size });
 
@@ -78,29 +78,24 @@ describe("Text", () => {
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass("sr-only");
   });
 
-  it("should render component with color black", () => {
-    getRenderer({ color: "black" });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-black");
+  it.each(["left", "center", "right", "justify"] as ComponentProps<
+    typeof Text
+  >["align"][])("should render component with text aligned to %p", (align) => {
+    getRenderer({ align });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${align}`);
   });
 
-  it("should render component with color neutral", () => {
-    getRenderer({ color: "neutral" });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-neutral-950");
-  });
-
-  it("should render component with color primary", () => {
-    getRenderer({ color: "primary" });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-primary-900");
-  });
-
-  it("should render component with color secondary", () => {
-    getRenderer({ color: "secondary" });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-secondary-700");
-  });
-
-  it("should render component with color tertiary", () => {
-    getRenderer({ color: "tertiary" });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-tertiary-600");
+  it.each([
+    ["black", "text-black"],
+    ["neutral", "text-neutral-950"],
+    ["primary", "text-primary-900"],
+    ["secondary", "text-secondary-700"],
+    ["tertiary", "text-tertiary-600"],
+    ["blue-500", "text-blue-500"],
+  ])("should render component with color %p", (color, expected) => {
+    // @ts-expect-error - ignoring for test purposes only
+    getRenderer({ color });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(expected);
   });
 });
 

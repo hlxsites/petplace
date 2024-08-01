@@ -11,7 +11,7 @@ describe("<FormLabel />", () => {
   });
 
   it.each(["a-class", "another-class"])(
-    "should render with className %s",
+    "should render with className %p",
     (expected) => {
       getRenderer({ className: expected });
       expect(getByTestId("FormLabel")).toHaveClass(
@@ -21,7 +21,7 @@ describe("<FormLabel />", () => {
   );
 
   it.each(["Children", "Another children"])(
-    "should render with children '%s'",
+    "should render with children %p",
     (expected) => {
       getRenderer({ children: <p>{expected}</p> });
       expect(getByText(expected)).toBeInTheDocument();

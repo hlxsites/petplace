@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { PetCardInfo } from "./PetCardInfo";
 import { ComponentProps } from "react";
+import { PetCardInfo } from "./PetCardInfo";
 
 const { getByRole, getByText } = screen;
 
@@ -30,7 +30,6 @@ describe("PetCardInfo", () => {
 
   it("should match snapshot to assure that the component is being rendered correctly", () => {
     const { container } = getRenderer();
-
     expect(container).toMatchSnapshot();
   });
 });

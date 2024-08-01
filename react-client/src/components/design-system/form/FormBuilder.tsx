@@ -21,10 +21,9 @@ import {
   type ElementSection,
   type ElementUnion,
   type FormSchema,
-  type InputValue,
+  type FormValues,
   type InputsUnion,
 } from "./types/formTypes";
-type FormValues = { [key: string]: InputValue };
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -45,7 +44,7 @@ export type FormBuilderProps = {
   schema: FormSchema;
   onChange?: (values: FormValues) => void;
   onSubmit?: (props: OnSubmitProps) => void;
-  values?: Record<string, InputValue>;
+  values?: FormValues;
 };
 
 export const FormBuilder = ({
@@ -54,9 +53,9 @@ export const FormBuilder = ({
   onSubmit,
   values: defaultValues,
 }: FormBuilderProps) => {
-  const initialDefaultValues = useRef<FormValues>(defaultValues || {});
+  const defaultValuesRef = useRef<FormValues>(defaultValues || {});
 
-  const [values, setValues] = useState<FormValues>(defaultValues || {});
+  const [values, setValues] = useState(defaultValuesRef.current);
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
@@ -67,7 +66,7 @@ export const FormBuilder = ({
 
   useDeepCompareEffect(() => {
     // Notify onChange callback only if the values have changed
-    if (!!onChange && !isEqual(initialDefaultValues.current, values)) {
+    if (!!onChange && !isEqual(defaultValuesRef.current, values)) {
       onChange(values);
     }
   }, [onChange, values]);
@@ -93,14 +92,31 @@ export const FormBuilder = ({
     return values;
   }
 
-  function renderElement(element: ElementUnion) {
+  function renderElement(element: ElementUnion, index: number) {
     if (!matchConditionExpression(element.shouldDisplay ?? true)) return null;
 
-    switch (element.elementType) {
+    const { elementType } = element;
+
+    if (elementType === "input") {
+      return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
+    } else if (elementType === "button") {
+      return (
+        <Button
+          className={element.className}
+          key={element.id}
+          type={element.type}
+        >
+          {element.label}
+        </Button>
+      );
+    }
+
+    const elementKey = `${elementType}-${index}`;
+    switch (elementType) {
       case "section":
-        return <Fragment key={element.id}>{renderSection(element)}</Fragment>;
+        return <Fragment key={elementKey}>{renderSection(element)}</Fragment>;
       case "html":
-        return <Fragment key={element.id}>{element.content}</Fragment>;
+        return <Fragment key={elementKey}>{element.content}</Fragment>;
       case "row":
         return (
           <div
@@ -108,23 +124,12 @@ export const FormBuilder = ({
               "flex flex-col gap-base lg:flex-row [&>*]:grow [&>*]:basis-0",
               element.className
             )}
-            key={element.id}
+            key={elementKey}
+            id={element.id}
           >
             {element.children.map(renderElement)}
           </div>
         );
-      case "button":
-        return (
-          <Button
-            className={element.className}
-            key={element.id}
-            type={element.type}
-          >
-            {element.label}
-          </Button>
-        );
-      case "input":
-        return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
       default:
         if (isDevEnvironment) {
           // @ts-expect-error - we expect it to throw an error when a new element is added in the form builder types but not implemented here yet

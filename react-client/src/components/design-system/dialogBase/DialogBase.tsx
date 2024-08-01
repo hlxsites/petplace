@@ -74,7 +74,11 @@ export const DialogBase = ({
               "justify-between": hasTitle,
             })}
           >
-            {title && <Title id={titleId}>{title}</Title>}
+            {title && (
+              <Title id={titleId} level="h4">
+                {title}
+              </Title>
+            )}
             <IconButton
               className={className?.closeButton}
               icon="closeXMark"
