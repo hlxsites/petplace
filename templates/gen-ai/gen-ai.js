@@ -330,6 +330,38 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     // append the stop button to the streaming results
     resultsBlock.querySelector('.search-card-container').appendChild(decorateSearch(socket));
     document.querySelector('.gen-ai .genai-search-container .stop-button-container').classList.add('show');
+  }
+
+  // // If the div already exists, update its content with the new message
+  // eslint-disable-next-line no-undef
+  if (article && marked) {
+    // eslint-disable-next-line no-undef
+    article.innerHTML = marked.parse(response.result);
+  }
+
+  // Add target="_blank" to all anchor tags
+  const card = resultsBlock.querySelector('.search-card');
+  const anchorTags = card?.querySelectorAll('a');
+
+  // if the placeholder cta card doesn't exist yet
+  if (!resultsBlock.querySelector('.search-actions-placeholder')) {
+    const placeholderCtaCard = document.createElement('div');
+    placeholderCtaCard.className = 'search-actions-placeholder';
+    placeholderCtaCard.innerHTML = '<div class="action-cta action-cta--placeholder"><div class="visually-hidden">CTA Card is loading...</div><div class="action-cta__image"></div><div class="action-cta__title"></div><div class="action-cta__cta"></div></div>';
+    card.prepend(placeholderCtaCard);
+  }
+
+  anchorTags?.forEach((anchorTag) => {
+    anchorTag.setAttribute('target', '_blank');
+  });
+
+  // Loop through result.questions and create a button for each
+  if (response.type === 'end') {
+    // Remove the cursor animation element
+    const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
+    cursorAnimation.classList.add('hide');
+    const stopButtonContainer = resultsBlock.querySelector('.search-card-container .stop-button-container');
+    stopButtonContainer.remove();
 
     // Add trigger words actions
     if (response.actions?.length && !document.querySelector('.search-actions')) {
@@ -337,6 +369,8 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       const actionsContainer = document.createElement('div');
       actionsContainer.classList.add('search-actions');
       searchContainer.prepend(actionsContainer);
+
+      const placeholderCtaCard = resultsBlock.querySelector('.search-actions-placeholder');
 
       response.actions.forEach((action) => {
         if (action.type === 'cta') {
@@ -365,34 +399,12 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
           decorateIcons(actionCtaBtn);
           actionCta.append(actionCtaBtn);
 
+          placeholderCtaCard.remove();
           actionsContainer.append(actionCta);
         }
       });
     }
-  }
 
-  // // If the div already exists, update its content with the new message
-  // eslint-disable-next-line no-undef
-  if (article && marked) {
-    // eslint-disable-next-line no-undef
-    article.innerHTML = marked.parse(response.result);
-  }
-
-  // Add target="_blank" to all anchor tags
-  const card = resultsBlock.querySelector('.search-card');
-  const anchorTags = card?.querySelectorAll('a');
-
-  anchorTags?.forEach((anchorTag) => {
-    anchorTag.setAttribute('target', '_blank');
-  });
-
-  // Loop through result.questions and create a button for each
-  if (response.type === 'end') {
-    // Remove the cursor animation element
-    const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
-    cursorAnimation.classList.add('hide');
-    const stopButtonContainer = resultsBlock.querySelector('.search-card-container .stop-button-container');
-    stopButtonContainer.remove();
     if (response.links?.length > 0) {
       const $slideShowContainer = document.querySelector('.gen-ai .genai-search-container .slideshow');
 
