@@ -5,14 +5,14 @@ import { Button } from "../button/Button";
 import { Card } from "../card/Card";
 import { Checkbox } from "../checkbox/Checkbox";
 import { Loading } from "../loading/Loading";
+import { TableHeader } from "./TableHeader";
+import { TableRowActions } from "./TableRowActions";
 import {
   RowAction,
   TableColumn,
   TableCommonProps,
   TableRow,
-} from "../types/TableTypes";
-import { TableHeader } from "./TableHeader";
-import { TableRowActions } from "./TableRowActions";
+} from "./TableTypes";
 import { useCellBase } from "./useCellBase";
 
 export const Table = <T,>({

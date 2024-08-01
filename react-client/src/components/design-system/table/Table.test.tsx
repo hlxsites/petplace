@@ -2,8 +2,8 @@ import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mockNamesList } from "~/mocks/mockNames";
-import type { TableCommonProps, TableRow } from "../types/TableTypes";
 import { Table } from "./Table";
+import type { TableCommonProps, TableRow } from "./TableTypes";
 
 const {
   getAllByRole,

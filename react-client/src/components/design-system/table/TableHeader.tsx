@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Icon, IconKeys, TextSpan } from "~/components/design-system";
-import { ITableHeaderProps } from "../types/TableTypes";
+import { ITableHeaderProps } from "./TableTypes";
 import { useCellBase } from "./useCellBase";
 
 export const TableHeader = <ColumnKey,>({

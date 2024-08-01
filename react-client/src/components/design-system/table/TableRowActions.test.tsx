@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
 import type { ComponentProps } from "react";
 
-import { TableRowActions } from "./TableRowActions";
-import { RowAction } from "../types/TableTypes";
 import userEvent from "@testing-library/user-event";
+import { TableRowActions } from "./TableRowActions";
+import { RowAction } from "./TableTypes";
 
 const DEFAULT_ACTIONS = [
   {
@@ -44,9 +44,11 @@ describe("<TableHeader />", () => {
   );
 
   it.each(DEFAULT_ACTIONS)("should display correct icon", ({ label }) => {
-    const { getByRole } = getRenderer({})
-    expect(getByRole("button", { name: label }).querySelector("svg")).toHaveAttribute("data-file-name", `Svg${label}Icon`);
-  })
+    const { getByRole } = getRenderer({});
+    expect(
+      getByRole("button", { name: label }).querySelector("svg")
+    ).toHaveAttribute("data-file-name", `Svg${label}Icon`);
+  });
 });
 
 type Props = ComponentProps<typeof TableRowActions>;
