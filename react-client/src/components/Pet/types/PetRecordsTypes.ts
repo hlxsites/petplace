@@ -1,8 +1,6 @@
-export type PetRecord = {
-  downloadPath?: string;
-  fileName: string;
-  fileType?: "doc" | "docx" | "jpg" | "pdf" | "png" | "txt";
-};
+import { DownloadFileProps } from "~/util/downloadFunctions";
+
+export type PetRecord = DownloadFileProps;
 
 export type PetCardRecordProps = {
   record: PetRecord;

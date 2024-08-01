@@ -103,10 +103,12 @@ module.exports = {
     space: SPACING_DEFAULTS,
     translate: SPACING_DEFAULTS,
     extend: {
+      bottom: SPACING_DEFAULTS,
       height: SPACING_DEFAULTS,
+      left: SPACING_DEFAULTS,
+      right: SPACING_DEFAULTS,
+      top: SPACING_DEFAULTS,
       width: SPACING_DEFAULTS,
-    },
-    extend: {
       maxHeight: {
         "90vh": "90vh",
         "80vh": "80vh",
