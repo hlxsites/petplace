@@ -5,6 +5,17 @@
   z-index: -1;
   padding-top: 0;
   padding-bottom: 0;
+  overflow: auto;
+}
+
+.insurance-landing-page main .hero::after {
+content: "";
+clear: both;
+display: table;
+}
+
+.insurance-landing-page .hero-container {
+  padding-top: 0;
 }
 
 .insurance-landing-page .hero-picture-container {
@@ -40,7 +51,7 @@
   :not(.search-container ~ .search-container).search-container {
   position: absolute;
   left: 0;
-  top: 480px;
+  top: 430px;
   display: flex;
   flex-direction: column;
   bottom: 0;
@@ -50,6 +61,14 @@
 
 .insurance-landing-page .search-container {
   padding: 0 1.5rem;
+}
+
+.insurance-landing-page .search-container .default-content-wrapper {
+  color: var(--text-color-inverted);
+  font-size: var(--body-font-size-s);;
+  line-height: 20px;
+  text-align: center;
+  width: 100%;
 }
 
 .insurance-landing-page
@@ -540,6 +559,13 @@
     font-size: 24px;
     line-height: 28px;
   }
+
+  .insurance-landing-page .search-container .default-content-wrapper {
+    text-align: left;
+    justify-content: flex-start;
+    padding-left: 2rem;
+    margin-left: 0 !important;
+  }
 }
 
 @media (max-width: 900px) {
@@ -654,7 +680,7 @@
     max-height: none;
     height: auto;
     width: unset;
-    max-width: 1200px;
+    max-width: 50%;
     max-height: 489px;
     margin: auto 0 0 auto;
   }
@@ -670,7 +696,17 @@
 }
 
 @media (min-width: 1200px) {
-  .insurance-landing-page .section > .search-wrapper {
+  .insurance-landing-page .section > .search-wrapper,
+  .insurance-landing-page .section > .find-useful-wrapper {
       max-width: 1200px;
+  }
+
+  .insurance-landing-page .section > .default-content-wrapper {
+    max-width: 1200px !important;
+    margin-left: auto !important;
+  }
+
+  .insurance-landing-page .hero img {
+    max-width: 100%;
   }
 }
