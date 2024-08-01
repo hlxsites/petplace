@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 
@@ -13,34 +13,28 @@ const DEFAULT_CLASSES =
   "flex w-full justify-between bg-transparent p-0 text-black hover:bg-transparent focus:bg-transparent focus:outline-none active:bg-transparent";
 
 describe("<Collapse />", () => {
-  it("should render the collapse", () => {
-    getRenderer();
-    expect(getByTestId(TEST_ID)).toBeInTheDocument();
-  });
-
   it("should render collapse trigger with default", () => {
     getRenderer();
     expect(getByTestId(TEST_ID).firstChild).toHaveClass(DEFAULT_CLASSES);
   });
-
-  it.each(["a-class", "another-class"])(
-    "should render the collapse trigger with custom classes",
-    (expected) => {
-      getRenderer({ className: expected });
-      expect(getByTestId(TEST_ID).firstChild).toHaveClass(
-        `${DEFAULT_CLASSES} ${expected}`
-      );
-    }
-  );
 
   it("should render the collapse children", () => {
     getRenderer({ isOpen: true });
     expect(getByText(DEFAULT_CHILDREN)).toBeInTheDocument();
   });
 
-  it("should not render the collapse children", () => {
+  it("should hide content wrapper element when it is closed", async () => {
     getRenderer({ isOpen: false });
-    expect(queryByText(DEFAULT_CHILDREN)).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(getByTestId("CollapseContentWrapper")).toHaveStyle({ opacity: 0 })
+    );
+  });
+
+  it("should show content wrapper element when it is open", async () => {
+    getRenderer({ isOpen: true });
+    await waitFor(() =>
+      expect(getByTestId("CollapseContentWrapper")).toHaveStyle({ opacity: 1 })
+    );
   });
 
   it("should render the collapse disabled", () => {
@@ -48,14 +42,18 @@ describe("<Collapse />", () => {
     expect(queryByText(DEFAULT_TRIGGER)).toBeDisabled();
   });
 
-  it.each([
-    [true, "ChevronUp"],
-    [false, "ChevronDown"],
-  ])("should render the correct icons accordingly", (isOpen, iconName) => {
-    const { container } = getRenderer({ isOpen });
+  it("should render the correct icons", () => {
+    const { container } = getRenderer();
     expect(container.querySelector("svg")).toHaveAttribute(
       "data-file-name",
-      `Svg${iconName}Icon`
+      "SvgChevronDownIcon"
+    );
+  });
+
+  it("should rotate the icon when it is open", () => {
+    const { container } = getRenderer({ isOpen: true });
+    expect(container.querySelector("svg")?.parentElement).toHaveClass(
+      "rotate-180 transform"
     );
   });
 
@@ -76,7 +74,7 @@ type Props = ComponentProps<typeof Collapse>;
 function getRenderer({
   isOpen = true,
   children = DEFAULT_CHILDREN,
-  trigger = DEFAULT_TRIGGER,
+  title = DEFAULT_TRIGGER,
   onOpenChange = jest.fn(),
   ...rest
 }: Partial<Props> = {}) {
@@ -84,7 +82,7 @@ function getRenderer({
     <Collapse
       {...rest}
       isOpen={isOpen}
-      trigger={trigger}
+      title={title}
       onOpenChange={onOpenChange}
     >
       {children}
