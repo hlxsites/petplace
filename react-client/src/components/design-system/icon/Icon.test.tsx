@@ -1,23 +1,20 @@
 import { render } from "@testing-library/react";
 import { ComponentProps } from "react";
 
-import { Icon } from "./Icon";
+import { upperCaseFirstLetter } from "~/util/stringUtils";
+import { Icon, IconKeys, IconMap } from "./Icon";
 
 describe("<Icon />", () => {
-  it.each(["Add", "Check"])(`should render an icon '%s'`, (expected) => {
-    const { container } = getRenderer({
-      display: expected.toLowerCase() as Props["display"],
-    });
-    const icon = container.querySelector("svg")
-    expect(icon).toBeInTheDocument();
-    expect(icon).toHaveAttribute(
+  it.each(Object.keys(IconMap))("should render the icon %p", (expected) => {
+    getRenderer({ display: expected as IconKeys });
+    expect(document.querySelector("svg")).toHaveAttribute(
       "data-file-name",
-      `Svg${expected}Icon`
+      `Svg${upperCaseFirstLetter(expected)}Icon`
     );
   });
 
   it.each(["a-class", "another-class"])(
-    `should render an icon with custom class'%s'`,
+    "should render an icon with custom class %p",
     (expected) => {
       const { container } = getRenderer({
         className: expected,
