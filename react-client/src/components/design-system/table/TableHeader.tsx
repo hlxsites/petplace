@@ -1,9 +1,7 @@
 import { useCallback } from "react";
-import { Conditional } from "../conditional/Conditional";
 import { Icon, IconKeys, TextSpan } from "~/components/design-system";
-import { useCellBase } from "./useCellBase";
 import { ITableHeaderProps } from "../types/TableTypes";
-
+import { useCellBase } from "./useCellBase";
 
 export const TableHeader = <ColumnKey,>({
   colSpan = 1,
@@ -29,11 +27,26 @@ export const TableHeader = <ColumnKey,>({
 
   const canBeSorted = !!didSort && !!column.isSortable;
   const isSorted = canBeSorted && sortBy === column.key;
-  const sortOrder = desc ? "descending" : "ascending"
-  const sortedIcon = desc ? "sortDownS" : "sortUpS"
+  const sortOrder = desc ? "descending" : "ascending";
+  const sortedIcon = desc ? "sortDownS" : "sortUpS";
   const sortIcon = isSorted ? sortedIcon : "sortS";
 
-  const headerLabel = <TextSpan >{column.label}</TextSpan>;
+  const children = (() => {
+    const labelElement = <TextSpan>{column.label}</TextSpan>;
+
+    if (!canBeSorted) return labelElement;
+
+    return (
+      <button
+        className="gap-1 flex"
+        onClick={onRequestSort(column.key as ColumnKey)}
+        type="button"
+      >
+        {labelElement}
+        <Icon data-testid={sortIcon} display={sortIcon as IconKeys} size={14} />
+      </button>
+    );
+  })();
   return (
     <th
       aria-sort={isSorted ? sortOrder : undefined}
@@ -44,20 +57,7 @@ export const TableHeader = <ColumnKey,>({
       scope="col"
       style={{ textAlign: column.align ?? "left", width: column.width }}
     >
-      <Conditional ifFalse={headerLabel} when={canBeSorted}>
-        <button
-          className="gap-1 flex"
-          onClick={onRequestSort(column.key as ColumnKey)}
-          type="button"
-        >
-          {headerLabel}
-          <Icon
-            data-testid={sortIcon}
-            display={sortIcon as IconKeys}
-            size={14}
-          />
-        </button>
-      </Conditional>
+      {children}
     </th>
   );
 };
