@@ -1,3 +1,4 @@
+import { downloadFile } from "~/util/downloadFunctions";
 import {
   Card,
   Icon,
@@ -7,7 +8,6 @@ import {
   Text,
 } from "../design-system";
 import { PetCardRecordProps } from "./types/PetRecordsTypes";
-import { downloadFile } from "../../util/downloadFunctions";
 
 export const PetCardRecord = ({
   downloadPath,

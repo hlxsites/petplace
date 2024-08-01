@@ -106,7 +106,9 @@ describe("PetCardRecord", () => {
   });
 
   it("should download the file with expected values when download button is clicked", async () => {
-    const downloadFileSpy = jest.spyOn(downloadFunctions, "downloadFile");
+    const downloadFileSpy = jest
+      .spyOn(downloadFunctions, "downloadFile")
+      .mockImplementation(() => Promise.resolve());
 
     getRenderer();
     expect(downloadFileSpy).not.toHaveBeenCalled();
