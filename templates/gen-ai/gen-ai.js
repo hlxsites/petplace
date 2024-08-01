@@ -343,7 +343,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   const card = resultsBlock.querySelector('.search-card');
   const anchorTags = card?.querySelectorAll('a');
 
-  // if the placeholder cta card doesn't exist yet
+  // Add placeholder cta card
   if (!resultsBlock.querySelector('.search-actions-placeholder')) {
     const placeholderCtaCard = document.createElement('div');
     placeholderCtaCard.className = 'search-actions-placeholder';
