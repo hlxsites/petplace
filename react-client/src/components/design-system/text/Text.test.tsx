@@ -16,7 +16,7 @@ describe("Text", () => {
     }
   );
 
-  it.each(["a-id", "another-id"])('should render with id="%s"', (id) => {
+  it.each(["a-id", "another-id"])("should render with id=%p", (id) => {
     getRenderer({ id });
     expect(getByRole("paragraph")).toHaveAttribute("id", id);
   });
@@ -48,7 +48,7 @@ describe("Text", () => {
   });
 
   it.each(["base", "sm"] as ComponentProps<typeof Text>["size"][])(
-    "should render component with size %s",
+    "should render component with size %p",
     (size) => {
       getRenderer({ size });
 
