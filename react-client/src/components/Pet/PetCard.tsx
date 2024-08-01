@@ -1,20 +1,19 @@
 import { ReactNode } from "react";
 import { classNames as cx } from "~/util/styleUtil";
 import { Card, CardProps, Icon } from "../design-system";
-import usePetCardBase, { UsePetCardBase } from "./usePetCardBase";
 
-type PetCardProps = UsePetCardBase &
-  CardProps & {
-    children: ReactNode;
-    classNames?: {
-      root?: string;
-    };
-    displayProtectedBadge?: {
-      isProtected: boolean;
-    };
-    img?: string;
-    name: string;
+type PetCardProps = CardProps & {
+  children: ReactNode;
+  classNames?: {
+    root?: string;
   };
+  displayProtectedBadge?: {
+    isProtected: boolean;
+  };
+  img?: string;
+  name: string;
+  variant?: "sm" | "md" | "lg";
+};
 
 export const PetCard = ({
   children,
@@ -25,14 +24,16 @@ export const PetCard = ({
   variant,
   ...props
 }: PetCardProps) => {
-  const { className: baseClassName } = usePetCardBase({
-    variant,
-  });
-
   return (
     <Card {...props} radius="sm">
       <div className={classNames?.root}>
-        <div className={cx(baseClassName)}>
+        <div
+          className={cx("relative flex w-full", {
+            "h-[191px] lg:h-[246px]": variant === "sm",
+            "h-[246px] lg:max-h-[306px]": variant === "md",
+            "h-[240px] lg:h-[343px] lg:max-w-[368px]": variant === "lg",
+          })}
+        >
           <img src={img} alt={name} className="w-full object-cover" />
           {displayProtectedBadge && (
             <div
