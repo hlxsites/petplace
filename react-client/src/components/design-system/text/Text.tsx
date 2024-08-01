@@ -1,13 +1,15 @@
 import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
+import {
+  TextCommonStyleProps,
+  useTextCommonStyles,
+} from "./useTextCommonStyles";
 
-type StyleProps = {
-  align?: "center" | "left" | "right" | "justify" ;
+type StyleProps = TextCommonStyleProps & {
   color?: "black" | "neutral" | "primary" | "secondary" | "tertiary";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
   size?: "lg" | "base" | "sm" | "xs" | "inherit";
-  srOnly?: boolean;
 };
 
 type TextProps = StyleProps & {
@@ -47,10 +49,11 @@ function useTextBase({
   fontFamily = "franklin",
   fontWeight = "normal",
   size = "xs",
-  align,
-  srOnly,
+  ...rest
 }: StyleProps) {
-  const className = classNames("inline-block", {
+  const commonClassName = useTextCommonStyles(rest);
+
+  const className = classNames("inline-block", commonClassName, {
     "text-black": color === "black",
     "text-neutral-950": color === "neutral",
     "text-primary-900": color === "primary",
@@ -65,13 +68,7 @@ function useTextBase({
     "text-base leading-6": size === "base",
     "text-sm leading-5": size === "sm",
     "text-xs leading-4": size === "xs",
-    "text-left": align === "left",
-    "text-center": align === "center",
-    "text-right": align === "right",
-    "text-justify": align === "justify",
-    "sr-only": srOnly,
   });
 
   return { className };
 }
-
