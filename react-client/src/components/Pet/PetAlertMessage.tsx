@@ -1,8 +1,4 @@
-import { Button, ButtonProps } from "../design-system";
-import { Icon } from "../design-system/icon/Icon";
-import { Title } from "../design-system/text/Title";
-import { Text } from "../design-system/text/Text";
-import { CardWrapper } from "../design-system/card/CardWrapper";
+import { Button, ButtonProps, Card, Icon, Text, Title } from "../design-system";
 
 type AlertMessageProps = {
   onClick?: () => void;
@@ -11,7 +7,7 @@ type AlertMessageProps = {
 
 export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
   return (
-    <CardWrapper
+    <Card
       backgroundColor="bg-blue-100"
       border="border-blue-100"
       shadow="elevation-3"
@@ -36,7 +32,7 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
           className: "h-[30px] w-full lg:hidden",
         })}
       </div>
-    </CardWrapper>
+    </Card>
   );
 
   function renderGetQuoteButton(props: Pick<ButtonProps, "className">) {
