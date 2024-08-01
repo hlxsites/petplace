@@ -1,4 +1,4 @@
-import { IconButton } from "~/components/design-system";
+import { IconButton } from "../button/IconButton";
 import { RowAction, TableRowActionsProps } from "./TableTypes";
 
 export const TableRowActions = ({

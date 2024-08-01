@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { Icon, IconKeys, TextSpan } from "~/components/design-system";
+import { Icon, IconKeys } from "../icon/Icon";
+import { TextSpan } from "../text/TextSpan";
 import { ITableHeaderProps } from "./TableTypes";
 import { useCellBase } from "./useCellBase";
 
