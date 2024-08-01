@@ -127,10 +127,9 @@ const martechLoadedPromise = initMartech(
     orgId: IMS_ORG,
     // eslint-disable-next-line no-nested-ternary
     datastreamId:
-      (window.location.origin === 'localhost' && DATASTREAM_IDS.dev)
-      || (window.location.origin.endsWith('.page') && DATASTREAM_IDS.stage)
-      || (window.location.origin.endsWith('.live') && DATASTREAM_IDS.stage)
-      || DATASTREAM_IDS.prod,
+      (window.location.origin.endsWith('.petplace.com') && DATASTREAM_IDS.prod)
+      || (window.location.origin.match(/^staging--/) && DATASTREAM_IDS.stage)
+      || DATASTREAM_IDS.dev,
   },
   {
     personalization: !!getMetadata('target'),
