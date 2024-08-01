@@ -5,11 +5,11 @@ import { ComponentProps } from "react";
 import { IconKeys } from "../icon/Icon";
 import { IconButton } from "./IconButton";
 
-const { getByRole, getByLabelText } = screen;
+const { getByRole } = screen;
 
 describe("<IconButton />", () => {
   it.each(["a-class", "another-class"])(
-    `should render button with custom className '%s'`,
+    `should render button with custom className %p`,
     (expected) => {
       getRenderer({ className: expected });
       expect(getByRole("button")).toHaveClass(expected);
@@ -17,15 +17,15 @@ describe("<IconButton />", () => {
   );
 
   it.each(["Label", "Another label"])(
-    "should render button with label '%s'",
+    "should render button with label %p",
     (expected) => {
       getRenderer({ label: expected });
-      expect(getByLabelText(expected).tagName).toBe("BUTTON");
+      expect(getByRole("button", { name: expected })).toBeInTheDocument();
     }
   );
 
   it.each(["Add", "Check"])(
-    `should render an button with '%s' icon`,
+    "should render an button with %p icon",
     (expected) => {
       const { container } = getRenderer({
         icon: expected.toLowerCase() as IconKeys,
@@ -70,7 +70,7 @@ describe("<IconButton />", () => {
   });
 
   it.each(["sample-id", "another-id"])(
-    "button should have id '%s'",
+    "button should have id %p",
     (expected) => {
       getRenderer({ id: expected });
       expect(getByRole("button")).toHaveAttribute("id", expected);
@@ -78,7 +78,7 @@ describe("<IconButton />", () => {
   );
 
   it.each(["Custom button", "Another button"])(
-    "should have aria-label '%s'",
+    "should have aria-label %p",
     (expected) => {
       getRenderer({ "aria-label": expected });
       expect(getByRole("button")).toHaveAttribute("aria-label", expected);
