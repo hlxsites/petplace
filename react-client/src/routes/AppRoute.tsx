@@ -1,6 +1,5 @@
 import isEqual from "lodash/isEqual";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { PetPlaceRouteObject } from "~/types/routerTypes";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
@@ -10,6 +9,7 @@ import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
+import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
@@ -37,7 +37,7 @@ const routes: PetPlaceRouteObject[] = [
             element: <MyPetsIndex />,
           },
           {
-            element: <PetProfileLayout/>,
+            element: <PetProfileLayout />,
             id: "petProfile",
             loader: PetProfileLayoutLoader,
             path: AppRoutePaths.petProfile,

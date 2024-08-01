@@ -3,6 +3,9 @@ import { ReactNode } from "react";
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
 
+export type FormVariableValues = Record<string, InputValue>;
+export type FormValues = Record<string, InputValue>;
+
 export type ElementType = "button" | "html" | "input" | "row" | "section";
 
 export type InputValue = string | number | Date | boolean | string[];
@@ -59,9 +62,9 @@ export type InputType =
   | "radio";
 
 type ElementCommon = {
-  id: string;
-  shouldDisplay?: ConditionExpression;
   elementType: ElementType;
+  id?: string;
+  shouldDisplay?: ConditionExpression;
 };
 
 export type ElementSection = ElementCommon & {
@@ -77,7 +80,7 @@ export type ElementRow = ElementCommon & {
   elementType: "row";
 };
 
-export type ElementHtml = ElementCommon & {
+export type ElementHtml = Omit<ElementCommon, "id"> & {
   content: ReactNode;
   elementType: "html";
 };
@@ -86,6 +89,7 @@ export type ElementButton = ElementCommon & {
   className?: string;
   disabledCondition?: ConditionExpression;
   elementType: "button";
+  id: string;
   label: string;
   onClick?: () => void;
   type: "button" | "reset" | "submit";
@@ -99,6 +103,7 @@ export type InputCommon = ElementCommon & {
   elementType: "input";
   errorMessage?: string;
   hideLabel?: boolean;
+  id: string;
   label: string;
   placeholder?: string;
   requiredCondition?: ConditionExpression;

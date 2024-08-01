@@ -31,7 +31,7 @@ describe("<UncontrolledTabs />", () => {
   });
 
   it.each([["Characteristics"], ["Notes"], ["Timeline"]])(
-    "should start with %s Tab selected when initialIndex=%i",
+    "should start with %p Tab selected when initialIndex=%i",
     (expected) => {
       getRenderer({
         tabs: [
