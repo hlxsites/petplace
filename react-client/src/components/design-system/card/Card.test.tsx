@@ -3,7 +3,7 @@ import { ComponentProps } from "react";
 
 import { Card } from "./Card";
 
-const { getByText } = screen;
+const { getByRole, getByText } = screen;
 
 const DEFAULT_CHILDREN = "Test children";
 
@@ -44,6 +44,14 @@ describe("<Card />", () => {
       getRenderer({ hasShadow: expected });
 
       expect(getByText(DEFAULT_CHILDREN)).not.toHaveClass("shadow-elevation-1");
+    }
+  );
+
+  it.each(["button", "dialog", "menu", "presentation"])(
+    `should render with role='%s'`,
+    (expected) => {
+      getRenderer({ role: expected });
+      expect(getByRole(expected)).toBeInTheDocument();
     }
   );
 });
