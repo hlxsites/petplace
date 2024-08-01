@@ -1,9 +1,8 @@
-import { PetCardRecordProps } from "../components/Pet/types/PetRecordsTypes";
-
-type DownloadFileProps = Omit<
-  PetCardRecordProps,
-  "onClick" | "isUploadingFile"
->;
+export type DownloadFileProps = {
+  downloadPath?: string;
+  fileName: string;
+  fileType?: "doc" | "docx" | "jpg" | "pdf" | "png" | "txt";
+};
 
 export async function downloadFile({
   downloadPath,
