@@ -11,9 +11,9 @@ const DEFAULT_CLASSNAMES =
   "flex h-5 w-5 items-center justify-center rounded-md";
 
 describe("<Checkbox />", () => {
-  it("should render checkbox", () => {
-    getRenderer();
-    expect(getByRole("checkbox")).toBeInTheDocument();
+  it.each(["id-1", "id-2"])("should render with id %p", (expected) => {
+    getRenderer({ id: expected });
+    expect(getByRole("checkbox")).toHaveAttribute("id", expected);
   });
 
   it("should render with default classes", () => {
@@ -21,13 +21,8 @@ describe("<Checkbox />", () => {
     expect(getByRole("checkbox")).toHaveClass(DEFAULT_CLASSNAMES);
   });
 
-  it.each(["id-1", "id-2"])('should render with id "%s"', (expected) => {
-    getRenderer({ id: expected });
-    expect(getByRole("checkbox")).toHaveAttribute("id", expected);
-  });
-
   it.each(["a-class", "another-class"])(
-    "should render custom class '%s'",
+    "should render with default classes and custom class %p",
     (expected) => {
       getRenderer({ className: expected });
       expect(getByRole("checkbox")).toHaveClass(
@@ -37,17 +32,12 @@ describe("<Checkbox />", () => {
   );
 
   it.each(["a label", "another label"])(
-    "should render checkbox with label '%s'",
+    "should render checkbox with label %p",
     (expected) => {
       getRenderer({ label: expected });
       expect(getByRole("checkbox", { name: expected })).toBeInTheDocument();
     }
   );
-
-  it("should hide label element when hideLabel is true", () => {
-    getRenderer({ hideLabel: true });
-    expect(queryByText(DEFAULT_LABEL)).not.toBeInTheDocument();
-  });
 
   it("should render checkbox with accessible aria-label when hideLabel is true", () => {
     getRenderer({ hideLabel: true });
@@ -55,7 +45,7 @@ describe("<Checkbox />", () => {
   });
 
   it.each([false, undefined])(
-    "should render checkbox label when hideLabel is %s",
+    "should render checkbox label when hideLabel is %p",
     (expected) => {
       getRenderer({ hideLabel: expected });
       expect(queryByText(DEFAULT_LABEL)).toBeInTheDocument();
@@ -98,18 +88,23 @@ describe("<Checkbox />", () => {
     );
   });
 
-  it("should call event callbacks", async () => {
-    const checkHandler = jest.fn();
-    getRenderer({ onCheckedChange: checkHandler });
+  it("should call event onCheckedChange callback", async () => {
+    const onCheckedChange = jest.fn();
+    getRenderer({ onCheckedChange });
+
     const checkbox = getByRole("checkbox");
+    expect(onCheckedChange).not.toHaveBeenCalled();
     expect(checkbox).not.toBeChecked();
 
     await userEvent.click(checkbox);
+    expect(onCheckedChange).toHaveBeenCalledWith(true);
     expect(checkbox).toBeChecked();
 
     await userEvent.click(checkbox);
+    expect(onCheckedChange).toHaveBeenCalledWith(false);
     expect(checkbox).not.toBeChecked();
-    expect(checkHandler).toHaveBeenCalledTimes(2);
+
+    expect(onCheckedChange).toHaveBeenCalledTimes(2);
   });
 });
 
