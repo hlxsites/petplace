@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Conditional } from "../conditional/Conditional";
-import { Icon, IconKeys } from "~/components/design-system";
+import { Icon, IconKeys, TextSpan } from "~/components/design-system";
 import { useCellBase } from "./useCellBase";
 import { ITableHeaderProps } from "../types/TableTypes";
 
@@ -33,7 +33,7 @@ export const TableHeader = <ColumnKey,>({
   const sortedIcon = desc ? "sortDownS" : "sortUpS"
   const sortIcon = isSorted ? sortedIcon : "sortS";
 
-  const headerLabel = <span className={column.className}>{column.label}</span>;
+  const headerLabel = <TextSpan >{column.label}</TextSpan>;
   return (
     <th
       aria-sort={isSorted ? sortOrder : undefined}

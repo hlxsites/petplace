@@ -79,6 +79,7 @@ module.exports = {
       "text-hinted": "var(--text-hinted)",
       "text-color": "var(--text-color)",
       "icon-danger": "var(--icon-danger)",
+      "text-color-supporting": "var(--text-color-supporting)",
       "background-color-tertiary": "var(--background-color-tertiary)",
       white: "#ffffff",
       black: "#000000",

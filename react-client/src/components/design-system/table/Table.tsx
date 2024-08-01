@@ -13,8 +13,12 @@ import { TableHeader } from "./TableHeader";
 import { TableRowActions } from "./TableRowActions";
 import { classNames } from "~/util/styleUtil";
 import { useCellBase } from "./useCellBase";
-import { RowAction, TableColumn, TableCommonProps, TableRow } from "../types/TableTypes";
-
+import {
+  RowAction,
+  TableColumn,
+  TableCommonProps,
+  TableRow,
+} from "../types/TableTypes";
 
 export const Table = <T,>({
   ariaLabel,
@@ -32,7 +36,7 @@ export const Table = <T,>({
   bulkSelectionActions,
   totalSelectedItems = 0,
   didSelectRowAction,
-  wrapper
+  wrapper,
 }: TableCommonProps<T>) => {
   const isThereAnyRowAction = (rowActions?.length ?? 0) > 0;
   const { className: cellClassName } = useCellBase();
@@ -53,7 +57,7 @@ export const Table = <T,>({
       </Conditional>
       {renderNoResultsView()}
       <Conditional when={!isEmptyState && !isLoading}>
-      {wrapper ? wrapper(renderTableContent()) : renderTableContent()}
+        {wrapper ? wrapper(renderTableContent()) : renderTableContent()}
       </Conditional>
     </>
   );
@@ -216,9 +220,14 @@ export const Table = <T,>({
 
     const message = noResultsMessage ?? "No results were found";
     return (
-      <Text>
-        {message} <TextSpan fontWeight="bold">{noResultsSearchTerm}</TextSpan>
-      </Text>
+      <div className="flex h-24 w-full flex-col items-center justify-center">
+        <Text>
+          {message} {"   "}
+          <TextSpan fontWeight="bold">
+            {noResultsSearchTerm}
+          </TextSpan>
+        </Text>
+      </div>
     );
   }
 
