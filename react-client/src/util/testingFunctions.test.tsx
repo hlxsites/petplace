@@ -19,7 +19,7 @@ describe("testingFunctions", () => {
       "Hello World",
       "Another example with multiple Elements",
       /Using regex [0-9]{3}-[0-9]{3}-[0-9]{4}/,
-    ])("should assert finding '%s'", async (expected) => {
+    ])("should assert finding %p", async (expected) => {
       render(<TestComponent />);
       expect(await findByTextContent(expected)).toBeInTheDocument();
     });
@@ -30,13 +30,14 @@ describe("testingFunctions", () => {
       "Hello World",
       "Another example with multiple Elements",
       /Using regex [0-9]{3}-[0-9]{3}-[0-9]{4}/,
-    ])("should assert getting '%s'", (expected) => {
+    ])("should assert getting %p", (expected) => {
       render(<TestComponent />);
       expect(getByTextContent(expected)).toBeInTheDocument();
     });
   });
 });
 
+// Test utilities
 function TestComponent() {
   return (
     <div>

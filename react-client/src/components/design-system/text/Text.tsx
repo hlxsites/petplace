@@ -1,7 +1,11 @@
 import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
+import {
+  TextCommonStyleProps,
+  useTextCommonStyles,
+} from "./useTextCommonStyles";
 
-type StyleProps = {
+type StyleProps = TextCommonStyleProps & {
   color?:
     | "black"
     | "neutral"
@@ -12,7 +16,6 @@ type StyleProps = {
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
   size?: "lg" | "base" | "sm" | "xs" | "inherit";
-  srOnly?: boolean;
 };
 
 type TextProps = StyleProps & {
@@ -52,9 +55,11 @@ function useTextBase({
   fontFamily = "franklin",
   fontWeight = "normal",
   size = "xs",
-  srOnly,
+  ...rest
 }: StyleProps) {
-  const className = classNames("inline-block", {
+  const commonClassName = useTextCommonStyles(rest);
+
+  const className = classNames("inline-block", commonClassName, {
     "text-black": color === "black",
     "text-blue-500": color === "blue-500",
     "text-neutral-950": color === "neutral",
@@ -70,7 +75,6 @@ function useTextBase({
     "text-base leading-6": size === "base",
     "text-sm leading-5": size === "sm",
     "text-xs leading-4": size === "xs",
-    "sr-only": srOnly,
   });
 
   return { className };
