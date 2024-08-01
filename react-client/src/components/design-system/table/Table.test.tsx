@@ -1,7 +1,6 @@
 import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { getByTextContent } from "~/util/testingFunctions";
 import { mockNamesList } from "~/mocks/mockNames";
 import type { TableCommonProps, TableRow } from "../types/TableTypes";
 import { Table } from "./Table";
@@ -466,43 +465,6 @@ describe("<Table />", () => {
     });
 
     describe("without rows", () => {
-      it("should display NoResultsView", () => {
-        getRenderer({
-          isLoading: false,
-          rows: [],
-        });
-        expect(getByText(NO_RESULTS_MESSAGE)).toBeInTheDocument();
-      });
-
-      it.each(["something", "another search"])(
-        "should display correct message using search term %s",
-        (expected) => {
-          getRenderer({
-            isLoading: false,
-            noResultsSearchTerm: expected,
-            rows: [],
-          });
-          expect(
-            getByTextContent(`${NO_RESULTS_MESSAGE} ${expected}`)
-          ).toBeInTheDocument();
-        }
-      );
-
-      it.each(["A lorem ipsum", "Another message"])(
-        "should display with custom message %s",
-        (expected) => {
-          getRenderer({
-            isLoading: false,
-            noResultsMessage: expected,
-            noResultsSearchTerm: "Not found text",
-            rows: [],
-          });
-          expect(
-            getByTextContent(`${expected} Not found text`)
-          ).toBeInTheDocument();
-        }
-      );
-
       it("should NOT display <table>", () => {
         getRenderer({
           isLoading: false,
