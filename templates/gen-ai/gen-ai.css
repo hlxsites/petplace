@@ -119,6 +119,7 @@
   }
 
   div[class^='action-cta'] {
+    overflow: hidden;
     position: relative;
     background: rgb(227, 227, 227);
 
