@@ -78,6 +78,38 @@ describe("<Button />", () => {
       expect(getByRole("button")).toHaveAttribute("aria-label", expected);
     }
   );
+
+  it("should have base classes", () => {
+    getRenderer();
+
+    expect(getByRole("button")).toHaveClass("px-base py-small text-base");
+  });
+
+  it("should have primary variant classes", () => {
+    getRenderer({ variant: "primary" });
+
+    expect(getByRole("button")).toHaveClass(
+      "bg-orange-300-contrast text-white"
+    );
+  });
+
+  it("should have secondary variant classes", () => {
+    getRenderer({ variant: "secondary" });
+
+    expect(getByRole("button")).toHaveClass(
+      "bg-white border-neutral-700 text-neutral-700"
+    );
+  });
+
+  it("should not be full width by default", () => {
+    getRenderer();
+    expect(getByRole("button")).not.toHaveClass("w-full");
+  });
+
+  it("should have full width class", () => {
+    getRenderer({ fullWidth: true });
+    expect(getByRole("button")).toHaveClass("w-full");
+  });
 });
 
 // Helpers
