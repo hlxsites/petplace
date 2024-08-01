@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { PetCardInfo } from "./PetCardInfo";
 import { ComponentProps } from "react";
+import { PetCardInfo } from "./PetCardInfo";
 
 const { getByRole, getByText } = screen;
 
@@ -27,6 +27,11 @@ describe("PetCardInfo", () => {
       expect(getByText(`Microchip#: ${microchipNumber}`)).toBeInTheDocument();
     }
   );
+
+  it("should match snapshot to assure that the component is being rendered correctly", () => {
+    const { container } = getRenderer();
+    expect(container).toMatchSnapshot();
+  });
 });
 
 function getRenderer({
