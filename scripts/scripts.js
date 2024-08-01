@@ -19,6 +19,15 @@ import {
   toClassName,
   waitForLCP,
 } from './lib-franklin.js';
+import {
+  initMartech,
+  updateUserConsent,
+  martechEager,
+  martechLazy,
+  martechDelayed,
+  pushEventToDataLayer,
+// eslint-disable-next-line import/no-relative-packages
+} from '../plugins/martech/src/index.js';
 
 export const PREFERRED_REGION_KEY = 'petplace-preferred-region';
 const NEWSLETTER_POPUP_KEY = 'petplace-newsletter-popup';
@@ -27,6 +36,13 @@ const NEWSLETTER_SIGNUP_KEY = 'petplace-newsletter-signedup';
 const LCP_BLOCKS = ['slideshow', 'hero']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.hlx.cache = {};
+
+const IMS_ORG = '53E06E76604280A10A495E65@AdobeOrg';
+const DATASTREAM_IDS = {
+  dev: '17e9e2de-4a10-40e0-8ea8-3cb636776970',
+  stage: '1b0ec0ce-b541-4d0f-a78f-fb2a6ca8713c',
+  prod: '3843429b-2a2d-43ce-9227-6aa732ddf7da',
+};
 
 // Define the custom audiences mapping for experience decisioning
 const AUDIENCES = {
@@ -106,6 +122,20 @@ window.hlx.templates.add([
 ]);
 
 const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
+
+const martechLoadedPromise = initMartech(
+  {
+    orgId: IMS_ORG,
+    // eslint-disable-next-line no-nested-ternary
+    datastreamId:
+      (window.location.origin.endsWith('.petplace.com') && DATASTREAM_IDS.prod)
+      || (window.location.origin.match(/^staging--/) && DATASTREAM_IDS.stage)
+      || DATASTREAM_IDS.dev,
+  },
+  {
+    personalization: !!getMetadata('target'),
+  },
+);
 
 window.hlx.plugins.add('experimentation', {
   url: '/plugins/experimentation/src/index.js',
@@ -474,6 +504,9 @@ function buildCookieConsent(main) {
   }
   // US region does not need the cookie consent logic
   if (document.documentElement.lang === 'en-US') {
+    updateUserConsent({
+      collect: true, marketing: true, personalize: true, share: true,
+    });
     gtag('consent', 'update', {
       ad_storage: 'granted',
       ad_user_data: 'granted',
@@ -484,13 +517,20 @@ function buildCookieConsent(main) {
     return;
   }
   const updateConsentHandler = (ev) => {
-    gtag('consent', 'update', {
-      ad_storage: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
-      ad_user_data: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
-      ad_personalization: ev.detail.categories.includes('CC_TARGETING') ? 'granted' : 'denied',
-      analytics_storage: ev.detail.categories.includes('CC_ANALYTICS') ? 'granted' : 'denied',
+    const collect = ev.detail.categories.includes('CC_ANALYTICS');
+    const marketing = ev.detail.categories.includes('CC_MARKETING');
+    const personalize = ev.detail.categories.includes('CC_TARGETING');
+    const share = ev.detail.categories.includes('CC_SHARING');
+    updateUserConsent({
+      collect, marketing, personalize, share,
     });
-    window.clarity('consent', ev.detail.categories.includes('CC_ANALYTICS'));
+    gtag('consent', 'update', {
+      ad_storage: marketing ? 'granted' : 'denied',
+      ad_user_data: marketing ? 'granted' : 'denied',
+      ad_personalization: personalize ? 'granted' : 'denied',
+      analytics_storage: collect ? 'granted' : 'denied',
+    });
+    window.clarity('consent', collect);
   };
   window.addEventListener('consent', updateConsentHandler);
   window.addEventListener('consent-updated', updateConsentHandler);
@@ -783,7 +823,10 @@ async function loadEager(doc) {
     decorateMain(main);
     fixLinks();
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+    await Promise.all([
+      martechLoadedPromise.then(martechEager),
+      waitForLCP(LCP_BLOCKS),
+    ]);
   }
 
   try {
@@ -992,6 +1035,44 @@ async function addNewsletterPopup() {
   document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
 }
 
+function trackPageView() {
+  const { pathname, hostname } = window.location;
+  const canonicalMeta = document.head.querySelector('link[rel="canonical"]');
+  const url = canonicalMeta ? new URL(canonicalMeta.href).pathname : pathname;
+  const is404 = window.isErrorPage;
+  pushEventToDataLayer('web.webpagedetails.pageViews', {
+    web: {
+      webPageDetails: {
+        pageViews: {
+          value: is404 ? 0 : 1,
+        },
+        isHomePage: pathname === '/',
+      },
+    },
+  }, {
+    __adobe: {
+      analytics: {
+        channel: !is404 ? pathname.split('/')[1] || 'home' : '404',
+        cookiesEnabled: navigator.cookieEnabled ? 'Y' : 'N',
+        pageName: !is404
+          ? pathname.split('/').slice(1).join(':') + (pathname.endsWith('/') ? 'home' : '')
+          : undefined,
+        pageType: is404 ? 'errorPage' : undefined,
+        server: window.location.hostname,
+        contextData: {
+          canonical: !is404 ? url : '/404',
+          environment: (hostname === 'localhost' && 'dev')
+            || (hostname.endsWith('.page') && 'preview')
+            || (hostname.endsWith('.live') && 'live')
+            || 'prod',
+          language: document.documentElement.getAttribute('lang') || 'en',
+          template: document.head.querySelector('meta[name="template"]')?.content?.toLowerCase() || 'default',
+        },
+      },
+    },
+  });
+}
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -1040,7 +1121,9 @@ async function loadLazy(doc) {
     { id: 'footer', label: getPlaceholder('skipFooter') },
   ]);
 
+  await martechLazy();
   sampleRUM('lazy');
+  trackPageView();
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
   sampleRUM('variant', { source: 'page-language', target: document.documentElement.lang });
@@ -1066,6 +1149,7 @@ function loadDelayed() {
   window.setTimeout(() => {
     window.hlx.plugins.load('delayed');
     window.hlx.plugins.run('loadDelayed');
+    martechDelayed();
     // eslint-disable-next-line import/no-cycle
     return import('./delayed.js');
   }, 3000);
