@@ -85,15 +85,11 @@ describe("Text", () => {
     ["primary", "text-primary-900"],
     ["secondary", "text-secondary-700"],
     ["tertiary", "text-tertiary-600"],
+    ["blue-500", "text-blue-500"],
   ])("should render component with color %p", (color, expected) => {
     // @ts-expect-error - ignoring for test purposes only
     getRenderer({ color });
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass(expected);
-  });
-
-  it("should render component with color blue-500", () => {
-    getRenderer({ color: "blue-500" });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-blue-500");
   });
 });
 
