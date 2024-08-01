@@ -5,6 +5,7 @@ export const Card = ({
   backgroundColor = "bg-neutral-white",
   border = "border-neutral-300",
   children,
+  padding,
   radius = "base",
   role,
   shadow,
@@ -20,6 +21,8 @@ export const Card = ({
           "rounded-xl": radius === "sm",
           "shadow-elevation-1": shadow === "elevation-1",
           "shadow-elevation-3": shadow === "elevation-3",
+          "p-base": padding === "base",
+          "p-large": padding === "large",
         }
       )}
       role={role}

@@ -38,14 +38,11 @@ describe("<Card />", () => {
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass("shadow-elevation-1");
   });
 
-  it(
-    "should NOT render shadowbox when shadow is not applied",
-    () => {
-      getRenderer({ shadow: undefined });
+  it("should NOT render shadowbox when shadow is not applied", () => {
+    getRenderer({ shadow: undefined });
 
-      expect(getByText(DEFAULT_CHILDREN)).not.toHaveClass("shadow-elevation-1");
-    }
-  );
+    expect(getByText(DEFAULT_CHILDREN)).not.toHaveClass("shadow-elevation-1");
+  });
 
   it.each(["button", "dialog", "menu", "presentation"])(
     "should render with role=%p",
@@ -54,6 +51,12 @@ describe("<Card />", () => {
       expect(getByRole(expected)).toBeInTheDocument();
     }
   );
+
+  it.each(["base", "large"])(`should render padding=%p`, (expected) => {
+    // @ts-expect-error - ignoring for test purposes
+    getRenderer({ padding: expected });
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`p-${expected}`);
+  });
 });
 
 // Helpers
