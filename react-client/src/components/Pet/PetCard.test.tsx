@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { PetCard } from "./PetCard";
 import { ComponentProps } from "react";
+import { PetCard } from "./PetCard";
 
 const { getByRole, getByText } = screen;
 
@@ -38,8 +38,6 @@ describe("PetCard", () => {
     "should render with custom class '%s'",
     (expected) => {
       getRenderer({ classNames: { root: expected } });
-      screen.debug();
-
       expect(getByText(DEFAULT_CHILDREN)).toHaveClass(expected);
     }
   );
@@ -90,15 +88,14 @@ describe("PetCard", () => {
     ["md", "h-[246px] lg:max-h-[306px]"],
     ["lg", "h-[240px]  lg:h-[343px] lg:max-w-[368px]"],
   ])("should match variant classes", (variant, expected) => {
-    getRenderer({
-      variant: variant as Props["variant"]
-    });
+    // @ts-expect-error - ignoring for test purposes only
+    getRenderer({ variant });
 
     expect(getByRole("img").parentElement).toHaveClass(expected);
   });
 });
 
-type Props = Partial<ComponentProps<typeof PetCard>>
+type Props = Partial<ComponentProps<typeof PetCard>>;
 
 function getRenderer({
   children = DEFAULT_CHILDREN,
