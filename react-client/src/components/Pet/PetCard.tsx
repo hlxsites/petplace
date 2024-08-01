@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { classNames as cx } from "~/util/styleUtil";
 import { Card, CardProps, Icon } from "../design-system";
-import usePetCardBase, { UsePetCardBase } from "./useCardBase";
+import usePetCardBase, { UsePetCardBase } from "./usePetCardBase";
 
 type PetCardProps = UsePetCardBase &
   CardProps & {
