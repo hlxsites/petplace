@@ -1,3 +1,4 @@
+export * from "./AdvertiseBannerImageRightPlayground";
 export * from "./ButtonPlayground";
 export * from "./CollapsePlayground";
 export * from "./DialogPlayground";

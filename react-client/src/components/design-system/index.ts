@@ -18,4 +18,5 @@ export * from "./table/Table";
 export * from "./text/Text";
 export * from "./text/TextSpan";
 export * from "./text/Title";
+export * from "./text/TitleSpan";
 export * from "./types/CardTypes";

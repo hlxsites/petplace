@@ -106,16 +106,20 @@ module.exports = {
     space: SPACING_DEFAULTS,
     translate: SPACING_DEFAULTS,
     extend: {
+      animation: {
+        fadeIn: "fadeIn 300ms ease-in-out",
+        fadeOut: "fadeOut 300ms ease-in-out",
+        slideInFromBottom: "slideInFromBottom 300ms forwards",
+        slideOutToBottom: "slideOutToBottom 300ms forwards",
+        slideInFromRight: "slideInFromRight 300ms forwards",
+        slideOutToRight: "slideOutToRight 300ms forwards",
+      },
+      backgroundSize: {
+        "x-small-gradient": "100% 5%",
+        "y-small-gradient": "5% 100%",
+      },
       bottom: SPACING_DEFAULTS,
       height: SPACING_DEFAULTS,
-      left: SPACING_DEFAULTS,
-      right: SPACING_DEFAULTS,
-      top: SPACING_DEFAULTS,
-      width: SPACING_DEFAULTS,
-      maxHeight: {
-        "90vh": "90vh",
-        "80vh": "80vh",
-      },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },
@@ -142,14 +146,14 @@ module.exports = {
           "100%": { transform: "translateX(100%)" },
         },
       },
-      animation: {
-        fadeIn: "fadeIn 300ms ease-in-out",
-        fadeOut: "fadeOut 300ms ease-in-out",
-        slideInFromBottom: "slideInFromBottom 300ms forwards",
-        slideOutToBottom: "slideOutToBottom 300ms forwards",
-        slideInFromRight: "slideInFromRight 300ms forwards",
-        slideOutToRight: "slideOutToRight 300ms forwards",
-      },
     },
+    left: SPACING_DEFAULTS,
+    maxHeight: {
+      "90vh": "90vh",
+      "80vh": "80vh",
+    },
+    right: SPACING_DEFAULTS,
+    top: SPACING_DEFAULTS,
+    width: SPACING_DEFAULTS,
   },
 };

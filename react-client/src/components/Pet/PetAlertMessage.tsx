@@ -16,7 +16,7 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
         <div className="flex justify-between">
           <div className="flex gap-[10px]">
             <Icon className="text-blue-500" display="stethoscope" />
-            <Title color="blue-500" level="h4">
+            <Title color="text-blue-500" level="h4">
               Secure Your Pet's Future
             </Title>
           </div>
