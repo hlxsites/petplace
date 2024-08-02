@@ -5,6 +5,7 @@ import AlertIcon from "./assets/alert-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
+import CheckCircleIcon from "./assets/check-circle-icon.svg";
 import ChevronDownIcon from "./assets/chevron-down-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
 import ChevronRightIcon from "./assets/chevron-right-icon.svg";
@@ -34,6 +35,7 @@ import TransferIcon from "./assets/transfer-icon.svg";
 import TrashIcon from "./assets/trash-icon.svg";
 import TxtFileIcon from "./assets/txt-file-icon.svg";
 import UploadCloudIcon from "./assets/upload-cloud-icon.svg";
+import WarningIcon from "./assets/warning-icon.svg";
 import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 
 export const IconMap = Object.freeze({
@@ -43,6 +45,7 @@ export const IconMap = Object.freeze({
   apps: <AppsIcon />,
   bendArrowDown: <BendArrowDownIcon />,
   check: <CheckIcon />,
+  checkCircle: <CheckCircleIcon />,
   chevronDown: <ChevronDownIcon />,
   chevronLeft: <ChevronLeftIcon />,
   chevronRight: <ChevronRightIcon />,
@@ -72,6 +75,7 @@ export const IconMap = Object.freeze({
   trash: <TrashIcon />,
   txtFile: <TxtFileIcon />,
   uploadCloud: <UploadCloudIcon />,
+  warning: <WarningIcon />,
   warningTriangle: <WarningTriangleIcon />,
 });
 
