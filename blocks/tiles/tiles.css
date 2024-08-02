@@ -124,6 +124,10 @@
   .tile .tile-contents > div:first-child {
     min-height: auto;
   }
+
+  .tiles-featured .tile {
+    width: 33%;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -146,7 +150,7 @@
   flex-direction: column;
 }
 
-.tiles.spotlight .tiles-featured {
+.tiles.spotlight, .tiles-featured {
   display: flex;
   flex-direction: row;
   gap: 1.5rem;
