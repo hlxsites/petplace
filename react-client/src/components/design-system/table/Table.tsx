@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { plural } from "~/util/stringUtils";
+import { plural } from "~/util/stringUtil";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Card } from "../card/Card";

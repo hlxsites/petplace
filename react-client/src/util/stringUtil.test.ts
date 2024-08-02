@@ -5,7 +5,7 @@ import {
   upperCaseFirstLetterRestLowerCase,
 } from "./stringUtil";
 
-describe("stringUtils", () => {
+describe("stringUtil", () => {
   describe("upperCaseFirstLetter", () => {
     it.each([
       ["", ""],
