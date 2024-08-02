@@ -43,12 +43,12 @@ describe("<Title />", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it.each(["blue-500", "neutral-950"] as ComponentProps<
+  it.each(["text-blue-500", "text-neutral-950"] as ComponentProps<
     typeof Title
   >["color"][])("should render with colors", (color) => {
     getRenderer({ color });
 
-    expect(getByRole("heading")).toHaveClass(`text-${color}`);
+    expect(getByRole("heading")).toHaveClass(`${color}`);
   });
 
   it("should render component with neutral-950 color class by default", () => {
