@@ -74,7 +74,7 @@ export const AdvertisingBannerImageRight = ({
         {img && (
           <div
             className={classNames(
-              "absolute inset-0 bg-gradient-to-b to-transparent",
+              "lg:bg-x-small-gradient bg-y-small-gradient absolute inset-0 bg-gradient-to-b via-transparent",
               gradientColor,
               {
                 "lg:bg-gradient-to-b": gradientDirection === "bottom",
