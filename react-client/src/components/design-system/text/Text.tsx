@@ -5,7 +5,7 @@ import {
   useTextCommonStyles,
 } from "./useTextCommonStyles";
 
-type StyleProps = TextCommonStyleProps & {
+export type StyleProps = TextCommonStyleProps & {
   color?:
     | "black"
     | "neutral"
@@ -13,6 +13,8 @@ type StyleProps = TextCommonStyleProps & {
     | "secondary"
     | "tertiary"
     | "blue-500"
+    | "yellow-500"
+    | "green-500"
     | "orange-300-c";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
@@ -68,6 +70,8 @@ function useTextBase({
     "text-secondary-700": color === "secondary",
     "text-tertiary-600": color === "tertiary",
     "text-orange-300-contrast": color === "orange-300-c",
+    "text-green-500": color === "green-500",
+    "text-yellow-500": color === "yellow-500",
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
     "font-roboto": fontFamily === "roboto",
