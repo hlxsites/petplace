@@ -92,8 +92,8 @@ describe("Text", () => {
     ["secondary", "text-secondary-700"],
     ["tertiary", "text-tertiary-600"],
     ["blue-500", "text-blue-500"],
-    ["yellow-500-c", "text-yellow-500"],
-    ["green-500-c", "text-green-500"],
+    ["yellow-500", "text-yellow-500"],
+    ["green-500", "text-green-500"],
     ["orange-300-c", "text-orange-300-contrast"],
   ])("should render component with color %p", (color, expected) => {
     // @ts-expect-error - ignoring for test purposes only

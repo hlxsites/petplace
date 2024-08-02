@@ -11,8 +11,8 @@ export type PetInfo = {
   sex?: string;
   spayedNeutered?: string;
   species?: string;
-  missingStatus: MissingStatus;
-  lostPetHistory: LostPetUpdate[];
+  missingStatus?: MissingStatus;
+  lostPetHistory?: LostPetUpdate[];
 };
 
 export type MissingStatus = "missing" | "found";

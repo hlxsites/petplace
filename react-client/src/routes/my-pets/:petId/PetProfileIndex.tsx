@@ -31,7 +31,7 @@ const ITEMS_PER_PAGE = 5;
 export const PetProfileIndex = () => {
   const { petInfo } = usePetProfileContext();
   const tableRows = (() => {
-    return petInfo.lostPetHistory.map(convertUpdateToRow);
+    return petInfo.lostPetHistory ? petInfo.lostPetHistory.map(convertUpdateToRow) : [];
   })();
 
   const [isTableVisible, setIsTableVisible] = useState(false);
@@ -128,7 +128,7 @@ export const PetProfileIndex = () => {
 
   function renderReportButton() {
     const { icon, iconColor, message } = reportingVariables(
-      petInfo.missingStatus
+      petInfo.missingStatus ?? "found"
     );
     return (
       <Button variant="secondary" fullWidth>
