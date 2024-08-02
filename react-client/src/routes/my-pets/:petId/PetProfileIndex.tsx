@@ -1,16 +1,15 @@
 import { Button, Card, Text } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
-import { Layout } from "~/components/design-system/layout/Layout";
+import { PetAlertMessage } from "~/components/Pet/PetAlertMessage";
 import { PetCard } from "~/components/Pet/PetCard";
 import { PetCardInfo } from "~/components/Pet/PetCardInfo";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
-import { PetAlertMessage } from "~/components/Pet/PetAlertMessage";
 
 export const PetProfileIndex = () => {
   const { petInfo } = usePetProfileContext();
 
   return (
-    <Layout>
+    <>
       <div className="pb-xxlarge">
         <PetAlertMessage petName={petInfo.name} />
       </div>
@@ -30,7 +29,7 @@ export const PetProfileIndex = () => {
         </PetCard>
         {renderPetInsuranceSection()}
       </div>
-    </Layout>
+    </>
   );
 };
 
