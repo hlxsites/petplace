@@ -1,4 +1,4 @@
-import classNames from "classnames";
+
 import type { FC, ReactElement, ReactNode } from "react";
 import { Icon, IconKeys } from "../icon/Icon";
 import { PaginateButton } from "./paginateButton/PaginateButton";
@@ -145,7 +145,7 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
     const color = isLimit
       ? "text-neutral-400"
       : "text-orange-300-contrast hover:text-orange-500";
-    return <Icon display={icon} className={classNames(color)} size={16} />;
+    return <Icon display={icon} className={color} size={16} />;
   }
 
   function renderTotal() {
