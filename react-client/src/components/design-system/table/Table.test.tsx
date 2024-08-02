@@ -2,8 +2,8 @@ import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mockNamesList } from "~/mocks/mockNames";
-import type { TableCommonProps, TableRow } from "../types/TableTypes";
 import { Table } from "./Table";
+import type { TableCommonProps, TableRow } from "./TableTypes";
 
 const {
   getAllByRole,
@@ -294,13 +294,9 @@ describe("<Table />", () => {
           expect(didSelect).toHaveBeenCalledWith("allOrNone");
         });
 
-        it.skip.each([
-          [1, testRows[0].key],
-          [3, testRows[2].key],
-          [6, testRows[5].key],
-        ])(
+        it.each([0, 2, 5])(
           "when user clicks on checkbox index %i should call didSelect callback with %i key",
-          async (checkboxIndex, expected) => {
+          async (checkboxIndex) => {
             const didSelect = jest.fn();
 
             getRenderer({
@@ -317,7 +313,7 @@ describe("<Table />", () => {
             );
 
             expect(didSelect).toHaveBeenCalled();
-            expect(didSelect).toHaveBeenCalledWith(expected);
+            expect(didSelect).toHaveBeenCalledWith(testRows[checkboxIndex].key);
           }
         );
       });

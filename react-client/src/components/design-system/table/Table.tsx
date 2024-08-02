@@ -1,22 +1,19 @@
 import { type ReactNode } from "react";
 import { plural } from "~/util/stringUtils";
-import {
-  Button,
-  Card,
-  Checkbox,
-  Loading,
-} from "~/components/design-system";
-import { Conditional } from "../conditional/Conditional";
+import { classNames } from "~/util/styleUtil";
+import { Button } from "../button/Button";
+import { Card } from "../card/Card";
+import { Checkbox } from "../checkbox/Checkbox";
+import { Loading } from "../loading/Loading";
 import { TableHeader } from "./TableHeader";
 import { TableRowActions } from "./TableRowActions";
-import { classNames } from "~/util/styleUtil";
-import { useCellBase } from "./useCellBase";
 import {
   RowAction,
   TableColumn,
   TableCommonProps,
   TableRow,
-} from "../types/TableTypes";
+} from "./TableTypes";
+import { useCellBase } from "./useCellBase";
 
 export const Table = <T,>({
   ariaLabel,
@@ -44,74 +41,82 @@ export const Table = <T,>({
   };
 
   const hasAnythingSelected = totalSelectedItems > 0;
-  const isEmptyState = rows.length < 1;
 
-  return (
-    <>
-      <Conditional when={isLoading}>
-        <Loading />
-      </Conditional>
-      <Conditional when={!isEmptyState && !isLoading}>
-        {wrapper ? wrapper(renderTableContent()) : renderTableContent()}
-      </Conditional>
-    </>
-  );
+  if (isLoading) return <Loading />;
+
+  // TODO: add a empty state content here
+  if (!rows.length) return null;
+
+  const children = (() => (
+    <div className="w-auto overflow-hidden py-large">
+      <Card>
+        <div className="scrolling-touch overflow-x-auto">
+          <div className="w-full">{renderTableContent()}</div>
+        </div>
+      </Card>
+    </div>
+  ))();
+
+  if (wrapper) return wrapper(children);
+
+  return children;
 
   function renderTableContent() {
-    return (
-      <div className="w-auto overflow-hidden py-large">
-        <Card>
-          <div className="scrolling-touch overflow-x-auto">
-            <div className="w-full">{renderAsTable()}</div>
-          </div>
-        </Card>
-      </div>
-    );
-  }
-
-  function renderAsTable() {
     const tableColumns = getColumns();
+
+    const tableHeader = (() => {
+      if (tableColumns.every(({ label }) => !label)) return null;
+
+      return (
+        <thead>
+          <tr>
+            {tableColumns.map((column) => {
+              return (
+                <TableHeader<keyof T>
+                  colSpan={
+                    column.key === "bulkSelectionHeader" ? columns.length : 1
+                  }
+                  column={column}
+                  desc={desc}
+                  didSort={didSort}
+                  key={column.key}
+                  sortBy={sortBy}
+                />
+              );
+            })}
+          </tr>
+        </thead>
+      );
+    })();
+
     return (
       <table aria-label={ariaLabel} className="min-w-full table-auto">
-        <Conditional when={tableColumns.some(({ label }) => !!label)}>
-          <thead>
-            <tr>
-              {tableColumns.map((column) => {
-                return (
-                  <TableHeader<keyof T>
-                    colSpan={
-                      column.key === "bulkSelectionHeader" ? columns.length : 1
-                    }
-                    column={column}
-                    desc={desc}
-                    didSort={didSort}
-                    key={column.key}
-                    sortBy={sortBy}
-                  />
-                );
-              })}
-            </tr>
-          </thead>
-        </Conditional>
+        {tableHeader}
         <tbody>
           {rows.map((row, i) => {
             const isEven = i % 2 === 0;
+
+            const selectedTableItem = (() => {
+              if (!isSelectable) return null;
+              return (
+                <td className={classNames(cellClassName({ isEven }))}>
+                  <Checkbox
+                    id={row.key}
+                    label="Select item"
+                    checked={!!row.isSelected}
+                    onCheckedChange={didSelectRow(row.key as keyof T)}
+                  />
+                </td>
+              );
+            })();
+
             return (
               <tr
                 className={classNames("hover table-row w-fit")}
                 data-testid="table_tbody_tr"
                 key={`row-${row.key}`}
               >
-                <Conditional when={isSelectable}>
-                  <td className={classNames(cellClassName({ isEven }))}>
-                    <Checkbox
-                      id={row.key}
-                      label="Select item"
-                      checked={!!row.isSelected}
-                      onCheckedChange={didSelectRow(row.key as keyof T)}
-                    />
-                  </td>
-                </Conditional>
+                {selectedTableItem}
                 {columns.map((column) => {
                   const data = row.data[column.key as keyof T];
                   let columnChild: unknown = data;

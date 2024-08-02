@@ -1,13 +1,21 @@
 import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
+import {
+  TextCommonStyleProps,
+  useTextCommonStyles,
+} from "./useTextCommonStyles";
 
-type StyleProps = {
-  align?: "center" | "left" | "right" | "justify" ;
-  color?: "black" | "neutral" | "primary" | "secondary" | "tertiary";
+type StyleProps = TextCommonStyleProps & {
+  color?:
+    | "black"
+    | "neutral"
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "blue-500";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
-  size?: "lg" | "base" | "sm" | "xs" | "inherit";
-  srOnly?: boolean;
+  size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";
 };
 
 type TextProps = StyleProps & {
@@ -47,11 +55,13 @@ function useTextBase({
   fontFamily = "franklin",
   fontWeight = "normal",
   size = "xs",
-  align,
-  srOnly,
+  ...rest
 }: StyleProps) {
-  const className = classNames("inline-block", {
+  const commonClassName = useTextCommonStyles(rest);
+
+  const className = classNames("inline-block", commonClassName, {
     "text-black": color === "black",
+    "text-blue-500": color === "blue-500",
     "text-neutral-950": color === "neutral",
     "text-primary-900": color === "primary",
     "text-secondary-700": color === "secondary",
@@ -61,17 +71,12 @@ function useTextBase({
     "font-roboto": fontFamily === "roboto",
     "font-normal": fontWeight === "normal",
     "font-bold": fontWeight === "bold",
-    "text-xl leading-7": size === "lg",
+    "text-xl leading-8": size === "xlg",
+    "text-lg leading-7": size === "lg",
     "text-base leading-6": size === "base",
     "text-sm leading-5": size === "sm",
     "text-xs leading-4": size === "xs",
-    "text-left": align === "left",
-    "text-center": align === "center",
-    "text-right": align === "right",
-    "text-justify": align === "justify",
-    "sr-only": srOnly,
   });
 
   return { className };
 }
-

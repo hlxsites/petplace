@@ -1,5 +1,5 @@
-import { IconButton } from "~/components/design-system";
-import { RowAction, TableRowActionsProps } from "../types/TableTypes";
+import { IconButton } from "../button/IconButton";
+import { RowAction, TableRowActionsProps } from "./TableTypes";
 
 export const TableRowActions = ({
   onSelect,
