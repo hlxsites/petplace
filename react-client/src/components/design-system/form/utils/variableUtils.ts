@@ -4,6 +4,7 @@ import {
   type ElementUnion,
   type FormSchema,
   type FormVariable,
+  type FormVariableValues,
   type InputValue,
 } from "../types/formTypes";
 
@@ -11,7 +12,7 @@ const VARIABLE_TEMPLATE_STRING_REGEX = /{{(.*?)\|.*?}}/;
 
 export function replaceVariablesInSettings(
   schema: FormSchema,
-  variables: Record<string, InputValue> | undefined
+  variables: FormVariableValues | undefined
 ): FormSchema {
   if (!variables) return schema;
 
@@ -65,7 +66,7 @@ export function replaceVariablesInSettings(
 
 function replaceCriteriaVariable(
   criteria: ConditionCriteria,
-  variables: Record<string, InputValue>
+  variables: FormVariableValues
 ) {
   const isStillTemplateStringVariable =
     criteria.valueType === "dynamic" &&
@@ -82,7 +83,7 @@ function replaceCriteriaVariable(
 
 function replaceConditionCriteriaVariables(
   condition: ConditionExpression | undefined,
-  variables: Record<string, InputValue>
+  variables: FormVariableValues
 ) {
   // If the condition is a boolean or undefined, it means it's a static condition
   if (!condition || typeof condition === "boolean") return;
@@ -106,7 +107,7 @@ function getVariableNameAndType(templateString: FormVariable) {
 
 function getVariableValue(
   variableName: string,
-  variables: Record<string, InputValue>
+  variables: FormVariableValues
 ): InputValue {
   if (!variables[variableName]) {
     throw new Error(`Variable ${variableName} not found`);
