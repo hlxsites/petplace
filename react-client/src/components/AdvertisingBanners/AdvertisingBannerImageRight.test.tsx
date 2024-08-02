@@ -66,7 +66,7 @@ describe("AdvertisingBannerImageRight", () => {
     (gradientColor) => {
       const { container } = getRenderer({ gradientColor });
       const gradientDiv = container.querySelector(
-        ".absolute.inset-0.bg-gradient-to-b.to-transparent"
+        ".absolute.inset-0.bg-gradient-to-b"
       );
       expect(gradientDiv).toHaveClass(`${gradientColor}`);
     }
