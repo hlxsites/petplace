@@ -49,7 +49,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               <input
                 autoFocus={autoFocus}
                 className={classNames(
-                  "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white px-base outline-none",
+                  "h-full w-full bg-neutral-white px-base outline-none placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled",
                   {
                     [FORM_STYLES.inputError]: hasError,
                   }
