@@ -1,6 +1,6 @@
 import { FormSchema, Text } from "~/components/design-system";
 
-export const petProfileFormSchema: FormSchema = {
+const petProfileFormSchema: FormSchema = {
   id: "pet-profile-form",
   children: [
     {
@@ -114,6 +114,14 @@ export const petProfileFormSchema: FormSchema = {
         },
       ],
     },
+  ],
+  version: 0,
+};
+
+export const addPetProfileFormSchema: FormSchema = {
+  ...petProfileFormSchema,
+  children: [
+    ...petProfileFormSchema.children,
     {
       content: (
         <Text size="base">
@@ -144,5 +152,29 @@ export const petProfileFormSchema: FormSchema = {
       type: "submit",
     },
   ],
-  version: 0,
+};
+
+export const editPetProfileFormSchema: FormSchema = {
+  ...petProfileFormSchema,
+  children: [
+    ...petProfileFormSchema.children,
+    {
+      className: "!mt-xxlarge",
+      elementType: "row",
+      children: [
+        {
+          elementType: "button",
+          id: "submit",
+          label: "Discard changes",
+          type: "reset",
+        },
+        {
+          elementType: "button",
+          id: "submit",
+          label: "Save changes",
+          type: "submit",
+        },
+      ],
+    },
+  ],
 };
