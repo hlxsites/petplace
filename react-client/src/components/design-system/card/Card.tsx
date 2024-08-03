@@ -23,6 +23,8 @@ export const Card = ({
           "shadow-elevation-3": shadow === "elevation-3",
           "p-base": padding === "base",
           "p-large": padding === "large",
+          "p-xlarge": padding === "xlarge",
+          "p-xxlarge": padding === "xxlarge",
         }
       )}
       role={role}
