@@ -1,4 +1,4 @@
-import { Card, DisplayForm } from "~/components/design-system";
+import { Card, DisplayForm, Title } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { editPetProfileFormSchema } from "../form/petForm";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
@@ -10,6 +10,8 @@ export const PetEditIndex = () => {
     <>
       <Header pageTitle="Edit Pet Profile" shouldRenderBackButton />
       <Card padding="xlarge">
+        <Title level="h3">Pet info</Title>
+        <div className="h-xxlarge" />
         <DisplayForm
           onChange={(props) => {
             console.log("onChange values", props);
