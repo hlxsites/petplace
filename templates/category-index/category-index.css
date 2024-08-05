@@ -22,7 +22,8 @@
   padding: 1.5rem 1rem;
 
   @media (min-width: 1024px) {
-    padding: 3rem 3rem 5rem;
+    position: relative;
+    padding: 6.25rem 3rem 5rem;
   }
 }
 
@@ -36,11 +37,17 @@
 .category-index .breadcrumb-wrapper {
   max-width: 1200px;
   margin: 1.5rem auto 0.5rem;
-  padding: 0 1rem;
+  position: absolute;
+  top: 0;
+  left: 3rem;
 
   @media (max-width: 1023px) {
     display: none;
   }
+}
+
+.category-index .breadcrumb:not([data-block-status="loaded"]) {
+  display: none;
 }
 
 .category-index .breadcrumb ol {
@@ -70,6 +77,7 @@
   max-width: 150px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   flex-shrink: 0;
   font-size: var(--body-font-size-s);
   line-height: normal;
@@ -80,6 +88,20 @@
 
 .category-index .breadcrumb .category-link-btn[aria-current="page"] {
   color: var(--color-neutral-600);
+}
+
+/**
+ * Ads
+ */
+
+.category-index .publi-container {
+  padding: 0;
+}
+
+.category-index .publi-wrapper > div[data-google-query-id] {
+  display: flex;
+  justify-content: center;
+  padding: 0 2.5rem 2.5rem;
 }
 
 .category-index .sidebar {
@@ -161,5 +183,39 @@
 
   .category-index .sidebar button[aria-controls] {
     display: none;
+  }
+
+  .category-index .cards li:first-of-type .skeleton {
+    min-height: 293px;
+    background-image:
+      radial-gradient(circle 16px, white 99%, transparent 0),
+      radial-gradient(circle 16px, white 99%, transparent 0),
+      linear-gradient(var(--background-color) 32px, transparent 0),
+      linear-gradient(var(--color-gray-light-alt) 100%, transparent 0),
+      linear-gradient(var(--color-gray-light-alt) 24px, transparent 0),
+      linear-gradient(var(--color-gray-light-alt) 24px, transparent 0),
+      linear-gradient(var(--color-gray-light-alt) 28px, transparent 0),
+      linear-gradient(var(--color-gray-light-alt) 28px, transparent 0),
+      linear-gradient(var(--color-gray-light-alt) 50px, transparent 0);
+    background-size:
+      32px 32px,
+      32px 32px,
+      180px 32px,
+      50% 100%,
+      160px 24px,
+      160px 24px,
+      160px 28px,
+      160px 28px,
+      160px 50px;
+    background-position:
+      24px 24px,
+      200px 24px,
+      36px 24px,
+      0 0,
+      calc(50% + 8rem) 3rem,
+      calc(50% + 8rem + 160px + 1rem) 3rem,
+      calc(50% + 8rem) 6.5rem,
+      calc(50% + 8rem) 8.75rem,
+      calc(50% + 8rem) 12.25rem;
   }
 }
