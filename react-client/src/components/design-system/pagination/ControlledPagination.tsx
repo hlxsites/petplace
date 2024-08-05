@@ -1,4 +1,3 @@
-
 import type { FC, ReactElement, ReactNode } from "react";
 import { Icon, IconKeys } from "../icon/Icon";
 import { PaginateButton } from "./paginateButton/PaginateButton";
@@ -29,8 +28,14 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
     <div className={className}>
       {children}
 
-      <div className="flex justify-between" data-testid="ControlledPagination">
-        <nav aria-label="Pagination navigation" className="flex">
+      <div
+        className="flex-col flex md:flex-row md:justify-between"
+        data-testid="ControlledPagination"
+      >
+        <nav
+          aria-label="Pagination navigation"
+          className="flex justify-center lg:justify-start"
+        >
           <PaginateButton
             ariaLabel="Go to first page"
             isDisabled={isFirstPage}
@@ -150,10 +155,12 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
 
   function renderTotal() {
     return (
-      <Text size="base">
-        Displaying {renderSpan(currentlyBeingDisplayed())} out of{" "}
-        {renderSpan(itemsCount)}
-      </Text>
+      <div className="flex justify-center lg:justify-end">
+        <Text size="base">
+          Displaying {renderSpan(currentlyBeingDisplayed())} out of{" "}
+          {renderSpan(itemsCount)}
+        </Text>
+      </div>
     );
   }
 
