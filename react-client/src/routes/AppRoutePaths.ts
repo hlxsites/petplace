@@ -6,6 +6,7 @@ export const AppRoutePaths = {
   petProfile: ":petId",
   petEdit: "edit",
   playground: "playground",
+  petProfileDocuments: "documents",
 } as const;
 
 export const AppRoutePathsIndexes = {
