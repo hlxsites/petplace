@@ -7,6 +7,7 @@ export * from "./collapse/Collapse";
 export * from "./checkbox/Checkbox";
 export * from "./dialog/Dialog";
 export * from "./drawer/Drawer";
+export * from "./dragAndDropZone/DragAndDropZone";
 export * from "./form/DisplayForm";
 export * from "./form/types/formTypes";
 export * from "./icon/Icon";
