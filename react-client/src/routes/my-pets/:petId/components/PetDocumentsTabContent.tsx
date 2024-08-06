@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { usePetProfileContext } from "~/routes/my-pets/:petId/usePetProfileLayoutViewModel";
-import { Card, Icon } from "../design-system";
-import { Text } from "../design-system/text/Text";
+import { Card, Icon, Text } from "~/components/design-system";
+import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 
 export function PetDocumentsTabContent() {
   const { documentTypes } = usePetProfileContext();

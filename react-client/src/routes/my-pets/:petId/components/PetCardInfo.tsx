@@ -1,12 +1,12 @@
-import { PetInfo } from "~/mocks/MockRestApiServer";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import {
   Button,
   RouteBasedTabs,
   RouteTab,
   Text,
   Title,
-} from "../design-system";
+} from "~/components/design-system";
+import { PetInfo } from "~/mocks/MockRestApiServer";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 
