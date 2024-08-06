@@ -50,6 +50,11 @@ const routes: PetPlaceRouteObject[] = [
                 index: true,
               },
               {
+                id: "petProfileDocuments",
+                path: AppRoutePaths.petProfileDocuments,
+                element: <PetProfileIndex />,
+              },
+              {
                 id: "petEdit",
                 path: AppRoutePaths.petEdit,
                 element: <PetEditIndex />,
