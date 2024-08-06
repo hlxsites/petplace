@@ -4,7 +4,7 @@ import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
 
 type PetDocumentViewProps = {
-  documents?: PetRecord[];
+  documents: PetRecord[];
   onDelete: (recordId: string, recordType: string) => void;
   recordType: string;
 };
@@ -31,9 +31,9 @@ export const PetDocumentsView = ({
       </Text>
 
       <div className="grid gap-small">
-        {documents?.map((record) => (
+        {documents.map((record) => (
           <PetCardRecord
-            key={record.fileName}
+            key={record.id}
             onDelete={() => onDeletePetCardRecord(recordType, record.id)}
             record={record}
           />
@@ -72,7 +72,11 @@ export const PetDocumentsView = ({
       {isUploading && (
         // TODO: 81832 fix this after implementing all logic to upload documents
         <PetCardRecord
-          record={{ fileName: "WIP - testing purposes", fileType: "doc" }}
+          record={{
+            id: "test-record",
+            fileName: "WIP - testing purposes",
+            fileType: "doc",
+          }}
           isUploadingFile={isUploading}
         />
       )}
