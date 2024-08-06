@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Button, Card, Icon, Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
 
 type PetDocumentViewProps = {
-  documents: PetRecord[];
-  onDelete: () => void;
+  documents?: PetRecord[];
+  onDelete: (recordId: string, recordType: string) => void;
   recordType: string;
 };
 
@@ -16,6 +16,14 @@ export const PetDocumentsView = ({
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
 
+  const onDeletePetCardRecord = useCallback(
+    (recordType: string, recordId?: string) => {
+      if (!recordId) return;
+      onDelete(recordId, recordType);
+    },
+    [onDelete]
+  );
+
   return (
     <div className="grid gap-large">
       <Text color="tertiary" size="sm">
@@ -23,10 +31,10 @@ export const PetDocumentsView = ({
       </Text>
 
       <div className="grid gap-small">
-        {documents.map((record) => (
+        {documents?.map((record) => (
           <PetCardRecord
             key={record.fileName}
-            onDelete={onDelete}
+            onDelete={() => onDeletePetCardRecord(recordType, record.id)}
             record={record}
           />
         ))}
