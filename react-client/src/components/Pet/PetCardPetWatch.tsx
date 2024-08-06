@@ -1,6 +1,8 @@
 import { classNames } from "~/util/styleUtil";
 import { Button, Icon, IconButton, Text } from "../design-system";
 import { PetCardOption } from "./PetCardOption";
+import roverLogo from "@images/roverLogo.png";
+import petcoLogo from "@images/petcoLogo.png";
 
 const PET_CARD_PET_WATCH_OPTIONS = [
   {
@@ -13,9 +15,11 @@ const PET_CARD_PET_WATCH_OPTIONS = [
     text: "DirectConnect",
   },
   {
+    img: roverLogo,
     text: "$30 Rover Discount",
   },
   {
+    img: petcoLogo,
     text: "$25 Petco Coupon",
   },
   {
@@ -35,56 +39,67 @@ const PET_CARD_PET_WATCH_OPTIONS = [
 ];
 
 export const PetCardPetWatch = () => {
-  return PET_CARD_PET_WATCH_OPTIONS.map(({ isDisabled, status, text }) => {
-    return (
-      <PetCardOption
-        actionButton={
-          isDisabled ? (
-            <Button className="text-orange-300-contrast" variant="link">
-              Renew
-            </Button>
-          ) : (
-            <IconButton
-              iconProps={{ className: "text-brand-secondary" }}
-              icon="chevronRight"
-              label="arrow to right"
-              variant="link"
-            />
-          )
-        }
-        iconLeft={
-          <div
-            className={classNames(
-              "relative mr-base h-8 w-8 rounded-full bg-orange-100",
-              {
-                "bg-neutral-100": isDisabled,
-              }
-            )}
-          >
-            <Icon
-              className={classNames("absolute left-2 top-2 text-orange-500", {
-                "text-neutral-400": isDisabled,
-              })}
-              display="phone"
-              size={16}
-            />
-          </div>
-        }
-        key={text}
-        text={
-          <div className="grid gap-xsmall">
-            <Text
-              color={isDisabled ? "text-neutral-500" : "text-black"}
-              fontFamily="raleway"
-              fontWeight="bold"
-              size="base"
-            >
-              {text}
-            </Text>
-            <Text>{status}</Text>
-          </div>
-        }
-      />
-    );
-  });
+  return (
+    <div className="grid gap-small">
+      {PET_CARD_PET_WATCH_OPTIONS.map(({ isDisabled, img, status, text }) => (
+        <PetCardOption
+          actionButton={
+            isDisabled ? (
+              <Button className="text-orange-300-contrast" variant="link">
+                Renew
+              </Button>
+            ) : (
+              <IconButton
+                iconProps={{ className: "text-brand-secondary" }}
+                icon="chevronRight"
+                label="arrow to right"
+                variant="link"
+              />
+            )
+          }
+          iconLeft={
+            img ? (
+              <img className="mr-base" src={img} />
+            ) : (
+              <div
+                className={classNames(
+                  "relative mr-base h-8 w-8 rounded-full bg-orange-100",
+                  {
+                    "bg-neutral-100": isDisabled,
+                  }
+                )}
+              >
+                <Icon
+                  className={classNames(
+                    "absolute left-2 top-2 text-orange-500",
+                    {
+                      "text-neutral-400": isDisabled,
+                    }
+                  )}
+                  display="phone"
+                  size={16}
+                />
+              </div>
+            )
+          }
+          key={text}
+          text={
+            <div className="grid gap-xsmall">
+              <Text
+                color={isDisabled ? "text-neutral-500" : "text-black"}
+                fontFamily="raleway"
+                fontWeight="bold"
+                size="base"
+              >
+                {text}
+              </Text>
+              <Text color={isDisabled ? "text-neutral-500" : "text-black"}>
+                {status}
+              </Text>
+            </div>
+          }
+        />
+      ))}
+    </div>
+  );
 };
