@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { LoaderFunction, useLoaderData, useNavigate } from "react-router-dom";
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
 import { getPetDocuments } from "~/mocks/MockRestApiServer";
@@ -21,20 +22,23 @@ export const useDocumentTypeIndexViewModel = () => {
   const { id, petId } = useLoaderData() as LoaderData<typeof loader>;
   const { documentTypes } = usePetProfileContext();
   const navigate = useNavigate();
+  const [documents, setDocuments] = useState<PetRecord[]>([]);
 
   const documentType = documentTypes.find((dt) => dt.id === id);
   // Since the loader gave us a valid document type id, we can safely assume it's not undefined
   invariant(documentType, "Document type must be found here");
 
-  const documents: PetRecord[] = getPetDocuments({ petId, type: id });
+  useEffect(() => {
+    setDocuments(getPetDocuments({ petId, type: id }));
+  }, [petId, id, setDocuments]);
 
   const onClose = () => {
     navigate("..");
   };
 
-  const onDelete = (recordId: string, recordType: string) => {
-    // Implement delete functionality when has API
-    console.log(`Deleting record ${recordId} of type ${recordType}`);
+  const onDelete = (recordId: string) => {
+    // TODO: Implement real delete action when backend is ready
+    setDocuments((prev) => prev.filter((doc) => doc.id !== recordId));
   };
 
   return {
