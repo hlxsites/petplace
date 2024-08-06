@@ -8,7 +8,7 @@ export const Drawer = (props: DialogCommonProps) => {
       className={{
         closeButton: "mt-[-8px] text-neutral-600",
         modal:
-          "fixed bottom-0 left-0 right-0 z-50 max-h-90vh w-full rounded-t-2xl bg-neutral-white p-xlarge duration-300 ease-in-out lg:left-auto lg:top-0 lg:max-h-screen lg:w-[405px] lg:rounded-none",
+          "fixed bottom-0 left-0 right-0 z-50 max-h-90vh w-full rounded-t-2xl bg-neutral-white p-xlarge duration-300 ease-in-out lg:left-auto lg:top-0 lg:max-h-screen lg:max-w-[435px] lg:rounded-none",
       }}
       element="drawer"
     >
