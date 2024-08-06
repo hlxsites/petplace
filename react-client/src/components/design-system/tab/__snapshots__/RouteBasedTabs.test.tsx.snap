@@ -1,0 +1,251 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RouteBasedTabs should allow user to select tabs 1`] = `
+<div>
+  <div
+    data-orientation="horizontal"
+    dir="ltr"
+  >
+    <div
+      aria-orientation="horizontal"
+      class="flex"
+      data-orientation="horizontal"
+      role="tablist"
+      style="outline: none;"
+      tabindex="0"
+    >
+      <button
+        aria-controls="radix-:rg:-content-Characteristics"
+        aria-label="Tab option: Characteristics"
+        aria-selected="false"
+        class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+        data-orientation="horizontal"
+        data-radix-collection-item=""
+        data-state="inactive"
+        id="radix-:rg:-trigger-Characteristics"
+        role="tab"
+        tabindex="-1"
+        type="button"
+      >
+        <div
+          class="flex place-items-center gap-small"
+        >
+          <p
+            class="inline-block text-black font-franklin font-normal text-base leading-6"
+          >
+            Characteristics
+          </p>
+        </div>
+      </button>
+      <button
+        aria-controls="radix-:rg:-content-Notes"
+        aria-label="Tab option: Notes"
+        aria-selected="false"
+        class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+        data-orientation="horizontal"
+        data-radix-collection-item=""
+        data-state="inactive"
+        id="radix-:rg:-trigger-Notes"
+        role="tab"
+        tabindex="-1"
+        type="button"
+      >
+        <div
+          class="flex place-items-center gap-small"
+        >
+          <p
+            class="inline-block text-black font-franklin font-normal text-base leading-6"
+          >
+            Notes
+          </p>
+        </div>
+      </button>
+      <button
+        aria-controls="radix-:rg:-content-Timeline"
+        aria-label="Tab option: Timeline"
+        aria-selected="true"
+        class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+        data-orientation="horizontal"
+        data-radix-collection-item=""
+        data-state="active"
+        id="radix-:rg:-trigger-Timeline"
+        role="tab"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="flex place-items-center gap-small"
+        >
+          <p
+            class="inline-block text-black font-franklin font-normal text-base leading-6"
+          >
+            Timeline
+          </p>
+        </div>
+      </button>
+    </div>
+    <div
+      aria-label="Tab content of: Characteristics"
+      aria-labelledby="radix-:rg:-trigger-Characteristics"
+      class="pt-large"
+      data-orientation="horizontal"
+      data-state="inactive"
+      hidden=""
+      id="radix-:rg:-content-Characteristics"
+      role="tabpanel"
+      style="animation-duration: 0s;"
+      tabindex="0"
+    />
+    <div
+      aria-label="Tab content of: Notes"
+      aria-labelledby="radix-:rg:-trigger-Notes"
+      class="pt-large"
+      data-orientation="horizontal"
+      data-state="inactive"
+      hidden=""
+      id="radix-:rg:-content-Notes"
+      role="tabpanel"
+      tabindex="0"
+    />
+    <div
+      aria-label="Tab content of: Timeline"
+      aria-labelledby="radix-:rg:-trigger-Timeline"
+      class="pt-large"
+      data-orientation="horizontal"
+      data-state="active"
+      id="radix-:rg:-content-Timeline"
+      role="tabpanel"
+      tabindex="0"
+    >
+      <div
+        data-testid="TimelineTabContent"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RouteBasedTabs should allow user to select tabs 2`] = `
+<div>
+  <div
+    data-orientation="horizontal"
+    dir="ltr"
+  >
+    <div
+      aria-orientation="horizontal"
+      class="flex"
+      data-orientation="horizontal"
+      role="tablist"
+      style="outline: none;"
+      tabindex="0"
+    >
+      <button
+        aria-controls="radix-:rg:-content-Characteristics"
+        aria-label="Tab option: Characteristics"
+        aria-selected="false"
+        class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+        data-orientation="horizontal"
+        data-radix-collection-item=""
+        data-state="inactive"
+        id="radix-:rg:-trigger-Characteristics"
+        role="tab"
+        tabindex="-1"
+        type="button"
+      >
+        <div
+          class="flex place-items-center gap-small"
+        >
+          <p
+            class="inline-block text-black font-franklin font-normal text-base leading-6"
+          >
+            Characteristics
+          </p>
+        </div>
+      </button>
+      <button
+        aria-controls="radix-:rg:-content-Notes"
+        aria-label="Tab option: Notes"
+        aria-selected="true"
+        class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+        data-orientation="horizontal"
+        data-radix-collection-item=""
+        data-state="active"
+        id="radix-:rg:-trigger-Notes"
+        role="tab"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="flex place-items-center gap-small"
+        >
+          <p
+            class="inline-block text-black font-franklin font-normal text-base leading-6"
+          >
+            Notes
+          </p>
+        </div>
+      </button>
+      <button
+        aria-controls="radix-:rg:-content-Timeline"
+        aria-label="Tab option: Timeline"
+        aria-selected="false"
+        class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+        data-orientation="horizontal"
+        data-radix-collection-item=""
+        data-state="inactive"
+        id="radix-:rg:-trigger-Timeline"
+        role="tab"
+        tabindex="-1"
+        type="button"
+      >
+        <div
+          class="flex place-items-center gap-small"
+        >
+          <p
+            class="inline-block text-black font-franklin font-normal text-base leading-6"
+          >
+            Timeline
+          </p>
+        </div>
+      </button>
+    </div>
+    <div
+      aria-label="Tab content of: Characteristics"
+      aria-labelledby="radix-:rg:-trigger-Characteristics"
+      class="pt-large"
+      data-orientation="horizontal"
+      data-state="inactive"
+      hidden=""
+      id="radix-:rg:-content-Characteristics"
+      role="tabpanel"
+      style=""
+      tabindex="0"
+    />
+    <div
+      aria-label="Tab content of: Notes"
+      aria-labelledby="radix-:rg:-trigger-Notes"
+      class="pt-large"
+      data-orientation="horizontal"
+      data-state="active"
+      id="radix-:rg:-content-Notes"
+      role="tabpanel"
+      tabindex="0"
+    >
+      <div
+        data-testid="NotesTabContent"
+      />
+    </div>
+    <div
+      aria-label="Tab content of: Timeline"
+      aria-labelledby="radix-:rg:-trigger-Timeline"
+      class="pt-large"
+      data-orientation="horizontal"
+      data-state="inactive"
+      hidden=""
+      id="radix-:rg:-content-Timeline"
+      role="tabpanel"
+      tabindex="0"
+    />
+  </div>
+</div>
+`;
