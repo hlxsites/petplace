@@ -1,13 +1,23 @@
+import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+
+export type Record = {
+  medicalRecords?: PetRecord[];
+  otherDocuments?: PetRecord[];
+  tests?: PetRecord[];
+  vaccines?: PetRecord[];
+};
+
 export type PetInfo = {
   age?: string | undefined;
   breed?: string;
   dateOfBirth?: string;
   id: string;
   img?: string;
-  mixedBreed?: string;
   isProtected?: boolean;
   microchipNumber?: number;
+  mixedBreed?: string;
   name: string;
+  records?: Record;
   sex?: string;
   spayedNeutered?: string;
   species?: string;
@@ -24,6 +34,7 @@ const PETS_LIST: PetInfo[] = [
     microchipNumber: 1290,
     mixedBreed: "Yes",
     name: "Buddy",
+    records: {},
     sex: "Male",
     spayedNeutered: "No",
     species: "Dog",
@@ -38,6 +49,25 @@ const PETS_LIST: PetInfo[] = [
     microchipNumber: 8645,
     mixedBreed: "No",
     name: "Lily",
+    records: {
+      medicalRecords: [],
+      otherDocuments: [
+        {
+          downloadPath:
+            "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg",
+          fileName: "Lily's photo",
+          fileType: "jpg",
+          id: "123",
+        },
+        {
+          downloadPath:
+            "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+          fileName: "PDF-Git sheet",
+          fileType: "pdf",
+          id: "756",
+        },
+      ],
+    },
     sex: "Female",
     spayedNeutered: "Yes",
     species: "Cat",
