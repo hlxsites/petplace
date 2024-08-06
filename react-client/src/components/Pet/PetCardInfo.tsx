@@ -38,7 +38,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
       exactRoute: true,
       icon: "paw",
       label: "Pet info",
-      route: getRouteFor("/"),
+      route: getRouteFor(""),
     },
     {
       content: () => <PetDocumentsTabContent />,
@@ -89,6 +89,6 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   }
 
   function getRouteFor(type: string) {
-    return `/${AppRoutePaths.myPets}/${name.toLocaleLowerCase()}/${type}`;
+    return `/${AppRoutePaths.myPets}/${petInfo.id}/${type}`;
   }
 };
