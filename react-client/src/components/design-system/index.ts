@@ -12,6 +12,7 @@ export * from "./form/types/formTypes";
 export * from "./icon/Icon";
 export * from "./loading/Loading";
 export * from "./switch/Switch";
+export * from "./tab/RouteBasedTabs";
 export * from "./tab/Tabs";
 export * from "./tab/UncontrolledTabs";
 export * from "./table/Table";
