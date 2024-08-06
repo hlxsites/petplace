@@ -30,15 +30,17 @@ export const PetDocumentsView = ({
         {`View, download and manage all ${recordType} records.`}
       </Text>
 
-      <div className="grid gap-small">
-        {documents.map((record) => (
-          <PetCardRecord
-            key={record.id}
-            onDelete={() => onDeletePetCardRecord(recordType, record.id)}
-            record={record}
-          />
-        ))}
-      </div>
+      {!!documents.length && (
+        <div className="grid gap-small">
+          {documents.map((record) => (
+            <PetCardRecord
+              key={record.id}
+              onDelete={() => onDeletePetCardRecord(recordType, record.id)}
+              record={record}
+            />
+          ))}
+        </div>
+      )}
 
       <Text color="primary" size="base" fontWeight="bold">
         Upload and attach files
