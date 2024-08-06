@@ -1,13 +1,7 @@
-import { downloadFile } from "~/util/downloadFunctions";
-import {
-  Card,
-  Icon,
-  IconButton,
-  IconKeys,
-  Loading,
-  Text,
-} from "../design-system";
+import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { PetCardRecordProps } from "./types/PetRecordsTypes";
+import { PetCardOption } from "./PetCardOption";
+import { Icon, IconButton, IconKeys, Loading, Text } from "../design-system";
 
 export const PetCardRecord = ({
   record,
@@ -15,20 +9,16 @@ export const PetCardRecord = ({
   onDelete,
 }: PetCardRecordProps) => {
   const { downloadPath, fileName, fileType } = record;
-  return (
-    <Card role="listitem">
-      <div className="flex justify-between p-base">
-        <div className="flex items-center gap-small">
-          <Icon className="text-neutral-white" display={getDisplayIcon()} />
 
-          <Text color="secondary" size="xs">
-            {fileName}
-          </Text>
-        </div>
-        {isUploadingFile ? (
+  const displayIcon: IconKeys = getDisplayIcon(fileType);
+
+  return (
+    <PetCardOption
+      actionButton={
+        isUploadingFile ? (
           <Loading />
         ) : (
-          <div className="flex items-center">
+          <>
             <IconButton
               label="download file"
               icon="download"
@@ -36,7 +26,9 @@ export const PetCardRecord = ({
                 className: "text-orange-300-contrast lg:mr-[-8px]",
                 size: 16,
               }}
-              onClick={handleOnDownload}
+              onClick={() =>
+                handleOnDownload({ downloadPath, fileName, fileType })
+              }
               variant="link"
             />
             <IconButton
@@ -46,23 +38,32 @@ export const PetCardRecord = ({
               onClick={onDelete}
               variant="link"
             />
-          </div>
-        )}
-      </div>
-    </Card>
+          </>
+        )
+      }
+      iconLeft={<Icon className="text-neutral-white" display={displayIcon} />}
+      text={
+        <Text color="text-secondary-700" size="xs">
+          {fileName}
+        </Text>
+      }
+    />
   );
-
-  function getDisplayIcon(): IconKeys {
-    if (!fileType) {
-      return "pdfFile";
-    }
-
-    return fileType === "docx" ? "docFile" : `${fileType}File`;
-  }
-
-  function handleOnDownload() {
-    downloadFile({ downloadPath, fileName, fileType }).catch((error) => {
-      console.warn("Error handling the download: ", error);
-    });
-  }
 };
+
+function getDisplayIcon(fileType?: string): IconKeys {
+  if (!fileType) {
+    return "pdfFile";
+  }
+  return fileType === "docx" ? "docFile" : (`${fileType}File` as IconKeys);
+}
+
+function handleOnDownload({
+  downloadPath,
+  fileName,
+  fileType,
+}: DownloadFileProps) {
+  downloadFile({ downloadPath, fileName, fileType }).catch((error) => {
+    console.warn("Error handling the download: ", error);
+  });
+}
