@@ -16,6 +16,7 @@ export * from "./switch/Switch";
 export * from "./tab/Tabs";
 export * from "./tab/UncontrolledTabs";
 export * from "./table/Table";
+export * from "./tag/Tag";
 export * from "./text/Text";
 export * from "./text/TextSpan";
 export * from "./text/Title";
