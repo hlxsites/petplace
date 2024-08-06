@@ -144,6 +144,22 @@ async function getBreadcrumbs(categorySlug) {
   return breadcrumbs.reverse();
 }
 
+function buildHeroBlock(container) {
+  const heroTitleSection = document.createElement('div');
+  heroTitleSection.classList.add('hero-title-container', 'section');
+
+  const articleTitle = container.querySelectorAll('h1')[0];
+  const authorDiv = container.querySelector('.article-author');
+  authorDiv.classList.remove('section');
+  const heroImgContainer = container.querySelectorAll('p')[0];
+  heroImgContainer.classList.add('hero-pic-div');
+
+  heroTitleSection.append(articleTitle);
+  heroTitleSection.append(authorDiv);
+  heroTitleSection.append(heroImgContainer);
+  container.prepend(heroTitleSection);
+}
+
 export async function loadEager(document) {
   const main = document.querySelector('main');
 
@@ -186,6 +202,10 @@ export async function loadEager(document) {
 
   // bottom
   createTemplateBlock(main, 'related-reading');
+
+  buildHeroBlock(main);
+
+  main.children[1].classList.add('article-content-container');
 
   // same attribute setting as earlier
   main.setAttribute('itemscope', '');
@@ -237,22 +257,6 @@ export async function loadEager(document) {
 
 export async function loadLazy(document) {
   const main = document.querySelector('main');
-  const heroTitleSection = document.createElement('div');
-  heroTitleSection.classList.add('hero-title-container', 'section');
-
-  const articleTitle = main.querySelectorAll('h1')[0];
-  const authorDiv = main.querySelector('.article-author-container');
-  authorDiv.classList.remove('section');
-  const heroImgContainer = main.querySelectorAll('p')[0];
-  heroImgContainer.classList.add('hero-pic-div');
-
-  heroTitleSection.append(articleTitle);
-  heroTitleSection.append(authorDiv);
-  heroTitleSection.append(heroImgContainer);
-  main.prepend(heroTitleSection);
-
-  const contentSection = main.querySelectorAll('.section')[1];
-  contentSection.classList.add('article-content-container');
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('article', 'create');
