@@ -6,7 +6,7 @@ import {
 } from "./useTextCommonStyles";
 
 type StyleProps = TextCommonStyleProps & {
-  color?: `text-${string}`;
+  color?: `text-${string}` | "inherit";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
   size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";
