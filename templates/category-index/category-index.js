@@ -8,12 +8,15 @@ import {
 import {
   createBreadCrumbs,
   fetchAndCacheJson,
+  getCategories,
   getCategory,
   getPlaceholder,
   meterCalls,
 } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
+
+await getCategories();
 
 async function getAllParentCategories(category) {
   const parentCategories = [];
