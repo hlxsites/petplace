@@ -1,7 +1,11 @@
+import { Meta, UppyFile } from "@uppy/core";
 import { useCallback, useState } from "react";
-import { Button, Card, Icon, Text } from "../design-system";
+import { Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
+import { useUppyUploader } from "~/hooks/useUppyUploader";
+import { PetDocumentsDragAndDrop } from "./PetDocumentsDragAndDrop";
+import { simplifyFileType } from "~/util/fileUtil";
 
 type PetDocumentViewProps = {
   documents: PetRecord[];
@@ -14,7 +18,13 @@ export const PetDocumentsView = ({
   onDelete,
   recordType,
 }: PetDocumentViewProps) => {
-  const [isUploading, setIsUploading] = useState(false);
+  const [file, setFile] = useState<UppyFile<Meta, Record<string, never>>>();
+
+  const { isUploading, handleFiles } = useUppyUploader({
+    onFileAdd: (file) => {
+      setFile(file);
+    },
+  });
 
   const onDeletePetCardRecord = useCallback(
     (recordType: string, recordId?: string) => {
@@ -46,38 +56,14 @@ export const PetDocumentsView = ({
         Upload and attach files
       </Text>
 
-      <Card>
-        <Button
-          aria-label="Upload document"
-          className="w-full rounded-none"
-          onClick={() => setIsUploading(true)}
-          variant="link"
-        >
-          <div className="grid place-items-center px-large py-base">
-            <div className="pb-small">
-              <Icon
-                display="uploadCloud"
-                className="text-brand-main"
-                size={32}
-              />
-            </div>
-            <Text fontFamily="raleway" fontWeight="bold" size="sm">
-              Click to upload or drag and drop
-            </Text>
-            <Text color="tertiary" size="xs">
-              PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
-            </Text>
-          </div>
-        </Button>
-      </Card>
+      <PetDocumentsDragAndDrop handleFiles={handleFiles} />
 
-      {isUploading && (
-        // TODO: 81832 fix this after implementing all logic to upload documents
+      {isUploading && file?.name && (
         <PetCardRecord
           record={{
+            fileName: file.name,
+            fileType: simplifyFileType(file.type),
             id: "test-record",
-            fileName: "WIP - testing purposes",
-            fileType: "doc",
           }}
           isUploadingFile={isUploading}
         />
