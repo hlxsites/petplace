@@ -377,37 +377,37 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
       const placeholderCtaCard = resultsBlock.querySelector('.search-actions-placeholder');
 
-      response.actions.forEach((action) => {
-        if (action.type === 'cta') {
-          const actionCta = document.createElement('a');
-          actionCta.classList.add('action-cta');
-          actionCta.setAttribute('href', action.href || '#');
 
-          const actionCtaLink = document.createElement('link');
-          actionCtaLink.setAttribute('itemprop', 'url');
-          actionCtaLink.setAttribute('href', action.href);
-          actionCta.append(actionCtaLink);
+      const action = response.actions[0];
+      if (action.type === 'cta') {
+        const actionCta = document.createElement('a');
+        actionCta.classList.add('action-cta');
+        actionCta.setAttribute('href', action.href || '#');
 
-          const actionCtaImg = document.createElement('img');
-          actionCtaImg.setAttribute('alt', action.title);
-          actionCtaImg.setAttribute('src', action.background_url);
-          actionCta.append(actionCtaImg);
+        const actionCtaLink = document.createElement('link');
+        actionCtaLink.setAttribute('itemprop', 'url');
+        actionCtaLink.setAttribute('href', action.href);
+        actionCta.append(actionCtaLink);
 
-          const actionCtaTitle = document.createElement('h3');
-          actionCtaTitle.setAttribute('itemprop', 'name');
-          actionCtaTitle.textContent = action.title;
-          actionCta.append(actionCtaTitle);
+        const actionCtaImg = document.createElement('img');
+        actionCtaImg.setAttribute('alt', action.title);
+        actionCtaImg.setAttribute('src', action.background_url);
+        actionCta.append(actionCtaImg);
 
-          const actionCtaBtn = document.createElement('span');
-          actionCtaBtn.classList.add('action-button');
-          actionCtaBtn.innerHTML = `${action.text}<span class="icon icon-arrow-right"></span>`;
-          decorateIcons(actionCtaBtn);
-          actionCta.append(actionCtaBtn);
+        const actionCtaTitle = document.createElement('h3');
+        actionCtaTitle.setAttribute('itemprop', 'name');
+        actionCtaTitle.textContent = action.title;
+        actionCta.append(actionCtaTitle);
 
-          placeholderCtaCard.remove();
-          actionsContainer.append(actionCta);
-        }
-      });
+        const actionCtaBtn = document.createElement('span');
+        actionCtaBtn.classList.add('action-button');
+        actionCtaBtn.innerHTML = `${action.text}<span class="icon icon-arrow-right"></span>`;
+        decorateIcons(actionCtaBtn);
+        actionCta.append(actionCtaBtn);
+
+        placeholderCtaCard.remove();
+        actionsContainer.append(actionCta);
+      }
     }
 
     if (response.links?.length > 0) {
