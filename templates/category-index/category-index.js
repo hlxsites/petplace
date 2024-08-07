@@ -87,7 +87,7 @@ async function renderArticles(articles) {
   }
   document.querySelector('.article-pagination').dataset.total = articleLoadingPromise.total();
   window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.remove());
   });
 }
 
