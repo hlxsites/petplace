@@ -15,6 +15,17 @@ import {
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
+async function getAllParentCategories(category) {
+  const parentCategories = [];
+  let currentCategory = category;
+  while (currentCategory.Parent) {
+    // eslint-disable-next-line no-await-in-loop
+    currentCategory = await getCategory(toClassName(currentCategory.Parent));
+    parentCategories.push(currentCategory);
+  }
+  return parentCategories;
+}
+
 /**
  * Queries the colum and finds the matching image else uses default image.
  * @param path
@@ -36,20 +47,12 @@ export async function getCategoryOrTagForUrl() {
   const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
   const catResult = await getCategory(category);
   if (catResult) {
-    return {
-      Name: catResult.Category,
-      Path: catResult.Path,
-      Slug: catResult.Slug,
-    };
+    return catResult;
   }
 
   const tags = await fetchAndCacheJson(`${window.hlx.contentBasePath}/tags/tags.json`);
   const tagResult = tags.find((tag) => tag.Path === pathname);
-  return tagResult ? {
-    Name: tagResult.Name,
-    Path: tagResult.Path,
-    Slug: tagResult.Slug,
-  } : undefined;
+  return tagResult;
 }
 
 const pageCategory = await getCategoryOrTagForUrl();
@@ -91,14 +94,19 @@ async function getArticles(category) {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
-  let sheet = 'article';
   if (window.location.pathname.startsWith('/tags/')) {
-    sheet = `tag-${category.Slug}`;
-  } else {
-    sheet = category.Slug;
+    return ffetch(`${window.hlx.contentBasePath}/article/tags-query-index.json`)
+      .sheet(category.Slug.substring(0, 25)) // sharepoint limits sheet name length
+      .withTotal(true)
+      .slice(offset, offset + limit);
   }
-  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-    .sheet(sheet.substring(0, 25)) // sharepoint limits sheet name length
+
+  const parentCategories = await getAllParentCategories(pageCategory);
+  const allCategories = [pageCategory, ...parentCategories];
+  const topCategory = allCategories[allCategories.length - 1];
+  return ffetch(`${window.hlx.contentBasePath}/article/categories-query-index.json`)
+    .sheet(topCategory.Slug.substring(0, 25)) // sharepoint limits sheet name length
+    .filter((article) => article.path.includes(`/${pageCategory.Slug}/`))
     .withTotal(true)
     .slice(offset, offset + limit);
 }
