@@ -50,6 +50,10 @@ main .section:nth-of-type(odd) {
   background: var(--background-color-light);
 }
 
+main .section.accordion-container {
+  background: white;
+}
+
 main .section.centered p {
   text-align: left;
 }
