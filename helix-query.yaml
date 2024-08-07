@@ -90,7 +90,7 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  categorized-articles: &articles-base
+  categorized-articles:
     include:
       - '/article/**'
     exclude:
@@ -139,7 +139,7 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  tagged-articles: &articles-base
+  tagged-articles:
     include:
       - '/article/**'
     exclude:
