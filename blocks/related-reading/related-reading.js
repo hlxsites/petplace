@@ -28,16 +28,6 @@ async function getAllParentCategories(category) {
   return parentCategories;
 }
 
-function ifArticleBelongsToCategories(article, categories) {
-  const articleCategories = article.category !== '0'
-    ? article.category.split(',').map((c) => c.trim().toLowerCase())
-    : article.path.split('/').splice(-2, 1);
-  return categories.some(
-    (c) => articleCategories.includes(c.Category.toLowerCase())
-      || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug),
-  );
-}
-
 function createArticleDetails(block, article) {
   // the article's thumbnail, which will link to the article's page
   const thumbnail = document.createElement('div');
@@ -85,48 +75,42 @@ async function createNavigation(block) {
   const categoryInfo = await getCategory(category);
   if (!categoryInfo) return false;
 
-  const parentCategories = await getAllParentCategories(categoryInfo);
-  const categories = [categoryInfo, ...parentCategories];
-
   // Get all articles in that category
   let articles = await ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-    .sheet(categories[0].Slug.substring(0, 25)) // sharepoint limits sheet name length
+    .sheet(categoryInfo.Slug.substring(0, 25)) // sharepoint limits sheet name length
     .chunks(500)
     .all();
-  if (!articles.length && categories.length > 1) {
-    articles = await ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-      .sheet(categories[1].Slug.substring(0, 25)) // sharepoint limits sheet name length
-      .chunks(500)
-      .all();
-  }
 
-  const parentCategoryArticlesMap = new Map();
-  parentCategories.forEach((c) => parentCategoryArticlesMap.set(c.Slug, []));
+  const relatedArticles = [];
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, article] of articles.entries()) {
     if (index === 3) break;
-    if (ifArticleBelongsToCategories(article, parentCategories)) {
-      if (parentCategoryArticlesMap.has(article['category slug'])) {
-        parentCategoryArticlesMap.get(article['category slug']).push(article);
-      }
+    relatedArticles.push(article);
+  }
+
+  if (relatedArticles.length < 3) {
+    const parentCategories = await getAllParentCategories(categoryInfo);
+    if (parentCategories.length) {
+      articles = await ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
+        .sheet(parentCategories[0].Slug.substring(0, 25)) // sharepoint limits sheet name length
+        .chunks(500)
+        .all();
+    }
+
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const [index, article] of articles.entries()) {
+      if (index === 3) break;
+      relatedArticles.push(article);
     }
   }
 
-  const parentCategory = parentCategories.find((c) => {
-    const parentCategoryArticles = parentCategoryArticlesMap.get(c.Slug);
-    return parentCategoryArticles.length;
-  });
+  if (!relatedArticles.length) {
+    return false;
+  }
 
-  if (!parentCategory) return false;
-
-  if (parentCategory) {
-    const parentCategoryArticles = parentCategoryArticlesMap.get(
-      parentCategory.Slug,
-    );
-    parentCategoryArticles.forEach((article) => {
-      createArticleDetails(block, article);
-    });
+  for (let i = 0; i < Math.min(3, relatedArticles.length); i += 1) {
+    createArticleDetails(block, relatedArticles[i]);
   }
 
   return true;
