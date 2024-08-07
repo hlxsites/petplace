@@ -13,7 +13,8 @@ type StyleProps = TextCommonStyleProps & {
     | "secondary"
     | "tertiary"
     | "blue-500"
-    | "orange-300-c";
+    | "orange-300-c"
+    | "inherit";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
   size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";

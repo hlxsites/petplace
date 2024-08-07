@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Button, Card, Icon, Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
 
 type PetDocumentViewProps = {
   documents: PetRecord[];
-  onDelete: () => void;
+  onDelete: (recordId: string, recordType: string) => void;
   recordType: string;
 };
 
@@ -16,21 +16,31 @@ export const PetDocumentsView = ({
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
 
+  const onDeletePetCardRecord = useCallback(
+    (recordType: string, recordId?: string) => {
+      if (!recordId) return;
+      onDelete(recordId, recordType);
+    },
+    [onDelete]
+  );
+
   return (
     <div className="grid gap-large">
       <Text color="tertiary" size="sm">
         {`View, download and manage all ${recordType} records.`}
       </Text>
 
-      <div className="grid gap-small">
-        {documents.map((record) => (
-          <PetCardRecord
-            key={record.fileName}
-            onDelete={onDelete}
-            record={record}
-          />
-        ))}
-      </div>
+      {!!documents.length && (
+        <div className="grid gap-small">
+          {documents.map((record) => (
+            <PetCardRecord
+              key={record.id}
+              onDelete={() => onDeletePetCardRecord(recordType, record.id)}
+              record={record}
+            />
+          ))}
+        </div>
+      )}
 
       <Text color="primary" size="base" fontWeight="bold">
         Upload and attach files
@@ -64,7 +74,11 @@ export const PetDocumentsView = ({
       {isUploading && (
         // TODO: 81832 fix this after implementing all logic to upload documents
         <PetCardRecord
-          record={{ fileName: "WIP - testing purposes", fileType: "doc" }}
+          record={{
+            id: "test-record",
+            fileName: "WIP - testing purposes",
+            fileType: "doc",
+          }}
           isUploadingFile={isUploading}
         />
       )}

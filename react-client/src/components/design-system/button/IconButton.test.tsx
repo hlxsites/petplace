@@ -100,7 +100,7 @@ describe("<IconButton />", () => {
   it('should render button with "link" variant', () => {
     getRenderer({ variant: "link" });
     expect(getByRole("button")).toHaveClass(
-      "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent border- text-neutral-700 lg:px-small lg:py-small focus:bg-transparent"
+      "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent"
     );
   });
 
