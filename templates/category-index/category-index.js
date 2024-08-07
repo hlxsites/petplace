@@ -55,7 +55,7 @@ let articleLoadingPromise;
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
   block.querySelectorAll('li').forEach((li) => li.remove());
-  for (let i = 0; i < 25; i += 1) {
+  for (let i = 0; i < articles.length; i += 1) {
     const div = document.createElement('div');
     div.classList.add('skeleton');
     block.append(div);
