@@ -1,5 +1,5 @@
 import { Meta, UppyFile } from "@uppy/core";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
@@ -9,7 +9,7 @@ import { simplifyFileType } from "~/util/fileUtil";
 
 type PetDocumentViewProps = {
   documents: PetRecord[];
-  onDelete: () => void;
+  onDelete: (recordId: string, recordType: string) => void;
   recordType: string;
 };
 
@@ -26,21 +26,31 @@ export const PetDocumentsView = ({
     },
   });
 
+  const onDeletePetCardRecord = useCallback(
+    (recordType: string, recordId?: string) => {
+      if (!recordId) return;
+      onDelete(recordId, recordType);
+    },
+    [onDelete]
+  );
+
   return (
     <div className="grid gap-large">
       <Text color="tertiary" size="sm">
         {`View, download and manage all ${recordType} records.`}
       </Text>
 
-      <div className="grid gap-small">
-        {documents.map((record) => (
-          <PetCardRecord
-            key={record.fileName}
-            onDelete={onDelete}
-            record={record}
-          />
-        ))}
-      </div>
+      {!!documents.length && (
+        <div className="grid gap-small">
+          {documents.map((record) => (
+            <PetCardRecord
+              key={record.id}
+              onDelete={() => onDeletePetCardRecord(recordType, record.id)}
+              record={record}
+            />
+          ))}
+        </div>
+      )}
 
       <Text color="primary" size="base" fontWeight="bold">
         Upload and attach files
@@ -53,6 +63,7 @@ export const PetDocumentsView = ({
           record={{
             fileName: file.name,
             fileType: simplifyFileType(file.type),
+            id: "test-record",
           }}
           isUploadingFile={isUploading}
         />

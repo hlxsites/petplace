@@ -12,6 +12,8 @@ import { RootErrorPage } from "./root-error-page";
 import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
+import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/DocumentTypeIndex";
+import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/:petId/PetProfileLayout";
 
@@ -48,6 +50,19 @@ const routes: PetPlaceRouteObject[] = [
                 element: <PetProfileIndex />,
                 id: "petProfileIndex",
                 index: true,
+              },
+              {
+                id: "petProfileDocuments",
+                path: AppRoutePaths.petProfileDocuments,
+                element: <PetProfileIndex />,
+                children: [
+                  {
+                    id: "petProfileDocumentType",
+                    loader: DocumentTypeIndexLoader,
+                    path: AppRoutePaths.petProfileDocumentType,
+                    element: <DocumentTypeIndex />,
+                  },
+                ],
               },
               {
                 id: "petEdit",

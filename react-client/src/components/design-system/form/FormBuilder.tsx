@@ -72,8 +72,13 @@ export const FormBuilder = ({
   }, [onChange, values]);
 
   return (
-    <form id={schema.id} noValidate onSubmit={onSubmitHandler}>
-      <div className="space-y-large">{schema.children.map(renderElement)}</div>
+    <form
+      className="space-y-large"
+      id={schema.id}
+      noValidate
+      onSubmit={onSubmitHandler}
+    >
+      {schema.children.map(renderElement)}
     </form>
   );
 
@@ -105,6 +110,7 @@ export const FormBuilder = ({
           className={element.className}
           key={element.id}
           type={element.type}
+          variant={element.type === "submit" ? "primary" : "secondary"}
         >
           {element.label}
         </Button>

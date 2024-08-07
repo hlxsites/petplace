@@ -2,6 +2,7 @@ export * from "./ButtonPlayground";
 export * from "./CollapsePlayground";
 export * from "./DialogPlayground";
 export * from "./DragAndDropZonePlayground";
+export * from "./DropdownMenuPlayground";
 export * from "./FormBuilderPlayground";
 export * from "./PetAlertMessagePlayground";
 export * from "./PetCardRecordPlayground";

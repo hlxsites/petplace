@@ -9,7 +9,7 @@ export async function downloadFile({
   fileName,
   fileType,
 }: DownloadFileProps) {
-  if (!downloadPath || fileType) return;
+  if (!downloadPath || !fileType) return;
 
   try {
     const response = await fetch(downloadPath);

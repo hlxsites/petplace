@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { PetCardInfo } from "./PetCardInfo";
+import { MemoryRouter } from "react-router-dom";
 
 const { getByRole, getByText } = screen;
 
@@ -39,5 +40,9 @@ function getRenderer({
   name = "Test pet card info",
   ...rest
 }: Partial<ComponentProps<typeof PetCardInfo>> = {}) {
-  return render(<PetCardInfo id={id} name={name} {...rest} />);
+  return render(
+    <MemoryRouter initialEntries={["/test"]}>
+      <PetCardInfo id={id} name={name} {...rest} />
+    </MemoryRouter>
+  );
 }
