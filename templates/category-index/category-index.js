@@ -179,8 +179,9 @@ export async function loadEager(document) {
   });
   popularTagsContainer.append(popularTags);
 
-  createTemplateBlock(main, 'article-pagination');
   renderArticles(articles);
+
+  createTemplateBlock(main, 'article-pagination');
 }
 
 export async function loadLazy() {
