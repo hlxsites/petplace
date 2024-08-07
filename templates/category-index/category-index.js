@@ -136,8 +136,8 @@ async function updateMetadata() {
   if (!result) {
     throw new Error(404);
   }
-  const { Name, Path } = result;
-  document.title = Name;
+  const { Name, Category, Path } = result;
+  document.title = Name || Category;
   document.head.querySelector('link[rel="canonical"]').href = `${window.location.origin}${Path}`;
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
