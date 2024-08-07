@@ -75,43 +75,39 @@ async function createNavigation(block) {
   const categoryInfo = await getCategory(category);
   if (!categoryInfo) return false;
 
+  const parentCategories = await getAllParentCategories(categoryInfo);
+  const allCategories = [categoryInfo, ...parentCategories];
+  const mainCategory = allCategories[allCategories.length - 1];
+
   // Get all articles in that category
-  let articles = await ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-    .sheet(categoryInfo.Slug.substring(0, 25)) // sharepoint limits sheet name length
+  const articles = await ffetch(`${window.hlx.contentBasePath}/article/categories-query-index.json`)
+    .sheet(mainCategory.Slug.substring(0, 25)) // sharepoint limits sheet name length
     .chunks(500)
     .all();
 
-  const relatedArticles = [];
-
+  let tmpCategory;
+  const categoriesMap = new Map();
   // eslint-disable-next-line no-restricted-syntax
-  for await (const [index, article] of articles.entries()) {
-    if (index === 3) break;
-    relatedArticles.push(article);
+  for await (const article of articles.values()) {
+    [tmpCategory] = article.path.split('/').slice(2, -1).reverse();
+    if (!categoriesMap[tmpCategory]) {
+      categoriesMap[tmpCategory] = [];
+    }
+    categoriesMap[tmpCategory].push(article);
   }
 
-  if (relatedArticles.length < 3) {
-    const parentCategories = await getAllParentCategories(categoryInfo);
-    if (parentCategories.length) {
-      articles = await ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-        .sheet(parentCategories[0].Slug.substring(0, 25)) // sharepoint limits sheet name length
-        .chunks(500)
-        .all();
-    }
+  const orderedArticles = allCategories.reduce((list, c) => {
+    list.push(...categoriesMap[c.Slug]);
+    return list;
+  }, []);
 
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const [index, article] of articles.entries()) {
-      if (index === 3) break;
-      relatedArticles.push(article);
-    }
-  }
-
-  if (!relatedArticles.length) {
+  if (!orderedArticles.length) {
     return false;
   }
 
-  for (let i = 0; i < Math.min(3, relatedArticles.length); i += 1) {
-    createArticleDetails(block, relatedArticles[i]);
-  }
+  orderedArticles.slice(0, 3).forEach((article) => {
+    createArticleDetails(block, article);
+  });
 
   return true;
 }
