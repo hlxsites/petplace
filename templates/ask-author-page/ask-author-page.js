@@ -14,8 +14,8 @@ async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || PAGINATE_ON;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
-  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-    .sheet('article')
+  return ffetch(`${window.hlx.contentBasePath}/article/categories-query-index.json`)
+    .sheet('vet-qa-parent')
     .withTotal(true)
     .filter((article) => article.path.includes('/vet-qa/')
       && toClassName(article.author) === toClassName('Dr. Debra Primovic - DVM'))
