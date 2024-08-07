@@ -15,7 +15,7 @@ export type TableColumn = {
   isSortable?: boolean;
   key: string;
   label?: ReactNode;
-  width?: number | string;
+  minWidth?: number | string;
 }
 
 export type TableRow<T> = {

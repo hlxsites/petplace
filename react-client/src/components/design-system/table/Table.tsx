@@ -131,7 +131,7 @@ export const Table = <T,>({
                       className={cellClassName({ isEven })}
                       style={{
                         textAlign: column.align ?? "left",
-                        minWidth: column.width,
+                        minWidth: column.minWidth,
                       }}
                     >
                       {columnChild as ReactNode}
