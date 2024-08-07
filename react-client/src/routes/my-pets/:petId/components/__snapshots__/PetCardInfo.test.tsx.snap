@@ -14,7 +14,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         Test pet card info
       </h1>
       <button
-        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 hidden lg:block"
+        class="rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 hidden lg:block"
         type="button"
       >
         <div
@@ -28,7 +28,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         Report lost pet
       </button>
       <button
-        class="rounded-full border-1 font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 block lg:hidden"
+        class="rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 block lg:hidden"
         type="button"
       >
         <div

@@ -42,7 +42,12 @@ export function PetInfoTabContent({
     },
     {
       label: "Spayed/Neutered",
-      value: spayedNeutered,
+      value:
+        typeof spayedNeutered === "boolean"
+          ? spayedNeutered
+            ? "Yes"
+            : "No"
+          : "",
     },
   ];
 
