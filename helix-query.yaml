@@ -90,8 +90,6 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-<<<<<<< Updated upstream
-=======
   categorized-articles: &articles-base
     include:
       - '/article/**'
@@ -190,7 +188,6 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
->>>>>>> Stashed changes
   # articles-en-gb:
   #   <<: *articles-base
   #   include:
