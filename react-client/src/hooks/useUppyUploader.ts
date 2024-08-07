@@ -84,16 +84,16 @@ export function useUppyUploader({
       if (files.length) {
         setIsUploading(true);
         // TODO: check why it fails on uploading added files
-        uppy.upload().catch(function catchUppyError(error) {
-          console.error("Upload error:", error);
-          setIsUploading(false);
-          if (onError) {
-            onError(error as FileUploadError);
-          }
-        });
+        // uppy.upload().catch(function catchUppyError(error) {
+        //   console.error("Upload error:", error);
+        //   setIsUploading(false);
+        //   if (onError) {
+        //     onError(error as FileUploadError);
+        //   }
+        // });
       }
     },
-    [uppy, setIsUploading, onError]
+    [uppy, setIsUploading]
   );
 
   return { isUploading, handleFiles, uppy };
