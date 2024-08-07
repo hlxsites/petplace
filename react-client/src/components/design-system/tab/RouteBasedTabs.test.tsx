@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ComponentProps } from "react";
 import { MemoryRouter } from "react-router-dom";
+import { getTestTabs } from "~/mocks/mockTabs";
 import { getSelectedTab } from "~/util/testingFunctions";
 import { RouteBasedTabs } from "./RouteBasedTabs";
-import { getTestTabs } from "~/mocks/mockTabs";
 
 const { getAllByRole, getByTestId, getByText, queryByRole } = screen;
 
@@ -43,22 +43,22 @@ describe("RouteBasedTabs", () => {
   );
 
   it("should allow user to select tabs", async () => {
-    const tabs = getTestTabs("123");
-    const { container } = getRenderer({
+    const tabs = getTestTabs();
+    getRenderer({
       tabs,
     });
 
     expect(tabs).toHaveLength(3);
 
     await userEvent.click(getByText(tabs[2].label));
-    expect(container).toMatchSnapshot();
+    expect(getSelectedTab()).toBe(tabs[2].label);
 
     await userEvent.click(getByText(tabs[1].label));
-    expect(container).toMatchSnapshot();
+    expect(getSelectedTab()).toBe(tabs[1].label);
   });
 
   it("should render first tab content", () => {
-    const tabs = getTestTabs("123");
+    const tabs = getTestTabs();
     getRenderer({
       tabs,
       initialRoute: tabs[0].route,
