@@ -125,7 +125,9 @@
     min-height: auto;
   }
 
-  .tiles-featured .tile {
+  .tiles-wrapper .tiles-block-container .tiles-featured .tile,
+  .tiles-wrapper .pet-care .tiles-block-container .tile,
+  .tiles-wrapper .pet-health .tiles-block-container .tile {
     width: 33%;
   }
 }
