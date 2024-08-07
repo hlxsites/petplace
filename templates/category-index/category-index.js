@@ -143,6 +143,8 @@ async function updateMetadata() {
   h1.id = toClassName(Name);
 }
 
+const articles = getArticles(pageCategory);
+
 export async function loadEager(document) {
   // List of max popular tags to display per viewport
   const maxTagsObj = {
@@ -175,11 +177,10 @@ export async function loadEager(document) {
   popularTagsContainer.append(popularTags);
 
   createTemplateBlock(main, 'article-pagination');
+  renderArticles(articles);
 }
 
 export async function loadLazy() {
-  renderArticles(getArticles(pageCategory));
-
   const main = document.querySelector('main');
 
   // Create breadcrumbs
