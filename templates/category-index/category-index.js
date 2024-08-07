@@ -92,7 +92,7 @@ async function renderArticles(articles) {
 }
 
 async function getArticles(category) {
-  const ffetch = await import('../../scripts/ffetch.js');
+  const { default: ffetch } = await import('../../scripts/ffetch.js');
 
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
