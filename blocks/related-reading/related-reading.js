@@ -77,10 +77,11 @@ async function createNavigation(block) {
 
   const parentCategories = await getAllParentCategories(categoryInfo);
   const allCategories = [categoryInfo, ...parentCategories];
+  const mainCategory = allCategories[allCategories.length - 1];
 
   // Get all articles in that category
   const articles = await ffetch(`${window.hlx.contentBasePath}/article/categories-query-index.json`)
-    .sheet(allCategories.reverse()[0].Slug.substring(0, 25)) // sharepoint limits sheet name length
+    .sheet(mainCategory.Slug.substring(0, 25)) // sharepoint limits sheet name length
     .chunks(500)
     .all();
 
@@ -96,7 +97,7 @@ async function createNavigation(block) {
   }
 
   const orderedArticles = allCategories.reduce((list, c) => {
-    list.push(categoriesMap[c.Slug]);
+    list.push(...categoriesMap[c.Slug]);
     return list;
   }, []);
 
