@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { Button, Card, Icon, Text } from "../design-system";
+import { Meta, UppyFile } from "@uppy/core";
+import { useRef, useState } from "react";
+import { Button, Card, DragAndDropZone, Icon, Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
+import { useUppyUploader } from "~/hooks/useUppyUploader";
 
 type PetDocumentViewProps = {
   documents: PetRecord[];
@@ -14,7 +16,14 @@ export const PetDocumentsView = ({
   onDelete,
   recordType,
 }: PetDocumentViewProps) => {
-  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<UppyFile<Meta, Record<string, never>>>();
+
+  const { isUploading, handleFiles } = useUppyUploader({
+    onFileAdd: (file) => {
+      setFile(file);
+    },
+  });
 
   return (
     <div className="grid gap-large">
@@ -36,38 +45,62 @@ export const PetDocumentsView = ({
         Upload and attach files
       </Text>
 
-      <Card>
-        <Button
-          aria-label="Upload document"
-          className="w-full rounded-none"
-          onClick={() => setIsUploading(true)}
-          variant="link"
-        >
-          <div className="grid place-items-center px-large py-base">
-            <div className="pb-small">
-              <Icon
-                display="uploadCloud"
-                className="text-brand-main"
-                size={32}
-              />
+      <DragAndDropZone
+        handleFiles={handleFiles}
+        className="rounded-2xl border-solid border-brand-main"
+      >
+        <input
+          id="drop-input"
+          ref={fileInputRef}
+          className="sr-only"
+          type="file"
+          onChange={handleInputChange}
+        />
+        <Card>
+          <Button
+            aria-label="Upload document"
+            className="w-full rounded-none"
+            onClick={handleUploadClick}
+            variant="link"
+          >
+            <div className="grid place-items-center px-large py-base">
+              <div className="pb-small">
+                <Icon
+                  display="uploadCloud"
+                  className="text-brand-main"
+                  size={32}
+                />
+              </div>
+              <Text fontFamily="raleway" fontWeight="bold" size="sm">
+                Click to upload or drag and drop
+              </Text>
+              <Text color="tertiary" size="xs">
+                PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
+              </Text>
             </div>
-            <Text fontFamily="raleway" fontWeight="bold" size="sm">
-              Click to upload or drag and drop
-            </Text>
-            <Text color="tertiary" size="xs">
-              PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
-            </Text>
-          </div>
-        </Button>
-      </Card>
+          </Button>
+        </Card>
+      </DragAndDropZone>
 
-      {isUploading && (
+      {isUploading && typeof file?.name !== "undefined" && (
         // TODO: 81832 fix this after implementing all logic to upload documents
         <PetCardRecord
-          record={{ fileName: "WIP - testing purposes", fileType: "doc" }}
+          record={{ fileName: file.name, fileType: "pdf" }}
           isUploadingFile={isUploading}
         />
       )}
+
+      <div id="uppy-dashboard"></div>
     </div>
   );
+
+  function handleUploadClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files) {
+      handleFiles(event.target.files);
+    }
+  }
 };
