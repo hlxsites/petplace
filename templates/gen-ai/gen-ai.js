@@ -55,7 +55,7 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
 
   socket.addEventListener('message', (event) => {
     // eslint-disable-next-line no-console
-    console.log('Message from server ', event);
+    // console.log('Message from server ', event);
     const message = JSON.parse(event.data);
 
     // eslint-disable-next-line no-use-before-define
@@ -346,8 +346,13 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   // Add placeholder cta card
   if (!resultsBlock.querySelector('.search-actions-placeholder') && card) {
     const placeholderCtaCard = document.createElement('div');
+    const placeholderCtaImage = 'https://www.petplace.com/images/media_12735b933a257e12fd7a4f78f77f752ce296513ce.png';
+    const placeholderCtaTitle = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness,';
+    const placeholderCtaText = 'Click to learn more.';
+    const placeholderCtaPath = document.head.querySelector('insurance-page-path')?.content || '/pet-insurance';
+
     placeholderCtaCard.className = 'search-actions-placeholder';
-    placeholderCtaCard.innerHTML = '<div class="action-cta action-cta--placeholder"><div class="visually-hidden">CTA Card is loading...</div><div class="action-cta__image"></div><div class="action-cta__title"></div><div class="action-cta__cta"></div></div>';
+    placeholderCtaCard.innerHTML = `<a class="action-cta--placeholder" href="${placeholderCtaPath}"><link itemprop="url" href="https://www.petplace.com/pet-adoption"><img alt="Thinking about adopting a pet?" src="${placeholderCtaImage}"><h3 itemprop="name">${placeholderCtaTitle}</h3><span class="action-button">${placeholderCtaText}<span class="icon icon-arrow-right"><svg id="icons-sprite-arrow-right" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.938 7.877h13.124M7.938 14.002l6.125-6.125-6.126-6.125" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></span></a>`;
     card.prepend(placeholderCtaCard);
   }
 
