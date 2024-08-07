@@ -57,12 +57,6 @@ const pageCategory = await getCategoryOrTagForUrl();
 let articleLoadingPromise;
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
-  block.querySelectorAll('li').forEach((li) => li.remove());
-  for (let i = 0; i < 25; i += 1) {
-    const div = document.createElement('div');
-    div.classList.add('skeleton');
-    block.append(div);
-  }
   document.querySelector('.article-pagination').dataset.total = '…';
   articleLoadingPromise = await articles;
   let articleCount = 0;
@@ -149,6 +143,13 @@ export async function loadEager(document) {
     mobile: 0,
   };
 
+  const cards = document.querySelector('.cards');
+  for (let i = 0; i < 24; i += 1) {
+    const div = document.createElement('div');
+    div.classList.add('skeleton');
+    cards.append(div);
+  }
+
   const main = document.querySelector('main');
   const h1 = document.createElement('h1');
   main.prepend(h1);
@@ -164,17 +165,18 @@ export async function loadEager(document) {
     popularTags.setAttribute(`data-max-tags-${viewport}`, maxTags);
   });
   popularTagsContainer.append(popularTags);
+
   createTemplateBlock(main, 'article-pagination');
 }
 
 export async function loadLazy() {
   renderArticles(getArticles(pageCategory));
 
-  // Create breadcrumbs
   const main = document.querySelector('main');
-  const body = main.parentNode;
+
+  // Create breadcrumbs
   const breadcrumbContainer = document.createElement('div');
-  body.insertBefore(breadcrumbContainer, main);
+  main.prepend(breadcrumbContainer);
 
   const breadcrumbData = await createBreadCrumbs([{
     url: window.hlx.contentBasePath + pageCategory.Path,
