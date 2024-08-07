@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import { Button, Card, Text } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { PetAlertMessage } from "~/components/Pet/PetAlertMessage";
