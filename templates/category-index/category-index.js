@@ -142,8 +142,8 @@ async function updateMetadata() {
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
   const h1 = document.querySelector('h1');
-  h1.textContent = Name;
-  h1.id = toClassName(Name);
+  h1.textContent = Name || Category;
+  h1.id = toClassName(Name || Category);
 }
 
 const articles = getArticles(pageCategory);
@@ -179,9 +179,10 @@ export async function loadEager(document) {
   });
   popularTagsContainer.append(popularTags);
 
-  renderArticles(articles);
-
   createTemplateBlock(main, 'article-pagination');
+
+  renderArticles(articles);
+  return null;
 }
 
 export async function loadLazy() {
