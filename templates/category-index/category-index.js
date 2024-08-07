@@ -1,4 +1,3 @@
-import ffetch from '../../scripts/ffetch.js';
 import {
   buildBlock,
   decorateBlock,
@@ -13,7 +12,6 @@ import {
   getPlaceholder,
   meterCalls,
 } from '../../scripts/scripts.js';
-import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
 
 await getCategories();
@@ -94,6 +92,8 @@ async function renderArticles(articles) {
 }
 
 async function getArticles(category) {
+  const ffetch = await import('../../scripts/ffetch.js');
+
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
@@ -203,6 +203,7 @@ export async function loadLazy() {
 }
 
 export async function loadDelayed() {
+  const { pushToDataLayer } = await import('../../scripts/utils/helpers.js');
   await pushToDataLayer({
     event: 'adsense',
     type: 'category',
