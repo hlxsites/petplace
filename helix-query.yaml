@@ -97,7 +97,7 @@ indices:
       - 'article/category/default'
       - 'article/category/category-images'
       - 'article/breed/'
-    target: /article/categorized-query-index.xlsx
+    target: /article/categories-query-index.xlsx
     properties:
       author:
         select: head > meta[name="author"]
