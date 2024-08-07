@@ -1,4 +1,3 @@
-import ffetch from '../../scripts/ffetch.js';
 import {
   buildBlock,
   decorateBlock,
@@ -8,12 +7,14 @@ import {
 import {
   createBreadCrumbs,
   fetchAndCacheJson,
+  getCategories,
   getCategory,
   getPlaceholder,
   meterCalls,
 } from '../../scripts/scripts.js';
-import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 // import { render as renderCategories } from '../../blocks/sub-categories/sub-categories.js';
+
+await getCategories();
 
 async function getAllParentCategories(category) {
   const parentCategories = [];
@@ -91,6 +92,8 @@ async function renderArticles(articles) {
 }
 
 async function getArticles(category) {
+  const { default: ffetch } = await import('../../scripts/ffetch.js');
+
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
@@ -133,15 +136,17 @@ async function updateMetadata() {
   if (!result) {
     throw new Error(404);
   }
-  const { Name, Path } = result;
-  document.title = Name;
+  const { Name, Category, Path } = result;
+  document.title = Name || Category;
   document.head.querySelector('link[rel="canonical"]').href = `${window.location.origin}${Path}`;
   document.head.querySelector('meta[property="og:title"]').content = document.title;
   document.head.querySelector('meta[name="twitter:title"]').content = document.title;
   const h1 = document.querySelector('h1');
-  h1.textContent = Name;
-  h1.id = toClassName(Name);
+  h1.textContent = Name || Category;
+  h1.id = toClassName(Name || Category);
 }
+
+const articles = getArticles(pageCategory);
 
 export async function loadEager(document) {
   // List of max popular tags to display per viewport
@@ -175,11 +180,12 @@ export async function loadEager(document) {
   popularTagsContainer.append(popularTags);
 
   createTemplateBlock(main, 'article-pagination');
+
+  renderArticles(articles);
+  return null;
 }
 
 export async function loadLazy() {
-  renderArticles(getArticles(pageCategory));
-
   const main = document.querySelector('main');
 
   // Create breadcrumbs
@@ -199,6 +205,7 @@ export async function loadLazy() {
 }
 
 export async function loadDelayed() {
+  const { pushToDataLayer } = await import('../../scripts/utils/helpers.js');
   await pushToDataLayer({
     event: 'adsense',
     type: 'category',
