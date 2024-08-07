@@ -89,13 +89,16 @@ async function createNavigation(block) {
   const categories = [categoryInfo, ...parentCategories];
 
   // Get all articles in that category
-  const articles = await ffetch(
-    `${window.hlx.contentBasePath}/article/query-index.json`,
-  )
-    .sheet('article')
+  let articles = await ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
+    .sheet(categories[0].Slug.substring(0, 25)) // sharepoint limits sheet name length
     .chunks(500)
-    .filter((article) => ifArticleBelongsToCategories(article, categories))
     .all();
+  if (!articles.length && categories.length > 1) {
+    articles = await ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
+      .sheet(categories[1].Slug.substring(0, 25)) // sharepoint limits sheet name length
+      .chunks(500)
+      .all();
+  }
 
   const parentCategoryArticlesMap = new Map();
   parentCategories.forEach((c) => parentCategoryArticlesMap.set(c.Slug, []));

@@ -4,8 +4,8 @@ import { decorateResponsiveImages, getId, isTablet } from '../../scripts/scripts
 
 async function renderArticles(articles) {
   const block = document.querySelector('.cards');
-  block.querySelectorAll('li').forEach((li) => li.remove());
   const res = await articles;
+  // block.querySelectorAll('li').forEach((li) => li.remove());
   // eslint-disable-next-line no-restricted-syntax
   for await (const article of res) {
     const div = document.createElement('div');
@@ -14,6 +14,9 @@ async function renderArticles(articles) {
     block.append(div);
   }
   document.querySelector('.pagination').dataset.total = res.total();
+  window.requestAnimationFrame(() => {
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+  });
 }
 
 async function getArticles() {
@@ -68,54 +71,59 @@ function buildSidebar() {
   return section;
 }
 
-function createTemplateBlock(main, blockName) {
+function createTemplateBlock(main, blockName, insertBefore) {
   const section = document.createElement('div');
 
   const block = buildBlock(blockName, { elems: [] });
   section.append(block);
-  main.append(section);
+  if (insertBefore) {
+    main.insertBefore(section, insertBefore);
+  } else {
+    main.append(section);
+  }
   return block;
+}
+
+function buildHeroBlock(container) {
+  const div = container.firstElementChild;
+  const pictures = div.querySelectorAll('div:first-child picture');
+  const heading = div.querySelector('div:first-child h1');
+  const subHeadings = div.querySelectorAll('div:first-child p');
+
+  const imgDiv = document.createElement('div');
+  imgDiv.className = 'img-div';
+  pictures.forEach((el) => imgDiv.append(el));
+  decorateResponsiveImages(imgDiv, ['461']);
+
+  const textDiv = document.createElement('div');
+  textDiv.classList = 'text-div';
+  textDiv.append(heading);
+  subHeadings.forEach((el) => textDiv.append(el));
+
+  const hero = buildBlock('hero', { elems: [imgDiv, textDiv] });
+  div.prepend(hero);
 }
 
 export function loadEager(document) {
   const main = document.querySelector('main');
   main.insertBefore(buildSidebar(), main.querySelector(':scope > div:nth-of-type(2)'));
-  const cards = createTemplateBlock(main, 'cards');
+
+  const cards = createTemplateBlock(main, 'cards', main.querySelector('.slide-cards').parentElement);
   cards.classList.add('breed');
   cards.dataset.limit = 6;
+  for (let i = 0; i < 12; i += 1) {
+    const div = document.createElement('div');
+    div.classList.add('skeleton');
+    cards.append(div);
+  }
+
   const pagination = createTemplateBlock(main, 'pagination');
   pagination.dataset.limit = 6;
+  buildHeroBlock(main);
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export async function loadLazy(document) {
-  const main = document.querySelector('main');
-  const hero = document.createElement('div');
-  const imgDiv = document.createElement('div');
-  const textDiv = document.createElement('div');
-  const defaultContentWrapper = main.querySelector('.default-content-wrapper');
-
-  defaultContentWrapper.parentElement.classList.add('hero-container');
-  hero.className = 'hero-wrapper';
-  imgDiv.className = 'img-div';
-  textDiv.classList = 'text-div';
-
-  [...defaultContentWrapper.querySelectorAll('picture')].forEach((el) => {
-    imgDiv.append(el);
-  });
-  hero.append(imgDiv);
-  textDiv.append(document.querySelector('h1'));
-
-  [...defaultContentWrapper.querySelectorAll('p')].forEach((el) => {
-    if (el.innerText.trim() !== '') {
-      textDiv.append(el);
-    }
-  });
-  hero.append(textDiv);
-  decorateResponsiveImages(imgDiv, ['461']);
-
-  defaultContentWrapper.outerHTML = hero.outerHTML;
-
   renderArticles(getArticles());
 
   // Softnav progressive enhancement for browsers that support it

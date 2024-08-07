@@ -8,7 +8,6 @@ import {
 import {
   createBreadCrumbs,
   fetchAndCacheJson,
-  getCategories,
   getCategory,
   getPlaceholder,
   meterCalls,
@@ -40,6 +39,7 @@ export async function getCategoryOrTagForUrl() {
     return {
       Name: catResult.Category,
       Path: catResult.Path,
+      Slug: catResult.Slug,
     };
   }
 
@@ -48,8 +48,11 @@ export async function getCategoryOrTagForUrl() {
   return tagResult ? {
     Name: tagResult.Name,
     Path: tagResult.Path,
+    Slug: tagResult.Slug,
   } : undefined;
 }
+
+const pageCategory = await getCategoryOrTagForUrl();
 
 let articleLoadingPromise;
 async function renderArticles(articles) {
@@ -69,9 +72,9 @@ async function renderArticles(articles) {
   if (articleCount === 0) {
     const container = document.querySelector('.cards-container');
     let noResults = container.querySelector('h2');
-    if (!document.querySelector('h2')) {
+    if (!container.querySelector('h2')) {
       noResults = document.createElement('h2');
-      container.append(noResults);
+      container.prepend(noResults);
     }
     noResults.innerText = getPlaceholder('noArticles');
     if (pagination) {
@@ -84,38 +87,19 @@ async function renderArticles(articles) {
   });
 }
 
-async function getArticles() {
-  let filterFn = () => false;
-  const categories = await getCategories();
-  const categoryPath = new URL(document.head.querySelector('link[rel="canonical"]').href).pathname;
-  const applicableCategories = categories
-    .filter((c) => c.Path === categoryPath
-      || c['Parent Path'].startsWith(categoryPath))
-    .map((c) => ({ id: c.Slug, name: toClassName(c.Category) }));
-
-  if (applicableCategories.length > 0) {
-    filterFn = (article) => {
-      const articleCategories = article.category !== '0'
-        ? article.category.split(',').map((c) => toClassName(c))
-        : article.path.split('/').splice(-2, 1);
-      return applicableCategories.some((c) => articleCategories.includes(c.name)
-        || articleCategories.includes(c.id));
-    };
-  } else {
-    const tag = await getCategoryOrTagForUrl();
-    const tagName = toClassName(tag.Name);
-    if (tagName) {
-      filterFn = (article) => JSON.parse(article.tags).map((t) => toClassName(t)).includes(tagName);
-    }
-  }
-
+async function getArticles(category) {
   const usp = new URLSearchParams(window.location.search);
   const limit = usp.get('limit') || 25;
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
+  let sheet = 'article';
+  if (window.location.pathname.startsWith('/tags/')) {
+    sheet = `tag-${category.Slug}`;
+  } else {
+    sheet = category.Slug;
+  }
   return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-    .sheet('article')
+    .sheet(sheet.substring(0, 25)) // sharepoint limits sheet name length
     .withTotal(true)
-    .filter(filterFn)
     .slice(offset, offset + limit);
 }
 
@@ -137,7 +121,7 @@ async function updateMetadata() {
   if (defaultPages.find((path) => path === window.location.pathname)) {
     return;
   }
-  const result = await getCategoryOrTagForUrl();
+  const result = pageCategory;
   if (!result) {
     throw new Error(404);
   }
@@ -186,14 +170,7 @@ export async function loadEager(document) {
 }
 
 export async function loadLazy() {
-  const result = await getCategoryOrTagForUrl();
-  if (!result) {
-    return;
-  }
-
-  const { Name, Path } = result;
-
-  renderArticles(getArticles());
+  renderArticles(getArticles(pageCategory));
 
   const main = document.querySelector('main');
 
@@ -202,10 +179,10 @@ export async function loadLazy() {
   main.prepend(breadcrumbContainer);
 
   const breadcrumbData = await createBreadCrumbs([{
-    url: window.hlx.contentBasePath + Path,
-    path: Name,
+    url: window.hlx.contentBasePath + pageCategory.Path,
+    path: pageCategory.Name,
     color: 'black',
-    label: Name,
+    label: pageCategory.Name,
   }], { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true });
   createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
 
@@ -214,13 +191,12 @@ export async function loadLazy() {
 }
 
 export async function loadDelayed() {
-  const pageCat = await getCategoryOrTagForUrl();
   await pushToDataLayer({
     event: 'adsense',
     type: 'category',
-    category: pageCat.Name,
+    category: pageCategory.Name,
   });
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
-  adsenseFunc('category', pageCat.Name);
+  adsenseFunc('category', pageCategory.Name);
 }
