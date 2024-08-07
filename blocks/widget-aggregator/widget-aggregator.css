@@ -12,5 +12,11 @@
 }
 
 .breed-page .widget-aggregator {
-  margin-bottom: -400px;
+  @media (min-width: 1024px) {
+    margin-bottom: -400px;
+  }
+
+  @media (max-width: 1024px) {
+    margin-bottom: -100px;
+  }
 }
