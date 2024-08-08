@@ -627,7 +627,10 @@ article ol {
 .genai-search-container .search-card-container .slideshow-title {
   flex-grow: 1;
   flex-shrink: 0;
-  padding: 0 52px;
+
+  @media (min-width: 1024px) {
+    padding: 0 52px;
+  }
 }
 
 .genai-search-container .search-card-container .slideshow:after {
@@ -677,8 +680,7 @@ article ol {
   user-select: none;
 
   &.hide {
-    opacity: 0;
-    cursor: default;
+    display: none;
   }
 
   @media (min-width: 600px) {

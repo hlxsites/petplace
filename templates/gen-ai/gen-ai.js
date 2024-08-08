@@ -61,7 +61,7 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
 
   socket.addEventListener('message', (event) => {
     // eslint-disable-next-line no-console
-    console.log('Message from server ', event);
+    // console.log('Message from server ', event);
     const message = JSON.parse(event.data);
 
     // eslint-disable-next-line no-use-before-define
@@ -244,6 +244,12 @@ function updateSlide(currentIndex, nextIndex, $block) {
 
 function initializeTouch($block, slideshowInfo) {
   const $slidesContainer = $block.querySelector('.slides-container');
+  const $nextButton = document.querySelector('.slideshow-next');
+
+  // Hide next button if there is only one slide
+  if ($slidesContainer.children.length === 1) {
+    $nextButton?.classList.add('hide');
+  }
 
   let startX;
   let currentX;
@@ -291,6 +297,8 @@ function initializeTouch($block, slideshowInfo) {
       } else if (diffX < -50) {
         const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
         changeSlide(slideshowInfo, index, nextIndex);
+      } else if (diffX === 0) {
+        return;
       } else {
         $slidesContainer.setAttribute(
           'style',
