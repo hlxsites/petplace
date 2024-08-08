@@ -97,7 +97,7 @@ async function createNavigation(block) {
   }
 
   const orderedArticles = allCategories.reduce((list, c) => {
-    list.push(...categoriesMap[c.Slug]);
+    list.push(...(categoriesMap[c.Slug] || []));
     return list;
   }, []);
 
