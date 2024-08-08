@@ -1,7 +1,7 @@
 import type { FC, ReactElement, ReactNode } from "react";
+import { Text, TextSpan } from "~/components/design-system";
 import { Icon, IconKeys } from "../icon/Icon";
 import { PaginateButton } from "./paginateButton/PaginateButton";
-import { Text, TextSpan } from "~/components/design-system";
 
 interface IControlledPaginationProps {
   children?: ReactNode;
@@ -29,7 +29,7 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
       {children}
 
       <div
-        className="flex-col flex md:flex-row md:justify-between"
+        className="flex flex-col md:flex-row md:justify-between"
         data-testid="ControlledPagination"
       >
         <nav
@@ -73,23 +73,23 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
   );
 
   function renderPageButtons() {
-    const buttons: ReactElement[] = [];
+    const buttons: ReactElement[] = [renderButton(1)];
 
-    const [startIndex, endIndex] = calculateStartAndEndIndexes(1);
+    let lastRendered = "";
 
-    if (startIndex > 1) {
-      buttons.push(renderButton(1)); // First page
-      if (startIndex > 2) buttons.push(renderEllipsis("ellipsis-start"));
-    }
-
-    for (let index = startIndex; index <= endIndex; index++) {
-      buttons.push(renderButton(index));
-    }
-
-    if (endIndex < totalPages) {
-      if (endIndex < totalPages - 1)
-        buttons.push(renderEllipsis("ellipsis-end"));
-      buttons.push(renderButton(totalPages));
+    // Since we are calculating pages, we start this loop from 2 instead of 0
+    for (let index = 2; index <= totalPages; index++) {
+      if (
+        index !== totalPages &&
+        (currentPage > index + 1 || currentPage < index - 1)
+      ) {
+        if (lastRendered === "ellipsis") continue;
+        buttons.push(renderEllipsis("ellipsis-start"));
+        lastRendered = "ellipsis";
+      } else {
+        buttons.push(renderButton(index));
+        lastRendered = "button";
+      }
     }
 
     return buttons;
@@ -122,28 +122,6 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
         </TextSpan>
       </div>
     );
-  }
-
-  function calculateStartAndEndIndexes(siblingCount: number = 1) {
-    const totalShownPages = siblingCount + 5;
-    let startIndex = Math.max(currentPage - siblingCount, 1);
-    let endIndex = Math.min(startIndex + siblingCount * 2, totalPages);
-
-    if (totalPages <= totalShownPages - 2) {
-      return [1, totalPages];
-    }
-
-    if (currentPage <= siblingCount + 3) {
-      endIndex = totalShownPages - 2;
-      return [1, endIndex];
-    }
-
-    if (currentPage >= totalPages - (siblingCount + 2)) {
-      startIndex = totalPages - (totalShownPages - 3);
-      return [startIndex, totalPages];
-    }
-
-    return [startIndex, endIndex];
   }
 
   function renderLimitIcon(isLimit: boolean, icon: IconKeys) {
