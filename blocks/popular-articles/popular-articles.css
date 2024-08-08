@@ -67,7 +67,7 @@
 }
 
 @media (min-width: 768px) {
-  .popular-articles-container.section {
+  .popular-articles-container {
     padding-left: 20px;
     padding-right: 20px;
   }

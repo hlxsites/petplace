@@ -42,10 +42,9 @@ async function createTemplateBlock(container, blockName, elems = []) {
   decorateBlock(block);
 }
 
-async function sectionGenAi(main) {
+async function buildGenAiSearchSection(main) {
   const genAIDiv = document.createElement('div');
   genAIDiv.classList.add('section');
-  genAIDiv.classList.add('genai-search');
 
   const genAIMeta = document.createElement('meta');
   genAIMeta.setAttribute('itemprop', 'description');
@@ -55,7 +54,7 @@ async function sectionGenAi(main) {
   );
   genAIDiv.append(genAIMeta);
 
-  const articleContainer = main.querySelector('.section:nth-of-type(2)');
+  const articleContainer = main.querySelector('.article-content-container');
   const genaiBlock = buildBlock('genai-search', '');
   const genAITitle = document.createElement('h2');
   const genAISubtitle = document.createElement('h2');
@@ -65,7 +64,7 @@ async function sectionGenAi(main) {
   genAIDiv.append(genAITitle);
   genAIDiv.append(genAISubtitle);
   genAIDiv.append(genaiBlock);
-  articleContainer.append(genAIDiv);
+  articleContainer.after(genAIDiv);
 
   // genAIBlock.insertBefore(secondHeadline);
 
@@ -73,7 +72,7 @@ async function sectionGenAi(main) {
   await loadBlock(genaiBlock);
 }
 
-const createGenAISearchCTA = () => {
+const buildGenAISearchCTA = () => {
   const headerSearchButton = document.createElement('div');
   headerSearchButton.className = 'header-search';
   headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
@@ -144,25 +143,17 @@ async function getBreadcrumbs(categorySlug) {
   return breadcrumbs.reverse();
 }
 
-function buildHeroBlock(container) {
-  const heroTitleSection = document.createElement('div');
-  heroTitleSection.classList.add('hero-title-container', 'section');
-
-  const articleTitle = container.querySelectorAll('h1')[0];
-  const authorDiv = container.querySelector('.article-author');
-  authorDiv.classList.remove('section');
-  const heroImgContainer = container.querySelectorAll('p')[0];
-  heroImgContainer.classList.add('hero-pic-div');
-
-  heroTitleSection.append(articleTitle);
-  heroTitleSection.append(authorDiv);
-  heroTitleSection.append(heroImgContainer);
-  container.prepend(heroTitleSection);
+function buildHeroSection(container) {
+  const hero = document.createElement('div');
+  hero.classList.add('section', 'hero-container');
+  hero.append(container.querySelector('h1'));
+  hero.append(buildBlock('article-author', { elems: [] }));
+  hero.append(container.querySelector('picture'));
+  container.prepend(hero);
 }
 
-export async function loadEager(document) {
+async function buildBreadcrumb(container) {
   const main = document.querySelector('main');
-
   // breadcrumb
   const heading = main.querySelector('h1');
   const categorySlugs = getMetadata('category')
@@ -189,105 +180,133 @@ export async function loadEager(document) {
   breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
     icon.classList.replace('icon-chevron', 'icon-chevron-large');
   });
-  createTemplateBlock(main, 'breadcrumb', [breadcrumbData]);
+  const section = document.createElement('div');
+  section.classList.add('section');
+  section.append(buildBlock('breadcrumb', { elems: [breadcrumbData] }));
+  container.prepend(section);
+}
+
+export async function loadEager(document) {
+  const main = document.querySelector('main');
+
+  main.firstElementChild.classList.add('article-content-container');
+
+  // content
+    // heading
+    // author
+    // hero
+    buildHeroSection(main);
+    // buildHeroBlock(main);
+    // ad top
+    // article
+      // ad middle
+    // genai search
+
+  // sidebar
+  const sidebar = document.createElement('div');
+  sidebar.classList.add('section', 'sidebar-container');
+  main.append(sidebar);
+  // share
+  sidebar.append(buildBlock('social-share', { elems: [] }));
+  // popular articles
+  sidebar.append(buildBlock('popular-articles', { elems: [] }));
+  // insurance
+  sidebar.append(buildBlock('article-cta', { elems: [] }));
+
+  // related readings
+  // ad bottom
 
   // top
   createTableOfContents(main);
-  createTemplateBlock(main, 'article-author');
 
   // sidebar
-  createTemplateBlock(main, 'social-share');
-  createTemplateBlock(main, 'popular-articles');
-  createTemplateBlock(main, 'article-cta');
 
   // bottom
   createTemplateBlock(main, 'related-reading');
 
-  buildHeroBlock(main);
-
-  main.children[1].classList.add('article-content-container');
-
   // same attribute setting as earlier
-  main.setAttribute('itemscope', '');
-  const articleType = toClassName(getMetadata('type'));
+  // main.setAttribute('itemscope', '');
+  // const articleType = toClassName(getMetadata('type'));
 
-  if (articleType === 'faq') {
-    main.setAttribute('itemtype', 'https://schema.org/FAQPage');
-    [...main.querySelectorAll(':scope > div > :is(h1,h2,h3)')]
-      .filter((h) => h.textContent.endsWith('?') || h.textContent.match(/#\d+/))
-      .forEach((h) => {
-        if (h.nodeName === 'H1') {
-          const meta = document.createElement('meta');
-          meta.setAttribute('itemprop', 'name');
-          meta.setAttribute('content', h.textContent);
-          h.after(meta);
-        } else {
-          h.setAttribute('itemprop', 'name');
-        }
-        const question = document.createElement('div');
-        question.setAttribute('itemscope', '');
-        question.setAttribute('itemprop', 'mainEntity');
-        question.setAttribute('itemtype', 'https://schema.org/Question');
-        if (h.nodeName === 'H1') {
-          h.after(question);
-          question.append(question.nextElementSibling);
-        } else {
-          h.replaceWith(question);
-          question.append(h);
-        }
-        const answer = document.createElement('div');
-        answer.setAttribute('itemscope', '');
-        answer.setAttribute('itemprop', 'acceptedAnswer');
-        answer.setAttribute('itemtype', 'https://schema.org/Answer');
-        question.append(answer);
-        const div = document.createElement('div');
-        div.setAttribute('itemprop', 'text');
-        answer.append(div);
-        while (
-          question.nextElementSibling
-          && question.nextElementSibling.tagName !== h.nodeName
-        ) {
-          div.append(question.nextElementSibling);
-        }
-      });
-  } else {
-    main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
-  }
+  // if (articleType === 'faq') {
+  //   main.setAttribute('itemtype', 'https://schema.org/FAQPage');
+  //   [...main.querySelectorAll(':scope > div > :is(h1,h2,h3)')]
+  //     .filter((h) => h.textContent.endsWith('?') || h.textContent.match(/#\d+/))
+  //     .forEach((h) => {
+  //       if (h.nodeName === 'H1') {
+  //         const meta = document.createElement('meta');
+  //         meta.setAttribute('itemprop', 'name');
+  //         meta.setAttribute('content', h.textContent);
+  //         h.after(meta);
+  //       } else {
+  //         h.setAttribute('itemprop', 'name');
+  //       }
+  //       const question = document.createElement('div');
+  //       question.setAttribute('itemscope', '');
+  //       question.setAttribute('itemprop', 'mainEntity');
+  //       question.setAttribute('itemtype', 'https://schema.org/Question');
+  //       if (h.nodeName === 'H1') {
+  //         h.after(question);
+  //         question.append(question.nextElementSibling);
+  //       } else {
+  //         h.replaceWith(question);
+  //         question.append(h);
+  //       }
+  //       const answer = document.createElement('div');
+  //       answer.setAttribute('itemscope', '');
+  //       answer.setAttribute('itemprop', 'acceptedAnswer');
+  //       answer.setAttribute('itemtype', 'https://schema.org/Answer');
+  //       question.append(answer);
+  //       const div = document.createElement('div');
+  //       div.setAttribute('itemprop', 'text');
+  //       answer.append(div);
+  //       while (
+  //         question.nextElementSibling
+  //         && question.nextElementSibling.tagName !== h.nodeName
+  //       ) {
+  //         div.append(question.nextElementSibling);
+  //       }
+  //     });
+  // } else {
+  //   main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
+  // }
+  await buildBreadcrumb(main);
 }
 
 export async function loadLazy(document) {
   const main = document.querySelector('main');
 
+  // breadcrumb
+
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('article', 'create');
 
-  // genai block code is unchanged from before
-  sectionGenAi(main);
+  // if (!isMobile()) {
+  //   const contentDiv = document.createElement('div');
+  //   contentDiv.classList.add('content-left');
+  //   const heroTitleDiv = document.querySelector('.hero-title-container');
+  //   const blogSection = document.querySelector('.article-content-container');
+  //   contentDiv.append(heroTitleDiv);
+  //   contentDiv.append(blogSection);
 
-  if (!isMobile()) {
-    const contentDiv = document.createElement('div');
-    contentDiv.classList.add('content-left');
-    const heroTitleDiv = document.querySelector('.hero-title-container');
-    const blogSection = document.querySelector('.article-content-container');
-    contentDiv.append(heroTitleDiv);
-    contentDiv.append(blogSection);
+  //   const sidebarDiv = document.createElement('div');
+  //   sidebarDiv.classList.add('sidebar-right');
+  //   const socialDiv = document.querySelector('.social-share-container');
+  //   const popularDiv = document.querySelector('.popular-articles-container');
+  //   const compareDiv = document.querySelector('.article-cta-container');
+  //   sidebarDiv.append(socialDiv);
+  //   sidebarDiv.append(popularDiv);
+  //   sidebarDiv.append(compareDiv);
 
-    const sidebarDiv = document.createElement('div');
-    sidebarDiv.classList.add('sidebar-right');
-    const socialDiv = document.querySelector('.social-share-container');
-    const popularDiv = document.querySelector('.popular-articles-container');
-    const compareDiv = document.querySelector('.article-cta-container');
-    sidebarDiv.append(socialDiv);
-    sidebarDiv.append(popularDiv);
-    sidebarDiv.append(compareDiv);
+  //   main.append(contentDiv);
+  //   main.append(sidebarDiv);
+  // }
 
-    main.append(contentDiv);
-    main.append(sidebarDiv);
-  }
-
+  // GenAI Search
+  buildGenAiSearchSection(main);
   if (document.body.classList.contains('article-page')) {
     const contentDiv = document.querySelector('.default-content-wrapper');
-    contentDiv.append(createGenAISearchCTA());
+    contentDiv.append(buildGenAISearchCTA());
   }
 }
 
