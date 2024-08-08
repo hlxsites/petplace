@@ -44,6 +44,7 @@
   grid-area: article;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .article-content-container .default-content-wrapper {
   margin-bottom: 2rem;
 }
