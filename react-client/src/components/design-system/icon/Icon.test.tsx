@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { ComponentProps } from "react";
 
-import { upperCaseFirstLetter } from "~/util/stringUtils";
+import { upperCaseFirstLetter } from "~/util/stringUtil";
 import { Icon, IconKeys, IconMap } from "./Icon";
 
 describe("<Icon />", () => {

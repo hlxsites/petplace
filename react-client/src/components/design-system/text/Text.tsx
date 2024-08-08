@@ -13,6 +13,7 @@ type StyleProps = TextCommonStyleProps & {
     | "secondary"
     | "tertiary"
     | "blue-500"
+    | "orange-300-c"
     | "inherit";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
@@ -67,6 +68,7 @@ function useTextBase({
     "text-primary-900": color === "primary",
     "text-secondary-700": color === "secondary",
     "text-tertiary-600": color === "tertiary",
+    "text-orange-300-contrast": color === "orange-300-c",
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
     "font-roboto": fontFamily === "roboto",

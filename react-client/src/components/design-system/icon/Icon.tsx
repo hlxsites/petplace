@@ -7,10 +7,13 @@ import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
 import ChevronDownIcon from "./assets/chevron-down-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
+import ChevronRightIcon from "./assets/chevron-right-icon.svg";
 import ChevronUpIcon from "./assets/chevron-up-icon.svg";
 import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CloseXMarkRegularIcon from "./assets/close-x-mark-regular-icon.svg";
 import CpuChipIcon from "./assets/cpu-chip-icon.svg";
+import DoubleArrowLeftIcon from "./assets/double-arrow-left-icon.svg";
+import DoubleArrowRightIcon from "./assets/double-arrow-right-icon.svg";
 import DocFileIcon from "./assets/doc-file-icon.svg";
 import DownloadIcon from "./assets/download-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
@@ -42,10 +45,13 @@ export const IconMap = Object.freeze({
   check: <CheckIcon />,
   chevronDown: <ChevronDownIcon />,
   chevronLeft: <ChevronLeftIcon />,
+  chevronRight: <ChevronRightIcon />,
   chevronUp: <ChevronUpIcon />,
   closeXMark: <CloseXMarkIcon />,
   closeXMarkRegular: <CloseXMarkRegularIcon />,
   cpuChip: <CpuChipIcon />,
+  doubleArrowLeft: <DoubleArrowLeftIcon />,
+  doubleArrowRight: <DoubleArrowRightIcon />,
   docFile: <DocFileIcon />,
   download: <DownloadIcon />,
   ellipse: <EllipseIcon />,
