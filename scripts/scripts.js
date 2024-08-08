@@ -543,6 +543,27 @@ function buildAutoBlocks(main) {
   }
 }
 
+function redecorateIfHeroBlock(heroElement) {
+  const parent = heroElement.parentElement.parentElement;
+  [...heroElement.children].reverse().forEach((el) => parent.prepend(el));
+  heroElement.parentElement.remove();
+  heroElement.remove();
+  // Rebuild and redecorate the hero block
+  buildHeroBlock(parent);
+  decorateBlocks(parent);
+  loadBlocks(parent);
+}
+
+export function decorateFunction(element) {
+  if (element.classList.contains('hero')) {
+    redecorateIfHeroBlock(element);
+  } else if (element.classList.contains('block')) {
+    decorateBlock(element);
+    loadBlock(element);
+  }
+  // add more conditions here if needed
+}
+
 /**
  * Creates hidden screen reader content for improving the website's screen
  * reader compatibility. The method will look for all "a" tags in the given
@@ -991,26 +1012,6 @@ async function addNewsletterPopup() {
 
   document.body.addEventListener('mouseleave', () => loadNewsletterPopup(document.querySelector('footer')));
 }
-
-// Properly decorate fragments that were pulled in
-document.addEventListener('aem:experimentation', (ev) => {
-  // Do not redecorate the default content
-  if (ev.detail.variant === 'control' || ev.detail?.campaign === 'default' || ev.detail?.audience === 'default') {
-    return;
-  }
-  // Rebuild the autoblock as needed
-  if (ev.detail.element.classList.contains('hero')) {
-    const parent = ev.detail.element.parentElement.parentElement;
-    [...ev.detail.element.children].reverse().forEach((el) => parent.prepend(el));
-    ev.detail.element.remove();
-    decorateBlocks(parent);
-    loadBlocks(parent);
-  } else if (ev.detail.element.classList.contains('block')) {
-    // Otherwise, just reset the replaced blocks and redecorate them
-    decorateBlock(ev.detail.element);
-    loadBlock(ev.detail.element);
-  }
-});
 
 /**
  * Loads everything that doesn't need to be delayed.
