@@ -21,7 +21,7 @@ export const PetCardRecord = ({
         <div className="flex items-center gap-small">
           <Icon className="text-neutral-white" display={getDisplayIcon()} />
 
-          <Text color="secondary" size="xs">
+          <Text color="text-secondary-700" size="xs">
             {fileName}
           </Text>
         </div>
