@@ -11,10 +11,14 @@ export default async function decorate(block) {
   details.textContent = 'Compare the top pet insurance plans all in one place to find the one that works best for you and your pet';
 
   img.classList.add('article-cta-img');
+  img.width = 322;
+  img.height = 184;
   if (isMobile()) {
     img.src = '/icons/compare-plans-screen.svg';
   } else if (isTablet()) {
     img.src = '/icons/compare-plans-tablet.svg';
+    img.width = 672;
+    img.height = 184;
   } else {
     img.src = '/icons/compare-plans-screen.svg';
   }
