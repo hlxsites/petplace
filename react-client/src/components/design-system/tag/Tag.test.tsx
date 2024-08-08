@@ -14,9 +14,7 @@ describe("Tag", () => {
     }
   );
 
-  it.each(["success", "warning", "info"] as ComponentProps<
-    typeof Tag
-  >["tagStatus"][])(
+  it.each(["success", "warning", "info"] satisfies TagType)(
     "should always render component with ellipse icon",
     (tagStatus) => {
       const { container } = getRenderer({ tagStatus });
@@ -39,7 +37,7 @@ describe("Tag", () => {
     }
   );
 
-  it.each(["info", "warning"] as ComponentProps<typeof Tag>["tagStatus"][])(
+  it.each(["info", "warning"] satisfies TagType)(
     "should render info icon for tagStatus=%s",
     (tagStatus) => {
       const { container } = getRenderer({ tagStatus });
@@ -59,9 +57,13 @@ describe("Tag", () => {
   });
 });
 
+// Test utils
+type Props = ComponentProps<typeof Tag>;
+type TagType = Props["tagStatus"][];
+
 function getRenderer({
   label = "Test label",
   tagStatus = "success",
-}: Partial<ComponentProps<typeof Tag>> = {}) {
+}: Partial<Props> = {}) {
   return render(<Tag label={label} tagStatus={tagStatus} />);
 }

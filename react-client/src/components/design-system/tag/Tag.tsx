@@ -1,4 +1,3 @@
-import { ComponentProps } from "react";
 import { Icon, Text } from "~/components/design-system";
 import { classNames } from "~/util/styleUtil";
 
@@ -17,20 +16,16 @@ export const Tag = ({ label, tagStatus }: TagProps) => {
     }
   );
 
-  const textColorClass = classNames({
-    "text-blue-500": tagStatus === "info",
-    "text-green-500": tagStatus === "success",
-    "text-yellow-500": tagStatus === "warning",
-  });
+  const textColorClass = (() => {
+    if (tagStatus === "success") return "text-green-500";
+    if (tagStatus === "warning") return "text-yellow-500";
+    return "text-blue-500";
+  })();
 
   return (
     <div className={containerClass}>
       <Icon display="ellipse" size={8} />
-      <Text
-        color={textColorClass as ComponentProps<typeof Text>["color"]}
-        fontWeight="medium"
-        size="base"
-      >
+      <Text color={textColorClass} fontWeight="medium" size="base">
         {label}
       </Text>
       {tagStatus !== "success" && <Icon display="information" size={16} />}
