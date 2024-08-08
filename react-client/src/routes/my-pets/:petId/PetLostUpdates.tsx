@@ -23,7 +23,7 @@ const columns: TableColumn[] = [
   { key: "date", minWidth: "200px", label: "Opened" },
   { key: "update", minWidth: "200px", label: "Last Update" },
   { key: "status", minWidth: "180px", label: "Status" },
-  { key: "note" , minWidth: "300px", label: "Note" },
+  { key: "note", minWidth: "300px", label: "Note" },
 ];
 
 const ITEMS_PER_PAGE = 5;
@@ -33,17 +33,20 @@ export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
 
-  const [isTableVisible, setIsTableVisible] = useState(false);
+  const isMissing = missingStatus === "missing";
+  const [isOpen, setIsOpen] = useState(isMissing);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentRows, setCurrentRows] = useState(
     tableRows.slice(0, ITEMS_PER_PAGE)
   );
+
   return (
     <div className="mt-large">
       <Collapse
-        isOpen={isTableVisible}
-        onOpenChange={setIsTableVisible}
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
         title={<Title level="h4">Lost Pets Status Update</Title>}
+        isLocked={isMissing}
       >
         {renderDescriptionMessage()}
         <PaginatedTable

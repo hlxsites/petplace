@@ -50,6 +50,11 @@ describe("<Collapse />", () => {
     );
   });
 
+  it("should not render the trigger button if it isLocked", () => {
+    getRenderer({ isLocked: true });
+    expect(queryByText(DEFAULT_TRIGGER)?.parentElement?.tagName).not.toBe("BUTTON");
+  });
+
   it("should rotate the icon when it is open", () => {
     const { container } = getRenderer({ isOpen: true });
     expect(container.querySelector("svg")?.parentElement).toHaveClass(
