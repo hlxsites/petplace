@@ -21,8 +21,10 @@ export default function decorate(block) {
 
   const socialShareDiv = document.querySelector('.social-share-container');
   const title = document.createElement('h2');
-  title.innerHTML = 'Share';
-  socialShareDiv.prepend(title);
+  if (!window.location.pathname.includes('best-pet-insurance')) {
+    title.innerHTML = 'Share';
+    socialShareDiv.prepend(title);
+  }
 
   // TODO: insta link only leads to petplace insta
   const socialListEl = document.createElement('ul');

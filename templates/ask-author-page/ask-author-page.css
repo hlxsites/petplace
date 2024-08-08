@@ -3,9 +3,7 @@
   grid-template:
     'hero'
     'author'
-    'social'
     'content'
-    'popular'
     'cards'
     'pagination';
 }
@@ -63,7 +61,7 @@
   height: 50px;
   color: var(--background-color);
   background: var(--highlight-color);
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 60px;
   border: none;
   font-family: var(--heading-font-family);
@@ -72,21 +70,21 @@
 }
 
 .ask-author-page .hero .ask-author-page-hero-auto-block .icon {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 .ask-author-page .hero .ask-author-page-hero-auto-block p {
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 14px;
 }
 
 .ask-author-page .hero > div > div {
   display: grid;
   grid-template:
-    "hero-picture" 65vh
-    "hero-title"
-    "hero-flair"
-    "hero-auto";
+    'hero-picture' 65vh
+    'hero-title'
+    'hero-flair'
+    'hero-auto';
   justify-content: center;
   gap: 1rem;
   max-width: 1344px;
@@ -112,19 +110,6 @@
   overflow: hidden;
 }
 
-.ask-author-page .social-share-container {
-  grid-area: social;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: .5rem;
-}
-
-.ask-author-page .popular-tags-container {
-  grid-area: popular;
-  margin-top: 0;
-  padding-top: 0;
-}
-
 .ask-author-page .cards-container {
   grid-area: cards;
 }
@@ -133,11 +118,11 @@
   grid-area: pagination;
 }
 
-.ask-author-page .section:not(.hero-container, .author-info-container, .popular-tags-container, .social-share-container) h2 {
+.ask-author-page .section:not(.hero-container, .author-info-container, ) h2 {
   font-size: 1.625rem;
 }
 
-.ask-author-page .section:not(.hero-container, .author-info-container, .popular-tags-container, .social-share-container) p {
+.ask-author-page .section:not(.hero-container, .author-info-container, ) p {
   line-height: 32px;
   font-size: 1.125rem;
   margin-bottom: 20px;
@@ -154,9 +139,9 @@
     padding-top: 2rem;
     padding-bottom: 1rem;
     grid-template:
-      "hero-title hero-picture" auto
-      "hero-flair hero-picture" auto
-      "hero-auto hero-picture" 1fr
+      'hero-title hero-picture' auto
+      'hero-flair hero-picture' auto
+      'hero-auto hero-picture' 1fr
       / 1fr 1fr;
   }
 
@@ -184,22 +169,6 @@
     font-size: 1.25rem;
     line-height: 32px;
   }
-
-  .ask-author-page main .popular-tags h2 {
-    font-size: 1.375rem;
-    border-bottom: 2px solid #8f8f8f;
-    padding-bottom: 6px;
-  }
-
-
-  .ask-author-page main .popular-tags h2::after {
-    content: '';
-    display: block;
-    border-bottom: 2px solid var(--highlight-color);
-    width: 100px;
-    margin-top: 6px;
-    margin-bottom: -8px;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -208,9 +177,12 @@
     grid-template:
       'hero hero hero hero' min-content
       '. author content .' min-content
-      '. social content .' min-content
       '. popular cards .' 1fr
-      '. popular pagination .' min-content / 1fr minmax(250px, 300px) minmax(750px, 1026px) 1fr;
+      '. popular pagination .' min-content / 1fr minmax(250px, 300px) minmax(
+        750px,
+        1026px
+      )
+      1fr;
     gap: 0 1.5rem;
   }
 
@@ -229,9 +201,9 @@
 
   .ask-author-page .hero > div > div {
     grid-template:
-      "hero-title hero-picture" auto
-      "hero-flair hero-picture" auto
-      "hero-auto hero-picture" 1fr
+      'hero-title hero-picture' auto
+      'hero-flair hero-picture' auto
+      'hero-auto hero-picture' 1fr
       / 425px 1fr;
   }
 
@@ -262,9 +234,8 @@
   }
 
   .ask-author-page main .hero .ask-author-page-hero-auto-block p {
-    font-size: .75rem;
+    font-size: 0.75rem;
     line-height: 14px;
     padding-right: 2rem;
   }
-
 }

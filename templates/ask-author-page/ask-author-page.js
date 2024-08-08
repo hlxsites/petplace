@@ -80,8 +80,6 @@ export function loadEager(document) {
   const avatar = createOptimizedPicture(avatarUrl, authorName, false, [{ width: 200 }]);
 
   createTemplateBlock(main, 'author-info', [avatar, p]);
-  createTemplateBlock(main, 'social-share');
-  createTemplateBlock(main, 'popular-tags');
   createTemplateBlock(main, 'cards');
   const pagination = createTemplateBlock(main, 'pagination');
   pagination.dataset.limit = PAGINATE_ON;

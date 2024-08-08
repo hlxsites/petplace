@@ -12,6 +12,7 @@ jobs:
       with:
         node-version: '20'
     - run: npm install
-    - run: npm run lint
+    - run: npm run lint:all
+    - run: npm run test:all
       env:
         CI: true

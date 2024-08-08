@@ -104,6 +104,10 @@
   }
 }
 
+.gen-ai .action-cta-title {
+  color: var(--text-color-alt);
+}
+
 /* stylelint-disable-next-line */
 .gen-ai .action-cta img {
   grid-area: action-image;

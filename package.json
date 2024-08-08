@@ -6,7 +6,13 @@
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "build:react": "npm run build --workspace=react-client",
+    "postbuild:react": "npm run update:react:js && npm run update:react:css",
+    "update:react:js": "cp react-client/dist/assets/*.js blocks/react",
+    "update:react:css": "cp react-client/dist/assets/*.css blocks/react",
+    "test:all": "npm run test --workspaces --if-present",
+    "lint:all": "npm run lint && npm run lint --workspaces --if-present"
   },
   "repository": {
     "type": "git",
@@ -28,5 +34,6 @@
     "stylelint-config-standard": "36.0.0"
   },
   "dependencies": {
-  }
+  },
+  "workspaces": [ "react-client" ]
 }
