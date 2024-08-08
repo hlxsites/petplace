@@ -1,4 +1,4 @@
-import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
+import { downloadFile } from "~/util/downloadFunctions";
 import { Icon, IconButton, IconKeys, Loading, Text } from "../design-system";
 import { PetCardOption } from "./PetCardOption";
 import { PetCardRecordProps } from "./types/PetRecordsTypes";
@@ -9,8 +9,6 @@ export const PetCardRecord = ({
   onDelete,
 }: PetCardRecordProps) => {
   const { downloadPath, fileName, fileType } = record;
-
-  const displayIcon: IconKeys = getDisplayIcon(fileType);
 
   return (
     <PetCardOption
@@ -26,9 +24,7 @@ export const PetCardRecord = ({
                 className: "text-orange-300-contrast lg:mr-[-8px]",
                 size: 16,
               }}
-              onClick={() =>
-                handleOnDownload({ downloadPath, fileName, fileType })
-              }
+              onClick={handleOnDownload}
               variant="link"
             />
             <IconButton
@@ -41,7 +37,9 @@ export const PetCardRecord = ({
           </>
         )
       }
-      iconLeft={<Icon className="text-neutral-white" display={displayIcon} />}
+      iconLeft={
+        <Icon className="text-neutral-white" display={getDisplayIcon()} />
+      }
       text={
         <Text color="text-secondary-700" size="xs">
           {fileName}
@@ -49,21 +47,17 @@ export const PetCardRecord = ({
       }
     />
   );
-};
 
-function getDisplayIcon(fileType?: string): IconKeys {
-  if (!fileType) {
-    return "pdfFile";
+  function getDisplayIcon(): IconKeys {
+    if (!fileType) {
+      return "pdfFile";
+    }
+    return fileType === "docx" ? "docFile" : (`${fileType}File` as IconKeys);
   }
-  return fileType === "docx" ? "docFile" : (`${fileType}File` as IconKeys);
-}
 
-function handleOnDownload({
-  downloadPath,
-  fileName,
-  fileType,
-}: DownloadFileProps) {
-  downloadFile({ downloadPath, fileName, fileType }).catch((error) => {
-    console.warn("Error handling the download: ", error);
-  });
-}
+  function handleOnDownload() {
+    downloadFile({ downloadPath, fileName, fileType }).catch((error) => {
+      console.warn("Error handling the download: ", error);
+    });
+  }
+};
