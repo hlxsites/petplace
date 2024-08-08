@@ -6,6 +6,7 @@ main p {
 main .hero-container {
   padding: 0;
   margin: 0;
+  background: none !important;
 }
 
 main .hero-container .hero {
@@ -45,8 +46,12 @@ main .section.well .default-content-wrapper {
   padding: 0;
 }
 
-main .section:nth-of-type(2n) {
+main .section:nth-of-type(odd) {
   background: var(--background-color-light);
+}
+
+main .section.accordion-container {
+  background: white;
 }
 
 main .section.centered p {

@@ -88,12 +88,4 @@ export default async function decorate(block) {
   observer = new MutationObserver(() => {
     renderContent(block);
   });
-
-  if (document.querySelector('.cards ul')) {
-    observer.observe(document.querySelector('.cards ul'), { childList: true });
-  } else {
-    setTimeout(() => {
-      observer.observe(document.querySelector('.cards ul'), { childList: true });
-    });
-  }
 }
