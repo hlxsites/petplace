@@ -10,7 +10,6 @@ import {
   createBreadCrumbs,
   getCategories,
 } from '../../scripts/scripts.js';
-import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
 
@@ -88,6 +87,7 @@ const buildGenAISearchCTA = () => {
   });
 
   headerSearchButton.addEventListener('click', async () => {
+    const { pushToDataLayer } = await import('../../scripts/utils/helpers.js');
     await pushToDataLayer({
       event: 'genai_floater',
       element_type: 'button',
@@ -314,6 +314,7 @@ export async function loadLazy(document) {
 
 export async function loadDelayed() {
   const articleCat = toClassName(getMetadata('category').split(',')[0]?.trim());
+  const { pushToDataLayer } = await import('../../scripts/utils/helpers.js');
   await pushToDataLayer({
     event: 'adsense',
     type: 'article',
