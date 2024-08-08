@@ -194,9 +194,9 @@ export async function loadLazy() {
 
   const breadcrumbData = await createBreadCrumbs([{
     url: window.hlx.contentBasePath + pageCategory.Path,
-    path: pageCategory.Name,
+    path: pageCategory.Path,
     color: 'black',
-    label: pageCategory.Name,
+    label: pageCategory.Name || pageCategory.Category,
   }], { chevronAll: true, chevronIcon: 'chevron-large', useHomeLabel: true });
   createTemplateBlock(breadcrumbContainer, 'breadcrumb', [breadcrumbData]);
 
@@ -209,9 +209,9 @@ export async function loadDelayed() {
   await pushToDataLayer({
     event: 'adsense',
     type: 'category',
-    category: pageCategory.Name,
+    category: pageCategory.Name || pageCategory.Category,
   });
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
-  adsenseFunc('category', pageCategory.Name);
+  adsenseFunc('category', pageCategory.Name || pageCategory.Category);
 }
