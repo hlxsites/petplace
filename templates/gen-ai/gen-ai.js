@@ -416,7 +416,6 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 
       const placeholderCtaCard = resultsBlock.querySelector('.search-actions-placeholder');
 
-
       const action = response.actions[0];
       if (action.type === 'cta') {
         const actionCta = document.createElement('a');
