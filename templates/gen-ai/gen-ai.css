@@ -85,8 +85,10 @@
   }
 }
 
-.gen-ai .action-cta {
+.gen-ai .action-cta,
+.gen-ai .action-cta--placeholder {
   display: grid;
+  grid-template-columns: 1fr;
   grid-template-areas:
     'action-image'
     'action-title'
@@ -98,6 +100,7 @@
   padding: 1.5rem;
 
   @media (min-width: 768px) {
+    grid-template-columns: auto 1fr;
     grid-template-areas:
       'action-image action-title'
       'action-image action-button';
@@ -108,8 +111,13 @@
   color: var(--text-color-alt);
 }
 
+.gen-ai .action-cta--placeholder {
+  margin-bottom: 2rem;
+}
+
 /* stylelint-disable-next-line */
-.gen-ai .action-cta img {
+.gen-ai .action-cta img,
+.gen-ai .action-cta--placeholder img {
   grid-area: action-image;
   aspect-ratio: 44 / 35;
   border-radius: 8px;
@@ -121,7 +129,8 @@
   }
 }
 
-.gen-ai .action-cta [itemprop='name'] {
+.gen-ai .action-cta [itemprop='name'],
+.gen-ai .action-cta--placeholder [itemprop='name'] {
   grid-area: action-title;
   display: flex;
   align-items: center;
@@ -129,7 +138,8 @@
   margin: 0 !important;
 }
 
-.gen-ai .action-cta .action-button {
+.gen-ai .action-cta .action-button,
+.gen-ai .action-cta--placeholder .action-button {
   grid-area: action-button;
   box-sizing: border-box;
   display: flex;
@@ -151,7 +161,8 @@
   }
 }
 
-.gen-ai .action-cta .action-button .icon {
+.gen-ai .action-cta .action-button .icon,
+.gen-ai .action-cta--placeholder .action-button .icon {
   height: 16px;
   width: 16px;
 }
@@ -232,4 +243,14 @@
   .gen-ai .section > div.hero-wrapper {
     max-width: inherit;
   }
+}
+
+.visually-hidden {
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }

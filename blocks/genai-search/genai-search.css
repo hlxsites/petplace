@@ -465,13 +465,11 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button {
   display: none;
 }
 
-.genai-search-container .search-card h3 {
-  grid-row: 3;
+.genai-search-container .search-card h4 {
   grid-column: 1;
 }
 
 .genai-search-container .search-card .search-card-buttons {
-  grid-row: 4;
   grid-column: 1;
   cursor: pointer;
 }
