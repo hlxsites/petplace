@@ -1,74 +1,66 @@
-import type { FC, ReactElement, ReactNode } from "react";
+import type { ReactElement } from "react";
 import { Text, TextSpan } from "~/components/design-system";
 import { Icon, IconKeys } from "../icon/Icon";
 import { PaginateButton } from "./paginateButton/PaginateButton";
 
-interface IControlledPaginationProps {
-  children?: ReactNode;
-  className?: string;
+type ControlledPaginationProps = {
   currentPage: number;
   itemsCount: number;
   itemsPerPage?: number;
   onChange: (page: number, itemsPerPage: number) => void;
-}
+};
 
-export const ControlledPagination: FC<IControlledPaginationProps> = ({
-  children,
-  className,
+export const ControlledPagination = ({
   currentPage,
   itemsCount,
   itemsPerPage = 10,
   onChange,
-}) => {
+}: ControlledPaginationProps) => {
   const isFirstPage = currentPage === 1;
   const totalPages = Math.ceil(itemsCount / itemsPerPage);
   const isLastPage = currentPage === totalPages;
 
   return (
-    <div className={className}>
-      {children}
-
-      <div
-        className="flex flex-col md:flex-row md:justify-between"
-        data-testid="ControlledPagination"
+    <div
+      className="flex flex-col md:flex-row md:justify-between"
+      data-testid="ControlledPagination"
+    >
+      <nav
+        aria-label="Pagination navigation"
+        className="flex justify-center lg:justify-start"
       >
-        <nav
-          aria-label="Pagination navigation"
-          className="flex justify-center lg:justify-start"
+        <PaginateButton
+          ariaLabel="Go to first page"
+          isDisabled={isFirstPage}
+          onClick={goToFirstPage}
         >
-          <PaginateButton
-            ariaLabel="Go to first page"
-            isDisabled={isFirstPage}
-            onClick={goToFirstPage}
-          >
-            {renderLimitIcon(isFirstPage, "doubleArrowLeft")}
-          </PaginateButton>
-          <PaginateButton
-            ariaLabel="Go to previous page"
-            isDisabled={isFirstPage}
-            onClick={goToPreviousPage}
-          >
-            {renderLimitIcon(isFirstPage, "chevronLeft")}
-          </PaginateButton>
-          {renderPageButtons()}
-          <PaginateButton
-            ariaLabel="Go to next page"
-            isDisabled={isLastPage}
-            onClick={goToNextPage}
-          >
-            {renderLimitIcon(isLastPage, "chevronRight")}
-          </PaginateButton>
-          <PaginateButton
-            ariaLabel="Go to last page"
-            isDisabled={isLastPage}
-            onClick={goToLastPage}
-          >
-            {renderLimitIcon(isLastPage, "doubleArrowRight")}
-          </PaginateButton>
-        </nav>
+          {renderLimitIcon(isFirstPage, "doubleArrowLeft")}
+        </PaginateButton>
+        <PaginateButton
+          ariaLabel="Go to previous page"
+          isDisabled={isFirstPage}
+          onClick={goToPreviousPage}
+        >
+          {renderLimitIcon(isFirstPage, "chevronLeft")}
+        </PaginateButton>
+        {renderPageButtons()}
+        <PaginateButton
+          ariaLabel="Go to next page"
+          isDisabled={isLastPage}
+          onClick={goToNextPage}
+        >
+          {renderLimitIcon(isLastPage, "chevronRight")}
+        </PaginateButton>
+        <PaginateButton
+          ariaLabel="Go to last page"
+          isDisabled={isLastPage}
+          onClick={goToLastPage}
+        >
+          {renderLimitIcon(isLastPage, "doubleArrowRight")}
+        </PaginateButton>
+      </nav>
 
-        <div>{renderTotal()}</div>
-      </div>
+      <div>{renderTotal()}</div>
     </div>
   );
 
