@@ -8,7 +8,7 @@ import {
 type StyleProps = TextCommonStyleProps & {
   color?: `text-${string}` | "inherit";
   fontFamily?: "franklin" | "raleway" | "roboto";
-  fontWeight?: "normal" | "bold";
+  fontWeight?: "normal" | "bold" | "medium";
   size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";
 };
 
@@ -59,6 +59,7 @@ function useTextBase({
     "font-roboto": fontFamily === "roboto",
     "font-normal": fontWeight === "normal",
     "font-bold": fontWeight === "bold",
+    "font-medium": fontWeight === "medium",
     "text-xl leading-8": size === "xlg",
     "text-lg leading-7": size === "lg",
     "text-base leading-6": size === "base",

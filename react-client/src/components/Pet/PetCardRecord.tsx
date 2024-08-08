@@ -1,7 +1,7 @@
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
-import { PetCardRecordProps } from "./types/PetRecordsTypes";
-import { PetCardOption } from "./PetCardOption";
 import { Icon, IconButton, IconKeys, Loading, Text } from "../design-system";
+import { PetCardOption } from "./PetCardOption";
+import { PetCardRecordProps } from "./types/PetRecordsTypes";
 
 export const PetCardRecord = ({
   record,

@@ -8,4 +8,5 @@ export * from "./PetCardPetWatchPlayground";
 export * from "./PetCardRecordPlayground";
 export * from "./PetDocumentsViewPlayground";
 export * from "./TablePlayground";
+export * from "./TagPlayground";
 export * from "./TextPlayground";

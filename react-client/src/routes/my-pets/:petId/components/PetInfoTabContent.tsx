@@ -1,5 +1,5 @@
+import { Text, TextSpan } from "~/components/design-system";
 import { PetInfo } from "~/mocks/MockRestApiServer";
-import { Text, TextSpan } from "../design-system";
 
 export type GetPetInfoTabProps = Omit<
   PetInfo,

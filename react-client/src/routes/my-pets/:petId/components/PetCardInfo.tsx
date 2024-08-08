@@ -1,5 +1,12 @@
+import {
+  Button,
+  RouteBasedTabs,
+  RouteTab,
+  Text,
+  Title,
+} from "~/components/design-system";
 import { PetInfo } from "~/mocks/MockRestApiServer";
-import { Button, Tab, Text, Title, UncontrolledTabs } from "../design-system";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 
@@ -16,7 +23,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
     species,
   } = petInfo;
 
-  const tabOptions: Tab[] = [
+  const tabOptions: RouteTab[] = [
     {
       content: () =>
         PetInfoTabContent({
@@ -28,13 +35,16 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
           spayedNeutered,
           species,
         }),
+      exactRoute: true,
       icon: "paw",
       label: "Pet info",
+      route: getRouteFor(""),
     },
     {
       content: () => <PetDocumentsTabContent />,
       icon: "file",
       label: "Pet documents",
+      route: getRouteFor(AppRoutePaths.petProfileDocuments),
     },
   ];
 
@@ -71,9 +81,13 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
         <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
 
         <div className="mt-base">
-          <UncontrolledTabs tabs={tabOptions} />
+          <RouteBasedTabs tabs={tabOptions} />
         </div>
       </>
     );
+  }
+
+  function getRouteFor(type: string) {
+    return `/${AppRoutePaths.myPets}/${petInfo.id}/${type}`;
   }
 };

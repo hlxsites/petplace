@@ -6,6 +6,7 @@ import {
 import { getPetById } from "~/mocks/MockRestApiServer";
 import { LoaderData } from "~/types/LoaderData";
 import { invariantResponse } from "~/util/invariant";
+import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
 
 export const loader = (({ params }) => {
   const { petId } = params;
@@ -16,15 +17,13 @@ export const loader = (({ params }) => {
     status: 404,
   });
 
-  return { petInfo };
+  return { documentTypes: PET_DOCUMENT_TYPES_LIST, petInfo };
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
-  const { petInfo } = useLoaderData() as LoaderData<typeof loader>;
+  const loaderData = useLoaderData() as LoaderData<typeof loader>;
 
-  return {
-    petInfo,
-  };
+  return loaderData;
 };
 
 export const usePetProfileContext = () =>
