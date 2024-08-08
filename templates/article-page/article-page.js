@@ -14,6 +14,8 @@ import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
 
+const categoriesPromise = getCategories();
+
 function createTableOfContents(main) {
   const hasToc = getMetadata('has-toc');
   if (!hasToc) {
@@ -96,8 +98,8 @@ const buildGenAISearchCTA = () => {
   return headerSearchButton;
 };
 
-export async function getCategoryByKey(key, value) {
-  const categories = await getCategories();
+async function getCategoryByKey(key, value) {
+  const categories = await categoriesPromise;
   return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
 }
 
