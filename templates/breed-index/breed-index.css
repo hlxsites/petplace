@@ -6,6 +6,15 @@
     position: relative;
 }
 
+.hero-wrapper .hero {
+  padding: 0;
+  min-height: auto;
+}
+
+.hero-wrapper .hero h1 {
+  color: var(--text-color-inverted);
+}
+
 .hero-wrapper .img-div {
     position: relative;
     padding-bottom: 111%;
@@ -21,6 +30,7 @@
     object-position: center center;
     opacity: 1;
     transition: opacity 500ms ease 0s;
+    max-height: auto;
 }
 
 .hero-wrapper .text-div {
@@ -84,16 +94,22 @@
 }
 
 @media screen and (min-width: 461px) {
-    .hero-wrapper .img-div {
-        position: relative;
-        padding-bottom: 62%;
-    }
+  .hero-wrapper .img-div {
+    position: relative;
+    padding-bottom: 62%;
+  }
 }
 
 @media screen and (min-width: 768px) {
-    .hero-wrapper .text-div {
-        top: 60px
-    }
+  .hero-wrapper .text-div {
+    top: 60px
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .hero-wrapper .hero h1 {
+    font-size: var(--heading-font-size-xxl);
+  }
 }
 
 @media (min-width: 1024px) {
