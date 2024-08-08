@@ -692,6 +692,12 @@ function animateSkeletons(main) {
           .forEach((el) => {
             observer.observe(el);
           });
+        [...entry.addedNodes]
+          .map((el) => (el.querySelectorAll ? [...el.querySelectorAll('.skeleton')] : []))
+          .flat()
+          .forEach((el) => {
+            observer.observe(el);
+          });
       } else if (entry.target.classList?.contains('skeleton')) {
         observer.observe(entry.target);
       }
