@@ -108,10 +108,8 @@ export const ControlledPagination = ({
 
   function renderEllipsis(key: string) {
     return (
-      <div className="mt-[4px]">
-        <TextSpan key={key} fontWeight="bold">
-          &hellip;
-        </TextSpan>
+      <div key={key} className="mt-[4px]">
+        <TextSpan fontWeight="bold">&hellip;</TextSpan>
       </div>
     );
   }
