@@ -193,16 +193,7 @@ export async function loadEager(document) {
 
   main.firstElementChild.classList.add('article-content-container');
 
-  // content
-    // heading
-    // author
-    // hero
-    buildHeroSection(main);
-    // buildHeroBlock(main);
-    // ad top
-    // article
-      // ad middle
-    // genai search
+  buildHeroSection(main);
 
   // sidebar
   const sidebar = document.createElement('div');
@@ -215,63 +206,58 @@ export async function loadEager(document) {
   // insurance
   sidebar.append(buildBlock('article-cta', { elems: [] }));
 
-  // related readings
-  // ad bottom
-
   // top
   createTableOfContents(main);
-
-  // sidebar
 
   // bottom
   createTemplateBlock(main, 'related-reading');
 
   // same attribute setting as earlier
-  // main.setAttribute('itemscope', '');
-  // const articleType = toClassName(getMetadata('type'));
+  main.setAttribute('itemscope', '');
+  const articleType = toClassName(getMetadata('type'));
 
-  // if (articleType === 'faq') {
-  //   main.setAttribute('itemtype', 'https://schema.org/FAQPage');
-  //   [...main.querySelectorAll(':scope > div > :is(h1,h2,h3)')]
-  //     .filter((h) => h.textContent.endsWith('?') || h.textContent.match(/#\d+/))
-  //     .forEach((h) => {
-  //       if (h.nodeName === 'H1') {
-  //         const meta = document.createElement('meta');
-  //         meta.setAttribute('itemprop', 'name');
-  //         meta.setAttribute('content', h.textContent);
-  //         h.after(meta);
-  //       } else {
-  //         h.setAttribute('itemprop', 'name');
-  //       }
-  //       const question = document.createElement('div');
-  //       question.setAttribute('itemscope', '');
-  //       question.setAttribute('itemprop', 'mainEntity');
-  //       question.setAttribute('itemtype', 'https://schema.org/Question');
-  //       if (h.nodeName === 'H1') {
-  //         h.after(question);
-  //         question.append(question.nextElementSibling);
-  //       } else {
-  //         h.replaceWith(question);
-  //         question.append(h);
-  //       }
-  //       const answer = document.createElement('div');
-  //       answer.setAttribute('itemscope', '');
-  //       answer.setAttribute('itemprop', 'acceptedAnswer');
-  //       answer.setAttribute('itemtype', 'https://schema.org/Answer');
-  //       question.append(answer);
-  //       const div = document.createElement('div');
-  //       div.setAttribute('itemprop', 'text');
-  //       answer.append(div);
-  //       while (
-  //         question.nextElementSibling
-  //         && question.nextElementSibling.tagName !== h.nodeName
-  //       ) {
-  //         div.append(question.nextElementSibling);
-  //       }
-  //     });
-  // } else {
-  //   main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
-  // }
+  if (articleType === 'faq') {
+    main.setAttribute('itemtype', 'https://schema.org/FAQPage');
+    [...main.querySelectorAll(':scope > div > :is(h1,h2,h3)')]
+      .filter((h) => h.textContent.endsWith('?') || h.textContent.match(/#\d+/))
+      .forEach((h) => {
+        if (h.nodeName === 'H1') {
+          const meta = document.createElement('meta');
+          meta.setAttribute('itemprop', 'name');
+          meta.setAttribute('content', h.textContent);
+          h.after(meta);
+        } else {
+          h.setAttribute('itemprop', 'name');
+        }
+        const question = document.createElement('div');
+        question.setAttribute('itemscope', '');
+        question.setAttribute('itemprop', 'mainEntity');
+        question.setAttribute('itemtype', 'https://schema.org/Question');
+        if (h.nodeName === 'H1') {
+          h.after(question);
+          question.append(question.nextElementSibling);
+        } else {
+          h.replaceWith(question);
+          question.append(h);
+        }
+        const answer = document.createElement('div');
+        answer.setAttribute('itemscope', '');
+        answer.setAttribute('itemprop', 'acceptedAnswer');
+        answer.setAttribute('itemtype', 'https://schema.org/Answer');
+        question.append(answer);
+        const div = document.createElement('div');
+        div.setAttribute('itemprop', 'text');
+        answer.append(div);
+        while (
+          question.nextElementSibling
+          && question.nextElementSibling.tagName !== h.nodeName
+        ) {
+          div.append(question.nextElementSibling);
+        }
+      });
+  } else {
+    main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
+  }
   await buildBreadcrumb(main);
 }
 
@@ -282,27 +268,6 @@ export async function loadLazy(document) {
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('article', 'create');
-
-  // if (!isMobile()) {
-  //   const contentDiv = document.createElement('div');
-  //   contentDiv.classList.add('content-left');
-  //   const heroTitleDiv = document.querySelector('.hero-title-container');
-  //   const blogSection = document.querySelector('.article-content-container');
-  //   contentDiv.append(heroTitleDiv);
-  //   contentDiv.append(blogSection);
-
-  //   const sidebarDiv = document.createElement('div');
-  //   sidebarDiv.classList.add('sidebar-right');
-  //   const socialDiv = document.querySelector('.social-share-container');
-  //   const popularDiv = document.querySelector('.popular-articles-container');
-  //   const compareDiv = document.querySelector('.article-cta-container');
-  //   sidebarDiv.append(socialDiv);
-  //   sidebarDiv.append(popularDiv);
-  //   sidebarDiv.append(compareDiv);
-
-  //   main.append(contentDiv);
-  //   main.append(sidebarDiv);
-  // }
 
   // GenAI Search
   buildGenAiSearchSection(main);
