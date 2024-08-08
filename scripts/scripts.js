@@ -8,7 +8,6 @@ import {
   decorateSections,
   decorateTemplateAndTheme,
   fetchPlaceholders,
-  getAllMetadata,
   getMetadata,
   loadBlock,
   loadBlocks,
@@ -108,17 +107,20 @@ window.hlx.templates.add([
 const consentConfig = JSON.parse(localStorage.getItem('aem-consent') || 'null');
 
 window.hlx.plugins.add('experimentation', {
-  url: '/plugins/experimentation/src/index.js',
-  condition: () => getMetadata('experiment')
-    || Object.keys(getAllMetadata('campaign')).length
-    || Object.keys(getAllMetadata('audience')).length,
-  load: 'eager',
+  condition: () => document.head.querySelector('[name^="experiment"],[name^="campaign-"],[name^="audience-"]')
+    || document.head.querySelector('[property^="campaign:"],[property^="audience:"]')
+    || document.querySelector('.section[class*="experiment-"],.section[class*="audience-"],.section[class*="campaign-"]')
+    || [...document.querySelectorAll('.section-metadata div')].some((d) => d.textContent.match(/Experiment|Campaign|Audience/i)),
   options: {
     audiences: AUDIENCES,
     prodHost: 'www.petplace.com',
-    storage: consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
-      ? window.localStorage : window.SessionStorage,
+    storage:
+        consentConfig && consentConfig.categories.includes('CC_ANALYTICS')
+          ? window.localStorage
+          : window.SessionStorage,
   },
+  load: 'eager',
+  url: '/plugins/experimentation/src/index.js',
 });
 
 window.hlx.plugins.add('martech', {
@@ -541,6 +543,27 @@ function buildAutoBlocks(main) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
+}
+
+function redecorateIfHeroBlock(heroElement) {
+  const parent = heroElement.parentElement.parentElement;
+  [...heroElement.children].reverse().forEach((el) => parent.prepend(el));
+  heroElement.parentElement.remove();
+  heroElement.remove();
+  // Rebuild and redecorate the hero block
+  buildHeroBlock(parent);
+  decorateBlocks(parent);
+  loadBlocks(parent);
+}
+
+export function decorateFunction(element) {
+  if (element.classList.contains('hero')) {
+    redecorateIfHeroBlock(element);
+  } else if (element.classList.contains('block')) {
+    decorateBlock(element);
+    loadBlock(element);
+  }
+  // add more conditions here if needed
 }
 
 /**
