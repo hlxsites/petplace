@@ -27,11 +27,7 @@ export const AdvertisingBannerImageRight = ({
   gradientDirection,
 }: AdvertisingBannerImageRightProps) => {
   return (
-    <Card
-      backgroundColor={cardStyleProps?.backgroundColor}
-      {...cardStyleProps}
-      role="region"
-    >
+    <Card {...cardStyleProps} role="region">
       <div className="grid grid-cols-1 justify-between p-large lg:flex">
         <div className="flex max-w-[455px] flex-col items-start justify-between pr-xxxxxlarge">
           <div className="grid gap-base pb-xxxxxlarge">
