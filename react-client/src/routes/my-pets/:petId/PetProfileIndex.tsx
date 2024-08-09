@@ -5,11 +5,12 @@ import { PetAlertMessage } from "~/components/Pet/PetAlertMessage";
 import { PetCard } from "~/components/Pet/PetCard";
 import { PetCardInfo } from "./components/PetCardInfo";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
+import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 
 export const PetProfileIndex = () => {
   const viewModel = usePetProfileContext();
-  const { petInfo } = viewModel;
-
+  const { petInfo, petServiceStatus } = viewModel;
+  console.log("petServiceStatus on index", petServiceStatus);
   return (
     <>
       <div className="pb-xxlarge">
@@ -29,6 +30,9 @@ export const PetProfileIndex = () => {
         >
           <PetCardInfo {...petInfo} name={petInfo.name} />
         </PetCard>
+        {petServiceStatus && (
+          <PetWatchSection petServiceStatus={petServiceStatus} />
+        )}
         {renderPetInsuranceSection()}
       </div>
       <Outlet context={viewModel} />
