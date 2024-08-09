@@ -1,10 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
 
-// downloadPath?: string;
-//   fileName: string;
-//   fileType?:
+const PET_SERVICES = {
+  buddy: {
+    id: "1",
+    type: "standard",
+  },
+  lily: {
+    id: "2",
+    type: "lifetimePlus",
+  },
+  charlie: {
+    id: "3",
+    type: "expired",
+  },
+};
 
 const PET_RECORDS = {
   buddy: {
@@ -148,4 +160,13 @@ export const getPetDocuments = ({
 
 export const getPetById = (id: string) => {
   return getPetsList()?.find((pet) => pet.id === id);
+};
+
+export const getPetServiceStatus = (petId: string) => {
+  try {
+    // @ts-expect-error - ignoring mock function
+    return (PET_SERVICES?.[petId]?.type as PetServiceTypes) || undefined;
+  } catch (_) {
+    return;
+  }
 };
