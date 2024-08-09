@@ -86,15 +86,14 @@ describe("Text", () => {
   });
 
   it.each([
-    ["black", "text-black"],
-    ["neutral", "text-neutral-950"],
-    ["primary", "text-primary-900"],
-    ["secondary", "text-secondary-700"],
-    ["tertiary", "text-tertiary-600"],
-    ["blue-500", "text-blue-500"],
-  ])("should render component with color %p", (color, expected) => {
-    // @ts-expect-error - ignoring for test purposes only
-    getRenderer({ color });
+    "text-black",
+    "text-neutral-950",
+    "text-primary-900",
+    "text-secondary-700",
+    "text-tertiary-600",
+    "text-blue-500",
+  ])("should render component with color %p", (expected) => {
+    getRenderer({ color: expected as `text-${string}`});
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass(expected);
   });
 });
