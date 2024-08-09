@@ -2,18 +2,18 @@ import { Text, TextSpan } from "~/components/design-system";
 import { Icon, IconKeys } from "../icon/Icon";
 import { PaginateButton } from "./paginateButton/PaginateButton";
 
-type ControlledPaginationProps = {
+export type ControlledPaginationProps = {
   currentPage: number;
   itemsCount: number;
   itemsPerPage?: number;
-  onChange: (page: number, itemsPerPage: number) => void;
+  didChangePage: (page: number, itemsPerPage: number) => void;
 };
 
 export const ControlledPagination = ({
   currentPage,
   itemsCount,
   itemsPerPage = 10,
-  onChange,
+  didChangePage,
 }: ControlledPaginationProps) => {
   const isFirstPage = currentPage === 1;
   const totalPages = Math.ceil(itemsCount / itemsPerPage);
@@ -82,7 +82,7 @@ export const ControlledPagination = ({
 
     const buttons = [renderButton(1)];
     let lastRendered = "";
-    let ellipsisLabel = "ellipsis-start"
+    let ellipsisLabel = "ellipsis-start";
     for (let index = 2; index <= totalPages; index++) {
       if (
         index !== totalPages &&
@@ -90,7 +90,7 @@ export const ControlledPagination = ({
       ) {
         if (lastRendered === "ellipsis") continue;
         buttons.push(renderEllipsis(ellipsisLabel));
-        ellipsisLabel = "ellipsis-end"
+        ellipsisLabel = "ellipsis-end";
         lastRendered = "ellipsis";
       } else {
         buttons.push(renderButton(index));
@@ -103,10 +103,10 @@ export const ControlledPagination = ({
 
   function generatePageButtons(amount: number, start: number) {
     const indexes = [];
-    let buttonIndex = start
+    let buttonIndex = start;
     for (let i = 0; i < amount; i++) {
       indexes.push(buttonIndex);
-      buttonIndex++
+      buttonIndex++;
     }
     return indexes.map(renderButton);
   }
@@ -125,14 +125,14 @@ export const ControlledPagination = ({
         onClick={goToPage(page)}
         className="-mt-[5px]"
       >
-        <span>{page}</span>
+        <span className="block w-5">{page}</span>
       </PaginateButton>
     );
   }
 
   function renderEllipsis(key: string) {
     return (
-      <div key={key} className="mt-[4px]">
+      <div key={key} className="mx-[4px] -mt-[1px] w-5">
         <TextSpan fontWeight="bold">&hellip;</TextSpan>
       </div>
     );
@@ -191,6 +191,6 @@ export const ControlledPagination = ({
   }
 
   function changeCurrentPage(page: number) {
-    onChange(page, itemsPerPage);
+    didChangePage(page, itemsPerPage);
   }
 };
