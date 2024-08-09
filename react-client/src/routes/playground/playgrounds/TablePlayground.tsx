@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Table, Title } from "~/components/design-system";
-import { PaginatedTable } from "~/components/design-system/table/paginatedTable/PaginatedTable";
 import { TableColumn } from "~/components/design-system/table/TableTypes";
 
 const SimpleTable = () => {
   const columns: TableColumn[] = [
-    { key: "date", width: "100px", label: "Date" },
-    { key: "status", width: "200px", label: "Status" },
-    { key: "id", width: "300px", label: "ID" },
+    { key: "date", minWidth: "100px", label: "Date" },
+    { key: "status", minWidth: "200px", label: "Status" },
+    { key: "id", minWidth: "300px", label: "ID" },
     { key: "note", label: "Note" },
   ];
 
@@ -53,9 +52,9 @@ const SimpleTable = () => {
 
 const TableWithoutHeader = () => {
   const columns: TableColumn[] = [
-    { key: "date", width: "100px" },
-    { key: "status", width: "200px" },
-    { key: "id", width: "300px" },
+    { key: "date", minWidth: "100px" },
+    { key: "status", minWidth: "200px" },
+    { key: "id", minWidth: "300px" },
     { key: "note" },
   ];
 
@@ -99,32 +98,37 @@ const TableWithoutHeader = () => {
   );
 };
 
-
 const TableWithPages = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentRows, setCurrentRows] = useState(getPaginatedRows().slice(0, 5));
+  const [currentRows, setCurrentRows] = useState(
+    getPaginatedRows().slice(0, 5)
+  );
   const pageColumns = [
-    { key: "date", width: "100px", label: "Date" },
-    { key: "status", width: "200px", label: "Status" },
-    { key: "id", width: "300px", label: "ID" },
+    { key: "date", minWidth: "150px", label: "Date" },
+    { key: "status", minWidth: "250px", label: "Status" },
+    { key: "id", minWidth: "350px", label: "ID" },
     { key: "note", label: "Note" },
   ];
 
   return (
     <div className="">
       {/* <Table columns={columns} rows={rows} /> */}
-      <PaginatedTable
+      <Table
         columns={pageColumns}
         rows={currentRows}
-        currentPage={currentPage}
-        didChangePagination={function (page: number, itemsPerPage: number) {
-          setCurrentPage(page);
-          const offsetStartIndex = itemsPerPage * (page - 1);
-          const offsetFinishIndex = offsetStartIndex + itemsPerPage;
-          setCurrentRows(getPaginatedRows().slice(offsetStartIndex, offsetFinishIndex));
+        paginationProps={{
+          currentPage: currentPage,
+          didChangePage: (page: number, itemsPerPage: number) => {
+            setCurrentPage(page);
+            const offsetStartIndex = itemsPerPage * (page - 1);
+            const offsetFinishIndex = offsetStartIndex + itemsPerPage;
+            setCurrentRows(
+              getPaginatedRows().slice(offsetStartIndex, offsetFinishIndex)
+            );
+          },
+          itemsCount: getPaginatedRows().length,
+          itemsPerPage: 5,
         }}
-        itemsCount={getPaginatedRows().length}
-        itemsPerPage={5}
       />
     </div>
   );
@@ -149,7 +153,7 @@ export const TablePlayground = () => {
   );
 };
 
-function getPaginatedRows(){
+function getPaginatedRows() {
   return [
     {
       data: {
@@ -721,5 +725,5 @@ function getPaginatedRows(){
       key: "173",
       isSelectable: false,
     },
-  ]
+  ];
 }

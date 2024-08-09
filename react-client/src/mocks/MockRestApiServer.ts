@@ -1,15 +1,87 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+
+// downloadPath?: string;
+//   fileName: string;
+//   fileType?:
+
+const PET_RECORDS = {
+  buddy: {
+    "medical-records": [
+      {
+        id: "medical-1",
+        downloadPath:
+          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+        fileName: "Buddy's medical record #1",
+        fileType: "pdf",
+      },
+      {
+        id: "medical-2",
+        downloadPath:
+          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+        fileName: "Buddy's medical record #2",
+        fileType: "pdf",
+      },
+    ],
+    other: [
+      {
+        downloadPath:
+          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+        fileName: "PDF-Git sheet",
+        fileType: "pdf",
+        id: "756",
+      },
+    ],
+  },
+  lily: {
+    vaccines: [
+      {
+        id: "vaccine-1",
+        downloadPath:
+          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+        fileName: "Lily's vaccine record #1",
+        fileType: "pdf",
+      },
+      {
+        id: "vaccine-2",
+        downloadPath:
+          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+        fileName: "Lily's vaccine record #2",
+        fileType: "pdf",
+      },
+    ],
+    other: [
+      {
+        downloadPath:
+          "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg",
+        fileName: "Lily's photo",
+        fileType: "jpg",
+        id: "123",
+      },
+      {
+        downloadPath:
+          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+        fileName: "PDF-Git sheet",
+        fileType: "pdf",
+        id: "756",
+      },
+    ],
+  },
+};
+
 export type PetInfo = {
   age?: string | undefined;
   breed?: string;
   dateOfBirth?: string;
   id: string;
   img?: string;
-  mixedBreed?: string;
   isProtected?: boolean;
   microchipNumber?: number;
+  mixedBreed?: string;
   name: string;
   sex?: string;
-  spayedNeutered?: string;
+  spayedNeutered?: boolean;
   species?: string;
   missingStatus?: MissingStatus;
   lostPetHistory?: LostPetUpdate[];
@@ -38,7 +110,7 @@ const PETS_LIST: PetInfo[] = [
     mixedBreed: "Yes",
     name: "Buddy",
     sex: "Male",
-    spayedNeutered: "No",
+    spayedNeutered: false,
     species: "Dog",
     lostPetHistory: [
       {
@@ -69,7 +141,7 @@ const PETS_LIST: PetInfo[] = [
     mixedBreed: "No",
     name: "Lily",
     sex: "Female",
-    spayedNeutered: "Yes",
+    spayedNeutered: true,
     species: "Cat",
     lostPetHistory: [
       {
@@ -132,7 +204,7 @@ const PETS_LIST: PetInfo[] = [
     missingStatus: "found",
     name: "Charlie",
     sex: "Male",
-    spayedNeutered: "Yes",
+    spayedNeutered: true,
     species: "Dog",
     lostPetHistory: [],
   },
@@ -141,6 +213,22 @@ const PETS_LIST: PetInfo[] = [
 export const getPetsList = () => {
   return PETS_LIST;
 };
+
+export const getPetDocuments = ({
+  petId,
+  type,
+}: {
+  petId: string;
+  type: string;
+}): PetRecord[] => {
+  try {
+    // @ts-expect-error - ignoring mock function
+    return (PET_RECORDS?.[petId]?.[type] as PetRecord[]) || [];
+  } catch (_) {
+    return [];
+  }
+};
+
 export const getPetById = (id: string) => {
   return getPetsList()?.find((pet) => pet.id === id);
 };

@@ -176,7 +176,7 @@ describe("<ControlledPagination />", () => {
       expect(getByRole("button", { name: expected })).toBeDisabled();
     });
 
-    it.each([5, 6, 7, 8, 9])(
+    it.each([ 6, 7, 8, 9])(
       "should NOT display button to page %i",
       (expected) => {
         getRenderer({
@@ -191,62 +191,62 @@ describe("<ControlledPagination />", () => {
     );
 
     it("should NOT allow user to move to previous page", async () => {
-      const onChange = jest.fn();
+      const didChangePage = jest.fn();
       getRenderer({
         currentPage: 1,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange,
+        didChangePage,
       });
 
       await userEvent.click(getByLabelText(PREVIOUS_PAGE));
-      expect(onChange).not.toHaveBeenCalled();
+      expect(didChangePage).not.toHaveBeenCalled();
     });
 
     it("should NOT allow user to move to first page", async () => {
-      const onChange = jest.fn();
+      const didChangePage = jest.fn();
       getRenderer({
         currentPage: 1,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange,
+        didChangePage,
       });
 
       await userEvent.click(getByLabelText(FIRST_PAGE));
-      expect(onChange).not.toHaveBeenCalled();
+      expect(didChangePage).not.toHaveBeenCalled();
     });
 
     it("should allow user to move to next page", async () => {
-      const onChange = jest.fn();
+      const didChangePage = jest.fn();
       getRenderer({
         currentPage: 1,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange,
+        didChangePage,
       });
-      expect(onChange).not.toHaveBeenCalled();
+      expect(didChangePage).not.toHaveBeenCalled();
 
       await userEvent.click(getByLabelText(NEXT_PAGE));
-      expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith(2, 10);
+      expect(didChangePage).toHaveBeenCalledTimes(1);
+      expect(didChangePage).toHaveBeenCalledWith(2, 10);
     });
 
     it("should allow user to move to last page", async () => {
-      const onChange = jest.fn();
+      const didChangePage = jest.fn();
       getRenderer({
         currentPage: 1,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange,
+        didChangePage,
       });
-      expect(onChange).not.toHaveBeenCalled();
+      expect(didChangePage).not.toHaveBeenCalled();
 
       await userEvent.click(getByLabelText(LAST_PAGE));
-      expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith(10, 10);
+      expect(didChangePage).toHaveBeenCalledTimes(1);
+      expect(didChangePage).toHaveBeenCalledWith(10, 10);
     });
 
-    it.each([2, 3, 4, 10])(
+    it.each([2, 3, 4, 5, 10])(
       "should allow user to move to Page %i",
       async (expected) => {
         let expectedPage = 1;
@@ -255,7 +255,7 @@ describe("<ControlledPagination />", () => {
           currentPage: 1,
           itemsCount: 100,
           itemsPerPage: 10,
-          onChange: (page: number) => (expectedPage = page),
+          didChangePage: (page: number) => (expectedPage = page),
         });
 
         await userEvent.click(getByLabelText(`Go to page ${expected}`));
@@ -284,7 +284,7 @@ describe("<ControlledPagination />", () => {
       expect(queryByLabelText(`Go to page ${expected}`)).toBeInTheDocument();
     });
 
-    it.each([1, 2, 3, 10])(
+    it.each([1, 2, 3, 5, 10])(
       "should allow user to move to Page %i",
       async (expected) => {
         let expectedPage = 4;
@@ -293,7 +293,7 @@ describe("<ControlledPagination />", () => {
           currentPage: 4,
           itemsCount: 100,
           itemsPerPage: 10,
-          onChange: (page: number) => (expectedPage = page),
+          didChangePage: (page: number) => (expectedPage = page),
         });
 
         await userEvent.click(getByLabelText(`Go to page ${expected}`));
@@ -303,7 +303,7 @@ describe("<ControlledPagination />", () => {
   });
 
   describe("When on last page (page 10)", () => {
-    it.each([2, 3, 4, 5, 6])(
+    it.each([2, 3, 4, 5])(
       "should NOT display button to page %i",
       (expected) => {
         getRenderer({
@@ -324,7 +324,7 @@ describe("<ControlledPagination />", () => {
         currentPage: 10,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange: (page: number) => (expectedPage = page),
+        didChangePage: (page: number) => (expectedPage = page),
       });
 
       await userEvent.click(getByLabelText(PREVIOUS_PAGE));
@@ -338,58 +338,58 @@ describe("<ControlledPagination />", () => {
         currentPage: 10,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange: (page: number) => (expectedPage = page),
+        didChangePage: (page: number) => (expectedPage = page),
       });
 
       await userEvent.click(getByLabelText(FIRST_PAGE));
       expect(expectedPage).toBe(1);
     });
 
-    it.each([1, 7, 8, 9])(
+    it.each([1, 6, 7, 8, 9])(
       "should allow user to move to Page %i",
       async (expected) => {
-        const onChange = jest.fn();
+        const didChangePage = jest.fn();
 
         getRenderer({
           currentPage: 10,
           itemsCount: 100,
           itemsPerPage: 10,
-          onChange,
+          didChangePage,
         });
-        expect(onChange).not.toHaveBeenCalled();
+        expect(didChangePage).not.toHaveBeenCalled();
 
         await userEvent.click(getByLabelText(`Go to page ${expected}`));
-        expect(onChange).toHaveBeenCalledTimes(1);
-        expect(onChange).toHaveBeenCalledWith(expected, 10);
+        expect(didChangePage).toHaveBeenCalledTimes(1);
+        expect(didChangePage).toHaveBeenCalledWith(expected, 10);
       }
     );
 
     it("should NOT allow user to move to next page", async () => {
-      const onChange = jest.fn();
+      const didChangePage = jest.fn();
 
       getRenderer({
         currentPage: 10,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange,
+        didChangePage,
       });
 
       await userEvent.click(getByLabelText(NEXT_PAGE));
-      expect(onChange).not.toHaveBeenCalled();
+      expect(didChangePage).not.toHaveBeenCalled();
     });
 
     it("should NOT allow user to move to last page", async () => {
-      const onChange = jest.fn();
+      const didChangePage = jest.fn();
 
       getRenderer({
         currentPage: 10,
         itemsCount: 100,
         itemsPerPage: 10,
-        onChange,
+        didChangePage,
       });
 
       await userEvent.click(getByLabelText(LAST_PAGE));
-      expect(onChange).not.toHaveBeenCalled();
+      expect(didChangePage).not.toHaveBeenCalled();
     });
   });
 });
@@ -398,14 +398,14 @@ function getRenderer({
   currentPage = 1,
   itemsCount = 100,
   itemsPerPage = 10,
-  onChange = jest.fn(),
+  didChangePage = jest.fn(),
 }: Partial<ComponentProps<typeof ControlledPagination>>) {
   return render(
     <ControlledPagination
       currentPage={currentPage}
       itemsCount={itemsCount}
       itemsPerPage={itemsPerPage}
-      onChange={onChange}
+      didChangePage={didChangePage}
     />
   );
 }

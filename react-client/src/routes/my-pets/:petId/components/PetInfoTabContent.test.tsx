@@ -7,13 +7,13 @@ const mockPetInfo = {
   dateOfBirth: "2021-05-01",
   mixedBreed: "No",
   sex: "Male",
-  spayedNeutered: "Yes",
+  spayedNeutered: true,
   species: "Dog",
 };
 
 const { getAllByRole } = screen;
 
-describe("getPetInfoTab", () => {
+describe("<PetInfoTabContent />", () => {
   it("should render the given labels with its expected values", () => {
     getRenderer(mockPetInfo);
 
@@ -26,9 +26,17 @@ describe("getPetInfoTab", () => {
     expect(items[5]).toHaveTextContent(
       `Mixed breed: ${mockPetInfo.mixedBreed}`
     );
-    expect(items[6]).toHaveTextContent(
-      `Spayed/Neutered: ${mockPetInfo.spayedNeutered}`
-    );
+    expect(items[6]).toHaveTextContent("Spayed/Neutered: Yes");
+  });
+
+  it("should render Spayed/Neutered: No", () => {
+    getRenderer({
+      ...mockPetInfo,
+      spayedNeutered: false,
+    });
+
+    const items = getAllByRole("listitem");
+    expect(items[6]).toHaveTextContent("Spayed/Neutered: No");
   });
 
   it("should render field empty when no value is given", () => {
@@ -38,7 +46,7 @@ describe("getPetInfoTab", () => {
       dateOfBirth: "",
       mixedBreed: "",
       sex: "",
-      spayedNeutered: "",
+      spayedNeutered: undefined,
       species: "",
     });
 

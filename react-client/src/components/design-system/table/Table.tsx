@@ -5,6 +5,7 @@ import { Button } from "../button/Button";
 import { Card } from "../card/Card";
 import { Checkbox } from "../checkbox/Checkbox";
 import { Loading } from "../loading/Loading";
+import { ControlledPagination } from "../pagination/ControlledPagination";
 import { TableHeader } from "./TableHeader";
 import { TableRowActions } from "./TableRowActions";
 import {
@@ -23,13 +24,13 @@ export const Table = <T,>({
   didSort,
   isLoading = false,
   isSelectable = false,
+  paginationProps,
   rowActions,
   rows,
   sortBy,
   bulkSelectionActions,
   totalSelectedItems = 0,
   didSelectRowAction,
-  wrapper,
 }: TableCommonProps<T>) => {
   const isThereAnyRowAction = (rowActions?.length ?? 0) > 0;
   const { className: cellClassName } = useCellBase();
@@ -47,7 +48,7 @@ export const Table = <T,>({
   // TODO: add a empty state content here
   if (!rows.length) return null;
 
-  const children = (() => (
+  return (() => (
     <div className="w-auto overflow-hidden py-large">
       <Card>
         <div className="scrolling-touch overflow-x-auto">
@@ -56,10 +57,6 @@ export const Table = <T,>({
       </Card>
     </div>
   ))();
-
-  if (wrapper) return wrapper(children);
-
-  return children;
 
   function renderTableContent() {
     const tableColumns = getColumns();
@@ -89,64 +86,83 @@ export const Table = <T,>({
       );
     })();
 
+    const pagination = (() => {
+      if (!paginationProps) return null;
+
+      return (
+        <div aria-label={`${ariaLabel} pagination`} className="flex w-full">
+          <ControlledPagination {...paginationProps} />
+        </div>
+      );
+    })();
+
     return (
-      <table aria-label={ariaLabel} className="min-w-full table-auto">
-        {tableHeader}
-        <tbody>
-          {rows.map((row, i) => {
-            const isEven = i % 2 === 0;
+      <>
+        <div className="overflow-x-auto">
+          <div>
+            <table aria-label={ariaLabel} className="min-w-full table-auto">
+              {tableHeader}
+              <tbody>
+                {rows.map((row, i) => {
+                  const isEven = i % 2 === 0;
 
-            const selectedTableItem = (() => {
-              if (!isSelectable) return null;
-              return (
-                <td className={classNames(cellClassName({ isEven }))}>
-                  <Checkbox
-                    id={row.key}
-                    label="Select item"
-                    checked={!!row.isSelected}
-                    onCheckedChange={didSelectRow(row.key as keyof T)}
-                  />
-                </td>
-              );
-            })();
-
-            return (
-              <tr
-                className={classNames("hover table-row w-fit")}
-                data-testid="table_tbody_tr"
-                key={`row-${row.key}`}
-              >
-                {selectedTableItem}
-                {columns.map((column) => {
-                  const data = row.data[column.key as keyof T];
-                  let columnChild: unknown = data;
-
-                  if (typeof data === "string") {
-                    columnChild = <span className="inline-block">{data}</span>;
-                  }
+                  const selectedTableItem = (() => {
+                    if (!isSelectable) return null;
+                    return (
+                      <td className={classNames(cellClassName({ isEven }))}>
+                        <Checkbox
+                          id={row.key}
+                          label="Select item"
+                          checked={!!row.isSelected}
+                          onCheckedChange={didSelectRow(row.key as keyof T)}
+                        />
+                      </td>
+                    );
+                  })();
 
                   return (
-                    <td
-                      key={`${row.key}_${column.key}`}
-                      className={cellClassName({ isEven })}
-                      style={{
-                        textAlign: column.align ?? "left",
-                        minWidth: column.minWidth,
-                      }}
+                    <tr
+                      className={classNames("hover table-row w-fit")}
+                      data-testid="table_tbody_tr"
+                      key={`row-${row.key}`}
                     >
-                      {columnChild as ReactNode}
-                    </td>
+                      {selectedTableItem}
+                      {columns.map((column) => {
+                        const data = row.data[column.key as keyof T];
+                        let columnChild: unknown = data;
+
+                        if (typeof data === "string") {
+                          columnChild = (
+                            <span className="inline-block">{data}</span>
+                          );
+                        }
+
+                        return (
+                          <td
+                            key={`${row.key}_${column.key}`}
+                            className={cellClassName({ isEven })}
+                            style={{
+                              textAlign: column.align ?? "left",
+                              minWidth: column.minWidth,
+                            }}
+                          >
+                            {columnChild as ReactNode}
+                          </td>
+                        );
+                      })}
+                      <TableRowActions
+                        onSelect={onSelectRowAction(row)}
+                        rowActions={rowActions}
+                      />
+                    </tr>
                   );
                 })}
-                <TableRowActions
-                  onSelect={onSelectRowAction(row)}
-                  rowActions={rowActions}
-                />
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {pagination}
+      </>
     );
   }
 
@@ -155,7 +171,7 @@ export const Table = <T,>({
       align: "right",
       key: "actionsColumn",
       label: "Actions",
-      width: "5%",
+      minWidth: "5%",
     };
 
     let columnsList: TableColumn[] = [];
@@ -174,7 +190,7 @@ export const Table = <T,>({
             onCheckedChange={didSelectRow("allOrNone")}
           />
         ),
-        width: 24,
+        minWidth: 24,
       });
     }
 

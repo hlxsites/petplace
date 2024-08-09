@@ -15,7 +15,8 @@ export type StyleProps = TextCommonStyleProps & {
     | "blue-500"
     | "yellow-500"
     | "green-500"
-    | "orange-300-c";
+    | "orange-300-c"
+    | "inherit";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold";
   size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";

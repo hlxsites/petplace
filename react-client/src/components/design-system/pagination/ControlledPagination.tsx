@@ -1,93 +1,114 @@
-
-import type { FC, ReactElement, ReactNode } from "react";
+import { Text, TextSpan } from "~/components/design-system";
 import { Icon, IconKeys } from "../icon/Icon";
 import { PaginateButton } from "./paginateButton/PaginateButton";
-import { Text, TextSpan } from "~/components/design-system";
 
-interface IControlledPaginationProps {
-  children?: ReactNode;
-  className?: string;
+export type ControlledPaginationProps = {
   currentPage: number;
   itemsCount: number;
   itemsPerPage?: number;
-  onChange: (page: number, itemsPerPage: number) => void;
-}
+  didChangePage: (page: number, itemsPerPage: number) => void;
+};
 
-export const ControlledPagination: FC<IControlledPaginationProps> = ({
-  children,
-  className,
+export const ControlledPagination = ({
   currentPage,
   itemsCount,
   itemsPerPage = 10,
-  onChange,
-}) => {
+  didChangePage,
+}: ControlledPaginationProps) => {
   const isFirstPage = currentPage === 1;
   const totalPages = Math.ceil(itemsCount / itemsPerPage);
   const isLastPage = currentPage === totalPages;
 
   return (
-    <div className={className}>
-      {children}
+    <div
+      className="flex flex-col items-center md:flex-row md:justify-between w-full mx-medium"
+      data-testid="ControlledPagination"
+    >
+      <nav
+        aria-label="Pagination navigation"
+        className="flex justify-center lg:justify-start"
+      >
+        <PaginateButton
+          ariaLabel="Go to first page"
+          isDisabled={isFirstPage}
+          onClick={goToFirstPage}
+        >
+          {renderLimitIcon(isFirstPage, "doubleArrowLeft")}
+        </PaginateButton>
+        <PaginateButton
+          ariaLabel="Go to previous page"
+          isDisabled={isFirstPage}
+          onClick={goToPreviousPage}
+        >
+          {renderLimitIcon(isFirstPage, "chevronLeft")}
+        </PaginateButton>
+        {renderPageButtons()}
+        <PaginateButton
+          ariaLabel="Go to next page"
+          isDisabled={isLastPage}
+          onClick={goToNextPage}
+        >
+          {renderLimitIcon(isLastPage, "chevronRight")}
+        </PaginateButton>
+        <PaginateButton
+          ariaLabel="Go to last page"
+          isDisabled={isLastPage}
+          onClick={goToLastPage}
+        >
+          {renderLimitIcon(isLastPage, "doubleArrowRight")}
+        </PaginateButton>
+      </nav>
 
-      <div className="flex justify-between" data-testid="ControlledPagination">
-        <nav aria-label="Pagination navigation" className="flex">
-          <PaginateButton
-            ariaLabel="Go to first page"
-            isDisabled={isFirstPage}
-            onClick={goToFirstPage}
-          >
-            {renderLimitIcon(isFirstPage, "doubleArrowLeft")}
-          </PaginateButton>
-          <PaginateButton
-            ariaLabel="Go to previous page"
-            isDisabled={isFirstPage}
-            onClick={goToPreviousPage}
-          >
-            {renderLimitIcon(isFirstPage, "chevronLeft")}
-          </PaginateButton>
-          {renderPageButtons()}
-          <PaginateButton
-            ariaLabel="Go to next page"
-            isDisabled={isLastPage}
-            onClick={goToNextPage}
-          >
-            {renderLimitIcon(isLastPage, "chevronRight")}
-          </PaginateButton>
-          <PaginateButton
-            ariaLabel="Go to last page"
-            isDisabled={isLastPage}
-            onClick={goToLastPage}
-          >
-            {renderLimitIcon(isLastPage, "doubleArrowRight")}
-          </PaginateButton>
-        </nav>
-
-        <div>{renderTotal()}</div>
-      </div>
+      <div>{renderTotal()}</div>
     </div>
   );
 
   function renderPageButtons() {
-    const buttons: ReactElement[] = [];
-
-    const [startIndex, endIndex] = calculateStartAndEndIndexes(1);
-
-    if (startIndex > 1) {
-      buttons.push(renderButton(1)); // First page
-      if (startIndex > 2) buttons.push(renderEllipsis("ellipsis-start"));
+    if (totalPages <= 7) {
+      return generatePageButtons(totalPages, 1);
     }
 
-    for (let index = startIndex; index <= endIndex; index++) {
-      buttons.push(renderButton(index));
+    if (currentPage < 5) {
+      const buttons = generatePageButtons(5, 1);
+      buttons.push(renderEllipsis("ellipsis-start"));
+      return [...buttons, renderButton(totalPages)];
     }
 
-    if (endIndex < totalPages) {
-      if (endIndex < totalPages - 1)
-        buttons.push(renderEllipsis("ellipsis-end"));
-      buttons.push(renderButton(totalPages));
+    if (currentPage > totalPages - 4) {
+      const buttons = [renderButton(1)];
+      buttons.push(renderEllipsis("ellipsis-end"));
+      return [...buttons, ...generatePageButtons(5, totalPages - 4)];
+    }
+
+    const buttons = [renderButton(1)];
+    let lastRendered = "";
+    let ellipsisLabel = "ellipsis-start";
+    for (let index = 2; index <= totalPages; index++) {
+      if (
+        index !== totalPages &&
+        (currentPage > index + 1 || currentPage < index - 1)
+      ) {
+        if (lastRendered === "ellipsis") continue;
+        buttons.push(renderEllipsis(ellipsisLabel));
+        ellipsisLabel = "ellipsis-end";
+        lastRendered = "ellipsis";
+      } else {
+        buttons.push(renderButton(index));
+        lastRendered = "button";
+      }
     }
 
     return buttons;
+  }
+
+  function generatePageButtons(amount: number, start: number) {
+    const indexes = [];
+    let buttonIndex = start;
+    for (let i = 0; i < amount; i++) {
+      indexes.push(buttonIndex);
+      buttonIndex++;
+    }
+    return indexes.map(renderButton);
   }
 
   function renderButton(page: number) {
@@ -104,41 +125,17 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
         onClick={goToPage(page)}
         className="-mt-[5px]"
       >
-        <span>{page}</span>
+        <span className="block w-5">{page}</span>
       </PaginateButton>
     );
   }
 
   function renderEllipsis(key: string) {
     return (
-      <div className="mt-[4px]">
-        <TextSpan key={key} fontWeight="bold">
-          &hellip;
-        </TextSpan>
+      <div key={key} className="mx-[5px] mt-[4px] w-5">
+        <TextSpan fontWeight="bold">&hellip;</TextSpan>
       </div>
     );
-  }
-
-  function calculateStartAndEndIndexes(siblingCount: number = 1) {
-    const totalShownPages = siblingCount + 5;
-    let startIndex = Math.max(currentPage - siblingCount, 1);
-    let endIndex = Math.min(startIndex + siblingCount * 2, totalPages);
-
-    if (totalPages <= totalShownPages - 2) {
-      return [1, totalPages];
-    }
-
-    if (currentPage <= siblingCount + 3) {
-      endIndex = totalShownPages - 2;
-      return [1, endIndex];
-    }
-
-    if (currentPage >= totalPages - (siblingCount + 2)) {
-      startIndex = totalPages - (totalShownPages - 3);
-      return [startIndex, totalPages];
-    }
-
-    return [startIndex, endIndex];
   }
 
   function renderLimitIcon(isLimit: boolean, icon: IconKeys) {
@@ -150,10 +147,12 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
 
   function renderTotal() {
     return (
-      <Text size="base">
-        Displaying {renderSpan(currentlyBeingDisplayed())} out of{" "}
-        {renderSpan(itemsCount)}
-      </Text>
+      <div className="flex justify-center lg:justify-end md:mr-small">
+        <Text size="base">
+          Displaying {renderSpan(currentlyBeingDisplayed())} out of{" "}
+          {renderSpan(itemsCount)}
+        </Text>
+      </div>
     );
   }
 
@@ -192,6 +191,6 @@ export const ControlledPagination: FC<IControlledPaginationProps> = ({
   }
 
   function changeCurrentPage(page: number) {
-    onChange(page, itemsPerPage);
+    didChangePage(page, itemsPerPage);
   }
 };

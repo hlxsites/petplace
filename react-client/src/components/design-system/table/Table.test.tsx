@@ -470,37 +470,6 @@ describe("<Table />", () => {
       });
     });
   });
-
-  describe("with wrapper", () => {
-    it("should render table inside wrapper", () => {
-      getRenderer({
-        didSort: jest.fn(),
-        rows: createRows(5),
-        wrapper: (child) => <div data-testid="TableWrapper">{child}</div>,
-      });
-      expect(getByTestId("TableWrapper")).toBeInTheDocument();
-      expect(
-        getByTestId("TableWrapper").firstChild?.firstChild?.firstChild
-          ?.firstChild?.firstChild
-      ).toHaveAttribute("aria-label", DEFAULT_LABEL);
-    });
-
-    it("should NOT render table", () => {
-      getRenderer({
-        didSort: jest.fn(),
-        rows: createRows(5),
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        wrapper: (_) => (
-          <div data-testid="TableWrapper">
-            <p>A text</p>
-          </div>
-        ),
-      });
-      expect(getByTestId("TableWrapper")).toBeInTheDocument();
-      expect(getByText("A text")).toBeInTheDocument();
-      expect(queryByLabelText("table")).not.toBeInTheDocument();
-    });
-  });
 });
 
 type TableObject = {

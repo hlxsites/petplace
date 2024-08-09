@@ -1,6 +1,6 @@
 import { classNames } from "~/util/styleUtil";
 
-interface BackdropProps {
+type BackdropProps = {
   isClosing?: boolean;
   isOpen: boolean;
   onClick?: () => void;

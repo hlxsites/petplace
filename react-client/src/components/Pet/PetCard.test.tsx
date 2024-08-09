@@ -90,7 +90,7 @@ describe("PetCard", () => {
   it.each([
     ["sm", "h-[191px] lg:h-[246px]"],
     ["md", "h-[246px] lg:max-h-[306px]"],
-    ["lg", "h-[240px]  lg:h-[343px] lg:max-w-[368px]"],
+    ["lg", "h-[240px]  lg:h-[372px] lg:max-w-[368px]"],
   ])("should match variant classes %p", (variant, expected) => {
     // @ts-expect-error - ignoring for test purposes only
     getRenderer({ variant });

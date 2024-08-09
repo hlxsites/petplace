@@ -4,9 +4,9 @@ import { ComponentProps } from "react";
 import { PetDocumentsView } from "./PetDocumentsView";
 
 const MOCK_DOCUMENTS: Props["documents"] = [
-  { fileName: "Test", fileType: "doc" },
-  { fileName: "Vaccine 2024", fileType: "pdf" },
-  { fileName: "MEDICAL RECORDS", fileType: "txt" },
+  { fileName: "Test", fileType: "doc", id: "9090" },
+  { fileName: "Vaccine 2024", fileType: "pdf", id: "8080" },
+  { fileName: "MEDICAL RECORDS", fileType: "txt", id: "7070" },
 ];
 const UPLOAD_DOCUMENT_LABEL = /WIP - testing purposes/i;
 
