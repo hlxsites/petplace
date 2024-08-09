@@ -1,7 +1,7 @@
 import { Icon, Text } from "~/components/design-system";
 import { classNames } from "~/util/styleUtil";
 
-type TagProps = {
+export type TagProps = {
   label: string;
   tagStatus: "info" | "success" | "warning";
 };
