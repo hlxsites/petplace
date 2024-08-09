@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
+import { classNames } from "~/util/styleUtil";
 import { Button, ButtonProps, Card, Text } from "../design-system";
 import { CardProps } from "../design-system/types/CardTypes";
-import { classNames } from "~/util/styleUtil";
 
 type AdvertisingBannerImageRightProps = {
   buttonLabel?: string;
@@ -65,12 +65,12 @@ export const AdvertisingBannerImageRight = ({
 
     return (
       <>
-        <img className="h-full w-full object-cover" alt={imgName} src={img} />
+        <img className="w-full h-full object-cover" alt={imgName} src={img} />
 
         {img && (
           <div
             className={classNames(
-              "lg:bg-x-small-gradient bg-y-small-gradient absolute inset-0 bg-gradient-to-b via-transparent",
+              "absolute inset-0 bg-gradient-to-b via-transparent bg-y-small-gradient lg:bg-x-small-gradient",
               gradientColor,
               {
                 "lg:bg-gradient-to-b": gradientDirection === "bottom",
