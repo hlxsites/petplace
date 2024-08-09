@@ -9,7 +9,7 @@ type TitleVariableProps = TextCommonStyleProps & {
   color?: `text-${string}`;
   element?: keyof JSX.IntrinsicElements;
   fullWidth?: boolean;
-  level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inherit";
+  level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 };
 
 export type TitleProps = TitleVariableProps & {
@@ -24,7 +24,7 @@ export const Title = ({
   level = "h1",
   ...rest
 }: TitleProps) => {
-  const Comp = element || (level === "inherit" ? "div" : level);
+  const Comp = element ?? level;
 
   const { className } = useTitleBase({ level, ...rest });
 
