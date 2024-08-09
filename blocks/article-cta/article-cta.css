@@ -1,21 +1,21 @@
-.article-cta-container > .article-cta-wrapper {
+.article-cta-wrapper {
   border-radius: 0.5rem;
   box-shadow: 0 2px 8px 0 rgb(0 0 0 / 25%);
   padding: 1rem;
 }
 
-.article-cta-container h2 {
+.article-cta h2 {
   font-size: 1.5rem;
   font-weight: 700;
   margin-top: 0.5rem;
 }
 
-.article-cta-container span {
+.article-cta span {
   font-size: 1rem;
   line-height: 0.5;
 }
 
-.article-cta-container button {
+.article-cta button {
   display: flex;
   margin-top: 2rem;
   justify-content: center;
@@ -28,7 +28,7 @@
   background-color: var(--link-color);
 }
 
-.article-cta-container button::after {
+.article-cta button::after {
   content: '';
   -webkit-mask: url("../../icons/arrow.svg") center / 100% 100%;
   mask: url("../../icons/arrow.svg") center / 100% 100%;
