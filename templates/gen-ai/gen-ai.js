@@ -270,7 +270,7 @@ function initializeTouch($block, slideshowInfo) {
       diffX = currentX - startX;
 
       const index = getCurrentSlideIndex($slidesContainer);
-      $slidesContainer.style.transform = `translateX(calc(-${index} * 260px))`;
+      $slidesContainer.style.transform = `translateX(calc(-${index} * 260px + ${diffX}px))`;
     },
     { passive: true },
   );
@@ -285,18 +285,35 @@ function initializeTouch($block, slideshowInfo) {
       if (tagName === 'A' || tagName === 'use') return;
 
       const index = getCurrentSlideIndex($slidesContainer);
+      let nextIndex = index;
+
       if (diffX > 50) {
-        const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
-        changeSlide(slideshowInfo, index, nextIndex);
+        nextIndex = index === 0 ? 0 : index - 1;
       } else if (diffX < -50) {
-        const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
-        changeSlide(slideshowInfo, index, nextIndex);
-      } else {
-        $slidesContainer.setAttribute(
-          'style',
-          `transform:translateX(-${index} * 260px)`,
-        );
+        nextIndex = index === $slidesContainer.children.length - 1 ? $slidesContainer.children.length - 1 : index + 1;
       }
+
+      if (nextIndex !== index) {
+        changeSlide(slideshowInfo, index, nextIndex);
+      }
+
+      // Update button visibility
+      if (nextIndex === 0) {
+        document.querySelector('.slideshow-prev')?.classList.add('hide');
+      } else {
+        document.querySelector('.slideshow-prev')?.classList.remove('hide');
+      }
+
+      if (nextIndex === $slidesContainer.children.length - 1) {
+        document.querySelector('.slideshow-next')?.classList.add('hide');
+      } else {
+        document.querySelector('.slideshow-next')?.classList.remove('hide');
+      }
+
+      $slidesContainer.style.transform = `translateX(-${nextIndex * 260}px)`;
+
+      // Reset diffX
+      diffX = 0;
     },
     { passive: true },
   );
@@ -308,7 +325,7 @@ function initializeTouch($block, slideshowInfo) {
       document.querySelector('.slideshow-next')?.classList.remove('hide');
       if (nextIndex === 0) {
         document.querySelector('.slideshow-prev')?.classList.add('hide');
-        $slidesContainer.setAttribute('style', 'transform:translateX(0px)');
+        $slidesContainer.style.transform = 'translateX(0px)';
       } else {
         document.querySelector('.slideshow-prev')?.classList.remove('hide');
       }
@@ -316,7 +333,7 @@ function initializeTouch($block, slideshowInfo) {
     } else if (
       e.target.matches('.slideshow-next') && !e.target.matches('.hide')
     ) {
-      const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
+      const nextIndex = index === $slidesContainer.children.length - 1 ? $slidesContainer.children.length - 1 : index + 1;
       document.querySelector('.slideshow-prev')?.classList.remove('hide');
 
       if (nextIndex === $slidesContainer.children.length - 1) {
