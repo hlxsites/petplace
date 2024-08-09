@@ -1,6 +1,6 @@
 import { classNames } from "~/util/styleUtil";
 
-interface CellProps {
+type CellProps = {
   isEven?: boolean;
   isHeader?: boolean;
 }

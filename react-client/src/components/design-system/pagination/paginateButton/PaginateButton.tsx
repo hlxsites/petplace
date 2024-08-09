@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Button } from "../../button/Button";
 import { classNames } from "~/util/styleUtil";
 
-interface PaginateButtonProps {
+type PaginateButtonProps = {
   ariaLabel: string;
   className?: string;
   children: ReactNode;
