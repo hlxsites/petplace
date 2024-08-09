@@ -1,4 +1,3 @@
-import type { ReactElement } from "react";
 import { Text, TextSpan } from "~/components/design-system";
 import { Icon, IconKeys } from "../icon/Icon";
 import { PaginateButton } from "./paginateButton/PaginateButton";
@@ -65,18 +64,33 @@ export const ControlledPagination = ({
   );
 
   function renderPageButtons() {
-    const buttons: ReactElement[] = [renderButton(1)];
+    if (totalPages <= 7) {
+      return generatePageButtons(totalPages, 1);
+    }
 
+    if (currentPage < 5) {
+      const buttons = generatePageButtons(5, 1);
+      buttons.push(renderEllipsis("ellipsis-start"));
+      return [...buttons, renderButton(totalPages)];
+    }
+
+    if (currentPage > totalPages - 4) {
+      const buttons = [renderButton(1)];
+      buttons.push(renderEllipsis("ellipsis-end"));
+      return [...buttons, ...generatePageButtons(5, totalPages - 4)];
+    }
+
+    const buttons = [renderButton(1)];
     let lastRendered = "";
-
-    // Since we are calculating pages, we start this loop from 2 instead of 0
+    let ellipsisLabel = "ellipsis-start"
     for (let index = 2; index <= totalPages; index++) {
       if (
         index !== totalPages &&
         (currentPage > index + 1 || currentPage < index - 1)
       ) {
         if (lastRendered === "ellipsis") continue;
-        buttons.push(renderEllipsis("ellipsis-start"));
+        buttons.push(renderEllipsis(ellipsisLabel));
+        ellipsisLabel = "ellipsis-end"
         lastRendered = "ellipsis";
       } else {
         buttons.push(renderButton(index));
@@ -85,6 +99,16 @@ export const ControlledPagination = ({
     }
 
     return buttons;
+  }
+
+  function generatePageButtons(amount: number, start: number) {
+    const indexes = [];
+    let buttonIndex = start
+    for (let i = 0; i < amount; i++) {
+      indexes.push(buttonIndex);
+      buttonIndex++
+    }
+    return indexes.map(renderButton);
   }
 
   function renderButton(page: number) {
