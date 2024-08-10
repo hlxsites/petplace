@@ -26,7 +26,7 @@ export const PetDocumentsView = ({
 
   return (
     <div className="grid gap-large">
-      <Text color="text-tertiary-600" size="sm">
+      <Text color="tertiary-600" size="sm">
         {`View, download and manage all ${recordType} records.`}
       </Text>
 
@@ -42,7 +42,7 @@ export const PetDocumentsView = ({
         </div>
       )}
 
-      <Text color="text-primary-900" size="base" fontWeight="bold">
+      <Text color="primary-900" size="base" fontWeight="bold">
         Upload and attach files
       </Text>
 
@@ -64,7 +64,7 @@ export const PetDocumentsView = ({
             <Text fontFamily="raleway" fontWeight="bold" size="sm">
               Click to upload or drag and drop
             </Text>
-            <Text color="text-tertiary-600" size="xs">
+            <Text color="tertiary-600" size="xs">
               PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
             </Text>
           </div>

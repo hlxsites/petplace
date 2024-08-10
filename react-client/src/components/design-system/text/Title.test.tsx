@@ -43,7 +43,7 @@ describe("<Title />", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it.each(["blue-500", "neutral-950"] as ComponentProps<
+  it.each(["blue-500", "neutral-950"] satisfies ComponentProps<
     typeof Title
   >["color"][])("should render with colors", (color) => {
     getRenderer({ color });

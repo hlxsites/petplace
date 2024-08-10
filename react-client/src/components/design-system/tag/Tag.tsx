@@ -17,9 +17,9 @@ export const Tag = ({ label, tagStatus }: TagProps) => {
   );
 
   const textColorClass = (() => {
-    if (tagStatus === "success") return "text-green-500";
-    if (tagStatus === "warning") return "text-yellow-500";
-    return "text-blue-500";
+    if (tagStatus === "success") return "green-500";
+    if (tagStatus === "warning") return "yellow-500";
+    return "blue-500";
   })();
 
   return (
