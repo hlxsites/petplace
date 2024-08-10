@@ -2,10 +2,6 @@
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
 
-// downloadPath?: string;
-//   fileName: string;
-//   fileType?:
-
 const PET_RECORDS = {
   buddy: {
     "medical-records": [
