@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
+import { classNames } from "~/util/styleUtil";
 import { Button, ButtonProps, Card, Text } from "../design-system";
 import { CardProps } from "../design-system/types/CardTypes";
-import { classNames } from "~/util/styleUtil";
 
 type AdvertisingBannerImageRightProps = {
   buttonLabel?: string;
@@ -27,11 +27,7 @@ export const AdvertisingBannerImageRight = ({
   gradientDirection,
 }: AdvertisingBannerImageRightProps) => {
   return (
-    <Card
-      backgroundColor={cardStyleProps?.backgroundColor}
-      {...cardStyleProps}
-      role="region"
-    >
+    <Card {...cardStyleProps} role="region">
       <div className="grid grid-cols-1 justify-between p-large lg:flex">
         <div className="flex max-w-[455px] flex-col items-start justify-between pr-xxxxxlarge">
           <div className="grid gap-base pb-xxxxxlarge">
