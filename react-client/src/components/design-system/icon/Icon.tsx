@@ -15,6 +15,7 @@ import CpuChipIcon from "./assets/cpu-chip-icon.svg";
 import DocFileIcon from "./assets/doc-file-icon.svg";
 import DownloadIcon from "./assets/download-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
+import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
 import InformationIcon from "./assets/information-icon.svg";
 import JpgFileIcon from "./assets/jpg-file-icon.svg";
@@ -52,6 +53,7 @@ export const IconMap = Object.freeze({
   docFile: <DocFileIcon />,
   download: <DownloadIcon />,
   ellipse: <EllipseIcon />,
+  emptyEllipse: <EmptyEllipseIcon />,
   file: <FileIcon />,
   medicine: <MedicineIcon />,
   information: <InformationIcon />,
