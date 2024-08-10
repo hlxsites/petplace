@@ -1,53 +1,44 @@
 import { render, screen } from "@testing-library/react";
 import { StepProgress, StepProgressProps } from "./StepProgress";
 
-const { getByText, getAllByLabelText, getByRole, queryByRole } = screen;
+const { getByTestId, getByText, queryByTestId } = screen;
 
+const TEST_ID = "StepProgress";
 const DEFAULT_COUNT = 5;
 const DEFAULT_CURRENT = 2;
 
 describe("<StepProgress />", () => {
-  it("should render the stepProgress", () => {
+  it("should render with testid", () => {
     getRenderer();
-    expect(
-      getByText(`${DEFAULT_CURRENT} of ${DEFAULT_COUNT}`)
-    ).toBeInTheDocument();
-  });
-
-  it("should render the accessibility props", () => {
-    getRenderer();
-    expect(getByRole("group")).toHaveAttribute(
-      "aria-label",
-      "Progress Indicators"
-    );
-  });
-
-  it.each([2, 4, 7])("should render %i icons", (expected) => {
-    const { container } = getRenderer({ count: expected });
-    expect(container.querySelectorAll("svg").length).toBe(expected);
-  });
-
-  it.each([1, 3, 5])("should render %i filled icons", (expected) => {
-    const { container } = getRenderer({ current: expected });
-    const filledIcons = container.querySelectorAll(
-      'svg[data-file-name="SvgEllipseIcon"]'
-    );
-    expect(filledIcons.length).toBe(expected);
-  });
-
-  it("should render 2 completed steps with accessibility", () => {
-    getRenderer();
-    expect(getAllByLabelText("Completed Step").length).toBe(2);
-  });
-
-  it("should render 3 uncompleted steps with accessibility", () => {
-    getRenderer();
-    expect(getAllByLabelText("Uncompleted Step").length).toBe(3);
+    expect(getByTestId(TEST_ID)).toBeInTheDocument();
   });
 
   it("should not render when count is 0", () => {
     getRenderer({ count: 0 });
-    expect(queryByRole("group")).not.toBeInTheDocument();
+    expect(queryByTestId(TEST_ID)).not.toBeInTheDocument();
+  });
+
+  it.each([0, 1])('should render "1 of 5" when current=%i ', (current) => {
+    getRenderer({ current });
+    expect(getByText("1 of 5")).toBeInTheDocument();
+  });
+
+  it.each([2, 3, 4, 5])(
+    'should render "2 of 5" when current=%i ',
+    (current) => {
+      getRenderer({ current });
+      expect(getByText(`${current} of 5`)).toBeInTheDocument();
+    }
+  );
+
+  it('should render "1 of 1" when count=1 and current=2 ', () => {
+    getRenderer({ count: 1, current: 2 });
+    expect(getByText("1 of 1")).toBeInTheDocument();
+  });
+
+  it('should render "10 of 10" when count=10 and current=20 ', () => {
+    getRenderer({ count: 10, current: 20 });
+    expect(getByText("10 of 10")).toBeInTheDocument();
   });
 });
 

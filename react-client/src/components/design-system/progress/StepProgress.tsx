@@ -1,4 +1,6 @@
-import { Icon } from "../icon/Icon";
+import { createNumericArray } from "~/util/misc";
+import { classNames } from "~/util/styleUtil";
+import { Text } from "../text/Text";
 
 export type StepProgressProps = {
   count: number;
@@ -8,32 +10,40 @@ export type StepProgressProps = {
 export const StepProgress = ({ count, current }: StepProgressProps) => {
   if (count < 1) return null;
 
+  const safeCurrent = Math.min(Math.max(current, 1), count);
+  const stepText = `${safeCurrent} of ${count}`;
+
   return (
     <div
-      className="flex justify-between"
-      aria-label={`Step ${current} of ${count}`}
+      className="flex items-center justify-between"
+      data-testid="StepProgress"
     >
-      <div>
-        {current} of {count}
-      </div>
-      <div className="flex" role="group" aria-label="Progress Indicators">
-        {renderIcons(current, count)}
-      </div>
+      <Text
+        aria-label={`Step ${stepText}`}
+        color="primary-900"
+        fontWeight="medium"
+        size="sm"
+      >
+        {stepText}
+      </Text>
+      <div className="flex gap-[3px]">{renderSteps()}</div>
     </div>
   );
+
+  function renderSteps() {
+    return createNumericArray(count).map((index) => {
+      const isDone = index === safeCurrent - 1;
+      return (
+        <div
+          className={classNames(
+            "h-[13px] w-[13px] rounded-full border border-primary-900",
+            {
+              "bg-primary-900": isDone,
+            }
+          )}
+          key={`step-${index}`}
+        />
+      );
+    });
+  }
 };
-
-function renderIcons(current: number, count: number) {
-  return Array.from({ length: count }, (_, i) => renderIcon(i < current, i));
-}
-
-function renderIcon(isDone: boolean, key: number) {
-  return (
-    <Icon
-      key={`step-${key}`}
-      display={isDone ? "ellipse" : "emptyEllipse"}
-      className={`${isDone ? "" : "text-white"} mx-xsmall`}
-      aria-label={isDone ? "Completed Step" : "Uncompleted Step"}
-    />
-  );
-}
