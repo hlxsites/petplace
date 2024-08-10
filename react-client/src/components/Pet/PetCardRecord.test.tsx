@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { ComponentProps } from "react";
 import userEvent from "@testing-library/user-event";
-import { PetCardRecord } from "./PetCardRecord";
+import { ComponentProps } from "react";
 import * as downloadFunctions from "../../util/downloadFunctions";
+import { PetCardRecord } from "./PetCardRecord";
 
 const { getByRole, queryByRole } = screen;
 
@@ -33,6 +33,7 @@ describe("PetCardRecord", () => {
     (fileType) => {
       getRenderer({
         record: {
+          id: "1",
           fileName: "Lily's Doc",
           fileType,
         },
@@ -59,7 +60,7 @@ describe("PetCardRecord", () => {
   it.each(["Medical", "Vaccines"])(
     "should render the given file name",
     (fileName) => {
-      getRenderer({ record: { fileName } });
+      getRenderer({ record: { id: "1", fileName } });
 
       expect(getByRole("paragraph")).toHaveTextContent(fileName);
     }
@@ -130,6 +131,7 @@ describe("PetCardRecord", () => {
 function getRenderer({
   isUploadingFile = false,
   record = {
+    id: "test",
     downloadPath: "http://example.com/file.jpg",
     fileName: "Test name",
     fileType: "jpg",

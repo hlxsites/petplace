@@ -24,7 +24,7 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
         </div>
         <div className="pl-xxlarge">
           <Text
-            color="blue-500"
+            color="text-blue-500"
             size="base"
           >{`Get a personalized insurance quote and ensure the best care for ${petName}`}</Text>
         </div>

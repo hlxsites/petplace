@@ -31,13 +31,13 @@ export const PetCard = ({
           className={cx("relative flex w-full", {
             "h-[191px] lg:h-[246px]": variant === "sm",
             "h-[246px] lg:max-h-[306px]": variant === "md",
-            "h-[240px] lg:h-[343px] lg:max-w-[368px]": variant === "lg",
+            "h-[240px] lg:h-[372px] lg:max-w-[368px]": variant === "lg",
           })}
         >
           <img
             src={img}
             alt={`Image of ${name}`}
-            className="w-full object-cover"
+            className="h-full w-full object-cover"
           />
           {displayProtectedBadge && (
             <div

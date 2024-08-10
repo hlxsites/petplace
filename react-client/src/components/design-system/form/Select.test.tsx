@@ -56,7 +56,7 @@ describe("<Select />", () => {
   it("should render an input with some classes", () => {
     getRenderer();
     expect(getByRole("combobox")).toHaveClass(
-      "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none"
+      "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full bg-neutral-white p-base outline-none"
     );
   });
 

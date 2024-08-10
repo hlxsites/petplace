@@ -108,12 +108,9 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
             <div className={FORM_STYLES.inputRoot}>
               <input
                 autoFocus={autoFocus}
-                className={clsx(
-                  "h-full w-full rounded-full bg-neutral-white p-base outline-none placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled",
-                  {
-                    [FORM_STYLES.inputError]: hasError,
-                  }
-                )}
+                className={clsx(FORM_STYLES.input, {
+                  [FORM_STYLES.inputError]: hasError,
+                })}
                 placeholder={placeholder ?? "Select..."}
                 {...inputProps}
                 {...getInputProps({ ref })}
@@ -138,6 +135,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
     );
 
     function renderButton() {
+      if (rest.disabled) return null;
+
       if (value && clearable) {
         return renderIconButton({
           icon: "closeXMarkRegular",

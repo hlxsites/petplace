@@ -7,6 +7,7 @@ import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
 import ChevronDownIcon from "./assets/chevron-down-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
+import ChevronRightIcon from "./assets/chevron-right-icon.svg";
 import ChevronUpIcon from "./assets/chevron-up-icon.svg";
 import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CloseXMarkRegularIcon from "./assets/close-x-mark-regular-icon.svg";
@@ -20,6 +21,7 @@ import JpgFileIcon from "./assets/jpg-file-icon.svg";
 import MedicineIcon from "./assets/medicine-icon.svg";
 import PawIcon from "./assets/paw-icon.svg";
 import PdfFileIcon from "./assets/pdf-file-icon.svg";
+import PhoneIcon from "./assets/phone-icon.svg";
 import PippetIcon from "./assets/pippet-icon.svg";
 import PngFileIcon from "./assets/png-file-icon.svg";
 import SearchIcon from "./assets/search-icon.svg";
@@ -42,6 +44,7 @@ export const IconMap = Object.freeze({
   check: <CheckIcon />,
   chevronDown: <ChevronDownIcon />,
   chevronLeft: <ChevronLeftIcon />,
+  chevronRight: <ChevronRightIcon />,
   chevronUp: <ChevronUpIcon />,
   closeXMark: <CloseXMarkIcon />,
   closeXMarkRegular: <CloseXMarkRegularIcon />,
@@ -55,6 +58,7 @@ export const IconMap = Object.freeze({
   jpgFile: <JpgFileIcon />,
   paw: <PawIcon />,
   pdfFile: <PdfFileIcon />,
+  phone: <PhoneIcon />,
   pippet: <PippetIcon />,
   pngFile: <PngFileIcon />,
   search: <SearchIcon />,
