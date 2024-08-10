@@ -171,14 +171,14 @@ module.exports = {
           to: { opacity: "1", transform: "translateX(0)" },
         },
       },
+      left: SPACING_DEFAULTS,
+      maxHeight: {
+        "90vh": "90vh",
+        "80vh": "80vh",
+      },
+      right: SPACING_DEFAULTS,
+      top: SPACING_DEFAULTS,
+      width: SPACING_DEFAULTS,
     },
-    left: SPACING_DEFAULTS,
-    maxHeight: {
-      "90vh": "90vh",
-      "80vh": "80vh",
-    },
-    right: SPACING_DEFAULTS,
-    top: SPACING_DEFAULTS,
-    width: SPACING_DEFAULTS,
   },
 };
