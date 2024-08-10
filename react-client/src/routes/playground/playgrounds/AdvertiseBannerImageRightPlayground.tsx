@@ -1,5 +1,5 @@
 import { AdvertisingBannerImageRight } from "~/components/AdvertisingBanners/AdvertisingBannerImageRight";
-import { Title, TitleSpan } from "~/components/design-system";
+import { TextSpan, Title } from "~/components/design-system";
 
 export const AdvertisingBannerImageRightPlayground = () => {
   return (
@@ -17,7 +17,7 @@ export const AdvertisingBannerImageRightPlayground = () => {
           title={
             <Title level="h2">
               Know your options when{" "}
-              <TitleSpan color="text-brand-main">protecting your pet</TitleSpan>
+              <TextSpan color="brand-main">protecting your pet</TextSpan>
             </Title>
           }
           gradientColor="from-orange-100"
@@ -38,7 +38,7 @@ export const AdvertisingBannerImageRightPlayground = () => {
           title={
             <Title level="h2">
               Know your options when{" "}
-              <TitleSpan color="text-brand-main">protecting your pet</TitleSpan>
+              <TextSpan color="brand-main">protecting your pet</TextSpan>
             </Title>
           }
           gradientColor="from-orange-100"

@@ -1,15 +1,13 @@
+import { ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 import {
   TextCommonStyleProps,
   useTextCommonStyles,
 } from "./useTextCommonStyles";
-import { ReactNode } from "react";
 
 type TitleVariableProps = TextCommonStyleProps & {
-  color?: `text-${string}`;
-  element?: keyof JSX.IntrinsicElements;
   fullWidth?: boolean;
-  level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inherit";
+  level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 };
 
 export type TitleProps = TitleVariableProps & {
@@ -17,14 +15,8 @@ export type TitleProps = TitleVariableProps & {
   id?: string;
 };
 
-export const Title = ({
-  children,
-  element,
-  id,
-  level = "h1",
-  ...rest
-}: TitleProps) => {
-  const Comp = element || (level === "inherit" ? "div" : level);
+export const Title = ({ children, id, level = "h1", ...rest }: TitleProps) => {
+  const Comp = level;
 
   const { className } = useTitleBase({ level, ...rest });
 
@@ -36,14 +28,14 @@ export const Title = ({
 };
 
 function useTitleBase({
-  color = "text-neutral-950",
+  color = "neutral-950",
   level,
   fullWidth,
   ...rest
 }: TitleVariableProps) {
-  const commonClassName = useTextCommonStyles(rest);
+  const commonClassNames = useTextCommonStyles({ ...rest, color });
 
-  const className = classNames("font-bold", color, commonClassName, {
+  const className = classNames("font-bold", commonClassNames, {
     "lg:text-[44px] text-[32px]/[36px]": level === "h1",
     "lg:text-[32px]/[36px] text-[24px]/[28px]": level === "h2",
     "lg:text-[24px]/[28px] text-[18px]/[20px]": level === "h3",

@@ -6,10 +6,10 @@ import {
 } from "./useTextCommonStyles";
 
 type StyleProps = TextCommonStyleProps & {
-  color?: `text-${string}` | "inherit";
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold" | "medium";
-  size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";
+  size?: "xlg" | "lg" | "base" | "sm" | "xs";
+  inherit?: boolean;
 };
 
 type TextProps = StyleProps & {
@@ -45,15 +45,35 @@ export const Text = ({
 };
 
 function useTextBase({
-  color = "text-black",
-  fontFamily = "franklin",
-  fontWeight = "normal",
-  size = "xs",
+  color: colorProp,
+  fontFamily: fontFamilyProp,
+  fontWeight: fontWeightProp,
+  inherit,
+  size: sizeProp,
   ...rest
 }: StyleProps) {
-  const commonClassName = useTextCommonStyles(rest);
+  const propValueConsideringInherit = <T extends string>(
+    prop: T | undefined,
+    defaultProp?: T
+  ): T | undefined => {
+    // If prop is defined always use it
+    if (prop) return prop;
 
-  const className = classNames("inline-block", commonClassName, color, {
+    // If prop is not defined and inherit is true, return undefined
+    if (inherit) return undefined;
+
+    // If prop is not defined and inherit is false, return defaultProp
+    return defaultProp;
+  };
+
+  const color = propValueConsideringInherit(colorProp, "black");
+  const fontFamily = propValueConsideringInherit(fontFamilyProp, "franklin");
+  const fontWeight = propValueConsideringInherit(fontWeightProp, "normal");
+  const size = propValueConsideringInherit(sizeProp, "xs");
+
+  const commonClassName = useTextCommonStyles({ ...rest, color });
+
+  const className = classNames("inline-block", commonClassName, {
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
     "font-roboto": fontFamily === "roboto",
