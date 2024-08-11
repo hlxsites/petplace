@@ -5,11 +5,11 @@ import { PetWatchSection } from "./PetWatchSection";
 const { getByRole, getByText } = screen;
 
 const ACTIVE_MESSAGE =
-  /Continue to enjoy premium benefits and top-notch care for your pet from or products and partners./i;
+  /Continue to enjoy premium benefits and top-notch care for your pet from or products and partners\./i;
 const EXPIRED_MESSAGE =
-  /Renew services to continue enjoying premium benefits and top-notch care for your pet from or products and partners./i;
+  /Renew services to continue enjoying premium benefits and top-notch care for your pet from or products and partners\./i;
 const STANDARD_MESSAGE =
-  /If your pet ever goes missing and is found, they can be scanned at a vet or animal shelter to identify their microchip number. When the chip number is shared with 24Petwatch, you'll be notified using the consent and information on file. This may include email, automated phone call and SMS. Be sure to keep your contact details up-to-date./i;
+  /If your pet ever goes missing and is found, they can be scanned at a vet or animal shelter to identify their microchip number. When the chip number is shared with 24Petwatch, you'll be notified using the consent and information on file\. This may include email, automated phone call and SMS\. Be sure to keep your contact details up-to-date\./i;
 const ACTIVE_BUTTON_LABEL = /See all my benefits/i;
 const EXPIRED_BUTTON_LABEL = "Renew services";
 const STANDARD_BUTTON_LABEL = /See details/i;
@@ -27,10 +27,10 @@ describe("PetWatchSection", () => {
     ["lifetimePlus", /Active Lifetime plus Membership/i],
     ["standard", /Standard Protection/i],
   ])(
-    "should render the %p petServiceType with the tag as %s",
-    (petServiceType, expectedTag) => {
+    "should render the %p petServiceStatus with the tag as %s",
+    (petServiceStatus, expectedTag) => {
       // @ts-expect-error - ignoring type error for testing purposes
-      getRenderer({ petServiceType });
+      getRenderer({ petServiceStatus });
       expect(getByText(expectedTag)).toBeInTheDocument();
     }
   );
@@ -42,10 +42,10 @@ describe("PetWatchSection", () => {
     ["lifetimePlus", ACTIVE_MESSAGE],
     ["standard", STANDARD_MESSAGE],
   ])(
-    "should render the %p petServiceType with the text as %s",
-    (petServiceType, expectedMessage) => {
+    "should render the %p petServiceStatus with the text as %s",
+    (petServiceStatus, expectedMessage) => {
       // @ts-expect-error - ignoring type error for testing purposes
-      getRenderer({ petServiceType });
+      getRenderer({ petServiceStatus });
       expect(getByText(expectedMessage)).toBeInTheDocument();
     }
   );
@@ -57,10 +57,10 @@ describe("PetWatchSection", () => {
     ["lifetimePlus", ACTIVE_BUTTON_LABEL],
     ["standard", STANDARD_BUTTON_LABEL],
   ])(
-    "should render the %p petServiceType with the button label as %s",
-    (petServiceType, expectedButtonLabel) => {
+    "should render the %p petServiceStatus with the button label as %s",
+    (petServiceStatus, expectedButtonLabel) => {
       // @ts-expect-error - ignoring type error for testing purposes
-      getRenderer({ petServiceType });
+      getRenderer({ petServiceStatus });
       expect(getByText(expectedButtonLabel)).toBeInTheDocument();
     }
   );

@@ -15,27 +15,25 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
   const { label, tagStatus } = PET_WATCH_TAGS[petServiceStatus];
 
   return (
-    <>
-      <Card>
-        <div className="grid gap-large p-large">
-          <div className="flex items-center justify-between">
-            <img
-              className="max-h-[20px]"
-              alt="24 Pet Watch logo"
-              src={ASSET_IMAGES.petWatchLogo}
-            />
-            <Tag label={label} tagStatus={tagStatus} />
-          </div>
-          <Text size="base">{message}</Text>
-          <Button
-            className="text-orange-300-contrast"
-            iconLeft={icon}
-            variant="secondary"
-          >
-            {buttonLabel}
-          </Button>
+    <Card>
+      <div className="grid gap-large p-large">
+        <div className="flex items-center justify-between">
+          <img
+            className="max-h-[20px]"
+            alt="24 Pet Watch logo"
+            src={ASSET_IMAGES.petWatchLogo}
+          />
+          <Tag label={label} tagStatus={tagStatus} />
         </div>
-      </Card>
-    </>
+        <Text size="base">{message}</Text>
+        <Button
+          className="text-orange-300-contrast"
+          iconLeft={icon}
+          variant="secondary"
+        >
+          {buttonLabel}
+        </Button>
+      </div>
+    </Card>
   );
 };
