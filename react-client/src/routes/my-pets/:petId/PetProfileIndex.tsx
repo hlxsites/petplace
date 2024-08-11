@@ -4,6 +4,7 @@ import { Header } from "~/components/design-system/header/Header";
 import { PetAlertMessage } from "~/components/Pet/PetAlertMessage";
 import { PetCard } from "~/components/Pet/PetCard";
 import { PetCardInfo } from "./components/PetCardInfo";
+import { PetLostUpdates } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 
@@ -21,7 +22,7 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
         shouldRenderBackButton
       />
-      <div className="grid gap-large">
+      <div className="flex flex-col gap-large">
         <PetCard
           classNames={{ root: "lg:flex" }}
           img={petInfo.img}
@@ -34,6 +35,7 @@ export const PetProfileIndex = () => {
           <PetWatchSection petServiceStatus={petServiceStatus} />
         )}
         {renderPetInsuranceSection()}
+        <PetLostUpdates {...petInfo} />
       </div>
       <Outlet context={viewModel} />
     </>

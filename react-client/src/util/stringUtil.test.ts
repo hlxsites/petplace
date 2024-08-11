@@ -1,10 +1,11 @@
 import {
+  plural,
   upperCaseFirstLetter,
   upperCaseFirstLetterOfEachWord,
   upperCaseFirstLetterRestLowerCase,
-} from "./stringUtils";
+} from "./stringUtil";
 
-describe("stringUtils", () => {
+describe("stringUtil", () => {
   describe("upperCaseFirstLetter", () => {
     it.each([
       ["", ""],
@@ -45,6 +46,42 @@ describe("stringUtils", () => {
       ["Lorem ipSUM DOlor", "Lorem Ipsum Dolor"],
     ])("when given %p should return %p", (input, expected) => {
       expect(upperCaseFirstLetterOfEachWord(input)).toBe(expected);
+    });
+  });
+
+  describe("plural", () => {
+    const DEFAULT_VALUES = {
+      zero: "No results",
+      one: "One result",
+      other: "Many results",
+    };
+
+    it.each([0, []])("should return zero", (countFrom) => {
+      expect(plural({ countFrom, ...DEFAULT_VALUES })).toBe(
+        DEFAULT_VALUES.zero
+      );
+    });
+
+    it.each([1, [{}]])("should return one", (countFrom) => {
+      expect(plural({ countFrom, ...DEFAULT_VALUES })).toBe(DEFAULT_VALUES.one);
+    });
+
+    it.each([53, ["", ""]])("should return other", (countFrom) => {
+      expect(plural({ countFrom, ...DEFAULT_VALUES })).toBe(
+        DEFAULT_VALUES.other
+      );
+    });
+
+    it.each([53, ["", ""]])("should return other", (countFrom) => {
+      expect(plural({ countFrom, ...DEFAULT_VALUES })).toBe(
+        DEFAULT_VALUES.other
+      );
+    });
+
+    it.each([0, []])("should return one when zero in not available", (countFrom) => {
+      expect(plural({ countFrom, ...DEFAULT_VALUES, zero: undefined })).toBe(
+        DEFAULT_VALUES.one
+      );
     });
   });
 });

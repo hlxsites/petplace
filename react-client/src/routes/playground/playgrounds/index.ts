@@ -1,3 +1,4 @@
+export * from "./AdvertiseBannerImageRightPlayground";
 export * from "./ButtonPlayground";
 export * from "./CollapsePlayground";
 export * from "./DialogPlayground";
@@ -7,6 +8,7 @@ export * from "./PetAlertMessagePlayground";
 export * from "./PetCardPetWatchPlayground";
 export * from "./PetCardRecordPlayground";
 export * from "./PetDocumentsViewPlayground";
+export * from "./StepProgressPlayground";
 export * from "./TablePlayground";
 export * from "./TagPlayground";
 export * from "./TextPlayground";

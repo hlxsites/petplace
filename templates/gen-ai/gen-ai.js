@@ -15,9 +15,11 @@ const sampleQuestions = [
   'Does my dog need a flea collar',
   'What do I do if my dog has diarrhea?',
   'Where can I adopt a Beagle?',
-  'What\'s the best food for an overweight cat?',
-
+  "What's the best food for an overweight cat?",
 ];
+
+let furtherQuestionsTitle = null;
+let suggestedArticlesTitle = null;
 
 // const capabilities = [
 //   'Uses semantic search to find relevant answers',
@@ -41,10 +43,14 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
       result: 'Please enter a search query.',
     };
   }
-  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  const helpContainer = document.querySelector(
+    '.gen-ai .genai-search-container .summary-columns',
+  );
   helpContainer.classList.remove('show');
 
-  const socket = new WebSocket('wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query');
+  const socket = new WebSocket(
+    'wss://experience-platform-asgd-spire-deploy-ethos12-prod-cbc821.cloud.adobe.io/api/query',
+  );
 
   socket.addEventListener('open', () => {
     // console.log('WebSocket connection established');
@@ -55,7 +61,7 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
 
   socket.addEventListener('message', (event) => {
     // eslint-disable-next-line no-console
-    console.log('Message from server ', event);
+    // console.log('Message from server ', event);
     const message = JSON.parse(event.data);
 
     // eslint-disable-next-line no-use-before-define
@@ -72,7 +78,9 @@ const fetchStreamingResults = async (index, query, resultsBlock) => {
     console.log('WebSocket connection closed');
   });
   // Show stop button container and add a click event listener
-  const stopButtonContainer = document.querySelector('.gen-ai .genai-search-container .stop-button-container');
+  const stopButtonContainer = document.querySelector(
+    '.gen-ai .genai-search-container .stop-button-container',
+  );
   if (stopButtonContainer && stopButtonContainer.classList) {
     stopButtonContainer.classList.add('show');
 
@@ -126,7 +134,9 @@ const decorateSearch = (socket = false) => {
       const results = document.querySelector('.gen-ai .search-results');
       results.innerHTML = '';
 
-      const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+      const helpContainer = document.querySelector(
+        '.gen-ai .genai-search-container .summary-columns',
+      );
       helpContainer.classList.add('show');
     });
   }
@@ -189,7 +199,12 @@ const createSearchSummary = () => {
   summaryColumns.className = 'summary-columns';
   const summaryTitle = document.createElement('h2');
   summaryTitle.innerHTML = 'Need help asking a question or just want to test drive the PetPlace Discovery tool?';
-  const summaryColumn1 = createSummaryColumn('examples', 'Try one of these suggested questions:', getRandomQuestions(sampleQuestions), 'button');
+  const summaryColumn1 = createSummaryColumn(
+    'examples',
+    'Try one of these suggested questions:',
+    getRandomQuestions(sampleQuestions),
+    'button',
+  );
   const summaryDisclaimer = document.createElement('div');
   summaryDisclaimer.className = 'search-card-warning';
   summaryDisclaimer.innerHTML = `<p>${GENAI_SEARCH_WARNING}</p>`;
@@ -203,7 +218,9 @@ const createSearchSummary = () => {
 };
 function getCurrentSlideIndex($block) {
   // console.log('$block', $block);
-  return [...$block.children].findIndex(($child) => $child.getAttribute('active') === 'true');
+  return [...$block.children].findIndex(
+    ($child) => $child.getAttribute('active') === 'true',
+  );
 }
 function disableChildLinks($slide) {
   [...$slide.querySelectorAll(':scope a')].forEach(($anchor) => {
@@ -232,42 +249,57 @@ function initializeTouch($block, slideshowInfo) {
   let currentX;
   let diffX = 0;
 
-  $block.addEventListener('touchstart', (e) => {
-    const { tagName } = e.target;
-    if (tagName === 'A' || tagName === 'use') return;
+  $block.addEventListener(
+    'touchstart',
+    (e) => {
+      const { tagName } = e.target;
+      if (tagName === 'A' || tagName === 'use') return;
 
-    startX = e.touches[0].pageX;
-  }, { passive: true });
+      startX = e.touches[0].pageX;
+    },
+    { passive: true },
+  );
 
-  $block.addEventListener('touchmove', (e) => {
-    const { tagName } = e.target;
-    if (tagName === 'A' || tagName === 'use') return;
+  $block.addEventListener(
+    'touchmove',
+    (e) => {
+      const { tagName } = e.target;
+      if (tagName === 'A' || tagName === 'use') return;
 
-    currentX = e.touches[0].pageX;
-    diffX = currentX - startX;
+      currentX = e.touches[0].pageX;
+      diffX = currentX - startX;
 
-    const index = getCurrentSlideIndex($slidesContainer);
-    $slidesContainer.style.transform = `translateX(calc(-${index} * 260px))`;
-  }, { passive: true });
+      const index = getCurrentSlideIndex($slidesContainer);
+      $slidesContainer.style.transform = `translateX(calc(-${index} * 260px))`;
+    },
+    { passive: true },
+  );
 
-  $block.addEventListener('touchend', (e) => {
-    const { tagName } = e.target;
-    pushToDataLayer({
-      event: 'genai_suggested_article_cta',
-    });
-    if (tagName === 'A' || tagName === 'use') return;
+  $block.addEventListener(
+    'touchend',
+    (e) => {
+      const { tagName } = e.target;
+      pushToDataLayer({
+        event: 'genai_suggested_article_cta',
+      });
+      if (tagName === 'A' || tagName === 'use') return;
 
-    const index = getCurrentSlideIndex($slidesContainer);
-    if (diffX > 50) {
-      const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
-      changeSlide(slideshowInfo, index, nextIndex);
-    } else if (diffX < -50) {
-      const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
-      changeSlide(slideshowInfo, index, nextIndex);
-    } else {
-      $slidesContainer.setAttribute('style', `transform:translateX(-${index} * 260px)`);
-    }
-  }, { passive: true });
+      const index = getCurrentSlideIndex($slidesContainer);
+      if (diffX > 50) {
+        const nextIndex = index === 0 ? $slidesContainer.children.length - 1 : index - 1;
+        changeSlide(slideshowInfo, index, nextIndex);
+      } else if (diffX < -50) {
+        const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
+        changeSlide(slideshowInfo, index, nextIndex);
+      } else {
+        $slidesContainer.setAttribute(
+          'style',
+          `transform:translateX(-${index} * 260px)`,
+        );
+      }
+    },
+    { passive: true },
+  );
 
   $block.addEventListener('click', (e) => {
     const index = getCurrentSlideIndex($slidesContainer);
@@ -281,7 +313,9 @@ function initializeTouch($block, slideshowInfo) {
         document.querySelector('.slideshow-prev')?.classList.remove('hide');
       }
       changeSlide(slideshowInfo, index, nextIndex);
-    } else if (e.target.matches('.slideshow-next') && !e.target.matches('.hide')) {
+    } else if (
+      e.target.matches('.slideshow-next') && !e.target.matches('.hide')
+    ) {
       const nextIndex = index === $slidesContainer.children.length - 1 ? 0 : index + 1;
       document.querySelector('.slideshow-prev')?.classList.remove('hide');
 
@@ -304,6 +338,7 @@ const createStreamingSearchCard = (resultsBlock) => {
   <div class="search-card-warning">
   <p>${GENAI_SEARCH_WARNING}</p></div>
   <article></article>
+  <h4 class="slideshow-title">${suggestedArticlesTitle.textContent}</h4>
   <div class="slideshow"></div></div>`;
 
   resultsBlock.innerHTML = card.outerHTML;
@@ -326,49 +361,12 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     // Create the cursor animation element
     const cursorAnimation = document.createElement('span');
     cursorAnimation.className = 'cursor-animation';
-    resultsBlock.querySelector('.search-card-container').appendChild(cursorAnimation);
+    resultsBlock
+      .querySelector('.search-card-container')
+      .appendChild(cursorAnimation);
     // append the stop button to the streaming results
     resultsBlock.querySelector('.search-card-container').appendChild(decorateSearch(socket));
     document.querySelector('.gen-ai .genai-search-container .stop-button-container').classList.add('show');
-
-    // Add trigger words actions
-    if (response.actions?.length && !document.querySelector('.search-actions')) {
-      const searchContainer = resultsBlock.querySelector('.search-card');
-      const actionsContainer = document.createElement('div');
-      actionsContainer.classList.add('search-actions');
-      searchContainer.prepend(actionsContainer);
-
-      response.actions.forEach((action) => {
-        if (action.type === 'cta') {
-          const actionCta = document.createElement('a');
-          actionCta.classList.add('action-cta');
-          actionCta.setAttribute('href', action.href || '#');
-
-          const actionCtaLink = document.createElement('link');
-          actionCtaLink.setAttribute('itemprop', 'url');
-          actionCtaLink.setAttribute('href', action.href);
-          actionCta.append(actionCtaLink);
-
-          const actionCtaImg = document.createElement('img');
-          actionCtaImg.setAttribute('alt', action.title);
-          actionCtaImg.setAttribute('src', action.background_url);
-          actionCta.append(actionCtaImg);
-
-          const actionCtaTitle = document.createElement('h3');
-          actionCtaTitle.setAttribute('itemprop', 'name');
-          actionCtaTitle.textContent = action.title;
-          actionCta.append(actionCtaTitle);
-
-          const actionCtaBtn = document.createElement('span');
-          actionCtaBtn.classList.add('action-button');
-          actionCtaBtn.innerHTML = `${action.text}<span class="icon icon-arrow-right"></span>`;
-          decorateIcons(actionCtaBtn);
-          actionCta.append(actionCtaBtn);
-
-          actionsContainer.append(actionCta);
-        }
-      });
-    }
   }
 
   // // If the div already exists, update its content with the new message
@@ -382,6 +380,19 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
   const card = resultsBlock.querySelector('.search-card');
   const anchorTags = card?.querySelectorAll('a');
 
+  // Add placeholder cta card
+  if (!resultsBlock.querySelector('.search-actions-placeholder') && card) {
+    const placeholderCtaCard = document.createElement('div');
+    const placeholderCtaImage = 'https://www.petplace.com/images/media_12735b933a257e12fd7a4f78f77f752ce296513ce.png';
+    const placeholderCtaTitle = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness,';
+    const placeholderCtaText = 'Click to learn more.';
+    const placeholderCtaPath = document.head.querySelector('insurance-page-path')?.content || '/pet-insurance';
+
+    placeholderCtaCard.className = 'search-actions-placeholder';
+    placeholderCtaCard.innerHTML = `<a class="action-cta--placeholder" href="${placeholderCtaPath}"><link itemprop="url" href="https://www.petplace.com/pet-adoption"><img alt="Thinking about adopting a pet?" src="${placeholderCtaImage}"><h3 itemprop="name">${placeholderCtaTitle}</h3><span class="action-button">${placeholderCtaText}<span class="icon icon-arrow-right"><svg id="icons-sprite-arrow-right" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.938 7.877h13.124M7.938 14.002l6.125-6.125-6.126-6.125" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></span></a>`;
+    card.prepend(placeholderCtaCard);
+  }
+
   anchorTags?.forEach((anchorTag) => {
     anchorTag.setAttribute('target', '_blank');
   });
@@ -391,10 +402,56 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
     // Remove the cursor animation element
     const cursorAnimation = resultsBlock.querySelector('.cursor-animation');
     cursorAnimation.classList.add('hide');
-    const stopButtonContainer = resultsBlock.querySelector('.search-card-container .stop-button-container');
+    const stopButtonContainer = resultsBlock.querySelector(
+      '.search-card-container .stop-button-container',
+    );
     stopButtonContainer.remove();
+
+    // Add trigger words actions
+    if (response.actions?.length && !document.querySelector('.search-actions')) {
+      const searchContainer = resultsBlock.querySelector('.search-card');
+      const actionsContainer = document.createElement('div');
+      actionsContainer.classList.add('search-actions');
+      searchContainer.prepend(actionsContainer);
+
+      const placeholderCtaCard = resultsBlock.querySelector('.search-actions-placeholder');
+
+      const action = response.actions[0];
+      if (action.type === 'cta') {
+        const actionCta = document.createElement('a');
+        actionCta.classList.add('action-cta');
+        actionCta.setAttribute('href', action.href || '#');
+
+        const actionCtaLink = document.createElement('link');
+        actionCtaLink.setAttribute('itemprop', 'url');
+        actionCtaLink.setAttribute('href', action.href);
+        actionCta.append(actionCtaLink);
+
+        const actionCtaImg = document.createElement('img');
+        actionCtaImg.setAttribute('alt', action.title);
+        actionCtaImg.setAttribute('src', action.background_url);
+        actionCta.append(actionCtaImg);
+
+        const actionCtaTitle = document.createElement('h3');
+        actionCtaTitle.setAttribute('itemprop', 'name');
+        actionCtaTitle.textContent = action.title;
+        actionCta.append(actionCtaTitle);
+
+        const actionCtaBtn = document.createElement('span');
+        actionCtaBtn.classList.add('action-button');
+        actionCtaBtn.innerHTML = `${action.text}<span class="icon icon-arrow-right"></span>`;
+        decorateIcons(actionCtaBtn);
+        actionCta.append(actionCtaBtn);
+
+        placeholderCtaCard.remove();
+        actionsContainer.append(actionCta);
+      }
+    }
+
     if (response.links?.length > 0) {
-      const $slideShowContainer = document.querySelector('.gen-ai .genai-search-container .slideshow');
+      const $slideShowContainer = document.querySelector(
+        '.gen-ai .genai-search-container .slideshow',
+      );
 
       const $slidesContainer = document.createElement('div');
 
@@ -449,7 +506,11 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       $slideShowContainer.appendChild($sliderNext);
 
       $slideShowContainer.addEventListener(Events.SLIDE_CHANGED, (e) => {
-        updateSlide(e.detail.currentIndex, e.detail.newIndex, $slideShowContainer);
+        updateSlide(
+          e.detail.currentIndex,
+          e.detail.newIndex,
+          $slideShowContainer,
+        );
       });
 
       const slideshowInfo = {
@@ -465,10 +526,10 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       // Add the divider and further questions heading
       const divider = document.createElement('div');
       divider.className = 'divider';
-      const h4 = document.createElement('h4');
-      h4.textContent = 'Further Questions';
+      const h3 = document.createElement('h3');
+      h3.textContent = furtherQuestionsTitle.textContent;
       card.appendChild(divider);
-      card.appendChild(h4);
+      card.appendChild(h3);
     }
     const paragraph = document.createElement('p');
     paragraph.className = 'search-card-buttons';
@@ -484,7 +545,9 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
 };
 
 function displayInsuranceCTA(resultsBlock) {
-  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  const helpContainer = document.querySelector(
+    '.gen-ai .genai-search-container .summary-columns',
+  );
   helpContainer.classList.add('hide');
   helpContainer.classList.remove('show');
   const insuranceCtaCopy = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness, Click to learn more.';
@@ -524,7 +587,9 @@ export async function displaySearchResults(query, resultsBlock) {
     return;
   }
   isRequestInProgress = true;
-  const helpContainer = document.querySelector('.gen-ai .genai-search-container .summary-columns');
+  const helpContainer = document.querySelector(
+    '.gen-ai .genai-search-container .summary-columns',
+  );
   helpContainer.classList.add('hide');
   // Create the loading message element
   const loadingMessage = document.createElement('div');
@@ -555,12 +620,17 @@ export async function displaySearchResults(query, resultsBlock) {
 
     // const searchBlock = document.querySelector('.genai-search-wrapper');
 
-    if (event.target.matches('.search-card-button') && isRequestInProgress === false) {
+    if (
+      event.target.matches('.search-card-button') && isRequestInProgress === false
+    ) {
       // searchBlock.scrollIntoView({ behavior: 'smooth' });
       pushToDataLayer({
         event: 'genai_suggested_questions_cta',
       });
-      window.localStorage.setItem('aem-gen-ai-query', JSON.stringify(event.target.innerText));
+      window.localStorage.setItem(
+        'aem-gen-ai-query',
+        JSON.stringify(event.target.innerText),
+      );
       searchBox.value = event.target.innerText;
       resultsBlock.innerHTML = '';
       document.getElementById('ai-powered-petplace-discovery').scrollIntoView();
@@ -575,7 +645,11 @@ export function setupSearchResults(defaultContentWrapper) {
   searchResultsDivElement.setAttribute('am-region', 'Search');
   searchResultsDivElement.appendChild(decorateSearch());
   defaultContentWrapper.innerHTML = '<p></p><p></p>';
-  if (document.querySelector('.gen-ai .genai-search-container .summary-columns') === null) {
+  if (
+    document.querySelector(
+      '.gen-ai .genai-search-container .summary-columns',
+    ) === null
+  ) {
     defaultContentWrapper.appendChild(createSearchSummary());
   }
   defaultContentWrapper.appendChild(searchResultsDivElement);
@@ -596,6 +670,8 @@ export async function loadLazy(main) {
   const contentDiv = document.createElement('div');
   const defaultContentWrapper = main.querySelector('.default-content-wrapper');
   const heroContainer = main.querySelector('.section.hero-container');
+  [furtherQuestionsTitle, suggestedArticlesTitle] = document.querySelectorAll('h3');
+
   hero.className = 'hero-wrapper';
   imgDiv.className = 'img-div';
   contentDiv.classList = 'text-div';

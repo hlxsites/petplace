@@ -1,17 +1,17 @@
+import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
 import {
   PET_WATCH_OFFERS,
   PET_WATCH_TAGS,
 } from "~/routes/my-pets/:petId/utils/petServiceConstants";
 import { Button, Card, Tag, Text } from "../../design-system";
-import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
 
 type PetWatchSectionProp = {
-  petServiceType: PetServiceTypes;
+  petServiceStatus: PetServiceTypes;
 };
 
-export const PetWatchSection = ({ petServiceType }: PetWatchSectionProp) => {
-  const { buttonLabel, icon, message } = PET_WATCH_OFFERS[petServiceType];
-  const { label, tagStatus } = PET_WATCH_TAGS[petServiceType];
+export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
+  const { buttonLabel, icon, message } = PET_WATCH_OFFERS[petServiceStatus];
+  const { label, tagStatus } = PET_WATCH_TAGS[petServiceStatus];
 
   return (
     <>

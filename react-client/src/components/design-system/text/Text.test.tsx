@@ -86,17 +86,18 @@ describe("Text", () => {
   });
 
   it.each([
-    "text-black",
-    "text-neutral-950",
-    "text-primary-900",
-    "text-secondary-700",
-    "text-tertiary-600",
-    "text-blue-500",
-  ] as ComponentProps<typeof Text>["color"][])(
+    "black",
+    "neutral-950",
+    "primary-900",
+    "secondary-700",
+    "tertiary-600",
+    "blue-500",
+    "green-500",
+  ] satisfies ComponentProps<typeof Text>["color"][])(
     "should render component with color %p",
     (color) => {
       getRenderer({ color });
-      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${color}`);
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${color}`);
     }
   );
 });
