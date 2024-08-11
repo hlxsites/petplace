@@ -49,9 +49,9 @@ export const Table = <T,>({
   if (!rows.length) return null;
 
   return (() => (
-    <div className="w-auto overflow-hidden py-large">
+    <div className="w-full overflow-hidden py-large">
       <Card>
-        <div className="scrolling-touch overflow-x-auto">
+        <div className="overflow-x-auto">
           <div className="w-full">{renderTableContent()}</div>
         </div>
       </Card>
@@ -90,7 +90,7 @@ export const Table = <T,>({
       if (!paginationProps) return null;
 
       return (
-        <div className="flex w-full">
+        <div className="flex w-full border-t border-solid border-neutral-300 p-base">
           <ControlledPagination {...paginationProps} />
         </div>
       );

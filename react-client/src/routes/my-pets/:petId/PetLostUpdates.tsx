@@ -41,27 +41,25 @@ export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
   );
 
   return (
-    <div className="mt-large">
-      <Collapse
-        isOpen={isOpen}
-        onOpenChange={setIsOpen}
-        title={<Title level="h4">Lost Pets Status Update</Title>}
-        isLocked={isMissing}
-      >
-        {renderDescriptionMessage()}
-        <Table
-          columns={columns}
-          rows={currentRows}
-          paginationProps={{
-            currentPage,
-            didChangePage: handlePagination,
-            itemsCount: dataSource.length,
-            itemsPerPage: ITEMS_PER_PAGE,
-          }}
-        />
-        {renderReportButton()}
-      </Collapse>
-    </div>
+    <Collapse
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      title={<Title level="h4">Lost Pets Status Update</Title>}
+      isLocked={isMissing}
+    >
+      {renderDescriptionMessage()}
+      <Table
+        columns={columns}
+        rows={currentRows}
+        paginationProps={{
+          currentPage,
+          didChangePage: handlePagination,
+          itemsCount: dataSource.length,
+          itemsPerPage: ITEMS_PER_PAGE,
+        }}
+      />
+      {renderReportButton()}
+    </Collapse>
   );
 
   function renderDescriptionMessage() {
