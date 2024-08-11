@@ -26,7 +26,7 @@ export const ControlledPagination = ({
     >
       <nav
         aria-label="Pagination navigation"
-        className="flex justify-center lg:justify-start"
+        className="flex items-stretch justify-center lg:justify-start"
       >
         <PaginateButton
           ariaLabel="Go to first page"
@@ -123,7 +123,6 @@ export const ControlledPagination = ({
         isSelected={isSelected}
         key={page}
         onClick={goToPage(page)}
-        className="-mt-[5px]"
       >
         <span className="block w-5">{page}</span>
       </PaginateButton>
@@ -132,7 +131,10 @@ export const ControlledPagination = ({
 
   function renderEllipsis(key: string) {
     return (
-      <div key={key} className="mx-[5px] mt-[4px] w-5">
+      <div
+        className="flex h-full min-w-[30px] items-baseline justify-center px-xsmall py-xsmall"
+        key={key}
+      >
         <TextSpan fontWeight="bold">&hellip;</TextSpan>
       </div>
     );
