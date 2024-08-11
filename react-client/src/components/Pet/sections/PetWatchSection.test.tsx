@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { PetWatchSection } from "./PetWatchSection";
 import { ComponentProps } from "react";
+import { PetWatchSection } from "./PetWatchSection";
 
 const { getByRole, getByText } = screen;
 
@@ -67,7 +67,7 @@ describe("PetWatchSection", () => {
 });
 
 function getRenderer({
-  petServiceType = "standard",
+  petServiceStatus = "standard",
 }: Partial<ComponentProps<typeof PetWatchSection>> = {}) {
-  return render(<PetWatchSection petServiceType={petServiceType} />);
+  return render(<PetWatchSection petServiceStatus={petServiceStatus} />);
 }
