@@ -15,6 +15,7 @@ interface ImportMetaEnv {
   readonly BASE_URL: string;
   readonly DEV: boolean;
   readonly PROD: boolean;
+  readonly VITE_REACT_BASE_URL: string;
 }
 
 interface ImportMeta {
