@@ -17,7 +17,7 @@ function useButtonBase({
   const isError = variant === "error";
 
   const className = classNames(
-    "rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium",
+    "rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium m-xsmall",
     {
       "bg-orange-300-contrast text-white hover:bg-orange-500 focus:bg-orange-300-contrast focus:outline-orange-100":
         isPrimary,

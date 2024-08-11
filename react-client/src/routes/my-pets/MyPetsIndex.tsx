@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PetCard } from "~/components/Pet/PetCard";
 import {
@@ -10,10 +11,9 @@ import {
 } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
+import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { AppRoutePaths } from "../AppRoutePaths";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
-import { useState } from "react";
-import { useWindowWidth } from "~/hooks/useWindowWidth";
 
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
@@ -98,7 +98,7 @@ export const MyPetsIndex = () => {
         {lostOrFoundMessages.map((message) => (
           <Text size="base">{message}</Text>
         ))}
-        <div className="mt-xxlarge grid max-h-12 gap-small md:flex">
+        <div className="mt-xxlarge grid gap-small md:flex">
           <Button variant="secondary" fullWidth>
             I have found a pet
           </Button>
