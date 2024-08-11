@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { ComponentProps } from "react";
 import userEvent from "@testing-library/user-event";
-import { PetCardRecord } from "./PetCardRecord";
+import { ComponentProps } from "react";
 import * as downloadFunctions from "../../util/downloadFunctions";
+import { PetCardRecord } from "./PetCardRecord";
 
 const { getByRole, queryByRole } = screen;
 
@@ -28,11 +28,15 @@ describe("PetCardRecord", () => {
 
   it.each(["doc", "jpg", "pdf", "png", "txt"] as ComponentProps<
     typeof PetCardRecord
-  >["fileType"][])(
+  >["record"]["fileType"][])(
     "should display the correct icon based on fileType",
     (fileType) => {
       getRenderer({
-        fileType,
+        record: {
+          id: "1",
+          fileName: "Lily's Doc",
+          fileType,
+        },
       });
 
       const svgElement = document.querySelector("svg");
@@ -56,7 +60,7 @@ describe("PetCardRecord", () => {
   it.each(["Medical", "Vaccines"])(
     "should render the given file name",
     (fileName) => {
-      getRenderer({ fileName });
+      getRenderer({ record: { id: "1", fileName } });
 
       expect(getByRole("paragraph")).toHaveTextContent(fileName);
     }
@@ -98,7 +102,7 @@ describe("PetCardRecord", () => {
 
   it("should call onClick when delete button is clicked", async () => {
     const onClick = jest.fn();
-    getRenderer({ onClick });
+    getRenderer({ onDelete: onClick });
 
     expect(onClick).not.toHaveBeenCalled();
     await userEvent.click(getByRole("button", { name: DELETE_BUTTON }));
@@ -106,7 +110,9 @@ describe("PetCardRecord", () => {
   });
 
   it("should download the file with expected values when download button is clicked", async () => {
-    const downloadFileSpy = jest.spyOn(downloadFunctions, "downloadFile");
+    const downloadFileSpy = jest
+      .spyOn(downloadFunctions, "downloadFile")
+      .mockImplementation(() => Promise.resolve());
 
     getRenderer();
     expect(downloadFileSpy).not.toHaveBeenCalled();
@@ -123,17 +129,18 @@ describe("PetCardRecord", () => {
 });
 
 function getRenderer({
-  downloadPath = "http://example.com/file.jpg",
-  fileName = "Test name",
-  fileType = "jpg",
   isUploadingFile = false,
+  record = {
+    id: "test",
+    downloadPath: "http://example.com/file.jpg",
+    fileName: "Test name",
+    fileType: "jpg",
+  },
   ...props
 }: Partial<ComponentProps<typeof PetCardRecord>> = {}) {
   return render(
     <PetCardRecord
-      downloadPath={downloadPath}
-      fileName={fileName}
-      fileType={fileType}
+      record={record}
       isUploadingFile={isUploadingFile}
       {...props}
     />

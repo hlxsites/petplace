@@ -1,6 +1,5 @@
 import isEqual from "lodash/isEqual";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { PetPlaceRouteObject } from "~/types/routerTypes";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
@@ -10,8 +9,12 @@ import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { Root } from "./root";
 import { RootErrorPage } from "./root-error-page";
+import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
+import { APP_BASE_URL, IS_DEV_ENV } from "~/util/envUtil";
+import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/DocumentTypeIndex";
+import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/:petId/PetProfileLayout";
 
@@ -37,7 +40,7 @@ const routes: PetPlaceRouteObject[] = [
             element: <MyPetsIndex />,
           },
           {
-            element: <PetProfileLayout/>,
+            element: <PetProfileLayout />,
             id: "petProfile",
             loader: PetProfileLayoutLoader,
             path: AppRoutePaths.petProfile,
@@ -48,6 +51,19 @@ const routes: PetPlaceRouteObject[] = [
                 element: <PetProfileIndex />,
                 id: "petProfileIndex",
                 index: true,
+              },
+              {
+                id: "petProfileDocuments",
+                path: AppRoutePaths.petProfileDocuments,
+                element: <PetProfileIndex />,
+                children: [
+                  {
+                    id: "petProfileDocumentType",
+                    loader: DocumentTypeIndexLoader,
+                    path: AppRoutePaths.petProfileDocumentType,
+                    element: <DocumentTypeIndex />,
+                  },
+                ],
               },
               {
                 id: "petEdit",
@@ -77,7 +93,7 @@ const routes: PetPlaceRouteObject[] = [
 ];
 
 // We don't want to include the playground route in production
-if (window.location.hostname.includes("localhost")) {
+if (IS_DEV_ENV) {
   const playgroundRoute: PetPlaceRouteObject = {
     id: "playground",
     path: AppRoutePaths.playground,
@@ -94,7 +110,7 @@ if (window.location.hostname.includes("localhost")) {
 }
 
 const router = createBrowserRouter(routes, {
-  basename: "/account",
+  basename: APP_BASE_URL,
 });
 
 export const AppRouter = (): JSX.Element => {

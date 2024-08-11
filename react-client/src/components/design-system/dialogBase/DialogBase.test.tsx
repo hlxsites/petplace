@@ -89,7 +89,7 @@ describe("DialogBase", () => {
   });
 
   it("should render the icon when the icon prop is provided", () => {
-    getRenderer({ icon: "alert" });
+    getRenderer({ icon: "alertDiamond" });
 
     expect(document.querySelector("svg")).toHaveAttribute(
       "data-file-name",

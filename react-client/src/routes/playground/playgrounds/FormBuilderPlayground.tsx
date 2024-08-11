@@ -1,5 +1,4 @@
-import { DisplayForm, Text } from "~/components/design-system";
-import { FormSchema } from "~/components/design-system/form/types/formTypes";
+import { DisplayForm, FormSchema, Text } from "~/components/design-system";
 
 export const FormBuilderPlayground = () => {
   const schema: FormSchema = {
@@ -17,7 +16,6 @@ export const FormBuilderPlayground = () => {
       },
       {
         elementType: "row",
-        id: "row-1",
         children: [
           {
             elementType: "input",
@@ -38,7 +36,6 @@ export const FormBuilderPlayground = () => {
         ],
       },
       {
-        id: "breed-row",
         elementType: "row",
         children: [
           {
@@ -63,7 +60,6 @@ export const FormBuilderPlayground = () => {
         ],
       },
       {
-        id: "breed-type-spayed",
         elementType: "row",
         children: [
           {
@@ -86,7 +82,6 @@ export const FormBuilderPlayground = () => {
       },
       {
         elementType: "row",
-        id: "birth-date-row",
         children: [
           {
             elementType: "input",
@@ -129,7 +124,6 @@ export const FormBuilderPlayground = () => {
           </Text>
         ),
         elementType: "html",
-        id: "text-note",
       },
       {
         elementType: "input",

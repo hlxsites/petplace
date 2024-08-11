@@ -39,7 +39,7 @@ export const MyPetsIndex = () => {
         {pets.map(({ isProtected, ...rest }) => (
           <Link key={`link-${rest.id}`} to={rest.id}>
             <PetCard
-              hasShadow
+              shadow="elevation-1"
               key={rest.name}
               displayProtectedBadge={{ isProtected: !!isProtected }}
               {...rest}

@@ -1,7 +1,11 @@
+import { DownloadFileProps } from "~/util/downloadFunctions";
+
+export type PetRecord = DownloadFileProps & {
+  id: string;
+};
+
 export type PetCardRecordProps = {
-  downloadPath?: string;
-  fileName: string;
-  fileType?: "doc" | "docx" | "jpg" | "pdf" | "png" | "txt";
+  record: PetRecord;
   isUploadingFile?: boolean;
-  onClick?: () => void;
+  onDelete?: () => void;
 };

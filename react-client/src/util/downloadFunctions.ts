@@ -1,16 +1,15 @@
-import { PetCardRecordProps } from "../components/Pet/types/PetRecordsTypes";
-
-type DownloadFileProps = Omit<
-  PetCardRecordProps,
-  "onClick" | "isUploadingFile"
->;
+export type DownloadFileProps = {
+  downloadPath?: string;
+  fileName: string;
+  fileType?: "doc" | "docx" | "jpg" | "pdf" | "png" | "txt";
+};
 
 export async function downloadFile({
   downloadPath,
   fileName,
   fileType,
 }: DownloadFileProps) {
-  if (!downloadPath) return;
+  if (!downloadPath || !fileType) return;
 
   try {
     const response = await fetch(downloadPath);
@@ -23,7 +22,7 @@ export async function downloadFile({
     const downloadLink = document.createElement("a");
     downloadLink.style.display = "none";
     downloadLink.href = url;
-    downloadLink.download = `${fileName}.${fileType}`;
+    downloadLink.download = `${fileName ?? "sample"}.${fileType}`;
 
     // for firefox browsers
     document.body.appendChild(downloadLink);

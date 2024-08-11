@@ -1,35 +1,22 @@
-import {
-  Card,
-  Icon,
-  IconButton,
-  IconKeys,
-  Loading,
-  Text,
-} from "../design-system";
+import { downloadFile } from "~/util/downloadFunctions";
+import { Icon, IconButton, IconKeys, Loading, Text } from "../design-system";
+import { PetCardOption } from "./PetCardOption";
 import { PetCardRecordProps } from "./types/PetRecordsTypes";
-import { downloadFile } from "../../util/downloadFunctions";
 
 export const PetCardRecord = ({
-  downloadPath,
-  fileName,
-  fileType,
+  record,
   isUploadingFile,
-  onClick,
+  onDelete,
 }: PetCardRecordProps) => {
-  return (
-    <Card role="listitem">
-      <div className="flex justify-between p-base">
-        <div className="flex items-center gap-small">
-          <Icon className="text-neutral-white" display={getDisplayIcon()} />
+  const { downloadPath, fileName, fileType } = record;
 
-          <Text color="secondary" size="xs">
-            {fileName}
-          </Text>
-        </div>
-        {isUploadingFile ? (
+  return (
+    <PetCardOption
+      actionButton={
+        isUploadingFile ? (
           <Loading />
         ) : (
-          <div className="flex items-center">
+          <>
             <IconButton
               label="download file"
               icon="download"
@@ -44,21 +31,28 @@ export const PetCardRecord = ({
               label="delete file"
               icon="trash"
               iconProps={{ className: "text-orange-300-contrast", size: 16 }}
-              onClick={onClick}
+              onClick={onDelete}
               variant="link"
             />
-          </div>
-        )}
-      </div>
-    </Card>
+          </>
+        )
+      }
+      iconLeft={
+        <Icon className="text-neutral-white" display={getDisplayIcon()} />
+      }
+      text={
+        <Text color="secondary-700" size="xs">
+          {fileName}
+        </Text>
+      }
+    />
   );
 
   function getDisplayIcon(): IconKeys {
     if (!fileType) {
       return "pdfFile";
     }
-
-    return fileType === "docx" ? "docFile" : `${fileType}File`;
+    return fileType === "docx" ? "docFile" : (`${fileType}File` as IconKeys);
   }
 
   function handleOnDownload() {

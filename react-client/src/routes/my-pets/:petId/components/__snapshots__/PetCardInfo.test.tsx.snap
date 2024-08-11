@@ -1,0 +1,272 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PetCardInfo should match snapshot to assure that the component is being rendered correctly 1`] = `
+<div>
+  <div
+    class="w-full p-large lg:p-xxlarge"
+  >
+    <div
+      class="max-h-xxxlarge mb-small flex w-full items-center justify-between"
+    >
+      <h1
+        class="font-bold text-neutral-950 lg:text-[44px] text-[32px]/[36px]"
+      >
+        Test pet card info
+      </h1>
+      <button
+        class="rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 hidden lg:block"
+        type="button"
+      >
+        <div
+          class="icon w-base lg:w-large mr-small text-brand-secondary"
+          style="height: 16px; width: 16px;"
+        >
+          <svg
+            data-file-name="SvgShieldGoodIcon"
+          />
+        </div>
+        Report lost pet
+      </button>
+      <button
+        class="rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 block lg:hidden"
+        type="button"
+      >
+        <div
+          class="icon w-base lg:w-large mr-small text-brand-secondary"
+          style="height: 16px; width: 16px;"
+        >
+          <svg
+            data-file-name="SvgAppsIcon"
+          />
+        </div>
+        Actions
+      </button>
+    </div>
+    <p
+      class="inline-block text-black font-franklin font-normal text-base leading-6"
+    >
+      Microchip#: 
+    </p>
+    <div
+      class="mt-base"
+    >
+      <div
+        data-orientation="horizontal"
+        dir="ltr"
+      >
+        <div
+          aria-orientation="horizontal"
+          class="flex"
+          data-orientation="horizontal"
+          role="tablist"
+          style="outline: none;"
+          tabindex="0"
+        >
+          <button
+            aria-controls="radix-:rf:-content-Pet info"
+            aria-label="Tab option: Pet info"
+            aria-selected="true"
+            class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+            data-orientation="horizontal"
+            data-radix-collection-item=""
+            data-state="active"
+            id="radix-:rf:-trigger-Pet info"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            <div
+              class="flex place-items-center gap-small"
+            >
+              <div
+                class="icon w-base lg:w-large"
+                style="height: 16px; width: 16px;"
+              >
+                <svg
+                  data-file-name="SvgPawIcon"
+                />
+              </div>
+              <p
+                class="inline-block text-black font-franklin font-normal text-base leading-6"
+              >
+                Pet info
+              </p>
+            </div>
+          </button>
+          <button
+            aria-controls="radix-:rf:-content-Pet documents"
+            aria-label="Tab option: Pet documents"
+            aria-selected="false"
+            class="flex w-full justify-center rounded-none border-0 border-b-[3px] border-b-neutral-300 bg-transparent p-small text-base font-bold text-neutral-500 outline-none hover:border-0 hover:border-b-[3px] hover:border-b-neutral-300 hover:bg-transparent hover:outline-none focus:bg-transparent focus:outline-none aria-selected:border-b-purple-500 aria-selected:text-purple-500"
+            data-orientation="horizontal"
+            data-radix-collection-item=""
+            data-state="inactive"
+            id="radix-:rf:-trigger-Pet documents"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            <div
+              class="flex place-items-center gap-small"
+            >
+              <div
+                class="icon w-base lg:w-large"
+                style="height: 16px; width: 16px;"
+              >
+                <svg
+                  data-file-name="SvgFileIcon"
+                />
+              </div>
+              <p
+                class="inline-block text-black font-franklin font-normal text-base leading-6"
+              >
+                Pet documents
+              </p>
+            </div>
+          </button>
+        </div>
+        <div
+          aria-label="Tab content of: Pet info"
+          aria-labelledby="radix-:rf:-trigger-Pet info"
+          class="pt-large"
+          data-orientation="horizontal"
+          data-state="active"
+          id="radix-:rf:-content-Pet info"
+          role="tabpanel"
+          style="animation-duration: 0s;"
+          tabindex="0"
+        >
+          <div
+            class="grid grid-cols-1 md:grid-cols-2"
+            role="list"
+          >
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Age
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Species
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Sex
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Breed
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  DOB
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Mixed breed
+                  :
+                </span>
+                 
+              </p>
+            </div>
+            <div
+              class="pb-xsmall"
+              role="listitem"
+            >
+              <p
+                class="inline-block text-black font-franklin font-normal text-sm leading-5"
+              >
+                <span
+                  class="inline-block font-raleway font-bold"
+                >
+                  Spayed/Neutered
+                  :
+                </span>
+                 
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-label="Tab content of: Pet documents"
+          aria-labelledby="radix-:rf:-trigger-Pet documents"
+          class="pt-large"
+          data-orientation="horizontal"
+          data-state="inactive"
+          hidden=""
+          id="radix-:rf:-content-Pet documents"
+          role="tabpanel"
+          tabindex="0"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

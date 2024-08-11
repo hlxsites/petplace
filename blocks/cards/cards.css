@@ -271,3 +271,22 @@
     24px 320px,
     24px 345px;
 }
+
+.cards.breed .skeleton {
+  min-height: 343px;
+  background-image:
+    linear-gradient(var(--color-gray-light-alt) 128px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 24px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 24px, transparent 0),
+    linear-gradient(var(--color-gray-light-alt) 24px, transparent 0);
+  background-size:
+    100% 128px,
+    calc(100% - 2*24px) 24px,
+    calc(100% - 2*24px) 24px,
+    calc(100% - 2*24px) 24px;
+  background-position:
+    0 0,
+    24px 158px,
+    24px 188px,
+    24px 218px;
+}

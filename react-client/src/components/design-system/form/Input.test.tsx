@@ -9,7 +9,7 @@ const { getByRole, getByLabelText } = screen;
 
 describe("<Input />", () => {
   it.each(["input-id", "another-id"])(
-    "should render an input with an id %s",
+    "should render an input with an id %p",
     (expected) => {
       getRenderer({ id: expected });
       expect(getByRole("textbox")).toHaveAttribute("id", expected);
@@ -17,7 +17,7 @@ describe("<Input />", () => {
   );
 
   it.each(["A label", "Another label"])(
-    "should render an input with a label %s",
+    "should render an input with a label %p",
     (expected) => {
       getRenderer({ label: expected });
       expect(getByRole("textbox", { name: expected })).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe("<Input />", () => {
   });
 
   it.each(["text", "email", "password"])(
-    "should render an input with type %s",
+    "should render an input with type %p",
     (expected) => {
       getRenderer({ type: expected as InputProps["type"] });
       expect(getByLabelText("The Input")).toHaveAttribute("type", expected);
@@ -45,7 +45,7 @@ describe("<Input />", () => {
   });
 
   it.each(["a placeholder", "another placeholder"])(
-    "should render an input with a placeholder %s",
+    "should render an input with a placeholder %p",
     (expected) => {
       getRenderer({ placeholder: expected });
       expect(getByRole("textbox")).toHaveAttribute("placeholder", expected);
@@ -53,7 +53,7 @@ describe("<Input />", () => {
   );
 
   it.each(["error", "another error"])(
-    "should render error message %s",
+    "should render error message %p",
     (expected) => {
       getRenderer({ errorMessage: expected });
 
@@ -64,7 +64,7 @@ describe("<Input />", () => {
   );
 
   it.each(["a description message", "another description message"])(
-    "should render description message %s",
+    "should render description message %p",
     (expected) => {
       getRenderer({ description: expected });
 

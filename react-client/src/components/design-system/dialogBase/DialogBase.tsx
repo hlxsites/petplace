@@ -5,9 +5,9 @@ import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
 import { classNames } from "~/util/styleUtil";
 import { Backdrop } from "../backdrop/Backdrop";
 import { IconButton } from "../button/IconButton";
+import { Icon } from "../icon/Icon";
 import { Title } from "../text/Title";
 import { DialogBaseProps } from "../types/DialogBaseTypes";
-import { Icon } from "../icon/Icon";
 
 export const DialogBase = ({
   ariaLabel,
@@ -72,13 +72,7 @@ export const DialogBase = ({
           role="dialog"
           tabIndex={-1}
         >
-          {icon && (
-            <Icon
-              className={iconProps?.className}
-              display={icon}
-              size={iconProps?.size}
-            />
-          )}
+          {icon && <Icon display={icon} {...iconProps} />}
           <div className="mb-small">
             {title && (
               <Title id={titleId} level={level}>
