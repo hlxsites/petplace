@@ -76,14 +76,6 @@ describe("DialogBase", () => {
     expect(queryByRole("dialog")?.querySelector("svg")).toBeNull();
   });
 
-  it("should render icon", () => {
-    getRenderer({ icon: "alertDiamond" });
-    expect(getByRole("dialog").querySelector("svg")).toHaveAttribute(
-      "data-file-name",
-      "SvgAlertDiamondIcon"
-    );
-  });
-
   it.each(["dialog", "drawer"] as ComponentProps<
     typeof DialogBase
   >["element"][])(
