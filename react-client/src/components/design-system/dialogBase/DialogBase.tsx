@@ -29,7 +29,7 @@ export const DialogBase = ({
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (!isClosing && isOpen && event.key === "Escape") {
-        onCloseWithAnimation();
+        onCloseWithAnimation?.();
       }
     }
 
@@ -81,14 +81,16 @@ export const DialogBase = ({
             )}
           </div>
 
-          <IconButton
-            className={className?.closeButton}
-            icon="closeXMark"
-            iconProps={{ size: 14 }}
-            label={`Close ${element}`}
-            onClick={onCloseWithAnimation}
-            variant="link"
-          />
+          {!!onCloseWithAnimation && (
+            <IconButton
+              className={className?.closeButton}
+              icon="closeXMark"
+              iconProps={{ size: 14 }}
+              label={`Close ${element}`}
+              onClick={onCloseWithAnimation}
+              variant="link"
+            />
+          )}
 
           <div className="h-90vh grid overflow-auto">{children}</div>
         </div>

@@ -31,30 +31,17 @@ describe("Dialog", () => {
       "absolute right-[2px] top-[-41px] text-neutral-white"
     );
   });
-
-  it("should hide close button when hideCloseButton=true", () => {
-    getRenderer({ hideCloseButton: true });
-
-    expect(getByRole("button", { name: "Close dialog" })).toHaveClass("hidden");
-  });
 });
 
 function getRenderer({
   children = "Test children",
-  hideCloseButton,
   id = "SampleId",
   isOpen = true,
   onClose = jest.fn(),
   title = "Test title",
 }: Partial<ComponentProps<typeof Dialog>> = {}) {
   return render(
-    <Dialog
-      hideCloseButton={hideCloseButton}
-      id={id}
-      isOpen={isOpen}
-      onClose={onClose}
-      title={title}
-    >
+    <Dialog id={id} isOpen={isOpen} onClose={onClose} title={title}>
       {children}
     </Dialog>
   );

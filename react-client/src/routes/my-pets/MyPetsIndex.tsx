@@ -109,7 +109,6 @@ export const MyPetsIndex = () => {
     return (
       <Dialog
         align="center"
-        hideCloseButton
         icon="warningTriangle"
         iconProps={{
           className: "mb-xxlarge",

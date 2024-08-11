@@ -32,7 +32,7 @@ export type DialogBaseProps = DialogIconProps &
     element: "dialog" | "drawer";
     id: string;
     isOpen: boolean;
-    onClose: () => void;
+    onClose?: () => void;
   };
 
 export type DialogCommonProps = Omit<

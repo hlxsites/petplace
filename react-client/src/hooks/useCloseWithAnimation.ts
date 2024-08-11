@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 type UseCloseWithAnimationProps = {
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 export const useCloseWithAnimation = ({
@@ -9,16 +9,18 @@ export const useCloseWithAnimation = ({
 }: UseCloseWithAnimationProps) => {
   const [isClosing, setIsClosing] = useState(false);
 
-  const onCloseWithAnimation = () => {
-    if (isClosing) return;
+  const onCloseWithAnimation = onClose
+    ? () => {
+        if (isClosing) return;
 
-    setIsClosing(true);
+        setIsClosing(true);
 
-    setTimeout(() => {
-      onClose();
-      setIsClosing(false);
-    }, 300);
-  };
+        setTimeout(() => {
+          onClose();
+          setIsClosing(false);
+        }, 300);
+      }
+    : undefined;
 
   return {
     isClosing,
