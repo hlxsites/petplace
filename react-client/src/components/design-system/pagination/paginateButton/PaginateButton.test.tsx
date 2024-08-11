@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { PaginateButton } from "./PaginateButton";
-import userEvent from "@testing-library/user-event";
 
 const { getByLabelText } = screen;
 
 const DEFAULT_LABEL = "Test label";
 const DEFAULT_CHILDREN = "Test children";
 const DEFAULT_CLASSES =
-  "inline px-[9px] py-[2px] hover:text-orange-500 focus:outline-none disabled:bg-transparent disabled:hover:bg-transparent";
+  "flex items-center hover:text-orange-500 focus:outline-none disabled:bg-transparent disabled:hover:bg-transparent";
 
 describe("<PaginateButton />", () => {
   it("should render button", () => {
@@ -29,14 +29,6 @@ describe("<PaginateButton />", () => {
     }
   );
 
-  it.each(["a-class", "another-class"])(
-    "should render button with custom class %p",
-    (expected) => {
-      getRenderer({ className: expected });
-      expect(getByLabelText(DEFAULT_LABEL)).toHaveClass(expected);
-    }
-  );
-
   it.each(["A children", "Another children"])(
     "should render children %s",
     (expected) => {
@@ -53,6 +45,19 @@ describe("<PaginateButton />", () => {
   it("should render button disabled when isSelected true", () => {
     getRenderer({ isSelected: true });
     expect(getByLabelText(DEFAULT_LABEL)).toBeDisabled();
+  });
+
+  it('should render button with "page" aria-current when isSelected true', () => {
+    getRenderer({ isSelected: true });
+    expect(getByLabelText(DEFAULT_LABEL)).toHaveAttribute(
+      "aria-current",
+      "page"
+    );
+  });
+
+  it('should render button without "page" aria-current when isSelected false', () => {
+    getRenderer();
+    expect(getByLabelText(DEFAULT_LABEL)).not.toHaveAttribute("aria-current");
   });
 
   it("should render button with disabled classes", () => {

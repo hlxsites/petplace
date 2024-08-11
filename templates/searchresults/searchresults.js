@@ -34,7 +34,7 @@ async function getArticles() {
   const usp = new URLSearchParams(window.location.search);
   let query;
   if (isTrueSearch) {
-    query = usp.get('query').trim();
+    query = (usp.get('query') || '').trim();
   } else {
     const [, page] = window.location.pathname.match(/([^/]*)(\/page)?(\/(\d+))?\/?$/) || [];
     query = page.replace(/-/g, ' ');

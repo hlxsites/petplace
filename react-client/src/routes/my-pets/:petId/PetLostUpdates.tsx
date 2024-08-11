@@ -4,12 +4,12 @@ import {
   Collapse,
   Icon,
   IconKeys,
-  StyleProps,
-  TextSpan,
+  Table,
   Text,
+  TextProps,
+  TextSpan,
   Title,
 } from "~/components/design-system";
-import { PaginatedTable } from "~/components/design-system/table/paginatedTable/PaginatedTable";
 import { TableColumn } from "~/components/design-system/table/TableTypes";
 import {
   LostPetUpdate,
@@ -29,7 +29,7 @@ const columns: TableColumn[] = [
 const ITEMS_PER_PAGE = 5;
 
 export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
-  const tableRows = (() => {
+  const dataSource = (() => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
 
@@ -37,7 +37,7 @@ export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
   const [isOpen, setIsOpen] = useState(isMissing);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentRows, setCurrentRows] = useState(
-    tableRows.slice(0, ITEMS_PER_PAGE)
+    dataSource.slice(0, ITEMS_PER_PAGE)
   );
 
   return (
@@ -49,13 +49,15 @@ export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
         isLocked={isMissing}
       >
         {renderDescriptionMessage()}
-        <PaginatedTable
+        <Table
           columns={columns}
           rows={currentRows}
-          currentPage={currentPage}
-          didChangePagination={handlePagination}
-          itemsCount={tableRows.length}
-          itemsPerPage={ITEMS_PER_PAGE}
+          paginationProps={{
+            currentPage,
+            didChangePage: handlePagination,
+            itemsCount: dataSource.length,
+            itemsPerPage: ITEMS_PER_PAGE,
+          }}
         />
         {renderReportButton()}
       </Collapse>
@@ -95,7 +97,7 @@ export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
   }
 
   function convertStatus(status: LostPetUpdate["status"]) {
-    const { message, textColor, bgColor } = convertVariable(status);
+    const { message, textColor, bgColor } = convertStatusVariable(status);
     return (
       <div
         className={classNames("flex w-full justify-center rounded-md", bgColor)}
@@ -120,7 +122,7 @@ export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
     setCurrentPage(page);
     const offsetStartIndex = itemsPerPage * (page - 1);
     const offsetFinishIndex = offsetStartIndex + itemsPerPage;
-    setCurrentRows(tableRows.slice(offsetStartIndex, offsetFinishIndex));
+    setCurrentRows(dataSource.slice(offsetStartIndex, offsetFinishIndex));
   }
 };
 
@@ -146,10 +148,10 @@ function reportingVariables(status: MissingStatus) {
   )[status];
 }
 
-function convertVariable(status: MissingStatus) {
+function convertStatusVariable(status: MissingStatus) {
   type ConvertVariable = Record<
     MissingStatus,
-    { textColor: StyleProps["color"]; bgColor: string; message: string }
+    { textColor: TextProps["color"]; bgColor: string; message: string }
   >;
 
   return (

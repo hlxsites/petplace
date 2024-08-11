@@ -34,6 +34,7 @@ export const PetEditIndex = () => {
             breedTypeOptions: [],
             colorOptions: ["Black", "White", "Brown", "Grey", "Golden"],
           }}
+          // @ts-expect-error - This is a mock data
           values={{
             ...petInfo,
           }}

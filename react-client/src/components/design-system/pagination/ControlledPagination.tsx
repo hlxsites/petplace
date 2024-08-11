@@ -21,12 +21,12 @@ export const ControlledPagination = ({
 
   return (
     <div
-      className="flex flex-col items-center md:flex-row md:justify-between w-full mx-medium"
+      className="mx-medium flex w-full flex-col items-center md:flex-row md:justify-between"
       data-testid="ControlledPagination"
     >
       <nav
         aria-label="Pagination navigation"
-        className="flex justify-center lg:justify-start"
+        className="flex items-stretch justify-center lg:justify-start"
       >
         <PaginateButton
           ariaLabel="Go to first page"
@@ -123,7 +123,6 @@ export const ControlledPagination = ({
         isSelected={isSelected}
         key={page}
         onClick={goToPage(page)}
-        className="-mt-[5px]"
       >
         <span className="block w-5">{page}</span>
       </PaginateButton>
@@ -132,7 +131,10 @@ export const ControlledPagination = ({
 
   function renderEllipsis(key: string) {
     return (
-      <div key={key} className="mx-[5px] mt-[4px] w-5">
+      <div
+        className="flex h-full min-w-[30px] items-baseline justify-center px-xsmall py-xsmall"
+        key={key}
+      >
         <TextSpan fontWeight="bold">&hellip;</TextSpan>
       </div>
     );
@@ -147,7 +149,7 @@ export const ControlledPagination = ({
 
   function renderTotal() {
     return (
-      <div className="flex justify-center lg:justify-end md:mr-small">
+      <div className="flex justify-center md:mr-small lg:justify-end">
         <Text size="base">
           Displaying {renderSpan(currentlyBeingDisplayed())} out of{" "}
           {renderSpan(itemsCount)}
@@ -158,7 +160,7 @@ export const ControlledPagination = ({
 
   function renderSpan(content: number) {
     return (
-      <TextSpan fontWeight="bold" color="orange-300-c">
+      <TextSpan color="orange-300-contrast" fontWeight="bold">
         {content}
       </TextSpan>
     );

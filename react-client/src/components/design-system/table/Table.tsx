@@ -90,7 +90,7 @@ export const Table = <T,>({
       if (!paginationProps) return null;
 
       return (
-        <div aria-label={`${ariaLabel} pagination`} className="flex w-full">
+        <div className="flex w-full">
           <ControlledPagination {...paginationProps} />
         </div>
       );

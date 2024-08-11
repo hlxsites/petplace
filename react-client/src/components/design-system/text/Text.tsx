@@ -5,24 +5,14 @@ import {
   useTextCommonStyles,
 } from "./useTextCommonStyles";
 
-export type StyleProps = TextCommonStyleProps & {
-  color?:
-    | "black"
-    | "neutral"
-    | "primary"
-    | "secondary"
-    | "tertiary"
-    | "blue-500"
-    | "yellow-500"
-    | "green-500"
-    | "orange-300-c"
-    | "inherit";
+type StyleProps = TextCommonStyleProps & {
   fontFamily?: "franklin" | "raleway" | "roboto";
-  fontWeight?: "normal" | "bold";
-  size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";
+  fontWeight?: "normal" | "bold" | "medium";
+  size?: "xlg" | "lg" | "base" | "sm" | "xs";
+  inherit?: boolean;
 };
 
-type TextProps = StyleProps & {
+export type TextProps = StyleProps & {
   ariaHidden?: boolean;
   ariaLabel?: string;
   children: ReactNode;
@@ -55,29 +45,41 @@ export const Text = ({
 };
 
 function useTextBase({
-  color = "black",
-  fontFamily = "franklin",
-  fontWeight = "normal",
-  size = "xs",
+  color: colorProp,
+  fontFamily: fontFamilyProp,
+  fontWeight: fontWeightProp,
+  inherit,
+  size: sizeProp,
   ...rest
 }: StyleProps) {
-  const commonClassName = useTextCommonStyles(rest);
+  const propValueConsideringInherit = <T extends string>(
+    prop: T | undefined,
+    defaultProp?: T
+  ): T | undefined => {
+    // If prop is defined always use it
+    if (prop) return prop;
+
+    // If prop is not defined and inherit is true, return undefined
+    if (inherit) return undefined;
+
+    // If prop is not defined and inherit is false, return defaultProp
+    return defaultProp;
+  };
+
+  const color = propValueConsideringInherit(colorProp, "black");
+  const fontFamily = propValueConsideringInherit(fontFamilyProp, "franklin");
+  const fontWeight = propValueConsideringInherit(fontWeightProp, "normal");
+  const size = propValueConsideringInherit(sizeProp, "xs");
+
+  const commonClassName = useTextCommonStyles({ ...rest, color });
 
   const className = classNames("inline-block", commonClassName, {
-    "text-black": color === "black",
-    "text-blue-500": color === "blue-500",
-    "text-neutral-950": color === "neutral",
-    "text-primary-900": color === "primary",
-    "text-secondary-700": color === "secondary",
-    "text-tertiary-600": color === "tertiary",
-    "text-orange-300-contrast": color === "orange-300-c",
-    "text-green-500": color === "green-500",
-    "text-yellow-500": color === "yellow-500",
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
     "font-roboto": fontFamily === "roboto",
     "font-normal": fontWeight === "normal",
     "font-bold": fontWeight === "bold",
+    "font-medium": fontWeight === "medium",
     "text-xl leading-8": size === "xlg",
     "text-lg leading-7": size === "lg",
     "text-base leading-6": size === "base",
