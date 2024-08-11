@@ -10,6 +10,7 @@ import { Title } from "../text/Title";
 import { DialogBaseProps } from "../types/DialogBaseTypes";
 
 export const DialogBase = ({
+  align,
   ariaLabel,
   children,
   className,
@@ -59,6 +60,10 @@ export const DialogBase = ({
           aria-modal="true"
           className={classNames(
             className?.modal,
+            {
+              "text-center": align === "center",
+              "text-right": align === "right",
+            },
             element === "drawer" && {
               "animate-slideInFromBottom lg:animate-slideInFromRight":
                 !isClosing,
