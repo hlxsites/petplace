@@ -17,11 +17,11 @@ function useButtonBase({
   const isError = variant === "error";
 
   const className = classNames(
-    "rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium m-xsmall",
+    "rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium",
     {
-      "bg-orange-300-contrast text-white hover:bg-orange-500 focus:bg-orange-300-contrast focus:outline-orange-100":
+      "bg-orange-300-contrast text-white hover:!bg-orange-500 focus:bg-orange-300-contrast":
         isPrimary,
-      "bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100":
+      "bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white":
         isSecondary,
       "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent":
         isLink,

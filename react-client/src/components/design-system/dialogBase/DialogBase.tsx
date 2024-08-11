@@ -90,9 +90,7 @@ export const DialogBase = ({
             variant="link"
           />
 
-          <div className="scrolling-touch max- h-90vh grid overflow-auto">
-            {children}
-          </div>
+          <div className="h-90vh grid overflow-auto">{children}</div>
         </div>
       </FocusTrap>
     </>
