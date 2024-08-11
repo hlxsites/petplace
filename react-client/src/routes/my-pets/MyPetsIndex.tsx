@@ -5,20 +5,17 @@ import {
   Button,
   ButtonProps,
   Dialog,
-  Drawer,
   LinkButton,
   Text,
 } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
-import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { AppRoutePaths } from "../AppRoutePaths";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
   const [isLostOrFoundDialogOpen, setIsLostOrFoundDialogOpen] = useState(false);
-  const windowWidth = useWindowWidth();
 
   const lostOrFoundMessages = [
     "While many pets find their way home after a short time, many more don't.",
@@ -109,7 +106,7 @@ export const MyPetsIndex = () => {
   }
 
   function openReportLostOrFoundModal() {
-    return windowWidth > 768 ? (
+    return (
       <Dialog
         align="center"
         hideCloseButton
@@ -125,22 +122,6 @@ export const MyPetsIndex = () => {
       >
         {renderReportLostOrFoundContent()}
       </Dialog>
-    ) : (
-      <Drawer
-        align="center"
-        hideCloseButton
-        icon="warningTriangle"
-        iconProps={{
-          className: "mb-xxlarge",
-          size: 72,
-        }}
-        id="report-lost-or-found-drawer"
-        isOpen={isLostOrFoundDialogOpen}
-        onClose={() => setIsLostOrFoundDialogOpen(false)}
-        title="Report a lost or found pet"
-      >
-        {renderReportLostOrFoundContent()}
-      </Drawer>
     );
   }
 };

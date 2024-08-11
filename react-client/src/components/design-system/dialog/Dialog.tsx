@@ -1,5 +1,7 @@
+import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { classNames } from "~/util/styleUtil";
 import { DialogBase } from "../dialogBase/DialogBase";
+import { Drawer } from "../drawer/Drawer";
 import { DialogCommonProps } from "../types/DialogBaseTypes";
 
 type DialogProps = DialogCommonProps & {
@@ -15,6 +17,13 @@ export const Dialog = ({
   hideCloseButton,
   ...rest
 }: DialogProps) => {
+  const windowWidth = useWindowWidth();
+
+  // Always use Drawer on mobile screens
+  if (windowWidth < 768) {
+    return <Drawer {...rest}>{children}</Drawer>;
+  }
+
   return (
     <DialogBase
       {...rest}
