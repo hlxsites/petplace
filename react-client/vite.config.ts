@@ -7,11 +7,8 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
-  const isProdEnv = env.NODE_ENV === "production";
-  const isTestEnv = env.NODE_ENV === "test";
-
   return {
-    base: "/account/",
+    base: env.BASE_URL || "/",
     build: {
       rollupOptions: {
         output: {
@@ -19,12 +16,6 @@ export default defineConfig(({ mode }) => {
           chunkFileNames: "assets/react-[name].js",
           assetFileNames: "assets/react.[ext]",
         },
-      },
-    },
-    define: {
-      "process.env": {
-        isProdEnv,
-        isTestEnv,
       },
     },
     plugins: [

@@ -10,3 +10,13 @@ declare module "*.svg" {
 
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-svgr/client" />
+
+interface ImportMetaEnv {
+  readonly BASE_URL: string;
+  readonly DEV: boolean;
+  readonly PROD: boolean;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

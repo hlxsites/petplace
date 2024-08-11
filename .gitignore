@@ -6,3 +6,11 @@ node_modules
 
 helix-importer-ui
 .DS_Store
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.staging
+.env.production
