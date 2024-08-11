@@ -3,6 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { DialogBase } from "./DialogBase";
 
+const { getByText, getByRole, getByTestId, queryByRole } = screen;
+
 jest.mock(
   "focus-trap-react",
   () =>
@@ -10,8 +12,6 @@ jest.mock(
       <div data-testid="FocusTrap">{children}</div>
     )
 );
-
-const { getByText, getByRole, getByTestId } = screen;
 
 describe("DialogBase", () => {
   it("should render the dialogBase", () => {
@@ -51,11 +51,36 @@ describe("DialogBase", () => {
     }
   );
 
-  it("should render icon closeXMark", () => {
+  it("should render close button when onClose callback is provided", () => {
+    getRenderer({ onClose: jest.fn() });
+    expect(getByRole("button", { name: "Close dialog" })).toBeInTheDocument();
+  });
+
+  it("should not render the close button when the onClose callback prop is not provided", () => {
     getRenderer();
+    expect(
+      queryByRole("button", { name: "Close dialog" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("should render icon closeXMark when onClose callback is provided", () => {
+    getRenderer({ onClose: jest.fn() });
     expect(getByRole("dialog").querySelector("svg")).toHaveAttribute(
       "data-file-name",
       "SvgCloseXMarkIcon"
+    );
+  });
+
+  it("should not render icon closeXMark when onClose callback is not provided", () => {
+    getRenderer();
+    expect(queryByRole("dialog")?.querySelector("svg")).toBeNull();
+  });
+
+  it("should render icon", () => {
+    getRenderer({ icon: "alertDiamond" });
+    expect(getByRole("dialog").querySelector("svg")).toHaveAttribute(
+      "data-file-name",
+      "SvgAlertDiamondIcon"
     );
   });
 
@@ -102,22 +127,20 @@ function getRenderer({
   ariaLabel = "Aria label test",
   children = "Test children",
   element = "dialog",
-  icon,
   id = "SampleId",
   isOpen = true,
-  onClose = jest.fn(),
   title = "Test title",
+  ...rest
 }: Partial<ComponentProps<typeof DialogBase>> = {}) {
   return render(
     <>
       <DialogBase
         ariaLabel={ariaLabel}
         element={element}
-        icon={icon}
         id={id}
         isOpen={isOpen}
-        onClose={onClose}
         title={title}
+        {...rest}
       >
         {children}
       </DialogBase>

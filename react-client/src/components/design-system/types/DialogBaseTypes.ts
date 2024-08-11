@@ -24,6 +24,7 @@ export type DialogTitleProps =
 
 export type DialogBaseProps = DialogIconProps &
   DialogTitleProps & {
+    align?: "center" | "right";
     children: ReactNode;
     className?: {
       modal: string;

@@ -5,7 +5,6 @@ import { Drawer } from "../drawer/Drawer";
 import { DialogCommonProps } from "../types/DialogBaseTypes";
 
 type DialogProps = DialogCommonProps & {
-  align?: "center" | "right";
   fullWidth?: boolean;
 };
 

@@ -72,7 +72,7 @@ export const DialogBase = ({
           role="dialog"
           tabIndex={-1}
         >
-          {icon && <Icon display={icon} {...iconProps} />}
+          {!!icon && <Icon display={icon} {...iconProps} />}
           <div className="mb-small">
             {title && (
               <Title id={titleId} level={level}>
@@ -81,7 +81,7 @@ export const DialogBase = ({
             )}
           </div>
 
-          {!!onCloseWithAnimation && (
+          {!!onClose && (
             <IconButton
               className={className?.closeButton}
               icon="closeXMark"
