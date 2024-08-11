@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ComponentProps } from "react";
-import { ControlledPagination } from "./ControlledPagination";
 import { findByTextContent } from "~/util/testingFunctions";
+import { ControlledPagination } from "./ControlledPagination";
 
 const { getByLabelText, getByRole, queryByLabelText, queryByRole } = screen;
 
@@ -74,7 +74,7 @@ describe("<ControlledPagination />", () => {
       "Go to page 3",
       "Go to page 4",
       NEXT_PAGE,
-      LAST_PAGE
+      LAST_PAGE,
     ])(
       "On the first page with 5 pages in total, should have aria-label '%s'",
       (expected) => {
@@ -96,7 +96,7 @@ describe("<ControlledPagination />", () => {
       "Go to page 6",
       "Go to page 10",
       NEXT_PAGE,
-      LAST_PAGE
+      LAST_PAGE,
     ])(
       "On page 5 with 10 pages in total, should have aria-label '%s'",
       (expected) => {
@@ -167,16 +167,19 @@ describe("<ControlledPagination />", () => {
   });
 
   describe("When on the first page", () => {
-    it.each([FIRST_PAGE, PREVIOUS_PAGE])("should display %p page disabled", (expected) => {
-      getRenderer({
-        currentPage: 1,
-        itemsCount: 20,
-        itemsPerPage: 10,
-      });
-      expect(getByRole("button", { name: expected })).toBeDisabled();
-    });
+    it.each([FIRST_PAGE, PREVIOUS_PAGE])(
+      "should display %p page disabled",
+      (expected) => {
+        getRenderer({
+          currentPage: 1,
+          itemsCount: 20,
+          itemsPerPage: 10,
+        });
+        expect(getByRole("button", { name: expected })).toBeDisabled();
+      }
+    );
 
-    it.each([ 6, 7, 8, 9])(
+    it.each([6, 7, 8, 9])(
       "should NOT display button to page %i",
       (expected) => {
         getRenderer({
@@ -265,15 +268,17 @@ describe("<ControlledPagination />", () => {
   });
 
   describe("When on page 4", () => {
-    it.each([FIRST_PAGE, PREVIOUS_PAGE, NEXT_PAGE, LAST_PAGE])("should display %s page enabled", (expected) => {
-      getRenderer({
-        currentPage: 4,
-        itemsCount: 100,
-        itemsPerPage: 10,
-      });
-      screen.debug()
-      expect(getByRole("button", { name: expected })).toBeEnabled();
-    });
+    it.each([FIRST_PAGE, PREVIOUS_PAGE, NEXT_PAGE, LAST_PAGE])(
+      "should display %s page enabled",
+      (expected) => {
+        getRenderer({
+          currentPage: 4,
+          itemsCount: 100,
+          itemsPerPage: 10,
+        });
+        expect(getByRole("button", { name: expected })).toBeEnabled();
+      }
+    );
 
     it.each([1, 10])("should display button to page %i", (expected) => {
       getRenderer({

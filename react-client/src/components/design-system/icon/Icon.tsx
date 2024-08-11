@@ -17,12 +17,14 @@ import DoubleArrowRightIcon from "./assets/double-arrow-right-icon.svg";
 import DocFileIcon from "./assets/doc-file-icon.svg";
 import DownloadIcon from "./assets/download-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
+import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
 import InformationIcon from "./assets/information-icon.svg";
 import JpgFileIcon from "./assets/jpg-file-icon.svg";
 import MedicineIcon from "./assets/medicine-icon.svg";
 import PawIcon from "./assets/paw-icon.svg";
 import PdfFileIcon from "./assets/pdf-file-icon.svg";
+import PhoneIcon from "./assets/phone-icon.svg";
 import PippetIcon from "./assets/pippet-icon.svg";
 import PngFileIcon from "./assets/png-file-icon.svg";
 import SearchIcon from "./assets/search-icon.svg";
@@ -55,12 +57,14 @@ export const IconMap = Object.freeze({
   docFile: <DocFileIcon />,
   download: <DownloadIcon />,
   ellipse: <EllipseIcon />,
+  emptyEllipse: <EmptyEllipseIcon />,
   file: <FileIcon />,
   medicine: <MedicineIcon />,
   information: <InformationIcon />,
   jpgFile: <JpgFileIcon />,
   paw: <PawIcon />,
   pdfFile: <PdfFileIcon />,
+  phone: <PhoneIcon />,
   pippet: <PippetIcon />,
   pngFile: <PngFileIcon />,
   search: <SearchIcon />,

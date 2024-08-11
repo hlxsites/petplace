@@ -1,10 +1,10 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Chevron Right" clip-path="url(#clip0_1210_2585)">
-<path id="Vector 108 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M18.1213 9.87868C19.2929 11.0503 19.2929 12.9497 18.1213 14.1213L8.68198 23.5607C8.09619 24.1464 7.14645 24.1464 6.56066 23.5607C5.97487 22.9749 5.97487 22.0251 6.56066 21.4393L16 12L6.56066 2.56066C5.97487 1.97487 5.97487 1.02513 6.56066 0.439339C7.14645 -0.146447 8.09619 -0.146447 8.68198 0.439339L18.1213 9.87868Z" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_1210_2585">
-<rect width="24" height="24" fill="white"/>
-</clipPath>
-</defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <g clip-path="url(#clip0_10165_13110)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0807 6.58579C12.8618 7.36684 12.8618 8.63317 12.0807 9.41421L5.78782 15.7071C5.3973 16.0976 4.76413 16.0976 4.37361 15.7071C3.98308 15.3166 3.98308 14.6834 4.37361 14.2929L10.6665 8L4.37361 1.70711C3.98309 1.31658 3.98309 0.683417 4.37361 0.292893C4.76413 -0.0976314 5.3973 -0.0976314 5.78782 0.292893L12.0807 6.58579Z" fill="white"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_10165_13110">
+      <rect width="16" height="16" fill="white"/>
+    </clipPath>
+  </defs>
 </svg>

@@ -21,7 +21,7 @@ export const ControlledPagination = ({
 
   return (
     <div
-      className="flex flex-col items-center md:flex-row md:justify-between w-full mx-medium"
+      className="mx-medium flex w-full flex-col items-center md:flex-row md:justify-between"
       data-testid="ControlledPagination"
     >
       <nav
@@ -147,7 +147,7 @@ export const ControlledPagination = ({
 
   function renderTotal() {
     return (
-      <div className="flex justify-center lg:justify-end md:mr-small">
+      <div className="flex justify-center md:mr-small lg:justify-end">
         <Text size="base">
           Displaying {renderSpan(currentlyBeingDisplayed())} out of{" "}
           {renderSpan(itemsCount)}
@@ -158,7 +158,7 @@ export const ControlledPagination = ({
 
   function renderSpan(content: number) {
     return (
-      <TextSpan fontWeight="bold" color="orange-300-c">
+      <TextSpan color="orange-300-contrast" fontWeight="bold">
         {content}
       </TextSpan>
     );

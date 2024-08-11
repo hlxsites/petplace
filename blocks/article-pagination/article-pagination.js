@@ -89,11 +89,15 @@ export default async function decorate(block) {
     renderContent(block);
   });
 
-  if (document.querySelector('.cards ul')) {
-    observer.observe(document.querySelector('.cards ul'), { childList: true });
-  } else {
-    setTimeout(() => {
-      observer.observe(document.querySelector('.cards ul'), { childList: true });
+  // Wath for added cards if not already in the DOM
+  if (!document.querySelector('.cards ul')) {
+    const addedObserver = new MutationObserver((entries) => {
+      entries.forEach((e) => {
+        if ([...e.addedNodes.values()].some((n) => n.querySelector && n.querySelector('.cards ul'))) {
+          renderContent(block);
+        }
+      });
     });
+    addedObserver.observe(document.querySelector('main'), { childList: true, subtree: true });
   }
 }

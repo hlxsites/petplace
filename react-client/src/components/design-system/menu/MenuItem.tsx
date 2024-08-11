@@ -26,7 +26,7 @@ export const MenuItem = ({
         {
           "border-border-base-color bg-transparent text-neutral-600 data-[highlighted]:border-neutral-600":
             variant === "default",
-          "bg-orange-200 border-transparent text-orange-500 data-[highlighted]:border-orange-500":
+          "border-transparent bg-orange-200 text-orange-500 data-[highlighted]:border-orange-500":
             variant === "highlight",
         }
       )}
@@ -34,7 +34,7 @@ export const MenuItem = ({
       onClick={onClick}
     >
       {icon && renderIcon({ display: icon, className: "mr-small" })}
-      <Text color="inherit" size="base">
+      <Text inherit size="base">
         {label}
       </Text>
     </RadixDropdownMenu.Item>
