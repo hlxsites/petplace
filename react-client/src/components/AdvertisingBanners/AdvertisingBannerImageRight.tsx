@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { FromColorClasses } from "~/routes/types/styleTypes";
 import { classNames } from "~/util/styleUtil";
 import { Button, ButtonProps, Card, Text } from "../design-system";
 import { CardProps } from "../design-system/types/CardTypes";
@@ -11,7 +12,7 @@ type AdvertisingBannerImageRightProps = {
   imgName?: string;
   message?: string;
   title: ReactNode;
-  gradientColor?: `from-${string}`;
+  gradientColor?: FromColorClasses;
   gradientDirection?: "top" | "right" | "bottom" | "left";
 };
 
@@ -70,7 +71,7 @@ export const AdvertisingBannerImageRight = ({
         {img && (
           <div
             className={classNames(
-              "lg:bg-x-small-gradient bg-y-small-gradient absolute inset-0 bg-gradient-to-b via-transparent",
+              "absolute inset-0 bg-gradient-to-b via-transparent bg-y-small-gradient lg:bg-x-small-gradient",
               gradientColor,
               {
                 "lg:bg-gradient-to-b": gradientDirection === "bottom",

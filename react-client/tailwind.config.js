@@ -9,9 +9,6 @@ module.exports = {
     "aria-selected:true",
     "aria-selected:false",
     {
-      pattern: /bg-+/,
-    },
-    {
       pattern: /text-+/,
     },
   ],
