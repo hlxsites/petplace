@@ -8,9 +8,9 @@
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
     "build:react": "npm run build --workspace=react-client",
-    "postbuild:react": "npm run update:react:js && npm run update:react:css",
-    "update:react:js": "cp react-client/dist/assets/*.js blocks/react",
-    "update:react:css": "cp react-client/dist/assets/*.css blocks/react",
+    "postbuild:react": "npm run update:react:block && npm run update:react:images",
+    "update:react:block": "rm -f blocks/react/react-* && cp react-client/dist/assets/* blocks/react",
+    "update:react:images": "cp react-client/dist/react/* blocks/react",
     "test:all": "npm run test --workspaces --if-present",
     "lint:all": "npm run lint && npm run lint --workspaces --if-present"
   },
