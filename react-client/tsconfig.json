@@ -17,7 +17,6 @@
     "jsx": "react-jsx",
     "paths": {
       "~/*": ["src/*"],
-      "@images/*": ["src/assets/images/*"],
     },
 
     /* Linting */

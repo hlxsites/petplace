@@ -1,3 +1,4 @@
+import { ASSET_IMAGES } from "~/assets";
 import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
 import {
   PET_WATCH_OFFERS,
@@ -18,7 +19,11 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
       <Card>
         <div className="grid gap-large p-large">
           <div className="flex items-center justify-between">
-            <img className="max-h-[20px]" alt="24 Pet Watch logo" src={""} />
+            <img
+              className="max-h-[20px]"
+              alt="24 Pet Watch logo"
+              src={ASSET_IMAGES.petWatchLogo}
+            />
             <Tag label={label} tagStatus={tagStatus} />
           </div>
           <Text size="base">{message}</Text>
