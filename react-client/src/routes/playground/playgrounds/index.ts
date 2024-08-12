@@ -1,6 +1,7 @@
 export * from "./AdvertiseBannerImageRightPlayground";
 export * from "./ButtonPlayground";
 export * from "./CollapsePlayground";
+export * from "./ConfirmDeletionDialogPlayground";
 export * from "./DialogPlayground";
 export * from "./DropdownMenuPlayground";
 export * from "./FormBuilderPlayground";
