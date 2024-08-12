@@ -11,7 +11,7 @@ export const DocumentTypeIndex = () => {
   } = useDocumentTypeIndexViewModel();
 
   return (
-    <Drawer id={id} isOpen onClose={onClose} title={label}>
+    <Drawer id={id} isOpen level="h4" onClose={onClose} title={label}>
       <PetDocumentsView
         documents={documents}
         onDelete={onDelete}
