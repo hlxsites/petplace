@@ -245,6 +245,10 @@ function updateSlide(currentIndex, nextIndex, $block) {
 function initializeTouch($block, slideshowInfo) {
   const $slidesContainer = $block.querySelector('.slides-container');
 
+  if ($slidesContainer.children.length === 1) {
+    document.querySelector('.slideshow-next')?.classList.add('hide');
+  }
+
   let startX;
   let currentX;
   let diffX = 0;
