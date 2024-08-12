@@ -23,6 +23,8 @@ import FileIcon from "./assets/file-icon.svg";
 import InformationIcon from "./assets/information-icon.svg";
 import JpgFileIcon from "./assets/jpg-file-icon.svg";
 import MedicineIcon from "./assets/medicine-icon.svg";
+import OutlinedArrowBottom from "./assets/outlined-arrow-bottom-icon.svg";
+import OutlinedArrowRight from "./assets/outlined-arrow-right-icon.svg";
 import PawIcon from "./assets/paw-icon.svg";
 import PdfFileIcon from "./assets/pdf-file-icon.svg";
 import PhoneIcon from "./assets/phone-icon.svg";
@@ -63,6 +65,8 @@ export const IconMap = Object.freeze({
   emptyEllipse: <EmptyEllipseIcon />,
   file: <FileIcon />,
   medicine: <MedicineIcon />,
+  outlinedArrowBottom: <OutlinedArrowBottom />,
+  outlinedArrowRight: <OutlinedArrowRight />,
   information: <InformationIcon />,
   jpgFile: <JpgFileIcon />,
   paw: <PawIcon />,
