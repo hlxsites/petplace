@@ -15,13 +15,12 @@ const COUNT = 5;
 
 export const OnboardingDialog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const isSmallerScreen = useWindowWidth() < 768;
   const isOnboarding = searchParams.get(ONBOARDING_PARAM);
   if (!isOnboarding) return null;
 
   const parsedParam = Number(searchParams.get(STEP_PARAM));
   const step = parsedParam > 0 && parsedParam <= COUNT ? parsedParam : 1;
-
-  const isSmallerScreen = useWindowWidth() < 768;
   const alignment = isSmallerScreen ? "center" : "left";
 
   return (
