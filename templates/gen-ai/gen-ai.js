@@ -294,7 +294,9 @@ function initializeTouch($block, slideshowInfo) {
       if (diffX > 50) {
         nextIndex = index === 0 ? 0 : index - 1;
       } else if (diffX < -50) {
-        nextIndex = index === $slidesContainer.children.length - 1 ? $slidesContainer.children.length - 1 : index + 1;
+        nextIndex = index === $slidesContainer.children.length - 1
+          ? $slidesContainer.children.length - 1
+          : index + 1;
       }
 
       if (nextIndex !== index) {
@@ -337,7 +339,9 @@ function initializeTouch($block, slideshowInfo) {
     } else if (
       e.target.matches('.slideshow-next') && !e.target.matches('.hide')
     ) {
-      const nextIndex = index === $slidesContainer.children.length - 1 ? $slidesContainer.children.length - 1 : index + 1;
+      const nextIndex = index === $slidesContainer.children.length - 1
+        ? $slidesContainer.children.length - 1
+        : index + 1;
       document.querySelector('.slideshow-prev')?.classList.remove('hide');
 
       if (nextIndex === $slidesContainer.children.length - 1) {
