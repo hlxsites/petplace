@@ -11,7 +11,7 @@ import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 export const PetProfileIndex = () => {
   const viewModel = usePetProfileContext();
   const { petInfo, petServiceStatus } = viewModel;
-  console.log("petServiceStatus on index", petServiceStatus);
+
   return (
     <>
       <div className="pb-xxlarge">
