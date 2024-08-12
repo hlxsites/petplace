@@ -17,7 +17,6 @@ import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/Docu
 import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/:petId/PetProfileLayout";
-import { PetWatchIndex } from "./my-pets/:petId/petWatch/PetWatchIndex";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -63,17 +62,6 @@ const routes: PetPlaceRouteObject[] = [
                     loader: DocumentTypeIndexLoader,
                     path: AppRoutePaths.petProfileDocumentType,
                     element: <DocumentTypeIndex />,
-                  },
-                ],
-              },
-              {
-                element: <PetProfileIndex />,
-                id: "petProfileIndex",
-                children: [
-                  {
-                    id: "petWatch",
-                    path: AppRoutePaths.petWatch,
-                    element: <PetWatchIndex />,
                   },
                 ],
               },
