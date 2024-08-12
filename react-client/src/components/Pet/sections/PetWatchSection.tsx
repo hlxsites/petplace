@@ -5,12 +5,16 @@ import {
   PET_WATCH_TAGS,
 } from "~/routes/my-pets/:petId/utils/petServiceConstants";
 import { Button, Card, Tag, Text } from "../../design-system";
+import { useNavigate } from "react-router-dom";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 
 type PetWatchSectionProp = {
   petServiceStatus: PetServiceTypes;
 };
 
 export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
+  const navigate = useNavigate();
+
   const { buttonLabel, icon, message } = PET_WATCH_OFFERS[petServiceStatus];
   const { label, tagStatus } = PET_WATCH_TAGS[petServiceStatus];
 
@@ -30,10 +34,15 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
           className="text-orange-300-contrast"
           iconLeft={icon}
           variant="secondary"
+          onClick={onOpenDrawer}
         >
           {buttonLabel}
         </Button>
       </div>
     </Card>
   );
+
+  function onOpenDrawer() {
+    navigate(AppRoutePaths.petWatch);
+  }
 };

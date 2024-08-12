@@ -7,6 +7,7 @@ export const AppRoutePaths = {
   petProfileDocuments: "documents",
   petProfileDocumentType: ":documentType",
   petEdit: "edit",
+  petWatch: "pet-watch",
   playground: "playground",
 } as const;
 
