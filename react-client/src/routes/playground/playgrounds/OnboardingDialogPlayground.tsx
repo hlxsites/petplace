@@ -8,7 +8,7 @@ export const OnboardingDialogPlayground = () => {
   useEffect(() => {
     searchParams.set("is-onboarding", "true");
     setSearchParams(searchParams);
-  }, []);
+  }, [searchParams, setSearchParams]);
 
   return <OnboardingDialog />;
 };
