@@ -21,7 +21,6 @@ export const DialogBase = ({
   isOpen,
   level,
   onClose,
-  padding,
   title,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
@@ -60,7 +59,7 @@ export const DialogBase = ({
           aria-labelledby={titleId}
           aria-modal="true"
           className={classNames(
-            className?.modal, padding,
+            className?.modal,
             {
               "text-center": align === "center",
               "text-right": align === "right",

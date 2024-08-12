@@ -8,11 +8,7 @@ type DialogProps = DialogCommonProps & {
   fullWidth?: boolean;
 };
 
-export const Dialog = ({
-  children,
-  fullWidth,
-  ...rest
-}: DialogProps) => {
+export const Dialog = ({ children, fullWidth, ...rest }: DialogProps) => {
   const windowWidth = useWindowWidth();
 
   // Always use Drawer on mobile screens
@@ -27,7 +23,6 @@ export const Dialog = ({
         closeButton: "absolute right-[2px] top-[-41px] text-neutral-white",
         modal: classNames(
           "fixed inset-0 z-50 m-auto max-h-max max-w-max rounded-2xl bg-neutral-white ease-out md:w-1/2 md:max-w-[50%]",
-          rest.padding ?? "p-xlarge",
           {
             "md:w-full md:max-w-full": fullWidth,
           }
