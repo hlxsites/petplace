@@ -7,6 +7,7 @@ import {
   Text,
   Title,
 } from "~/components/design-system";
+import { useWindowWidth } from "~/hooks/useWindowWidth";
 
 const ONBOARDING_PARAM = "is-onboarding";
 const STEP_PARAM = "step";
@@ -14,24 +15,29 @@ const COUNT = 5;
 
 export const OnboardingDialog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const isOnboarding = searchParams.get(ONBOARDING_PARAM)
+  const isOnboarding = searchParams.get(ONBOARDING_PARAM);
   if (!isOnboarding) return null;
 
-  const parsedParam = Number(searchParams.get(STEP_PARAM))
+  const parsedParam = Number(searchParams.get(STEP_PARAM));
   const step = parsedParam > 0 && parsedParam <= COUNT ? parsedParam : 1;
+
+  const isSmallerScreen = useWindowWidth() < 768;
+  const alignment = isSmallerScreen ? "center" : "left";
 
   return (
     <Dialog
       isOpen
       id="onboarding-steps"
       ariaLabel="Onboarding steps dialog"
-      padding="xxxl"
+      padding="px-large pt-large pb-xxlarge md:p-xxxlarge"
     >
       <StepProgress count={COUNT} current={step} />
-      <div className="mb-large mt-xlarge">
-        <Title level="h2">Welcome to PetPlace!</Title>
+      <div className="mb-large mt-xlarge flex text-center">
+        <Title level="h2" align={alignment}>
+          Welcome to PetPlace!
+        </Title>
       </div>
-      <Text size="lg">
+      <Text size="lg" align={alignment}>
         Your go-to destination for keeping pets happy and healthy. Discover
         sound advice, trusted providers, and indispensable services all in one
         place.
