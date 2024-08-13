@@ -28,7 +28,10 @@ const columns: TableColumn[] = [
 
 const ITEMS_PER_PAGE = 5;
 
-export const PetLostUpdates = ({ lostPetHistory, missingStatus }: PetInfo) => {
+export const PetLostUpdatesSection = ({
+  lostPetHistory,
+  missingStatus,
+}: PetInfo) => {
   const dataSource = (() => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
