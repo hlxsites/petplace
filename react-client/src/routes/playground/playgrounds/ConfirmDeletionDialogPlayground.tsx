@@ -8,10 +8,9 @@ export const ConfirmDeletionDialogPlayground = () => {
     <>
       <Button onClick={onOpen}>Open confirm dialog</Button>
       <ConfirmDeletionDialog
-        fileName="Test doc"
         isOpen={isOpen}
-        onClose={onClose}
-        onConfirmDeletion={onClose}
+        onCancel={onClose}
+        onConfirm={onClose}
       />
     </>
   );
