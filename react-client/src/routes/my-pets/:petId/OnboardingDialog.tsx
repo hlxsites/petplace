@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router-dom";
 import { ASSET_IMAGES } from "~/assets";
 import {
   Button,
@@ -7,20 +6,18 @@ import {
   Text,
   Title,
 } from "~/components/design-system";
+import { useLocalStorage } from "~/hooks/useLocalStorage";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
 
-const ONBOARDING_PARAM = "is-onboarding";
-const STEP_PARAM = "step";
+const STEP_PARAM_KEY = "step";
 const COUNT = 5;
 
 export const OnboardingDialog = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const isSmallerScreen = useWindowWidth() < 768;
-  const isOnboarding = searchParams.get(ONBOARDING_PARAM);
-  if (!isOnboarding) return null;
 
-  const parsedParam = Number(searchParams.get(STEP_PARAM));
-  const step = parsedParam > 0 && parsedParam <= COUNT ? parsedParam : 1;
+  const [parsedStep, setStep] = useLocalStorage(STEP_PARAM_KEY, 1);
+
+  const step = parsedStep <= COUNT ? parsedStep : 1;
   const alignment = isSmallerScreen ? "center" : "left";
 
   return (
@@ -40,7 +37,9 @@ export const OnboardingDialog = () => {
         <div className="mb-xlarge mt-large flex w-full justify-center">
           <img src={ASSET_IMAGES.comfyDogAndCat} alt="Comfy dog and cat" />
         </div>
-        <Button onClick={handleClick}>Get Started</Button>
+        <Button fullWidth onClick={handleClick}>
+          Get Started
+        </Button>
       </div>
     </Dialog>
   );
@@ -49,7 +48,6 @@ export const OnboardingDialog = () => {
     const nextStep = step + 1;
     if (nextStep > COUNT) return;
 
-    searchParams.set(STEP_PARAM, String(step + 1));
-    setSearchParams(searchParams);
+    setStep(nextStep);
   }
 };
