@@ -29,6 +29,11 @@ export const DialogBase = ({
   });
 
   useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "visible";
+    document.body.style.position = isOpen ? "relative" : "static";
+  }, [isOpen]);
+
+  useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (!isClosing && isOpen && event.key === "Escape") {
         onCloseWithAnimation?.();
