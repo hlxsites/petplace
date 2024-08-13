@@ -26,7 +26,9 @@ export type DialogTitleProps = {
 export type DialogBaseProps = DialogIconProps &
   DialogTitleProps & {
     align?: "center" | "right";
-    children: ReactNode;
+    children:
+      | ReactNode
+      | ((props: { onCloseWithAnimation?: () => void }) => ReactNode);
     className?: {
       modal: string;
       closeButton: string;

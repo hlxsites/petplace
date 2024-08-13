@@ -45,6 +45,13 @@ export const DialogBase = ({
   const hasTitle = !!title;
   const titleId = hasTitle ? `${id}-title` : undefined;
 
+  const renderChildren = (() => {
+    if (typeof children === "function") {
+      return children({ onCloseWithAnimation: onCloseWithAnimation });
+    }
+    return children;
+  })();
+
   const portalContent = (
     <>
       <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
@@ -97,7 +104,7 @@ export const DialogBase = ({
             />
           )}
 
-          <div className="h-90vh grid overflow-auto">{children}</div>
+          <div className="h-90vh grid overflow-auto">{renderChildren}</div>
         </div>
       </FocusTrap>
     </>
