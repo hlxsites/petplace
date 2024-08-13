@@ -1,7 +1,5 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { isBrowser } from "~/util/misc";
-
-const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
+import { useMemo, useState } from "react";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 export type UseMeasureRect = Pick<
   DOMRectReadOnly,
