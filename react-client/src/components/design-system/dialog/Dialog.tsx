@@ -6,11 +6,13 @@ import { DialogCommonProps } from "../types/DialogBaseTypes";
 
 type DialogProps = DialogCommonProps & {
   fullWidth?: boolean;
+  widthFit?: boolean;
 };
 
 export const Dialog = ({
   children,
   fullWidth,
+  widthFit,
   ...rest
 }: DialogProps) => {
   const windowWidth = useWindowWidth();
@@ -30,6 +32,7 @@ export const Dialog = ({
           rest.padding ?? "p-xlarge",
           {
             "md:w-full md:max-w-full": fullWidth,
+            "md:w-fit md:max-w-fit": widthFit,
           }
         ),
       }}
