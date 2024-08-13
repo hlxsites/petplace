@@ -37,6 +37,7 @@ export type DialogBaseProps = DialogIconProps &
     id: string;
     isOpen: boolean;
     onClose?: () => void;
+    paddingNone?: boolean;
   };
 
 export type DialogCommonProps = Omit<

@@ -21,25 +21,32 @@ export const OnboardingDialog = () => {
   const alignment = isSmallerScreen ? "center" : "left";
 
   return (
-    <Dialog isOpen id="onboarding-steps" ariaLabel="Onboarding steps dialog">
+    <Dialog
+      isOpen
+      id="onboarding-steps"
+      ariaLabel="Onboarding steps dialog"
+      paddingNone
+    >
       <div className="px-large pb-xxlarge pt-large md:p-xxxlarge">
-        <StepProgress count={COUNT} current={step} />
-        <div className="mb-large mt-xlarge flex text-center">
-          <Title level="h2" align={alignment}>
-            Welcome to PetPlace!
-          </Title>
+        <div className={isSmallerScreen ? "max-w-max" : "max-w-[544px]"}>
+          <StepProgress count={COUNT} current={step} />
+          <div className="mb-large mt-xlarge flex text-center">
+            <Title level="h2" align={alignment}>
+              Welcome to PetPlace!
+            </Title>
+          </div>
+          <Text size="lg" align={alignment}>
+            Your go-to destination for keeping pets happy and healthy. Discover
+            sound advice, trusted providers, and indispensable services all in
+            one place.
+          </Text>
+          <div className="mb-xlarge mt-large flex w-full justify-center">
+            <img src={ASSET_IMAGES.comfyDogAndCat} alt="Comfy dog and cat" />
+          </div>
+          <Button fullWidth onClick={handleClick}>
+            Get Started
+          </Button>
         </div>
-        <Text size="lg" align={alignment}>
-          Your go-to destination for keeping pets happy and healthy. Discover
-          sound advice, trusted providers, and indispensable services all in one
-          place.
-        </Text>
-        <div className="mb-xlarge mt-large flex w-full justify-center">
-          <img src={ASSET_IMAGES.comfyDogAndCat} alt="Comfy dog and cat" />
-        </div>
-        <Button fullWidth onClick={handleClick}>
-          Get Started
-        </Button>
       </div>
     </Dialog>
   );

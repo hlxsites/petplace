@@ -21,6 +21,7 @@ export const DialogBase = ({
   isOpen,
   titleLevel,
   onClose,
+  paddingNone,
   title,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
