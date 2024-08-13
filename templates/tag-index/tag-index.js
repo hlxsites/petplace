@@ -68,7 +68,8 @@ async function renderArticles(articles) {
   }
   document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
   window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.closest('li').remove());
+    block.querySelectorAll('ul > li:empty').forEach((el) => el.remove());
   });
 }
 

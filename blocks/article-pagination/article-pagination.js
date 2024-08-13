@@ -88,4 +88,16 @@ export default async function decorate(block) {
   observer = new MutationObserver(() => {
     renderContent(block);
   });
+
+  // Wath for added cards if not already in the DOM
+  if (!document.querySelector('.cards ul')) {
+    const addedObserver = new MutationObserver((entries) => {
+      entries.forEach((e) => {
+        if ([...e.addedNodes.values()].some((n) => n.querySelector && n.querySelector('.cards ul'))) {
+          renderContent(block);
+        }
+      });
+    });
+    addedObserver.observe(document.querySelector('main'), { childList: true, subtree: true });
+  }
 }
