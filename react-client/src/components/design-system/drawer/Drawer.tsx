@@ -1,10 +1,10 @@
 import { DialogBase } from "../dialogBase/DialogBase";
 import { DialogCommonProps } from "../types/DialogBaseTypes";
 
-export const Drawer = (props: DialogCommonProps) => {
+export const Drawer = ({ children, ...rest }: DialogCommonProps) => {
   return (
     <DialogBase
-      {...props}
+      {...rest}
       className={{
         closeButton: "absolute right-[28px] top-[34px] text-neutral-600",
         modal:
@@ -12,7 +12,7 @@ export const Drawer = (props: DialogCommonProps) => {
       }}
       element="drawer"
     >
-      {props.children}
+      {children}
     </DialogBase>
   );
 };

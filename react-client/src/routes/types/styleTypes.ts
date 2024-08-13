@@ -1,6 +1,7 @@
-import { THEME_COLORS } from "tailwind.theme";
+import { SPACING_DEFAULTS, THEME_COLORS } from "tailwind.theme";
 
 export type ThemeColors = keyof typeof THEME_COLORS;
+type SpacingKeys = keyof typeof SPACING_DEFAULTS;
 
 /**
  * Retrieves the keys of the specified theme color from the THEME_COLORS object.
@@ -21,22 +22,24 @@ type RawColorUnion<Prefix extends string> = {
 }[ThemeColors];
 
 /**
- * Type utility to create a final union representing color classnames
+ * Type utility to create a final union representing classnames
  * (it removes '-default' from the end of the string)
  *
- * @template ColorUnion - The string type to cleanup.
- * @returns The cleaned up color classes.
+ * @template TypeUnion - The string type to cleanup.
+ * @returns The cleaned up classes.
  */
-type CleanupColorClasses<ColorUnion extends string> = {
-  [ClassString in ColorUnion]: ClassString extends `${infer First}-${infer Second}-default`
+type CleanupClasses<TypeUnion extends string> = {
+  [ClassString in TypeUnion]: ClassString extends `${infer First}-${infer Second}-default`
     ? `${First}-${Second}`
     : ClassString;
-}[ColorUnion];
+}[TypeUnion];
 
-export type BackgroundColorClasses = CleanupColorClasses<RawColorUnion<"bg">>;
+export type BackgroundColorClasses = CleanupClasses<RawColorUnion<"bg">>;
 
-export type BorderColorClasses = CleanupColorClasses<RawColorUnion<"border">>;
+export type BorderColorClasses = CleanupClasses<RawColorUnion<"border">>;
 
-export type FromColorClasses = CleanupColorClasses<RawColorUnion<"from">>;
+export type FromColorClasses = CleanupClasses<RawColorUnion<"from">>;
 
-export type TextColorClasses = CleanupColorClasses<RawColorUnion<"text">>;
+export type TextColorClasses = CleanupClasses<RawColorUnion<"text">>;
+
+export type PaddingClasses = CleanupClasses<`p-${SpacingKeys}`>;

@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-const SPACING_DEFAULTS = {
+export const SPACING_DEFAULTS = {
   0: "0",
   auto: "auto",
   xxxxxlarge: "var(--xxxxxlarge)",

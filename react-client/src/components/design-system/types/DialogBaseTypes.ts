@@ -10,22 +10,25 @@ export type DialogIconProps = {
   };
 };
 
-export type DialogTitleProps =
+export type DialogTitleProps = {
+  titleLevel?: ComponentProps<typeof Title>["level"];
+} & (
   | {
       ariaLabel?: string;
-      level?: ComponentProps<typeof Title>["level"];
       title: string;
     }
   | {
       ariaLabel: string;
-      level?: ComponentProps<typeof Title>["level"];
-      title?: string;
-    };
+      title?: undefined;
+    }
+);
 
 export type DialogBaseProps = DialogIconProps &
   DialogTitleProps & {
     align?: "center" | "right";
-    children: ReactNode;
+    children:
+      | ReactNode
+      | ((props: { onCloseWithAnimation?: () => void }) => ReactNode);
     className?: {
       modal: string;
       closeButton: string;
