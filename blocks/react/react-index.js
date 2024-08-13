@@ -91,7 +91,7 @@ __p += '`),Be&&(Y+=`' +
 `;var be=qe.call(l,"variable")&&l.variable;if(!be)Y=`with (obj) {
 `+Y+`
 }
-`;else if(Pt.test(be))throw new Pe(c);Y=(N?Y.replace(pu,""):Y).replace(ya,"$1").replace(Of,"$1;"),Y="function("+(be||"obj")+`) {
+`;else if(Pt.test(be))throw new Pe(c);Y=(N?Y.replace(pu,""):Y).replace(Ca,"$1").replace(Of,"$1;"),Y="function("+(be||"obj")+`) {
 `+(be?"":`obj || (obj = {});
 `)+"var __t, __p = ''"+(M?", __e = _.escape":"")+(N?`, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }

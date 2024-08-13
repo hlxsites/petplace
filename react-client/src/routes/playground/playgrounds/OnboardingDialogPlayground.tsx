@@ -1,14 +1,23 @@
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "~/components/design-system";
+import { useLocalStorage } from "~/hooks/useLocalStorage";
 import { OnboardingDialog } from "~/routes/my-pets/:petId/OnboardingDialog";
 
 export const OnboardingDialogPlayground = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [, , remove] = useLocalStorage("step", 1);
 
-  useEffect(() => {
-    searchParams.set("is-onboarding", "true");
-    setSearchParams(searchParams);
-  }, [searchParams, setSearchParams]);
-
-  return <OnboardingDialog />;
+  return (
+    <div className="flex justify-center">
+      <Button
+        onClick={() => {
+          remove();
+          setIsOpen(true);
+        }}
+      >
+        Open onboarding dialog
+      </Button>
+      {!!isOpen && <OnboardingDialog />}
+    </div>
+  );
 };

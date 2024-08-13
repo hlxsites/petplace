@@ -19,9 +19,9 @@ export const DialogBase = ({
   iconProps,
   id,
   isOpen,
-  level,
+  titleLevel,
   onClose,
-  padding,
+  paddingNone,
   title,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
@@ -46,6 +46,13 @@ export const DialogBase = ({
   const hasTitle = !!title;
   const titleId = hasTitle ? `${id}-title` : undefined;
 
+  const renderChildren = (() => {
+    if (typeof children === "function") {
+      return children({ onCloseWithAnimation: onCloseWithAnimation });
+    }
+    return children;
+  })();
+
   const portalContent = (
     <>
       <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
@@ -60,7 +67,7 @@ export const DialogBase = ({
           aria-labelledby={titleId}
           aria-modal="true"
           className={classNames(
-            className?.modal, padding,
+            className?.modal,
             {
               "text-center": align === "center",
               "text-right": align === "right",
@@ -81,7 +88,7 @@ export const DialogBase = ({
           {!!icon && <Icon display={icon} {...iconProps} />}
           <div className="mb-small">
             {title && (
-              <Title id={titleId} level={level}>
+              <Title id={titleId} level={titleLevel}>
                 {title}
               </Title>
             )}
@@ -98,7 +105,7 @@ export const DialogBase = ({
             />
           )}
 
-          <div className="h-90vh grid overflow-auto">{children}</div>
+          <div className="h-90vh grid overflow-auto">{renderChildren}</div>
         </div>
       </FocusTrap>
     </>
