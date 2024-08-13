@@ -1,6 +1,6 @@
-import { Dialog } from "./Dialog";
-import { Text } from "../text/Text";
 import { Button } from "../button/Button";
+import { Text } from "../text/Text";
+import { Dialog } from "./Dialog";
 
 type ConfirmDeletionDialogProps = {
   fileName: string;
@@ -19,9 +19,9 @@ export const ConfirmDeletionDialog = ({
     <Dialog
       id="Confirm deletion file"
       isOpen={isOpen}
-      level="h2"
       onClose={onClose}
       title="Are you sure you want to delete this file?"
+      titleLevel="h2"
     >
       <div className="grid gap-xlarge pt-xlarge">
         {fileName && (

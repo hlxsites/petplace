@@ -19,7 +19,7 @@ export const DialogBase = ({
   iconProps,
   id,
   isOpen,
-  level,
+  titleLevel,
   onClose,
   title,
 }: DialogBaseProps) => {
@@ -80,7 +80,7 @@ export const DialogBase = ({
           {!!icon && <Icon display={icon} {...iconProps} />}
           <div className="mb-small">
             {title && (
-              <Title id={titleId} level={level}>
+              <Title id={titleId} level={titleLevel}>
                 {title}
               </Title>
             )}
