@@ -6,6 +6,7 @@ import AppsIcon from "./assets/apps-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
 import CheckCircleIcon from "./assets/check-circle-icon.svg";
+import CheckSoloIcon from "./assets/check-solo-icon.svg";
 import ChevronDownIcon from "./assets/chevron-down-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
 import ChevronRightIcon from "./assets/chevron-right-icon.svg";
@@ -52,6 +53,7 @@ export const IconMap = Object.freeze({
   bendArrowDown: <BendArrowDownIcon />,
   check: <CheckIcon />,
   checkCircle: <CheckCircleIcon />,
+  checkSolo: <CheckSoloIcon />,
   chevronDown: <ChevronDownIcon />,
   chevronLeft: <ChevronLeftIcon />,
   chevronRight: <ChevronRightIcon />,
