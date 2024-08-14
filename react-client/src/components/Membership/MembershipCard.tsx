@@ -64,10 +64,7 @@ export const MembershipCard = ({
                 display={icon ?? "checkCircle"}
                 size={16}
               />
-              <Text
-                size="base"
-                textDecoration={icon ? "strikethrough" : "none"}
-              >
+              <Text size="base" textDecoration={icon ? "line-through" : "none"}>
                 {offerLabel}
               </Text>
             </div>
