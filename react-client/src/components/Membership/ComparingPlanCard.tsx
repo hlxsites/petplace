@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Card, Icon, IconKeys, Text, Title } from "../design-system";
 import {
   CA_AVAILABLE_PLANS,
@@ -23,6 +23,26 @@ export const ComparingPlanCard = ({
   const availablePlans =
     country === "us" ? US_AVAILABLE_PLANS : CA_AVAILABLE_PLANS;
 
+  const getIconClass = useCallback(
+    (index: number) => {
+      const defaultClass = "text-green-300";
+
+      const usClasses: ClassMap = {
+        bothLifetime: { 0: "text-red-300" },
+        lifetimePlus: { 0: "text-red-300", 1: "text-red-300" },
+      };
+
+      const caClasses: ClassMap = {
+        lifetimePlus: { 0: "text-red-300" },
+      };
+
+      const classMap = country === "us" ? usClasses : caClasses;
+
+      return classMap?.[availableOnPlan]?.[index] || defaultClass;
+    },
+    [availableOnPlan, country]
+  );
+
   const renderIcons = useMemo(() => {
     return availablePlans.map((plan, index) => {
       const iconClass = getIconClass(index);
@@ -39,7 +59,7 @@ export const ComparingPlanCard = ({
         />
       );
     });
-  }, [availableOnPlan, country, availablePlans]);
+  }, [availablePlans, country, getIconClass]);
 
   return (
     <Card>
@@ -54,21 +74,4 @@ export const ComparingPlanCard = ({
       </div>
     </Card>
   );
-
-  function getIconClass(index: number) {
-    const defaultClass = "text-green-300";
-
-    const usClasses: ClassMap = {
-      bothLifetime: { 0: "text-red-300" },
-      lifetimePlus: { 0: "text-red-300", 1: "text-red-300" },
-    };
-
-    const caClasses: ClassMap = {
-      lifetimePlus: { 0: "text-red-300" },
-    };
-
-    const classMap = country === "us" ? usClasses : caClasses;
-
-    return classMap?.[availableOnPlan]?.[index] || defaultClass;
-  }
 };
