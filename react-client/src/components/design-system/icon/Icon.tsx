@@ -10,6 +10,7 @@ import ChevronDownIcon from "./assets/chevron-down-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
 import ChevronRightIcon from "./assets/chevron-right-icon.svg";
 import ChevronUpIcon from "./assets/chevron-up-icon.svg";
+import ClearCircleIcon from "./assets/clear-circle-icon.svg";
 import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CloseXMarkRegularIcon from "./assets/close-x-mark-regular-icon.svg";
 import CpuChipIcon from "./assets/cpu-chip-icon.svg";
@@ -20,6 +21,7 @@ import DownloadIcon from "./assets/download-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
+import InfoIcon from "./assets/info-icon.svg";
 import InformationIcon from "./assets/information-icon.svg";
 import JpgFileIcon from "./assets/jpg-file-icon.svg";
 import MedicineIcon from "./assets/medicine-icon.svg";
@@ -54,6 +56,7 @@ export const IconMap = Object.freeze({
   chevronLeft: <ChevronLeftIcon />,
   chevronRight: <ChevronRightIcon />,
   chevronUp: <ChevronUpIcon />,
+  clearCircle: <ClearCircleIcon />,
   closeXMark: <CloseXMarkIcon />,
   closeXMarkRegular: <CloseXMarkRegularIcon />,
   cpuChip: <CpuChipIcon />,
@@ -64,10 +67,11 @@ export const IconMap = Object.freeze({
   ellipse: <EllipseIcon />,
   emptyEllipse: <EmptyEllipseIcon />,
   file: <FileIcon />,
+  information: <InformationIcon />,
+  info: <InfoIcon />,
   medicine: <MedicineIcon />,
   outlinedArrowBottom: <OutlinedArrowBottom />,
   outlinedArrowRight: <OutlinedArrowRight />,
-  information: <InformationIcon />,
   jpgFile: <JpgFileIcon />,
   paw: <PawIcon />,
   pdfFile: <PdfFileIcon />,
