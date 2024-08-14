@@ -38,6 +38,7 @@ export type DialogBaseProps = DialogIconProps &
     isOpen: boolean;
     onClose?: () => void;
     paddingNone?: boolean;
+    isLocked?: boolean;
   };
 
 export type DialogCommonProps = Omit<

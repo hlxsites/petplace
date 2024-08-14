@@ -19,6 +19,7 @@ export const DialogBase = ({
   iconProps,
   id,
   isOpen,
+  isLocked,
   titleLevel,
   onClose,
   title,
@@ -93,7 +94,7 @@ export const DialogBase = ({
             )}
           </div>
 
-          {!!onClose && (
+          {!!onClose && !isLocked && (
             <IconButton
               className={className?.closeButton}
               icon="closeXMark"
