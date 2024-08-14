@@ -101,7 +101,7 @@ describe("Text", () => {
     }
   );
 
-  fit.each([
+  it.each([
     ["none", "no-underline"],
     ["line-through", "line-through"],
     ["underline", "underline"],
