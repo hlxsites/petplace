@@ -4,11 +4,13 @@ import {
   TextCommonStyleProps,
   useTextCommonStyles,
 } from "./useTextCommonStyles";
+import { DisplayClasses } from "~/routes/types/styleTypes";
 
 type StyleProps = TextCommonStyleProps & {
   fontFamily?: "franklin" | "raleway" | "roboto";
-  fontWeight?: "normal" | "bold" | "medium";
+  fontWeight?: "normal" | "bold" | "semibold" | "medium";
   size?: "xlg" | "lg" | "base" | "sm" | "xs";
+  display?: DisplayClasses;
   inherit?: boolean;
 };
 
@@ -46,6 +48,7 @@ export const Text = ({
 
 function useTextBase({
   color: colorProp,
+  display = "inline-block",
   fontFamily: fontFamilyProp,
   fontWeight: fontWeightProp,
   inherit,
@@ -73,12 +76,13 @@ function useTextBase({
 
   const commonClassName = useTextCommonStyles({ ...rest, color });
 
-  const className = classNames("inline-block", commonClassName, {
+  const className = classNames(display, commonClassName, {
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
     "font-roboto": fontFamily === "roboto",
     "font-normal": fontWeight === "normal",
     "font-bold": fontWeight === "bold",
+    "font-semibold": fontWeight === "semibold",
     "font-medium": fontWeight === "medium",
     "text-xl leading-8": size === "xlg",
     "text-lg leading-7": size === "lg",
