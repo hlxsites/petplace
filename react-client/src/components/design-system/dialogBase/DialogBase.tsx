@@ -21,8 +21,9 @@ export const DialogBase = ({
   isOpen,
   titleLevel,
   onClose,
-  padding,
+  padding = "p-xlarge",
   title,
+  width,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
     onClose,
@@ -89,6 +90,7 @@ export const DialogBase = ({
           )}
           id={id}
           role="dialog"
+          style={{ width }}
           tabIndex={-1}
         >
           {!!icon && <Icon display={icon} {...iconProps} />}

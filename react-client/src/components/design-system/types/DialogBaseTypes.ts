@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps, CSSProperties, ReactNode } from "react";
 import { IconProps } from "../icon/Icon";
 import { Title } from "../text/Title";
 
@@ -38,6 +38,7 @@ export type DialogBaseProps = DialogIconProps &
     isOpen: boolean;
     onClose?: () => void;
     padding?: "p-0" | "p-large" | "p-xlarge";
+    width?: CSSProperties["width"];
   };
 
 export type DialogCommonProps = Omit<

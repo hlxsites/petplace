@@ -1,14 +1,14 @@
 import { ASSET_IMAGES } from "~/assets";
+import { useDrawerSearchParams } from "~/hooks/useDrawerSearchParams";
 import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
 import {
   PET_WATCH_OFFERS,
   PET_WATCH_TAGS,
 } from "~/routes/my-pets/:petId/utils/petServiceConstants";
-import { Button, Card, Drawer, Tag, Text } from "../../design-system";
 import { PET_WATCH_OPTIONS } from "~/routes/my-pets/:petId/utils/petWatchConstants";
-import { PetCardPetWatch } from "../PetCardPetWatch";
 import { CONTENT } from "~/util/searchParamsKeys";
-import { useDrawerSearchParams } from "~/hooks/useDrawerSearchParams";
+import { Button, Card, Drawer, Tag, Text } from "../../design-system";
+import { PetCardPetWatch } from "../PetCardPetWatch";
 
 type PetWatchSectionProp = {
   petServiceStatus: PetServiceTypes;
@@ -50,7 +50,7 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
         id="24PetWatchDrawer"
         isOpen={isDrawerOpen}
         onClose={onCloseDrawer}
-        title=""
+        width={440}
       >
         <div>
           <img className="pb-small" src={ASSET_IMAGES.petWatchLogo} />
