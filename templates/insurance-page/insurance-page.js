@@ -30,7 +30,7 @@ export async function loadEager(document) {
   createTemplateBlock(sideSection, 'social-share', ['<div>facebook</div>', '<div>instagram</div>', '<div>tiktok</div>']);
 
   // Build side section page links
-  createTemplateBlock(sideSection, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);
+  // createTemplateBlock(sideSection, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);
 
   // Move subhead to the footer
   const subhead = document.querySelector('.subhead');
