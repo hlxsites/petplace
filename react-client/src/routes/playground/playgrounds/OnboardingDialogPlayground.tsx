@@ -17,7 +17,7 @@ export const OnboardingDialogPlayground = () => {
       >
         Open onboarding dialog
       </Button>
-      {!!isOpen && <OnboardingDialog />}
+      {!!isOpen && <OnboardingDialog id="playground-id" name="Romã" />}
     </div>
   );
 };
