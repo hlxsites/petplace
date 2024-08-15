@@ -1,7 +1,7 @@
 import { classNames } from "~/util/styleUtil";
 import AddIcon from "./assets/add-icon.svg";
 import AlertDiamondIcon from "./assets/alert-diamond-icon.svg";
-import AlertIcon from "./assets/alert-icon.svg";
+import AlertIcon from "./assets/alert.icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
