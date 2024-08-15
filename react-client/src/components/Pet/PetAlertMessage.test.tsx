@@ -3,10 +3,23 @@ import { ComponentProps } from "react";
 import { PetAlertMessage } from "./PetAlertMessage";
 import userEvent from "@testing-library/user-event";
 
-const { getByRole, getAllByRole } = screen;
+const { getByRole, getByText, getAllByRole } = screen;
 
 describe("AlertMessage", () => {
-  it("should render the component with the correct icon", () => {
+  it.each([
+    ["apps", "SvgAppsIcon"],
+    ["chevronUp", "SvgChevronUpIcon"],
+  ])("should render the component with the given icon", (icon, expected) => {
+    // @ts-expect-error - ignoring for test purposes only
+    getRenderer({ icon });
+
+    expect(document.querySelector("svg")).toHaveAttribute(
+      "data-file-name",
+      expected
+    );
+  });
+
+  it("should render component with stethoscope icon when no icon is provided", () => {
     getRenderer();
 
     expect(document.querySelector("svg")).toHaveAttribute(
@@ -15,22 +28,21 @@ describe("AlertMessage", () => {
     );
   });
 
-  it("should render the title of the alert message", () => {
-    getRenderer();
+  it.each(["Sample title", "Awesome title"])(
+    "should render the given title of the alert message",
+    (title) => {
+      getRenderer({ title });
 
-    expect(
-      getByRole("heading", { name: /Secure Your Pet's Future/i })
-    ).toBeInTheDocument();
-  });
+      expect(getByRole("heading", { name: title })).toBeInTheDocument();
+    }
+  );
 
-  it.each(["Drake", "Jason"])(
-    "should render the message of the alert message with pet's name",
-    (petName) => {
-      getRenderer({ petName });
+  it.each(["Cool message", "Awesome message"])(
+    "should render the given message of the alert",
+    (message) => {
+      getRenderer({ message });
 
-      expect(getByRole("paragraph")).toHaveTextContent(
-        `Get a personalized insurance quote and ensure the best care for ${petName}`
-      );
+      expect(getByText(message)).toBeInTheDocument();
     }
   );
 
@@ -61,8 +73,17 @@ describe("AlertMessage", () => {
 });
 
 function getRenderer({
+  icon,
   onClick,
-  petName = "Test",
+  message = "Message",
+  title = "Title",
 }: Partial<ComponentProps<typeof PetAlertMessage>> = {}) {
-  return render(<PetAlertMessage petName={petName} onClick={onClick} />);
+  return render(
+    <PetAlertMessage
+      icon={icon}
+      message={message}
+      onClick={onClick}
+      title={title}
+    />
+  );
 }
