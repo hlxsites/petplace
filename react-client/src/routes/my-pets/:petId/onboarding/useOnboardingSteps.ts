@@ -14,7 +14,7 @@ type OnboardingStepsReturn = {
   totalSteps: number;
 };
 
-export function useOnboardingSteps(): OnboardingStepsReturn {
+export const useOnboardingSteps = (): OnboardingStepsReturn => {
   const [parsedStep, setStoredStep] = useLocalStorage(STEP_PARAM_KEY, 1);
 
   const step = useMemo(() => Math.min(parsedStep, COUNT), [parsedStep]);
@@ -51,4 +51,4 @@ export function useOnboardingSteps(): OnboardingStepsReturn {
     isLastStep: step === COUNT,
     totalSteps: COUNT,
   };
-}
+};
