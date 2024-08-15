@@ -92,8 +92,10 @@ export const MyPetsIndex = () => {
   function renderReportLostOrFoundContent() {
     return (
       <div className="mt-large">
-        {lostOrFoundMessages.map((message) => (
-          <Text size="base">{message}</Text>
+        {lostOrFoundMessages.map((message, index) => (
+          <Text key={index} size="base">
+            {message}
+          </Text>
         ))}
         <div className="mt-xxlarge grid gap-small md:flex">
           <Button variant="secondary" fullWidth>

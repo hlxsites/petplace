@@ -2,6 +2,7 @@ export const AppRoutePaths = {
   root: "/",
   account: "account",
   addNewPet: "add",
+  checkout: "checkout",
   myPets: "my-pets",
   petProfile: ":petId",
   petProfileDocuments: "documents",
@@ -12,6 +13,7 @@ export const AppRoutePaths = {
 
 export const AppRoutePathsIndexes = {
   addNewPetIndex: undefined,
+  checkoutIndex: undefined,
   myPetsIndex: undefined,
   petProfileIndex: undefined,
   playgroundIndex: undefined,

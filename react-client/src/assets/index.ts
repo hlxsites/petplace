@@ -1,7 +1,9 @@
 export const ASSET_IMAGES = {
-  petWatchLogo: getImageUrl("24-pet-watch-logo.png"),
   comfyDogAndCat: getImageUrl("onboarding-comfy-dog-and-cat.png"),
   petPlaceLogo: getImageUrl("pet-place-logo.png"),
+  petcoLogo: getImageUrl("petco-logo.png"),
+  petWatchLogo: getImageUrl("24-pet-watch-logo.png"),
+  roverLogo: getImageUrl("rover-logo.png"),
 };
 
 function getImageUrl(filename: string) {

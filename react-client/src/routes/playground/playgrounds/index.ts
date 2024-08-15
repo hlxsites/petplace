@@ -7,7 +7,6 @@ export * from "./DialogPlayground";
 export * from "./DropdownMenuPlayground";
 export * from "./FormBuilderPlayground";
 export * from "./OnboardingDialogPlayground";
-export * from "./PetCardPetWatchPlayground";
 export * from "./PetCardRecordPlayground";
 export * from "./PetDocumentsViewPlayground";
 export * from "./StepProgressPlayground";
