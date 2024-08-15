@@ -18,6 +18,7 @@ import DoubleArrowRightIcon from "./assets/double-arrow-right-icon.svg";
 import DocFileIcon from "./assets/doc-file-icon.svg";
 import DownloadIcon from "./assets/download-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
+import EllipseWithStrokeIcon from "./assets/ellipse-with-stroke-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
 import InformationIcon from "./assets/information-icon.svg";
@@ -60,6 +61,7 @@ export const IconMap = Object.freeze({
   docFile: <DocFileIcon />,
   download: <DownloadIcon />,
   ellipse: <EllipseIcon />,
+  ellipseWithStrokeIcon: <EllipseWithStrokeIcon />,
   emptyEllipse: <EmptyEllipseIcon />,
   file: <FileIcon />,
   medicine: <MedicineIcon />,
