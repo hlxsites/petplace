@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { PetWatchSection } from "./PetWatchSection";
+import { MemoryRouter } from "react-router-dom";
 
 const { getByRole, getByText } = screen;
 
@@ -69,5 +70,9 @@ describe("PetWatchSection", () => {
 function getRenderer({
   petServiceStatus = "standard",
 }: Partial<ComponentProps<typeof PetWatchSection>> = {}) {
-  return render(<PetWatchSection petServiceStatus={petServiceStatus} />);
+  return render(
+    <MemoryRouter>
+      <PetWatchSection petServiceStatus={petServiceStatus} />
+    </MemoryRouter>
+  );
 }

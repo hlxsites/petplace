@@ -22,10 +22,10 @@ export const OnboardingDialog = () => {
 
   return (
     <Dialog
-      isOpen
-      id="onboarding-steps"
       ariaLabel="Onboarding steps dialog"
-      paddingNone
+      id="onboarding-steps"
+      isOpen
+      padding="p-0"
     >
       <div className="px-large pb-xxlarge pt-large md:p-xxxlarge">
         <div className={isSmallerScreen ? "max-w-max" : "max-w-[544px]"}>
