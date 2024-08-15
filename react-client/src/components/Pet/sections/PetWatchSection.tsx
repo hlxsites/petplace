@@ -1,12 +1,11 @@
 import { ASSET_IMAGES } from "~/assets";
-import { useDrawerSearchParams } from "~/hooks/useDrawerSearchParams";
+import { useDrawerContentState } from "~/hooks/useDrawerContentState";
 import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
 import {
   PET_WATCH_OFFERS,
   PET_WATCH_TAGS,
 } from "~/routes/my-pets/:petId/utils/petServiceConstants";
 import { PET_WATCH_OPTIONS } from "~/routes/my-pets/:petId/utils/petWatchConstants";
-import { CONTENT } from "~/util/searchParamsKeys";
 import { Button, Card, Drawer, Tag, Text } from "../../design-system";
 import { PetCardPetWatch } from "../PetCardPetWatch";
 
@@ -15,9 +14,8 @@ type PetWatchSectionProp = {
 };
 
 export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
-  const { isDrawerOpen, onOpenDrawer, onCloseDrawer } = useDrawerSearchParams(
-    CONTENT.petWatch
-  );
+  const { isDrawerOpen, onOpenDrawer, onCloseDrawer } =
+    useDrawerContentState("pet-watch");
 
   const { buttonLabel, icon, message } = PET_WATCH_OFFERS[petServiceStatus];
   const { label, tagStatus } = PET_WATCH_TAGS[petServiceStatus];
@@ -39,7 +37,7 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
             className="text-orange-300-contrast"
             iconLeft={icon}
             variant="secondary"
-            onClick={onOpenDrawer}
+            onClick={() => onOpenDrawer()}
           >
             {buttonLabel}
           </Button>

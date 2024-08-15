@@ -1,3 +1,1 @@
-export const CONTENT = {
-  petWatch: "petWatch",
-};
+export const CONTENT_PARAM_KEY = "content";
