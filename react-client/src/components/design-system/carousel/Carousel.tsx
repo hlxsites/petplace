@@ -1,13 +1,14 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
+import { classNames } from "~/util/styleUtil";
 import { IconButton } from "../button/IconButton";
 import { Icon } from "../icon/Icon";
-import { classNames } from "~/util/styleUtil";
 
 type CarouselProps = {
+  ariaLabel: string;
   items: ReactNode[];
 };
 
-export const Carousel = ({ items }: CarouselProps) => {
+export const Carousel = ({ ariaLabel, items }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToNextSlide = useCallback(() => {
@@ -41,7 +42,7 @@ export const Carousel = ({ items }: CarouselProps) => {
 
   return (
     <div
-      aria-label="carousel"
+      aria-label={ariaLabel}
       className="relative grid w-full place-items-center"
       role="region"
       tabIndex={0}

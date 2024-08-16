@@ -31,7 +31,7 @@ export const CarouselPlayground = () => {
 
   return (
     <div className="max-w-[300px] bg-orange-100">
-      <Carousel items={items} />
+      <Carousel ariaLabel="A carousel example" items={items} />
     </div>
   );
 };
