@@ -248,3 +248,7 @@ export const getPetServiceStatus = (petId: string) => {
     return null;
   }
 };
+
+export const getProductsList = () => {
+  return [];
+};

@@ -21,11 +21,18 @@ export const DialogBase = ({
   isOpen,
   titleLevel,
   onClose,
+  padding = "p-xlarge",
   title,
+  width,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
     onClose,
   });
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "visible";
+    document.body.style.position = isOpen ? "relative" : "static";
+  }, [isOpen]);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -67,6 +74,7 @@ export const DialogBase = ({
           aria-modal="true"
           className={classNames(
             className?.modal,
+            padding,
             {
               "text-center": align === "center",
               "text-right": align === "right",
@@ -82,16 +90,17 @@ export const DialogBase = ({
           )}
           id={id}
           role="dialog"
+          style={{ width }}
           tabIndex={-1}
         >
           {!!icon && <Icon display={icon} {...iconProps} />}
-          <div className="mb-small">
-            {title && (
+          {title && (
+            <div className="mb-small">
               <Title id={titleId} level={titleLevel}>
                 {title}
               </Title>
-            )}
-          </div>
+            </div>
+          )}
 
           {!!onClose && (
             <IconButton

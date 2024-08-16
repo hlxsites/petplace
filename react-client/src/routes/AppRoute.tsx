@@ -17,6 +17,8 @@ import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/Docu
 import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/:petId/PetProfileLayout";
+import { CheckoutIndex } from "./checkout/CheckoutIndex";
+import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -85,6 +87,20 @@ const routes: PetPlaceRouteObject[] = [
                 element: <AddNewPetIndex />,
               },
             ],
+          },
+        ],
+      },
+      {
+        id: "checkout",
+        path: AppRoutePaths.checkout,
+        children: [
+          {
+            id: "checkoutIndex",
+            index: true,
+            loader: CheckoutIndexLoader,
+            shouldRevalidate: ({ currentParams, nextParams }) =>
+              !isEqual(currentParams, nextParams),
+            element: <CheckoutIndex />,
           },
         ],
       },

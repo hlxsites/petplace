@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "~/components/design-system";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
-import { OnboardingDialog } from "~/routes/my-pets/:petId/OnboardingDialog";
+import { OnboardingDialog } from "~/routes/my-pets/:petId/onboarding/OnboardingDialog";
 
 export const OnboardingDialogPlayground = () => {
   const [isOpen, setIsOpen] = useState(false);
