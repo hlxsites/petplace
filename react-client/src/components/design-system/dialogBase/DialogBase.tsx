@@ -94,13 +94,13 @@ export const DialogBase = ({
           tabIndex={-1}
         >
           {!!icon && <Icon display={icon} {...iconProps} />}
-          <div className="mb-small">
-            {title && (
+          {title && (
+            <div className="mb-small">
               <Title id={titleId} level={titleLevel}>
                 {title}
               </Title>
-            )}
-          </div>
+            </div>
+          )}
 
           {!!onClose && (
             <IconButton
