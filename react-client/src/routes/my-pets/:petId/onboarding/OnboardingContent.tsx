@@ -3,6 +3,7 @@ import { Button, Text } from "~/components/design-system";
 import { Title } from "~/components/design-system/text/Title";
 
 type OnboardingContentProps = {
+  alignment: "center" | "left";
   children: ReactNode;
   hideButton?: boolean;
   message?: string;
@@ -12,6 +13,7 @@ type OnboardingContentProps = {
 };
 
 export const OnboardingContent = ({
+  alignment,
   children,
   hideButton,
   message,
@@ -23,8 +25,8 @@ export const OnboardingContent = ({
 
   return (
     <div className="flex flex-col gap-large">
-      <Title level="h2">{title}</Title>
-      {!!message && <Text size="base">{message}</Text>}
+      <Title level="h2" align={alignment}>{title}</Title>
+      {!!message && <Text size="base" align={alignment}>{message}</Text>}
       {children}
       {!hideButton && (
         <Button onClick={onNextStep} fullWidth>
