@@ -2,6 +2,7 @@ import { ASSET_IMAGES } from "~/assets";
 import { Icon } from "~/components/design-system";
 import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
+import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
 export const OnboardingStepTwo = ({
   isSmallerScreen,
@@ -10,13 +11,13 @@ export const OnboardingStepTwo = ({
   return (
     <OnboardingContent
       {...props}
-      message="Your and your pet's information has moved to PetPlace. You can now access your 24Petwatch account from PetPlace."
-      title="Important notice for 24Petwatch customers."
+      message={ONBOARDING_STEPS_TEXTS[2].message}
+      title={ONBOARDING_STEPS_TEXTS[2].title}
     >
       <div className="mb-xlarge mt-large flex flex-col items-center gap-base md:w-full md:flex-row md:justify-center">
         <img
           src={ASSET_IMAGES.petWatchLogo}
-          alt="24 Pet Watch Logo"
+          alt={ONBOARDING_STEPS_TEXTS[2].imgAlt24Pet}
           className="w-[197px]"
         />
         <Icon
@@ -27,7 +28,7 @@ export const OnboardingStepTwo = ({
         />
         <img
           src={ASSET_IMAGES.petPlaceLogo}
-          alt="Pet Place Logo"
+          alt={ONBOARDING_STEPS_TEXTS[2].imgAltPetPlace}
           className="w-[197px]"
         />
       </div>

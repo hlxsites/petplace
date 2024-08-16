@@ -1,18 +1,19 @@
 import { ASSET_IMAGES } from "~/assets";
 import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
+import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
 export const OnboardingStepOne = (props: CommonOnboardingProps) => {
   return (
     <OnboardingContent
       {...props}
-      message="Your go-to destination for keeping pets happy and healthy. Discover sound advice, trusted providers, and indispensable services all in one place."
-      title="Welcome to PetPlace!"
+      message={ONBOARDING_STEPS_TEXTS[1].message}
+      title={ONBOARDING_STEPS_TEXTS[1].title}
     >
       <div className="flex w-full justify-center">
         <img
           className="w-full max-w-[430px]"
-          alt="Comfy dog and cat"
+          alt={ONBOARDING_STEPS_TEXTS[1].imgAlt}
           src={ASSET_IMAGES.comfyDogAndCat}
         />
       </div>

@@ -134,10 +134,9 @@ const NoneStatusContent = ({name, setStatus, ...props}: Exclude<StepFourContent,
     >
       <>
         <Text size="lg" align={props.alignment}>
-          Update, add files, download, or print. It's the one place to keep all
-          your pet's details.{" "}
+          {ONBOARDING_STEPS_TEXTS[4].none.message(name)[0]}
           <TextSpan fontWeight="semibold" display="inline">
-            {`If available, would you like PetPlace to access and upload ${name}'s shelter documents for you?`}
+            {ONBOARDING_STEPS_TEXTS[4].none.message(name)[1]}
           </TextSpan>
         </Text>
         <div className="flex w-full justify-center">

@@ -2,29 +2,31 @@ import { Button, Icon, IconKeys, Text } from "~/components/design-system";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
+import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
 export const OnboardingStepFive = ({isSmallerScreen, status, reset, ...props}: CommonOnboardingProps & { isSmallerScreen: boolean, status: string, reset: () => void}) => {
   return (
     <OnboardingContent
       {...props}
-      title="Almost there!"
-      message={`Your pet's microchip is registered${status !== "none" ? " and adoption documents are digitally available" : ""}. Now let’s ensure your pet's safety with added layers of protection.`}
+      message={ONBOARDING_STEPS_TEXTS[5].message(status)}
+      title={ONBOARDING_STEPS_TEXTS[5].title}
+      hideButton
     >
       <div className="flex w-full justify-center">
         <div className="grid grid-rows-3 gap-[58px] md:grid-cols-3 md:grid-rows-1 md:py-xlarge">
           {renderStepsChoices({
-            text: "Microchip registration",
+            text:  ONBOARDING_STEPS_TEXTS[5].microchip,
             icon: "checkSolo",
             accepted: true,
             isFirst: true,
           })}
           {renderStepsChoices({
-            text: "Digital documents",
+            text:  ONBOARDING_STEPS_TEXTS[5].documents,
             icon: "file",
             accepted: status !== "none",
           })}
           {renderStepsChoices({
-            text: "Enhanced pet protection",
+            text:  ONBOARDING_STEPS_TEXTS[5].protection,
             icon: "shieldGood",
             accepted: false,
           })}
