@@ -1,5 +1,6 @@
 export * from "./AdvertiseBannerImageRightPlayground";
 export * from "./ButtonPlayground";
+export * from "./CheckoutHeaderAndFooterPlayground";
 export * from "./CollapsePlayground";
 export * from "./ConfirmDeletionDialogPlayground";
 export * from "./DialogPlayground";
@@ -7,7 +8,6 @@ export * from "./DropdownMenuPlayground";
 export * from "./FormBuilderPlayground";
 export * from "./MembershipCardPlayground";
 export * from "./OnboardingDialogPlayground";
-export * from "./PetCardPetWatchPlayground";
 export * from "./PetCardRecordPlayground";
 export * from "./PetDocumentsViewPlayground";
 export * from "./StepProgressPlayground";

@@ -12,7 +12,7 @@ import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 export const PetProfileIndex = () => {
   const viewModel = usePetProfileContext();
   const { petInfo, petServiceStatus } = viewModel;
-  console.log("petServiceStatus on index", petServiceStatus);
+
   return (
     <>
       <PetAlertSection />
