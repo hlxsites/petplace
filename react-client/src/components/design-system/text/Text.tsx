@@ -6,10 +6,11 @@ import {
 } from "./useTextCommonStyles";
 
 type StyleProps = TextCommonStyleProps & {
+  inherit?: boolean;
   fontFamily?: "franklin" | "raleway" | "roboto";
   fontWeight?: "normal" | "bold" | "medium";
-  size?: "xlg" | "lg" | "base" | "sm" | "xs";
-  inherit?: boolean;
+  size?: "xxlg" | "xlg" | "lg" | "base" | "sm" | "xs";
+  textDecoration?: "none" | "line-through" | "underline";
 };
 
 export type TextProps = StyleProps & {
@@ -50,6 +51,7 @@ function useTextBase({
   fontWeight: fontWeightProp,
   inherit,
   size: sizeProp,
+  textDecoration: textDecorationProp,
   ...rest
 }: StyleProps) {
   const propValueConsideringInherit = <T extends string>(
@@ -70,6 +72,7 @@ function useTextBase({
   const fontFamily = propValueConsideringInherit(fontFamilyProp, "franklin");
   const fontWeight = propValueConsideringInherit(fontWeightProp, "normal");
   const size = propValueConsideringInherit(sizeProp, "xs");
+  const textDecoration = propValueConsideringInherit(textDecorationProp);
 
   const commonClassName = useTextCommonStyles({ ...rest, color });
 
@@ -80,11 +83,15 @@ function useTextBase({
     "font-normal": fontWeight === "normal",
     "font-bold": fontWeight === "bold",
     "font-medium": fontWeight === "medium",
+    "text-4xl leading-10": size === "xxlg",
     "text-xl leading-8": size === "xlg",
     "text-lg leading-7": size === "lg",
     "text-base leading-6": size === "base",
     "text-sm leading-5": size === "sm",
     "text-xs leading-4": size === "xs",
+    "line-through": textDecoration === "line-through",
+    "no-underline": textDecoration === "none",
+    underline: textDecoration === "underline",
   });
 
   return { className };
