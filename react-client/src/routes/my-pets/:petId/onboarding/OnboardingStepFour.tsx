@@ -12,98 +12,94 @@ import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
+import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
-export const OnboardingStepFour = ({
-  alignment,
-  isSmallerScreen,
-  name,
-  onNextStep,
-  status,
-  setStatus,
-  ...props
-}: CommonOnboardingProps & {
+type StepFourContent = CommonOnboardingProps & {
   isSmallerScreen: boolean;
   name: string;
-  status: string;
+  status: DocumentationStatus;
   setStatus: (value: DocumentationStatus) => void;
-}) => {
+};
+
+export const OnboardingStepFour = ({
+  status,
+  ...props
+}: StepFourContent) => {
+  if (status === "none") return <NoneStatusContent {...props} status="none" />;
+
+  const contentProps = {
+    ...props,
+    ...responseVariables(status),
+  };
+
   return {
-    none: (
-      <OnboardingContent
-        {...props}
-        alignment={alignment}
-        hideButton
-        onNextStep={onNextStep}
-        title="At PetPlace you can access all your pet's adoption documents."
-      >
-        <>
-          <Text size="lg" align={alignment}>
-            Update, add files, download, or print. It's the one place to keep
-            all your pet's details.{" "}
-            <TextSpan fontWeight="semibold" display="inline">
-              {`If available, would you like PetPlace to access and upload ${name}'s shelter documents for you?`}
-            </TextSpan>
-          </Text>
-          <div className="flex w-full justify-center">
-            <img
-              src={
-                isSmallerScreen
-                  ? ASSET_IMAGES.petServicesSm
-                  : ASSET_IMAGES.petServices
-              }
-              alt="Icons representing available pet services"
-            />
-          </div>
-          <ul className="flex flex-col items-center justify-center gap-xsmall md:flex-row">
-            <div className="flex items-center gap-xsmall">
-              {renderLI("Microchip")}
-              {renderSeparator()}
-              {renderLI("Pet ID")}
-              {renderSeparator()}
-              {renderLI("Medical History")}
-            </div>
-            <div className="flex items-center gap-xsmall">
-              {renderSeparator("hidden md:inline-block")}
-              {renderLI("Insurance")}
-              {renderSeparator()}
-              {renderLI("Vaccines")}
-              {renderSeparator()}
-              {renderLI("Lost Pet Services")}
-            </div>
-          </ul>
-          {renderUploadButtons()}
-        </>
-      </OnboardingContent>
-    ),
-    sent: (
-      <>
-        <div className="flex w-full justify-center md:w-fit">
-          <Loading size={64} />
-        </div>
-        <Title align={alignment} level="h2">
-          Uploading...
-        </Title>
-        {renderText(
-          "Your pet’s documents are being processed. Please wait a moment while we complete the upload."
-        )}
-        <Button className="text-neutral-500" fullWidth disabled>
-          Next
-        </Button>
-      </>
-    ),
-    approved: renderUploadResponse("approved"),
-    failed: renderUploadResponse("failed"),
-    "in progress": renderUploadResponse("in progress"),
+    sent: <StepFourContent {...contentProps} />,
+    approved: <StepFourContent {...contentProps} />,
+    failed: <StepFourContent {...contentProps} />,
+    "in progress": <StepFourContent {...contentProps} />,
   }[status];
 
-  function renderUploadResponse(
-    status: Exclude<DocumentationStatus, "none" | "sent">
-  ) {
-    const { icon, className, title, description } = responseVariables(status);
+  function responseVariables(status: Exclude<DocumentationStatus, "none">) {
+    type UploadVariables = Record<
+      typeof status,
+      {
+        buttonDisabled?: boolean;
+        className?: string;
+        icon?: IconKeys;
+        message: string;
+        title: string;
+      }
+    >;
 
     return (
-      <>
-        <div className="flex w-full justify-center md:w-fit">
+      {
+        approved: {
+          icon: "checkCircle",
+          className: "bg-green-300 text-green-100",
+          title: ONBOARDING_STEPS_TEXTS[4].approved.title,
+          message: ONBOARDING_STEPS_TEXTS[4].approved.message,
+        },
+        failed: {
+          icon: "clearCircle",
+          className: "bg-red-300 text-red-100",
+          title: ONBOARDING_STEPS_TEXTS[4].failed.title,
+          message: ONBOARDING_STEPS_TEXTS[4].failed.message,
+        },
+        "in progress": {
+          icon: "info",
+          className: "bg-blue-300 text-blue-100",
+          title: ONBOARDING_STEPS_TEXTS[4]["in progress"].title,
+          message: ONBOARDING_STEPS_TEXTS[4]["in progress"].message,
+        },
+        sent: {
+          buttonDisabled: true,
+          title: ONBOARDING_STEPS_TEXTS[4].sent.title,
+          message: ONBOARDING_STEPS_TEXTS[4].sent.message,
+        },
+      } satisfies UploadVariables
+    )[status];
+  }
+};
+
+const StepFourContent = ({
+  alignment,
+  buttonDisabled,
+  className,
+  icon,
+  message,
+  onNextStep,
+  title,
+}: CommonOnboardingProps & {
+  buttonDisabled?: boolean;
+  className?: string;
+  icon?: IconKeys;
+  message: string;
+  title: string;
+}) => {
+  return (
+    <>
+      <div className="flex w-full justify-center md:w-fit">
+        {icon ? (
           <div
             className={classNames(
               "flex h-[64px] w-[64px] items-center justify-center rounded-full",
@@ -112,52 +108,69 @@ export const OnboardingStepFour = ({
           >
             <Icon display={icon} size={25} />
           </div>
-        </div>
-        <Title align={alignment}>{title}</Title>
-        <Text size="lg" align={alignment}>
-          {description}
+        ) : (
+          <Loading size={64} />
+        )}
+      </div>
+      <Title align={alignment}>{title}</Title>
+      <Text size="lg" align={alignment}>
+        {message}
+      </Text>
+      <Button onClick={onNextStep} fullWidth disabled={buttonDisabled}>
+        Next
+      </Button>
+    </>
+  );
+};
+
+const NoneStatusContent = ({name, setStatus, ...props}: Exclude<StepFourContent, "status">) => {
+  return (
+    <OnboardingContent
+      {...props}
+      alignment={props.alignment}
+      hideButton
+      onNextStep={props.onNextStep}
+      title={ONBOARDING_STEPS_TEXTS[4].none.title}
+    >
+      <>
+        <Text size="lg" align={props.alignment}>
+          Update, add files, download, or print. It's the one place to keep all
+          your pet's details.{" "}
+          <TextSpan fontWeight="semibold" display="inline">
+            {`If available, would you like PetPlace to access and upload ${name}'s shelter documents for you?`}
+          </TextSpan>
         </Text>
-        <Button onClick={onNextStep} fullWidth>
-          Next
-        </Button>
+        <div className="flex w-full justify-center">
+          <img
+            src={
+              props.isSmallerScreen
+                ? ASSET_IMAGES.petServicesSm
+                : ASSET_IMAGES.petServices
+            }
+            alt={ONBOARDING_STEPS_TEXTS[4].none.imgAlt}
+          />
+        </div>
+        <ul className="flex flex-col items-center justify-center gap-xsmall md:flex-row">
+          <div className="flex items-center gap-xsmall">
+            {renderLI("Microchip")}
+            {renderSeparator()}
+            {renderLI("Pet ID")}
+            {renderSeparator()}
+            {renderLI("Medical History")}
+          </div>
+          <div className="flex items-center gap-xsmall">
+            {renderSeparator("hidden md:inline-block")}
+            {renderLI("Insurance")}
+            {renderSeparator()}
+            {renderLI("Vaccines")}
+            {renderSeparator()}
+            {renderLI("Lost Pet Services")}
+          </div>
+        </ul>
+        {renderUploadButtons()}
       </>
-    );
-  }
-
-  function responseVariables(
-    status: Exclude<DocumentationStatus, "none" | "sent">
-  ) {
-    type UploadVariables = Record<
-      typeof status,
-      { className: string; description: string; icon: IconKeys; title: string }
-    >;
-
-    return (
-      {
-        approved: {
-          icon: "checkCircle",
-          className: "bg-green-300 text-green-100",
-          title: "Upload Successful!",
-          description:
-            "Your pet’s documents have been uploaded successfully and are now available.",
-        },
-        failed: {
-          icon: "clearCircle",
-          className: "bg-red-300 text-red-100",
-          title: "Upload Failed",
-          description:
-            "There was an issue uploading your pet’s documents. Please try again or upload them manually.",
-        },
-        "in progress": {
-          icon: "info",
-          className: "bg-blue-300 text-blue-100",
-          title: "Upload In Progress",
-          description:
-            "Your pet’s documents are being uploaded. They will be available within 24 hours.",
-        },
-      } satisfies UploadVariables
-    )[status];
-  }
+    </OnboardingContent>
+  );
 
   function renderLI(text: string) {
     return (
@@ -180,18 +193,10 @@ export const OnboardingStepFour = ({
     );
   }
 
-  function renderText(text: string) {
-    return (
-      <Text size="lg" align={alignment}>
-        {text}
-      </Text>
-    );
-  }
-
   function renderUploadButtons() {
     return (
       <div className="flex flex-col-reverse items-stretch gap-base md:grid md:grid-cols-2">
-        <Button variant="secondary" onClick={onNextStep}>
+        <Button variant="secondary" onClick={props.onNextStep}>
           Not now
         </Button>
         <Button onClick={handleUpload}>Yes, upload documents</Button>
