@@ -1,8 +1,8 @@
 import { ASSET_IMAGES } from "~/assets";
 import { Dialog, Icon, StepProgress } from "~/components/design-system";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
-import { useOnboardingSteps } from "./useOnboardingSteps";
 import { OnboardingContent } from "./OnboardingContent";
+import { useOnboardingSteps } from "./useOnboardingSteps";
 
 export const OnboardingDialog = () => {
   const isSmallerScreen = useWindowWidth() < 768;
@@ -13,8 +13,8 @@ export const OnboardingDialog = () => {
       isOpen
       id="onboarding-steps"
       ariaLabel="Onboarding steps dialog"
-      paddingNone
-      widthFit
+      padding="p-0"
+      width="fit-content"
     >
       <div className="px-large pb-xxlarge pt-large md:p-xxxlarge">
         <div className={isSmallerScreen ? "max-w-max" : "max-w-[544px]"}>
