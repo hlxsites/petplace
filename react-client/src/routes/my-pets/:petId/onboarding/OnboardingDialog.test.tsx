@@ -3,6 +3,7 @@ import { ComponentProps } from "react";
 import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { getByTextContent } from "~/util/testingFunctions";
 import { OnboardingDialog } from "./OnboardingDialog";
+import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
 jest.mock(
   "focus-trap-react",
@@ -11,6 +12,8 @@ jest.mock(
       <div data-testid="FocusTrap">{children}</div>
     )
 );
+
+const DEFAULT_NAME = "Romã";
 
 const { getByRole, getByText, getByAltText } = screen;
 
@@ -31,14 +34,10 @@ describe("OnboardingDialog", () => {
     getRenderer();
 
     expect(
-      getByRole("heading", { name: "Welcome to PetPlace!" })
+      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[1].title })
     ).toBeInTheDocument();
-    expect(
-      getByText(
-        "Your go-to destination for keeping pets happy and healthy. Discover sound advice, trusted providers, and indispensable services all in one place."
-      )
-    ).toBeInTheDocument();
-    expect(getByAltText("Comfy dog and cat")).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[1].message)).toBeInTheDocument();
+    expect(getByAltText(ONBOARDING_STEPS_TEXTS[1].imgAlt)).toBeInTheDocument();
   });
 
   it("should render step 2 content", () => {
@@ -47,16 +46,16 @@ describe("OnboardingDialog", () => {
 
     expect(
       getByRole("heading", {
-        name: "Important notice for 24Petwatch customers.",
+        name: ONBOARDING_STEPS_TEXTS[2].title,
       })
     ).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[2].message)).toBeInTheDocument();
     expect(
-      getByText(
-        "Your and your pet's information has moved to PetPlace. You can now access your 24Petwatch account from PetPlace."
-      )
+      getByAltText(ONBOARDING_STEPS_TEXTS[2].imgAlt24Pet)
     ).toBeInTheDocument();
-    expect(getByAltText("24 Pet Watch Logo")).toBeInTheDocument();
-    expect(getByAltText("Pet Place Logo")).toBeInTheDocument();
+    expect(
+      getByAltText(ONBOARDING_STEPS_TEXTS[2].imgAltPetPlace)
+    ).toBeInTheDocument();
   });
 
   it("should render step 3 content", () => {
@@ -64,55 +63,50 @@ describe("OnboardingDialog", () => {
     getRenderer();
 
     expect(
-      getByRole("heading", { name: "It's all about your pet!" })
+      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[3].title })
     ).toBeInTheDocument();
-    expect(
-      getByText(
-        "MyPets is where you keep track of all your pet's important stuff. Plus, recommendations on how to keep your pet protected!"
-      )
-    ).toBeInTheDocument();
-    expect(getByAltText("Friendly dog and cat")).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[3].message)).toBeInTheDocument();
+    expect(getByAltText(ONBOARDING_STEPS_TEXTS[3].imgAlt)).toBeInTheDocument();
   });
 
   it("should render step 4 content for none documentationStatus by default", () => {
     localStorage.setItem("step", "4");
     getRenderer();
 
+    const [string1, string2] =
+      ONBOARDING_STEPS_TEXTS[4].none.message(DEFAULT_NAME);
+
     expect(
       getByRole("heading", {
-        name: "At PetPlace you can access all your pet's adoption documents.",
+        name: ONBOARDING_STEPS_TEXTS[4].none.title,
       })
     ).toBeInTheDocument();
+    expect(getByTextContent(`${string1}${string2}`)).toBeInTheDocument();
     expect(
-      getByTextContent(
-        "Update, add files, download, or print. It's the one place to keep all your pet's details. If available, would you like PetPlace to access and upload Romã's shelter documents for you?"
-      )
-    ).toBeInTheDocument();
-    expect(
-      getByAltText("Icons representing available pet services")
+      getByAltText(ONBOARDING_STEPS_TEXTS[4].none.imgAlt)
     ).toBeInTheDocument();
   });
 
   it.each([
     [
       "sent",
-      "Uploading...",
-      "Your pet’s documents are being processed. Please wait a moment while we complete the upload.",
+      ONBOARDING_STEPS_TEXTS[4].sent.title,
+      ONBOARDING_STEPS_TEXTS[4].sent.message,
     ],
     [
       "approved",
-      "Upload Successful!",
-      "Your pet’s documents have been uploaded successfully and are now available.",
+      ONBOARDING_STEPS_TEXTS[4].approved.title,
+      ONBOARDING_STEPS_TEXTS[4].approved.message,
     ],
     [
       "in progress",
-      "Upload In Progress",
-      "Your pet’s documents are being uploaded. They will be available within 24 hours.",
+      ONBOARDING_STEPS_TEXTS[4]["in progress"].title,
+      ONBOARDING_STEPS_TEXTS[4]["in progress"].message,
     ],
     [
       "failed",
-      "Upload Failed",
-      "There was an issue uploading your pet’s documents. Please try again or upload them manually.",
+      ONBOARDING_STEPS_TEXTS[4].failed.title,
+      ONBOARDING_STEPS_TEXTS[4].failed.message,
     ],
   ])(
     "should render step 4 dynamic content for documentationStatus %s",
@@ -127,26 +121,41 @@ describe("OnboardingDialog", () => {
     }
   );
 
-  it("should render step 5 content", () => {
+  it("should render step 5 content with status none message", () => {
     localStorage.setItem("step", "5");
     getRenderer();
 
-    expect(getByRole("heading", { name: "Almost there!" })).toBeInTheDocument();
     expect(
-      getByText(
-        "Your pet's microchip is registered. Now let’s ensure your pet's safety with added layers of protection."
-      )
+      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
     ).toBeInTheDocument();
-    expect(getByText("Microchip registration")).toBeInTheDocument();
-    expect(getByText("Digital documents")).toBeInTheDocument();
-    expect(getByText("Enhanced pet protection")).toBeInTheDocument();
+    expect(
+      getByText(ONBOARDING_STEPS_TEXTS[5].message("none"))
+    ).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[5].microchip)).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[5].documents)).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[5].protection)).toBeInTheDocument();
+  });
+
+  it("should render step 5 content with message for other status", () => {
+    localStorage.setItem("step", "5");
+    getRenderer({ documentationStatus: "approved" });
+
+    expect(
+      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
+    ).toBeInTheDocument();
+    expect(
+      getByText(ONBOARDING_STEPS_TEXTS[5].message("approved"))
+    ).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[5].microchip)).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[5].documents)).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[5].protection)).toBeInTheDocument();
   });
 });
 
 function getRenderer({
   documentationStatus = "none",
   id = "test-id",
-  name = "Romã",
+  name = DEFAULT_NAME,
 }: Partial<ComponentProps<typeof OnboardingDialog>> = {}) {
   return render(
     <OnboardingDialog
