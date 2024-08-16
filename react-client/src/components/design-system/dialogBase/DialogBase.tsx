@@ -19,7 +19,6 @@ export const DialogBase = ({
   iconProps,
   id,
   isOpen,
-  isLocked,
   titleLevel,
   onClose,
   padding = "p-xlarge",
@@ -103,7 +102,7 @@ export const DialogBase = ({
             </div>
           )}
 
-          {!!onClose && !isLocked && (
+          {!!onClose && (
             <IconButton
               className={className?.closeButton}
               icon="closeXMark"
