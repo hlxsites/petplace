@@ -3,18 +3,8 @@ import { useLocalStorage } from "~/hooks/useLocalStorage";
 const STEP_PARAM_KEY = "step";
 const COUNT = 5;
 
-type OnboardingStepsReturn = {
-  step: number;
-  setStep: (newStep: number) => void;
-  onNextStep: () => void;
-  onPrevStep: () => void;
-  isFirstStep: boolean;
-  isLastStep: boolean;
-  totalSteps: number;
-};
-
-export const useOnboardingSteps = (): OnboardingStepsReturn => {
-  const [parsedStep, setStoredStep] = useLocalStorage(STEP_PARAM_KEY, 1);
+export const useOnboardingSteps = () => {
+  const [parsedStep, setStoredStep, reset] = useLocalStorage(STEP_PARAM_KEY, 1);
 
   const step = Math.min(parsedStep, COUNT);
 
@@ -45,6 +35,7 @@ export const useOnboardingSteps = (): OnboardingStepsReturn => {
     onPrevStep,
     isFirstStep: step === 1,
     isLastStep: step === COUNT,
+    reset,
     totalSteps: COUNT,
   };
 };
