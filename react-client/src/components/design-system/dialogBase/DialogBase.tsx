@@ -63,6 +63,8 @@ export const DialogBase = ({
     <>
       <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
       <FocusTrap
+        // TODO: disabled by a debt tech problem, see our documentation
+        active={false}
         focusTrapOptions={{
           clickOutsideDeactivates: true,
           returnFocusOnDeactivate: true,
