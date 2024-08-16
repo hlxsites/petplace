@@ -3,8 +3,7 @@ import { Button, Text } from "~/components/design-system";
 import { Title } from "~/components/design-system/text/Title";
 
 type OnboardingContentProps = {
-  ariaLable: string;
-  mainContent: ReactNode;
+  children: ReactNode;
   message: string;
   onNextStep: () => void;
   step: number;
@@ -12,8 +11,7 @@ type OnboardingContentProps = {
 };
 
 export const OnboardingContent = ({
-  ariaLable,
-  mainContent,
+  children,
   message,
   onNextStep,
   step,
@@ -22,10 +20,10 @@ export const OnboardingContent = ({
   const buttonLabel = step < 2 ? "Get Started" : "Next";
 
   return (
-    <div aria-label={ariaLable}>
-      <Title>{title}</Title>
-      <Text>{message}</Text>
-      {mainContent}
+    <div className="flex flex-col gap-large">
+      <Title level="h2">{title}</Title>
+      <Text size="base">{message}</Text>
+      {children}
       <Button onClick={onNextStep} fullWidth>
         {buttonLabel}
       </Button>
