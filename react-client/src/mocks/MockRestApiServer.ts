@@ -83,14 +83,17 @@ export type PetInfo = {
   microchipNumber?: number;
   mixedBreed?: string;
   name: string;
+  onboardCompleted?: boolean;
   sex?: string;
   spayedNeutered?: boolean;
   species?: string;
+  documentationStatus?: DocumentationStatus;
   missingStatus?: MissingStatus;
   lostPetHistory?: LostPetUpdate[];
 };
 
 export type MissingStatus = "missing" | "found";
+export type DocumentationStatus = "none" | "sent" | "approved" | "failed" | "in progress";
 
 export type LostPetUpdate = {
   date: number;
@@ -112,9 +115,11 @@ const PETS_LIST: PetInfo[] = [
     missingStatus: "found",
     mixedBreed: "Yes",
     name: "Buddy",
+    onboardCompleted: false,
     sex: "Male",
     spayedNeutered: false,
     species: "Dog",
+    documentationStatus: "none",
     lostPetHistory: [
       {
         date: 1722300534,
@@ -242,4 +247,8 @@ export const getPetServiceStatus = (petId: string) => {
   } catch (_) {
     return null;
   }
+};
+
+export const getProductsList = () => {
+  return [];
 };

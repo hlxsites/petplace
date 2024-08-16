@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Button } from "~/components/design-system";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
-import { OnboardingDialog } from "~/routes/my-pets/:petId/OnboardingDialog";
+import { getPetById, PetInfo } from "~/mocks/MockRestApiServer";
+import { OnboardingDialog } from "~/routes/my-pets/:petId/onboarding/OnboardingDialog";
 
 export const OnboardingDialogPlayground = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [, , remove] = useLocalStorage("step", 1);
+
+  const pet = getPetById("buddy") as PetInfo;
 
   return (
     <div className="flex justify-center">
@@ -17,7 +20,7 @@ export const OnboardingDialogPlayground = () => {
       >
         Open onboarding dialog
       </Button>
-      {!!isOpen && <OnboardingDialog />}
+      {!!isOpen && <OnboardingDialog {...pet} />}
     </div>
   );
 };

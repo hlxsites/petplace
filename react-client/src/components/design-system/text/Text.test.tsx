@@ -100,6 +100,19 @@ describe("Text", () => {
       expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${color}`);
     }
   );
+
+  it.each([
+    ["none", "no-underline"],
+    ["line-through", "line-through"],
+    ["underline", "underline"],
+  ])(
+    "should render component with text decoration: %s",
+    (textDecoration, expected) => {
+      // @ts-expect-error - ignoring for test purposes only
+      getRenderer({ textDecoration });
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`);
+    }
+  );
 });
 
 function getRenderer({

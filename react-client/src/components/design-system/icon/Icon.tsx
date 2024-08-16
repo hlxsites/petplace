@@ -6,10 +6,12 @@ import AppsIcon from "./assets/apps-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
 import CheckCircleIcon from "./assets/check-circle-icon.svg";
+import CheckSoloIcon from "./assets/check-solo-icon.svg";
 import ChevronDownIcon from "./assets/chevron-down-icon.svg";
 import ChevronLeftIcon from "./assets/chevron-left-icon.svg";
 import ChevronRightIcon from "./assets/chevron-right-icon.svg";
 import ChevronUpIcon from "./assets/chevron-up-icon.svg";
+import ClearCircleIcon from "./assets/clear-circle-icon.svg";
 import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CloseXMarkRegularIcon from "./assets/close-x-mark-regular-icon.svg";
 import CpuChipIcon from "./assets/cpu-chip-icon.svg";
@@ -20,9 +22,12 @@ import DownloadIcon from "./assets/download-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
+import InfoIcon from "./assets/info-icon.svg";
 import InformationIcon from "./assets/information-icon.svg";
 import JpgFileIcon from "./assets/jpg-file-icon.svg";
 import MedicineIcon from "./assets/medicine-icon.svg";
+import OutlinedArrowBottom from "./assets/outlined-arrow-bottom-icon.svg";
+import OutlinedArrowRight from "./assets/outlined-arrow-right-icon.svg";
 import PawIcon from "./assets/paw-icon.svg";
 import PdfFileIcon from "./assets/pdf-file-icon.svg";
 import PhoneIcon from "./assets/phone-icon.svg";
@@ -48,10 +53,12 @@ export const IconMap = Object.freeze({
   bendArrowDown: <BendArrowDownIcon />,
   check: <CheckIcon />,
   checkCircle: <CheckCircleIcon />,
+  checkSolo: <CheckSoloIcon />,
   chevronDown: <ChevronDownIcon />,
   chevronLeft: <ChevronLeftIcon />,
   chevronRight: <ChevronRightIcon />,
   chevronUp: <ChevronUpIcon />,
+  clearCircle: <ClearCircleIcon />,
   closeXMark: <CloseXMarkIcon />,
   closeXMarkRegular: <CloseXMarkRegularIcon />,
   cpuChip: <CpuChipIcon />,
@@ -62,8 +69,11 @@ export const IconMap = Object.freeze({
   ellipse: <EllipseIcon />,
   emptyEllipse: <EmptyEllipseIcon />,
   file: <FileIcon />,
-  medicine: <MedicineIcon />,
   information: <InformationIcon />,
+  info: <InfoIcon />,
+  medicine: <MedicineIcon />,
+  outlinedArrowBottom: <OutlinedArrowBottom />,
+  outlinedArrowRight: <OutlinedArrowRight />,
   jpgFile: <JpgFileIcon />,
   paw: <PawIcon />,
   pdfFile: <PdfFileIcon />,
