@@ -127,8 +127,8 @@ export const LostPetIndex = () => {
         children: [
           {
             elementType: "button",
-            id: "discard-button",
-            label: "Discard changes",
+            id: "cancel-button",
+            label: "Cancel",
             type: "reset",
           },
           {
