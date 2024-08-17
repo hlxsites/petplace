@@ -1,13 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { LostOrFoundDialog } from "~/components/Pet/LostOrFoundDialog";
 import { PetCard } from "~/components/Pet/PetCard";
-import {
-  Button,
-  ButtonProps,
-  Dialog,
-  LinkButton,
-  Text,
-} from "~/components/design-system";
+import { Button, ButtonProps, LinkButton } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
 import { AppRoutePaths } from "../AppRoutePaths";
@@ -16,11 +11,6 @@ import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
   const [isLostOrFoundDialogOpen, setIsLostOrFoundDialogOpen] = useState(false);
-
-  const lostOrFoundMessages = [
-    "While many pets find their way home after a short time, many more don't.",
-    "Thanks to microchips, 24Petwatch is able to help reunite 1000s of lost pets with their owners each",
-  ];
 
   return (
     <Layout>
@@ -89,40 +79,12 @@ export const MyPetsIndex = () => {
     setIsLostOrFoundDialogOpen(true);
   }
 
-  function renderReportLostOrFoundContent() {
-    return (
-      <div className="mt-large">
-        {lostOrFoundMessages.map((message, index) => (
-          <Text key={index} size="base">
-            {message}
-          </Text>
-        ))}
-        <div className="mt-xxlarge grid gap-small md:flex">
-          <Button variant="secondary" fullWidth>
-            I have found a pet
-          </Button>
-          <Button fullWidth>I have lost a pet</Button>
-        </div>
-      </div>
-    );
-  }
-
   function openReportLostOrFoundModal() {
     return (
-      <Dialog
-        align="center"
-        icon="warningTriangle"
-        iconProps={{
-          className: "mb-xxlarge",
-          size: 72,
-        }}
-        id="report-lost-or-found-dialog"
+      <LostOrFoundDialog
         isOpen={isLostOrFoundDialogOpen}
         onClose={() => setIsLostOrFoundDialogOpen(false)}
-        title="Report a lost or found pet"
-      >
-        {renderReportLostOrFoundContent()}
-      </Dialog>
+      />
     );
   }
 };

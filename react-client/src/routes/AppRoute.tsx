@@ -15,6 +15,8 @@ import { lazy } from "react";
 import { APP_BASE_URL, IS_DEV_ENV } from "~/util/envUtil";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
+import { FoundPetIndex } from "./found-pet/FoundPetIndex";
+import { LostPetIndex } from "./lost-pet/LostPetIndex";
 import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/DocumentTypeIndex";
 import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
@@ -89,6 +91,16 @@ const routes: PetPlaceRouteObject[] = [
             ],
           },
         ],
+      },
+      {
+        id: "lostPet",
+        path: AppRoutePaths.lostPet,
+        element: <LostPetIndex />,
+      },
+      {
+        id: "foundPet",
+        path: AppRoutePaths.foundPet,
+        element: <FoundPetIndex />,
       },
     ],
   },

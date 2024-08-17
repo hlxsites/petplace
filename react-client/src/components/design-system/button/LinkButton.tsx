@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 import { Link, LinkProps } from "react-router-dom";
+import { classNames } from "~/util/styleUtil";
 import { Button } from "./Button";
 
 type ButtonProps = Omit<ComponentProps<typeof Button>, "onClick">;
@@ -19,6 +20,9 @@ export const LinkButton = ({
 }: LinkButtonProps) => {
   return (
     <Link
+      className={classNames({
+        "w-full": buttonProps.fullWidth,
+      })}
       preventScrollReset={preventScrollReset}
       relative={relative}
       replace={replace}
