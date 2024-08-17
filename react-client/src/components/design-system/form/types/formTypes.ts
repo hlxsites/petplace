@@ -69,14 +69,15 @@ type ElementCommon = {
 
 export type ElementSection = ElementCommon & {
   children: ElementUnion[];
+  className?: string;
   description?: string;
   elementType: "section";
   title?: string;
 };
 
 export type ElementRow = ElementCommon & {
-  className?: string;
   children: ElementUnion[];
+  className?: string;
   elementType: "row";
 };
 
@@ -124,7 +125,7 @@ export type InputWithoutFormBuilderProps<T = InputCommon> = Omit<
 
 export type ElementInputText = InputCommon & {
   onChange?: (newValue: string) => void;
-  type: "text";
+  type: "text" | "email" | "password" | "number";
   value?: string;
 };
 

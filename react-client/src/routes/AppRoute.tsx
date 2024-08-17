@@ -17,6 +17,7 @@ import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
 import { FoundPetIndex } from "./found-pet/FoundPetIndex";
 import { LostPetIndex } from "./lost-pet/LostPetIndex";
+import { loader as LostPetIndexLoader } from "./lost-pet/useLostPetIndexViewModel";
 import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/DocumentTypeIndex";
 import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
@@ -93,14 +94,17 @@ const routes: PetPlaceRouteObject[] = [
         ],
       },
       {
+        element: <LostPetIndex />,
         id: "lostPet",
         path: AppRoutePaths.lostPet,
-        element: <LostPetIndex />,
+        loader: LostPetIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
       },
       {
+        element: <FoundPetIndex />,
         id: "foundPet",
         path: AppRoutePaths.foundPet,
-        element: <FoundPetIndex />,
       },
     ],
   },
