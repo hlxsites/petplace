@@ -232,6 +232,7 @@ export const FormBuilder = ({
           onChange={(newValue) => {
             setValues((prev) => ({ ...prev, [id]: newValue }));
           }}
+          rows={inputProps.rows}
           value={(values?.[id] as string) || ""}
         />
       );

@@ -131,6 +131,7 @@ export type ElementInputText = InputCommon & {
 
 export type ElementInputTextarea = InputCommon & {
   onChange?: (newValue: string) => void;
+  rows?: number;
   type: "textarea";
   value?: string;
 };
