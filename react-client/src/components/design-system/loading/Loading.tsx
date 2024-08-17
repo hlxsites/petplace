@@ -1,13 +1,13 @@
 import { Text } from "../text/Text";
 
-export const Loading = () => {
+export const Loading = ({ size }: { size?: number}) => {
   return (
     <>
       <svg
         className="animate-spin"
         xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
+        width={size ?? 32}
+        height={size ?? 32}
         viewBox="0 0 32 32"
         fill="none"
         name="loadingIcon"

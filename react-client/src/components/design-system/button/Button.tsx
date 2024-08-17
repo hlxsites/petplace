@@ -29,6 +29,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const { className: baseClassName } = useButtonBase({
+      disabled: rest.disabled,
       fullWidth,
       isLoading,
       variant,

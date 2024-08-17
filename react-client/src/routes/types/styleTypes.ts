@@ -43,3 +43,12 @@ export type FromColorClasses = CleanupClasses<RawColorUnion<"from">>;
 export type TextColorClasses = CleanupClasses<RawColorUnion<"text">>;
 
 export type PaddingClasses = CleanupClasses<`p-${SpacingKeys}`>;
+
+export type DisplayClasses =
+  | "hidden"
+  | "static"
+  | "inline"
+  | "inline-block"
+  | "block"
+  | "flex"
+  | "grid";

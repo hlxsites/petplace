@@ -1,12 +1,14 @@
 import { classNames } from "~/util/styleUtil";
 
 export type UseButtonBase = {
+  disabled?: boolean;
   fullWidth?: boolean;
   isLoading?: boolean;
   variant?: "primary" | "secondary" | "link" | "error";
 };
 
 function useButtonBase({
+  disabled,
   fullWidth,
   isLoading,
   variant = "primary",
@@ -26,6 +28,7 @@ function useButtonBase({
       "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent":
         isLink,
       "bg-red-300 text-white": isError,
+      "!cursor-not-allowed hover:!bg-inherit": disabled,
       "w-full": fullWidth,
       loading: isLoading,
     }

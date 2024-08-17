@@ -1,18 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 import { Button } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
-import { PetLostUpdatesSection } from "./PetLostUpdates";
-import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
-import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
-import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
-import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
+import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
+import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
+import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
+import { OnboardingDialog } from "./onboarding/OnboardingDialog";
+import { PetLostUpdatesSection } from "./PetLostUpdates";
+import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 
 export const PetProfileIndex = () => {
+  const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
   const { petInfo, petServiceStatus } = viewModel;
-  console.log("petServiceStatus on index", petServiceStatus);
+
+  const displayOnboarding = !!searchParams.get("onboarding");
+
   return (
     <>
       <PetAlertSection />
@@ -31,6 +35,7 @@ export const PetProfileIndex = () => {
         <PetLostUpdatesSection {...petInfo} />
       </div>
       <Outlet context={viewModel} />
+      {displayOnboarding && <OnboardingDialog {...petInfo} />}
     </>
   );
 };
