@@ -71,7 +71,7 @@ export const FoundPetIndex = () => {
       },
       {
         elementType: "section",
-        title: "Finde contact information:",
+        title: "Finder contact information:",
         className: "!mb-xxxlarge",
         children: [
           {
