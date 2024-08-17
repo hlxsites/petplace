@@ -1,5 +1,4 @@
 import { Outlet, useSearchParams } from "react-router-dom";
-import { Button } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
@@ -7,6 +6,7 @@ import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
+import { ReportLostPetButton } from "./components/ReportLostPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
@@ -43,15 +43,8 @@ export const PetProfileIndex = () => {
   function renderActionsButton() {
     return (
       <>
-        <PetActionsDropdownMenu className="hidden lg:block" />
-        <Button
-          className="block lg:hidden"
-          iconLeft="shieldGood"
-          iconProps={{ className: "text-brand-secondary" }}
-          variant="secondary"
-        >
-          Report lost pet
-        </Button>
+        <PetActionsDropdownMenu className="hidden lg:flex" />
+        <ReportLostPetButton className="flex lg:hidden" />
       </>
     );
   }

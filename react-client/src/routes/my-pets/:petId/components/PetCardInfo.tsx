@@ -1,5 +1,4 @@
 import {
-  Button,
   RouteBasedTabs,
   RouteTab,
   Text,
@@ -10,6 +9,7 @@ import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
+import { ReportLostPetButton } from "./ReportLostPetButton";
 
 export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   const {
@@ -54,15 +54,8 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
       <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
         <Title level="h1">{name}</Title>
 
-        <Button
-          className="hidden lg:block"
-          iconLeft="shieldGood"
-          iconProps={{ className: "text-brand-secondary" }}
-          variant="secondary"
-        >
-          Report lost pet
-        </Button>
-        <PetActionsDropdownMenu className="block lg:hidden" />
+        <ReportLostPetButton className="hidden lg:flex" />
+        <PetActionsDropdownMenu className="flex lg:hidden" />
       </div>
       {renderSubInfo()}
     </div>
