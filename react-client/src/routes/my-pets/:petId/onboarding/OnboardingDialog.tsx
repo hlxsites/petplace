@@ -19,7 +19,7 @@ import { useOnboardingSteps } from "./useOnboardingSteps";
 
 export const OnboardingDialog = ({ documentationStatus, name }: PetInfo) => {
   const isSmallerScreen = useWindowWidth() < 768;
-  const { step, onNextStep, totalSteps } = useOnboardingSteps();
+  const { step, onNextStep, reset, totalSteps } = useOnboardingSteps();
   const [status, setStatus] = useState(documentationStatus ?? "none");
 
   const commonProps = {
@@ -276,8 +276,10 @@ export const OnboardingDialog = ({ documentationStatus, name }: PetInfo) => {
   function renderFinalActions() {
     return (
       <div className="flex flex-col-reverse items-stretch gap-base md:grid md:grid-cols-2">
-        <Button variant="secondary">See my pet</Button>
-        <Button>See my options</Button>
+        <Button variant="secondary" onClick={reset}>
+          See my pet
+        </Button>
+        <Button onClick={reset}>See my options</Button>
       </div>
     );
   }

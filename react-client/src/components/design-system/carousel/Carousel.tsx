@@ -65,7 +65,7 @@ export const Carousel = ({ ariaLabel, items }: CarouselProps) => {
               className={classNames("text-white", {
                 "text-neutral-500": index === currentIndex,
               })}
-              display="ellipseWithStrokeIcon"
+              display="ellipseWithStroke"
               key={`carousel-indicator-${index}`}
               size={16}
             />
