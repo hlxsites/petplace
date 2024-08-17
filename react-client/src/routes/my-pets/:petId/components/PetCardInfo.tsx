@@ -7,6 +7,7 @@ import {
 } from "~/components/design-system";
 import { PetInfo } from "~/mocks/MockRestApiServer";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
+import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 
@@ -61,14 +62,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
         >
           Report lost pet
         </Button>
-        <Button
-          className="block lg:hidden"
-          iconLeft="apps"
-          variant="secondary"
-          iconProps={{ className: "text-brand-secondary" }}
-        >
-          Actions
-        </Button>
+        <PetActionsDropdownMenu className="block lg:hidden" />
       </div>
       {renderSubInfo()}
     </div>

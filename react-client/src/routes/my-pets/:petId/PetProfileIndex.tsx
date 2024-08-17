@@ -6,6 +6,7 @@ import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
+import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
@@ -38,27 +39,20 @@ export const PetProfileIndex = () => {
       {displayOnboarding && <OnboardingDialog {...petInfo} />}
     </>
   );
-};
 
-function renderActionsButton() {
-  return (
-    <>
-      <Button
-        className="hidden lg:block"
-        iconLeft="apps"
-        variant="secondary"
-        iconProps={{ className: "text-brand-secondary" }}
-      >
-        Actions
-      </Button>
-      <Button
-        className="block lg:hidden"
-        iconLeft="shieldGood"
-        iconProps={{ className: "text-brand-secondary" }}
-        variant="secondary"
-      >
-        Report lost pet
-      </Button>
-    </>
-  );
-}
+  function renderActionsButton() {
+    return (
+      <>
+        <PetActionsDropdownMenu className="hidden lg:block" />
+        <Button
+          className="block lg:hidden"
+          iconLeft="shieldGood"
+          iconProps={{ className: "text-brand-secondary" }}
+          variant="secondary"
+        >
+          Report lost pet
+        </Button>
+      </>
+    );
+  }
+};

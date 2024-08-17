@@ -1,9 +1,11 @@
 import {
   LoaderFunction,
   useLoaderData,
+  useNavigate,
   useOutletContext,
 } from "react-router-dom";
 import { getPetById, getPetServiceStatus } from "~/mocks/MockRestApiServer";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { LoaderData } from "~/types/LoaderData";
 import { invariantResponse } from "~/util/invariant";
 import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
@@ -22,9 +24,14 @@ export const loader = (({ params }) => {
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
+  const navigate = useNavigate();
   const loaderData = useLoaderData() as LoaderData<typeof loader>;
 
-  return loaderData;
+  const onEditPet = () => {
+    navigate(AppRoutePaths.petEdit);
+  };
+
+  return { ...loaderData, onEditPet };
 };
 
 export const usePetProfileContext = () =>

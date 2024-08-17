@@ -9,7 +9,7 @@ type MenuIcon = IconProps["display"];
 export type MenuItemProps = {
   icon?: MenuIcon;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   variant?: "default" | "highlight";
 };
 
