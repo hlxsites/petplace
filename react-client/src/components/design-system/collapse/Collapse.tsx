@@ -43,7 +43,7 @@ export const Collapse = ({
         ) : (
           <Collapsible.Trigger
             className={classNames(
-              "flex w-full justify-between bg-transparent p-0 text-black hover:bg-transparent focus:bg-transparent focus:outline-none active:bg-transparent"
+              "flex w-full justify-between rounded-none bg-transparent p-0 text-black hover:bg-transparent focus:bg-transparent focus:outline-none active:bg-transparent"
             )}
           >
             {title}

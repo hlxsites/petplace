@@ -192,6 +192,14 @@
     /* stylelint-enable */
 }
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
 @media (min-width: 600px) {
     :root {
         --body-font-size-default: 18px;
