@@ -233,7 +233,7 @@ function getFavorites(animalData) {
                                 <p class="fp-name"><a class="${petDetailPageUrl ? '' : 'prevent-click'} ${IsAvailable ? '' : 'prevent-click'}" href="${petDetailPageUrl || ''}">${Name ? extractName(Name) : Id}</a> <span class="unavailable-tag">No Longer available</span></p>
                                 <p class="fp-details">${Breed || ''} ${Breed && Sex ? '<span class="fp-separator"></span>' : ''} ${Sex || ''}</p>
                             </div>
-                            <button class="remove-fav" data-rum-source=".fav-pet-card  .remove-fav">
+                            <button class="remove-fav" data-rum-source=".fav-pet-card .remove-fav">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                     <path d="M4.5 19.5L19.5 4.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M4.5 4.5L19.5 19.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
