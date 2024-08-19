@@ -224,7 +224,7 @@ function getFavorites(animalData) {
                 favPetCard.availability = IsAvailable;
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
-                    <div class="fp-img" data-rum-source=".fav-pet-card  .fp-img">
+                    <div class="fp-img" data-rum-source=".fav-pet-card .fp-img">
                     ${createImageObject(ImageUrl, fallBackImg, '').outerHTML}
                     </div>
                     <div class="fp-info" data-rum-source=".fav-pet-card .fp-info">
