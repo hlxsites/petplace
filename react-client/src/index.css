@@ -2,4 +2,7 @@
 @import "./assets/styles/reset.css";
 @tailwind base;
 @tailwind components;
+@tailwind utilities;@import "./assets/styles/reset.css";
+@tailwind base;
+@tailwind components;
 @tailwind utilities;

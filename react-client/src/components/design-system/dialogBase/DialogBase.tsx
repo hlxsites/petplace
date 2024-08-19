@@ -2,7 +2,7 @@ import FocusTrap from "focus-trap-react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
-import { classNames } from "~/util/styleUtil";
+import { classNames, resetBodyStyles } from "~/util/styleUtil";
 import { Backdrop } from "../backdrop/Backdrop";
 import { IconButton } from "../button/IconButton";
 import { Icon } from "../icon/Icon";
@@ -32,6 +32,9 @@ export const DialogBase = ({
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "visible";
     document.body.style.position = isOpen ? "relative" : "static";
+
+    // Reset body styles when unmounting
+    return resetBodyStyles;
   }, [isOpen]);
 
   useEffect(() => {

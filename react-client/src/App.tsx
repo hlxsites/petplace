@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import "./index.css";
 import { AppRouter } from "./routes/AppRoute";
+import { resetBodyStyles } from "./util/styleUtil";
 
 function App() {
   useEffect(() => {
     document.body.className = "";
-    document.body.style.display = "block";
+    resetBodyStyles();
   }, []);
 
   return <AppRouter />;
