@@ -224,16 +224,16 @@ function getFavorites(animalData) {
                 favPetCard.availability = IsAvailable;
                 favPetCard.card = `
                 <div class="fav-pet-card ${IsAvailable ? '' : 'unavailable'} ${ImageUrl !== '' ? '' : 'no-image'} ${index > 4 ? 'fp-hidden' : ''}">
-                    <div class="fp-img">
+                    <div class="fp-img" data-rum-source=".fav-pet-card  .fp-img">
                     ${createImageObject(ImageUrl, fallBackImg, '').outerHTML}
                     </div>
-                    <div class="fp-info">
+                    <div class="fp-info" data-rum-source=".fav-pet-card .fp-info">
                         <div class="fp-info-header">
                             <div>
                                 <p class="fp-name"><a class="${petDetailPageUrl ? '' : 'prevent-click'} ${IsAvailable ? '' : 'prevent-click'}" href="${petDetailPageUrl || ''}">${Name ? extractName(Name) : Id}</a> <span class="unavailable-tag">No Longer available</span></p>
                                 <p class="fp-details">${Breed || ''} ${Breed && Sex ? '<span class="fp-separator"></span>' : ''} ${Sex || ''}</p>
                             </div>
-                            <button class="remove-fav">
+                            <button class="remove-fav" data-rum-source=".fav-pet-card  .remove-fav">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                     <path d="M4.5 19.5L19.5 4.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M4.5 4.5L19.5 19.5" stroke="#6E6D73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
