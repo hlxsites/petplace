@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { classNames } from "~/util/styleUtil";
 import { IconButton } from "../button/IconButton";
 import { Icon } from "../icon/Icon";
@@ -11,15 +11,15 @@ type CarouselProps = {
 export const Carousel = ({ ariaLabel, items }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const goToNextSlide = () => {
+  const goToNextSlide = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-  };
+  }, [items.length]);
 
-  const goToPrevSlide = () => {
+  const goToPrevSlide = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? items.length - 1 : prevIndex - 1
     );
-  };
+  }, [items.length]);
 
   // Keyboard navigation functionality - enhance accessibility
   useEffect(() => {
