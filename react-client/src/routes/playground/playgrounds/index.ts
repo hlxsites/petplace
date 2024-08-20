@@ -11,6 +11,7 @@ export * from "./MembershipCardPlayground";
 export * from "./OnboardingDialogPlayground";
 export * from "./PetCardRecordPlayground";
 export * from "./PetDocumentsViewPlayground";
+export * from "./PetServicesDetailsPlayground";
 export * from "./StepProgressPlayground";
 export * from "./TablePlayground";
 export * from "./TagPlayground";
