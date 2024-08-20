@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
-import { PetInfo } from "~/mocks/MockRestApiServer";
+import { DocumentationStatus, PetInfo } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingStepFive } from "./OnboardingStepFive";
 import { OnboardingStepFour } from "./OnboardingStepFour";
@@ -12,8 +12,13 @@ import { useOnboardingSteps } from "./useOnboardingSteps";
 
 export type CommonOnboardingProps = {
   alignment: "center" | "left";
-  step: number;
+  isSmallerScreen?: boolean;
+  name: string;
   onNextStep: () => void;
+  reset: () => void;
+  updateStatus: (value: DocumentationStatus) => void;
+  status: DocumentationStatus;
+  step: number;
 };
 
 export const OnboardingDialog = ({ documentationStatus, name }: PetInfo) => {
@@ -21,13 +26,15 @@ export const OnboardingDialog = ({ documentationStatus, name }: PetInfo) => {
   const { step, onNextStep, reset, totalSteps } = useOnboardingSteps();
   const [status, setStatus] = useState(documentationStatus ?? "none");
 
-  const alignment: CommonOnboardingProps["alignment"] = isSmallerScreen
-    ? "center"
-    : "left";
-  const commonProps = {
-    alignment,
-    step,
+  const commonProps: CommonOnboardingProps = {
+    alignment: isSmallerScreen ? "center" : "left",
+    isSmallerScreen,
+    name,
     onNextStep,
+    reset,
+    updateStatus,
+    status,
+    step,
   };
 
   return (
@@ -56,27 +63,14 @@ export const OnboardingDialog = ({ documentationStatus, name }: PetInfo) => {
   function renderContent() {
     return {
       1: <OnboardingStepOne {...commonProps} />,
-      2: (
-        <OnboardingStepTwo {...commonProps} isSmallerScreen={isSmallerScreen} />
-      ),
+      2: <OnboardingStepTwo {...commonProps} />,
       3: <OnboardingStepThree {...commonProps} />,
-      4: (
-        <OnboardingStepFour
-          {...commonProps}
-          isSmallerScreen={isSmallerScreen}
-          name={name}
-          setStatus={setStatus}
-          status={status}
-        />
-      ),
-      5: (
-        <OnboardingStepFive
-          {...commonProps}
-          isSmallerScreen={isSmallerScreen}
-          reset={reset}
-          status={status}
-        />
-      ),
+      4: <OnboardingStepFour {...commonProps} />,
+      5: <OnboardingStepFive {...commonProps} />,
     }[step];
+  }
+
+  function updateStatus(value: DocumentationStatus) {
+    setStatus(value);
   }
 };
