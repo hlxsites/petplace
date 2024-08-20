@@ -59,7 +59,7 @@ export const OnboardingStepFive = ({
         {!isFirst && (
           <div
             className={classNames(
-              "absolute -top-[58px] left-[25px] h-[58px] w-0 border-2 md:-top-[48px] md:rotate-90",
+              "absolute -top-[58px] left-[25px] h-[58px] w-0 border-2 border-solid md:-top-[48px] md:rotate-90",
               {
                 "border-border-strong md:-left-[31px] md:h-[148px]": !accepted,
                 "border-purple-300 md:-left-[32px] md:h-[147.25px]": accepted,
@@ -69,7 +69,7 @@ export const OnboardingStepFive = ({
         )}
         <Icon
           display={accepted ? "checkSolo" : icon}
-          className={classNames("rounded-full border p-base", {
+          className={classNames("rounded-full border border-solid p-base", {
             "border-2 text-purple-500": accepted,
           })}
           size={53}
