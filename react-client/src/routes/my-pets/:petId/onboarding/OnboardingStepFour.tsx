@@ -1,8 +1,16 @@
+import { ComponentProps } from "react";
 import { ASSET_IMAGES } from "~/assets";
-import { Button, IconKeys, Text, TextSpan } from "~/components/design-system";
+import {
+  Button,
+  IconKeys,
+  Loading,
+  Text,
+  TextSpan,
+} from "~/components/design-system";
 import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingContent } from "./components/OnboardingContent";
+import { OnboardingIcon } from "./components/OnboardingIcon";
 import { OnboardingPrimaryButton } from "./components/OnboardingPrimaryButton";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
@@ -38,25 +46,18 @@ export const OnboardingStepFour = ({ ...rest }: CommonOnboardingProps) => {
     return (
       {
         approved: {
-          icon: "checkCircle",
-          iconClassName: "bg-green-300 text-green-100",
           title: ONBOARDING_STEPS_TEXTS[4].approved.title,
           message: ONBOARDING_STEPS_TEXTS[4].approved.message,
         },
         failed: {
-          icon: "clearCircle",
-          iconClassName: "bg-red-300 text-red-100",
           title: ONBOARDING_STEPS_TEXTS[4].failed.title,
           message: ONBOARDING_STEPS_TEXTS[4].failed.message,
         },
         "in progress": {
-          icon: "info",
-          iconClassName: "bg-blue-300 text-blue-100",
           title: ONBOARDING_STEPS_TEXTS[4]["in progress"].title,
           message: ONBOARDING_STEPS_TEXTS[4]["in progress"].message,
         },
         sent: {
-          buttonDisabled: true,
           title: ONBOARDING_STEPS_TEXTS[4].sent.title,
           message: ONBOARDING_STEPS_TEXTS[4].sent.message,
         },
@@ -66,24 +67,53 @@ export const OnboardingStepFour = ({ ...rest }: CommonOnboardingProps) => {
 };
 
 const StepFourContent = ({
-  buttonDisabled,
   onNextStep,
+  status,
   ...rest
 }: CommonOnboardingProps & {
-  buttonDisabled?: boolean;
-  iconClassName?: string;
-  icon?: IconKeys;
   message: string;
   title: string;
 }) => {
+  const header = (() => {
+    if (status === "sent") return <Loading size={64} />;
+
+    const iconProps: ComponentProps<typeof OnboardingIcon> | undefined =
+      (() => {
+        if (status === "approved") {
+          return {
+            className: "bg-green-300 text-green-100",
+            display: "checkCircle",
+          };
+        }
+        if (status === "failed") {
+          return {
+            className: "bg-red-300 text-red-100",
+            display: "clearCircle",
+          };
+        }
+        if (status === "in progress") {
+          return {
+            className: "bg-blue-300 text-blue-100",
+            display: "info",
+          };
+        }
+      })();
+
+    if (!iconProps) return null;
+    return <OnboardingIcon {...iconProps} />;
+  })();
+
   return (
     <OnboardingContent
       footer={
-        <OnboardingPrimaryButton disabled={buttonDisabled} onClick={onNextStep}>
+        <OnboardingPrimaryButton
+          disabled={status === "sent"}
+          onClick={onNextStep}
+        >
           Next
         </OnboardingPrimaryButton>
       }
-      preTitle
+      header={header}
       {...rest}
     />
   );
