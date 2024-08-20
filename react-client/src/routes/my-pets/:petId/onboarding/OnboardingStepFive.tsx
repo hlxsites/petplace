@@ -4,7 +4,15 @@ import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
-export const OnboardingStepFive = ({isSmallerScreen, status, reset, ...props}: CommonOnboardingProps & { isSmallerScreen: boolean, status: string, reset: () => void}) => {
+export const OnboardingStepFive = ({
+  isSmallerScreen,
+  status,
+  reset,
+  ...props
+}: CommonOnboardingProps & {
+  status: string;
+  reset: () => void;
+}) => {
   return (
     <OnboardingContent
       {...props}
@@ -15,18 +23,18 @@ export const OnboardingStepFive = ({isSmallerScreen, status, reset, ...props}: C
       <div className="flex w-full justify-center">
         <div className="grid grid-rows-3 gap-[58px] md:grid-cols-3 md:grid-rows-1 md:py-xlarge">
           {renderStepsChoices({
-            text:  ONBOARDING_STEPS_TEXTS[5].microchip,
+            text: ONBOARDING_STEPS_TEXTS[5].microchip,
             icon: "checkSolo",
             accepted: true,
             isFirst: true,
           })}
           {renderStepsChoices({
-            text:  ONBOARDING_STEPS_TEXTS[5].documents,
+            text: ONBOARDING_STEPS_TEXTS[5].documents,
             icon: "file",
             accepted: status !== "none",
           })}
           {renderStepsChoices({
-            text:  ONBOARDING_STEPS_TEXTS[5].protection,
+            text: ONBOARDING_STEPS_TEXTS[5].protection,
             icon: "shieldGood",
             accepted: false,
           })}

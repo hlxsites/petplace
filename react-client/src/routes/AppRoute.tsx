@@ -13,12 +13,15 @@ import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
 import { APP_BASE_URL, IS_DEV_ENV } from "~/util/envUtil";
+import { CheckoutIndex } from "./checkout/CheckoutIndex";
+import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
+import { FoundPetIndex } from "./found-pet/FoundPetIndex";
+import { LostPetIndex } from "./lost-pet/LostPetIndex";
+import { loader as LostPetIndexLoader } from "./lost-pet/useLostPetIndexViewModel";
 import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/DocumentTypeIndex";
 import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/:petId/PetProfileLayout";
-import { CheckoutIndex } from "./checkout/CheckoutIndex";
-import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -91,18 +94,31 @@ const routes: PetPlaceRouteObject[] = [
         ],
       },
       {
-        id: "checkout",
-        path: AppRoutePaths.checkout,
-        children: [
-          {
-            id: "checkoutIndex",
-            index: true,
-            loader: CheckoutIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
-            element: <CheckoutIndex />,
-          },
-        ],
+        element: <LostPetIndex />,
+        id: "lostPet",
+        path: AppRoutePaths.lostPet,
+        loader: LostPetIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
+      },
+      {
+        element: <FoundPetIndex />,
+        id: "foundPet",
+        path: AppRoutePaths.foundPet,
+      },
+    ],
+  },
+  {
+    id: "checkout",
+    path: AppRoutePaths.checkout,
+    children: [
+      {
+        id: "checkoutIndex",
+        index: true,
+        loader: CheckoutIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
+        element: <CheckoutIndex />,
       },
     ],
   },

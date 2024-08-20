@@ -9,7 +9,7 @@ type MenuIcon = IconProps["display"];
 export type MenuItemProps = {
   icon?: MenuIcon;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   variant?: "default" | "highlight";
 };
 
@@ -22,7 +22,7 @@ export const MenuItem = ({
   return (
     <RadixDropdownMenu.Item
       className={classNames(
-        "flex cursor-pointer select-none items-center rounded-2xl border px-base py-small leading-none outline-none",
+        "flex cursor-pointer select-none items-center rounded-2xl border border-solid px-base py-small leading-none outline-none",
         {
           "border-border-base-color bg-transparent text-neutral-600 data-[highlighted]:border-neutral-600":
             variant === "default",

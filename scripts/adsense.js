@@ -32,7 +32,8 @@ const adsDivCreator = (adLoc) => {
       const initialCard = document.querySelector(':scope .cards li:first-child');
       initialCard.before(mainAdsDiv);
     } else {
-      const content = document.querySelectorAll('.default-content-wrapper')[0];
+      const content = document.querySelector('.article-content-container .default-content-wrapper')
+        || document.querySelector('main .default-content-wrapper');
       content.before(mainAdsDiv);
     }
   }

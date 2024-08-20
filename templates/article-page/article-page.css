@@ -1,60 +1,16 @@
-@media (max-width: 768px) {
-  .article-page main {
-    display: grid;
-    grid-template:
-      "breadcrumb"
-      "details"
-      "article"
-      "related"
-      "social"
-      "popular"
-      "compare"
-  }
-
-  .article-content-container {
-    grid-area: article;
-  }
-
-  .article-page .social-share-container.section {
-    grid-area: social;
-  }
-
-  .popular-articles-container {
-    grid-area: popular;
-  }
-
-  .article-cta-container {
-    grid-area: compare;
-  }
-
-  .article-page .section {
-    padding: 1rem;
-  }
+.article-page main {
+  display: grid;
+  grid-template:
+    "breadcrumb"
+    "hero"
+    "article"
+    "genai"
+    "related"
+    "sidebar"
 }
 
-.related-reading-container {
-  grid-area: related;
-}
-
-.article-page .hero-title-container {
-  grid-area: details;
-  min-height: fit-content;
-}
-
-.article-page .hero-title-container h1 {
-  color: #000;
-  margin-top: 0;
-  font-size: 3rem;
-  font-weight: bolder;
-}
-
-.article-content-container .publi-container {
-  padding: 1rem 0;
-  padding-bottom: 2rem;
-}
-
-.section:is(.hero-title-container) {
-  padding-bottom: 0;
+.article-page .section {
+  padding: 1rem;
 }
 
 .section:is(.related-reading-container) {
@@ -62,23 +18,69 @@
   padding-bottom: 0;
 }
 
+.breadcrumb-container {
+  grid-area: breadcrumb;
+  display: none;
+}
+
+.section.hero-container {
+  grid-area: hero;
+  min-height: fit-content;
+  padding-bottom: 0;
+}
+
+.section.hero-container .default-content-wrapper {
+  margin: 0;
+}
+
+.section.hero-container h1 {
+  color: #000;
+  margin-top: 0;
+  font-size: 3rem;
+  font-weight: bolder;
+}
+
+.article-content-container {
+  grid-area: article;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
 .article-content-container .default-content-wrapper {
   margin-bottom: 2rem;
 }
 
-.sidebar-right h2 {
+.article-content-container .publi-container {
+  padding: 1rem 0;
+  padding-bottom: 2rem;
+}
+
+.sidebar-container {
+  grid-area: sidebar;
+  padding: 0;
+}
+
+.sidebar-container h2 {
   font-size: 1.5rem;
 }
 
+.sidebar-container .popular-articles-wrapper {
+  padding: 2rem 0;
+}
+
+.sidebar-container.social-share-container h2 {
+  margin-bottom: 1rem;
+}
+
+.genai-search-container {
+  grid-area: genai;
+  margin: 0 1rem 1rem;
+}
+
+.related-reading-container {
+  grid-area: related;
+}
+
 @media (min-width: 768px) {
-  .content-left {
-    grid-area: left-side;
-  }
-
-  .sidebar-right {
-    grid-area: right-side;
-  }
-
   .related-reading-container {
     padding-left: 3.5rem !important;
   }
@@ -87,9 +89,19 @@
     display: grid;
     grid-template:
       ". breadcrumb breadcrumb breadcrumb ." min-content
-      ". left-side .. right-side ." min-content
+      ". hero .. sidebar ." min-content
+      ". article .. sidebar ." min-content
+      ". genai .. sidebar ." min-content
       ". related related related ." min-content
       / minmax(1rem, 1fr) minmax(420px, 720px) minmax(1rem, 64px) 350px minmax(1rem, 1fr);
+  }
+
+  .article-page .sidebar-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .breadcrumb-container {
+    display: block;
   }
 }
 

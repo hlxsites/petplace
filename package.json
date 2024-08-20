@@ -9,7 +9,7 @@
     "lint": "npm run lint:js && npm run lint:css",
     "build:react": "npm run build --workspace=react-client",
     "postbuild:react": "npm run update:react:block && npm run update:react:images",
-    "react-client:watch": "nodemon --watch './react-client/src/*' --ignore '**test.**' -e css,tsx,ts --exec \"npm run build:react\"",
+    "react-client:watch": "nodemon --watch './react-client/src/*' --ignore '**test.**' -e tsx,ts --exec \"npm run build:react\"",
     "update:react:block": "rm -f blocks/react/react-* && cp react-client/dist/assets/* blocks/react",
     "update:react:images": "cp react-client/dist/react/* blocks/react",
     "test:all": "npm run test --workspaces --if-present",

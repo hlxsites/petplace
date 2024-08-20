@@ -1,7 +1,7 @@
 import { classNames } from "~/util/styleUtil";
 import AddIcon from "./assets/add-icon.svg";
 import AlertDiamondIcon from "./assets/alert-diamond-icon.svg";
-import AlertIcon from "./assets/alert.icon.svg";
+import AlertIcon from "./assets/alert-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckCircleIcon from "./assets/check-circle-icon.svg";
@@ -19,6 +19,7 @@ import DocFileIcon from "./assets/doc-file-icon.svg";
 import DoubleArrowLeftIcon from "./assets/double-arrow-left-icon.svg";
 import DoubleArrowRightIcon from "./assets/double-arrow-right-icon.svg";
 import DownloadIcon from "./assets/download-icon.svg";
+import EditIcon from "./assets/edit-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import EllipseWithStrokeIcon from "./assets/ellipse-with-stroke-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
@@ -37,6 +38,7 @@ import PngFileIcon from "./assets/png-file-icon.svg";
 import SearchIcon from "./assets/search-icon.svg";
 import ShieldGoodIcon from "./assets/shield-good-icon.svg";
 import ShieldOffIcon from "./assets/shield-off-icon.svg";
+import ShoppingCartIcon from "./assets/shopping-cart-icon.svg";
 import StethoscopeIcon from "./assets/stethoscope-icon.svg";
 import SyringeIcon from "./assets/syringe-icon.svg";
 import TransferIcon from "./assets/transfer-icon.svg";
@@ -67,6 +69,7 @@ export const IconMap = Object.freeze({
   doubleArrowRight: <DoubleArrowRightIcon />,
   docFile: <DocFileIcon />,
   download: <DownloadIcon />,
+  edit: <EditIcon />,
   ellipse: <EllipseIcon />,
   ellipseWithStroke: <EllipseWithStrokeIcon />,
   emptyEllipse: <EmptyEllipseIcon />,
@@ -85,6 +88,7 @@ export const IconMap = Object.freeze({
   search: <SearchIcon />,
   shieldGood: <ShieldGoodIcon />,
   shieldOff: <ShieldOffIcon />,
+  shoppingCart: <ShoppingCartIcon />,
   stethoscope: <StethoscopeIcon />,
   syringe: <SyringeIcon />,
   transfer: <TransferIcon />,

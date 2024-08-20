@@ -19,7 +19,7 @@ function useButtonBase({
   const isError = variant === "error";
 
   const className = classNames(
-    "rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium",
+    "m-0 rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium",
     {
       "bg-orange-300-contrast text-white hover:!bg-orange-500 focus:bg-orange-300-contrast":
         isPrimary,
