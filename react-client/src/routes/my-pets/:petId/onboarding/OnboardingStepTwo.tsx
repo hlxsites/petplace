@@ -1,7 +1,7 @@
 import { ASSET_IMAGES } from "~/assets";
 import { Icon } from "~/components/design-system";
+import { OnboardingContent } from "./components/OnboardingContent";
 import { OnboardingPrimaryButton } from "./components/OnboardingPrimaryButton";
-import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 

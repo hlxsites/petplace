@@ -1,6 +1,6 @@
 import { Button, Icon, IconKeys, Text } from "~/components/design-system";
 import { classNames } from "~/util/styleUtil";
-import { OnboardingContent } from "./OnboardingContent";
+import { OnboardingContent } from "./components/OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 

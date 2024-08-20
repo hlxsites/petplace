@@ -2,8 +2,8 @@ import { ASSET_IMAGES } from "~/assets";
 import { Button, IconKeys, Text, TextSpan } from "~/components/design-system";
 import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
+import { OnboardingContent } from "./components/OnboardingContent";
 import { OnboardingPrimaryButton } from "./components/OnboardingPrimaryButton";
-import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
