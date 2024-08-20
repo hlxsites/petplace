@@ -7,12 +7,13 @@ import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 export const OnboardingStepTwo = ({
   isSmallerScreen,
   ...props
-}: CommonOnboardingProps & { isSmallerScreen: boolean }) => {
+}: CommonOnboardingProps) => {
   return (
     <OnboardingContent
       {...props}
       message={ONBOARDING_STEPS_TEXTS[2].message}
       title={ONBOARDING_STEPS_TEXTS[2].title}
+      buttonLabel="Next"
     >
       <div className="mb-xlarge mt-large flex flex-col items-center gap-base md:w-full md:flex-row md:justify-center">
         <img

@@ -1,35 +1,17 @@
 import { ASSET_IMAGES } from "~/assets";
-import {
-  Button,
-  Icon,
-  IconKeys,
-  Loading,
-  Text,
-  TextSpan,
-  Title,
-} from "~/components/design-system";
+import { Button, IconKeys, Text, TextSpan } from "~/components/design-system";
 import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
-type StepFourContent = CommonOnboardingProps & {
-  isSmallerScreen: boolean;
-  name: string;
-  status: DocumentationStatus;
-  setStatus: (value: DocumentationStatus) => void;
-};
-
-export const OnboardingStepFour = ({
-  status,
-  ...props
-}: StepFourContent) => {
-  if (status === "none") return <NoneStatusContent {...props} status="none" />;
+export const OnboardingStepFour = ({ ...props }: CommonOnboardingProps) => {
+  if (props.status === "none") return <NoneStatusContent {...props} status="none" />;
 
   const contentProps = {
     ...props,
-    ...responseVariables(status),
+    ...responseVariables(props.status),
   };
 
   return {
@@ -37,14 +19,14 @@ export const OnboardingStepFour = ({
     approved: <StepFourContent {...contentProps} />,
     failed: <StepFourContent {...contentProps} />,
     "in progress": <StepFourContent {...contentProps} />,
-  }[status];
+  }[props.status];
 
   function responseVariables(status: Exclude<DocumentationStatus, "none">) {
     type UploadVariables = Record<
       typeof status,
       {
         buttonDisabled?: boolean;
-        className?: string;
+        iconClassName?: string;
         icon?: IconKeys;
         message: string;
         title: string;
@@ -55,19 +37,19 @@ export const OnboardingStepFour = ({
       {
         approved: {
           icon: "checkCircle",
-          className: "bg-green-300 text-green-100",
+          iconClassName: "bg-green-300 text-green-100",
           title: ONBOARDING_STEPS_TEXTS[4].approved.title,
           message: ONBOARDING_STEPS_TEXTS[4].approved.message,
         },
         failed: {
           icon: "clearCircle",
-          className: "bg-red-300 text-red-100",
+          iconClassName: "bg-red-300 text-red-100",
           title: ONBOARDING_STEPS_TEXTS[4].failed.title,
           message: ONBOARDING_STEPS_TEXTS[4].failed.message,
         },
         "in progress": {
           icon: "info",
-          className: "bg-blue-300 text-blue-100",
+          iconClassName: "bg-blue-300 text-blue-100",
           title: ONBOARDING_STEPS_TEXTS[4]["in progress"].title,
           message: ONBOARDING_STEPS_TEXTS[4]["in progress"].message,
         },
@@ -81,49 +63,27 @@ export const OnboardingStepFour = ({
   }
 };
 
-const StepFourContent = ({
-  alignment,
-  buttonDisabled,
-  className,
-  icon,
-  message,
-  onNextStep,
-  title,
-}: CommonOnboardingProps & {
-  buttonDisabled?: boolean;
-  className?: string;
-  icon?: IconKeys;
-  message: string;
-  title: string;
-}) => {
+const StepFourContent = (
+  props: CommonOnboardingProps & {
+    buttonDisabled?: boolean;
+    iconClassName?: string;
+    icon?: IconKeys;
+    message: string;
+    title: string;
+  }
+) => {
   return (
     <>
-      <div className="flex w-full justify-center md:w-fit">
-        {icon ? (
-          <div
-            className={classNames(
-              "flex h-[64px] w-[64px] items-center justify-center rounded-full",
-              className
-            )}
-          >
-            <Icon display={icon} size={25} />
-          </div>
-        ) : (
-          <Loading size={64} />
-        )}
-      </div>
-      <Title align={alignment}>{title}</Title>
-      <Text size="lg" align={alignment}>
-        {message}
-      </Text>
-      <Button onClick={onNextStep} fullWidth disabled={buttonDisabled}>
-        Next
-      </Button>
+      <OnboardingContent preTitle {...props} buttonLabel="Next" />
     </>
   );
 };
 
-const NoneStatusContent = ({name, setStatus, ...props}: Exclude<StepFourContent, "status">) => {
+const NoneStatusContent = ({
+  name,
+  updateStatus,
+  ...props
+}: CommonOnboardingProps) => {
   return (
     <OnboardingContent
       {...props}
@@ -149,7 +109,7 @@ const NoneStatusContent = ({name, setStatus, ...props}: Exclude<StepFourContent,
             alt={ONBOARDING_STEPS_TEXTS[4].none.imgAlt}
           />
         </div>
-        <ul className="flex flex-col items-center justify-center gap-xsmall md:flex-row">
+        <div className="flex flex-col items-center justify-center gap-xsmall md:flex-row">
           <div className="flex items-center gap-xsmall">
             {renderLI("Microchip")}
             {renderSeparator()}
@@ -165,7 +125,7 @@ const NoneStatusContent = ({name, setStatus, ...props}: Exclude<StepFourContent,
             {renderSeparator()}
             {renderLI("Lost Pet Services")}
           </div>
-        </ul>
+        </div>
         {renderUploadButtons()}
       </>
     </OnboardingContent>
@@ -173,11 +133,11 @@ const NoneStatusContent = ({name, setStatus, ...props}: Exclude<StepFourContent,
 
   function renderLI(text: string) {
     return (
-      <li className="inline-block text-nowrap pl-0">
+      <div className="indivne-block text-nowrap pl-0">
         <TextSpan fontWeight="semibold" size="sm">
           {text}
         </TextSpan>
-      </li>
+      </div>
     );
   }
 
@@ -204,10 +164,10 @@ const NoneStatusContent = ({name, setStatus, ...props}: Exclude<StepFourContent,
   }
 
   function handleUpload() {
-    setStatus("sent");
+    updateStatus("sent");
 
     setTimeout(() => {
-      setStatus("in progress");
+      updateStatus("in progress");
     }, 1500);
   }
 };

@@ -9,6 +9,7 @@ export const OnboardingStepOne = (props: CommonOnboardingProps) => {
       {...props}
       message={ONBOARDING_STEPS_TEXTS[1].message}
       title={ONBOARDING_STEPS_TEXTS[1].title}
+      buttonLabel="Get started"
     >
       <div className="flex w-full justify-center">
         <img
