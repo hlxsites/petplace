@@ -20,17 +20,20 @@ export async function loadEager(document) {
   const main = document.querySelector('main');
 
   // Create side section container
-  const sideSection = document.createElement('section');
-  sideSection.classList.add('section', 'side-section');
+  const divAuthorShare = document.createElement('div');
+  divAuthorShare.classList.add('side-section');
 
-  main.prepend(sideSection);
+  main.prepend(divAuthorShare);
 
   // Add side section blocks
-  createTemplateBlock(sideSection, 'article-author');
-  createTemplateBlock(sideSection, 'social-share', ['<div>facebook</div>', '<div>instagram</div>', '<div>tiktok</div>']);
+  const wrapperDiv = document.createElement('div');
+  wrapperDiv.classList.add('side-section');
+  createTemplateBlock(wrapperDiv, 'article-author');
+  createTemplateBlock(wrapperDiv, 'social-share', ['<div>facebook</div>', '<div>instagram</div>', '<div>tiktok</div>']);
+  divAuthorShare.append(wrapperDiv);
 
   // Build side section page links
-  // createTemplateBlock(sideSection, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);
+  // createTemplateBlock(divAuthorShare, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);
 
   // Move subhead to the footer
   const subhead = document.querySelector('.subhead');
