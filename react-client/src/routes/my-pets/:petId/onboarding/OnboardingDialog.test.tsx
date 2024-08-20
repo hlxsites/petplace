@@ -99,9 +99,9 @@ describe("OnboardingDialog", () => {
       ONBOARDING_STEPS_TEXTS[4].approved.message,
     ],
     [
-      "in progress",
-      ONBOARDING_STEPS_TEXTS[4]["in progress"].title,
-      ONBOARDING_STEPS_TEXTS[4]["in progress"].message,
+      "inProgress",
+      ONBOARDING_STEPS_TEXTS[4].inProgress.title,
+      ONBOARDING_STEPS_TEXTS[4].inProgress.message,
     ],
     [
       "failed",

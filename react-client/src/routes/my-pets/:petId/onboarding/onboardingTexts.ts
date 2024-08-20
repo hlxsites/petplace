@@ -29,7 +29,7 @@ export const ONBOARDING_STEPS_TEXTS = {
       message:
         "There was an issue uploading your pet’s documents. Please try again or upload them manually.",
     },
-    "in progress": {
+    inProgress: {
       title: "Upload In Progress",
       message:
         "Your pet’s documents are being uploaded. They will be available within 24 hours.",

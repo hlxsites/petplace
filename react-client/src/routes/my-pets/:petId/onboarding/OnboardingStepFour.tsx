@@ -28,7 +28,7 @@ export const OnboardingStepFour = ({ ...rest }: CommonOnboardingProps) => {
     sent: <StepFourContent {...contentProps} />,
     approved: <StepFourContent {...contentProps} />,
     failed: <StepFourContent {...contentProps} />,
-    "in progress": <StepFourContent {...contentProps} />,
+    inProgress: <StepFourContent {...contentProps} />,
   }[rest.status];
 
   function responseVariables(status: Exclude<DocumentationStatus, "none">) {
@@ -53,9 +53,9 @@ export const OnboardingStepFour = ({ ...rest }: CommonOnboardingProps) => {
           title: ONBOARDING_STEPS_TEXTS[4].failed.title,
           message: ONBOARDING_STEPS_TEXTS[4].failed.message,
         },
-        "in progress": {
-          title: ONBOARDING_STEPS_TEXTS[4]["in progress"].title,
-          message: ONBOARDING_STEPS_TEXTS[4]["in progress"].message,
+        inProgress: {
+          title: ONBOARDING_STEPS_TEXTS[4].inProgress.title,
+          message: ONBOARDING_STEPS_TEXTS[4].inProgress.message,
         },
         sent: {
           title: ONBOARDING_STEPS_TEXTS[4].sent.title,
@@ -91,7 +91,7 @@ const StepFourContent = ({
             display: "clearCircle",
           };
         }
-        if (status === "in progress") {
+        if (status === "inProgress") {
           return {
             className: "bg-blue-300 text-blue-100",
             display: "info",
@@ -205,7 +205,7 @@ const NoneStatusContent = ({
     updateStatus("sent");
 
     setTimeout(() => {
-      updateStatus("in progress");
+      updateStatus("inProgress");
     }, 1500);
   }
 };
