@@ -91,7 +91,7 @@ __p += '`),Ge&&(ee+=`' +
 `;var Se=et.call(l,"variable")&&l.variable;if(!Se)ee=`with (obj) {
 `+ee+`
 }
-`;else if(Nt.test(Se))throw new ke(u);ee=(B?ee.replace(rc,""):ee).replace(Xl,"$1").replace(U1,"$1;"),ee="function("+(Se||"obj")+`) {
+`;else if(Nt.test(Se))throw new Me(u);ee=(B?ee.replace(rc,""):ee).replace(Xl,"$1").replace(U1,"$1;"),ee="function("+(Se||"obj")+`) {
 `+(Se?"":`obj || (obj = {});
 `)+"var __t, __p = ''"+(O?", __e = _.escape":"")+(B?`, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -126,19 +126,19 @@ function print() { __p += __j.call(arguments, '') }
     `),n==="padding"&&"padding-right: ".concat(u,"px ").concat(r,";")].filter(Boolean).join(""),`
   }
   
-  .`).concat(Kd,` {
+  .`).concat(Zd,` {
     right: `).concat(u,"px ").concat(r,`;
   }
   
-  .`).concat(Gd,` {
+  .`).concat(Kd,` {
     margin-right: `).concat(u,"px ").concat(r,`;
   }
   
-  .`).concat(Kd," .").concat(Kd,` {
+  .`).concat(Zd," .").concat(Zd,` {
     right: 0 `).concat(r,`;
   }
   
-  .`).concat(Gd," .").concat(Gd,` {
+  .`).concat(Kd," .").concat(Kd,` {
     margin-right: 0 `).concat(r,`;
   }
   

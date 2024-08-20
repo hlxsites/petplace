@@ -6,3 +6,11 @@ img, picture, video, canvas, svg {
 #root, #__next {
     isolation: isolate;
 }
+
+main input {
+    all: unset;
+}
+
+main input:hover {
+    border: initial;
+}

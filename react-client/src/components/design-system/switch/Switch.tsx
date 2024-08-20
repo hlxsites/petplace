@@ -19,7 +19,11 @@ export const Switch = forwardRef<
       <RadixSwitch.Root
         aria-label={hideLabel ? label : undefined}
         className={classNames(
-          `relative h-6 w-[52px] rounded-[21px] border-[1px] border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none ${isChecked ? "border-none bg-orange-300-contrast focus:bg-orange-300-contrast" : ""}`,
+          "relative h-6 w-[52px] rounded-[21px] border border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none",
+          {
+            "border-none bg-orange-300-contrast focus:bg-orange-300-contrast":
+              isChecked,
+          },
           className
         )}
         ref={ref}

@@ -37,8 +37,8 @@ header .header {
   position: fixed;
 }
 
-/* 
-* Header - Minimal 
+/*
+* Header - Minimal
 * Styling for the minimal header, which consists of the logo and the get a quote cta
 */
 
@@ -507,6 +507,7 @@ header .header {
     grid-row: 2/3;
     grid-column: 5/6;
     height: 48px;
+    width: 48px;
   }
 
   #nav .user-btn img {
