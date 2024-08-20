@@ -70,6 +70,7 @@ export const CartItemCard = ({
           },
           className
         )}
+        iconProps={{ size: 16}}
         onClick={onClick}
         disabled={disabled}
       />
