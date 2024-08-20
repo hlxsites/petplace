@@ -26,17 +26,6 @@ export const OnboardingDialog = ({ documentationStatus, name }: PetInfo) => {
   const { step, onNextStep, reset, totalSteps } = useOnboardingSteps();
   const [status, setStatus] = useState(documentationStatus ?? "none");
 
-  const commonProps: CommonOnboardingProps = {
-    alignment: isSmallerScreen ? "center" : "left",
-    isSmallerScreen,
-    name,
-    onNextStep,
-    reset,
-    updateStatus,
-    status,
-    step,
-  };
-
   return (
     <Dialog
       isOpen
@@ -61,13 +50,30 @@ export const OnboardingDialog = ({ documentationStatus, name }: PetInfo) => {
   );
 
   function renderContent() {
-    return {
-      1: <OnboardingStepOne {...commonProps} />,
-      2: <OnboardingStepTwo {...commonProps} />,
-      3: <OnboardingStepThree {...commonProps} />,
-      4: <OnboardingStepFour {...commonProps} />,
-      5: <OnboardingStepFive {...commonProps} />,
-    }[step];
+    const commonProps: CommonOnboardingProps = {
+      alignment: isSmallerScreen ? "center" : "left",
+      isSmallerScreen,
+      name,
+      onNextStep,
+      reset,
+      updateStatus,
+      status,
+      step,
+    };
+
+    switch (step) {
+      case 1:
+        return <OnboardingStepOne {...commonProps} />;
+      case 2:
+        return <OnboardingStepTwo {...commonProps} />;
+      case 3:
+        return <OnboardingStepThree {...commonProps} />;
+      case 4:
+        return <OnboardingStepFour {...commonProps} />;
+      case 5:
+      default:
+        return <OnboardingStepFive {...commonProps} />;
+    }
   }
 
   function updateStatus(value: DocumentationStatus) {

@@ -16,9 +16,9 @@ export const OnboardingStepFive = ({
   return (
     <OnboardingContent
       {...props}
+      footer={renderFinalActions()}
       message={ONBOARDING_STEPS_TEXTS[5].message(status)}
       title={ONBOARDING_STEPS_TEXTS[5].title}
-      hideButton
     >
       <div className="flex w-full justify-center">
         <div className="grid grid-rows-3 gap-[58px] md:grid-cols-3 md:grid-rows-1 md:py-xlarge">
@@ -40,7 +40,6 @@ export const OnboardingStepFive = ({
           })}
         </div>
       </div>
-      {renderFinalActions()}
     </OnboardingContent>
   );
 

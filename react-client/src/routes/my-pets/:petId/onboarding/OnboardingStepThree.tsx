@@ -1,15 +1,23 @@
 import { ASSET_IMAGES } from "~/assets";
+import { OnboardingPrimaryButton } from "./components/OnboardingPrimaryButton";
 import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
-export const OnboardingStepThree = (props: CommonOnboardingProps) => {
+export const OnboardingStepThree = ({
+  onNextStep,
+  ...rest
+}: CommonOnboardingProps) => {
   return (
     <OnboardingContent
-      {...props}
+      {...rest}
+      footer={
+        <OnboardingPrimaryButton onClick={onNextStep}>
+          Next
+        </OnboardingPrimaryButton>
+      }
       message={ONBOARDING_STEPS_TEXTS[3].message}
       title={ONBOARDING_STEPS_TEXTS[3].title}
-      buttonLabel="Next"
     >
       <div className="mb-xlarge mt-large flex w-full justify-center">
         <img

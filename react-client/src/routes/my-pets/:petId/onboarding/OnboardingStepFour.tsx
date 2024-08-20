@@ -2,16 +2,18 @@ import { ASSET_IMAGES } from "~/assets";
 import { Button, IconKeys, Text, TextSpan } from "~/components/design-system";
 import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
+import { OnboardingPrimaryButton } from "./components/OnboardingPrimaryButton";
 import { OnboardingContent } from "./OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
-export const OnboardingStepFour = ({ ...props }: CommonOnboardingProps) => {
-  if (props.status === "none") return <NoneStatusContent {...props} status="none" />;
+export const OnboardingStepFour = ({ ...rest }: CommonOnboardingProps) => {
+  if (rest.status === "none")
+    return <NoneStatusContent {...rest} status="none" />;
 
   const contentProps = {
-    ...props,
-    ...responseVariables(props.status),
+    ...rest,
+    ...responseVariables(rest.status),
   };
 
   return {
@@ -19,7 +21,7 @@ export const OnboardingStepFour = ({ ...props }: CommonOnboardingProps) => {
     approved: <StepFourContent {...contentProps} />,
     failed: <StepFourContent {...contentProps} />,
     "in progress": <StepFourContent {...contentProps} />,
-  }[props.status];
+  }[rest.status];
 
   function responseVariables(status: Exclude<DocumentationStatus, "none">) {
     type UploadVariables = Record<
@@ -63,19 +65,27 @@ export const OnboardingStepFour = ({ ...props }: CommonOnboardingProps) => {
   }
 };
 
-const StepFourContent = (
-  props: CommonOnboardingProps & {
-    buttonDisabled?: boolean;
-    iconClassName?: string;
-    icon?: IconKeys;
-    message: string;
-    title: string;
-  }
-) => {
+const StepFourContent = ({
+  buttonDisabled,
+  onNextStep,
+  ...rest
+}: CommonOnboardingProps & {
+  buttonDisabled?: boolean;
+  iconClassName?: string;
+  icon?: IconKeys;
+  message: string;
+  title: string;
+}) => {
   return (
-    <>
-      <OnboardingContent preTitle {...props} buttonLabel="Next" />
-    </>
+    <OnboardingContent
+      footer={
+        <OnboardingPrimaryButton disabled={buttonDisabled} onClick={onNextStep}>
+          Next
+        </OnboardingPrimaryButton>
+      }
+      preTitle
+      {...rest}
+    />
   );
 };
 
@@ -88,8 +98,7 @@ const NoneStatusContent = ({
     <OnboardingContent
       {...props}
       alignment={props.alignment}
-      hideButton
-      onNextStep={props.onNextStep}
+      footer={renderUploadButtons()}
       title={ONBOARDING_STEPS_TEXTS[4].none.title}
     >
       <>
@@ -126,7 +135,6 @@ const NoneStatusContent = ({
             {renderLI("Lost Pet Services")}
           </div>
         </div>
-        {renderUploadButtons()}
       </>
     </OnboardingContent>
   );
