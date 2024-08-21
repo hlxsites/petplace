@@ -26,8 +26,10 @@
       window.location.replace('/rss.xml');
     }
 
-    // Redirect React app
-    if (window.location.pathname.includes('/account')) {
+    // Redirect to React client app
+    const isProdSite = window.location.origin.includes('petplace.com');
+    // It is disabled for prod site while we are not ready to release it
+    if (!isProdSite && window.location.pathname.includes('/account')) {
       const subpath = window.location.pathname.split('/account')[1];
       redirecting = true;
 
