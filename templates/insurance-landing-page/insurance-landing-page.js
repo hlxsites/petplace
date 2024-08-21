@@ -10,6 +10,20 @@ function removeAllErrorMessage(searchContainers) {
     searchInput.value = '';
   });
 }
+function getFilteredQueryParams() {
+  const includedParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+
+  const filteredParams = [];
+  urlParams.forEach((value, key) => {
+    if (includedParams.includes(key)) {
+      filteredParams.push({ key, value });
+    }
+  });
+  
+  return filteredParams;
+}
 
 function isValidZipcode(code) {
   const regex = /^[0-9]{5}(?:-[0-9]{4})?$/;
