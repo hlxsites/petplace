@@ -10,6 +10,8 @@ function removeAllErrorMessage(searchContainers) {
     searchInput.value = '';
   });
 }
+
+// below functions are to break up and rejoin the url params
 function getFilteredQueryParams() {
   const includedParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
   const queryString = window.location.search;
@@ -56,7 +58,8 @@ function createSpanBlock(main) {
       const code = searchInput.value;
       if (isValidZipcode(code)) {
         removeAllErrorMessage(searchContainers);
-        const pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}`;
+        const utmParams = getUrlParamString();
+        const pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}&${utmParams}`;
         window.open(pageUrl);
       } else {
         errorMsg.style.display = 'block';
