@@ -22,6 +22,7 @@ import { DocumentTypeIndex } from "./my-pets/:petId/documents/:documentType/Docu
 import { loader as DocumentTypeIndexLoader } from "./my-pets/:petId/documents/:documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/:petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/:petId/PetProfileLayout";
+import { ProductsIndex } from "./checkout/products/ProductsIndex";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -119,6 +120,15 @@ const routes: PetPlaceRouteObject[] = [
         shouldRevalidate: ({ currentParams, nextParams }) =>
           !isEqual(currentParams, nextParams),
         element: <CheckoutIndex />,
+      },
+      {
+        id: "products",
+        element: <ProductsIndex />,
+        // fix the loader when discover if products will be available via API or hardcoded
+        loader: CheckoutIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
+        path: AppRoutePaths.products,
       },
     ],
   },

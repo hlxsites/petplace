@@ -3,6 +3,7 @@ export const AppRoutePaths = {
   account: "account",
   addNewPet: "add",
   checkout: "checkout",
+  products: "products",
   foundPet: "found-pet",
   lostPet: "lost-pet",
   myPets: "my-pets",
