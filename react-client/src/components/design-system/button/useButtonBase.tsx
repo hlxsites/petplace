@@ -25,10 +25,10 @@ function useButtonBase({
         isPrimary,
       "bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white":
         isSecondary,
-      "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent":
+      "px-xsmall disabled:!bg-inherit py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent":
         isLink,
       "bg-red-300 text-white": isError,
-      "!cursor-not-allowed hover:!bg-inherit": disabled,
+      "!cursor-not-allowed": disabled,
       "w-full": fullWidth,
       loading: isLoading,
     }
