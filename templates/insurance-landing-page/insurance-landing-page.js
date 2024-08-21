@@ -25,6 +25,14 @@ function getFilteredQueryParams() {
   return filteredParams;
 }
 
+function getUrlParamString() {
+  const paramsArr = getFilteredQueryParams();
+  const parts = paramsArr.map(param => `${encodeURIComponent(param.key)  }=${ 
+  encodeURIComponent(param.value)}`)
+  const url = parts.join('&');
+  return url;
+}
+
 function isValidZipcode(code) {
   const regex = /^[0-9]{5}(?:-[0-9]{4})?$/;
 
