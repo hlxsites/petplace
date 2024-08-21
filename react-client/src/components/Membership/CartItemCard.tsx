@@ -19,7 +19,7 @@ export const CartItemCard = ({
 
   return (
     <Card>
-      <div className="flex flex-col gap-base p-base">
+      <div className="flex flex-col gap-base p-base" data-testid="cart-item">
         <div className="flex justify-between">
           <div>
             <Text size="base" fontWeight="bold" display="block">
