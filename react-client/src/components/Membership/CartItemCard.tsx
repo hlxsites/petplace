@@ -1,19 +1,20 @@
-import { classNames } from "~/util/styleUtil";
-import { Card, IconButton, IconKeys, Text } from "../design-system";
+import { Card, Text } from "../design-system";
+import { CartItemQuantityManager } from "./CartItemQuantityManager";
 import { CartItem } from "./utils/cartTypes";
+
+type CartItemCardProps = CartItem & {
+  updateQuantity: (id: string, value: number) => void;
+};
 
 export const CartItemCard = ({
   acquisitionMessage,
   description,
-  id,
   name,
   price,
-  purchaseLimit,
-  quantity,
   recurrence,
   type,
-  updateQuantity,
-}: CartItem & { updateQuantity: (id: string, value: number) => void }) => {
+  ...rest
+}: CartItemCardProps) => {
   const isService = type === "service";
 
   return (
@@ -41,84 +42,8 @@ export const CartItemCard = ({
             </Text>
           </div>
         )}
-        {!isService && (
-          <div className="flex w-full justify-end">
-            <div className="flex items-center">
-              {renderIconButton("remove")}
-              <Text fontWeight="bold" size="base">
-                {quantity}
-              </Text>
-              {renderIconButton("add")}
-            </div>
-          </div>
-        )}
+        {!isService && <CartItemQuantityManager {...rest} />}
       </div>
     </Card>
   );
-
-  function renderIconButton(variation: "remove" | "add") {
-    const { label, icon, className, onClick, disabled } =
-      buttonVariables(variation);
-    return (
-      <IconButton
-        variant="link"
-        label={label}
-        icon={icon}
-        className={classNames(
-          {
-            "bg-white": disabled,
-          },
-          className
-        )}
-        iconProps={{ size: 16}}
-        onClick={onClick}
-        disabled={disabled}
-      />
-    );
-  }
-
-  function buttonVariables(value: "remove" | "add") {
-    type ButtonVariables = Record<
-      typeof value,
-      {
-        className: string;
-        disabled: boolean;
-        icon: IconKeys;
-        label: string;
-        onClick: () => void;
-      }
-    >;
-
-    const removeLimit = quantity < 2;
-    const addLimit = quantity === purchaseLimit;
-
-    return (
-      {
-        remove: {
-          className: removeLimit
-            ? "text-neutral-600"
-            : "text-orange-300-contrast",
-          icon: "removeCircle",
-          label: "Remove one",
-          onClick: removeOne,
-          disabled: removeLimit,
-        },
-        add: {
-          className: addLimit ? "text-neutral-600" : "text-orange-300-contrast",
-          icon: "addCircle",
-          label: "Add one",
-          onClick: addOne,
-          disabled: addLimit,
-        },
-      } satisfies ButtonVariables
-    )[value];
-  }
-
-  function addOne() {
-    updateQuantity(id, quantity + 1);
-  }
-
-  function removeOne() {
-    updateQuantity(id, quantity - 1);
-  }
 };
