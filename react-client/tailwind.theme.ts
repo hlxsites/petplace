@@ -16,6 +16,7 @@ export const SPACING_DEFAULTS = {
 };
 
 export const THEME_COLORS = {
+  "background-dark": "var(--background-dark)",
   "brand-main": "var(--purple-300)",
   "brand-secondary": "var(--orange-300-contrast)",
   "brand-blue": "var(--brand-blue)",
