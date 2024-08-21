@@ -474,7 +474,7 @@ export default async function decorate(block) {
         document
           .querySelector('.nav-language-selector')
           .classList.remove('hidden');
-        document.querySelector('.btn-regions-list').classList.remove('active');
+        document.querySelector('.btn-regions-list')?.classList.remove('active');
         const buttonDropdown = document.querySelector('.button-dropdown');
         const contentDropdown = document.querySelector('.content-dropdown');
         if (
