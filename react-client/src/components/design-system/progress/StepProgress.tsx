@@ -26,7 +26,7 @@ export const StepProgress = ({ count, current }: StepProgressProps) => {
       >
         {stepText}
       </Text>
-      <div className="flex gap-[3px]">{renderSteps()}</div>
+      <div className="flex items-center gap-[3px]">{renderSteps()}</div>
     </div>
   );
 
@@ -36,7 +36,7 @@ export const StepProgress = ({ count, current }: StepProgressProps) => {
       return (
         <div
           className={classNames(
-            "h-[13px] w-[13px] rounded-full border border-primary-900",
+            "box-content size-[13px] rounded-full border border-solid border-primary-900",
             {
               "bg-primary-900": isDone,
             }

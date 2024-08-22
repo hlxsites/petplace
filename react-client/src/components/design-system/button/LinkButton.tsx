@@ -20,7 +20,7 @@ export const LinkButton = ({
 }: LinkButtonProps) => {
   return (
     <Link
-      className={classNames({
+      className={classNames("no-underline", {
         "w-full": buttonProps.fullWidth,
       })}
       preventScrollReset={preventScrollReset}
