@@ -28,7 +28,7 @@ export const CartItemQuantityManager = ({
   onUpdateQuantity,
 }: CartItemQuantityManagerProps) => {
   return (
-    <div className="flex w-full justify-end" data-testid="cart-item-quantity-manager">
+    <div className="flex w-full justify-end">
       <div className="flex items-center">
         {renderIconButton("remove")}
         <Text fontWeight="bold" size="base">
