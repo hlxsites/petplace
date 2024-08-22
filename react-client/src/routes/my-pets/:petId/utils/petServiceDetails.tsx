@@ -1,4 +1,5 @@
 import { LinkButton, Text, TextSpan } from "~/components/design-system";
+import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
 
 export type PetWatchServiceProps = PetServiceDetailsCardProps & {
@@ -64,23 +65,27 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   },
   {
     additionalInfo: (
-      <div className="flex flex-col gap-base p-large">
-        <Text>
-          Please fill out the form below and email to:
-          <TextSpan fontWeight="semibold">
-            24PetMedAlert@24petwatch.com.
-          </TextSpan>
-        </Text>
-        <Text>
-          Note: this form requires Adobe Reader,
-          <LinkButton to={""} className="m-0 inline">
-            <TextSpan fontWeight="bold" size="sm">
-              click here
-            </TextSpan>
-          </LinkButton>{" "}
-          to download.
-        </Text>
-      </div>
+      <PetServiceAdditionalInfo
+        info={
+          <>
+            <Text>
+              Please fill out the form below and email to:
+              <TextSpan fontWeight="semibold">
+                24PetMedAlert@24petwatch.com.
+              </TextSpan>
+            </Text>
+            <Text>
+              Note: this form requires Adobe Reader,
+              <LinkButton to={""} className="m-0 inline">
+                <TextSpan fontWeight="bold" size="sm">
+                  click here
+                </TextSpan>
+              </LinkButton>{" "}
+              to download.
+            </Text>
+          </>
+        }
+      />
     ),
     description:
       "This protects your pet by relaying your pet’s critical medical and behavioral information to veterinary care personnel, animal shelters or animal rescue organizations if your pet is lost.",
@@ -93,12 +98,10 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   },
   {
     additionalInfo: (
-      <div className="flex flex-col gap-base p-large">
-        <Text>
-          Our friends at whiskerDocs will be sending you a welcome email with
-          your account information. Make sure it’s not in your junk mail folder.
-        </Text>
-      </div>
+      <PetServiceAdditionalInfo
+        info="Our friends at whiskerDocs will be sending you a welcome email with
+          your account information. Make sure it’s not in your junk mail folder."
+      />
     ),
     description:
       "Can’t decide whether or not to bring your pet the vet? Veterinary experts available 24/7 through phone, email or live chat, provided by whiskerDocs.",
@@ -107,9 +110,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   },
   {
     additionalInfo: (
-      <div className="flex flex-col gap-base p-large">
-        <Text>Look out for your welcome email from Petcademy.</Text>
-      </div>
+      <PetServiceAdditionalInfo info="Look out for your welcome email from Petcademy." />
     ),
     description:
       "Get 12-month unlimited access to Petcademy’s online platform, which offers customized training plans, training videos, unlimited messaging with trainers and access to all their online communities.",
@@ -118,9 +119,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   },
   {
     additionalInfo: (
-      <div className="flex flex-col gap-base p-large">
-        <Text>Check your mailbox in approximately 4-6 weeks.</Text>
-      </div>
+      <PetServiceAdditionalInfo info="Check your mailbox in approximately 4-6 weeks." />
     ),
     description:
       "Because your pet is unique! Your customized ID tag with your pet’s name and unique microchip number, as well as the 24Petwatch Lost Pet Recovery Service toll-free number is in the mail.",

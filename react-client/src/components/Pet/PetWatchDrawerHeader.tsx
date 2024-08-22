@@ -11,7 +11,6 @@ export const PetWatchDrawerHeader = ({
   contentDetails,
   onClick,
 }: PetWatchDrawerHeaderProps) => {
-  console.log(contentDetails);
   if (!contentDetails) return <MainHeader />;
 
   return (
