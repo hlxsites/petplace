@@ -37,9 +37,9 @@ export const ONBOARDING_STEPS_TEXTS = {
     none: {
       title: "At PetPlace you can access all your pet's adoption documents.",
       imgAlt: "Icons representing available pet services",
-      message: (name: string) => [
+      message: (name?: string) => [
         "Update, add files, download, or print. It's the one place to keep all your pet's details. ",
-        `If available, would you like PetPlace to access and upload ${name}'s shelter documents for you?`,
+        `If available, would you like PetPlace to access and upload ${name ?? "your pet"}'s shelter documents for you?`,
       ],
     },
     sent: {

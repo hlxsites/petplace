@@ -36,7 +36,7 @@ export const PetProfileIndex = () => {
         <PetLostUpdatesSection {...petInfo} />
       </div>
       <Outlet context={viewModel} />
-      {displayOnboarding && <OnboardingDialog {...petInfo} />}
+      {displayOnboarding && <OnboardingDialog />}
     </>
   );
 
