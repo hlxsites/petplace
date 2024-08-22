@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 import { IconKeys } from "../design-system";
 import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 
-const { getByText, getByRole } = screen;
+const { getByText, getByRole, queryByRole } = screen;
 
 describe("PetServiceDetailsCard", () => {
   it("should render title", () => {
@@ -35,6 +35,37 @@ describe("PetServiceDetailsCard", () => {
       expect(getByText(expected)).toBeInTheDocument();
     }
   );
+
+  it("should render primary button when primaryAction is determined", () => {
+    const primaryAction = {
+      label: "primary action label",
+    };
+    getRenderer({ primaryAction });
+    expect(
+      getByRole("button", { name: "primary action label" })
+    ).toBeInTheDocument();
+  });
+
+  it("should NOT render primary button when primaryAction is not determined", () => {
+    getRenderer({ primaryAction: undefined });
+    expect(queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("should render secondary button when secondaryActions are determined", () => {
+    const secondaryActions = {
+      icon: "apps" as IconKeys,
+      label: "secondary action label",
+    };
+    getRenderer({ secondaryActions: [secondaryActions] });
+    expect(
+      getByRole("button", { name: "secondary action label" })
+    ).toBeInTheDocument();
+  });
+
+  it("should NOT render secondary button when secondaryActions is not determined", () => {
+    getRenderer({ secondaryActions: undefined });
+    expect(queryByRole("button")).not.toBeInTheDocument();
+  });
 
   it("should call primary action callback", async () => {
     const primaryAction = {
