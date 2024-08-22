@@ -29,11 +29,14 @@ export async function loadEager(document) {
   const wrapperDiv = document.createElement('div');
   wrapperDiv.classList.add('side-section');
   createTemplateBlock(wrapperDiv, 'article-author');
-  createTemplateBlock(wrapperDiv, 'social-share', ['<div>facebook</div>', '<div>instagram</div>', '<div>tiktok</div>']);
+  createTemplateBlock(
+    wrapperDiv,
+    'social-share',
+    ['<div>facebook</div>', '<div>instagram</div>', '<div>tiktok</div>'],
+  );
   divAuthorShare.append(wrapperDiv);
 
   // Build side section page links
-  // createTemplateBlock(divAuthorShare, 'fragment', ['<a href="/fragments/insurance-anchor-links"></a>']);
 
   // Move subhead to the footer
   const subhead = document.querySelector('.subhead');
