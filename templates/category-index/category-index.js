@@ -134,7 +134,8 @@ async function updateMetadata() {
   }
   const result = pageCategory;
   if (!result) {
-    throw new Error(404);
+    window.location.replace(`/invalid-category/${window.location.pathname.split('/').pop()}`);
+    return;
   }
   const { Name, Category, Path } = result;
   document.title = Name || Category;

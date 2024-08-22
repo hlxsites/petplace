@@ -85,7 +85,8 @@ function createTemplateBlock(main, blockName, elems = []) {
 async function updateMetadata() {
   const tag = await getTagForUrl();
   if (!tag) {
-    throw new Error(404);
+    window.location.replace(`/invalid-tag/${window.location.pathname.split('/').pop()}`);
+    return;
   }
   const { Name } = tag;
   document.title = `${Name} | ${document.title}`;
