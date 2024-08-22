@@ -3,6 +3,7 @@
 exports[`LinkIconButton should match snapshot to assure that the component is being rendered correctly 1`] = `
 <div>
   <a
+    class="no-underline"
     href="/test"
   >
     <button

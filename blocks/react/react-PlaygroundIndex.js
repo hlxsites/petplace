@@ -1,1 +1,1463 @@
-import{r as p,j as e,I as q,a as v,c as F,T as h,A as P,b as g,B as c,C as M,d as s,e as E,f as O,g as A,D as x,h as W,i as B,u as _,k as z,O as U,P as w,l as H,m as V,n as Y,o as I,S as C,p as S,q as j,s as $}from"./react-index.js";const G=({ariaLabel:t,items:i})=>{const[a,n]=p.useState(0),d=p.useCallback(()=>{n(o=>(o+1)%i.length)},[i.length]),u=p.useCallback(()=>{n(o=>o===0?i.length-1:o-1)},[i.length]);return p.useEffect(()=>{const o=l=>{l.preventDefault(),l.key==="ArrowRight"||l.key===" "?d():(l.key==="ArrowLeft"||l.key==="Backspace")&&u()};return window.addEventListener("keydown",o),()=>{window.removeEventListener("keydown",o)}},[d,u]),e.jsxs("div",{"aria-label":t,className:"relative grid w-full place-items-center",role:"region",tabIndex:0,children:[e.jsxs("div",{className:"flex items-center",children:[e.jsx(q,{icon:"chevronLeft",iconProps:{className:"text-orange-300-contrast",size:16},label:"Previous Slide",onClick:u,variant:"link"}),e.jsx("div",{className:"mt-4 flex gap-xsmall",children:i.map((o,l)=>e.jsx(v,{className:F("text-white",{"text-neutral-500":l===a}),display:"ellipseWithStroke",size:16},`carousel-indicator-${l}`))}),e.jsx(q,{icon:"chevronRight",iconProps:{className:"text-orange-300-contrast",size:16},label:"Next Slide",onClick:d,variant:"link"})]}),e.jsx("div",{className:"relative w-full max-w-3xl overflow-hidden",children:e.jsx("div",{className:"flex gap-xsmall transition-transform duration-300 ease-out",style:{transform:`translateX(-${a*82}%)`},children:i.map((o,l)=>e.jsx("div",{className:"w-[87%] flex-shrink-0",children:o},`carousel-item-${l}`))})})]})},K=()=>e.jsxs("div",{className:"grid gap-xxxxxlarge",children:[e.jsxs("div",{className:"grid gap-xlarge",children:[e.jsx(h,{children:"With small image"}),e.jsx(P,{buttonLabel:"Discover my Options",cardStyleProps:{backgroundColor:"bg-orange-100",border:"border-orange-100"},img:"https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg",message:"It is stressful when a furry family member is lost. Protect and care for your pet with 24Petwatch enhanced Lost Pet Protection.",title:e.jsxs(h,{level:"h2",children:["Know your options when"," ",e.jsx(g,{color:"brand-main",children:"protecting your pet"})]}),gradientColor:"from-orange-100",gradientDirection:"right"})]}),e.jsxs("div",{className:"grid gap-xlarge",children:[e.jsx(h,{children:"With big image"}),e.jsx(P,{buttonLabel:"Discover my Options",cardStyleProps:{backgroundColor:"bg-orange-100",border:"border-orange-100"},img:"https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg",message:"It is stressful when a furry family member is lost. Protect and care for your pet with 24Petwatch enhanced Lost Pet Protection.",title:e.jsxs(h,{level:"h2",children:["Know your options when"," ",e.jsx(g,{color:"brand-main",children:"protecting your pet"})]}),gradientColor:"from-orange-100",gradientDirection:"right"})]})]}),J=()=>e.jsxs(e.Fragment,{children:[e.jsx(c,{variant:"primary",children:"Primary button"}),e.jsx(c,{variant:"secondary",children:"Secondary button"}),e.jsx(c,{variant:"error",children:"Error button"}),e.jsx(c,{variant:"link",children:"Link button"})]}),X=[{bgColor:"bg-blue-100",description:"Description of Slide 1",title:"Slide 1"},{bgColor:"bg-green-100",description:"Description of Slide 2",title:"Slide 2"},{bgColor:"bg-red-100",description:"Description of Slide 3",title:"Slide 3"}],Q=()=>{const t=X.map(({bgColor:i,description:a,title:n})=>e.jsx(M,{backgroundColor:i,children:e.jsxs("div",{className:"grid gap-small p-base",children:[e.jsx(h,{level:"h3",children:n}),e.jsx(s,{children:a})]})},`card-${n}`));return e.jsx("div",{className:"max-w-[300px] bg-orange-100",children:e.jsx(G,{ariaLabel:"A carousel example",items:t})})},Z=()=>e.jsxs("div",{className:"grid gap-xxxxxlarge",children:[e.jsxs("div",{className:"grid gap-xlarge",children:[e.jsx(h,{level:"h2",children:"Header"}),e.jsx(E,{})]}),e.jsxs("div",{className:"grid gap-xlarge",children:[e.jsx(h,{level:"h2",children:"Footer"}),e.jsx(O,{})]})]}),ee=()=>{const[t,i]=p.useState(!1);return e.jsxs(A,{title:"Lost Pets Status Update",onOpenChange:()=>i(!t),isOpen:t,children:[e.jsx(s,{size:"base",children:"Track your pet's status."}),e.jsx("div",{className:"mt-base rounded-xl border p-base",children:e.jsx(s,{children:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."})}),e.jsxs(c,{variant:"secondary",className:"mt-base",fullWidth:!0,children:[e.jsx(v,{display:"check",className:"mr-small"})," Report as Found"]})]})},te=({isOpen:t,message:i,onCancel:a,onConfirm:n})=>{const d=(()=>{if(i&&typeof i!="string")return i;const u=i??"This action is irreversible.";return e.jsx(s,{size:"base",children:u})})();return e.jsx(x,{id:"confirm-deletion-dialog",isOpen:t,onClose:a,title:"Are you sure you want to delete this file?",titleLevel:"h2",children:({onCloseWithAnimation:u})=>e.jsxs("div",{className:"grid gap-xlarge pt-xlarge",children:[d,e.jsxs("div",{className:"flex gap-small",children:[e.jsx(c,{fullWidth:!0,onClick:u,variant:"secondary",children:"Cancel"}),e.jsx(c,{fullWidth:!0,onClick:n,children:"Yes, delete"})]})]})})},ie=()=>{const[t,i]=p.useState(!1);return e.jsxs(e.Fragment,{children:[e.jsx(c,{onClick:a,children:"Open confirm dialog"}),e.jsx(te,{isOpen:t,onCancel:n,onConfirm:n})]});function a(){i(!0)}function n(){i(!1)}},ae=()=>{const[t,i]=p.useState(null);return e.jsxs("div",{className:"flex flex-col items-center gap-base",children:[a("Open basic dialog","basic"),e.jsxs(x,{id:"basic",isOpen:t==="basic",onClose:()=>i(null),title:"The dialog title",children:[e.jsx(s,{children:"Ut error enim. Modi qui voluptates quibusdam aliquid repudiandae nulla autem. Consequatur incidunt unde quis at et quis hic sed veniam. Voluptatem et possimus consequatur sapiente officiis qui. Omnis qui eaque asperiores sed earum incidunt."}),e.jsx(s,{children:"At dolores alias temporibus tempora mollitia quo. Similique ut iusto occaecati eveniet excepturi. Sint ut pariatur ex dolores perferendis. Dolorum vel voluptatibus voluptas dolores. Dolores consequatur inventore magni. Ad nesciunt commodi neque non quibusdam. Molestiae exercitationem distinctio et nemo et quia. Sunt unde velit mollitia quaerat."})]}),a("Open fullwidth dialog","fullwidth"),e.jsxs(x,{id:"fullwidth",fullWidth:!0,isOpen:t==="fullwidth",onClose:()=>i(null),title:"The fullwidth dialog",children:[e.jsx(s,{children:"Ut error enim. Modi qui voluptates quibusdam aliquid repudiandae nulla autem. Consequatur incidunt unde quis at et quis hic sed veniam. Voluptatem et possimus consequatur sapiente officiis qui. Omnis qui eaque asperiores sed earum incidunt."}),e.jsx(s,{children:"At dolores alias temporibus tempora mollitia quo. Similique ut iusto occaecati eveniet excepturi. Sint ut pariatur ex dolores perferendis. Dolorum vel voluptatibus voluptas dolores. Dolores consequatur inventore magni. Ad nesciunt commodi neque non quibusdam. Molestiae exercitationem distinctio et nemo et quia. Sunt unde velit mollitia quaerat."})]}),a("Open scrollable dialog","scrollable"),e.jsxs(x,{id:"scrollable",isOpen:t==="scrollable",onClose:()=>i(null),title:"The scrollable dialog",children:[e.jsx(s,{children:"Eu ipsum nostrud et do fugiat. Eiusmod eiusmod do aute elit nisi qui excepteur elit do consectetur culpa occaecat voluptate ea. Id occaecat dolore est ad id irure sint cupidatat. Fugiat velit nisi duis ad commodo do adipisicing. Exercitation nulla adipisicing proident officia mollit mollit ipsum esse consequat consectetur consectetur anim commodo commodo. Est velit incididunt eu deserunt eu aliquip. Irure nisi nostrud eiusmod qui do. Irure duis sunt proident reprehenderit nulla. Occaecat aute nostrud est sunt sit. Pariatur esse aliquip nisi consectetur. Nisi incididunt et officia aliquip est anim magna elit tempor aute in. Est et quis sit enim. Sit adipisicing ullamco pariatur voluptate aute cupidatat deserunt."}),e.jsx(s,{children:"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim."}),e.jsx(s,{children:"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim."}),e.jsx(s,{children:"Eu ipsum nostrud et do fugiat. Eiusmod eiusmod do aute elit nisi qui excepteur elit do consectetur culpa occaecat voluptate ea. Id occaecat dolore est ad id irure sint cupidatat. Fugiat velit nisi duis ad commodo do adipisicing. Exercitation nulla adipisicing proident officia mollit mollit ipsum esse consequat consectetur consectetur anim commodo commodo. Est velit incididunt eu deserunt eu aliquip. Irure nisi nostrud eiusmod qui do. Irure duis sunt proident reprehenderit nulla. Occaecat aute nostrud est sunt sit. Pariatur esse aliquip nisi consectetur. Nisi incididunt et officia aliquip est anim magna elit tempor aute in. Est et quis sit enim. Sit adipisicing ullamco pariatur voluptate aute cupidatat deserunt."}),e.jsx(s,{children:"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim."}),e.jsx(s,{children:"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim."}),e.jsx(s,{children:"Eu ipsum nostrud et do fugiat. Eiusmod eiusmod do aute elit nisi qui excepteur elit do consectetur culpa occaecat voluptate ea. Id occaecat dolore est ad id irure sint cupidatat. Fugiat velit nisi duis ad commodo do adipisicing. Exercitation nulla adipisicing proident officia mollit mollit ipsum esse consequat consectetur consectetur anim commodo commodo. Est velit incididunt eu deserunt eu aliquip. Irure nisi nostrud eiusmod qui do. Irure duis sunt proident reprehenderit nulla. Occaecat aute nostrud est sunt sit. Pariatur esse aliquip nisi consectetur. Nisi incididunt et officia aliquip est anim magna elit tempor aute in. Est et quis sit enim. Sit adipisicing ullamco pariatur voluptate aute cupidatat deserunt."}),e.jsx(s,{children:"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim."}),e.jsx(s,{children:"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim."}),e.jsx(s,{children:"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim."}),e.jsx(s,{children:"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim."})]})]});function a(n,d){return e.jsx(c,{"aria-controls":d,"aria-haspopup":"dialog","aria-expanded":t===d,onClick:()=>i(d),variant:"secondary",children:n})}},se=()=>e.jsx("div",{className:"flex flex-col items-center gap-base",children:e.jsx(W,{trigger:e.jsx(c,{children:"Actions"}),items:[{icon:"add",label:"Add",onClick:()=>{alert("add menu item onClick callback")}},{icon:"trash",label:"Delete",onClick:()=>{alert("delete menu item onClick callback")},variant:"highlight"}]})}),ne=()=>{const t={id:"form-playground",children:[{elementType:"input",description:"This can be your pet's current name, or a new name that you chose.",id:"name",label:"Pet name",errorMessage:"Please enter your pet's name.",requiredCondition:!0,type:"text"},{elementType:"row",children:[{elementType:"input",id:"type",label:"Is your pet a",options:["Dog","Cat"],requiredCondition:!0,type:"select"},{elementType:"input",id:"gender",label:"What's their gender?",options:["Male","Female"],requiredCondition:!0,type:"select"}]},{elementType:"row",children:[{description:`If you don't see it in the list below, select "other" at very bottom of the list.`,elementType:"input",id:"breed",label:"Breed",options:"{{breedOptions|string[]}}",optionsType:"dynamic",type:"select"},{description:`If you don't see your pet's color, please select "other" located at the bottom of the list.`,elementType:"input",id:"color",label:"Color",options:"{{colorOptions|string[]}}",optionsType:"dynamic",requiredCondition:!0,type:"select"}]},{elementType:"row",children:[{elementType:"input",id:"breed-type",label:"What's their breed type?",options:"{{breedTypeOptions|string[]}}",optionsType:"dynamic",requiredCondition:!0,type:"select"},{elementType:"input",id:"spayed-neutered",label:"Are they spayed or neutered?",requiredCondition:!0,type:"boolean"}]},{elementType:"row",children:[{elementType:"input",id:"birth-month",label:"Birth month",placeholder:"Month",requiredCondition:!0,options:["January","February","March","April","May","June","July","August","September","October","November","December"],type:"select"},{elementType:"input",id:"birth-year",label:"Birth year",placeholder:"Year",requiredCondition:!0,type:"number"}]},{content:e.jsx(s,{size:"base",children:"Please ensure that all the information is complete and accurate. We may contact you periodically to ensure your information remains accurate and up to date."}),elementType:"html"},{elementType:"input",hideLabel:!0,id:"consent",label:"Consent to release information",errorMessage:"You must consent to release your information.",options:["Do you consent to the release of my name, email, address and telephone number to anyone who finds your pet? You may withdraw your consent at any time."],requiredCondition:!0,type:"checkboxGroup"},{className:"w-full mt-xxlarge",elementType:"button",id:"submit",label:"Save pet",type:"submit"}],version:0};return e.jsx(B,{onChange:i=>{console.log("onChange values",i)},onSubmit:({event:i,values:a})=>{i.preventDefault(),console.log("onSubmit values",a)},schema:t,variables:{breedOptions:["Poodle","Golden Retriever","Labrador","Pug","Beagle"],breedTypeOptions:[],colorOptions:["Black","White","Brown","Grey","Golden"]},values:{breed:"Poodle",gender:"Male",name:"Lili"}})},oe=({buttonLabel:t,cardProps:i,infoFooter:a,membershipDescriptionOffers:n,price:d,priceInfo:u,subTitle:o,title:l})=>{const b=i?"primary":"secondary";return e.jsx(M,{...i,role:"region",children:e.jsxs("div",{className:"grid gap-large p-large",children:[e.jsxs("div",{className:"gap-xsmall",children:[e.jsx(h,{level:"h4",children:l}),e.jsx(s,{color:"text-color-supporting",size:"base",children:o})]}),e.jsxs("div",{className:"grid gap-xsmall",children:[e.jsx(s,{fontWeight:"bold",size:"xxlg",children:d}),e.jsx(s,{color:"text-color-supporting",children:u})]}),e.jsx(c,{variant:b,children:t}),e.jsx("div",{className:"grid gap-small",role:"list",children:n==null?void 0:n.map(({icon:f,offerLabel:L},D)=>e.jsxs("div",{className:"flex items-center gap-xsmall",role:"listitem",children:[e.jsx(v,{className:f?"text-red-300":"text-green-300",display:f??"checkCircle",size:16}),e.jsx(s,{size:"base",textDecoration:f?"line-through":"none",children:L})]},D))}),a&&e.jsx(s,{children:a})]})})},re=[{offerLabel:"Direct connection to your pet's finder."},{icon:"clearCircle",offerLabel:"Pet Training Courses *."}],le=[{offerLabel:"Get help finding your lost pet."},{icon:"clearCircle",offerLabel:"Lifetime warranty ID tag."}],de=[{buttonLabel:"Get 1 Year Protection",price:"$45.95",priceInfo:"For the first year, $19.95/year thereafter",membershipDescriptionOffers:re,subTitle:"Keep Your Pet Safe All Year",title:"Annual Protection"},{buttonLabel:"Get the Best Value",cardProps:{backgroundColor:"bg-blue-100"},infoFooter:"* Complimentary for 1 year",price:"$99.95",priceInfo:"One-time fee",membershipDescriptionOffers:le,subTitle:"The Best Value Lost Pet Protection",title:"Lifetime"}],ue=()=>e.jsx("div",{className:"grid w-full grid-flow-row grid-cols-2 justify-center gap-large",children:de.map(({...t})=>e.jsx(oe,{...t},t.title))}),ce=()=>{const[t,i]=p.useState(!1),[,,a]=_("step",1),n=z("buddy");return e.jsxs("div",{className:"flex justify-center",children:[e.jsx(c,{onClick:()=>{a(),i(!0)},children:"Open onboarding dialog"}),!!t&&e.jsx(U,{...n})]})},me=()=>{const[t,i]=p.useState(!1);return e.jsxs("div",{className:"grid max-w-[300px] gap-xlarge",children:[e.jsxs("div",{className:"grid gap-small",children:[e.jsx(w,{record:{id:"dog-image",downloadPath:"https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg",fileName:"Dog image",fileType:"jpg"}}),e.jsx(w,{record:{id:"github-pdf",downloadPath:"https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",fileName:"PDF gitHub",fileType:"pdf"}})]}),e.jsx(c,{onClick:()=>i(a=>!a),children:"Upload"}),t&&e.jsx(w,{record:{id:"upload-test",fileName:"Upload test"},isUploadingFile:t})]})},he=()=>{return e.jsx("div",{className:"w-[400px]",children:e.jsx(H,{documents:i(),onDelete:t,recordType:"medical"})});function t(){}function i(){return[{fileName:"Test record doc",fileType:"doc"},{fileName:"Test record docx",fileType:"docx"},{fileName:"Test record jpg",fileType:"jpg"},{fileName:"Test record pdf",fileType:"pdf"},{fileName:"Test record txt",fileType:"txt"},{fileName:"Test record png",fileType:"png"}]}},pe=()=>e.jsx("div",{className:"flex flex-col gap-xlarge",children:V.map(t=>e.jsx(Y,{...t},t.title))}),y=8,ge=()=>e.jsxs("div",{className:"w-[300px]",children:[I(y).map(t=>e.jsx(C,{count:y,current:t+1})),I(y-1).reverse().map(t=>e.jsx(C,{count:y,current:t+1}))]}),ye=()=>{const t=[{key:"date",minWidth:"100px",label:"Date"},{key:"status",minWidth:"200px",label:"Status"},{key:"id",minWidth:"300px",label:"ID"},{key:"note",label:"Note"}],i=[{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"1",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"2",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"3",isSelectable:!1}];return e.jsx("div",{className:"",children:e.jsx(S,{columns:t,rows:i})})},xe=()=>{const t=[{key:"date",minWidth:"100px"},{key:"status",minWidth:"200px"},{key:"id",minWidth:"300px"},{key:"note"}],i=[{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"1",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"2",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"3",isSelectable:!1}];return e.jsx("div",{className:"",children:e.jsx(S,{columns:t,rows:i})})},be=()=>{const[t,i]=p.useState(1),[a,n]=p.useState(k().slice(0,5)),d=[{key:"date",minWidth:"150px",label:"Date"},{key:"status",minWidth:"250px",label:"Status"},{key:"id",minWidth:"350px",label:"ID"},{key:"note",label:"Note"}];return e.jsx("div",{className:"",children:e.jsx(S,{columns:d,rows:a,paginationProps:{currentPage:t,didChangePage:(u,o)=>{i(u);const l=o*(u-1),b=l+o;n(k().slice(l,b))},itemsCount:k().length,itemsPerPage:5}})})},fe=()=>e.jsxs("div",{className:"flex flex-col gap-xlarge",children:[e.jsxs("div",{children:[e.jsx(h,{level:"h2",children:"Simple table"}),e.jsx(ye,{})]}),e.jsxs("div",{children:[e.jsx(h,{level:"h2",children:"Table without header"}),e.jsx(xe,{})]}),e.jsxs("div",{children:[e.jsx(h,{level:"h2",children:"Table with pages"}),e.jsx(be,{})]})]});function k(){return[{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner1"},key:"1",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"2",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"3",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"4",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"5",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"6",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"11",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"12",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"13",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"21",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"22",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"23",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"31",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"32",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"33",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"41",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"42",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"43",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"61",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"52",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"53",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"51",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"62",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"63",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"71",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"72",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"73",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"81",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"82",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"83",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"91",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"92",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"93",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"101",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"102",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"103",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"111",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"112",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"113",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"121",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"122",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"123",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"131",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"132",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"133",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"141",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"142",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"143",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"151",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"152",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"153",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"161",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"162",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"163",isSelectable:!1},{data:{date:"17/04/2023",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner"},key:"171",isSelectable:!1},{data:{date:"11/11/2012",status:"Found Pet",id:"87428473698273hghw3874928472hwek3y2",note:"Rescued by stranger"},key:"172",isSelectable:!1},{data:{date:"31/08/2024",status:"Reported Missing",id:"87428473698273hghw3874928472hwek3y2",note:"Informed by owner fim2"},key:"173",isSelectable:!1}]}const we=()=>e.jsxs("div",{className:"grid gap-medium",children:[e.jsx(j,{label:"Info tag status",tagStatus:"info"}),e.jsx(j,{label:"Success tag status",tagStatus:"success"}),e.jsx(j,{label:"Warning tag status",tagStatus:"warning"})]}),m=t=>e.jsx(s,{size:"base",...t}),r=t=>e.jsx(m,{fontWeight:"bold",...t}),je=()=>{const t=a=>e.jsx(h,{level:"h3",children:a}),i=a=>e.jsxs(e.Fragment,{children:[e.jsx("hr",{className:"my-medium"}),t(a)]});return e.jsxs(e.Fragment,{children:[t("Font size"),e.jsx(m,{size:"xs",children:"Extra small text"}),e.jsx(m,{size:"sm",children:"Small text"}),e.jsx(m,{size:"base",children:"Base text"}),e.jsx(m,{size:"lg",children:"Large text"}),e.jsx(m,{size:"xlg",children:"Extra large text"}),i("Font family"),e.jsxs(m,{fontFamily:"franklin",children:["Franklin text with"," ",e.jsx(g,{fontWeight:"medium",children:"medium weight"})," and"," ",e.jsx(g,{fontWeight:"bold",children:"bold weight"})]}),e.jsxs(m,{fontFamily:"raleway",children:["Raleway text with ",e.jsx(g,{fontWeight:"medium",children:"medium weight"})," ","and ",e.jsx(g,{fontWeight:"bold",children:"bold weight"})]}),e.jsxs(m,{fontFamily:"roboto",children:["Roboto text with ",e.jsx(g,{fontWeight:"medium",children:"medium weight"})," ","and ",e.jsx(g,{fontWeight:"bold",children:"bold weight"})]}),i("Font weight"),e.jsx(m,{fontWeight:"normal",children:"Text with normal weight"}),e.jsx(m,{fontWeight:"medium",children:"Text with medium weight"}),e.jsx(m,{fontWeight:"bold",children:"Text with bold weight"}),i("Text color"),e.jsx(r,{color:"main",children:"main text"}),e.jsx(r,{color:"brand-blue",children:"brand-blue text"}),e.jsx(r,{color:"brand-main",children:"brand-main text"}),e.jsx(r,{color:"brand-secondary",children:"brand-secondary text"}),e.jsx(r,{color:"blue-300",children:"blue-300 text"}),e.jsx(r,{color:"blue-500",children:"blue-500 text"}),e.jsx(r,{color:"red-300",children:"red-300 text"}),e.jsx(r,{color:"red-500",children:"red-500 text"}),e.jsx(r,{color:"green-100",children:"green-100 text"}),e.jsx(r,{color:"green-300",children:"green-300 text"}),e.jsx(r,{color:"green-500",children:"green-500 text"}),e.jsx(r,{color:"maroon-100",children:"maroon-100 text"}),e.jsx(r,{color:"maroon-300",children:"maroon-300 text"}),e.jsx(r,{color:"maroon-500",children:"maroon-500 text"}),e.jsx(r,{color:"purple-100",children:"purple-100 text"}),e.jsx(r,{color:"purple-300",children:"purple-300 text"}),e.jsx(r,{color:"purple-500",children:"purple-500 text"}),e.jsx(r,{color:"yellow-100",children:"yellow-100 text"}),e.jsx(r,{color:"yellow-300",children:"yellow-300 text"}),e.jsx(r,{color:"yellow-500",children:"yellow-500 text"})]})},N=Object.freeze(Object.defineProperty({__proto__:null,AdvertisingBannerImageRightPlayground:K,ButtonPlayground:J,CarouselPlayground:Q,CheckoutHeaderAndFooterPlayground:Z,CollapsePlayground:ee,ConfirmDeletionDialogPlayground:ie,DialogPlayground:ae,DropdownMenuPlayground:se,FormBuilderPlayground:ne,MembershipCardPlayground:ue,OnboardingDialogPlayground:ce,PetCardRecordPlayground:me,PetDocumentsViewPlayground:he,PetServicesInfoPlayground:pe,StepProgressPlayground:ge,TablePlayground:fe,TagPlayground:we,TextPlayground:je},Symbol.toStringTag,{value:"Module"})),R=Object.keys(N),T="display",ve=()=>{const[t,i]=$(),a=t.get(T)??R[0],n=N[a];return e.jsxs("div",{className:"flex min-h-screen w-full",children:[e.jsx("div",{className:"flex flex-col gap-small border-r-[1px] border-r-border-secondary p-base",children:R.map(d)}),e.jsx("div",{className:"flex min-h-full w-full flex-col gap-base overflow-hidden p-base",children:e.jsx(n,{})})]});function d(o){const l=o===a;return e.jsx(c,{className:"h-6 text-sm",fullWidth:!0,onClick:u(o),variant:l?"primary":"secondary",children:o.replace("Playground","")},o)}function u(o){return()=>{i({[T]:o})}}};export{ve as default};
+import {
+	j as e,
+	T as d,
+	A as k,
+	a as h,
+	B as o,
+	p as N,
+	C as D,
+	b as I,
+	c as s,
+	r as p,
+	d as F,
+	I as O,
+	D as b,
+	e as L,
+	f as R,
+	u as W,
+	g as E,
+	O as A,
+	L as B,
+	P as x,
+	h as z,
+	i as v,
+	S,
+	k as j,
+	l as f,
+	m as U,
+} from "./react-index.js";
+const _ = () =>
+		e.jsxs("div", {
+			className: "grid gap-xxxxxlarge",
+			children: [
+				e.jsxs("div", {
+					className: "grid gap-xlarge",
+					children: [
+						e.jsx(d, { children: "With small image" }),
+						e.jsx(k, {
+							buttonLabel: "Discover my Options",
+							cardStyleProps: { backgroundColor: "bg-orange-100", border: "border-orange-100" },
+							img: "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg",
+							message:
+								"It is stressful when a furry family member is lost. Protect and care for your pet with 24Petwatch enhanced Lost Pet Protection.",
+							title: e.jsxs(d, {
+								level: "h2",
+								children: [
+									"Know your options when",
+									" ",
+									e.jsx(h, { color: "brand-main", children: "protecting your pet" }),
+								],
+							}),
+							gradientColor: "from-orange-100",
+							gradientDirection: "right",
+						}),
+					],
+				}),
+				e.jsxs("div", {
+					className: "grid gap-xlarge",
+					children: [
+						e.jsx(d, { children: "With big image" }),
+						e.jsx(k, {
+							buttonLabel: "Discover my Options",
+							cardStyleProps: { backgroundColor: "bg-orange-100", border: "border-orange-100" },
+							img: "https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg",
+							message:
+								"It is stressful when a furry family member is lost. Protect and care for your pet with 24Petwatch enhanced Lost Pet Protection.",
+							title: e.jsxs(d, {
+								level: "h2",
+								children: [
+									"Know your options when",
+									" ",
+									e.jsx(h, { color: "brand-main", children: "protecting your pet" }),
+								],
+							}),
+							gradientColor: "from-orange-100",
+							gradientDirection: "right",
+						}),
+					],
+				}),
+			],
+		}),
+	C = ({ badge: t, ...i }) => {
+		return e.jsxs("span", {
+			className: "relative",
+			children: [e.jsx(o, { fullWidth: !0, variant: "secondary", ...i }), a()],
+		});
+		function a() {
+			return !t || t <= 0
+				? null
+				: e.jsx("div", {
+						"aria-label": N({ countFrom: t, one: "1 item", other: `${t} items` }),
+						className:
+							"font-['Libre Franklin'] absolute -right-1 -top-1 inline-flex h-6 w-6 items-center justify-center rounded-[100px] bg-orange-300-contrast text-xs text-white",
+						role: "status",
+						children: t,
+					});
+		}
+	},
+	V = () =>
+		e.jsxs(e.Fragment, {
+			children: [
+				e.jsx(o, { variant: "primary", children: "Primary button" }),
+				e.jsx(o, { disabled: !0, variant: "primary", children: "Disabled Primary button" }),
+				e.jsx(o, { variant: "secondary", children: "Secondary button" }),
+				e.jsx(o, { disabled: !0, variant: "secondary", children: "Disabled Secondary button" }),
+				e.jsx(o, { variant: "error", children: "Error button" }),
+				e.jsx(o, { variant: "link", children: "Link button" }),
+				e.jsx(o, { disabled: !0, variant: "link", children: "Disabled Link button" }),
+				e.jsx(o, { iconLeft: "apps", children: "Icon left" }),
+				e.jsx(o, { iconRight: "apps", children: "Icon right" }),
+				e.jsx(C, { badge: 3, children: "Button with badge" }),
+			],
+		}),
+	Y = [
+		{ bgColor: "bg-blue-100", description: "Description of Slide 1", title: "Slide 1" },
+		{ bgColor: "bg-green-100", description: "Description of Slide 2", title: "Slide 2" },
+		{ bgColor: "bg-red-100", description: "Description of Slide 3", title: "Slide 3" },
+	],
+	G = () => {
+		const t = Y.map(({ bgColor: i, description: a, title: r }) =>
+			e.jsx(
+				I,
+				{
+					backgroundColor: i,
+					children: e.jsxs("div", {
+						className: "grid gap-small p-base",
+						children: [e.jsx(d, { level: "h3", children: r }), e.jsx(s, { children: a })],
+					}),
+				},
+				`card-${r}`
+			)
+		);
+		return e.jsx("div", {
+			className: "max-w-[300px] bg-orange-100",
+			children: e.jsx(D, { ariaLabel: "A carousel example", items: t }),
+		});
+	},
+	K = () => {
+		const [t, i] = p.useState(!1);
+		return e.jsxs(F, {
+			title: "Lost Pets Status Update",
+			onOpenChange: () => i(!t),
+			isOpen: t,
+			children: [
+				e.jsx(s, { size: "base", children: "Track your pet's status." }),
+				e.jsx("div", {
+					className: "mt-base rounded-xl border p-base",
+					children: e.jsx(s, {
+						children:
+							"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+					}),
+				}),
+				e.jsxs(o, {
+					variant: "secondary",
+					className: "mt-base",
+					fullWidth: !0,
+					children: [e.jsx(O, { display: "check", className: "mr-small" }), " Report as Found"],
+				}),
+			],
+		});
+	},
+	$ = ({ isOpen: t, message: i, onCancel: a, onConfirm: r }) => {
+		const u = (() => {
+			if (i && typeof i != "string") return i;
+			const m = i ?? "This action is irreversible.";
+			return e.jsx(s, { size: "base", children: m });
+		})();
+		return e.jsx(b, {
+			id: "confirm-deletion-dialog",
+			isOpen: t,
+			onClose: a,
+			title: "Are you sure you want to delete this file?",
+			titleLevel: "h2",
+			children: ({ onCloseWithAnimation: m }) =>
+				e.jsxs("div", {
+					className: "grid gap-xlarge pt-xlarge",
+					children: [
+						u,
+						e.jsxs("div", {
+							className: "flex gap-small",
+							children: [
+								e.jsx(o, { fullWidth: !0, onClick: m, variant: "secondary", children: "Cancel" }),
+								e.jsx(o, { fullWidth: !0, onClick: r, children: "Yes, delete" }),
+							],
+						}),
+					],
+				}),
+		});
+	},
+	H = () => {
+		const [t, i] = p.useState(!1);
+		return e.jsxs(e.Fragment, {
+			children: [
+				e.jsx(o, { onClick: a, children: "Open confirm dialog" }),
+				e.jsx($, { isOpen: t, onCancel: r, onConfirm: r }),
+			],
+		});
+		function a() {
+			i(!0);
+		}
+		function r() {
+			i(!1);
+		}
+	},
+	J = () => {
+		const [t, i] = p.useState(null);
+		return e.jsxs("div", {
+			className: "flex flex-col items-center gap-base",
+			children: [
+				a("Open basic dialog", "basic"),
+				e.jsxs(b, {
+					id: "basic",
+					isOpen: t === "basic",
+					onClose: () => i(null),
+					title: "The dialog title",
+					children: [
+						e.jsx(s, {
+							children:
+								"Ut error enim. Modi qui voluptates quibusdam aliquid repudiandae nulla autem. Consequatur incidunt unde quis at et quis hic sed veniam. Voluptatem et possimus consequatur sapiente officiis qui. Omnis qui eaque asperiores sed earum incidunt.",
+						}),
+						e.jsx(s, {
+							children:
+								"At dolores alias temporibus tempora mollitia quo. Similique ut iusto occaecati eveniet excepturi. Sint ut pariatur ex dolores perferendis. Dolorum vel voluptatibus voluptas dolores. Dolores consequatur inventore magni. Ad nesciunt commodi neque non quibusdam. Molestiae exercitationem distinctio et nemo et quia. Sunt unde velit mollitia quaerat.",
+						}),
+					],
+				}),
+				a("Open fullwidth dialog", "fullwidth"),
+				e.jsxs(b, {
+					id: "fullwidth",
+					fullWidth: !0,
+					isOpen: t === "fullwidth",
+					onClose: () => i(null),
+					title: "The fullwidth dialog",
+					children: [
+						e.jsx(s, {
+							children:
+								"Ut error enim. Modi qui voluptates quibusdam aliquid repudiandae nulla autem. Consequatur incidunt unde quis at et quis hic sed veniam. Voluptatem et possimus consequatur sapiente officiis qui. Omnis qui eaque asperiores sed earum incidunt.",
+						}),
+						e.jsx(s, {
+							children:
+								"At dolores alias temporibus tempora mollitia quo. Similique ut iusto occaecati eveniet excepturi. Sint ut pariatur ex dolores perferendis. Dolorum vel voluptatibus voluptas dolores. Dolores consequatur inventore magni. Ad nesciunt commodi neque non quibusdam. Molestiae exercitationem distinctio et nemo et quia. Sunt unde velit mollitia quaerat.",
+						}),
+					],
+				}),
+				a("Open scrollable dialog", "scrollable"),
+				e.jsxs(b, {
+					id: "scrollable",
+					isOpen: t === "scrollable",
+					onClose: () => i(null),
+					title: "The scrollable dialog",
+					children: [
+						e.jsx(s, {
+							children:
+								"Eu ipsum nostrud et do fugiat. Eiusmod eiusmod do aute elit nisi qui excepteur elit do consectetur culpa occaecat voluptate ea. Id occaecat dolore est ad id irure sint cupidatat. Fugiat velit nisi duis ad commodo do adipisicing. Exercitation nulla adipisicing proident officia mollit mollit ipsum esse consequat consectetur consectetur anim commodo commodo. Est velit incididunt eu deserunt eu aliquip. Irure nisi nostrud eiusmod qui do. Irure duis sunt proident reprehenderit nulla. Occaecat aute nostrud est sunt sit. Pariatur esse aliquip nisi consectetur. Nisi incididunt et officia aliquip est anim magna elit tempor aute in. Est et quis sit enim. Sit adipisicing ullamco pariatur voluptate aute cupidatat deserunt.",
+						}),
+						e.jsx(s, {
+							children:
+								"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim.",
+						}),
+						e.jsx(s, {
+							children:
+								"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim.",
+						}),
+						e.jsx(s, {
+							children:
+								"Eu ipsum nostrud et do fugiat. Eiusmod eiusmod do aute elit nisi qui excepteur elit do consectetur culpa occaecat voluptate ea. Id occaecat dolore est ad id irure sint cupidatat. Fugiat velit nisi duis ad commodo do adipisicing. Exercitation nulla adipisicing proident officia mollit mollit ipsum esse consequat consectetur consectetur anim commodo commodo. Est velit incididunt eu deserunt eu aliquip. Irure nisi nostrud eiusmod qui do. Irure duis sunt proident reprehenderit nulla. Occaecat aute nostrud est sunt sit. Pariatur esse aliquip nisi consectetur. Nisi incididunt et officia aliquip est anim magna elit tempor aute in. Est et quis sit enim. Sit adipisicing ullamco pariatur voluptate aute cupidatat deserunt.",
+						}),
+						e.jsx(s, {
+							children:
+								"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim.",
+						}),
+						e.jsx(s, {
+							children:
+								"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim.",
+						}),
+						e.jsx(s, {
+							children:
+								"Eu ipsum nostrud et do fugiat. Eiusmod eiusmod do aute elit nisi qui excepteur elit do consectetur culpa occaecat voluptate ea. Id occaecat dolore est ad id irure sint cupidatat. Fugiat velit nisi duis ad commodo do adipisicing. Exercitation nulla adipisicing proident officia mollit mollit ipsum esse consequat consectetur consectetur anim commodo commodo. Est velit incididunt eu deserunt eu aliquip. Irure nisi nostrud eiusmod qui do. Irure duis sunt proident reprehenderit nulla. Occaecat aute nostrud est sunt sit. Pariatur esse aliquip nisi consectetur. Nisi incididunt et officia aliquip est anim magna elit tempor aute in. Est et quis sit enim. Sit adipisicing ullamco pariatur voluptate aute cupidatat deserunt.",
+						}),
+						e.jsx(s, {
+							children:
+								"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim.",
+						}),
+						e.jsx(s, {
+							children:
+								"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim.",
+						}),
+						e.jsx(s, {
+							children:
+								"Occaecat dolore consectetur fugiat ut consequat est tempor id. Proident sit aliquip mollit sunt et labore qui irure ipsum eu reprehenderit aute. Adipisicing Lorem dolor exercitation veniam ad laborum amet mollit consequat veniam et labore nisi. Laborum velit do laborum adipisicing sint nostrud sunt ex quis culpa. Duis enim incididunt pariatur in ut qui aliquip aute voluptate anim.",
+						}),
+						e.jsx(s, {
+							children:
+								"Aliqua esse pariatur sint nulla pariatur qui do non nulla adipisicing aliquip aute. Ut tempor non irure duis consequat enim occaecat tempor nostrud mollit elit. Eiusmod consequat aute elit deserunt laborum sunt eiusmod veniam excepteur est ea cupidatat fugiat nisi ex. Magna cillum non tempor excepteur quis veniam nostrud minim esse. Tempor occaecat et Lorem fugiat exercitation magna minim incididunt aliqua magna enim.",
+						}),
+					],
+				}),
+			],
+		});
+		function a(r, u) {
+			return e.jsx(o, {
+				"aria-controls": u,
+				"aria-haspopup": "dialog",
+				"aria-expanded": t === u,
+				onClick: () => i(u),
+				variant: "secondary",
+				children: r,
+			});
+		}
+	},
+	Q = () =>
+		e.jsx("div", {
+			className: "flex flex-col items-center gap-base",
+			children: e.jsx(L, {
+				trigger: e.jsx(o, { children: "Actions" }),
+				items: [
+					{
+						icon: "add",
+						label: "Add",
+						onClick: () => {
+							alert("add menu item onClick callback");
+						},
+					},
+					{
+						icon: "trash",
+						label: "Delete",
+						onClick: () => {
+							alert("delete menu item onClick callback");
+						},
+						variant: "highlight",
+					},
+				],
+			}),
+		}),
+	X = () => {
+		const t = {
+			id: "form-playground",
+			children: [
+				{
+					elementType: "input",
+					description: "This can be your pet's current name, or a new name that you chose.",
+					id: "name",
+					label: "Pet name",
+					errorMessage: "Please enter your pet's name.",
+					requiredCondition: !0,
+					type: "text",
+				},
+				{
+					elementType: "row",
+					children: [
+						{
+							elementType: "input",
+							id: "type",
+							label: "Is your pet a",
+							options: ["Dog", "Cat"],
+							requiredCondition: !0,
+							type: "select",
+						},
+						{
+							elementType: "input",
+							id: "gender",
+							label: "What's their gender?",
+							options: ["Male", "Female"],
+							requiredCondition: !0,
+							type: "select",
+						},
+					],
+				},
+				{
+					elementType: "row",
+					children: [
+						{
+							description: `If you don't see it in the list below, select "other" at very bottom of the list.`,
+							elementType: "input",
+							id: "breed",
+							label: "Breed",
+							options: "{{breedOptions|string[]}}",
+							optionsType: "dynamic",
+							type: "select",
+						},
+						{
+							description: `If you don't see your pet's color, please select "other" located at the bottom of the list.`,
+							elementType: "input",
+							id: "color",
+							label: "Color",
+							options: "{{colorOptions|string[]}}",
+							optionsType: "dynamic",
+							requiredCondition: !0,
+							type: "select",
+						},
+					],
+				},
+				{
+					elementType: "row",
+					children: [
+						{
+							elementType: "input",
+							id: "breed-type",
+							label: "What's their breed type?",
+							options: "{{breedTypeOptions|string[]}}",
+							optionsType: "dynamic",
+							requiredCondition: !0,
+							type: "select",
+						},
+						{
+							elementType: "input",
+							id: "spayed-neutered",
+							label: "Are they spayed or neutered?",
+							requiredCondition: !0,
+							type: "boolean",
+						},
+					],
+				},
+				{
+					elementType: "row",
+					children: [
+						{
+							elementType: "input",
+							id: "birth-month",
+							label: "Birth month",
+							placeholder: "Month",
+							requiredCondition: !0,
+							options: [
+								"January",
+								"February",
+								"March",
+								"April",
+								"May",
+								"June",
+								"July",
+								"August",
+								"September",
+								"October",
+								"November",
+								"December",
+							],
+							type: "select",
+						},
+						{
+							elementType: "input",
+							id: "birth-year",
+							label: "Birth year",
+							placeholder: "Year",
+							requiredCondition: !0,
+							type: "number",
+						},
+					],
+				},
+				{
+					content: e.jsx(s, {
+						size: "base",
+						children:
+							"Please ensure that all the information is complete and accurate. We may contact you periodically to ensure your information remains accurate and up to date.",
+					}),
+					elementType: "html",
+				},
+				{
+					elementType: "input",
+					hideLabel: !0,
+					id: "consent",
+					label: "Consent to release information",
+					errorMessage: "You must consent to release your information.",
+					options: [
+						"Do you consent to the release of my name, email, address and telephone number to anyone who finds your pet? You may withdraw your consent at any time.",
+					],
+					requiredCondition: !0,
+					type: "checkboxGroup",
+				},
+				{ className: "w-full mt-xxlarge", elementType: "button", id: "submit", label: "Save pet", type: "submit" },
+			],
+			version: 0,
+		};
+		return e.jsx(R, {
+			onChange: (i) => {
+				console.log("onChange values", i);
+			},
+			onSubmit: ({ event: i, values: a }) => {
+				i.preventDefault(), console.log("onSubmit values", a);
+			},
+			schema: t,
+			variables: {
+				breedOptions: ["Poodle", "Golden Retriever", "Labrador", "Pug", "Beagle"],
+				breedTypeOptions: [],
+				colorOptions: ["Black", "White", "Brown", "Grey", "Golden"],
+			},
+			values: { breed: "Poodle", gender: "Male", name: "Lili" },
+		});
+	},
+	Z = () => {
+		const [t, i] = p.useState(!1),
+			[, , a] = W("step", 1),
+			r = E("buddy");
+		return e.jsxs("div", {
+			className: "flex justify-center",
+			children: [
+				e.jsx(o, {
+					onClick: () => {
+						a(), i(!0);
+					},
+					children: "Open onboarding dialog",
+				}),
+				!!t && e.jsx(A, { ...r }),
+			],
+		});
+	},
+	ee = () =>
+		e.jsxs("div", {
+			className: "flex justify-between",
+			children: [
+				e.jsxs("div", {
+					className: "pb-xlarge",
+					children: [
+						e.jsx(d, { level: "h3", children: "Secure Your Pet's Protection Plan" }),
+						e.jsx(s, {
+							size: "lg",
+							children: "Add Additional Products, and Confirm Opt-ins and Terms for Comprehensive Pet Safety.",
+						}),
+					],
+				}),
+				e.jsx(C, {
+					iconProps: { className: "text-orange-300-contrast" },
+					iconLeft: "shoppingCart",
+					badge: 2,
+					children: "Shopping cart",
+				}),
+			],
+		}),
+	te = () =>
+		e.jsx(I, {
+			children: e.jsxs("div", {
+				className: "p-large",
+				children: [
+					e.jsx(d, { level: "h4", children: "Opt-ins" }),
+					e.jsxs("div", {
+						className: "flex gap-large",
+						children: [
+							e.jsx(R, {
+								onChange: (t) => {
+									console.log("onChange values", t);
+								},
+								onSubmit: ({ event: t, values: i }) => {
+									t.preventDefault(), console.log("onSubmit values", i);
+								},
+								schema: ae,
+							}),
+							e.jsx(B, { className: "font-franklin text-sm text-orange-300-contrast", to: "", children: "More info" }),
+						],
+					}),
+				],
+			}),
+		}),
+	ie = {
+		elementType: "input",
+		hideLabel: !0,
+		id: "optIn",
+		label: "Consent to opt-in",
+		options: [
+			"To continue accessing 24PetMedAlert® and 24/7 Vet Helpline beyond your complimentary first year, click here to opt-in to auto-renew these services for only $19.95/year (plus applicable taxes). Price subject to change.",
+		],
+		requiredCondition: !0,
+		type: "checkboxGroup",
+	},
+	ae = { id: "opt-in-form", children: [{ ...ie }], version: 0 },
+	se = () => e.jsxs("div", { className: "grid gap-large", children: [e.jsx(ee, {}), e.jsx(te, {})] }),
+	ne = () => {
+		const [t, i] = p.useState(!1);
+		return e.jsxs("div", {
+			className: "grid max-w-[300px] gap-xlarge",
+			children: [
+				e.jsxs("div", {
+					className: "grid gap-small",
+					children: [
+						e.jsx(x, {
+							record: {
+								id: "dog-image",
+								downloadPath:
+									"https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg",
+								fileName: "Dog image",
+								fileType: "jpg",
+							},
+						}),
+						e.jsx(x, {
+							record: {
+								id: "github-pdf",
+								downloadPath: "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
+								fileName: "PDF gitHub",
+								fileType: "pdf",
+							},
+						}),
+					],
+				}),
+				e.jsx(o, { onClick: () => i((a) => !a), children: "Upload" }),
+				t && e.jsx(x, { record: { id: "upload-test", fileName: "Upload test" }, isUploadingFile: t }),
+			],
+		});
+	},
+	oe = () => {
+		return e.jsx("div", {
+			className: "w-[400px]",
+			children: e.jsx(z, { documents: i(), onDelete: t, recordType: "medical" }),
+		});
+		function t() {}
+		function i() {
+			return [
+				{ fileName: "Test record doc", fileType: "doc" },
+				{ fileName: "Test record docx", fileType: "docx" },
+				{ fileName: "Test record jpg", fileType: "jpg" },
+				{ fileName: "Test record pdf", fileType: "pdf" },
+				{ fileName: "Test record txt", fileType: "txt" },
+				{ fileName: "Test record png", fileType: "png" },
+			];
+		}
+	},
+	y = 8,
+	re = () =>
+		e.jsxs("div", {
+			className: "w-[300px]",
+			children: [
+				v(y).map((t) => e.jsx(S, { count: y, current: t + 1 })),
+				v(y - 1)
+					.reverse()
+					.map((t) => e.jsx(S, { count: y, current: t + 1 })),
+			],
+		}),
+	le = () => {
+		const t = [
+				{ key: "date", minWidth: "100px", label: "Date" },
+				{ key: "status", minWidth: "200px", label: "Status" },
+				{ key: "id", minWidth: "300px", label: "ID" },
+				{ key: "note", label: "Note" },
+			],
+			i = [
+				{
+					data: {
+						date: "17/04/2023",
+						status: "Reported Missing",
+						id: "87428473698273hghw3874928472hwek3y2",
+						note: "Informed by owner",
+					},
+					key: "1",
+					isSelectable: !1,
+				},
+				{
+					data: {
+						date: "11/11/2012",
+						status: "Found Pet",
+						id: "87428473698273hghw3874928472hwek3y2",
+						note: "Rescued by stranger",
+					},
+					key: "2",
+					isSelectable: !1,
+				},
+				{
+					data: {
+						date: "31/08/2024",
+						status: "Reported Missing",
+						id: "87428473698273hghw3874928472hwek3y2",
+						note: "Informed by owner",
+					},
+					key: "3",
+					isSelectable: !1,
+				},
+			];
+		return e.jsx("div", { className: "", children: e.jsx(j, { columns: t, rows: i }) });
+	},
+	de = () => {
+		const t = [
+				{ key: "date", minWidth: "100px" },
+				{ key: "status", minWidth: "200px" },
+				{ key: "id", minWidth: "300px" },
+				{ key: "note" },
+			],
+			i = [
+				{
+					data: {
+						date: "17/04/2023",
+						status: "Reported Missing",
+						id: "87428473698273hghw3874928472hwek3y2",
+						note: "Informed by owner",
+					},
+					key: "1",
+					isSelectable: !1,
+				},
+				{
+					data: {
+						date: "11/11/2012",
+						status: "Found Pet",
+						id: "87428473698273hghw3874928472hwek3y2",
+						note: "Rescued by stranger",
+					},
+					key: "2",
+					isSelectable: !1,
+				},
+				{
+					data: {
+						date: "31/08/2024",
+						status: "Reported Missing",
+						id: "87428473698273hghw3874928472hwek3y2",
+						note: "Informed by owner",
+					},
+					key: "3",
+					isSelectable: !1,
+				},
+			];
+		return e.jsx("div", { className: "", children: e.jsx(j, { columns: t, rows: i }) });
+	},
+	ue = () => {
+		const [t, i] = p.useState(1),
+			[a, r] = p.useState(w().slice(0, 5)),
+			u = [
+				{ key: "date", minWidth: "150px", label: "Date" },
+				{ key: "status", minWidth: "250px", label: "Status" },
+				{ key: "id", minWidth: "350px", label: "ID" },
+				{ key: "note", label: "Note" },
+			];
+		return e.jsx("div", {
+			className: "",
+			children: e.jsx(j, {
+				columns: u,
+				rows: a,
+				paginationProps: {
+					currentPage: t,
+					didChangePage: (m, c) => {
+						i(m);
+						const g = c * (m - 1),
+							M = g + c;
+						r(w().slice(g, M));
+					},
+					itemsCount: w().length,
+					itemsPerPage: 5,
+				},
+			}),
+		});
+	},
+	ce = () =>
+		e.jsxs("div", {
+			className: "flex flex-col gap-xlarge",
+			children: [
+				e.jsxs("div", { children: [e.jsx(d, { level: "h2", children: "Simple table" }), e.jsx(le, {})] }),
+				e.jsxs("div", { children: [e.jsx(d, { level: "h2", children: "Table without header" }), e.jsx(de, {})] }),
+				e.jsxs("div", { children: [e.jsx(d, { level: "h2", children: "Table with pages" }), e.jsx(ue, {})] }),
+			],
+		});
+function w() {
+	return [
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner1",
+			},
+			key: "1",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "2",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "3",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "4",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "5",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "6",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "11",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "12",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "13",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "21",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "22",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "23",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "31",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "32",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "33",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "41",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "42",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "43",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "61",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "52",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "53",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "51",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "62",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "63",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "71",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "72",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "73",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "81",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "82",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "83",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "91",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "92",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "93",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "101",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "102",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "103",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "111",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "112",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "113",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "121",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "122",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "123",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "131",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "132",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "133",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "141",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "142",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "143",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "151",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "152",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "153",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "161",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "162",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "163",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "17/04/2023",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner",
+			},
+			key: "171",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "11/11/2012",
+				status: "Found Pet",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Rescued by stranger",
+			},
+			key: "172",
+			isSelectable: !1,
+		},
+		{
+			data: {
+				date: "31/08/2024",
+				status: "Reported Missing",
+				id: "87428473698273hghw3874928472hwek3y2",
+				note: "Informed by owner fim2",
+			},
+			key: "173",
+			isSelectable: !1,
+		},
+	];
+}
+const me = () =>
+		e.jsxs("div", {
+			className: "grid gap-medium",
+			children: [
+				e.jsx(f, { label: "Info tag status", tagStatus: "info" }),
+				e.jsx(f, { label: "Success tag status", tagStatus: "success" }),
+				e.jsx(f, { label: "Warning tag status", tagStatus: "warning" }),
+			],
+		}),
+	l = (t) => e.jsx(s, { size: "base", ...t }),
+	n = (t) => e.jsx(l, { fontWeight: "bold", ...t }),
+	he = () => {
+		const t = (a) => e.jsx(d, { level: "h3", children: a }),
+			i = (a) => e.jsxs(e.Fragment, { children: [e.jsx("hr", { className: "my-medium" }), t(a)] });
+		return e.jsxs(e.Fragment, {
+			children: [
+				t("Font size"),
+				e.jsx(l, { size: "xs", children: "Extra small text" }),
+				e.jsx(l, { size: "sm", children: "Small text" }),
+				e.jsx(l, { size: "base", children: "Base text" }),
+				e.jsx(l, { size: "lg", children: "Large text" }),
+				e.jsx(l, { size: "xlg", children: "Extra large text" }),
+				i("Font family"),
+				e.jsxs(l, {
+					fontFamily: "franklin",
+					children: [
+						"Franklin text with",
+						" ",
+						e.jsx(h, { fontWeight: "medium", children: "medium weight" }),
+						" and",
+						" ",
+						e.jsx(h, { fontWeight: "bold", children: "bold weight" }),
+					],
+				}),
+				e.jsxs(l, {
+					fontFamily: "raleway",
+					children: [
+						"Raleway text with ",
+						e.jsx(h, { fontWeight: "medium", children: "medium weight" }),
+						" ",
+						"and ",
+						e.jsx(h, { fontWeight: "bold", children: "bold weight" }),
+					],
+				}),
+				e.jsxs(l, {
+					fontFamily: "roboto",
+					children: [
+						"Roboto text with ",
+						e.jsx(h, { fontWeight: "medium", children: "medium weight" }),
+						" ",
+						"and ",
+						e.jsx(h, { fontWeight: "bold", children: "bold weight" }),
+					],
+				}),
+				i("Font weight"),
+				e.jsx(l, { fontWeight: "normal", children: "Text with normal weight" }),
+				e.jsx(l, { fontWeight: "medium", children: "Text with medium weight" }),
+				e.jsx(l, { fontWeight: "bold", children: "Text with bold weight" }),
+				i("Text color"),
+				e.jsx(n, { color: "main", children: "main text" }),
+				e.jsx(n, { color: "brand-blue", children: "brand-blue text" }),
+				e.jsx(n, { color: "brand-main", children: "brand-main text" }),
+				e.jsx(n, { color: "brand-secondary", children: "brand-secondary text" }),
+				e.jsx(n, { color: "blue-300", children: "blue-300 text" }),
+				e.jsx(n, { color: "blue-500", children: "blue-500 text" }),
+				e.jsx(n, { color: "red-300", children: "red-300 text" }),
+				e.jsx(n, { color: "red-500", children: "red-500 text" }),
+				e.jsx(n, { color: "green-100", children: "green-100 text" }),
+				e.jsx(n, { color: "green-300", children: "green-300 text" }),
+				e.jsx(n, { color: "green-500", children: "green-500 text" }),
+				e.jsx(n, { color: "maroon-100", children: "maroon-100 text" }),
+				e.jsx(n, { color: "maroon-300", children: "maroon-300 text" }),
+				e.jsx(n, { color: "maroon-500", children: "maroon-500 text" }),
+				e.jsx(n, { color: "purple-100", children: "purple-100 text" }),
+				e.jsx(n, { color: "purple-300", children: "purple-300 text" }),
+				e.jsx(n, { color: "purple-500", children: "purple-500 text" }),
+				e.jsx(n, { color: "yellow-100", children: "yellow-100 text" }),
+				e.jsx(n, { color: "yellow-300", children: "yellow-300 text" }),
+				e.jsx(n, { color: "yellow-500", children: "yellow-500 text" }),
+			],
+		});
+	},
+	T = Object.freeze(
+		Object.defineProperty(
+			{
+				__proto__: null,
+				AdvertisingBannerImageRightPlayground: _,
+				ButtonPlayground: V,
+				CarouselPlayground: G,
+				CheckoutSecondPagePlayground: se,
+				CollapsePlayground: K,
+				ConfirmDeletionDialogPlayground: H,
+				DialogPlayground: J,
+				DropdownMenuPlayground: Q,
+				FormBuilderPlayground: X,
+				OnboardingDialogPlayground: Z,
+				PetCardRecordPlayground: ne,
+				PetDocumentsViewPlayground: oe,
+				StepProgressPlayground: re,
+				TablePlayground: ce,
+				TagPlayground: me,
+				TextPlayground: he,
+			},
+			Symbol.toStringTag,
+			{ value: "Module" }
+		)
+	),
+	q = Object.keys(T),
+	P = "display",
+	ge = () => {
+		const [t, i] = U(),
+			a = t.get(P) ?? q[0],
+			r = T[a];
+		return e.jsxs("div", {
+			className: "flex min-h-screen w-full",
+			children: [
+				e.jsx("div", {
+					className: "flex flex-col gap-small border-r-[1px] border-r-border-secondary p-base",
+					children: q.map(u),
+				}),
+				e.jsx("div", {
+					className: "flex min-h-full w-full flex-col gap-base overflow-hidden p-base",
+					children: e.jsx(r, {}),
+				}),
+			],
+		});
+		function u(c) {
+			const g = c === a;
+			return e.jsx(
+				o,
+				{
+					className: "h-6 text-sm",
+					fullWidth: !0,
+					onClick: m(c),
+					variant: g ? "primary" : "secondary",
+					children: c.replace("Playground", ""),
+				},
+				c
+			);
+		}
+		function m(c) {
+			return () => {
+				i({ [P]: c });
+			};
+		}
+	};
+export { ge as default };

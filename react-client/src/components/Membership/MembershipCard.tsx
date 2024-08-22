@@ -1,28 +1,6 @@
-import {
-  Button,
-  Card,
-  CardProps,
-  Icon,
-  IconKeys,
-  Text,
-  Title,
-} from "../design-system";
-
-type MembershipDescriptionOffer = {
-  icon?: IconKeys;
-  offerLabel: string;
-};
-
-type MembershipCardProps = {
-  buttonLabel: string;
-  cardProps?: Omit<CardProps, "children">;
-  infoFooter?: string;
-  membershipDescriptionOffers?: MembershipDescriptionOffer[];
-  price: string;
-  priceInfo: string;
-  subTitle: string;
-  title: string;
-};
+import { classNames } from "~/util/styleUtil";
+import { Button, Card, Icon, Text, Title } from "../design-system";
+import { MembershipInfoCard } from "./utils/MembershipTypes";
 
 export const MembershipCard = ({
   buttonLabel,
@@ -33,13 +11,13 @@ export const MembershipCard = ({
   priceInfo,
   subTitle,
   title,
-}: MembershipCardProps) => {
+}: MembershipInfoCard) => {
   const buttonVariant = cardProps ? "primary" : "secondary";
 
   return (
     <Card {...cardProps} role="region">
       <div className="grid gap-large p-large">
-        <div className="gap-xsmall">
+        <div className="grid gap-xsmall">
           <Title level="h4">{title}</Title>
           <Text color="text-color-supporting" size="base">
             {subTitle}
@@ -52,7 +30,12 @@ export const MembershipCard = ({
           <Text color="text-color-supporting">{priceInfo}</Text>
         </div>
         <Button variant={buttonVariant}>{buttonLabel}</Button>
-        <div className="grid gap-small" role="list">
+        <div
+          className={classNames("grid gap-small", {
+            "pb-xxlarge": !infoFooter,
+          })}
+          role="list"
+        >
           {membershipDescriptionOffers?.map(({ icon, offerLabel }, index) => (
             <div
               key={index}
