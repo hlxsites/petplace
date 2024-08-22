@@ -29,7 +29,7 @@ function getFilteredQueryParams() {
 
 function getUrlParamString() {
   const paramsArr = getFilteredQueryParams();
-  const parts = paramsArr.map(param => `${encodeURIComponent(param.key)  }=${ 
+  const parts = paramsArr.map(param => `${encodeURIComponent(param.key)}=${ 
   encodeURIComponent(param.value)}`)
   const url = parts.join('&');
   return url;
@@ -59,7 +59,7 @@ function createSpanBlock(main) {
       if (isValidZipcode(code)) {
         removeAllErrorMessage(searchContainers);
         const utmParams = getUrlParamString();
-        const pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}&${utmParams}`;
+        const pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}${utmParams ? `&${utmParams}` : ''}`;
         window.open(pageUrl);
       } else {
         errorMsg.style.display = 'block';
