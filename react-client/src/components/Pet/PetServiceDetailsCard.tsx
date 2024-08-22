@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Button, Icon, IconKeys, Text, TextSpan } from "../design-system";
+import { Button, Card, Icon, IconKeys, Text } from "../design-system";
 
 export type PetServiceDetailsCardProps = {
   additionalInfo?: ReactNode;
@@ -24,16 +24,20 @@ export const PetServiceDetailsCard = ({
   return (
     <div className="flex flex-col gap-large">
       <div>
-        <TextSpan fontWeight="bold" size="sm">
+        <Text fontWeight="bold" size="sm">
           Service Description:
-        </TextSpan>
+        </Text>
         <Text>{description}</Text>
       </div>
-      {additionalInfo && (additionalInfo)}
-      {contact && (
-        <div className="flex w-full justify-center py-xlarge">
-          <TextSpan fontWeight="bold">{contact}</TextSpan>
-        </div>
+      {(additionalInfo || contact) && (
+        <Card>
+          {additionalInfo}
+          {contact && (
+            <div className="flex w-full justify-center py-xlarge">
+              <Text fontWeight="bold">{contact}</Text>
+            </div>
+          )}
+        </Card>
       )}
       {secondaryActions && (
         <div className="flex justify-between gap-small">
