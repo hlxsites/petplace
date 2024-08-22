@@ -108,7 +108,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
             <div className={FORM_STYLES.inputRoot}>
               <input
                 autoFocus={autoFocus}
-                className={clsx(FORM_STYLES.input, {
+                className={clsx(FORM_STYLES.input, "border-none text-base", {
                   [FORM_STYLES.inputError]: hasError,
                 })}
                 placeholder={placeholder ?? "Select..."}
@@ -195,7 +195,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       return (
         <li
           className={clsx(
-            "px-4 absolute left-0 top-0 flex w-full cursor-pointer items-center hover:bg-neutral-50",
+            "px-4 absolute left-0 top-0 flex w-full cursor-pointer items-center text-base hover:bg-neutral-50",
             {
               "text-primary": isActive || isHighlighted,
               "bg-accent": isHighlighted,

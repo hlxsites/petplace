@@ -48,9 +48,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
               <input
                 autoFocus={autoFocus}
-                className={classNames(FORM_STYLES.input, {
-                  [FORM_STYLES.inputError]: hasError,
-                })}
+                className={classNames(
+                  FORM_STYLES.input,
+                  "border-none text-base",
+                  {
+                    [FORM_STYLES.inputError]: hasError,
+                  }
+                )}
                 id={id}
                 name={id}
                 onChange={handleOnChange}
