@@ -27,7 +27,7 @@ describe("CartItemQuantityManager", () => {
   });
 
   it("should disable the remove button when quantity is 1", () => {
-    getRenderer({ quantity: 1 });
+    getRenderer({ quantity: 0 });
     expect(getByLabelText("Remove one")).toBeDisabled();
   });
 

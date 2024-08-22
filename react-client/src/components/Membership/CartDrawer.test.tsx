@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 import { CartDrawer } from "./CartDrawer";
 import { CartItem } from "./utils/cartTypes";
 
-const { getByLabelText, getAllByTestId, getByText } = screen;
+const { getByLabelText, getAllByRole, getByText } = screen;
 
 const DEFAULT_ITEMS = [
   { id: "1", name: "byteTag", price: "$99.00" },
@@ -24,7 +24,7 @@ describe("CartDrawer", () => {
 
   it("should render 2 items", () => {
     getRenderer();
-    expect(getAllByTestId("cart-item").length).toBe(DEFAULT_ITEMS.length);
+    expect(getAllByRole("listitem").length).toBe(DEFAULT_ITEMS.length);
   });
 });
 

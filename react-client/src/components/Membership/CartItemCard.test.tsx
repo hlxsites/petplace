@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { CartItemCard } from "./CartItemCard";
 
-const { getByText, queryByText, queryByTestId, getByTestId } = screen;
+const { getByText, queryByText } = screen;
 
 const DEFAULT_QUANTITY = 5;
 
@@ -51,12 +51,17 @@ describe("CartItemCard", () => {
 
   it("should render quantity manager when type is product", () => {
     getRenderer({ type: "product" });
-    expect(getByTestId("cart-item-quantity-manager")).toBeInTheDocument();
+
+    expect(
+      document.querySelector("svg[data-file-name='SvgRemoveCircleIcon']")
+    ).toBeInTheDocument();
   });
 
   it("should NOT render quantity manager when type is service", () => {
     getRenderer({ type: "service" });
-    expect(queryByTestId("cart-item-quantity-manager")).not.toBeInTheDocument();
+    expect(
+      document.querySelector("svg[data-file-name='SvgRemoveCircleIcon']")
+    ).not.toBeInTheDocument();
   });
 });
 
