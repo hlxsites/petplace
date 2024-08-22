@@ -1,18 +1,12 @@
-import { useCartItems } from "~/hooks/useCartItems";
 import { Drawer, Text } from "../design-system";
 import { CartFooter } from "./CartFooter";
 import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
+import { useCartCheckout } from "./hooks/useCartCheckout";
 import { CartDrawerProps } from "./utils/cartTypes";
 
-export const CartDrawer = ({
-  items,
-  updateQuantity,
-  ...props
-}: CartDrawerProps & {
-  updateQuantity: (id: string, value: number) => void;
-}) => {
-  const { subtotal } = useCartItems(items);
+export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
+  const { cartItems, subtotal, onUpdateQuantity } = useCartCheckout(items);
 
   return (
     <Drawer id="cart-drawer" ariaLabel="Cart Drawer" {...props}>
@@ -23,11 +17,11 @@ export const CartDrawer = ({
             Items
           </Text>
 
-          {items.map((props) => (
+          {cartItems.map((item) => (
             <CartItemCard
-              key={props.id}
-              updateQuantity={updateQuantity}
-              {...props}
+              key={item.id}
+              onUpdateQuantity={onUpdateQuantity}
+              {...item}
             />
           ))}
         </div>
