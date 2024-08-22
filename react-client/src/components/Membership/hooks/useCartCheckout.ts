@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { CartItem } from "~/components/Membership/utils/cartTypes";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 
-export function useCartItems(items: CartItem[]) {
+export function useCartCheckout(initialItems: CartItem[] = []) {
+  const [cartItems, setCartItems] = useState<CartItem[]>(initialItems);
   const [subtotal, setSubtotal] = useState("");
 
   useEffect(() => {
     function calculateSubtotal(): number {
-      return items.reduce((total, item) => {
+      return cartItems.reduce((total, item) => {
         const itemPrice = getValueFromPrice(item.price);
         const itemQuantity = item.quantity ?? 1;
         return total + itemPrice * itemQuantity;
@@ -15,7 +16,18 @@ export function useCartItems(items: CartItem[]) {
     }
 
     setSubtotal(formatPrice(calculateSubtotal()));
-  }, [items]);
+  }, [cartItems]);
 
-  return { subtotal }
+  const onUpdateQuantity = (id: string, newQuantity: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      })
+    );
+  };
+
+  return { subtotal, onUpdateQuantity, cartItems };
 }

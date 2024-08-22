@@ -67,7 +67,7 @@ function getRenderer({
   price = "100.00",
   type = "product",
   quantity = DEFAULT_QUANTITY,
-  updateQuantity = jest.fn(),
+  onUpdateQuantity = jest.fn(),
   ...props
 }: Partial<ComponentProps<typeof CartItemCard>> = {}) {
   return render(
@@ -78,7 +78,7 @@ function getRenderer({
       price={price}
       type={type}
       quantity={quantity}
-      updateQuantity={updateQuantity}
+      onUpdateQuantity={onUpdateQuantity}
       {...props}
     />
   );

@@ -19,27 +19,26 @@ describe("CartFooter", () => {
     ).toBeInTheDocument();
   });
 
-  it.each(["123.45", "11.69"])("should render correct %s subtotal value", (expected) => {
-    getRenderer({ subtotal: expected});
-    expect(
-      getByText(`$${expected}`)
-    ).toBeInTheDocument();
-  });
+  it.each(["123.45", "11.69"])(
+    "should render correct %s subtotal value",
+    (expected) => {
+      getRenderer({ subtotal: expected });
+      expect(getByText(`$${expected}`)).toBeInTheDocument();
+    }
+  );
 
-  it("should call proceedToCheckout callback", async () => {
-    const proceedToCheckout = jest.fn();
-    getRenderer({ proceedToCheckout });
+  it("should call onClick callback", async () => {
+    const onClick = jest.fn();
+    getRenderer({ onClick });
 
     await userEvent.click(getByRole("button", { name: "Proceed to checkout" }));
-    expect(proceedToCheckout).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalled();
   });
 });
 
 function getRenderer({
   subtotal = "123.45",
-  proceedToCheckout = jest.fn(),
+  onClick = jest.fn(),
 }: Partial<ComponentProps<typeof CartFooter>> = {}) {
-  return render(
-    <CartFooter subtotal={subtotal} proceedToCheckout={proceedToCheckout} />
-  );
+  return render(<CartFooter subtotal={subtotal} onClick={onClick} />);
 }

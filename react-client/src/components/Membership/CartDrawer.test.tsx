@@ -31,14 +31,6 @@ describe("CartDrawer", () => {
 function getRenderer({
   items = DEFAULT_ITEMS as CartItem[],
   onClose = jest.fn(),
-  updateQuantity = jest.fn(),
 }: Partial<ComponentProps<typeof CartDrawer>> = {}) {
-  return render(
-    <CartDrawer
-      items={items}
-      isOpen
-      onClose={onClose}
-      updateQuantity={updateQuantity}
-    />
-  );
+  return render(<CartDrawer items={items} isOpen onClose={onClose} />);
 }

@@ -36,21 +36,21 @@ describe("CartItemQuantityManager", () => {
     expect(getByLabelText("Add one")).toBeDisabled();
   });
 
-  it("should call updateQuantity with decremented value when remove button is clicked", async () => {
-    const updateQuantity = jest.fn();
-    getRenderer({ updateQuantity });
+  it("should call onUpdateQuantity with decremented value when remove button is clicked", async () => {
+    const onUpdateQuantity = jest.fn();
+    getRenderer({ onUpdateQuantity });
     await userEvent.click(getByLabelText("Remove one"));
-    expect(updateQuantity).toHaveBeenCalledWith(
+    expect(onUpdateQuantity).toHaveBeenCalledWith(
       DEFAULT_ID,
       DEFAULT_QUANTITY - 1
     );
   });
 
-  it("should call updateQuantity with incremented value when add button is clicked", async () => {
-    const updateQuantity = jest.fn();
-    getRenderer({ updateQuantity });
+  it("should call onUpdateQuantity with incremented value when add button is clicked", async () => {
+    const onUpdateQuantity = jest.fn();
+    getRenderer({ onUpdateQuantity });
     await userEvent.click(getByLabelText("Add one"));
-    expect(updateQuantity).toHaveBeenCalledWith(
+    expect(onUpdateQuantity).toHaveBeenCalledWith(
       DEFAULT_ID,
       DEFAULT_QUANTITY + 1
     );
@@ -60,14 +60,14 @@ describe("CartItemQuantityManager", () => {
 function getRenderer({
   id = DEFAULT_ID,
   quantity = DEFAULT_QUANTITY,
-  updateQuantity = jest.fn(),
+  onUpdateQuantity = jest.fn(),
   ...props
 }: Partial<ComponentProps<typeof CartItemQuantityManager>> = {}) {
   return render(
     <CartItemQuantityManager
       id={id}
       quantity={quantity}
-      updateQuantity={updateQuantity}
+      onUpdateQuantity={onUpdateQuantity}
       {...props}
     />
   );
