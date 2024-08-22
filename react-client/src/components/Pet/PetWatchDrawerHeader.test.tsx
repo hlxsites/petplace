@@ -13,24 +13,24 @@ const DEFAULT_CONTENT = {
 };
 
 describe("PetWatchDrawerHeader", () => {
-  it("should render title by default", () => {
+  it("should render default title when no contentDetails is provided", () => {
     getRenderer();
     expect(
       getByText("Here is all the available benefits and perks")
     ).toBeInTheDocument();
   });
 
-  it("should render Pet Watch Logo by default", () => {
+  it("should render Pet Watch Logo when no contentDetails is provided", () => {
     getRenderer();
     expect(getByRole("img")).toHaveAttribute("src", ASSET_IMAGES.petWatchLogo);
   });
 
-  it("should NOT render button by default", () => {
+  it("should NOT render button when no contentDetails is provided", () => {
     getRenderer();
     expect(queryByRole("button")).not.toBeInTheDocument();
   });
 
-  it("should NOT render title when there is content", () => {
+  it("should NOT render default title when there is content", () => {
     getRenderer({ contentDetails: DEFAULT_CONTENT });
     expect(
       queryByText("Here is all the available benefits and perks")
@@ -42,14 +42,14 @@ describe("PetWatchDrawerHeader", () => {
     expect(queryByRole("img")).not.toBeInTheDocument();
   });
 
-  it("should render content title", () => {
+  it("should render content title when contentDetails is provided", () => {
     getRenderer({ contentDetails: DEFAULT_CONTENT });
     expect(
       queryByRole("heading", { name: DEFAULT_CONTENT.title })
     ).toBeInTheDocument();
   });
 
-  it("should render content subtitle", () => {
+  it("should render content subtitle when contentDetails is provided", () => {
     getRenderer({ contentDetails: DEFAULT_CONTENT });
     expect(getByText(DEFAULT_CONTENT.subtitle)).toBeInTheDocument();
   });
