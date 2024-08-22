@@ -3,7 +3,7 @@ import { CartItemQuantityManager } from "./CartItemQuantityManager";
 import { CartItem } from "./utils/cartTypes";
 
 type CartItemCardProps = CartItem & {
-  updateQuantity: (id: string, value: number) => void;
+  onUpdateQuantity: (id: string, value: number) => void;
 };
 
 export const CartItemCard = ({
