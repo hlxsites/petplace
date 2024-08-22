@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { ComponentProps } from "react";
-import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { getByTextContent } from "~/util/testingFunctions";
+import * as petProfileLayoutViewModel from "../usePetProfileLayoutViewModel";
 import { OnboardingDialog } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
@@ -12,6 +11,11 @@ jest.mock(
       <div data-testid="FocusTrap">{children}</div>
     )
 );
+
+jest.mock("../usePetProfileLayoutViewModel", () => ({
+  usePetProfileLayoutViewModel: jest.fn(),
+  usePetProfileContext: jest.fn(),
+}));
 
 const DEFAULT_NAME = "Romã";
 
@@ -28,6 +32,11 @@ describe("OnboardingDialog", () => {
       .mockImplementation((key, value) => {
         store[key] = value.toString();
       });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    localStorage.clear();
   });
 
   it("should render Dialog with initial content", () => {
@@ -71,6 +80,7 @@ describe("OnboardingDialog", () => {
 
   it("should render step 4 content for none documentationStatus by default", () => {
     localStorage.setItem("step", "4");
+    useMockedDocumentationStatus("none");
     getRenderer();
 
     const [string1, string2] =
@@ -112,9 +122,8 @@ describe("OnboardingDialog", () => {
     "should render step 4 dynamic content for documentationStatus %s",
     (documentationStatus, title, description) => {
       localStorage.setItem("step", "4");
-      getRenderer({
-        documentationStatus: documentationStatus as DocumentationStatus,
-      });
+      useMockedDocumentationStatus(documentationStatus);
+      getRenderer();
 
       expect(getByRole("heading", { name: title })).toBeInTheDocument();
       expect(getByText(description)).toBeInTheDocument();
@@ -123,6 +132,7 @@ describe("OnboardingDialog", () => {
 
   it("should render step 5 content with status none message", () => {
     localStorage.setItem("step", "5");
+    useMockedDocumentationStatus("none");
     getRenderer();
 
     expect(
@@ -136,32 +146,43 @@ describe("OnboardingDialog", () => {
     expect(getByText(ONBOARDING_STEPS_TEXTS[5].protection)).toBeInTheDocument();
   });
 
-  it("should render step 5 content with message for other status", () => {
-    localStorage.setItem("step", "5");
-    getRenderer({ documentationStatus: "approved" });
+  it.each(["sent", "approved", "inProgress", "failed"])(
+    "should render step 5 content with message for other status",
+    (expected) => {
+      localStorage.setItem("step", "5");
+      useMockedDocumentationStatus(expected);
+      getRenderer();
 
-    expect(
-      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
-    ).toBeInTheDocument();
-    expect(
-      getByText(ONBOARDING_STEPS_TEXTS[5].message("approved"))
-    ).toBeInTheDocument();
-    expect(getByText(ONBOARDING_STEPS_TEXTS[5].microchip)).toBeInTheDocument();
-    expect(getByText(ONBOARDING_STEPS_TEXTS[5].documents)).toBeInTheDocument();
-    expect(getByText(ONBOARDING_STEPS_TEXTS[5].protection)).toBeInTheDocument();
-  });
+      expect(
+        getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
+      ).toBeInTheDocument();
+      expect(
+        getByText(ONBOARDING_STEPS_TEXTS[5].message(expected))
+      ).toBeInTheDocument();
+      expect(
+        getByText(ONBOARDING_STEPS_TEXTS[5].microchip)
+      ).toBeInTheDocument();
+      expect(
+        getByText(ONBOARDING_STEPS_TEXTS[5].documents)
+      ).toBeInTheDocument();
+      expect(
+        getByText(ONBOARDING_STEPS_TEXTS[5].protection)
+      ).toBeInTheDocument();
+    }
+  );
 });
 
-function getRenderer({
-  documentationStatus = "none",
-  id = "test-id",
-  name = DEFAULT_NAME,
-}: Partial<ComponentProps<typeof OnboardingDialog>> = {}) {
-  return render(
-    <OnboardingDialog
-      id={id}
-      name={name}
-      documentationStatus={documentationStatus}
-    />
+function getRenderer() {
+  return render(<OnboardingDialog />);
+}
+
+function useMockedDocumentationStatus(status: string) {
+  (petProfileLayoutViewModel.usePetProfileContext as jest.Mock).mockReturnValue(
+    {
+      petInfo: {
+        name: DEFAULT_NAME,
+        documentationStatus: status,
+      },
+    }
   );
 }
