@@ -12,7 +12,7 @@ exports[`Header should match snapshot to assure that the component is being rend
         class="flex items-center"
       >
         <h1
-          class="font-bold text-neutral-950 lg:text-[44px] text-[32px]/[36px]"
+          class="font-bold m-0 text-neutral-950 lg:text-[44px] text-[32px]/[36px]"
         >
           Test Title
         </h1>
