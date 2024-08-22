@@ -23,16 +23,17 @@ function getFilteredQueryParams() {
       filteredParams.push({ key, value });
     }
   });
-  
+
   return filteredParams;
 }
 
 function getUrlParamString() {
   const paramsArr = getFilteredQueryParams();
-  const parts = paramsArr.map(param => `${encodeURIComponent(param.key)}=${ 
-  encodeURIComponent(param.value)}`)
-  const url = parts.join('&');
-  return url;
+  // eslint-disable-next-line arrow-parens
+  const parts = paramsArr.map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`);
+
+  const urlString = parts.join('&');
+  return urlString;
 }
 
 function isValidZipcode(code) {
