@@ -2,7 +2,7 @@ import { Text } from "../design-system";
 
 export const CheckoutFooter = () => {
   return (
-    <footer>
+    <footer className="mt-xxlarge">
       <Text>
         Pet parents who register their microchips with PetPlace, powered by
         24Petwatch, will receive our standard pet protection services, which

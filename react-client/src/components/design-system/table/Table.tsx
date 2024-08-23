@@ -90,7 +90,7 @@ export const Table = <T,>({
       if (!paginationProps) return null;
 
       return (
-        <div className="flex w-full border-t border-solid border-neutral-300 p-base">
+        <div className="flex w-full border-0 border-t border-solid border-neutral-300 p-base">
           <ControlledPagination {...paginationProps} />
         </div>
       );

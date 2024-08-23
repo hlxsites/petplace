@@ -93,7 +93,12 @@ export type PetInfo = {
 };
 
 export type MissingStatus = "missing" | "found";
-export type DocumentationStatus = "none" | "sent" | "approved" | "failed" | "in progress";
+export type DocumentationStatus =
+  | "none"
+  | "sent"
+  | "approved"
+  | "failed"
+  | "inProgress";
 
 export type LostPetUpdate = {
   date: number;

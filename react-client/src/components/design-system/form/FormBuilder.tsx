@@ -9,6 +9,7 @@ import {
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
+import { Title } from "../text/Title";
 import Input from "./Input";
 import { InputBoolean } from "./InputBoolean";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
@@ -231,12 +232,18 @@ export const FormBuilder = ({
           onChange={(newValue) => {
             setValues((prev) => ({ ...prev, [id]: newValue }));
           }}
+          rows={inputProps.rows}
           value={(values?.[id] as string) || ""}
         />
       );
     }
 
-    if (type === "text" || type === "number") {
+    if (
+      type === "email" ||
+      type === "text" ||
+      type === "number" ||
+      type === "password"
+    ) {
       return (
         <Input
           {...commonProps}
@@ -256,6 +263,7 @@ export const FormBuilder = ({
 
   function renderSection({
     children,
+    className,
     description,
     id,
     shouldDisplay,
@@ -263,12 +271,16 @@ export const FormBuilder = ({
   }: ElementSection) {
     if (!matchConditionExpression(shouldDisplay || true)) return;
     return (
-      <section className="my-small" id={id}>
-        {!!title && <h2 className="text-h2">{title}</h2>}
+      <section className={classNames("my-small", className)} id={id}>
+        {!!title && <Title level="h2">{title}</Title>}
         {!!description && (
           <p className="text-lg text-muted-foreground">{description}</p>
         )}
-        <div className="mt-xsmall space-y-xsmall">
+        <div
+          className={classNames("space-y-base", {
+            "mt-base": !!title || !!description,
+          })}
+        >
           {children.map(renderElement)}
         </div>
       </section>

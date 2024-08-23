@@ -108,7 +108,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
             <div className={FORM_STYLES.inputRoot}>
               <input
                 autoFocus={autoFocus}
-                className={clsx(FORM_STYLES.input, {
+                className={clsx(FORM_STYLES.input, "border-none text-base", {
                   [FORM_STYLES.inputError]: hasError,
                 })}
                 placeholder={placeholder ?? "Select..."}
@@ -121,7 +121,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
             <ul
               {...getMenuProps({ ref: listRef })}
               className={clsx(
-                "shadow absolute z-50 ml-[1px] mt-[-10px] max-h-60 w-[calc(100%-2px)] flex-row overflow-scroll rounded-b-md border border-t-0 bg-neutral-white p-0",
+                "shadow absolute z-50 ml-[1px] mt-[-10px] max-h-60 w-[calc(100%-2px)] flex-row overflow-scroll rounded-b-md border border-t-0 border-solid bg-neutral-white p-0",
                 {
                   hidden: !(isOpen && filterOptions.length),
                 }
@@ -195,7 +195,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       return (
         <li
           className={clsx(
-            "px-4 absolute left-0 top-0 flex w-full cursor-pointer items-center",
+            "px-4 absolute left-0 top-0 flex w-full cursor-pointer items-center text-base hover:bg-neutral-50",
             {
               "text-primary": isActive || isHighlighted,
               "bg-accent": isHighlighted,

@@ -35,7 +35,7 @@ function useTitleBase({
 }: TitleVariableProps) {
   const commonClassNames = useTextCommonStyles({ ...rest, color });
 
-  const className = classNames("font-bold", commonClassNames, {
+  const className = classNames("font-bold m-0", commonClassNames, {
     "lg:text-[44px] text-[32px]/[36px]": level === "h1",
     "lg:text-[32px]/[36px] text-[24px]/[28px]": level === "h2",
     "lg:text-[24px]/[28px] text-[18px]/[20px]": level === "h3",

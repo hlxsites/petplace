@@ -36,3 +36,13 @@ export function plural({ countFrom, one, other, zero }: PluralProps) {
   }
   return other;
 }
+
+export function getValueFromPrice(price: string): number {
+  const cleanedPrice = price.replace(/[^0-9.]+/g, '');
+  const value = Number(cleanedPrice);
+  return isNaN(value) ? 0 : value;
+}
+
+export function formatPrice(value: number): string {
+  return value.toFixed(2);
+}

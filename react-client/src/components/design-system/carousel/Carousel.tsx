@@ -44,7 +44,6 @@ export const Carousel = ({ ariaLabel, items }: CarouselProps) => {
     <div
       aria-label={ariaLabel}
       className="relative grid w-full place-items-center"
-      role="region"
       tabIndex={0}
     >
       <div className="flex items-center">
