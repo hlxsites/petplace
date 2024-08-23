@@ -76,6 +76,7 @@ export const THEME_COLORS = {
   white: "#ffffff",
   black: "#000000",
   transparent: "transparent",
+  inherit: "inherit",
 };
 
 export const CUSTOM_THEME: Config["theme"] = {
