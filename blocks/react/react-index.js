@@ -93,7 +93,7 @@ __p += '`),Ge&&(ee+=`' +
 }
 `;else if(Dt.test(Se))throw new ke(u);ee=(B?ee.replace(ac,""):ee).replace(es,"$1").replace(G1,"$1;"),ee="function("+(Se||"obj")+`) {
 `+(Se?"":`obj || (obj = {});
-`)+"var __t, __p = ''"+(O?", __e = _.escape":"")+(B?`, __j = Array.prototype.join;
+`)+"var __t, __p = ''"+(O?", __e = _.escape":"")+(V?`, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 `:`;
 `)+ee+`return __p

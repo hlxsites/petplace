@@ -5,9 +5,8 @@ import {
   PET_WATCH_OFFERS,
   PET_WATCH_TAGS,
 } from "~/routes/my-pets/:petId/utils/petServiceConstants";
-import { PET_WATCH_OPTIONS } from "~/routes/my-pets/:petId/utils/petWatchConstants";
 import { Button, Card, Drawer, Tag, Text } from "../../design-system";
-import { PetCardPetWatch } from "../PetCardPetWatch";
+import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
 
 type PetWatchSectionProp = {
   petServiceStatus: PetServiceTypes;
@@ -50,26 +49,7 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
         onClose={onCloseDrawer}
         width={440}
       >
-        <div>
-          <img className="pb-small" src={ASSET_IMAGES.petWatchLogo} />
-          <Text color="tertiary-600" size="base">
-            Here is all the available benefits and perks
-          </Text>
-          <div className="grid gap-small pt-large">
-            {PET_WATCH_OPTIONS.map(
-              ({ imgBrand, imgLabel, isDisabled, label, labelStatus }) => (
-                <PetCardPetWatch
-                  imgBrand={imgBrand}
-                  imgLabel={imgLabel}
-                  isDisabled={isDisabled}
-                  key={label}
-                  label={label}
-                  labelStatus={labelStatus}
-                />
-              )
-            )}
-          </div>
-        </div>
+        <PetWatchDrawerServiceContent />
       </Drawer>
     </>
   );
