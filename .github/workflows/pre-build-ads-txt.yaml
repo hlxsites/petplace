@@ -1,0 +1,58 @@
+name: Pre-build the ads json from sharepoint and convert to txt file
+
+on:
+  repository_dispatch:
+    types:
+      - resource-published
+  pull_request:
+    paths:
+      - '.github/ci/**'
+      - '.github/workflows/pre-build-ads-txt.yaml'
+
+env:
+  TARGETDIRECTORY: "../.."
+
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+        # The bot uses a PAT token currently assigned to ramboz to commit the changes.
+        # To change this token, a new personal access token must be created from:
+        # https://github.com/settings/tokens
+        # The token is then stored in the secrets of the this repository.
+        # See https://github.com/hlxsites/petplace/settings/secrets/actions
+        token: ${{ secrets.BOT_ACCESS_TOKEN }}
+
+    - run: |
+        echo "Status: ${{ github.event.client_payload.status }}"
+        echo "Path: ${{ github.event.client_payload.path }}"
+
+    - name: Configure git
+      run: |
+        git config user.name "Petplace - GitHub Action - Generate Ads File"
+        git config user.email "<>"
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      working-directory: ./.github/ci
+      run: npm install
+
+    - name: Generate the ads.txt file
+      working-directory: ./.github/ci
+      run:  node build-ads-file.js ${{ env.TARGETDIRECTORY }}
+
+    - name: Commit and push changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: 'ads-*.txt'
+        commit_message: "chore: update the ads.txt file"
