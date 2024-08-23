@@ -82,6 +82,12 @@ describe("<Button />", () => {
     );
   });
 
+  it("should have tertiary variant classes", () => {
+    getRenderer({ variant: "tertiary" });
+
+    expect(getByRole("button")).toHaveClass("bg-orange-100  text-orange-500");
+  });
+
   it("should not be full width by default", () => {
     getRenderer();
     expect(getByRole("button")).not.toHaveClass("w-full");

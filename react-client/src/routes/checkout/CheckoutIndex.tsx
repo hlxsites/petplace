@@ -1,9 +1,14 @@
-import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
+import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
 import { CheckoutHeader } from "~/components/Membership/CheckoutHeader";
 import { MembershipHeader } from "~/components/Membership/sections/MembershipHeader";
 import { MembershipOfferSection } from "~/components/Membership/sections/MembershipOfferSection";
+import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
+import { useLocation } from "react-router-dom";
 
 export const CheckoutIndex = () => {
+  const { pathname } = useLocation();
+  const isLandingPage = pathname === "/checkout";
+
   return (
     <div className="min-h-[100dvh] bg-neutral-50">
       <CheckoutHeader />
@@ -13,8 +18,9 @@ export const CheckoutIndex = () => {
           <MembershipOfferSection />
         </div>
 
-        <CheckoutFooter />
+        <CheckoutInfoSection isLandingPage={isLandingPage} />
       </main>
+      <CheckoutFooter />
     </div>
   );
 };
