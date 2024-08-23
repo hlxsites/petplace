@@ -1,4 +1,4 @@
-name: Pre-build the seach index and update RSS/Atom feeds
+name: Pre-build the search index and update RSS/Atom feeds
 
 on:
   repository_dispatch:
@@ -36,7 +36,7 @@ jobs:
 
     - name: Configure git
       run: |
-        git config user.name "Petplace - GitHub Action"
+        git config user.name "Petplace - GitHub Action - Generate Search Index"
         git config user.email "<>"
 
     - uses: actions/setup-node@v3
