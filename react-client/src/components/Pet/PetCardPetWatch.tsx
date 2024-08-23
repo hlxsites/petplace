@@ -3,11 +3,13 @@ import { Button, Icon, IconButton, Text } from "../design-system";
 import { PetCardOption } from "./PetCardOption";
 
 export type PetCardPetWatchProps = {
+  id?: string;
   label: string;
   labelStatus?: string;
   imgBrand?: string;
   imgLabel?: string;
   isDisabled?: boolean;
+  onClick?: () => void;
 };
 
 export const PetCardPetWatch = ({
@@ -16,6 +18,7 @@ export const PetCardPetWatch = ({
   imgBrand,
   imgLabel,
   isDisabled,
+  onClick,
 }: PetCardPetWatchProps) => {
   return (
     <PetCardOption
@@ -72,6 +75,7 @@ export const PetCardPetWatch = ({
           size: 16,
         }}
         variant="link"
+        onClick={onClick}
       />
     );
   }
