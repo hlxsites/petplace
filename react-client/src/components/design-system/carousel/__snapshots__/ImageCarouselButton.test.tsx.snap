@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageCarouselButton should match snapshot of both enabled and disable button 1`] = `
+<div>
+  <button
+    aria-label="Previous Slide"
+    class="m-0 rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent btn-square mx-1 min-w-0 px-medium py-0"
+    disabled=""
+    type="button"
+  >
+    <div
+      class="icon w-base lg:w-large text-neutral-400 p-[4px] rounded-full border-[0.57px] border-text-color-supporting"
+      style="height: 15px; width: 15px;"
+    >
+      <svg
+        data-file-name="SvgChevronLeftIcon"
+      />
+    </div>
+  </button>
+</div>
+`;
+
+exports[`ImageCarouselButton should match snapshot of both enabled and disable button 2`] = `
+<div>
+  <button
+    aria-label="Previous Slide"
+    class="m-0 rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent btn-square mx-1 min-w-0 px-medium py-0"
+    type="button"
+  >
+    <div
+      class="icon w-base lg:w-large text-orange-300-contrast p-small bg-white rounded-full border-[0.5px] border-solid border-text-color-supporting -mx-[4px]"
+      style="height: 25px; width: 25px;"
+    >
+      <svg
+        data-file-name="SvgChevronLeftIcon"
+      />
+    </div>
+  </button>
+</div>
+`;

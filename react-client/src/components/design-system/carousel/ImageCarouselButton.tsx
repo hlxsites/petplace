@@ -4,11 +4,11 @@ import { IconKeys } from "../icon/Icon";
 
 type ImageCarouselButtonProps = {
   type: IconButtonTypes;
-  disabled: boolean;
+  disabled?: boolean;
   onClick: () => void;
 };
 
-type IconButtonTypes = "next" | "previous";
+export type IconButtonTypes = "next" | "previous";
 
 type RenderedIconButton = Record<
   IconButtonTypes,
@@ -17,7 +17,7 @@ type RenderedIconButton = Record<
     iconProps: { size: number; className: string };
     label: string;
     variant: ButtonProps["variant"];
-    disabled: boolean;
+    disabled?: boolean;
   }
 >;
 
@@ -50,7 +50,7 @@ export const ImageCarouselButton = ({
       next: {
         icon: "chevronRight",
         iconProps,
-        label: "Previous Slide",
+        label: "Next Slide",
         variant: "link",
         disabled,
       },
