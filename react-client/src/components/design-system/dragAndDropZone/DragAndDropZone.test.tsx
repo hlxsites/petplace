@@ -7,6 +7,7 @@ const { getByText } = screen;
 
 const DEFAULT_CHILDREN = "Test children";
 const DEFAULT_CLASSES = "rounded-xl border-dashed";
+const DRAG_OVER_CLASSES = "border-2";
 
 describe("<DragAndDropZone />", () => {
   it.each(["A children", "Another children"])(
@@ -32,25 +33,32 @@ describe("<DragAndDropZone />", () => {
     }
   );
 
-  it("should render drag and drop styles", () => {
-    const dragStyles = "test-class";
-    getRenderer({ dragStyles });
+  it("should render correct class on drag over event", () => {
+    getRenderer();
 
     const dropZone = getByText(DEFAULT_CHILDREN);
-
-    expect(dropZone).not.toHaveClass(dragStyles);
+    expect(dropZone).not.toHaveClass(DRAG_OVER_CLASSES);
 
     fireEvent.dragOver(dropZone);
-    expect(dropZone).toHaveClass(dragStyles);
+    expect(dropZone).toHaveClass(DRAG_OVER_CLASSES);
+  });
+
+  it("should render correct class on drag leave event", () => {
+    getRenderer();
+    const dropZone = getByText(DEFAULT_CHILDREN);
+    fireEvent.dragOver(dropZone);
 
     fireEvent.dragLeave(dropZone);
-    expect(dropZone).not.toHaveClass(dragStyles);
+    expect(dropZone).not.toHaveClass(DRAG_OVER_CLASSES);
+  });
 
+  it("should render correct class on drag drop event", () => {
+    getRenderer();
+    const dropZone = getByText(DEFAULT_CHILDREN);
     fireEvent.dragOver(dropZone);
-    expect(dropZone).toHaveClass(dragStyles);
 
     fireEvent.drop(dropZone);
-    expect(dropZone).not.toHaveClass(dragStyles);
+    expect(dropZone).not.toHaveClass(DRAG_OVER_CLASSES);
   });
 
   it("should call handleFiles callback correctly", () => {
