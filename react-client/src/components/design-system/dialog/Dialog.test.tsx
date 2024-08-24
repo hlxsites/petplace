@@ -34,14 +34,14 @@ describe("Dialog", () => {
 });
 
 function getRenderer({
-  title = "Test title",
   children = "Test children",
   id = "SampleId",
   isOpen = true,
   onClose = jest.fn(),
+  title = "Test title",
 }: Partial<ComponentProps<typeof Dialog>> = {}) {
   return render(
-    <Dialog title={title} onClose={onClose} id={id} isOpen={isOpen}>
+    <Dialog id={id} isOpen={isOpen} onClose={onClose} title={title}>
       {children}
     </Dialog>
   );

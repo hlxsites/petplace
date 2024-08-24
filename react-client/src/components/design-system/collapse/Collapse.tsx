@@ -13,11 +13,13 @@ type CollapseProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   title: ReactNode;
+  isLocked?: boolean;
 };
 
 export const Collapse = ({
   children,
   isOpen,
+  isLocked,
   title,
   ...rest
 }: CollapseProps) => {
@@ -36,22 +38,26 @@ export const Collapse = ({
   return (
     <Card padding="base">
       <Collapsible.Root {...rest} data-testid="collapse" open={isOpen}>
-        <Collapsible.Trigger
-          className={classNames(
-            "flex w-full justify-between bg-transparent p-0 text-black hover:bg-transparent focus:bg-transparent focus:outline-none active:bg-transparent"
-          )}
-        >
-          {title}
-          <Icon
-            display="chevronDown"
+        {isLocked ? (
+          <div>{title}</div>
+        ) : (
+          <Collapsible.Trigger
             className={classNames(
-              "transition-300 text-orange-300-contrast transition-all",
-              {
-                "rotate-180 transform": isOpen,
-              }
+              "flex w-full justify-between rounded-none bg-transparent p-0 text-black hover:bg-transparent focus:bg-transparent focus:outline-none active:bg-transparent"
             )}
-          />
-        </Collapsible.Trigger>
+          >
+            {title}
+            <Icon
+              display="chevronDown"
+              className={classNames(
+                "transition-300 text-orange-300-contrast transition-all",
+                {
+                  "rotate-180 transform": isOpen,
+                }
+              )}
+            />
+          </Collapsible.Trigger>
+        )}
         <Collapsible.Content forceMount>
           <animated.div data-testid="CollapseContentWrapper" style={style}>
             <div ref={measureRef}>{children}</div>

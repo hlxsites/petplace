@@ -1,10 +1,10 @@
 import { classNames } from "~/util/styleUtil";
 
-interface BackdropProps {
+type BackdropProps = {
   isClosing?: boolean;
   isOpen: boolean;
   onClick?: () => void;
-}
+};
 
 export const Backdrop = ({ isClosing, isOpen, onClick }: BackdropProps) => {
   if (!isOpen) return null;

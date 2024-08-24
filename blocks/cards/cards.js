@@ -1,10 +1,10 @@
 import { createOptimizedPicture, decorateIcons, toClassName } from '../../scripts/lib-franklin.js';
 import { getCategories, getPlaceholder } from '../../scripts/scripts.js';
 
-const dateFormatter = new Intl.DateTimeFormat(document.documentElement.lang, { month: 'long', day: 'numeric', year: 'numeric' });
 const categories = await getCategories();
 let isAuthorCard = false;
 let isEager = true;
+let dateFormatter;
 
 async function buildPost(post, eager) {
   const postCategories = post.category ? post.category.split(',') : [];
@@ -42,7 +42,7 @@ async function buildPost(post, eager) {
             </span>
             <span class="card-date">
               <span class="icon icon-calendar"></span>
-              <time itemprop="datePublished" datetime="${postDate.toISOString().substring(0, 10)}">${dateFormatter.format(postDate)}</time>
+              <time itemprop="datePublished" datetime="${postDate.toISOString().substring(0, 10)}"></time>
             </span>
           </p>` : ''}
           <div class="card-cta">Read Article</div>
@@ -50,6 +50,12 @@ async function buildPost(post, eager) {
       </a>
     </div>
   </a>`;
+  window.setTimeout(() => {
+    if (!dateFormatter) {
+      dateFormatter = new Intl.DateTimeFormat(document.documentElement.lang, { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+    postCard.querySelector('time').textContent = dateFormatter.format(postDate);
+  });
   postCard.querySelector('img').setAttribute('itemprop', 'image');
   return postCard;
 }

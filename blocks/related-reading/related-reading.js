@@ -28,16 +28,6 @@ async function getAllParentCategories(category) {
   return parentCategories;
 }
 
-function ifArticleBelongsToCategories(article, categories) {
-  const articleCategories = article.category !== '0'
-    ? article.category.split(',').map((c) => c.trim().toLowerCase())
-    : article.path.split('/').splice(-2, 1);
-  return categories.some(
-    (c) => articleCategories.includes(c.Category.toLowerCase())
-      || articleCategories.map((ac) => toClassName(ac)).includes(c.Slug),
-  );
-}
-
 function createArticleDetails(block, article) {
   // the article's thumbnail, which will link to the article's page
   const thumbnail = document.createElement('div');
@@ -86,45 +76,38 @@ async function createNavigation(block) {
   if (!categoryInfo) return false;
 
   const parentCategories = await getAllParentCategories(categoryInfo);
-  const categories = [categoryInfo, ...parentCategories];
+  const allCategories = [categoryInfo, ...parentCategories];
+  const mainCategory = allCategories[allCategories.length - 1];
 
   // Get all articles in that category
-  const articles = await ffetch(
-    `${window.hlx.contentBasePath}/article/query-index.json`,
-  )
-    .sheet('article')
+  const articles = await ffetch(`${window.hlx.contentBasePath}/article/categories-query-index.json`)
+    .sheet(mainCategory.Slug.substring(0, 25)) // sharepoint limits sheet name length
     .chunks(500)
-    .filter((article) => ifArticleBelongsToCategories(article, categories))
     .all();
 
-  const parentCategoryArticlesMap = new Map();
-  parentCategories.forEach((c) => parentCategoryArticlesMap.set(c.Slug, []));
-
+  let tmpCategory;
+  const categoriesMap = new Map();
   // eslint-disable-next-line no-restricted-syntax
-  for await (const [index, article] of articles.entries()) {
-    if (index === 3) break;
-    if (ifArticleBelongsToCategories(article, parentCategories)) {
-      if (parentCategoryArticlesMap.has(article['category slug'])) {
-        parentCategoryArticlesMap.get(article['category slug']).push(article);
-      }
+  for await (const article of articles.values()) {
+    [tmpCategory] = article.path.split('/').slice(2, -1).reverse();
+    if (!categoriesMap[tmpCategory]) {
+      categoriesMap[tmpCategory] = [];
     }
+    categoriesMap[tmpCategory].push(article);
   }
 
-  const parentCategory = parentCategories.find((c) => {
-    const parentCategoryArticles = parentCategoryArticlesMap.get(c.Slug);
-    return parentCategoryArticles.length;
+  const orderedArticles = allCategories.reduce((list, c) => {
+    list.push(...(categoriesMap[c.Slug] || []));
+    return list;
+  }, []);
+
+  if (!orderedArticles.length) {
+    return false;
+  }
+
+  orderedArticles.slice(0, 3).forEach((article) => {
+    createArticleDetails(block, article);
   });
-
-  if (!parentCategory) return false;
-
-  if (parentCategory) {
-    const parentCategoryArticles = parentCategoryArticlesMap.get(
-      parentCategory.Slug,
-    );
-    parentCategoryArticles.forEach((article) => {
-      createArticleDetails(block, article);
-    });
-  }
 
   return true;
 }

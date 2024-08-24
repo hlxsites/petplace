@@ -150,7 +150,7 @@ window.addEventListener('message', (ev) => {
 /**
  * @param {HTMLDivElement} block
  */
-export default function decorate(block) {
+export default async function decorate(block) {
   const url = new URL(block.querySelector('a').href.replace(/%5C%5C_/, '_'));
 
   block.textContent = '';
@@ -166,7 +166,7 @@ export default function decorate(block) {
       observer.unobserve(block);
     });
     observer.observe(block);
-  } else {
-    loadEmbed(block, service, url);
+    return Promise.resolve();
   }
+  return loadEmbed(block, service, url);
 }

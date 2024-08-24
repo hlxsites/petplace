@@ -9,12 +9,12 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
       class="max-h-xxxlarge mb-small flex w-full items-center justify-between"
     >
       <h1
-        class="font-bold lg:text-[44px] text-[32px]/[36px] text-neutral-950"
+        class="font-bold text-neutral-950 lg:text-[44px] text-[32px]/[36px]"
       >
         Test pet card info
       </h1>
       <button
-        class="rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 hidden lg:block"
+        class="rounded-full border font-semibold focus:outline-none items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white hidden lg:block"
         type="button"
       >
         <div
@@ -28,7 +28,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
         Report lost pet
       </button>
       <button
-        class="rounded-full border font-semibold outline outline-transparent outline-2 outline-offset-2 items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white focus:outline-neutral-100 block lg:hidden"
+        class="rounded-full border font-semibold focus:outline-none items-center justify-center px-base py-small lg:px-large text-base lg:py-medium bg-white border-neutral-700 text-neutral-700 hover:bg-neutral-100 focus:bg-white block lg:hidden"
         type="button"
       >
         <div
@@ -148,7 +148,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block text-black font-raleway font-bold"
+                  class="inline-block font-raleway font-bold"
                 >
                   Age
                   :
@@ -164,7 +164,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block text-black font-raleway font-bold"
+                  class="inline-block font-raleway font-bold"
                 >
                   Species
                   :
@@ -180,7 +180,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block text-black font-raleway font-bold"
+                  class="inline-block font-raleway font-bold"
                 >
                   Sex
                   :
@@ -196,7 +196,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block text-black font-raleway font-bold"
+                  class="inline-block font-raleway font-bold"
                 >
                   Breed
                   :
@@ -212,7 +212,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block text-black font-raleway font-bold"
+                  class="inline-block font-raleway font-bold"
                 >
                   DOB
                   :
@@ -228,7 +228,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block text-black font-raleway font-bold"
+                  class="inline-block font-raleway font-bold"
                 >
                   Mixed breed
                   :
@@ -244,7 +244,7 @@ exports[`PetCardInfo should match snapshot to assure that the component is being
                 class="inline-block text-black font-franklin font-normal text-sm leading-5"
               >
                 <span
-                  class="inline-block text-black font-raleway font-bold"
+                  class="inline-block font-raleway font-bold"
                 >
                   Spayed/Neutered
                   :

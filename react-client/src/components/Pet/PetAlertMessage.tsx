@@ -1,11 +1,26 @@
-import { Button, ButtonProps, Card, Icon, Text, Title } from "../design-system";
+import {
+  Button,
+  ButtonProps,
+  Card,
+  Icon,
+  IconKeys,
+  Text,
+  Title,
+} from "../design-system";
 
 type AlertMessageProps = {
+  icon?: IconKeys;
+  message: string;
   onClick?: () => void;
-  petName: string;
+  title: string;
 };
 
-export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
+export const PetAlertMessage = ({
+  icon,
+  message,
+  onClick,
+  title,
+}: AlertMessageProps) => {
   return (
     <Card
       backgroundColor="bg-blue-100"
@@ -15,18 +30,17 @@ export const PetAlertMessage = ({ onClick, petName }: AlertMessageProps) => {
       <div className="grid gap-small p-base">
         <div className="flex justify-between">
           <div className="flex gap-[10px]">
-            <Icon className="text-blue-500" display="stethoscope" />
+            <Icon className="text-blue-500" display={icon ?? "stethoscope"} />
             <Title color="blue-500" level="h4">
-              Secure Your Pet's Future
+              {title}
             </Title>
           </div>
           {renderGetQuoteButton({ className: "hidden h-[30px] lg:flex" })}
         </div>
         <div className="pl-xxlarge">
-          <Text
-            color="blue-500"
-            size="base"
-          >{`Get a personalized insurance quote and ensure the best care for ${petName}`}</Text>
+          <Text color="blue-500" size="base">
+            {message}
+          </Text>
         </div>
         {renderGetQuoteButton({
           className: "h-[30px] w-full lg:hidden",

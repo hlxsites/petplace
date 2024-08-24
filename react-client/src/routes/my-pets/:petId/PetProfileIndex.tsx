@@ -1,76 +1,51 @@
-import { Outlet } from "react-router-dom";
-import { Button, Card, Text } from "~/components/design-system";
+import { Outlet, useSearchParams } from "react-router-dom";
 import { Header } from "~/components/design-system/header/Header";
-import { PetAlertMessage } from "~/components/Pet/PetAlertMessage";
-import { PetCard } from "~/components/Pet/PetCard";
-import { PetCardInfo } from "./components/PetCardInfo";
+import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
+import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
+import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
+import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
+import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
+import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
+import { ReportLostPetButton } from "./components/ReportLostPetButton";
+import { OnboardingDialog } from "./onboarding/OnboardingDialog";
+import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 
 export const PetProfileIndex = () => {
+  const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
-  const { petInfo } = viewModel;
+  const { petInfo, petServiceStatus } = viewModel;
+
+  const displayOnboarding = !!searchParams.get("onboarding");
 
   return (
     <>
-      <div className="pb-xxlarge">
-        <PetAlertMessage petName={petInfo.name} />
-      </div>
+      <PetAlertSection />
       <Header
         pageTitle="Pet Profile"
         primaryElement={renderActionsButton()}
         shouldRenderBackButton
       />
-      <div className="grid gap-large">
-        <PetCard
-          classNames={{ root: "lg:flex" }}
-          img={petInfo.img}
-          name={petInfo.name}
-          variant="lg"
-        >
-          <PetCardInfo {...petInfo} name={petInfo.name} />
-        </PetCard>
-        {renderPetInsuranceSection()}
+      <div className="flex flex-col gap-large">
+        <PetCardSection petInfo={petInfo} />
+        <AdvertisingSection />
+        {petServiceStatus && (
+          <PetWatchSection petServiceStatus={petServiceStatus} />
+        )}
+        <PetInsuranceSection />
+        <PetLostUpdatesSection {...petInfo} />
       </div>
       <Outlet context={viewModel} />
+      {displayOnboarding && <OnboardingDialog />}
     </>
   );
+
+  function renderActionsButton() {
+    return (
+      <>
+        <PetActionsDropdownMenu className="hidden lg:flex" />
+        <ReportLostPetButton className="flex lg:hidden" />
+      </>
+    );
+  }
 };
-
-function renderActionsButton() {
-  return (
-    <>
-      <Button
-        className="hidden lg:block"
-        iconLeft="apps"
-        variant="secondary"
-        iconProps={{ className: "text-brand-secondary" }}
-      >
-        Actions
-      </Button>
-      <Button
-        className="block lg:hidden"
-        iconLeft="shieldGood"
-        iconProps={{ className: "text-brand-secondary" }}
-        variant="secondary"
-      >
-        Report lost pet
-      </Button>
-    </>
-  );
-}
-
-function renderPetInsuranceSection() {
-  return (
-    <Card>
-      <div className="grid grid-cols-1 items-center justify-items-center gap-large p-large md:items-start md:justify-items-start">
-        <Text fontFamily="raleway" fontWeight="bold" size="lg">
-          See pet's insurance in MyPetHealth
-        </Text>
-
-        <Button fullWidth={true} variant="secondary">
-          View insurance details
-        </Button>
-      </div>
-    </Card>
-  );
-}

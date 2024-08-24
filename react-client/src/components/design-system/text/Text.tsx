@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { DisplayClasses } from "~/routes/types/styleTypes";
 import { classNames } from "~/util/styleUtil";
 import {
   TextCommonStyleProps,
@@ -6,20 +7,15 @@ import {
 } from "./useTextCommonStyles";
 
 type StyleProps = TextCommonStyleProps & {
-  color?:
-    | "black"
-    | "neutral"
-    | "primary"
-    | "secondary"
-    | "tertiary"
-    | "blue-500"
-    | "inherit";
+  display?: DisplayClasses;
+  inherit?: boolean;
   fontFamily?: "franklin" | "raleway" | "roboto";
-  fontWeight?: "normal" | "bold";
-  size?: "xlg" | "lg" | "base" | "sm" | "xs" | "inherit";
+  fontWeight?: "normal" | "bold" | "semibold" | "medium";
+  size?: "xxlg" | "xlg" | "lg" | "base" | "sm" | "xs";
+  textDecoration?: "none" | "line-through" | "underline";
 };
 
-type TextProps = StyleProps & {
+export type TextProps = StyleProps & {
   ariaHidden?: boolean;
   ariaLabel?: string;
   children: ReactNode;
@@ -52,31 +48,54 @@ export const Text = ({
 };
 
 function useTextBase({
-  color = "black",
-  fontFamily = "franklin",
-  fontWeight = "normal",
-  size = "xs",
+  color: colorProp,
+  display = "inline-block",
+  fontFamily: fontFamilyProp,
+  fontWeight: fontWeightProp,
+  inherit,
+  size: sizeProp,
+  textDecoration: textDecorationProp,
   ...rest
 }: StyleProps) {
-  const commonClassName = useTextCommonStyles(rest);
+  const propValueConsideringInherit = <T extends string>(
+    prop: T | undefined,
+    defaultProp?: T
+  ): T | undefined => {
+    // If prop is defined always use it
+    if (prop) return prop;
 
-  const className = classNames("inline-block", commonClassName, {
-    "text-black": color === "black",
-    "text-blue-500": color === "blue-500",
-    "text-neutral-950": color === "neutral",
-    "text-primary-900": color === "primary",
-    "text-secondary-700": color === "secondary",
-    "text-tertiary-600": color === "tertiary",
+    // If prop is not defined and inherit is true, return undefined
+    if (inherit) return undefined;
+
+    // If prop is not defined and inherit is false, return defaultProp
+    return defaultProp;
+  };
+
+  const color = propValueConsideringInherit(colorProp, "black");
+  const fontFamily = propValueConsideringInherit(fontFamilyProp, "franklin");
+  const fontWeight = propValueConsideringInherit(fontWeightProp, "normal");
+  const size = propValueConsideringInherit(sizeProp, "xs");
+  const textDecoration = propValueConsideringInherit(textDecorationProp);
+
+  const commonClassName = useTextCommonStyles({ ...rest, color });
+
+  const className = classNames(display, commonClassName, {
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
     "font-roboto": fontFamily === "roboto",
     "font-normal": fontWeight === "normal",
     "font-bold": fontWeight === "bold",
+    "font-semibold": fontWeight === "semibold",
+    "font-medium": fontWeight === "medium",
+    "text-4xl leading-10": size === "xxlg",
     "text-xl leading-8": size === "xlg",
     "text-lg leading-7": size === "lg",
     "text-base leading-6": size === "base",
     "text-sm leading-5": size === "sm",
     "text-xs leading-4": size === "xs",
+    "line-through": textDecoration === "line-through",
+    "no-underline": textDecoration === "none",
+    underline: textDecoration === "underline",
   });
 
   return { className };

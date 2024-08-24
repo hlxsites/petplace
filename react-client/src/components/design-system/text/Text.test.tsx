@@ -86,17 +86,33 @@ describe("Text", () => {
   });
 
   it.each([
-    ["black", "text-black"],
-    ["neutral", "text-neutral-950"],
-    ["primary", "text-primary-900"],
-    ["secondary", "text-secondary-700"],
-    ["tertiary", "text-tertiary-600"],
-    ["blue-500", "text-blue-500"],
-  ])("should render component with color %p", (color, expected) => {
-    // @ts-expect-error - ignoring for test purposes only
-    getRenderer({ color });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(expected);
-  });
+    "black",
+    "neutral-950",
+    "primary-900",
+    "secondary-700",
+    "tertiary-600",
+    "blue-500",
+    "green-500",
+  ] satisfies ComponentProps<typeof Text>["color"][])(
+    "should render component with color %p",
+    (color) => {
+      getRenderer({ color });
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${color}`);
+    }
+  );
+
+  it.each([
+    ["none", "no-underline"],
+    ["line-through", "line-through"],
+    ["underline", "underline"],
+  ])(
+    "should render component with text decoration: %s",
+    (textDecoration, expected) => {
+      // @ts-expect-error - ignoring for test purposes only
+      getRenderer({ textDecoration });
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`);
+    }
+  );
 });
 
 function getRenderer({

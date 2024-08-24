@@ -168,7 +168,10 @@ body.gen-ai .section.genai-search-container .default-content-wrapper h1 {
   }
 }
 
-body.gen-ai .section.genai-search-container .default-content-wrapper h2 {
+body.gen-ai
+  .section.genai-search-container
+  .default-content-wrapper
+  h2:not(.action-cta-title) {
   font-size: var(--heading-font-size-xl);
   line-height: 1.1;
   font-weight: 600;
@@ -454,8 +457,11 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button {
 }
 
 .genai-search-container .search-card .divider {
-  grid-row: 2;
-  grid-column: 1;
+  grid-column: span 2;
+
+  @media (min-width: 1024px) {
+    grid-column: 1;
+  }
 }
 
 .genai-search-container .search-card h1::before,
@@ -463,13 +469,11 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button {
   display: none;
 }
 
-.genai-search-container .search-card h4 {
-  grid-row: 3;
+.genai-search-container .search-card h4:not(.slideshow-title) {
   grid-column: 1;
 }
 
 .genai-search-container .search-card .search-card-buttons {
-  grid-row: 4;
   grid-column: 1;
   cursor: pointer;
 }
@@ -554,7 +558,9 @@ article ol {
   list-style-position: unset;
 }
 
+.genai-search-container .search-card > h3,
 .genai-search-container .search-card > h4 {
+  grid-column: 1;
   margin-top: 15px !important;
   /* margin-bottom: 0px !important; */
   padding-bottom: 0px;
@@ -598,14 +604,15 @@ article ol {
   grid-row: 2;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: auto;
-  margin: 1.75rem 0;
+  margin: 0 0 1.75rem;
   position: relative;
   overflow: hidden;
   touch-action: none;
   @media (min-width: 1024px) {
     max-width: 480px;
-    /* margin: 0; */
+    margin-top: 0;
   }
 }
 
@@ -618,6 +625,15 @@ article ol {
     z-index: 1;
     height: 100%;
     background: linear-gradient(90deg, #fff 64.58%, transparent 0%);
+  }
+}
+
+.genai-search-container .search-card-container .slideshow-title {
+  flex-grow: 1;
+  flex-shrink: 0;
+
+  @media (min-width: 1024px) {
+    padding: 0 52px;
   }
 }
 
@@ -646,40 +662,52 @@ article ol {
   display: none;
 }
 
-@media (min-width: 600px) {
-  .genai-search-container .search-card-container .slideshow .slideshow-prev,
-  .genai-search-container .search-card-container .slideshow .slideshow-next {
-    position: absolute;
-    border: 1px solid #000;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+.genai-search-container .search-card-container .slideshow .slideshow-prev,
+.genai-search-container .search-card-container .slideshow .slideshow-next {
+  position: absolute;
+  border: 1px solid #000;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background: #fff;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.25s linear;
+  z-index: 2;
+  font-size: 30px;
+  line-height: 30px;
+  user-select: none;
+
+  &.hide {
+    opacity: 0;
+    cursor: default;
+  }
+
+  /* @media (min-width: 600px) {
     top: calc(50% - 20px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    background: #fff;
-    cursor: pointer;
-    opacity: 1;
-    transition: opacity 0.25s linear;
-    z-index: 2;
-    font-size: 30px;
-    line-height: 30px;
-    user-select: none;
-    &.hide {
-      opacity: 0;
-      cursor: default;
-    }
-  }
+    bottom: auto;
+  } */
+}
 
-  .genai-search-container .search-card-container .slideshow .slideshow-prev {
-    left: 0;
-  }
+.genai-search-container .search-card-container .slideshow .slideshow-prev {
+  left: 0;
 
-  .genai-search-container .search-card-container .slideshow .slideshow-next {
-    right: 0;
+  @media (min-width: 600px) {
+    left: 50px;
   }
+}
+
+.genai-search-container .search-card-container .slideshow .slideshow-next {
+  right: 0;
+
+  /* @media (min-width: 600px) {
+    right: 15px;
+  } */
 }
 
 .genai-search-container
@@ -689,11 +717,15 @@ article ol {
   .slide {
   width: 260px;
   min-width: 260px;
+  height: 200px;
   display: block;
   border-left: 1px solid #bdbdbd;
   flex-shrink: 0;
   position: relative;
-  height: 160px;
+
+  /* @media (min-width: 600px) {
+    height: 160px;
+  } */
 }
 
 .genai-search-container
@@ -704,9 +736,9 @@ article ol {
   border-left: 0px solid #bdbdbd;
   transition: border 0.25s linear;
 
-  @media (max-width: 600px) {
+  /* @media (max-width: 600px) { */
     padding-left: 0;
-  }
+  /* } */
 }
 
 .genai-search-container

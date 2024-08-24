@@ -9,7 +9,7 @@ type MenuIcon = IconProps["display"];
 export type MenuItemProps = {
   icon?: MenuIcon;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   variant?: "default" | "highlight";
 };
 
@@ -22,11 +22,11 @@ export const MenuItem = ({
   return (
     <RadixDropdownMenu.Item
       className={classNames(
-        "flex cursor-pointer select-none items-center rounded-2xl border px-base py-small leading-none outline-none",
+        "flex cursor-pointer select-none items-center rounded-2xl border border-solid px-base py-small leading-none outline-none",
         {
           "border-border-base-color bg-transparent text-neutral-600 data-[highlighted]:border-neutral-600":
             variant === "default",
-          "bg-orange-200 border-transparent text-orange-500 data-[highlighted]:border-orange-500":
+          "border-transparent bg-orange-200 text-orange-500 data-[highlighted]:border-orange-500":
             variant === "highlight",
         }
       )}
@@ -34,7 +34,7 @@ export const MenuItem = ({
       onClick={onClick}
     >
       {icon && renderIcon({ display: icon, className: "mr-small" })}
-      <Text color="inherit" size="base">
+      <Text inherit size="base">
         {label}
       </Text>
     </RadixDropdownMenu.Item>

@@ -56,7 +56,7 @@ export const TableHeader = <ColumnKey,>({
       className={className({ isHeader: true })}
       key={column.key}
       scope="col"
-      style={{ textAlign: column.align ?? "left", width: column.width }}
+      style={{ textAlign: column.align ?? "left", width: column.minWidth }}
     >
       {children}
     </th>

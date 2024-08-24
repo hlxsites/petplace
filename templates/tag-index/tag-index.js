@@ -26,8 +26,8 @@ async function getArticles() {
   const offset = (Number(usp.get('page') || 1) - 1) * limit;
   const tag = await getTagForUrl();
   const tagName = toClassName(tag.Name);
-  return ffetch(`${window.hlx.contentBasePath}/article/query-index.json`)
-    .sheet('article')
+  return ffetch(`${window.hlx.contentBasePath}/article/tags-query-index.json`)
+    .sheet(tagName.substring(0, 25))
     .withTotal(true)
     .filter((article) => JSON.parse(article.tags).map((t) => toClassName(t)).includes(tagName))
     .slice(offset, offset + limit);
@@ -68,7 +68,8 @@ async function renderArticles(articles) {
   }
   document.querySelector('.pagination').dataset.total = articleLoadingPromise.total();
   window.requestAnimationFrame(() => {
-    block.querySelectorAll('.skeleton').forEach((sk) => sk.parentElement.remove());
+    block.querySelectorAll('.skeleton').forEach((sk) => sk.closest('li').remove());
+    block.querySelectorAll('ul > li:empty').forEach((el) => el.remove());
   });
 }
 
@@ -84,7 +85,8 @@ function createTemplateBlock(main, blockName, elems = []) {
 async function updateMetadata() {
   const tag = await getTagForUrl();
   if (!tag) {
-    throw new Error(404);
+    window.location.replace(`/invalid-tag/${window.location.pathname.split('/').pop()}`);
+    return;
   }
   const { Name } = tag;
   document.title = `${Name} | ${document.title}`;

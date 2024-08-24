@@ -10,9 +10,10 @@ import {
   createBreadCrumbs,
   getCategories,
 } from '../../scripts/scripts.js';
-import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
 const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
+
+const categoriesPromise = getCategories();
 
 function createTableOfContents(main) {
   const hasToc = getMetadata('has-toc');
@@ -42,10 +43,9 @@ async function createTemplateBlock(container, blockName, elems = []) {
   decorateBlock(block);
 }
 
-async function sectionGenAi(main) {
+async function buildGenAiSearchSection(main) {
   const genAIDiv = document.createElement('div');
   genAIDiv.classList.add('section');
-  genAIDiv.classList.add('genai-search');
 
   const genAIMeta = document.createElement('meta');
   genAIMeta.setAttribute('itemprop', 'description');
@@ -55,7 +55,7 @@ async function sectionGenAi(main) {
   );
   genAIDiv.append(genAIMeta);
 
-  const articleContainer = main.querySelector('.section:nth-of-type(2)');
+  const articleContainer = main.querySelector('.article-content-container');
   const genaiBlock = buildBlock('genai-search', '');
   const genAITitle = document.createElement('h2');
   const genAISubtitle = document.createElement('h2');
@@ -65,7 +65,7 @@ async function sectionGenAi(main) {
   genAIDiv.append(genAITitle);
   genAIDiv.append(genAISubtitle);
   genAIDiv.append(genaiBlock);
-  articleContainer.append(genAIDiv);
+  articleContainer.after(genAIDiv);
 
   // genAIBlock.insertBefore(secondHeadline);
 
@@ -73,7 +73,7 @@ async function sectionGenAi(main) {
   await loadBlock(genaiBlock);
 }
 
-const createGenAISearchCTA = () => {
+const buildGenAISearchCTA = () => {
   const headerSearchButton = document.createElement('div');
   headerSearchButton.className = 'header-search';
   headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
@@ -87,6 +87,7 @@ const createGenAISearchCTA = () => {
   });
 
   headerSearchButton.addEventListener('click', async () => {
+    const { pushToDataLayer } = await import('../../scripts/utils/helpers.js');
     await pushToDataLayer({
       event: 'genai_floater',
       element_type: 'button',
@@ -97,8 +98,8 @@ const createGenAISearchCTA = () => {
   return headerSearchButton;
 };
 
-export async function getCategoryByKey(key, value) {
-  const categories = await getCategories();
+async function getCategoryByKey(key, value) {
+  const categories = await categoriesPromise;
   return categories.find((c) => c[key].toLowerCase() === value.toLowerCase());
 }
 
@@ -144,9 +145,17 @@ async function getBreadcrumbs(categorySlug) {
   return breadcrumbs.reverse();
 }
 
-export async function loadEager(document) {
-  const main = document.querySelector('main');
+function buildHeroSection(container) {
+  const hero = document.createElement('div');
+  hero.classList.add('section', 'hero-container');
+  hero.append(container.querySelector('h1'));
+  hero.append(buildBlock('article-author', { elems: [] }));
+  hero.append(container.querySelector('picture'));
+  container.prepend(hero);
+}
 
+async function buildBreadcrumb(container) {
+  const main = document.querySelector('main');
   // breadcrumb
   const heading = main.querySelector('h1');
   const categorySlugs = getMetadata('category')
@@ -173,16 +182,32 @@ export async function loadEager(document) {
   breadcrumbData.querySelectorAll('.icon.icon-chevron').forEach((icon) => {
     icon.classList.replace('icon-chevron', 'icon-chevron-large');
   });
-  createTemplateBlock(main, 'breadcrumb', [breadcrumbData]);
+  const section = document.createElement('div');
+  section.classList.add('section');
+  section.append(buildBlock('breadcrumb', { elems: [breadcrumbData] }));
+  container.prepend(section);
+}
+
+export async function loadEager(document) {
+  const main = document.querySelector('main');
+
+  main.firstElementChild.classList.add('article-content-container');
+
+  buildHeroSection(main);
+
+  // sidebar
+  const sidebar = document.createElement('div');
+  sidebar.classList.add('section', 'sidebar-container');
+  main.append(sidebar);
+  // share
+  sidebar.append(buildBlock('social-share', { elems: [] }));
+  // popular articles
+  sidebar.append(buildBlock('popular-articles', { elems: [] }));
+  // insurance
+  sidebar.append(buildBlock('article-cta', { elems: [] }));
 
   // top
   createTableOfContents(main);
-  createTemplateBlock(main, 'article-author');
-
-  // sidebar
-  createTemplateBlock(main, 'social-share');
-  createTemplateBlock(main, 'popular-articles');
-  createTemplateBlock(main, 'article-cta');
 
   // bottom
   createTemplateBlock(main, 'related-reading');
@@ -233,62 +258,28 @@ export async function loadEager(document) {
   } else {
     main.setAttribute('itemtype', 'https://schema.org/BlogPosting');
   }
+  await buildBreadcrumb(main);
 }
 
 export async function loadLazy(document) {
   const main = document.querySelector('main');
-  const heroTitleSection = document.createElement('div');
-  heroTitleSection.classList.add('hero-title-container', 'section');
 
-  const articleTitle = main.querySelectorAll('h1')[0];
-  const authorDiv = main.querySelector('.article-author-container');
-  authorDiv.classList.remove('section');
-  const heroImgContainer = main.querySelectorAll('p')[0];
-  heroImgContainer.classList.add('hero-pic-div');
-
-  heroTitleSection.append(articleTitle);
-  heroTitleSection.append(authorDiv);
-  heroTitleSection.append(heroImgContainer);
-  main.prepend(heroTitleSection);
-
-  const contentSection = main.querySelectorAll('.section')[1];
-  contentSection.classList.add('article-content-container');
+  // breadcrumb
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('article', 'create');
 
-  // genai block code is unchanged from before
-  sectionGenAi(main);
-
-  if (!isMobile()) {
-    const contentDiv = document.createElement('div');
-    contentDiv.classList.add('content-left');
-    const heroTitleDiv = document.querySelector('.hero-title-container');
-    const blogSection = document.querySelector('.article-content-container');
-    contentDiv.append(heroTitleDiv);
-    contentDiv.append(blogSection);
-
-    const sidebarDiv = document.createElement('div');
-    sidebarDiv.classList.add('sidebar-right');
-    const socialDiv = document.querySelector('.social-share-container');
-    const popularDiv = document.querySelector('.popular-articles-container');
-    const compareDiv = document.querySelector('.article-cta-container');
-    sidebarDiv.append(socialDiv);
-    sidebarDiv.append(popularDiv);
-    sidebarDiv.append(compareDiv);
-
-    main.append(contentDiv);
-    main.append(sidebarDiv);
-  }
-
+  // GenAI Search
+  buildGenAiSearchSection(main);
   if (document.body.classList.contains('article-page')) {
     const contentDiv = document.querySelector('.default-content-wrapper');
-    contentDiv.append(createGenAISearchCTA());
+    contentDiv.append(buildGenAISearchCTA());
   }
 }
 
 export async function loadDelayed() {
   const articleCat = toClassName(getMetadata('category').split(',')[0]?.trim());
+  const { pushToDataLayer } = await import('../../scripts/utils/helpers.js');
   await pushToDataLayer({
     event: 'adsense',
     type: 'article',

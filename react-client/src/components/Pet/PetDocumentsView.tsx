@@ -1,11 +1,11 @@
 import { Meta, UppyFile } from "@uppy/core";
 import { useCallback, useState } from "react";
+import { useUppyUploader } from "~/hooks/useUppyUploader";
+import { simplifyFileType } from "~/util/fileUtil";
 import { Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
-import { PetRecord } from "./types/PetRecordsTypes";
-import { useUppyUploader } from "~/hooks/useUppyUploader";
 import { PetDocumentsDragAndDrop } from "./PetDocumentsDragAndDrop";
-import { simplifyFileType } from "~/util/fileUtil";
+import { PetRecord } from "./types/PetRecordsTypes";
 
 type PetDocumentViewProps = {
   documents: PetRecord[];
@@ -36,7 +36,7 @@ export const PetDocumentsView = ({
 
   return (
     <div className="grid gap-large">
-      <Text color="tertiary" size="sm">
+      <Text color="tertiary-600" size="sm">
         {`View, download and manage all ${recordType} records.`}
       </Text>
 
@@ -52,7 +52,7 @@ export const PetDocumentsView = ({
         </div>
       )}
 
-      <Text color="primary" size="base" fontWeight="bold">
+      <Text color="primary-900" size="base" fontWeight="bold">
         Upload and attach files
       </Text>
 

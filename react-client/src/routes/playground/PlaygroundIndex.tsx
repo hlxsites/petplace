@@ -27,7 +27,7 @@ const PlaygroundIndex = () => {
       <div className="flex flex-col gap-small border-r-[1px] border-r-border-secondary p-base">
         {ComponentsKeysList.map(renderMenuItem)}
       </div>
-      <div className="flex min-h-full w-full flex-col gap-base p-base">
+      <div className="flex min-h-full w-full flex-col gap-base overflow-hidden p-base">
         {/* @ts-expect-error - TS doesn't understand the hacky way we are importing the component */}
         <SelectedComponent />
       </div>

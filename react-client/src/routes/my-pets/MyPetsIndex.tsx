@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { LostOrFoundDialog } from "~/components/Pet/LostOrFoundDialog";
 import { PetCard } from "~/components/Pet/PetCard";
 import { Button, ButtonProps, LinkButton } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
@@ -8,13 +10,14 @@ import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
+  const [isLostOrFoundDialogOpen, setIsLostOrFoundDialogOpen] = useState(false);
 
   return (
     <Layout>
       <Header
         pageTitle="My Pets"
         primaryElement={renderMyPetsHeadButtons()}
-        secondaryElement={renderReportLostOrFound({
+        secondaryElement={renderReportLostOrFoundButton({
           className: "md:hidden w-full",
         })}
       />
@@ -23,9 +26,10 @@ export const MyPetsIndex = () => {
         {pets.map(({ isProtected, ...rest }) => (
           <Link key={`link-${rest.id}`} to={rest.id}>
             <PetCard
-              shadow="elevation-1"
-              key={rest.name}
               displayProtectedBadge={{ isProtected: !!isProtected }}
+              key={rest.name}
+              shadow="elevation-1"
+              variant="md"
               {...rest}
             >
               <div className="p-base text-2xl font-bold leading-none text-black">
@@ -35,12 +39,21 @@ export const MyPetsIndex = () => {
           </Link>
         ))}
       </div>
+
+      {openReportLostOrFoundModal()}
     </Layout>
   );
 
-  function renderReportLostOrFound(props: Pick<ButtonProps, "className">) {
+  function renderReportLostOrFoundButton(
+    props: Pick<ButtonProps, "className">
+  ) {
     return (
-      <Button variant="secondary" iconLeft="warningTriangle" {...props}>
+      <Button
+        variant="secondary"
+        iconLeft="warningTriangle"
+        onClick={onHandleReportLostOrFound}
+        {...props}
+      >
         Report a lost or found pet
       </Button>
     );
@@ -49,7 +62,7 @@ export const MyPetsIndex = () => {
   function renderMyPetsHeadButtons() {
     return (
       <div className="flex gap-small">
-        {renderReportLostOrFound({
+        {renderReportLostOrFoundButton({
           className: "hidden md:flex",
         })}
         <LinkButton
@@ -60,6 +73,19 @@ export const MyPetsIndex = () => {
           Add a new pet
         </LinkButton>
       </div>
+    );
+  }
+
+  function onHandleReportLostOrFound() {
+    setIsLostOrFoundDialogOpen(true);
+  }
+
+  function openReportLostOrFoundModal() {
+    return (
+      <LostOrFoundDialog
+        isOpen={isLostOrFoundDialogOpen}
+        onClose={() => setIsLostOrFoundDialogOpen(false)}
+      />
     );
   }
 };
