@@ -1,11 +1,13 @@
 import { useRef } from "react";
 import { Button, Card, DragAndDropZone, Icon, Text } from "../design-system";
 
+type PetDocumentsDragAndDropProps = {
+  handleFiles: (files: FileList) => void;
+};
+
 export const PetDocumentsDragAndDrop = ({
   handleFiles,
-}: {
-  handleFiles: (files: FileList) => void;
-}) => {
+}: PetDocumentsDragAndDropProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -38,7 +40,7 @@ export const PetDocumentsDragAndDrop = ({
             <Text fontFamily="raleway" fontWeight="bold" size="sm">
               Click to upload or drag and drop
             </Text>
-            <Text color="tertiary" size="xs">
+            <Text color="tertiary-600" size="xs">
               PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
             </Text>
           </div>
