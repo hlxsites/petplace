@@ -20,3 +20,13 @@
     margin-bottom: -100px;
   }
 }
+
+.insurance-page .widget-aggregator {
+  @media (min-width: 1024px) {
+    margin-bottom: -400px;
+  }
+
+  @media (max-width: 1024px) {
+    margin-bottom: -50px;
+  }
+}

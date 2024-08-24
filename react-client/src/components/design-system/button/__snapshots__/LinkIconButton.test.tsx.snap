@@ -8,7 +8,7 @@ exports[`LinkIconButton should match snapshot to assure that the component is be
   >
     <button
       aria-label="Check button"
-      class="m-0 rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium px-xsmall disabled:!bg-inherit py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent btn-square mx-1 min-w-0 px-medium py-0"
+      class="m-0 rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent btn-square mx-1 min-w-0 px-medium py-0"
       type="button"
     >
       <div

@@ -990,7 +990,7 @@ function populateSidebarFilters(params) {
             // eslint-disable-next-line
             shelterList = data;
             updateShelterListSelect().then(() => {
-                const shelterArray = params.get('filterShelter')?.split(',');
+                const shelterArray = params.get('filterShelter')?.split(',') || [];
                 if (shelterArray.length > 0) {
                     shelterArray?.forEach((shelter) => {
                         const checkbox = document.getElementById(shelter);
