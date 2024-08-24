@@ -1,7 +1,4 @@
-import { Meta, UppyFile } from "@uppy/core";
-import { useCallback, useState } from "react";
-import { useUppyUploader } from "~/hooks/useUppyUploader";
-import { simplifyFileType } from "~/util/fileUtil";
+import { useCallback } from "react";
 import { Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetDocumentsDragAndDrop } from "./PetDocumentsDragAndDrop";
@@ -18,14 +15,6 @@ export const PetDocumentsView = ({
   onDelete,
   recordType,
 }: PetDocumentViewProps) => {
-  const [file, setFile] = useState<UppyFile<Meta, Record<string, never>>>();
-
-  const { isUploading, handleFiles } = useUppyUploader({
-    onFileAdd: (file) => {
-      setFile(file);
-    },
-  });
-
   const onDeletePetCardRecord = useCallback(
     (recordType: string, recordId?: string) => {
       if (!recordId) return;
@@ -57,17 +46,10 @@ export const PetDocumentsView = ({
       </Text>
 
       <PetDocumentsDragAndDrop handleFiles={handleFiles} />
-
-      {isUploading && file?.name && (
-        <PetCardRecord
-          record={{
-            fileName: file.name,
-            fileType: simplifyFileType(file.type),
-            id: "test-record",
-          }}
-          isUploadingFile={isUploading}
-        />
-      )}
     </div>
   );
+
+  function handleFiles() {
+    // TODO: Implement file upload
+  }
 };
