@@ -4,7 +4,7 @@ export * from "./button/LinkButton";
 export * from "./button/LinkIconButton";
 export * from "./card/Card";
 export * from "./carousel/Carousel";
-export * from "./carousel/ImageCarousel";
+export * from "./imageCarousel/ImageCarousel";
 export * from "./checkbox/Checkbox";
 export * from "./collapse/Collapse";
 export * from "./dialog/Dialog";

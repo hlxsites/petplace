@@ -5,7 +5,12 @@ import { ImageCarouselButton } from "./ImageCarouselButton";
 
 type ImageCarouselProps = {
   ariaLabel: string;
-  items: string[];
+  items: ImageItem[];
+};
+
+type ImageItem = {
+  src: string;
+  alt?: string;
 };
 
 export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
@@ -21,7 +26,6 @@ export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
     );
   }, [items.length]);
 
-  // Keyboard navigation functionality - enhance accessibility
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       event.preventDefault();
@@ -34,7 +38,6 @@ export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // Cleanup event listener
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -52,9 +55,12 @@ export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
             transform: `translateX(-${currentIndex * 100}%)`,
           }}
         >
-          {items.map((src, index) => (
-            <div key={`image-item-${index}`} className="w-full flex-shrink-0 flex justify-center bg-white">
-              <img src={src} alt="sample" />
+          {items.map(({ src, alt }, index) => (
+            <div
+              key={`image-item-${index}`}
+              className="flex w-full flex-shrink-0 justify-center bg-white"
+            >
+              <img src={src} alt={alt} />
             </div>
           ))}
         </div>
