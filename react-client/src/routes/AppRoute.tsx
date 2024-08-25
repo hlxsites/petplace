@@ -19,8 +19,8 @@ import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewMo
 import { FoundPetIndex } from "./found-pet/FoundPetIndex";
 import { LostPetIndex } from "./lost-pet/LostPetIndex";
 import { loader as LostPetIndexLoader } from "./lost-pet/useLostPetIndexViewModel";
-import { DocumentTypeIndex } from "./my-pets/petId/documents/:documentType/DocumentTypeIndex";
-import { loader as DocumentTypeIndexLoader } from "./my-pets/petId/documents/:documentType/useDocumentTypeIndexViewModel";
+import { DocumentTypeIndex } from "./my-pets/petId/documents/documentType/DocumentTypeIndex";
+import { loader as DocumentTypeIndexLoader } from "./my-pets/petId/documents/documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/petId/PetProfileLayout";
 
