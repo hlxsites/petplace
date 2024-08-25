@@ -1,7 +1,6 @@
-import { useCallback } from "react";
-import { Text } from "../design-system";
+import { useCallback, useState } from "react";
+import { Card, DragAndDropFileUpload, Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
-import { PetDocumentsDragAndDrop } from "./PetDocumentsDragAndDrop";
 import { PetRecord } from "./types/PetRecordsTypes";
 
 type PetDocumentViewProps = {
@@ -15,6 +14,8 @@ export const PetDocumentsView = ({
   onDelete,
   recordType,
 }: PetDocumentViewProps) => {
+  const [isUploading, setIsUploading] = useState(false);
+
   const onDeletePetCardRecord = useCallback(
     (recordType: string, recordId?: string) => {
       if (!recordId) return;
@@ -45,11 +46,29 @@ export const PetDocumentsView = ({
         Upload and attach files
       </Text>
 
-      <PetDocumentsDragAndDrop handleFiles={handleFiles} />
+      <Card>
+        <DragAndDropFileUpload
+          ariaLabel="Upload document"
+          handleFiles={handleFiles}
+        />
+      </Card>
+
+      {isUploading && (
+        // TODO: 81832 fix this after implementing all logic to upload documents
+        <PetCardRecord
+          record={{
+            id: "test-record",
+            fileName: "WIP - testing purposes",
+            fileType: "doc",
+          }}
+          isUploadingFile={isUploading}
+        />
+      )}
     </div>
   );
 
   function handleFiles() {
     // TODO: Implement file upload
+    setIsUploading(true);
   }
 };
