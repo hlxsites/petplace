@@ -12,7 +12,7 @@ export function PetDocumentsTabContent() {
       {documentTypes.map(({ id, label, icon, iconColor }) => (
         <Card key={label} role="listitem">
           <Link
-            className="flex h-[116px] cursor-pointer flex-col justify-between p-base"
+            className="flex h-[116px] cursor-pointer flex-col justify-between p-base no-underline"
             to={id}
           >
             <Icon className={iconColor} display={icon} />
