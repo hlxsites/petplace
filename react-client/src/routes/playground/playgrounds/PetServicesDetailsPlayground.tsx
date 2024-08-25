@@ -1,5 +1,5 @@
 import { PetServiceDetailsCard } from "~/components/Pet/PetServiceDetailsCard";
-import { PET_WATCH_SERVICES_DETAILS } from "~/routes/my-pets/:petId/utils/petServiceDetails";
+import { PET_WATCH_SERVICES_DETAILS } from "~/routes/my-pets/petId/utils/petServiceDetails";
 
 export const PetServicesDetailsPlayground = () => {
   return (

@@ -1,10 +1,10 @@
 import { ASSET_IMAGES } from "~/assets";
 import { useDrawerContentState } from "~/hooks/useDrawerContentState";
-import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
+import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 import {
   PET_WATCH_OFFERS,
   PET_WATCH_TAGS,
-} from "~/routes/my-pets/:petId/utils/petServiceConstants";
+} from "~/routes/my-pets/petId/utils/petServiceConstants";
 import { Button, Card, Drawer, Tag, Text } from "../../design-system";
 import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
 

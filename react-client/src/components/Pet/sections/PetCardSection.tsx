@@ -1,6 +1,6 @@
-import { PetCardInfo } from "~/routes/my-pets/:petId/components/PetCardInfo";
-import { PetCard } from "../PetCard";
 import { PetInfo } from "~/mocks/MockRestApiServer";
+import { PetCardInfo } from "~/routes/my-pets/petId/components/PetCardInfo";
+import { PetCard } from "../PetCard";
 
 export const PetCardSection = ({ petInfo }: { petInfo: PetInfo }) => {
   return (

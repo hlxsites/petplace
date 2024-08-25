@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
-import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
+import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 
 const PET_SERVICES: Record<string, PetServiceTypes> = {
   buddy: "standard",

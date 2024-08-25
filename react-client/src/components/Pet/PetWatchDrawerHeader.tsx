@@ -1,6 +1,6 @@
 import { ASSET_IMAGES } from "~/assets";
+import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { IconButton, Text, Title } from "../design-system";
-import { PetWatchServiceProps } from "~/routes/my-pets/:petId/utils/petServiceDetails";
 
 type PetWatchDrawerHeaderProps = {
   contentDetails?: PetWatchServiceProps;

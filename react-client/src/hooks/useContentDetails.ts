@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { PET_WATCH_SERVICES_DETAILS } from "~/routes/my-pets/:petId/utils/petServiceDetails";
+import { PET_WATCH_SERVICES_DETAILS } from "~/routes/my-pets/petId/utils/petServiceDetails";
 
 const SERVICE_PARAM = "item";
 
@@ -30,6 +30,6 @@ export const useContentDetails = () => {
 
   return {
     handleContentChange,
-    contentDetails
+    contentDetails,
   };
 };
