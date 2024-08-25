@@ -5,6 +5,7 @@ import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
 import { ReportLostPetButton } from "./components/ReportLostPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
@@ -22,9 +23,9 @@ export const PetProfileIndex = () => {
     <>
       <PetAlertSection />
       <Header
+        backButtonTo={`/${AppRoutePaths.myPets}`}
         pageTitle="Pet Profile"
         primaryElement={renderActionsButton()}
-        shouldRenderBackButton
       />
       <div className="flex flex-col gap-large">
         <PetCardSection petInfo={petInfo} />

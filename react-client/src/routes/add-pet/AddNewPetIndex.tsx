@@ -2,6 +2,7 @@ import { Button, Icon, IconKeys } from "~/components/design-system";
 import { Card } from "~/components/design-system/card/Card";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
+import { AppRoutePaths } from "../AppRoutePaths";
 
 type CardContent = {
   button: string;
@@ -13,21 +14,25 @@ type CardContent = {
 export const AddNewPetIndex = () => {
   return (
     <Layout>
-      <Header mb="small" pageTitle="Add new pet" shouldRenderBackButton />
+      <Header
+        backButtonTo={`/${AppRoutePaths.myPets}`}
+        mb="small"
+        pageTitle="Add new pet"
+      />
       <div className="mb-[32px] w-full lg:mb-[40px]">
         <span className="text-base" role="text">
           Is this a new or previously registered Pet? You have three options
           bellow:
         </span>
       </div>
-      <div className="grid max-h-[492] max-w-[800px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-base">
+      <div className="grid max-h-[492] max-w-[800px] grid-cols-1 gap-base sm:grid-cols-2 lg:grid-cols-3">
         {getCardsContent().map((card) => {
           return (
             <div className="lg:w-[256px]">
               <Card>
                 <div className="grid p-large">
                   <Icon display={card.icon} />
-                  <div className="grid sm:h-[88px] lg:h-auto my-large">
+                  <div className="my-large grid sm:h-[88px] lg:h-auto">
                     <strong className="text-lg mb-[8px]">{card.title}</strong>
                     <span className="text-sm" role="text">
                       {card.message}
