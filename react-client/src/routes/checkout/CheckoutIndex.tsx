@@ -16,9 +16,8 @@ export const CheckoutIndex = () => {
         <div className="grid place-items-center gap-xxxxxlarge">
           <MembershipHeader petName="test" />
           <MembershipOfferSection />
+          <CheckoutInfoSection isLandingPage={isLandingPage} />
         </div>
-
-        <CheckoutInfoSection isLandingPage={isLandingPage} />
       </main>
       <CheckoutFooter />
     </div>

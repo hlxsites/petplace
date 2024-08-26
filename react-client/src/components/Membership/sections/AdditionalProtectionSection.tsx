@@ -3,8 +3,8 @@ import { ButtonWithBadge } from "~/components/design-system/button/ButtonWithBad
 
 export const AdditionalProtectionSection = () => {
   return (
-    <div className="flex justify-between">
-      <div className="pb-xlarge">
+    <div className="flex w-full justify-between">
+      <div>
         <Title level="h3">Secure Your Pet's Protection Plan</Title>
         <Text size="lg">
           Add Additional Products, and Confirm Opt-ins and Terms for
