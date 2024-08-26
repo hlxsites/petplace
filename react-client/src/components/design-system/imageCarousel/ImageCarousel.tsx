@@ -50,7 +50,7 @@ export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
     >
       <div className="relative w-full max-w-3xl overflow-hidden">
         <div
-          className="flex transition-transform duration-300 ease-out"
+          className="flex transition-transform duration-300 ease-out h-[265px]"
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
           }}
@@ -60,7 +60,7 @@ export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
               key={`image-item-${index}`}
               className="flex w-full flex-shrink-0 justify-center bg-white"
             >
-              <img src={src} alt={alt} />
+              <img src={src} alt={alt} className="object-contain" />
             </div>
           ))}
         </div>
