@@ -47,25 +47,20 @@ describe("Text", () => {
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-xs");
   });
 
-  it.each(["base", "sm"] as ComponentProps<typeof Text>["size"][])(
-    "should render component with size %p",
-    (size) => {
-      getRenderer({ size });
+  it.each([
+    ["40", "text-[40px] leading-10"],
+    ["32", "text-[32px] leading-8"],
+    ["24", "text-[24px] leading-7"],
+    ["20", "text-xl leading-7"],
+    ["18", "text-lg leading-7"],
+    ["16", "text-base leading-6"],
+    ["14", "text-sm leading-5"],
+    ["12", "text-xs leading-4"],
+  ])("should render component with size %p", (size, expected) => {
+    // @ts-expect-error - ignoring for test purposes only
+    getRenderer({ size });
 
-      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${size}`);
-    }
-  );
-
-  it("should render component with size large", () => {
-    getRenderer({ size: "xlg" });
-
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-xl`);
-  });
-
-  it("should render component with size large", () => {
-    getRenderer({ size: "lg" });
-
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-lg`);
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`);
   });
 
   it("should not be screen reader only by default", () => {
@@ -113,6 +108,20 @@ describe("Text", () => {
       expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`);
     }
   );
+
+  it.each([
+    ["18", "text-sm leading-5"],
+    ["16", "text-sm leading-5"],
+    ["14", "text-xs leading-4"],
+  ])(
+    "should render component responsive for sizes=%s",
+    async (size, expected) => {
+      setViewportWidth(500);
+      // @ts-expect-error - ignoring for test purposes only
+      getRenderer({ size, isResponsive: true });
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`);
+    }
+  );
 });
 
 function getRenderer({
@@ -121,3 +130,9 @@ function getRenderer({
 }: Partial<ComponentProps<typeof Text>> = {}) {
   return render(<Text {...props}>{children}</Text>);
 }
+
+// Helper function to set viewport width
+const setViewportWidth = (width: number) => {
+  (window as any).innerWidth = width;
+  (window as any).dispatchEvent(new Event("resize"));
+};
