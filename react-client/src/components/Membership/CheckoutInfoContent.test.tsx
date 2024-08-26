@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { CheckoutInfoContent } from "../CheckoutInfoContent";
+import { CheckoutInfoContent } from "./CheckoutInfoContent";
 import { render, screen } from "@testing-library/react";
 import { getByTextContent } from "~/util/testingFunctions";
 
