@@ -1,0 +1,6 @@
+.no-markup #main {
+  display: flex;
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+}

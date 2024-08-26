@@ -8,6 +8,8 @@ export * from "./imageCarousel/ImageCarousel";
 export * from "./checkbox/Checkbox";
 export * from "./collapse/Collapse";
 export * from "./dialog/Dialog";
+export * from "./dragAndDropZone/DragAndDropFileUpload";
+export * from "./dragAndDropZone/DragAndDropZone";
 export * from "./drawer/Drawer";
 export * from "./form/DisplayForm";
 export * from "./form/types/formTypes";

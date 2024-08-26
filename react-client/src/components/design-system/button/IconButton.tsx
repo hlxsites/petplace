@@ -33,7 +33,8 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
 
     return (
       <button
-        aria-label={label}
+        // Set undefined when label is empty to avoid screen readers from reading it
+        aria-label={label || undefined}
         className={classNames(
           baseClassName,
           "btn-square mx-1 min-w-0 px-medium py-0",

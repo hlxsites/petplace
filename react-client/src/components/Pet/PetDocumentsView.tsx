@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Button, Card, Icon, Text } from "../design-system";
+import { Card, DragAndDropFileUpload, Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
 
@@ -47,28 +47,10 @@ export const PetDocumentsView = ({
       </Text>
 
       <Card>
-        <Button
-          aria-label="Upload document"
-          className="w-full rounded-none"
-          onClick={() => setIsUploading(true)}
-          variant="link"
-        >
-          <div className="grid place-items-center px-large py-base">
-            <div className="pb-small">
-              <Icon
-                display="uploadCloud"
-                className="text-brand-main"
-                size={32}
-              />
-            </div>
-            <Text fontFamily="raleway" fontWeight="bold" size="sm">
-              Click to upload or drag and drop
-            </Text>
-            <Text color="tertiary-600" size="xs">
-              PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
-            </Text>
-          </div>
-        </Button>
+        <DragAndDropFileUpload
+          ariaLabel="Upload document"
+          handleFiles={handleFiles}
+        />
       </Card>
 
       {isUploading && (
@@ -84,4 +66,9 @@ export const PetDocumentsView = ({
       )}
     </div>
   );
+
+  function handleFiles() {
+    // TODO: Implement file upload
+    setIsUploading(true);
+  }
 };

@@ -24,7 +24,7 @@ export const MyPetsIndex = () => {
 
       <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-large sm:grid-cols-2 lg:grid-cols-3">
         {pets.map(({ isProtected, ...rest }) => (
-          <Link key={`link-${rest.id}`} to={rest.id}>
+          <Link className="no-underline" key={rest.id} to={rest.id}>
             <PetCard
               displayProtectedBadge={{ isProtected: !!isProtected }}
               key={rest.name}

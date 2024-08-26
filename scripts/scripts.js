@@ -97,6 +97,7 @@ window.hlx.templates.add([
   '/templates/insurance-landing-page',
   '/templates/insurance-page',
   '/templates/insurance-paid-page',
+  '/templates/no-markup',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
   '/templates/tag-index',

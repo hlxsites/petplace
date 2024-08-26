@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { PET_WATCH_OPTIONS } from "~/routes/my-pets/:petId/utils/petWatchConstants";
+import { PET_WATCH_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
 
 const { getByText } = screen;

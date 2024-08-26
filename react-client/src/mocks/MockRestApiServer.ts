@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
-import { PetServiceTypes } from "~/routes/my-pets/:petId/types/PetServicesTypes";
+import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 
 const PET_SERVICES: Record<string, PetServiceTypes> = {
   buddy: "standard",
@@ -106,6 +106,19 @@ export type LostPetUpdate = {
   status: MissingStatus;
   id: number;
   note?: string;
+};
+
+export type Colors = "black";
+export type Sizes = "L" | "M/S" | "One Size";
+
+export type CheckoutProduct = {
+  availableColors?: Colors[];
+  availableSizes?: Sizes[];
+  description?: string;
+  isAnnual?: boolean;
+  img: string;
+  title: string;
+  price: string;
 };
 
 const PETS_LIST: PetInfo[] = [
@@ -223,6 +236,24 @@ const PETS_LIST: PetInfo[] = [
   },
 ];
 
+const CHECKOUT_PRODUCTS: CheckoutProduct[] = [
+  {
+    description:
+      "Reach veterinary professionals anytime by phone, email or live chat, provided by whiskerDocs.",
+    img: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1725235200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=e~Gnf3K0y75CxfbL~wWj~NugWyyj0nshHZHyD-CmzpaVenkl3jthKbZCwzA73O80wKQYM-mfusjE~g4edCiJwbuHoIwIsQZlDyUg3O0NxY2XJAp25~VEmn0VikLrpB9PJvjY0txOgz4N6J2EqwbcSK2SBkXrrFoSZyS-MVWJgdVuKJTjKhEIKFcYeM37hkfagmxuDExyq-2YaFsnloM6FXigCy9zZDUDTk2O0IRTJ5e5sciQXqXWFgT~QCmmblcf9zRIfnvyiZckCAGE8XEGATqwe~dXpM-AjQfnLmB~vGuYmqztWj-qx7x5kxMU8o2sdjbQfIOXOavDlcdlk-sC4g__",
+    isAnnual: true,
+    price: "$24.95",
+    title: "24PetMedAlert",
+  },
+  {
+    availableColors: ["black"],
+    availableSizes: ["L", "M/S"],
+    img: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1725235200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=e~Gnf3K0y75CxfbL~wWj~NugWyyj0nshHZHyD-CmzpaVenkl3jthKbZCwzA73O80wKQYM-mfusjE~g4edCiJwbuHoIwIsQZlDyUg3O0NxY2XJAp25~VEmn0VikLrpB9PJvjY0txOgz4N6J2EqwbcSK2SBkXrrFoSZyS-MVWJgdVuKJTjKhEIKFcYeM37hkfagmxuDExyq-2YaFsnloM6FXigCy9zZDUDTk2O0IRTJ5e5sciQXqXWFgT~QCmmblcf9zRIfnvyiZckCAGE8XEGATqwe~dXpM-AjQfnLmB~vGuYmqztWj-qx7x5kxMU8o2sdjbQfIOXOavDlcdlk-sC4g__",
+    price: "$24.95",
+    title: "24PetMedAlert",
+  },
+];
+
 export const getPetsList = () => {
   return PETS_LIST;
 };
@@ -255,5 +286,5 @@ export const getPetServiceStatus = (petId: string) => {
 };
 
 export const getProductsList = () => {
-  return [];
+  return CHECKOUT_PRODUCTS;
 };

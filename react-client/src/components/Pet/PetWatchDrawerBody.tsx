@@ -1,7 +1,7 @@
-import { PET_WATCH_OPTIONS } from "~/routes/my-pets/:petId/utils/petWatchConstants";
-import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
+import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
+import { PET_WATCH_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { PetCardPetWatch } from "./PetCardPetWatch";
-import { PetWatchServiceProps } from "~/routes/my-pets/:petId/utils/petServiceDetails";
+import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;

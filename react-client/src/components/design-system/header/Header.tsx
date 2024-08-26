@@ -1,31 +1,23 @@
-import { ComponentProps, ReactNode } from "react";
+import { ReactNode } from "react";
+import { To } from "react-router-dom";
 import { classNames } from "~/util/styleUtil";
 import { LinkIconButton } from "../button/LinkIconButton";
 import { Title } from "../text/Title";
 
 type HeaderProps = {
+  backButtonTo?: To;
   mb?: "large" | "small";
-  linkIconButtonProps?: ComponentProps<typeof LinkIconButton>;
   pageTitle: string;
   primaryElement?: ReactNode;
   secondaryElement?: ReactNode;
-  shouldRenderBackButton?: boolean;
 };
 
 export const Header = ({
-  linkIconButtonProps = {
-    buttonProps: {
-      label: "Back button",
-      icon: "chevronLeft",
-    },
-    relative: "path",
-    to: "..",
-  },
+  backButtonTo,
   mb = "large",
   pageTitle,
   primaryElement,
   secondaryElement,
-  shouldRenderBackButton,
 }: HeaderProps) => {
   const { className } = useHeaderBase(mb);
 
@@ -33,8 +25,15 @@ export const Header = ({
     <div className={className}>
       <div className="mb-large flex items-center justify-between lg:m-0">
         <div className="flex items-center">
-          {shouldRenderBackButton && (
-            <LinkIconButton {...linkIconButtonProps} className="ml-[-12px]" />
+          {!!backButtonTo && (
+            <LinkIconButton
+              buttonProps={{
+                icon: "chevronLeft",
+              }}
+              className="ml-[-12px]"
+              label="Back to previous page"
+              to={backButtonTo}
+            />
           )}
           <Title>{pageTitle}</Title>
         </div>
