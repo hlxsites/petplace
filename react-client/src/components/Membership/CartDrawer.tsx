@@ -13,7 +13,7 @@ export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
       <div className="flex flex-col gap-large">
         <CartHeader />
         <div className="flex flex-col gap-small">
-          <Text size="base" fontWeight="bold">
+          <Text size="16" fontWeight="bold">
             Items
           </Text>
 

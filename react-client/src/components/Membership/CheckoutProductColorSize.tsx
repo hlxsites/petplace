@@ -33,7 +33,7 @@ export const CheckoutProductColorSize = ({
     <div className="flex h-fit w-full gap-large">
       {productColors && (
         <div className="grid gap-small">
-          <Text>Color choice:</Text>
+          <Text size="14">Color choice:</Text>
           <div className="flex gap-xsmall">
             {productColors.map((productColor, index) => (
               <Button
@@ -58,7 +58,7 @@ export const CheckoutProductColorSize = ({
       )}
       {productSizes && (
         <div className="grid gap-small">
-          <Text>Select a size:</Text>
+          <Text size="14">Select a size:</Text>
           <div className="flex h-[30px] gap-medium">
             {productSizes.map((productSize, index) => (
               <Button

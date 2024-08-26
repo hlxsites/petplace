@@ -66,7 +66,7 @@ export const ComparingPlanCard = ({
       <div className="flex-col-2 flex justify-between p-base">
         <div className="grid gap-xsmall">
           <Title level="h4">{title}</Title>
-          <Text>{description}</Text>
+          <Text size="16">{description}</Text>
         </div>
         <div className="flex place-items-center gap-[129px] px-xxlarge">
           {renderIcons}

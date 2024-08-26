@@ -6,7 +6,7 @@ export const AdditionalProtectionSection = () => {
     <div className="flex justify-between">
       <div className="pb-xlarge">
         <Title level="h3">Secure Your Pet's Protection Plan</Title>
-        <Text size="lg">
+        <Text isResponsive size="18">
           Add Additional Products, and Confirm Opt-ins and Terms for
           Comprehensive Pet Safety.
         </Text>

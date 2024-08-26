@@ -26,7 +26,7 @@ export const PetDocumentsView = ({
 
   return (
     <div className="grid gap-large">
-      <Text color="tertiary-600" size="sm">
+      <Text color="tertiary-600" size="14">
         {`View, download and manage all ${recordType} records.`}
       </Text>
 
@@ -42,7 +42,7 @@ export const PetDocumentsView = ({
         </div>
       )}
 
-      <Text color="primary-900" size="base" fontWeight="bold">
+      <Text color="primary-900" size="16" fontWeight="bold">
         Upload and attach files
       </Text>
 

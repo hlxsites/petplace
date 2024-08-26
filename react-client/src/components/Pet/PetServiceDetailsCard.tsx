@@ -24,17 +24,19 @@ export const PetServiceDetailsCard = ({
   return (
     <div className="flex flex-col gap-large">
       <div>
-        <Text fontWeight="bold" size="sm">
+        <Text fontWeight="bold" size="16">
           Service Description:
         </Text>
-        <Text>{description}</Text>
+        <Text size="14">{description}</Text>
       </div>
       {(additionalInfo || contact) && (
         <Card>
           {additionalInfo}
           {contact && (
             <div className="flex w-full justify-center py-xlarge">
-              <Text fontWeight="bold">{contact}</Text>
+              <Text fontWeight="bold" size="18">
+                {contact}
+              </Text>
             </div>
           )}
         </Card>

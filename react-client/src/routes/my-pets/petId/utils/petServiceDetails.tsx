@@ -68,16 +68,16 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       <PetServiceAdditionalInfo
         info={
           <>
-            <Text>
+            <Text size="14">
               Please fill out the form below and email to:
               <TextSpan fontWeight="semibold">
                 24PetMedAlert@24petwatch.com.
               </TextSpan>
             </Text>
-            <Text>
+            <Text size="14">
               Note: this form requires Adobe Reader,
               <LinkButton to={""} className="m-0 inline">
-                <TextSpan fontWeight="bold" size="sm">
+                <TextSpan fontWeight="bold" size="14">
                   click here
                 </TextSpan>
               </LinkButton>{" "}

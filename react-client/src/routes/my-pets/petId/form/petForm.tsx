@@ -170,7 +170,7 @@ export const addPetProfileFormSchema: FormSchema = {
     },
     {
       content: (
-        <Text size="base">
+        <Text size="16">
           Please ensure that all the information is complete and accurate. We
           may contact you periodically to ensure your information remains
           accurate and up to date.

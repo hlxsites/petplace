@@ -37,7 +37,7 @@ export const LostOrFoundDialog = ({
     return (
       <div className="mt-large">
         {messages.map((message) => (
-          <Text key={message} size="base">
+          <Text key={message} size="16">
             {message}
           </Text>
         ))}

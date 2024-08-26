@@ -24,14 +24,10 @@ export const CheckoutProductCard = ({
         <div className="flex justify-between">
           <Title level="h4">{title}</Title>
           <div className="flex flex-col text-right">
-            <Text fontWeight="bold" size="xlg">
+            <Text fontWeight="bold" size="24">
               {price}
             </Text>
-            {isAnnual && (
-              <Text fontWeight="bold" size="xs">
-                /year
-              </Text>
-            )}
+            {isAnnual && <Text fontWeight="bold">/year</Text>}
           </div>
         </div>
         <Card border="border-border-base-color">{product}</Card>

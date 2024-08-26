@@ -65,7 +65,7 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
     const getMicrochipNumber = microchipNumber ?? "";
     return (
       <>
-        <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
+        <Text size="16">{`Microchip#: ${getMicrochipNumber}`}</Text>
 
         <div className="mt-base">
           <RouteBasedTabs tabs={tabOptions} />

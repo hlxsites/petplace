@@ -33,7 +33,7 @@ export const Tabs = ({ onChange, tabs, ...rest }: TabsProps) => {
             >
               <div className="flex place-items-center gap-small">
                 {!!icon && <Icon display={icon} size={16} />}
-                <Text size="base">{label}</Text>
+                <Text size="16">{label}</Text>
               </div>
             </RadixTab.Trigger>
           ))}

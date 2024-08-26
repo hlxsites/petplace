@@ -20,7 +20,11 @@ export const ConfirmDeletionDialog = ({
     if (message && typeof message !== "string") return message;
 
     const textMessage = message ?? "This action is irreversible.";
-    return <Text size="base">{textMessage}</Text>;
+    return (
+      <Text size="16" isResponsive>
+        {textMessage}
+      </Text>
+    );
   })();
 
   return (
