@@ -1,39 +1,55 @@
 import {
+  Button,
   Card,
   DisplayForm,
   FormSchema,
   InputsUnion,
-  LinkButton,
   Title,
 } from "~/components/design-system";
+import { CheckoutServicesDrawer } from "../CheckoutServicesDrawer";
+import { useServicesDetails } from "../hooks/useServicesDetails";
 
 export const OptInsSection = () => {
+  const { items, goBack, openServiceDetails } = useServicesDetails();
+
   return (
-    <Card>
-      <div className="p-large">
-        <Title level="h4">Opt-ins</Title>
-        <div className="flex gap-large">
-          <DisplayForm
-            onChange={(props) => {
-              console.log("onChange values", props);
-            }}
-            onSubmit={({ event, values }) => {
-              event.preventDefault();
-              console.log("onSubmit values", values);
-            }}
-            schema={optInFormSchema}
-          />
-          {/* Need to define the route for opt-in */}
-          <LinkButton
-            className="font-franklin text-sm text-orange-300-contrast"
-            to={""}
-          >
-            More info
-          </LinkButton>
+    <>
+      <Card>
+        <div className="p-large">
+          <Title level="h4">Opt-ins</Title>
+          <div className="flex gap-large">
+            <DisplayForm
+              onChange={(props) => {
+                console.log("onChange values", props);
+              }}
+              onSubmit={({ event, values }) => {
+                event.preventDefault();
+                console.log("onSubmit values", values);
+              }}
+              schema={optInFormSchema}
+            />
+            {/* Need to define the route for opt-in */}
+            <Button
+              className="text-sm font-franklin text-orange-300-contrast min-w-[90px]"
+              onClick={handleClick}
+              variant="link"
+            >
+              More info
+            </Button>
+          </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+      <CheckoutServicesDrawer
+        isOpen={!!items.length}
+        onClose={goBack}
+        services={items}
+      />
+    </>
   );
+
+  function handleClick() {
+    openServiceDetails();
+  }
 };
 
 const optInInput: InputsUnion = {
