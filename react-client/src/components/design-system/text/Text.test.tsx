@@ -80,13 +80,13 @@ describe("Text", () => {
     expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${align}`);
   });
 
-  fit.each([
-    // "black",
-    // "neutral-950",
-    // "primary-900",
-    // "secondary-700",
-    // "tertiary-600",
-    // "blue-500",
+  it.each([
+    "black",
+    "neutral-950",
+    "primary-900",
+    "secondary-700",
+    "tertiary-600",
+    "blue-500",
     "green-500",
   ])("should render component with color %p", (color) => {
     // @ts-expect-error - ignoring for test purposes only
