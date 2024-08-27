@@ -2,6 +2,7 @@ export * from "./AdvertiseBannerImageRightPlayground";
 export * from "./ButtonPlayground";
 export * from "./CarouselPlayground";
 export * from "./CartDrawerPlayground";
+export * from "./CheckoutConclusionModalPlayground";
 export * from "./CheckoutProductCardPlayground";
 export * from "./CollapsePlayground";
 export * from "./ComparingPlanCardPlayground";
