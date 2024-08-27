@@ -420,6 +420,44 @@ export const DETAILED_CART_ITEMS: DetailedCartItem[] = [
   },
 ];
 
+export type CheckoutServices = {
+  name: string;
+  price: string;
+  id: string;
+  description: string;
+  isAnnual?: boolean;
+  images: Image[];
+};
+
+const CHECKOUT_SERVICES: CheckoutServices[] = [
+  {
+    name: "24PetMedAlert®",
+    price: "$24.95",
+    id: "24-pet-med-alert",
+    images: [
+      {
+        src: "https://s3-alpha-sig.figma.com/img/cb94/a44d/e6830c0de767f84369e5b5c46907cdb8?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kRxTKMFSnG0E4qqmCisFLte4c4NU9mY5X-EdRcM9tQNg0~zOJ9HC0aqOgmzqrWxiSjmzutuvuoN130shPIeloDaWNQxwCYWEfz0Ffwhvk9ZLaT0CgDyPx7iPSfxD81V1vyKz2n2ZLXE2nBRuz0iR5~Nk5vwjTCixbPWynFKqlQAbpleQFA0KjX-evHqnLEj97Be9kpNzXzbRFdZxqZscQJhtv7NmFgAbNCMVfZIpF8Zfh70MXPhhYDpplOppKngwiqG6BDiLiNnvuK~u4OnCLkK7Ikiq5Sjl38echWig58dmDVmumr7L5S~ZhtA-o3gf6yINfMr2kfGEEXV68Qlz0w__",
+      },
+    ],
+    isAnnual: true,
+    description:
+      "Store and share critical medical and behavioral information. Your first year is complimentary with a Lifetime Protection Membership.",
+  },
+  {
+    name: "24/7 Vet Helpline",
+    price: "$15.00",
+    id: "24-7-vet-helpline",
+    images: [
+      {
+        src: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=lW51xy4dfqkyDi4jWruiI0Rv3-yC6GnRD0SOQmquxSuBwM~zS7cxfkxF8j59D9fRXo0Y-YrlJY~R8aAFkqN3~N9iDY8d9mdRFu-W15ABxAXr464cpjpE3zOBxR~bflQn0EfQlFBEDhXa8HrTCo31ABzX246eGN5J8VMnzLHh4moYisdqsuyMsPsdJqQUOkg8IVnYlfRSQnQIJkLQ2kTT2c7J4kgkOsPbC0eb-pyAjX42Bhw35A483SarFdDkyhg1v0lJOSYALXKJaBfzJzYA9K1DY0b5gUGbXB-wYsYs5SIV4zbC7QKrr7PxAifMgjH8Y6v-oQ0usVzWwqW2yhF2eA__",
+      },
+    ],
+    isAnnual: true,
+    description:
+      "Contact a veterinary professional any time or day by phone, email or live chat. Your first year is complimentary with a Lifetime Protection Membership.",
+  },
+];
+
 export const getPetsList = () => {
   return PETS_LIST;
 };
@@ -453,6 +491,10 @@ export const getPetServiceStatus = (petId: string) => {
 
 export const getProductsList = () => {
   return CHECKOUT_PRODUCTS;
+};
+
+export const getServicesList = () => {
+  return CHECKOUT_SERVICES;
 };
 
 export const getProductById = (id: string | null) => {
