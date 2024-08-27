@@ -35,9 +35,7 @@ export const MembershipComparingPlanTable = ({
         const tableHeaderCells = table.querySelectorAll("th");
 
         if (tableHeaderCells.length > secondLastColumnIndex) {
-          const targetCell = tableHeaderCells[
-            secondLastColumnIndex
-          ] as HTMLElement;
+          const targetCell = tableHeaderCells[secondLastColumnIndex];
           const tableRect = table.getBoundingClientRect();
           const targetCellRect = targetCell.getBoundingClientRect();
 
@@ -94,7 +92,7 @@ export const MembershipComparingPlanTable = ({
                   key={`${column} icon ${colIndex}`}
                   className="relative text-center"
                 >
-                  {row.availableColumns.includes(column as MembershipPlans) ? (
+                  {row.availableColumns.includes(column) ? (
                     <Icon
                       className="text-green-300"
                       display="checkCircle"
