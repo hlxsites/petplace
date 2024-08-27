@@ -46,10 +46,10 @@ export const DragAndDropFileUpload = ({
                 size={32}
               />
             </div>
-            <Text fontFamily="raleway" fontWeight="bold" size="sm">
+            <Text fontFamily="raleway" fontWeight="bold" size="14">
               {messageText}
             </Text>
-            <Text color="tertiary-600" size="xs">
+            <Text color="tertiary-600">
               PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
             </Text>
           </div>
