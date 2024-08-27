@@ -10,13 +10,15 @@ type TableRow = {
 
 type MembershipComparingPlanTableProps = {
   actions: TableActions[];
-  rows: TableRow[];
   columns: MembershipPlans[];
+  onClick?: () => void;
+  rows: TableRow[];
 };
 
 export const MembershipComparingPlanTable = ({
   actions,
   columns,
+  onClick,
   rows,
 }: MembershipComparingPlanTableProps) => {
   const [highlightStyles, setHighlightStyles] = useState<{
@@ -67,7 +69,7 @@ export const MembershipComparingPlanTable = ({
           zIndex: 10,
         }}
       ></div>
-      <table className="my-base w-full border-collapse" ref={tableRef}>
+      <table className="my-small w-full border-collapse" ref={tableRef}>
         <thead>
           <tr>
             <th>{/* Placeholder */}</th>
@@ -113,8 +115,10 @@ export const MembershipComparingPlanTable = ({
             <td>{/* Placeholder */}</td>
             {actions.map(({ label, ...rest }) => (
               <td className="text-center" key={label}>
-                <div className="space-x-4 flex justify-evenly">
-                  <Button {...rest}>{label}</Button>
+                <div className="space-x-4 flex justify-evenly pt-xlarge">
+                  <Button {...rest} onClick={onClick}>
+                    {label}
+                  </Button>
                 </div>
               </td>
             ))}

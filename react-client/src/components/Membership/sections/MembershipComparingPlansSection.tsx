@@ -24,7 +24,7 @@ export const MembershipComparingPlansSection = ({
       <Collapse
         isOpen={isOpen}
         onOpenChange={setIsOpen}
-        title={<Title level="h2">Compare plans</Title>}
+        title={<Title level="h3">Compare plans</Title>}
       >
         <MembershipComparingPlanTable
           actions={getActionButtons()}
