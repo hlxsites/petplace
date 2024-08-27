@@ -67,7 +67,7 @@ export const MembershipComparingPlanTable = ({
           zIndex: 10,
         }}
       ></div>
-      <table className="w-full border-collapse bg-white" ref={tableRef}>
+      <table className="my-base w-full border-collapse" ref={tableRef}>
         <thead>
           <tr>
             <th>{/* Placeholder */}</th>
@@ -109,11 +109,13 @@ export const MembershipComparingPlanTable = ({
               ))}
             </tr>
           ))}
-          <tr className="">
+          <tr>
             <td>{/* Placeholder */}</td>
             {actions.map(({ label, ...rest }) => (
-              <td key={label}>
-                <Button {...rest}>{label}</Button>
+              <td className="text-center" key={label}>
+                <div className="space-x-4 flex justify-evenly">
+                  <Button {...rest}>{label}</Button>
+                </div>
               </td>
             ))}
           </tr>
