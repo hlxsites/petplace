@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 import { DisplayClasses } from "~/routes/types/styleTypes";
-import { classNames } from "~/util/styleUtil";
 import {
   TextCommonStyleProps,
   useTextCommonStyles,
 } from "./useTextCommonStyles";
+import clsx from "clsx";
 
 type StyleProps = TextCommonStyleProps & {
   display?: DisplayClasses;
@@ -79,9 +79,9 @@ function useTextBase({
   const size = propValueConsideringInherit(sizeProp, "12");
   const textDecoration = propValueConsideringInherit(textDecorationProp);
 
-  const commonClassName = useTextCommonStyles({ ...rest, color });
+  const commonClassName = useTextCommonStyles({ color, ...rest });
 
-  const className = classNames(display, commonClassName, {
+  const className = clsx(display, commonClassName, {
     // Family
     "font-franklin": fontFamily === "franklin",
     "font-raleway": fontFamily === "raleway",
@@ -93,22 +93,19 @@ function useTextBase({
     "font-semibold": fontWeight === "semibold",
     "font-medium": fontWeight === "medium",
 
-    // Size
-    "text-xs leading-4": size === "12",
-    "text-sm leading-5": size === "14",
-    "text-base leading-6": size === "16",
-    "text-lg leading-7": size === "18",
-    "text-xl leading-7": size === "20",
-    "text-[24px] leading-7": size === "24",
-    "text-[32px] leading-8": size === "32",
-    "text-[40px] leading-10": size === "40",
+    "text-12 leading-4": size === "12",
+    "text-14 leading-5": size === "14",
+    "text-16 leading-6": size === "16",
+    "text-18 leading-7": size === "18",
+    "text-20 leading-7": size === "20",
+    "text-24 leading-7": size === "24",
+    "text-32 leading-8": size === "32",
+    "text-40 leading-10": size === "40",
 
     // Responsive size
-    "lg:text-[18px] lg:leading-7 text-sm leading-5":
-      size === "18" && isResponsive,
-    "lg:text-base lg:leading-6 text-sm leading-5":
-      size === "16" && isResponsive,
-    "lg:text-sm lg:leading-5 text-xs leading-4": size === "14" && isResponsive,
+    "lg:text-18 lg:leading-7 text-14 leading-5": size === "18" && isResponsive,
+    "lg:text-16 lg:leading-6 text-14 leading-5": size === "16" && isResponsive,
+    "lg:text-14 lg:leading-5 text-12 leading-4": size === "14" && isResponsive,
 
     // Decoration
     "line-through": textDecoration === "line-through",
