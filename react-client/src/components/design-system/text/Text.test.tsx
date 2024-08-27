@@ -133,6 +133,6 @@ function getRenderer({
 
 // Helper function to set viewport width
 const setViewportWidth = (width: number) => {
-  (window as any).innerWidth = width;
-  (window as any).dispatchEvent(new Event("resize"));
+  window.innerWidth = width;
+  window.dispatchEvent(new Event("resize"));
 };
