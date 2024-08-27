@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Button, Icon, Text, TextSpan, Title } from "../design-system";
 import { MembershipPlans, TableActions } from "./types/MembershipTypes";
 
@@ -18,9 +19,55 @@ export const MembershipComparingPlanTable = ({
   columns,
   rows,
 }: MembershipComparingPlanTableProps) => {
+  const [highlightStyles, setHighlightStyles] = useState<{
+    left: number;
+    width: number;
+  }>({ left: 0, width: 0 });
+  const tableRef = useRef<HTMLTableElement>(null);
+
+  useEffect(() => {
+    const updateHighlightPosition = () => {
+      if (tableRef.current) {
+        const table = tableRef.current;
+        const secondLastColumnIndex = columns.length - 1;
+        const tableHeaderCells = table.querySelectorAll("th");
+
+        if (tableHeaderCells.length > secondLastColumnIndex) {
+          const targetCell = tableHeaderCells[
+            secondLastColumnIndex
+          ] as HTMLElement;
+          const tableRect = table.getBoundingClientRect();
+          const targetCellRect = targetCell.getBoundingClientRect();
+
+          setHighlightStyles({
+            left: targetCellRect.left - tableRect.left,
+            width: targetCellRect.width,
+          });
+        }
+      }
+    };
+
+    updateHighlightPosition();
+    window.addEventListener("resize", updateHighlightPosition);
+
+    return () => window.removeEventListener("resize", updateHighlightPosition);
+  }, [columns]);
+
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse bg-white">
+    <div className="relative overflow-x-auto">
+      {/* Highlight container */}
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl border border-solid border-orange-300-contrast"
+        style={{
+          left: highlightStyles.left,
+          width: highlightStyles.width,
+          top: 0,
+          bottom: 0,
+          height: "100%",
+          zIndex: 10,
+        }}
+      ></div>
+      <table className="w-full border-collapse bg-white" ref={tableRef}>
         <thead>
           <tr>
             <th>{/* Placeholder */}</th>
