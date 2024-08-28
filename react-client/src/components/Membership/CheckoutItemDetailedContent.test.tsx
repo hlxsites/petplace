@@ -83,7 +83,7 @@ describe("CheckoutItemDetailedContent", () => {
     expect(getByText(YEAR_LABEL)).toBeInTheDocument();
   });
 
-  it(`should NOT render component with ${YEAR_LABEL} when isAnnual is falsy`, () => {
+  it(`should NOT render component with ${YEAR_LABEL} when isAnnual is false`, () => {
     getRenderer({ item: { ...DEFAULT_ITEM, isAnnual: false } });
     expect(queryByText(YEAR_LABEL)).not.toBeInTheDocument();
   });
@@ -95,22 +95,22 @@ describe("CheckoutItemDetailedContent", () => {
     ).toBeInTheDocument();
   });
 
-  it("should call addToCart callback when user clicks on a button", async () => {
-    const addToCart = jest.fn();
-    getRenderer({ addToCart });
-    expect(addToCart).not.toHaveBeenCalled();
+  it("should call onAddToCart callback when user clicks on it", async () => {
+    const onAddToCart = jest.fn();
+    getRenderer({ onAddToCart });
+    expect(onAddToCart).not.toHaveBeenCalled();
     await userEvent.click(
       getByRole("button", { name: ADD_TO_CART_BUTTON_LABEL })
     );
-    expect(addToCart).toHaveBeenCalledTimes(1);
+    expect(onAddToCart).toHaveBeenCalledTimes(1);
   });
 });
 
 function getRenderer({
   item = DEFAULT_ITEM,
-  addToCart = jest.fn(),
+  onAddToCart = jest.fn(),
 }: Partial<ComponentProps<typeof CheckoutItemDetailedContent>> = {}) {
   return render(
-    <CheckoutItemDetailedContent item={item} addToCart={addToCart} />
+    <CheckoutItemDetailedContent item={item} onAddToCart={onAddToCart} />
   );
 }

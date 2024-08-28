@@ -5,12 +5,12 @@ import { CheckoutProductColorSize } from "./CheckoutProductColorSize";
 
 type CheckoutItemDetailedContentProps = {
   item: DetailedCartItem;
-  addToCart?: () => void;
+  onAddToCart?: () => void;
 };
 
 export const CheckoutItemDetailedContent = ({
   item,
-  addToCart,
+  onAddToCart,
 }: CheckoutItemDetailedContentProps) => {
   const {
     additionalInfo,
@@ -79,7 +79,7 @@ export const CheckoutItemDetailedContent = ({
           productSizes={availableSizes}
         />
       )}
-      <Button fullWidth onClick={addToCart} variant="tertiary">
+      <Button fullWidth onClick={onAddToCart} variant="tertiary">
         Add to cart
       </Button>
     </div>
