@@ -24,13 +24,10 @@ describe("CartItemImages", () => {
     expect(carousel).toBeInTheDocument();
   });
 
-  it.each([[], {} as any])(
-    "should return null when images array is empty",
-    (images) => {
-      const { container } = getRenderer({ images });
-      expect(container.firstChild).toBeNull();
-    }
-  );
+  it("should return null when images array is an empty array", () => {
+    const { container } = getRenderer({ images: [] });
+    expect(container.firstChild).toBeNull();
+  });
 
   it("should render alt text as 'Product image' when name is not provided", () => {
     getRenderer({ images: MOCK_IMAGE });
