@@ -3,15 +3,15 @@ import { Drawer } from "../design-system";
 import { CheckoutItemDetailedContent } from "./CheckoutItemDetailedContent";
 
 type CheckoutItemDetailsDrawerProps = {
-  addToCart?: () => void;
   item: DetailedCartItem;
+  onAddToCart?: () => void;
   onClose: () => void;
 };
 
 export const CheckoutItemDetailsDrawer = ({
-  addToCart,
-  onClose,
   item,
+  onAddToCart,
+  onClose,
 }: CheckoutItemDetailsDrawerProps) => {
   return (
     <Drawer
@@ -20,7 +20,7 @@ export const CheckoutItemDetailsDrawer = ({
       isOpen
       onClose={onClose}
     >
-      <CheckoutItemDetailedContent item={item} addToCart={addToCart} />
+      <CheckoutItemDetailedContent item={item} onAddToCart={onAddToCart} />
     </Drawer>
   );
 };
