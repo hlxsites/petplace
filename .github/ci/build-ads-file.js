@@ -8,6 +8,17 @@ const api = new URL(`https://${site}/ads-txt-file.json`);
 const response = await fetch(api);
 const result = await response.json();
 
-const targetFile = `${targetDirectory}/ads-new.txt`;
-console.log(`Writing ads file to ${targetFile}`);
-fs.writeFileSync(targetFile, result.data[0].script);
+const dbAdsFile = `${targetDirectory}/ads-new.db`;
+const txtAdsFile = `${targetDirectory}/ads-new.txt`;
+
+// using DB file to check for published date
+if (!fs.existsSync(dbAdsFile)) {
+  console.log(`Creating ads db to ${dbAdsFile}`);
+  fs.writeFileSync(dbAdsFile, JSON.stringify(result.data[0]));
+}
+
+// initial creation of the ads file if it doesn't exist
+if (!fs.existsSync(txtAdsFile)) {
+  console.log(`Creating ads file to ${txtAdsFile}`);
+  fs.writeFileSync(txtAdsFile, result.data[0].script);
+}
