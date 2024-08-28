@@ -31,24 +31,22 @@ export const CheckoutItemDetailedContent = ({
       <div>
         <Title level="h5">{name}</Title>
         <Text fontWeight="bold">
-          <TextSpan size="xlg">{price}</TextSpan>
+          <TextSpan size="24">{price}</TextSpan>
           {`${isAnnual ? "/year" : ""}`}
         </Text>
       </div>
       <CartItemImages images={images} name={name} />
       <div className="flex flex-col gap-base">
-        <Text color="background-color-tertiary">{description}</Text>
+        <Text color="background-color-tertiary" size="14">
+          {description}
+        </Text>
         {additionalInfo && (
-          <Text color="background-color-tertiary" size="xs">
-            {additionalInfo}
-          </Text>
+          <Text color="background-color-tertiary">{additionalInfo}</Text>
         )}
       </div>
       {tagFeatures && (
         <>
-          <Text size="sm" fontWeight="bold">
-            Tag Features
-          </Text>
+          <Title level="h4">Tag Features</Title>
           <ul className="pl-0">
             {tagFeatures.map((feature) => (
               <li className="mb-xsmall flex items-center">
@@ -61,18 +59,18 @@ export const CheckoutItemDetailedContent = ({
       )}
       {sizing && (
         <>
-          <Text size="sm" fontWeight="bold">
-            Sizing
+          <Title level="h4">Sizing</Title>
+          <Text color="background-color-tertiary" size="14">
+            {sizing}
           </Text>
-          <Text color="background-color-tertiary">{sizing}</Text>
         </>
       )}
       {privacyFeatures && (
         <>
-          <Text size="sm" fontWeight="bold">
-            Privacy Features
+          <Title level="h4">Privacy Features</Title>
+          <Text color="background-color-tertiary" size="14">
+            {privacyFeatures}
           </Text>
-          <Text color="background-color-tertiary">{privacyFeatures}</Text>
         </>
       )}
       {availableColors && availableSizes && (
