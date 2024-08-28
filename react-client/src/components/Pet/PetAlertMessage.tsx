@@ -38,7 +38,7 @@ export const PetAlertMessage = ({
           {renderGetQuoteButton({ className: "hidden h-[30px] lg:flex" })}
         </div>
         <div className="pl-xxlarge">
-          <Text color="blue-500" size="base">
+          <Text color="blue-500" size="14">
             {message}
           </Text>
         </div>

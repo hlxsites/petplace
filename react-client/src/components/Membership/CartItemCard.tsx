@@ -22,13 +22,15 @@ export const CartItemCard = ({
       <div className="flex flex-col gap-base p-base">
         <div className="flex justify-between">
           <div>
-            <Text size="base" fontWeight="bold" display="block">
+            <Text display="block" fontWeight="bold" size="18">
               {name}
             </Text>
-            <Text color="background-color-tertiary">{description}</Text>
+            <Text color="background-color-tertiary" size="14">
+              {description}
+            </Text>
           </div>
           <div>
-            <Text size="base" fontWeight="bold">
+            <Text fontWeight="bold" size="20">
               {price}
             </Text>
           </div>
@@ -37,7 +39,7 @@ export const CartItemCard = ({
         {isService && (
           <div className="flex justify-between">
             <Text color="background-color-tertiary">{recurrence}</Text>
-            <Text fontWeight="bold" color="orange-300-contrast">
+            <Text color="orange-300-contrast" fontWeight="bold" size="14">
               {acquisitionMessage}
             </Text>
           </div>

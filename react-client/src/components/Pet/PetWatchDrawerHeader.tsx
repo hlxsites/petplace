@@ -42,7 +42,7 @@ const MainHeader = () => {
         className="pb-small"
         src={ASSET_IMAGES.petWatchLogo}
       />
-      <Text color="tertiary-600" size="base">
+      <Text color="tertiary-600" size="14">
         Here is all the available benefits and perks
       </Text>
     </>

@@ -11,7 +11,7 @@ export const MembershipOfferSection = () => {
   return (
     <>
       <div
-        className="hidden w-full grid-flow-row grid-cols-3 justify-center gap-base md:grid"
+        className="hidden w-full grid-flow-row grid-cols-3 justify-center gap-xxlarge md:grid"
         role="region"
       >
         {membershipCards}

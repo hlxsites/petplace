@@ -6,7 +6,7 @@ export const AdditionalProtectionSection = () => {
     <div className="flex w-full justify-between">
       <div>
         <Title level="h3">Secure Your Pet's Protection Plan</Title>
-        <Text size="lg">
+        <Text isResponsive size="18">
           Add Additional Products, and Confirm Opt-ins and Terms for
           Comprehensive Pet Safety.
         </Text>

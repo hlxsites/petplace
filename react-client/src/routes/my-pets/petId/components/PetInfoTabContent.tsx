@@ -55,7 +55,7 @@ export function PetInfoTabContent({
     <div className="grid grid-cols-1 md:grid-cols-2" role="list">
       {getFields.map(({ label, value }) => (
         <div className="pb-xsmall" key={label} role="listitem">
-          <Text size="sm">
+          <Text size="14">
             <TextSpan fontFamily="raleway" fontWeight="bold">
               {label}:
             </TextSpan>{" "}
