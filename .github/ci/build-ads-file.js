@@ -1,14 +1,10 @@
 import fs from 'fs';
-import { getLocaleForUrl } from './utils.js';
-
-const hlx = false; // change this to true for local testing
 
 const targetDirectory = process.argv[2] || '.';
-const locale = getLocaleForUrl(process.argv[3]);
-const site = hlx ? 'main--petplace--hlxsites.hlx.page' : 'www.petplace.com'
+const site = process.env.CI ? 'www.petplace.com' : 'main--petplace--hlxsites.hlx.page';
 
-const root = locale === 'en-US' ? '' : `/${locale.toLowerCase()}`;
-const api = new URL(`https://${site}${root}/ads-txt-file.json`);
+// fetch ads json file as api, and output result
+const api = new URL(`https://${site}/ads-txt-file.json`);
 const response = await fetch(api);
 const result = await response.json();
 
