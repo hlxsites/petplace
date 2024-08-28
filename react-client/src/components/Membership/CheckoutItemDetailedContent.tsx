@@ -49,7 +49,7 @@ export const CheckoutItemDetailedContent = ({
           <Title level="h4">Tag Features</Title>
           <ul className="pl-0">
             {tagFeatures.map((feature) => (
-              <li className="mb-xsmall flex items-center">
+              <li className="mb-xsmall flex items-center" key={feature}>
                 <span className="mr-small h-[2px] w-[2px] rounded-full bg-black"></span>
                 <Text color="background-color-tertiary">{feature}</Text>
               </li>

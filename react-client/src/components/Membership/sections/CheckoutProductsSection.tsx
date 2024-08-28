@@ -37,6 +37,8 @@ export const CheckoutProductsSection = ({
           }) => (
             <CheckoutProductCard
               {...rest}
+              key={title}
+              onClick={() => openItemDetails(id)}
               product={<CartItemImages images={images} name={title} />}
               productSpecifications={renderProductSpecifications(
                 description,
@@ -44,7 +46,6 @@ export const CheckoutProductsSection = ({
                 availableSizes
               )}
               title={title}
-              onClick={() => openItemDetails(id)}
             />
           )
         )}
