@@ -18,3 +18,4 @@ export * from "./StepProgressPlayground";
 export * from "./TablePlayground";
 export * from "./TagPlayground";
 export * from "./TextPlayground";
+export * from "./TitlePlayground";
