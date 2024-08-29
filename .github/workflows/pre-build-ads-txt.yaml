@@ -18,7 +18,7 @@ env:
 
 jobs:
   build:
-    if: "${{ github.event.client_payload.path == '/ads-txt-file.json' }}"
+      if: "${{ github.event.client_payload.path == '/ads-txt-file.json' }}"
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v3
