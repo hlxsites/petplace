@@ -28,6 +28,7 @@ export const Header = ({
           {!!backButtonTo && (
             <LinkIconButton
               buttonProps={{
+                className: "text-orange-300-contrast",
                 icon: "chevronLeft",
               }}
               className="ml-[-12px]"
