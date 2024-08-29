@@ -35,7 +35,9 @@ export const Header = ({
               to={backButtonTo}
             />
           )}
-          <Title>{pageTitle}</Title>
+          <Title level="h2" isResponsive>
+            {pageTitle}
+          </Title>
         </div>
         {primaryElement}
       </div>

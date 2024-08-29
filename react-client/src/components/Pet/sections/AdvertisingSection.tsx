@@ -17,7 +17,7 @@ export const AdvertisingSection = () => {
       img="https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg"
       message="It is stressful when a furry family member is lost. Protect and care for your pet with 24Petwatch enhanced Lost Pet Protection."
       title={
-        <Title level="h2">
+        <Title level="h2" isResponsive>
           Did you know that 1 in 3 pets{" "}
           <TextSpan color="orange-300-contrast">go missing?</TextSpan>
         </Title>
