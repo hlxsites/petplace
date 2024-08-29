@@ -17,7 +17,7 @@ env:
 #   cancel-in-progress: true
 
 jobs:
-  build:
+  repository-dispatch:
     if: github.event.client_payload.path == '/ads-txt-file.json'
     runs-on: ubuntu-latest
     steps:
@@ -55,5 +55,5 @@ jobs:
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: 'ads.txt'
+        file_pattern: 'ads.txt ads-txt.db'
         commit_message: "chore: update the ads.txt file"

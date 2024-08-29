@@ -28,7 +28,9 @@ const dateFromFile = JSON.parse(dbAdsFileData).stamp;
 
 // only updates if the time stamps don't match
 if (result.data[0].stamp !== dateFromFile) {
-  console.log(`Update for ads file and DB`);
+  console.log("Update for ads file and DB");
   fs.writeFileSync(txtAdsFile, result.data[0].script);
   fs.writeFileSync(dbAdsFile, JSON.stringify(result.data[0]));
+} else {
+  console.log("Skipping ads file and DB update. Timestamp hasn't changed.");
 }
