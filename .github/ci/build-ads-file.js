@@ -8,8 +8,8 @@ const api = new URL(`https://${site}/ads-txt-file.json`);
 const response = await fetch(api);
 const result = await response.json();
 
-const dbAdsFile = `${targetDirectory}/ads-new.db`;
-const txtAdsFile = `${targetDirectory}/ads-new.txt`;
+const dbAdsFile = `${targetDirectory}/ads-txt.db`;
+const txtAdsFile = `${targetDirectory}/ads.txt`;
 
 // using DB file to check for published date
 if (!fs.existsSync(dbAdsFile)) {
