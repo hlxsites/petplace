@@ -2,7 +2,7 @@ import { Button, Icon, IconKeys } from "~/components/design-system";
 import { Card } from "~/components/design-system/card/Card";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
-import { AppRoutePaths } from "../AppRoutePaths";
+import { MY_PETS_FULL_ROUTE } from "../AppRoutePaths";
 
 type CardContent = {
   button: string;
@@ -15,7 +15,7 @@ export const AddNewPetIndex = () => {
   return (
     <Layout>
       <Header
-        backButtonTo={`/${AppRoutePaths.myPets}`}
+        backButtonTo={MY_PETS_FULL_ROUTE}
         mb="small"
         pageTitle="Add new pet"
       />
