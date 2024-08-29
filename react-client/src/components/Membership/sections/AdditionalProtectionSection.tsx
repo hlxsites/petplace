@@ -3,7 +3,7 @@ import { ButtonWithBadge } from "~/components/design-system/button/ButtonWithBad
 
 export const AdditionalProtectionSection = () => {
   return (
-    <div className="flex w-full justify-between">
+    <div className="relative flex w-full justify-between">
       <div>
         <Title level="h3" isResponsive>
           Secure Your Pet's Protection Plan
@@ -13,13 +13,15 @@ export const AdditionalProtectionSection = () => {
           Comprehensive Pet Safety.
         </Text>
       </div>
-      <ButtonWithBadge
-        iconProps={{ className: "text-orange-300-contrast" }}
-        iconLeft="shoppingCart"
-        badge={2}
-      >
-        Shopping cart
-      </ButtonWithBadge>
+      <div className="absolute bottom-[160px] right-10 lg:bottom-0">
+        <ButtonWithBadge
+          iconProps={{ className: "text-orange-300-contrast" }}
+          iconLeft="shoppingCart"
+          badge={2}
+        >
+          Shopping cart
+        </ButtonWithBadge>
+      </div>
     </div>
   );
 };
