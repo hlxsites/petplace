@@ -10,3 +10,4 @@ folders:
   /en-gb/article/category/: /en-gb/article/category/default
   /en-gb/tags/: /en-gb/tags/default
   /account/: /account/default
+  /checkout/: /checkout/default
