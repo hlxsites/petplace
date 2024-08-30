@@ -487,6 +487,13 @@ export default {
       case 'article-page':
         main = transformArticlePage(document);
         break;
+      case 'account-activation':
+        main = document.querySelector('main');
+        WebImporter.DOMUtils.remove(main, [
+          'header',
+          'footer',
+        ]);
+        break;
       case 'breed-page':
         main = transformBreedPage(document);
         break;
