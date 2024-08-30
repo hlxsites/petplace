@@ -30,7 +30,7 @@ export const CheckoutProductCard = ({
             {isAnnual && <Text fontWeight="bold">/year</Text>}
           </div>
         </div>
-        <Card border="border-border-base-color">{product}</Card>
+        {product && <Card border="border-border-base-color">{product}</Card>}
         <div className="h-[58px]">{productSpecifications}</div>
         <div className="grid w-full gap-xsmall">
           <Button fullWidth onClick={onClick} variant="tertiary">
