@@ -1,3 +1,4 @@
+import { redeemTokenRequest } from '../../scripts/lib/msal/default-msal-config.js';
 import { getDefaultMsalInstance } from '../../scripts/lib/msal/msal-instance.js';
 
 function parseJwt(token) {
@@ -11,27 +12,34 @@ function parseJwt(token) {
 }
 
 export async function loadEager(document) {
-  const main = document.querySelector('main');
-
-  // cleanup body html
-  document.body.innerHTML = '';
-  document.body.appendChild(main);
-
   const searchParams = new URLSearchParams(window.location.search);
   const token = searchParams.get('token');
-
   const claim = parseJwt(token);
-  if (claim) {
-    const { email } = claim;
 
-    const msalInstance = await getDefaultMsalInstance();
-    const loginRequest = {
-      extraQueryParameters: {
-        id_token_hint: token,
-        login_hint: email,
-        source: 'petplace-account-activation',
-      },
-    };
-    msalInstance.loginRedirect(loginRequest);
+  if (!token || !claim) {
+    const main = document.querySelector('main');
+    main.innerHTML = `
+        <div>
+            <h1>Invalid token</h1>
+            <p>This link is invalid or has already expired.</p>
+            <a href="/" class="button cta">Back to Homepage</a>
+        </div>
+    `;
+
+    // Stop execution if token is invalid
+    return;
   }
+
+  const { email } = claim;
+
+  const msalInstance = await getDefaultMsalInstance();
+  const loginRequest = {
+    ...redeemTokenRequest,
+    extraQueryParameters: {
+      id_token_hint: token,
+      login_hint: email,
+    },
+    redirectUri: window.location.origin,
+  };
+  msalInstance.loginRedirect(loginRequest);
 }
