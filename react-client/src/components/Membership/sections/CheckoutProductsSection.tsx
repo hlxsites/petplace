@@ -1,8 +1,16 @@
-import { CheckoutProduct, Colors, Sizes } from "~/mocks/MockRestApiServer";
+import { Text } from "~/components/design-system";
+import {
+  CheckoutProduct,
+  Colors,
+  Image,
+  Sizes,
+} from "~/mocks/MockRestApiServer";
+import { classNames } from "~/util/styleUtil";
+import { CartItemImages } from "../CartItemImages";
 import { CheckoutProductCard } from "../CheckoutProductCard";
 import { CheckoutProductColorSize } from "../CheckoutProductColorSize";
-import { Text } from "~/components/design-system";
-import { classNames } from "~/util/styleUtil";
+import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
+import { useCartItemsDetails } from "../hooks/useCartItemDetails";
 
 type CheckoutProductsSectionProps = {
   products: CheckoutProduct[];
@@ -11,63 +19,56 @@ type CheckoutProductsSectionProps = {
 export const CheckoutProductsSection = ({
   products,
 }: CheckoutProductsSectionProps) => {
-  const productsLength = products.length;
+  const { item, openItemDetails, goBack } = useCartItemsDetails();
+  const gridColumns = getGridColumns(products.length);
 
   return (
-    <div
-      className={classNames("grid grid-cols-1 gap-large", {
-        "lg:grid-cols-3": productsLength > 2,
-        "lg:grid-cols-2": productsLength >= 1 && productsLength <= 2,
-      })}
-    >
-      {products.map(
-        ({
-          availableColors,
-          availableSizes,
-          description,
-          img,
-          title,
-          ...rest
-        }) => (
+    <>
+      <div className={classNames("grid gap-large", gridColumns)}>
+        {products.map((product) => (
           <CheckoutProductCard
-            {...rest}
-            product={renderProduct(img, title)}
+            {...product}
+            key={product.id}
+            onClick={() => openItemDetails(product.id)}
+            product={renderProductImage(product.title, product.images)}
             productSpecifications={renderProductSpecifications(
-              description,
-              availableColors,
-              availableSizes
+              product.description,
+              product.availableColors,
+              product.availableSizes
             )}
-            title={title}
           />
-        )
-      )}
-    </div>
+        ))}
+      </div>
+      {item && <CheckoutItemDetailsDrawer item={item} onClose={goBack} />}
+    </>
   );
+};
 
-  function renderProduct(img: string, name: string) {
+function getGridColumns(productsLength: number) {
+  if (productsLength > 2) return "lg:grid-cols-3";
+  if (productsLength >= 1) return "lg:grid-cols-2";
+  return "grid-cols-1";
+}
+
+function renderProductImage(title: string, images?: Image[] | null) {
+  return images && images.length ? (
+    <CartItemImages images={images} name={title} />
+  ) : null;
+}
+
+function renderProductSpecifications(
+  description?: string,
+  availableColors?: Colors[],
+  availableSizes?: Sizes[]
+) {
+  if (description) return <Text>{description}</Text>;
+  if (availableColors && availableSizes) {
     return (
-      <img
-        alt={`image of product: ${name}`}
-        className="h-full w-full object-contain"
-        src={img}
+      <CheckoutProductColorSize
+        productColors={availableColors}
+        productSizes={availableSizes}
       />
     );
   }
-
-  function renderProductSpecifications(
-    description?: string,
-    availableColors?: Colors[],
-    availableSizes?: Sizes[]
-  ) {
-    return description ? (
-      <Text>{description}</Text>
-    ) : (
-      availableColors && availableSizes && (
-        <CheckoutProductColorSize
-          productColors={availableColors}
-          productSizes={availableSizes}
-        />
-      )
-    );
-  }
-};
+  return null;
+}

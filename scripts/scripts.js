@@ -99,6 +99,7 @@ window.hlx.templates.add([
   '/templates/insurance-paid-page',
   '/templates/no-markup',
   '/templates/puppy-diaries-index',
+  '/templates/react-render-only',
   '/templates/searchresults',
   '/templates/tag-index',
   '/templates/travel-guide-page',
