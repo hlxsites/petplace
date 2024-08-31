@@ -80,24 +80,31 @@ checkFragment();
  */
 export async function login(callback, featureName) {
   let msalInstance = await getDefaultMsalInstance();
+
+  const successCallback = () => {
+    document.querySelector('.nav-login .user-btn').classList.remove('hidden');
+    document.querySelector('.nav-login .login-btn').classList.add('hidden');
+
+    // For React-client specific pages, we need to reload the page after login to reload react block
+    const isCheckoutPage = window.location.pathname.startsWith('/checkout');
+    const isAccountPage = window.location.pathname.startsWith('/account');
+    if (isCheckoutPage || isAccountPage) {
+      window.location.reload();
+    }
+  }
+
   // use loginRedirect() for mobile devices, use loginPopup() for desktop.
   if (isMobile()) {
     msalInstance.loginRedirect(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
-      .then(() => {
-        document.querySelector('.nav-login .user-btn').classList.remove('hidden');
-        document.querySelector('.nav-login .login-btn').classList.add('hidden');
-      })
+      .then(successCallback)
       .catch((error) => {
         console.log(error);
       });
   } else {
     msalInstance.loginPopup(loginRequest)
       .then((response) => handleResponse(response, callback, featureName))
-      .then(() => {
-        document.querySelector('.nav-login .user-btn').classList.remove('hidden');
-        document.querySelector('.nav-login .login-btn').classList.add('hidden');
-      })
+      .then(successCallback)
       .catch((error) => {
         console.log(error);
       });
@@ -342,7 +349,7 @@ function handleResponse(response, customCallback, featureName = 'PetPlace (Gener
                     ? contentGroup.content
                     : 'N/A - Content Group Not Set',
                 });
-      
+
                 // invoke custom callback if one was provided
                 if (customCallback) {
                   customCallback(response);
