@@ -1,11 +1,12 @@
-import { useWindowWidth } from "~/hooks/useWindowWidth";
-import { MembershipCard } from "../MembershipCard";
-import { MEMBERSHIP_CARD_OPTIONS } from "../utils/membershipConstants";
+import { useState } from "react";
 import { Carousel } from "~/components/design-system";
+import { useCheckoutIndexViewModel } from "~/routes/checkout/useCheckoutIndexViewModel";
+import { MembershipCard } from "../MembershipCard";
+import { PlanBenefitsList } from "../PlanBenefitsList";
 
 export const MembershipOfferSection = () => {
-  const shouldRenderContentInCarousel = useWindowWidth() < 768;
-
+  const [isOpen, setIsOpen] = useState(false);
+  const { plans, renderMobileVersion } = useCheckoutIndexViewModel();
   const membershipCards = renderMembershipCards();
 
   return (
@@ -16,15 +17,18 @@ export const MembershipOfferSection = () => {
       >
         {membershipCards}
       </div>
-      {shouldRenderContentInCarousel && (
+      {renderMobileVersion && (
         <Carousel ariaLabel="Membership carousel" items={membershipCards} />
       )}
     </>
   );
 
   function renderMembershipCards() {
-    return MEMBERSHIP_CARD_OPTIONS.map(({ ...props }) => (
-      <MembershipCard key={props.title} {...props} />
+    return plans.map(({ title, ...props }) => (
+      <>
+        <MembershipCard key={title} title={title} {...props} />
+        <PlanBenefitsList isOpen={isOpen} title={title} setIsOpen={setIsOpen} />
+      </>
     ));
   }
 };
