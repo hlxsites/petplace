@@ -1,5 +1,6 @@
 import { IconKeys } from "~/components/design-system";
 import { CardProps } from "~/components/design-system/types/CardTypes";
+import { MembershipPlan } from "../types/MembershipTypes";
 
 export type MembershipDescriptionOffer = {
   icon?: IconKeys;
@@ -14,5 +15,5 @@ export type MembershipInfoCard = {
   price: string;
   priceInfo: string;
   subTitle: string;
-  title: string;
+  title: MembershipPlan;
 };

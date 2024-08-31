@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
-import { MembershipPlans, TableActions } from "./types/MembershipTypes";
-import { ComponentProps } from "react";
 import userEvent from "@testing-library/user-event";
+import { ComponentProps } from "react";
+import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
+import { MembershipPlan, TableActions } from "./types/MembershipTypes";
 
 const { getAllByRole, getByText } = screen;
 
@@ -71,7 +71,7 @@ const ACTIONS: TableActions[] = [
   { label: "Action 1", variant: "secondary" },
   { label: "Action 2" },
 ];
-const COLUMNS: MembershipPlans[] = [
+const COLUMNS: MembershipPlan[] = [
   "Annual Protection",
   "Lifetime",
   "Lifetime Plus",
@@ -80,11 +80,11 @@ const ROWS = [
   {
     label: "Label 1",
     title: "Title 1",
-    availableColumns: ["Lifetime", "Lifetime Plus"] as MembershipPlans[],
+    availableColumns: ["Lifetime", "Lifetime Plus"] as MembershipPlan[],
   },
   {
     label: "Label 2",
     title: "Title 2",
-    availableColumns: ["Annual Protection"] as MembershipPlans[],
+    availableColumns: ["Annual Protection"] as MembershipPlan[],
   },
 ];

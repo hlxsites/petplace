@@ -1,11 +1,11 @@
 import { ButtonProps } from "~/components/design-system";
 
-export type MembershipPlans =
+export type MembershipPlan =
   | "Annual Protection"
   | "Lifetime"
   | "Lifetime Plus";
 
-export type Locales = "us" | "ca";
+export type Locale = "us" | "ca";
 
 export type TableActions = {
   label: string;
