@@ -23,16 +23,18 @@ export const CheckoutConclusionModal = ({
       align="center"
       padding="p-0"
     >
-      <div className="flex md:w-[708px] flex-col items-center gap-xxlarge px-large py-xxlarge md:px-xxlarge">
+      <div className="flex flex-col items-center gap-xxlarge px-large py-xxlarge md:w-[708px] md:px-xxlarge">
         <Icon display="shieldGood" size={72} className="text-green-300" />
         <Title level="h2">
-          Congratulations! Your Pet’s Protection Plan is Now Active!
+          Congratulations! Your Pet is now covered with 24Petwatch Protection
+          Plan!
         </Title>
         <Text size="16" color="text-color-supporting">
-          You can now access all the benefits of your selected tier, including
-          24/7 Vet Help and Lost Pet Protection, in the Membership section.
+          You can access your plan benefits in your pet profile's “Active pet
+          services” section. Your purchase may take up to 24 hours to reflect.
+          Your invoice and plan details will be emailed shortly.
         </Text>
-        <div className="flex flex-col md:flex-row w-full gap-medium md:gap-small">
+        <div className="flex w-full flex-col gap-medium md:flex-row md:gap-small">
           <LinkButton
             fullWidth
             variant="secondary"
