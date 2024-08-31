@@ -8,6 +8,7 @@ export const CollapsePlayground = () => {
       title="Lost Pets Status Update"
       onOpenChange={() => setIsOpen(!isOpen)}
       isOpen={isOpen}
+      padding="large"
     >
       <Text size="14">Track your pet's status.</Text>
       <div className="mt-base rounded-xl border p-base">

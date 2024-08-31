@@ -49,6 +49,7 @@ export const PetLostUpdatesSection = ({
       onOpenChange={setIsOpen}
       title={<Title level="h4">Lost Pets Status Update</Title>}
       isLocked={isMissing}
+      padding="large"
     >
       {renderDescriptionMessage()}
       <Table

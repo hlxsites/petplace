@@ -21,6 +21,7 @@ export const Card = ({
           "rounded-xl": radius === "sm",
           "shadow-elevation-1": shadow === "elevation-1",
           "shadow-elevation-3": shadow === "elevation-3",
+          "p-medium": padding === "medium",
           "p-base": padding === "base",
           "p-large": padding === "large",
           "p-xlarge": padding === "xlarge",
