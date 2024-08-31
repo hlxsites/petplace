@@ -3,3 +3,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#login-required-message {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+}
+
+#login-required-message h1 {
+    color: var(--text-primary-900);
+}
