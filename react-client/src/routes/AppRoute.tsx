@@ -50,6 +50,16 @@ const routes: PetPlaceRouteObject[] = [
             index: true,
           },
           {
+            id: "accountNotifications",
+            path: AppRoutePaths.accountNotifications,
+            element: <AccountIndex />,
+          },
+          {
+            id: "accountPayment",
+            path: AppRoutePaths.accountPayment,
+            element: <AccountIndex />,
+          },
+          {
             id: "myPets",
             path: AppRoutePaths.myPets,
             children: [

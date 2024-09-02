@@ -1,6 +1,8 @@
 export const AppRoutePaths = {
   root: "/",
   account: "account",
+  accountNotifications: "notifications",
+  accountPayment: "payment-information",
   addNewPet: "add",
   checkout: "checkout",
   products: "products",
@@ -14,7 +16,9 @@ export const AppRoutePaths = {
   playground: "playground",
 } as const;
 
-export const MY_PETS_FULL_ROUTE = `/${AppRoutePaths.account}/${AppRoutePaths.myPets}`;
+export const ACCOUNT_FULL_ROUTE = `/${AppRoutePaths.account}`;
+
+export const MY_PETS_FULL_ROUTE = `${ACCOUNT_FULL_ROUTE}/${AppRoutePaths.myPets}`;
 
 export const PET_PROFILE_FULL_ROUTE = (petId: string) =>
   `${MY_PETS_FULL_ROUTE}/${petId}`;
