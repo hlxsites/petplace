@@ -4,7 +4,6 @@ export * from "./CarouselPlayground";
 export * from "./CartDrawerPlayground";
 export * from "./CheckoutProductCardPlayground";
 export * from "./CollapsePlayground";
-export * from "./ComparingPlanCardPlayground";
 export * from "./ConfirmDeletionDialogPlayground";
 export * from "./DialogPlayground";
 export * from "./DragAndDropZonePlayground";
