@@ -39,14 +39,15 @@ describe("MembershipComparingPlanTable", () => {
     const onClick = jest.fn();
     getRenderer({ onClick });
 
-    ACTIONS.forEach(async ({ label }) => {
+    for (const { label } of ACTIONS) {
       const button = getByText(label);
       expect(button).toBeInTheDocument();
       expect(onClick).not.toHaveBeenCalled();
 
       await userEvent.click(button);
       expect(onClick).toHaveBeenCalledTimes(1);
-    });
+      onClick.mockClear();
+    }
   });
 });
 
