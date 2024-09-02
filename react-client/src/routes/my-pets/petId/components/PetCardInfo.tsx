@@ -10,6 +10,7 @@ import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 import { ReportLostPetButton } from "./ReportLostPetButton";
+import { getRouteFor } from "~/routes/util/getRouteFor";
 
 export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   const {
@@ -39,13 +40,16 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
       exactRoute: true,
       icon: "paw",
       label: "Pet info",
-      route: getRouteFor(""),
+      route: getRouteFor(PET_PROFILE_FULL_ROUTE(petInfo.id), ""),
     },
     {
       content: () => <PetDocumentsTabContent />,
       icon: "file",
       label: "Pet documents",
-      route: getRouteFor(AppRoutePaths.petProfileDocuments),
+      route: getRouteFor(
+        PET_PROFILE_FULL_ROUTE(petInfo.id),
+        AppRoutePaths.petProfileDocuments
+      ),
     },
   ];
 
@@ -72,9 +76,5 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
         </div>
       </>
     );
-  }
-
-  function getRouteFor(type: string) {
-    return `${PET_PROFILE_FULL_ROUTE(petInfo.id)}/${type}`;
   }
 };
