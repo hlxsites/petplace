@@ -215,14 +215,6 @@
         margin: 0;
       }
 
-      .password-container {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        padding-top: 48px;
-        width: 100%;
-      }
-
       .password-message {
         color: #4162A0;
         display: flex;
@@ -236,27 +228,8 @@
         margin: 0px;
       }
 
-      .submit-button {
-        background-color: #C74D2F;
-        border-radius: 360px;
-        border: solid, 1px, #C74D2F;
-        color: #FFF;
-        font-size: 18px;
-        height: 48px;
-        width: 100%;
-      }
-
-      /* This class must be injected on input field by Azure after form validation */
-      .on-error {
-        border: solid, 1px, #D31510;
-        color: #D31510;
-      }
-      .on-error:focus {
-        border: solid, 1px, #D31510;
-        color: #D31510;
-      }
-
       #api {
+        position: relative;
         width: 100%;
       }
 
@@ -332,6 +305,63 @@
           width: 88%;
         }
       }
+
+      /* CSS adjust elements from Azure*/
+      ul {
+        list-style: none;
+        margin-top: 48px;
+        padding: 0px;
+      }
+      li{
+        padding-bottom: 16px;
+      }
+      .heading, .helpLink, .intro,
+      #signInName_label, #password_label, #verifying_blurb, #newPassword_label, #reenterPassword_label {
+        display: none;
+      }
+      #continue {
+        background-color: #C74D2F;
+        border-radius: 360px;
+        border: solid, 1px, #C74D2F;
+        color: #FFF;
+        font-size: 18px;
+        height: 48px;
+        width: 100%;
+      }
+        /* this should be injected only on error  */
+      .validate input {
+        border: solid, 1px, #D31510;
+        color: #D31510;
+      }
+      .validate #password {
+        margin-bottom: 35px;
+      }
+      .pageLevel {
+        padding-left: 4px;
+        position: absolute;
+        bottom: 70px;
+      }
+      .error {
+        color: #D31510;
+      }
+      .show {
+        padding: 4px;
+      }
+
+      @media screen and (min-width: 1400px) {
+        .pageLevel {
+        bottom: 90px;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        .pageLevel {
+        bottom: 75px;
+        }
+        .validate #password {
+        margin-bottom: 60px;
+       }
+      }
+
     </style>
 
     <script src="account-activation.js" async></script>
@@ -379,46 +409,35 @@
 
               <!-- Azure Form starts here -->
               <div id="api" data-name="Unified">
-                <form aria-label="Activate your account" id="account-activation-form" >
-                  <div class="password-container">
-                    <div class="password-item">
-                      <label for="enter-new-password" hidden="true">Enter new password</label>
-                      <input 
-                        aria-label="Enter new password"
-                        aria-required="true"
-                        autofocus="true"
-                        form="account-activation-form"
-                        id="enter-new-password"
-                        name="enter-new-password"
-                        placeholder="Enter new password"
-                        type="text" 
-                      />
-                    </div>
-                    <div class="password-item">
-                      <label for="confirm-new-password" hidden="true">Confirm new password</label>
-                      <input 
-                        aria-label="Confirm new password"
-                        aria-required="true"
-                        autofocus="false"
-                        form="account-activation-form"
-                        id="confirm-new-password"
-                        name="confirm-new-password"
-                        placeholder="Confirm new password"
-                        aria-invalid="true"
-                        type="text" 
-                        
-                      />
-                    </div>
-                  </div> 
-                  <div class="password-message">
-                    <img alt="information icon" src="images/information-icon.svg">
-                    <p>Your password must have at least 8 characters.</p>
-                  </div>
-                  <button class="submit-button" id="next" type="submit">
-                    Confirm account activation 
-                  </button>
-                </form>
+                <div class="heading">
+                  <h1 role="heading">User Details</h1>
+                </div>
+              <div class="buttons">
               </div>
+              <div class="intro">
+                <p>Please provide the following details.</p>
+              </div>
+              <form id="attributeVerification">
+                  <div id="requiredFieldMissing" class="error pageLevel" style="display: none;" aria-hidden="true">A required field is missing. Please fill out all required fields and try again.</div>
+                  <div id="fieldIncorrect" class="error pageLevel" style="display: none;" aria-hidden="true">One or more fields are filled out incorrectly. Please check your entries and try again.</div>
+                  <div id="captchaUnresolved" class="error pageLevel" style="display: none;" aria-hidden="true">Captcha challenge is not resolved. Please solve it to proceed.</div>
+                  <div id="claimVerificationServerError" class="error pageLevel" style="display: none;" aria-hidden="true"></div>
+                  <div id="attributeList" class="attr">
+                      <ul>
+                          <li class="Password newPassword_li"><div class="attrEntry"><label id="newPassword_label" for="newPassword" class="required">New Password</label><div class="error itemLevel" role="alert"></div><input id="newPassword" class="textInput" type="password" placeholder="New Password" pattern="^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])|(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9])|(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]))([A-Za-z\d@#$%^&amp;*\-_+=[\]{}|\\:',?/`~&quot;();!]|\.(?!@)){8,16}$" title="Enter new password" autocomplete="new-password" aria-required="true" autofocus="autofocus"><a class="helpLink tiny" href="javascript:void(0)" data-help="Enter new password">What is this?</a></div></li>
+                          <li class="Password reenterPassword_li"><div class="attrEntry"><label id="reenterPassword_label" for="reenterPassword" class="required">Confirm New Password</label><div class="error itemLevel" role="alert"></div><input id="reenterPassword" class="textInput" type="password" placeholder="Confirm New Password" pattern="^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])|(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9])|(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]))([A-Za-z\d@#$%^&amp;*\-_+=[\]{}|\\:',?/`~&quot;();!]|\.(?!@)){8,16}$" title="Confirm new password" autocomplete="new-password" aria-required="true"><a class="helpLink tiny" href="javascript:void(0)" data-help="Confirm new password">What is this?</a></div></li>
+                      </ul>
+                  </div>
+                  <div class="buttons">
+                      <button id="continue" type="submit" form="attributeVerification" aria-disabled="false" aria-label="Sign Up">Sign Up</button>
+                  </div>
+          
+                  <div class="verifying-modal" aria-live="assertive" aria-labelledby="verifying_blurb">
+                      <div id="verifying_blurb"></div>
+                  </div>
+              </form>
+              
+            </div>
               <!-- Azure Form ends here -->
                 
                 <div class="agreement-message">
