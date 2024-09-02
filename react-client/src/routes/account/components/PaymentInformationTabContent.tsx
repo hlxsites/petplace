@@ -22,6 +22,7 @@ export const PaymentInformationTabContent = () => {
           buttonLabel={buttonLabel}
           buttonProps={{ variant: "secondary" }}
           key={buttonLabel}
+          textProps={{ size: "16" }}
           {...rest}
         />
       ))}
