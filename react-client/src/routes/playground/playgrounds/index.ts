@@ -1,4 +1,5 @@
 export * from "./AdvertiseBannerImageRightPlayground";
+export * from "./BasicActionCardPlayground";
 export * from "./ButtonPlayground";
 export * from "./CarouselPlayground";
 export * from "./CartDrawerPlayground";
