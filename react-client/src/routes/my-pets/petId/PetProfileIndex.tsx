@@ -27,7 +27,7 @@ export const PetProfileIndex = () => {
         pageTitle="Pet Profile"
         primaryElement={renderActionsButton()}
       />
-      <div className="flex flex-col gap-large">
+      <div className="flex flex-col gap-xlarge">
         <PetCardSection petInfo={petInfo} />
         <AdvertisingSection />
         {petServiceStatus && (

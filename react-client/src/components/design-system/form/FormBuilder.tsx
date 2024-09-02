@@ -272,7 +272,11 @@ export const FormBuilder = ({
     if (!matchConditionExpression(shouldDisplay || true)) return;
     return (
       <section className={classNames("my-small", className)} id={id}>
-        {!!title && <Title level="h2">{title}</Title>}
+        {!!title && (
+          <Title level="h3" isResponsive>
+            {title}
+          </Title>
+        )}
         {!!description && (
           <p className="text-lg text-muted-foreground">{description}</p>
         )}

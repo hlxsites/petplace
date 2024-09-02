@@ -45,7 +45,6 @@ export const Tabs = ({ onChange, tabs, ...rest }: TabsProps) => {
           return (
             <RadixTab.Content
               aria-label={`Tab content of: ${label}`}
-              className="pt-large"
               key={label}
               value={label}
             >

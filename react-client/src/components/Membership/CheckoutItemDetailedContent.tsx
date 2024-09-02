@@ -28,13 +28,11 @@ export const CheckoutItemDetailedContent = ({
 
   return (
     <div className="flex flex-col gap-base">
-      <div>
-        <Title level="h5">{name}</Title>
-        <Text fontWeight="bold">
-          <TextSpan size="24">{price}</TextSpan>
-          {`${isAnnual ? "/year" : ""}`}
-        </Text>
-      </div>
+      <Text fontWeight="bold">
+        <TextSpan size="24">{price}</TextSpan>
+        {`${isAnnual ? "/year" : ""}`}
+      </Text>
+
       <CartItemImages images={images} name={name} />
       <div className="flex flex-col gap-base">
         <Text color="background-color-tertiary" size="14">
@@ -46,7 +44,7 @@ export const CheckoutItemDetailedContent = ({
       </div>
       {tagFeatures && (
         <>
-          <Title level="h4">Tag Features</Title>
+          <Title level="h5">Tag Features</Title>
           <ul className="pl-0">
             {tagFeatures.map((feature) => (
               <li className="mb-xsmall flex items-center" key={feature}>
@@ -59,7 +57,7 @@ export const CheckoutItemDetailedContent = ({
       )}
       {sizing && (
         <>
-          <Title level="h4">Sizing</Title>
+          <Title level="h5">Sizing</Title>
           <Text color="background-color-tertiary" size="14">
             {sizing}
           </Text>
@@ -67,7 +65,7 @@ export const CheckoutItemDetailedContent = ({
       )}
       {privacyFeatures && (
         <>
-          <Title level="h4">Privacy Features</Title>
+          <Title level="h5">Privacy Features</Title>
           <Text color="background-color-tertiary" size="14">
             {privacyFeatures}
           </Text>
