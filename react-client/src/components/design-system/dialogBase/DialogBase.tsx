@@ -19,7 +19,8 @@ export const DialogBase = ({
   iconProps,
   id,
   isOpen,
-  titleLevel,
+  isTitleResponsive,
+  titleSize,
   onClose,
   padding = "p-xlarge",
   title,
@@ -101,7 +102,12 @@ export const DialogBase = ({
           {!!icon && <Icon display={icon} {...iconProps} />}
           {title && (
             <div className="mb-small">
-              <Title id={titleId} level={titleLevel}>
+              <Title
+                id={titleId}
+                level="h4"
+                size={titleSize}
+                isResponsive={isTitleResponsive}
+              >
                 {title}
               </Title>
             </div>

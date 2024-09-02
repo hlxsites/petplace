@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Button, Card, Icon, IconKeys, Text } from "../design-system";
+import { Button, Card, Icon, IconKeys, Text, Title } from "../design-system";
 
 export type PetServiceDetailsCardProps = {
   additionalInfo?: ReactNode;
@@ -23,10 +23,8 @@ export const PetServiceDetailsCard = ({
 }: PetServiceDetailsCardProps) => {
   return (
     <div className="flex flex-col gap-large">
-      <div>
-        <Text fontWeight="bold" size="16">
-          Service Description:
-        </Text>
+      <div className="grid gap-small">
+        <Title level="h5">Service Description:</Title>
         <Text size="14">{description}</Text>
       </div>
       {(additionalInfo || contact) && (

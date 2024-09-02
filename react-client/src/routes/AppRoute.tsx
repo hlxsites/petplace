@@ -5,6 +5,7 @@ import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewM
 import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { PetProfileIndex } from "./my-pets/petId/PetProfileIndex";
+import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { loader as PetProfileLayoutLoader } from "./my-pets/petId/usePetProfileLayoutViewModel";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { Root } from "./root";
@@ -24,6 +25,7 @@ import { DocumentTypeIndex } from "./my-pets/petId/documents/documentType/Docume
 import { loader as DocumentTypeIndexLoader } from "./my-pets/petId/documents/documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/petId/PetProfileLayout";
+import { AccountIndex } from "./account/AccountIndex";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -37,8 +39,16 @@ const routes: PetPlaceRouteObject[] = [
       {
         element: <AccountRoot />,
         id: "account",
+        loader: AccountIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
         path: AppRoutePaths.account,
         children: [
+          {
+            element: <AccountIndex />,
+            id: "accountIndex",
+            index: true,
+          },
           {
             id: "myPets",
             path: AppRoutePaths.myPets,

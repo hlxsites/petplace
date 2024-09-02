@@ -19,6 +19,7 @@ export const CheckoutItemDetailsDrawer = ({
       id={item.id}
       isOpen
       onClose={onClose}
+      title={item.name}
     >
       <CheckoutItemDetailedContent item={item} onAddToCart={onAddToCart} />
     </Drawer>

@@ -81,6 +81,7 @@ export const REGIONS = {
 
 window.hlx.templates.add([
   '/templates/about-us',
+  '/templates/account-activation/',
   '/templates/adopt',
   '/templates/adoption-landing-page',
   '/templates/article-page',
@@ -97,7 +98,6 @@ window.hlx.templates.add([
   '/templates/insurance-landing-page',
   '/templates/insurance-page',
   '/templates/insurance-paid-page',
-  '/templates/no-markup',
   '/templates/puppy-diaries-index',
   '/templates/react-render-only',
   '/templates/searchresults',

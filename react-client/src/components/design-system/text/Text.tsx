@@ -94,9 +94,9 @@ function useTextBase({
     "font-medium": fontWeight === "medium",
 
     "text-12 leading-4": size === "12",
-    "text-14 leading-5": size === "14",
-    "text-16 leading-6": size === "16",
-    "text-18 leading-7": size === "18",
+    "text-14 leading-5": size === "14" && !isResponsive,
+    "text-16 leading-6": size === "16" && !isResponsive,
+    "text-18 leading-7": size === "18" && !isResponsive,
     "text-20 leading-7": size === "20",
     "text-24 leading-7": size === "24",
     "text-32 leading-8": size === "32",
