@@ -15,7 +15,7 @@ export const PaymentInformationTabContent = () => {
     },
   ];
   return (
-    <div className="grid gap-large">
+    <div className="mt-xxxlarge grid gap-large">
       <Title level="h3">Payment information</Title>
       {actionsSections.map(({ buttonLabel, ...rest }) => (
         <BasicActionCard
