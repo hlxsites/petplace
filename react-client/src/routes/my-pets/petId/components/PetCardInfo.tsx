@@ -5,7 +5,7 @@ import {
   Title,
 } from "~/components/design-system";
 import { PetInfo } from "~/mocks/MockRestApiServer";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
+import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
@@ -72,6 +72,6 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   }
 
   function getRouteFor(type: string) {
-    return `/${AppRoutePaths.myPets}/${petInfo.id}/${type}`;
+    return `${PET_PROFILE_FULL_ROUTE(petInfo.id)}/${type}`;
   }
 };

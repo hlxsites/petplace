@@ -1,0 +1,17 @@
+.account-activation #main {
+  align-items: center;
+  display: flex;
+  height: 100dvh;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.account-activation header,
+.account-activation footer {
+  display: none;
+}
+
+.account-activation h1 {
+  color: var(--text-primary-900);
+}
