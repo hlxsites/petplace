@@ -11,9 +11,9 @@ import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Title } from "../text/Title";
 import Input from "./Input";
-import { InputBoolean } from "./InputBoolean";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
 import { InputRadio } from "./InputRadio";
+import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
 import Select from "./Select";
 import {
@@ -211,9 +211,9 @@ export const FormBuilder = ({
         />
       );
     }
-    if (type === "boolean") {
+    if (type === "switch") {
       return (
-        <InputBoolean
+        <InputSwitch
           {...commonProps}
           onChange={(newValue) => {
             setValues((prev) => ({ ...prev, [id]: newValue }));
