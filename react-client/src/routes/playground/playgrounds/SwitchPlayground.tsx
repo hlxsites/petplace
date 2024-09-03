@@ -26,7 +26,7 @@ export const SwitchPlayground = () => {
           <Switch
             label={label}
             id={label}
-            // @ts-ignore for test purpose
+            // @ts-expect-error  for test purpose
             textProps={{ fontFamily }}
           />
         ))}
@@ -36,7 +36,7 @@ export const SwitchPlayground = () => {
           <Switch
             label={label}
             id={label}
-            // @ts-ignore for test purpose
+            // @ts-expect-error  for test purpose
             textProps={{ textDecoration }}
           />
         ))}
@@ -47,7 +47,7 @@ export const SwitchPlayground = () => {
             key={label}
             label={label}
             id={label}
-            // @ts-ignore for test purpose
+            // @ts-expect-error  for test purpose
             textProps={{ size }}
           />
         ))}
