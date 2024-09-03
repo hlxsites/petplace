@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 
 import { Switch } from "./Switch";
 
-const { queryByText, getByRole } = screen;
+const { queryByText, getByRole, getByText } = screen;
 
 const DEFAULT_LABEL = "Test label";
 const DEFAULT_CLASSES = "h-6 w-[52px] rounded-[21px]";
@@ -27,6 +27,24 @@ describe("<Switch />", () => {
       expect(queryByText(DEFAULT_LABEL)).toBeInTheDocument();
     }
   );
+
+  it("should render switch with given text style props", () => {
+    getRenderer({
+      textProps: {
+        size: "32",
+        fontFamily: "roboto",
+        textDecoration: "line-through",
+      },
+    });
+    expect(getByText(DEFAULT_LABEL)).toHaveClass(
+      "text-32 font-roboto line-through"
+    );
+  });
+
+  it("should render switch with default text style props", () => {
+    getRenderer();
+    expect(getByText(DEFAULT_LABEL)).toHaveClass("text-16 font-franklin");
+  });
 
   it("should render default classes", () => {
     getRenderer();

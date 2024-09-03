@@ -2,6 +2,8 @@ import * as RadixSwitch from "@radix-ui/react-switch";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import { classNames } from "~/util/styleUtil";
 import { CommonInputProps } from "../types/FormTypes";
+import { TextSpan } from "../text/TextSpan";
+import { StyleProps } from "../types/TextTypes";
 
 type SwitchVariant = "orange" | "purple";
 
@@ -10,33 +12,45 @@ type SwitchProps = Omit<
   "children"
 > &
   CommonInputProps & {
+    textProps?: StyleProps;
     variant?: SwitchVariant;
   };
 
 export const Switch = forwardRef<
   ElementRef<typeof RadixSwitch.Root>,
   SwitchProps
->(({ className, hideLabel, label, variant = "orange", ...props }, ref) => {
-  const isChecked = props.checked || props.defaultChecked;
-  const { rootClassName, thumbClassName } = useSwitchVariant(
-    isChecked ?? false,
-    variant
-  );
+>(
+  (
+    { className, hideLabel, label, textProps, variant = "orange", ...props },
+    ref
+  ) => {
+    const isChecked = props.checked || props.defaultChecked;
+    const { rootClassName, thumbClassName } = useSwitchVariant(
+      isChecked ?? false,
+      variant
+    );
 
-  return (
-    <div className="flex items-center gap-xsmall">
-      <RadixSwitch.Root
-        aria-label={hideLabel ? label : undefined}
-        className={classNames(rootClassName, className)}
-        ref={ref}
-        {...props}
-      >
-        <RadixSwitch.Thumb className={thumbClassName} />
-      </RadixSwitch.Root>
-      {!hideLabel && <label htmlFor={props.id}>{label}</label>}
-    </div>
-  );
-});
+    return (
+      <div className="flex items-center gap-xsmall">
+        <RadixSwitch.Root
+          aria-label={hideLabel ? label : undefined}
+          className={classNames(rootClassName, className)}
+          ref={ref}
+          {...props}
+        >
+          <RadixSwitch.Thumb className={thumbClassName} />
+        </RadixSwitch.Root>
+        {!hideLabel && (
+          <label htmlFor={props.id}>
+            <TextSpan fontFamily="franklin" size="16" {...textProps}>
+              {label}
+            </TextSpan>
+          </label>
+        )}
+      </div>
+    );
+  }
+);
 
 function useSwitchVariant(isChecked: boolean, variant: SwitchVariant) {
   const rootClassName = classNames(
