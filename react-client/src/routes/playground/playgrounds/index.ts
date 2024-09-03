@@ -22,3 +22,4 @@ export * from "./TablePlayground";
 export * from "./TagPlayground";
 export * from "./TextPlayground";
 export * from "./TitlePlayground";
+export * from "./ViewNotificationsPlayground";
