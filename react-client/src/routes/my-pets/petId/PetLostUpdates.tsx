@@ -6,11 +6,11 @@ import {
   IconKeys,
   Table,
   Text,
-  TextProps,
   TextSpan,
   Title,
 } from "~/components/design-system";
 import { TableColumn } from "~/components/design-system/table/TableTypes";
+import { TextProps } from "~/components/design-system/types/TextTypes";
 import {
   LostPetUpdate,
   MissingStatus,

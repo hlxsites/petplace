@@ -1,6 +1,7 @@
 import { Button, ButtonProps } from "../button/Button";
-import { Text, TextProps } from "../text/Text";
+import { Text } from "../text/Text";
 import { Title, TitleProps } from "../text/Title";
+import { TextProps } from "../types/TextTypes";
 import { Card } from "./Card";
 
 type BasicActionCardProps = {
