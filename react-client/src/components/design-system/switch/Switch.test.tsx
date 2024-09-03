@@ -64,6 +64,34 @@ describe("<Switch />", () => {
     expect(getByRole("switch")).toBeDisabled();
   });
 
+  it("should render orange variant classes by default", () => {
+    getRenderer({ defaultChecked: true });
+    expect(getByRole("switch")).toHaveClass(
+      "border-none bg-orange-300-contrast focus:bg-orange-300-contrast"
+    );
+  });
+
+  it.each([
+    [true, "border-none bg-purple-100 focus:bg-purple-100"],
+    [false, "hover:bg-purple-300"],
+  ])(
+    "should render purple variant root classes for isChecked: %s",
+    (defaultChecked, expected) => {
+      getRenderer({ defaultChecked, variant: "purple" });
+      expect(getByRole("switch")).toHaveClass(expected);
+    }
+  );
+
+  it("should render purple variant indicator classes", () => {
+    const { container } = getRenderer({
+      defaultChecked: true,
+      variant: "purple",
+    });
+    expect(container.querySelector("span")).toHaveClass(
+      "bg-purple-500 hover:bg-purple-300"
+    );
+  });
+
   it("should render switch unchecked by default", () => {
     getRenderer();
     const switchElement = getByRole("switch");
