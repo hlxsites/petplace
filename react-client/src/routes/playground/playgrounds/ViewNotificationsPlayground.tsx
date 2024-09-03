@@ -6,7 +6,7 @@ export const ViewNotificationsPlayground = () => {
     <Card>
       <div className="p-large">
         <ViewNotifications
-          dateFound={"06-10-2024"}
+          dateFoundOrLost={"06-10-2024"}
           foundedBy={"Erica Wong"}
           notificationCategory={"FoundPet"}
           petName={"Lily"}
