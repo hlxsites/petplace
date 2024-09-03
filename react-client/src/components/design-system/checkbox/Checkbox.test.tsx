@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 
 import { Checkbox } from "./Checkbox";
 
-const { queryByText, getByRole } = screen;
+const { queryByText, getByRole, getByText } = screen;
 
 const DEFAULT_LABEL = "Test label";
 const DEFAULT_CLASSNAMES =
@@ -38,6 +38,24 @@ describe("<Checkbox />", () => {
       expect(getByRole("checkbox", { name: expected })).toBeInTheDocument();
     }
   );
+
+  it("should render checkbox with given text style props", () => {
+    getRenderer({
+      textProps: {
+        size: "32",
+        fontFamily: "roboto",
+        textDecoration: "line-through",
+      },
+    });
+    expect(getByText(DEFAULT_LABEL)).toHaveClass(
+      "text-32 font-roboto line-through"
+    );
+  });
+
+  it("should render checkbox with default text style props", () => {
+    getRenderer();
+    expect(getByText(DEFAULT_LABEL)).toHaveClass("text-16 font-franklin");
+  });
 
   it("should render checkbox with accessible aria-label when hideLabel is true", () => {
     getRenderer({ hideLabel: true });
