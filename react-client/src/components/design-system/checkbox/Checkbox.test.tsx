@@ -84,7 +84,21 @@ describe("<Checkbox />", () => {
 
     expect(container.querySelector("svg")).toHaveAttribute(
       "data-file-name",
-      "SvgCheckIcon"
+      "SvgCheckSoloIcon"
+    );
+  });
+
+  it("should not render orange variant classes by default", () => {
+    const { container } = getRenderer({ defaultChecked: true });
+    expect(container.querySelector("span")).toHaveClass(
+      "bg-orange-300-contrast"
+    );
+  });
+
+  it("should not render purple variant classes", () => {
+    getRenderer({ defaultChecked: true, variant: "purple" });
+    expect(getByRole("checkbox")).toHaveClass(
+      "focus:bg-purple-300 hover:bg-purple-300"
     );
   });
 
