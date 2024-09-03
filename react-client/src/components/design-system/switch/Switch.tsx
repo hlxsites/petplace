@@ -3,43 +3,60 @@ import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import { classNames } from "~/util/styleUtil";
 import { CommonInputProps } from "../types/FormTypes";
 
+type SwitchVariant = "orange" | "purple";
+
 type SwitchProps = Omit<
   ComponentPropsWithoutRef<typeof RadixSwitch.Root>,
   "children"
 > &
-  CommonInputProps;
+  CommonInputProps & {
+    variant?: SwitchVariant;
+  };
 
 export const Switch = forwardRef<
   ElementRef<typeof RadixSwitch.Root>,
   SwitchProps
->(({ className, hideLabel, label, ...props }, ref) => {
+>(({ className, hideLabel, label, variant = "orange", ...props }, ref) => {
   const isChecked = props.checked || props.defaultChecked;
+  const { rootClassName, thumbClassName } = useSwitchVariant(
+    isChecked ?? false,
+    variant
+  );
+
   return (
     <div className="flex items-center gap-xsmall">
       <RadixSwitch.Root
         aria-label={hideLabel ? label : undefined}
-        className={classNames(
-          "relative h-6 w-[52px] rounded-[21px] border border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none",
-          {
-            "border-none bg-orange-300-contrast focus:bg-orange-300-contrast":
-              isChecked,
-          },
-          className
-        )}
+        className={classNames(rootClassName, className)}
         ref={ref}
         {...props}
       >
-        <RadixSwitch.Thumb
-          className={classNames(
-            "transition:transform block h-5 w-[21px] rounded-full bg-white transition-[2000ms]",
-            {
-              "switch-thumb-checked": isChecked,
-              "translate-x-[1px]": !isChecked,
-            }
-          )}
-        />
+        <RadixSwitch.Thumb className={thumbClassName} />
       </RadixSwitch.Root>
       {!hideLabel && <label htmlFor={props.id}>{label}</label>}
     </div>
   );
 });
+
+function useSwitchVariant(isChecked: boolean, variant: SwitchVariant) {
+  const rootClassName = classNames(
+    "relative h-6 w-[52px] rounded-[21px] border border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none",
+    {
+      "hover:bg-purple-300": variant === "purple",
+      "border-none bg-orange-300-contrast focus:bg-orange-300-contrast":
+        isChecked && variant === "orange",
+      "border-none bg-purple-100 focus:bg-purple-100":
+        isChecked && variant === "purple",
+    }
+  );
+
+  const thumbClassName = classNames(
+    "transition:transform absolute left-[2px] top-[2px] block h-5 w-[21px] rounded-full bg-white transition-[2000ms]",
+    {
+      "bg-purple-500 hover:bg-purple-300": isChecked && variant === "purple",
+      "top-[1px] translate-x-[36px]": !isChecked,
+    }
+  );
+
+  return { rootClassName, thumbClassName };
+}
