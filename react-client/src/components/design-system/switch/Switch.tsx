@@ -5,7 +5,7 @@ import { CommonInputProps } from "../types/FormTypes";
 import { TextSpan } from "../text/TextSpan";
 import { StyleProps } from "../types/TextTypes";
 
-type SwitchVariant = "orange" | "purple";
+export type SwitchVariant = "orange" | "purple";
 
 type SwitchProps = Omit<
   ComponentPropsWithoutRef<typeof RadixSwitch.Root>,
