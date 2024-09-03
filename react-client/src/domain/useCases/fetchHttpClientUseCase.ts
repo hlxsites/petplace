@@ -4,7 +4,7 @@ import {
   HttpResponse,
 } from "../repository/HttpClientRepository";
 
-export class fetchHttpClientUseCase implements HttpClientRepository {
+export class FetchHttpClientUseCase implements HttpClientRepository {
   private baseUrl: string;
 
   constructor(baseUrl: string) {

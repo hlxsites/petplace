@@ -4,15 +4,15 @@ import {
   HttpOptions,
   HttpResponse,
 } from "../repository/HttpClientRepository";
-import { fetchHttpClientUseCase } from "./fetchHttpClientUseCase";
+import { FetchHttpClientUseCase } from "./FetchHttpClientUseCase";
 
-export class petPlaceHttpClientUseCase implements HttpClientRepository {
+export class PetPlaceHttpClientUseCase implements HttpClientRepository {
   private authToken: string;
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string) {
     this.authToken = authToken;
-    this.httpClient = new fetchHttpClientUseCase(PETPLACE_SERVER_BASE_URL);
+    this.httpClient = new FetchHttpClientUseCase(PETPLACE_SERVER_BASE_URL);
   }
 
   private get createHeaders() {
