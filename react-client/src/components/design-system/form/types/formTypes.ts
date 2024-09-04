@@ -54,6 +54,7 @@ export type InputType =
   | "email"
   | "password"
   | "number"
+  | "contact"
   | "url"
   | "date"
   | "time"
@@ -131,6 +132,14 @@ export type ElementInputText = InputCommon & {
   value?: string;
 };
 
+export type ElementInputContact = InputCommon & {
+  disableSelect?: boolean;
+  defaultSelect?: string;
+  onChange?: (newValue: string) => void;
+  type: "contact";
+  value?: string;
+};
+
 export type ElementInputTextarea = InputCommon & {
   onChange?: (newValue: string) => void;
   rows?: number;
@@ -187,7 +196,6 @@ export type ElementInputDate = InputCommon & {
   onChange?: (newValue: Date) => void;
   type: "date";
   value?: Date;
-  variant: SwitchVariant;
 };
 
 type ElementInputSelectCommon = InputCommon &
@@ -210,6 +218,7 @@ export type InputsUnion =
   | ElementInputTextarea
   | ElementInputBoolean
   | ElementInputSwitch
+  | ElementInputContact
   | ElementInputRadio
   | ElementInputCheckboxGroup
   | ElementInputNumber

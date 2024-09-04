@@ -12,6 +12,7 @@ import { Button } from "../button/Button";
 import { Title } from "../text/Title";
 import Input from "./Input";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
+import { InputContact } from "./InputContact";
 import { InputRadio } from "./InputRadio";
 import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
@@ -234,6 +235,18 @@ export const FormBuilder = ({
             setValues((prev) => ({ ...prev, [id]: newValue }));
           }}
           rows={inputProps.rows}
+          value={(values?.[id] as string) || ""}
+        />
+      );
+    }
+
+    if (type === "contact") {
+      return (
+        <InputContact
+          {...commonProps}
+          onChange={(newValue) => {
+            setValues((prev) => ({ ...prev, [id]: newValue }));
+          }}
           value={(values?.[id] as string) || ""}
         />
       );
