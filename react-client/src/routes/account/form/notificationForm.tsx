@@ -8,6 +8,7 @@ const newsletterRadioGroupInput: InputsUnion = {
   label: "Newsletter",
   options: ["Cat", "Dog"],
   type: "checkboxGroup",
+  variant: "purple",
 };
 
 const petPlaceOffersSwitchInput: InputsUnion = {
@@ -38,6 +39,7 @@ const petPlaceAdoptAlertsRadioGroupInput: InputsUnion = {
   label: "PetPlace Adopt Alerts",
   options: ["SMS", "Email"],
   type: "checkboxGroup",
+  variant: "purple",
 };
 
 export const notificationsFormSchema: FormSchema = {
