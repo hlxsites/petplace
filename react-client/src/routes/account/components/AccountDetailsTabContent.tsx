@@ -1,10 +1,11 @@
-import { Card, Title } from "~/components/design-system";
+import { Card } from "~/components/design-system";
+import { AccountDetailsIndex } from "./AccountDetailsIndex";
 
 export const AccountDetailsTabContent = () => {
   return (
     <Card role="region">
       <div className="p-xlarge">
-        <Title level="h3">Contact info</Title>
+        <AccountDetailsIndex />
       </div>
     </Card>
   );
