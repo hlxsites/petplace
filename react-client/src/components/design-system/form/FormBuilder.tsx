@@ -112,6 +112,7 @@ export const FormBuilder = ({
           key={element.id}
           type={element.type}
           variant={element.type === "submit" ? "primary" : "secondary"}
+          disabled={element.disabledCondition === true}
         >
           {element.label}
         </Button>
