@@ -15,6 +15,7 @@ import { InputCheckboxGroup } from "./InputCheckboxGroup";
 import { InputRadio } from "./InputRadio";
 import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
+import { InputBoolean } from "./InputBoolean";
 import Select from "./Select";
 import {
   type ConditionCriteria,
@@ -214,6 +215,19 @@ export const FormBuilder = ({
     if (type === "switch") {
       return (
         <InputSwitch
+          {...commonProps}
+          onChange={(newValue) => {
+            setValues((prev) => ({ ...prev, [id]: newValue }));
+          }}
+          value={
+            typeof values?.[id] !== "undefined" ? !!values?.[id] : undefined
+          }
+        />
+      );
+    }
+    if (type === "boolean") {
+      return (
+        <InputBoolean
           {...commonProps}
           onChange={(newValue) => {
             setValues((prev) => ({ ...prev, [id]: newValue }));
