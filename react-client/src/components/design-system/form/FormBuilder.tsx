@@ -57,6 +57,7 @@ export const FormBuilder = ({
   const defaultValuesRef = useRef<FormValues>(defaultValues || {});
 
   const [values, setValues] = useState(defaultValuesRef.current);
+  const [isFormChanged, setIsFormChanged] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
@@ -66,10 +67,17 @@ export const FormBuilder = ({
   const hasValidationError = renderedFields.some((f) => !!f.errorMessage);
 
   useDeepCompareEffect(() => {
+    const formChanged = !isEqual(defaultValuesRef.current, values);
+
+    // Set form as changed if values differ from the default values
+    setIsFormChanged(formChanged);
+
     // Notify onChange callback only if the values have changed
-    if (!!onChange && !isEqual(defaultValuesRef.current, values)) {
+    if (!!onChange && formChanged) {
       onChange(values);
     }
+
+    console.log("Form Changed:", formChanged); // Debugging
   }, [onChange, values]);
 
   return (
@@ -106,9 +114,14 @@ export const FormBuilder = ({
     if (elementType === "input") {
       return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
     } else if (elementType === "button") {
+      const disabled = element.enabledCondition
+        ? !isFormChanged
+        : !!element.disabledCondition;
+
       return (
         <Button
           className={element.className}
+          disabled={disabled}
           key={element.id}
           type={element.type}
           variant={element.type === "submit" ? "primary" : "secondary"}
