@@ -184,9 +184,6 @@ export const AccountDetailsIndex = () => {
             countryOptions: ["Canada", "United States"],
             stateOptions: [],
           }}
-          values={{
-            "first-name": "Mateus",
-          }}
         />
       </Card>
     </div>
