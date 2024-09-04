@@ -105,7 +105,7 @@ describe("<Switch />", () => {
       defaultChecked: true,
       variant: "purple",
     });
-    expect(container.querySelector("span")).toHaveClass(
+    expect(container.querySelectorAll("span")[1]).toHaveClass(
       "bg-purple-500 hover:bg-purple-300"
     );
   });

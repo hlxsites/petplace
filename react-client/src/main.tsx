@@ -7,7 +7,7 @@ const rootElement = document.getElementById("react-root");
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <App authToken={authToken ?? null} />
+      <App authToken={authToken || null} />
     </React.StrictMode>
   );
 }

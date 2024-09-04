@@ -5,7 +5,7 @@ import { CommonInputProps } from "../types/FormTypes";
 import { TextSpan } from "../text/TextSpan";
 import { StyleProps } from "../types/TextTypes";
 
-type SwitchVariant = "orange" | "purple";
+export type SwitchVariant = "orange" | "purple";
 
 type SwitchProps = Omit<
   ComponentPropsWithoutRef<typeof RadixSwitch.Root>,
@@ -31,7 +31,14 @@ export const Switch = forwardRef<
     );
 
     return (
-      <div className="flex items-center gap-xsmall">
+      <div className="flex items-center gap-small">
+        {!hideLabel && (
+          <label htmlFor={props.id}>
+            <TextSpan fontFamily="franklin" size="16" {...textProps}>
+              {label}
+            </TextSpan>
+          </label>
+        )}
         <RadixSwitch.Root
           aria-label={hideLabel ? label : undefined}
           className={classNames(rootClassName, className)}
@@ -40,13 +47,6 @@ export const Switch = forwardRef<
         >
           <RadixSwitch.Thumb className={thumbClassName} />
         </RadixSwitch.Root>
-        {!hideLabel && (
-          <label htmlFor={props.id}>
-            <TextSpan fontFamily="franklin" size="16" {...textProps}>
-              {label}
-            </TextSpan>
-          </label>
-        )}
       </div>
     );
   }

@@ -10,7 +10,7 @@ import { Icon } from "../icon/Icon";
 import { TextSpan } from "../text/TextSpan";
 import { StyleProps } from "../types/TextTypes";
 
-type CheckboxVariant = "orange" | "purple";
+export type CheckboxVariant = "orange" | "purple";
 
 type CheckboxGroupType =
   InputWithoutFormBuilderProps<ElementInputCheckboxGroup>;
