@@ -86,35 +86,6 @@ function addWidgetScript(block) {
   }
 }
 
-async function buildGenAiSearchSection(main) {
-  const genAIDiv = document.createElement('div');
-  genAIDiv.classList.add('section');
-
-  const genAIMeta = document.createElement('meta');
-  genAIMeta.setAttribute('itemprop', 'description');
-  genAIMeta.setAttribute(
-    'content',
-    document.head.querySelector('meta[name="description"]').content,
-  );
-  genAIDiv.append(genAIMeta);
-
-  const genaiBlock = buildBlock('genai-search', '');
-  const genAITitle = document.createElement('h2');
-  const genAISubtitle = document.createElement('h2');
-  genAITitle.innerText = 'Learn even more with...  ';
-  genAISubtitle.innerText = 'AI Powered PetPlace Discovery';
-
-  genAIDiv.append(genAITitle);
-  genAIDiv.append(genAISubtitle);
-  genAIDiv.append(genaiBlock);
-  main.after(genAIDiv);
-
-  // genAIBlock.insertBefore(secondHeadline);
-
-  decorateBlock(genaiBlock);
-  await loadBlock(genaiBlock);
-}
-
 const buildGenAISearchCTA = () => {
   const headerSearchButton = document.createElement('div');
   headerSearchButton.className = 'header-search';
@@ -179,7 +150,6 @@ export async function loadLazy(document) {
   adsenseFunc('home', 'create');
 
   // GenAI Search
-  buildGenAiSearchSection(main);
   if (document.body.classList.contains('home-page')) {
     main.append(buildGenAISearchCTA());
   }
