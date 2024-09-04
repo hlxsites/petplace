@@ -390,7 +390,6 @@ export const FormBuilder = ({
       }
 
       if (type === "checkboxGroup") return "Select at least one option";
-      if (type === "boolean") return "Answer yes or no";
 
       return "Fill this field";
     }

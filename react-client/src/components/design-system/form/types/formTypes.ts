@@ -59,7 +59,6 @@ export type InputType =
   | "time"
   | "hidden"
   | "select"
-  | "boolean"
   | "switch"
   | "checkboxGroup"
   | "radio";
@@ -171,6 +170,7 @@ export type ElementInputCheckboxGroup = Omit<InputCommon, "placeholder"> &
   };
 
 export type ElementInputSwitch = Omit<InputCommon, "placeholder"> & {
+  conditionalLabel?: [string, string];
   onChange?: (newValue: boolean) => void;
   type: "switch";
   value?: boolean;
