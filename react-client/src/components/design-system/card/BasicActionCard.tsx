@@ -1,6 +1,7 @@
 import { Button, ButtonProps } from "../button/Button";
-import { Text, TextProps } from "../text/Text";
+import { Text } from "../text/Text";
 import { Title, TitleProps } from "../text/Title";
+import { TextProps } from "../types/TextTypes";
 import { Card } from "./Card";
 
 type BasicActionCardProps = {
@@ -23,7 +24,7 @@ export const BasicActionCard = ({
   return (
     <Card role="region">
       <div className="grid gap-large p-xxlarge">
-        <div className="grid gap-xsmall">
+        <div className="grid gap-small">
           <Title level="h3" {...titleProps}>
             {title}
           </Title>
