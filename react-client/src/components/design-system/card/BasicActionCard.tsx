@@ -24,7 +24,7 @@ export const BasicActionCard = ({
   return (
     <Card role="region">
       <div className="grid gap-large p-xxlarge">
-        <div className="grid gap-xsmall">
+        <div className="grid gap-small">
           <Title level="h3" {...titleProps}>
             {title}
           </Title>

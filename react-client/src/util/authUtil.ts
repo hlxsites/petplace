@@ -1,3 +1,4 @@
+import { AUTH_TOKEN } from "./envUtil";
 import { invariantResponse } from "./invariant";
 
 export function getAuthToken() {
@@ -5,7 +6,7 @@ export function getAuthToken() {
     .getElementById("auth-token")
     ?.getAttribute("value");
 
-  return authToken || null;
+  return authToken || AUTH_TOKEN || null;
 }
 
 export function requireAuthToken() {
