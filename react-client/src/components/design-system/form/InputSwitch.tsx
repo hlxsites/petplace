@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import { Switch } from "../switch/Switch";
-import { Text } from "../text/Text";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import {
   type ElementInputSwitch,
@@ -12,33 +11,43 @@ type InputSwitchProps = InputWithoutFormBuilderProps<ElementInputSwitch> & {
 };
 
 export const InputSwitch = forwardRef<HTMLButtonElement, InputSwitchProps>(
-  ({ id, onChange, value, variant, ...rest }, ref) => {
-    const conditionalLabel = value ? "On" : "Off";
-    // TODO: rever porque o label não vem no ...rest
+  (
+    {
+      conditionalLabel,
+      hideLabel,
+      id,
+      label,
+      onChange,
+      value,
+      variant,
+      ...rest
+    },
+    ref
+  ) => {
+    const newLabel =
+      (value ? conditionalLabel?.[0] : conditionalLabel?.[1]) ?? label;
+
     return (
       <InputAccessibilityWrapper
+        hideLabel
         id={id}
-        {...rest}
+        label={label}
         labelProps={{ className: "pb-0" }}
+        {...rest}
       >
         {({ inputProps }) => (
-          <>
-            <div className="flex place-items-center gap-medium">
-              <Text size="16">{conditionalLabel}</Text>
-              <Switch
-                checked={value}
-                id={id}
-                key={id}
-                label={rest.label}
-                hideLabel
-                name={id}
-                onCheckedChange={onChange}
-                ref={ref}
-                variant={variant}
-                {...inputProps}
-              />
-            </div>
-          </>
+          <Switch
+            checked={value}
+            hideLabel={hideLabel}
+            id={id}
+            key={id}
+            label={newLabel}
+            name={id}
+            onCheckedChange={onChange}
+            ref={ref}
+            variant={variant}
+            {...inputProps}
+          />
         )}
       </InputAccessibilityWrapper>
     );
