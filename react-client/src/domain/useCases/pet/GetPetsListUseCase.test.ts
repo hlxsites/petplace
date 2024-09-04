@@ -1,5 +1,5 @@
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetPetsListUseCase } from "./getPetsListUseCase";
+import { GetPetsListUseCase } from "./GetPetsListUseCase";
 
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import getPetsListMock from "./mocks/getPetsListMock.json";
