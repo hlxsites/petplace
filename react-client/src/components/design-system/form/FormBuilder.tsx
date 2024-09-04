@@ -76,8 +76,6 @@ export const FormBuilder = ({
     if (!!onChange && formChanged) {
       onChange(values);
     }
-
-    console.log("Form Changed:", formChanged); // Debugging
   }, [onChange, values]);
 
   return (
@@ -284,7 +282,11 @@ export const FormBuilder = ({
   }: ElementSection) {
     if (!matchConditionExpression(shouldDisplay || true)) return;
     return (
-      <section className={classNames("my-small", className)} id={id}>
+      <section
+        aria-label={title}
+        className={classNames("my-small", className)}
+        id={id}
+      >
         {!!title && (
           <Title level="h3" isResponsive>
             {title}

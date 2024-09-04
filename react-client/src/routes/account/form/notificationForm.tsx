@@ -11,21 +11,21 @@ const newsletterRadioGroupInput: InputsUnion = {
 };
 
 const petPlaceOffersSwitchInput: InputsUnion = {
-  className: "flex flex-row justify-end",
+  className: "flex flex-row justify-end -mt-[12px]",
   elementType: "input",
   id: "pet-place-offers",
   label: "PetPlace Offers",
-  conditionalLabel: ["Off", "On"],
+  conditionalLabel: ["On", "Off"],
   type: "switch",
   variant: "purple",
 };
 
 const partnerOffersSwitchInput: InputsUnion = {
-  className: "flex flex-row justify-end",
+  className: "flex flex-row justify-end -mt-[12px]",
   elementType: "input",
   id: "partner-offers",
   label: "Partner Offers",
-  conditionalLabel: ["Off", "On"],
+  conditionalLabel: ["On", "Off"],
   type: "switch",
   variant: "purple",
 };
@@ -49,6 +49,7 @@ export const notificationsFormSchema: FormSchema = {
       children: [
         {
           elementType: "row",
+          className: "flex flex-row",
           children: [
             {
               content: (
@@ -66,7 +67,7 @@ export const notificationsFormSchema: FormSchema = {
         },
         {
           elementType: "row",
-          className: "justify-between",
+          className: "flex flex-row",
           children: [
             {
               content: (
@@ -86,6 +87,7 @@ export const notificationsFormSchema: FormSchema = {
         },
         {
           elementType: "row",
+          className: "flex flex-row",
           children: [
             {
               content: (
@@ -112,6 +114,7 @@ export const notificationsFormSchema: FormSchema = {
       children: [
         {
           elementType: "row",
+          className: "flex flex-row",
           children: [
             {
               content: (
