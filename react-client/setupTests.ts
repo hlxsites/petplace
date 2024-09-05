@@ -20,3 +20,10 @@ window.ResizeObserver = jest.fn().mockImplementation(() => ({
   unobserve: jest.fn(),
   disconnect: jest.fn(),
 }));
+
+global.console = {
+  ...console,
+  debug: jest.fn(),
+  error: jest.fn(),
+  info: jest.fn(),
+};

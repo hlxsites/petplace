@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Card, DragAndDropFileUpload, Text } from "../design-system";
+import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
 
@@ -42,9 +42,9 @@ export const PetDocumentsView = ({
         </div>
       )}
 
-      <Text color="primary-900" size="16" fontWeight="bold">
+      <Title color="primary-900" level="h5">
         Upload and attach files
-      </Text>
+      </Title>
 
       <Card>
         <DragAndDropFileUpload

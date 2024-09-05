@@ -28,6 +28,7 @@ export const Header = ({
           {!!backButtonTo && (
             <LinkIconButton
               buttonProps={{
+                className: "text-orange-300-contrast",
                 icon: "chevronLeft",
               }}
               className="ml-[-12px]"
@@ -35,7 +36,9 @@ export const Header = ({
               to={backButtonTo}
             />
           )}
-          <Title>{pageTitle}</Title>
+          <Title level="h2" isResponsive>
+            {pageTitle}
+          </Title>
         </div>
         {primaryElement}
       </div>

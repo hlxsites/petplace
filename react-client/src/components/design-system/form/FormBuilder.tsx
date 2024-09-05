@@ -11,9 +11,9 @@ import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Title } from "../text/Title";
 import Input from "./Input";
-import { InputBoolean } from "./InputBoolean";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
 import { InputRadio } from "./InputRadio";
+import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
 import Select from "./Select";
 import {
@@ -211,9 +211,9 @@ export const FormBuilder = ({
         />
       );
     }
-    if (type === "boolean") {
+    if (type === "switch") {
       return (
-        <InputBoolean
+        <InputSwitch
           {...commonProps}
           onChange={(newValue) => {
             setValues((prev) => ({ ...prev, [id]: newValue }));
@@ -272,7 +272,11 @@ export const FormBuilder = ({
     if (!matchConditionExpression(shouldDisplay || true)) return;
     return (
       <section className={classNames("my-small", className)} id={id}>
-        {!!title && <Title level="h2">{title}</Title>}
+        {!!title && (
+          <Title level="h3" isResponsive>
+            {title}
+          </Title>
+        )}
         {!!description && (
           <p className="text-lg text-muted-foreground">{description}</p>
         )}
@@ -386,7 +390,6 @@ export const FormBuilder = ({
       }
 
       if (type === "checkboxGroup") return "Select at least one option";
-      if (type === "boolean") return "Answer yes or no";
 
       return "Fill this field";
     }

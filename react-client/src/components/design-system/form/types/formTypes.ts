@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+import { CheckboxVariant } from "../../checkbox/Checkbox";
+import { SwitchVariant } from "../../switch/Switch";
 
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
@@ -57,7 +59,7 @@ export type InputType =
   | "time"
   | "hidden"
   | "select"
-  | "boolean"
+  | "switch"
   | "checkboxGroup"
   | "radio";
 
@@ -164,7 +166,16 @@ export type ElementInputCheckboxGroup = Omit<InputCommon, "placeholder"> &
     onChange?: (newValue: string[]) => void;
     type: "checkboxGroup";
     value?: string[];
+    variant?: CheckboxVariant;
   };
+
+export type ElementInputSwitch = Omit<InputCommon, "placeholder"> & {
+  conditionalLabel?: [string, string];
+  onChange?: (newValue: boolean) => void;
+  type: "switch";
+  value?: boolean;
+  variant?: SwitchVariant;
+};
 
 export type ElementInputNumber = InputCommon & {
   onChange?: (newValue: number) => void;
@@ -176,6 +187,7 @@ export type ElementInputDate = InputCommon & {
   onChange?: (newValue: Date) => void;
   type: "date";
   value?: Date;
+  variant: SwitchVariant;
 };
 
 type ElementInputSelectCommon = InputCommon &
@@ -197,6 +209,7 @@ export type InputsUnion =
   | ElementInputText
   | ElementInputTextarea
   | ElementInputBoolean
+  | ElementInputSwitch
   | ElementInputRadio
   | ElementInputCheckboxGroup
   | ElementInputNumber
