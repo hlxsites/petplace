@@ -1,7 +1,19 @@
 import { Card, DisplayForm, Title } from "~/components/design-system";
 import { notificationsFormSchema } from "../form/notificationForm";
+import {
+  LostAndFoundNotifications,
+  LostNotification,
+} from "./LostAndFoundNotifications";
 
-export const NotificationsTabContent = () => {
+type NotificationsTabProps = {
+  isExternalLogin?: boolean;
+  lostPetsHistory?: LostNotification[];
+};
+
+export const NotificationsTabContent = ({
+  isExternalLogin,
+  lostPetsHistory,
+}: NotificationsTabProps) => {
   return (
     <div className="mt-xxxlarge grid gap-large">
       <Title level="h3">Communication Preferences</Title>
@@ -10,12 +22,6 @@ export const NotificationsTabContent = () => {
           <DisplayForm
             onChange={(props) => {
               console.log("onChange values", props);
-
-              const indexButtonElement =
-                notificationsFormSchema.children.length - 1;
-
-              // needs to make disabled
-              notificationsFormSchema.children[indexButtonElement];
             }}
             onSubmit={({ event, values }) => {
               event.preventDefault();
@@ -26,6 +32,9 @@ export const NotificationsTabContent = () => {
           />
         </div>
       </Card>
+      {isExternalLogin && (
+        <LostAndFoundNotifications notifications={lostPetsHistory} />
+      )}
     </div>
   );
 };

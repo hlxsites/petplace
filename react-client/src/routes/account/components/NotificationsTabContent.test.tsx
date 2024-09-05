@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 import { userEvent } from "@testing-library/user-event";
+import { ComponentProps } from "react";
 
-const { getByRole } = screen;
+const { getByRole, queryByRole } = screen;
 
 describe("NotificationsTabContent", () => {
   it("should render the expected title for this tab content", () => {
@@ -46,8 +47,63 @@ describe("NotificationsTabContent", () => {
     await userEvent.click(getByRole("checkbox", { name: "Cat" }));
     expect(getByRole("button", { name: "Save changes" })).toBeEnabled();
   });
+
+  it("should render Lost and Found notifications when login is external", () => {
+    getRenderer({ isExternalLogin: true });
+    expect(
+      getByRole("heading", { name: /Lost & Found notifications/i })
+    ).toBeInTheDocument();
+  });
+
+  it("should NOT render Lost and Found notifications when login is local", () => {
+    getRenderer({ isExternalLogin: false });
+    expect(
+      queryByRole("heading", { name: /Lost & Found notifications/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it.each(["All", "Incoming found pet alerts"])(
+    "should render the selector filter: %s",
+    (selector) => {
+      getRenderer({ isExternalLogin: true });
+      expect(getByRole("checkbox", { name: selector })).toBeInTheDocument();
+    }
+  );
+
+  it("should render the given lost notifications", () => {
+    getRenderer({
+      isExternalLogin: true,
+      // @ts-expect-error - ignoring for test purposes only
+      lostPetsHistory: MOCK_PET_HISTORY,
+    });
+    expect(getByRole("button", { name: /view/i })).toBeInTheDocument();
+  });
+
+  it("should NOT render the lost notifications when it's not provided", () => {
+    getRenderer({
+      isExternalLogin: true,
+      lostPetsHistory: undefined,
+    });
+    expect(queryByRole("button", { name: /view/i })).not.toBeInTheDocument();
+  });
 });
 
-function getRenderer() {
-  return render(<NotificationsTabContent />);
+function getRenderer({
+  ...props
+}: Partial<ComponentProps<typeof NotificationsTabContent>> = {}) {
+  return render(<NotificationsTabContent {...props} />);
 }
+
+const MOCK_PET_HISTORY = [
+  {
+    petHistory: [
+      {
+        date: 628021800000,
+        foundedBy: {
+          finderName: "Mrs Smart",
+        },
+      },
+    ],
+    petName: "Mag",
+  },
+];
