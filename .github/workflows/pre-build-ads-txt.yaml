@@ -1,4 +1,4 @@
-name: Pre-build the search index and update RSS/Atom feeds
+name: Pre-build the ads json from sharepoint and convert to txt file
 
 on:
   repository_dispatch:
@@ -6,8 +6,8 @@ on:
       - resource-published
   pull_request:
     paths:
-      - '.github/ci/**'
-      - '.github/workflows/pre-build-search-index.yaml'
+      - '.github/ci/build-ads-file.js'
+      - '.github/workflows/pre-build-ads-txt.yaml'
 
 env:
   TARGETDIRECTORY: "../.."
@@ -17,7 +17,8 @@ env:
 #   cancel-in-progress: true
 
 jobs:
-  build:
+  repository-dispatch:
+    if: github.event.client_payload.path == '/ads-txt-file.json'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -36,7 +37,7 @@ jobs:
 
     - name: Configure git
       run: |
-        git config user.name "Petplace - GitHub Action - Generate Search Index"
+        git config user.name "Petplace - GitHub Action - Generate Ads File"
         git config user.email "<>"
 
     - uses: actions/setup-node@v3
@@ -47,16 +48,12 @@ jobs:
       working-directory: ./.github/ci
       run: npm install
 
-    - name: Generate the search index
+    - name: Generate the ads.txt file
       working-directory: ./.github/ci
-      run:  node build-search-index.js ${{ env.TARGETDIRECTORY }} ${{ github.event.client_payload.path }}
-
-    - name: Generate the RSS/Atom feed
-      working-directory: ./.github/ci
-      run:  node generate-news-feed.js ${{ env.TARGETDIRECTORY }} ${{ github.event.client_payload.path }}
+      run:  node build-ads-file.js ${{ env.TARGETDIRECTORY }}
 
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: 'search-index*.db rss*.xml atom*.xml'
-        commit_message: "chore: update the search index and rss/atom feeds"
+        file_pattern: 'ads.txt'
+        commit_message: "chore: update the ads.txt file"
