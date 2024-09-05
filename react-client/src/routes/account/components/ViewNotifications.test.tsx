@@ -25,25 +25,11 @@ describe("ViewNotifications", () => {
     }
   );
 
-  it.each(["06-10-2024", "06-10-2021"])(
-    "should render the given dateFoundOrLost=%s",
-    (dateFoundOrLost) => {
-      getRenderer({ dateFoundOrLost });
-      expect(getByText(`${dateFoundOrLost} | FoundPet`)).toBeInTheDocument();
-    }
-  );
-
-  it.each(["LostPet", "FoundPet"] as ComponentProps<
-    typeof ViewNotifications
-  >["notificationCategory"][])(
-    "should render the given notificationCategory=%s",
-    (notificationCategory) => {
-      getRenderer({ notificationCategory });
-      expect(
-        getByText(`06-10-2024 | ${notificationCategory}`)
-      ).toBeInTheDocument();
-    }
-  );
+  it("should render the given dateFoundOrLost=%s", () => {
+    const convertedDate = new Date(628021800000).toISOString().split("T")[0];
+    getRenderer({ dateFoundOrLost: 628021800000 });
+    expect(getByText(`${convertedDate}`)).toBeInTheDocument();
+  });
 
   it("should render button with expected icon and label", () => {
     getRenderer();
@@ -63,9 +49,8 @@ describe("ViewNotifications", () => {
 });
 
 function getRenderer({
-  dateFoundOrLost = "06-10-2024",
+  dateFoundOrLost = 628021800000,
   foundedBy = "Jane Doe",
-  notificationCategory = "FoundPet",
   petName = "Juan",
   ...rest
 }: Partial<ComponentProps<typeof ViewNotifications>> = {}) {
@@ -73,7 +58,6 @@ function getRenderer({
     <ViewNotifications
       dateFoundOrLost={dateFoundOrLost}
       foundedBy={foundedBy}
-      notificationCategory={notificationCategory}
       petName={petName}
       {...rest}
     />
