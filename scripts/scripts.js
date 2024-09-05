@@ -81,6 +81,7 @@ export const REGIONS = {
 
 window.hlx.templates.add([
   '/templates/about-us',
+  '/templates/account-activation/',
   '/templates/adopt',
   '/templates/adoption-landing-page',
   '/templates/article-page',
