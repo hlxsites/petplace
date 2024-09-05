@@ -100,12 +100,28 @@ export type DocumentationStatus =
   | "failed"
   | "inProgress";
 
+type ContactDone = {
+  date: number;
+  email?: string;
+  methodContact?: string;
+  phoneNumber?: string;
+};
+
+export type FoundedByInfo = {
+  contact?: ContactDone[];
+  finderName?: string;
+  finderOrganization?: string;
+  finderPhoneNumber?: string;
+  name?: string;
+};
+
 export type LostPetUpdate = {
   date: number;
   update: number;
   status: MissingStatus;
   id: number;
   note?: string;
+  foundedBy?: FoundedByInfo | null;
 };
 
 export type Colors = "black";
@@ -149,11 +165,31 @@ const PETS_LIST: PetInfo[] = [
         note: "Lost report from submitted",
       },
       {
-        date: 1722430534,
+        date: 628021800000,
         update: 1722460747,
         status: "found",
         id: 2234567,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
     ],
   },
@@ -185,6 +221,26 @@ const PETS_LIST: PetInfo[] = [
         status: "found",
         id: 2637427,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
       {
         date: 1722433434,
@@ -199,6 +255,7 @@ const PETS_LIST: PetInfo[] = [
         status: "found",
         id: 4637427,
         note: "",
+        foundedBy: null,
       },
       {
         date: 1722433434,
@@ -457,4 +514,20 @@ export const getProductsList = () => {
 
 export const getProductById = (id: string | null) => {
   return DETAILED_CART_ITEMS.find((pet) => pet.id === id);
+};
+
+export const getLostPetsHistory = () => {
+  return PETS_LIST.filter((pet) =>
+    pet.lostPetHistory?.some((history) => history.foundedBy)
+  ).map((pet) => {
+    const petName = pet.name;
+    const petHistory = pet.lostPetHistory?.filter(
+      (history) => history.foundedBy
+    );
+    return { petName, petHistory };
+  });
+};
+
+export const getAuthLogin = () => {
+  return true;
 };
