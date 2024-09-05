@@ -15,7 +15,7 @@ describe("CheckoutConclusionModal", () => {
     getRenderer();
     expect(
       getByRole("heading", {
-        name: "Congratulations! Your Pet’s Protection Plan is Now Active!",
+        name: "Congratulations! Your Pet is now covered with 24Petwatch Protection Plan!",
       })
     ).toBeInTheDocument();
   });
@@ -24,7 +24,7 @@ describe("CheckoutConclusionModal", () => {
     getRenderer();
     expect(
       getByText(
-        "You can now access all the benefits of your selected tier, including 24/7 Vet Help and Lost Pet Protection, in the Membership section."
+        "You can access your plan benefits in your pet profile's “Active pet services” section. Your purchase may take up to 24 hours to reflect. Your invoice and plan details will be emailed shortly."
       )
     ).toBeInTheDocument();
   });
