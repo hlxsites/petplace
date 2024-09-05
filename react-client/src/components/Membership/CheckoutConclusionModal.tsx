@@ -25,7 +25,7 @@ export const CheckoutConclusionModal = ({
     >
       <div className="flex flex-col items-center gap-xxlarge px-large py-xxlarge md:w-[708px] md:px-xxlarge">
         <Icon display="shieldGood" size={72} className="text-green-300" />
-        <Title level="h2">
+        <Title level="h2" size="24">
           Congratulations! Your Pet is now covered with 24Petwatch Protection
           Plan!
         </Title>
