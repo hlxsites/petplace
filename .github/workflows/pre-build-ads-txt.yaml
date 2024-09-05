@@ -55,5 +55,5 @@ jobs:
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: 'ads.txt ads-txt.db'
+        file_pattern: 'ads.txt'
         commit_message: "chore: update the ads.txt file"
