@@ -1,9 +1,3 @@
-import {
-  buildBlock,
-  decorateBlock,
-  loadBlock,
-} from '../../scripts/lib-franklin.js';
-
 const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
 
 function isValidZipcode(code) {
