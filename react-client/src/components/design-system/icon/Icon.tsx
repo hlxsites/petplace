@@ -4,6 +4,7 @@ import AddCircleIcon from "./assets/add-circle-icon.svg";
 import AlertDiamondIcon from "./assets/alert-diamond-icon.svg";
 import AlertIcon from "./assets/alert-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
+import BellIcon from "./assets/bell-icon.svg";
 import BendArrowDownIcon from "./assets/bend-arrow-down-icon.svg";
 import CheckCircleIcon from "./assets/check-circle-icon.svg";
 import CheckIcon from "./assets/check-icon.svg";
@@ -25,6 +26,7 @@ import EditIcon from "./assets/edit-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import EllipseWithStrokeIcon from "./assets/ellipse-with-stroke-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
+import EyeIcon from "./assets/eye-icon.svg";
 import ForwardedCallIcon from "./assets/forwarded-call-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
 import InfoIcon from "./assets/info-icon.svg";
@@ -34,6 +36,7 @@ import MedicineIcon from "./assets/medicine-icon.svg";
 import OutlinedArrowBottom from "./assets/outlined-arrow-bottom-icon.svg";
 import OutlinedArrowRight from "./assets/outlined-arrow-right-icon.svg";
 import PawIcon from "./assets/paw-icon.svg";
+import PaymentCardIcon from "./assets/payment-card-icon.svg";
 import PdfFileIcon from "./assets/pdf-file-icon.svg";
 import PhoneIcon from "./assets/phone-icon.svg";
 import PippetIcon from "./assets/pippet-icon.svg";
@@ -49,6 +52,7 @@ import TransferIcon from "./assets/transfer-icon.svg";
 import TrashIcon from "./assets/trash-icon.svg";
 import TxtFileIcon from "./assets/txt-file-icon.svg";
 import UploadCloudIcon from "./assets/upload-cloud-icon.svg";
+import UserIcon from "./assets/user-icon.svg";
 import WarningIcon from "./assets/warning-icon.svg";
 import WarningTriangleIcon from "./assets/warning-triangle-icon.svg";
 
@@ -58,6 +62,7 @@ export const IconMap = Object.freeze({
   alert: <AlertIcon />,
   alertDiamond: <AlertDiamondIcon />,
   apps: <AppsIcon />,
+  bell: <BellIcon />,
   bendArrowDown: <BendArrowDownIcon />,
   check: <CheckIcon />,
   checkCircle: <CheckCircleIcon />,
@@ -79,6 +84,7 @@ export const IconMap = Object.freeze({
   ellipse: <EllipseIcon />,
   ellipseWithStroke: <EllipseWithStrokeIcon />,
   emptyEllipse: <EmptyEllipseIcon />,
+  eye: <EyeIcon />,
   file: <FileIcon />,
   forwardedCall: <ForwardedCallIcon />,
   information: <InformationIcon />,
@@ -88,6 +94,7 @@ export const IconMap = Object.freeze({
   outlinedArrowRight: <OutlinedArrowRight />,
   jpgFile: <JpgFileIcon />,
   paw: <PawIcon />,
+  paymentCard: <PaymentCardIcon />,
   pdfFile: <PdfFileIcon />,
   phone: <PhoneIcon />,
   pippet: <PippetIcon />,
@@ -103,6 +110,7 @@ export const IconMap = Object.freeze({
   trash: <TrashIcon />,
   txtFile: <TxtFileIcon />,
   uploadCloud: <UploadCloudIcon />,
+  user: <UserIcon />,
   warning: <WarningIcon />,
   warningTriangle: <WarningTriangleIcon />,
 });

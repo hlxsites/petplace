@@ -31,9 +31,10 @@ export const ConfirmDeletionDialog = ({
     <Dialog
       id="confirm-deletion-dialog"
       isOpen={isOpen}
+      isTitleResponsive
       onClose={onCancel}
       title="Are you sure you want to delete this file?"
-      titleLevel="h2"
+      titleSize="32"
     >
       {({ onCloseWithAnimation }) => (
         <div className="grid gap-xlarge pt-xlarge">

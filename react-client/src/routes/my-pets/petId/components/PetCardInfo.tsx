@@ -5,11 +5,12 @@ import {
   Title,
 } from "~/components/design-system";
 import { PetInfo } from "~/mocks/MockRestApiServer";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
+import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 import { ReportLostPetButton } from "./ReportLostPetButton";
+import { getRouteFor } from "~/routes/util/getRouteFor";
 
 export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   const {
@@ -39,20 +40,23 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
       exactRoute: true,
       icon: "paw",
       label: "Pet info",
-      route: getRouteFor(""),
+      route: getRouteFor(PET_PROFILE_FULL_ROUTE(petInfo.id), ""),
     },
     {
       content: () => <PetDocumentsTabContent />,
       icon: "file",
       label: "Pet documents",
-      route: getRouteFor(AppRoutePaths.petProfileDocuments),
+      route: getRouteFor(
+        PET_PROFILE_FULL_ROUTE(petInfo.id),
+        AppRoutePaths.petProfileDocuments
+      ),
     },
   ];
 
   return (
     <div className="w-full p-large lg:p-xxlarge">
       <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
-        <Title level="h1">{name}</Title>
+        <Title isResponsive>{name}</Title>
 
         <ReportLostPetButton className="hidden lg:flex" />
         <PetActionsDropdownMenu className="flex lg:hidden" />
@@ -66,15 +70,8 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
     return (
       <>
         <Text size="16">{`Microchip#: ${getMicrochipNumber}`}</Text>
-
-        <div className="mt-base">
-          <RouteBasedTabs tabs={tabOptions} />
-        </div>
+        <RouteBasedTabs tabs={tabOptions} />
       </>
     );
-  }
-
-  function getRouteFor(type: string) {
-    return `/${AppRoutePaths.myPets}/${petInfo.id}/${type}`;
   }
 };

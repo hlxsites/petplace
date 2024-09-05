@@ -18,6 +18,9 @@ const stageConfigs = {
     changePassword: {
       authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
     },
+    accountActivation: {
+      authority: 'https://petplacepoc.b2clogin.com/petplacepoc.onmicrosoft.com/B2C_1A_REDEEMTOKEN',
+    },
   },
   authorityDomain: 'petplacepoc.b2clogin.com',
 };
@@ -32,6 +35,9 @@ const stageAltConfigs = {
     changePassword: {
       authority: 'https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
     },
+    accountActivation: {
+      authority: 'https://petplaceb2cftr.b2clogin.com/petplaceb2cftr.onmicrosoft.com/B2C_1A_REDEEMTOKEN',
+    },
   },
   authorityDomain: 'petplaceb2cftr.b2clogin.com',
 };
@@ -45,6 +51,9 @@ const prodConfigs = {
     },
     changePassword: {
       authority: 'https://petplaceb2c.b2clogin.com/petplaceb2c.onmicrosoft.com/B2C_1A_PASSWORDCHANGE',
+    },
+    accountActivation: {
+      authority: 'https://petplaceb2c.b2clogin.com/petplaceb2c.onmicrosoft.com/B2C_1A_REDEEMTOKEN',
     },
   },
   authorityDomain: 'petplaceb2c.b2clogin.com',
@@ -154,6 +163,12 @@ export const tokenRequest = {
   forceRefresh: false,
   // Set this to "true" to skip a cached token and go to the server to get a new token
 };
+
+export const redeemTokenRequest = {
+  clientId: b2cPolicies.clientId,
+  authority: b2cPolicies.authorities.accountActivation.authority,
+};
+
 export const changePwdRequest = {
   scopes: b2cPolicies.scopes,
   mainWindowRedirectUri: window.location.href,

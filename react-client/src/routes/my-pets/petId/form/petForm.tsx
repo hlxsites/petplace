@@ -68,22 +68,6 @@ const insuranceInput: InputsUnion = {
   type: "number",
 };
 
-const spayedNeuteredInput: InputsUnion = {
-  elementType: "input",
-  id: "spayedNeutered",
-  label: "Spayed/Neutered",
-  requiredCondition: true,
-  type: "boolean",
-};
-
-const mixedBreedInput: InputsUnion = {
-  elementType: "input",
-  id: "mixedBreed",
-  label: "Mixed breed",
-  requiredCondition: true,
-  type: "boolean",
-};
-
 export const addPetProfileFormSchema: FormSchema = {
   id: "add-pet-profile-form",
   children: [
@@ -126,10 +110,6 @@ export const addPetProfileFormSchema: FormSchema = {
           optionsType: "dynamic",
           requiredCondition: true,
           type: "select",
-        },
-        {
-          ...spayedNeuteredInput,
-          label: "Are they spayed or neutered?",
         },
       ],
     },
@@ -216,11 +196,11 @@ export const editPetProfileFormSchema: FormSchema = {
     },
     {
       elementType: "row",
-      children: [microchipInput, spayedNeuteredInput],
+      children: [microchipInput],
     },
     {
       elementType: "row",
-      children: [speciesInput, mixedBreedInput],
+      children: [speciesInput],
     },
     {
       elementType: "row",
