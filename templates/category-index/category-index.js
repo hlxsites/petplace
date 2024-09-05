@@ -45,7 +45,12 @@ export async function getCategoryImage(path) {
 
 export async function getCategoryOrTagForUrl() {
   const { pathname } = window.location;
-  const [category] = pathname.split('/').splice(pathname.endsWith('/') ? -2 : -1, 1);
+  const hasLegacyPagination = pathname.split('/').includes('page');
+  const offset = (hasLegacyPagination && pathname.endsWith('/') && -4)
+    || (hasLegacyPagination && pathname.endsWith('/') && -3)
+    || (pathname.endsWith('/') && -2)
+    || -1;
+  const [category] = pathname.split('/').splice(offset, 1);
   const catResult = await getCategory(category);
   if (catResult) {
     return catResult;
