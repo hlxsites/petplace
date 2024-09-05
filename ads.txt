@@ -1,11 +1,28 @@
-# ads.txt (last update: 08-08-2024)
+# ads.txt (last update: 09-04-2024)
 
 # OFFICIAL PETPLACE Ad Sense
 google.com, pub-0827704052812365, DIRECT, f08c47fec0942fa0
 # OFFICIAL PETPLACE Ad Exchange
 google.com, pub-5915072357508663, DIRECT, f08c47fec0942fa0
 
-#IndexExchange OB
+# IndexExchange OB
 indexexchange.com, 209361, DIRECT, 50b1c356f2c5c8fc
-#Media.net OB
+
+# Media.net OB
 Media.net, 8CUT52R56, DIRECT
+
+# SOVRN OB
+lijit.com, 519919, DIRECT, fafdf38b16bf6b2b #SOVRN
+lijit.com, 519919-eb, DIRECT, fafdf38b16bf6b2b #SOVRN
+openx.com, 538959099, RESELLER, 6a698e2ec38604c6
+pubmatic.com, 137711, RESELLER, 5d62403b186f2ace
+pubmatic.com, 156212, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 17960, RESELLER, 0bfd66d529a55807
+appnexus.com, 1019, RESELLER, f5ab79cb980f11d1
+video.unrulymedia.com, 2444764291, RESELLER,
+contextweb.com, 558511, RESELLER, 89ff185a4c4e857c
+krushmedia.com, AJxF6R572a9M6CaTvK, RESELLER,
+inmobi.com, b01aa06531c543d8a5fb9982f60afb00, RESELLER, 83e75a7ae333ca9d
+motorik.io, 100463, RESELLER,
+smaato.com, 1100056344, RESELLER, 07bcf65f187117b4
+smartadserver.com, 4926, RESELLER, 060d053dcf45cbf3
