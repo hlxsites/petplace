@@ -8,14 +8,7 @@ const api = new URL(`https://${site}/ads-txt-file.json`);
 const response = await fetch(api);
 const result = await response.json();
 
-const dbAdsFile = `${targetDirectory}/ads-txt.db`;
 const txtAdsFile = `${targetDirectory}/ads.txt`;
-
-// using DB file to check for published date
-if (!fs.existsSync(dbAdsFile)) {
-  console.log(`Creating ads db to ${dbAdsFile}`);
-  fs.writeFileSync(dbAdsFile, JSON.stringify(result.data[0]));
-}
 
 // initial creation of the ads file if it doesn't exist
 if (!fs.existsSync(txtAdsFile)) {
@@ -23,14 +16,13 @@ if (!fs.existsSync(txtAdsFile)) {
   fs.writeFileSync(txtAdsFile, result.data[0].script);
 }
 
-const dbAdsFileData = fs.readFileSync(dbAdsFile, 'utf8');
-const dateFromFile = JSON.parse(dbAdsFileData).stamp;
+const txtAdsFileData = fs.readFileSync(txtAdsFile,  { encoding: 'utf8', flag: 'r' });
+const dateFromFile = txtAdsFileData.match(/\d{2}-\d{2}-\d{4}/) || [];
 
 // only updates if the time stamps don't match
-if (result.data[0].stamp !== dateFromFile) {
+if (result.data[0].stamp !== dateFromFile[0]) {
   console.log("Update for ads file and DB");
   fs.writeFileSync(txtAdsFile, result.data[0].script);
-  fs.writeFileSync(dbAdsFile, JSON.stringify(result.data[0]));
 } else {
   console.log("Skipping ads file and DB update. Timestamp hasn't changed.");
 }
