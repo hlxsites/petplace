@@ -1,11 +1,13 @@
 import { Outlet, useSearchParams } from "react-router-dom";
 import { Header } from "~/components/design-system/header/Header";
+import { CheckoutConclusionModal } from "~/components/Membership/CheckoutConclusionModal";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 import { MY_PETS_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
 import { ReportLostPetButton } from "./components/ReportLostPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
@@ -19,6 +21,13 @@ export const PetProfileIndex = () => {
 
   const displayOnboarding = !!searchParams.get("onboarding");
 
+  const displayCheckoutSuccessModal = (() => {
+    const contentParam = searchParams.get(CONTENT_PARAM_KEY);
+    if (!contentParam) return false;
+
+    return contentParam === "pet-watch-purchase-success";
+  })();
+
   return (
     <>
       <PetAlertSection />
@@ -28,7 +37,7 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
       />
       <div className="flex flex-col gap-xlarge">
-        <PetCardSection petInfo={petInfo} />
+        <PetCardSection pet={petInfo} />
         <AdvertisingSection />
         {petServiceStatus && (
           <PetWatchSection petServiceStatus={petServiceStatus} />
@@ -38,6 +47,9 @@ export const PetProfileIndex = () => {
       </div>
       <Outlet context={viewModel} />
       {displayOnboarding && <OnboardingDialog />}
+      {displayCheckoutSuccessModal && (
+        <CheckoutConclusionModal petId={petInfo.id} />
+      )}
     </>
   );
 

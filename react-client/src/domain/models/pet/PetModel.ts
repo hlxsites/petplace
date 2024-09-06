@@ -21,7 +21,7 @@ export type PetModel = {
   id: string;
   img?: string;
   isProtected?: boolean;
-  microchip?: string;
+  microchip?: string | null;
   mixedBreed?: string;
   name: string;
   onboardCompleted?: boolean;
