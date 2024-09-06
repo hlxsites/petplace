@@ -39,9 +39,11 @@ export default async function decorate(block) {
   }
 
   // Set React entry point
-  block.id = 'react-root';
   // Insert the token into the DOM as a hidden input element so React can access it
-  block.innerHTML = `<input id="auth-token" type="hidden" value="${token}" />`;
+  block.innerHTML = `
+    <div id="react-root"></div>
+    <input id="auth-token" type="hidden" value="${token}" />
+  `;
 
   import('./react-index.js');
 }

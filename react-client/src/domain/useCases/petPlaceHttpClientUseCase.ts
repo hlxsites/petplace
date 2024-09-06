@@ -4,7 +4,7 @@ import {
   HttpOptions,
   HttpResponse,
 } from "../repository/HttpClientRepository";
-import { FetchHttpClientUseCase } from "./fetchHttpClientUseCase";
+import { FetchHttpClientUseCase } from "./FetchHttpClientUseCase";
 
 export class PetPlaceHttpClientUseCase implements HttpClientRepository {
   private authToken: string;
