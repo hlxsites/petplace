@@ -10,6 +10,7 @@ import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Title } from "../text/Title";
+import { FormRepeater } from "./FormRepeater";
 import Input from "./Input";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
 import { InputContact } from "./InputContact";
@@ -18,11 +19,11 @@ import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
 import Select from "./Select";
 import {
-  type ExtendedFormValues,
   type ConditionCriteria,
   type ConditionExpression,
   type ElementSection,
   type ElementUnion,
+  type ExtendedFormValues,
   type FormSchema,
   type FormValues,
   type InputsUnion,
@@ -278,15 +279,57 @@ export const FormBuilder = ({
     return null;
   }
 
-  function renderSection({
-    children,
-    className,
-    description,
-    id,
-    shouldDisplay,
-    title,
-  }: ElementSection) {
+  function renderSection(section: ElementSection) {
+    const { id, isRepeatable, shouldDisplay } = section;
+
     if (!matchConditionExpression(shouldDisplay || true)) return;
+    if (!isRepeatable) return renderCommonSection(section);
+
+    if (isRepeatable && id) {
+      const repeaterValues = Array.isArray(values[id])
+        ? values[id]
+        : [defaultValues || {}];
+
+      return (
+        <FormRepeater
+          repeaterSchema={section}
+          defaultItemValues={defaultValues || {}}
+          onChange={(newSectionValues) =>
+            handleRepeatableChange(id, newSectionValues)
+          }
+          renderElement={renderElement}
+          values={repeaterValues as FormValues[]}
+        />
+      );
+    }
+
+    throw Error("Repeatable sections must have an id");
+  }
+
+  function handleRepeatableChange(
+    sectionId: string,
+    newSectionValues: ExtendedFormValues[]
+  ) {
+    setValues((prevValues: ExtendedFormValues) => {
+      const updatedValues: ExtendedFormValues = {
+        ...prevValues,
+        [sectionId]: newSectionValues,
+      };
+      return updatedValues;
+    });
+
+    if (onChange) {
+      const updatedValues: ExtendedFormValues = {
+        ...values,
+        [sectionId]: newSectionValues,
+      };
+      onChange(updatedValues);
+    }
+  }
+
+  function renderCommonSection(section: ElementSection) {
+    const { children, className, description, id, title } = section;
+
     return (
       <section className={classNames("my-small", className)} id={id}>
         {!!title && (

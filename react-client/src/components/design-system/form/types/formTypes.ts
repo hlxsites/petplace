@@ -76,6 +76,10 @@ export type ElementSection = ElementCommon & {
   className?: string;
   description?: string;
   elementType: "section";
+  isRepeatable?: boolean;
+  minRepeat?: number;
+  maxRepeat?: number;
+  repeatingTitle?: string;
   title?: string;
 };
 
