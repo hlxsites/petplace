@@ -18,6 +18,7 @@ import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
 import Select from "./Select";
 import {
+  type ExtendedFormValues,
   type ConditionCriteria,
   type ConditionExpression,
   type ElementSection,
@@ -31,7 +32,7 @@ const isDevEnvironment = window.location.hostname === "localhost";
 
 type OnSubmitProps = {
   event: FormEvent<HTMLFormElement>;
-  values: FormValues;
+  values: ExtendedFormValues;
 };
 
 type RenderedInput = Omit<
@@ -44,9 +45,9 @@ type RenderedInput = Omit<
 
 export type FormBuilderProps = {
   schema: FormSchema;
-  onChange?: (values: FormValues) => void;
+  onChange?: (values: ExtendedFormValues) => void;
   onSubmit?: (props: OnSubmitProps) => void;
-  values?: FormValues;
+  values?: ExtendedFormValues;
 };
 
 export const FormBuilder = ({
@@ -55,9 +56,11 @@ export const FormBuilder = ({
   onSubmit,
   values: defaultValues,
 }: FormBuilderProps) => {
-  const defaultValuesRef = useRef<FormValues>(defaultValues || {});
+  const defaultValuesRef = useRef<ExtendedFormValues>(defaultValues || {});
 
-  const [values, setValues] = useState(defaultValuesRef.current);
+  const [values, setValues] = useState<ExtendedFormValues>(
+    defaultValuesRef.current
+  );
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render

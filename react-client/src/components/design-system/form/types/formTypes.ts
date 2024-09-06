@@ -7,6 +7,7 @@ export type FormVariable = `{{${string}|${VariableType}}}`;
 
 export type FormVariableValues = Record<string, InputValue>;
 export type FormValues = Record<string, InputValue>;
+export type ExtendedFormValues = { [key: string]: InputValue | ExtendedFormValues[] };
 
 export type ElementType = "button" | "html" | "input" | "row" | "section";
 
