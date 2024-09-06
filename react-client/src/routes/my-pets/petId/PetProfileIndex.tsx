@@ -37,7 +37,7 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
       />
       <div className="flex flex-col gap-xlarge">
-        <PetCardSection petInfo={petInfo} />
+        <PetCardSection pet={petInfo} />
         <AdvertisingSection />
         {petServiceStatus && (
           <PetWatchSection petServiceStatus={petServiceStatus} />
