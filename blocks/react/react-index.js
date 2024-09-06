@@ -113,12 +113,12 @@ function print() { __p += __j.call(arguments, '') }
    overflow: hidden `).concat(r,`;
    padding-right: `).concat(u,"px ").concat(r,`;
   }
-  body[`).concat(Pl,`] {
+  body[`).concat(rl,`] {
     overflow: hidden `).concat(r,`;
     overscroll-behavior: contain;
     `).concat([t&&"position: relative ".concat(r,";"),n==="margin"&&`
     padding-left: `.concat(i,`px;
-    padding-top: `).concat(a,`px;
+    padding-top: `).concat(o,`px;
     padding-right: `).concat(s,`px;
     margin-left:0;
     margin-top:0;

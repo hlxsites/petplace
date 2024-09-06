@@ -4,20 +4,20 @@ import {
   Text,
   Title,
 } from "~/components/design-system";
-import { PetInfo } from "~/mocks/MockRestApiServer";
+import { PetModel } from "~/domain/models/pet/PetModel";
 import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import { getRouteFor } from "~/routes/util/getRouteFor";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 import { ReportLostPetButton } from "./ReportLostPetButton";
-import { getRouteFor } from "~/routes/util/getRouteFor";
 
-export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
+export const PetCardInfo = ({ ...petInfo }: PetModel) => {
   const {
     age,
     breed,
     dateOfBirth,
-    microchipNumber,
+    microchip,
     name,
     mixedBreed,
     sex,
@@ -66,10 +66,10 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   );
 
   function renderSubInfo() {
-    const getMicrochipNumber = microchipNumber ?? "";
+    const getmicrochip = microchip ?? "";
     return (
       <>
-        <Text size="16">{`Microchip#: ${getMicrochipNumber}`}</Text>
+        <Text size="16">{`Microchip#: ${getmicrochip}`}</Text>
         <RouteBasedTabs tabs={tabOptions} />
       </>
     );

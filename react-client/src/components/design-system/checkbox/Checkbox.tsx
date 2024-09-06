@@ -69,7 +69,7 @@ function useCheckboxVariant(variant: CheckboxVariant) {
   );
 
   const indicatorClassName = classNames(
-    "absolute flex h-5 w-5 items-center justify-center rounded-md text-white",
+    "absolute flex h-5 w-5 items-center justify-center rounded-md text-white p-[3px]",
     {
       "bg-orange-300-contrast": variant === "orange",
       "bg-purple-300": variant === "purple",

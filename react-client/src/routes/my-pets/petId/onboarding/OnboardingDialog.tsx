@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
+import { DocumentationStatus } from "~/domain/models/pet/PetModel";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
-import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 import { OnboardingStepFive } from "./OnboardingStepFive";
