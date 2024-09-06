@@ -134,6 +134,7 @@ export type ElementInputText = InputCommon & {
 
 export type ElementInputContact = InputCommon & {
   disableSelect?: boolean;
+  hideSelect?: boolean;
   defaultSelect?: string;
   onChange?: (newValue: string) => void;
   type: "contact";
