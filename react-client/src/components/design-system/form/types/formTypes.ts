@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { CheckboxVariant } from "../../checkbox/Checkbox";
 import { SwitchVariant } from "../../switch/Switch";
+import { TitleProps } from "../..";
+import { TextProps } from "../../types/TextTypes";
 
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
@@ -72,9 +74,15 @@ type ElementCommon = {
 export type ElementSection = ElementCommon & {
   children: ElementUnion[];
   className?: string;
-  description?: string;
+  description?: {
+    label: string;
+    textProps: Omit<TextProps, "children">;
+  };
   elementType: "section";
-  title?: string;
+  title?: {
+    label: string;
+    titleProps?: Omit<TitleProps, "children">;
+  };
 };
 
 export type ElementRow = ElementCommon & {

@@ -25,6 +25,7 @@ import {
   type FormValues,
   type InputsUnion,
 } from "./types/formTypes";
+import { Text } from "../text/Text";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -270,15 +271,16 @@ export const FormBuilder = ({
     title,
   }: ElementSection) {
     if (!matchConditionExpression(shouldDisplay || true)) return;
+
     return (
       <section className={classNames("my-small", className)} id={id}>
         {!!title && (
-          <Title level="h3" isResponsive>
-            {title}
+          <Title level={title.titleProps?.level ?? "h3"} {...title.titleProps}>
+            {title.label}
           </Title>
         )}
         {!!description && (
-          <p className="text-lg text-muted-foreground">{description}</p>
+          <Text {...description.textProps}>{description.label}</Text>
         )}
         <div
           className={classNames("space-y-base", {

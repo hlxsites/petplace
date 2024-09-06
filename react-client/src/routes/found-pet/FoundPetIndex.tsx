@@ -7,7 +7,9 @@ export const FoundPetIndex = () => {
       {
         elementType: "section",
         className: "!mb-xxxlarge",
-        title: "I have found a pet",
+        title: {
+          label: "I have found a pet",
+        },
         children: [
           {
             description:
@@ -22,7 +24,9 @@ export const FoundPetIndex = () => {
       },
       {
         elementType: "section",
-        title: "Found location:",
+        title: {
+          label: "Found location:",
+        },
         className: "!mb-xxxlarge",
         children: [
           {
@@ -71,7 +75,9 @@ export const FoundPetIndex = () => {
       },
       {
         elementType: "section",
-        title: "Finder contact information:",
+        title: {
+          label: "Finder contact information:",
+        },
         className: "!mb-xxxlarge",
         children: [
           {
