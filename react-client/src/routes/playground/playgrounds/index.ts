@@ -3,7 +3,6 @@ export * from "./BasicActionCardPlayground";
 export * from "./ButtonPlayground";
 export * from "./CarouselPlayground";
 export * from "./CartDrawerPlayground";
-export * from "./CheckoutConclusionModalPlayground";
 export * from "./CheckboxPlayground";
 export * from "./CheckoutProductCardPlayground";
 export * from "./CollapsePlayground";

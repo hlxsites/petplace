@@ -2,10 +2,11 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useSearchParams } from "react-router-dom";
+import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { CheckoutConclusionModal } from "./CheckoutConclusionModal";
 
-const { getByText, getByRole, queryByText } = screen;
+const { getByTestId, getByText, getByRole, queryByText } = screen;
 
 const DEFAULT_ID = "test-id";
 const PET_PROFILE = "Pet Profile Page";
@@ -29,21 +30,22 @@ describe("CheckoutConclusionModal", () => {
     ).toBeInTheDocument();
   });
 
-  it("should navigate to pets id", async () => {
+  it("should navigate to pet profile", async () => {
     getRenderer();
     expect(queryByText("Pet Profile Page")).not.toBeInTheDocument();
 
-    await userEvent.click(getByRole("button", { name: "Back to pet profile" }));
+    await userEvent.click(getByRole("link", { name: "Back to pet profile" }));
     expect(getByText("Pet Profile Page")).toBeInTheDocument();
   });
 
-  it.each(["Back to pet profile", "See my benefits"])(
-    "should render correct buttons",
-    (expected) => {
-      getRenderer();
-      expect(getByRole("button", { name: expected })).toBeInTheDocument();
-    }
-  );
+  it("should navigate to pet profile with pet watch benefits content drawer", async () => {
+    getRenderer();
+    expect(queryByText("Pet Profile Page")).not.toBeInTheDocument();
+
+    await userEvent.click(getByRole("link", { name: "See my benefits" }));
+    expect(getByText("Pet Profile Page")).toBeInTheDocument();
+    expect(getByTestId("content")).toHaveTextContent("pet-watch");
+  });
 });
 
 function getRenderer({
@@ -51,18 +53,30 @@ function getRenderer({
 }: Partial<ComponentProps<typeof CheckoutConclusionModal>> = {}) {
   return {
     ...render(
-      <MemoryRouter initialEntries={[`/checkout/${petId}`]}>
+      <MemoryRouter initialEntries={["/whatever"]}>
         <Routes>
           <Route
-            path={`/checkout/:petId`}
+            path="/whatever"
             element={<CheckoutConclusionModal petId={petId} />}
           />
           <Route
-            path={`/my-pets/${DEFAULT_ID}`}
-            element={<div>{PET_PROFILE}</div>}
+            path={`/account/my-pets/:petId`}
+            element={<TestPetProfilePage />}
           />
         </Routes>
       </MemoryRouter>
     ),
   };
+}
+
+function TestPetProfilePage() {
+  const [searchParams] = useSearchParams();
+  const contentParam = searchParams.get(CONTENT_PARAM_KEY);
+
+  return (
+    <>
+      <h1>{PET_PROFILE}</h1>
+      <div data-testid="content">{contentParam}</div>
+    </>
+  );
 }

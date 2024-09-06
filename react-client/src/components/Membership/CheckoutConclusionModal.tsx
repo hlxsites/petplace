@@ -1,12 +1,5 @@
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
-import {
-  Button,
-  Dialog,
-  Icon,
-  LinkButton,
-  Text,
-  Title,
-} from "../design-system";
+import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import { Dialog, Icon, LinkButton, Text, Title } from "../design-system";
 
 type CheckoutConclusionModalProps = {
   petId: string;
@@ -15,6 +8,10 @@ type CheckoutConclusionModalProps = {
 export const CheckoutConclusionModal = ({
   petId,
 }: CheckoutConclusionModalProps) => {
+  if (!petId) return null;
+
+  const petProfilePath = PET_PROFILE_FULL_ROUTE(petId);
+
   return (
     <Dialog
       id="checkout-conclusion"
@@ -35,14 +32,17 @@ export const CheckoutConclusionModal = ({
           Your invoice and plan details will be emailed shortly.
         </Text>
         <div className="flex w-full flex-col gap-medium md:flex-row md:gap-small">
-          <LinkButton
-            fullWidth
-            variant="secondary"
-            to={`/${AppRoutePaths.myPets}/${petId}`}
-          >
+          <LinkButton fullWidth replace to={petProfilePath} variant="secondary">
             Back to pet profile
           </LinkButton>
-          <Button fullWidth>See my benefits</Button>
+          <LinkButton
+            fullWidth
+            replace
+            to={`${petProfilePath}?content=pet-watch`}
+            variant="primary"
+          >
+            See my benefits
+          </LinkButton>
         </div>
       </div>
     </Dialog>
