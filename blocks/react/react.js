@@ -1,4 +1,4 @@
-import { acquireToken, isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import { acquireToken, isLoggedIn, login } from '../../scripts/lib/msal/msal-authentication.js';
 
 async function getAuthToken() {
   try {
@@ -16,12 +16,23 @@ async function getAuthToken() {
 export default async function decorate(block) {
   const token = await getAuthToken();
   if (!token) {
+    const buttonId = 'react-login-button';
+
     block.innerHTML = `
       <div id="login-required-message">
-          <h1>Login required</h1>
-          <p>Enter with your account to access this page.</p>
+          <img src="${window.location.origin}/blocks/react/react-onboarding-friendly-dog-and-cat.png" alt="Friendly dog and a cat together">
+          <h1>This is page requires to be logged in.</h1>
+          <p>Please login to get access to your pets' documents, insurance, membership information and much more.</p>
+          <button id="${buttonId}" type="button">Log In</button>
       </div>
   `;
+
+  block.querySelector(`#${buttonId}`).addEventListener('click', async () => {
+    login(() => {
+      // Reload the page after successful login to get the token and render the React app
+      window.location.reload();
+    });
+  });
 
     // Stop execution if token is invalid
     return;
