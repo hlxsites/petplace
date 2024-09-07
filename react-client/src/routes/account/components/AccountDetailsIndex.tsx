@@ -13,8 +13,8 @@ export const AccountDetailsIndex = () => {
             elementType: "row",
             children: [
               {
-                defaultSelect: "Home",
-                disableSelect: true,
+                defaultType: "Home",
+                disabledType: true,
                 description:
                   "You’re not required to own a ‘Home’ phone, however if it’s left blank, our system will auto-populate this field with your mobile or work number. This will not impact our ability to contact you if your pet is lost and found",
                 elementType: "input",

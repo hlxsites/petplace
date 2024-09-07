@@ -257,6 +257,9 @@ export const FormBuilder = ({
       return (
         <InputPhone
           {...commonProps}
+          disabledType={matchConditionExpression(
+            inputProps.disabledType ?? false
+          )}
           onChange={(newValue) => {
             setValues((prev) => ({ ...prev, [id]: newValue }));
           }}

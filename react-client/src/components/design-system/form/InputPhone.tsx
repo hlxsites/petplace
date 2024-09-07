@@ -8,29 +8,55 @@ import {
 } from "./types/formTypes";
 import { FORM_STYLES } from "./utils/formStyleUtils";
 
-type InputPhoneProps = InputWithoutFormBuilderProps<ElementInputPhone> & {
-  disableSelect?: boolean;
-  defaultSelect?: string;
+type InputPhoneProps = Omit<
+  InputWithoutFormBuilderProps<ElementInputPhone>,
+  "disabledType"
+> & {
+  defaultType?: string;
+  disabledType?: boolean;
 };
-
-const selectOptions = ["Home", "Work"];
 
 export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
   (
     {
       autoFocus,
-      disableSelect,
-      defaultSelect,
+      defaultType,
+      disabledType,
       id,
       onChange,
       placeholder,
-      value,
+      value: combinedValue,
       ...rest
     },
     ref
   ) => {
-    const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-      onChange?.(target.value);
+    const [value, type] = combinedValue?.split("|") || [];
+
+    const selectedType = (() => {
+      if (type) return type;
+
+      if (defaultType) return defaultType;
+
+      return "";
+    })();
+
+    const handleOnChange = ({
+      newType,
+      newValue,
+    }: {
+      newType?: string;
+      newValue?: string;
+    }) => {
+      const newCombinedValue = `${newValue || value}|${newType || selectedType}`;
+      onChange?.(newCombinedValue);
+    };
+
+    const handleOnChangeType = (newType: string) => {
+      handleOnChange({ newType });
+    };
+
+    const handleOnChangeInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
+      handleOnChange({ newValue: target.value });
     };
 
     return (
@@ -39,12 +65,14 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
           return (
             <div className="flex gap-medium">
               <Select
-                id="contact-category"
-                label="Contact category"
+                disabled={disabledType}
                 hideLabel
-                options={selectOptions}
-                disabled={disableSelect}
-                value={defaultSelect}
+                id="phone-category"
+                label="Contact category"
+                placeholder="Choose"
+                options={["Home", "Mobile", "Work"]}
+                onChange={handleOnChangeType}
+                value={type || defaultType}
               />
               <div
                 className={classNames(FORM_STYLES.inputRoot, {
@@ -64,7 +92,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
                   )}
                   id={id}
                   name={id}
-                  onChange={handleOnChange}
+                  onChange={handleOnChangeInput}
                   placeholder={placeholder}
                   ref={ref}
                   value={value}

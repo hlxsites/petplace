@@ -134,8 +134,8 @@ export type ElementInputText = InputCommon & {
 };
 
 export type ElementInputPhone = InputCommon & {
-  disableSelect?: boolean;
-  defaultSelect?: string;
+  defaultType?: string;
+  disabledType?: ConditionExpression;
   onChange?: (newValue: string) => void;
   type: "phone";
   value?: string;
