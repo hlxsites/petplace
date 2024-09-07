@@ -1,4 +1,4 @@
-import { Card, DisplayForm, FormSchema } from "~/components/design-system";
+import { DisplayForm, FormSchema } from "~/components/design-system";
 
 export const AccountDetailsIndex = () => {
   const formSchema: FormSchema = {
@@ -173,23 +173,19 @@ export const AccountDetailsIndex = () => {
   };
 
   return (
-    <div className="m-auto max-w-[800px]">
-      <Card padding="xlarge">
-        <DisplayForm
-          onChange={(props) => {
-            console.log("onChange values", props);
-          }}
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
-            console.log("onSubmit values", values);
-          }}
-          schema={formSchema}
-          variables={{
-            countryOptions: ["Canada", "United States"],
-            stateOptions: [],
-          }}
-        />
-      </Card>
-    </div>
+    <DisplayForm
+      onChange={(props) => {
+        console.log("onChange values", props);
+      }}
+      onSubmit={({ event, values }) => {
+        event.preventDefault();
+        console.log("onSubmit values", values);
+      }}
+      schema={formSchema}
+      variables={{
+        countryOptions: ["Canada", "United States"],
+        stateOptions: [],
+      }}
+    />
   );
 };
