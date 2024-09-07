@@ -113,9 +113,12 @@ export const FormBuilder = ({
     if (elementType === "input") {
       return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
     } else if (elementType === "button") {
-      const disabled = element.enabledCondition
-        ? !isFormChanged
-        : !!element.disabledCondition;
+      const disabled = (() => {
+        if (matchConditionExpression(element.enabledCondition ?? false))
+          return !isFormChanged;
+
+        return matchConditionExpression(element.disabledCondition ?? false);
+      })();
 
       return (
         <Button
@@ -124,7 +127,6 @@ export const FormBuilder = ({
           key={element.id}
           type={element.type}
           variant={element.type === "submit" ? "primary" : "secondary"}
-          disabled={element.disabledCondition === true}
         >
           {element.label}
         </Button>
