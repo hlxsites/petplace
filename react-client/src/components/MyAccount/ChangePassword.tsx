@@ -6,7 +6,7 @@ type ChangePasswordProps = {
 
 export const ChangePassword = ({ onChangePassword }: ChangePasswordProps) => {
   return (
-    <Card role="region">
+    <Card data-testid="ChangePasswordCard">
       <div className="grid grid-cols-1 items-center justify-between gap-xlarge p-xlarge lg:flex">
         <div className="grid gap-small">
           <Title level="h3">Change password</Title>

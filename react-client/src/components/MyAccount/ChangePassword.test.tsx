@@ -1,18 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { ChangePassword } from "./ChangePassword";
-import { ComponentProps } from "react";
 import { userEvent } from "@testing-library/user-event";
+import { ComponentProps } from "react";
+import { ChangePassword } from "./ChangePassword";
 
-const { getByRole, getByText } = screen;
+const { getByRole, getByTestId, getByText } = screen;
 
 const CHANGE_PASSWORD_LABEL = /change password/i;
 
 describe("ChangePassword", () => {
-  it("should render component with role region", () => {
-    getRenderer();
-    expect(getByRole("region")).toBeInTheDocument();
-  });
-
   it("should render component with its title", () => {
     getRenderer();
     expect(getByRole("heading")).toHaveTextContent(CHANGE_PASSWORD_LABEL);
@@ -42,7 +37,7 @@ describe("ChangePassword", () => {
 
   it("should render component with expected classes to assure that will work on multiple screens", () => {
     getRenderer();
-    expect(getByRole("region").querySelector("div")).toHaveClass(
+    expect(getByTestId("ChangePasswordCard").querySelector("div")).toHaveClass(
       "grid grid-cols-1 lg:flex"
     );
   });
