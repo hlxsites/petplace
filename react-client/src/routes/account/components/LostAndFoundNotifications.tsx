@@ -1,6 +1,6 @@
 import { Card, Checkbox, Title } from "~/components/design-system";
+import { LostPetUpdate } from "~/domain/models/pet/PetModel";
 import { ViewNotifications } from "./ViewNotifications";
-import { LostPetUpdate } from "~/mocks/MockRestApiServer";
 
 export type LostNotification = {
   petHistory?: LostPetUpdate[];

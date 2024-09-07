@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { NotificationsTabContent } from "./NotificationsTabContent";
 import { userEvent } from "@testing-library/user-event";
 import { ComponentProps } from "react";
+import { NotificationsTabContent } from "./NotificationsTabContent";
 
 const { getByRole, queryByRole } = screen;
 
