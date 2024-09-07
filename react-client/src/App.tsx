@@ -3,21 +3,12 @@ import "./index.css";
 import { AppRouter } from "./routes/AppRoute";
 import { resetBodyStyles } from "./util/styleUtil";
 
-type AppProps = {
-  authToken: string | null;
-};
-
-function App({ authToken }: AppProps) {
+function App() {
   useEffect(() => {
     resetBodyStyles();
   }, []);
 
-  return (
-    <>
-      <AppRouter />
-      {authToken && <input id="auth-token" type="hidden" value={authToken} />}
-    </>
-  );
+  return <AppRouter />;
 }
 
 export default App;

@@ -14,8 +14,8 @@ import { TextProps } from "~/components/design-system/types/TextTypes";
 import {
   LostPetUpdate,
   MissingStatus,
-  PetInfo,
-} from "~/mocks/MockRestApiServer";
+  PetModel,
+} from "~/domain/models/pet/PetModel";
 import { classNames } from "~/util/styleUtil";
 
 const columns: TableColumn[] = [
@@ -31,7 +31,7 @@ const ITEMS_PER_PAGE = 5;
 export const PetLostUpdatesSection = ({
   lostPetHistory,
   missingStatus,
-}: PetInfo) => {
+}: PetModel) => {
   const dataSource = (() => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();

@@ -8,6 +8,7 @@ import {
 
 export const AccountDetailsIndex = () => {
   const isExternalAccess = true;
+
   const formSchema = isExternalAccess
     ? externalAccountDetailsFormSchema
     : internalAccountDetailsFormSchema;

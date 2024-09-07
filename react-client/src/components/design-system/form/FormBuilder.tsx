@@ -13,7 +13,7 @@ import { Title } from "../text/Title";
 import { FormRepeater } from "./FormRepeater";
 import Input from "./Input";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
-import { InputContact } from "./InputContact";
+import { InputPhone } from "./InputPhone";
 import { InputRadio } from "./InputRadio";
 import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
@@ -62,6 +62,7 @@ export const FormBuilder = ({
   const [values, setValues] = useState<ExtendedFormValues>(
     defaultValuesRef.current
   );
+  const [isFormChanged, setIsFormChanged] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
@@ -71,8 +72,13 @@ export const FormBuilder = ({
   const hasValidationError = renderedFields.some((f) => !!f.errorMessage);
 
   useDeepCompareEffect(() => {
+    const formChanged = !isEqual(defaultValuesRef.current, values);
+
+    // Set form as changed if values differ from the default values
+    setIsFormChanged(formChanged);
+
     // Notify onChange callback only if the values have changed
-    if (!!onChange && !isEqual(defaultValuesRef.current, values)) {
+    if (!!onChange && formChanged) {
       onChange(values);
     }
   }, [onChange, values]);
@@ -111,13 +117,20 @@ export const FormBuilder = ({
     if (elementType === "input") {
       return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
     } else if (elementType === "button") {
+      const disabled = (() => {
+        if (matchConditionExpression(element.enabledCondition ?? false))
+          return !isFormChanged;
+
+        return matchConditionExpression(element.disabledCondition ?? false);
+      })();
+
       return (
         <Button
           className={element.className}
+          disabled={disabled}
           key={element.id}
           type={element.type}
           variant={element.type === "submit" ? "primary" : "secondary"}
-          disabled={element.disabledCondition === true}
         >
           {element.label}
         </Button>
@@ -244,10 +257,14 @@ export const FormBuilder = ({
       );
     }
 
-    if (type === "contact") {
+    if (type === "phone") {
       return (
-        <InputContact
+        <InputPhone
           {...commonProps}
+          disabledType={matchConditionExpression(
+            inputProps.disabledType ?? false
+          )}
+          hideType={matchConditionExpression(inputProps.hideType ?? false)}
           onChange={(newValue) => {
             setValues((prev) => ({ ...prev, [id]: newValue }));
           }}
@@ -331,7 +348,11 @@ export const FormBuilder = ({
     const { children, className, description, id, title } = section;
 
     return (
-      <section className={classNames("my-small", className)} id={id}>
+      <section
+        aria-label={title}
+        className={classNames("my-small", className)}
+        id={id}
+      >
         {!!title && (
           <Title level="h3" isResponsive>
             {title}

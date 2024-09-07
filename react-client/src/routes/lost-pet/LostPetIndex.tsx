@@ -163,7 +163,7 @@ export const LostPetIndex = () => {
             stateOptions: [],
           }}
           values={{
-            microchip: selectedPet?.microchipNumber?.toString() ?? "",
+            microchip: selectedPet?.microchip?.toString() ?? "",
           }}
         />
       </Card>

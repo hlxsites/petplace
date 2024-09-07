@@ -7,7 +7,9 @@ export type FormVariable = `{{${string}|${VariableType}}}`;
 
 export type FormVariableValues = Record<string, InputValue>;
 export type FormValues = Record<string, InputValue>;
-export type ExtendedFormValues = { [key: string]: InputValue | ExtendedFormValues[] };
+export type ExtendedFormValues = {
+  [key: string]: InputValue | ExtendedFormValues[];
+};
 
 export type ElementType = "button" | "html" | "input" | "row" | "section";
 
@@ -55,7 +57,7 @@ export type InputType =
   | "email"
   | "password"
   | "number"
-  | "contact"
+  | "phone"
   | "url"
   | "date"
   | "time"
@@ -97,6 +99,7 @@ export type ElementHtml = Omit<ElementCommon, "id"> & {
 export type ElementButton = ElementCommon & {
   className?: string;
   disabledCondition?: ConditionExpression;
+  enabledCondition?: ConditionExpression;
   elementType: "button";
   id: string;
   label: string;
@@ -137,12 +140,12 @@ export type ElementInputText = InputCommon & {
   value?: string;
 };
 
-export type ElementInputContact = InputCommon & {
-  disableSelect?: boolean;
-  hideSelect?: boolean;
-  defaultSelect?: string;
+export type ElementInputPhone = InputCommon & {
+  defaultType?: string;
+  disabledType?: ConditionExpression;
+  hideType?: boolean;
   onChange?: (newValue: string) => void;
-  type: "contact";
+  type: "phone";
   value?: string;
 };
 
@@ -224,7 +227,7 @@ export type InputsUnion =
   | ElementInputTextarea
   | ElementInputBoolean
   | ElementInputSwitch
-  | ElementInputContact
+  | ElementInputPhone
   | ElementInputRadio
   | ElementInputCheckboxGroup
   | ElementInputNumber

@@ -3,36 +3,62 @@ import { classNames } from "~/util/styleUtil";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import Select from "./Select";
 import {
-  type ElementInputContact,
+  type ElementInputPhone,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
 import { FORM_STYLES } from "./utils/formStyleUtils";
 
-type InputContactProps = InputWithoutFormBuilderProps<ElementInputContact> & {
-  disableSelect?: boolean;
-  hideSelect?: boolean;
-  defaultSelect?: string;
+type InputPhoneProps = Omit<
+  InputWithoutFormBuilderProps<ElementInputPhone>,
+  "disabledType" | "hideType"
+> & {
+  defaultType?: string;
+  disabledType?: boolean;
+  hideType?: boolean;
 };
 
-const selectOptions = ["Home", "Work"];
-
-export const InputContact = forwardRef<HTMLInputElement, InputContactProps>(
+export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
   (
     {
       autoFocus,
-      disableSelect,
-      defaultSelect,
-      hideSelect,
+      defaultType,
+      disabledType,
+      hideType,
       id,
       onChange,
       placeholder,
-      value,
+      value: combinedValue,
       ...rest
     },
     ref
   ) => {
-    const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-      onChange?.(target.value);
+    const [value, type] = combinedValue?.split("|") || [];
+
+    const selectedType = (() => {
+      if (type) return type;
+
+      if (defaultType) return defaultType;
+
+      return "";
+    })();
+
+    const handleOnChange = ({
+      newType,
+      newValue,
+    }: {
+      newType?: string;
+      newValue?: string;
+    }) => {
+      const newCombinedValue = `${newValue || value}|${newType || selectedType}`;
+      onChange?.(newCombinedValue);
+    };
+
+    const handleOnChangeType = (newType: string) => {
+      handleOnChange({ newType });
+    };
+
+    const handleOnChangeInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
+      handleOnChange({ newValue: target.value });
     };
 
     return (
@@ -40,14 +66,16 @@ export const InputContact = forwardRef<HTMLInputElement, InputContactProps>(
         {({ hasError, inputProps }) => {
           return (
             <div className="flex gap-medium">
-              {!hideSelect && (
+              {!hideType && (
                 <Select
-                  id="contact-category"
-                  label="Contact category"
+                  disabled={disabledType}
                   hideLabel
-                  options={selectOptions}
-                  disabled={disableSelect}
-                  value={defaultSelect}
+                  id="phone-category"
+                  label="Contact category"
+                  placeholder="Choose"
+                  options={["Home", "Mobile", "Work"]}
+                  onChange={handleOnChangeType}
+                  value={type || defaultType}
                 />
               )}
               <div
@@ -68,7 +96,7 @@ export const InputContact = forwardRef<HTMLInputElement, InputContactProps>(
                   )}
                   id={id}
                   name={id}
-                  onChange={handleOnChange}
+                  onChange={handleOnChangeInput}
                   placeholder={placeholder}
                   ref={ref}
                   value={value}

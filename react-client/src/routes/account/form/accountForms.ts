@@ -426,11 +426,11 @@ export const emergencyContactFormSchema: FormSchema = {
             },
             {
               elementType: "input",
-              hideSelect: true,
+              hideType: true,
               id: "contact-phone",
               label: "Phone Number",
               requiredCondition: true,
-              type: "contact",
+              type: "phone",
             },
           ],
         },
