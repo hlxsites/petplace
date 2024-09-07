@@ -54,7 +54,7 @@ export type InputType =
   | "email"
   | "password"
   | "number"
-  | "contact"
+  | "phone"
   | "url"
   | "date"
   | "time"
@@ -133,11 +133,11 @@ export type ElementInputText = InputCommon & {
   value?: string;
 };
 
-export type ElementInputContact = InputCommon & {
+export type ElementInputPhone = InputCommon & {
   disableSelect?: boolean;
   defaultSelect?: string;
   onChange?: (newValue: string) => void;
-  type: "contact";
+  type: "phone";
   value?: string;
 };
 
@@ -219,7 +219,7 @@ export type InputsUnion =
   | ElementInputTextarea
   | ElementInputBoolean
   | ElementInputSwitch
-  | ElementInputContact
+  | ElementInputPhone
   | ElementInputRadio
   | ElementInputCheckboxGroup
   | ElementInputNumber

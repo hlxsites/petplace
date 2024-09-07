@@ -3,20 +3,32 @@ import { classNames } from "~/util/styleUtil";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import Select from "./Select";
 import {
-  type ElementInputContact,
+  type ElementInputPhone,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
 import { FORM_STYLES } from "./utils/formStyleUtils";
 
-type InputContactProps = InputWithoutFormBuilderProps<ElementInputContact> & {
-    disableSelect?: boolean;
-    defaultSelect?: string;
+type InputPhoneProps = InputWithoutFormBuilderProps<ElementInputPhone> & {
+  disableSelect?: boolean;
+  defaultSelect?: string;
 };
 
 const selectOptions = ["Home", "Work"];
 
-export const InputContact = forwardRef<HTMLInputElement, InputContactProps>(
-  ({ autoFocus, disableSelect, defaultSelect, id, onChange, placeholder, value, ...rest }, ref) => {
+export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
+  (
+    {
+      autoFocus,
+      disableSelect,
+      defaultSelect,
+      id,
+      onChange,
+      placeholder,
+      value,
+      ...rest
+    },
+    ref
+  ) => {
     const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
       onChange?.(target.value);
     };
@@ -66,4 +78,3 @@ export const InputContact = forwardRef<HTMLInputElement, InputContactProps>(
     );
   }
 );
-
