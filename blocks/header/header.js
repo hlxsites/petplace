@@ -488,7 +488,7 @@ export default async function decorate(block) {
           !document.querySelector('.regions-list')?.contains(event.target)
           && !document.querySelector('.btn-regions-list')?.contains(event.target)
         ) {
-          document.querySelector('.regions-list').classList.add('hidden');
+          document.querySelector('.regions-list')?.classList.add('hidden');
         }
       });
 
@@ -592,7 +592,7 @@ export default async function decorate(block) {
           && !document.querySelector('.regions-list')?.contains(event.target)
           && !document.querySelector('.btn-regions-list')?.contains(event.target)
         ) {
-          document.querySelector('.regions-list').classList.add('hidden');
+          document.querySelector('.regions-list')?.classList.add('hidden');
         }
       });
 

@@ -1,3 +1,5 @@
+const GENAI_TOOLTIP = 'Try our AI powered discovery tool and get all your questions answered';
+
 function isValidZipcode(code) {
   const regex = /^[0-9]{5}(?:-[0-9]{4})?$/;
 
@@ -78,6 +80,31 @@ function addWidgetScript(block) {
   }
 }
 
+const buildGenAISearchCTA = () => {
+  const headerSearchButton = document.createElement('div');
+  headerSearchButton.className = 'header-search';
+  headerSearchButton.innerHTML = `<a data-modal="/tools/search"><img src="${window.hlx.codeBasePath}/icons/ai_generate_white.svg"><span class="tooltip">${GENAI_TOOLTIP}</span></a>`;
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY >= 68) {
+      headerSearchButton.classList.add('scrolled'); // New position when scrolled to the threshold
+    } else {
+      headerSearchButton.classList.remove('scrolled'); // Original position
+    }
+  });
+
+  headerSearchButton.addEventListener('click', async () => {
+    const { pushToDataLayer } = await import('../../scripts/utils/helpers.js');
+    await pushToDataLayer({
+      event: 'genai_floater',
+      element_type: 'button',
+    });
+    document.location.pathname = '/discovery';
+  });
+
+  return headerSearchButton;
+};
+
 export async function loadLazy(document) {
   // adding wave background
   const main = document.querySelector('#main');
@@ -115,6 +142,11 @@ export async function loadLazy(document) {
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('home', 'create');
+
+  // GenAI Search
+  if (document.body.classList.contains('home-page')) {
+    main.append(buildGenAISearchCTA());
+  }
 }
 
 // eslint-disable-next-line import/prefer-default-export
