@@ -1,221 +1,181 @@
-import { FormSchema } from "~/components/design-system";
+import {
+  ElementButton,
+  ElementInputPhone,
+  ElementInputSingleSelect,
+  ElementInputText,
+  ElementSection,
+  FormSchema,
+} from "~/components/design-system";
 
-const requiredPhoneInput = {
-  defaultSelect: "Home",
-  disableSelect: true,
+const requiredPhoneInput: ElementInputPhone = {
+  defaultType: "Home",
+  disabledType: true,
   description:
     "You’re not required to own a ‘Home’ phone, however if it’s left blank, our system will auto-populate this field with your mobile or work number. This will not impact our ability to contact you if your pet is lost and found",
-
-  id: "contact-default",
-  label: "Phone Number (Required)",
-  requiredCondition: true,
+  elementType: "input",
+  id: "phone-default",
+  label: "Phone Number",
+  requiredCondition: {
+    inputId: "phone-secondary",
+    type: "null",
+    value: "",
+  },
+  type: "phone",
 };
 
-const optionalPhoneInput = {
-  id: "contact-2",
+const optionalPhoneInput: ElementInputPhone = {
+  elementType: "input",
+  id: "phone-secondary",
   label: "Phone Number 2",
+  type: "phone",
 };
 
-const firstNameInput = {
+const firstNameInput: ElementInputText = {
+  elementType: "input",
   id: "first-name",
   label: "First Name",
   requiredCondition: true,
+  type: "text",
 };
 
-const lastNameInput = {
+const lastNameInput: ElementInputText = {
+  elementType: "input",
   id: "last-name",
   label: "Last Name",
   requiredCondition: true,
+  type: "text",
 };
 
-const emailInput = {
+const emailInput: ElementInputText = {
+  elementType: "input",
   id: "email-address",
   label: "Email Address",
   requiredCondition: true,
+  type: "email",
 };
 
-const countryInput = {
+const countryInput: ElementInputSingleSelect = {
+  elementType: "input",
   id: "country",
   label: "Country",
+  options: "{{countryOptions|string[]}}",
+  optionsType: "dynamic",
   requiredCondition: true,
+  type: "select",
 };
 
-const stateInput = {
+const stateInput: ElementInputSingleSelect = {
+  elementType: "input",
   id: "state",
   label: "Province/State",
+  options: "{{stateOptions|string[]}}",
+  optionsType: "dynamic",
   requiredCondition: true,
   placeholder: "State",
+  type: "select",
 };
 
-const addressLineOneInput = {
+const addressLineOneInput: ElementInputText = {
+  elementType: "input",
   id: "address-1",
   label: "Address Line 1",
   requiredCondition: true,
+  type: "text",
 };
 
-const addressLineTwoInput = {
+const addressLineTwoInput: ElementInputText = {
+  elementType: "input",
   id: "address-2",
   label: "Address Line 2",
   requiredCondition: true,
+  type: "text",
 };
 
-const cityInput = {
+const cityInput: ElementInputText = {
+  elementType: "input",
   id: "city",
   label: "City",
   requiredCondition: true,
+  type: "text",
 };
 
-const intersectionInput = {
+const intersectionInput: ElementInputText = {
+  elementType: "input",
   id: "intersection-address",
   label: "Intersection/Address",
   requiredCondition: true,
+  type: "text",
 };
 
-const zipCodeInput = {
+const zipCodeInput: ElementInputText = {
+  className: "w-1/2",
+  elementType: "input",
   id: "zip-code",
   label: "Zip Code",
   requiredCondition: true,
+  type: "text",
 };
 
-const submit = {
+const submitButton: ElementButton = {
+  className: "!mt-xxlarge w-full",
+  elementType: "button",
   disabledCondition: true,
   id: "submit-button",
   label: "Save changes",
+  type: "submit",
+};
+
+const contactInfoSection: ElementSection = {
+  elementType: "section",
+  title: "Contact Info",
+  className: "!mb-xxxlarge",
+  children: [
+    {
+      elementType: "row",
+      children: [requiredPhoneInput, optionalPhoneInput],
+    },
+  ],
+};
+
+const userDetailsSection: ElementSection = {
+  elementType: "section",
+  title: "User details",
+  children: [
+    {
+      elementType: "row",
+      children: [firstNameInput, lastNameInput],
+    },
+    emailInput,
+  ],
+};
+
+const addressSection: ElementSection = {
+  elementType: "section",
+  title: "Address",
+  children: [
+    {
+      elementType: "row",
+      children: [countryInput, stateInput],
+    },
+    {
+      elementType: "row",
+      children: [addressLineOneInput, addressLineTwoInput],
+    },
+    {
+      elementType: "row",
+      children: [cityInput, intersectionInput],
+    },
+    zipCodeInput,
+  ],
 };
 
 export const internalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
   children: [
-    {
-      elementType: "section",
-      title: "Contact Info",
-      className: "!mb-xxxlarge",
-      children: [
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "contact",
-              ...requiredPhoneInput,
-            },
-            {
-              elementType: "input",
-              type: "contact",
-              ...optionalPhoneInput,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      elementType: "section",
-      title: "User details",
-      children: [
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...firstNameInput,
-            },
-            {
-              elementType: "input",
-              type: "text",
-              ...lastNameInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...emailInput,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      elementType: "section",
-      title: "Address",
-      children: [
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "select",
-              options: "{{countryOptions|string[]}}",
-              optionsType: "dynamic",
-              ...countryInput,
-            },
-            {
-              elementType: "input",
-              options: "{{stateOptions|string[]}}",
-              optionsType: "dynamic",
-              type: "select",
-              ...stateInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...addressLineOneInput,
-            },
-            {
-              elementType: "input",
-              type: "text",
-              ...addressLineTwoInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...cityInput,
-            },
-            {
-              elementType: "input",
-              type: "text",
-              ...intersectionInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          className: "w-1/2",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...zipCodeInput,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      className: "!mt-xxlarge",
-      elementType: "row",
-      children: [
-        {
-          elementType: "button",
-          type: "submit",
-          ...submit,
-        },
-      ],
-    },
+    contactInfoSection,
+    userDetailsSection,
+    addressSection,
+    submitButton,
   ],
   version: 0,
 };
@@ -223,125 +183,9 @@ export const internalAccountDetailsFormSchema: FormSchema = {
 export const externalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
   children: [
-    {
-      elementType: "section",
-      title: "Contact Info",
-      className: "!mb-xxxlarge",
-      children: [
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "contact",
-              ...requiredPhoneInput,
-            },
-            {
-              elementType: "input",
-              type: "contact",
-              ...optionalPhoneInput,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      elementType: "section",
-      title: "User details",
-      children: [
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...firstNameInput,
-            },
-            {
-              elementType: "input",
-              type: "text",
-              ...lastNameInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...emailInput,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      elementType: "section",
-      title: "Address",
-      children: [
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "select",
-              options: "{{countryOptions|string[]}}",
-              optionsType: "dynamic",
-              ...countryInput,
-            },
-            {
-              elementType: "input",
-              options: "{{stateOptions|string[]}}",
-              optionsType: "dynamic",
-              type: "select",
-              ...stateInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...addressLineOneInput,
-            },
-            {
-              elementType: "input",
-              type: "text",
-              ...addressLineTwoInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...cityInput,
-            },
-            {
-              elementType: "input",
-              type: "text",
-              ...intersectionInput,
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          className: "w-1/2",
-          children: [
-            {
-              elementType: "input",
-              type: "text",
-              ...zipCodeInput,
-            },
-          ],
-        },
-      ],
-    },
+    contactInfoSection,
+    userDetailsSection,
+    addressSection,
     {
       elementType: "section",
       description:
@@ -372,17 +216,7 @@ export const externalAccountDetailsFormSchema: FormSchema = {
         },
       ],
     },
-    {
-      className: "!mt-xxlarge",
-      elementType: "row",
-      children: [
-        {
-          elementType: "button",
-          type: "submit",
-          ...submit,
-        },
-      ],
-    },
+    submitButton,
   ],
   version: 0,
 };
@@ -402,14 +236,10 @@ export const emergencyContactFormSchema: FormSchema = {
           elementType: "row",
           children: [
             {
-              elementType: "input",
-              type: "text",
               ...firstNameInput,
               id: "contact-first-name",
             },
             {
-              elementType: "input",
-              type: "text",
               ...lastNameInput,
               id: "contact-last-name",
             },
@@ -419,8 +249,6 @@ export const emergencyContactFormSchema: FormSchema = {
           elementType: "row",
           children: [
             {
-              elementType: "input",
-              type: "text",
               ...emailInput,
               id: "contact-email-address",
             },
@@ -436,17 +264,7 @@ export const emergencyContactFormSchema: FormSchema = {
         },
       ],
     },
-    {
-      className: "!mt-xxlarge",
-      elementType: "row",
-      children: [
-        {
-          elementType: "button",
-          type: "submit",
-          ...submit,
-        },
-      ],
-    },
+    submitButton,
   ],
   version: 0,
 };

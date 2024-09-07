@@ -143,7 +143,7 @@ export type ElementInputText = InputCommon & {
 export type ElementInputPhone = InputCommon & {
   defaultType?: string;
   disabledType?: ConditionExpression;
-  hideType?: boolean;
+  hideType?: ConditionExpression;
   onChange?: (newValue: string) => void;
   type: "phone";
   value?: string;
