@@ -14,7 +14,7 @@ export const AccountDetailsIndex = () => {
     : internalAccountDetailsFormSchema;
 
   return (
-    <div className="m-auto grid max-w-[800px] gap-xxxlarge">
+    <div className="grid gap-xxxlarge pt-xlarge" role="region">
       <Card padding="xlarge">
         <DisplayForm
           onChange={(props) => {
