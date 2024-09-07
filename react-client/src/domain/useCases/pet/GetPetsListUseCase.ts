@@ -40,13 +40,12 @@ function convertToPetModelList(data: unknown): PetModel[] {
     Name: z.string(),
   });
 
-  const parsePetData = (data: unknown) => {
-    try {
-      return serverResponseSchema.parse(data);
-    } catch (error) {
-      console.error("Error parsing pet data", { data, error });
-      return null;
-    }
+  const parsePetData = (petData: unknown) => {
+    const { data, error, success } = serverResponseSchema.safeParse(petData);
+    if (success) return data;
+
+    console.error("Error parsing pet data", { petData, error });
+    return null;
   };
 
   const list: PetModel[] = [];
