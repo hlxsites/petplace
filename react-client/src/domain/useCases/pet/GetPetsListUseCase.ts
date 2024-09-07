@@ -2,7 +2,7 @@ import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetModel } from "../../models/pet/PetModel";
 import { GetPetsListRepository } from "../../repository/pet/GetPetsListRepository";
-import { PetPlaceHttpClientUseCase } from "../petPlaceHttpClientUseCase";
+import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase2";
 
 export class GetPetsListUseCase implements GetPetsListRepository {
   private httpClient: HttpClientRepository;
