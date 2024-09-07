@@ -92,6 +92,7 @@ export type ElementHtml = Omit<ElementCommon, "id"> & {
 export type ElementButton = ElementCommon & {
   className?: string;
   disabledCondition?: ConditionExpression;
+  enabledCondition?: ConditionExpression;
   elementType: "button";
   id: string;
   label: string;

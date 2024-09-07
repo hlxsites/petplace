@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
-import { getPetsList, PetInfo } from "~/mocks/MockRestApiServer";
+import { PetModel } from "~/domain/models/pet/PetModel";
+import { getPetsList } from "~/mocks/MockRestApiServer";
 import { LoaderData } from "~/types/LoaderData";
 
 export const loader = (() => {
@@ -11,7 +12,7 @@ export const loader = (() => {
 
 export const useLostPetIndexViewModel = () => {
   const { pets } = useLoaderData() as LoaderData<typeof loader>;
-  const [selectedPet, setSelectedPet] = useState<PetInfo | null>(null);
+  const [selectedPet, setSelectedPet] = useState<PetModel | null>(null);
 
   const onSelectPet = (petName: string) => {
     const pet = pets.find((pet) => pet.name === petName);

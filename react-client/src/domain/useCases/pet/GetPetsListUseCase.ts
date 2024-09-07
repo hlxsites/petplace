@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
-
+import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetModel } from "../../models/pet/PetModel";
 import { GetPetsListRepository } from "../../repository/pet/GetPetsListRepository";
-import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
+import { PetPlaceHttpClientUseCase } from "../petPlaceHttpClientUseCase";
 
 export class GetPetsListUseCase implements GetPetsListRepository {
   private httpClient: HttpClientRepository;
@@ -32,12 +31,36 @@ export class GetPetsListUseCase implements GetPetsListRepository {
 
 function convertToPetModelList(data: unknown): PetModel[] {
   // Data should be an array of pets
-  if (!data || !(Array.isArray(data) && data.length)) return [];
+  if (!data || !Array.isArray(data)) return [];
 
-  return data.map((pet) => ({
-    id: pet.Id,
-    isProtected: !!pet.MembershipStatus,
-    microchip: pet.Microchip,
-    name: pet.Name,
-  }));
+  const serverResponseSchema = z.object({
+    Id: z.string(),
+    MembershipStatus: z.string().nullish(),
+    Microchip: z.string().nullish(),
+    Name: z.string(),
+  });
+
+  const parsePetData = (petData: unknown) => {
+    const { data, error, success } = serverResponseSchema.safeParse(petData);
+    if (success) return data;
+
+    console.error("Error parsing pet data", { petData, error });
+    return null;
+  };
+
+  const list: PetModel[] = [];
+
+  data.forEach((petData) => {
+    const pet = parsePetData(petData);
+    if (!pet) return;
+
+    list.push({
+      id: pet.Id,
+      isProtected: !!pet.MembershipStatus,
+      microchip: pet.Microchip,
+      name: pet.Name,
+    });
+  });
+
+  return list;
 }

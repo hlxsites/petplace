@@ -12,15 +12,11 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
   }
 
   async get(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
-    console.log("###path", path);
-    console.log("###options", options);
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "GET",
         headers: options.headers,
       });
-
-      console.log("### result", result);
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const data = await result.json();

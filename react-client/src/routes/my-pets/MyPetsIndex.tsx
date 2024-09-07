@@ -10,6 +10,7 @@ import {
 } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
+import { IS_DEV_ENV } from "~/util/envUtil";
 import { AppRoutePaths } from "../AppRoutePaths";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
@@ -70,13 +71,15 @@ export const MyPetsIndex = () => {
         {renderReportLostOrFoundButton({
           className: "hidden md:flex",
         })}
-        <LinkButton
-          iconLeft="add"
-          to={AppRoutePaths.addNewPet}
-          variant="primary"
-        >
-          Add a new pet
-        </LinkButton>
+        {IS_DEV_ENV && (
+          <LinkButton
+            iconLeft="add"
+            to={AppRoutePaths.addNewPet}
+            variant="primary"
+          >
+            Add a new pet
+          </LinkButton>
+        )}
       </div>
     );
   }
