@@ -5,15 +5,24 @@ import { SwitchVariant } from "../../switch/Switch";
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
 
+export type InputValue =
+  | string
+  | number
+  | Date
+  | boolean
+  | string[]
+  | FormValues[];
+
 export type FormVariableValues = Record<string, InputValue>;
 export type FormValues = Record<string, InputValue>;
-export type ExtendedFormValues = {
-  [key: string]: InputValue | ExtendedFormValues[];
-};
 
-export type ElementType = "button" | "html" | "input" | "row" | "section";
-
-export type InputValue = string | number | Date | boolean | string[];
+export type ElementType =
+  | "button"
+  | "html"
+  | "input"
+  | "repeater"
+  | "row"
+  | "section";
 
 type ConditionCriteriaCommon = {
   inputId: string;
@@ -67,27 +76,39 @@ export type InputType =
   | "checkboxGroup"
   | "radio";
 
+export type RepeaterMetadata = {
+  index: number;
+};
+
 type ElementCommon = {
+  className?: string;
   elementType: ElementType;
   id?: string;
   shouldDisplay?: ConditionExpression;
+  repeaterMetadata?: RepeaterMetadata;
 };
 
 export type ElementSection = ElementCommon & {
   children: ElementUnion[];
-  className?: string;
   description?: string;
   elementType: "section";
-  isRepeatable?: boolean;
-  minRepeat?: number;
-  maxRepeat?: number;
-  repeatingTitle?: string;
   title?: string;
+};
+
+export type ElementRepeater = Omit<ElementCommon, "id"> & {
+  children: ElementUnion[];
+  id: string;
+  elementType: "repeater";
+  labels?: {
+    add?: string;
+    remove?: string;
+  };
+  maxRepeat?: number;
+  minRepeat?: number;
 };
 
 export type ElementRow = ElementCommon & {
   children: ElementUnion[];
-  className?: string;
   elementType: "row";
 };
 
@@ -97,7 +118,6 @@ export type ElementHtml = Omit<ElementCommon, "id"> & {
 };
 
 export type ElementButton = ElementCommon & {
-  className?: string;
   disabledCondition?: ConditionExpression;
   enabledCondition?: ConditionExpression;
   elementType: "button";
@@ -109,7 +129,6 @@ export type ElementButton = ElementCommon & {
 
 export type InputCommon = ElementCommon & {
   autoFocus?: boolean;
-  className?: string;
   description?: string;
   disabledCondition?: ConditionExpression;
   elementType: "input";
@@ -238,6 +257,7 @@ export type InputsUnion =
 export type ElementUnion =
   | ElementButton
   | ElementHtml
+  | ElementRepeater
   | ElementRow
   | ElementSection
   | InputsUnion;

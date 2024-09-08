@@ -227,38 +227,52 @@ export const emergencyContactFormSchema: FormSchema = {
     {
       elementType: "section",
       title: "Emergency contact info",
-      repeatingTitle: "Emergency contact",
-      maxRepeat: 2,
-      isRepeatable: true,
-      id: "emergency-contact",
       children: [
         {
-          elementType: "row",
+          elementType: "repeater",
+          id: "emergency-contact",
+          maxRepeat: 2,
+          minRepeat: 1,
+          labels: {
+            add: "Add emergency contact",
+            remove: "Remove emergency contact",
+          },
           children: [
             {
-              ...firstNameInput,
-              id: "contact-first-name",
-            },
-            {
-              ...lastNameInput,
-              id: "contact-last-name",
-            },
-          ],
-        },
-        {
-          elementType: "row",
-          children: [
-            {
-              ...emailInput,
-              id: "contact-email-address",
-            },
-            {
-              elementType: "input",
-              hideType: true,
-              id: "contact-phone",
-              label: "Phone Number",
-              requiredCondition: true,
-              type: "phone",
+              elementType: "section",
+              title: "Emergency contact {{index}}",
+              children: [
+                {
+                  elementType: "row",
+                  children: [
+                    {
+                      ...firstNameInput,
+                      id: "contact-first-name",
+                    },
+                    {
+                      ...lastNameInput,
+                      id: "contact-last-name",
+                    },
+                  ],
+                },
+                {
+                  elementType: "row",
+                  children: [
+                    {
+                      ...emailInput,
+                      id: "contact-email-address",
+                    },
+                    {
+                      elementType: "input",
+                      hideType: true,
+                      id: "contact-phone",
+                      label: "Phone Number",
+                      requiredCondition: true,
+                      type: "phone",
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

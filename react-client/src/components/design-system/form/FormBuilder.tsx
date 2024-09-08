@@ -23,17 +23,20 @@ import {
   type ConditionExpression,
   type ElementSection,
   type ElementUnion,
-  type ExtendedFormValues,
   type FormSchema,
   type FormValues,
   type InputsUnion,
 } from "./types/formTypes";
+import {
+  idWithRepeaterMetadata,
+  textWithRepeaterMetadata,
+} from "./utils/formRepeaterUtils";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
 type OnSubmitProps = {
   event: FormEvent<HTMLFormElement>;
-  values: ExtendedFormValues;
+  values: FormValues;
 };
 
 type RenderedInput = Omit<
@@ -46,9 +49,9 @@ type RenderedInput = Omit<
 
 export type FormBuilderProps = {
   schema: FormSchema;
-  onChange?: (values: ExtendedFormValues) => void;
+  onChange?: (values: FormValues) => void;
   onSubmit?: (props: OnSubmitProps) => void;
-  values?: ExtendedFormValues;
+  values?: FormValues;
 };
 
 export const FormBuilder = ({
@@ -57,11 +60,9 @@ export const FormBuilder = ({
   onSubmit,
   values: defaultValues,
 }: FormBuilderProps) => {
-  const defaultValuesRef = useRef<ExtendedFormValues>(defaultValues || {});
+  const defaultValuesRef = useRef<FormValues>(defaultValues || {});
 
-  const [values, setValues] = useState<ExtendedFormValues>(
-    defaultValuesRef.current
-  );
+  const [values, setValues] = useState<FormValues>(defaultValuesRef.current);
   const [isFormChanged, setIsFormChanged] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
 
@@ -139,6 +140,18 @@ export const FormBuilder = ({
 
     const elementKey = `${elementType}-${index}`;
     switch (elementType) {
+      case "repeater":
+        return (
+          <FormRepeater
+            key={elementKey}
+            {...element}
+            onChange={(newValues) => {
+              setValues((prev) => ({ ...prev, [element.id]: newValues }));
+            }}
+            renderElement={renderElement}
+            values={values}
+          />
+        );
       case "section":
         return <Fragment key={elementKey}>{renderSection(element)}</Fragment>;
       case "html":
@@ -153,7 +166,12 @@ export const FormBuilder = ({
             key={elementKey}
             id={element.id}
           >
-            {element.children.map(renderElement)}
+            {element.children.map((e, i) =>
+              renderElement(
+                { ...e, repeaterMetadata: element.repeaterMetadata },
+                i
+              )
+            )}
           </div>
         );
       default:
@@ -166,20 +184,25 @@ export const FormBuilder = ({
   }
 
   function renderInput({
+    id: inputId,
     disabledCondition,
+    label: inputLabel,
     requiredCondition,
-    shouldDisplay,
+    repeaterMetadata,
     ...inputProps
   }: InputsUnion): ReactNode {
-    if (!matchConditionExpression(shouldDisplay ?? true)) return null;
-
     const disabled = matchConditionExpression(disabledCondition ?? false);
     const required = matchConditionExpression(requiredCondition ?? false);
 
-    const { id, type } = inputProps;
+    const { type } = inputProps;
+
+    const id = idWithRepeaterMetadata(inputId, repeaterMetadata);
+    const label = textWithRepeaterMetadata(inputLabel, repeaterMetadata);
 
     const commonProps = {
+      id,
       disabled,
+      label,
       required,
       ...inputProps,
     };
@@ -296,56 +319,33 @@ export const FormBuilder = ({
     return null;
   }
 
-  function renderSection(section: ElementSection) {
-    const { id, isRepeatable, shouldDisplay } = section;
-
-    if (!matchConditionExpression(shouldDisplay || true)) return;
-    if (!isRepeatable) return renderCommonSection(section);
-
-    if (isRepeatable && id) {
-      const repeaterValues = Array.isArray(values[id])
-        ? values[id]
-        : [defaultValues || {}];
+  function renderSection({
+    children,
+    className,
+    description,
+    id,
+    repeaterMetadata,
+    title,
+  }: ElementSection) {
+    const titleElement = (() => {
+      if (!title) return null;
 
       return (
-        <FormRepeater
-          repeaterSchema={section}
-          defaultItemValues={defaultValues || {}}
-          onChange={(newSectionValues) =>
-            handleRepeatableChange(id, newSectionValues)
-          }
-          renderElement={renderElement}
-          values={repeaterValues as FormValues[]}
-        />
+        <Title level="h3" isResponsive>
+          {textWithRepeaterMetadata(title, repeaterMetadata)}
+        </Title>
       );
-    }
+    })();
 
-    throw Error("Repeatable sections must have an id");
-  }
+    const descriptionElement = (() => {
+      if (!description) return null;
 
-  function handleRepeatableChange(
-    sectionId: string,
-    newSectionValues: ExtendedFormValues[]
-  ) {
-    setValues((prevValues: ExtendedFormValues) => {
-      const updatedValues: ExtendedFormValues = {
-        ...prevValues,
-        [sectionId]: newSectionValues,
-      };
-      return updatedValues;
-    });
-
-    if (onChange) {
-      const updatedValues: ExtendedFormValues = {
-        ...values,
-        [sectionId]: newSectionValues,
-      };
-      onChange(updatedValues);
-    }
-  }
-
-  function renderCommonSection(section: ElementSection) {
-    const { children, className, description, id, title } = section;
+      return (
+        <p className="text-lg text-muted-foreground">
+          {textWithRepeaterMetadata(description, repeaterMetadata)}
+        </p>
+      );
+    })();
 
     return (
       <section
@@ -353,20 +353,14 @@ export const FormBuilder = ({
         className={classNames("my-small", className)}
         id={id}
       >
-        {!!title && (
-          <Title level="h3" isResponsive>
-            {title}
-          </Title>
-        )}
-        {!!description && (
-          <p className="text-lg text-muted-foreground">{description}</p>
-        )}
+        {titleElement}
+        {descriptionElement}
         <div
           className={classNames("space-y-base", {
             "mt-base": !!title || !!description,
           })}
         >
-          {children.map(renderElement)}
+          {children.map((e, i) => renderElement({ ...e, repeaterMetadata }, i))}
         </div>
       </section>
     );
