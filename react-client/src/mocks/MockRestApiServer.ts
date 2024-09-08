@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
-import { MissingStatus, PetModel } from "~/domain/models/pet/PetModel";
+import { MissingStatus, PetModel, LostPetUpdate } from "~/domain/models/pet/PetModel";
 import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 
 const PET_SERVICES: Record<string, PetServiceTypes> = {
@@ -74,13 +74,31 @@ const PET_RECORDS = {
   },
 };
 
-export type LostPetUpdate = {
-  date: number;
-  update: number;
-  status: MissingStatus;
-  id: number;
-  note?: string;
+export type PetInfo = {
+  age?: string | undefined;
+  breed?: string;
+  dateOfBirth?: string;
+  id: string;
+  img?: string;
+  isProtected?: boolean;
+  microchipNumber?: number;
+  mixedBreed?: string;
+  name: string;
+  onboardCompleted?: boolean;
+  sex?: string;
+  spayedNeutered?: boolean;
+  species?: string;
+  documentationStatus?: DocumentationStatus;
+  missingStatus?: MissingStatus;
+  lostPetHistory?: LostPetUpdate[];
 };
+
+export type DocumentationStatus =
+  | "none"
+  | "sent"
+  | "approved"
+  | "failed"
+  | "inProgress";
 
 export type Colors = "black";
 export type Sizes = "L" | "M/S" | "One Size";
@@ -123,11 +141,31 @@ const PETS_LIST: PetModel[] = [
         note: "Lost report from submitted",
       },
       {
-        date: 1722430534,
+        date: 628021800000,
         update: 1722460747,
         status: "found",
         id: 2234567,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
     ],
   },
@@ -159,6 +197,26 @@ const PETS_LIST: PetModel[] = [
         status: "found",
         id: 2637427,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
       {
         date: 1722433434,
@@ -173,6 +231,7 @@ const PETS_LIST: PetModel[] = [
         status: "found",
         id: 4637427,
         note: "",
+        foundedBy: null,
       },
       {
         date: 1722433434,
@@ -431,4 +490,20 @@ export const getProductsList = () => {
 
 export const getProductById = (id: string | null) => {
   return DETAILED_CART_ITEMS.find((pet) => pet.id === id);
+};
+
+export const getLostPetsHistory = () => {
+  return PETS_LIST.filter((pet) =>
+    pet.lostPetHistory?.some((history) => history.foundedBy)
+  ).map((pet) => {
+    const petName = pet.name;
+    const petHistory = pet.lostPetHistory?.filter(
+      (history) => history.foundedBy
+    );
+    return { petName, petHistory };
+  });
+};
+
+export const getAuthLogin = () => {
+  return true;
 };

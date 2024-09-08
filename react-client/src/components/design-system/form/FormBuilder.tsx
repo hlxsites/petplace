@@ -9,9 +9,12 @@ import {
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
+import { Text } from "../text/Text";
 import { Title } from "../text/Title";
+import { FormRepeater } from "./FormRepeater";
 import Input from "./Input";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
+import { InputPhone } from "./InputPhone";
 import { InputRadio } from "./InputRadio";
 import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
@@ -25,7 +28,10 @@ import {
   type FormValues,
   type InputsUnion,
 } from "./types/formTypes";
-import { Text } from "../text/Text";
+import {
+  idWithRepeaterMetadata,
+  textWithRepeaterMetadata,
+} from "./utils/formRepeaterUtils";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -57,7 +63,8 @@ export const FormBuilder = ({
 }: FormBuilderProps) => {
   const defaultValuesRef = useRef<FormValues>(defaultValues || {});
 
-  const [values, setValues] = useState(defaultValuesRef.current);
+  const [values, setValues] = useState<FormValues>(defaultValuesRef.current);
+  const [isFormChanged, setIsFormChanged] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
@@ -67,8 +74,13 @@ export const FormBuilder = ({
   const hasValidationError = renderedFields.some((f) => !!f.errorMessage);
 
   useDeepCompareEffect(() => {
+    const formChanged = !isEqual(defaultValuesRef.current, values);
+
+    // Set form as changed if values differ from the default values
+    setIsFormChanged(formChanged);
+
     // Notify onChange callback only if the values have changed
-    if (!!onChange && !isEqual(defaultValuesRef.current, values)) {
+    if (!!onChange && formChanged) {
       onChange(values);
     }
   }, [onChange, values]);
@@ -107,9 +119,17 @@ export const FormBuilder = ({
     if (elementType === "input") {
       return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
     } else if (elementType === "button") {
+      const disabled = (() => {
+        if (matchConditionExpression(element.enabledCondition ?? false))
+          return !isFormChanged;
+
+        return matchConditionExpression(element.disabledCondition ?? false);
+      })();
+
       return (
         <Button
           className={element.className}
+          disabled={disabled}
           key={element.id}
           type={element.type}
           variant={element.type === "submit" ? "primary" : "secondary"}
@@ -121,6 +141,18 @@ export const FormBuilder = ({
 
     const elementKey = `${elementType}-${index}`;
     switch (elementType) {
+      case "repeater":
+        return (
+          <FormRepeater
+            key={elementKey}
+            {...element}
+            onChange={(newValues) => {
+              setValues((prev) => ({ ...prev, [element.id]: newValues }));
+            }}
+            renderElement={renderElement}
+            values={values}
+          />
+        );
       case "section":
         return <Fragment key={elementKey}>{renderSection(element)}</Fragment>;
       case "html":
@@ -135,7 +167,12 @@ export const FormBuilder = ({
             key={elementKey}
             id={element.id}
           >
-            {element.children.map(renderElement)}
+            {element.children.map((e, i) =>
+              renderElement(
+                { ...e, repeaterMetadata: element.repeaterMetadata },
+                i
+              )
+            )}
           </div>
         );
       default:
@@ -148,20 +185,25 @@ export const FormBuilder = ({
   }
 
   function renderInput({
+    id: inputId,
     disabledCondition,
+    label: inputLabel,
     requiredCondition,
-    shouldDisplay,
+    repeaterMetadata,
     ...inputProps
   }: InputsUnion): ReactNode {
-    if (!matchConditionExpression(shouldDisplay ?? true)) return null;
-
     const disabled = matchConditionExpression(disabledCondition ?? false);
     const required = matchConditionExpression(requiredCondition ?? false);
 
-    const { id, type } = inputProps;
+    const { type } = inputProps;
+
+    const id = idWithRepeaterMetadata(inputId, repeaterMetadata);
+    const label = textWithRepeaterMetadata(inputLabel, repeaterMetadata);
 
     const commonProps = {
+      id,
       disabled,
+      label,
       required,
       ...inputProps,
     };
@@ -239,6 +281,22 @@ export const FormBuilder = ({
       );
     }
 
+    if (type === "phone") {
+      return (
+        <InputPhone
+          {...commonProps}
+          disabledType={matchConditionExpression(
+            inputProps.disabledType ?? false
+          )}
+          hideType={matchConditionExpression(inputProps.hideType ?? false)}
+          onChange={(newValue) => {
+            setValues((prev) => ({ ...prev, [id]: newValue }));
+          }}
+          value={(values?.[id] as string) || ""}
+        />
+      );
+    }
+
     if (
       type === "email" ||
       type === "text" ||
@@ -267,27 +325,45 @@ export const FormBuilder = ({
     className,
     description,
     id,
-    shouldDisplay,
+    repeaterMetadata,
     title,
   }: ElementSection) {
-    if (!matchConditionExpression(shouldDisplay || true)) return;
+    const titleElement = (() => {
+      if (title.hideLabel) return null;
+
+      const { label, level, size, ...rest } = title;
+      return (
+        <Title level={level ?? "h2"} size={size ?? "18"} {...rest}>
+          {textWithRepeaterMetadata(label, repeaterMetadata)}
+        </Title>
+      );
+    })();
+
+    const descriptionElement = (() => {
+      if (!description) return null;
+
+      const { label, ...rest } = description;
+      return (
+        <Text {...rest}>
+          {textWithRepeaterMetadata(label, repeaterMetadata)}
+        </Text>
+      );
+    })();
 
     return (
-      <section className={classNames("my-small", className)} id={id}>
-        {!!title && (
-          <Title level={title.titleProps?.level ?? "h3"} {...title.titleProps}>
-            {title.label}
-          </Title>
-        )}
-        {!!description && (
-          <Text {...description.textProps}>{description.label}</Text>
-        )}
+      <section
+        aria-label={title.hideLabel ? title.label : undefined}
+        className={classNames("my-small", className)}
+        id={id}
+      >
+        {titleElement}
+        {descriptionElement}
         <div
           className={classNames("space-y-base", {
             "mt-base": !!title || !!description,
           })}
         >
-          {children.map(renderElement)}
+          {children.map((e, i) => renderElement({ ...e, repeaterMetadata }, i))}
         </div>
       </section>
     );

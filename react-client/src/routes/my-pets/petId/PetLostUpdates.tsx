@@ -11,8 +11,11 @@ import {
 } from "~/components/design-system";
 import { TableColumn } from "~/components/design-system/table/TableTypes";
 import { TextProps } from "~/components/design-system/types/TextTypes";
-import { MissingStatus, PetModel } from "~/domain/models/pet/PetModel";
-import { LostPetUpdate } from "~/mocks/MockRestApiServer";
+import {
+  LostPetUpdate,
+  MissingStatus,
+  PetModel,
+} from "~/domain/models/pet/PetModel";
 import { classNames } from "~/util/styleUtil";
 
 const columns: TableColumn[] = [

@@ -1,9 +1,8 @@
 import { Button, Text } from "~/components/design-system";
 
-type ViewNotificationsProps = {
-  dateFoundOrLost: string;
-  foundedBy: string;
-  notificationCategory: "LostPet" | "FoundPet";
+export type ViewNotificationsProps = {
+  dateFoundOrLost: number;
+  foundedBy?: string;
   onClick?: () => void;
   petName: string;
 };
@@ -11,19 +10,18 @@ type ViewNotificationsProps = {
 export const ViewNotifications = ({
   dateFoundOrLost,
   foundedBy,
-  notificationCategory,
   onClick,
   petName,
 }: ViewNotificationsProps) => {
+  const date = new Date(dateFoundOrLost).toISOString().split("T")[0];
+
   return (
     <div className="grid lg:flex lg:justify-between">
       <div className="grid gap-xsmall">
         <Text fontFamily="raleway" fontWeight="bold" size="18" isResponsive>
           Pet {petName} is found by {foundedBy}
         </Text>
-        <Text size="14">
-          {dateFoundOrLost} | {notificationCategory}
-        </Text>
+        <Text size="14">{date}</Text>
       </div>
 
       <div className="flex justify-end pt-medium lg:pt-0">
