@@ -5,7 +5,7 @@ import { MyAccountInfoTabs } from "./components/MyAccountInfoTabs";
 export const AccountIndex = () => {
   return (
     <Layout>
-      <Header pageTitle="My Account" />
+      <Header pageTitle="My Account" titleProps={{ level: "h1", size: "32" }} />
       <MyAccountInfoTabs />
     </Layout>
   );

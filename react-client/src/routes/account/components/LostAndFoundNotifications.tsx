@@ -29,7 +29,9 @@ export const LostAndFoundNotifications = ({
     <Card>
       <div className="p-xxlarge">
         <div className="flex items-center justify-between pb-large">
-          <Title level="h3">Lost & Found notifications</Title>
+          <Title level="h2" size="24">
+            Lost & Found notifications
+          </Title>
           <div className="flex gap-large">
             {checkboxesFilters.map(({ label }) => (
               <Checkbox id={label} key={label} label={label} variant="purple" />

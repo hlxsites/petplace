@@ -21,16 +21,16 @@ describe("NotificationsTabContent", () => {
   });
 
   it("should render the 'Offers and Resources' section", () => {
-    const { container } = getRenderer();
+    getRenderer();
     expect(
-      container.querySelector("section[aria-label='Offers and Resources']")
+      getByRole("heading", { name: /Offers and Resources/i })
     ).toBeInTheDocument();
   });
 
   it("should render the 'Notifications' section", () => {
-    const { container } = getRenderer();
+    getRenderer();
     expect(
-      container.querySelector("section[aria-label='Notifications']")
+      getByRole("heading", { name: /Notifications/i })
     ).toBeInTheDocument();
   });
 

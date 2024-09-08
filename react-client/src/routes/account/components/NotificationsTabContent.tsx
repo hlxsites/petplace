@@ -16,7 +16,9 @@ export const NotificationsTabContent = ({
 }: NotificationsTabProps) => {
   return (
     <div className="mt-xxxlarge grid gap-large">
-      <Title level="h3">Communication Preferences</Title>
+      <Title level="h2" size="24">
+        Communication Preferences
+      </Title>
       <Card role="region">
         <div className="p-xxlarge">
           <DisplayForm
