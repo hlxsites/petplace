@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { TitleProps } from "../..";
 import { CheckboxVariant } from "../../checkbox/Checkbox";
 import { SwitchVariant } from "../../switch/Switch";
+import { TitleProps } from "../../text/Title";
 import { TextProps } from "../../types/TextTypes";
 
 type VariableType = "string" | "number" | "date" | "string[]";
