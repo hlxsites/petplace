@@ -127,7 +127,10 @@ const submitButton: ElementButton = {
 
 const contactInfoSection: ElementSection = {
   elementType: "section",
-  title: "Contact Info",
+  title: {
+    label: "Contact Info",
+    size: "24",
+  },
   className: "!mb-xxxlarge",
   children: [
     {
@@ -139,7 +142,10 @@ const contactInfoSection: ElementSection = {
 
 const userDetailsSection: ElementSection = {
   elementType: "section",
-  title: "User details",
+  title: {
+    label: "User details",
+    level: "h3",
+  },
   children: [
     {
       elementType: "row",
@@ -151,7 +157,10 @@ const userDetailsSection: ElementSection = {
 
 const addressSection: ElementSection = {
   elementType: "section",
-  title: "Address",
+  title: {
+    label: "Address",
+    level: "h3",
+  },
   children: [
     {
       elementType: "row",
@@ -188,9 +197,15 @@ export const externalAccountDetailsFormSchema: FormSchema = {
     addressSection,
     {
       elementType: "section",
-      description:
-        "You understand and consent to the collection, storage and use of your personal data for the purposes outlined in the 24Petwatch Privacy Policy. Your personal data privacy rights are outlined therein.",
-      title: "User Agreements",
+      description: {
+        label:
+          "You understand and consent to the collection, storage and use of your personal data for the purposes outlined in the 24Petwatch Privacy Policy. Your personal data privacy rights are outlined therein.",
+        size: "16",
+      },
+      title: {
+        label: "User Agreements",
+        size: "24",
+      },
       children: [
         {
           elementType: "input",
@@ -226,7 +241,10 @@ export const emergencyContactFormSchema: FormSchema = {
   children: [
     {
       elementType: "section",
-      title: "Emergency contact info",
+      title: {
+        label: "Emergency contact info",
+        size: "24",
+      },
       children: [
         {
           elementType: "repeater",
@@ -240,7 +258,10 @@ export const emergencyContactFormSchema: FormSchema = {
           children: [
             {
               elementType: "section",
-              title: "Emergency contact {{index}}",
+              title: {
+                label: "Emergency contact {{index}}",
+                level: "h3",
+              },
               children: [
                 {
                   elementType: "row",

@@ -92,14 +92,13 @@ type ElementCommon = {
 
 export type ElementSection = ElementCommon & {
   children: ElementUnion[];
-  description?: {
+  description?: Omit<TextProps, "children"> & {
     label: string;
-    textProps: Omit<TextProps, "children">;
   };
   elementType: "section";
-  title?: {
+  title: Omit<TitleProps, "children"> & {
+    hideLabel?: boolean;
     label: string;
-    titleProps?: Omit<TitleProps, "children">;
   };
 };
 

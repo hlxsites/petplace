@@ -16,9 +16,7 @@ export const LostPetIndex = () => {
         description: {
           label:
             "We're sorry to hear that, please confirm the information below:",
-          textProps: {
-            size: "16",
-          },
+          size: "16",
         },
 
         children: [

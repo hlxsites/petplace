@@ -47,7 +47,11 @@ export const notificationsFormSchema: FormSchema = {
   children: [
     {
       elementType: "section",
-      title: "Offers and Resources",
+      title: {
+        label: "Offers and Resources",
+        level: "h3",
+        size: "24",
+      },
       children: [
         {
           elementType: "row",
@@ -111,7 +115,11 @@ export const notificationsFormSchema: FormSchema = {
     },
     {
       elementType: "section",
-      title: "Notifications",
+      title: {
+        label: "Notifications",
+        level: "h3",
+        size: "24",
+      },
       className: "!mt-xxxlarge",
       children: [
         {
