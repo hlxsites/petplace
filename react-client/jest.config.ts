@@ -13,7 +13,24 @@ const config: Config = {
   testEnvironment: "jsdom",
   testMatch: ["**/tests/*.+(ts|tsx|js)", "**/?(*.)+(test).+(ts|tsx|js)"],
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(ts|tsx)$": [
+      "ts-jest",
+      {
+        diagnostics: {
+          ignoreCodes: [1343],
+        },
+        astTransformers: {
+          before: [
+            {
+              path: "ts-jest-mock-import-meta", // or, alternatively, 'ts-jest-mock-import-meta' directly, without node_modules.
+              options: {
+                metaObjectReplacement: { url: "https://www.url.com" },
+              },
+            },
+          ],
+        },
+      },
+    ],
     "^.+\\.(js|jsx)$": "babel-jest",
     "^.+\\.svg$": "jest-transformer-svg",
   },

@@ -21,7 +21,7 @@ Element.prototype.getBoundingClientRect = jest.fn(() => {
 
 describe("<Select />", () => {
   it.each(["A label", "Another label"])(
-    "should render an input with a label %s",
+    "should render an input with a label %p",
     (expected) => {
       getRenderer({ label: expected, required: true });
       expect(getByRole("combobox", { name: expected })).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe("<Select />", () => {
   });
 
   it.each(["a-id", "another-id"])(
-    "should render an input with id %s-input",
+    "should render an input with id %p-input",
     (id) => {
       getRenderer({ id });
       expect(getByRole("combobox")).toHaveAttribute("id", `${id}-input`);
@@ -56,7 +56,7 @@ describe("<Select />", () => {
   it("should render an input with some classes", () => {
     getRenderer();
     expect(getByRole("combobox")).toHaveClass(
-      "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full rounded-full bg-neutral-white p-base outline-none"
+      "placeholder:text-text-hinted disabled:bg-background-disabled disabled:text-text-disabled h-full w-full bg-neutral-white p-base outline-none"
     );
   });
 
@@ -76,7 +76,7 @@ describe("<Select />", () => {
   );
 
   it.each(["A placeholder", "Another placeholder"])(
-    "should render an input with placeholder %s",
+    "should render an input with placeholder %p",
     (placeholder) => {
       getRenderer({ placeholder });
       expect(getByRole("combobox")).toHaveAttribute("placeholder", placeholder);
@@ -93,10 +93,13 @@ describe("<Select />", () => {
     expect(queryByRole("button", { name: "Clear" })).not.toBeInTheDocument();
   });
 
-  it.each(['Option A', "Option B"])('should render with pre-selected value %p', (expected) => {
-    getRenderer({ options: getOptions(), value: expected });
-    expect(getByRole("combobox")).toHaveValue(expected);
-  });
+  it.each(["Option A", "Option B"])(
+    "should render with pre-selected value %p",
+    (expected) => {
+      getRenderer({ options: getOptions(), value: expected });
+      expect(getByRole("combobox")).toHaveValue(expected);
+    }
+  );
 
   describe("onChange callback", () => {
     it("should call it when an option is selected", async () => {

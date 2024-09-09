@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { LinkIconButton } from "./LinkIconButton";
 import { ComponentProps } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { LinkIconButton } from "./LinkIconButton";
 
 const { getByRole } = screen;
 
@@ -20,13 +20,16 @@ describe("LinkIconButton", () => {
     expect(linkElement).toHaveAttribute("target", target);
   });
 
-  it("should pass buttonProps to IconButton component", () => {
-    const label = "Shield off";
+  it.each(["A label", "Another label"])("should have label %p", (label) => {
+    getRenderer({ label });
 
+    expect(getByRole("link", { name: label })).toBeInTheDocument();
+  });
+
+  it("should pass buttonProps to IconButton component", () => {
     getRenderer({
       buttonProps: {
         icon: "shieldOff",
-        label,
       },
     });
 
@@ -34,7 +37,6 @@ describe("LinkIconButton", () => {
       "data-file-name",
       "SvgShieldOffIcon"
     );
-    expect(getByRole("button")).toHaveAttribute("aria-label", label);
   });
 
   it("should match snapshot to assure that the component is being rendered correctly", () => {
@@ -47,14 +49,19 @@ describe("LinkIconButton", () => {
 function getRenderer({
   buttonProps = {
     icon: "check",
-    label: "Check button",
   },
+  label = "Check button",
   to = "/test",
   ...rest
 }: Partial<ComponentProps<typeof LinkIconButton>> = {}) {
   return render(
     <Router>
-      <LinkIconButton buttonProps={buttonProps} to={to} {...rest} />
+      <LinkIconButton
+        buttonProps={buttonProps}
+        label={label}
+        to={to}
+        {...rest}
+      />
     </Router>
   );
 }

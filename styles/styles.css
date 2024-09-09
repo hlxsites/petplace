@@ -89,14 +89,18 @@
 
     /* Style from library (https://www.figma.com/design/PF2x6COOknHJpdFOMNw9KE/Style-Library-[PP-Team]?node-id=7-671&t=SixuBfEkq2og7mjp-0) */
 
-    /* colors */
+    /* color tokens */
     --purple-500: #302280;
     --purple-300: #7369ab;
     --purple-100: #f1effc;
     --orange-500: #803522;
     --orange-300-contrast: #c74d2f;
     --orange-300-main: #fa7d59;
+    --orange-200: #fbe5dc;
     --orange-100: #fcf2ef;
+    --background-dark: #3b092c;
+    --background-disabled: #e6e6e6;
+    --border-secondary: #e4e7ec;
     --brand-blue: #4162a0;
     --blue-500: #224680;
     --blue-300: #5273a8;
@@ -128,8 +132,9 @@
     --neutral-50: #fafafc;
     --neutral-white: #fff;
     --text-hinted: #909090;
-    --background-disabled: #e6e6e6;
-    --border-secondary: #e4e7ec;
+    --text-primary-900: #101828;
+    --text-secondary-700: #344054;
+    --text-tertiary-600: #475467;
 
     /* spacing tokens */
     --page: 120px;
@@ -149,8 +154,7 @@
     /* fonts */
     --body-font-family: "Libre Franklin", "Libre Franklin Fallback", sans-serif;
     --heading-font-family: "Raleway", "Raleway Fallback", sans-serif;
-    --fixed-font-family: "Roboto Mono", menlo, consolas, "Liberation Mono",
-        monospace;
+    --fixed-font-family: "Roboto Mono", menlo, consolas, "Liberation Mono", monospace;
 
     /* body sizes */
     --body-font-size-default: 16px;
@@ -186,6 +190,16 @@
         rgba(255, 255, 255, 0%) 100.9%
     );
     /* stylelint-enable */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
 }
 
 @media (min-width: 600px) {

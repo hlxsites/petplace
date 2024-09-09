@@ -1,3 +1,5 @@
+export const isBrowser = typeof window !== "undefined";
+
 export function safeIdFromText(text: string) {
   return text
     .replace(/[\s\t]/g, "-")

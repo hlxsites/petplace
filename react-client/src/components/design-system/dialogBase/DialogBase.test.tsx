@@ -3,6 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { DialogBase } from "./DialogBase";
 
+const { getByText, getByRole, getByTestId, queryByRole } = screen;
+
 jest.mock(
   "focus-trap-react",
   () =>
@@ -10,8 +12,6 @@ jest.mock(
       <div data-testid="FocusTrap">{children}</div>
     )
 );
-
-const { getByText, getByRole, getByTestId } = screen;
 
 describe("DialogBase", () => {
   it("should render the dialogBase", () => {
@@ -51,12 +51,29 @@ describe("DialogBase", () => {
     }
   );
 
-  it("should render icon closeXMark", () => {
+  it("should render close button when onClose callback is provided", () => {
+    getRenderer({ onClose: jest.fn() });
+    expect(getByRole("button", { name: "Close dialog" })).toBeInTheDocument();
+  });
+
+  it("should not render the close button when the onClose callback prop is not provided", () => {
     getRenderer();
+    expect(
+      queryByRole("button", { name: "Close dialog" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("should render icon closeXMark when onClose callback is provided", () => {
+    getRenderer({ onClose: jest.fn() });
     expect(getByRole("dialog").querySelector("svg")).toHaveAttribute(
       "data-file-name",
       "SvgCloseXMarkIcon"
     );
+  });
+
+  it("should not render icon closeXMark when onClose callback is not provided", () => {
+    getRenderer();
+    expect(queryByRole("dialog")?.querySelector("svg")).toBeNull();
   });
 
   it.each(["dialog", "drawer"] as ComponentProps<
@@ -87,6 +104,15 @@ describe("DialogBase", () => {
     await userEvent.click(getByTestId("backdrop"));
     await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
+
+  it("should render the icon when the icon prop is provided", () => {
+    getRenderer({ icon: "alertDiamond" });
+
+    expect(document.querySelector("svg")).toHaveAttribute(
+      "data-file-name",
+      "SvgAlertDiamondIcon"
+    );
+  });
 });
 
 function getRenderer({
@@ -95,8 +121,8 @@ function getRenderer({
   element = "dialog",
   id = "SampleId",
   isOpen = true,
-  onClose = jest.fn(),
   title = "Test title",
+  ...rest
 }: Partial<ComponentProps<typeof DialogBase>> = {}) {
   return render(
     <>
@@ -105,8 +131,8 @@ function getRenderer({
         element={element}
         id={id}
         isOpen={isOpen}
-        onClose={onClose}
         title={title}
+        {...rest}
       >
         {children}
       </DialogBase>

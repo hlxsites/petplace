@@ -1,5 +1,5 @@
 import { FormBuilder, type FormBuilderProps } from "./FormBuilder";
-import { type FormSchema, type InputValue } from "./types/formTypes";
+import { type FormSchema, type FormVariableValues } from "./types/formTypes";
 import { replaceVariablesInSettings } from "./utils/variableUtils";
 
 type DisplayFormProps = Pick<
@@ -7,7 +7,7 @@ type DisplayFormProps = Pick<
   "onChange" | "onSubmit" | "values"
 > & {
   schema: FormSchema;
-  variables?: Record<string, InputValue>;
+  variables?: FormVariableValues;
 };
 
 export const DisplayForm = ({

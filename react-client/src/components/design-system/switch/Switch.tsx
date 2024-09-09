@@ -13,13 +13,17 @@ export const Switch = forwardRef<
   ElementRef<typeof RadixSwitch.Root>,
   SwitchProps
 >(({ className, hideLabel, label, ...props }, ref) => {
-  const isChecked = props.checked;
+  const isChecked = props.checked || props.defaultChecked;
   return (
-    <div className="gap-xsmall flex items-center">
+    <div className="flex items-center gap-xsmall">
       <RadixSwitch.Root
         aria-label={hideLabel ? label : undefined}
         className={classNames(
-          `relative h-6 w-[52px] rounded-[21px] border-[1px] border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none ${isChecked ? "border-none bg-orange-300-contrast focus:bg-orange-300-contrast" : ""}`,
+          "relative h-6 w-[52px] rounded-[21px] border border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none",
+          {
+            "border-none bg-orange-300-contrast focus:bg-orange-300-contrast":
+              isChecked,
+          },
           className
         )}
         ref={ref}

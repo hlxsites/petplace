@@ -2,30 +2,45 @@ import FocusTrap from "focus-trap-react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
-import { classNames } from "~/util/styleUtil";
+import { classNames, resetBodyStyles } from "~/util/styleUtil";
 import { Backdrop } from "../backdrop/Backdrop";
 import { IconButton } from "../button/IconButton";
+import { Icon } from "../icon/Icon";
 import { Title } from "../text/Title";
 import { DialogBaseProps } from "../types/DialogBaseTypes";
 
 export const DialogBase = ({
+  align,
   ariaLabel,
   children,
   className,
   element,
+  icon,
+  iconProps,
   id,
   isOpen,
+  titleLevel,
   onClose,
+  padding = "p-xlarge",
   title,
+  width,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
     onClose,
   });
 
   useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "visible";
+    document.body.style.position = isOpen ? "relative" : "static";
+
+    // Reset body styles when unmounting
+    return resetBodyStyles;
+  }, [isOpen]);
+
+  useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (!isClosing && isOpen && event.key === "Escape") {
-        onCloseWithAnimation();
+        onCloseWithAnimation?.();
       }
     }
 
@@ -40,10 +55,19 @@ export const DialogBase = ({
   const hasTitle = !!title;
   const titleId = hasTitle ? `${id}-title` : undefined;
 
+  const renderChildren = (() => {
+    if (typeof children === "function") {
+      return children({ onCloseWithAnimation: onCloseWithAnimation });
+    }
+    return children;
+  })();
+
   const portalContent = (
     <>
       <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
       <FocusTrap
+        // TODO: disabled by a debt tech problem, see our documentation
+        active={false}
         focusTrapOptions={{
           clickOutsideDeactivates: true,
           returnFocusOnDeactivate: true,
@@ -55,6 +79,11 @@ export const DialogBase = ({
           aria-modal="true"
           className={classNames(
             className?.modal,
+            padding,
+            {
+              "text-center": align === "center",
+              "text-right": align === "right",
+            },
             element === "drawer" && {
               "animate-slideInFromBottom lg:animate-slideInFromRight":
                 !isClosing,
@@ -66,15 +95,19 @@ export const DialogBase = ({
           )}
           id={id}
           role="dialog"
+          style={{ width }}
           tabIndex={-1}
         >
-          <div
-            className={classNames("mb-small flex items-start", {
-              "justify-end": !hasTitle,
-              "justify-between": hasTitle,
-            })}
-          >
-            {title && <Title id={titleId}>{title}</Title>}
+          {!!icon && <Icon display={icon} {...iconProps} />}
+          {title && (
+            <div className="mb-small">
+              <Title id={titleId} level={titleLevel}>
+                {title}
+              </Title>
+            </div>
+          )}
+
+          {!!onClose && (
             <IconButton
               className={className?.closeButton}
               icon="closeXMark"
@@ -83,8 +116,9 @@ export const DialogBase = ({
               onClick={onCloseWithAnimation}
               variant="link"
             />
-          </div>
-          <div className="max-h-full overflow-y-auto">{children}</div>
+          )}
+
+          <div className="h-90vh grid overflow-auto">{renderChildren}</div>
         </div>
       </FocusTrap>
     </>

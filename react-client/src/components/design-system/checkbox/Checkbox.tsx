@@ -21,6 +21,15 @@ export const Checkbox = forwardRef<
   ElementRef<typeof RadixCheckbox.Root>,
   CheckboxProps
 >(({ className, hideLabel, label, ...props }, ref) => {
+  const labelElement = (() => {
+    if (hideLabel) return null;
+    return (
+      <label className="font-franklin text-sm" htmlFor={props.id}>
+        {label}
+      </label>
+    );
+  })();
+
   return (
     <div className="grid grid-cols-[auto,_1fr] items-center gap-small">
       <RadixCheckbox.Root
@@ -36,11 +45,7 @@ export const Checkbox = forwardRef<
           <Icon display="check" />
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
-      {!hideLabel && (
-        <label className="font-franklin text-sm" htmlFor={props.id}>
-          {label}
-        </label>
-      )}
+      {labelElement}
     </div>
   );
 });

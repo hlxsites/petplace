@@ -3,6 +3,9 @@ import { ReactNode } from "react";
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
 
+export type FormVariableValues = Record<string, InputValue>;
+export type FormValues = Record<string, InputValue>;
+
 export type ElementType = "button" | "html" | "input" | "row" | "section";
 
 export type InputValue = string | number | Date | boolean | string[];
@@ -59,25 +62,26 @@ export type InputType =
   | "radio";
 
 type ElementCommon = {
-  id: string;
-  shouldDisplay?: ConditionExpression;
   elementType: ElementType;
+  id?: string;
+  shouldDisplay?: ConditionExpression;
 };
 
 export type ElementSection = ElementCommon & {
   children: ElementUnion[];
+  className?: string;
   description?: string;
   elementType: "section";
   title?: string;
 };
 
 export type ElementRow = ElementCommon & {
-  className?: string;
   children: ElementUnion[];
+  className?: string;
   elementType: "row";
 };
 
-export type ElementHtml = ElementCommon & {
+export type ElementHtml = Omit<ElementCommon, "id"> & {
   content: ReactNode;
   elementType: "html";
 };
@@ -86,6 +90,7 @@ export type ElementButton = ElementCommon & {
   className?: string;
   disabledCondition?: ConditionExpression;
   elementType: "button";
+  id: string;
   label: string;
   onClick?: () => void;
   type: "button" | "reset" | "submit";
@@ -99,6 +104,7 @@ export type InputCommon = ElementCommon & {
   elementType: "input";
   errorMessage?: string;
   hideLabel?: boolean;
+  id: string;
   label: string;
   placeholder?: string;
   requiredCondition?: ConditionExpression;
@@ -119,12 +125,13 @@ export type InputWithoutFormBuilderProps<T = InputCommon> = Omit<
 
 export type ElementInputText = InputCommon & {
   onChange?: (newValue: string) => void;
-  type: "text";
+  type: "text" | "email" | "password" | "number";
   value?: string;
 };
 
 export type ElementInputTextarea = InputCommon & {
   onChange?: (newValue: string) => void;
+  rows?: number;
   type: "textarea";
   value?: string;
 };

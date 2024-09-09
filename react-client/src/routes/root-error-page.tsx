@@ -24,7 +24,7 @@ export const RootErrorPage = (): JSX.Element => {
   return (
     <Layout>
       <div className="m-auto grid max-w-[464px] place-items-center gap-base">
-        <Icon display="alert" size={80} />
+        <Icon display="alertDiamond" size={80} />
         <span
           className="text-center text-[28px] font-semibold"
           role="heading"
