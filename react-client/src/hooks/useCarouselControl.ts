@@ -16,7 +16,6 @@ export const useCarouselControl = (itemsLength: number) => {
   // Keyboard navigation functionality - enhance accessibility
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      event.preventDefault();
       if (event.key === "ArrowRight" || event.key === " ") {
         goToNextSlide();
       } else if (event.key === "ArrowLeft" || event.key === "Backspace") {
