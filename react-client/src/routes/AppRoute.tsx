@@ -120,20 +120,20 @@ const routes: PetPlaceRouteObject[] = [
               },
             ],
           },
-          {
-            element: <LostPetIndex />,
-            id: "lostPet",
-            path: AppRoutePaths.lostPet,
-            loader: LostPetIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
-          },
-          {
-            element: <FoundPetIndex />,
-            id: "foundPet",
-            path: AppRoutePaths.foundPet,
-          },
         ],
+      },
+      {
+        element: <LostPetIndex />,
+        id: "lostPet",
+        path: AppRoutePaths.lostPet,
+        loader: LostPetIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
+      },
+      {
+        element: <FoundPetIndex />,
+        id: "foundPet",
+        path: AppRoutePaths.foundPet,
       },
       {
         id: "checkout",
