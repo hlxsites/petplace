@@ -1,5 +1,5 @@
 import { Button, Dialog, Text, TextSpan } from "~/components/design-system";
-import { LostPetUpdate } from "~/mocks/MockRestApiServer";
+import { LostPetUpdate } from "~/domain/models/pet/PetModel";
 
 type NotificationsDialogProps = {
   isOpen: boolean;
