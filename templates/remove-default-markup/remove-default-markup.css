@@ -7,3 +7,9 @@
 .remove-default-markup main .section {
   padding: 0;
 }
+
+.remove-default-markup .react-wrapper {
+  margin: 0;
+  max-width: 100dvw;
+  width: 100%;
+}
