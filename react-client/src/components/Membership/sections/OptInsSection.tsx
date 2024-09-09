@@ -17,7 +17,7 @@ export const OptInsSection = () => {
       <Card>
         <div className="p-large">
           <Title level="h4">Opt-ins</Title>
-          <div className="flex gap-large">
+          <div className="grid place-items-center gap-large pt-small lg:flex">
             <DisplayForm
               onChange={(props) => {
                 console.log("onChange values", props);
@@ -30,7 +30,7 @@ export const OptInsSection = () => {
             />
             {/* Need to define the route for opt-in */}
             <Button
-              className="text-sm font-franklin text-orange-300-contrast min-w-[90px]"
+              className="text-sm min-w-[90px] font-franklin text-orange-300-contrast"
               onClick={handleClick}
               variant="link"
             >

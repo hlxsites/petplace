@@ -2,9 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LostOrFoundDialog } from "~/components/Pet/LostOrFoundDialog";
 import { PetCard } from "~/components/Pet/PetCard";
-import { Button, ButtonProps, LinkButton } from "~/components/design-system";
+import {
+  Button,
+  ButtonProps,
+  LinkButton,
+  Title,
+} from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
+import { IS_DEV_ENV } from "~/util/envUtil";
 import { AppRoutePaths } from "../AppRoutePaths";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
@@ -32,8 +38,8 @@ export const MyPetsIndex = () => {
               variant="md"
               {...rest}
             >
-              <div className="p-base text-2xl font-bold leading-none text-black">
-                {rest.name}
+              <div className="text-2xl p-base font-bold leading-none text-black">
+                <Title level="h3">{rest.name}</Title>
               </div>
             </PetCard>
           </Link>
@@ -65,13 +71,15 @@ export const MyPetsIndex = () => {
         {renderReportLostOrFoundButton({
           className: "hidden md:flex",
         })}
-        <LinkButton
-          iconLeft="add"
-          to={AppRoutePaths.addNewPet}
-          variant="primary"
-        >
-          Add a new pet
-        </LinkButton>
+        {IS_DEV_ENV && (
+          <LinkButton
+            iconLeft="add"
+            to={AppRoutePaths.addNewPet}
+            variant="primary"
+          >
+            Add a new pet
+          </LinkButton>
+        )}
       </div>
     );
   }

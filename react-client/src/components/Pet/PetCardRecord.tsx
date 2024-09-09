@@ -40,11 +40,7 @@ export const PetCardRecord = ({
       iconLeft={
         <Icon className="text-neutral-white" display={getDisplayIcon()} />
       }
-      text={
-        <Text color="secondary-700" size="xs">
-          {fileName}
-        </Text>
-      }
+      text={<Text color="secondary-700">{fileName}</Text>}
     />
   );
 

@@ -30,7 +30,7 @@ export const PetCardPetWatch = ({
             color={isDisabled ? "neutral-500" : "secondary-700"}
             fontFamily="raleway"
             fontWeight="bold"
-            size="base"
+            size="14"
           >
             {label}
           </Text>

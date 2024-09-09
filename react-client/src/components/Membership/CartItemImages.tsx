@@ -7,17 +7,25 @@ type CartItemImagesProps = {
 };
 
 export const CartItemImages = ({ images, name }: CartItemImagesProps) => {
-  if (images.length === 1) {
+  const validImages = Array.isArray(images) && images.length > 0 ? images : [];
+  const validImagesLength = validImages.length;
+
+  if (!validImagesLength) return null;
+
+  if (validImagesLength === 1) {
     return (
       <img
-        alt={`product: ${name}`}
-        className="h-[265px] w-full object-contain"
         {...images[0]}
+        alt={name ? `product: ${name}` : "Product image"}
+        className="h-[265px] w-full object-contain"
       />
     );
   }
 
   return (
-    <ImageCarousel items={images} ariaLabel={`Images of product: ${name}`} />
+    <ImageCarousel
+      items={validImages}
+      ariaLabel={`Images of product: ${name || "Product"}`}
+    />
   );
 };

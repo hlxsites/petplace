@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+import { MissingStatus, PetModel, LostPetUpdate } from "~/domain/models/pet/PetModel";
 import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 
 const PET_SERVICES: Record<string, PetServiceTypes> = {
@@ -92,21 +93,12 @@ export type PetInfo = {
   lostPetHistory?: LostPetUpdate[];
 };
 
-export type MissingStatus = "missing" | "found";
 export type DocumentationStatus =
   | "none"
   | "sent"
   | "approved"
   | "failed"
   | "inProgress";
-
-export type LostPetUpdate = {
-  date: number;
-  update: number;
-  status: MissingStatus;
-  id: number;
-  note?: string;
-};
 
 export type Colors = "black";
 export type Sizes = "L" | "M/S" | "One Size";
@@ -123,7 +115,7 @@ export type CheckoutProduct = {
   price: string;
 };
 
-const PETS_LIST: PetInfo[] = [
+const PETS_LIST: PetModel[] = [
   {
     age: "Young",
     breed: "Some Dog",
@@ -131,7 +123,7 @@ const PETS_LIST: PetInfo[] = [
     id: "buddy",
     img: "https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg",
     isProtected: true,
-    microchipNumber: 1290,
+    microchip: "1290",
     missingStatus: "found",
     mixedBreed: "Yes",
     name: "Buddy",
@@ -149,11 +141,31 @@ const PETS_LIST: PetInfo[] = [
         note: "Lost report from submitted",
       },
       {
-        date: 1722430534,
+        date: 628021800000,
         update: 1722460747,
         status: "found",
         id: 2234567,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
     ],
   },
@@ -164,7 +176,7 @@ const PETS_LIST: PetInfo[] = [
     id: "lily",
     img: "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg",
     isProtected: false,
-    microchipNumber: 8645,
+    microchip: "8645",
     missingStatus: "missing",
     mixedBreed: "No",
     name: "Lily",
@@ -185,6 +197,26 @@ const PETS_LIST: PetInfo[] = [
         status: "found",
         id: 2637427,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
       {
         date: 1722433434,
@@ -199,6 +231,7 @@ const PETS_LIST: PetInfo[] = [
         status: "found",
         id: 4637427,
         note: "",
+        foundedBy: null,
       },
       {
         date: 1722433434,
@@ -228,7 +261,7 @@ const PETS_LIST: PetInfo[] = [
     id: "charlie",
     img: "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg",
     isProtected: true,
-    microchipNumber: 3856,
+    microchip: "3856",
     missingStatus: "found",
     name: "Charlie",
     sex: "Male",
@@ -478,7 +511,7 @@ export const getPetDocuments = ({
 };
 
 export const getPetById = (id: string) => {
-  return getPetsList()?.find((pet) => pet.id === id);
+  return getPetsList()?.find((pet) => pet.id === id) || getPetsList()[0];
 };
 
 export const getPetServiceStatus = (petId: string) => {
@@ -499,4 +532,20 @@ export const getServicesList = () => {
 
 export const getProductById = (id: string | null) => {
   return DETAILED_CART_ITEMS.find((pet) => pet.id === id);
+};
+
+export const getLostPetsHistory = () => {
+  return PETS_LIST.filter((pet) =>
+    pet.lostPetHistory?.some((history) => history.foundedBy)
+  ).map((pet) => {
+    const petName = pet.name;
+    const petHistory = pet.lostPetHistory?.filter(
+      (history) => history.foundedBy
+    );
+    return { petName, petHistory };
+  });
+};
+
+export const getAuthLogin = () => {
+  return true;
 };

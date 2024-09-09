@@ -4,6 +4,7 @@ import { MembershipHeader } from "~/components/Membership/sections/MembershipHea
 import { MembershipOfferSection } from "~/components/Membership/sections/MembershipOfferSection";
 import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
 import { useLocation } from "react-router-dom";
+import { MembershipComparingPlansSection } from "~/components/Membership/sections/MembershipComparingPlansSection";
 
 export const CheckoutIndex = () => {
   const { pathname } = useLocation();
@@ -16,6 +17,7 @@ export const CheckoutIndex = () => {
         <div className="grid place-items-center gap-xxxxxlarge">
           <MembershipHeader petName="test" />
           <MembershipOfferSection />
+          <MembershipComparingPlansSection locale={"us"} />
           <CheckoutInfoSection isLandingPage={isLandingPage} />
         </div>
       </main>

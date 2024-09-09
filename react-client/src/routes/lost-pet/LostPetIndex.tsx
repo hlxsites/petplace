@@ -10,9 +10,15 @@ export const LostPetIndex = () => {
       {
         elementType: "section",
         className: "!mb-xxxlarge",
-        title: "I have lost a pet",
-        description:
-          "We're sorry to hear that, please confirm the information below:",
+        title: {
+          label: "I have lost a pet",
+        },
+        description: {
+          label:
+            "We're sorry to hear that, please confirm the information below:",
+          size: "16",
+        },
+
         children: [
           {
             elementType: "input",
@@ -40,7 +46,9 @@ export const LostPetIndex = () => {
       },
       {
         elementType: "section",
-        title: "Last seen:",
+        title: {
+          label: "Last seen:",
+        },
         className: "!mb-xxxlarge",
         children: [
           {
@@ -89,7 +97,7 @@ export const LostPetIndex = () => {
       },
       {
         elementType: "section",
-        title: "Owner details:",
+        title: { label: "Owner details:" },
         className: "!mb-xxxlarge",
         children: [
           {
@@ -163,7 +171,7 @@ export const LostPetIndex = () => {
             stateOptions: [],
           }}
           values={{
-            microchip: selectedPet?.microchipNumber?.toString() ?? "",
+            microchip: selectedPet?.microchip?.toString() ?? "",
           }}
         />
       </Card>

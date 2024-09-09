@@ -1,6 +1,6 @@
 import { Card, DisplayForm, Title } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
+import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { editPetProfileFormSchema } from "../form/petForm";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 
@@ -10,7 +10,7 @@ export const PetEditIndex = () => {
   return (
     <>
       <Header
-        backButtonTo={`/${AppRoutePaths.myPets}/${petInfo.id}`}
+        backButtonTo={PET_PROFILE_FULL_ROUTE(petInfo.id)}
         pageTitle="Edit Pet Profile"
       />
       <Card padding="xlarge">

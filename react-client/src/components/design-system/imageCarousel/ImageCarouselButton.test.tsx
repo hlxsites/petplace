@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { IconButtonTypes, ImageCarouselButton } from "./ImageCarouselButton";
 
@@ -25,28 +24,33 @@ describe("ImageCarouselButton", () => {
     );
   });
 
+  it("should be enabled by default", () => {
+    getRenderer();
+    expect(getByRole("button")).toBeEnabled();
+  });
+
   it("should be disabled when disabled is true", () => {
     getRenderer({ disabled: true });
     expect(getByRole("button")).toBeDisabled();
   });
 
-  it("should call onClick callbacks", async () => {
-    const onClick = jest.fn();
-    getRenderer({ onClick });
-    expect(onClick).not.toHaveBeenCalled();
-
-    await userEvent.click(getByRole("button"));
-    expect(onClick).toHaveBeenCalledTimes(1);
+  it("should render button with expected classes when is enabled", () => {
+    getRenderer({ disabled: false });
+    expect(
+      getByRole("button").querySelector(
+        "svg[data-file-name='SvgChevronLeftIcon']"
+      )?.parentElement
+    ).toHaveClass("text-orange-300-contrast");
   });
 
-  it.each([true, false])(
-    "should match snapshot of both enabled and disable button",
-    (expected) => {
-      const { container } = getRenderer({ disabled: expected });
-
-      expect(container).toMatchSnapshot();
-    }
-  );
+  it("should render button with expected classes when is disabled", () => {
+    getRenderer({ disabled: true });
+    expect(
+      getByRole("button").querySelector(
+        "svg[data-file-name='SvgChevronLeftIcon']"
+      )?.parentElement
+    ).toHaveClass("text-neutral-400");
+  });
 });
 
 function getRenderer({

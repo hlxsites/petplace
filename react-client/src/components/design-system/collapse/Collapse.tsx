@@ -36,7 +36,7 @@ export const Collapse = ({
   });
 
   return (
-    <Card padding="base">
+    <Card padding="large">
       <Collapsible.Root {...rest} data-testid="collapse" open={isOpen}>
         {isLocked ? (
           <div>{title}</div>

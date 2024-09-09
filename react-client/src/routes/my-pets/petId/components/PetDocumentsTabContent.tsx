@@ -16,7 +16,7 @@ export function PetDocumentsTabContent() {
             to={id}
           >
             <Icon className={iconColor} display={icon} />
-            <Text size="sm" fontFamily="raleway" fontWeight="bold">
+            <Text size="14" fontFamily="raleway" fontWeight="bold">
               {label}
             </Text>
           </Link>

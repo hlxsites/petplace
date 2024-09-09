@@ -5,12 +5,12 @@ import { CheckoutProductColorSize } from "./CheckoutProductColorSize";
 
 type CheckoutItemDetailedContentProps = {
   item: DetailedCartItem;
-  addToCart?: () => void;
+  onAddToCart?: () => void;
 };
 
 export const CheckoutItemDetailedContent = ({
   item,
-  addToCart,
+  onAddToCart,
 }: CheckoutItemDetailedContentProps) => {
   const {
     additionalInfo,
@@ -28,30 +28,26 @@ export const CheckoutItemDetailedContent = ({
 
   return (
     <div className="flex flex-col gap-base">
-      <div>
-        <Title level="h5">{name}</Title>
-        <Text fontWeight="bold">
-          <TextSpan size="xlg">{price}</TextSpan>
-          {`${isAnnual ? "/year" : ""}`}
-        </Text>
-      </div>
+      <Text fontWeight="bold">
+        <TextSpan size="24">{price}</TextSpan>
+        {`${isAnnual ? "/year" : ""}`}
+      </Text>
+
       <CartItemImages images={images} name={name} />
       <div className="flex flex-col gap-base">
-        <Text color="background-color-tertiary">{description}</Text>
+        <Text color="background-color-tertiary" size="14">
+          {description}
+        </Text>
         {additionalInfo && (
-          <Text color="background-color-tertiary" size="xs">
-            {additionalInfo}
-          </Text>
+          <Text color="background-color-tertiary">{additionalInfo}</Text>
         )}
       </div>
       {tagFeatures && (
         <>
-          <Text size="sm" fontWeight="bold">
-            Tag Features
-          </Text>
+          <Title level="h5">Tag Features</Title>
           <ul className="pl-0">
             {tagFeatures.map((feature) => (
-              <li className="mb-xsmall flex items-center">
+              <li className="mb-xsmall flex items-center" key={feature}>
                 <span className="mr-small h-[2px] w-[2px] rounded-full bg-black"></span>
                 <Text color="background-color-tertiary">{feature}</Text>
               </li>
@@ -61,18 +57,18 @@ export const CheckoutItemDetailedContent = ({
       )}
       {sizing && (
         <>
-          <Text size="sm" fontWeight="bold">
-            Sizing
+          <Title level="h5">Sizing</Title>
+          <Text color="background-color-tertiary" size="14">
+            {sizing}
           </Text>
-          <Text color="background-color-tertiary">{sizing}</Text>
         </>
       )}
       {privacyFeatures && (
         <>
-          <Text size="sm" fontWeight="bold">
-            Privacy Features
+          <Title level="h5">Privacy Features</Title>
+          <Text color="background-color-tertiary" size="14">
+            {privacyFeatures}
           </Text>
-          <Text color="background-color-tertiary">{privacyFeatures}</Text>
         </>
       )}
       {availableColors && availableSizes && (
@@ -81,7 +77,7 @@ export const CheckoutItemDetailedContent = ({
           productSizes={availableSizes}
         />
       )}
-      <Button fullWidth onClick={addToCart} variant="tertiary">
+      <Button fullWidth onClick={onAddToCart} variant="tertiary">
         Add to cart
       </Button>
     </div>

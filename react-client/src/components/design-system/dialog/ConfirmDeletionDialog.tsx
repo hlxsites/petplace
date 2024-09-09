@@ -20,16 +20,21 @@ export const ConfirmDeletionDialog = ({
     if (message && typeof message !== "string") return message;
 
     const textMessage = message ?? "This action is irreversible.";
-    return <Text size="base">{textMessage}</Text>;
+    return (
+      <Text size="16" isResponsive>
+        {textMessage}
+      </Text>
+    );
   })();
 
   return (
     <Dialog
       id="confirm-deletion-dialog"
       isOpen={isOpen}
+      isTitleResponsive
       onClose={onCancel}
       title="Are you sure you want to delete this file?"
-      titleLevel="h2"
+      titleSize="32"
     >
       {({ onCloseWithAnimation }) => (
         <div className="grid gap-xlarge pt-xlarge">

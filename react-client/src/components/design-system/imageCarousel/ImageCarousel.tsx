@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
 import { classNames } from "~/util/styleUtil";
 import { Icon } from "../icon/Icon";
 import { ImageCarouselButton } from "./ImageCarouselButton";
+import { useCarouselControl } from "~/hooks/useCarouselControl";
 
 type ImageCarouselProps = {
   ariaLabel: string;
@@ -14,34 +14,9 @@ type ImageItem = {
 };
 
 export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const goToNextSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-  }, [items.length]);
-
-  const goToPrevSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? items.length - 1 : prevIndex - 1
-    );
-  }, [items.length]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      event.preventDefault();
-      if (event.key === "ArrowRight" || event.key === " ") {
-        goToNextSlide();
-      } else if (event.key === "ArrowLeft" || event.key === "Backspace") {
-        goToPrevSlide();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [goToNextSlide, goToPrevSlide]);
+  const { currentIndex, goToNextSlide, goToPrevSlide } = useCarouselControl(
+    items.length
+  );
 
   return (
     <div
@@ -50,7 +25,7 @@ export const ImageCarousel = ({ ariaLabel, items }: ImageCarouselProps) => {
     >
       <div className="relative w-full max-w-3xl overflow-hidden">
         <div
-          className="flex transition-transform duration-300 ease-out h-[265px]"
+          className="flex h-[265px] transition-transform duration-300 ease-out"
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
           }}

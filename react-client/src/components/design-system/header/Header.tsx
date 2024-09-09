@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { To } from "react-router-dom";
 import { classNames } from "~/util/styleUtil";
 import { LinkIconButton } from "../button/LinkIconButton";
-import { Title } from "../text/Title";
+import { Title, TitleProps } from "../text/Title";
 
 type HeaderProps = {
   backButtonTo?: To;
@@ -10,6 +10,7 @@ type HeaderProps = {
   pageTitle: string;
   primaryElement?: ReactNode;
   secondaryElement?: ReactNode;
+  titleProps?: Omit<TitleProps, "children">;
 };
 
 export const Header = ({
@@ -18,6 +19,7 @@ export const Header = ({
   pageTitle,
   primaryElement,
   secondaryElement,
+  titleProps,
 }: HeaderProps) => {
   const { className } = useHeaderBase(mb);
 
@@ -28,6 +30,7 @@ export const Header = ({
           {!!backButtonTo && (
             <LinkIconButton
               buttonProps={{
+                className: "text-orange-300-contrast",
                 icon: "chevronLeft",
               }}
               className="ml-[-12px]"
@@ -35,7 +38,9 @@ export const Header = ({
               to={backButtonTo}
             />
           )}
-          <Title>{pageTitle}</Title>
+          <Title level="h2" isResponsive {...titleProps}>
+            {pageTitle}
+          </Title>
         </div>
         {primaryElement}
       </div>
