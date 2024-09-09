@@ -28,7 +28,6 @@ export const OptInsSection = () => {
               }}
               schema={optInFormSchema}
             />
-            {/* Need to define the route for opt-in */}
             <Button
               className="text-sm min-w-[90px] font-franklin text-orange-300-contrast"
               onClick={handleClick}

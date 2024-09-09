@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
-import { MissingStatus, PetModel, LostPetUpdate } from "~/domain/models/pet/PetModel";
+import {
+  LostPetUpdate,
+  MissingStatus,
+  PetModel,
+} from "~/domain/models/pet/PetModel";
 import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 
 const PET_SERVICES: Record<string, PetServiceTypes> = {
