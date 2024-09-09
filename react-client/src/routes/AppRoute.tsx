@@ -1,11 +1,11 @@
 import isEqual from "lodash/isEqual";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
 import { PetProfileIndex } from "./my-pets/petId/PetProfileIndex";
-import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { loader as PetProfileLayoutLoader } from "./my-pets/petId/usePetProfileLayoutViewModel";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { Root } from "./root";
@@ -14,6 +14,7 @@ import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
 import { IS_DEV_ENV } from "~/util/envUtil";
+import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { ProductsIndex } from "./checkout/products/ProductsIndex";
@@ -25,7 +26,6 @@ import { DocumentTypeIndex } from "./my-pets/petId/documents/documentType/Docume
 import { loader as DocumentTypeIndexLoader } from "./my-pets/petId/documents/documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/petId/PetProfileLayout";
-import { AccountIndex } from "./account/AccountIndex";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 

@@ -1,9 +1,9 @@
+import { clsx } from "clsx";
 import { ReactNode } from "react";
 import {
   TextCommonStyleProps,
   useTextCommonStyles,
 } from "./useTextCommonStyles";
-import { clsx } from "clsx";
 
 type TitleVariableProps = TextCommonStyleProps & {
   fullWidth?: boolean;

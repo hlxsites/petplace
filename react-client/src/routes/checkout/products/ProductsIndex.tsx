@@ -3,9 +3,9 @@ import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
 import { CheckoutHeader } from "~/components/Membership/CheckoutHeader";
 import { AdditionalProtectionSection } from "~/components/Membership/sections/AdditionalProtectionSection";
 import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
+import { CheckoutProductsSection } from "~/components/Membership/sections/CheckoutProductsSection";
 import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
 import { useCheckoutIndexViewModel } from "../useCheckoutIndexViewModel";
-import { CheckoutProductsSection } from "~/components/Membership/sections/CheckoutProductsSection";
 
 export const ProductsIndex = () => {
   const { products } = useCheckoutIndexViewModel();

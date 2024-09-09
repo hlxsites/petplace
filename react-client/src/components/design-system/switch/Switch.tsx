@@ -1,8 +1,8 @@
 import * as RadixSwitch from "@radix-ui/react-switch";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import { classNames } from "~/util/styleUtil";
-import { CommonInputProps } from "../types/FormTypes";
 import { TextSpan } from "../text/TextSpan";
+import { CommonInputProps } from "../types/FormTypes";
 import { StyleProps } from "../types/TextTypes";
 
 export type SwitchVariant = "orange" | "purple";

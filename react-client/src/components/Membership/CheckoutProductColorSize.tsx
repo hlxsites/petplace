@@ -1,8 +1,8 @@
+import { createRef, useRef } from "react";
+import { useButtonSelection } from "~/hooks/useButtonSelection";
+import { Colors, Sizes } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { Button, Text } from "../design-system";
-import { useButtonSelection } from "~/hooks/useButtonSelection";
-import { useRef, createRef } from "react";
-import { Colors, Sizes } from "~/mocks/MockRestApiServer";
 
 type CheckoutProductColorSizeProps = {
   productColors?: Colors[];

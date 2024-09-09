@@ -1,6 +1,6 @@
-import { useTextCommonStyles } from "./useTextCommonStyles";
 import clsx from "clsx";
 import { StyleProps, TextProps } from "../types/TextTypes";
+import { useTextCommonStyles } from "./useTextCommonStyles";
 
 export const Text = ({
   ariaHidden,

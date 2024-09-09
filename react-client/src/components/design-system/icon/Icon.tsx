@@ -1,6 +1,6 @@
 import { classNames } from "~/util/styleUtil";
-import AddIcon from "./assets/add-icon.svg";
 import AddCircleIcon from "./assets/add-circle-icon.svg";
+import AddIcon from "./assets/add-icon.svg";
 import AlertDiamondIcon from "./assets/alert-diamond-icon.svg";
 import AlertIcon from "./assets/alert-icon.svg";
 import AppsIcon from "./assets/apps-icon.svg";
@@ -27,8 +27,8 @@ import EllipseIcon from "./assets/ellipse-icon.svg";
 import EllipseWithStrokeIcon from "./assets/ellipse-with-stroke-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
 import EyeIcon from "./assets/eye-icon.svg";
-import ForwardedCallIcon from "./assets/forwarded-call-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
+import ForwardedCallIcon from "./assets/forwarded-call-icon.svg";
 import InfoIcon from "./assets/info-icon.svg";
 import InformationIcon from "./assets/information-icon.svg";
 import JpgFileIcon from "./assets/jpg-file-icon.svg";

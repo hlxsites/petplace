@@ -1,10 +1,10 @@
-import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
+import { useLocation } from "react-router-dom";
+import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
 import { CheckoutHeader } from "~/components/Membership/CheckoutHeader";
+import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
+import { MembershipComparingPlansSection } from "~/components/Membership/sections/MembershipComparingPlansSection";
 import { MembershipHeader } from "~/components/Membership/sections/MembershipHeader";
 import { MembershipOfferSection } from "~/components/Membership/sections/MembershipOfferSection";
-import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
-import { useLocation } from "react-router-dom";
-import { MembershipComparingPlansSection } from "~/components/Membership/sections/MembershipComparingPlansSection";
 
 export const CheckoutIndex = () => {
   const { pathname } = useLocation();
