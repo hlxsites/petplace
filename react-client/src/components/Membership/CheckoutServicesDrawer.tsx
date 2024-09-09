@@ -1,5 +1,5 @@
 import { CheckoutServices } from "~/mocks/MockRestApiServer";
-import { Drawer, Title } from "../design-system";
+import { Drawer } from "../design-system";
 import { CheckoutServiceCard } from "./CheckoutServiceCard";
 
 type CheckoutServicesDrawerProps = {
@@ -9,19 +9,12 @@ type CheckoutServicesDrawerProps = {
 };
 
 export const CheckoutServicesDrawer = ({
-  isOpen,
   services,
-  onClose,
+  ...rest
 }: CheckoutServicesDrawerProps) => {
   return (
-    <Drawer
-      id="checkout-services"
-      ariaLabel="Services"
-      isOpen={isOpen}
-      onClose={onClose}
-    >
-      <div className="flex flex-col gap-large">
-        <Title level="h3">Services</Title>
+    <Drawer id="checkout-services" title="Services" width={400} {...rest}>
+      <div className="flex flex-col gap-large pt-large">
         {services.map((service) => (
           <CheckoutServiceCard {...service} key={service.id} />
         ))}
