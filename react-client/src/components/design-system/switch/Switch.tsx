@@ -1,8 +1,8 @@
 import * as RadixSwitch from "@radix-ui/react-switch";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import { classNames } from "~/util/styleUtil";
-import { CommonInputProps } from "../types/FormTypes";
 import { TextSpan } from "../text/TextSpan";
+import { CommonInputProps } from "../types/FormTypes";
 import { StyleProps } from "../types/TextTypes";
 
 export type SwitchVariant = "orange" | "purple";
@@ -54,21 +54,21 @@ export const Switch = forwardRef<
 
 function useSwitchVariant(isChecked: boolean, variant: SwitchVariant) {
   const rootClassName = classNames(
-    "relative h-6 w-[52px] rounded-[21px] border border-solid border-neutral-950 bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none",
+    "relative h-7 w-[20px] border-none max-w-[5px] rounded-[21px] bg-neutral-400 focus:bg-neutral-400 focus:outline-none disabled:border-none",
     {
       "hover:bg-purple-300": variant === "purple",
       "border-none bg-orange-300-contrast focus:bg-orange-300-contrast":
         isChecked && variant === "orange",
-      "border-none bg-purple-100 focus:bg-purple-100":
+      "bg-purple-100 focus:bg-purple-100":
         isChecked && variant === "purple",
     }
   );
 
   const thumbClassName = classNames(
-    "transition:transform absolute left-[2px] top-[2px] block h-5 w-[21px] rounded-full bg-white transition-[2000ms]",
+    "transition:transform absolute left-[2px] top-[2px] block h-6 w-[25px] rounded-full bg-white transition-[2000ms]",
     {
       "bg-purple-500 hover:bg-purple-300": isChecked && variant === "purple",
-      "top-[1px] translate-x-[36px]": !isChecked,
+      "top-[2px] translate-x-[30px]": isChecked,
     }
   );
 
