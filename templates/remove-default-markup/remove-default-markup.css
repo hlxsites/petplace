@@ -1,0 +1,9 @@
+
+.remove-default-markup .header-wrapper,
+.remove-default-markup footer .footer.block {
+  display: none;
+}
+
+.remove-default-markup main .section {
+  padding: 0;
+}
