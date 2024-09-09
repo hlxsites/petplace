@@ -2,19 +2,19 @@ import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { CheckoutServiceCard } from "./CheckoutServiceCard";
 
-const { getByText, queryByText, queryByRole, getByRole } = screen;
+const { getAllByRole, getByText, queryByText, queryByRole, getByRole } = screen;
 
 describe("CheckoutServiceCard", () => {
   it.each(["A name", "Another name"])(
-    "should render service name",
+    "should render service name %p",
     (expected) => {
       getRenderer({ name: expected });
       expect(getByText(expected)).toBeInTheDocument();
     }
   );
 
-  it.each(["A price", "Another price"])(
-    "should render service price",
+  it.each(["$24.95", "$15.00"])(
+    "should render service price %p",
     (expected) => {
       getRenderer({ price: expected });
       expect(getByText(expected)).toBeInTheDocument();
@@ -31,17 +31,22 @@ describe("CheckoutServiceCard", () => {
 
   it("should render service annual label", () => {
     getRenderer({ isAnnual: true });
-    expect(getByText("/year")).toBeInTheDocument();
+    expect(getByText("$100/year")).toBeInTheDocument();
   });
 
-  it("should render service annual label", () => {
+  it("should not render service annual label", () => {
     getRenderer({ isAnnual: false });
-    expect(queryByText("/year")).not.toBeInTheDocument();
+    expect(queryByText("$100/year")).not.toBeInTheDocument();
   });
 
   it("should render service image", () => {
     getRenderer({ images: [{ src: "some-src" }] });
     expect(getByRole("img")).toBeInTheDocument();
+  });
+
+  it("should render all service images", () => {
+    getRenderer({ images: [{ src: "some-src" }, { src: "another-src" }] });
+    expect(getAllByRole("img")).toHaveLength(2);
   });
 
   it("should NOT render service image", () => {
@@ -54,7 +59,7 @@ function getRenderer({
   id = "Test id",
   name = "Test name",
   price = "$100",
-  isAnnual = true,
+  isAnnual = false,
   images = [],
   description = "Test description",
 }: Partial<ComponentProps<typeof CheckoutServiceCard>> = {}) {

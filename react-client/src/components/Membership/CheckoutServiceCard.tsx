@@ -9,13 +9,19 @@ export const CheckoutServiceCard = ({
   images,
   description,
 }: CheckoutServices) => {
+  const priceString = (() => {
+    if (isAnnual) return price + "/year";
+    return price;
+  })();
+
   return (
     <>
       <div className="flex justify-between">
-        <Title level="h5">{name}</Title>
+        <Title level="h4" size="16">
+          {name}
+        </Title>
         <Text fontWeight="bold">
-          <TextSpan>{price}</TextSpan>
-          {`${isAnnual ? "/year" : ""}`}
+          <TextSpan>{priceString}</TextSpan>
         </Text>
       </div>
       <Card>
