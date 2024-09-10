@@ -6,7 +6,7 @@ const { getByText } = screen;
 
 describe("PlanBenefitCard", () => {
   it.each(["A title", "Another title"])(
-    "should render %s",
+    "should render the given title = %s",
     (expected) => {
       getRenderer({ title: expected });
       expect(getByText(expected)).toBeInTheDocument();
@@ -14,7 +14,7 @@ describe("PlanBenefitCard", () => {
   );
 
   it.each(["A label", "Another label"])(
-    "should render %s",
+    "should render the given label = %s",
     (expected) => {
       getRenderer({ label: expected });
       expect(getByText(expected)).toBeInTheDocument();
@@ -24,21 +24,29 @@ describe("PlanBenefitCard", () => {
   it.each([
     [true, "CheckCircle"],
     [false, "ClearCircle"],
-  ])("should render isAvailable=%s correct icon: %s", (isAvailable, iconName) => {
-    const { container } = getRenderer({ isAvailable });
-    expect(container.querySelector("svg")).toHaveAttribute(
-      "data-file-name",
-      `Svg${iconName}Icon`
-    );
-  });
+  ])(
+    "should render isAvailable=%s correct icon: %s",
+    (isAvailable, iconName) => {
+      const { container } = getRenderer({ isAvailable });
+      expect(container.querySelector("svg")).toHaveAttribute(
+        "data-file-name",
+        `Svg${iconName}Icon`
+      );
+    }
+  );
 
   it.each([
     [true, "text-green-300"],
     [false, "text-red-300"],
-  ])("should render isAvailable=%s correct class: %s", (isAvailable, expected) => {
-    const { container } = getRenderer({ isAvailable });
-    expect(container.querySelector("svg")?.parentElement).toHaveClass(expected);
-  });
+  ])(
+    "should render isAvailable=%s correct class: %s",
+    (isAvailable, expected) => {
+      const { container } = getRenderer({ isAvailable });
+      expect(container.querySelector("svg")?.parentElement).toHaveClass(
+        expected
+      );
+    }
+  );
 });
 
 function getRenderer({
