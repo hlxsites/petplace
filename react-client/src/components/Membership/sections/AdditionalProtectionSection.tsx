@@ -1,7 +1,13 @@
 import { Text, Title } from "~/components/design-system";
 import { ButtonWithBadge } from "~/components/design-system/button/ButtonWithBadge";
 
-export const AdditionalProtectionSection = () => {
+type AdditionalProtectionSectionProps = {
+  onClick?: () => void;
+};
+
+export const AdditionalProtectionSection = ({
+  onClick,
+}: AdditionalProtectionSectionProps) => {
   return (
     <div className="relative flex w-full justify-between">
       <div>
@@ -18,6 +24,7 @@ export const AdditionalProtectionSection = () => {
           iconProps={{ className: "text-orange-300-contrast" }}
           iconLeft="shoppingCart"
           badge={2}
+          onClick={onClick}
         >
           Shopping cart
         </ButtonWithBadge>
