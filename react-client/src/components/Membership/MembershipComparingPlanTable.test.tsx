@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
-import { MembershipPlan, TableActions } from "./types/MembershipTypes";
+import { TableActions, MembershipPlan } from "./utils/MembershipTypes";
 
 const { getAllByRole, getByText } = screen;
 
@@ -39,14 +39,19 @@ describe("MembershipComparingPlanTable", () => {
     const onClick = jest.fn();
     getRenderer({ onClick });
 
-    ACTIONS.forEach(async ({ label }) => {
+    let clickCount = 0;
+    for (const { label } of ACTIONS) {
       const button = getByText(label);
       expect(button).toBeInTheDocument();
-      expect(onClick).not.toHaveBeenCalled();
+      // Expect the previous click count
+      expect(onClick).toHaveBeenCalledTimes(clickCount);
 
       await userEvent.click(button);
-      expect(onClick).toHaveBeenCalledTimes(1);
-    });
+      // Increment the click count after each click
+      clickCount += 1;
+      // Validate the new click count
+      expect(onClick).toHaveBeenCalledTimes(clickCount);
+    }
   });
 });
 
