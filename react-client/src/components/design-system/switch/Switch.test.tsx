@@ -7,7 +7,7 @@ import { Switch } from "./Switch";
 const { queryByText, getByRole, getByText } = screen;
 
 const DEFAULT_LABEL = "Test label";
-const DEFAULT_CLASSES = "h-6 w-[52px] rounded-[21px]";
+const DEFAULT_CLASSES = "h-7 w-[20px] rounded-[21px]";
 
 describe("<Switch />", () => {
   it("should hide switch label when hideLabel is true", () => {
