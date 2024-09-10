@@ -1,43 +1,32 @@
-import { Collapse, Title } from "~/components/design-system";
-import { MembershipComparingPlanTable } from "../MembershipComparingPlanTable";
 import { useState } from "react";
-import { Locales } from "../types/MembershipTypes";
+import { Collapse, Title } from "~/components/design-system";
+import { useCheckoutIndexViewModel } from "~/routes/checkout/useCheckoutIndexViewModel";
+import { MembershipComparingPlanTable } from "../MembershipComparingPlanTable";
 import {
-  CA_MEMBERSHIP_PLANS,
   MEMBERSHIP_COMPARE_PLANS,
   MEMBERSHIP_COMPARING_PLANS_BUTTONS,
-  US_MEMBERSHIP_PLANS,
 } from "../utils/membershipConstants";
 
-type MembershipComparingPlansSectionProps = {
-  locale: Locales;
-};
-
-export const MembershipComparingPlansSection = ({
-  locale,
-}: MembershipComparingPlansSectionProps) => {
+export const MembershipComparingPlansSection = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const isCanadaLocale = locale === "ca";
+  const { availablePlans, isCanadaLocale } = useCheckoutIndexViewModel();
 
   return (
-    <div className="w-full">
+    <div className="hidden w-full md:block">
       <Collapse
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         title={<Title level="h3">Compare plans</Title>}
+        padding="large"
       >
         <MembershipComparingPlanTable
           actions={getActionButtons()}
-          columns={getMembershipTitles()}
+          columns={availablePlans}
           rows={MEMBERSHIP_COMPARE_PLANS}
         />
       </Collapse>
     </div>
   );
-
-  function getMembershipTitles() {
-    return isCanadaLocale ? CA_MEMBERSHIP_PLANS : US_MEMBERSHIP_PLANS;
-  }
 
   function getActionButtons() {
     return isCanadaLocale
