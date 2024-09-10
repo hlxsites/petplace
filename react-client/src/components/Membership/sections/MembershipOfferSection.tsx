@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Carousel } from "~/components/design-system";
 import { useCheckoutIndexViewModel } from "~/routes/checkout/useCheckoutIndexViewModel";
 import { MembershipCard } from "../MembershipCard";
@@ -25,10 +25,10 @@ export const MembershipOfferSection = () => {
 
   function renderMembershipCards() {
     return plans.map(({ title, ...props }) => (
-      <>
+      <Fragment key={title}>
         <MembershipCard key={title} title={title} {...props} />
         <PlanBenefitsList isOpen={isOpen} title={title} setIsOpen={setIsOpen} />
-      </>
+      </Fragment>
     ));
   }
 };

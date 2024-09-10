@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import { Collapse, Text } from "../design-system";
 import { PlanBenefitCard } from "./PlanBenefitCard";
-import { MembershipPlan } from "./types/MembershipTypes";
+
 import { MEMBERSHIP_COMPARE_PLANS } from "./utils/membershipConstants";
+import { MembershipPlan } from "./utils/MembershipTypes";
 
 type PlanBenefitListProps = {
   isOpen: boolean;
@@ -28,11 +29,12 @@ export const PlanBenefitsList = ({
         padding="medium"
         triggerNoMargin
       >
-        <div className="pt-medium grid gap-medium">
+        <div className="grid gap-medium pt-medium">
           {MEMBERSHIP_COMPARE_PLANS.map(
             ({ availableColumns, ...benefitProps }) => (
               <PlanBenefitCard
                 {...benefitProps}
+                key={benefitProps.title}
                 isAvailable={availableColumns.includes(title)}
               />
             )
