@@ -26,20 +26,6 @@
       window.location.replace('/rss.xml');
     }
 
-    // Redirect React app
-    if (window.location.pathname.includes('/react-test')) {
-      const subpath = window.location.pathname.split('/react-test')[1];
-      redirecting = true;
-
-      sampleRUM('redirect-react-app', { source: document.referrer, target: window.location.href });
-      const search = encodeURIComponent(window.location.search.replace('?', ''));
-      let url = `${window.location.origin}/react-test?redirectFrom=${subpath}`;
-      if (search) {
-        url += `&search=${search}`;
-      }
-      window.location.href = url;
-    }
-
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
