@@ -1,7 +1,8 @@
-import { MembershipPlan, TableActions } from "../types/MembershipTypes";
 import {
   MembershipDescriptionOffer,
   MembershipInfoCard,
+  MembershipPlan,
+  TableActions,
 } from "./MembershipTypes";
 
 const MEMBERSHIP_LIST_OFFERS = [
