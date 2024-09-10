@@ -6,9 +6,8 @@ export const PetCardSection = ({ pet }: { pet: PetModel }) => {
   return (
     <PetCard
       classNames={{ root: "lg:flex" }}
-      img={pet.img}
-      name={pet.name}
       variant="lg"
+      {...pet}
     >
       <PetCardInfo {...pet} name={pet.name} />
     </PetCard>
