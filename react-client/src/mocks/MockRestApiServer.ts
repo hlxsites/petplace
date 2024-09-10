@@ -275,81 +275,81 @@ const PETS_LIST: PetModel[] = [
   },
 ];
 
+const BytetagSlide: CheckoutProduct = {
+  availableColors: ["black"],
+  availableSizes: ["L", "M/S"],
+  id: "bytetag-slide",
+  images: [
+    {
+      src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Zvh7WpDTn3gR4~rNk8H-or6i9FY7czQkt6Qql2dw7vfX8ireRW1b4JsWH5wIqOoctTucZIr2VsXUTXZCAXwhRyhDPfZlv5~ptuQTHz7ktbgFPyxeUbm5NA8OczUseuaCIMZAah1~GQCr-jfSAyKGnnhgvt70ENihgFF1Ttnz-8oeOavz4e6qBLJMf1G2RlbtL9by9-w2XyvbBW2QkKegpyya5l~2GUkyXK0fioDahYHzIJl4d~prUFJYbHDeFkQBAitcfug1njg7byfib0ABFRVs5~3OPjmmeikHBHz3awpljBBL-9dmrCRcBEe6cpKu6sTsFMzglPAVTrjS22W0aQ__",
+    },
+    {
+      src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Zvh7WpDTn3gR4~rNk8H-or6i9FY7czQkt6Qql2dw7vfX8ireRW1b4JsWH5wIqOoctTucZIr2VsXUTXZCAXwhRyhDPfZlv5~ptuQTHz7ktbgFPyxeUbm5NA8OczUseuaCIMZAah1~GQCr-jfSAyKGnnhgvt70ENihgFF1Ttnz-8oeOavz4e6qBLJMf1G2RlbtL9by9-w2XyvbBW2QkKegpyya5l~2GUkyXK0fioDahYHzIJl4d~prUFJYbHDeFkQBAitcfug1njg7byfib0ABFRVs5~3OPjmmeikHBHz3awpljBBL-9dmrCRcBEe6cpKu6sTsFMzglPAVTrjS22W0aQ__",
+    },
+    {
+      src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Zvh7WpDTn3gR4~rNk8H-or6i9FY7czQkt6Qql2dw7vfX8ireRW1b4JsWH5wIqOoctTucZIr2VsXUTXZCAXwhRyhDPfZlv5~ptuQTHz7ktbgFPyxeUbm5NA8OczUseuaCIMZAah1~GQCr-jfSAyKGnnhgvt70ENihgFF1Ttnz-8oeOavz4e6qBLJMf1G2RlbtL9by9-w2XyvbBW2QkKegpyya5l~2GUkyXK0fioDahYHzIJl4d~prUFJYbHDeFkQBAitcfug1njg7byfib0ABFRVs5~3OPjmmeikHBHz3awpljBBL-9dmrCRcBEe6cpKu6sTsFMzglPAVTrjS22W0aQ__",
+    },
+  ],
+  price: "$19.95",
+  title: "Bytetag Slide",
+};
+
+const BytetagRound: CheckoutProduct = {
+  availableColors: ["black"],
+  availableSizes: ["One Size"],
+  id: "bytetag-round",
+  images: [
+    {
+      src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=paLS581ralWdhfWzR4BOCY13BCYZMedTE9KHiTEYkmvriACOdBLCaF-7-pCNgMSL8WvOtiQCVnXpA3DyRfRXqYP7PzIvFVKXDecfstJVnA~i8EFjI2Ct~WK20sJWCBucQZ5z00Bv25UXs3zYJxr2YOn6bcQu7G71F0H~MhYf9eZdsSUcRGWEitZ9FKOA~m0snAuLbhBUPkebWqbUQKRXF7uZenZMnay2yFiSymlDt5iHcYSAOH1LvG5vSDgSOTku0-buODUvc8zFWf1aLmc4UUtO~MRzwjaYIwk3elaDNCMlCrMyD9WanAtk-NFD8ucrshW5RbDigCUrn3MLL1skZg__",
+    },
+    {
+      src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=paLS581ralWdhfWzR4BOCY13BCYZMedTE9KHiTEYkmvriACOdBLCaF-7-pCNgMSL8WvOtiQCVnXpA3DyRfRXqYP7PzIvFVKXDecfstJVnA~i8EFjI2Ct~WK20sJWCBucQZ5z00Bv25UXs3zYJxr2YOn6bcQu7G71F0H~MhYf9eZdsSUcRGWEitZ9FKOA~m0snAuLbhBUPkebWqbUQKRXF7uZenZMnay2yFiSymlDt5iHcYSAOH1LvG5vSDgSOTku0-buODUvc8zFWf1aLmc4UUtO~MRzwjaYIwk3elaDNCMlCrMyD9WanAtk-NFD8ucrshW5RbDigCUrn3MLL1skZg__",
+    },
+    {
+      src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=paLS581ralWdhfWzR4BOCY13BCYZMedTE9KHiTEYkmvriACOdBLCaF-7-pCNgMSL8WvOtiQCVnXpA3DyRfRXqYP7PzIvFVKXDecfstJVnA~i8EFjI2Ct~WK20sJWCBucQZ5z00Bv25UXs3zYJxr2YOn6bcQu7G71F0H~MhYf9eZdsSUcRGWEitZ9FKOA~m0snAuLbhBUPkebWqbUQKRXF7uZenZMnay2yFiSymlDt5iHcYSAOH1LvG5vSDgSOTku0-buODUvc8zFWf1aLmc4UUtO~MRzwjaYIwk3elaDNCMlCrMyD9WanAtk-NFD8ucrshW5RbDigCUrn3MLL1skZg__",
+    },
+  ],
+  price: "$19.95",
+  title: "Bytetag Round",
+};
+
+const PetMedAlert: CheckoutProduct = {
+  description:
+    "Critical medical and behavioral information will be relayed to the shelter or vet when found.",
+  id: "24-pet-med-alert",
+  images: [
+    {
+      src: "https://s3-alpha-sig.figma.com/img/cb94/a44d/e6830c0de767f84369e5b5c46907cdb8?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aYDsLbTvIb5i01fZHnE65t56q1IYHDp8jI4b7cndDG~lBiYYrwgLfCezOUa4mSGPO-d2C7ybRXPcpmIqK2vdGAUJkBEUNkCIO6fuB~c-nbwRF0QtrHRAi98I-K5mK-cLANw~Hw~WSfkCwISFLF5v6V8cU-JBR1~24uw64YOQkAz3tPY6wdtYRXiU-7LIKUo99vUR0ZqPq7NZ55y1XIBe677dSIcUTYXJlJ6AYgjkecyDGLulroojAn~tI3MUW8GpRVb5a45RD4SHRc-pAGyDd~~pV2aCoHXzLIQ-ll6Z89C18S5NNIpM8OSP15BSgFCH0kK1uDFJl5zscBZuCnQOjQ__",
+    },
+  ],
+  isAnnual: true,
+  price: "$24.95",
+  title: "24PetMedAlert®",
+};
+
+const VetHelpline: CheckoutProduct = {
+  description:
+    "Reach veterinary professionals anytime by phone, email or live chat, provided by whiskerDocs.",
+  id: "24-7-vet-helpline",
+  images: [
+    {
+      src: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1727049600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=dIhEvEaiOY99w5B4u8REdKfFXgYJV6Jl~EVS-TqnZd43ej3vcJg31MVduSf8M6bUzvjv3inSIzKFnzR~ZuDLMufz8MiNi8I4Ar9cGbufLw1~g-YziRJpf2z4ASxfpGnSru2FKqwu6yNpS3EI9hA~7vkfxB12MmJZXcMdF6n-El97ykP8kMit5TlvWZpXDBpa4ertM0X6aBkmGdEDs98ZICZwEu-PqQwa1khaX7ddQdJKGOPNaZcMJrgT3iA-OoAueykHRKQdD9KlrvCJinA0nUROAkQ6bwZwVlJfhst79jTwqKdzMX3DqX3RKR9eyUh~ko0bMUu60lTY2W5PDIqpDw__",
+    },
+  ],
+  isAnnual: true,
+  price: "$15.00",
+  title: "24/7 Vet Helpline",
+};
+
 const CHECKOUT_PRODUCTS: CheckoutProduct[] = [
-  {
-    availableColors: ["black"],
-    availableSizes: ["L", "M/S"],
-    id: "bytetag-slide",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IUEPMm0WipjS2BkdbVmE~4MlH3VB6qgSYnKUbO4nf~Iss-33HP3xCk22hBi0ZUWWwFLQSKvnyasGl9RQ-zxPt7x4Sj329nU015tIlODYh3QuI5PEgZ81cAu5VY2t4CRsdsjuegym-om1UKYfEmwzBaRufJCOJJqknIDxo50~fA8iEz9q16XNjA3uUOomxeO823IKcEtVb-1dRqVM3Q1k57rvrAfGQ9nz7F2vGOiVMjpCF~z2d7EcylJKN4wy~-e5mHUaifrkCGGVdTlUkoKkoM6pcAuXWAGaGQPRAbf2rLKcKmKAs--M4KerGMVdzoJ~WxTUa6rew5aoN1WofR4-Aw__",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IUEPMm0WipjS2BkdbVmE~4MlH3VB6qgSYnKUbO4nf~Iss-33HP3xCk22hBi0ZUWWwFLQSKvnyasGl9RQ-zxPt7x4Sj329nU015tIlODYh3QuI5PEgZ81cAu5VY2t4CRsdsjuegym-om1UKYfEmwzBaRufJCOJJqknIDxo50~fA8iEz9q16XNjA3uUOomxeO823IKcEtVb-1dRqVM3Q1k57rvrAfGQ9nz7F2vGOiVMjpCF~z2d7EcylJKN4wy~-e5mHUaifrkCGGVdTlUkoKkoM6pcAuXWAGaGQPRAbf2rLKcKmKAs--M4KerGMVdzoJ~WxTUa6rew5aoN1WofR4-Aw__",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IUEPMm0WipjS2BkdbVmE~4MlH3VB6qgSYnKUbO4nf~Iss-33HP3xCk22hBi0ZUWWwFLQSKvnyasGl9RQ-zxPt7x4Sj329nU015tIlODYh3QuI5PEgZ81cAu5VY2t4CRsdsjuegym-om1UKYfEmwzBaRufJCOJJqknIDxo50~fA8iEz9q16XNjA3uUOomxeO823IKcEtVb-1dRqVM3Q1k57rvrAfGQ9nz7F2vGOiVMjpCF~z2d7EcylJKN4wy~-e5mHUaifrkCGGVdTlUkoKkoM6pcAuXWAGaGQPRAbf2rLKcKmKAs--M4KerGMVdzoJ~WxTUa6rew5aoN1WofR4-Aw__",
-      },
-    ],
-    price: "$19.95",
-    title: "Bytetag Slide",
-  },
-  {
-    availableColors: ["black"],
-    availableSizes: ["One Size"],
-    id: "bytetag-round",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A2nrhMfKM3R2EBbnHwpHN6vhg9dDmBWVXlvSueb6eLM7fAoEy08ioYYLJoEOXi0sFZlCdOBLYjWcT7I0PM8SbXXvRTNh1O4YGH8X~uJrcO-67pC2lUe6hQxzmjMIrf9BYAhWijA9-3HHW-hOkCPjvUUPtLKS~QHGbUfvIkPhWxoaLCe83MylhGPEHQbDY~ti2sHJJGgHjpBysaHlZdbIkToEw-8lPWl8TOWapxovnXA5ItOB4DNA-I3SBvDjv5mSDg~4Bs0JAegBtx2MKPZRs6lGvMcElznmbtFHxz7ayHeCtOwX5Gqwiztcyn1~0xo9PN6a8v5i3xF7tCz6XyfS9A__",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A2nrhMfKM3R2EBbnHwpHN6vhg9dDmBWVXlvSueb6eLM7fAoEy08ioYYLJoEOXi0sFZlCdOBLYjWcT7I0PM8SbXXvRTNh1O4YGH8X~uJrcO-67pC2lUe6hQxzmjMIrf9BYAhWijA9-3HHW-hOkCPjvUUPtLKS~QHGbUfvIkPhWxoaLCe83MylhGPEHQbDY~ti2sHJJGgHjpBysaHlZdbIkToEw-8lPWl8TOWapxovnXA5ItOB4DNA-I3SBvDjv5mSDg~4Bs0JAegBtx2MKPZRs6lGvMcElznmbtFHxz7ayHeCtOwX5Gqwiztcyn1~0xo9PN6a8v5i3xF7tCz6XyfS9A__",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A2nrhMfKM3R2EBbnHwpHN6vhg9dDmBWVXlvSueb6eLM7fAoEy08ioYYLJoEOXi0sFZlCdOBLYjWcT7I0PM8SbXXvRTNh1O4YGH8X~uJrcO-67pC2lUe6hQxzmjMIrf9BYAhWijA9-3HHW-hOkCPjvUUPtLKS~QHGbUfvIkPhWxoaLCe83MylhGPEHQbDY~ti2sHJJGgHjpBysaHlZdbIkToEw-8lPWl8TOWapxovnXA5ItOB4DNA-I3SBvDjv5mSDg~4Bs0JAegBtx2MKPZRs6lGvMcElznmbtFHxz7ayHeCtOwX5Gqwiztcyn1~0xo9PN6a8v5i3xF7tCz6XyfS9A__",
-      },
-    ],
-    price: "$19.95",
-    title: "Bytetag Round",
-  },
-  {
-    description:
-      "Critical medical and behavioral information will be relayed to the shelter or vet when found.",
-    id: "24-pet-med-alert",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/cb94/a44d/e6830c0de767f84369e5b5c46907cdb8?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kRxTKMFSnG0E4qqmCisFLte4c4NU9mY5X-EdRcM9tQNg0~zOJ9HC0aqOgmzqrWxiSjmzutuvuoN130shPIeloDaWNQxwCYWEfz0Ffwhvk9ZLaT0CgDyPx7iPSfxD81V1vyKz2n2ZLXE2nBRuz0iR5~Nk5vwjTCixbPWynFKqlQAbpleQFA0KjX-evHqnLEj97Be9kpNzXzbRFdZxqZscQJhtv7NmFgAbNCMVfZIpF8Zfh70MXPhhYDpplOppKngwiqG6BDiLiNnvuK~u4OnCLkK7Ikiq5Sjl38echWig58dmDVmumr7L5S~ZhtA-o3gf6yINfMr2kfGEEXV68Qlz0w__",
-      },
-    ],
-    isAnnual: true,
-    price: "$24.95",
-    title: "24PetMedAlert®",
-  },
-  {
-    description:
-      "Reach veterinary professionals anytime by phone, email or live chat, provided by whiskerDocs.",
-    id: "24-7-vet-helpline",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1725235200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=e~Gnf3K0y75CxfbL~wWj~NugWyyj0nshHZHyD-CmzpaVenkl3jthKbZCwzA73O80wKQYM-mfusjE~g4edCiJwbuHoIwIsQZlDyUg3O0NxY2XJAp25~VEmn0VikLrpB9PJvjY0txOgz4N6J2EqwbcSK2SBkXrrFoSZyS-MVWJgdVuKJTjKhEIKFcYeM37hkfagmxuDExyq-2YaFsnloM6FXigCy9zZDUDTk2O0IRTJ5e5sciQXqXWFgT~QCmmblcf9zRIfnvyiZckCAGE8XEGATqwe~dXpM-AjQfnLmB~vGuYmqztWj-qx7x5kxMU8o2sdjbQfIOXOavDlcdlk-sC4g__",
-      },
-    ],
-    isAnnual: true,
-    price: "$15.00",
-    title: "24/7 Vet Helpline",
-  },
+  BytetagSlide,
+  BytetagRound,
+  PetMedAlert,
+  VetHelpline,
 ];
 
-export type DetailedCartItem = {
+export type DetailedCartItem = CheckoutProduct & {
   additionalInfo?: string;
-  availableColors?: Colors[];
-  availableSizes?: Sizes[];
-  description: string;
-  id: string;
-  images: Image[];
-  isAnnual?: boolean;
-  name: string;
-  price: string;
   privacyFeatures?: string;
   sizing?: string;
   tagFeatures?: string[];
@@ -357,27 +357,7 @@ export type DetailedCartItem = {
 
 export const DETAILED_CART_ITEMS: DetailedCartItem[] = [
   {
-    availableColors: ["black"],
-    availableSizes: ["L", "M/S"],
-    name: "Bytetag Slide",
-    price: "$19.95",
-    description:
-      "ByteTag Slide is a scannable pet tag containing all of your pets important information conveniently in one profile. The slide attaches directly to a collar.",
-    id: "bytetag-slide",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IUEPMm0WipjS2BkdbVmE~4MlH3VB6qgSYnKUbO4nf~Iss-33HP3xCk22hBi0ZUWWwFLQSKvnyasGl9RQ-zxPt7x4Sj329nU015tIlODYh3QuI5PEgZ81cAu5VY2t4CRsdsjuegym-om1UKYfEmwzBaRufJCOJJqknIDxo50~fA8iEz9q16XNjA3uUOomxeO823IKcEtVb-1dRqVM3Q1k57rvrAfGQ9nz7F2vGOiVMjpCF~z2d7EcylJKN4wy~-e5mHUaifrkCGGVdTlUkoKkoM6pcAuXWAGaGQPRAbf2rLKcKmKAs--M4KerGMVdzoJ~WxTUa6rew5aoN1WofR4-Aw__",
-        alt: "Bytetag Slide 1",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IUEPMm0WipjS2BkdbVmE~4MlH3VB6qgSYnKUbO4nf~Iss-33HP3xCk22hBi0ZUWWwFLQSKvnyasGl9RQ-zxPt7x4Sj329nU015tIlODYh3QuI5PEgZ81cAu5VY2t4CRsdsjuegym-om1UKYfEmwzBaRufJCOJJqknIDxo50~fA8iEz9q16XNjA3uUOomxeO823IKcEtVb-1dRqVM3Q1k57rvrAfGQ9nz7F2vGOiVMjpCF~z2d7EcylJKN4wy~-e5mHUaifrkCGGVdTlUkoKkoM6pcAuXWAGaGQPRAbf2rLKcKmKAs--M4KerGMVdzoJ~WxTUa6rew5aoN1WofR4-Aw__",
-        alt: "Bytetag Slide 2",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c4cf/8d14/97efcac85020a015f873858bde3111ad?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IUEPMm0WipjS2BkdbVmE~4MlH3VB6qgSYnKUbO4nf~Iss-33HP3xCk22hBi0ZUWWwFLQSKvnyasGl9RQ-zxPt7x4Sj329nU015tIlODYh3QuI5PEgZ81cAu5VY2t4CRsdsjuegym-om1UKYfEmwzBaRufJCOJJqknIDxo50~fA8iEz9q16XNjA3uUOomxeO823IKcEtVb-1dRqVM3Q1k57rvrAfGQ9nz7F2vGOiVMjpCF~z2d7EcylJKN4wy~-e5mHUaifrkCGGVdTlUkoKkoM6pcAuXWAGaGQPRAbf2rLKcKmKAs--M4KerGMVdzoJ~WxTUa6rew5aoN1WofR4-Aw__",
-        alt: "Bytetag Slide 3",
-      },
-    ],
+    ...BytetagSlide,
     sizing: "Small: 7.7cm x 1.3cm | Large: 8.1cm x 2cm",
     privacyFeatures:
       "You can choose to hide your phone number and address from your pet's profile until your pet has been marked as lost.",
@@ -392,27 +372,8 @@ export const DETAILED_CART_ITEMS: DetailedCartItem[] = [
     ],
   },
   {
-    availableColors: ["black"],
-    availableSizes: ["One Size"],
-    name: "Bytetag Round",
-    price: "$19.95",
-    description:
-      "ByteTag Round is a scannable pet tag containing all of your pets important information conveniently in one profile.",
-    id: "bytetag-round",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A2nrhMfKM3R2EBbnHwpHN6vhg9dDmBWVXlvSueb6eLM7fAoEy08ioYYLJoEOXi0sFZlCdOBLYjWcT7I0PM8SbXXvRTNh1O4YGH8X~uJrcO-67pC2lUe6hQxzmjMIrf9BYAhWijA9-3HHW-hOkCPjvUUPtLKS~QHGbUfvIkPhWxoaLCe83MylhGPEHQbDY~ti2sHJJGgHjpBysaHlZdbIkToEw-8lPWl8TOWapxovnXA5ItOB4DNA-I3SBvDjv5mSDg~4Bs0JAegBtx2MKPZRs6lGvMcElznmbtFHxz7ayHeCtOwX5Gqwiztcyn1~0xo9PN6a8v5i3xF7tCz6XyfS9A__",
-        alt: "Bytetag Round 1",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A2nrhMfKM3R2EBbnHwpHN6vhg9dDmBWVXlvSueb6eLM7fAoEy08ioYYLJoEOXi0sFZlCdOBLYjWcT7I0PM8SbXXvRTNh1O4YGH8X~uJrcO-67pC2lUe6hQxzmjMIrf9BYAhWijA9-3HHW-hOkCPjvUUPtLKS~QHGbUfvIkPhWxoaLCe83MylhGPEHQbDY~ti2sHJJGgHjpBysaHlZdbIkToEw-8lPWl8TOWapxovnXA5ItOB4DNA-I3SBvDjv5mSDg~4Bs0JAegBtx2MKPZRs6lGvMcElznmbtFHxz7ayHeCtOwX5Gqwiztcyn1~0xo9PN6a8v5i3xF7tCz6XyfS9A__",
-        alt: "Bytetag Round 2",
-      },
-      {
-        src: "https://s3-alpha-sig.figma.com/img/a0c0/b99c/8b8cd8f37db6ba72ab310687efc5203d?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A2nrhMfKM3R2EBbnHwpHN6vhg9dDmBWVXlvSueb6eLM7fAoEy08ioYYLJoEOXi0sFZlCdOBLYjWcT7I0PM8SbXXvRTNh1O4YGH8X~uJrcO-67pC2lUe6hQxzmjMIrf9BYAhWijA9-3HHW-hOkCPjvUUPtLKS~QHGbUfvIkPhWxoaLCe83MylhGPEHQbDY~ti2sHJJGgHjpBysaHlZdbIkToEw-8lPWl8TOWapxovnXA5ItOB4DNA-I3SBvDjv5mSDg~4Bs0JAegBtx2MKPZRs6lGvMcElznmbtFHxz7ayHeCtOwX5Gqwiztcyn1~0xo9PN6a8v5i3xF7tCz6XyfS9A__",
-        alt: "Bytetag Round 3",
-      },
-    ],
+    ...BytetagRound,
+    sizing: "Small: 7.7cm x 1.3cm | Large: 8.1cm x 2cm",
     privacyFeatures:
       "You can choose to hide your phone number and address from your pet's profile until your pet has been marked as lost.",
     tagFeatures: [
@@ -426,39 +387,19 @@ export const DETAILED_CART_ITEMS: DetailedCartItem[] = [
     ],
   },
   {
-    name: "24PetMedAlert®",
-    price: "$24.95",
-    id: "24-pet-med-alert",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/cb94/a44d/e6830c0de767f84369e5b5c46907cdb8?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kRxTKMFSnG0E4qqmCisFLte4c4NU9mY5X-EdRcM9tQNg0~zOJ9HC0aqOgmzqrWxiSjmzutuvuoN130shPIeloDaWNQxwCYWEfz0Ffwhvk9ZLaT0CgDyPx7iPSfxD81V1vyKz2n2ZLXE2nBRuz0iR5~Nk5vwjTCixbPWynFKqlQAbpleQFA0KjX-evHqnLEj97Be9kpNzXzbRFdZxqZscQJhtv7NmFgAbNCMVfZIpF8Zfh70MXPhhYDpplOppKngwiqG6BDiLiNnvuK~u4OnCLkK7Ikiq5Sjl38echWig58dmDVmumr7L5S~ZhtA-o3gf6yINfMr2kfGEEXV68Qlz0w__",
-      },
-    ],
-    isAnnual: true,
-    description:
-      "If your pet is lost and then brought to a shelter or vet, we are able to share all important information about them. This information may make all the difference to the care your pet.",
+    ...PetMedAlert,
     additionalInfo:
       "Your first year is complimentary with a Lifetime Protection Membership.",
   },
   {
-    name: "24/7 Vet Helpline",
-    price: "$15.00",
-    id: "24-7-vet-helpline",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=lW51xy4dfqkyDi4jWruiI0Rv3-yC6GnRD0SOQmquxSuBwM~zS7cxfkxF8j59D9fRXo0Y-YrlJY~R8aAFkqN3~N9iDY8d9mdRFu-W15ABxAXr464cpjpE3zOBxR~bflQn0EfQlFBEDhXa8HrTCo31ABzX246eGN5J8VMnzLHh4moYisdqsuyMsPsdJqQUOkg8IVnYlfRSQnQIJkLQ2kTT2c7J4kgkOsPbC0eb-pyAjX42Bhw35A483SarFdDkyhg1v0lJOSYALXKJaBfzJzYA9K1DY0b5gUGbXB-wYsYs5SIV4zbC7QKrr7PxAifMgjH8Y6v-oQ0usVzWwqW2yhF2eA__",
-      },
-    ],
-    isAnnual: true,
-    description:
-      "Contact a veterinary professional any time or day by phone, email or live chat.",
+    ...VetHelpline,
     additionalInfo:
       "Your first year is complimentary with a Lifetime Protection Membership.",
   },
 ];
 
 export type CheckoutServices = {
-  name: string;
+  title: string;
   price: string;
   id: string;
   description: string;
@@ -467,32 +408,8 @@ export type CheckoutServices = {
 };
 
 const CHECKOUT_SERVICES: CheckoutServices[] = [
-  {
-    name: "24PetMedAlert®",
-    price: "$24.95",
-    id: "24-pet-med-alert",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/cb94/a44d/e6830c0de767f84369e5b5c46907cdb8?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kRxTKMFSnG0E4qqmCisFLte4c4NU9mY5X-EdRcM9tQNg0~zOJ9HC0aqOgmzqrWxiSjmzutuvuoN130shPIeloDaWNQxwCYWEfz0Ffwhvk9ZLaT0CgDyPx7iPSfxD81V1vyKz2n2ZLXE2nBRuz0iR5~Nk5vwjTCixbPWynFKqlQAbpleQFA0KjX-evHqnLEj97Be9kpNzXzbRFdZxqZscQJhtv7NmFgAbNCMVfZIpF8Zfh70MXPhhYDpplOppKngwiqG6BDiLiNnvuK~u4OnCLkK7Ikiq5Sjl38echWig58dmDVmumr7L5S~ZhtA-o3gf6yINfMr2kfGEEXV68Qlz0w__",
-      },
-    ],
-    isAnnual: true,
-    description:
-      "Store and share critical medical and behavioral information. Your first year is complimentary with a Lifetime Protection Membership.",
-  },
-  {
-    name: "24/7 Vet Helpline",
-    price: "$15.00",
-    id: "24-7-vet-helpline",
-    images: [
-      {
-        src: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=lW51xy4dfqkyDi4jWruiI0Rv3-yC6GnRD0SOQmquxSuBwM~zS7cxfkxF8j59D9fRXo0Y-YrlJY~R8aAFkqN3~N9iDY8d9mdRFu-W15ABxAXr464cpjpE3zOBxR~bflQn0EfQlFBEDhXa8HrTCo31ABzX246eGN5J8VMnzLHh4moYisdqsuyMsPsdJqQUOkg8IVnYlfRSQnQIJkLQ2kTT2c7J4kgkOsPbC0eb-pyAjX42Bhw35A483SarFdDkyhg1v0lJOSYALXKJaBfzJzYA9K1DY0b5gUGbXB-wYsYs5SIV4zbC7QKrr7PxAifMgjH8Y6v-oQ0usVzWwqW2yhF2eA__",
-      },
-    ],
-    isAnnual: true,
-    description:
-      "Contact a veterinary professional any time or day by phone, email or live chat. Your first year is complimentary with a Lifetime Protection Membership.",
-  },
+  PetMedAlert as CheckoutServices,
+  VetHelpline as CheckoutServices,
 ];
 
 export const getPetsList = () => {
