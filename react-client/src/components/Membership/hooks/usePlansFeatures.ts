@@ -1,10 +1,10 @@
 import { useWindowWidth } from "~/hooks/useWindowWidth";
-import { Locale } from "../types/MembershipTypes";
 import {
   CA_MEMBERSHIP_PLANS,
   MEMBERSHIP_CARD_OPTIONS,
   US_MEMBERSHIP_PLANS,
 } from "../utils/membershipConstants";
+import { Locale } from "../utils/MembershipTypes";
 
 export const usePlansFeatures = (locale: Locale) => {
   const renderMobileVersion = useWindowWidth() < 768;
