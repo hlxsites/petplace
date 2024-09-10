@@ -12,11 +12,10 @@ export const PlanBenefitCard = ({
   isAvailable,
 }: PlanBenefitCardProps) => {
   return (
-    <div>
-      <Card>
+    <Card>
       <div className="flex gap-small p-medium">
         <div>{renderIcon()}</div>
-        <div>
+        <div className="grid">
           <Text size="18" fontFamily="raleway" fontWeight="bold">
             {title}
           </Text>
@@ -24,14 +23,13 @@ export const PlanBenefitCard = ({
         </div>
       </div>
     </Card>
-    </div>
   );
 
   function renderIcon() {
     return (
       <Icon
-        display={isAvailable ? "checkCircle" : "clearCircle"}
         className={isAvailable ? "text-green-300" : "text-red-300"}
+        display={isAvailable ? "checkCircle" : "clearCircle"}
         size={24}
       />
     );
