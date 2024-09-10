@@ -17,7 +17,6 @@ export type LostAndFoundNotificationsProps = {
 export const LostAndFoundNotifications = ({
   notifications = [],
 }: LostAndFoundNotificationsProps) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedPet, setSelectedPet] = useState<LostNotification | null>(null);
 
   const checkboxesFilters = [
@@ -50,7 +49,7 @@ export const LostAndFoundNotifications = ({
 
       {selectedPet && (
         <NotificationsDialog
-          isOpen={isOpen}
+          isOpen={!!selectedPet}
           onClose={onCloseDialog}
           viewData={selectedPet.petHistory}
           petName={selectedPet.petName}
@@ -90,11 +89,9 @@ export const LostAndFoundNotifications = ({
 
   function onOpenDialog(pet: LostNotification) {
     setSelectedPet(pet);
-    setIsOpen(true);
   }
 
   function onCloseDialog() {
     setSelectedPet(null);
-    setIsOpen(false);
   }
 };
