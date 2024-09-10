@@ -40,7 +40,7 @@ export const PetCard = ({
           })}
         >
           <img
-            src={img ?? avatar}
+            src={img || avatar}
             alt={`Image of ${name}`}
             className="h-full w-full object-cover"
           />
