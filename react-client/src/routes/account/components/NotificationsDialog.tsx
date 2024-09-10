@@ -14,9 +14,6 @@ export const NotificationsDialog = ({
   viewData,
   petName,
 }: NotificationsDialogProps) => {
-  console.log(viewData);
-  console.log(petName);
-
   const foundedBy = viewData?.[0]?.foundedBy;
   const finderName = foundedBy?.finderName ?? "Unknown Finder";
 
