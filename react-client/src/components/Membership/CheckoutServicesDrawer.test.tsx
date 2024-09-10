@@ -6,14 +6,20 @@ import { CheckoutServicesDrawer } from "./CheckoutServicesDrawer";
 
 const { getByRole, queryByRole, getByText } = screen;
 
-const DEFAULT_SERVICES = [
+const DEFAULT_SERVICES: CheckoutServices[] = [
   {
-    name: "Test service 1",
+    description: "",
+    price: "",
     images: [],
+    id: "",
+    title: "Test service 1",
   },
   {
-    name: "Test service 2",
+    description: "",
+    id: "",
     images: [],
+    price: "",
+    title: "Test service 2",
   },
 ];
 
@@ -43,7 +49,7 @@ describe("CheckoutServicesDrawer", () => {
     }
   });
 
-  it.each(DEFAULT_SERVICES.map(({ name }) => name))(
+  it.each(DEFAULT_SERVICES.map(({ title }) => title))(
     "should render each services name: %s",
     (expected) => {
       getRenderer();
@@ -55,7 +61,7 @@ describe("CheckoutServicesDrawer", () => {
 function getRenderer({
   isOpen = true,
   onClose = jest.fn(),
-  services = DEFAULT_SERVICES as unknown as CheckoutServices[],
+  services = DEFAULT_SERVICES,
 }: Partial<ComponentProps<typeof CheckoutServicesDrawer>> = {}) {
   return render(
     <CheckoutServicesDrawer
