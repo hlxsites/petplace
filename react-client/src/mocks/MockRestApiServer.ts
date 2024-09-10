@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+import {
+  LostPetUpdate,
+  MissingStatus,
+  PetModel,
+} from "~/domain/models/pet/PetModel";
 import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 
 const PET_SERVICES: Record<string, PetServiceTypes> = {
@@ -92,21 +97,12 @@ export type PetInfo = {
   lostPetHistory?: LostPetUpdate[];
 };
 
-export type MissingStatus = "missing" | "found";
 export type DocumentationStatus =
   | "none"
   | "sent"
   | "approved"
   | "failed"
   | "inProgress";
-
-export type LostPetUpdate = {
-  date: number;
-  update: number;
-  status: MissingStatus;
-  id: number;
-  note?: string;
-};
 
 export type Colors = "black";
 export type Sizes = "L" | "M/S" | "One Size";
@@ -123,7 +119,7 @@ export type CheckoutProduct = {
   price: string;
 };
 
-const PETS_LIST: PetInfo[] = [
+const PETS_LIST: PetModel[] = [
   {
     age: "Young",
     breed: "Some Dog",
@@ -131,7 +127,7 @@ const PETS_LIST: PetInfo[] = [
     id: "buddy",
     img: "https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg",
     isProtected: true,
-    microchipNumber: 1290,
+    microchip: "1290",
     missingStatus: "found",
     mixedBreed: "Yes",
     name: "Buddy",
@@ -149,11 +145,31 @@ const PETS_LIST: PetInfo[] = [
         note: "Lost report from submitted",
       },
       {
-        date: 1722430534,
+        date: 628021800000,
         update: 1722460747,
         status: "found",
         id: 2234567,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
     ],
   },
@@ -164,7 +180,7 @@ const PETS_LIST: PetInfo[] = [
     id: "lily",
     img: "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg",
     isProtected: false,
-    microchipNumber: 8645,
+    microchip: "8645",
     missingStatus: "missing",
     mixedBreed: "No",
     name: "Lily",
@@ -185,6 +201,26 @@ const PETS_LIST: PetInfo[] = [
         status: "found",
         id: 2637427,
         note: "",
+        foundedBy: {
+          finderName: "Erica Wong",
+          contact: [
+            {
+              date: 1722430534,
+              methodContact: "Phone Call",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Text Message",
+              phoneNumber: "289-218-6754",
+            },
+            {
+              date: 1722430534,
+              methodContact: "Email",
+              email: "dana.rayman@pethealthinc.com",
+            },
+          ],
+        },
       },
       {
         date: 1722433434,
@@ -199,6 +235,7 @@ const PETS_LIST: PetInfo[] = [
         status: "found",
         id: 4637427,
         note: "",
+        foundedBy: null,
       },
       {
         date: 1722433434,
@@ -228,7 +265,7 @@ const PETS_LIST: PetInfo[] = [
     id: "charlie",
     img: "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg",
     isProtected: true,
-    microchipNumber: 3856,
+    microchip: "3856",
     missingStatus: "found",
     name: "Charlie",
     sex: "Male",
@@ -420,6 +457,44 @@ export const DETAILED_CART_ITEMS: DetailedCartItem[] = [
   },
 ];
 
+export type CheckoutServices = {
+  name: string;
+  price: string;
+  id: string;
+  description: string;
+  isAnnual?: boolean;
+  images: Image[];
+};
+
+const CHECKOUT_SERVICES: CheckoutServices[] = [
+  {
+    name: "24PetMedAlert®",
+    price: "$24.95",
+    id: "24-pet-med-alert",
+    images: [
+      {
+        src: "https://s3-alpha-sig.figma.com/img/cb94/a44d/e6830c0de767f84369e5b5c46907cdb8?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kRxTKMFSnG0E4qqmCisFLte4c4NU9mY5X-EdRcM9tQNg0~zOJ9HC0aqOgmzqrWxiSjmzutuvuoN130shPIeloDaWNQxwCYWEfz0Ffwhvk9ZLaT0CgDyPx7iPSfxD81V1vyKz2n2ZLXE2nBRuz0iR5~Nk5vwjTCixbPWynFKqlQAbpleQFA0KjX-evHqnLEj97Be9kpNzXzbRFdZxqZscQJhtv7NmFgAbNCMVfZIpF8Zfh70MXPhhYDpplOppKngwiqG6BDiLiNnvuK~u4OnCLkK7Ikiq5Sjl38echWig58dmDVmumr7L5S~ZhtA-o3gf6yINfMr2kfGEEXV68Qlz0w__",
+      },
+    ],
+    isAnnual: true,
+    description:
+      "Store and share critical medical and behavioral information. Your first year is complimentary with a Lifetime Protection Membership.",
+  },
+  {
+    name: "24/7 Vet Helpline",
+    price: "$15.00",
+    id: "24-7-vet-helpline",
+    images: [
+      {
+        src: "https://s3-alpha-sig.figma.com/img/c719/8a55/9d54d4db8c1e404cce5823f148596ae3?Expires=1725840000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=lW51xy4dfqkyDi4jWruiI0Rv3-yC6GnRD0SOQmquxSuBwM~zS7cxfkxF8j59D9fRXo0Y-YrlJY~R8aAFkqN3~N9iDY8d9mdRFu-W15ABxAXr464cpjpE3zOBxR~bflQn0EfQlFBEDhXa8HrTCo31ABzX246eGN5J8VMnzLHh4moYisdqsuyMsPsdJqQUOkg8IVnYlfRSQnQIJkLQ2kTT2c7J4kgkOsPbC0eb-pyAjX42Bhw35A483SarFdDkyhg1v0lJOSYALXKJaBfzJzYA9K1DY0b5gUGbXB-wYsYs5SIV4zbC7QKrr7PxAifMgjH8Y6v-oQ0usVzWwqW2yhF2eA__",
+      },
+    ],
+    isAnnual: true,
+    description:
+      "Contact a veterinary professional any time or day by phone, email or live chat. Your first year is complimentary with a Lifetime Protection Membership.",
+  },
+];
+
 export const getPetsList = () => {
   return PETS_LIST;
 };
@@ -440,7 +515,7 @@ export const getPetDocuments = ({
 };
 
 export const getPetById = (id: string) => {
-  return getPetsList()?.find((pet) => pet.id === id);
+  return getPetsList()?.find((pet) => pet.id === id) || getPetsList()[0];
 };
 
 export const getPetServiceStatus = (petId: string) => {
@@ -455,6 +530,26 @@ export const getProductsList = () => {
   return CHECKOUT_PRODUCTS;
 };
 
+export const getServicesList = () => {
+  return CHECKOUT_SERVICES;
+};
+
 export const getProductById = (id: string | null) => {
   return DETAILED_CART_ITEMS.find((pet) => pet.id === id);
+};
+
+export const getLostPetsHistory = () => {
+  return PETS_LIST.filter((pet) =>
+    pet.lostPetHistory?.some((history) => history.foundedBy)
+  ).map((pet) => {
+    const petName = pet.name;
+    const petHistory = pet.lostPetHistory?.filter(
+      (history) => history.foundedBy
+    );
+    return { petName, petHistory };
+  });
+};
+
+export const getAuthLogin = () => {
+  return true;
 };

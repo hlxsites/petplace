@@ -81,6 +81,7 @@ export const REGIONS = {
 
 window.hlx.templates.add([
   '/templates/about-us',
+  '/templates/account-activation/',
   '/templates/adopt',
   '/templates/adoption-landing-page',
   '/templates/article-page',
@@ -97,9 +98,8 @@ window.hlx.templates.add([
   '/templates/insurance-landing-page',
   '/templates/insurance-page',
   '/templates/insurance-paid-page',
-  '/templates/no-markup',
   '/templates/puppy-diaries-index',
-  '/templates/react-render-only',
+  '/templates/remove-default-markup',
   '/templates/searchresults',
   '/templates/tag-index',
   '/templates/travel-guide-page',
@@ -876,6 +876,9 @@ async function optimizedBatchLoading(promises) {
 }
 
 export async function createNewsletterAutoBlock(fragmentUrl, addElement) {
+  const isNoMarkupTemplate = document.body.classList.contains('remove-default-markup');
+  if (isNoMarkupTemplate) return null;
+
   const res = await fetch(fragmentUrl);
   const text = await res.text();
 

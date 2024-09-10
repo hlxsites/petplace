@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 
 import { Switch } from "./Switch";
 
-const { queryByText, getByRole } = screen;
+const { queryByText, getByRole, getByText } = screen;
 
 const DEFAULT_LABEL = "Test label";
 const DEFAULT_CLASSES = "h-6 w-[52px] rounded-[21px]";
@@ -27,6 +27,24 @@ describe("<Switch />", () => {
       expect(queryByText(DEFAULT_LABEL)).toBeInTheDocument();
     }
   );
+
+  it("should render switch with given text style props", () => {
+    getRenderer({
+      textProps: {
+        size: "32",
+        fontFamily: "roboto",
+        textDecoration: "line-through",
+      },
+    });
+    expect(getByText(DEFAULT_LABEL)).toHaveClass(
+      "text-32 font-roboto line-through"
+    );
+  });
+
+  it("should render switch with default text style props", () => {
+    getRenderer();
+    expect(getByText(DEFAULT_LABEL)).toHaveClass("text-16 font-franklin");
+  });
 
   it("should render default classes", () => {
     getRenderer();
@@ -62,6 +80,34 @@ describe("<Switch />", () => {
   it("should render switch disabled when disabled is true", () => {
     getRenderer({ disabled: true });
     expect(getByRole("switch")).toBeDisabled();
+  });
+
+  it("should render orange variant classes by default", () => {
+    getRenderer({ defaultChecked: true });
+    expect(getByRole("switch")).toHaveClass(
+      "border-none bg-orange-300-contrast focus:bg-orange-300-contrast"
+    );
+  });
+
+  it.each([
+    [true, "border-none bg-purple-100 focus:bg-purple-100"],
+    [false, "hover:bg-purple-300"],
+  ])(
+    "should render purple variant root classes for isChecked: %s",
+    (defaultChecked, expected) => {
+      getRenderer({ defaultChecked, variant: "purple" });
+      expect(getByRole("switch")).toHaveClass(expected);
+    }
+  );
+
+  it("should render purple variant indicator classes", () => {
+    const { container } = getRenderer({
+      defaultChecked: true,
+      variant: "purple",
+    });
+    expect(container.querySelectorAll("span")[1]).toHaveClass(
+      "bg-purple-500 hover:bg-purple-300"
+    );
   });
 
   it("should render switch unchecked by default", () => {

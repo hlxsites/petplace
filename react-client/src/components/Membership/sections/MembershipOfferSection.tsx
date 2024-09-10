@@ -1,4 +1,5 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
+import { Fragment } from "react/jsx-runtime";
 import { Carousel } from "~/components/design-system";
 import { useCheckoutIndexViewModel } from "~/routes/checkout/useCheckoutIndexViewModel";
 import { MembershipCard } from "../MembershipCard";

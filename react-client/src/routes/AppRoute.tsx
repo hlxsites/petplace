@@ -1,5 +1,6 @@
 import isEqual from "lodash/isEqual";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
@@ -13,6 +14,7 @@ import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
 import { IS_DEV_ENV } from "~/util/envUtil";
+import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { ProductsIndex } from "./checkout/products/ProductsIndex";
@@ -37,8 +39,26 @@ const routes: PetPlaceRouteObject[] = [
       {
         element: <AccountRoot />,
         id: "account",
+        loader: AccountIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
         path: AppRoutePaths.account,
         children: [
+          {
+            element: <AccountIndex />,
+            id: "accountIndex",
+            index: true,
+          },
+          {
+            id: "accountNotifications",
+            path: AppRoutePaths.accountNotifications,
+            element: <AccountIndex />,
+          },
+          {
+            id: "accountPayment",
+            path: AppRoutePaths.accountPayment,
+            element: <AccountIndex />,
+          },
           {
             id: "myPets",
             path: AppRoutePaths.myPets,
@@ -100,20 +120,20 @@ const routes: PetPlaceRouteObject[] = [
               },
             ],
           },
-          {
-            element: <LostPetIndex />,
-            id: "lostPet",
-            path: AppRoutePaths.lostPet,
-            loader: LostPetIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
-          },
-          {
-            element: <FoundPetIndex />,
-            id: "foundPet",
-            path: AppRoutePaths.foundPet,
-          },
         ],
+      },
+      {
+        element: <LostPetIndex />,
+        id: "lostPet",
+        path: AppRoutePaths.lostPet,
+        loader: LostPetIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
+      },
+      {
+        element: <FoundPetIndex />,
+        id: "foundPet",
+        path: AppRoutePaths.foundPet,
       },
       {
         id: "checkout",

@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
+import { useCarouselControl } from "~/hooks/useCarouselControl";
 import { classNames } from "~/util/styleUtil";
 import { IconButton } from "../button/IconButton";
 import { Icon } from "../icon/Icon";
-import { useCarouselControl } from "~/hooks/useCarouselControl";
 
 type CarouselProps = {
   ariaLabel: string;

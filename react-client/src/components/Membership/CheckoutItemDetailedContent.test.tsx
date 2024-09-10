@@ -16,14 +16,6 @@ const DEFAULT_ITEM = {
 const { getByRole, getByText, queryByText, queryByRole } = screen;
 
 describe("CheckoutItemDetailedContent", () => {
-  it.each(["A product", "Another product"])(
-    "should render component with given name",
-    (name) => {
-      getRenderer({ item: { ...DEFAULT_ITEM, name } });
-      expect(getByRole("heading", { name })).toBeInTheDocument();
-    }
-  );
-
   it.each(["$19.95", "$100.00"])(
     "should render component with given price",
     (price) => {

@@ -1,9 +1,9 @@
 import { Text, TextSpan } from "~/components/design-system";
-import { PetInfo } from "~/mocks/MockRestApiServer";
+import { PetModel } from "~/domain/models/pet/PetModel";
 
 export type GetPetInfoTabProps = Omit<
-  PetInfo,
-  "id" | "img" | "isProtected" | "microchipNumber" | "name"
+  PetModel,
+  "id" | "img" | "isProtected" | "microchip" | "name"
 >;
 
 export function PetInfoTabContent({

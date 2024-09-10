@@ -76,7 +76,7 @@ export const FormBuilderPlayground = () => {
             id: "spayed-neutered",
             label: "Are they spayed or neutered?",
             requiredCondition: true,
-            type: "boolean",
+            type: "switch",
           },
         ],
       },

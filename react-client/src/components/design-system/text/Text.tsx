@@ -1,28 +1,6 @@
-import { ReactNode } from "react";
-import { DisplayClasses } from "~/routes/types/styleTypes";
-import {
-  TextCommonStyleProps,
-  useTextCommonStyles,
-} from "./useTextCommonStyles";
 import clsx from "clsx";
-
-type StyleProps = TextCommonStyleProps & {
-  display?: DisplayClasses;
-  inherit?: boolean;
-  fontFamily?: "franklin" | "raleway" | "roboto";
-  fontWeight?: "normal" | "bold" | "semibold" | "medium";
-  isResponsive?: boolean;
-  size?: "12" | "14" | "16" | "18" | "20" | "24" | "32" | "40";
-  textDecoration?: "none" | "line-through" | "underline";
-};
-
-export type TextProps = StyleProps & {
-  ariaHidden?: boolean;
-  ariaLabel?: string;
-  children: ReactNode;
-  element?: "p" | "span";
-  id?: string;
-};
+import { StyleProps, TextProps } from "../types/TextTypes";
+import { useTextCommonStyles } from "./useTextCommonStyles";
 
 export const Text = ({
   ariaHidden,
@@ -94,9 +72,9 @@ function useTextBase({
     "font-medium": fontWeight === "medium",
 
     "text-12 leading-4": size === "12",
-    "text-14 leading-5": size === "14",
-    "text-16 leading-6": size === "16",
-    "text-18 leading-7": size === "18",
+    "text-14 leading-5": size === "14" && !isResponsive,
+    "text-16 leading-6": size === "16" && !isResponsive,
+    "text-18 leading-7": size === "18" && !isResponsive,
     "text-20 leading-7": size === "20",
     "text-24 leading-7": size === "24",
     "text-32 leading-8": size === "32",

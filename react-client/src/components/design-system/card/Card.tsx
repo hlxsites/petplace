@@ -7,8 +7,8 @@ export const Card = ({
   children,
   padding,
   radius = "base",
-  role,
   shadow,
+  ...rest
 }: CardProps) => {
   return (
     <div
@@ -28,7 +28,7 @@ export const Card = ({
           "p-xxlarge": padding === "xxlarge",
         }
       )}
-      role={role}
+      {...rest}
     >
       {children}
     </div>
