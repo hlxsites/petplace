@@ -7,7 +7,7 @@ const ADD_TO_CART_BUTTON_LABEL = "Add to cart";
 const YEAR_LABEL = "/year";
 const DEFAULT_ITEM = {
   id: "item-id",
-  name: "Item name",
+  title: "Item title",
   price: "Item price",
   description: "Item description",
   images: [],

@@ -19,7 +19,7 @@ export const CheckoutItemDetailedContent = ({
     description,
     images,
     isAnnual,
-    name,
+    title,
     price,
     privacyFeatures,
     sizing,
@@ -33,7 +33,7 @@ export const CheckoutItemDetailedContent = ({
         {`${isAnnual ? "/year" : ""}`}
       </Text>
 
-      <CartItemImages images={images} name={name} />
+      <CartItemImages images={images} name={title} />
       <div className="flex flex-col gap-base">
         <Text color="background-color-tertiary" size="14">
           {description}
