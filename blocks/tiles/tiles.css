@@ -124,6 +124,12 @@
   .tile .tile-contents > div:first-child {
     min-height: auto;
   }
+
+  .tiles-wrapper .tiles-block-container .tiles-featured .tile,
+  .tiles-wrapper .pet-care .tiles-block-container .tile,
+  .tiles-wrapper .pet-health .tiles-block-container .tile {
+    width: 33%;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -146,7 +152,7 @@
   flex-direction: column;
 }
 
-.tiles.spotlight .tiles-featured {
+.tiles.spotlight, .tiles-featured {
   display: flex;
   flex-direction: row;
   gap: 1.5rem;

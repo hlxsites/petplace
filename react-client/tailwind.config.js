@@ -1,16 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+import { CUSTOM_THEME } from "./tailwind.theme";
+
 module.exports = {
-  mode: "jit",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  theme: {
-    colors: {
-      "highlight-color": "var(--highlight-color)",
-      "primary-color": "var(--cta-button-color)",
-      white: "#ffffff",
-      black: "#000000",
-      transparent: "transparent",
-    },
-    extend: {},
+  corePlugins: {
+    preflight: false,
   },
+  mode: "jit",
   plugins: [],
+  safelist: [
+    "aria-selected:true",
+    "aria-selected:false",
+    {
+      pattern: /text-+/,
+    },
+  ],
+
+  theme: CUSTOM_THEME,
 };

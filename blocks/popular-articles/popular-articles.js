@@ -1,5 +1,8 @@
 import {
-  createOptimizedPicture, decorateBlock, loadBlock, toClassName,
+  createOptimizedPicture,
+  decorateBlock,
+  loadBlock,
+  toClassName,
 } from '../../scripts/lib-franklin.js';
 import { getCategory } from '../../scripts/scripts.js';
 
@@ -12,7 +15,10 @@ async function fetchArticleData(paths) {
     const html = document.createElement('div');
     html.innerHTML = text;
 
-    const catSlug = html.querySelector('meta[name="category"]').content.split(',')[0]?.trim();
+    const catSlug = html
+      .querySelector('meta[name="category"]')
+      .content.split(',')[0]
+      ?.trim();
     const catData = await getCategory(toClassName(catSlug));
     const title = html.querySelector('h1').textContent;
     const imageAlt = html.querySelector('meta[property="og:image:alt"]');
@@ -24,59 +30,47 @@ async function fetchArticleData(paths) {
       category: catData.Category,
       categoryPath: catData.Path,
       author: html.querySelector('meta[name="author"]').content,
-      publicationDate: html.querySelector('meta[name="publication-date"]').content,
+      publicationDate: html.querySelector('meta[name="publication-date"]')
+        .content,
     };
   });
 
   return Promise.all(PromiseArray);
 }
 
-async function getPathsFromSlideshow() {
-  const res = await fetch(`${window.hlx.contentBasePath}/`);
-  const html = await res.text();
-
-  // Create a temporary element to extract the content within the <main> tag
-  const tempElement = document.createElement('div');
-  tempElement.innerHTML = html;
-
-  // Get the content within the <main> tag
-  const slideShow = tempElement.querySelector('.slideshow');
-  const paths = [...slideShow.children].map((child) => new URL(child.querySelector('a').href).pathname);
-  paths.splice(3, paths.length);
-
-  return paths;
-}
-
 async function getPopularPosts(block, isAuthorPopularPosts) {
-  const res = await fetch(`${window.hlx.contentBasePath}/fragments/popular-posts`);
+  const res = await fetch(
+    `${window.hlx.contentBasePath}/fragments/popular-posts`,
+  );
   const text = await res.text();
   const html = document.createElement('div');
   let paths = [];
   html.innerHTML = text;
+
   // Get the content within the <main> tag
   const heading = html.querySelector('h2');
   block.innerHTML = heading.outerHTML;
   if (isAuthorPopularPosts) {
-    const popularPostsElem = html.querySelector('.authorpopularposts');
+    const popularPostsElem = html.querySelector('.popularpostsauthor');
 
     if (popularPostsElem) {
       // eslint-disable-next-line max-len
-      paths = [...popularPostsElem.children].map((child) => new URL(child.textContent.trim()).pathname);
+      paths = [...popularPostsElem.children].map(
+        (child) => new URL(child.textContent.trim()).pathname,
+      );
     }
 
     return fetchArticleData(paths);
   }
-  const popularPostsElem = html.querySelector('.popularposts');
+  const popularPostsElem = html.querySelector('.popularpostsarticle');
 
   if (popularPostsElem) {
     // eslint-disable-next-line max-len
-    paths = [...popularPostsElem.children].map((child) => new URL(child.textContent.trim()).pathname);
+    paths = [...popularPostsElem.children].map(
+      (child) => new URL(child.textContent.trim()).pathname,
+    );
   }
-  // if popularPostsElem is not found or there is less than three paths
-  if (paths.length < 3) {
-    paths.push(...await getPathsFromSlideshow());
-  }
-  paths.splice(3, paths.length);
+  paths.splice(4, paths.length);
 
   return fetchArticleData(paths);
 }
@@ -91,37 +85,47 @@ export default async function decorate(block) {
 
     PopularPostsData.forEach((post, i) => {
       const popularPostsWrapper = `
-        <div class="popular-posts-card">
-          <a href="${post.path}">
-            <div class="img-div"></div>
-          </a>
-          <div class="title-div">
-            <a href="${post.categoryPath}">${post.category}</a>
-            <a href="${post.path}"><h3>${post.title}</h3></a>
-          </div>
-        </div>          
+        <a href="${post.path}">
+          <div class="popular-posts-card">
+            <div class="img-title-div">
+              <div class="img-div"></div>
+              <div class="title-div">
+                <h3>${post.title}</h3>
+              </div>
+            </div>
+          </div>          
+        </a>
       `;
       cardWrapper.innerHTML += popularPostsWrapper;
       const imgDiv = cardWrapper.querySelectorAll('.img-div')[i];
-      imgDiv.append(createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '300' }]));
+      imgDiv.append(
+        createOptimizedPicture(post.image, post.imageAlt, false, [
+          { width: '300' },
+        ]),
+      );
     });
 
     return block.append(cardWrapper);
   }
+
   const slideCardMedia = document.createElement('div');
   slideCardMedia.classList.add('slide-cards');
   slideCardMedia.classList.add('media');
 
   PopularPostsData.forEach((post) => {
-    const row = `<div>
-            <div>
-              ${createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '768' }]).outerHTML}
-            </div>
-            <div class="button-container">
-            <a href="${post.path}" title="${post.title}" class="button primary">${post.title}</a>
-            <p>${post.publicationDate} | ${post.author}</p>
-            </div>
-          </div>`;
+    const row = `
+      <div>
+        <div>
+          ${createOptimizedPicture(post.image, post.imageAlt, false, [{ width: '768' }]).outerHTML}
+        </div>
+        <div class="button-container">
+          <a href="${post.path}" title="${post.title}" class="button primary">
+            ${post.title}
+          </a>
+          <p>${post.publicationDate} | ${post.author}</p>
+        </div>
+      </div>
+    `;
 
     slideCardMedia.innerHTML += row;
   });

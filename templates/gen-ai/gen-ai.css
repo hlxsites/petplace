@@ -3,50 +3,59 @@
 }
 
 .gen-ai .hero-wrapper {
+  display: grid;
   position: relative;
   max-width: inherit;
   flex-direction: row;
-  position: relative;
-  max-height: 375px;
   overflow: hidden;
+
+  @media (max-width: 1023px) {
+    max-height: 375px;
+  }
 }
 
 .gen-ai .hero-wrapper .img-div {
   position: relative;
-  padding-bottom: 90%;
-  @media (max-width: 1024px){
-    padding-bottom: 70%;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+
+  @media (max-width: 1024px) {
     height: 100%;
   }
 }
 
 .gen-ai .hero-wrapper .img-div img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
   max-height: 375px;
   object-fit: cover;
   object-position: center center;
   opacity: 1;
   transition: opacity 500ms ease 0s;
-  @media (max-width: 1024px){
+
+  @media (max-width: 1024px) {
     object-position: top left;
   }
-  @media (min-width: 1400px){
+
+  @media (min-width: 1024px) {
+    min-height: 446px;
+  }
+
+  @media (min-width: 1400px) {
     object-position: bottom center;
   }
 }
 
 .gen-ai .hero-wrapper .text-div {
-  position: absolute;
-  inset: 0 1.5rem;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  position: relative;
+  z-index: 2;
+  justify-self: center;
   display: flex;
   flex-direction: column;
-  color: var(--text-color-inverted);
+  width: calc(100% - 3rem);
   max-width: 1392px;
-  margin: 0 auto;
+  color: var(--text-color-inverted);
 }
 
 .gen-ai .hero-wrapper .text-div h1 {
@@ -55,7 +64,7 @@
   margin: 20px 0 10px;
 }
 
-.gen-ai .hero-wrapper .text-div h1:before {
+.gen-ai .hero-wrapper .text-div h1::before {
   content: ' ';
   background-image: url('data:image/svg+xml,<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.9329 14.9692L19.6 16.4249V22.4C19.6 23.1732 18.9732 23.8 18.2 23.8H6.99999C6.2268 23.8 5.59999 23.1732 5.59999 22.4V11.2C5.59999 10.4268 6.2268 9.8 6.99999 9.8H13.2822L10.6102 7H6.99999C4.6804 7 2.79999 8.88041 2.79999 11.2V22.4C2.79999 24.7196 4.6804 26.6 6.99999 26.6H18.2C20.5196 26.6 22.4 24.7196 22.4 22.4V14.8017L21.4942 14.7433C21.2826 14.7297 21.0761 14.8127 20.9329 14.9692Z" fill="white"/><path d="M22.4449 2.96558L21.8201 7.69716C21.7666 8.10275 21.8999 8.51075 22.1825 8.80649L25.1911 11.9541L20.8455 11.6734C20.4373 11.647 20.0392 11.8072 19.763 12.1088L16.5399 15.629L17.1591 10.8929C17.212 10.4881 17.0789 10.0811 16.7971 9.78586L13.7931 6.63908L18.134 6.91835C18.5414 6.94456 18.9389 6.78493 19.215 6.48414L22.4449 2.96558Z" fill="white"/><path d="M13.9086 13.4264L13.5509 16.1352C13.5015 16.5089 13.6243 16.8847 13.8847 17.1572L15.5952 18.9466L13.1245 18.787C12.7485 18.7627 12.3818 18.9102 12.1273 19.1881L10.2821 21.2035L10.6367 18.4914C10.6854 18.1185 10.5628 17.7436 10.3031 17.4716L8.59515 15.6824L11.0632 15.8412C11.4386 15.8654 11.8047 15.7183 12.059 15.4412L13.9086 13.4264Z" fill="white"/></svg>');
   width: 28px;
@@ -63,20 +72,114 @@
   display: inline-block;
   margin-right: 5px;
   background-size: cover;
-
 }
+
+/* Search Actions */
+.gen-ai .search-actions {
+  display: flex;
+  margin-bottom: 2rem;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    grid-column: span 2;
+  }
+}
+
+.gen-ai .action-cta,
+.gen-ai .action-cta--placeholder {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'action-image'
+    'action-title'
+    'action-button';
+  gap: 2rem 2.5rem;
+  border-radius: 12px;
+  border: 2px solid #e8e8e8;
+  box-shadow: 0 2px 6px 0 rgba(0 0 0 / 15%);
+  padding: 1.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'action-image action-title'
+      'action-image action-button';
+  }
+}
+
+.gen-ai .action-cta-title {
+  color: var(--text-color-alt);
+}
+
+.gen-ai .action-cta--placeholder {
+  margin-bottom: 2rem;
+}
+
+/* stylelint-disable-next-line */
+.gen-ai .action-cta img,
+.gen-ai .action-cta--placeholder img {
+  grid-area: action-image;
+  aspect-ratio: 44 / 35;
+  border-radius: 8px;
+  height: 175px;
+  object-fit: cover;
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+}
+
+.gen-ai .action-cta [itemprop='name'],
+.gen-ai .action-cta--placeholder [itemprop='name'] {
+  grid-area: action-title;
+  display: flex;
+  align-items: center;
+  font-size: 1.625rem;
+  margin: 0 !important;
+}
+
+.gen-ai .action-cta .action-button,
+.gen-ai .action-cta--placeholder .action-button {
+  grid-area: action-button;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  column-gap: 1rem;
+  background-color: var(--cta-button-color);
+  border-radius: 360px;
+  color: var(--text-color-inverted);
+  font-weight: 600;
+  line-height: normal;
+  min-width: 175px;
+  padding: 0.875rem 1.5rem;
+  text-align: center;
+  height: fit-content;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: fit-content;
+  }
+}
+
+.gen-ai .action-cta .action-button .icon,
+.gen-ai .action-cta--placeholder .action-button .icon {
+  height: 16px;
+  width: 16px;
+}
+
 @media (min-width: 600px) {
-.gen-ai .hero-wrapper .text-div h1:before {
+  .gen-ai .hero-wrapper .text-div h1:before {
     height: 58px;
     width: 58px;
   }
 }
+
 .gen-ai .hero-wrapper .search-wrapper {
   margin-right: 30px;
 }
 
 .gen-ai .sortbtn .search-select {
-  padding: 1px 2.5rem 2px 1rem;        
+  padding: 1px 2.5rem 2px 1rem;
   background-image: url('../../icons/down-chevron.svg');
   background-position: calc(100% - 13px) 50%;
   background-repeat: no-repeat;
@@ -92,11 +195,13 @@
 .gen-ai .cards .skeleton {
   min-width: 318px;
 }
-@media (max-width: 600px){
+
+@media (max-width: 600px) {
   .gen-ai .hero-wrapper .text-div p {
     font-size: 0.8125rem;
   }
 }
+
 @media (max-width: 350px) {
   .gen-ai .hero-wrapper .text-div p {
     display: none;
@@ -106,7 +211,6 @@
 @media screen and (min-width: 530px) {
   .gen-ai .hero-wrapper .img-div {
     position: relative;
-    padding-bottom: 62%;
   }
 }
 
@@ -139,9 +243,14 @@
   .gen-ai .section > div.hero-wrapper {
     max-width: inherit;
   }
+}
 
-  .gen-ai .hero-wrapper .img-div {
-    position: relative;
-    padding-bottom: 30.2083%;
-  }
+.visually-hidden {
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }

@@ -1,0 +1,39 @@
+.article-cta-wrapper {
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 25%);
+  padding: 1rem;
+}
+
+.article-cta h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.article-cta span {
+  font-size: 1rem;
+  line-height: 0.5;
+}
+
+.article-cta button {
+  display: flex;
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+  height: 2.5rem;
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: normal;
+  border-radius: 0.5rem;
+  background-color: var(--link-color);
+}
+
+.article-cta button::after {
+  content: '';
+  -webkit-mask: url("../../icons/arrow.svg") center / 100% 100%;
+  mask: url("../../icons/arrow.svg") center / 100% 100%;
+  background-color: #fff;
+  padding: 0.5rem;
+  margin-left: 1rem;
+  display: inline-block;
+}

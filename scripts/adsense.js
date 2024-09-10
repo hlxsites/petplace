@@ -21,11 +21,6 @@ const adsDivCreator = (adLoc) => {
   } else idLoc.id = adLoc;
   adDiv.appendChild(idLoc);
 
-  if (adLoc === 'article_side') {
-    const aside = document.querySelector('.social-share-wrapper');
-    aside.after(mainAdsDiv);
-  }
-
   if (adLoc.includes('top')) {
     if (adLoc.includes('home')) {
       const adSection = document.querySelectorAll('.tiles-container')[0];
@@ -37,9 +32,16 @@ const adsDivCreator = (adLoc) => {
       const initialCard = document.querySelector(':scope .cards li:first-child');
       initialCard.before(mainAdsDiv);
     } else {
-      const hero = document.querySelector('.hero-wrapper');
-      hero.after(mainAdsDiv);
+      const content = document.querySelector('.article-content-container .default-content-wrapper')
+        || document.querySelector('main .default-content-wrapper');
+      content.before(mainAdsDiv);
     }
+  }
+
+  if (adLoc === 'article_side') {
+    const content = document.querySelector('.article-content-container');
+    mainAdsDiv.classList.add('skyscraper');
+    content.append(mainAdsDiv);
   }
 
   if (adLoc.includes('bottom')) {

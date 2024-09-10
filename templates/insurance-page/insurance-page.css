@@ -148,6 +148,7 @@
   display: -webkit-box;
   max-width: 150px;
   -webkit-box-orient: vertical;
+  line-clamp: 1;
   -webkit-line-clamp: 1;
   flex-shrink: 0;
   font-size: var(--body-font-size-s);
@@ -247,44 +248,35 @@
  */
 .insurance-page main {
   display: grid;
-  grid-template-columns: auto;
-  max-width: 1020px;
+  width: 80%;
   margin: auto;
-  padding: 0 1rem;
+  grid-template:
+    "hero"
+    "side-section"
+    "content";
 
-  @media (min-width: 1024px) {
-    grid-template-columns: minmax(66%, 670px) 1fr;
-  }
+    @media (max-width: 768px) {
+      padding: 1rem;
+      width: auto;
+    }  
 }
 
-.insurance-page main>.side-section {
-  grid-row: 2 / 2;
+.insurance-page main .side-section {
+  grid-area: side-section;
+  display: flex;
+  align-items: center;
+  padding: 0;
 
-  @media (min-width: 1024px) {
-    margin-left: 80px;
-    grid-column: 2 / 2;
-    grid-row: 1 / span 2;
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: start;
   }
-
-  @media (max-width: 1023px) {
-    padding-bottom: 0;
-  }
-}
-
-.insurance-page main>.section:nth-child(n+3) {
-  grid-column: 1 / 1;
 }
 
 /**
  * Article Author
  */
-.insurance-page .article-author {
-  margin-bottom: 24px;
-
-  @media (min-width: 1024px) {
-    margin-bottom: 32px;
-  }
-}
 
 .insurance-page .article-author [itemprop="author"] {
   display: grid;
@@ -324,10 +316,9 @@
 /**
  * Social Share
  */
-.insurance-page .social-share {
-  @media (min-width: 1024px) {
-    margin-bottom: 48px;
-  }
+.insurance-page .social-share-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 .insurance-page .social-share :is(li, .icon) {
@@ -345,22 +336,6 @@
     display: block;
   }
 }
-
-/**
- * Widgets
- */
- .insurance-page .widget.aggregator {
-  width: 100%;
-  height: 1280px;
-
-  @media (min-width: 800px) {
-    height: 560px;
-  }
-
-  @media (min-width: 1024px) {
-    height: 1020px;
-  }
- }
 
 /**
  * Emphasized List

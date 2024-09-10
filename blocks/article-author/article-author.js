@@ -25,13 +25,15 @@ export default async function decorate(block) {
   block.innerHTML = `
     <div itemprop="author" itemscope itemtype="https://schema.org/Person">
       <p itemprop="name">${titleWithLinkIfExist}</p>
+      <time itemprop="datePublished" datetime="${date.toISOString().substring(0, 10)}">${date}</time>
     </div>
-    <time itemprop="datePublished" datetime="${date.toISOString().substring(0, 10)}">${date}</time>
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
       <meta itemprop="name" content="${getPlaceholder('websiteName')}"/>
       <meta itemprop="logo" content="${window.location.origin}/icons/logo.svg"/>
     </div>`;
-  block.firstElementChild.prepend(avatarIfExist);
+
+  if (avatar) block.prepend(avatarIfExist);
+
   decorateIcons(block);
   setTimeout(() => {
     window.requestAnimationFrame(() => {

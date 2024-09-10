@@ -9,12 +9,20 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh"],
+  plugins: [
+    "prettier",
+    "react-refresh",
+    "@typescript-eslint",
+    "react",
+    "unused-imports",
+  ],
   rules: {
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
     ],
+    "@typescript-eslint/unbound-method": "off",
+    "unused-imports/no-unused-imports": "error",
   },
   parserOptions: {
     ecmaVersion: "latest",
@@ -30,6 +38,16 @@ module.exports = {
       files: ["*.js", "*.jsx"],
       parserOptions: {
         project: null,
+      },
+    },
+    {
+      files: ["*.test.ts", "*.test.tsx", "*.spec.ts"],
+      rules: {
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
       },
     },
   ],

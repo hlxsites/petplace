@@ -11,6 +11,31 @@ function removeAllErrorMessage(searchContainers) {
   });
 }
 
+// below functions are to break up and rejoin the url params
+function getFilteredQueryParams() {
+  const includedParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+
+  const filteredParams = [];
+  urlParams.forEach((value, key) => {
+    if (includedParams.includes(key)) {
+      filteredParams.push({ key, value });
+    }
+  });
+
+  return filteredParams;
+}
+
+function getUrlParamString() {
+  const paramsArr = getFilteredQueryParams();
+  // eslint-disable-next-line arrow-parens
+  const parts = paramsArr.map(param => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`);
+
+  const urlString = parts.join('&');
+  return urlString;
+}
+
 function isValidZipcode(code) {
   const regex = /^[0-9]{5}(?:-[0-9]{4})?$/;
 
@@ -34,14 +59,8 @@ function createSpanBlock(main) {
       const code = searchInput.value;
       if (isValidZipcode(code)) {
         removeAllErrorMessage(searchContainers);
-        let pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}`;
-        if (document.body.classList.contains('experiment-aggregator-split-testing')) {
-          if (document.body.classList.contains('variant-control')) {
-            pageUrl = `https://quote.petplace.com/?zipCode=${code}&source=OldSite&campaign=TestA`;
-          } else if (document.body.classList.contains('variant-challenger-1')) {
-            pageUrl = `https://quote.petpremium.com/petplace/wizard?zipCode=${code}&source=NewSite&campaign=TestB`;
-          }
-        }
+        const utmParams = getUrlParamString();
+        const pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}${utmParams ? `&${utmParams}` : ''}`;
         window.open(pageUrl);
       } else {
         errorMsg.style.display = 'block';

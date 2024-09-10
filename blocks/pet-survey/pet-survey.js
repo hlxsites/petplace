@@ -97,6 +97,19 @@ export default async function decorate(block) {
   const state = {
     surveyAnswers: [],
   };
+
+  function pushSurveyAnswer(newAnswer) {
+    // Since we can't be sure if the QuestionId will be a number or string,
+    // we convert it to string to compare
+    const isNotEqualAsNewAnswer = ({ QuestionId }) => `${QuestionId}` !== `${newAnswer.QuestionId}`;
+
+    state.surveyAnswers = [
+      // Remove any existing answers for the same question
+      ...state.surveyAnswers.filter(isNotEqualAsNewAnswer),
+      newAnswer,
+    ];
+  }
+
   const isLoggedInUser = await isLoggedIn();
   let token;
   let surveyParentId = null;
@@ -174,7 +187,7 @@ export default async function decorate(block) {
           QuestionId: parseInt(el.target.getAttribute('data-question-id'), 10),
           QuestionOptionId: parseInt(el.target.value, 10),
         };
-        state.surveyAnswers.push(data);
+        pushSurveyAnswer(data);
         enableSaveButton();
         const otherOptions = inputEl.querySelectorAll(`option:not([value="${el.target.value}"]):not([value=""])`);
         if (otherOptions.length > 0) {
@@ -220,7 +233,7 @@ export default async function decorate(block) {
             );
             // only add if it doesn't exist already
             if (existingAnswerIndex === -1) {
-              state.surveyAnswers.push(data);
+              pushSurveyAnswer(data);
             }
           } else {
             // remove the unchecked item from the state
@@ -412,7 +425,7 @@ export default async function decorate(block) {
           });
           itemsToDelete.forEach((item) => {
             item.Deleted = true;
-            state.surveyAnswers.push(item);
+            pushSurveyAnswer(item);
           });
           const payload = {
             Id: surveyResponse.Id,
@@ -706,6 +719,8 @@ export default async function decorate(block) {
           } else {
             bindSummarySaveNewEvent(block);
           }
+
+          bindSurveySummaryChangeEvents(block);
       }
     }
   }

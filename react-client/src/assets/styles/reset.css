@@ -1,0 +1,16 @@
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+#root, #__next {
+    isolation: isolate;
+}
+
+main input {
+    all: unset;
+}
+
+main input:hover {
+    border: initial;
+}

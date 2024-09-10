@@ -13,4 +13,4 @@ auth-pages/
 
 # Ignore the react-client directory & build generated files
 react-client/
-blocks/react/react-index*
+blocks/react/react*

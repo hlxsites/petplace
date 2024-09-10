@@ -62,7 +62,7 @@ export const articlePopularHelper = () => {
 };
 
 export const articlePrevNextHelper = () => {
-  const articleNav = document.querySelector('.article-navigation-wrapper');
+  const articleNav = document.querySelector('.related-reading-wrapper');
   if (!articleNav) return;
 
   articleNav.addEventListener('click', (ev) => {
@@ -145,26 +145,6 @@ export const mappingHelper = (adLoc) => {
     )
     .build();
 
-  const mappingMiddle = window.googletag
-    .sizeMapping()
-    .addSize(
-      [0, 0],
-      [
-        [320, 50],
-        [320, 100],
-        [300, 250],
-        [336, 280],
-      ],
-    )
-    .addSize(
-      [980, 200],
-      [
-        [300, 250],
-        [336, 280],
-      ],
-    )
-    .build();
-
   const mappingLeaderboard = window.googletag
     .sizeMapping()
     .addSize(
@@ -189,7 +169,7 @@ export const mappingHelper = (adLoc) => {
   // this conditional is only for articles
   if (adLoc.includes('article')) {
     if (adLoc.includes('side')) return mappingSide;
-    if (adLoc.includes('middle')) return mappingMiddle;
+    if (adLoc.includes('middle')) return mappingTop;
   }
 
   if (adLoc.includes('top')) return mappingTop;

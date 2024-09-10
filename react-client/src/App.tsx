@@ -1,14 +1,15 @@
+import { useEffect } from "react";
 import "./index.css";
 import { AppRouter } from "./routes/AppRoute";
+import { resetBodyStyles } from "./util/styleUtil";
 
 function App() {
-  return (
-    <>
-      <h1 className="text-primary-color">PetPlace React project</h1>
-      <p className="text-primary-color">Teste</p>
-      <AppRouter />
-    </>
-  );
+  useEffect(() => {
+    document.body.className = "";
+    resetBodyStyles();
+  }, []);
+
+  return <AppRouter />;
 }
 
 export default App;

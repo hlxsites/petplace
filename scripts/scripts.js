@@ -35,6 +35,7 @@ const AUDIENCES = {
 };
 
 export const DEFAULT_REGION = 'en-US';
+export const ACTIVE_REGIONS = ['en-US'];
 export const REGIONS = {
   // Africa:
   en_GH: ['ACC'],
@@ -80,6 +81,7 @@ export const REGIONS = {
 
 window.hlx.templates.add([
   '/templates/about-us',
+  '/templates/account-activation/',
   '/templates/adopt',
   '/templates/adoption-landing-page',
   '/templates/article-page',
@@ -95,6 +97,7 @@ window.hlx.templates.add([
   '/templates/home-page/',
   '/templates/insurance-landing-page',
   '/templates/insurance-page',
+  '/templates/insurance-paid-page',
   '/templates/puppy-diaries-index',
   '/templates/searchresults',
   '/templates/tag-index',
@@ -122,7 +125,7 @@ window.hlx.plugins.add('experimentation', {
 window.hlx.plugins.add('martech', {
   url: './third-party.js',
   condition: () => new URLSearchParams(window.location.search).get('martech') !== 'off',
-  load: 'eager',
+  load: 'lazy',
 });
 
 window.hlx.plugins.add('rum-conversion', {
@@ -382,7 +385,7 @@ export function decorateResponsiveImages(container, breakpoints = [440, 768]) {
  * @param {Element} main The container element
  */
 async function buildHeroBlock(main) {
-  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt'];
+  const excludedPages = ['home-page', 'breed-index', 'searchresults', 'article-signup', 'adopt', 'article-page', 'insurance-paid-page'];
   const bodyClass = [...document.body.classList];
   // check the page's body class to see if it matched the list
   // of excluded page for auto-blocking the hero
@@ -687,6 +690,12 @@ function animateSkeletons(main) {
       if (entry.addedNodes.length) {
         [...entry.addedNodes]
           .filter((el) => el.classList?.contains('skeleton'))
+          .forEach((el) => {
+            observer.observe(el);
+          });
+        [...entry.addedNodes]
+          .map((el) => (el.querySelectorAll ? [...el.querySelectorAll('.skeleton')] : []))
+          .flat()
           .forEach((el) => {
             observer.observe(el);
           });

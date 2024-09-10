@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header should match snapshot to assure that the component is being rendered correctly 1`] = `
+<div>
+  <div
+    class="mb-large lg:mb-xxlarge"
+  >
+    <div
+      class="mb-large flex items-center justify-between lg:m-0"
+    >
+      <div
+        class="flex items-center"
+      >
+        <h1
+          class="font-bold m-0 text-neutral-950 lg:text-[44px] text-[32px]/[36px]"
+        >
+          Test Title
+        </h1>
+      </div>
+      <div>
+        Primary
+      </div>
+    </div>
+    <div>
+      Secondary
+    </div>
+  </div>
+</div>
+`;
