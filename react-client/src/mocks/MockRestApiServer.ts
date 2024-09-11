@@ -86,7 +86,7 @@ export type PetInfo = {
   img?: string;
   isProtected?: boolean;
   microchipNumber?: number;
-  mixedBreed?: string;
+  mixedBreed?: boolean;
   name: string;
   onboardCompleted?: boolean;
   sex?: string;
@@ -129,7 +129,7 @@ const PETS_LIST: PetModel[] = [
     isProtected: true,
     microchip: "1290",
     missingStatus: "found",
-    mixedBreed: "Yes",
+    mixedBreed: false,
     name: "Buddy",
     onboardCompleted: false,
     sex: "Male",
@@ -182,7 +182,7 @@ const PETS_LIST: PetModel[] = [
     isProtected: false,
     microchip: "8645",
     missingStatus: "missing",
-    mixedBreed: "No",
+    mixedBreed: true,
     name: "Lily",
     sex: "Female",
     spayedNeutered: true,
