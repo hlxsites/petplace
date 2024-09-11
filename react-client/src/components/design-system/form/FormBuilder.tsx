@@ -91,6 +91,7 @@ export const FormBuilder = ({
     <form
       className="space-y-large"
       id={schema.id}
+      role="form"
       noValidate
       onSubmit={onSubmitHandler}
     >
