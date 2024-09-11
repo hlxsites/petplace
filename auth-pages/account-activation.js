@@ -5,9 +5,18 @@
 
     renderOwnerName(claim);
 
-    const endpoint = "https://6bf885ab-eae1-4bf3-8087-2c29b87aea62.mock.pstmn.io/account-activation";
+    if (!token) return;
 
-    const response = fetch(endpoint, { method: "GET" })
+    const endpoint = "https://api-stg.petpoint.com/animal-ftr/adopt/account-activation";
+
+    const response = fetch(endpoint, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }
+     })
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error status: ${response.status}`);
@@ -15,7 +24,23 @@
             return response.json();
         })
         .then((data) => {
-            renderPageInfo(data["petsInfo"])
+            let petsList = [];
+
+            if (Array.isArray(data)) {
+                petsList = data.map((item) => ({
+                    animalType: item.animalType,
+                    name: item.animalName,
+                    photo: item.animalImageUrl
+                }));
+            } else if (data) {
+                petsList.push({
+                    animalType: data.animalType,
+                    name: data.animalName,
+                    photo: data.animalImageUrl
+                });
+            }
+
+            renderPageInfo(petsList)
         })
         .catch((error) => console.log("There was a problem on network: ", error));
 
@@ -23,14 +48,13 @@
 })();
 
 function renderPageInfo(petsList) {
-    if (!petsList) return;
+    if (!petsList?.length) return;
 
     const petsNames = petsList.filter((item) => item.name.length).map((item) => item.name);
     const petsPictures = petsList.map((item) => ({
         placeholder: getImagePlaceholder(item.animalType),
         src: item?.photo?.length ? item.photo : null,
     }));
-
 
     getPetsNames(petsNames);
     getPetsPictures(petsPictures, petsNames);
@@ -53,15 +77,13 @@ function getPetsNames(petsNames) {
 function getPetsPictures(petsPictures, petsNames) {
     if (!petsPictures) return;
 
-    const petsPicturesLength = petsPictures?.length || 0;
+    const petsPicturesLength = petsPictures.length || 0;
 
     const imageContainer = document.getElementById("pet-image");
 
     petsPictures.slice(0, 3).forEach(({ src, placeholder }, index) => {
-        if (!src) return;
-
         const imageTag = document.createElement("img");
-        imageTag.src = src;
+        imageTag.src = src || placeholder;
         imageTag.alt = `Image of pet: ${petsNames[index]}`;
         imageTag.onerror = function () {
             this.src = placeholder;
