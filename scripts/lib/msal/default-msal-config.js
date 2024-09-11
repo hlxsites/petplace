@@ -144,7 +144,6 @@ export const msalChangePwdConfig = {
  * https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  redirectUri: 'https://www.petplace.com',
   scopes: b2cPolicies.scopes,
 };
 
