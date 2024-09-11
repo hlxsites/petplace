@@ -35,14 +35,6 @@ export const CheckoutConclusionModal = ({
           <LinkButton fullWidth replace to={petProfilePath} variant="secondary">
             Back to pet profile
           </LinkButton>
-          <LinkButton
-            fullWidth
-            replace
-            to={`${petProfilePath}?content=pet-watch`}
-            variant="primary"
-          >
-            See my benefits
-          </LinkButton>
         </div>
       </div>
     </Dialog>
