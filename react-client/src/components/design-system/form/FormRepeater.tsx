@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { createNumericArray } from "~/util/misc";
 import { Button } from "../button/Button";
 import { IconKeys } from "../icon/Icon";
@@ -21,20 +21,27 @@ export const FormRepeater = ({
   renderElement,
   values,
 }: FormRepeaterProps) => {
-  const repeaterValues: FormValues[] = (() => {
-    if (values[id] && Array.isArray(values[id])) {
-      return values[id] as FormValues[];
+  const [repeatersValues, setRepeatersValues] = useState<FormValues[]>([]);
+
+  useEffect(() => {
+    if (Array.isArray(values[id]))
+      return setRepeatersValues(values[id] as FormValues[]);
+
+    let minRepeaters: FormValues[] = [];
+    if (minRepeat) {
+      minRepeaters = createNumericArray(minRepeat).map(() => ({}));
     }
-    if (minRepeat) return createNumericArray(minRepeat).map(() => ({}));
-    return [];
-  })();
+
+    onChange(minRepeaters);
+    setRepeatersValues(minRepeaters);
+  }, [id, minRepeat, onChange, values]);
 
   const renderRepeaterButton = (type: "add" | "remove", index: number) => {
     const handleOnClick = () => {
       if (type === "add") {
-        onChange([...repeaterValues, {}]);
+        onChange([...repeatersValues, {}]);
       } else {
-        const newValue = repeaterValues.filter((_, i) => i !== index);
+        const newValue = repeatersValues.filter((_, i) => i !== index);
         onChange(newValue);
       }
     };
@@ -66,19 +73,19 @@ export const FormRepeater = ({
 
   return (
     <div className="grid gap-xlarge">
-      {repeaterValues.map((_, index) => {
-        const isLastIndex = index === repeaterValues.length - 1;
+      {repeatersValues.map((_, index) => {
+        const isLastIndex = index === repeatersValues.length - 1;
 
         const addButton = (() => {
           if (!isLastIndex) return null;
-          if (maxRepeat && repeaterValues.length >= maxRepeat) return null;
+          if (maxRepeat && repeatersValues.length >= maxRepeat) return null;
 
           return renderRepeaterButton("add", index);
         })();
 
         const removeButton = (() => {
           if (!isLastIndex) return null;
-          if (repeaterValues.length <= minRepeat) return null;
+          if (repeatersValues.length <= minRepeat) return null;
 
           return renderRepeaterButton("remove", index);
         })();
@@ -94,10 +101,11 @@ export const FormRepeater = ({
         })();
 
         return (
-          <div className="space-y-base" key={index}>
+          <div className="space-y-base" key={`repeater-${id}-${index}`}>
             {children.map((element, elementIndex) => {
               const repeaterMetadata = {
                 index,
+                repeaterId: id,
               };
 
               return renderElement(

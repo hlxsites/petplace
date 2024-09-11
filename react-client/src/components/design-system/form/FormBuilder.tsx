@@ -27,6 +27,8 @@ import {
   type FormSchema,
   type FormValues,
   type InputsUnion,
+  type InputValue,
+  type RepeaterMetadata,
 } from "./types/formTypes";
 import {
   idWithRepeaterMetadata,
@@ -169,7 +171,10 @@ export const FormBuilder = ({
           >
             {element.children.map((e, i) =>
               renderElement(
-                { ...e, repeaterMetadata: element.repeaterMetadata },
+                {
+                  ...e,
+                  repeaterMetadata: element.repeaterMetadata,
+                },
                 i
               )
             )}
@@ -222,10 +227,10 @@ export const FormBuilder = ({
         <Select
           {...commonProps}
           onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
+            return handleChange(newValue);
           }}
           options={options as string[]}
-          value={(values?.[id] as string) || ""}
+          value={handleStringValue()}
         />
       );
     }
@@ -235,10 +240,10 @@ export const FormBuilder = ({
         <InputRadio
           {...commonProps}
           onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
+            return handleChange(newValue);
           }}
           options={(inputProps.options as string[]) || []}
-          value={(values?.[id] as string) || ""}
+          value={handleStringValue()}
         />
       );
     }
@@ -247,10 +252,10 @@ export const FormBuilder = ({
         <InputCheckboxGroup
           {...commonProps}
           onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
+            return handleChange(newValue);
           }}
           options={(inputProps.options as string[]) || []}
-          value={(values?.[id] as string[]) || []}
+          value={handleStringArrayValue()}
         />
       );
     }
@@ -259,11 +264,9 @@ export const FormBuilder = ({
         <InputSwitch
           {...commonProps}
           onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
+            return handleChange(newValue);
           }}
-          value={
-            typeof values?.[id] !== "undefined" ? !!values?.[id] : undefined
-          }
+          value={handleBooleanValue()}
         />
       );
     }
@@ -273,10 +276,10 @@ export const FormBuilder = ({
         <InputTextarea
           {...commonProps}
           onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
+            return handleChange(newValue);
           }}
           rows={inputProps.rows}
-          value={(values?.[id] as string) || ""}
+          value={handleStringValue()}
         />
       );
     }
@@ -290,9 +293,9 @@ export const FormBuilder = ({
           )}
           hideType={matchConditionExpression(inputProps.hideType ?? false)}
           onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
+            return handleChange(newValue);
           }}
-          value={(values?.[id] as string) || ""}
+          value={handleStringValue()}
         />
       );
     }
@@ -307,9 +310,9 @@ export const FormBuilder = ({
         <Input
           {...commonProps}
           onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
+            return handleChange(newValue);
           }}
-          value={(values?.[id] as string) || ""}
+          value={handleStringValue()}
           type={type}
         />
       );
@@ -318,6 +321,68 @@ export const FormBuilder = ({
     if (isDevEnvironment) throw new Error(`Unsupported input type: ${type}`);
 
     return null;
+
+    function handleChange(newValue: InputValue) {
+      if (repeaterMetadata) {
+        const { repeaterId, index } = repeaterMetadata;
+        setValues((prev) => {
+          const processedValue = processValue(
+            values[repeaterId] as FormValues[],
+            index,
+            newValue
+          );
+
+          return { ...prev, [repeaterId]: processedValue };
+        });
+      } else setValues((prev) => ({ ...prev, [id]: newValue }));
+    }
+
+    function processValue(
+      repeaters: FormValues[],
+      index: number,
+      newValue: InputValue
+    ) {
+      return repeaters.map((item, i) => {
+        if (index !== i) return item;
+
+        const cleanId = sanitizeId(id);
+
+        return {
+          ...item,
+          [cleanId]: newValue,
+        };
+      });
+    }
+
+    function handleStringValue() {
+      if (repeaterMetadata) {
+        return (getValue(repeaterMetadata) as string) ?? "";
+      } else return (values?.[id] as string) || "";
+    }
+
+    function handleBooleanValue() {
+      if (repeaterMetadata) {
+        return (getValue(repeaterMetadata) as boolean) ?? undefined;
+      } else return (values?.[id] as boolean) || undefined;
+    }
+
+    function handleStringArrayValue() {
+      if (repeaterMetadata) {
+        return (getValue(repeaterMetadata) as string[]) ?? [];
+      } else return (values?.[id] as string[]) || [];
+    }
+
+    function getValue(repeaterMetadata: RepeaterMetadata) {
+      const { repeaterId, index } = repeaterMetadata;
+      const cleandId = sanitizeId(id);
+      // @ts-expect-error this value goes too deep for ts to understand
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+      return values?.[repeaterId]?.[index]?.[cleandId];
+    }
+
+    function sanitizeId(id: string) {
+      return id.split("_repeater_")[0];
+    }
   }
 
   function renderSection({

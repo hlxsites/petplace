@@ -80,6 +80,7 @@ export type InputType =
 
 export type RepeaterMetadata = {
   index: number;
+  repeaterId: string;
 };
 
 type ElementCommon = {
