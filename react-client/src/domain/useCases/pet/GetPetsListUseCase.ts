@@ -3,6 +3,7 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetModel } from "../../models/pet/PetModel";
 import { GetPetsListRepository } from "../../repository/pet/GetPetsListRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
+import { parseData } from "../util/parseData";
 
 export class GetPetsListUseCase implements GetPetsListRepository {
   private httpClient: HttpClientRepository;
@@ -40,18 +41,11 @@ function convertToPetModelList(data: unknown): PetModel[] {
     Name: z.string(),
   });
 
-  const parsePetData = (petData: unknown) => {
-    const { data, error, success } = serverResponseSchema.safeParse(petData);
-    if (success) return data;
-
-    console.error("Error parsing pet data", { petData, error });
-    return null;
-  };
-
   const list: PetModel[] = [];
 
   data.forEach((petData) => {
-    const pet = parsePetData(petData);
+    const pet = parseData(serverResponseSchema, petData);
+    petData;
     if (!pet) return;
 
     list.push({
