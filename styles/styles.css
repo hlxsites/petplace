@@ -1177,15 +1177,12 @@ html > ins[data-google-query-id] {
     width: 100%;
 }
 
-.social-share-container .publi-container {
-    /* stylelint-disable-next-line value-no-vendor-prefix */
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
+.sidebar-container .publi-wrapper {
+  margin: 0;
 }
 
-.social-share-container .publi-wrapper {
-    margin: 0;
+.sidebar-container .publi-container {
+  padding: 2.5rem 0;
 }
 
 .modal.hidden {
