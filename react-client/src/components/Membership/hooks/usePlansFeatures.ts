@@ -1,5 +1,5 @@
 import { useWindowWidth } from "~/hooks/useWindowWidth";
-import { Locale } from "../types/MembershipTypes";
+import { Locale } from "../utils/MembershipTypes";
 import {
   CA_MEMBERSHIP_PLANS,
   MEMBERSHIP_CARD_OPTIONS,
