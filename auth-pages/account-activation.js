@@ -17,23 +17,21 @@
 })();
 
 function renderPageInfo(petsList, ownerName) {
-	if(!petsList) return;
+	if (!petsList) return;
 
 	const petsNames = petsList.filter((item) => item.name.length).map((item) => item.name);
-	const petsPictures = petsList.map((item) => {
-		if (item?.photo?.length) {
-			return item.photo;
-		}
-		return getImagePlaceholder(item.animalType);
-	});
-	
+	const petsPictures = petsList.map((item) => ({
+		placeholder: getImagePlaceholder(item.animalType),
+		src: item?.photo?.length ? item.photo : null,
+	}));
+
 
 	getPetsNames(petsNames);
 	getPetsPictures(petsPictures, petsNames);
 	getFormInfo(petsNames, ownerName);
 }
 
-function formatPetsNames (petsNames) {
+function formatPetsNames(petsNames) {
 	return petsNames?.length > 1 ? petsNames.slice(0, -1).join(", ") + " & " + petsNames.at(-1) : petsNames;
 }
 
@@ -41,7 +39,6 @@ function getPetsNames(petsNames) {
 	if (!petsNames) return;
 
 	const greetingMessage = formatPetsNames(petsNames)
-		
 	if (!greetingMessage?.length) return;
 
 	document.getElementById("pet-name").innerHTML = greetingMessage;
@@ -54,12 +51,15 @@ function getPetsPictures(petsPictures, petsNames) {
 
 	const imageContainer = document.getElementById("pet-image");
 
-	petsPictures.slice(0, 3).forEach((src, index) => {
+	petsPictures.slice(0, 3).forEach(({ src, placeholder }, index) => {
 		if (!src) return;
 
 		const imageTag = document.createElement("img");
 		imageTag.src = src;
 		imageTag.alt = `Image of pet: ${petsNames[index]}`;
+		imageTag.onerror = function () {
+			this.src = placeholder;
+		}
 		imageTag.classList.add(petsPicturesLength === 1 ? "panel-pet-single-image" : "panel-pets-pictures");
 
 		if (petsPicturesLength > 1) {
@@ -88,7 +88,7 @@ function getImagePlaceholder(animalType) {
 }
 
 function getFormInfo(petsNames, ownerName) {
-	if(!ownerName?.length) return;
+	if (!ownerName?.length) return;
 
 	const petsText = document.getElementById("pets-names")
 
