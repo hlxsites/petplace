@@ -13,6 +13,7 @@ export const ViewNotifications = ({
   onClick,
   petName,
 }: ViewNotificationsProps) => {
+  // TODO use parseDate after API defines that this is string datetime
   const date = new Date(dateFoundOrLost).toISOString().split("T")[0];
 
   return (

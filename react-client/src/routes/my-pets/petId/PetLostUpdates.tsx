@@ -87,6 +87,7 @@ export const PetLostUpdatesSection = ({
   }: LostPetUpdate) {
     return {
       data: {
+        // TODO use parseDate after API defines that this is string datetime
         date: new Date(date).toLocaleString(),
         update: new Date(update).toLocaleString(),
         status: convertStatus(status),
