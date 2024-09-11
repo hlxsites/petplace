@@ -60,7 +60,7 @@
         padding: 16px 40px 16px 64px;
       }
 
-      .panel-background {  
+      .panel-background {
         display: flex;
         height: 100%;
         position: relative;
@@ -69,7 +69,7 @@
 
       .panel-background::after{
         background: url(https://s3-alpha-sig.figma.com/img/d4c2/96c6/cc82827f7947931d8d080264889da34c?Expires=1719792000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I0BgY1lAoBFLP1XdgnUy~PU-OrEwvZJtlGJUSSozlO7NaWyQWaAH8dz-3-nRHg-clf1pzEXH5k3RsJqXuMnVVTeAVWcNh5i5S069WWhkDOHTNpvPEzU7EwTf8D6K3~s8y9FJ2aFxKT7iXfECg72f85UdUtw1ciOknPPpUFS4xOEPzWvUvlhyRSJsLsSKGJDvyxkGRNUHSmS4M04FM97oq8M-Yo4e3UA7iA3tBUXld6XR3J2AdQkonFrUWOKLf6oGd88M~rHAANdAoUWwd5WEmA8kYniMA3o4apc6Xa6TEirtUEBliO2wSVI~HWHnc7MjROu4fzlWZXYpHuaPtWIbcQ__) no-repeat;
-        background-color: #D3D3D3;     
+        background-color: #D3D3D3;
         background-size: cover;
         bottom: 0;
         content: "";
@@ -105,7 +105,6 @@
         margin: 0;
         width: 100%;
       }
-      
       .panel-pet-single-image {
         background-color: #EBE8FC;
         border-radius: 50%;
@@ -247,7 +246,7 @@
           flex-direction: column;
           gap: 32px;
           justify-content: center;
-          max-width: 480px;      
+          max-width: 480px;
         }
 
         .panel-greeting-container {
@@ -315,11 +314,20 @@
       li{
         padding-bottom: 16px;
       }
-      .heading, .helpLink, .intro,
-      #signInName_label, #password_label, #verifying_blurb, #newPassword_label, #reenterPassword_label {
+      #api .heading, #api .helpLink, #api .intro, form label {
         display: none;
       }
-      #continue {
+      form .attrEntry {
+        display: flex;
+        flex-direction: column;
+      }
+      form .attrEntry .itemLevel {
+        order: 2;
+      }
+      form .attrEntry input {
+        order: 1;
+      }
+      form button[type="submit"] {
         background-color: #C74D2F;
         border-radius: 360px;
         border: solid, 1px, #C74D2F;
@@ -328,10 +336,11 @@
         height: 48px;
         width: 100%;
       }
-        /* this should be injected only on error  */
-      .validate input {
-        border: solid, 1px, #D31510;
-        color: #D31510;
+      @supports selector(form .validate:has(.error)) {
+        form .validate:has(.error[aria-hidden="false"]) input {
+          border: solid, 1px, #D31510;
+          color: #D31510;
+        }
       }
       .validate #password {
         margin-bottom: 35px;
@@ -344,7 +353,8 @@
       .error {
         color: #D31510;
       }
-      .show {
+      .itemLevel {
+        font-size:14px;
         padding: 4px;
       }
 
