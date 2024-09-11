@@ -1,7 +1,7 @@
 {
   "Age": "2",
   "Breed": "Labrador",
-  "DateOfBirth": "2020-01-01",
+  "DateOfBirth": "2020-01-01T00:00:00",
   "Id": "A123",
   "MembershipStatus": "Active",
   "Microchip": "123456789",

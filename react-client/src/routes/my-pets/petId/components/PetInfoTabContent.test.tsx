@@ -4,9 +4,9 @@ import { GetPetInfoTabProps, PetInfoTabContent } from "./PetInfoTabContent";
 const mockPetInfo = {
   age: "2 years",
   breed: "Labrador",
-  dateOfBirth: "2021-05-01",
+  dateOfBirth: "2021-05-01T00:00:00",
   mixedBreed: false,
-  sex: "Male",
+  sex: "1",
   spayedNeutered: true,
   species: "Dog",
 };
@@ -20,12 +20,10 @@ describe("<PetInfoTabContent />", () => {
     const items = getAllByRole("listitem");
     expect(items[0]).toHaveTextContent(`Age: ${mockPetInfo.age}`);
     expect(items[1]).toHaveTextContent(`Species: ${mockPetInfo.species}`);
-    expect(items[2]).toHaveTextContent(`Sex: ${mockPetInfo.sex}`);
+    expect(items[2]).toHaveTextContent("Sex: Male");
     expect(items[3]).toHaveTextContent(`Breed: ${mockPetInfo.breed}`);
-    expect(items[4]).toHaveTextContent(`DOB: ${mockPetInfo.dateOfBirth}`);
-    expect(items[5]).toHaveTextContent(
-      `Mixed breed: ${mockPetInfo.mixedBreed}`
-    );
+    expect(items[4]).toHaveTextContent("DOB: 5/1/2021");
+    expect(items[5]).toHaveTextContent("Mixed breed: No");
     expect(items[6]).toHaveTextContent("Spayed/Neutered: Yes");
   });
 

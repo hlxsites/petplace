@@ -22,6 +22,7 @@ describe("GetPetsInfoUseCase", () => {
     expect(result).toStrictEqual({
       age: "2",
       breed: "Labrador",
+      dateOfBirth: "2020-01-01T00:00:00",
       id: "A123",
       microchip: "123456789",
       mixedBreed: false,
