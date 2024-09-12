@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
+import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { createNumericArray } from "~/util/misc";
 import { Button } from "../button/Button";
 import { IconKeys } from "../icon/Icon";
@@ -21,27 +22,31 @@ export const FormRepeater = ({
   renderElement,
   values,
 }: FormRepeaterProps) => {
-  const [repeatersValues, setRepeatersValues] = useState<FormValues[]>([]);
-
-  useEffect(() => {
-    if (Array.isArray(values[id]))
-      return setRepeatersValues(values[id] as FormValues[]);
-
-    let minRepeaters: FormValues[] = [];
-    if (minRepeat) {
-      minRepeaters = createNumericArray(minRepeat).map(() => ({}));
+  const repeaterValues = (() => {
+    if (values[id] && Array.isArray(values[id])) {
+      // We know form repeater values are always an array of FormValues objects
+      return values[id] as FormValues[];
     }
+    return null;
+  })();
 
-    onChange(minRepeaters);
-    setRepeatersValues(minRepeaters);
-  }, [id, minRepeat, onChange, values]);
+  useDeepCompareEffect(() => {
+    const quantity = repeaterValues?.length || 0;
+    if (quantity < minRepeat) {
+      onChange(createNumericArray(minRepeat).map(() => ({})));
+    } else if (!repeaterValues) {
+      onChange([{}]);
+    }
+  }, [minRepeat, onChange, repeaterValues]);
+
+  if (!repeaterValues) return null;
 
   const renderRepeaterButton = (type: "add" | "remove", index: number) => {
     const handleOnClick = () => {
       if (type === "add") {
-        onChange([...repeatersValues, {}]);
+        onChange([...repeaterValues, {}]);
       } else {
-        const newValue = repeatersValues.filter((_, i) => i !== index);
+        const newValue = repeaterValues.filter((_, i) => i !== index);
         onChange(newValue);
       }
     };
@@ -73,19 +78,19 @@ export const FormRepeater = ({
 
   return (
     <div className="grid gap-xlarge">
-      {repeatersValues.map((_, index) => {
-        const isLastIndex = index === repeatersValues.length - 1;
+      {repeaterValues.map((_, index) => {
+        const isLastIndex = index === repeaterValues.length - 1;
 
         const addButton = (() => {
           if (!isLastIndex) return null;
-          if (maxRepeat && repeatersValues.length >= maxRepeat) return null;
+          if (maxRepeat && repeaterValues.length >= maxRepeat) return null;
 
           return renderRepeaterButton("add", index);
         })();
 
         const removeButton = (() => {
           if (!isLastIndex) return null;
-          if (repeatersValues.length <= minRepeat) return null;
+          if (repeaterValues.length <= minRepeat) return null;
 
           return renderRepeaterButton("remove", index);
         })();
