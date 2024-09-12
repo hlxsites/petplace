@@ -4,6 +4,7 @@ interface EnvVariables {
   DEV?: boolean;
   VITE_PETPLACE_SERVER_STG_URL?: string;
   VITE_PETPLACE_SERVER_PROD_URL?: string;
+  VITE_ENABLE_MOCK?: string;
 }
 
 // Determine which environment object to use
@@ -15,14 +16,19 @@ const env: EnvVariables =
       : {};
 
 // Safely access environment variables
-const getEnvVariable = <T>(key: keyof EnvVariables, defaultValue: T): T => {
-  return (env[key] as unknown as T) ?? defaultValue;
+const getEnvVariable = <T>(key: keyof EnvVariables, defaultValue?: T) => {
+  return (env[key] as unknown as T) || defaultValue || null;
 };
 
 // Export variables with default values
 export const AUTH_TOKEN = getEnvVariable("VITE_AUTH_TOKEN", "");
 export const IS_PROD_ENV = getEnvVariable("PROD", false);
-export const IS_DEV_ENV = getEnvVariable("DEV", true);
+export const IS_DEV_ENV = getEnvVariable("DEV", false);
+
+export const ENABLE_MOCK = (() => {
+  const envValue = getEnvVariable<string>("VITE_ENABLE_MOCK");
+  return envValue && ["true", "1"].includes(envValue.toLocaleLowerCase());
+})();
 
 const SERVER_STG_URL = getEnvVariable("VITE_PETPLACE_SERVER_STG_URL", "");
 const SERVER_POD_URL = getEnvVariable("VITE_PETPLACE_SERVER_PROD_URL", "");
