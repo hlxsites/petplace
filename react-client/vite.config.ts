@@ -19,7 +19,7 @@ export default defineConfig(() => {
             }
 
             if (/\.css$/.test(name ?? "")) {
-              return "assets/react.min.css";
+              return "assets/react.css";
             }
 
             return "assets/react-[name][extname]";
