@@ -30,19 +30,22 @@ export type LostPetUpdate = {
   foundedBy?: FoundedByInfo | null;
 };
 
-export type PetModel = {
+export type PetCommon = {
+  id: string;
+  img?: string;
+  isProtected?: boolean;
+  microchip?: string | null;
+  name: string;
+};
+
+export type PetModel = PetCommon & {
   age?: string | undefined;
   breed?: string;
   dateOfBirth?: string;
   documentationStatus?: DocumentationStatus;
-  id: string;
-  img?: string;
-  isProtected?: boolean;
   lostPetHistory?: LostPetUpdate[];
-  microchip?: string | null;
   missingStatus?: MissingStatus;
   mixedBreed?: boolean;
-  name: string;
   onboardCompleted?: boolean;
   sex?: string;
   spayedNeutered?: boolean;
