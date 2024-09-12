@@ -10,8 +10,8 @@ export default defineConfig(() => {
     build: {
       rollupOptions: {
         output: {
-          entryFileNames: "assets/react-[name].js",
-          chunkFileNames: "assets/react-[name].js",
+          entryFileNames: "assets/react-[name].min.js",
+          chunkFileNames: "assets/react-[name].min.js",
           assetFileNames: ({ name }) => {
             // Special handling for images
             if (/\.(gif|jpe?g|png|svg)$/.test(name ?? "")) {
@@ -19,7 +19,7 @@ export default defineConfig(() => {
             }
 
             if (/\.css$/.test(name ?? "")) {
-              return "assets/react.css";
+              return "assets/react.min.css";
             }
 
             return "assets/react-[name][extname]";
