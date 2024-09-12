@@ -412,10 +412,6 @@ const CHECKOUT_SERVICES: CheckoutServices[] = [
   VetHelpline as CheckoutServices,
 ];
 
-export const getPetsList = () => {
-  return PETS_LIST;
-};
-
 export const getPetDocuments = ({
   petId,
   type,
@@ -432,7 +428,7 @@ export const getPetDocuments = ({
 };
 
 export const getPetById = (id: string) => {
-  return getPetsList()?.find((pet) => pet.id === id) || getPetsList()[0];
+  return PETS_LIST.find((pet) => pet.id === id) || PETS_LIST[0];
 };
 
 export const getPetServiceStatus = (petId: string) => {
