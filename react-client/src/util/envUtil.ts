@@ -17,7 +17,7 @@ const env: EnvVariables =
 
 // Safely access environment variables
 const getEnvVariable = <T>(key: keyof EnvVariables, defaultValue?: T) => {
-  return (env[key] as unknown as T) || defaultValue || null;
+  return (env[key] as unknown as T) || defaultValue || "";
 };
 
 // Export variables with default values
