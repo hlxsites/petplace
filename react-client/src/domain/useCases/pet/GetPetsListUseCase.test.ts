@@ -6,7 +6,7 @@ import getPetsListMock from "./mocks/getPetsListMock.json";
 import getPetsListMock2 from "./mocks/getPetsListMock2.json";
 
 // We don't care about the implementation while running those tests
-jest.mock("../test", () => {});
+jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
 describe("GetPetsListUseCase", () => {
   it("should return an empty array", async () => {
