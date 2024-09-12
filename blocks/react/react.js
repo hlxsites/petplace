@@ -45,5 +45,5 @@ export default async function decorate(block) {
     <input id="auth-token" type="hidden" value="${token}" />
   `;
 
-  import('./react-index.js');
+  import('./react-index.min.js');
 }

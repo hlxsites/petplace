@@ -1,4 +1,4 @@
 lite-yt-embed
 
 # Ignore the react-client directory & build generated files
-blocks/react/react.css
+blocks/react/**.css
