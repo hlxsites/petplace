@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { LoaderFunction, useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
 import { getPetDocuments } from "~/mocks/MockRestApiServer";
-import { LoaderData } from "~/types/LoaderData";
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
 import { isValidPetDocumentId } from "../petDocumentTypeUtils";
@@ -19,7 +19,7 @@ export const loader = (({ params }) => {
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
-  const { id, petId } = useLoaderData() as LoaderData<typeof loader>;
+  const { id, petId } = useLoaderData<typeof loader>();
   const { documentTypes } = usePetProfileContext();
   const navigate = useNavigate();
   const [documents, setDocuments] = useState<PetRecord[]>([]);
