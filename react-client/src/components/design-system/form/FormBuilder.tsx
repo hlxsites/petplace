@@ -28,7 +28,6 @@ import {
   type FormValues,
   type InputsUnion,
   type InputValue,
-  type RepeaterMetadata,
 } from "./types/formTypes";
 import {
   idWithRepeaterMetadata,
@@ -171,10 +170,7 @@ export const FormBuilder = ({
           >
             {element.children.map((e, i) =>
               renderElement(
-                {
-                  ...e,
-                  repeaterMetadata: element.repeaterMetadata,
-                },
+                { ...e, repeaterMetadata: element.repeaterMetadata },
                 i
               )
             )}
@@ -226,11 +222,9 @@ export const FormBuilder = ({
       return (
         <Select
           {...commonProps}
-          onChange={(newValue) => {
-            return handleChange(newValue);
-          }}
+          onChange={handleInputChange}
           options={options as string[]}
-          value={handleStringValue()}
+          value={getStringValue()}
         />
       );
     }
@@ -239,11 +233,9 @@ export const FormBuilder = ({
       return (
         <InputRadio
           {...commonProps}
-          onChange={(newValue) => {
-            return handleChange(newValue);
-          }}
+          onChange={handleInputChange}
           options={(inputProps.options as string[]) || []}
-          value={handleStringValue()}
+          value={getStringValue()}
         />
       );
     }
@@ -251,11 +243,9 @@ export const FormBuilder = ({
       return (
         <InputCheckboxGroup
           {...commonProps}
-          onChange={(newValue) => {
-            return handleChange(newValue);
-          }}
+          onChange={handleInputChange}
           options={(inputProps.options as string[]) || []}
-          value={handleStringArrayValue()}
+          value={getStringArrayValue()}
         />
       );
     }
@@ -263,10 +253,8 @@ export const FormBuilder = ({
       return (
         <InputSwitch
           {...commonProps}
-          onChange={(newValue) => {
-            return handleChange(newValue);
-          }}
-          value={handleBooleanValue()}
+          onChange={handleInputChange}
+          value={getBooleanValue()}
         />
       );
     }
@@ -275,11 +263,9 @@ export const FormBuilder = ({
       return (
         <InputTextarea
           {...commonProps}
-          onChange={(newValue) => {
-            return handleChange(newValue);
-          }}
+          onChange={handleInputChange}
           rows={inputProps.rows}
-          value={handleStringValue()}
+          value={getStringValue()}
         />
       );
     }
@@ -292,10 +278,8 @@ export const FormBuilder = ({
             inputProps.disabledType ?? false
           )}
           hideType={matchConditionExpression(inputProps.hideType ?? false)}
-          onChange={(newValue) => {
-            return handleChange(newValue);
-          }}
-          value={handleStringValue()}
+          onChange={handleInputChange}
+          value={getStringValue()}
         />
       );
     }
@@ -309,10 +293,8 @@ export const FormBuilder = ({
       return (
         <Input
           {...commonProps}
-          onChange={(newValue) => {
-            return handleChange(newValue);
-          }}
-          value={handleStringValue()}
+          onChange={handleInputChange}
+          value={getStringValue()}
           type={type}
         />
       );
@@ -322,65 +304,57 @@ export const FormBuilder = ({
 
     return null;
 
-    function handleChange(newValue: InputValue) {
-      if (repeaterMetadata) {
+    function handleInputChange(newValue: InputValue) {
+      setValues((prev) => {
+        const inputId = getInputId();
+
+        if (!repeaterMetadata) return { ...prev, [inputId]: newValue };
+
         const { repeaterId, index } = repeaterMetadata;
-        setValues((prev) => {
-          const processedValue = processValue(
-            values[repeaterId] as FormValues[],
-            index,
-            newValue
-          );
+        const processedValue = (() => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          const current = prev[repeaterId];
+          if (current && Array.isArray(current)) {
+            return (current as FormValues[]).map((item, i) => {
+              if (index !== i) return item;
 
-          return { ...prev, [repeaterId]: processedValue };
-        });
-      } else setValues((prev) => ({ ...prev, [id]: newValue }));
-    }
+              return {
+                ...item,
+                [inputId]: newValue,
+              };
+            });
+          }
 
-    function processValue(
-      repeaters: FormValues[],
-      index: number,
-      newValue: InputValue
-    ) {
-      return repeaters.map((item, i) => {
-        if (index !== i) return item;
-
-        const cleanId = sanitizeId(id);
-
-        return {
-          ...item,
-          [cleanId]: newValue,
-        };
+          return [];
+        })();
+        return { ...prev, [repeaterId]: processedValue };
       });
     }
 
-    function handleStringValue() {
-      if (repeaterMetadata) {
-        return (getValue(repeaterMetadata) as string) ?? "";
-      } else return (values?.[id] as string) || "";
+    function getStringValue() {
+      return (getInputValue() as string) || "";
     }
 
-    function handleBooleanValue() {
-      if (repeaterMetadata) {
-        return (getValue(repeaterMetadata) as boolean) ?? undefined;
-      } else return (values?.[id] as boolean) || undefined;
+    function getBooleanValue() {
+      return !!getInputValue();
     }
 
-    function handleStringArrayValue() {
-      if (repeaterMetadata) {
-        return (getValue(repeaterMetadata) as string[]) ?? [];
-      } else return (values?.[id] as string[]) || [];
+    function getStringArrayValue() {
+      return (getInputValue() as string[]) || [];
     }
 
-    function getValue(repeaterMetadata: RepeaterMetadata) {
+    function getInputValue() {
+      const inputId = getInputId();
+      if (!repeaterMetadata) return values?.[inputId];
+
       const { repeaterId, index } = repeaterMetadata;
-      const cleandId = sanitizeId(id);
       // @ts-expect-error this value goes too deep for ts to understand
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-      return values?.[repeaterId]?.[index]?.[cleandId];
+      return values?.[repeaterId]?.[index]?.[inputId];
     }
 
-    function sanitizeId(id: string) {
+    function getInputId() {
+      if (!repeaterMetadata) return id;
       return id.split("_repeater_")[0];
     }
   }
