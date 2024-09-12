@@ -1,10 +1,6 @@
-import {
-  LoaderFunction,
-  useLoaderData,
-  useOutletContext,
-} from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
+import { LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { getAuthLogin, getLostPetsHistory } from "~/mocks/MockRestApiServer";
-import { LoaderData } from "~/types/LoaderData";
 
 export const loader = (() => {
   return {
@@ -14,9 +10,7 @@ export const loader = (() => {
 }) satisfies LoaderFunction;
 
 export const useAccountIndexViewModel = () => {
-  const { isExternalLogin, lostPetsHistory } = useLoaderData() as LoaderData<
-    typeof loader
-  >;
+  const { isExternalLogin, lostPetsHistory } = useLoaderData<typeof loader>();
 
   return {
     isExternalLogin,

@@ -49,6 +49,7 @@ export const PetLostUpdatesSection = ({
       onOpenChange={setIsOpen}
       title={<Title level="h4">Lost Pets Status Update</Title>}
       isLocked={isMissing}
+      padding="large"
     >
       {renderDescriptionMessage()}
       <Table
@@ -86,6 +87,7 @@ export const PetLostUpdatesSection = ({
   }: LostPetUpdate) {
     return {
       data: {
+        // TODO use parseDate after API defines that this is string datetime
         date: new Date(date).toLocaleString(),
         update: new Date(update).toLocaleString(),
         status: convertStatus(status),

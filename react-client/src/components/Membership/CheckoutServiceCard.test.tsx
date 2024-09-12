@@ -8,7 +8,7 @@ describe("CheckoutServiceCard", () => {
   it.each(["A name", "Another name"])(
     "should render service name %p",
     (expected) => {
-      getRenderer({ name: expected });
+      getRenderer({ title: expected });
       expect(getByText(expected)).toBeInTheDocument();
     }
   );
@@ -57,7 +57,7 @@ describe("CheckoutServiceCard", () => {
 
 function getRenderer({
   id = "Test id",
-  name = "Test name",
+  title = "Test title",
   price = "$100",
   isAnnual = false,
   images = [],
@@ -66,7 +66,7 @@ function getRenderer({
   return render(
     <CheckoutServiceCard
       id={id}
-      name={name}
+      title={title}
       price={price}
       isAnnual={isAnnual}
       description={description}

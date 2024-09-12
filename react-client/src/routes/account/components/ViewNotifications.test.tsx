@@ -26,6 +26,7 @@ describe("ViewNotifications", () => {
   );
 
   it("should render the given dateFoundOrLost=%s", () => {
+    // TODO use parseDate after API defines that this is string datetime
     const convertedDate = new Date(628021800000).toISOString().split("T")[0];
     getRenderer({ dateFoundOrLost: 628021800000 });
     expect(getByText(`${convertedDate}`)).toBeInTheDocument();

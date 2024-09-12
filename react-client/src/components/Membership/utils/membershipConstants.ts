@@ -1,7 +1,8 @@
-import { MembershipPlans, TableActions } from "../types/MembershipTypes";
 import {
   MembershipDescriptionOffer,
   MembershipInfoCard,
+  MembershipPlan,
+  TableActions,
 } from "./MembershipTypes";
 
 const MEMBERSHIP_LIST_OFFERS = [
@@ -53,15 +54,15 @@ export const MEMBERSHIP_CARD_OPTIONS: MembershipInfoCard[] = [
   },
 ];
 
-const MEMBERSHIP_PLANS: MembershipPlans[] = [
+const MEMBERSHIP_PLANS: MembershipPlan[] = [
   "Annual Protection",
   "Lifetime",
   "Lifetime Plus",
 ];
 
-export const US_MEMBERSHIP_PLANS: MembershipPlans[] = [...MEMBERSHIP_PLANS];
+export const US_MEMBERSHIP_PLANS: MembershipPlan[] = [...MEMBERSHIP_PLANS];
 
-export const CA_MEMBERSHIP_PLANS: MembershipPlans[] = [
+export const CA_MEMBERSHIP_PLANS: MembershipPlan[] = [
   "Lifetime",
   "Lifetime Plus",
 ];

@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Icon, Text, TextSpan, Title } from "../design-system";
-import { MembershipPlans, TableActions } from "./types/MembershipTypes";
+import { MembershipPlan, TableActions } from "./utils/MembershipTypes";
 
 type TableRow = {
   label: string;
   title: string;
-  availableColumns: MembershipPlans[];
+  availableColumns: MembershipPlan[];
 };
 
 type MembershipComparingPlanTableProps = {
   actions: TableActions[];
-  columns: MembershipPlans[];
+  columns: MembershipPlan[];
   onClick?: () => void;
   rows: TableRow[];
 };
