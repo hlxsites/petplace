@@ -127,9 +127,9 @@ export const DialogBase = ({
           )}
 
           <div
-            className="h-90vh grid overflow-auto"
+            className="h-85dvh grid overflow-auto"
             style={{
-              maxHeight: `calc(90vh - ${headerFooterHeight}px)`,
+              maxHeight: `calc(85dvh - ${headerFooterHeight}px)`,
             }}
           >
             {renderChildren}
