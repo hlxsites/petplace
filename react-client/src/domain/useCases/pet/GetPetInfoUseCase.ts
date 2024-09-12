@@ -1,8 +1,8 @@
+import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoRepository";
 import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
-import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoRepository";
-import { z } from "zod";
 import { parseData } from "../util/parseData";
 
 export class GetPetInfoUseCase implements GetPetInfoRepository {
@@ -46,9 +46,9 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     Id: z.string(),
     MembershipStatus: z.string().nullish(),
     Microchip: z.string().nullish(),
-    MixedBreed: z.boolean(),
+    MixedBreed: z.boolean().nullish(),
     Name: z.string(),
-    Neutered: z.boolean(),
+    Neutered: z.boolean().nullish(),
     Sex: z.string(),
     Species: z.string(),
   });
@@ -63,10 +63,10 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     dateOfBirth: info.DateOfBirth,
     id: info.Id,
     microchip: info.Microchip,
-    mixedBreed: info.MixedBreed,
+    mixedBreed: !!info.MixedBreed,
     name: info.Name,
     sex: info.Sex,
-    spayedNeutered: info.Neutered,
+    spayedNeutered: !!info.Neutered,
     species: info.Species,
   };
 }
