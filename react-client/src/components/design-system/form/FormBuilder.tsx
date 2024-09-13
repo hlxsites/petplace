@@ -33,6 +33,7 @@ import {
   idWithRepeaterMetadata,
   textWithRepeaterMetadata,
 } from "./utils/formRepeaterUtils";
+import { isEmailValid } from "./utils/formValidationUtils";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -88,10 +89,12 @@ export const FormBuilder = ({
   useEffect(() => {
     if (didSubmit) {
       const formHasErrors = renderedFields.some((field) => field.errorMessage);
+
       if (!formHasErrors && isSubmitting) {
         if (submitEventRef.current && onSubmit) {
           onSubmit({ event: submitEventRef.current, values });
         }
+        
         setIsSubmitting(false);
         setDidSubmit(false);
         submitEventRef.current = null;
@@ -468,6 +471,10 @@ export const FormBuilder = ({
     if (input.disabled) return null;
 
     const { errorMessage, required, type } = input;
+
+    if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
+      return "Please enter a valid email address.";
+    }
 
     if (required && !inputValueExist(input)) {
       if (errorMessage) return errorMessage;
