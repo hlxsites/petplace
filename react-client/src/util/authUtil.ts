@@ -1,4 +1,4 @@
-import { ParsedToken } from "./authTypes";
+import { z } from "zod";
 import { AUTH_TOKEN } from "./envUtil";
 import { invariantResponse } from "./invariant";
 
@@ -31,7 +31,7 @@ export function parseJwt(token: string) {
         .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
         .join("")
     );
-    const parsedValue = JSON.parse(jsonPayload) as ParsedToken;
+    const parsedValue = JSON.parse(jsonPayload) as Record<string, unknown>;
 
     return parsedValue;
   } catch (e) {
@@ -39,12 +39,29 @@ export function parseJwt(token: string) {
   }
 }
 
-export function checkIsExternalLogin() {
-  const parsedJwt = parseJwt(requireAuthToken());
-  if (!parsedJwt) return undefined;
+export function readJwtClaim() {
+  const schema = z.object({
+    extension_CustRelationId: z.string(),
+    given_name: z.string().optional(),
+    family_name: z.string(),
+    emails: z.array(z.string()),
+  });
 
+  const parsedJwt = parseJwt(requireAuthToken());
+  if (!parsedJwt) return null;
+
+  try {
+    return schema.parse(parsedJwt);
+  } catch (error) {
+    console.error("Error parsing jwt claim", error);
+    return null;
+  }
+}
+
+export function checkIsExternalLogin() {
+  const claim = readJwtClaim();
   return (
-    parsedJwt.extension_CustRelationId &&
-    Number(parsedJwt.extension_CustRelationId) !== 0
+    !!claim?.extension_CustRelationId &&
+    Number(claim.extension_CustRelationId) !== 0
   );
 }
