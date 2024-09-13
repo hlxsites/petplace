@@ -1,5 +1,5 @@
 import { IconKeys } from "~/components/design-system";
-import { PetDocumentTypeId } from "../documents/petDocumentTypeUtils";
+import { PetDocumentTypeId } from "~/domain/models/pet/PetDocument";
 
 type PetDocumentType = {
   icon: IconKeys;

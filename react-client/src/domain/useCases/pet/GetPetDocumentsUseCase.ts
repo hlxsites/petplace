@@ -1,11 +1,12 @@
 import { z } from "zod";
-import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
-import { parseData } from "../util/parseData";
-import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
+import { PetDocumentTypeId } from "~/domain/models/pet/PetDocument";
 import { PetRecord } from "~/domain/models/pet/PetRecords";
+import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
 import { getPetRecordDocumentType } from "~/util/getPetRecordDocumentType";
 import { getFileExtension } from "~/util/stringUtil";
+import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
+import { parseData } from "../util/parseData";
 
 export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
   private httpClient: HttpClientRepository;
@@ -23,13 +24,17 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
     return [];
   }
 
-  async query(petId: string): Promise<PetRecord[]> {
+  async query(petId: string, type: PetDocumentTypeId): Promise<PetRecord[]> {
     try {
       const result = await this.httpClient.get(`Pet/${petId}/documents`);
 
-      if (result.data) return convertToPetDocuments(result.data);
+      if (!result.data) return [];
 
-      return [];
+      const allDocuments = convertToPetDocuments(result.data);
+
+      return allDocuments.filter(
+        (doc) => doc.recordType?.toLowerCase() === type
+      );
     } catch (error) {
       return this.handleError(error);
     }
