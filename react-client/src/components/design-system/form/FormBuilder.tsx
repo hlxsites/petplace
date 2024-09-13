@@ -1,6 +1,7 @@
 import { isEqual } from "lodash";
 import {
   Fragment,
+  useEffect,
   useRef,
   useState,
   type FormEvent,
@@ -62,16 +63,15 @@ export const FormBuilder = ({
   values: defaultValues,
 }: FormBuilderProps) => {
   const defaultValuesRef = useRef<FormValues>(defaultValues || {});
+  const submitEventRef = useRef<FormEvent<HTMLFormElement> | null>(null);
 
   const [values, setValues] = useState<FormValues>(defaultValuesRef.current);
   const [isFormChanged, setIsFormChanged] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
   const renderedFields: RenderedInput[] = [];
-
-  // Check if any of the rendered fields has an error message
-  const hasValidationError = renderedFields.some((f) => !!f.errorMessage);
 
   useDeepCompareEffect(() => {
     const formChanged = !isEqual(defaultValuesRef.current, values);
@@ -85,6 +85,22 @@ export const FormBuilder = ({
     }
   }, [onChange, values]);
 
+  useEffect(() => {
+    if (didSubmit) {
+      const formHasErrors = renderedFields.some((field) => field.errorMessage);
+      if (!formHasErrors && isSubmitting) {
+        if (submitEventRef.current && onSubmit) {
+          onSubmit({ event: submitEventRef.current, values });
+        }
+        setIsSubmitting(false);
+        setDidSubmit(false);
+        submitEventRef.current = null;
+      } else if (formHasErrors) {
+        setIsSubmitting(false);
+      }
+    }
+  }, [didSubmit, isSubmitting, onSubmit, renderedFields, values]);
+
   return (
     <form
       className="space-y-large"
@@ -97,18 +113,11 @@ export const FormBuilder = ({
   );
 
   function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
-    if (hasValidationError) {
-      event.preventDefault();
-      setDidSubmit(true);
-
-      return null;
-    }
+    event.preventDefault();
+    submitEventRef.current = event;
 
     setDidSubmit(true);
-
-    if (onSubmit) onSubmit({ event, values });
-
-    return values;
+    setIsSubmitting(true);
   }
 
   function renderElement(element: ElementUnion, index: number) {
