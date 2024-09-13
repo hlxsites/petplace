@@ -100,8 +100,9 @@ export const FormBuilder = ({
   );
 
   function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     if (hasValidationError) {
-      event.preventDefault();
       setDidSubmit(true);
 
       return null;
