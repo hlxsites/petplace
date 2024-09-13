@@ -1,6 +1,6 @@
+import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsUseCase } from "./GetPetDocumentsUseCase";
-import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import getPetDocumentsMock from "./mocks/getPetDocumentsMock.json";
 import getPetDocumentsMock2 from "./mocks/getPetDocumentsMock2.json";
 
@@ -10,13 +10,13 @@ jest.mock("../PetPlaceHttpClientUseCase", () => {});
 describe("GetPetDocumentsUseCase", () => {
   it("should return an empty array when no documents are found", async () => {
     const sut = makeSut();
-    expect(await sut.query("pet-id")).toStrictEqual([]);
+    expect(await sut.query("pet-id", "medical")).toStrictEqual([]);
   });
 
   it("should return the correct pet documents list", async () => {
     const httpClient = new MockHttpClient({ data: getPetDocumentsMock });
     const sut = makeSut(httpClient);
-    const result = await sut.query("pet-id");
+    const result = await sut.query("pet-id", "vaccines");
     expect(result).toStrictEqual([
       {
         downloadPath: "doc-1",
@@ -28,10 +28,10 @@ describe("GetPetDocumentsUseCase", () => {
     ]);
   });
 
-  it("should return the correct pet documents list 2", async () => {
+  it("should return the correct pet documents list for type other", async () => {
     const httpClient = new MockHttpClient({ data: getPetDocumentsMock2 });
     const sut = makeSut(httpClient);
-    const result = await sut.query("pet-id2");
+    const result = await sut.query("pet-id2", "other");
     expect(result).toStrictEqual([
       {
         downloadPath: "doc-2",
@@ -40,6 +40,14 @@ describe("GetPetDocumentsUseCase", () => {
         id: "doc-2",
         recordType: "Other",
       },
+    ]);
+  });
+
+  it("should return the correct pet documents list for type medical", async () => {
+    const httpClient = new MockHttpClient({ data: getPetDocumentsMock2 });
+    const sut = makeSut(httpClient);
+    const result = await sut.query("pet-id2", "medical");
+    expect(result).toStrictEqual([
       {
         downloadPath: "doc-3",
         fileName: "Medical Report.pdf",
@@ -55,7 +63,7 @@ describe("GetPetDocumentsUseCase", () => {
       error: new Error("Error"),
     });
     const sut = makeSut(httpClient);
-    const result = await sut.query("pet-id");
+    const result = await sut.query("pet-id", "medical");
     expect(result).toStrictEqual([]);
   });
 });
