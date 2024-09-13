@@ -22,7 +22,7 @@ describe("<PetInfoTabContent />", () => {
     expect(items[1]).toHaveTextContent(`Species: ${mockPetInfo.species}`);
     expect(items[2]).toHaveTextContent("Sex: Male");
     expect(items[3]).toHaveTextContent(`Breed: ${mockPetInfo.breed}`);
-    expect(items[4]).toHaveTextContent("DOB: 01/05/2021");
+    expect(items[4]).toHaveTextContent("DOB: 5/1/2021");
     expect(items[5]).toHaveTextContent("Mixed breed: No");
     expect(items[6]).toHaveTextContent("Spayed/Neutered: Yes");
   });
