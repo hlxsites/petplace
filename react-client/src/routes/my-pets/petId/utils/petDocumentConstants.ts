@@ -12,7 +12,7 @@ export const PET_DOCUMENT_TYPES_LIST: PetDocumentType[] = [
   {
     icon: "medicine",
     iconColor: "text-green-300",
-    id: "medical-records",
+    id: "medical",
     label: "Medical Records",
   },
   {

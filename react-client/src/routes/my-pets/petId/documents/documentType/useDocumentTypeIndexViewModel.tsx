@@ -23,7 +23,7 @@ export const loader = (async ({ params }) => {
   try {
     const allDocuments = await useCase.query(petId);
     const filteredDocuments = allDocuments.filter(
-      (doc) => doc.recordType === documentType
+      (doc) => doc.recordType?.toLowerCase() === documentType
     );
 
     return {

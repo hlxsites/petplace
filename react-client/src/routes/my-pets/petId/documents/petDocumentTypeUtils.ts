@@ -1,5 +1,5 @@
 const PET_DOCUMENT_TYPE_IDS = [
-  "medical-records",
+  "medical",
   "vaccines",
   "tests",
   "other",
