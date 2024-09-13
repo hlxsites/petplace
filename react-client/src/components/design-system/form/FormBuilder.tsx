@@ -72,7 +72,9 @@ export const FormBuilder = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Object to store the rendered fields, can't use a ref because we want a clean object on each render
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const renderedFields: RenderedInput[] = [];
+
 
   useDeepCompareEffect(() => {
     const formChanged = !isEqual(defaultValuesRef.current, values);
