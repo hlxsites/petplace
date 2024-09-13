@@ -3,7 +3,6 @@ import { PetDocumentTypeId } from "~/domain/models/pet/PetDocument";
 import { PetRecord } from "~/domain/models/pet/PetRecords";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
-import { getPetRecordDocumentType } from "~/util/getPetRecordDocumentType";
 import { getFileExtension } from "~/util/stringUtil";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
@@ -69,4 +68,22 @@ function convertToPetDocuments(data: unknown): PetRecord[] {
   });
 
   return documents;
+}
+
+export enum PetDocumentRecordType {
+  MedicalRecord = 1,
+  Vaccine = 2,
+  Test = 3,
+  Other = 1024,
+}
+
+function getPetRecordDocumentType(record?: number): string | undefined {
+  const documentRecordTypeMap: Record<PetDocumentRecordType, string> = {
+    [PetDocumentRecordType.MedicalRecord]: "Medical",
+    [PetDocumentRecordType.Other]: "Other",
+    [PetDocumentRecordType.Test]: "Tests",
+    [PetDocumentRecordType.Vaccine]: "Vaccines",
+  };
+
+  return documentRecordTypeMap[record as PetDocumentRecordType] || undefined;
 }
