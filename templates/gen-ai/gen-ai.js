@@ -442,6 +442,7 @@ const updateStreamingSearchCard = (resultsBlock, response, socket) => {
       const placeholderCtaCard = resultsBlock.querySelector('.search-actions-placeholder');
 
       const action = response.actions[0];
+
       if (action.type === 'cta') {
         const actionCta = document.createElement('a');
         actionCta.classList.add('action-cta');
@@ -575,28 +576,19 @@ function displayInsuranceCTA(resultsBlock) {
   );
   helpContainer.classList.add('hide');
   helpContainer.classList.remove('show');
-  const insuranceCtaCopy = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness, Click to learn more.';
+
+  const insuranceCtaCard = document.createElement('div');
+  const insuranceCtaImage = 'https://www.petplace.com/images/media_1373303d2c6645980b4e6a4cd76061c181b8b44ca.png';
+  const insuranceCtaTitle = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness,';
+  const insuranceCtaText = 'Click to learn more.';
   const insuranceCtaPath = document.head.querySelector('insurance-page-path')?.content || '/pet-insurance';
 
-  const resultContainer = document.createElement('div');
-  resultContainer.className = 'insurance-card';
-  resultContainer.innerHTML = `<div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div>`;
+  insuranceCtaCard.className = 'insurance-card';
+  insuranceCtaCard.innerHTML = `<div class="search-card-warning"><p>${GENAI_SEARCH_WARNING}</p></div>`;
+  insuranceCtaCard.innerHTML += `<a class="action-cta action-cta--insurance" href="${insuranceCtaPath}"><link itemprop="url" href="https://www.petplace.com/pet-adoption"><img alt="Thinking about adopting a pet?" src="${insuranceCtaImage}"><h3 itemprop="name">${insuranceCtaTitle}</h3><span class="action-button">${insuranceCtaText}<span class="icon icon-arrow-right"><svg id="icons-sprite-arrow-right" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.938 7.877h13.124M7.938 14.002l6.125-6.125-6.126-6.125" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></span></a>`;
+  resultsBlock.appendChild(insuranceCtaCard);
 
-  const ctaContainer = document.createElement('div');
-  ctaContainer.className = 'cta-container';
-
-  const ctaTitle = document.createElement('h4');
-  ctaTitle.textContent = 'Petplace.com/pet-insurance';
-
-  const ctaText = document.createElement('p');
-  ctaText.textContent = insuranceCtaCopy;
-
-  ctaContainer.appendChild(ctaTitle);
-  ctaContainer.appendChild(ctaText);
-  resultContainer.appendChild(ctaContainer);
-  resultsBlock.appendChild(resultContainer);
-
-  ctaContainer.addEventListener('click', () => {
+  insuranceCtaCard.addEventListener('click', () => {
     pushToDataLayer({
       event: 'genai_insurance_cta',
       element_type: 'button',
