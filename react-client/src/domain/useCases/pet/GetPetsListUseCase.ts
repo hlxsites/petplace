@@ -45,7 +45,7 @@ function convertToPetModelList(data: unknown): PetCommon[] {
 
   data.forEach((petData) => {
     const pet = parseData(serverResponseSchema, petData);
-    petData;
+
     if (!pet) return;
 
     list.push({

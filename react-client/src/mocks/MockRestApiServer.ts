@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+import { PetDocument } from "~/domain/models/pet/PetDocument";
 import {
   LostPetUpdate,
   MissingStatus,
@@ -418,10 +418,10 @@ export const getPetDocuments = ({
 }: {
   petId: string;
   type: string;
-}): PetRecord[] => {
+}): PetDocument[] => {
   try {
     // @ts-expect-error - ignoring mock function
-    return (PET_RECORDS[petId]?.[type] as PetRecord[]) || [];
+    return (PET_RECORDS[petId]?.[type] as PetDocument[]) || [];
   } catch (_) {
     return [];
   }

@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
-import { getPetDocuments } from "~/mocks/MockRestApiServer";
+
+import { isValidPetDocumentId } from "~/domain/models/pet/PetDocument";
+import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
+import { requireAuthToken } from "~/util/authUtil";
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
-import { isValidPetDocumentId } from "../petDocumentTypeUtils";
 
-export const loader = (({ params }) => {
+export const loader = (async ({ params }) => {
   const { petId, documentType } = params;
   invariantResponse(petId, "Pet id is required in this route");
   invariantResponse(
@@ -15,22 +15,25 @@ export const loader = (({ params }) => {
     "Invalid document type"
   );
 
-  return { id: documentType, petId };
+  const authToken = requireAuthToken();
+  const useCase = new GetPetDocumentsUseCase(authToken);
+
+  const documents = await useCase.query(petId, documentType);
+
+  return {
+    id: documentType,
+    petId,
+    documents,
+  };
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
-  const { id, petId } = useLoaderData<typeof loader>();
+  const { id, documents } = useLoaderData<typeof loader>();
   const { documentTypes } = usePetProfileContext();
   const navigate = useNavigate();
-  const [documents, setDocuments] = useState<PetRecord[]>([]);
 
   const documentType = documentTypes.find((dt) => dt.id === id);
-  // Since the loader gave us a valid document type id, we can safely assume it's not undefined
   invariant(documentType, "Document type must be found here");
-
-  useEffect(() => {
-    setDocuments(getPetDocuments({ petId, type: id }));
-  }, [petId, id, setDocuments]);
 
   const onClose = () => {
     navigate("..");
@@ -38,7 +41,7 @@ export const useDocumentTypeIndexViewModel = () => {
 
   const onDelete = (recordId: string) => {
     // TODO: Implement real delete action when backend is ready
-    setDocuments((prev) => prev.filter((doc) => doc.id !== recordId));
+    console.log("recordId", recordId);
   };
 
   return {
