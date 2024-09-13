@@ -90,6 +90,7 @@ export const FormBuilder = ({
     <form
       className="space-y-large"
       id={schema.id}
+      role="form"
       noValidate
       onSubmit={onSubmitHandler}
     >
@@ -98,8 +99,9 @@ export const FormBuilder = ({
   );
 
   function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     if (hasValidationError) {
-      event.preventDefault();
       setDidSubmit(true);
 
       return null;
