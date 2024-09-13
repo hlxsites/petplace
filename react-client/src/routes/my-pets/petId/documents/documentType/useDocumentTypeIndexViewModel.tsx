@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
-import { getPetDocuments } from "~/mocks/MockRestApiServer";
+
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
 import { isValidPetDocumentId } from "../petDocumentTypeUtils";
+import { requireAuthToken } from "~/util/authUtil";
+import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
 
-export const loader = (({ params }) => {
+export const loader = (async ({ params }) => {
   const { petId, documentType } = params;
   invariantResponse(petId, "Pet id is required in this route");
   invariantResponse(
@@ -15,29 +17,50 @@ export const loader = (({ params }) => {
     "Invalid document type"
   );
 
-  return { id: documentType, petId };
+  const authToken = requireAuthToken();
+  const useCase = new GetPetDocumentsUseCase(authToken);
+
+  try {
+    const allDocuments = await useCase.query(petId);
+    const filteredDocuments = allDocuments.filter(
+      (doc) => doc.recordType === documentType
+    );
+
+    return {
+      id: documentType,
+      petId,
+      documents: filteredDocuments,
+    };
+  } catch (error) {
+    console.error("Failed to fetch pet records:", error);
+    // You might want to throw an error here or return a specific error state
+    return {
+      id: documentType,
+      petId,
+      documents: [],
+      error: "Failed to fetch documents",
+    };
+  }
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
-  const { id, petId } = useLoaderData<typeof loader>();
+  const {
+    id,
+    documents: initialDocuments,
+    error,
+  } = useLoaderData<typeof loader>();
   const { documentTypes } = usePetProfileContext();
   const navigate = useNavigate();
-  const [documents, setDocuments] = useState<PetRecord[]>([]);
+  const [documents, setDocuments] = useState<PetRecord[]>(initialDocuments);
 
   const documentType = documentTypes.find((dt) => dt.id === id);
-  // Since the loader gave us a valid document type id, we can safely assume it's not undefined
   invariant(documentType, "Document type must be found here");
-
-  useEffect(() => {
-    setDocuments(getPetDocuments({ petId, type: id }));
-  }, [petId, id, setDocuments]);
 
   const onClose = () => {
     navigate("..");
   };
 
   const onDelete = (recordId: string) => {
-    // TODO: Implement real delete action when backend is ready
     setDocuments((prev) => prev.filter((doc) => doc.id !== recordId));
   };
 
@@ -46,5 +69,6 @@ export const useDocumentTypeIndexViewModel = () => {
     documentType,
     onClose,
     onDelete,
+    error,
   };
 };
