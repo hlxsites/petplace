@@ -23,7 +23,7 @@ describe("GetPetDocumentsUseCase", () => {
         fileName: "Vaccine Record.pdf",
         fileType: "pdf",
         id: "doc-1",
-        recordType: "Vaccines",
+        type: "vaccines",
       },
     ]);
   });
@@ -38,7 +38,7 @@ describe("GetPetDocumentsUseCase", () => {
         fileName: "Adoption Paper.pdf",
         fileType: "pdf",
         id: "doc-2",
-        recordType: "Other",
+        type: "other",
       },
     ]);
   });
@@ -53,7 +53,7 @@ describe("GetPetDocumentsUseCase", () => {
         fileName: "Medical Report.pdf",
         fileType: "pdf",
         id: "doc-3",
-        recordType: "Medical",
+        type: "medical",
       },
     ]);
   });

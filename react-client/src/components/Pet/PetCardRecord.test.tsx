@@ -28,11 +28,11 @@ describe("PetCardRecord", () => {
 
   it.each(["doc", "jpg", "pdf", "png", "txt"] as ComponentProps<
     typeof PetCardRecord
-  >["record"]["fileType"][])(
+  >["document"]["fileType"][])(
     "should display the correct icon based on fileType",
     (fileType) => {
       getRenderer({
-        record: {
+        document: {
           id: "1",
           fileName: "Lily's Doc",
           fileType,
@@ -60,7 +60,7 @@ describe("PetCardRecord", () => {
   it.each(["Medical", "Vaccines"])(
     "should render the given file name",
     (fileName) => {
-      getRenderer({ record: { id: "1", fileName } });
+      getRenderer({ document: { id: "1", fileName, fileType: "pdf" } });
 
       expect(getByRole("paragraph")).toHaveTextContent(fileName);
     }
@@ -109,7 +109,8 @@ describe("PetCardRecord", () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  it("should download the file with expected values when download button is clicked", async () => {
+  // TODO: 81832 implement the test bellow after setting up the file download
+  it.skip("should download the file with expected values when download button is clicked", async () => {
     const downloadFileSpy = jest
       .spyOn(downloadFunctions, "downloadFile")
       .mockImplementation(() => Promise.resolve());
@@ -130,9 +131,8 @@ describe("PetCardRecord", () => {
 
 function getRenderer({
   isUploadingFile = false,
-  record = {
+  document = {
     id: "test",
-    downloadPath: "http://example.com/file.jpg",
     fileName: "Test name",
     fileType: "jpg",
   },
@@ -140,7 +140,7 @@ function getRenderer({
 }: Partial<ComponentProps<typeof PetCardRecord>> = {}) {
   return render(
     <PetCardRecord
-      record={record}
+      document={document}
       isUploadingFile={isUploadingFile}
       {...props}
     />

@@ -1,6 +1,8 @@
-import { PetDocumentTypeId } from "~/domain/models/pet/PetDocument";
-import { PetRecord } from "~/domain/models/pet/PetRecords";
+import {
+  PetDocument,
+  PetDocumentTypeId,
+} from "~/domain/models/pet/PetDocument";
 
 export interface GetPetDocumentsRepository {
-  query(petId: string, type: PetDocumentTypeId): Promise<PetRecord[]>;
+  query(petId: string, type: PetDocumentTypeId): Promise<PetDocument[]>;
 }

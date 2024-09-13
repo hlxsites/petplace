@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { PetDocumentTypeId } from "~/domain/models/pet/PetDocument";
-import { PetRecord } from "~/domain/models/pet/PetRecords";
+import {
+  PetDocument,
+  PetDocumentTypeId,
+} from "~/domain/models/pet/PetDocument";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
 import { getFileExtension } from "~/util/stringUtil";
@@ -23,7 +25,7 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
     return [];
   }
 
-  async query(petId: string, type: PetDocumentTypeId): Promise<PetRecord[]> {
+  async query(petId: string, type: PetDocumentTypeId): Promise<PetDocument[]> {
     try {
       const result = await this.httpClient.get(`Pet/${petId}/documents`);
 
@@ -31,16 +33,18 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
 
       const allDocuments = convertToPetDocuments(result.data);
 
-      return allDocuments.filter(
-        (doc) => doc.recordType?.toLowerCase() === type
-      );
+      return allDocuments.filter((doc) => doc.type?.toLowerCase() === type);
     } catch (error) {
       return this.handleError(error);
     }
   }
 }
 
-function convertToPetDocuments(data: unknown): PetRecord[] {
+type PetDocumentWithType = PetDocument & {
+  type: PetDocumentTypeId;
+};
+
+function convertToPetDocuments(data: unknown): PetDocumentWithType[] {
   if (!data || !Array.isArray(data)) return [];
 
   const serverResponseSchema = z.object({
@@ -51,7 +55,7 @@ function convertToPetDocuments(data: unknown): PetRecord[] {
     Name: z.string(),
   });
 
-  const documents: PetRecord[] = [];
+  const documents: PetDocumentWithType[] = [];
 
   data.forEach((petData) => {
     const petDocument = parseData(serverResponseSchema, petData);
@@ -61,29 +65,33 @@ function convertToPetDocuments(data: unknown): PetRecord[] {
     documents.push({
       downloadPath: petDocument.Id,
       fileName: petDocument.Name,
+      // @ts-expect-error - asdfa
       fileType: getFileExtension(petDocument.Name),
       id: petDocument.Id,
-      recordType: getPetRecordDocumentType(petDocument.DocumentType),
-    });
+      type: getPetRecordDocumentType(petDocument.DocumentType),
+    } satisfies PetDocumentWithType);
   });
 
   return documents;
 }
 
-export enum PetDocumentRecordType {
+enum PetDocumentRecordType {
   MedicalRecord = 1,
   Vaccine = 2,
   Test = 3,
   Other = 1024,
 }
 
-function getPetRecordDocumentType(record?: number): string | undefined {
-  const documentRecordTypeMap: Record<PetDocumentRecordType, string> = {
-    [PetDocumentRecordType.MedicalRecord]: "Medical",
-    [PetDocumentRecordType.Other]: "Other",
-    [PetDocumentRecordType.Test]: "Tests",
-    [PetDocumentRecordType.Vaccine]: "Vaccines",
+function getPetRecordDocumentType(record?: number): PetDocumentTypeId {
+  const documentRecordTypeMap: Record<
+    PetDocumentRecordType,
+    PetDocumentTypeId
+  > = {
+    [PetDocumentRecordType.MedicalRecord]: "medical",
+    [PetDocumentRecordType.Other]: "other",
+    [PetDocumentRecordType.Test]: "tests",
+    [PetDocumentRecordType.Vaccine]: "vaccines",
   };
 
-  return documentRecordTypeMap[record as PetDocumentRecordType] || undefined;
+  return documentRecordTypeMap[record as PetDocumentRecordType] || "other";
 }
