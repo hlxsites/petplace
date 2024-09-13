@@ -49,12 +49,12 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
       newType?: string;
       newValue?: string;
     }) => {
-      const newCombinedValue = `${newValue || value}|${newType || selectedType}`;
+      const newCombinedValue = `${newValue ? newValue : ""}|${newType || selectedType}`;
       onChange?.(newCombinedValue);
     };
 
     const handleOnChangeType = (newType: string) => {
-      handleOnChange({ newType });
+      handleOnChange({ newValue: value, newType });
     };
 
     const handleOnChangeInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
