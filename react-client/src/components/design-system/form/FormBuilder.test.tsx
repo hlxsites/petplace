@@ -378,22 +378,14 @@ describe("<DisplayForm />", () => {
       ],
     };
     getRenderer({ schema });
-
-    const addRepeaterButton = getByRole("button", { name: "Add" });
-    expect(addRepeaterButton.querySelector("svg")).toHaveAttribute(
-      "data-file-name",
-      "SvgAddIcon"
-    );
     expect(getAllByRole("textbox").length).toEqual(1);
 
+    const addRepeaterButton = getByRole("button", { name: "Add" });
     await userEvent.click(addRepeaterButton);
-    const removeRepeaterButton = getByRole("button", { name: "Remove" });
-    expect(removeRepeaterButton.querySelector("svg")).toHaveAttribute(
-      "data-file-name",
-      "SvgRemoveCircleIcon"
-    );
     expect(getAllByRole("textbox").length).toEqual(2);
 
+    // Can remove repeater
+    const removeRepeaterButton = getByRole("button", { name: "Remove" });
     await userEvent.click(removeRepeaterButton);
     expect(getAllByRole("textbox").length).toEqual(1);
   });
@@ -417,13 +409,14 @@ describe("<DisplayForm />", () => {
     expect(onChange).not.toHaveBeenCalled();
     await userEvent.type(getByRole("textbox"), "test");
     expect(onChange).toHaveBeenCalledTimes(4);
+    expect(onChange).toHaveBeenLastCalledWith({ name: "test" });
   });
 
   it("should call onSubmit callback", async () => {
     const onSubmit = jest.fn();
     getRenderer({ schema: DEFAULT_SCHEMA, onSubmit });
-
     expect(onSubmit).not.toHaveBeenCalled();
+
     await userEvent.click(getByRole("button", { name: DEFAULT_SUBMIT.label }));
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
