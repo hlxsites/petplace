@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+import { PetDocument } from "~/domain/models/pet/PetDocument";
 import {
   LostPetUpdate,
   MissingStatus,
@@ -86,7 +86,7 @@ export type PetInfo = {
   img?: string;
   isProtected?: boolean;
   microchipNumber?: number;
-  mixedBreed?: string;
+  mixedBreed?: boolean;
   name: string;
   onboardCompleted?: boolean;
   sex?: string;
@@ -129,7 +129,7 @@ const PETS_LIST: PetModel[] = [
     isProtected: true,
     microchip: "1290",
     missingStatus: "found",
-    mixedBreed: "Yes",
+    mixedBreed: false,
     name: "Buddy",
     onboardCompleted: false,
     sex: "Male",
@@ -182,7 +182,7 @@ const PETS_LIST: PetModel[] = [
     isProtected: false,
     microchip: "8645",
     missingStatus: "missing",
-    mixedBreed: "No",
+    mixedBreed: true,
     name: "Lily",
     sex: "Female",
     spayedNeutered: true,
@@ -418,10 +418,10 @@ export const getPetDocuments = ({
 }: {
   petId: string;
   type: string;
-}): PetRecord[] => {
+}): PetDocument[] => {
   try {
     // @ts-expect-error - ignoring mock function
-    return (PET_RECORDS[petId]?.[type] as PetRecord[]) || [];
+    return (PET_RECORDS[petId]?.[type] as PetDocument[]) || [];
   } catch (_) {
     return [];
   }

@@ -6,7 +6,6 @@ export type DocumentationStatus =
   | "failed"
   | "inProgress";
 
-
 type ContactDone = {
   date: number;
   email?: string;
@@ -31,21 +30,24 @@ export type LostPetUpdate = {
   foundedBy?: FoundedByInfo | null;
 };
 
-export type PetModel = {
-  age?: string | undefined;
-  breed?: string;
-  dateOfBirth?: string;
+export type PetCommon = {
   id: string;
   img?: string;
   isProtected?: boolean;
   microchip?: string | null;
-  mixedBreed?: string;
   name: string;
+};
+
+export type PetModel = PetCommon & {
+  age?: string | undefined;
+  breed?: string;
+  dateOfBirth?: string;
+  documentationStatus?: DocumentationStatus;
+  lostPetHistory?: LostPetUpdate[];
+  missingStatus?: MissingStatus;
+  mixedBreed?: boolean;
   onboardCompleted?: boolean;
   sex?: string;
   spayedNeutered?: boolean;
   species?: string;
-  documentationStatus?: DocumentationStatus;
-  missingStatus?: MissingStatus;
-  lostPetHistory?: LostPetUpdate[];
 };

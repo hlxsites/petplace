@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { createNumericArray } from "~/util/misc";
 import { Button } from "../button/Button";
 import { IconKeys } from "../icon/Icon";
@@ -21,13 +22,24 @@ export const FormRepeater = ({
   renderElement,
   values,
 }: FormRepeaterProps) => {
-  const repeaterValues: FormValues[] = (() => {
+  const repeaterValues = (() => {
     if (values[id] && Array.isArray(values[id])) {
+      // We know form repeater values are always an array of FormValues objects
       return values[id] as FormValues[];
     }
-    if (minRepeat) return createNumericArray(minRepeat).map(() => ({}));
-    return [];
+    return null;
   })();
+
+  useDeepCompareEffect(() => {
+    const quantity = repeaterValues?.length || 0;
+    if (quantity < minRepeat) {
+      onChange(createNumericArray(minRepeat).map(() => ({})));
+    } else if (!repeaterValues) {
+      onChange([{}]);
+    }
+  }, [minRepeat, onChange, repeaterValues]);
+
+  if (!repeaterValues) return null;
 
   const renderRepeaterButton = (type: "add" | "remove", index: number) => {
     const handleOnClick = () => {
@@ -94,10 +106,11 @@ export const FormRepeater = ({
         })();
 
         return (
-          <div className="space-y-base" key={index}>
+          <div className="space-y-base" key={`repeater-${id}-${index}`}>
             {children.map((element, elementIndex) => {
               const repeaterMetadata = {
                 index,
+                repeaterId: id,
               };
 
               return renderElement(

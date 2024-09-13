@@ -30,6 +30,8 @@ export const DialogBase = ({
     onClose,
   });
 
+  const headerFooterHeight = title ? 60 : 0;
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "visible";
     document.body.style.position = isOpen ? "relative" : "static";
@@ -124,7 +126,14 @@ export const DialogBase = ({
             />
           )}
 
-          <div className="h-90vh grid overflow-auto">{renderChildren}</div>
+          <div
+            className="h-85dvh grid overflow-auto"
+            style={{
+              maxHeight: `calc(85dvh - ${headerFooterHeight}px)`,
+            }}
+          >
+            {renderChildren}
+          </div>
         </div>
       </FocusTrap>
     </>

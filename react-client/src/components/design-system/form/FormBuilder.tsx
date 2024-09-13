@@ -28,6 +28,7 @@ import {
   type FormSchema,
   type FormValues,
   type InputsUnion,
+  type InputValue,
 } from "./types/formTypes";
 import {
   idWithRepeaterMetadata,
@@ -75,7 +76,6 @@ export const FormBuilder = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const renderedFields: RenderedInput[] = [];
 
-
   useDeepCompareEffect(() => {
     const formChanged = !isEqual(defaultValuesRef.current, values);
 
@@ -96,7 +96,7 @@ export const FormBuilder = ({
         if (submitEventRef.current && onSubmit) {
           onSubmit({ event: submitEventRef.current, values });
         }
-        
+
         setIsSubmitting(false);
         setDidSubmit(false);
         submitEventRef.current = null;
@@ -110,6 +110,7 @@ export const FormBuilder = ({
     <form
       className="space-y-large"
       id={schema.id}
+      role="form"
       noValidate
       onSubmit={onSubmitHandler}
     >
@@ -235,11 +236,9 @@ export const FormBuilder = ({
       return (
         <Select
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           options={options as string[]}
-          value={(values?.[id] as string) || ""}
+          value={getStringValue()}
         />
       );
     }
@@ -248,11 +247,9 @@ export const FormBuilder = ({
       return (
         <InputRadio
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           options={(inputProps.options as string[]) || []}
-          value={(values?.[id] as string) || ""}
+          value={getStringValue()}
         />
       );
     }
@@ -260,11 +257,9 @@ export const FormBuilder = ({
       return (
         <InputCheckboxGroup
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           options={(inputProps.options as string[]) || []}
-          value={(values?.[id] as string[]) || []}
+          value={getStringArrayValue()}
         />
       );
     }
@@ -272,12 +267,8 @@ export const FormBuilder = ({
       return (
         <InputSwitch
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
-          value={
-            typeof values?.[id] !== "undefined" ? !!values?.[id] : undefined
-          }
+          onChange={handleInputChange}
+          value={getBooleanValue()}
         />
       );
     }
@@ -286,11 +277,9 @@ export const FormBuilder = ({
       return (
         <InputTextarea
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           rows={inputProps.rows}
-          value={(values?.[id] as string) || ""}
+          value={getStringValue()}
         />
       );
     }
@@ -303,10 +292,8 @@ export const FormBuilder = ({
             inputProps.disabledType ?? false
           )}
           hideType={matchConditionExpression(inputProps.hideType ?? false)}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
-          value={(values?.[id] as string) || ""}
+          onChange={handleInputChange}
+          value={getStringValue()}
         />
       );
     }
@@ -320,10 +307,8 @@ export const FormBuilder = ({
       return (
         <Input
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
-          value={(values?.[id] as string) || ""}
+          onChange={handleInputChange}
+          value={getStringValue()}
           type={type}
         />
       );
@@ -332,6 +317,59 @@ export const FormBuilder = ({
     if (isDevEnvironment) throw new Error(`Unsupported input type: ${type}`);
 
     return null;
+
+    function handleInputChange(newValue: InputValue) {
+      setValues((prev) => {
+        const inputId = getInputId();
+
+        if (!repeaterMetadata) return { ...prev, [inputId]: newValue };
+
+        const { repeaterId, index } = repeaterMetadata;
+        const processedValue = (() => {
+          const current = prev[repeaterId];
+          if (current && Array.isArray(current)) {
+            return (current as FormValues[]).map((item, i) => {
+              if (index !== i) return item;
+
+              return {
+                ...item,
+                [inputId]: newValue,
+              };
+            });
+          }
+
+          return [];
+        })();
+        return { ...prev, [repeaterId]: processedValue };
+      });
+    }
+
+    function getStringValue() {
+      return (getInputValue() as string) || "";
+    }
+
+    function getBooleanValue() {
+      return !!getInputValue();
+    }
+
+    function getStringArrayValue() {
+      return (getInputValue() as string[]) || [];
+    }
+
+    function getInputValue() {
+      const inputId = getInputId();
+      if (!repeaterMetadata) return values?.[inputId];
+
+      const { repeaterId, index } = repeaterMetadata;
+      // @ts-expect-error this value goes too deep for ts to understand
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+      return values?.[repeaterId]?.[index]?.[inputId];
+    }
+
+    function getInputId() {
+      if (!repeaterMetadata) return id;
+      return id.split("_repeater_")[0];
+    }
   }
 
   function renderSection({

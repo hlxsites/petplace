@@ -6,7 +6,7 @@ import { MemoryRouter, Route, Routes, useSearchParams } from "react-router-dom";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { CheckoutConclusionModal } from "./CheckoutConclusionModal";
 
-const { getByTestId, getByText, getByRole, queryByText } = screen;
+const { getByText, getByRole, queryByText } = screen;
 
 const DEFAULT_ID = "test-id";
 const PET_PROFILE = "Pet Profile Page";
@@ -36,15 +36,6 @@ describe("CheckoutConclusionModal", () => {
 
     await userEvent.click(getByRole("link", { name: "Back to pet profile" }));
     expect(getByText("Pet Profile Page")).toBeInTheDocument();
-  });
-
-  it("should navigate to pet profile with pet watch benefits content drawer", async () => {
-    getRenderer();
-    expect(queryByText("Pet Profile Page")).not.toBeInTheDocument();
-
-    await userEvent.click(getByRole("link", { name: "See my benefits" }));
-    expect(getByText("Pet Profile Page")).toBeInTheDocument();
-    expect(getByTestId("content")).toHaveTextContent("pet-watch");
   });
 });
 

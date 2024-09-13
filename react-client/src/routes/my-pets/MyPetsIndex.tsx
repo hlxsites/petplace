@@ -31,17 +31,17 @@ export const MyPetsIndex = () => {
       <SuspenseAwait minHeight={336} resolve={pets}>
         {(pets) => (
           <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-large sm:grid-cols-2 lg:grid-cols-3">
-            {pets.map(({ isProtected, ...rest }) => (
-              <Link className="no-underline" key={rest.id} to={rest.id}>
+            {pets.map(({ id, isProtected, name }) => (
+              <Link className="no-underline" key={id} to={id}>
                 <PetCard
                   displayProtectedBadge={{ isProtected: !!isProtected }}
-                  key={rest.name}
+                  key={name}
+                  name={name}
                   shadow="elevation-1"
                   variant="md"
-                  {...rest}
                 >
                   <div className="text-2xl p-base font-bold leading-none text-black">
-                    <Title level="h3">{rest.name}</Title>
+                    <Title level="h3">{name}</Title>
                   </div>
                 </PetCard>
               </Link>

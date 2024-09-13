@@ -1,14 +1,19 @@
-import { downloadFile } from "~/util/downloadFunctions";
+import { PetDocument } from "~/domain/models/pet/PetDocument";
 import { Icon, IconButton, IconKeys, Loading, Text } from "../design-system";
 import { PetCardOption } from "./PetCardOption";
-import { PetCardRecordProps } from "./types/PetRecordsTypes";
+
+type PetCardRecordProps = {
+  document: PetDocument;
+  isUploadingFile?: boolean;
+  onDelete?: () => void;
+};
 
 export const PetCardRecord = ({
-  record,
+  document,
   isUploadingFile,
   onDelete,
 }: PetCardRecordProps) => {
-  const { downloadPath, fileName, fileType } = record;
+  const { fileType, fileName } = document;
 
   return (
     <PetCardOption
@@ -52,8 +57,6 @@ export const PetCardRecord = ({
   }
 
   function handleOnDownload() {
-    downloadFile({ downloadPath, fileName, fileType }).catch((error) => {
-      console.warn("Error handling the download: ", error);
-    });
+    // TODO: 81832 implement download function
   }
 };

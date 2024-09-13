@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
+import { PetDocument } from "~/domain/models/pet/PetDocument";
 import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
-import { PetRecord } from "./types/PetRecordsTypes";
 
 type PetDocumentViewProps = {
-  documents: PetRecord[];
+  documents: PetDocument[];
   onDelete: (recordId: string, recordType: string) => void;
   recordType: string;
 };
@@ -36,7 +36,7 @@ export const PetDocumentsView = ({
             <PetCardRecord
               key={record.id}
               onDelete={() => onDeletePetCardRecord(recordType, record.id)}
-              record={record}
+              document={record}
             />
           ))}
         </div>
@@ -56,7 +56,7 @@ export const PetDocumentsView = ({
       {isUploading && (
         // TODO: 81832 fix this after implementing all logic to upload documents
         <PetCardRecord
-          record={{
+          document={{
             id: "test-record",
             fileName: "WIP - testing purposes",
             fileType: "doc",

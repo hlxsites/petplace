@@ -1,7 +1,7 @@
 export type DownloadFileProps = {
   downloadPath?: string;
   fileName: string;
-  fileType?: "doc" | "docx" | "jpg" | "pdf" | "png" | "txt";
+  fileType?: string;
 };
 
 export async function downloadFile({
