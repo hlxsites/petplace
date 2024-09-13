@@ -13,6 +13,7 @@ const requiredPhoneInput: ElementInputPhone = {
   description:
     "You’re not required to own a ‘Home’ phone, however if it’s left blank, our system will auto-populate this field with your mobile or work number. This will not impact our ability to contact you if your pet is lost and found",
   elementType: "input",
+  errorMessage: "Please fill out your phone number before continuing.",
   id: "phone-default",
   label: "Phone Number",
   requiredCondition: {
@@ -32,6 +33,7 @@ const optionalPhoneInput: ElementInputPhone = {
 
 const firstNameInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "First Name is a required field",
   id: "first-name",
   label: "First Name",
   requiredCondition: true,
@@ -40,6 +42,7 @@ const firstNameInput: ElementInputText = {
 
 const lastNameInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "Last Name is a required field",
   id: "last-name",
   label: "Last Name",
   requiredCondition: true,
@@ -48,6 +51,7 @@ const lastNameInput: ElementInputText = {
 
 const emailInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "Email is a required field",
   id: "email-address",
   label: "Email Address",
   requiredCondition: true,
@@ -71,12 +75,18 @@ const stateInput: ElementInputSingleSelect = {
   options: "{{stateOptions|string[]}}",
   optionsType: "dynamic",
   requiredCondition: true,
+  disabledCondition: {
+    inputId: "country",
+    type: "null",
+    value: "",
+  },
   placeholder: "State",
   type: "select",
 };
 
 const addressLineOneInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "This field should not be empty",
   id: "address-1",
   label: "Address Line 1",
   requiredCondition: true,
@@ -85,6 +95,7 @@ const addressLineOneInput: ElementInputText = {
 
 const addressLineTwoInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "This field should not be empty",
   id: "address-2",
   label: "Address Line 2",
   requiredCondition: true,
@@ -93,6 +104,7 @@ const addressLineTwoInput: ElementInputText = {
 
 const cityInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "This field should not be empty",
   id: "city",
   label: "City",
   requiredCondition: true,
@@ -101,6 +113,7 @@ const cityInput: ElementInputText = {
 
 const intersectionInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "This field should not be empty",
   id: "intersection-address",
   label: "Intersection/Address",
   requiredCondition: true,
@@ -110,6 +123,7 @@ const intersectionInput: ElementInputText = {
 const zipCodeInput: ElementInputText = {
   className: "w-1/2",
   elementType: "input",
+  errorMessage: "This field should not be empty",
   id: "zip-code",
   label: "Zip Code",
   requiredCondition: true,
@@ -119,7 +133,7 @@ const zipCodeInput: ElementInputText = {
 const submitButton: ElementButton = {
   className: "!mt-xxlarge w-full",
   elementType: "button",
-  disabledCondition: true,
+  enabledCondition: true,
   id: "submit-button",
   label: "Save changes",
   type: "submit",
@@ -155,37 +169,9 @@ const userDetailsSection: ElementSection = {
   ],
 };
 
-const addressSection: ElementSection = {
-  elementType: "section",
-  title: {
-    label: "Address",
-    level: "h3",
-  },
-  children: [
-    {
-      elementType: "row",
-      children: [countryInput, stateInput],
-    },
-    {
-      elementType: "row",
-      children: [addressLineOneInput, addressLineTwoInput],
-    },
-    {
-      elementType: "row",
-      children: [cityInput, intersectionInput],
-    },
-    zipCodeInput,
-  ],
-};
-
 export const internalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
-  children: [
-    contactInfoSection,
-    userDetailsSection,
-    addressSection,
-    submitButton,
-  ],
+  children: [contactInfoSection, userDetailsSection, submitButton],
   version: 0,
 };
 
@@ -194,7 +180,28 @@ export const externalAccountDetailsFormSchema: FormSchema = {
   children: [
     contactInfoSection,
     userDetailsSection,
-    addressSection,
+    {
+      elementType: "section",
+      title: {
+        label: "Address",
+        level: "h3",
+      },
+      children: [
+        {
+          elementType: "row",
+          children: [countryInput, stateInput],
+        },
+        {
+          elementType: "row",
+          children: [addressLineOneInput, addressLineTwoInput],
+        },
+        {
+          elementType: "row",
+          children: [cityInput, intersectionInput],
+        },
+        zipCodeInput,
+      ],
+    },
     {
       elementType: "section",
       description: {
@@ -209,6 +216,7 @@ export const externalAccountDetailsFormSchema: FormSchema = {
       children: [
         {
           elementType: "input",
+          errorMessage: "",
           hideLabel: true,
           id: "pet-health-services",
           label: "Consent to terms of service",
@@ -285,6 +293,7 @@ export const emergencyContactFormSchema: FormSchema = {
                     },
                     {
                       elementType: "input",
+                      errorMessage: "Phone Number is a required field",
                       hideType: true,
                       id: "contact-phone",
                       label: "Phone Number",
