@@ -25,6 +25,7 @@ export const NotificationsDialog = ({
       onClose={onClose}
       title={`Pet ${petName} is found by ${finderName}.`}
       titleSize="32"
+      trigger={undefined}
       isTitleResponsive
     >
       <div className="grid w-[640px] gap-large pt-large">

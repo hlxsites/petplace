@@ -24,6 +24,8 @@ export type DialogTitleProps = {
     }
 );
 
+export type DialogTrigger = ReactElement | undefined;
+
 export type DialogBaseProps = DialogIconProps &
   DialogTitleProps & {
     align?: "center" | "right";
@@ -39,7 +41,7 @@ export type DialogBaseProps = DialogIconProps &
     isOpen: boolean;
     onClose?: () => void;
     padding?: "p-0" | "p-large" | "p-xlarge";
-    trigger?: ReactElement;
+    trigger: DialogTrigger;
     width?: CSSProperties["width"];
   };
 

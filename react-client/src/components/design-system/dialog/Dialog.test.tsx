@@ -39,9 +39,16 @@ function getRenderer({
   isOpen = true,
   onClose = jest.fn(),
   title = "Test title",
+  trigger = undefined,
 }: Partial<ComponentProps<typeof Dialog>> = {}) {
   return render(
-    <Dialog id={id} isOpen={isOpen} onClose={onClose} title={title}>
+    <Dialog
+      id={id}
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      trigger={trigger}
+    >
       {children}
     </Dialog>
   );

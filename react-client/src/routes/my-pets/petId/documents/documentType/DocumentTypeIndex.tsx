@@ -13,7 +13,14 @@ export const DocumentTypeIndex = () => {
   } = useDocumentTypeIndexViewModel();
 
   return (
-    <Drawer id={id} isOpen onClose={onClose} title={label} width="fit-content">
+    <Drawer
+      id={id}
+      isOpen
+      onClose={onClose}
+      title={label}
+      trigger={undefined}
+      width="fit-content"
+    >
       <SuspenseAwait resolve={documents}>
         {(resolvedDocuments) => (
           <PetDocumentsView

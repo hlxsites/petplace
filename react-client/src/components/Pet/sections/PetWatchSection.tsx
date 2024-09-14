@@ -32,25 +32,27 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
             <Tag label={label} tagStatus={tagStatus} />
           </div>
           <Text size="14">{message}</Text>
-          <Button
-            className="text-orange-300-contrast"
-            iconLeft={icon}
-            variant="secondary"
-            onClick={() => onOpenDrawer()}
+          <Drawer
+            ariaLabel="24 Pet Watch benefits"
+            id="24PetWatchDrawer"
+            isOpen={isDrawerOpen}
+            onClose={onCloseDrawer}
+            width={440}
+            trigger={
+              <Button
+                className="text-orange-300-contrast"
+                iconLeft={icon}
+                variant="secondary"
+                onClick={() => onOpenDrawer()}
+              >
+                {buttonLabel}
+              </Button>
+            }
           >
-            {buttonLabel}
-          </Button>
+            <PetWatchDrawerServiceContent />
+          </Drawer>
         </div>
       </Card>
-      <Drawer
-        ariaLabel="24 Pet Watch benefits"
-        id="24PetWatchDrawer"
-        isOpen={isDrawerOpen}
-        onClose={onCloseDrawer}
-        width={440}
-      >
-        <PetWatchDrawerServiceContent />
-      </Drawer>
     </>
   );
 };
