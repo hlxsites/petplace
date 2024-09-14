@@ -86,7 +86,6 @@ const stateInput: ElementInputSingleSelect = {
 
 const addressLineOneInput: ElementInputText = {
   elementType: "input",
-  errorMessage: "This field should not be empty",
   id: "address-1",
   label: "Address Line 1",
   requiredCondition: true,
@@ -95,7 +94,6 @@ const addressLineOneInput: ElementInputText = {
 
 const addressLineTwoInput: ElementInputText = {
   elementType: "input",
-  errorMessage: "This field should not be empty",
   id: "address-2",
   label: "Address Line 2",
   requiredCondition: true,
@@ -104,7 +102,6 @@ const addressLineTwoInput: ElementInputText = {
 
 const cityInput: ElementInputText = {
   elementType: "input",
-  errorMessage: "This field should not be empty",
   id: "city",
   label: "City",
   requiredCondition: true,
@@ -113,7 +110,6 @@ const cityInput: ElementInputText = {
 
 const intersectionInput: ElementInputText = {
   elementType: "input",
-  errorMessage: "This field should not be empty",
   id: "intersection-address",
   label: "Intersection/Address",
   requiredCondition: true,
@@ -123,7 +119,6 @@ const intersectionInput: ElementInputText = {
 const zipCodeInput: ElementInputText = {
   className: "w-1/2",
   elementType: "input",
-  errorMessage: "This field should not be empty",
   id: "zip-code",
   label: "Zip Code",
   requiredCondition: true,

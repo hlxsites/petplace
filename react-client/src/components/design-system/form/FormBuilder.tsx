@@ -525,7 +525,7 @@ export const FormBuilder = ({
 
       if (type === "checkboxGroup") return "Select at least one option";
 
-      return "Fill this field";
+      return "This field should not be empty";
     }
 
     return null;
