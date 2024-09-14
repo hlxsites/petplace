@@ -13,13 +13,13 @@ const UPLOAD_DOCUMENT_LABEL = /WIP - testing purposes/i;
 const { getByText, getAllByRole, queryByText, getByRole } = screen;
 
 describe("PetDocumentsView", () => {
-  it.each(["medical", "vaccines", "test"] as Props["recordType"][])(
-    "should render text message containing the %s recordType",
-    (recordType) => {
-      getRenderer({ recordType });
+  it.each(["medical", "vaccines", "test"] as Props["documentType"][])(
+    "should render text message containing the %s documentType",
+    (documentType) => {
+      getRenderer({ documentType });
 
       expect(
-        getByText(`View, download and manage all ${recordType} records.`)
+        getByText(`View, download and manage all ${documentType} records.`)
       ).toBeInTheDocument();
     }
   );
@@ -71,7 +71,7 @@ describe("PetDocumentsView", () => {
 
   it("should call onDelete when user clicks to delete an item", async () => {
     const onDelete = jest.fn();
-    getRenderer({ onDelete });
+    getRenderer({ onDelete: () => onDelete });
 
     expect(onDelete).not.toHaveBeenCalled();
 
@@ -90,16 +90,16 @@ describe("PetDocumentsView", () => {
 type Props = ComponentProps<typeof PetDocumentsView>;
 function getRenderer({
   documents = MOCK_DOCUMENTS,
+  documentType = "test",
   onDelete = jest.fn(),
   onDownload = jest.fn(),
-  recordType = "test",
 }: Partial<Props> = {}) {
   return render(
     <PetDocumentsView
       documents={documents}
       onDelete={onDelete}
       onDownload={onDownload}
-      recordType={recordType}
+      documentType={documentType}
     />
   );
 }

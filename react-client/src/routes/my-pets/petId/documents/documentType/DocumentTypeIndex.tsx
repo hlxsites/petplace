@@ -1,7 +1,7 @@
+import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Drawer } from "~/components/design-system";
 import { PetDocumentsView } from "~/components/Pet/PetDocumentsView";
 import { useDocumentTypeIndexViewModel } from "./useDocumentTypeIndexViewModel";
-import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 
 export const DocumentTypeIndex = () => {
   const {
@@ -18,9 +18,9 @@ export const DocumentTypeIndex = () => {
         {(resolvedDocuments) => (
           <PetDocumentsView
             documents={resolvedDocuments}
+            documentType={id}
             onDelete={onDelete}
             onDownload={onDownload}
-            recordType={id}
           />
         )}
       </SuspenseAwait>

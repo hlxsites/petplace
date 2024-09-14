@@ -1,53 +1,37 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { PetDocument } from "~/domain/models/pet/PetDocument";
 import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 
 type PetDocumentViewProps = {
   documents: PetDocument[];
-  onDelete: (recordId: string, recordType: string) => void;
-  onDownload: (
-    documentId: string,
-    fileName: string,
-    fileType: string
-  ) => Promise<void>;
-  recordType: string;
+  documentType: string;
+  onDelete: (document: PetDocument) => () => void;
+  onDownload: (document: PetDocument) => () => void;
 };
 
 export const PetDocumentsView = ({
   documents,
+  documentType,
   onDelete,
   onDownload,
-  recordType,
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
-
-  const onDeletePetCardRecord = useCallback(
-    (recordType: string, recordId?: string) => {
-      if (!recordId) return;
-      onDelete(recordId, recordType);
-    },
-    [onDelete]
-  );
-
-  const handleDownload = (record: PetDocument) => {
-    void onDownload(record.id, record.fileName, record.fileType);
-  };
 
   return (
     <div className="grid gap-large">
       <Text color="tertiary-600" size="14">
-        {`View, download and manage all ${recordType} records.`}
+        {`View, download and manage all ${documentType} records.`}
       </Text>
 
       {!!documents.length && (
         <div className="grid gap-small">
-          {documents.map((record) => (
+          {documents.map((document) => (
             <PetCardRecord
-              document={record}
-              key={record.id}
-              onDelete={() => onDeletePetCardRecord(recordType, record.id)}
-              onDownload={() => handleDownload(record)}
+              document={document}
+              key={document.id}
+              onDelete={onDelete(document)}
+              onDownload={onDownload(document)}
             />
           ))}
         </div>
