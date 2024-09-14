@@ -48,6 +48,7 @@ export type PetModel = PetCommon & {
   mixedBreed?: boolean;
   onboardCompleted?: boolean;
   sex?: string;
+  sourceType?: "MyPetHealth" | "PetPoint";
   spayedNeutered?: boolean;
   species?: string;
 };

@@ -50,6 +50,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     Name: z.string(),
     Neutered: z.boolean().nullish(),
     Sex: z.string(),
+    Source: z.number().nullish(),
     Species: z.string(),
   });
 
@@ -66,6 +67,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     mixedBreed: !!info.MixedBreed,
     name: info.Name,
     sex: info.Sex,
+    sourceType: info.Source === 1 ? "MyPetHealth" : "PetPoint",
     spayedNeutered: !!info.Neutered,
     species: info.Species,
   };
