@@ -6,14 +6,14 @@ import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 export const DocumentTypeIndex = () => {
   const {
     documents,
-    documentType: { id, name },
+    documentType: { id, label },
     onClose,
     onDelete,
     onDownload,
   } = useDocumentTypeIndexViewModel();
 
   return (
-    <Drawer id={id} isOpen onClose={onClose} title={name} width="fit-content">
+    <Drawer id={id} isOpen onClose={onClose} title={label} width="fit-content">
       <SuspenseAwait resolve={documents}>
         {(resolvedDocuments) => (
           <PetDocumentsView

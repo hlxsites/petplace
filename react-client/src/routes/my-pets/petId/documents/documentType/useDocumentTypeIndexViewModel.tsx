@@ -1,4 +1,4 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 
 import { isValidPetDocumentId } from "~/domain/models/pet/PetDocument";
@@ -6,11 +6,7 @@ import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUse
 import { requireAuthToken } from "~/util/authUtil";
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
-
-type DocumentType = {
-  id: string;
-  name: string;
-};
+import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
 
 export const loader = (({ params }) => {
   const { petId, documentType } = params;
@@ -35,9 +31,7 @@ export const loader = (({ params }) => {
 export const useDocumentTypeIndexViewModel = () => {
   const navigate = useNavigate();
   const loaderData = useLoaderData<typeof loader>();
-  const { documentTypes } = useOutletContext<{
-    documentTypes: DocumentType[];
-  }>();
+  const { documentTypes } = usePetProfileContext();
 
   const documentType = documentTypes.find((dt) => dt.id === loaderData.id);
   invariant(documentType, "Document type must be found here");
