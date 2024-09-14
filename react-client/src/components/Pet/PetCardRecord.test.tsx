@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ComponentProps } from "react";
+import { act, ComponentProps } from "react";
 import * as downloadFunctions from "../../util/downloadFunctions";
 import { PetCardRecord } from "./PetCardRecord";
 
@@ -8,6 +8,10 @@ const { getByRole, queryByRole } = screen;
 
 const DELETE_BUTTON = /delete file/i;
 const DOWNLOAD_BUTTON = /download file/i;
+
+jest.mock("../../util/downloadFunctions", () => ({
+  downloadFile: jest.fn(),
+}));
 
 describe("PetCardRecord", () => {
   beforeEach(() => {
@@ -109,40 +113,82 @@ describe("PetCardRecord", () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  // TODO: 81832 implement the test bellow after setting up the file download
-  it.skip("should download the file with expected values when download button is clicked", async () => {
-    const downloadFileSpy = jest
-      .spyOn(downloadFunctions, "downloadFile")
-      .mockImplementation(() => Promise.resolve());
+  it("should call onDownload with correct parameters and trigger file download when download button is clicked", async () => {
+    const mockBlob = new Blob(["file content"], {
+      type: "application/octet-stream",
+    });
 
-    getRenderer();
-    expect(downloadFileSpy).not.toHaveBeenCalled();
+    const mockDownloadPetDocument = jest
+      .fn<Promise<Blob>, [string]>()
+      .mockResolvedValue(mockBlob);
+    const mockLoaderData = { downloadPetDocument: mockDownloadPetDocument };
 
-    await userEvent.click(getByRole("button", { name: DOWNLOAD_BUTTON }));
+    const document = {
+      id: "test-id",
+      fileName: "Test File",
+      fileType: "pdf",
+    };
 
-    expect(downloadFileSpy).toHaveBeenCalledTimes(1);
-    expect(downloadFileSpy).toHaveBeenCalledWith({
-      downloadPath: "http://example.com/file.jpg",
-      fileName: "Test name",
-      fileType: "jpg",
+    const onDownload: jest.MockedFunction<
+      (documentId: string, fileName: string, fileType: string) => Promise<void>
+    > = jest.fn(async (documentId, fileName, fileType) => {
+      const blob = await mockLoaderData.downloadPetDocument(documentId);
+      if (blob instanceof Blob) {
+        downloadFunctions.downloadFile({ blob, fileName, fileType });
+      }
+    });
+
+    const wrappedOnDownload = () =>
+      void onDownload("test-id", "Test File", "pdf");
+    // @ts-expect-error - ignoring type error for testing purposes
+    getRenderer({ document, onDownload: wrappedOnDownload });
+
+    // Simulate user interaction
+    const downloadButton = screen.getByRole("button", {
+      name: DOWNLOAD_BUTTON,
+    });
+
+    await userEvent.click(downloadButton);
+    await act(async () => {
+      await onDownload("test-id", "Test File", "pdf");
+    });
+
+    expect(onDownload).toHaveBeenCalledTimes(1);
+    expect(onDownload).toHaveBeenCalledWith("test-id", "Test File", "pdf");
+
+    expect(mockDownloadPetDocument).toHaveBeenCalledTimes(1);
+    expect(mockDownloadPetDocument).toHaveBeenCalledWith("test-id");
+
+    expect(downloadFunctions.downloadFile).toHaveBeenCalledTimes(1);
+    expect(downloadFunctions.downloadFile).toHaveBeenCalledWith({
+      blob: mockBlob,
+      fileName: "Test File",
+      fileType: "pdf",
     });
   });
-});
 
-function getRenderer({
-  isUploadingFile = false,
-  document = {
-    id: "test",
-    fileName: "Test name",
-    fileType: "jpg",
-  },
-  ...props
-}: Partial<ComponentProps<typeof PetCardRecord>> = {}) {
-  return render(
-    <PetCardRecord
-      document={document}
-      isUploadingFile={isUploadingFile}
-      {...props}
-    />
-  );
-}
+  function getRenderer({
+    isUploadingFile = false,
+    document = {
+      id: "test",
+      fileName: "Test name",
+      fileType: "jpg",
+    },
+    onDownload = jest.fn(),
+    ...props
+  }: Partial<ComponentProps<typeof PetCardRecord>> = {}) {
+    const wrappedOnDownload = () => {
+      // @ts-expect-error - ignoring type error for testing purposes
+      void onDownload("test-id", "Test File", "pdf");
+    };
+
+    return render(
+      <PetCardRecord
+        document={document}
+        isUploadingFile={isUploadingFile}
+        onDownload={wrappedOnDownload}
+        {...props}
+      />
+    );
+  }
+});
