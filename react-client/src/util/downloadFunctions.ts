@@ -1,22 +1,13 @@
 export type DownloadFileProps = {
-  downloadPath?: string;
+  blob?: Blob;
   fileName: string;
   fileType?: string;
 };
 
-export async function downloadFile({
-  downloadPath,
-  fileName,
-  fileType,
-}: DownloadFileProps) {
-  if (!downloadPath || !fileType) return;
+export function downloadFile({ blob, fileName, fileType }: DownloadFileProps) {
+  if (!blob || !fileType) return;
 
   try {
-    const response = await fetch(downloadPath);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const blob = await response.blob();
     const url = URL.createObjectURL(blob);
 
     const downloadLink = document.createElement("a");
