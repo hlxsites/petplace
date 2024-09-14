@@ -21,28 +21,26 @@ export const loader = (({ params }) => {
 
   return defer({
     id: documentType,
-    petId,
     documents: useCase.query(petId, documentType),
-    downloadPetDocument: (documentId: string) =>
-      useCase.fetchDocumentBlob(documentId),
+    downloadPetDocument: useCase.fetchDocumentBlob,
   });
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
   const navigate = useNavigate();
-  const loaderData = useLoaderData<typeof loader>();
+  const { documents, downloadPetDocument, id } = useLoaderData<typeof loader>();
   const { documentTypes } = usePetProfileContext();
 
-  const documentType = documentTypes.find((dt) => dt.id === loaderData.id);
+  const documentType = documentTypes.find((dt) => dt.id === id);
   invariant(documentType, "Document type must be found here");
 
   const onClose = () => {
     navigate("..");
   };
 
-  const onDelete = (recordId: string) => {
+  const onDelete = (documentId: string) => {
     // TODO: Implement real delete action when backend is ready
-    console.log("recordId", recordId);
+    console.log("implement delete document", documentId);
   };
 
   const onDownload = async (
@@ -51,7 +49,7 @@ export const useDocumentTypeIndexViewModel = () => {
     fileType: string
   ) => {
     try {
-      const blob = await loaderData.downloadPetDocument(documentId);
+      const blob = await downloadPetDocument(documentId);
       if (blob instanceof Blob) {
         const downloadProps: DownloadFileProps = {
           blob,
@@ -68,7 +66,7 @@ export const useDocumentTypeIndexViewModel = () => {
   };
 
   return {
-    ...loaderData,
+    documents,
     documentType,
     onClose,
     onDelete,
