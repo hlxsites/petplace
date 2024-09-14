@@ -91,12 +91,14 @@ type Props = ComponentProps<typeof PetDocumentsView>;
 function getRenderer({
   documents = MOCK_DOCUMENTS,
   onDelete = jest.fn(),
+  onDownload = jest.fn(),
   recordType = "test",
 }: Partial<Props> = {}) {
   return render(
     <PetDocumentsView
       documents={documents}
       onDelete={onDelete}
+      onDownload={onDownload}
       recordType={recordType}
     />
   );
