@@ -33,6 +33,7 @@ import {
   idWithRepeaterMetadata,
   textWithRepeaterMetadata,
 } from "./utils/formRepeaterUtils";
+import { isEmailValid } from "./utils/formValidationUtils";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -52,7 +53,7 @@ type RenderedInput = Omit<
 export type FormBuilderProps = {
   schema: FormSchema;
   onChange?: (values: FormValues) => void;
-  onSubmit?: (props: OnSubmitProps) => void;
+  onSubmit: (props: OnSubmitProps) => void;
   values?: FormValues;
 };
 
@@ -65,26 +66,19 @@ export const FormBuilder = ({
   const defaultValuesRef = useRef<FormValues>(defaultValues || {});
 
   const [values, setValues] = useState<FormValues>(defaultValuesRef.current);
-  const [isFormChanged, setIsFormChanged] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
 
-  // Object to store the rendered fields, can't use a ref because we want a clean object on each render
-  const renderedFields: RenderedInput[] = [];
+  // Array to store the rendered inputs, can't use a ref because we want a clean array on each render
+  const renderedInputs: RenderedInput[] = [];
 
-  // Check if any of the rendered fields has an error message
-  const hasValidationError = renderedFields.some((f) => !!f.errorMessage);
+  const isFormChanged = !isEqual(defaultValuesRef.current, values);
 
   useDeepCompareEffect(() => {
-    const formChanged = !isEqual(defaultValuesRef.current, values);
-
-    // Set form as changed if values differ from the default values
-    setIsFormChanged(formChanged);
-
     // Notify onChange callback only if the values have changed
-    if (!!onChange && formChanged) {
+    if (!!onChange && isFormChanged) {
       onChange(values);
     }
-  }, [onChange, values]);
+  }, [isFormChanged, onChange, values]);
 
   return (
     <form
@@ -100,18 +94,15 @@ export const FormBuilder = ({
 
   function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!didSubmit) setDidSubmit(true);
 
-    if (hasValidationError) {
-      setDidSubmit(true);
+    // Check if any of the rendered fields has an error message
+    const hasValidationError = renderedInputs.some((f) => !!f.errorMessage);
 
-      return null;
-    }
+    // Prevent form submission if there are validation errors
+    if (hasValidationError) return;
 
-    setDidSubmit(true);
-
-    if (onSubmit) onSubmit({ event, values });
-
-    return values;
+    onSubmit({ event, values });
   }
 
   function renderElement(element: ElementUnion, index: number) {
@@ -211,13 +202,17 @@ export const FormBuilder = ({
       ...inputProps,
     };
 
-    // Validate the input and add the error message to the props if necessary
-    const errorMessage = didSubmit ? validateInput(commonProps) : null;
-    commonProps["errorMessage"] = errorMessage || undefined;
+    // Validate the input
+    const errorMessage = validateInput(commonProps);
 
-    renderedFields.push({
+    // We always need the error message in the rendered fields
+    renderedInputs.push({
       ...commonProps,
+      errorMessage,
     });
+
+    // Display the error message only if the form has been submitted
+    commonProps.errorMessage = didSubmit ? errorMessage : undefined;
 
     if (type === "select") {
       const { options } = inputProps;
@@ -500,6 +495,10 @@ export const FormBuilder = ({
 
     const { errorMessage, required, type } = input;
 
+    if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
+      return "Please enter a valid email address.";
+    }
+
     if (required && !inputValueExist(input)) {
       if (errorMessage) return errorMessage;
 
@@ -509,7 +508,7 @@ export const FormBuilder = ({
 
       if (type === "checkboxGroup") return "Select at least one option";
 
-      return "Fill this field";
+      return "This field should not be empty";
     }
 
     return null;

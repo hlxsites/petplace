@@ -4,7 +4,7 @@ import { type ComponentProps } from "react";
 import { DisplayForm } from "./DisplayForm";
 import { ElementUnion, FormSchema } from "./types/formTypes";
 
-const { getByRole, getAllByRole, queryByRole, getByText } = screen;
+const { getByRole, getAllByRole, queryByRole, getByText, queryByText } = screen;
 
 const DEFAULT_SUBMIT: ElementUnion = {
   elementType: "button",
@@ -412,42 +412,116 @@ describe("<DisplayForm />", () => {
     expect(onChange).toHaveBeenLastCalledWith({ name: "test" });
   });
 
-  it("should call onSubmit callback", async () => {
-    const onSubmit = jest.fn();
-    getRenderer({ schema: DEFAULT_SCHEMA, onSubmit });
-    expect(onSubmit).not.toHaveBeenCalled();
+  describe("with a required field", () => {
+    it("should not display validation error by default", () => {
+      const errorMessage = "This field is required";
+      const schema: FormSchema = {
+        ...DEFAULT_SCHEMA,
+        children: [
+          {
+            elementType: "input",
+            id: "name",
+            label: "What is your pet name?",
+            requiredCondition: true,
+            type: "text",
+            errorMessage,
+          },
+          DEFAULT_SUBMIT,
+        ],
+      };
+      getRenderer({ schema });
+      expect(queryByText(errorMessage)).not.toBeInTheDocument();
+    });
 
-    await userEvent.click(getByRole("button", { name: DEFAULT_SUBMIT.label }));
-    expect(onSubmit).toHaveBeenCalledTimes(1);
+    it("should display validation error when user try to submit it", async () => {
+      const errorMessage = "This field is required";
+      const schema: FormSchema = {
+        ...DEFAULT_SCHEMA,
+        children: [
+          {
+            elementType: "input",
+            id: "name",
+            label: "What is your pet name?",
+            requiredCondition: true,
+            type: "text",
+            errorMessage,
+          },
+          DEFAULT_SUBMIT,
+        ],
+      };
+      getRenderer({ schema });
+
+      await userEvent.click(getByRole("button"));
+      expect(getByText(errorMessage)).toBeInTheDocument();
+    });
   });
 
-  it("should display validation error", async () => {
-    const errorMessage = "This field is required";
-    const schema: FormSchema = {
-      ...DEFAULT_SCHEMA,
-      children: [
-        {
-          elementType: "input",
-          id: "name",
-          label: "What is your pet name?",
-          requiredCondition: true,
-          type: "text",
-          errorMessage,
-        },
-        DEFAULT_SUBMIT,
-      ],
-    };
-    getRenderer({ schema });
+  describe("onSubmit callback", () => {
+    it("should call it", async () => {
+      const onSubmit = jest.fn();
+      getRenderer({ schema: DEFAULT_SCHEMA, onSubmit });
+      expect(onSubmit).not.toHaveBeenCalled();
 
-    await userEvent.click(getByRole("button", { name: DEFAULT_SUBMIT.label }));
-    expect(getByText(errorMessage)).toBeInTheDocument();
+      await userEvent.click(getByRole("button"));
+      expect(onSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not call it when there is a required field without a value on it", async () => {
+      const onSubmit = jest.fn();
+      getRenderer({
+        schema: {
+          ...DEFAULT_SCHEMA,
+          children: [
+            {
+              elementType: "input",
+              id: "name",
+              label: "Required field",
+              requiredCondition: true,
+              type: "text",
+            },
+            DEFAULT_SUBMIT,
+          ],
+        },
+        onSubmit,
+      });
+
+      await userEvent.click(getByRole("button"));
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    it("should call it when there is a required field with a value on it", async () => {
+      const onSubmit = jest.fn();
+      getRenderer({
+        schema: {
+          ...DEFAULT_SCHEMA,
+          children: [
+            {
+              elementType: "input",
+              id: "name",
+              label: "Required field",
+              requiredCondition: true,
+              type: "text",
+            },
+            DEFAULT_SUBMIT,
+          ],
+        },
+        onSubmit,
+        values: {
+          name: "test",
+        },
+      });
+
+      await userEvent.click(getByRole("button"));
+      expect(onSubmit).toHaveBeenCalled();
+    });
   });
 });
 
 // Helpers
 function getRenderer({
+  onSubmit = jest.fn(),
   schema = DEFAULT_SCHEMA,
   ...rest
 }: Partial<ComponentProps<typeof DisplayForm>> = {}) {
-  return render(<DisplayForm schema={schema} {...rest} />);
+  return render(<DisplayForm onSubmit={onSubmit} schema={schema} {...rest} />);
 }
