@@ -1,7 +1,7 @@
-import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import getPetInfoMock from "./mocks/getPetInfoMock.json";
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
+import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetInfoUseCase } from "./GetPetInfoUseCase";
+import getPetInfoMock from "./mocks/getPetInfoMock.json";
 
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
@@ -29,6 +29,7 @@ describe("GetPetsInfoUseCase", () => {
       name: "Buddy",
       sex: "Male",
       spayedNeutered: true,
+      sourceType: "PetPoint",
       species: "Dog",
     });
   });
