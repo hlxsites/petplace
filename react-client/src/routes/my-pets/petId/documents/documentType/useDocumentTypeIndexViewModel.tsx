@@ -1,13 +1,18 @@
-import { useNavigate } from "react-router-dom";
-import { LoaderFunction, useLoaderData } from "react-router-typesafe";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 
 import { isValidPetDocumentId } from "~/domain/models/pet/PetDocument";
 import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
 import { requireAuthToken } from "~/util/authUtil";
+import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
-import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
 
-export const loader = (async ({ params }) => {
+type DocumentType = {
+  id: string;
+  name: string;
+};
+
+export const loader = (({ params }) => {
   const { petId, documentType } = params;
   invariantResponse(petId, "Pet id is required in this route");
   invariantResponse(
@@ -18,21 +23,23 @@ export const loader = (async ({ params }) => {
   const authToken = requireAuthToken();
   const useCase = new GetPetDocumentsUseCase(authToken);
 
-  const documents = await useCase.query(petId, documentType);
-
-  return {
+  return defer({
     id: documentType,
     petId,
-    documents,
-  };
+    documents: useCase.query(petId, documentType),
+    downloadPetDocument: (documentId: string) =>
+      useCase.fetchDocumentBlob(documentId),
+  });
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
-  const { id, documents } = useLoaderData<typeof loader>();
-  const { documentTypes } = usePetProfileContext();
   const navigate = useNavigate();
+  const loaderData = useLoaderData<typeof loader>();
+  const { documentTypes } = useOutletContext<{
+    documentTypes: DocumentType[];
+  }>();
 
-  const documentType = documentTypes.find((dt) => dt.id === id);
+  const documentType = documentTypes.find((dt) => dt.id === loaderData.id);
   invariant(documentType, "Document type must be found here");
 
   const onClose = () => {
@@ -44,10 +51,33 @@ export const useDocumentTypeIndexViewModel = () => {
     console.log("recordId", recordId);
   };
 
+  const onDownload = async (
+    documentId: string,
+    fileName: string,
+    fileType: string
+  ) => {
+    try {
+      const blob = await loaderData.downloadPetDocument(documentId);
+      if (blob instanceof Blob) {
+        const downloadProps: DownloadFileProps = {
+          blob,
+          fileName,
+          fileType,
+        };
+        downloadFile(downloadProps);
+      } else {
+        console.error("Downloaded content is not a Blob");
+      }
+    } catch (error) {
+      console.error("Error downloading document:", error);
+    }
+  };
+
   return {
-    documents,
+    ...loaderData,
     documentType,
     onClose,
     onDelete,
+    onDownload,
   };
 };
