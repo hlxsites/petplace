@@ -6,12 +6,14 @@ import { PetCardRecord } from "./PetCardRecord";
 type PetDocumentViewProps = {
   documents: PetDocument[];
   onDelete: (recordId: string, recordType: string) => void;
+  onDownload: (documentId: string, fileName: string, fileType: string) => void;
   recordType: string;
 };
 
 export const PetDocumentsView = ({
   documents,
   onDelete,
+  onDownload,
   recordType,
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -24,6 +26,13 @@ export const PetDocumentsView = ({
     [onDelete]
   );
 
+  const onDownloadPetCardRecord = useCallback(
+    (document: PetDocument) => {
+      onDownload(document.id, document.fileName, document.fileType);
+    },
+    [onDownload]
+  );
+
   return (
     <div className="grid gap-large">
       <Text color="tertiary-600" size="14">
@@ -34,9 +43,10 @@ export const PetDocumentsView = ({
         <div className="grid gap-small">
           {documents.map((record) => (
             <PetCardRecord
+              document={record}
               key={record.id}
               onDelete={() => onDeletePetCardRecord(recordType, record.id)}
-              document={record}
+              onDownload={() => onDownloadPetCardRecord(record)}
             />
           ))}
         </div>
