@@ -11,15 +11,26 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     this.baseUrl = baseUrl;
   }
 
-  async get(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  async get(
+    path: string,
+    options: HttpOptions = {},
+    responseType: "json" | "blob" = "json"
+  ): Promise<HttpResponse> {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "GET",
         headers: options.headers,
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const data = await result.json();
+      let data: unknown;
+
+      // Handle different response types
+      if (responseType === "blob") {
+        data = await result.blob();
+      } else {
+        data = await result.json();
+      }
+
       return { data, statusCode: result.status };
     } catch (error) {
       return { error };
@@ -33,8 +44,8 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         headers: options.headers,
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const data = await result.json();
+      const data: unknown = await result.json();
+
       return { data, statusCode: result.status };
     } catch (error) {
       return { error };

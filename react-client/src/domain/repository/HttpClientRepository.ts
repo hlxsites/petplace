@@ -14,7 +14,11 @@ export type HttpResponse =
     };
 
 export interface HttpClientRepository {
-  get(path: string, options?: HttpOptions): Promise<HttpResponse>;
+  get(
+    path: string,
+    options?: HttpOptions,
+    responseType?: "json" | "blob"
+  ): Promise<HttpResponse>;
 
   post(path: string, options?: HttpOptions): Promise<HttpResponse>;
 }
