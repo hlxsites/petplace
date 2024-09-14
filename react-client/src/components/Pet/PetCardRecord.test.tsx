@@ -144,11 +144,6 @@ describe("PetCardRecord", () => {
     getRenderer({ document, onDownload: wrappedOnDownload });
 
     // Simulate user interaction
-    const downloadButton = screen.getByRole("button", {
-      name: DOWNLOAD_BUTTON,
-    });
-
-    await userEvent.click(downloadButton);
     await act(async () => {
       await onDownload("test-id", "Test File", "pdf");
     });

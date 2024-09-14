@@ -31,7 +31,7 @@ export const PetCardRecord = ({
                 className: "text-orange-300-contrast lg:mr-[-8px]",
                 size: 16,
               }}
-              onClick={() => onDownload}
+              onClick={() => onDownload?.()}
               variant="link"
             />
             <IconButton

@@ -19,7 +19,7 @@ export const DocumentTypeIndex = () => {
           <PetDocumentsView
             documents={resolvedDocuments}
             onDelete={onDelete}
-            onDownload={() => onDownload}
+            onDownload={onDownload}
             recordType={id}
           />
         )}

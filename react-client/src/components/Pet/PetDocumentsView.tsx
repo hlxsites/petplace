@@ -6,7 +6,11 @@ import { PetCardRecord } from "./PetCardRecord";
 type PetDocumentViewProps = {
   documents: PetDocument[];
   onDelete: (recordId: string, recordType: string) => void;
-  onDownload: (documentId: string, fileName: string, fileType: string) => void;
+  onDownload: (
+    documentId: string,
+    fileName: string,
+    fileType: string
+  ) => Promise<void>;
   recordType: string;
 };
 
@@ -26,12 +30,9 @@ export const PetDocumentsView = ({
     [onDelete]
   );
 
-  const onDownloadPetCardRecord = useCallback(
-    (document: PetDocument) => {
-      onDownload(document.id, document.fileName, document.fileType);
-    },
-    [onDownload]
-  );
+  const handleDownload = (record: PetDocument) => {
+    void onDownload(record.id, record.fileName, record.fileType);
+  };
 
   return (
     <div className="grid gap-large">
@@ -46,7 +47,7 @@ export const PetDocumentsView = ({
               document={record}
               key={record.id}
               onDelete={() => onDeletePetCardRecord(recordType, record.id)}
-              onDownload={() => onDownloadPetCardRecord(record)}
+              onDownload={() => handleDownload(record)}
             />
           ))}
         </div>
@@ -64,7 +65,6 @@ export const PetDocumentsView = ({
       </Card>
 
       {isUploading && (
-        // TODO: 81832 fix this after implementing all logic to upload documents
         <PetCardRecord
           document={{
             id: "test-record",
