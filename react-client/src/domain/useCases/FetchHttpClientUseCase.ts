@@ -11,25 +11,19 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     this.baseUrl = baseUrl;
   }
 
-  async get(
-    path: string,
-    options: HttpOptions = {},
-    responseType: "json" | "blob" = "json"
-  ): Promise<HttpResponse> {
+  async get(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "GET",
         headers: options.headers,
       });
 
-      let data: unknown;
-
-      // Handle different response types
-      if (responseType === "blob") {
-        data = await result.blob();
-      } else {
-        data = await result.json();
-      }
+      const data: unknown = await (async () => {
+        if (options.responseType === "blob") {
+          return result.blob();
+        }
+        return result.json();
+      })();
 
       return { data, statusCode: result.status };
     } catch (error) {

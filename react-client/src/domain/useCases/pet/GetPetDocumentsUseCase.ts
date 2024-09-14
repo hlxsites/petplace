@@ -41,11 +41,9 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
 
   async fetchDocumentBlob(documentId: string): Promise<Blob | null> {
     try {
-      const result = await this.httpClient.get(
-        `Document/${documentId}`,
-        {},
-        "blob"
-      );
+      const result = await this.httpClient.get(`Document/${documentId}`, {
+        responseType: "blob",
+      });
 
       if (result.error || !result.data) {
         console.error("Error fetching document blob", result.error);

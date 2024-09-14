@@ -24,17 +24,12 @@ export class PetPlaceHttpClientUseCase implements HttpClientRepository {
 
   async get(
     path: string,
-    options: Omit<HttpOptions, "headers"> = {},
-    responseType: "json" | "blob" = "json"
+    options: Omit<HttpOptions, "headers"> = {}
   ): Promise<HttpResponse> {
-    return this.httpClient.get(
-      path,
-      {
-        ...options,
-        headers: this.createHeaders,
-      },
-      responseType
-    );
+    return this.httpClient.get(path, {
+      ...options,
+      headers: this.createHeaders,
+    });
   }
 
   async post(
