@@ -211,7 +211,6 @@ export const externalAccountDetailsFormSchema: FormSchema = {
       children: [
         {
           elementType: "input",
-          errorMessage: "",
           hideLabel: true,
           id: "pet-health-services",
           label: "Consent to terms of service",
