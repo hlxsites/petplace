@@ -1,95 +1,50 @@
 import { useState } from "react";
-import { Button, DisplayForm, FormSchema } from "~/components/design-system";
+import {
+  Card,
+  DisplayForm,
+  FormSchema,
+  Title,
+} from "~/components/design-system";
+import Select from "~/components/design-system/form/Select";
+import { basicSchema, repeaterSchema } from "./schemas";
 
 export const FormBuilderPlayground = () => {
-  const [dataStructure, setDataStructure] = useState({});
-  const schema: FormSchema = {
-    id: "form-playground",
-    children: [
-      {
-        elementType: "repeater",
-        id: "test-repeater",
-        minRepeat: 1,
-        children: [
-          {
-            elementType: "input",
-            id: "name",
-            label: "What is your pet name?",
-            requiredCondition: true,
-            type: "text",
-          },
-          {
-            elementType: "input",
-            id: "breed",
-            label: "What's their breed?",
-            options: ["Bulldog", "Doberman", "Mixed"],
-            requiredCondition: true,
-            type: "select",
-          },
-          {
-            elementType: "input",
-            id: "gender",
-            label: "What's their gender?",
-            options: ["Male", "Female"],
-            requiredCondition: true,
-            type: "radio",
-          },
-          {
-            elementType: "input",
-            id: "health-problems",
-            label: "Have they ever had?",
-            options: ["Fever", "Vomit", "Low appetite"],
-            requiredCondition: true,
-            type: "checkboxGroup",
-          },
-          {
-            elementType: "input",
-            id: "vaccine",
-            label: "Have they ever been vaccinated?",
-            requiredCondition: true,
-            type: "switch",
-          },
-          {
-            elementType: "input",
-            id: "comments",
-            label: "Other comments:",
-            requiredCondition: true,
-            type: "textarea",
-          },
-          {
-            elementType: "input",
-            id: "contact",
-            label: "Contact:",
-            requiredCondition: true,
-            type: "phone",
-          },
-        ],
-      },
-    ],
-    version: 0,
-  };
+  const [selectedForm, setSelectedForm] = useState<string>("basic");
+
+  const schema = (() => {
+    const mapper: Record<string, FormSchema> = {
+      basic: basicSchema,
+      repeater: repeaterSchema,
+    };
+    return mapper[selectedForm] || basicSchema;
+  })();
 
   return (
-    <div>
-      <div className="mb-xxlarge flex w-full justify-center">
-        <Button onClick={seeDataStructure}>Ver Estrutura de dados</Button>
-      </div>
-      <DisplayForm
-        onChange={(props) => {
-          setDataStructure(props);
-          console.log("onChange values", props);
-        }}
-        onSubmit={({ event, values }) => {
-          event.preventDefault();
+    <div className="flex flex-col gap-xxlarge">
+      <Card padding="base" overflow="visible">
+        <Select
+          id="form-schema-selector"
+          label="Select the schema"
+          options={["basic", "repeater"]}
+          onChange={setSelectedForm}
+          required
+          value={selectedForm}
+        />
+      </Card>
 
-          console.log("onSubmit values", values);
-        }}
-        schema={schema}
-      />
+      <div className="flex flex-col gap-base">
+        <Title level="h2">Displaying form: {selectedForm}</Title>
+        <DisplayForm
+          onChange={(props) => {
+            console.log("onChange values", props);
+          }}
+          key={selectedForm}
+          onSubmit={({ values }) => {
+            window.alert(JSON.stringify(values));
+          }}
+          schema={schema}
+        />
+      </div>
     </div>
   );
-
-  function seeDataStructure() {
-    window.alert(JSON.stringify(dataStructure));
-  }
 };
