@@ -8,6 +8,7 @@ export type CardProps = {
   backgroundColor?: BackgroundColorClasses;
   border?: BorderColorClasses;
   children: ReactNode;
+  overflow?: "hidden" | "visible" | "scroll" | "auto";
   padding?: "medium" | "base" | "large" | "xlarge" | "xxlarge";
   "data-testid"?: string;
   radius?: "sm" | "base";
