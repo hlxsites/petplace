@@ -1,13 +1,16 @@
 import { Button } from "~/components/design-system";
+import { PetUnavailableActionDialog } from "~/components/Pet/PetUnavailableActionDialog";
 
 type ReportLostPetButtonProps = {
   className?: string;
+  disabled: boolean;
 };
 
 export const ReportLostPetButton = ({
   className,
+  disabled,
 }: ReportLostPetButtonProps) => {
-  return (
+  const button = (
     <Button
       className={className}
       iconLeft="shieldGood"
@@ -17,4 +20,8 @@ export const ReportLostPetButton = ({
       Report lost pet
     </Button>
   );
+
+  if (!disabled) return button;
+
+  return <PetUnavailableActionDialog trigger={button} />;
 };
