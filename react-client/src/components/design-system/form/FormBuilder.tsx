@@ -1,7 +1,6 @@
 import { isEqual } from "lodash";
 import {
   Fragment,
-  useEffect,
   useRef,
   useState,
   type FormEvent,
@@ -54,7 +53,7 @@ type RenderedInput = Omit<
 export type FormBuilderProps = {
   schema: FormSchema;
   onChange?: (values: FormValues) => void;
-  onSubmit?: (props: OnSubmitProps) => void;
+  onSubmit: (props: OnSubmitProps) => void;
   values?: FormValues;
 };
 
@@ -65,46 +64,21 @@ export const FormBuilder = ({
   values: defaultValues,
 }: FormBuilderProps) => {
   const defaultValuesRef = useRef<FormValues>(defaultValues || {});
-  const submitEventRef = useRef<FormEvent<HTMLFormElement> | null>(null);
 
   const [values, setValues] = useState<FormValues>(defaultValuesRef.current);
-  const [isFormChanged, setIsFormChanged] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Object to store the rendered fields, can't use a ref because we want a clean object on each render
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const renderedFields: RenderedInput[] = [];
+  // Array to store the rendered inputs, can't use a ref because we want a clean array on each render
+  const renderedInputs: RenderedInput[] = [];
+
+  const isFormChanged = !isEqual(defaultValuesRef.current, values);
 
   useDeepCompareEffect(() => {
-    const formChanged = !isEqual(defaultValuesRef.current, values);
-
-    // Set form as changed if values differ from the default values
-    setIsFormChanged(formChanged);
-
     // Notify onChange callback only if the values have changed
-    if (!!onChange && formChanged) {
+    if (!!onChange && isFormChanged) {
       onChange(values);
     }
-  }, [onChange, values]);
-
-  useEffect(() => {
-    if (didSubmit) {
-      const formHasErrors = renderedFields.some((field) => field.errorMessage);
-
-      if (!formHasErrors && isSubmitting) {
-        if (submitEventRef.current && onSubmit) {
-          onSubmit({ event: submitEventRef.current, values });
-        }
-
-        setIsSubmitting(false);
-        setDidSubmit(false);
-        submitEventRef.current = null;
-      } else if (formHasErrors) {
-        setIsSubmitting(false);
-      }
-    }
-  }, [didSubmit, isSubmitting, onSubmit, renderedFields, values]);
+  }, [isFormChanged, onChange, values]);
 
   return (
     <form
@@ -120,10 +94,15 @@ export const FormBuilder = ({
 
   function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    submitEventRef.current = event;
+    if (!didSubmit) setDidSubmit(true);
 
-    setDidSubmit(true);
-    setIsSubmitting(true);
+    // Check if any of the rendered fields has an error message
+    const hasValidationError = renderedInputs.some((f) => !!f.errorMessage);
+
+    // Prevent form submission if there are validation errors
+    if (hasValidationError) return;
+
+    onSubmit({ event, values });
   }
 
   function renderElement(element: ElementUnion, index: number) {
@@ -223,13 +202,17 @@ export const FormBuilder = ({
       ...inputProps,
     };
 
-    // Validate the input and add the error message to the props if necessary
-    const errorMessage = didSubmit ? validateInput(commonProps) : null;
-    commonProps["errorMessage"] = errorMessage || undefined;
+    // Validate the input
+    const errorMessage = validateInput(commonProps);
 
-    renderedFields.push({
+    // We always need the error message in the rendered fields
+    renderedInputs.push({
       ...commonProps,
+      errorMessage,
     });
+
+    // Display the error message only if the form has been submitted
+    commonProps.errorMessage = didSubmit ? errorMessage : undefined;
 
     if (type === "select") {
       const { options } = inputProps;
