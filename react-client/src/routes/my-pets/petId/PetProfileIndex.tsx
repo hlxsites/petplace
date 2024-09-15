@@ -51,9 +51,13 @@ export const PetProfileIndex = () => {
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
           <AdvertisingSection />
-          {petServiceStatus && (
-            <PetWatchSection petServiceStatus={petServiceStatus} />
-          )}
+
+          <SuspenseAwait resolve={petServiceStatus}>
+            {(status) =>
+              status && <PetWatchSection petServiceStatus={status} />
+            }
+          </SuspenseAwait>
+
           <PetInsuranceSection />
           <PetLostUpdatesSection {...pet} />
         </div>

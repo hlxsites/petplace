@@ -3,11 +3,12 @@
   "Breed": "Labrador",
   "DateOfBirth": "2020-01-01T00:00:00",
   "Id": "A123",
-  "MembershipStatus": "Active",
+  "MembershipStatus": "Annual member",
   "Microchip": "123456789",
   "MixedBreed": false,
   "Name": "Buddy",
   "Neutered": true,
+  "Products": [],
   "Sex": "Male",
   "Species": "Dog"
 }

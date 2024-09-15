@@ -14,3 +14,9 @@ export type PetServiceTypes =
   | "lifetime"
   | "lifetimePlus"
   | "standard";
+
+export type MembershipStatus =
+  | "Annual member"
+  | "Lifetime protect member"
+  | "Lifetime plus protect member"
+  | "Not a member";
