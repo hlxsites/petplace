@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { PetWatchSection } from "./PetWatchSection";
 import { MemoryRouter } from "react-router-dom";
 import { PetServices } from "~/domain/models/pet/PetModel";
+import { PetWatchSection } from "./PetWatchSection";
 
 const { getByRole, getByText } = screen;
 
@@ -35,18 +35,18 @@ describe("PetWatchSection", () => {
   });
 
   it.each([
-    ["Annual member", [], /Active Annual Membership/i],
+    ["Annual member", /Active Annual Membership/i, []],
     [
       "Annual member",
-      [{ id: "test", name: "test", isExpired: true }],
       /Expired Services/i,
+      [{ id: "test", name: "test", isExpired: true }],
     ],
-    ["Lifetime protect member", [], /Active Lifetime Membership/i],
-    ["Lifetime plus protect member", [], /Active Lifetime plus Membership/i],
-    ["Not a member", [], /Standard Protection/i],
+    ["Lifetime protect member", /Active Lifetime Membership/i, []],
+    ["Lifetime plus protect member", /Active Lifetime plus Membership/i, []],
+    ["Not a member", /Standard Protection/i, []],
   ])(
     "should render the %p petServiceStatus with the tag as %s",
-    (membershipStatus, products, expectedTag) => {
+    (membershipStatus, expectedTag, products) => {
       getRenderer({
         petServiceStatus: {
           membershipStatus,
@@ -58,18 +58,18 @@ describe("PetWatchSection", () => {
   );
 
   it.each([
-    ["Annual member", [], ACTIVE_MESSAGE],
+    ["Annual member", ACTIVE_MESSAGE, []],
     [
       "Annual member",
-      [{ id: "test", name: "test", isExpired: true }],
       EXPIRED_MESSAGE,
+      [{ id: "test", name: "test", isExpired: true }],
     ],
-    ["Lifetime protect member", [], ACTIVE_MESSAGE],
-    ["Lifetime plus protect member", [], ACTIVE_MESSAGE],
-    ["Not a member", [], STANDARD_MESSAGE],
+    ["Lifetime protect member", ACTIVE_MESSAGE, []],
+    ["Lifetime plus protect member", ACTIVE_MESSAGE, []],
+    ["Not a member", STANDARD_MESSAGE, []],
   ])(
     "should render the %p petServiceStatus with the text as %s",
-    (membershipStatus, products, expectedMessage) => {
+    (membershipStatus, expectedMessage, products) => {
       getRenderer({
         petServiceStatus: {
           membershipStatus,
@@ -81,18 +81,18 @@ describe("PetWatchSection", () => {
   );
 
   it.each([
-    ["Annual member", [], ACTIVE_BUTTON_LABEL],
+    ["Annual member", ACTIVE_BUTTON_LABEL, []],
     [
       "Annual member",
-      [{ id: "test", name: "test", isExpired: true }],
       EXPIRED_BUTTON_LABEL,
+      [{ id: "test", name: "test", isExpired: true }],
     ],
-    ["Lifetime protect member", [], ACTIVE_BUTTON_LABEL],
-    ["Lifetime plus protect member", [], ACTIVE_BUTTON_LABEL],
-    ["Not a member", [], STANDARD_BUTTON_LABEL],
+    ["Lifetime protect member", ACTIVE_BUTTON_LABEL, []],
+    ["Lifetime plus protect member", ACTIVE_BUTTON_LABEL, []],
+    ["Not a member", STANDARD_BUTTON_LABEL, []],
   ])(
     "should render the %p petServiceStatus with the button label as %s",
-    (membershipStatus, products, expectedButtonLabel) => {
+    (membershipStatus, expectedButtonLabel, products) => {
       getRenderer({
         petServiceStatus: {
           membershipStatus,
