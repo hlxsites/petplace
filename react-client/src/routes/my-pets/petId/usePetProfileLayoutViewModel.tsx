@@ -5,7 +5,6 @@ import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
 import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
-import { getPetServiceStatus } from "./utils/petServiceStatusUtils";
 
 export const loader = (({ params }) => {
   const { petId } = params;
@@ -18,9 +17,6 @@ export const loader = (({ params }) => {
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
     petInfo: petInfoPromise,
-    petServiceStatus: petInfoPromise.then((petInfo) =>
-      getPetServiceStatus(petInfo)
-    ),
   });
 }) satisfies LoaderFunction;
 

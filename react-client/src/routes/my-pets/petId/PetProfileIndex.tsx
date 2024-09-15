@@ -20,7 +20,7 @@ import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
-  const { petInfo, petServiceStatus } = viewModel;
+  const { petInfo } = viewModel;
 
   return (
     <SuspenseAwait minHeight={"80dvh"} resolve={petInfo}>
@@ -40,6 +40,8 @@ export const PetProfileIndex = () => {
       return contentParam === "pet-watch-purchase-success";
     })();
 
+    const { id, membershipStatus, products } = pet;
+
     return (
       <>
         <PetAlertSection />
@@ -51,21 +53,13 @@ export const PetProfileIndex = () => {
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
           <AdvertisingSection />
-
-          <SuspenseAwait resolve={petServiceStatus}>
-            {(status) =>
-              status && <PetWatchSection petServiceStatus={status} />
-            }
-          </SuspenseAwait>
-
+          <PetWatchSection petServiceStatus={{ membershipStatus, products }} />
           <PetInsuranceSection />
           <PetLostUpdatesSection {...pet} />
         </div>
         <Outlet context={viewModel} />
         {displayOnboarding && <OnboardingDialog />}
-        {displayCheckoutSuccessModal && (
-          <CheckoutConclusionModal petId={pet.id} />
-        )}
+        {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
       </>
     );
 

@@ -1,19 +1,5 @@
-import {
-  PetModel,
-  PetProduct,
-  PetServices,
-} from "~/domain/models/pet/PetModel";
+import { PetProduct, PetServices } from "~/domain/models/pet/PetModel";
 import { MembershipStatus, PetServiceTypes } from "../types/PetServicesTypes";
-
-export function getPetServiceStatus(
-  petInfo: PetModel | null
-): PetServices | undefined {
-  if (!petInfo) return undefined;
-  return {
-    membershipStatus: petInfo.membershipStatus,
-    products: petInfo.products,
-  };
-}
 
 function getProductStatus(products?: PetProduct[]) {
   return products ? products.some((product) => product.isExpired) : false;
