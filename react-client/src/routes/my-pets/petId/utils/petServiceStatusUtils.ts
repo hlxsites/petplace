@@ -1,0 +1,36 @@
+import {
+  PetModel,
+  PetProduct,
+  PetServices,
+} from "~/domain/models/pet/PetModel";
+import { MembershipStatus, PetServiceTypes } from "../types/PetServicesTypes";
+
+export function getPetServiceStatus(
+  petInfo: PetModel | null
+): PetServices | undefined {
+  if (!petInfo) return undefined;
+  return {
+    membershipStatus: petInfo.membershipStatus,
+    products: petInfo.products,
+  };
+}
+
+function getProductStatus(products?: PetProduct[]) {
+  return products ? products.some((product) => product.isExpired) : false;
+}
+
+export function getStatus(petServiceStatus: PetServices) {
+  const isAnyProductExpired = getProductStatus(petServiceStatus.products);
+  if (isAnyProductExpired) return "expired";
+
+  const Statuses: Record<MembershipStatus, PetServiceTypes> = {
+    "Annual member": "annual",
+    "Lifetime protect member": "lifetime",
+    "Lifetime plus protect member": "lifetimePlus",
+    "Not a member": "standard",
+  };
+
+  const statusKey = petServiceStatus.membershipStatus as MembershipStatus;
+
+  return Statuses[statusKey] ?? "standard";
+}
