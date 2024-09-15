@@ -172,9 +172,7 @@ export type ElementInputPhone = InputCommon & {
   defaultType?: string;
   disabledType?: ConditionExpression;
   hideType?: ConditionExpression;
-  onChange?: (newValue: string) => void;
   type: "phone";
-  value?: string;
 };
 
 export type ElementInputTextarea = InputCommon & {
