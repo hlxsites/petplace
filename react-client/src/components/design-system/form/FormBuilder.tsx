@@ -473,10 +473,6 @@ export const FormBuilder = ({
 
     const { errorMessage, required, type } = input;
 
-    if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
-      return "Please enter a valid email address.";
-    }
-
     if (required && !inputValueExist(input)) {
       if (errorMessage) return errorMessage;
 
@@ -489,6 +485,10 @@ export const FormBuilder = ({
       return "This field should not be empty";
     }
 
+    if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
+      return "Please enter a valid email address.";
+    }
+
     return null;
   }
 
@@ -499,9 +499,7 @@ export const FormBuilder = ({
 
     if (Array.isArray(value)) return !!value.length;
 
-    if (typeof value === "string") return !!value.length;
-
-    return true;
+    return !!value;
   }
 
   function getInputValue(input: RenderedInput): InputValue {
