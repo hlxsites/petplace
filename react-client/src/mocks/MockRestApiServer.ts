@@ -6,13 +6,6 @@ import {
   MissingStatus,
   PetModel,
 } from "~/domain/models/pet/PetModel";
-import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
-
-const PET_SERVICES: Record<string, PetServiceTypes> = {
-  buddy: "standard",
-  lily: "lifetimePlus",
-  charlie: "expired",
-};
 
 const PET_RECORDS = {
   buddy: {
@@ -429,14 +422,6 @@ export const getPetDocuments = ({
 
 export const getPetById = (id: string) => {
   return PETS_LIST.find((pet) => pet.id === id) || PETS_LIST[0];
-};
-
-export const getPetServiceStatus = (petId: string) => {
-  try {
-    return PET_SERVICES[petId] || null;
-  } catch (_) {
-    return null;
-  }
 };
 
 export const getProductsList = () => {
