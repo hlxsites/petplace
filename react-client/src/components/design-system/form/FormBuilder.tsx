@@ -302,7 +302,6 @@ export const FormBuilder = ({
 
       const { repeaterId, index } = repeaterMetadata;
       const repeaterValues = (() => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const current = values[repeaterId];
         if (current && Array.isArray(current)) {
           return (current as FormValues[]).map((item, i) => {
