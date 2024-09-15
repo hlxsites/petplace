@@ -169,8 +169,7 @@ export const LostPetIndex = () => {
 
             setValues(props);
           }}
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
+          onSubmit={({ values }) => {
             console.log("onSubmit values", values);
           }}
           schema={formSchema}

@@ -146,8 +146,7 @@ export const FoundPetIndex = () => {
     <div className="m-auto max-w-[800px]">
       <Card padding="xlarge">
         <DisplayUncontrolledForm
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
+          onSubmit={({ values }) => {
             console.log("onSubmit values", values);
           }}
           schema={formSchema}
