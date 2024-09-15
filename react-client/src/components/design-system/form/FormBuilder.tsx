@@ -174,7 +174,6 @@ export const FormBuilder = ({
     disabledCondition,
     label: inputLabel,
     requiredCondition,
-    repeaterMetadata,
     ...inputProps
   }: InputsUnion): ReactNode {
     const disabled = matchConditionExpression(disabledCondition ?? false);
@@ -182,6 +181,7 @@ export const FormBuilder = ({
 
     const { type } = inputProps;
 
+    const { repeaterMetadata } = inputProps;
     const id = idWithRepeaterMetadata(inputId, repeaterMetadata);
     const label = textWithRepeaterMetadata(inputLabel, repeaterMetadata);
 
@@ -293,7 +293,7 @@ export const FormBuilder = ({
     return null;
 
     function handleInputChange(newValue: InputValue) {
-      const inputId = getInputId();
+      const inputId = getInputId(commonProps);
 
       if (!repeaterMetadata) {
         onChangeFormValues({ ...values, [inputId]: newValue });
@@ -321,30 +321,15 @@ export const FormBuilder = ({
     }
 
     function getStringValue() {
-      return (getInputValue() as string) || "";
+      return (getInputValue(commonProps) as string) || "";
     }
 
     function getBooleanValue() {
-      return !!getInputValue();
+      return !!getInputValue(commonProps);
     }
 
     function getStringArrayValue() {
-      return (getInputValue() as string[]) || [];
-    }
-
-    function getInputValue() {
-      const inputId = getInputId();
-      if (!repeaterMetadata) return values?.[inputId];
-
-      const { repeaterId, index } = repeaterMetadata;
-      // @ts-expect-error this value goes too deep for ts to understand
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-      return values?.[repeaterId]?.[index]?.[inputId];
-    }
-
-    function getInputId() {
-      if (!repeaterMetadata) return id;
-      return id.split("_repeater_")[0];
+      return (getInputValue(commonProps) as string[]) || [];
     }
   }
 
@@ -507,8 +492,8 @@ export const FormBuilder = ({
     return null;
   }
 
-  function inputValueExist({ id }: RenderedInput): boolean {
-    const value = values?.[id];
+  function inputValueExist(input: RenderedInput): boolean {
+    const value = getInputValue(input);
 
     if (typeof value === "undefined") return false;
 
@@ -517,5 +502,22 @@ export const FormBuilder = ({
     if (typeof value === "string") return !!value.length;
 
     return true;
+  }
+
+  function getInputValue(input: RenderedInput): InputValue {
+    const inputId = getInputId(input);
+
+    const { repeaterMetadata } = input;
+    if (!repeaterMetadata) return values?.[inputId];
+
+    const { repeaterId, index } = repeaterMetadata;
+    // @ts-expect-error this value goes too deep for ts to understand
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+    return values?.[repeaterId]?.[index]?.[inputId];
+  }
+
+  function getInputId({ id, repeaterMetadata }: RenderedInput) {
+    if (!repeaterMetadata) return id;
+    return id.split("_repeater_")[0];
   }
 };
