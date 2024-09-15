@@ -28,7 +28,9 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
   }
 }
 
-function convertToAccountDetailsModel(data: unknown): AccountDetailsModel | null {
+function convertToAccountDetailsModel(
+  data: unknown
+): AccountDetailsModel | null {
   if (!data) return null;
 
   const serverResponseSchema = z.object({
