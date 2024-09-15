@@ -1,4 +1,4 @@
-import { Card, DisplayForm } from "~/components/design-system";
+import { Card, DisplayUncontrolledForm } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 import {
   emergencyContactFormSchema,
@@ -16,12 +16,8 @@ export const AccountDetailsTabContent = () => {
   return (
     <div className="grid gap-xxxlarge pt-xlarge" role="region">
       <Card padding="xlarge">
-        <DisplayForm
-          onChange={(props) => {
-            console.log("onChange values", props);
-          }}
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
+        <DisplayUncontrolledForm
+          onSubmit={({ values }) => {
             console.log("onSubmit values", values);
           }}
           schema={formSchema}
@@ -39,12 +35,8 @@ export const AccountDetailsTabContent = () => {
   function renderEmergencyContactForm() {
     return (
       <Card padding="xlarge">
-        <DisplayForm
-          onChange={(props) => {
-            console.log("onChange values", props);
-          }}
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
+        <DisplayUncontrolledForm
+          onSubmit={({ values }) => {
             console.log("onSubmit values", values);
           }}
           schema={emergencyContactFormSchema}

@@ -6,7 +6,6 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
@@ -52,33 +51,25 @@ type RenderedInput = Omit<
 
 export type FormBuilderProps = {
   schema: FormSchema;
-  onChange?: (values: FormValues) => void;
+  onChange: (values: FormValues) => void;
   onSubmit: (props: OnSubmitProps) => void;
-  values?: FormValues;
+  values: FormValues;
 };
 
 export const FormBuilder = ({
   schema,
-  onChange,
+  onChange: onChangeFormValues,
   onSubmit,
-  values: defaultValues,
+  values,
 }: FormBuilderProps) => {
-  const defaultValuesRef = useRef<FormValues>(defaultValues || {});
+  const initialValuesRef = useRef<FormValues>(values || {});
 
-  const [values, setValues] = useState<FormValues>(defaultValuesRef.current);
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Array to store the rendered inputs, can't use a ref because we want a clean array on each render
   const renderedInputs: RenderedInput[] = [];
 
-  const isFormChanged = !isEqual(defaultValuesRef.current, values);
-
-  useDeepCompareEffect(() => {
-    // Notify onChange callback only if the values have changed
-    if (!!onChange && isFormChanged) {
-      onChange(values);
-    }
-  }, [isFormChanged, onChange, values]);
+  const isFormChanged = !isEqual(initialValuesRef.current, values);
 
   return (
     <form
@@ -141,7 +132,7 @@ export const FormBuilder = ({
             key={elementKey}
             {...element}
             onChange={(newValues) => {
-              setValues((prev) => ({ ...prev, [element.id]: newValues }));
+              onChangeFormValues({ ...values, [element.id]: newValues });
             }}
             renderElement={renderElement}
             values={values}
@@ -302,29 +293,31 @@ export const FormBuilder = ({
     return null;
 
     function handleInputChange(newValue: InputValue) {
-      setValues((prev) => {
-        const inputId = getInputId();
+      const inputId = getInputId();
 
-        if (!repeaterMetadata) return { ...prev, [inputId]: newValue };
+      if (!repeaterMetadata) {
+        onChangeFormValues({ ...values, [inputId]: newValue });
+        return;
+      }
 
-        const { repeaterId, index } = repeaterMetadata;
-        const processedValue = (() => {
-          const current = prev[repeaterId];
-          if (current && Array.isArray(current)) {
-            return (current as FormValues[]).map((item, i) => {
-              if (index !== i) return item;
+      const { repeaterId, index } = repeaterMetadata;
+      const repeaterValues = (() => {
+        const current = values[repeaterId];
+        if (current && Array.isArray(current)) {
+          return (current as FormValues[]).map((item, i) => {
+            if (index !== i) return item;
 
-              return {
-                ...item,
-                [inputId]: newValue,
-              };
-            });
-          }
+            return {
+              ...item,
+              [inputId]: newValue,
+            };
+          });
+        }
 
-          return [];
-        })();
-        return { ...prev, [repeaterId]: processedValue };
-      });
+        return [];
+      })();
+
+      onChangeFormValues({ ...values, [repeaterId]: repeaterValues });
     }
 
     function getStringValue() {

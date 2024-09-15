@@ -1,4 +1,8 @@
-import { Card, DisplayForm, Title } from "~/components/design-system";
+import {
+  Card,
+  DisplayUncontrolledForm,
+  Title,
+} from "~/components/design-system";
 import { notificationsFormSchema } from "../form/notificationForm";
 import {
   LostAndFoundNotifications,
@@ -21,13 +25,8 @@ export const NotificationsTabContent = ({
       </Title>
       <Card role="region">
         <div className="p-xxlarge">
-          <DisplayForm
-            onChange={(props) => {
-              console.log("onChange values", props);
-            }}
-            onSubmit={({ event, values }) => {
-              event.preventDefault();
-
+          <DisplayUncontrolledForm
+            onSubmit={({ values }) => {
               console.log("onSubmit values", values);
             }}
             schema={notificationsFormSchema}

@@ -1,8 +1,15 @@
-import { Card, DisplayForm, FormSchema } from "~/components/design-system";
+import { useState } from "react";
+import {
+  Card,
+  DisplayForm,
+  FormSchema,
+  FormValues,
+} from "~/components/design-system";
 import { useLostPetIndexViewModel } from "./useLostPetIndexViewModel";
 
 export const LostPetIndex = () => {
   const { onSelectPet, pets, selectedPet } = useLostPetIndexViewModel();
+  const [values, setValues] = useState<FormValues>({});
 
   const formSchema: FormSchema = {
     id: "lost-pet-form",
@@ -159,6 +166,8 @@ export const LostPetIndex = () => {
             if (props.name) {
               onSelectPet(props.name as string);
             }
+
+            setValues(props);
           }}
           onSubmit={({ event, values }) => {
             event.preventDefault();
@@ -171,7 +180,8 @@ export const LostPetIndex = () => {
             stateOptions: [],
           }}
           values={{
-            microchip: selectedPet?.microchip?.toString() ?? "",
+            ...values,
+            microchip: selectedPet?.microchip ?? "",
           }}
         />
       </Card>
