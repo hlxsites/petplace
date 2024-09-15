@@ -140,7 +140,7 @@ export type InputCommon = ElementCommon & {
   description?: string;
   disabledCondition?: ConditionExpression;
   elementType: "input";
-  errorMessage?: string;
+  errorMessage?: string | null;
   hideLabel?: boolean;
   id: string;
   label: string;

@@ -18,8 +18,13 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         headers: options.headers,
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const data = await result.json();
+      const data: unknown = await (async () => {
+        if (options.responseType === "blob") {
+          return result.blob();
+        }
+        return result.json();
+      })();
+
       return { data, statusCode: result.status };
     } catch (error) {
       return { error };
@@ -33,8 +38,8 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         headers: options.headers,
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const data = await result.json();
+      const data: unknown = await result.json();
+
       return { data, statusCode: result.status };
     } catch (error) {
       return { error };

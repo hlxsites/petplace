@@ -1,5 +1,6 @@
 export type HttpOptions = {
   headers?: Record<string, string>;
+  responseType?: "json" | "blob";
 };
 
 export type HttpResponse =

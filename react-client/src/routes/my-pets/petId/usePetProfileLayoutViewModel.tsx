@@ -1,7 +1,6 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { GetPetInfoUseCase } from "~/domain/useCases/pet/GetPetInfoUseCase";
-import { getPetServiceStatus } from "~/mocks/MockRestApiServer";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
@@ -13,13 +12,11 @@ export const loader = (({ params }) => {
 
   const authToken = requireAuthToken();
   const useCase = new GetPetInfoUseCase(authToken);
-
-  const petServiceStatus = getPetServiceStatus(petId);
+  const petInfoPromise = useCase.query(petId);
 
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
-    petInfo: useCase.query(petId),
-    petServiceStatus,
+    petInfo: petInfoPromise,
   });
 }) satisfies LoaderFunction;
 

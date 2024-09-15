@@ -38,6 +38,24 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
       return this.handleError(error);
     }
   }
+
+  async fetchDocumentBlob(documentId: string): Promise<Blob | null> {
+    try {
+      const result = await this.httpClient.get(`Document/${documentId}`, {
+        responseType: "blob",
+      });
+
+      if (result.error || !result.data) {
+        console.error("Error fetching document blob", result.error);
+        return null;
+      }
+
+      return result.data as Blob;
+    } catch (error) {
+      console.error("Error fetching document blob", error);
+      return null;
+    }
+  }
 }
 
 type PetDocumentWithType = PetDocument & {

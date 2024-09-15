@@ -13,7 +13,13 @@ export const CheckoutServicesDrawer = ({
   ...rest
 }: CheckoutServicesDrawerProps) => {
   return (
-    <Drawer id="checkout-services" title="Services" width={400} {...rest}>
+    <Drawer
+      id="checkout-services"
+      title="Services"
+      width={400}
+      trigger={undefined}
+      {...rest}
+    >
       <div className="flex flex-col gap-large pt-large">
         {services.map((service) => (
           <CheckoutServiceCard {...service} key={service.id} />

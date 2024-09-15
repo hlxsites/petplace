@@ -49,7 +49,6 @@ export const MyPetsIndex = () => {
           </div>
         )}
       </SuspenseAwait>
-      {openReportLostOrFoundModal()}
     </Layout>
   );
 
@@ -57,14 +56,20 @@ export const MyPetsIndex = () => {
     props: Pick<ButtonProps, "className">
   ) {
     return (
-      <Button
-        variant="secondary"
-        iconLeft="warningTriangle"
-        onClick={onHandleReportLostOrFound}
-        {...props}
-      >
-        Report a lost or found pet
-      </Button>
+      <LostOrFoundDialog
+        isOpen={isLostOrFoundDialogOpen}
+        onClose={() => setIsLostOrFoundDialogOpen(false)}
+        trigger={
+          <Button
+            variant="secondary"
+            iconLeft="warningTriangle"
+            onClick={onHandleReportLostOrFound}
+            {...props}
+          >
+            Report a lost or found pet
+          </Button>
+        }
+      />
     );
   }
 
@@ -89,14 +94,5 @@ export const MyPetsIndex = () => {
 
   function onHandleReportLostOrFound() {
     setIsLostOrFoundDialogOpen(true);
-  }
-
-  function openReportLostOrFoundModal() {
-    return (
-      <LostOrFoundDialog
-        isOpen={isLostOrFoundDialogOpen}
-        onClose={() => setIsLostOrFoundDialogOpen(false)}
-      />
-    );
   }
 };

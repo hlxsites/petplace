@@ -38,16 +38,29 @@ export type PetCommon = {
   name: string;
 };
 
-export type PetModel = PetCommon & {
-  age?: string | undefined;
-  breed?: string;
-  dateOfBirth?: string;
-  documentationStatus?: DocumentationStatus;
-  lostPetHistory?: LostPetUpdate[];
-  missingStatus?: MissingStatus;
-  mixedBreed?: boolean;
-  onboardCompleted?: boolean;
-  sex?: string;
-  spayedNeutered?: boolean;
-  species?: string;
+export type PetProduct = {
+  id: string;
+  isExpired: boolean;
+  name: string;
 };
+
+export type PetServices = {
+  membershipStatus?: string;
+  products?: PetProduct[];
+};
+
+export type PetModel = PetCommon &
+  PetServices & {
+    age?: string | undefined;
+    breed?: string;
+    dateOfBirth?: string;
+    documentationStatus?: DocumentationStatus;
+    lostPetHistory?: LostPetUpdate[];
+    missingStatus?: MissingStatus;
+    mixedBreed?: boolean;
+    onboardCompleted?: boolean;
+    sex?: string;
+    sourceType?: "MyPetHealth" | "PetPoint";
+    spayedNeutered?: boolean;
+    species?: string;
+  };

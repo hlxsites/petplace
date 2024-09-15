@@ -12,7 +12,12 @@ export const CartDrawer = ({ items = [], ...props }: CartDrawerProps) => {
   );
 
   return (
-    <Drawer id="cart-drawer" ariaLabel="Cart Drawer" {...props}>
+    <Drawer
+      id="cart-drawer"
+      ariaLabel="Cart Drawer"
+      {...props}
+      trigger={undefined}
+    >
       <div className="flex flex-col gap-large">
         <CartHeader />
         <div className="flex flex-col gap-small">

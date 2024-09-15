@@ -19,6 +19,7 @@ export const CheckoutConclusionModal = ({
       isOpen
       align="center"
       padding="p-0"
+      trigger={undefined}
     >
       <div className="flex flex-col items-center gap-xxlarge px-large py-xxlarge md:w-[708px] md:px-xxlarge">
         <Icon display="shieldGood" size={72} className="text-green-300" />

@@ -44,12 +44,20 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
       message: "Invalid date format",
     }),
     Id: z.string(),
-    MembershipStatus: z.string().nullish(),
+    MembershipStatus: z.string(),
     Microchip: z.string().nullish(),
     MixedBreed: z.boolean().nullish(),
     Name: z.string(),
     Neutered: z.boolean().nullish(),
+    Products: z.array(
+      z.object({
+        Id: z.string(),
+        IsExpired: z.boolean(),
+        Name: z.string(),
+      })
+    ),
     Sex: z.string(),
+    Source: z.number().nullish(),
     Species: z.string(),
   });
 
@@ -57,15 +65,26 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
 
   if (!info) return null;
 
+  const products = info.Products.map(
+    (product: { Id: string; IsExpired: boolean; Name: string }) => ({
+      id: product.Id,
+      isExpired: product.IsExpired,
+      name: product.Name,
+    })
+  );
+
   return {
     age: info.Age,
     breed: info.Breed,
     dateOfBirth: info.DateOfBirth,
     id: info.Id,
+    membershipStatus: info.MembershipStatus,
     microchip: info.Microchip,
     mixedBreed: !!info.MixedBreed,
     name: info.Name,
+    products,
     sex: info.Sex,
+    sourceType: info.Source === 1 ? "MyPetHealth" : "PetPoint",
     spayedNeutered: !!info.Neutered,
     species: info.Species,
   };

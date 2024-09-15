@@ -13,6 +13,7 @@ const requiredPhoneInput: ElementInputPhone = {
   description:
     "You’re not required to own a ‘Home’ phone, however if it’s left blank, our system will auto-populate this field with your mobile or work number. This will not impact our ability to contact you if your pet is lost and found",
   elementType: "input",
+  errorMessage: "Please fill out your phone number before continuing.",
   id: "phone-default",
   label: "Phone Number",
   requiredCondition: {
@@ -32,6 +33,7 @@ const optionalPhoneInput: ElementInputPhone = {
 
 const firstNameInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "First Name is a required field",
   id: "first-name",
   label: "First Name",
   requiredCondition: true,
@@ -40,6 +42,7 @@ const firstNameInput: ElementInputText = {
 
 const lastNameInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "Last Name is a required field",
   id: "last-name",
   label: "Last Name",
   requiredCondition: true,
@@ -48,6 +51,7 @@ const lastNameInput: ElementInputText = {
 
 const emailInput: ElementInputText = {
   elementType: "input",
+  errorMessage: "Email is a required field",
   id: "email-address",
   label: "Email Address",
   requiredCondition: true,
@@ -71,6 +75,11 @@ const stateInput: ElementInputSingleSelect = {
   options: "{{stateOptions|string[]}}",
   optionsType: "dynamic",
   requiredCondition: true,
+  disabledCondition: {
+    inputId: "country",
+    type: "null",
+    value: "",
+  },
   placeholder: "State",
   type: "select",
 };
@@ -119,7 +128,7 @@ const zipCodeInput: ElementInputText = {
 const submitButton: ElementButton = {
   className: "!mt-xxlarge w-full",
   elementType: "button",
-  disabledCondition: true,
+  enabledCondition: true,
   id: "submit-button",
   label: "Save changes",
   type: "submit",
@@ -155,37 +164,9 @@ const userDetailsSection: ElementSection = {
   ],
 };
 
-const addressSection: ElementSection = {
-  elementType: "section",
-  title: {
-    label: "Address",
-    level: "h3",
-  },
-  children: [
-    {
-      elementType: "row",
-      children: [countryInput, stateInput],
-    },
-    {
-      elementType: "row",
-      children: [addressLineOneInput, addressLineTwoInput],
-    },
-    {
-      elementType: "row",
-      children: [cityInput, intersectionInput],
-    },
-    zipCodeInput,
-  ],
-};
-
 export const internalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
-  children: [
-    contactInfoSection,
-    userDetailsSection,
-    addressSection,
-    submitButton,
-  ],
+  children: [contactInfoSection, userDetailsSection, submitButton],
   version: 0,
 };
 
@@ -194,7 +175,28 @@ export const externalAccountDetailsFormSchema: FormSchema = {
   children: [
     contactInfoSection,
     userDetailsSection,
-    addressSection,
+    {
+      elementType: "section",
+      title: {
+        label: "Address",
+        level: "h3",
+      },
+      children: [
+        {
+          elementType: "row",
+          children: [countryInput, stateInput],
+        },
+        {
+          elementType: "row",
+          children: [addressLineOneInput, addressLineTwoInput],
+        },
+        {
+          elementType: "row",
+          children: [cityInput, intersectionInput],
+        },
+        zipCodeInput,
+      ],
+    },
     {
       elementType: "section",
       description: {
@@ -215,7 +217,6 @@ export const externalAccountDetailsFormSchema: FormSchema = {
           options: [
             `With your 24Pet® microchip, Pethealth Services (USA) Inc. ("PSU") may offer you free lost pet services, as well as exclusive offers, promotions and the latest information from 24Pet regarding microchip services. Additionally, PSU's affiliates, including PTZ Insurance Agency, Ltd., PetPartners, Inc. and Independence Pet Group, Inc., and their subsidiaries (collectively, "PTZ") may offer you promotions and the latest information regarding pet insurance services and products. PSU may also have or benefit from contractual arrangements with third parties ("Partners") who may offer you related services, products, offers and/or promotions.By giving consent, you agree that PSU, its Partners and/or PTZ may contact you for the purposes identified herein via commercial electronic messages at the e-mail address you provided, via mailer at the mailing address you provided and/or via automatic telephone dialing systems, pre-recorded/automated messages and/or text messages at the telephone number(s) you provided. Data and message rates may apply. This consent is not a condition of the purchase of any goods or services. You understand that if you choose not to provide your consent, you will not receive the above-mentioned communications or free lost pet services, which includes being contacted with information in the event that your pet goes missing.You may withdraw your consent at any time.`,
           ],
-          requiredCondition: true,
           type: "checkboxGroup",
         },
         {
@@ -226,7 +227,6 @@ export const externalAccountDetailsFormSchema: FormSchema = {
           options: [
             `In the event that your pet is missing and is found by a Good Samaritan, you give your consent for us to release your contact information to the finder. This may include your name, phone number, address and email address.`,
           ],
-          requiredCondition: true,
           type: "checkboxGroup",
         },
       ],
@@ -285,6 +285,7 @@ export const emergencyContactFormSchema: FormSchema = {
                     },
                     {
                       elementType: "input",
+                      errorMessage: "Phone Number is a required field",
                       hideType: true,
                       id: "contact-phone",
                       label: "Phone Number",

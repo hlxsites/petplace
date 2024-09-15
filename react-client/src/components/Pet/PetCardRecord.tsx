@@ -6,12 +6,14 @@ type PetCardRecordProps = {
   document: PetDocument;
   isUploadingFile?: boolean;
   onDelete?: () => void;
+  onDownload?: () => void;
 };
 
 export const PetCardRecord = ({
   document,
   isUploadingFile,
   onDelete,
+  onDownload,
 }: PetCardRecordProps) => {
   const { fileType, fileName } = document;
 
@@ -29,7 +31,7 @@ export const PetCardRecord = ({
                 className: "text-orange-300-contrast lg:mr-[-8px]",
                 size: 16,
               }}
-              onClick={handleOnDownload}
+              onClick={onDownload}
               variant="link"
             />
             <IconButton
@@ -54,9 +56,5 @@ export const PetCardRecord = ({
       return "pdfFile";
     }
     return fileType === "docx" ? "docFile" : (`${fileType}File` as IconKeys);
-  }
-
-  function handleOnDownload() {
-    // TODO: 81832 implement download function
   }
 };

@@ -1,15 +1,13 @@
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
-import { Dialog, LinkButton, Text } from "../design-system";
+import { Dialog, DialogTrigger, LinkButton, Text } from "../design-system";
 
 type LostOrFoundDialogProps = {
   isOpen: boolean;
   onClose: () => void;
+  trigger: DialogTrigger;
 };
 
-export const LostOrFoundDialog = ({
-  isOpen,
-  onClose,
-}: LostOrFoundDialogProps) => {
+export const LostOrFoundDialog = (props: LostOrFoundDialogProps) => {
   return (
     <Dialog
       align="center"
@@ -19,10 +17,9 @@ export const LostOrFoundDialog = ({
         size: 72,
       }}
       id="report-lost-or-found-dialog"
-      isOpen={isOpen}
-      onClose={onClose}
       title="Report a lost or found pet"
       width={708}
+      {...props}
     >
       {renderReportLostOrFoundContent()}
     </Dialog>

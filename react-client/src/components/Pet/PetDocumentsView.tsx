@@ -1,42 +1,37 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { PetDocument } from "~/domain/models/pet/PetDocument";
 import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 
 type PetDocumentViewProps = {
   documents: PetDocument[];
-  onDelete: (recordId: string, recordType: string) => void;
-  recordType: string;
+  documentType: string;
+  onDelete: (document: PetDocument) => () => void;
+  onDownload: (document: PetDocument) => () => void;
 };
 
 export const PetDocumentsView = ({
   documents,
+  documentType,
   onDelete,
-  recordType,
+  onDownload,
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
-
-  const onDeletePetCardRecord = useCallback(
-    (recordType: string, recordId?: string) => {
-      if (!recordId) return;
-      onDelete(recordId, recordType);
-    },
-    [onDelete]
-  );
 
   return (
     <div className="grid gap-large">
       <Text color="tertiary-600" size="14">
-        {`View, download and manage all ${recordType} records.`}
+        {`View, download and manage all ${documentType} records.`}
       </Text>
 
       {!!documents.length && (
         <div className="grid gap-small">
-          {documents.map((record) => (
+          {documents.map((document) => (
             <PetCardRecord
-              key={record.id}
-              onDelete={() => onDeletePetCardRecord(recordType, record.id)}
-              document={record}
+              document={document}
+              key={document.id}
+              onDelete={onDelete(document)}
+              onDownload={onDownload(document)}
             />
           ))}
         </div>
@@ -54,7 +49,6 @@ export const PetDocumentsView = ({
       </Card>
 
       {isUploading && (
-        // TODO: 81832 fix this after implementing all logic to upload documents
         <PetCardRecord
           document={{
             id: "test-record",

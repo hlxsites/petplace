@@ -51,6 +51,7 @@ export const OnboardingDialog = () => {
       id="onboarding-steps"
       ariaLabel="Onboarding steps dialog"
       padding="p-0"
+      trigger={undefined}
       width="fit-content"
     >
       <div
