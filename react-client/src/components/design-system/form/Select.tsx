@@ -1,5 +1,4 @@
 import { useVirtualizer, type VirtualItem } from "@tanstack/react-virtual";
-import clsx from "clsx";
 import { useCombobox } from "downshift";
 import {
   forwardRef,
@@ -9,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { classNames } from "~/util/styleUtil";
 import { IconButton, IconButtonProps } from "../button/IconButton";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import {
@@ -105,12 +105,20 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       <InputAccessibilityWrapper id={id} {...rest} labelProps={getLabelProps()}>
         {({ hasError, inputProps }) => (
           <div className="relative">
-            <div className={FORM_STYLES.inputRoot}>
+            <div
+              className={classNames(FORM_STYLES.inputRoot, {
+                "border-text-danger-default": hasError,
+              })}
+            >
               <input
                 autoFocus={autoFocus}
-                className={clsx(FORM_STYLES.input, "border-none text-base", {
-                  [FORM_STYLES.inputError]: hasError,
-                })}
+                className={classNames(
+                  FORM_STYLES.input,
+                  "text-base border-none",
+                  {
+                    [FORM_STYLES.inputError]: hasError,
+                  }
+                )}
                 placeholder={placeholder ?? "Select..."}
                 {...inputProps}
                 {...getInputProps({ ref })}
@@ -120,7 +128,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 
             <ul
               {...getMenuProps({ ref: listRef })}
-              className={clsx(
+              className={classNames(
                 "shadow absolute z-50 ml-[1px] mt-[-10px] max-h-60 w-[calc(100%-2px)] flex-row overflow-scroll rounded-b-md border border-t-0 border-solid bg-neutral-white p-0",
                 {
                   hidden: !(isOpen && filterOptions.length),
@@ -194,8 +202,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
       const isActive = value === item;
       return (
         <li
-          className={clsx(
-            "px-4 absolute left-0 top-0 flex w-full cursor-pointer items-center text-base hover:bg-neutral-50",
+          className={classNames(
+            "px-4 text-base absolute left-0 top-0 flex w-full cursor-pointer items-center hover:bg-neutral-50",
             {
               "text-primary": isActive || isHighlighted,
               "bg-accent": isHighlighted,
