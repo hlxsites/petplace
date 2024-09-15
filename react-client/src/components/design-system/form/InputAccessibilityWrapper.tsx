@@ -16,6 +16,7 @@ type InputAccessibilityWrapperProps = InputWithoutFormBuilderProps & {
 };
 
 export const InputAccessibilityWrapper = ({
+  autoComplete,
   className,
   children,
   description,
@@ -34,13 +35,14 @@ export const InputAccessibilityWrapper = ({
   const descriptionId = `${id}-description`;
 
   const inputProps: Record<string, unknown> = {
-    disabled,
-    id,
-    name: id,
     "aria-invalid": hasError ? true : undefined,
     "aria-describedby": hasDescription ? descriptionId : undefined,
     "aria-errormessage": hasError ? errorId : undefined,
     "aria-label": hideLabel ? label : undefined,
+    autoComplete,
+    disabled,
+    id,
+    name: id,
     required,
   };
 

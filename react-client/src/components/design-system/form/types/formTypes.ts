@@ -136,6 +136,7 @@ export type ElementButton = ElementCommon & {
 };
 
 export type InputCommon = ElementCommon & {
+  autoComplete?: HTMLInputElement["autocomplete"];
   autoFocus?: boolean;
   description?: string;
   disabledCondition?: ConditionExpression;
