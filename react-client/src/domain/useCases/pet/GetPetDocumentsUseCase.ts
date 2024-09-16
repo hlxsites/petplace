@@ -27,7 +27,7 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
 
   async query(petId: string, type: PetDocumentTypeId): Promise<PetDocument[]> {
     try {
-      const result = await this.httpClient.get(`Pet/${petId}/documents`);
+      const result = await this.httpClient.get(`api/Pet/${petId}/documents`);
 
       if (!result.data) return [];
 
@@ -41,7 +41,7 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
 
   async fetchDocumentBlob(documentId: string): Promise<Blob | null> {
     try {
-      const result = await this.httpClient.get(`Document/${documentId}`, {
+      const result = await this.httpClient.get(`api/Document/${documentId}`, {
         responseType: "blob",
       });
 
