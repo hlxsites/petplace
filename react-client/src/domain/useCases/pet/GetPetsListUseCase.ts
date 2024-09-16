@@ -18,7 +18,7 @@ export class GetPetsListUseCase implements GetPetsListRepository {
 
   async query(): Promise<PetCommon[]> {
     try {
-      const result = await this.httpClient.get("Pet");
+      const result = await this.httpClient.get("api/Pet");
 
       if (result.data) return convertToPetModelList(result.data);
 

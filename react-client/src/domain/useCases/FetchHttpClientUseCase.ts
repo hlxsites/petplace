@@ -7,7 +7,8 @@ import {
 export class FetchHttpClientUseCase implements HttpClientRepository {
   private baseUrl: string;
 
-  constructor(baseUrl: string) {
+  constructor(defaultUrl: string) {
+    const baseUrl = defaultUrl.replace(/\/api$/, '')
     this.baseUrl = baseUrl;
   }
 
