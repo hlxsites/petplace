@@ -4,7 +4,7 @@ import { AccountNotificationModel } from "../../models/user/UserModels";
 import { GetAccountNotificationRepository } from "../../repository/user/GetAccountNotificationRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
-export class GetAccountNotificationUseCase implements GetAccountNotificationRepository {
+export class GetAccountNotificationsUseCase implements GetAccountNotificationRepository {
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {

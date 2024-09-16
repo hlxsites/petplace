@@ -1,7 +1,7 @@
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetAccountNotificationRepository } from "~/domain/repository/user/GetAccountNotificationRepository";
 import { IS_DEV_ENV } from "~/util/envUtil";
-import { GetAccountNotificationUseCase } from "./GetAccountNotificationsUseCase";
+import { GetAccountNotificationsUseCase } from "./GetAccountNotificationsUseCase";
 import { MockGetAccountNotificationsUseCase } from "./MockGetAccountNotificationsUseCase";
 
 export default function (
@@ -10,5 +10,5 @@ export default function (
 ): GetAccountNotificationRepository {
   if (IS_DEV_ENV) return new MockGetAccountNotificationsUseCase();
 
-  return new GetAccountNotificationUseCase(authToken, httpClient);
+  return new GetAccountNotificationsUseCase(authToken, httpClient);
 }
