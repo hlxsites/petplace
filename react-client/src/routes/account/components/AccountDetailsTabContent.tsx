@@ -1,13 +1,13 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import { Card, DisplayForm, FormValues } from "~/components/design-system";
+import { Card, DisplayForm } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";
-import { readJwtClaim } from "~/util/authUtil";
 import {
   emergencyContactFormSchema,
   externalAccountDetailsFormSchema,
   internalAccountDetailsFormSchema,
 } from "../form/accountForms";
+import { getAccountDetailsData } from "./util/formDataUtil";
 
 type AccountDetailsTabContentProps = {
   accountDetails?: Promise<AccountDetailsModel | null>;
@@ -40,7 +40,7 @@ export const AccountDetailsTabContent = ({
                 countryOptions: ["Canada", "United States"],
                 stateOptions: [],
               }}
-              values={getAccountDetailsData(accountDetails) as FormValues}
+              values={getAccountDetailsData(accountDetails)}
             />
           )}
         </SuspenseAwait>
@@ -65,15 +65,5 @@ export const AccountDetailsTabContent = ({
         />
       </Card>
     );
-  }
-
-  function getAccountDetailsData(accountDetails?: AccountDetailsModel | null) {
-    const data = readJwtClaim();
-    return {
-      "first-name": data?.given_name,
-      "last-name": data?.family_name,
-      "email-address": data?.emails[0],
-      "phone-default": accountDetails?.phoneNumber,
-    };
   }
 };
