@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
+import { useState, useCallback, useEffect } from "react";
 
 import {
   isValidPetDocumentId,
@@ -26,13 +27,27 @@ export const loader = (({ params }) => {
     id: documentType,
     documents: useCase.query(petId, documentType),
     downloadPetDocument: useCase.fetchDocumentBlob,
+    deletePetDocument: useCase.deleteDocument,
+    reFetchDocuments: () => useCase.query(petId, documentType),
   });
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
   const navigate = useNavigate();
-  const { documents, downloadPetDocument, id } = useLoaderData<typeof loader>();
+  const {
+    deletePetDocument,
+    documents: initialDocuments,
+    downloadPetDocument,
+    id,
+    reFetchDocuments,
+  } = useLoaderData<typeof loader>();
   const { documentTypes } = usePetProfileContext();
+
+  const [documents, setDocuments] = useState<PetDocument[]>([]);
+
+  useEffect(() => {
+    initialDocuments.then(setDocuments);
+  }, [initialDocuments]);
 
   const documentType = documentTypes.find((dt) => dt.id === id);
   invariant(documentType, "Document type must be found here");
@@ -41,12 +56,25 @@ export const useDocumentTypeIndexViewModel = () => {
     navigate("..");
   };
 
-  const onDelete = (document: PetDocument) => {
-    return () => {
-      // TODO: Implement real delete action when backend is ready
-      console.log("implement delete document", document);
-    };
-  };
+  const onDelete = useCallback(
+    (documentId: PetDocument) => {
+      return async () => {
+        try {
+          const isDeleted = await deletePetDocument(documentId["id"]);
+
+          if (isDeleted) {
+            const updatedDocuments = await reFetchDocuments();
+            setDocuments(updatedDocuments);
+          } else {
+            console.error("Failed to delete document");
+          }
+        } catch (error) {
+          console.error("Error deleting document:", error);
+        }
+      };
+    },
+    [deletePetDocument, reFetchDocuments]
+  );
 
   const onDownload = ({ id, fileName, fileType }: PetDocument) => {
     return async () => {
