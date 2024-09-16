@@ -7,7 +7,9 @@ import {
 } from "./types/formTypes";
 
 type InputSwitchProps = InputWithoutFormBuilderProps<ElementInputSwitch> & {
+  onChange?: (newValue: boolean) => void;
   label: string;
+  value?: boolean;
 };
 
 export const InputSwitch = forwardRef<HTMLButtonElement, InputSwitchProps>(

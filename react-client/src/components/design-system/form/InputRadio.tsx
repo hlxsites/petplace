@@ -11,7 +11,9 @@ type InputRadioProps = Omit<
   InputWithoutFormBuilderProps<ElementInputRadio>,
   "options" | "optionsType"
 > & {
+  onChange?: (newValue: string) => void;
   options: string[];
+  value?: string;
 };
 
 export const InputRadio = forwardRef<HTMLInputElement, InputRadioProps>(

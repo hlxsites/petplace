@@ -21,8 +21,10 @@ export type SelectProps = Omit<
   InputWithoutFormBuilderProps<ElementInputSingleSelect>,
   "options" | "optionsType"
 > & {
+  onChange?: (newValue: string) => void;
   options: string[];
   required?: boolean;
+  value?: string;
 };
 
 const Select = forwardRef<HTMLInputElement, SelectProps>(
