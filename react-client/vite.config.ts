@@ -1,17 +1,19 @@
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
   return {
-    base: "./",
+    base: env.BASE_URL,
     build: {
       rollupOptions: {
         output: {
-          entryFileNames: "assets/react-[name].min.js",
-          chunkFileNames: "assets/react-[name].min.js",
+          entryFileNames: "assets/react-[name].js",
+          chunkFileNames: "assets/react-[name].js",
           assetFileNames: ({ name }) => {
             // Special handling for images
             if (/\.(gif|jpe?g|png|svg)$/.test(name ?? "")) {
@@ -38,9 +40,6 @@ export default defineConfig(() => {
         include: "**/*.svg",
       }),
     ],
-    server: {
-      port: 3000,
-    },
     resolve: {
       alias: [{ find: "~", replacement: path.resolve(__dirname, "src") }],
     },

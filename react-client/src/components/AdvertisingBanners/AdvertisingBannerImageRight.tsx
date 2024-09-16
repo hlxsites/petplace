@@ -33,7 +33,7 @@ export const AdvertisingBannerImageRight = ({
         <div className="flex max-w-[455px] flex-col items-start justify-between pr-xxxxxlarge">
           <div className="grid gap-base pb-xxxxxlarge">
             {title}
-            <Text size="18">{message}</Text>
+            <Text size="lg">{message}</Text>
           </div>
 
           {renderActionButton("hidden lg:block")}

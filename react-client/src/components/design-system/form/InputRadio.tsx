@@ -11,9 +11,7 @@ type InputRadioProps = Omit<
   InputWithoutFormBuilderProps<ElementInputRadio>,
   "options" | "optionsType"
 > & {
-  onChange?: (newValue: string) => void;
   options: string[];
-  value?: string;
 };
 
 export const InputRadio = forwardRef<HTMLInputElement, InputRadioProps>(
@@ -30,7 +28,7 @@ export const InputRadio = forwardRef<HTMLInputElement, InputRadioProps>(
               const optionId = safeIdFromText(`${id}-${option}`);
               return (
                 <label
-                  className="label flex w-fit cursor-pointer gap-small pl-0"
+                  className="label gap-2 w-fit cursor-pointer pl-0"
                   key={option}
                   htmlFor={optionId}
                 >

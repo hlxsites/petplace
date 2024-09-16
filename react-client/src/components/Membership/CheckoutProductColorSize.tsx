@@ -1,8 +1,10 @@
-import { createRef, useRef } from "react";
-import { useButtonSelection } from "~/hooks/useButtonSelection";
-import { Colors, Sizes } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { Button, Text } from "../design-system";
+import { useButtonSelection } from "~/hooks/useButtonSelection";
+import { useRef, createRef } from "react";
+
+type Colors = "black";
+type Sizes = "L" | "M/S" | "One Size";
 
 type CheckoutProductColorSizeProps = {
   productColors?: Colors[];
@@ -31,7 +33,7 @@ export const CheckoutProductColorSize = ({
     <div className="flex h-fit w-full gap-large">
       {productColors && (
         <div className="grid gap-small">
-          <Text size="14">Color choice:</Text>
+          <Text>Color choice:</Text>
           <div className="flex gap-xsmall">
             {productColors.map((productColor, index) => (
               <Button
@@ -56,7 +58,7 @@ export const CheckoutProductColorSize = ({
       )}
       {productSizes && (
         <div className="grid gap-small">
-          <Text size="14">Select a size:</Text>
+          <Text>Select a size:</Text>
           <div className="flex h-[30px] gap-medium">
             {productSizes.map((productSize, index) => (
               <Button

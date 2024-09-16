@@ -16,7 +16,6 @@ type InputAccessibilityWrapperProps = InputWithoutFormBuilderProps & {
 };
 
 export const InputAccessibilityWrapper = ({
-  autoComplete,
   className,
   children,
   description,
@@ -35,19 +34,18 @@ export const InputAccessibilityWrapper = ({
   const descriptionId = `${id}-description`;
 
   const inputProps: Record<string, unknown> = {
+    disabled,
+    id,
+    name: id,
     "aria-invalid": hasError ? true : undefined,
     "aria-describedby": hasDescription ? descriptionId : undefined,
     "aria-errormessage": hasError ? errorId : undefined,
     "aria-label": hideLabel ? label : undefined,
-    autoComplete,
-    disabled,
-    id,
-    name: id,
     required,
   };
 
   return (
-    <div className={classNames("flex flex-col gap-xsmall", className)}>
+    <div className={classNames("flex flex-col gap-medium", className)}>
       {!hideLabel && (
         <FormLabel htmlFor={id} {...labelProps}>
           {required ? label : `${label} (optional)`}
@@ -58,10 +56,10 @@ export const InputAccessibilityWrapper = ({
         inputProps,
       })}
       {(hasDescription || hasError) && (
-        <>
+        <div className="flex justify-between gap-small">
           <InputDescriptionMessage id={descriptionId} message={description} />
           <InputErrorMessage id={errorId} message={errorMessage} />
-        </>
+        </div>
       )}
     </div>
   );

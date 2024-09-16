@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { Text } from "./Text";
 
@@ -41,26 +41,31 @@ describe("Text", () => {
     }
   );
 
-  it("should render component with size 12 by default", () => {
+  it("should render component with size xs by default", () => {
     getRenderer();
 
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-12");
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass("text-xs");
   });
 
-  it.each([
-    ["40", "text-40 leading-10"],
-    ["32", "text-32 leading-8"],
-    ["24", "text-24 leading-7"],
-    ["20", "text-20 leading-7"],
-    ["18", "text-18 leading-7"],
-    ["16", "text-16 leading-6"],
-    ["14", "text-14 leading-5"],
-    ["12", "text-12 leading-4"],
-  ])("should render component with size %p px", (size, expected) => {
-    // @ts-expect-error - ignoring for test purposes only
-    getRenderer({ size });
+  it.each(["base", "sm"] as ComponentProps<typeof Text>["size"][])(
+    "should render component with size %p",
+    (size) => {
+      getRenderer({ size });
 
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`);
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${size}`);
+    }
+  );
+
+  it("should render component with size large", () => {
+    getRenderer({ size: "xlg" });
+
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-xl`);
+  });
+
+  it("should render component with size large", () => {
+    getRenderer({ size: "lg" });
+
+    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-lg`);
   });
 
   it("should not be screen reader only by default", () => {
@@ -88,11 +93,13 @@ describe("Text", () => {
     "tertiary-600",
     "blue-500",
     "green-500",
-  ])("should render component with color %p", (color) => {
-    // @ts-expect-error - ignoring for test purposes only
-    getRenderer({ color });
-    expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${color}`);
-  });
+  ] satisfies ComponentProps<typeof Text>["color"][])(
+    "should render component with color %p",
+    (color) => {
+      getRenderer({ color });
+      expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`text-${color}`);
+    }
+  );
 
   it.each([
     ["none", "no-underline"],
@@ -106,22 +113,6 @@ describe("Text", () => {
       expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`);
     }
   );
-
-  it.each([
-    ["18", "text-14 leading-5"],
-    ["16", "text-14 leading-5"],
-    ["14", "text-12 leading-4"],
-  ])(
-    "should render component responsive for sizes=%s",
-    async (size, expected) => {
-      setViewportWidth(500);
-      // @ts-expect-error - ignoring for test purposes only
-      getRenderer({ size, isResponsive: true });
-      await waitFor(() =>
-        expect(getByText(DEFAULT_CHILDREN)).toHaveClass(`${expected}`)
-      );
-    }
-  );
 });
 
 function getRenderer({
@@ -130,9 +121,3 @@ function getRenderer({
 }: Partial<ComponentProps<typeof Text>> = {}) {
   return render(<Text {...props}>{children}</Text>);
 }
-
-// Helper function to set viewport width
-const setViewportWidth = (width: number) => {
-  window.innerWidth = width;
-  window.dispatchEvent(new Event("resize"));
-};

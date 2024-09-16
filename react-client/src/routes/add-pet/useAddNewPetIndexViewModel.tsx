@@ -1,4 +1,5 @@
-import { LoaderFunction, useLoaderData } from "react-router-typesafe";
+import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { LoaderData } from "~/types/LoaderData";
 
 export const loader = (() => {
   return {
@@ -7,7 +8,7 @@ export const loader = (() => {
 }) satisfies LoaderFunction;
 
 export const useAddNewPetIndexViewModel = () => {
-  const { petRegistration } = useLoaderData<typeof loader>();
+  const { petRegistration } = useLoaderData() as LoaderData<typeof loader>;
 
   return {
     petRegistration,

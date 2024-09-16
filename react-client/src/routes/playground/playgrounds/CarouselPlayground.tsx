@@ -1,10 +1,4 @@
-import {
-  Card,
-  Carousel,
-  ImageCarousel,
-  Text,
-  Title,
-} from "~/components/design-system";
+import { Card, Carousel, Text, Title } from "~/components/design-system";
 
 const SAMPLE_FOR_CARD = [
   {
@@ -35,29 +29,9 @@ export const CarouselPlayground = () => {
     </Card>
   ));
 
-  const images = [
-    {
-      src: "https://cdn.shopify.com/s/files/1/0593/0349/3809/files/slide-preview_6a283b9a-156b-4c82-9d69-4e5f0b87cc66_280x420.jpg?v=1709746081",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0593/0349/3809/files/Black_24Pet_2048x_74bc36de-8ae5-420d-a406-cabc954b356e_280x420.jpg?v=1723143592",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0593/0349/3809/files/slide-preview_6a283b9a-156b-4c82-9d69-4e5f0b87cc66_280x420.jpg?v=1709746081",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0593/0349/3809/files/Black_24Pet_2048x_74bc36de-8ae5-420d-a406-cabc954b356e_280x420.jpg?v=1723143592",
-    },
-  ];
-
   return (
-    <>
-      <div className="max-w-[300px] bg-orange-100">
-        <Carousel ariaLabel="A carousel example" items={items} />
-      </div>
-      <div className="max-w-[311px] bg-orange-100">
-        <ImageCarousel ariaLabel="A carousel of images" items={images} />
-      </div>
-    </>
+    <div className="max-w-[300px] bg-orange-100">
+      <Carousel ariaLabel="A carousel example" items={items} />
+    </div>
   );
 };

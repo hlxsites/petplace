@@ -17,10 +17,10 @@ const SELECTED_KEY = "display";
 
 const PlaygroundIndex = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selected = searchParams.get(SELECTED_KEY);
+  const selected = searchParams.get(SELECTED_KEY) ?? ComponentsKeysList[0];
 
   // @ts-expect-error - the index.ts file in this folder exports all the Playground components
-  const SelectedComponent: JSX.Element = ComponentsPlaygroundList[selected] ?? ComponentsPlaygroundList[ComponentsKeysList[0]];
+  const SelectedComponent: JSX.Element = ComponentsPlaygroundList[selected];
 
   return (
     <div className="flex min-h-screen w-full">

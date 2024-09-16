@@ -34,7 +34,7 @@ export const MenuItem = ({
       onClick={onClick}
     >
       {icon && renderIcon({ display: icon, className: "mr-small" })}
-      <Text inherit size="16">
+      <Text inherit size="base">
         {label}
       </Text>
     </RadixDropdownMenu.Item>

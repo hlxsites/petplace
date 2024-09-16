@@ -7,14 +7,14 @@ export const CartFooter = ({ subtotal, onClick }: CartFooterProps) => {
     <>
       <div className="flex w-full justify-between">
         <div className="w-1/2">
-          <Text display="block" fontWeight="bold" size="18">
+          <Text fontWeight="bold" display="block">
             Subtotal
           </Text>
           <Text color="background-color-tertiary">
             Applicable taxes will be applied at checkout
           </Text>
         </div>
-        <Text fontWeight="bold" size="32">
+        <Text fontWeight="bold" size="xlg">
           {`$${subtotal}`}
         </Text>
       </div>

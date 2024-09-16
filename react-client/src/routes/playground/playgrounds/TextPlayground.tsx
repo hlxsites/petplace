@@ -6,7 +6,7 @@ import {
 } from "~/components/design-system";
 
 const Text = (props: ComponentProps<typeof DefaultTextComponent>) => (
-  <DefaultTextComponent size="16" {...props} />
+  <DefaultTextComponent size="base" {...props} />
 );
 
 const BoldText = (props: ComponentProps<typeof DefaultTextComponent>) => (
@@ -26,14 +26,11 @@ export const TextPlayground = () => {
   return (
     <>
       {renderTitle("Font size")}
-      <Text size="12">Font size: 12</Text>
-      <Text size="14">Font size: 14</Text>
-      <Text size="16">Font size: 16</Text>
-      <Text size="18">Font size: 18</Text>
-      <Text size="20">Font size: 20</Text>
-      <Text size="24">Font size: 24</Text>
-      <Text size="32">Font size: 32</Text>
-      <Text size="40">Font size: 40</Text>
+      <Text size="xs">Extra small text</Text>
+      <Text size="sm">Small text</Text>
+      <Text size="base">Base text</Text>
+      <Text size="lg">Large text</Text>
+      <Text size="xlg">Extra large text</Text>
       {titleWithSeparator("Font family")}
       <Text fontFamily="franklin">
         Franklin text with{" "}

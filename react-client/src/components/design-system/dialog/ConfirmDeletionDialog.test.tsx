@@ -59,7 +59,6 @@ function getRenderer({
   isOpen = true,
   onCancel = jest.fn(),
   onConfirm = jest.fn(),
-  trigger = undefined,
   ...rest
 }: Partial<ComponentProps<typeof ConfirmDeletionDialog>> = {}) {
   return render(
@@ -67,7 +66,6 @@ function getRenderer({
       isOpen={isOpen}
       onCancel={onCancel}
       onConfirm={onConfirm}
-      trigger={trigger}
       {...rest}
     />
   );

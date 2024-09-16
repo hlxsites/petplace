@@ -22,7 +22,7 @@ export const StepProgress = ({ count, current }: StepProgressProps) => {
         aria-label={`Step ${stepText}`}
         color="primary-900"
         fontWeight="medium"
-        size="14"
+        size="sm"
       >
         {stepText}
       </Text>

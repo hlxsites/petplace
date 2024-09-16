@@ -1,8 +1,12 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { GetPetInfoUseCase } from "~/domain/useCases/pet/GetPetInfoUseCase";
+import {
+  LoaderFunction,
+  useLoaderData,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
+import { getPetById, getPetServiceStatus } from "~/mocks/MockRestApiServer";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
-import { requireAuthToken } from "~/util/authUtil";
+import { LoaderData } from "~/types/LoaderData";
 import { invariantResponse } from "~/util/invariant";
 import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
 
@@ -10,19 +14,18 @@ export const loader = (({ params }) => {
   const { petId } = params;
   invariantResponse(petId, "Pet ID is required in this route");
 
-  const authToken = requireAuthToken();
-  const useCase = new GetPetInfoUseCase(authToken);
-  const petInfoPromise = useCase.query(petId);
-
-  return defer({
-    documentTypes: PET_DOCUMENT_TYPES_LIST,
-    petInfo: petInfoPromise,
+  const petInfo = getPetById(petId);
+  invariantResponse(petInfo, "Pet not found", {
+    status: 404,
   });
+  const petServiceStatus = getPetServiceStatus(petId);
+
+  return { documentTypes: PET_DOCUMENT_TYPES_LIST, petInfo, petServiceStatus };
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
-  const loaderData = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData() as LoaderData<typeof loader>;
 
   const onEditPet = () => {
     navigate(AppRoutePaths.petEdit);

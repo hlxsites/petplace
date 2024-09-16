@@ -4,20 +4,19 @@ import {
   Text,
   Title,
 } from "~/components/design-system";
-import { PetModel } from "~/domain/models/pet/PetModel";
-import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
-import { getRouteFor } from "~/routes/util/getRouteFor";
+import { PetInfo } from "~/mocks/MockRestApiServer";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 import { ReportLostPetButton } from "./ReportLostPetButton";
 
-export const PetCardInfo = ({ ...petInfo }: PetModel) => {
+export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   const {
     age,
     breed,
     dateOfBirth,
-    microchip,
+    microchipNumber,
     name,
     mixedBreed,
     sex,
@@ -40,28 +39,22 @@ export const PetCardInfo = ({ ...petInfo }: PetModel) => {
       exactRoute: true,
       icon: "paw",
       label: "Pet info",
-      route: getRouteFor(PET_PROFILE_FULL_ROUTE(petInfo.id), ""),
+      route: getRouteFor(""),
     },
     {
       content: () => <PetDocumentsTabContent />,
       icon: "file",
       label: "Pet documents",
-      route: getRouteFor(
-        PET_PROFILE_FULL_ROUTE(petInfo.id),
-        AppRoutePaths.petProfileDocuments
-      ),
+      route: getRouteFor(AppRoutePaths.petProfileDocuments),
     },
   ];
 
   return (
     <div className="w-full p-large lg:p-xxlarge">
       <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
-        <Title isResponsive>{name}</Title>
+        <Title level="h1">{name}</Title>
 
-        <ReportLostPetButton
-          className="hidden lg:flex"
-          disabled={petInfo.sourceType !== "MyPetHealth"}
-        />
+        <ReportLostPetButton className="hidden lg:flex" />
         <PetActionsDropdownMenu className="flex lg:hidden" />
       </div>
       {renderSubInfo()}
@@ -69,12 +62,19 @@ export const PetCardInfo = ({ ...petInfo }: PetModel) => {
   );
 
   function renderSubInfo() {
-    const getmicrochip = microchip ?? "";
+    const getMicrochipNumber = microchipNumber ?? "";
     return (
       <>
-        <Text size="16">{`Microchip#: ${getmicrochip}`}</Text>
-        <RouteBasedTabs tabs={tabOptions} />
+        <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
+
+        <div className="mt-base">
+          <RouteBasedTabs tabs={tabOptions} />
+        </div>
       </>
     );
+  }
+
+  function getRouteFor(type: string) {
+    return `/${AppRoutePaths.myPets}/${petInfo.id}/${type}`;
   }
 };

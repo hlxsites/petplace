@@ -1,59 +1,56 @@
+import { ASSET_IMAGES } from "~/assets";
 import { useDrawerContentState } from "~/hooks/useDrawerContentState";
+import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
 import {
   PET_WATCH_OFFERS,
   PET_WATCH_TAGS,
 } from "~/routes/my-pets/petId/utils/petServiceConstants";
-import { Button, Card, Drawer, Tag, Text, Title } from "../../design-system";
+import { Button, Card, Drawer, Tag, Text } from "../../design-system";
 import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
-import { PetServices } from "~/domain/models/pet/PetModel";
-import { getStatus } from "~/routes/my-pets/petId/utils/petServiceStatusUtils";
 
 type PetWatchSectionProp = {
-  petServiceStatus: PetServices;
+  petServiceStatus: PetServiceTypes;
 };
 
 export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
   const { isDrawerOpen, onOpenDrawer, onCloseDrawer } =
     useDrawerContentState("pet-watch");
 
-  const serviceStatus = getStatus(petServiceStatus);
-
-  const { buttonLabel, icon, message } = PET_WATCH_OFFERS[serviceStatus];
-  const { label, tagStatus } = PET_WATCH_TAGS[serviceStatus];
+  const { buttonLabel, icon, message } = PET_WATCH_OFFERS[petServiceStatus];
+  const { label, tagStatus } = PET_WATCH_TAGS[petServiceStatus];
 
   return (
     <>
-      <Text fontFamily="raleway" fontWeight="bold" size="18">
-        Active Pet Services
-      </Text>
       <Card>
         <div className="grid gap-large p-large">
           <div className="flex items-center justify-between">
-            <Title level="h4">Lost Pet Protection</Title>
+            <img
+              className="max-h-[20px]"
+              alt="24 Pet Watch logo"
+              src={ASSET_IMAGES.petWatchLogo}
+            />
             <Tag label={label} tagStatus={tagStatus} />
           </div>
-          <Text size="14">{message}</Text>
-          <Drawer
-            ariaLabel="24 Pet Watch benefits"
-            id="24PetWatchDrawer"
-            isOpen={isDrawerOpen}
-            onClose={onCloseDrawer}
-            width={440}
-            trigger={
-              <Button
-                className="text-orange-300-contrast"
-                iconLeft={icon}
-                variant="secondary"
-                onClick={() => onOpenDrawer()}
-              >
-                {buttonLabel}
-              </Button>
-            }
+          <Text size="base">{message}</Text>
+          <Button
+            className="text-orange-300-contrast"
+            iconLeft={icon}
+            variant="secondary"
+            onClick={() => onOpenDrawer()}
           >
-            <PetWatchDrawerServiceContent />
-          </Drawer>
+            {buttonLabel}
+          </Button>
         </div>
       </Card>
+      <Drawer
+        ariaLabel="24 Pet Watch benefits"
+        id="24PetWatchDrawer"
+        isOpen={isDrawerOpen}
+        onClose={onCloseDrawer}
+        width={440}
+      >
+        <PetWatchDrawerServiceContent />
+      </Drawer>
     </>
   );
 };

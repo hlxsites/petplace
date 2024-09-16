@@ -31,7 +31,7 @@ export const CartItemQuantityManager = ({
     <div className="flex w-full justify-end">
       <div className="flex items-center">
         {renderIconButton("remove")}
-        <Text fontWeight="bold" size="16">
+        <Text fontWeight="bold" size="base">
           {quantity}
         </Text>
         {renderIconButton("add")}

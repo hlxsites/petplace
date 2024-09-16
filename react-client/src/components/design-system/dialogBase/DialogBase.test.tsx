@@ -122,7 +122,6 @@ function getRenderer({
   id = "SampleId",
   isOpen = true,
   title = "Test title",
-  trigger = undefined,
   ...rest
 }: Partial<ComponentProps<typeof DialogBase>> = {}) {
   return render(
@@ -133,7 +132,6 @@ function getRenderer({
         id={id}
         isOpen={isOpen}
         title={title}
-        trigger={trigger}
         {...rest}
       >
         {children}

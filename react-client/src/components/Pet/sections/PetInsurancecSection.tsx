@@ -1,10 +1,12 @@
-import { Button, Card, Title } from "~/components/design-system";
+import { Button, Card, Text } from "~/components/design-system";
 
 export const PetInsuranceSection = () => {
   return (
     <Card>
       <div className="grid grid-cols-1 items-center justify-items-center gap-large p-large md:items-start md:justify-items-start">
-        <Title level="h4">See pet's insurance in MyPetHealth</Title>
+        <Text fontFamily="raleway" fontWeight="bold" size="lg">
+          See pet's insurance in MyPetHealth
+        </Text>
 
         <Button fullWidth={true} variant="secondary">
           View insurance details

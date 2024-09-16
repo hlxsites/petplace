@@ -1,10 +1,9 @@
-import { useLocation } from "react-router-dom";
-import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
-import { CheckoutHeader } from "~/components/Membership/CheckoutHeader";
 import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
-import { MembershipComparingPlansSection } from "~/components/Membership/sections/MembershipComparingPlansSection";
+import { CheckoutHeader } from "~/components/Membership/CheckoutHeader";
 import { MembershipHeader } from "~/components/Membership/sections/MembershipHeader";
 import { MembershipOfferSection } from "~/components/Membership/sections/MembershipOfferSection";
+import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
+import { useLocation } from "react-router-dom";
 
 export const CheckoutIndex = () => {
   const { pathname } = useLocation();
@@ -17,9 +16,9 @@ export const CheckoutIndex = () => {
         <div className="grid place-items-center gap-xxxxxlarge">
           <MembershipHeader petName="test" />
           <MembershipOfferSection />
-          <MembershipComparingPlansSection />
-          <CheckoutInfoSection isLandingPage={isLandingPage} />
         </div>
+
+        <CheckoutInfoSection isLandingPage={isLandingPage} />
       </main>
       <CheckoutFooter />
     </div>

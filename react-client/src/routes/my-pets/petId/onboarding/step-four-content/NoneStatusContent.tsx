@@ -18,7 +18,7 @@ export const NoneStatusContent = ({
       title={ONBOARDING_STEPS_TEXTS[4].none.title}
     >
       <>
-        <Text size="16" align={props.alignment}>
+        <Text size="lg" align={props.alignment}>
           {ONBOARDING_STEPS_TEXTS[4].none.message(name)[0]}
           <TextSpan fontWeight="semibold" display="inline">
             {ONBOARDING_STEPS_TEXTS[4].none.message(name)[1]}
@@ -58,7 +58,7 @@ export const NoneStatusContent = ({
   function renderLI(text: string) {
     return (
       <div className="indivne-block text-nowrap pl-0">
-        <TextSpan fontWeight="semibold" size="14">
+        <TextSpan fontWeight="semibold" size="sm">
           {text}
         </TextSpan>
       </div>

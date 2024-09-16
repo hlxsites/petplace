@@ -8,7 +8,7 @@ export const CheckoutInfoSection = ({
   isLandingPage,
 }: CheckoutInfoSectionProps) => {
   return (
-    <div role="region">
+    <div className="mt-xxlarge" role="region">
       <CheckoutInfoContent isLandingPage={isLandingPage} />
     </div>
   );

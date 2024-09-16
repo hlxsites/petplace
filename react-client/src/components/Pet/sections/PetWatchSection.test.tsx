@@ -1,15 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { MemoryRouter } from "react-router-dom";
-import { PetServices } from "~/domain/models/pet/PetModel";
 import { PetWatchSection } from "./PetWatchSection";
+import { MemoryRouter } from "react-router-dom";
 
 const { getByRole, getByText } = screen;
-
-const MOCK_PET_SERVICE_STATUS: PetServices = {
-  membershipStatus: "Annual member",
-  products: [],
-};
 
 const ACTIVE_MESSAGE =
   /Continue to enjoy premium benefits and top-notch care for your pet from or products and partners\./i;
@@ -20,92 +14,61 @@ const STANDARD_MESSAGE =
 const ACTIVE_BUTTON_LABEL = /See all my benefits/i;
 const EXPIRED_BUTTON_LABEL = "Renew services";
 const STANDARD_BUTTON_LABEL = /See details/i;
-const ACTIVE_PET_SERVICES_LABEL = /Active Pet Services/i;
 
 describe("PetWatchSection", () => {
-  it(`should render the text ${ACTIVE_PET_SERVICES_LABEL}`, () => {
+  it("should render the petWatch logo", () => {
     getRenderer();
-    expect(getByText(ACTIVE_PET_SERVICES_LABEL)).toBeInTheDocument();
-  });
-  it("should render the petWatch title", () => {
-    getRenderer();
-    expect(
-      getByRole("heading", { name: /Lost Pet Protection/i })
-    ).toBeInTheDocument();
+    expect(getByRole("img")).toHaveAttribute("alt", "24 Pet Watch logo");
   });
 
   it.each([
-    ["Annual member", /Active Annual Membership/i, []],
-    [
-      "Annual member",
-      /Expired Services/i,
-      [{ id: "test", name: "test", isExpired: true }],
-    ],
-    ["Lifetime protect member", /Active Lifetime Membership/i, []],
-    ["Lifetime plus protect member", /Active Lifetime plus Membership/i, []],
-    ["Not a member", /Standard Protection/i, []],
+    ["annual", /Active Annual Membership/i],
+    ["expired", /Expired Services/i],
+    ["lifetime", /Active Lifetime Membership/i],
+    ["lifetimePlus", /Active Lifetime plus Membership/i],
+    ["standard", /Standard Protection/i],
   ])(
     "should render the %p petServiceStatus with the tag as %s",
-    (membershipStatus, expectedTag, products) => {
-      getRenderer({
-        petServiceStatus: {
-          membershipStatus,
-          products,
-        },
-      });
+    (petServiceStatus, expectedTag) => {
+      // @ts-expect-error - ignoring type error for testing purposes
+      getRenderer({ petServiceStatus });
       expect(getByText(expectedTag)).toBeInTheDocument();
     }
   );
 
   it.each([
-    ["Annual member", ACTIVE_MESSAGE, []],
-    [
-      "Annual member",
-      EXPIRED_MESSAGE,
-      [{ id: "test", name: "test", isExpired: true }],
-    ],
-    ["Lifetime protect member", ACTIVE_MESSAGE, []],
-    ["Lifetime plus protect member", ACTIVE_MESSAGE, []],
-    ["Not a member", STANDARD_MESSAGE, []],
+    ["annual", ACTIVE_MESSAGE],
+    ["expired", EXPIRED_MESSAGE],
+    ["lifetime", ACTIVE_MESSAGE],
+    ["lifetimePlus", ACTIVE_MESSAGE],
+    ["standard", STANDARD_MESSAGE],
   ])(
     "should render the %p petServiceStatus with the text as %s",
-    (membershipStatus, expectedMessage, products) => {
-      getRenderer({
-        petServiceStatus: {
-          membershipStatus,
-          products,
-        },
-      });
+    (petServiceStatus, expectedMessage) => {
+      // @ts-expect-error - ignoring type error for testing purposes
+      getRenderer({ petServiceStatus });
       expect(getByText(expectedMessage)).toBeInTheDocument();
     }
   );
 
   it.each([
-    ["Annual member", ACTIVE_BUTTON_LABEL, []],
-    [
-      "Annual member",
-      EXPIRED_BUTTON_LABEL,
-      [{ id: "test", name: "test", isExpired: true }],
-    ],
-    ["Lifetime protect member", ACTIVE_BUTTON_LABEL, []],
-    ["Lifetime plus protect member", ACTIVE_BUTTON_LABEL, []],
-    ["Not a member", STANDARD_BUTTON_LABEL, []],
+    ["annual", ACTIVE_BUTTON_LABEL],
+    ["expired", EXPIRED_BUTTON_LABEL],
+    ["lifetime", ACTIVE_BUTTON_LABEL],
+    ["lifetimePlus", ACTIVE_BUTTON_LABEL],
+    ["standard", STANDARD_BUTTON_LABEL],
   ])(
     "should render the %p petServiceStatus with the button label as %s",
-    (membershipStatus, expectedButtonLabel, products) => {
-      getRenderer({
-        petServiceStatus: {
-          membershipStatus,
-          products,
-        },
-      });
+    (petServiceStatus, expectedButtonLabel) => {
+      // @ts-expect-error - ignoring type error for testing purposes
+      getRenderer({ petServiceStatus });
       expect(getByText(expectedButtonLabel)).toBeInTheDocument();
     }
   );
 });
 
 function getRenderer({
-  petServiceStatus = MOCK_PET_SERVICE_STATUS,
+  petServiceStatus = "standard",
 }: Partial<ComponentProps<typeof PetWatchSection>> = {}) {
   return render(
     <MemoryRouter>

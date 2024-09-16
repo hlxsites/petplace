@@ -1,30 +1,14 @@
 import { ReactNode } from "react";
-import { CheckboxVariant } from "../../checkbox/Checkbox";
-import { SwitchVariant } from "../../switch/Switch";
-import { TitleProps } from "../../text/Title";
-import { TextProps } from "../../types/TextTypes";
 
 type VariableType = "string" | "number" | "date" | "string[]";
 export type FormVariable = `{{${string}|${VariableType}}}`;
 
-export type InputValue =
-  | string
-  | number
-  | Date
-  | boolean
-  | string[]
-  | FormValues[];
-
 export type FormVariableValues = Record<string, InputValue>;
 export type FormValues = Record<string, InputValue>;
 
-export type ElementType =
-  | "button"
-  | "html"
-  | "input"
-  | "repeater"
-  | "row"
-  | "section";
+export type ElementType = "button" | "html" | "input" | "row" | "section";
+
+export type InputValue = string | number | Date | boolean | string[];
 
 type ConditionCriteriaCommon = {
   inputId: string;
@@ -68,56 +52,32 @@ export type InputType =
   | "email"
   | "password"
   | "number"
-  | "phone"
   | "url"
   | "date"
   | "time"
   | "hidden"
   | "select"
-  | "multiSelect"
-  | "switch"
+  | "boolean"
   | "checkboxGroup"
   | "radio";
 
-export type RepeaterMetadata = {
-  index: number;
-  repeaterId: string;
-};
-
 type ElementCommon = {
-  className?: string;
   elementType: ElementType;
   id?: string;
   shouldDisplay?: ConditionExpression;
-  repeaterMetadata?: RepeaterMetadata;
 };
 
 export type ElementSection = ElementCommon & {
   children: ElementUnion[];
-  description?: Omit<TextProps, "children"> & {
-    label: string;
-  };
+  className?: string;
+  description?: string;
   elementType: "section";
-  title: Omit<TitleProps, "children"> & {
-    hideLabel?: boolean;
-    label: string;
-  };
-};
-
-export type ElementRepeater = Omit<ElementCommon, "id"> & {
-  children: ElementUnion[];
-  id: string;
-  elementType: "repeater";
-  labels?: {
-    add?: string;
-    remove?: string;
-  };
-  maxRepeat?: number;
-  minRepeat?: number;
+  title?: string;
 };
 
 export type ElementRow = ElementCommon & {
   children: ElementUnion[];
+  className?: string;
   elementType: "row";
 };
 
@@ -127,8 +87,8 @@ export type ElementHtml = Omit<ElementCommon, "id"> & {
 };
 
 export type ElementButton = ElementCommon & {
+  className?: string;
   disabledCondition?: ConditionExpression;
-  enabledCondition?: ConditionExpression;
   elementType: "button";
   id: string;
   label: string;
@@ -137,12 +97,12 @@ export type ElementButton = ElementCommon & {
 };
 
 export type InputCommon = ElementCommon & {
-  autoComplete?: HTMLInputElement["autocomplete"];
   autoFocus?: boolean;
+  className?: string;
   description?: string;
   disabledCondition?: ConditionExpression;
   elementType: "input";
-  errorMessage?: string | null;
+  errorMessage?: string;
   hideLabel?: boolean;
   id: string;
   label: string;
@@ -164,23 +124,22 @@ export type InputWithoutFormBuilderProps<T = InputCommon> = Omit<
 };
 
 export type ElementInputText = InputCommon & {
+  onChange?: (newValue: string) => void;
   type: "text" | "email" | "password" | "number";
-};
-
-export type ElementInputPhone = InputCommon & {
-  defaultType?: string;
-  disabledType?: ConditionExpression;
-  hideType?: ConditionExpression;
-  type: "phone";
+  value?: string;
 };
 
 export type ElementInputTextarea = InputCommon & {
+  onChange?: (newValue: string) => void;
   rows?: number;
   type: "textarea";
+  value?: string;
 };
 
 export type ElementInputBoolean = Omit<InputCommon, "placeholder"> & {
+  onChange?: (newValue: boolean) => void;
   type: "boolean";
+  value?: boolean;
 };
 
 type OptionType =
@@ -195,45 +154,49 @@ type OptionType =
 
 export type ElementInputRadio = Omit<InputCommon, "placeholder"> &
   OptionType & {
+    onChange?: (newValue: string) => void;
     type: "radio";
+    value?: string;
   };
 
 export type ElementInputCheckboxGroup = Omit<InputCommon, "placeholder"> &
   OptionType & {
+    onChange?: (newValue: string[]) => void;
     type: "checkboxGroup";
-    variant?: CheckboxVariant;
+    value?: string[];
   };
 
-export type ElementInputSwitch = Omit<InputCommon, "placeholder"> & {
-  conditionalLabel?: [string, string];
-  type: "switch";
-  variant?: SwitchVariant;
-};
-
 export type ElementInputNumber = InputCommon & {
+  onChange?: (newValue: number) => void;
   type: "number";
+  value?: number;
 };
 
 export type ElementInputDate = InputCommon & {
+  onChange?: (newValue: Date) => void;
   type: "date";
+  value?: Date;
 };
 
-type ElementInputSelectCommon = InputCommon & OptionType;
+type ElementInputSelectCommon = InputCommon &
+  OptionType & {
+    type: "select";
+  };
 
 export type ElementInputSingleSelect = ElementInputSelectCommon & {
-  type: "select";
+  onChange?: (newValue: string) => void;
+  value?: string;
 };
 
 export type ElementInputMultiSelect = ElementInputSelectCommon & {
-  type: "multiSelect";
+  onChange?: (newValue: string[]) => void;
+  value?: string[];
 };
 
 export type InputsUnion =
   | ElementInputText
   | ElementInputTextarea
   | ElementInputBoolean
-  | ElementInputSwitch
-  | ElementInputPhone
   | ElementInputRadio
   | ElementInputCheckboxGroup
   | ElementInputNumber
@@ -244,7 +207,6 @@ export type InputsUnion =
 export type ElementUnion =
   | ElementButton
   | ElementHtml
-  | ElementRepeater
   | ElementRow
   | ElementSection
   | InputsUnion;

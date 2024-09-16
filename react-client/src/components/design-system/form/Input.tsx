@@ -11,9 +11,7 @@ import { FORM_STYLES } from "./utils/formStyleUtils";
 type InputProps = InputWithoutFormBuilderProps<ElementInputText> & {
   iconLeft?: IconProps;
   iconRight?: IconProps;
-  onChange?: (newValue: string) => void;
   type?: "text" | "email" | "password" | "number";
-  value?: string;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -52,7 +50,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 autoFocus={autoFocus}
                 className={classNames(
                   FORM_STYLES.input,
-                  "text-base border-none",
+                  "border-none text-base",
                   {
                     [FORM_STYLES.inputError]: hasError,
                   }

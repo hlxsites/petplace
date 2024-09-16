@@ -21,12 +21,12 @@ describe.skip("PetCardInfo", () => {
     ).toBeInTheDocument();
   });
 
-  it.each(["333", "ab98234263"])(
+  it.each([333, 98234263])(
     "should render microchip info with given value",
-    (microchip) => {
-      getRenderer({ microchip });
+    (microchipNumber) => {
+      getRenderer({ microchipNumber });
 
-      expect(getByText(`Microchip#: ${microchip}`)).toBeInTheDocument();
+      expect(getByText(`Microchip#: ${microchipNumber}`)).toBeInTheDocument();
     }
   );
 

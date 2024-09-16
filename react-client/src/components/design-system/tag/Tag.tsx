@@ -25,7 +25,7 @@ export const Tag = ({ label, tagStatus }: TagProps) => {
   return (
     <div className={containerClass}>
       <Icon display="ellipse" size={8} />
-      <Text color={textColorClass} fontWeight="medium" size="16">
+      <Text color={textColorClass} fontWeight="medium" size="base">
         {label}
       </Text>
       {tagStatus !== "success" && <Icon display="information" size={16} />}

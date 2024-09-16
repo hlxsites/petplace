@@ -1,20 +1,17 @@
-import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-
-import petListUseCaseFactory from "~/domain/useCases/pet/petListUseCaseFactory";
-import { requireAuthToken } from "~/util/authUtil";
+import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { getPetsList } from "~/mocks/MockRestApiServer";
+import { LoaderData } from "~/types/LoaderData";
 
 export const loader = (() => {
-  const authToken = requireAuthToken();
-
-  const useCase = petListUseCaseFactory(authToken);
-
-  return defer({
-    pets: useCase.query(),
-  });
+  return {
+    pets: getPetsList(),
+  };
 }) satisfies LoaderFunction;
 
 export const useMyPetsIndexViewModel = () => {
-  const loaderData = useLoaderData<typeof loader>();
+  const { pets } = useLoaderData() as LoaderData<typeof loader>;
 
-  return loaderData;
+  return {
+    pets,
+  };
 };

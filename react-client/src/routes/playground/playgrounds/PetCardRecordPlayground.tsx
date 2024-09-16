@@ -9,16 +9,20 @@ export const PetCardRecordPlayground = () => {
     <div className="grid max-w-[300px] gap-xlarge">
       <div className="grid gap-small">
         <PetCardRecord
-          document={{
+          record={{
             id: "dog-image",
+            downloadPath:
+              "https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg",
             fileName: "Dog image",
             fileType: "jpg",
           }}
         />
 
         <PetCardRecord
-          document={{
+          record={{
             id: "github-pdf",
+            downloadPath:
+              "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
             fileName: "PDF gitHub",
             fileType: "pdf",
           }}
@@ -28,10 +32,9 @@ export const PetCardRecordPlayground = () => {
       <Button onClick={() => setIsUploading((prev) => !prev)}>Upload</Button>
       {isUploading && (
         <PetCardRecord
-          document={{
+          record={{
             id: "upload-test",
             fileName: "Upload test",
-            fileType: "doc",
           }}
           isUploadingFile={isUploading}
         />

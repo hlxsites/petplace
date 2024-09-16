@@ -1,45 +1,50 @@
-import { useState } from "react";
-import { PetDocument } from "~/domain/models/pet/PetDocument";
-import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
+import { useCallback, useState } from "react";
+import { Card, DragAndDropFileUpload, Text } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
+import { PetRecord } from "./types/PetRecordsTypes";
 
 type PetDocumentViewProps = {
-  documents: PetDocument[];
-  documentType: string;
-  onDelete: (document: PetDocument) => () => void;
-  onDownload: (document: PetDocument) => () => void;
+  documents: PetRecord[];
+  onDelete: (recordId: string, recordType: string) => void;
+  recordType: string;
 };
 
 export const PetDocumentsView = ({
   documents,
-  documentType,
   onDelete,
-  onDownload,
+  recordType,
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
 
+  const onDeletePetCardRecord = useCallback(
+    (recordType: string, recordId?: string) => {
+      if (!recordId) return;
+      onDelete(recordId, recordType);
+    },
+    [onDelete]
+  );
+
   return (
     <div className="grid gap-large">
-      <Text color="tertiary-600" size="14">
-        {`View, download and manage all ${documentType} records.`}
+      <Text color="tertiary-600" size="sm">
+        {`View, download and manage all ${recordType} records.`}
       </Text>
 
       {!!documents.length && (
         <div className="grid gap-small">
-          {documents.map((document) => (
+          {documents.map((record) => (
             <PetCardRecord
-              document={document}
-              key={document.id}
-              onDelete={onDelete(document)}
-              onDownload={onDownload(document)}
+              key={record.id}
+              onDelete={() => onDeletePetCardRecord(recordType, record.id)}
+              record={record}
             />
           ))}
         </div>
       )}
 
-      <Title color="primary-900" level="h5">
+      <Text color="primary-900" size="base" fontWeight="bold">
         Upload and attach files
-      </Title>
+      </Text>
 
       <Card>
         <DragAndDropFileUpload
@@ -49,8 +54,9 @@ export const PetDocumentsView = ({
       </Card>
 
       {isUploading && (
+        // TODO: 81832 fix this after implementing all logic to upload documents
         <PetCardRecord
-          document={{
+          record={{
             id: "test-record",
             fileName: "WIP - testing purposes",
             fileType: "doc",

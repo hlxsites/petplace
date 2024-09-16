@@ -1,15 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-
-import {
-  isValidPetDocumentId,
-  PetDocument,
-} from "~/domain/models/pet/PetDocument";
-import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
-import { requireAuthToken } from "~/util/authUtil";
-import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
+import { useEffect, useState } from "react";
+import { LoaderFunction, useLoaderData, useNavigate } from "react-router-dom";
+import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
+import { getPetDocuments } from "~/mocks/MockRestApiServer";
+import { LoaderData } from "~/types/LoaderData";
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
+import { isValidPetDocumentId } from "../petDocumentTypeUtils";
 
 export const loader = (({ params }) => {
   const { petId, documentType } = params;
@@ -19,53 +15,30 @@ export const loader = (({ params }) => {
     "Invalid document type"
   );
 
-  const authToken = requireAuthToken();
-  const useCase = new GetPetDocumentsUseCase(authToken);
-
-  return defer({
-    id: documentType,
-    documents: useCase.query(petId, documentType),
-    downloadPetDocument: useCase.fetchDocumentBlob,
-  });
+  return { id: documentType, petId };
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
-  const navigate = useNavigate();
-  const { documents, downloadPetDocument, id } = useLoaderData<typeof loader>();
+  const { id, petId } = useLoaderData() as LoaderData<typeof loader>;
   const { documentTypes } = usePetProfileContext();
+  const navigate = useNavigate();
+  const [documents, setDocuments] = useState<PetRecord[]>([]);
 
   const documentType = documentTypes.find((dt) => dt.id === id);
+  // Since the loader gave us a valid document type id, we can safely assume it's not undefined
   invariant(documentType, "Document type must be found here");
+
+  useEffect(() => {
+    setDocuments(getPetDocuments({ petId, type: id }));
+  }, [petId, id, setDocuments]);
 
   const onClose = () => {
     navigate("..");
   };
 
-  const onDelete = (document: PetDocument) => {
-    return () => {
-      // TODO: Implement real delete action when backend is ready
-      console.log("implement delete document", document);
-    };
-  };
-
-  const onDownload = ({ id, fileName, fileType }: PetDocument) => {
-    return async () => {
-      try {
-        const blob = await downloadPetDocument(id);
-        if (blob instanceof Blob) {
-          const downloadProps: DownloadFileProps = {
-            blob,
-            fileName,
-            fileType,
-          };
-          downloadFile(downloadProps);
-        } else {
-          console.error("Downloaded content is not a Blob");
-        }
-      } catch (error) {
-        console.error("Error downloading document:", error);
-      }
-    };
+  const onDelete = (recordId: string) => {
+    // TODO: Implement real delete action when backend is ready
+    setDocuments((prev) => prev.filter((doc) => doc.id !== recordId));
   };
 
   return {
@@ -73,6 +46,5 @@ export const useDocumentTypeIndexViewModel = () => {
     documentType,
     onClose,
     onDelete,
-    onDownload,
   };
 };

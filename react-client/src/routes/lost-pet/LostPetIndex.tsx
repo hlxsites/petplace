@@ -1,15 +1,8 @@
-import { useState } from "react";
-import {
-  Card,
-  DisplayForm,
-  FormSchema,
-  FormValues,
-} from "~/components/design-system";
+import { Card, DisplayForm, FormSchema } from "~/components/design-system";
 import { useLostPetIndexViewModel } from "./useLostPetIndexViewModel";
 
 export const LostPetIndex = () => {
   const { onSelectPet, pets, selectedPet } = useLostPetIndexViewModel();
-  const [values, setValues] = useState<FormValues>({});
 
   const formSchema: FormSchema = {
     id: "lost-pet-form",
@@ -17,15 +10,9 @@ export const LostPetIndex = () => {
       {
         elementType: "section",
         className: "!mb-xxxlarge",
-        title: {
-          label: "I have lost a pet",
-        },
-        description: {
-          label:
-            "We're sorry to hear that, please confirm the information below:",
-          size: "16",
-        },
-
+        title: "I have lost a pet",
+        description:
+          "We're sorry to hear that, please confirm the information below:",
         children: [
           {
             elementType: "input",
@@ -53,9 +40,7 @@ export const LostPetIndex = () => {
       },
       {
         elementType: "section",
-        title: {
-          label: "Last seen:",
-        },
+        title: "Last seen:",
         className: "!mb-xxxlarge",
         children: [
           {
@@ -104,7 +89,7 @@ export const LostPetIndex = () => {
       },
       {
         elementType: "section",
-        title: { label: "Owner details:" },
+        title: "Owner details:",
         className: "!mb-xxxlarge",
         children: [
           {
@@ -166,10 +151,9 @@ export const LostPetIndex = () => {
             if (props.name) {
               onSelectPet(props.name as string);
             }
-
-            setValues(props);
           }}
-          onSubmit={({ values }) => {
+          onSubmit={({ event, values }) => {
+            event.preventDefault();
             console.log("onSubmit values", values);
           }}
           schema={formSchema}
@@ -179,8 +163,7 @@ export const LostPetIndex = () => {
             stateOptions: [],
           }}
           values={{
-            ...values,
-            microchip: selectedPet?.microchip ?? "",
+            microchip: selectedPet?.microchipNumber?.toString() ?? "",
           }}
         />
       </Card>

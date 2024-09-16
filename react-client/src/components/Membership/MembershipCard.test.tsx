@@ -1,19 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { MembershipCard } from "./MembershipCard";
 import { ComponentProps } from "react";
-import { MembershipPlan } from "./utils/MembershipTypes";
 
 const { getByRole, getByText, queryByText } = screen;
 
 describe("MembershipCard", () => {
-  it.each([
-    "Lifetime",
-    "Lifetime Plus",
-    "Annual Protection",
-  ] as MembershipPlan[])("should render the given title", (title) => {
-    getRenderer({ title });
-    expect(getByRole("heading", { name: title })).toBeInTheDocument();
-  });
+  it.each(["My title", "Awesome title"])(
+    "should render the given title",
+    (title) => {
+      getRenderer({ title });
+      expect(getByRole("heading", { name: title })).toBeInTheDocument();
+    }
+  );
 
   it.each(["My sub title", "Awesome sub title"])(
     "should render the given sub title",
@@ -138,7 +136,7 @@ function getRenderer({
   price = "Test price",
   priceInfo = "Test info price label",
   subTitle = "Test info sub title",
-  title = "Lifetime",
+  title = "Test title",
   ...props
 }: Partial<ComponentProps<typeof MembershipCard>> = {}) {
   return render(

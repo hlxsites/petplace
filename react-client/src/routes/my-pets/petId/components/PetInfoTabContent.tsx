@@ -1,11 +1,9 @@
 import { Text, TextSpan } from "~/components/design-system";
-import { PetModel } from "~/domain/models/pet/PetModel";
-import { parseDate } from "~/util/dateUtils";
-import { getAnimalSex } from "~/util/getAnimalDetails";
+import { PetInfo } from "~/mocks/MockRestApiServer";
 
 export type GetPetInfoTabProps = Omit<
-  PetModel,
-  "id" | "img" | "isProtected" | "microchip" | "name"
+  PetInfo,
+  "id" | "img" | "isProtected" | "microchipNumber" | "name"
 >;
 
 export function PetInfoTabContent({
@@ -28,7 +26,7 @@ export function PetInfoTabContent({
     },
     {
       label: "Sex",
-      value: getAnimalSex(sex),
+      value: sex,
     },
     {
       label: "Breed",
@@ -36,15 +34,20 @@ export function PetInfoTabContent({
     },
     {
       label: "DOB",
-      value: parseDate(dateOfBirth),
+      value: dateOfBirth,
     },
     {
       label: "Mixed breed",
-      value: renderBooleanField(mixedBreed),
+      value: mixedBreed,
     },
     {
       label: "Spayed/Neutered",
-      value: renderBooleanField(spayedNeutered),
+      value:
+        typeof spayedNeutered === "boolean"
+          ? spayedNeutered
+            ? "Yes"
+            : "No"
+          : "",
     },
   ];
 
@@ -52,7 +55,7 @@ export function PetInfoTabContent({
     <div className="grid grid-cols-1 md:grid-cols-2" role="list">
       {getFields.map(({ label, value }) => (
         <div className="pb-xsmall" key={label} role="listitem">
-          <Text size="14">
+          <Text size="sm">
             <TextSpan fontFamily="raleway" fontWeight="bold">
               {label}:
             </TextSpan>{" "}
@@ -62,8 +65,4 @@ export function PetInfoTabContent({
       ))}
     </div>
   );
-}
-
-function renderBooleanField(field?: boolean) {
-  return typeof field === "boolean" ? (field ? "Yes" : "No") : "";
 }

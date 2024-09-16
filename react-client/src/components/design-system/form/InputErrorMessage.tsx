@@ -1,13 +1,13 @@
 type InputErrorMessageProps = {
   id: string;
-  message?: string | null;
+  message?: string;
 };
 
 export const InputErrorMessage = ({ id, message }: InputErrorMessageProps) => {
   if (!message) return null;
 
   return (
-    <span className="text-xs block text-text-danger-default" id={id}>
+    <span className="text-text-danger-default block text-xs" id={id}>
       {message}
     </span>
   );

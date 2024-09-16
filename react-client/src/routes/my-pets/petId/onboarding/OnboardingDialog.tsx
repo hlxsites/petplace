@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
-import { DocumentationStatus, PetModel } from "~/domain/models/pet/PetModel";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
+import { DocumentationStatus } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 import { OnboardingStepFive } from "./OnboardingStepFive";
@@ -24,26 +24,9 @@ export type CommonOnboardingProps = {
 export const OnboardingDialog = () => {
   const isSmallerScreen = useWindowWidth() < 768;
   const viewModel = usePetProfileContext();
-
-  const [petInfo, setPetInfo] = useState<PetModel | null>(null);
-  const [status, setStatus] = useState<DocumentationStatus>("none");
-
+  const petInfo = viewModel?.petInfo;
   const { step, onNextStep, reset, totalSteps } = useOnboardingSteps();
-
-  useEffect(() => {
-    const resolvePetInfo = async () => {
-      try {
-        const resolvedPetInfo = await viewModel.petInfo;
-        setPetInfo(resolvedPetInfo);
-        setStatus(resolvedPetInfo?.documentationStatus ?? "none");
-      } catch (error) {
-        console.error("Failed to resolve petInfo:", error);
-      }
-    };
-
-    // Ensure the promise is handled, and the lint rule is satisfied
-    void resolvePetInfo();
-  }, [viewModel.petInfo]);
+  const [status, setStatus] = useState(petInfo?.documentationStatus ?? "none");
 
   return (
     <Dialog
@@ -51,7 +34,6 @@ export const OnboardingDialog = () => {
       id="onboarding-steps"
       ariaLabel="Onboarding steps dialog"
       padding="p-0"
-      trigger={undefined}
       width="fit-content"
     >
       <div

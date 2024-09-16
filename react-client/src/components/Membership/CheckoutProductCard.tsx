@@ -24,13 +24,17 @@ export const CheckoutProductCard = ({
         <div className="flex justify-between">
           <Title level="h4">{title}</Title>
           <div className="flex flex-col text-right">
-            <Text fontWeight="bold" size="24">
+            <Text fontWeight="bold" size="xlg">
               {price}
             </Text>
-            {isAnnual && <Text fontWeight="bold">/year</Text>}
+            {isAnnual && (
+              <Text fontWeight="bold" size="xs">
+                /year
+              </Text>
+            )}
           </div>
         </div>
-        {product && <Card border="border-border-base-color">{product}</Card>}
+        <Card border="border-border-base-color">{product}</Card>
         <div className="h-[58px]">{productSpecifications}</div>
         <div className="grid w-full gap-xsmall">
           <Button fullWidth onClick={onClick} variant="tertiary">

@@ -1,5 +1,5 @@
 import { IconKeys } from "~/components/design-system";
-import { PetDocumentTypeId } from "~/domain/models/pet/PetDocument";
+import { PetDocumentTypeId } from "../documents/petDocumentTypeUtils";
 
 type PetDocumentType = {
   icon: IconKeys;
@@ -12,7 +12,7 @@ export const PET_DOCUMENT_TYPES_LIST: PetDocumentType[] = [
   {
     icon: "medicine",
     iconColor: "text-green-300",
-    id: "medical",
+    id: "medical-records",
     label: "Medical Records",
   },
   {

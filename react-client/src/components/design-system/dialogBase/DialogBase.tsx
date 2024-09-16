@@ -1,5 +1,5 @@
 import FocusTrap from "focus-trap-react";
-import { cloneElement, isValidElement, ReactElement, useEffect } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
 import { classNames, resetBodyStyles } from "~/util/styleUtil";
@@ -19,19 +19,15 @@ export const DialogBase = ({
   iconProps,
   id,
   isOpen,
-  isTitleResponsive,
-  titleSize,
+  titleLevel,
   onClose,
   padding = "p-xlarge",
   title,
-  trigger,
   width,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
     onClose,
   });
-
-  const headerFooterHeight = title ? 60 : 0;
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "visible";
@@ -54,18 +50,7 @@ export const DialogBase = ({
     };
   }, [isClosing, isOpen, onCloseWithAnimation]);
 
-  const renderTrigger = (() => {
-    if (!trigger || !isValidElement(trigger)) return null;
-
-    // @ts-expect-error - We know that trigger is a valid element
-    return cloneElement<ReactElement<HTMLButtonElement>>(trigger, {
-      "aria-controls": id,
-      "aria-haspopup": "dialog",
-      "aria-expanded": isOpen,
-    });
-  })();
-
-  if (!isOpen) return renderTrigger;
+  if (!isOpen) return null;
 
   const hasTitle = !!title;
   const titleId = hasTitle ? `${id}-title` : undefined;
@@ -116,12 +101,7 @@ export const DialogBase = ({
           {!!icon && <Icon display={icon} {...iconProps} />}
           {title && (
             <div className="mb-small">
-              <Title
-                id={titleId}
-                level="h4"
-                size={titleSize}
-                isResponsive={isTitleResponsive}
-              >
+              <Title id={titleId} level={titleLevel}>
                 {title}
               </Title>
             </div>
@@ -138,23 +118,11 @@ export const DialogBase = ({
             />
           )}
 
-          <div
-            className="h-85dvh grid overflow-auto"
-            style={{
-              maxHeight: `calc(85dvh - ${headerFooterHeight}px)`,
-            }}
-          >
-            {renderChildren}
-          </div>
+          <div className="h-90vh grid overflow-auto">{renderChildren}</div>
         </div>
       </FocusTrap>
     </>
   );
 
-  return (
-    <>
-      {renderTrigger}
-      {createPortal(portalContent, document.body)}
-    </>
-  );
+  return createPortal(portalContent, document.body);
 };

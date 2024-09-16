@@ -1,7 +1,7 @@
 export type CartDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
-  items?: CartItem[];
+  items: CartItem[];
 };
 
 export type CartItem = {
