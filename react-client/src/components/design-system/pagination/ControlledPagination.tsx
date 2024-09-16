@@ -150,7 +150,7 @@ export const ControlledPagination = ({
   function renderTotal() {
     return (
       <div className="flex justify-center md:mr-small lg:justify-end">
-        <Text size="base">
+        <Text size="16">
           Displaying {renderSpan(currentlyBeingDisplayed())} out of{" "}
           {renderSpan(itemsCount)}
         </Text>
@@ -160,7 +160,7 @@ export const ControlledPagination = ({
 
   function renderSpan(content: number) {
     return (
-      <TextSpan color="orange-300-contrast" fontWeight="bold">
+      <TextSpan color="orange-300-contrast" fontWeight="bold" size="16">
         {content}
       </TextSpan>
     );

@@ -19,12 +19,12 @@ export const MembershipCard = ({
       <div className="grid gap-large p-large">
         <div className="grid gap-xsmall">
           <Title level="h4">{title}</Title>
-          <Text color="text-color-supporting" size="base">
+          <Text color="text-color-supporting" size="14">
             {subTitle}
           </Text>
         </div>
         <div className="grid gap-xsmall">
-          <Text fontWeight="bold" size="xxlg">
+          <Text fontWeight="bold" size="40">
             {price}
           </Text>
           <Text color="text-color-supporting">{priceInfo}</Text>
@@ -47,7 +47,7 @@ export const MembershipCard = ({
                 display={icon ?? "checkCircle"}
                 size={16}
               />
-              <Text size="base" textDecoration={icon ? "line-through" : "none"}>
+              <Text size="14" textDecoration={icon ? "line-through" : "none"}>
                 {offerLabel}
               </Text>
             </div>

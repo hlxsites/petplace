@@ -27,7 +27,7 @@ export const OnboardingContent = ({
   const messageElement = (() => {
     if (!message) return null;
     return (
-      <Text size="base" align={alignment}>
+      <Text align={alignment} isResponsive size="16">
         {message}
       </Text>
     );
@@ -36,7 +36,7 @@ export const OnboardingContent = ({
   return (
     <div className="flex flex-col gap-large">
       {headerElement}
-      <Title level="h2" align={alignment}>
+      <Title level="h2" align={alignment} isResponsive>
         {title}
       </Title>
       {messageElement}

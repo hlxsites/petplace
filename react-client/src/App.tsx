@@ -5,7 +5,6 @@ import { resetBodyStyles } from "./util/styleUtil";
 
 function App() {
   useEffect(() => {
-    document.body.className = "";
     resetBodyStyles();
   }, []);
 

@@ -75,7 +75,7 @@ export const OnboardingStepFive = ({
           size={53}
         />
         <Text
-          size="lg"
+          size="16"
           color={accepted ? "purple-500" : "black"}
           fontWeight="medium"
           align={isSmallerScreen ? "left" : "center"}

@@ -7,7 +7,7 @@ export const CartHeader = () => {
         display="shoppingCart"
         className="mr-small text-orange-300-contrast"
       />
-      <Text fontWeight="bold" size="xlg">
+      <Text fontWeight="bold" size="24">
         My Cart
       </Text>
     </div>

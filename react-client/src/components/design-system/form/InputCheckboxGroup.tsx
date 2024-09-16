@@ -11,13 +11,15 @@ type InputCheckboxGroupProps = Omit<
   InputWithoutFormBuilderProps<ElementInputCheckboxGroup>,
   "options" | "optionsType"
 > & {
+  onChange?: (newValue: string[]) => void;
   options: string[];
+  value?: string[];
 };
 
 export const InputCheckboxGroup = forwardRef<
   HTMLButtonElement,
   InputCheckboxGroupProps
->(({ id, onChange, options, value, ...rest }, ref) => {
+>(({ id, onChange, options, value, variant, ...rest }, ref) => {
   const handleOnChange = (option: string) => {
     return () => {
       if (value?.includes(option)) {
@@ -49,6 +51,7 @@ export const InputCheckboxGroup = forwardRef<
                 onCheckedChange={handleOnChange(option)}
                 ref={ref}
                 value={option}
+                variant={variant}
               />
             );
           })}

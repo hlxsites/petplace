@@ -6,16 +6,16 @@ import {
   IconKeys,
   Table,
   Text,
-  TextProps,
   TextSpan,
   Title,
 } from "~/components/design-system";
 import { TableColumn } from "~/components/design-system/table/TableTypes";
+import { TextProps } from "~/components/design-system/types/TextTypes";
 import {
   LostPetUpdate,
   MissingStatus,
-  PetInfo,
-} from "~/mocks/MockRestApiServer";
+  PetModel,
+} from "~/domain/models/pet/PetModel";
 import { classNames } from "~/util/styleUtil";
 
 const columns: TableColumn[] = [
@@ -31,7 +31,7 @@ const ITEMS_PER_PAGE = 5;
 export const PetLostUpdatesSection = ({
   lostPetHistory,
   missingStatus,
-}: PetInfo) => {
+}: PetModel) => {
   const dataSource = (() => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
@@ -49,6 +49,7 @@ export const PetLostUpdatesSection = ({
       onOpenChange={setIsOpen}
       title={<Title level="h4">Lost Pets Status Update</Title>}
       isLocked={isMissing}
+      padding="large"
     >
       {renderDescriptionMessage()}
       <Table
@@ -68,7 +69,7 @@ export const PetLostUpdatesSection = ({
   function renderDescriptionMessage() {
     return (
       <div className="mb-large">
-        <Text size="base">
+        <Text size="16">
           {currentRows.length
             ? "Track your pet's status."
             : "Report Your pet as lost in case i goes missing."}
@@ -86,6 +87,7 @@ export const PetLostUpdatesSection = ({
   }: LostPetUpdate) {
     return {
       data: {
+        // TODO use parseDate after API defines that this is string datetime
         date: new Date(date).toLocaleString(),
         update: new Date(update).toLocaleString(),
         status: convertStatus(status),

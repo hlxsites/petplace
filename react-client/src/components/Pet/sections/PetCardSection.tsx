@@ -1,16 +1,11 @@
-import { PetInfo } from "~/mocks/MockRestApiServer";
+import { PetModel } from "~/domain/models/pet/PetModel";
 import { PetCardInfo } from "~/routes/my-pets/petId/components/PetCardInfo";
 import { PetCard } from "../PetCard";
 
-export const PetCardSection = ({ petInfo }: { petInfo: PetInfo }) => {
+export const PetCardSection = ({ pet }: { pet: PetModel }) => {
   return (
-    <PetCard
-      classNames={{ root: "lg:flex" }}
-      img={petInfo.img}
-      name={petInfo.name}
-      variant="lg"
-    >
-      <PetCardInfo {...petInfo} name={petInfo.name} />
+    <PetCard classNames={{ root: "lg:flex" }} name={pet.name} variant="lg">
+      <PetCardInfo {...pet} name={pet.name} />
     </PetCard>
   );
 };

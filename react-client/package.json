@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "sed -i '' \"/styles.css/d\" \"./src/index.css\"",
     "build": "tsc && vite build -l error",
-    "postbuild": "echo '@import \"../../styles/styles.css\";' > temp_file && cat ./src/index.css >> temp_file && mv temp_file ./src/index.css",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "jest",
@@ -27,8 +25,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
+    "react-router-typesafe": "^1.5.0",
     "react-spring": "^9.7.4",
-    "tailwind-merge": "^2.3.0"
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
