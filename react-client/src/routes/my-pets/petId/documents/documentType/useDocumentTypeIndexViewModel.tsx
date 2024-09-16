@@ -46,7 +46,7 @@ export const useDocumentTypeIndexViewModel = () => {
   const [documents, setDocuments] = useState<PetDocument[]>([]);
 
   useEffect(() => {
-    initialDocuments.then(setDocuments);
+    void initialDocuments.then(setDocuments);
   }, [initialDocuments]);
 
   const documentType = documentTypes.find((dt) => dt.id === id);
