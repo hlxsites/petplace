@@ -23,7 +23,7 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
 
   async query(petId: string): Promise<PetModel | null> {
     try {
-      const result = await this.httpClient.get(`Pet/${petId}`);
+      const result = await this.httpClient.get(`api/Pet/${petId}`);
 
       if (result.data) return convertToPetModelInfo(result.data);
 

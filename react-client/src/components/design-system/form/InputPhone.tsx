@@ -76,7 +76,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
                   placeholder="Choose"
                   options={["Home", "Mobile", "Work"]}
                   onChange={handleOnChangeType}
-                  value={type || defaultType}
+                  value={selectedType}
                 />
               )}
               <div

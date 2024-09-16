@@ -22,6 +22,7 @@ import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewMo
 import { FoundPetIndex } from "./found-pet/FoundPetIndex";
 import { LostPetIndex } from "./lost-pet/LostPetIndex";
 import { loader as LostPetIndexLoader } from "./lost-pet/useLostPetIndexViewModel";
+import { MyPetsLayout } from "./my-pets/MyPetsLayout";
 import { DocumentTypeIndex } from "./my-pets/petId/documents/documentType/DocumentTypeIndex";
 import { loader as DocumentTypeIndexLoader } from "./my-pets/petId/documents/documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/petId/edit/PetEditIndex";
@@ -59,64 +60,66 @@ const routes: PetPlaceRouteObject[] = [
             path: AppRoutePaths.accountPayment,
             element: <AccountIndex />,
           },
+        ],
+      },
+      {
+        element: <MyPetsLayout />,
+        id: "myPets",
+        // @ts-expect-error - this is a valid path but TS doesn't know it
+        path: `${AppRoutePaths.account}/${AppRoutePaths.myPets}`,
+        children: [
           {
-            id: "myPets",
-            path: AppRoutePaths.myPets,
+            id: "myPetsIndex",
+            index: true,
+            loader: MyPetsIndexLoader,
+            shouldRevalidate: ({ currentParams, nextParams }) =>
+              !isEqual(currentParams, nextParams),
+            element: <MyPetsIndex />,
+          },
+          {
+            element: <PetProfileLayout />,
+            id: "petProfile",
+            loader: PetProfileLayoutLoader,
+            path: AppRoutePaths.petProfile,
+            shouldRevalidate: ({ currentParams, nextParams }) =>
+              !isEqual(currentParams, nextParams),
             children: [
               {
-                id: "myPetsIndex",
+                element: <PetProfileIndex />,
+                id: "petProfileIndex",
                 index: true,
-                loader: MyPetsIndexLoader,
-                shouldRevalidate: ({ currentParams, nextParams }) =>
-                  !isEqual(currentParams, nextParams),
-                element: <MyPetsIndex />,
               },
               {
-                element: <PetProfileLayout />,
-                id: "petProfile",
-                loader: PetProfileLayoutLoader,
-                path: AppRoutePaths.petProfile,
-                shouldRevalidate: ({ currentParams, nextParams }) =>
-                  !isEqual(currentParams, nextParams),
+                id: "petProfileDocuments",
+                path: AppRoutePaths.petProfileDocuments,
+                element: <PetProfileIndex />,
                 children: [
                   {
-                    element: <PetProfileIndex />,
-                    id: "petProfileIndex",
-                    index: true,
-                  },
-                  {
-                    id: "petProfileDocuments",
-                    path: AppRoutePaths.petProfileDocuments,
-                    element: <PetProfileIndex />,
-                    children: [
-                      {
-                        id: "petProfileDocumentType",
-                        loader: DocumentTypeIndexLoader,
-                        path: AppRoutePaths.petProfileDocumentType,
-                        element: <DocumentTypeIndex />,
-                      },
-                    ],
-                  },
-                  {
-                    id: "petEdit",
-                    path: AppRoutePaths.petEdit,
-                    element: <PetEditIndex />,
+                    id: "petProfileDocumentType",
+                    loader: DocumentTypeIndexLoader,
+                    path: AppRoutePaths.petProfileDocumentType,
+                    element: <DocumentTypeIndex />,
                   },
                 ],
               },
               {
-                id: "addNewPet",
-                path: AppRoutePaths.addNewPet,
-                children: [
-                  {
-                    id: "addNewPetIndex",
-                    index: true,
-                    loader: AddNewPetIndexLoader,
-                    shouldRevalidate: ({ currentParams, nextParams }) =>
-                      !isEqual(currentParams, nextParams),
-                    element: <AddNewPetIndex />,
-                  },
-                ],
+                id: "petEdit",
+                path: AppRoutePaths.petEdit,
+                element: <PetEditIndex />,
+              },
+            ],
+          },
+          {
+            id: "addNewPet",
+            path: AppRoutePaths.addNewPet,
+            children: [
+              {
+                id: "addNewPetIndex",
+                index: true,
+                loader: AddNewPetIndexLoader,
+                shouldRevalidate: ({ currentParams, nextParams }) =>
+                  !isEqual(currentParams, nextParams),
+                element: <AddNewPetIndex />,
               },
             ],
           },

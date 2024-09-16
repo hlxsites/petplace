@@ -30,8 +30,7 @@ describe("GetAccountDetailsUseCase", () => {
 
   it("should return null when the data doesn't match the schema", async () => {
     const invalidMockData = {
-      name: "Samantha",
-      surname: "Kingston",
+      FirstName: 2,
     };
     const httpClient = new MockHttpClient({ data: invalidMockData });
     const sut = makeSut(httpClient);

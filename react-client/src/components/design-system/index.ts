@@ -19,6 +19,8 @@ export * from "./form/DisplayUncontrolledForm";
 export * from "./form/types/formTypes";
 export * from "./icon/Icon";
 export * from "./imageCarousel/ImageCarousel";
+export * from "./layout/Layout";
+export * from "./layout/LayoutBasic";
 export * from "./loading/Loading";
 export * from "./menu/DropdownMenu";
 export * from "./progress/StepProgress";
