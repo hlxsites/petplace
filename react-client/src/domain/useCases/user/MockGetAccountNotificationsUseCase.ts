@@ -9,10 +9,10 @@ export class MockGetAccountNotificationsUseCase implements GetAccountNotificatio
     return {
       emailAlert: true,
       petPlaceOffer: true,
-      partnerOffer: true,
-      signedCatNewsletter: true,
+      partnerOffer: false,
+      signedCatNewsletter: false,
       signedDogNewsletter: true,
-      smsAlert: true,
+      smsAlert: false,
     };
   }
 }
