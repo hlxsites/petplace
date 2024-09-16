@@ -1,16 +1,17 @@
 import { FormValues } from "~/components/design-system";
 import { AccountDetailsModel, AccountNotificationModel } from "~/domain/models/user/UserModels";
 import { readJwtClaim } from "~/util/authUtil";
+import { baseAccountDetailsIds } from "./accountForms";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
 ) {
   const data = readJwtClaim();
   return {
-    "first-name": data?.given_name,
-    "last-name": data?.family_name,
-    "email-address": data?.emails[0],
-    "phone-default": accountDetails?.phoneNumber,
+    [baseAccountDetailsIds.name]: data?.given_name,
+    [baseAccountDetailsIds.surname]: data?.family_name,
+    [baseAccountDetailsIds.email]: data?.emails[0],
+    [baseAccountDetailsIds.phone]: accountDetails?.phoneNumber,
   } as FormValues;
 }
 
