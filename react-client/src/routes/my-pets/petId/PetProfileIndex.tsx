@@ -64,15 +64,10 @@ export const PetProfileIndex = () => {
     );
 
     function renderActionsButton() {
-      const isFromMyPetHealth = pet?.sourceType === "MyPetHealth";
-
       return (
         <>
           <PetActionsDropdownMenu className="hidden lg:flex" />
-          <ReportLostPetButton
-            className="flex lg:hidden"
-            disabled={!isFromMyPetHealth}
-          />
+          <ReportLostPetButton className="flex lg:hidden" />
         </>
       );
     }

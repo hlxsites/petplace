@@ -58,10 +58,7 @@ export const PetCardInfo = ({ ...petInfo }: PetModel) => {
       <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
         <Title isResponsive>{name}</Title>
 
-        <ReportLostPetButton
-          className="hidden lg:flex"
-          disabled={petInfo.sourceType !== "MyPetHealth"}
-        />
+        <ReportLostPetButton className="hidden lg:flex" />
         <PetActionsDropdownMenu className="flex lg:hidden" />
       </div>
       {renderSubInfo()}
