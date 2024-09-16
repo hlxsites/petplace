@@ -32,7 +32,6 @@ function convertToAccountNotificationModel(data: unknown): AccountNotificationMo
   if (!data) return null;
 
   const serverResponseSchema = z.object({
-    CommunicationPreference: z.string().nullish(),
     CatNewsletterOptIn: z.boolean(),
     DogNewsletterOptIn: z.boolean(),
     EmailOptIn: z.boolean(),
