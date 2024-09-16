@@ -11,7 +11,9 @@ type InputCheckboxGroupProps = Omit<
   InputWithoutFormBuilderProps<ElementInputCheckboxGroup>,
   "options" | "optionsType"
 > & {
+  onChange?: (newValue: string[]) => void;
   options: string[];
+  value?: string[];
 };
 
 export const InputCheckboxGroup = forwardRef<

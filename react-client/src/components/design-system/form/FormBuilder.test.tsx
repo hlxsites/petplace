@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ComponentProps } from "react";
-import { DisplayForm } from "./DisplayForm";
+import { DisplayUncontrolledForm } from "./DisplayUncontrolledForm";
 import { ElementUnion, FormSchema } from "./types/formTypes";
 
 const { getByRole, getAllByRole, queryByRole, getByText, queryByText } = screen;
@@ -358,6 +358,25 @@ describe("<DisplayForm />", () => {
     expect(getByRole("button", { name: "Test" })).not.toBeDisabled();
   });
 
+  it.each(["Bob", "Duda"])(
+    "should load initial values for pet name %p",
+    (expected) => {
+      const schema: FormSchema = {
+        ...DEFAULT_SCHEMA,
+        children: [
+          {
+            elementType: "input",
+            id: "name",
+            label: "What is your pet name?",
+            type: "text",
+          },
+        ],
+      };
+      getRenderer({ schema, initialValues: { name: expected } });
+      expect(getByRole("textbox")).toHaveValue(expected);
+    }
+  );
+
   it("should render a repeater and manage repetition", async () => {
     const schema: FormSchema = {
       ...DEFAULT_SCHEMA,
@@ -388,28 +407,6 @@ describe("<DisplayForm />", () => {
     const removeRepeaterButton = getByRole("button", { name: "Remove" });
     await userEvent.click(removeRepeaterButton);
     expect(getAllByRole("textbox").length).toEqual(1);
-  });
-
-  it("should call onChange callback", async () => {
-    const onChange = jest.fn();
-    const schema: FormSchema = {
-      ...DEFAULT_SCHEMA,
-      children: [
-        {
-          elementType: "input",
-          id: "name",
-          label: "What is your pet name?",
-          requiredCondition: true,
-          type: "text",
-        },
-      ],
-    };
-    getRenderer({ schema, onChange });
-
-    expect(onChange).not.toHaveBeenCalled();
-    await userEvent.type(getByRole("textbox"), "test");
-    expect(onChange).toHaveBeenCalledTimes(4);
-    expect(onChange).toHaveBeenLastCalledWith({ name: "test" });
   });
 
   describe("with a required field", () => {
@@ -506,7 +503,7 @@ describe("<DisplayForm />", () => {
           ],
         },
         onSubmit,
-        values: {
+        initialValues: {
           name: "test",
         },
       });
@@ -522,6 +519,8 @@ function getRenderer({
   onSubmit = jest.fn(),
   schema = DEFAULT_SCHEMA,
   ...rest
-}: Partial<ComponentProps<typeof DisplayForm>> = {}) {
-  return render(<DisplayForm onSubmit={onSubmit} schema={schema} {...rest} />);
+}: Partial<ComponentProps<typeof DisplayUncontrolledForm>> = {}) {
+  return render(
+    <DisplayUncontrolledForm onSubmit={onSubmit} schema={schema} {...rest} />
+  );
 }

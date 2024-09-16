@@ -1,5 +1,9 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import { Card, DisplayForm, FormValues } from "~/components/design-system";
+import {
+  Card,
+  DisplayUncontrolledForm,
+  FormValues,
+} from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";
 import { readJwtClaim } from "~/util/authUtil";
@@ -27,12 +31,9 @@ export const AccountDetailsTabContent = ({
       <Card padding="xlarge">
         <SuspenseAwait resolve={accountDetails}>
           {(accountDetails) => (
-            <DisplayForm
-              onChange={(props) => {
-                console.log("onChange values", props);
-              }}
-              onSubmit={({ event, values }) => {
-                event.preventDefault();
+            <DisplayUncontrolledForm
+              initialValues={getAccountDetailsData(accountDetails)}
+              onSubmit={({ values }) => {
                 console.log("onSubmit values", values);
               }}
               schema={formSchema}
@@ -40,7 +41,6 @@ export const AccountDetailsTabContent = ({
                 countryOptions: ["Canada", "United States"],
                 stateOptions: [],
               }}
-              values={getAccountDetailsData(accountDetails) as FormValues}
             />
           )}
         </SuspenseAwait>
@@ -53,12 +53,8 @@ export const AccountDetailsTabContent = ({
   function renderEmergencyContactForm() {
     return (
       <Card padding="xlarge">
-        <DisplayForm
-          onChange={(props) => {
-            console.log("onChange values", props);
-          }}
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
+        <DisplayUncontrolledForm
+          onSubmit={({ values }) => {
             console.log("onSubmit values", values);
           }}
           schema={emergencyContactFormSchema}
@@ -67,13 +63,15 @@ export const AccountDetailsTabContent = ({
     );
   }
 
-  function getAccountDetailsData(accountDetails?: AccountDetailsModel | null) {
+  function getAccountDetailsData(
+    accountDetails?: AccountDetailsModel | null
+  ): FormValues {
     const data = readJwtClaim();
     return {
-      "first-name": data?.given_name,
-      "last-name": data?.family_name,
-      "email-address": data?.emails[0],
-      "phone-default": accountDetails?.phoneNumber,
+      "first-name": data?.given_name ?? "",
+      "last-name": data?.family_name ?? "",
+      "email-address": data?.emails[0] ?? "",
+      "phone-default": accountDetails?.phoneNumber ?? "",
     };
   }
 };
