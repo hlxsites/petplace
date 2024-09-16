@@ -34,11 +34,11 @@ function convertToAccountDetailsModel(
   if (!data) return null;
 
   const serverResponseSchema = z.object({
-    Email: z.string(),
-    FirstName: z.string(),
-    LastName: z.string(),
-    PhoneNumber: z.string(),
-    ZipCode: z.string(),
+    Email: z.string().nullish(),
+    FirstName: z.string().nullish(),
+    LastName: z.string().nullish(),
+    PhoneNumber: z.string().nullish(),
+    ZipCode: z.string().nullish(),
   });
 
   const parseUserDetailsData = (userData: unknown) => {
@@ -51,11 +51,13 @@ function convertToAccountDetailsModel(
 
   const user = parseUserDetailsData(data);
   if (!user) return null;
+  const { Email, FirstName, LastName, PhoneNumber, ZipCode } = user;
+
   return {
-    email: user.Email,
-    name: user.FirstName,
-    phoneNumber: user.PhoneNumber,
-    surname: user.LastName,
-    zipCode: user.ZipCode,
+    email: Email ?? "",
+    name: FirstName ?? "",
+    phoneNumber: PhoneNumber ?? "",
+    surname: LastName ?? "",
+    zipCode: ZipCode ?? "",
   };
 }
