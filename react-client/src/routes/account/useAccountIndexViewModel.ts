@@ -4,22 +4,26 @@ import { getLostPetsHistory } from "~/mocks/MockRestApiServer";
 import { requireAuthToken } from "~/util/authUtil";
 
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
+import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
 
 export const loader = (() => {
   const authToken = requireAuthToken();
 
-  const useCase = accountDetailsUseCaseFactory(authToken);
+  const accountDetailsUseCase = accountDetailsUseCaseFactory(authToken);
+  const accountNotificationsUseCase = accountNotificationsUseCaseFactory(authToken);
   return defer({
-    accountDetails: useCase.query(),
+    accountDetails: accountDetailsUseCase.query(),
+    accountNotifications: accountNotificationsUseCase.query(),
     lostPetsHistory: getLostPetsHistory(),
   });
 }) satisfies LoaderFunction;
 
 export const useAccountIndexViewModel = () => {
-  const { accountDetails, lostPetsHistory } = useLoaderData<typeof loader>();
+  const { accountDetails, accountNotifications, lostPetsHistory } = useLoaderData<typeof loader>();
 
   return {
     accountDetails,
+    accountNotifications,
     lostPetsHistory,
   };
 };

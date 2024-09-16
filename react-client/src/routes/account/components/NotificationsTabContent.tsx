@@ -1,4 +1,5 @@
 import { Card, DisplayForm, Title } from "~/components/design-system";
+import { AccountNotificationModel } from "~/domain/models/user/UserModels";
 import { notificationsFormSchema } from "../form/notificationForm";
 import {
   LostAndFoundNotifications,
@@ -6,6 +7,7 @@ import {
 } from "./LostAndFoundNotifications";
 
 type NotificationsTabProps = {
+  accountNotifications: Promise<AccountNotificationModel | null>;
   isExternalLogin?: boolean;
   lostPetsHistory?: LostNotification[];
 };
