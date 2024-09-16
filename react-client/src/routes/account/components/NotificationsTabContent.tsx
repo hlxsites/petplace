@@ -9,7 +9,7 @@ import {
 import { getAccountNotificationsData } from "./util/formDataUtil";
 
 type NotificationsTabProps = {
-  accountNotifications: Promise<AccountNotificationModel | null>;
+  accountNotifications?: Promise<AccountNotificationModel | null>;
   isExternalLogin?: boolean;
   lostPetsHistory?: LostNotification[];
 };
