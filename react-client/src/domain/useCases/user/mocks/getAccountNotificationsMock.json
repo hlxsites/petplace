@@ -1,0 +1,9 @@
+{
+  "CommunicationPreference": "Email",
+  "CatNewsletterOptIn": true,
+  "DogNewsletterOptIn": true,
+  "EmailOptIn": true,
+  "PartnerOffer": true,
+  "PetPlaceOffer": true,
+  "SmsOptIn": false
+}
