@@ -1,9 +1,10 @@
-import { Button } from "~/components/design-system";
+import { LinkButton } from "~/components/design-system";
 import { PetUnavailableActionDialog } from "~/components/Pet/PetUnavailableActionDialog";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 
 type ReportLostPetButtonProps = {
   className?: string;
-  disabled: boolean;
+  disabled?: boolean;
 };
 
 export const ReportLostPetButton = ({
@@ -11,14 +12,16 @@ export const ReportLostPetButton = ({
   disabled,
 }: ReportLostPetButtonProps) => {
   const button = (
-    <Button
-      className={className}
-      iconLeft="shieldGood"
-      iconProps={{ className: "text-brand-secondary" }}
-      variant="secondary"
-    >
-      Report lost pet
-    </Button>
+    <div className={className}>
+      <LinkButton
+        iconLeft="shieldGood"
+        iconProps={{ className: "text-brand-secondary" }}
+        to={`/${AppRoutePaths.lostPet}`}
+        variant="secondary"
+      >
+        Report lost pet
+      </LinkButton>
+    </div>
   );
 
   if (!disabled) return button;
