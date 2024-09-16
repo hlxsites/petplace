@@ -22,6 +22,16 @@ export class PetPlaceHttpClientUseCase implements HttpClientRepository {
     };
   }
 
+  async delete(
+    path: string,
+    options: Omit<HttpOptions, "headers"> = {}
+  ): Promise<HttpResponse> {
+    return this.httpClient.delete(path, {
+      ...options,
+      headers: this.createHeaders,
+    });
+  }
+
   async get(
     path: string,
     options: Omit<HttpOptions, "headers"> = {}

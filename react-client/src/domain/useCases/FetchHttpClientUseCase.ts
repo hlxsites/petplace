@@ -11,6 +11,21 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     this.baseUrl = baseUrl;
   }
 
+  async delete(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+    try {
+      const result = await fetch(`${this.baseUrl}/${path}`, {
+        method: "DELETE",
+        headers: options.headers,
+      });
+
+      const data: unknown = result.status === 204 ? null : await result.json();
+
+      return { data, statusCode: result.status };
+    } catch (error) {
+      return { error };
+    }
+  }
+
   async get(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
