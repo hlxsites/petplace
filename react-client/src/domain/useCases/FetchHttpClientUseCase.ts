@@ -8,7 +8,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
   private baseUrl: string;
 
   constructor(defaultUrl: string) {
-    const baseUrl = defaultUrl.replace(/\/api$/, '')
+    const baseUrl = defaultUrl.replace(/\/api$/, "");
     this.baseUrl = baseUrl;
   }
 
@@ -19,9 +19,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         headers: options.headers,
       });
 
-      const data: unknown = result.status === 204 ? null : await result.json();
-
-      return { data, statusCode: result.status };
+      return { data: true, statusCode: result.status };
     } catch (error) {
       return { error };
     }
