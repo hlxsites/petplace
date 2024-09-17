@@ -20,9 +20,9 @@ export const DocumentTypeIndex = () => {
       onClose={onClose}
       title={label}
       trigger={undefined}
-      width="fit-content"
+      width={400}
     >
-      <SuspenseAwait resolve={documents}>
+      <SuspenseAwait minHeight={100} resolve={documents}>
         {(resolvedDocuments) => (
           <PetDocumentsView
             documents={resolvedDocuments}
