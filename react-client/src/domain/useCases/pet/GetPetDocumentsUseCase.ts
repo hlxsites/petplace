@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   PetDocument,
   PetDocumentTypeId,
+  UploadDocumentType,
 } from "~/domain/models/pet/PetDocument";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
@@ -82,6 +83,38 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
       return false;
     }
   };
+
+  uploadDocument = async ({
+    file,
+    microchip,
+    petId,
+    type,
+  }: UploadDocumentType): Promise<boolean> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("PetId", petId ?? "");
+    formData.append("Microchip", microchip ?? "");
+    formData.append("Type", type.toString());
+
+    try {
+      const response = await this.httpClient.postFormData(`api/Pet/document`, {
+        body: formData,
+      });
+
+      if ("error" in response) {
+        console.error("Error uploading document", response.error);
+        return false;
+      }
+
+      return response.statusCode >= 200 && response.statusCode < 300;
+    } catch (error) {
+      console.error(
+        "An unexpected error occurred while uploading the document",
+        error
+      );
+      return false;
+    }
+  };
 }
 
 type PetDocumentWithType = PetDocument & {
@@ -119,7 +152,7 @@ function convertToPetDocuments(data: unknown): PetDocumentWithType[] {
   return documents;
 }
 
-enum PetDocumentRecordType {
+export enum PetDocumentRecordType {
   MedicalRecord = 1,
   Vaccine = 2,
   Test = 3,
