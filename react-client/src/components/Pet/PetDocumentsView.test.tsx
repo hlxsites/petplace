@@ -82,6 +82,8 @@ describe("PetDocumentsView", () => {
         name: /delete file/i,
       })
     );
+    // belongs to confirm deletion dialog
+    await userEvent.click(getByRole("button", { name: /yes, delete/i }));
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
 });
