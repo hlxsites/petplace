@@ -10,6 +10,7 @@ export const DocumentTypeIndex = () => {
     onClose,
     onDelete,
     onDownload,
+    onUpload,
   } = useDocumentTypeIndexViewModel();
 
   return (
@@ -28,6 +29,7 @@ export const DocumentTypeIndex = () => {
             documentType={id}
             onDelete={onDelete}
             onDownload={onDownload}
+            onUpload={onUpload}
           />
         )}
       </SuspenseAwait>

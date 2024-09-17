@@ -93,12 +93,14 @@ function getRenderer({
   documentType = "test",
   onDelete = jest.fn(),
   onDownload = jest.fn(),
+  onUpload = jest.fn(),
 }: Partial<Props> = {}) {
   return render(
     <PetDocumentsView
       documents={documents}
       onDelete={onDelete}
       onDownload={onDownload}
+      onUpload={onUpload}
       documentType={documentType}
     />
   );

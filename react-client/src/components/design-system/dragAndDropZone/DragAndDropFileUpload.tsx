@@ -64,7 +64,24 @@ export const DragAndDropFileUpload = ({
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
-      handleFiles(event.target.files);
+      const files = Array.from(event.target.files);
+      const validFiles = files.filter((file) => {
+        const validTypes = [
+          "image/png",
+          "image/jpeg",
+          "application/pdf",
+          "text/plain",
+          "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ];
+        return validTypes.includes(file.type) && file.size <= 10 * 1024 * 1024; // 10MB limit
+      });
+
+      if (validFiles.length !== files.length) {
+        alert("Some files were not included due to invalid type or size.");
+      }
+
+      handleFiles(validFiles as unknown as FileList);
     }
   }
 };

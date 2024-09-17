@@ -1,13 +1,20 @@
 import { useState } from "react";
-import { PetDocument } from "~/domain/models/pet/PetDocument";
+import {
+  DocumentFileType,
+  PetDocument,
+  UploadDocumentType,
+} from "~/domain/models/pet/PetDocument";
 import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
+import { PetDocumentRecordType } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
+import { getFileExtension } from "~/util/stringUtil";
 
 type PetDocumentViewProps = {
   documents: PetDocument[];
   documentType: string;
   onDelete: (document: PetDocument) => () => void;
   onDownload: (document: PetDocument) => () => void;
+  onUpload: (document: UploadDocumentType) => () => void;
 };
 
 export const PetDocumentsView = ({
@@ -15,8 +22,10 @@ export const PetDocumentsView = ({
   documentType,
   onDelete,
   onDownload,
+  onUpload,
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
+  const [fileNameUploading, setFileNameUploading] = useState<string>("");
 
   return (
     <div className="grid gap-large">
@@ -44,7 +53,7 @@ export const PetDocumentsView = ({
       <Card>
         <DragAndDropFileUpload
           ariaLabel="Upload document"
-          handleFiles={handleFiles}
+          handleFiles={onHandleFiles} // Attach the corrected handler
         />
       </Card>
 
@@ -52,8 +61,8 @@ export const PetDocumentsView = ({
         <PetCardRecord
           document={{
             id: "test-record",
-            fileName: "WIP - testing purposes",
-            fileType: "doc",
+            fileName: fileNameUploading ?? "",
+            fileType: getFileExtension(fileNameUploading) as DocumentFileType,
           }}
           isUploadingFile={isUploading}
         />
@@ -61,8 +70,43 @@ export const PetDocumentsView = ({
     </div>
   );
 
-  function handleFiles() {
-    // TODO: Implement file upload
+  function onHandleFiles(files: FileList) {
     setIsUploading(true);
+
+    const uploadPromises = Array.from(files).map((file) => {
+      setFileNameUploading(file.name);
+      const uploadDocument: UploadDocumentType = {
+        file,
+        type: getPetRecordNumber(),
+      };
+
+      return new Promise<void>((resolve) => {
+        const uploadFn = onUpload(uploadDocument);
+        uploadFn();
+        resolve();
+      });
+    });
+
+    Promise.all(uploadPromises)
+      .then(() => {
+        setIsUploading(false);
+        setFileNameUploading("");
+      })
+      .catch((error) => {
+        console.error("Error uploading files:", error);
+        setIsUploading(false);
+        setFileNameUploading("");
+      });
+  }
+
+  function getPetRecordNumber() {
+    const documentRecordNumberMap: Record<string, PetDocumentRecordType> = {
+      medical: PetDocumentRecordType.MedicalRecord,
+      other: PetDocumentRecordType.Other,
+      test: PetDocumentRecordType.Test,
+      vaccines: PetDocumentRecordType.Vaccine,
+    };
+
+    return documentRecordNumberMap[documentType || "other"];
   }
 };
