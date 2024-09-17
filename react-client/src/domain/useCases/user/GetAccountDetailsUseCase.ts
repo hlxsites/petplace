@@ -17,12 +17,12 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
 
   async query(): Promise<AccountDetailsModel | null> {
     try {
-      const result = await this.httpClient.get("adopt/api/User", { });
+      const result = await this.httpClient.get("adopt/api/UserProfile", { });
       if (result.data) return convertToAccountDetailsModel(result.data);
 
       return null;
     } catch (error) {
-      console.error("GetUserUseCase query error", error);
+      console.error("GetAccountDetailsUseCase query error", error);
       return null;
     }
   }
@@ -38,7 +38,6 @@ function convertToAccountDetailsModel(
     FirstName: z.string().nullish(),
     LastName: z.string().nullish(),
     PhoneNumber: z.string().nullish(),
-    ZipCode: z.string().nullish(),
   });
 
   const parseUserDetailsData = (userData: unknown) => {
@@ -51,13 +50,12 @@ function convertToAccountDetailsModel(
 
   const user = parseUserDetailsData(data);
   if (!user) return null;
-  const { Email, FirstName, LastName, PhoneNumber, ZipCode } = user;
+  const { Email, FirstName, LastName, PhoneNumber } = user;
 
   return {
     email: Email ?? "",
     name: FirstName ?? "",
     phoneNumber: PhoneNumber ?? "",
     surname: LastName ?? "",
-    zipCode: ZipCode ?? "",
   };
 }
