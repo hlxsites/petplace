@@ -24,7 +24,6 @@ describe("GetAccountDetailsUseCase", () => {
       surname: "Waters",
       email: "augustus.ok@email.com",
       phoneNumber: "(234) 345 6876",
-      zipCode: "23456",
     });
   });
 
