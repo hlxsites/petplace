@@ -20,8 +20,6 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
     } else {
       this.httpClient = new PetPlaceHttpClientUseCase(authToken);
     }
-
-    this.deleteDocument = this.deleteDocument.bind(this);
   }
 
   private handleError(error: unknown): [] {
@@ -29,7 +27,10 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
     return [];
   }
 
-  async query(petId: string, type: PetDocumentTypeId): Promise<PetDocument[]> {
+  query = async (
+    petId: string,
+    type: PetDocumentTypeId
+  ): Promise<PetDocument[]> => {
     try {
       const result = await this.httpClient.get(`api/Pet/${petId}/documents`);
 
@@ -41,9 +42,9 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
     } catch (error) {
       return this.handleError(error);
     }
-  }
+  };
 
-  async fetchDocumentBlob(documentId: string): Promise<Blob | null> {
+  fetchDocumentBlob = async (documentId: string): Promise<Blob | null> => {
     try {
       const result = await this.httpClient.get(
         `${DOCUMENT_BASE_URL}/${documentId}`,
@@ -62,9 +63,9 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
       console.error("Error fetching document blob", error);
       return null;
     }
-  }
+  };
 
-  async deleteDocument(documentId: string): Promise<boolean> {
+  deleteDocument = async (documentId: string): Promise<boolean> => {
     try {
       const result = await this.httpClient.delete(
         `${DOCUMENT_BASE_URL}/${documentId}`
@@ -80,7 +81,7 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
       console.error("Error deleting document", error);
       return false;
     }
-  }
+  };
 }
 
 type PetDocumentWithType = PetDocument & {
