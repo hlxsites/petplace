@@ -1,4 +1,3 @@
-import isEqual from "lodash/isEqual";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
@@ -41,8 +40,6 @@ const routes: PetPlaceRouteObject[] = [
         element: <AccountRoot />,
         id: "account",
         loader: AccountIndexLoader,
-        shouldRevalidate: ({ currentParams, nextParams }) =>
-          !isEqual(currentParams, nextParams),
         path: AppRoutePaths.account,
         children: [
           {
@@ -72,8 +69,6 @@ const routes: PetPlaceRouteObject[] = [
             id: "myPetsIndex",
             index: true,
             loader: MyPetsIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
             element: <MyPetsIndex />,
           },
           {
@@ -81,8 +76,6 @@ const routes: PetPlaceRouteObject[] = [
             id: "petProfile",
             loader: PetProfileLayoutLoader,
             path: AppRoutePaths.petProfile,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
             children: [
               {
                 element: <PetProfileIndex />,
@@ -117,8 +110,6 @@ const routes: PetPlaceRouteObject[] = [
                 id: "addNewPetIndex",
                 index: true,
                 loader: AddNewPetIndexLoader,
-                shouldRevalidate: ({ currentParams, nextParams }) =>
-                  !isEqual(currentParams, nextParams),
                 element: <AddNewPetIndex />,
               },
             ],
@@ -130,8 +121,6 @@ const routes: PetPlaceRouteObject[] = [
         id: "lostPet",
         path: AppRoutePaths.lostPet,
         loader: LostPetIndexLoader,
-        shouldRevalidate: ({ currentParams, nextParams }) =>
-          !isEqual(currentParams, nextParams),
       },
       {
         element: <FoundPetIndex />,
@@ -146,8 +135,6 @@ const routes: PetPlaceRouteObject[] = [
             id: "checkoutIndex",
             index: true,
             loader: CheckoutIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
             element: <CheckoutIndex />,
           },
           {
@@ -155,8 +142,6 @@ const routes: PetPlaceRouteObject[] = [
             element: <ProductsIndex />,
             // fix the loader when discover if products will be available via API or hardcoded
             loader: CheckoutIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
             path: AppRoutePaths.products,
           },
         ],
