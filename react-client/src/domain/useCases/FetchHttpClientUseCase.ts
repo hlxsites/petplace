@@ -12,7 +12,10 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     this.baseUrl = baseUrl;
   }
 
-  async delete(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  delete = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "DELETE",
@@ -23,9 +26,12 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
 
-  async get(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  get = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "GET",
@@ -43,9 +49,12 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
 
-  async post(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  post = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "POST",
@@ -58,5 +67,5 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
 }

@@ -15,7 +15,7 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
     }
   }
 
-  async query(): Promise<AccountDetailsModel | null> {
+  query = async (): Promise<AccountDetailsModel | null> => {
     try {
       const result = await this.httpClient.get("adopt/api/UserProfile");
       if (result.data) return convertToAccountDetailsModel(result.data);
@@ -25,7 +25,7 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
       console.error("GetAccountDetailsUseCase query error", error);
       return null;
     }
-  }
+  };
 }
 
 function convertToAccountDetailsModel(

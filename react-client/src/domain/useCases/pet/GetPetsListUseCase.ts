@@ -16,7 +16,7 @@ export class GetPetsListUseCase implements GetPetsListRepository {
     }
   }
 
-  async query(): Promise<PetCommon[]> {
+  query = async (): Promise<PetCommon[]> => {
     try {
       const result = await this.httpClient.get("api/Pet");
 
@@ -27,7 +27,7 @@ export class GetPetsListUseCase implements GetPetsListRepository {
       console.error("GetPetsListUseCase query error", error);
       return [];
     }
-  }
+  };
 }
 
 function convertToPetModelList(data: unknown): PetCommon[] {
