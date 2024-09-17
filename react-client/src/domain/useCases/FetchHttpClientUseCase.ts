@@ -13,7 +13,10 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     this.baseUrl = baseUrl;
   }
 
-  async delete(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  delete = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "DELETE",
@@ -24,9 +27,12 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
 
-  async get(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  get = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "GET",
@@ -44,9 +50,12 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
 
-  async post(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  post = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "POST",
@@ -59,30 +68,29 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
 
-  async postFormData(
+  postFormData = async (
     path: string,
     options: HttpFormDataOptions
-  ): Promise<HttpResponse> {
+  ): Promise<HttpResponse> => {
     try {
       const headers = options.headers || {};
 
-      if (options.body instanceof FormData) {
+      if (headers["Content-Type"]) {
+        // Delete the content type when using FormData
         delete headers["Content-Type"];
-      } else if (!headers["Content-Type"]) {
-        headers["Content-Type"] = "application/json";
       }
 
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "POST",
         body: options.body,
-        headers: headers,
+        headers,
       });
 
       let data: unknown;
       const contentType = result.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
+      if (contentType?.includes("application/json")) {
         data = await result.json();
       } else {
         data = await result.text();
@@ -93,5 +101,5 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
       console.error("Error in POST request:", error);
       return { error };
     }
-  }
+  };
 }

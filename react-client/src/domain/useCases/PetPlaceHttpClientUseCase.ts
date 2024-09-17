@@ -23,43 +23,43 @@ export class PetPlaceHttpClientUseCase implements HttpClientRepository {
     };
   }
 
-  async delete(
+  delete = async (
     path: string,
     options: Omit<HttpOptions, "headers"> = {}
-  ): Promise<HttpResponse> {
+  ): Promise<HttpResponse> => {
     return this.httpClient.delete(path, {
       ...options,
       headers: this.createHeaders,
     });
-  }
+  };
 
-  async get(
+  get = async (
     path: string,
     options: Omit<HttpOptions, "headers"> = {}
-  ): Promise<HttpResponse> {
+  ): Promise<HttpResponse> => {
     return this.httpClient.get(path, {
       ...options,
       headers: this.createHeaders,
     });
-  }
+  };
 
-  async post(
+  post = async (
     path: string,
     options: Omit<HttpOptions, "headers"> = {}
-  ): Promise<HttpResponse> {
+  ): Promise<HttpResponse> => {
     return this.httpClient.post(path, {
       ...options,
       headers: this.createHeaders,
     });
-  }
+  };
 
-  async postFormData(
+  postFormData = async (
     path: string,
     options: Omit<HttpFormDataOptions, "headers">
-  ): Promise<HttpResponse> {
+  ): Promise<HttpResponse> => {
     return this.httpClient.postFormData(path, {
       ...options,
       headers: this.createHeaders,
     });
-  }
+  };
 }
