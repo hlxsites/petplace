@@ -2,16 +2,17 @@ import { useState } from "react";
 import {
   DocumentFileType,
   PetDocument,
+  PetDocumentTypeId,
   UploadDocumentType,
 } from "~/domain/models/pet/PetDocument";
-import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
-import { PetCardRecord } from "./PetCardRecord";
 import { PetDocumentRecordType } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
 import { getFileExtension } from "~/util/stringUtil";
+import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
+import { PetCardRecord } from "./PetCardRecord";
 
 type PetDocumentViewProps = {
   documents: PetDocument[];
-  documentType: string;
+  documentType: PetDocumentTypeId;
   onDelete: (document: PetDocument) => () => void;
   onDownload: (document: PetDocument) => () => void;
   onUpload: (document: UploadDocumentType) => () => void;
@@ -26,6 +27,17 @@ export const PetDocumentsView = ({
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [fileNameUploading, setFileNameUploading] = useState<string>("");
+
+  const documentTypeAsNumber = (() => {
+    const mapper: Record<PetDocumentTypeId, PetDocumentRecordType> = {
+      medical: PetDocumentRecordType.MedicalRecord,
+      other: PetDocumentRecordType.Other,
+      tests: PetDocumentRecordType.Test,
+      vaccines: PetDocumentRecordType.Vaccine,
+    };
+
+    return mapper[documentType] || PetDocumentRecordType.Other;
+  })();
 
   return (
     <div className="grid gap-large">
@@ -77,7 +89,7 @@ export const PetDocumentsView = ({
       setFileNameUploading(file.name);
       const uploadDocument: UploadDocumentType = {
         file,
-        type: getPetRecordNumber(),
+        type: documentTypeAsNumber,
       };
 
       return new Promise<void>((resolve) => {
@@ -97,16 +109,5 @@ export const PetDocumentsView = ({
         setIsUploading(false);
         setFileNameUploading("");
       });
-  }
-
-  function getPetRecordNumber() {
-    const documentRecordNumberMap: Record<string, PetDocumentRecordType> = {
-      medical: PetDocumentRecordType.MedicalRecord,
-      other: PetDocumentRecordType.Other,
-      test: PetDocumentRecordType.Test,
-      vaccines: PetDocumentRecordType.Vaccine,
-    };
-
-    return documentRecordNumberMap[documentType || "other"];
   }
 };
