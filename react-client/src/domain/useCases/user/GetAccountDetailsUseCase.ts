@@ -17,7 +17,7 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
 
   async query(): Promise<AccountDetailsModel | null> {
     try {
-      const result = await this.httpClient.get("adopt/api/UserProfile", { });
+      const result = await this.httpClient.get("adopt/api/UserProfile");
       if (result.data) return convertToAccountDetailsModel(result.data);
 
       return null;
