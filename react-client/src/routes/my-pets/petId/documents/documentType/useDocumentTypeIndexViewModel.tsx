@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRevalidator } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { useState, useCallback, useEffect } from "react";
 
 import {
   isValidPetDocumentId,
@@ -28,26 +27,16 @@ export const loader = (({ params }) => {
     documents: useCase.query(petId, documentType),
     downloadPetDocument: useCase.fetchDocumentBlob,
     deletePetDocument: useCase.deleteDocument,
-    reFetchDocuments: () => useCase.query(petId, documentType),
   });
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
   const navigate = useNavigate();
-  const {
-    deletePetDocument,
-    documents: initialDocuments,
-    downloadPetDocument,
-    id,
-    reFetchDocuments,
-  } = useLoaderData<typeof loader>();
+  const { deletePetDocument, documents, downloadPetDocument, id } =
+    useLoaderData<typeof loader>();
   const { documentTypes } = usePetProfileContext();
 
-  const [documents, setDocuments] = useState<PetDocument[]>([]);
-
-  useEffect(() => {
-    void initialDocuments.then(setDocuments);
-  }, [initialDocuments]);
+  const revalidator = useRevalidator();
 
   const documentType = documentTypes.find((dt) => dt.id === id);
   invariant(documentType, "Document type must be found here");
@@ -56,25 +45,12 @@ export const useDocumentTypeIndexViewModel = () => {
     navigate("..");
   };
 
-  const onDelete = useCallback(
-    (documentId: PetDocument) => {
-      return async () => {
-        try {
-          const isDeleted = await deletePetDocument(documentId["id"]);
-
-          if (isDeleted) {
-            const updatedDocuments = await reFetchDocuments();
-            setDocuments(updatedDocuments);
-          } else {
-            console.error("Failed to delete document");
-          }
-        } catch (error) {
-          console.error("Error deleting document:", error);
-        }
-      };
-    },
-    [deletePetDocument, reFetchDocuments]
-  );
+  const onDelete = (documentId: PetDocument) => {
+    return async () => {
+      await deletePetDocument(documentId["id"]);
+      revalidator.revalidate();
+    };
+  };
 
   const onDownload = ({ id, fileName, fileType }: PetDocument) => {
     return async () => {
