@@ -9,6 +9,8 @@ import { getFileExtension } from "~/util/stringUtil";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
+const DOCUMENT_BASE_URL = "api/Document";
+
 export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
   private httpClient: HttpClientRepository;
 
@@ -43,9 +45,12 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
 
   async fetchDocumentBlob(documentId: string): Promise<Blob | null> {
     try {
-      const result = await this.httpClient.get(`api/Document/${documentId}`, {
-        responseType: "blob",
-      });
+      const result = await this.httpClient.get(
+        `${DOCUMENT_BASE_URL}/${documentId}`,
+        {
+          responseType: "blob",
+        }
+      );
 
       if (result.error || !result.data) {
         console.error("Error fetching document blob", result.error);
@@ -61,7 +66,9 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
 
   async deleteDocument(documentId: string): Promise<boolean> {
     try {
-      const result = await this.httpClient.delete(`Document/${documentId}`);
+      const result = await this.httpClient.delete(
+        `${DOCUMENT_BASE_URL}/${documentId}`
+      );
 
       if ("error" in result) {
         console.error("Error deleting document", result.error);
