@@ -25,7 +25,7 @@ export const ErrorDialog = ({
     if (message && typeof message !== "string") return message;
 
     return (
-      <Text size="16" isResponsive>
+      <Text color="neutral-700" size="16" isResponsive>
         {message}
       </Text>
     );
