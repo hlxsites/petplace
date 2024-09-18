@@ -17,11 +17,9 @@ const annualMembershipSchema = baseProductSchema.omit({ price: true }).extend({
   additionalProductList: z.array(commonProductSpecificationSchema).optional(),
 });
 
-const lpmMembershipSchema = baseProductSchema
-  .extend({
-    bundleList: z.array(commonProductSpecificationSchema).optional(),
-  })
-  .nullable();
+const lpmMembershipSchema = baseProductSchema.extend({
+  bundleList: z.array(commonProductSpecificationSchema).optional(),
+});
 
 const subscriptionProductSchema = commonProductSpecificationSchema
   .omit({ itemType: true })
