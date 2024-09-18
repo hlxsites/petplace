@@ -7,12 +7,14 @@ import { DragAndDropZone } from "./DragAndDropZone";
 type DragAndDropFileUploadProps = {
   ariaLabel: string;
   message?: string;
+  multiple?: boolean;
   handleFiles: (files: FileList) => void;
 };
 
 export const DragAndDropFileUpload = ({
   ariaLabel,
   message,
+  multiple,
   handleFiles,
 }: DragAndDropFileUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -22,14 +24,15 @@ export const DragAndDropFileUpload = ({
   return (
     <DragAndDropZone
       handleFiles={handleFiles}
-      className="rounded-2xl border-solid border-brand-main"
+      className="h-fit rounded-2xl border-solid border-brand-main"
     >
       <input
-        id="drop-input"
-        ref={fileInputRef}
         className="sr-only"
-        type="file"
+        id="drop-input"
+        multiple={multiple}
+        ref={fileInputRef}
         onChange={handleInputChange}
+        type="file"
       />
       {
         <Button
