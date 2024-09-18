@@ -94,6 +94,7 @@ function getRenderer({
   onDelete = jest.fn(),
   onDownload = jest.fn(),
   onUpload = jest.fn(),
+  uploadingNamesList = [],
 }: Partial<Props> = {}) {
   return render(
     <PetDocumentsView
@@ -102,6 +103,7 @@ function getRenderer({
       onDownload={onDownload}
       onUpload={onUpload}
       documentType={documentType}
+      uploadingNamesList={uploadingNamesList}
     />
   );
 }

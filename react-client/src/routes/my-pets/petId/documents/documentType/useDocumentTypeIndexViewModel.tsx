@@ -1,6 +1,7 @@
 import { useNavigate, useRevalidator } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 
+import { useState } from "react";
 import {
   isValidPetDocumentId,
   PetDocument,
@@ -43,6 +44,7 @@ export const useDocumentTypeIndexViewModel = () => {
     uploadDocument,
   } = useLoaderData<typeof loader>();
   const { documentTypes, petInfo: petInfoPromise } = usePetProfileContext();
+  const [uploadingNamesList, setUploadingNamesList] = useState<string[]>([]);
 
   const revalidator = useRevalidator();
 
@@ -80,15 +82,33 @@ export const useDocumentTypeIndexViewModel = () => {
     };
   };
 
-  const onUpload = (file: File) => {
+  const handleFileUpload = async (file: File, microchip?: string) => {
+    const fileName = file.name;
+    setUploadingNamesList((prev) => [...prev, fileName]);
+
+    await uploadDocument({
+      file,
+      microchip,
+      petId,
+      type: id,
+    });
+    revalidator.revalidate();
+
+    setUploadingNamesList((prev) => prev.filter((name) => name !== fileName));
+  };
+
+  const onUpload = (files: FileList) => {
     return async () => {
       const petInfo = await petInfoPromise;
-      await uploadDocument({
-        file,
-        microchip: petInfo?.microchip || undefined,
-        petId,
-        type: id,
+
+      const promisesList: Promise<void>[] = [];
+
+      Array.from(files).map((file) => {
+        const microchip = petInfo?.microchip || undefined;
+        promisesList.push(handleFileUpload(file, microchip));
       });
+
+      await Promise.allSettled(promisesList);
       revalidator.revalidate();
     };
   };
@@ -100,5 +120,6 @@ export const useDocumentTypeIndexViewModel = () => {
     onDelete,
     onDownload,
     onUpload,
+    uploadingNamesList,
   };
 };

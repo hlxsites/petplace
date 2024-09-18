@@ -1,10 +1,4 @@
-import { useState } from "react";
-import {
-  Card,
-  DragAndDropFileUpload,
-  Text,
-  Title,
-} from "~/components/design-system";
+import { DragAndDropFileUpload, Text, Title } from "~/components/design-system";
 import { PetCardRecord } from "~/components/Pet/PetCardRecord";
 import {
   DocumentFileType,
@@ -18,7 +12,8 @@ type PetDocumentViewProps = {
   documentType: PetDocumentTypeId;
   onDelete: (document: PetDocument) => () => void;
   onDownload: (document: PetDocument) => () => void;
-  onUpload: (file: File) => () => void;
+  onUpload: (file: FileList) => () => void;
+  uploadingNamesList: string[];
 };
 
 export const PetDocumentsView = ({
@@ -27,9 +22,9 @@ export const PetDocumentsView = ({
   onDelete,
   onDownload,
   onUpload,
+  uploadingNamesList,
 }: PetDocumentViewProps) => {
-  const [isUploading, setIsUploading] = useState(false);
-  const [fileNameUploading, setFileNameUploading] = useState<string>("");
+  const isUploading = !!uploadingNamesList.length;
 
   return (
     <div className="grid gap-large">
@@ -54,46 +49,31 @@ export const PetDocumentsView = ({
         Upload and attach files
       </Title>
 
-      <Card>
-        <DragAndDropFileUpload
-          ariaLabel="Upload document"
-          handleFiles={onHandleFiles} // Attach the corrected handler
-        />
-      </Card>
+      <DragAndDropFileUpload
+        ariaLabel="Upload document"
+        handleFiles={onHandleFiles}
+        multiple
+      />
 
       {isUploading && (
-        <PetCardRecord
-          document={{
-            id: "test-record",
-            fileName: fileNameUploading ?? "",
-            fileType: getFileExtension(fileNameUploading) as DocumentFileType,
-          }}
-          isUploadingFile={isUploading}
-        />
+        <div className="grid gap-small">
+          {uploadingNamesList.map((name, index) => (
+            <PetCardRecord
+              key={`${name}_${index}`}
+              document={{
+                id: `${name}_${index}`,
+                fileName: name,
+                fileType: getFileExtension(name) as DocumentFileType,
+              }}
+              isUploadingFile={isUploading}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
 
   function onHandleFiles(files: FileList) {
-    setIsUploading(true);
-
-    const uploadPromises = Array.from(files).map((file) => {
-      setFileNameUploading(file.name);
-      return new Promise<void>((resolve) => {
-        onUpload(file);
-        resolve();
-      });
-    });
-
-    Promise.all(uploadPromises)
-      .then(() => {
-        setIsUploading(false);
-        setFileNameUploading("");
-      })
-      .catch((error) => {
-        console.error("Error uploading files:", error);
-        setIsUploading(false);
-        setFileNameUploading("");
-      });
+    onUpload(files)();
   }
 };
