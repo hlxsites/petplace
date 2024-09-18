@@ -1,6 +1,6 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Drawer } from "~/components/design-system";
-import { PetDocumentsView } from "~/components/Pet/PetDocumentsView";
+import { PetDocumentsView } from "./components/PetDocumentsView";
 import { useDocumentTypeIndexViewModel } from "./useDocumentTypeIndexViewModel";
 
 export const DocumentTypeIndex = () => {

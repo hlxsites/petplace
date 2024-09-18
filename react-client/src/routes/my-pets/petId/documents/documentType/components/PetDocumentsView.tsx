@@ -1,12 +1,17 @@
 import { useState } from "react";
 import {
+  Card,
+  DragAndDropFileUpload,
+  Text,
+  Title,
+} from "~/components/design-system";
+import { PetCardRecord } from "~/components/Pet/PetCardRecord";
+import {
   DocumentFileType,
   PetDocument,
   PetDocumentTypeId,
 } from "~/domain/models/pet/PetDocument";
 import { getFileExtension } from "~/util/stringUtil";
-import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
-import { PetCardRecord } from "./PetCardRecord";
 
 type PetDocumentViewProps = {
   documents: PetDocument[];
