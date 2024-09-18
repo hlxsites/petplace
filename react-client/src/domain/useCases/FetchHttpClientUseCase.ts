@@ -1,5 +1,6 @@
 import {
   HttpClientRepository,
+  HttpFormDataOptions,
   HttpOptions,
   HttpResponse,
 } from "../repository/HttpClientRepository";
@@ -65,6 +66,39 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
 
       return { data, statusCode: result.status };
     } catch (error) {
+      return { error };
+    }
+  };
+
+  postFormData = async (
+    path: string,
+    options: HttpFormDataOptions
+  ): Promise<HttpResponse> => {
+    try {
+      const headers = options.headers || {};
+
+      if (headers["Content-Type"]) {
+        // Delete the content type when using FormData
+        delete headers["Content-Type"];
+      }
+
+      const result = await fetch(`${this.baseUrl}/${path}`, {
+        method: "POST",
+        body: options.body,
+        headers,
+      });
+
+      let data: unknown;
+      const contentType = result.headers.get("content-type");
+      if (contentType?.includes("application/json")) {
+        data = await result.json();
+      } else {
+        data = await result.text();
+      }
+
+      return { data, statusCode: result.status };
+    } catch (error) {
+      console.error("Error in POST request:", error);
       return { error };
     }
   };

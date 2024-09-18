@@ -11,6 +11,13 @@ import { parseData } from "../util/parseData";
 
 const DOCUMENT_BASE_URL = "api/Document";
 
+type UploadDocumentType = {
+  file: File;
+  petId: string;
+  microchip?: string;
+  type: PetDocumentTypeId;
+};
+
 export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
   private httpClient: HttpClientRepository;
 
@@ -82,6 +89,38 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
       return false;
     }
   };
+
+  uploadDocument = async ({
+    file,
+    microchip,
+    petId,
+    type,
+  }: UploadDocumentType): Promise<boolean> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("PetId", petId);
+    formData.append("Microchip", microchip ?? "");
+    formData.append("Type", convertToRecordTypeEnum(type).toString());
+
+    try {
+      const response = await this.httpClient.postFormData(`api/Pet/document`, {
+        body: formData,
+      });
+
+      if ("error" in response) {
+        console.error("Error uploading document", response.error);
+        return false;
+      }
+
+      return response.statusCode >= 200 && response.statusCode < 300;
+    } catch (error) {
+      console.error(
+        "An unexpected error occurred while uploading the document",
+        error
+      );
+      return false;
+    }
+  };
 }
 
 type PetDocumentWithType = PetDocument & {
@@ -112,7 +151,7 @@ function convertToPetDocuments(data: unknown): PetDocumentWithType[] {
       // @ts-expect-error - asdfa
       fileType: getFileExtension(petDocument.Name),
       id: petDocument.Id,
-      type: getPetRecordDocumentType(petDocument.DocumentType),
+      type: convertNumberToPetDocumentType(petDocument.DocumentType),
     } satisfies PetDocumentWithType);
   });
 
@@ -126,7 +165,7 @@ enum PetDocumentRecordType {
   Other = 1024,
 }
 
-function getPetRecordDocumentType(record?: number): PetDocumentTypeId {
+function convertNumberToPetDocumentType(record?: number): PetDocumentTypeId {
   const documentRecordTypeMap: Record<
     PetDocumentRecordType,
     PetDocumentTypeId
@@ -138,4 +177,15 @@ function getPetRecordDocumentType(record?: number): PetDocumentTypeId {
   };
 
   return documentRecordTypeMap[record as PetDocumentRecordType] || "other";
+}
+
+function convertToRecordTypeEnum(documentType: PetDocumentTypeId) {
+  const mapper: Record<PetDocumentTypeId, PetDocumentRecordType> = {
+    medical: PetDocumentRecordType.MedicalRecord,
+    other: PetDocumentRecordType.Other,
+    tests: PetDocumentRecordType.Test,
+    vaccines: PetDocumentRecordType.Vaccine,
+  };
+
+  return mapper[documentType] || PetDocumentRecordType.Other;
 }

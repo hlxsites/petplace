@@ -1,6 +1,7 @@
 import { useNavigate, useRevalidator } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 
+import { useState } from "react";
 import {
   isValidPetDocumentId,
   PetDocument,
@@ -27,14 +28,23 @@ export const loader = (({ params }) => {
     documents: useCase.query(petId, documentType),
     downloadPetDocument: useCase.fetchDocumentBlob,
     deletePetDocument: useCase.deleteDocument,
+    petId,
+    uploadDocument: useCase.uploadDocument,
   });
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
   const navigate = useNavigate();
-  const { deletePetDocument, documents, downloadPetDocument, id } =
-    useLoaderData<typeof loader>();
-  const { documentTypes } = usePetProfileContext();
+  const {
+    deletePetDocument,
+    documents,
+    downloadPetDocument,
+    id,
+    petId,
+    uploadDocument,
+  } = useLoaderData<typeof loader>();
+  const { documentTypes, petInfo: petInfoPromise } = usePetProfileContext();
+  const [uploadingNamesList, setUploadingNamesList] = useState<string[]>([]);
 
   const revalidator = useRevalidator();
 
@@ -72,11 +82,44 @@ export const useDocumentTypeIndexViewModel = () => {
     };
   };
 
+  const handleFileUpload = async (file: File, microchip?: string) => {
+    const fileName = file.name;
+    setUploadingNamesList((prev) => [...prev, fileName]);
+
+    await uploadDocument({
+      file,
+      microchip,
+      petId,
+      type: id,
+    });
+    revalidator.revalidate();
+
+    setUploadingNamesList((prev) => prev.filter((name) => name !== fileName));
+  };
+
+  const onUpload = (files: FileList) => {
+    return async () => {
+      const petInfo = await petInfoPromise;
+
+      const promisesList: Promise<void>[] = [];
+
+      Array.from(files).map((file) => {
+        const microchip = petInfo?.microchip || undefined;
+        promisesList.push(handleFileUpload(file, microchip));
+      });
+
+      await Promise.allSettled(promisesList);
+      revalidator.revalidate();
+    };
+  };
+
   return {
     documents,
     documentType,
     onClose,
     onDelete,
     onDownload,
+    onUpload,
+    uploadingNamesList,
   };
 };

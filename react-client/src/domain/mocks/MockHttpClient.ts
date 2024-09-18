@@ -41,4 +41,14 @@ export class MockHttpClient implements HttpClientRepository {
     // @ts-expect-error - this is a mock implementation
     return { data: this.data };
   }
+
+  postFormData(): Promise<HttpResponse> {
+    if (this.error) {
+      // @ts-expect-error - this is a mock implementation
+      return { error: this.error };
+    }
+
+    // @ts-expect-error - this is a mock implementation
+    return { data: this.data };
+  }
 }
