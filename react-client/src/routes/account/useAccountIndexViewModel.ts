@@ -10,7 +10,9 @@ export const loader = (() => {
   const authToken = requireAuthToken();
 
   const accountDetailsUseCase = accountDetailsUseCaseFactory(authToken);
-  const accountNotificationsUseCase = accountNotificationsUseCaseFactory(authToken);
+  const accountNotificationsUseCase =
+    accountNotificationsUseCaseFactory(authToken);
+
   return defer({
     accountDetails: accountDetailsUseCase.query(),
     accountNotifications: accountNotificationsUseCase.query(),
@@ -19,7 +21,8 @@ export const loader = (() => {
 }) satisfies LoaderFunction;
 
 export const useAccountIndexViewModel = () => {
-  const { accountDetails, accountNotifications, lostPetsHistory } = useLoaderData<typeof loader>();
+  const { accountDetails, accountNotifications, lostPetsHistory } =
+    useLoaderData<typeof loader>();
 
   return {
     accountDetails,
