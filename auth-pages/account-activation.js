@@ -106,13 +106,15 @@ function getPetsPictures(petsPictures, petsNames) {
 }
 
 function getImagePlaceholder(animalType) {
+    const imagesBaseUrl = 'https://www.petplace.com/images/auth-page-images'
     const AnimalType = {
-        cat: "images/cat-placeholder.svg",
-        default: "images/dog-placeholder.svg",
-        dog: "images/dog-placeholder.svg",
+        cat: "cat-placeholder.svg",
+        default: "dog-placeholder.svg",
+        dog: "dog-placeholder.svg",
     };
 
-    return AnimalType[animalType?.length ? animalType : "default"] || AnimalType["default"];
+    const image = AnimalType[animalType?.length ? animalType : "default"] || AnimalType["default"];
+    return `${imagesBaseUrl}/${image}`;
 }
 
 function getFormInfo(petsNames) {
