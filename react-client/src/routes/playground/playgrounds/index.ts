@@ -10,6 +10,7 @@ export * from "./ConfirmDeletionDialogPlayground";
 export * from "./DialogPlayground";
 export * from "./DragAndDropZonePlayground";
 export * from "./DropdownMenuPlayground";
+export * from "./ErrorDialogPlayground";
 export * from "./formBuilder/FormBuilderPlayground";
 export * from "./MyAccountPagePlayground";
 export * from "./OnboardingDialogPlayground";
