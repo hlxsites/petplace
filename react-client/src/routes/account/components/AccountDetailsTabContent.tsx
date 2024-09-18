@@ -31,7 +31,7 @@ export const AccountDetailsTabContent = ({
         <SuspenseAwait resolve={accountDetails}>
           {(accountDetails) => (
             <DisplayUncontrolledForm
-              initialValues={getAccountDetailsData(accountDetails)}
+              initialValues={getAccountDetailsData(accountDetails, isExternalLogin)}
               onSubmit={({ values }) => {
                 console.log("onSubmit values", values);
               }}
