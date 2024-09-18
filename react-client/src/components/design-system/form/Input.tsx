@@ -11,9 +11,9 @@ import { FORM_STYLES } from "./utils/formStyleUtils";
 type InputProps = InputWithoutFormBuilderProps<ElementInputText> & {
   iconLeft?: IconProps;
   iconRight?: IconProps;
-  onChange?: (newValue: string) => void;
+  onChange: (newValue: string) => void;
   type?: "text" | "email" | "password" | "number";
-  value?: string;
+  value: string;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(

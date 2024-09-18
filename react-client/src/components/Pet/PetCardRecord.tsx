@@ -1,6 +1,8 @@
 import { PetDocument } from "~/domain/models/pet/PetDocument";
 import { Icon, IconButton, IconKeys, Loading, Text } from "../design-system";
 import { PetCardOption } from "./PetCardOption";
+import { ConfirmDeletionDialog } from "../design-system/dialog/ConfirmDeletionDialog";
+import { useState } from "react";
 
 type PetCardRecordProps = {
   document: PetDocument;
@@ -16,7 +18,8 @@ export const PetCardRecord = ({
   onDownload,
 }: PetCardRecordProps) => {
   const { fileType, fileName } = document;
-
+  const [isConfirmDeletionDialogOpen, setIsConfirmDeletionDialogOpen] =
+    useState(false);
   return (
     <PetCardOption
       actionButton={
@@ -34,12 +37,22 @@ export const PetCardRecord = ({
               onClick={onDownload}
               variant="link"
             />
-            <IconButton
-              label="delete file"
-              icon="trash"
-              iconProps={{ className: "text-orange-300-contrast", size: 16 }}
-              onClick={onDelete}
-              variant="link"
+            <ConfirmDeletionDialog
+              isOpen={isConfirmDeletionDialogOpen}
+              onCancel={() => setIsConfirmDeletionDialogOpen(false)}
+              onConfirm={onHandleDeleteFile}
+              trigger={
+                <IconButton
+                  label="delete file"
+                  icon="trash"
+                  iconProps={{
+                    className: "text-orange-300-contrast",
+                    size: 16,
+                  }}
+                  onClick={onOpenConfirmDialog}
+                  variant="link"
+                />
+              }
             />
           </>
         )
@@ -55,6 +68,16 @@ export const PetCardRecord = ({
     if (!fileType) {
       return "pdfFile";
     }
+    if (fileType === "jpeg") return "jpgFile";
     return fileType === "docx" ? "docFile" : (`${fileType}File` as IconKeys);
+  }
+
+  function onOpenConfirmDialog() {
+    setIsConfirmDeletionDialogOpen(true);
+  }
+
+  function onHandleDeleteFile() {
+    onDelete?.();
+    setIsConfirmDeletionDialogOpen(false);
   }
 };

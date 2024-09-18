@@ -82,6 +82,8 @@ describe("PetDocumentsView", () => {
         name: /delete file/i,
       })
     );
+    // belongs to confirm deletion dialog
+    await userEvent.click(getByRole("button", { name: /yes, delete/i }));
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
 });
@@ -90,16 +92,20 @@ describe("PetDocumentsView", () => {
 type Props = ComponentProps<typeof PetDocumentsView>;
 function getRenderer({
   documents = MOCK_DOCUMENTS,
-  documentType = "test",
+  documentType = "tests",
   onDelete = jest.fn(),
   onDownload = jest.fn(),
+  onUpload = jest.fn(),
+  uploadingNamesList = [],
 }: Partial<Props> = {}) {
   return render(
     <PetDocumentsView
       documents={documents}
       onDelete={onDelete}
       onDownload={onDownload}
+      onUpload={onUpload}
       documentType={documentType}
+      uploadingNamesList={uploadingNamesList}
     />
   );
 }

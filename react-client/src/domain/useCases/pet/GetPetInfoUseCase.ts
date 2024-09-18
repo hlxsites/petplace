@@ -16,14 +16,14 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
     }
   }
 
-  private handleError(error: unknown): null {
+  private handleError = (error: unknown): null => {
     console.error("GetPetInfoUseCase query error", error);
     return null;
-  }
+  };
 
-  async query(petId: string): Promise<PetModel | null> {
+  query = async (petId: string): Promise<PetModel | null> => {
     try {
-      const result = await this.httpClient.get(`Pet/${petId}`);
+      const result = await this.httpClient.get(`api/Pet/${petId}`);
 
       if (result.data) return convertToPetModelInfo(result.data);
 
@@ -31,7 +31,7 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
     } catch (error) {
       return this.handleError(error);
     }
-  }
+  };
 }
 
 function convertToPetModelInfo(data: unknown): PetModel | null {

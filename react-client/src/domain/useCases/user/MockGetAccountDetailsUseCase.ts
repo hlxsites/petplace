@@ -1,7 +1,7 @@
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";
 import { GetAccountDetailsRepository } from "../../repository/user/GetAccountDetailsRepository";
 
-export class MockGetUserUseCase implements GetAccountDetailsRepository {
+export class MockGetAccountDetailsCase implements GetAccountDetailsRepository {
   async query(): Promise<AccountDetailsModel> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -11,7 +11,6 @@ export class MockGetUserUseCase implements GetAccountDetailsRepository {
       name: "Johene",
       phoneNumber: "(234) 123-4566",
       surname: "Smith",
-      zipCode: "09889",
     };
   }
 }
