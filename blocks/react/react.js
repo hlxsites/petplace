@@ -1,4 +1,4 @@
-import { acquireToken, isLoggedIn, login } from '../../scripts/lib/msal/msal-authentication.js';
+import { acquireToken, isLoggedIn, login, changePassword } from '../../scripts/lib/msal/msal-authentication.js';
 
 async function getAuthToken() {
   try {
@@ -38,12 +38,17 @@ export default async function decorate(block) {
     return;
   }
 
+  window.reactChangePassword = async function () {
+    await changePassword();
+  };
+
   // Set React entry point
   // Insert the token into the DOM as a hidden input element so React can access it
   block.innerHTML = `
-    <div id="react-root"></div>
-    <input id="auth-token" type="hidden" value="${token}" />
-  `;
+  <div id="react-root"></div>
+  <input id="auth-token" type="hidden" value="${token}" />
+  <button id="react-password-change" class="hidden" onclick="reactChangePassword()">Change Password</button>
+`;
 
   import('./react-index.min.js');
 }
