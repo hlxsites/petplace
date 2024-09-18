@@ -34,30 +34,24 @@ export const DragAndDropFileUpload = ({
         onChange={handleInputChange}
         type="file"
       />
-      {
-        <Button
-          aria-label={ariaLabel}
-          className="w-full rounded-none"
-          onClick={handleUploadClick}
-          variant="link"
-        >
-          <div className="grid place-items-center px-large py-base">
-            <div className="pb-small">
-              <Icon
-                display="uploadCloud"
-                className="text-brand-main"
-                size={32}
-              />
-            </div>
-            <Text fontFamily="raleway" fontWeight="bold" size="14">
-              {messageText}
-            </Text>
-            <Text color="tertiary-600">
-              PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
-            </Text>
+      <Button
+        aria-label={ariaLabel}
+        className="w-full rounded-none"
+        onClick={handleUploadClick}
+        variant="link"
+      >
+        <div className="grid place-items-center px-large py-base">
+          <div className="pb-small">
+            <Icon display="uploadCloud" className="text-brand-main" size={32} />
           </div>
-        </Button>
-      }
+          <Text fontFamily="raleway" fontWeight="bold" size="14">
+            {messageText}
+          </Text>
+          <Text color="tertiary-600">
+            PNG, JPG, PDF, TXT, DOC, DOCX (max 10Mb)
+          </Text>
+        </div>
+      </Button>
     </DragAndDropZone>
   );
 
@@ -67,24 +61,7 @@ export const DragAndDropFileUpload = ({
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
-      const files = Array.from(event.target.files);
-      const validFiles = files.filter((file) => {
-        const validTypes = [
-          "image/png",
-          "image/jpeg",
-          "application/pdf",
-          "text/plain",
-          "application/msword",
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        ];
-        return validTypes.includes(file.type) && file.size <= 10 * 1024 * 1024; // 10MB limit
-      });
-
-      if (validFiles.length !== files.length) {
-        alert("Some files were not included due to invalid type or size.");
-      }
-
-      handleFiles(validFiles as unknown as FileList);
+      handleFiles(event.target.files);
     }
   }
 };
