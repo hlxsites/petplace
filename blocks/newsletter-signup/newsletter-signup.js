@@ -42,6 +42,12 @@ async function submitForm(block, fd) {
     'Content-Type': 'application/json',
   };
 
+  if (!isCatBox && !isDogBox) {
+    showMessage(block, 'Please select one of the checkboxes above!', 'error');
+    block.querySelector('button').removeAttribute('disabled');
+    return;
+  }
+
   try {
     const baseUri = 'https://aem-eds-petplace.edgecompute.app/services/newsletter';
     const res = await fetch(baseUri, fetchOpts);
