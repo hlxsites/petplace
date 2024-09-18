@@ -1,5 +1,8 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import { Card, DisplayForm } from "~/components/design-system";
+import {
+  Card,
+  DisplayUncontrolledForm
+} from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";
 import {
@@ -7,7 +10,7 @@ import {
   externalAccountDetailsFormSchema,
   internalAccountDetailsFormSchema,
 } from "../form/accountForms";
-import { getAccountDetailsData } from "./util/formDataUtil";
+import { getAccountDetailsData } from "../form/formDataUtil";
 
 type AccountDetailsTabContentProps = {
   accountDetails?: Promise<AccountDetailsModel | null>;
@@ -27,12 +30,9 @@ export const AccountDetailsTabContent = ({
       <Card padding="xlarge">
         <SuspenseAwait resolve={accountDetails}>
           {(accountDetails) => (
-            <DisplayForm
-              onChange={(props) => {
-                console.log("onChange values", props);
-              }}
-              onSubmit={({ event, values }) => {
-                event.preventDefault();
+            <DisplayUncontrolledForm
+              initialValues={getAccountDetailsData(accountDetails)}
+              onSubmit={({ values }) => {
                 console.log("onSubmit values", values);
               }}
               schema={formSchema}
@@ -40,7 +40,6 @@ export const AccountDetailsTabContent = ({
                 countryOptions: ["Canada", "United States"],
                 stateOptions: [],
               }}
-              values={getAccountDetailsData(accountDetails)}
             />
           )}
         </SuspenseAwait>
@@ -53,12 +52,8 @@ export const AccountDetailsTabContent = ({
   function renderEmergencyContactForm() {
     return (
       <Card padding="xlarge">
-        <DisplayForm
-          onChange={(props) => {
-            console.log("onChange values", props);
-          }}
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
+        <DisplayUncontrolledForm
+          onSubmit={({ values }) => {
             console.log("onSubmit values", values);
           }}
           schema={emergencyContactFormSchema}

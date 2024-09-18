@@ -1,6 +1,6 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Drawer } from "~/components/design-system";
-import { PetDocumentsView } from "~/components/Pet/PetDocumentsView";
+import { PetDocumentsView } from "./components/PetDocumentsView";
 import { useDocumentTypeIndexViewModel } from "./useDocumentTypeIndexViewModel";
 
 export const DocumentTypeIndex = () => {
@@ -10,6 +10,8 @@ export const DocumentTypeIndex = () => {
     onClose,
     onDelete,
     onDownload,
+    onUpload,
+    uploadingNamesList,
   } = useDocumentTypeIndexViewModel();
 
   return (
@@ -19,15 +21,17 @@ export const DocumentTypeIndex = () => {
       onClose={onClose}
       title={label}
       trigger={undefined}
-      width="fit-content"
+      width={400}
     >
-      <SuspenseAwait resolve={documents}>
+      <SuspenseAwait minHeight={100} resolve={documents}>
         {(resolvedDocuments) => (
           <PetDocumentsView
             documents={resolvedDocuments}
             documentType={id}
             onDelete={onDelete}
             onDownload={onDownload}
+            onUpload={onUpload}
+            uploadingNamesList={uploadingNamesList}
           />
         )}
       </SuspenseAwait>

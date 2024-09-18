@@ -7,7 +7,10 @@ import {
 } from "./types/formTypes";
 import { FORM_STYLES } from "./utils/formStyleUtils";
 
-type InputTextareaProps = InputWithoutFormBuilderProps<ElementInputTextarea>;
+type InputTextareaProps = InputWithoutFormBuilderProps<ElementInputTextarea> & {
+  onChange: (newValue: string) => void;
+  value: string;
+};
 
 export const InputTextarea = forwardRef<
   HTMLTextAreaElement,

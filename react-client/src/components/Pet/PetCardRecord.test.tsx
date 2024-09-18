@@ -110,6 +110,9 @@ describe("PetCardRecord", () => {
 
     expect(onClick).not.toHaveBeenCalled();
     await userEvent.click(getByRole("button", { name: DELETE_BUTTON }));
+
+    // belongs to confirm deletion dialog
+    await userEvent.click(getByRole("button", { name: /yes, delete/i }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 

@@ -6,7 +6,6 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
@@ -52,33 +51,25 @@ type RenderedInput = Omit<
 
 export type FormBuilderProps = {
   schema: FormSchema;
-  onChange?: (values: FormValues) => void;
+  onChange: (values: FormValues) => void;
   onSubmit: (props: OnSubmitProps) => void;
-  values?: FormValues;
+  values: FormValues;
 };
 
 export const FormBuilder = ({
   schema,
-  onChange,
+  onChange: onChangeFormValues,
   onSubmit,
-  values: defaultValues,
+  values,
 }: FormBuilderProps) => {
-  const defaultValuesRef = useRef<FormValues>(defaultValues || {});
+  const initialValuesRef = useRef<FormValues>(values || {});
 
-  const [values, setValues] = useState<FormValues>(defaultValuesRef.current);
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Array to store the rendered inputs, can't use a ref because we want a clean array on each render
   const renderedInputs: RenderedInput[] = [];
 
-  const isFormChanged = !isEqual(defaultValuesRef.current, values);
-
-  useDeepCompareEffect(() => {
-    // Notify onChange callback only if the values have changed
-    if (!!onChange && isFormChanged) {
-      onChange(values);
-    }
-  }, [isFormChanged, onChange, values]);
+  const isFormChanged = !isEqual(initialValuesRef.current, values);
 
   return (
     <form
@@ -141,7 +132,7 @@ export const FormBuilder = ({
             key={elementKey}
             {...element}
             onChange={(newValues) => {
-              setValues((prev) => ({ ...prev, [element.id]: newValues }));
+              onChangeFormValues({ ...values, [element.id]: newValues });
             }}
             renderElement={renderElement}
             values={values}
@@ -183,7 +174,6 @@ export const FormBuilder = ({
     disabledCondition,
     label: inputLabel,
     requiredCondition,
-    repeaterMetadata,
     ...inputProps
   }: InputsUnion): ReactNode {
     const disabled = matchConditionExpression(disabledCondition ?? false);
@@ -191,6 +181,7 @@ export const FormBuilder = ({
 
     const { type } = inputProps;
 
+    const { repeaterMetadata } = inputProps;
     const id = idWithRepeaterMetadata(inputId, repeaterMetadata);
     const label = textWithRepeaterMetadata(inputLabel, repeaterMetadata);
 
@@ -302,56 +293,43 @@ export const FormBuilder = ({
     return null;
 
     function handleInputChange(newValue: InputValue) {
-      setValues((prev) => {
-        const inputId = getInputId();
+      const inputId = getInputId(commonProps);
 
-        if (!repeaterMetadata) return { ...prev, [inputId]: newValue };
+      if (!repeaterMetadata) {
+        onChangeFormValues({ ...values, [inputId]: newValue });
+        return;
+      }
 
-        const { repeaterId, index } = repeaterMetadata;
-        const processedValue = (() => {
-          const current = prev[repeaterId];
-          if (current && Array.isArray(current)) {
-            return (current as FormValues[]).map((item, i) => {
-              if (index !== i) return item;
+      const { repeaterId, index } = repeaterMetadata;
+      const repeaterValues = (() => {
+        const current = values[repeaterId];
+        if (current && Array.isArray(current)) {
+          return (current as FormValues[]).map((item, i) => {
+            if (index !== i) return item;
 
-              return {
-                ...item,
-                [inputId]: newValue,
-              };
-            });
-          }
+            return {
+              ...item,
+              [inputId]: newValue,
+            };
+          });
+        }
 
-          return [];
-        })();
-        return { ...prev, [repeaterId]: processedValue };
-      });
+        return [];
+      })();
+
+      onChangeFormValues({ ...values, [repeaterId]: repeaterValues });
     }
 
     function getStringValue() {
-      return (getInputValue() as string) || "";
+      return (getInputValue(commonProps) as string) || "";
     }
 
     function getBooleanValue() {
-      return !!getInputValue();
+      return !!getInputValue(commonProps);
     }
 
     function getStringArrayValue() {
-      return (getInputValue() as string[]) || [];
-    }
-
-    function getInputValue() {
-      const inputId = getInputId();
-      if (!repeaterMetadata) return values?.[inputId];
-
-      const { repeaterId, index } = repeaterMetadata;
-      // @ts-expect-error this value goes too deep for ts to understand
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-      return values?.[repeaterId]?.[index]?.[inputId];
-    }
-
-    function getInputId() {
-      if (!repeaterMetadata) return id;
-      return id.split("_repeater_")[0];
+      return (getInputValue(commonProps) as string[]) || [];
     }
   }
 
@@ -495,10 +473,6 @@ export const FormBuilder = ({
 
     const { errorMessage, required, type } = input;
 
-    if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
-      return "Please enter a valid email address.";
-    }
-
     if (required && !inputValueExist(input)) {
       if (errorMessage) return errorMessage;
 
@@ -511,18 +485,37 @@ export const FormBuilder = ({
       return "This field should not be empty";
     }
 
+    if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
+      return "Please enter a valid email address.";
+    }
+
     return null;
   }
 
-  function inputValueExist({ id }: RenderedInput): boolean {
-    const value = values?.[id];
+  function inputValueExist(input: RenderedInput): boolean {
+    const value = getInputValue(input);
 
     if (typeof value === "undefined") return false;
 
     if (Array.isArray(value)) return !!value.length;
 
-    if (typeof value === "string") return !!value.length;
+    return !!value;
+  }
 
-    return true;
+  function getInputValue(input: RenderedInput): InputValue {
+    const inputId = getInputId(input);
+
+    const { repeaterMetadata } = input;
+    if (!repeaterMetadata) return values?.[inputId];
+
+    const { repeaterId, index } = repeaterMetadata;
+    // @ts-expect-error this value goes too deep for ts to understand
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+    return values?.[repeaterId]?.[index]?.[inputId];
+  }
+
+  function getInputId({ id, repeaterMetadata }: RenderedInput) {
+    if (!repeaterMetadata) return id;
+    return id.split("_repeater_")[0];
   }
 };
