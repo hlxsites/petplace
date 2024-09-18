@@ -55,6 +55,7 @@ export const PetCardRecord = ({
     if (!fileType) {
       return "pdfFile";
     }
+    if (fileType === "jpeg") return "jpgFile";
     return fileType === "docx" ? "docFile" : (`${fileType}File` as IconKeys);
   }
 };
