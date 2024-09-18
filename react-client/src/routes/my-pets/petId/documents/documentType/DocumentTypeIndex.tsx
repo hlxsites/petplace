@@ -5,8 +5,10 @@ import { useDocumentTypeIndexViewModel } from "./useDocumentTypeIndexViewModel";
 
 export const DocumentTypeIndex = () => {
   const {
+    clearDownloadError,
     documents,
     documentType: { id, label },
+    downloadError,
     onClose,
     onDelete,
     onDownload,
@@ -26,8 +28,10 @@ export const DocumentTypeIndex = () => {
       <SuspenseAwait minHeight={100} resolve={documents}>
         {(resolvedDocuments) => (
           <PetDocumentsView
+            clearDownloadError={clearDownloadError}
             documents={resolvedDocuments}
             documentType={id}
+            downloadError={downloadError}
             onDelete={onDelete}
             onDownload={onDownload}
             onUpload={onUpload}
