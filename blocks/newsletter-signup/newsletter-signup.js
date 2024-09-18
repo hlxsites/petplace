@@ -17,12 +17,15 @@ function showError(block, fd) {
 
 async function submitForm(block, fd) {
   const formData = new FormData(block.querySelector('form'));
+  const isCatBox = formData.get('cats') === 'on';
+  const isDogBox = formData.get('dogs') === 'on';
   const formInfo = {
     email: formData.get('email'),
-    first_name: formData.get('name'),
-    catnewsletter: formData.get('cats') === 'on',
-    dognewsletter: formData.get('dogs') === 'on',
-    country: DEFAULT_REGION, // rework later
+    first_name: formData.get('firstname'),
+    last_name: formData.get('lastname'),
+    catnewsletter: isCatBox,
+    dognewsletter: isDogBox,
+    // country: DEFAULT_REGION, // rework later
   };
 
   const apiKey = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
@@ -70,12 +73,12 @@ async function submitForm(block, fd) {
 }
 
 export default async function decorate(block) {
-  const form = await createForm(
-    '/newsletter.json',
-    (fd) => submitForm(block, fd),
+  const form = await createForm('/newsletter.json', (fd) =>
+    submitForm(block, fd),
   );
+  form.querySelector('label[for="firstname"]').classList.add('sr-only');
+  form.querySelector('label[for="lastname"]').classList.add('sr-only');
   form.querySelector('label[for="email"]').classList.add('sr-only');
-  form.querySelector('label[for="name"]').classList.add('sr-only');
 
   const messageContainer = document.createElement('div');
   messageContainer.classList.add('newsletter-message');
