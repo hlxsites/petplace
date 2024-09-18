@@ -1,5 +1,6 @@
 import {
   HttpClientRepository,
+  HttpFormDataOptions,
   HttpOptions,
   HttpResponse,
 } from "../repository/HttpClientRepository";
@@ -7,11 +8,31 @@ import {
 export class FetchHttpClientUseCase implements HttpClientRepository {
   private baseUrl: string;
 
-  constructor(baseUrl: string) {
+  constructor(defaultUrl: string) {
+    const baseUrl = defaultUrl.replace(/\/api$/, "");
     this.baseUrl = baseUrl;
   }
 
-  async get(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  delete = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
+    try {
+      const result = await fetch(`${this.baseUrl}/${path}`, {
+        method: "DELETE",
+        headers: options.headers,
+      });
+
+      return { data: true, statusCode: result.status };
+    } catch (error) {
+      return { error };
+    }
+  };
+
+  get = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "GET",
@@ -29,9 +50,12 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
 
-  async post(path: string, options: HttpOptions = {}): Promise<HttpResponse> {
+  post = async (
+    path: string,
+    options: HttpOptions = {}
+  ): Promise<HttpResponse> => {
     try {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "POST",
@@ -44,5 +68,38 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     } catch (error) {
       return { error };
     }
-  }
+  };
+
+  postFormData = async (
+    path: string,
+    options: HttpFormDataOptions
+  ): Promise<HttpResponse> => {
+    try {
+      const headers = options.headers || {};
+
+      if (headers["Content-Type"]) {
+        // Delete the content type when using FormData
+        delete headers["Content-Type"];
+      }
+
+      const result = await fetch(`${this.baseUrl}/${path}`, {
+        method: "POST",
+        body: options.body,
+        headers,
+      });
+
+      let data: unknown;
+      const contentType = result.headers.get("content-type");
+      if (contentType?.includes("application/json")) {
+        data = await result.json();
+      } else {
+        data = await result.text();
+      }
+
+      return { data, statusCode: result.status };
+    } catch (error) {
+      console.error("Error in POST request:", error);
+      return { error };
+    }
+  };
 }

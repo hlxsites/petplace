@@ -60,7 +60,7 @@ export function readJwtClaim() {
 
 export function checkIsExternalLogin() {
   const claim = readJwtClaim();
-  return (
+  return !(
     !!claim?.extension_CustRelationId &&
     Number(claim.extension_CustRelationId) !== 0
   );

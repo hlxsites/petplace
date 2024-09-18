@@ -3,6 +3,10 @@ import { AccountDetailsTabContent } from "./AccountDetailsTabContent";
 
 const { getByRole } = screen;
 
+jest.mock("~/util/authUtil", () => ({
+  readJwtClaim: jest.fn(),
+}));
+
 describe("AccountDetailsTabContent", () => {
   it("should render card with expected title", () => {
     getRenderer();

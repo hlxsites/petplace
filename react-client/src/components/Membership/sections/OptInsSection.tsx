@@ -1,7 +1,7 @@
 import {
   Button,
   Card,
-  DisplayForm,
+  DisplayUncontrolledForm,
   FormSchema,
   InputsUnion,
   Title,
@@ -18,12 +18,8 @@ export const OptInsSection = () => {
         <div className="p-large">
           <Title level="h4">Opt-ins</Title>
           <div className="grid place-items-center gap-large pt-small lg:flex">
-            <DisplayForm
-              onChange={(props) => {
-                console.log("onChange values", props);
-              }}
-              onSubmit={({ event, values }) => {
-                event.preventDefault();
+            <DisplayUncontrolledForm
+              onSubmit={({ values }) => {
                 console.log("onSubmit values", values);
               }}
               schema={optInFormSchema}

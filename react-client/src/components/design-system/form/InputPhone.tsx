@@ -15,6 +15,8 @@ type InputPhoneProps = Omit<
   defaultType?: string;
   disabledType?: boolean;
   hideType?: boolean;
+  onChange: (newValue: string) => void;
+  value: string;
 };
 
 export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
@@ -32,13 +34,11 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
     },
     ref
   ) => {
-    const [value, type] = combinedValue?.split("|") || [];
+    const [value, type] = combinedValue?.split("|") || ["", ""];
 
     const selectedType = (() => {
       if (type) return type;
-
       if (defaultType) return defaultType;
-
       return "";
     })();
 
@@ -49,8 +49,8 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
       newType?: string;
       newValue?: string;
     }) => {
-      const newCombinedValue = `${newValue || value}|${newType || selectedType}`;
-      onChange?.(newCombinedValue);
+      const newCombinedValue = `${newValue ?? value}|${newType ?? selectedType}`;
+      onChange(newCombinedValue);
     };
 
     const handleOnChangeType = (newType: string) => {
@@ -68,6 +68,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
             <div className="flex gap-medium">
               {!hideType && (
                 <Select
+                  autoComplete="off"
                   disabled={disabledType}
                   hideLabel
                   id="phone-category"
@@ -75,7 +76,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
                   placeholder="Choose"
                   options={["Home", "Mobile", "Work"]}
                   onChange={handleOnChangeType}
-                  value={type || defaultType}
+                  value={selectedType}
                 />
               )}
               <div

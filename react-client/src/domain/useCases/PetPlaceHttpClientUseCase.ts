@@ -1,6 +1,7 @@
 import { PETPLACE_SERVER_BASE_URL } from "~/util/envUtil";
 import {
   HttpClientRepository,
+  HttpFormDataOptions,
   HttpOptions,
   HttpResponse,
 } from "../repository/HttpClientRepository";
@@ -22,23 +23,43 @@ export class PetPlaceHttpClientUseCase implements HttpClientRepository {
     };
   }
 
-  async get(
+  delete = async (
     path: string,
     options: Omit<HttpOptions, "headers"> = {}
-  ): Promise<HttpResponse> {
+  ): Promise<HttpResponse> => {
+    return this.httpClient.delete(path, {
+      ...options,
+      headers: this.createHeaders,
+    });
+  };
+
+  get = async (
+    path: string,
+    options: Omit<HttpOptions, "headers"> = {}
+  ): Promise<HttpResponse> => {
     return this.httpClient.get(path, {
       ...options,
       headers: this.createHeaders,
     });
-  }
+  };
 
-  async post(
+  post = async (
     path: string,
     options: Omit<HttpOptions, "headers"> = {}
-  ): Promise<HttpResponse> {
+  ): Promise<HttpResponse> => {
     return this.httpClient.post(path, {
       ...options,
       headers: this.createHeaders,
     });
-  }
+  };
+
+  postFormData = async (
+    path: string,
+    options: Omit<HttpFormDataOptions, "headers">
+  ): Promise<HttpResponse> => {
+    return this.httpClient.postFormData(path, {
+      ...options,
+      headers: this.createHeaders,
+    });
+  };
 }
