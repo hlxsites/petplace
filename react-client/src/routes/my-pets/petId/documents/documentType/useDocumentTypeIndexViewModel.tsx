@@ -4,15 +4,12 @@ import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import {
   isValidPetDocumentId,
   PetDocument,
-  UploadDocumentType,
 } from "~/domain/models/pet/PetDocument";
 import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
 import { requireAuthToken } from "~/util/authUtil";
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
-import { PetModel } from "~/domain/models/pet/PetModel";
-import { useEffect, useState } from "react";
 
 export const loader = (({ params }) => {
   const { petId, documentType } = params;
@@ -30,6 +27,7 @@ export const loader = (({ params }) => {
     documents: useCase.query(petId, documentType),
     downloadPetDocument: useCase.fetchDocumentBlob,
     deletePetDocument: useCase.deleteDocument,
+    petId,
     uploadDocument: useCase.uploadDocument,
   });
 }) satisfies LoaderFunction;
@@ -41,17 +39,12 @@ export const useDocumentTypeIndexViewModel = () => {
     documents,
     downloadPetDocument,
     id,
+    petId,
     uploadDocument,
   } = useLoaderData<typeof loader>();
   const { documentTypes, petInfo: petInfoPromise } = usePetProfileContext();
 
   const revalidator = useRevalidator();
-
-  const [petInfo, setPetInfo] = useState<PetModel | null>(null);
-
-  useEffect(() => {
-    void petInfoPromise.then(setPetInfo);
-  }, [petInfoPromise]);
 
   const documentType = documentTypes.find((dt) => dt.id === id);
   invariant(documentType, "Document type must be found here");
@@ -87,13 +80,14 @@ export const useDocumentTypeIndexViewModel = () => {
     };
   };
 
-  const onUpload = ({ file, microchip, petId, type }: UploadDocumentType) => {
+  const onUpload = (file: File) => {
     return async () => {
+      const petInfo = await petInfoPromise;
       await uploadDocument({
         file,
-        microchip: petInfo?.microchip ?? microchip,
-        petId: petInfo?.id ?? petId,
-        type,
+        microchip: petInfo?.microchip || undefined,
+        petId,
+        type: id,
       });
       revalidator.revalidate();
     };

@@ -24,10 +24,3 @@ export type PetDocument = {
   fileType: DocumentFileType;
   id: string;
 };
-
-export type UploadDocumentType = {
-  file: File;
-  microchip?: string;
-  petId?: string;
-  type: number;
-};

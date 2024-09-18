@@ -3,9 +3,7 @@ import {
   DocumentFileType,
   PetDocument,
   PetDocumentTypeId,
-  UploadDocumentType,
 } from "~/domain/models/pet/PetDocument";
-import { PetDocumentRecordType } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
 import { getFileExtension } from "~/util/stringUtil";
 import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
@@ -15,7 +13,7 @@ type PetDocumentViewProps = {
   documentType: PetDocumentTypeId;
   onDelete: (document: PetDocument) => () => void;
   onDownload: (document: PetDocument) => () => void;
-  onUpload: (document: UploadDocumentType) => () => void;
+  onUpload: (file: File) => () => void;
 };
 
 export const PetDocumentsView = ({
@@ -27,17 +25,6 @@ export const PetDocumentsView = ({
 }: PetDocumentViewProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [fileNameUploading, setFileNameUploading] = useState<string>("");
-
-  const documentTypeAsNumber = (() => {
-    const mapper: Record<PetDocumentTypeId, PetDocumentRecordType> = {
-      medical: PetDocumentRecordType.MedicalRecord,
-      other: PetDocumentRecordType.Other,
-      tests: PetDocumentRecordType.Test,
-      vaccines: PetDocumentRecordType.Vaccine,
-    };
-
-    return mapper[documentType] || PetDocumentRecordType.Other;
-  })();
 
   return (
     <div className="grid gap-large">
@@ -87,14 +74,8 @@ export const PetDocumentsView = ({
 
     const uploadPromises = Array.from(files).map((file) => {
       setFileNameUploading(file.name);
-      const uploadDocument: UploadDocumentType = {
-        file,
-        type: documentTypeAsNumber,
-      };
-
       return new Promise<void>((resolve) => {
-        const uploadFn = onUpload(uploadDocument);
-        uploadFn();
+        onUpload(file);
         resolve();
       });
     });

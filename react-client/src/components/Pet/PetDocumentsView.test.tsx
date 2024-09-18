@@ -90,7 +90,7 @@ describe("PetDocumentsView", () => {
 type Props = ComponentProps<typeof PetDocumentsView>;
 function getRenderer({
   documents = MOCK_DOCUMENTS,
-  documentType = "test",
+  documentType = "tests",
   onDelete = jest.fn(),
   onDownload = jest.fn(),
   onUpload = jest.fn(),

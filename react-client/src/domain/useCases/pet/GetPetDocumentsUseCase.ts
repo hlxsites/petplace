@@ -2,7 +2,6 @@ import { z } from "zod";
 import {
   PetDocument,
   PetDocumentTypeId,
-  UploadDocumentType,
 } from "~/domain/models/pet/PetDocument";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
@@ -11,6 +10,13 @@ import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
 const DOCUMENT_BASE_URL = "api/Document";
+
+type UploadDocumentType = {
+  file: File;
+  petId: string;
+  microchip?: string;
+  type: PetDocumentTypeId;
+};
 
 export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
   private httpClient: HttpClientRepository;
@@ -92,9 +98,9 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
   }: UploadDocumentType): Promise<boolean> => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("PetId", petId ?? "");
+    formData.append("PetId", petId);
     formData.append("Microchip", microchip ?? "");
-    formData.append("Type", type.toString());
+    formData.append("Type", convertToRecordTypeEnum(type).toString());
 
     try {
       const response = await this.httpClient.postFormData(`api/Pet/document`, {
@@ -145,21 +151,21 @@ function convertToPetDocuments(data: unknown): PetDocumentWithType[] {
       // @ts-expect-error - asdfa
       fileType: getFileExtension(petDocument.Name),
       id: petDocument.Id,
-      type: getPetRecordDocumentType(petDocument.DocumentType),
+      type: convertNumberToPetDocumentType(petDocument.DocumentType),
     } satisfies PetDocumentWithType);
   });
 
   return documents;
 }
 
-export enum PetDocumentRecordType {
+enum PetDocumentRecordType {
   MedicalRecord = 1,
   Vaccine = 2,
   Test = 3,
   Other = 1024,
 }
 
-function getPetRecordDocumentType(record?: number): PetDocumentTypeId {
+function convertNumberToPetDocumentType(record?: number): PetDocumentTypeId {
   const documentRecordTypeMap: Record<
     PetDocumentRecordType,
     PetDocumentTypeId
@@ -171,4 +177,15 @@ function getPetRecordDocumentType(record?: number): PetDocumentTypeId {
   };
 
   return documentRecordTypeMap[record as PetDocumentRecordType] || "other";
+}
+
+function convertToRecordTypeEnum(documentType: PetDocumentTypeId) {
+  const mapper: Record<PetDocumentTypeId, PetDocumentRecordType> = {
+    medical: PetDocumentRecordType.MedicalRecord,
+    other: PetDocumentRecordType.Other,
+    tests: PetDocumentRecordType.Test,
+    vaccines: PetDocumentRecordType.Vaccine,
+  };
+
+  return mapper[documentType] || PetDocumentRecordType.Other;
 }
