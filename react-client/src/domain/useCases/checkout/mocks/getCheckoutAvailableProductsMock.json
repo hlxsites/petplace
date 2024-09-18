@@ -1,0 +1,24 @@
+{
+  "membershipProducts": {
+    "annualMembership": {
+      "itemName": "Test item name",
+      "itemId": "Test item id",
+      "itemType": "Test item type",
+      "salesPrice": "29.99",
+      "renewPrice": "9.99",
+      "additionalProductList": [
+        {
+          "itemName": "Test additional product name",
+          "itemId": "Test additional product id",
+          "itemType": "Test additional product item type",
+          "price": "39.99",
+          "uiName": "Test ui name"
+        }
+      ]
+    },
+
+    "subscriptions": null,
+    "tags": null
+    
+  }
+}
