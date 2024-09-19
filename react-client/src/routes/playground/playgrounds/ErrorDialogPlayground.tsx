@@ -10,7 +10,7 @@ export const ErrorDialogPlayground = () => {
       <ErrorDialog
         isOpen={isOpen}
         message="We're having trouble downloading your pet's document. This could be due to a temporary server issue or a problem with the file. Please try again later."
-        onCancel={onClose}
+        onClose={onClose}
         title="Document Download Failed"
         trigger={<Button onClick={onOpen}>Open error dialog</Button>}
       />
