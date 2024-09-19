@@ -51,7 +51,6 @@ function convertToCheckoutModelInfo(data: unknown): CheckoutModel | null {
       annualMembership: products?.annualMembership,
       lifetimeMembership: products?.lpmMembership,
       lifetimePlusMembership: products?.lpmPlusMembership,
-      subscriptions: products?.subscriptions,
       tags: products?.tags,
     },
   };

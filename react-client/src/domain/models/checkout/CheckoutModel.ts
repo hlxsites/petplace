@@ -32,14 +32,17 @@ type AnnualMembership = Omit<BaseProduct, "price"> & {
   salesPrice?: string;
   renewPrice?: string;
   additionalProductList?: CommonProductSpecification[];
+  autoRenew?: boolean;
 };
 
 type LpmMembership = BaseProduct & {
   bundleList?: CommonProductSpecification[];
+  autoRenew?: boolean;
 };
 
 type LpmPlusMembership = BaseProduct & {
   bundleList?: CommonProductSpecification[];
+  autoRenew?: boolean;
 };
 
 type SubscriptionProduct = Omit<CommonProductSpecification, "itemType"> & {

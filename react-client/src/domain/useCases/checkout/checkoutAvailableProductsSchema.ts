@@ -11,23 +11,19 @@ const commonProductSpecificationSchema = baseProductSchema.extend({
   uiName: z.string().nullish(),
 });
 
-const annualMembershipSchema = baseProductSchema.omit({ price: true }).extend({
+const annualMembershipSchema = z.object({
+  itemId: z.string().optional(),
   salesPrice: z.string().optional(),
   renewPrice: z.string().optional(),
   additionalProductList: z.array(commonProductSpecificationSchema).optional(),
+  autoRenew: z.boolean().optional(),
 });
 
-const lpmMembershipSchema = baseProductSchema.extend({
-  bundleList: z.array(commonProductSpecificationSchema).optional(),
+const lpmMembershipSchema = z.object({
+  itemId: z.string().optional(),
+  itemPrice: z.string().optional(),
+  autoRenew: z.boolean().optional(),
 });
-
-const subscriptionProductSchema = commonProductSpecificationSchema
-  .omit({ itemType: true })
-  .extend({
-    isIncludedInPlan: z.boolean().optional(),
-    isSubscribed: z.boolean().optional(),
-  })
-  .nullable();
 
 const byteTagSchema = baseProductSchema.extend({
   shape: z.string().optional(),
@@ -58,7 +54,6 @@ const membershipProductsSchema = z.object({
   annualMembership: annualMembershipSchema.nullish(),
   lpmMembership: lpmMembershipSchema.nullish(),
   lpmPlusMembership: lpmMembershipSchema.nullish(),
-  subscriptions: subscriptionProductSchema.nullish(),
   tags: tagCheckoutProductSchema.nullish(),
 });
 
