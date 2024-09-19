@@ -48,7 +48,6 @@ export function readJwtClaim() {
   });
 
   const parsedJwt = parseJwt(requireAuthToken());
-  console.log("🚀 ~ parsedJwt", parsedJwt)
   if (!parsedJwt) return null;
 
   try {
