@@ -22,15 +22,9 @@ function createTableOfContents(main) {
   }
   const tocDiv = document.createElement('div');
   tocDiv.classList.add('toc');
-
-  // if there is a disclosure, add the toc after it, otherwise add it after the h1
-  const title = main.querySelector('h1');
-  const disclosure = main.querySelector('.disclosure');
-  if (title.nextElementSibling === disclosure) {
-    disclosure.after(tocDiv);
-  } else {
-    title.after(tocDiv);
-  }
+  const heroContainer = main.querySelector('.hero-container');
+  // add TOC as last item of the Hero Container
+  heroContainer.append(tocDiv);
 }
 
 async function createTemplateBlock(container, blockName, elems = []) {
