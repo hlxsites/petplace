@@ -579,7 +579,7 @@ function displayInsuranceCTA(resultsBlock) {
 
   const insuranceCtaCard = document.createElement('div');
   const insuranceCtaImage = 'https://www.petplace.com/images/media_1373303d2c6645980b4e6a4cd76061c181b8b44ca.png';
-  const insuranceCtaTitle = document.head.querySelector('insurance-cta-text')?.content || 'Pet insurance may provide assistance with costs related to accidents & illness,';
+  const insuranceCtaTitle = document.head.querySelector('insurance-cta-text')?.content || 'Concerned about costs related to accidents & illnesses?';
   const insuranceCtaText = 'Click to learn more.';
   const insuranceCtaPath = document.head.querySelector('insurance-page-path')?.content || '/pet-insurance';
 
@@ -672,7 +672,7 @@ export function setupSearchResults(defaultContentWrapper) {
   defaultContentWrapper.appendChild(searchResultsDivElement);
   const searchQuery = window.localStorage.getItem('aem-gen-ai-query');
   if (searchQuery) {
-    if (searchQuery.indexOf('insurance') !== -1) {
+    if (searchQuery.toLowerCase().includes('insurance')) {
       displayInsuranceCTA(searchResultsDivElement);
     } else {
       displaySearchResults(searchQuery, searchResultsDivElement);
