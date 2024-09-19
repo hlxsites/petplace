@@ -290,7 +290,7 @@ export async function loadDelayed() {
   adsenseFunc('article', articleCat);
 
   if (!isMobile()) {
-    const sidebarDiv = document.querySelector('.sidebar-right');
+    const sidebarDiv = document.querySelector('.sidebar-container');
     const skyscraperAd = document.querySelector('.skyscraper');
     sidebarDiv.append(skyscraperAd);
   }
