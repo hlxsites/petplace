@@ -17,6 +17,7 @@ import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { ProductsIndex } from "./checkout/products/ProductsIndex";
+import { loader as CheckoutProductsIndexLoader } from "./checkout/products/useCheckoutProductsViewModel";
 import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
 import { FoundPetIndex } from "./found-pet/FoundPetIndex";
 import { LostPetIndex } from "./lost-pet/LostPetIndex";
@@ -140,8 +141,7 @@ const routes: PetPlaceRouteObject[] = [
           {
             id: "products",
             element: <ProductsIndex />,
-            // fix the loader when discover if products will be available via API or hardcoded
-            loader: CheckoutIndexLoader,
+            loader: CheckoutProductsIndexLoader,
             path: AppRoutePaths.products,
           },
         ],

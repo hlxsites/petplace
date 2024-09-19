@@ -2,18 +2,21 @@ import { LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { usePlansFeatures } from "~/components/Membership/hooks/usePlansFeatures";
 import { Locale } from "~/components/Membership/utils/MembershipTypes";
 
-import { getProductsList } from "~/mocks/MockRestApiServer";
+import { invariantResponse } from "~/util/invariant";
 
-export const loader = (() => {
+export const loader = (({ request }) => {
+  const url = new URL(request.url);
+  const petId = url.searchParams.get("petId");
+  invariantResponse(petId, "petId param is required");
+
   const locale: Locale = "us";
   return {
     locale: locale as Locale,
-    products: getProductsList(),
   };
 }) satisfies LoaderFunction;
 
 export const useCheckoutIndexViewModel = () => {
-  const { products, locale } = useLoaderData<typeof loader>();
+  const { locale } = useLoaderData<typeof loader>();
   const { availablePlans, renderMobileVersion, isCanadaLocale, plans } =
     usePlansFeatures(locale);
 
@@ -22,6 +25,5 @@ export const useCheckoutIndexViewModel = () => {
     renderMobileVersion,
     isCanadaLocale,
     plans,
-    products,
   };
 };
