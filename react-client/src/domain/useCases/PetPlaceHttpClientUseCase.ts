@@ -62,4 +62,14 @@ export class PetPlaceHttpClientUseCase implements HttpClientRepository {
       headers: this.createHeaders,
     });
   };
+
+  put = async (
+    path: string,
+    options: Omit<HttpOptions, "headers"> = {}
+  ): Promise<HttpResponse> => {
+    return this.httpClient.put(path, {
+      ...options,
+      headers: this.createHeaders,
+    });
+  };
 }
