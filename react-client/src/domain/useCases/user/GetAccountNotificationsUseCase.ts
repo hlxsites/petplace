@@ -17,7 +17,7 @@ export class GetAccountNotificationsUseCase implements GetAccountNotificationRep
 
   async query(): Promise<AccountNotificationModel | null> {
     try {
-      const result = await this.httpClient.get("User");
+      const result = await this.httpClient.get("adopt/api/User");
       if (result.data) return convertToAccountNotificationModel(result.data);
 
       return null;
