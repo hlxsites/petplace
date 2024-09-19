@@ -119,13 +119,13 @@ export const useDocumentTypeIndexViewModel = () => {
     setUploadingNamesList((prev) => prev.filter((name) => name !== fileName));
   };
 
-  const onUpload = (files: FileList) => {
+  const onUpload = (files: File[]) => {
     return async () => {
       const petInfo = await petInfoPromise;
 
       const promisesList: Promise<void>[] = [];
 
-      Array.from(files).map((file) => {
+      files.forEach((file) => {
         const microchip = petInfo?.microchip || undefined;
         promisesList.push(handleFileUpload(file, microchip));
       });

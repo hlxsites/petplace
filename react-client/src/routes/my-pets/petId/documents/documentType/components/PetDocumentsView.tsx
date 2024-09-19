@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DragAndDropFileUpload, Text, Title } from "~/components/design-system";
 import { ErrorDialog } from "~/components/design-system/dialog/ErrorDialog";
 import { PetCardRecord } from "~/components/Pet/PetCardRecord";
@@ -16,7 +16,7 @@ type PetDocumentViewProps = {
   downloadError: string | null;
   onDelete: (document: PetDocument) => () => void;
   onDownload: (document: PetDocument) => () => void;
-  onUpload: (file: FileList) => () => void;
+  onUpload: (files: File[]) => () => void;
   uploadingNamesList: string[];
 };
 
@@ -30,10 +30,10 @@ export const PetDocumentsView = ({
   onUpload,
   uploadingNamesList,
 }: PetDocumentViewProps) => {
-  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorType, setErrorType] = useState<"upload" | "download" | null>(
     null
   );
+  const isErrorDialogOpen = !!errorType;
 
   const isUploading = !!uploadingNamesList.length;
 
@@ -53,15 +53,16 @@ export const PetDocumentsView = ({
   useEffect(() => {
     if (downloadError) {
       setErrorType("download");
-      setIsErrorDialogOpen(true);
     }
   }, [downloadError]);
 
   const handleCloseErrorDialog = () => {
     clearDownloadError();
-    setIsErrorDialogOpen(false);
     setErrorType(null);
-    setIsErrorDialogOpen(false);
+  };
+
+  const onUploadError = () => {
+    setErrorType("upload");
   };
 
   return (
@@ -88,9 +89,13 @@ export const PetDocumentsView = ({
       </Title>
 
       <DragAndDropFileUpload
-        ariaLabel="Upload document"
+        allowedFileTypes={["doc", "png", "jpg", "pdf", "txt"]}
+        allowedFileSizeLimitInMb={10}
+        ariaLabel="Upload pet documents"
         handleFiles={onHandleFiles}
+        id="upload-pet-documents"
         multiple
+        onError={onUploadError}
       />
 
       {isUploading && (
@@ -120,25 +125,7 @@ export const PetDocumentsView = ({
     </div>
   );
 
-  function onHandleFiles(files: FileList) {
-    const validFiles = Array.from(files).filter((file) => {
-      const validTypes = [
-        "image/png",
-        "image/jpeg",
-        "application/pdf",
-        "text/plain",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      ];
-      return validTypes.includes(file.type) && file.size <= 10 * 1024 * 1024; // 10MB limit
-    });
-
-    if (validFiles.length !== files.length) {
-      setErrorType("upload");
-      setIsErrorDialogOpen(true);
-      return;
-    }
-
-    onUpload(validFiles as unknown as FileList)();
+  function onHandleFiles(files: File[]) {
+    onUpload(files)();
   }
 };
