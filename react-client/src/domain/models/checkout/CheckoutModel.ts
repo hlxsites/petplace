@@ -57,6 +57,7 @@ type TagCheckoutProduct = {
 };
 
 export type CheckoutModel = {
+  locale?: string;
   membershipProducts?: {
     annualMembership?: AnnualMembership | null;
     lifetimeMembership?: LpmMembership | null;

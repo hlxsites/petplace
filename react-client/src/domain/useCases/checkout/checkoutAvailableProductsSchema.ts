@@ -58,5 +58,6 @@ const membershipProductsSchema = z.object({
 });
 
 export const checkoutModelSchema = z.object({
+  country: z.string().optional(),
   membershipProducts: membershipProductsSchema.nullish(),
 });

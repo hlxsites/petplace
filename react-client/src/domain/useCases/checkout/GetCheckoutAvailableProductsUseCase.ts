@@ -47,6 +47,7 @@ function convertToCheckoutModelInfo(data: unknown): CheckoutModel | null {
   if (!info) return null;
 
   return {
+    locale: info.country,
     membershipProducts: {
       annualMembership: products?.annualMembership,
       lifetimeMembership: products?.lpmMembership,
