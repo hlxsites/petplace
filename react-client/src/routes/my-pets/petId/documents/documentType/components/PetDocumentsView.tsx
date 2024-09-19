@@ -89,7 +89,7 @@ export const PetDocumentsView = ({
       </Title>
 
       <DragAndDropFileUpload
-        allowedFileTypes={["doc", "png", "jpg", "pdf", "txt"]}
+        allowedFileTypes={["png", "jpg", "pdf", "txt", "doc"]}
         allowedFileSizeLimitInMb={10}
         ariaLabel="Upload pet documents"
         handleFiles={onHandleFiles}

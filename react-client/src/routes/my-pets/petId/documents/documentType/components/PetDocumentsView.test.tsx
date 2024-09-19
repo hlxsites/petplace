@@ -40,7 +40,9 @@ describe("PetDocumentsView", () => {
     getRenderer();
 
     expect(
-      getByRole("button", { name: /Upload document/i }).querySelector("svg")
+      getByRole("button", { name: /Upload pet documents/i }).querySelector(
+        "svg"
+      )
     ).toHaveAttribute("data-file-name", "SvgUploadCloudIcon");
   });
 
@@ -49,7 +51,7 @@ describe("PetDocumentsView", () => {
 
     expect(getByText("Click to upload or drag and drop")).toBeInTheDocument();
     expect(
-      getByText(/^PNG, JPG, PDF, TXT, DOC, DOCX \(max 10Mb\)$/i)
+      getByText(/^PNG, JPG, JPEG, PDF, TXT, DOC, DOCX \(max 10Mb\)$/i)
     ).toBeInTheDocument();
   });
 
@@ -63,7 +65,7 @@ describe("PetDocumentsView", () => {
   it.skip("should render record file with loading view when user clicks to upload document", async () => {
     getRenderer();
 
-    const uploadArea = getByRole("button", { name: /upload document/i });
+    const uploadArea = getByRole("button", { name: /upload pet documents/i });
     await userEvent.click(uploadArea);
 
     expect(getByText(UPLOAD_DOCUMENT_LABEL)).toBeInTheDocument();
