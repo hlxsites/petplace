@@ -580,7 +580,7 @@ function displayInsuranceCTA(resultsBlock) {
   const insuranceCtaCard = document.createElement('div');
   const insuranceCtaImage = 'https://www.petplace.com/images/media_1373303d2c6645980b4e6a4cd76061c181b8b44ca.png';
   const insuranceCtaTitle = document.head.querySelector('insurance-cta-text')?.content || 'Concerned about costs related to accidents & illnesses?';
-  const insuranceCtaText = 'Click to learn more.';
+  const insuranceCtaText = 'Learn About Pet Insurance';
   const insuranceCtaPath = document.head.querySelector('insurance-page-path')?.content || '/pet-insurance';
 
   insuranceCtaCard.className = 'insurance-card';
