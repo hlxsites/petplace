@@ -5,10 +5,12 @@ import { PetServices } from "~/domain/models/pet/PetModel";
 
 type PetWatchDrawerServiceContentProps = {
   serviceStatus: PetServices["membershipStatus"];
+  route?: string;
 };
 
 export const PetWatchDrawerServiceContent = ({
   serviceStatus,
+  route,
 }: PetWatchDrawerServiceContentProps) => {
   const { handleContentChange, contentDetails } = useContentDetails();
 
@@ -22,6 +24,7 @@ export const PetWatchDrawerServiceContent = ({
       <PetWatchDrawerBody
         contentDetails={contentDetails}
         onClick={handleContentChange}
+        route={route}
         serviceStatus={serviceStatus}
       />
     </>
