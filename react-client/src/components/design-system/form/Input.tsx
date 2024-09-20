@@ -58,6 +58,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                   }
                 )}
                 id={id}
+                maxLength={rest.max}
+                minLength={rest.min}
                 name={id}
                 onChange={handleOnChange}
                 placeholder={placeholder}

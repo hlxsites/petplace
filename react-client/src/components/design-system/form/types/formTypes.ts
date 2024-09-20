@@ -164,6 +164,8 @@ export type InputWithoutFormBuilderProps<T = InputCommon> = Omit<
 };
 
 export type ElementInputText = InputCommon & {
+  max?: number;
+  min?: number;
   type: "text" | "email" | "password" | "number";
 };
 
