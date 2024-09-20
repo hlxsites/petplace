@@ -3,17 +3,15 @@ import {
   AccountDetailsModel,
   AccountNotificationModel,
 } from "~/domain/models/user/UserModels";
-import { readJwtClaim } from "~/util/authUtil";
 import { baseAccountDetailsIds } from "./accountForms";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
 ): FormValues {
-  const data = readJwtClaim();
   return {
-    [baseAccountDetailsIds.name]: data?.given_name ?? "",
-    [baseAccountDetailsIds.surname]: data?.family_name ?? "",
-    [baseAccountDetailsIds.email]: data?.emails?.[0] ?? "",
+    [baseAccountDetailsIds.name]: accountDetails?.name ?? "",
+    [baseAccountDetailsIds.surname]: accountDetails?.surname ?? "",
+    [baseAccountDetailsIds.email]: accountDetails?.email ?? "",
     [baseAccountDetailsIds.phone]: accountDetails?.phoneNumber ?? "",
   };
 }
@@ -35,4 +33,15 @@ export function getAccountNotificationsData(
     "partner-offers": !!accountNotifications?.partnerOffer,
     "pet-place-adopt-alerts": alerts,
   };
+}
+
+export function buildAccountDetails(values: FormValues): AccountDetailsModel {
+  const accountDetails: AccountDetailsModel = {
+    email: values["email-address"] as string,
+    name: values["first-name"] as string,
+    phoneNumber: values["phone-default"] as string,
+    surname: values["last-name"] as string,
+  };
+
+  return accountDetails;
 }
