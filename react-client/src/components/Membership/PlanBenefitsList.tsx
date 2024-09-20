@@ -3,7 +3,7 @@ import { Collapse, Text } from "../design-system";
 import { PlanBenefitCard } from "./PlanBenefitCard";
 
 import { MEMBERSHIP_COMPARE_PLANS } from "./utils/membershipConstants";
-import { MembershipPlan } from "./utils/MembershipTypes";
+import { MembershipPlan } from "~/domain/useCases/checkout/GetCheckoutUseCase";
 
 type PlanBenefitListProps = {
   isOpen: boolean;

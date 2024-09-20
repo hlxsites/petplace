@@ -2,7 +2,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
-import { TableActions, MembershipPlan } from "./utils/MembershipTypes";
+import {
+  MembershipPlan,
+  TableActions,
+} from "~/domain/useCases/checkout/GetCheckoutUseCase";
 
 const { getAllByRole, getByText } = screen;
 
@@ -73,8 +76,8 @@ function getRenderer({
 
 // Mock data
 const ACTIONS: TableActions[] = [
-  { label: "Action 1", variant: "secondary" },
-  { label: "Action 2" },
+  { label: "Action 1" },
+  { label: "Action 2", isPrimary: true },
 ];
 const COLUMNS: MembershipPlan[] = [
   "Annual Protection",

@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Icon, Text, TextSpan, Title } from "../design-system";
-import { MembershipPlan, TableActions } from "./utils/MembershipTypes";
+import {
+  MembershipPlan,
+  TableActions,
+} from "~/domain/useCases/checkout/GetCheckoutUseCase";
 
 type TableRow = {
   label: string;
@@ -111,10 +114,13 @@ export const MembershipComparingPlanTable = ({
           ))}
           <tr>
             <td>{/* Placeholder */}</td>
-            {actions.map(({ label, ...rest }) => (
+            {actions.map(({ label, isPrimary }) => (
               <td className="text-center" key={label}>
                 <div className="space-x-4 flex justify-evenly pt-xlarge">
-                  <Button {...rest} onClick={onClick}>
+                  <Button
+                    onClick={onClick}
+                    variant={isPrimary ? "primary" : "secondary"}
+                  >
                     {label}
                   </Button>
                 </div>
