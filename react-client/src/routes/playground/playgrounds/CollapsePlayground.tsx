@@ -9,7 +9,7 @@ export const CollapsePlayground = () => {
       onOpenChange={() => setIsOpen(!isOpen)}
       isOpen={isOpen}
     >
-      <Text size="base">Track your pet's status.</Text>
+      <Text size="14">Track your pet's status.</Text>
       <div className="mt-base rounded-xl border p-base">
         <Text>
           Lorem Ipsum is simply dummy text of the printing and typesetting

@@ -1,7 +1,7 @@
+import { Carousel } from "~/components/design-system";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { MembershipCard } from "../MembershipCard";
 import { MEMBERSHIP_CARD_OPTIONS } from "../utils/membershipConstants";
-import { Carousel } from "~/components/design-system";
 
 export const MembershipOfferSection = () => {
   const shouldRenderContentInCarousel = useWindowWidth() < 768;
@@ -11,7 +11,7 @@ export const MembershipOfferSection = () => {
   return (
     <>
       <div
-        className="hidden w-full grid-flow-row grid-cols-3 justify-center gap-base md:grid"
+        className="hidden w-full grid-flow-row grid-cols-3 justify-center gap-xxlarge md:grid"
         role="region"
       >
         {membershipCards}

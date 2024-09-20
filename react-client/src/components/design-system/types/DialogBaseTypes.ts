@@ -11,7 +11,8 @@ export type DialogIconProps = {
 };
 
 export type DialogTitleProps = {
-  titleLevel?: ComponentProps<typeof Title>["level"];
+  isTitleResponsive?: ComponentProps<typeof Title>["isResponsive"];
+  titleSize?: ComponentProps<typeof Title>["size"];
 } & (
   | {
       ariaLabel?: string;

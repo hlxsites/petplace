@@ -31,7 +31,7 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
             />
             <Tag label={label} tagStatus={tagStatus} />
           </div>
-          <Text size="base">{message}</Text>
+          <Text size="14">{message}</Text>
           <Button
             className="text-orange-300-contrast"
             iconLeft={icon}

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Card, DragAndDropFileUpload, Text } from "../design-system";
+import { Card, DragAndDropFileUpload, Text, Title } from "../design-system";
 import { PetCardRecord } from "./PetCardRecord";
 import { PetRecord } from "./types/PetRecordsTypes";
 
@@ -26,7 +26,7 @@ export const PetDocumentsView = ({
 
   return (
     <div className="grid gap-large">
-      <Text color="tertiary-600" size="sm">
+      <Text color="tertiary-600" size="14">
         {`View, download and manage all ${recordType} records.`}
       </Text>
 
@@ -42,9 +42,9 @@ export const PetDocumentsView = ({
         </div>
       )}
 
-      <Text color="primary-900" size="base" fontWeight="bold">
+      <Title color="primary-900" level="h5">
         Upload and attach files
-      </Text>
+      </Title>
 
       <Card>
         <DragAndDropFileUpload

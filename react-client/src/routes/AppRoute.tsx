@@ -1,5 +1,6 @@
 import isEqual from "lodash/isEqual";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
@@ -12,7 +13,9 @@ import { RootErrorPage } from "./root-error-page";
 import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
-import { APP_BASE_URL, IS_DEV_ENV } from "~/util/envUtil";
+import { IS_DEV_ENV } from "~/util/envUtil";
+import { AccountIndex } from "./account/AccountIndex";
+import { AccountRoot } from "./account/AccountRoot";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { ProductsIndex } from "./checkout/products/ProductsIndex";
 import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
@@ -34,61 +37,86 @@ const routes: PetPlaceRouteObject[] = [
     errorElement: <RootErrorPage />,
     children: [
       {
-        id: "myPets",
-        path: AppRoutePaths.myPets,
+        element: <AccountRoot />,
+        id: "account",
+        loader: AccountIndexLoader,
+        shouldRevalidate: ({ currentParams, nextParams }) =>
+          !isEqual(currentParams, nextParams),
+        path: AppRoutePaths.account,
         children: [
           {
-            id: "myPetsIndex",
+            element: <AccountIndex />,
+            id: "accountIndex",
             index: true,
-            loader: MyPetsIndexLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
-            element: <MyPetsIndex />,
           },
           {
-            element: <PetProfileLayout />,
-            id: "petProfile",
-            loader: PetProfileLayoutLoader,
-            path: AppRoutePaths.petProfile,
-            shouldRevalidate: ({ currentParams, nextParams }) =>
-              !isEqual(currentParams, nextParams),
+            id: "accountNotifications",
+            path: AppRoutePaths.accountNotifications,
+            element: <AccountIndex />,
+          },
+          {
+            id: "accountPayment",
+            path: AppRoutePaths.accountPayment,
+            element: <AccountIndex />,
+          },
+          {
+            id: "myPets",
+            path: AppRoutePaths.myPets,
             children: [
               {
-                element: <PetProfileIndex />,
-                id: "petProfileIndex",
+                id: "myPetsIndex",
                 index: true,
+                loader: MyPetsIndexLoader,
+                shouldRevalidate: ({ currentParams, nextParams }) =>
+                  !isEqual(currentParams, nextParams),
+                element: <MyPetsIndex />,
               },
               {
-                id: "petProfileDocuments",
-                path: AppRoutePaths.petProfileDocuments,
-                element: <PetProfileIndex />,
+                element: <PetProfileLayout />,
+                id: "petProfile",
+                loader: PetProfileLayoutLoader,
+                path: AppRoutePaths.petProfile,
+                shouldRevalidate: ({ currentParams, nextParams }) =>
+                  !isEqual(currentParams, nextParams),
                 children: [
                   {
-                    id: "petProfileDocumentType",
-                    loader: DocumentTypeIndexLoader,
-                    path: AppRoutePaths.petProfileDocumentType,
-                    element: <DocumentTypeIndex />,
+                    element: <PetProfileIndex />,
+                    id: "petProfileIndex",
+                    index: true,
+                  },
+                  {
+                    id: "petProfileDocuments",
+                    path: AppRoutePaths.petProfileDocuments,
+                    element: <PetProfileIndex />,
+                    children: [
+                      {
+                        id: "petProfileDocumentType",
+                        loader: DocumentTypeIndexLoader,
+                        path: AppRoutePaths.petProfileDocumentType,
+                        element: <DocumentTypeIndex />,
+                      },
+                    ],
+                  },
+                  {
+                    id: "petEdit",
+                    path: AppRoutePaths.petEdit,
+                    element: <PetEditIndex />,
                   },
                 ],
               },
               {
-                id: "petEdit",
-                path: AppRoutePaths.petEdit,
-                element: <PetEditIndex />,
-              },
-            ],
-          },
-          {
-            id: "addNewPet",
-            path: AppRoutePaths.addNewPet,
-            children: [
-              {
-                id: "addNewPetIndex",
-                index: true,
-                loader: AddNewPetIndexLoader,
-                shouldRevalidate: ({ currentParams, nextParams }) =>
-                  !isEqual(currentParams, nextParams),
-                element: <AddNewPetIndex />,
+                id: "addNewPet",
+                path: AppRoutePaths.addNewPet,
+                children: [
+                  {
+                    id: "addNewPetIndex",
+                    index: true,
+                    loader: AddNewPetIndexLoader,
+                    shouldRevalidate: ({ currentParams, nextParams }) =>
+                      !isEqual(currentParams, nextParams),
+                    element: <AddNewPetIndex />,
+                  },
+                ],
               },
             ],
           },
@@ -107,28 +135,28 @@ const routes: PetPlaceRouteObject[] = [
         id: "foundPet",
         path: AppRoutePaths.foundPet,
       },
-    ],
-  },
-  {
-    id: "checkout",
-    path: AppRoutePaths.checkout,
-    children: [
       {
-        id: "checkoutIndex",
-        index: true,
-        loader: CheckoutIndexLoader,
-        shouldRevalidate: ({ currentParams, nextParams }) =>
-          !isEqual(currentParams, nextParams),
-        element: <CheckoutIndex />,
-      },
-      {
-        id: "products",
-        element: <ProductsIndex />,
-        // fix the loader when discover if products will be available via API or hardcoded
-        loader: CheckoutIndexLoader,
-        shouldRevalidate: ({ currentParams, nextParams }) =>
-          !isEqual(currentParams, nextParams),
-        path: AppRoutePaths.products,
+        id: "checkout",
+        path: AppRoutePaths.checkout,
+        children: [
+          {
+            id: "checkoutIndex",
+            index: true,
+            loader: CheckoutIndexLoader,
+            shouldRevalidate: ({ currentParams, nextParams }) =>
+              !isEqual(currentParams, nextParams),
+            element: <CheckoutIndex />,
+          },
+          {
+            id: "products",
+            element: <ProductsIndex />,
+            // fix the loader when discover if products will be available via API or hardcoded
+            loader: CheckoutIndexLoader,
+            shouldRevalidate: ({ currentParams, nextParams }) =>
+              !isEqual(currentParams, nextParams),
+            path: AppRoutePaths.products,
+          },
+        ],
       },
     ],
   },
@@ -151,9 +179,7 @@ if (IS_DEV_ENV) {
   routes.push(playgroundRoute);
 }
 
-const router = createBrowserRouter(routes, {
-  basename: APP_BASE_URL,
-});
+const router = createBrowserRouter(routes);
 
 export const AppRouter = (): JSX.Element => {
   return <RouterProvider router={router} />;

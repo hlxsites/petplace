@@ -8,6 +8,7 @@ export type CardProps = {
   backgroundColor?: BackgroundColorClasses;
   border?: BorderColorClasses;
   children: ReactNode;
+  "data-testid"?: string;
   padding?: "base" | "large" | "xlarge" | "xxlarge";
   radius?: "sm" | "base";
   role?: JSX.IntrinsicElements["div"]["role"];

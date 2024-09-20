@@ -1,4 +1,5 @@
 import { Icon } from "../icon/Icon";
+import { Text } from "../text/Text";
 
 type InputDescriptionMessageProps = {
   id: string;
@@ -14,7 +15,7 @@ export const InputDescriptionMessage = ({
   return (
     <span className="text-background-color-tertiary flex" id={id}>
       <Icon display="information" size={16} />
-      <span className="ml-small block text-xs">{message}</span>
+      <Text>{message}</Text>
     </span>
   );
 };

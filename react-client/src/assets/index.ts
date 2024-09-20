@@ -1,5 +1,7 @@
 export const ASSET_IMAGES = {
+  catAvatar: getImageUrl("cat-avatar.svg"),
   comfyDogAndCat: getImageUrl("onboarding-comfy-dog-and-cat.png"),
+  dogAvatar: getImageUrl("dog-avatar.svg"),
   friendlyDogAndCat: getImageUrl("onboarding-friendly-dog-and-cat.png"),
   petServices: getImageUrl("onboarding-pet-services.png"),
   petServicesSm: getImageUrl("onboarding-pet-services-sm.png"),

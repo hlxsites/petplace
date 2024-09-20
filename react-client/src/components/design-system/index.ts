@@ -13,6 +13,7 @@ export * from "./drawer/Drawer";
 export * from "./form/DisplayForm";
 export * from "./form/types/formTypes";
 export * from "./icon/Icon";
+export * from "./imageCarousel/ImageCarousel";
 export * from "./loading/Loading";
 export * from "./menu/DropdownMenu";
 export * from "./progress/StepProgress";
