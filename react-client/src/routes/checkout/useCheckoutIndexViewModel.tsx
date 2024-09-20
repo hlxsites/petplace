@@ -1,29 +1,33 @@
-import { LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { usePlansFeatures } from "~/components/Membership/hooks/usePlansFeatures";
-import { Locale } from "~/components/Membership/utils/MembershipTypes";
+import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
+import { GetCheckoutUseCase } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import { useWindowWidth } from "~/hooks/useWindowWidth";
+import { requireAuthToken } from "~/util/authUtil";
 
 import { invariantResponse } from "~/util/invariant";
 
-export const loader = (({ request }) => {
+export const loader = (async ({ request }) => {
   const url = new URL(request.url);
   const petId = url.searchParams.get("petId");
   invariantResponse(petId, "petId param is required");
 
-  const locale: Locale = "us";
-  return {
-    locale: locale as Locale,
-  };
+  const authToken = requireAuthToken();
+  const useCase = new GetCheckoutUseCase(authToken);
+
+  const checkoutData = await useCase.query(petId);
+
+  return defer({
+    checkoutData,
+  });
 }) satisfies LoaderFunction;
 
 export const useCheckoutIndexViewModel = () => {
-  const { locale } = useLoaderData<typeof loader>();
-  const { availablePlans, renderMobileVersion, isCanadaLocale, plans } =
-    usePlansFeatures(locale);
+  const { checkoutData } = useLoaderData<typeof loader>();
+  const renderMobileVersion = useWindowWidth() < 768;
 
   return {
-    availablePlans,
+    actionButtons: checkoutData?.actionButtons || [],
+    availablePlans: checkoutData?.availablePlans || [],
     renderMobileVersion,
-    isCanadaLocale,
-    plans,
+    plans: checkoutData?.plans || [],
   };
 };
