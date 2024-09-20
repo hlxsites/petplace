@@ -1,7 +1,7 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import {
   Card,
-  DisplayUncontrolledForm
+  DisplayUncontrolledForm,
 } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";

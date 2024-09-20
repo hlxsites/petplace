@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { PetDocumentsView } from "./PetDocumentsView";
@@ -40,7 +40,9 @@ describe("PetDocumentsView", () => {
     getRenderer();
 
     expect(
-      getByRole("button", { name: /Upload document/i }).querySelector("svg")
+      getByRole("button", { name: /Upload pet documents/i }).querySelector(
+        "svg"
+      )
     ).toHaveAttribute("data-file-name", "SvgUploadCloudIcon");
   });
 
@@ -49,7 +51,7 @@ describe("PetDocumentsView", () => {
 
     expect(getByText("Click to upload or drag and drop")).toBeInTheDocument();
     expect(
-      getByText(/^PNG, JPG, PDF, TXT, DOC, DOCX \(max 10Mb\)$/i)
+      getByText(/^PNG, JPG, JPEG, PDF, TXT, DOC, DOCX \(max 10Mb\)$/i)
     ).toBeInTheDocument();
   });
 
@@ -63,7 +65,7 @@ describe("PetDocumentsView", () => {
   it.skip("should render record file with loading view when user clicks to upload document", async () => {
     getRenderer();
 
-    const uploadArea = getByRole("button", { name: /upload document/i });
+    const uploadArea = getByRole("button", { name: /upload pet documents/i });
     await userEvent.click(uploadArea);
 
     expect(getByText(UPLOAD_DOCUMENT_LABEL)).toBeInTheDocument();
@@ -86,13 +88,108 @@ describe("PetDocumentsView", () => {
     await userEvent.click(getByRole("button", { name: /yes, delete/i }));
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
+
+  it("should not render error dialog when there's no download error", () => {
+    getRenderer({ downloadError: null });
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("should render error dialog when there's a download error", () => {
+    getRenderer({ downloadError: "Failed to download file" });
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+    expect(
+      within(dialog).getByText("Document Download Failed")
+    ).toBeInTheDocument();
+    expect(
+      within(dialog).getByText(
+        /We're having trouble downloading your pet's document/
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("should not render error dialog after clearing the download error", async () => {
+    const clearDownloadError = jest.fn();
+    const { rerender } = getRenderer({
+      downloadError: "Failed to download file",
+      clearDownloadError,
+    });
+
+    const dialog = screen.getByRole("dialog");
+    const dismissButton = within(dialog).getByRole("button", {
+      name: /dismiss/i,
+    });
+
+    await userEvent.click(dismissButton);
+
+    rerender(
+      <PetDocumentsView
+        clearDownloadError={clearDownloadError}
+        documents={MOCK_DOCUMENTS}
+        downloadError={null}
+        onDelete={jest.fn()}
+        onDownload={jest.fn()}
+        onUpload={jest.fn()}
+        documentType="tests"
+        uploadingNamesList={[]}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  });
+
+  it("should close the error dialog when dismissing it", async () => {
+    const clearDownloadError = jest.fn();
+    getRenderer({
+      downloadError: "Failed to download file",
+      clearDownloadError,
+    });
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+
+    const dismissButton = within(dialog).getByRole("button", {
+      name: /dismiss/i,
+    });
+    await userEvent.click(dismissButton);
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  });
+
+  it("should call clearDownloadError when dismissing the error dialog", async () => {
+    const clearDownloadError = jest.fn();
+    getRenderer({
+      downloadError: "Failed to download file",
+      clearDownloadError,
+    });
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+
+    const dismissButton = within(dialog).getByRole("button", {
+      name: /dismiss/i,
+    });
+    await userEvent.click(dismissButton);
+
+    await waitFor(() => {
+      expect(clearDownloadError).toHaveBeenCalledTimes(1);
+    });
+  });
 });
 
 // Test utils
 type Props = ComponentProps<typeof PetDocumentsView>;
 function getRenderer({
+  clearDownloadError = jest.fn(),
   documents = MOCK_DOCUMENTS,
   documentType = "tests",
+  downloadError = null,
   onDelete = jest.fn(),
   onDownload = jest.fn(),
   onUpload = jest.fn(),
@@ -100,7 +197,9 @@ function getRenderer({
 }: Partial<Props> = {}) {
   return render(
     <PetDocumentsView
+      clearDownloadError={clearDownloadError}
       documents={documents}
+      downloadError={downloadError}
       onDelete={onDelete}
       onDownload={onDownload}
       onUpload={onUpload}

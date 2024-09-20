@@ -50,7 +50,9 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
               </Button>
             }
           >
-            <PetWatchDrawerServiceContent />
+            <PetWatchDrawerServiceContent
+              serviceStatus={petServiceStatus.membershipStatus}
+            />
           </Drawer>
         </div>
       </Card>

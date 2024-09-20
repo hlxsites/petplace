@@ -1,7 +1,7 @@
 import { useNavigate, useRevalidator } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   isValidPetDocumentId,
   PetDocument,
@@ -44,12 +44,21 @@ export const useDocumentTypeIndexViewModel = () => {
     uploadDocument,
   } = useLoaderData<typeof loader>();
   const { documentTypes, petInfo: petInfoPromise } = usePetProfileContext();
+
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [uploadingNamesList, setUploadingNamesList] = useState<string[]>([]);
 
   const revalidator = useRevalidator();
 
   const documentType = documentTypes.find((dt) => dt.id === id);
   invariant(documentType, "Document type must be found here");
+
+  const isMounted = useRef(true);
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   const onClose = () => {
     navigate("..");
@@ -65,6 +74,8 @@ export const useDocumentTypeIndexViewModel = () => {
   const onDownload = ({ id, fileName, fileType }: PetDocument) => {
     return async () => {
       try {
+        setDownloadError(null);
+
         const blob = await downloadPetDocument(id);
         if (blob instanceof Blob) {
           const downloadProps: DownloadFileProps = {
@@ -78,8 +89,19 @@ export const useDocumentTypeIndexViewModel = () => {
         }
       } catch (error) {
         console.error("Error downloading document:", error);
+        if (isMounted.current) {
+          setDownloadError(
+            error instanceof Error
+              ? error.message
+              : "Unknown error occurred during download"
+          );
+        }
       }
     };
+  };
+
+  const clearDownloadError = () => {
+    setDownloadError(null);
   };
 
   const handleFileUpload = async (file: File, microchip?: string) => {
@@ -97,13 +119,13 @@ export const useDocumentTypeIndexViewModel = () => {
     setUploadingNamesList((prev) => prev.filter((name) => name !== fileName));
   };
 
-  const onUpload = (files: FileList) => {
+  const onUpload = (files: File[]) => {
     return async () => {
       const petInfo = await petInfoPromise;
 
       const promisesList: Promise<void>[] = [];
 
-      Array.from(files).map((file) => {
+      files.forEach((file) => {
         const microchip = petInfo?.microchip || undefined;
         promisesList.push(handleFileUpload(file, microchip));
       });
@@ -114,8 +136,10 @@ export const useDocumentTypeIndexViewModel = () => {
   };
 
   return {
+    clearDownloadError,
     documents,
     documentType,
+    downloadError,
     onClose,
     onDelete,
     onDownload,

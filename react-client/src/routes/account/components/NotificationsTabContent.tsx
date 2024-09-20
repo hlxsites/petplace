@@ -32,13 +32,13 @@ export const NotificationsTabContent = ({
         <div className="p-xxlarge">
           <SuspenseAwait resolve={accountNotifications}>
             {(accountNotifications) => (
-                <DisplayUncontrolledForm
-                  onSubmit={({ values }) => {
-                    console.log("onSubmit values", values);
-                  }}
-                  schema={notificationsFormSchema}
-                  initialValues={getAccountNotificationsData(accountNotifications)}
-                />
+              <DisplayUncontrolledForm
+              onSubmit={({ values }) => {
+                console.log("onSubmit values", values);
+              }}
+              schema={notificationsFormSchema}
+              initialValues={getAccountNotificationsData(accountNotifications)}
+            />
             )}
           </SuspenseAwait>
         </div>

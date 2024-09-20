@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { PET_WATCH_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
+import { PET_WATCH_COMMON_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
 
 const { getByText } = screen;
@@ -11,7 +11,9 @@ const DEFAULT_CONTENT = {
   description: "Test description",
 };
 
-const PET_WATCH_OPTIONS_LABELS = PET_WATCH_OPTIONS.map(({ label }) => label);
+const PET_WATCH_OPTIONS_LABELS = PET_WATCH_COMMON_OPTIONS.map(
+  ({ label }) => label
+);
 
 describe("PetWatchDrawerBody", () => {
   it.each(PET_WATCH_OPTIONS_LABELS)(
@@ -30,7 +32,14 @@ describe("PetWatchDrawerBody", () => {
 
 function getRenderer({
   onClick = jest.fn(),
+  serviceStatus = "Annual member",
   ...props
 }: Partial<ComponentProps<typeof PetWatchDrawerBody>> = {}) {
-  return render(<PetWatchDrawerBody onClick={onClick} {...props} />);
+  return render(
+    <PetWatchDrawerBody
+      onClick={onClick}
+      serviceStatus={serviceStatus}
+      {...props}
+    />
+  );
 }
