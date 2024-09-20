@@ -18,6 +18,9 @@ export const AppRoutePaths = {
 
 export const ACCOUNT_FULL_ROUTE = `/${AppRoutePaths.account}`;
 
+export const CHECKOUT_FULL_ROUTE = (petId: string) =>
+  `/${AppRoutePaths.checkout}?petId=${petId}`;
+
 export const MY_PETS_FULL_ROUTE = `${ACCOUNT_FULL_ROUTE}/${AppRoutePaths.myPets}`;
 
 export const PET_PROFILE_FULL_ROUTE = (petId: string) =>
