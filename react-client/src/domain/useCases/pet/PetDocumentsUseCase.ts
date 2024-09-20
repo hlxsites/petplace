@@ -18,7 +18,7 @@ type UploadDocumentType = {
   type: PetDocumentTypeId;
 };
 
-export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
+export class PetDocumentsUseCase implements GetPetDocumentsRepository {
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
@@ -30,7 +30,7 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
   }
 
   private handleError(error: unknown): [] {
-    console.error("GetPetDocumentsUseCase query error", error);
+    console.error("PetDocumentsUseCase query error", error);
     return [];
   }
 
