@@ -149,6 +149,7 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
 
       if (data) {
         const locale = this.getLocale(data.Country);
+        this.updateMembershipPrices(data.MembershipProducts);
         return this.getPlansFeatures(locale);
       }
 
@@ -181,5 +182,24 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
       : this.MEMBERSHIP_COMPARING_PLANS_BUTTONS;
 
     return { actionButtons, availablePlans, plans };
+  }
+
+  private updateMembershipPrices(
+    products?: CheckoutData["MembershipProducts"]
+  ) {
+    if (!products) return;
+
+    const priceMap: Record<MembershipPlan, string | undefined | null> = {
+      "Annual Protection": `$${products.AnnualMembership?.SalesPrice}`,
+      Lifetime: `$${products.LPMMembership?.ItemPrice}`,
+      "Lifetime Plus": `$${products.LPMPlusMembership?.ItemPrice}`,
+    };
+
+    this.MEMBERSHIP_CARD_OPTIONS = this.MEMBERSHIP_CARD_OPTIONS.map(
+      (option) => {
+        const newPrice = priceMap[option.title];
+        return newPrice ? { ...option, price: newPrice } : option;
+      }
+    );
   }
 }
