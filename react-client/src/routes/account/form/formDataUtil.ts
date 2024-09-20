@@ -45,3 +45,12 @@ export function buildAccountDetails(values: FormValues): AccountDetailsModel {
 
   return accountDetails;
 }
+
+export function validateAccountDetails(accountDetails: AccountDetailsModel) {
+  return validateNameOrSurname(accountDetails.name) && validateNameOrSurname(accountDetails.surname)
+}
+
+function validateNameOrSurname(value: string) {
+  const pattern = /^[A-Za-z'-\s]+$/;
+  return pattern.test(value);
+}
