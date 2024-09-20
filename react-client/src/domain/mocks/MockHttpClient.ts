@@ -6,10 +6,16 @@ import {
 export class MockHttpClient implements HttpClientRepository {
   private data: unknown;
   private error: unknown;
+  private statusCode?: number;
 
-  constructor({ data, error }: { data?: unknown; error?: unknown } = {}) {
+  constructor({
+    data,
+    error,
+    statusCode,
+  }: { data?: unknown; error?: unknown; statusCode?: number } = {}) {
     this.data = data;
     this.error = error;
+    this.statusCode = statusCode;
   }
 
   delete(): Promise<HttpResponse> {
@@ -54,11 +60,20 @@ export class MockHttpClient implements HttpClientRepository {
 
   put(): Promise<HttpResponse> {
     if (this.error) {
-      // @ts-expect-error - this is a mock implementation
-      return { error: this.error };
+      return Promise.resolve({
+        error: this.error,
+      });
+    }
+    if (this.statusCode === 204) {
+      return Promise.resolve({
+        data: null,
+        statusCode: this.statusCode,
+      });
     }
 
     // @ts-expect-error - this is a mock implementation
-    return { data: this.data };
+    return Promise.resolve({
+      data: this.data,
+    });
   }
 }
