@@ -111,12 +111,20 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "PUT",
         headers: options.headers,
+        body: options.body,
       });
 
-      const data: unknown = await result.json();
+      let data: unknown = null;
+
+      if (
+        result.status !== 204
+      ) {
+        data = await result.json();
+      }
 
       return { data, statusCode: result.status };
     } catch (error) {
+      console.error("Error in PUT request:", error);
       return { error };
     }
   };
