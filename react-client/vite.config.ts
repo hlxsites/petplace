@@ -15,7 +15,7 @@ export default defineConfig(() => {
           assetFileNames: ({ name }) => {
             // Special handling for images
             if (/\.(gif|jpe?g|png|svg)$/.test(name ?? "")) {
-              return "react/react-[name][extname]";
+              return "images/[name][extname]";
             }
 
             if (/\.css$/.test(name ?? "")) {

@@ -1,3 +1,7 @@
+import { IS_RUNNING_ON_LOCALHOST } from "~/util/envUtil";
+
+const BASE_URL = `${window.location.origin}/images/react/`;
+
 export const ASSET_IMAGES = {
   catAvatar: getImageUrl("cat-avatar.svg"),
   comfyDogAndCat: getImageUrl("onboarding-comfy-dog-and-cat.png"),
@@ -12,5 +16,9 @@ export const ASSET_IMAGES = {
 };
 
 function getImageUrl(filename: string) {
-  return new URL(`./images/${filename}`, import.meta.url).href;
+  if (IS_RUNNING_ON_LOCALHOST) {
+    return new URL(`./images/${filename}`, import.meta.url).href;
+  }
+
+  return `${BASE_URL}${filename}`;
 }

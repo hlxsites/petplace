@@ -11,7 +11,7 @@
     "postbuild:react": "npm run update:react:block && npm run update:react:images",
     "react-client:watch": "nodemon --watch './react-client/src/*' --ignore '**test.**' -e tsx,ts --exec \"npm run build:react\"",
     "update:react:block": "rm -f blocks/react/react-* && cp react-client/dist/assets/* blocks/react",
-    "update:react:images": "cp react-client/dist/react/* blocks/react",
+    "update:react:images": "mkdir -p images/react && cp react-client/dist/images/* images/react",
     "test:all": "npm run test --workspaces --if-present",
     "lint:all": "npm run lint && npm run lint --workspaces --if-present"
   },

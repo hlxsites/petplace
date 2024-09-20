@@ -33,6 +33,8 @@ export const ENABLE_MOCK = (() => {
 const SERVER_STG_URL = getEnvVariable("VITE_PETPLACE_SERVER_STG_URL", "");
 const SERVER_POD_URL = getEnvVariable("VITE_PETPLACE_SERVER_PROD_URL", "");
 
+export const IS_RUNNING_ON_LOCALHOST = window.location.hostname === "localhost";
+
 export const IS_PROD_URL =
   typeof window !== "undefined" &&
   (window.location.origin.includes("petplace.com") ||
