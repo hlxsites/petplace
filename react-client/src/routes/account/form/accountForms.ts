@@ -62,7 +62,7 @@ const emailInput: ElementInputText = {
   errorMessage: "Email is a required field",
   id: baseAccountDetailsIds.email,
   label: "Email Address",
-  requiredCondition: true,
+  disabledCondition: true,
   type: "email",
 };
 
