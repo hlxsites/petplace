@@ -1,7 +1,7 @@
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";
-import { GetAccountDetailsRepository } from "../../repository/user/GetAccountDetailsRepository";
+import { AccountDetailsRepository } from "../../repository/user/AccountDetailsRepository";
 
-export class MockGetAccountDetailsCase implements GetAccountDetailsRepository {
+export class MockAccountDetailsCase implements AccountDetailsRepository {
   async query(): Promise<AccountDetailsModel> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -12,5 +12,12 @@ export class MockGetAccountDetailsCase implements GetAccountDetailsRepository {
       phoneNumber: "(234) 123-4566",
       surname: "Smith",
     };
+  }
+
+  async mutate(data: AccountDetailsModel): Promise<boolean> {
+    // Simulate a delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    data
+    return true;
   }
 }

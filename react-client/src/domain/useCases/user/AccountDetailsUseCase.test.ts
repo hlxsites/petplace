@@ -1,12 +1,12 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetAccountDetailsUseCase } from "./GetAccountDetailsUseCase";
+import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
-describe("GetAccountDetailsUseCase", () => {
+describe("AccountDetailsUseCase", () => {
   it("should return null whenever it finds no data", async () => {
     const httpClient = new MockHttpClient({ data: null });
     const sut = makeSut(httpClient);
@@ -50,7 +50,7 @@ describe("GetAccountDetailsUseCase", () => {
 
 // Test helpers
 function makeSut(httpClient?: HttpClientRepository) {
-  return new GetAccountDetailsUseCase(
+  return new AccountDetailsUseCase(
     "token",
     httpClient ||
       new MockHttpClient({

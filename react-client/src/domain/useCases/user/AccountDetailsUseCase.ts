@@ -1,10 +1,20 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { readJwtClaim } from "~/util/authUtil";
 import { AccountDetailsModel } from "../../models/user/UserModels";
-import { GetAccountDetailsRepository } from "../../repository/user/GetAccountDetailsRepository";
+import { AccountDetailsRepository } from "../../repository/user/AccountDetailsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
-export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
+const serverPutRequestSchema = z.object({
+  FirstName: z.string().nullish(),
+  LastName: z.string().nullish(),
+  PhoneNumber: z.string().nullish(),
+  ZipCode: z.string().nullish(),
+});
+
+export type PutAccountDetailsRequest = z.infer<typeof serverPutRequestSchema>;
+
+export class AccountDetailsUseCase implements AccountDetailsRepository {
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
@@ -17,13 +27,33 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
 
   query = async (): Promise<AccountDetailsModel | null> => {
     try {
-      const result = await this.httpClient.get("adopt/api/UserProfile");
+      const result = await this.httpClient.get("adopt/api/User");
       if (result.data) return convertToAccountDetailsModel(result.data);
 
       return null;
     } catch (error) {
-      console.error("GetAccountDetailsUseCase query error", error);
+      console.error("AccountDetailsUseCase query error", error);
       return null;
+    }
+  };
+
+  mutate = async (data: AccountDetailsModel): Promise<boolean> => {
+    const zipCode = readJwtClaim()?.postalCode;
+    const body = convertToServerAccountDetails(data, zipCode);
+
+    try {
+      if (serverPutRequestSchema.safeParse(body).success) {
+        const result = await this.httpClient.put("adopt/api/User", {
+          body: JSON.stringify(body),
+        });
+
+        if (result.statusCode === 204) return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("AccountDetailsUseCase mutation error", error);
+      return false;
     }
   };
 }
@@ -57,5 +87,17 @@ function convertToAccountDetailsModel(
     name: FirstName ?? "",
     phoneNumber: PhoneNumber ?? "",
     surname: LastName ?? "",
+  };
+}
+
+function convertToServerAccountDetails(
+  data: AccountDetailsModel,
+  zipCode?: string
+): PutAccountDetailsRequest {
+  return {
+    FirstName: data.name ?? "",
+    PhoneNumber: data.phoneNumber ? data.phoneNumber.split("|")[0] : "",
+    LastName: data.surname ?? "",
+    ZipCode: zipCode ?? "00000",
   };
 }
