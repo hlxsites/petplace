@@ -27,7 +27,6 @@ export const useCheckoutIndexViewModel = () => {
 
   return {
     actionButtons: checkoutData?.actionButtons || [],
-    availablePlans: checkoutData?.availablePlans || [],
     renderMobileVersion,
     plans: checkoutData?.plans || [],
   };

@@ -44,7 +44,6 @@ type CheckoutData = {
 
 export type CheckoutResolvedData = {
   actionButtons: TableActions[];
-  availablePlans: MembershipPlan[];
   plans: MembershipInfo[];
 };
 
@@ -180,6 +179,6 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
       ? this.MEMBERSHIP_COMPARING_PLANS_BUTTONS.slice(1)
       : this.MEMBERSHIP_COMPARING_PLANS_BUTTONS;
 
-    return { actionButtons, availablePlans, plans };
+    return { actionButtons, plans };
   }
 }

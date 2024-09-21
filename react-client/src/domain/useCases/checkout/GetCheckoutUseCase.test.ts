@@ -37,11 +37,6 @@ describe("GetCheckoutUseCase", () => {
     const result = await sut.query("petId");
 
     expect(result).not.toBeNull();
-    expect(result?.availablePlans).toEqual([
-      "Annual Protection",
-      "Lifetime",
-      "Lifetime Plus",
-    ]);
     expect(result?.plans).toHaveLength(3);
     expect(result?.actionButtons).toHaveLength(3);
   });
@@ -59,7 +54,6 @@ describe("GetCheckoutUseCase", () => {
     const result = await sut.query("petId");
 
     expect(result).not.toBeNull();
-    expect(result?.availablePlans).toEqual(["Lifetime", "Lifetime Plus"]);
     expect(result?.plans).toHaveLength(2);
     expect(result?.actionButtons).toHaveLength(2);
   });
@@ -77,11 +71,6 @@ describe("GetCheckoutUseCase", () => {
     const result = await sut.query("petId");
 
     expect(result).not.toBeNull();
-    expect(result?.availablePlans).toEqual([
-      "Annual Protection",
-      "Lifetime",
-      "Lifetime Plus",
-    ]);
     expect(result?.plans).toHaveLength(3);
     expect(result?.actionButtons).toHaveLength(3);
   });

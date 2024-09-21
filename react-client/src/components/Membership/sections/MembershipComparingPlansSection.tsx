@@ -6,7 +6,7 @@ import { MEMBERSHIP_COMPARE_PLANS } from "../utils/membershipConstants";
 
 export const MembershipComparingPlansSection = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { actionButtons, availablePlans } = useCheckoutIndexViewModel();
+  const { actionButtons, plans } = useCheckoutIndexViewModel();
 
   return (
     <div className="hidden w-full md:block">
@@ -18,7 +18,7 @@ export const MembershipComparingPlansSection = () => {
       >
         <MembershipComparingPlanTable
           actions={actionButtons}
-          columns={availablePlans}
+          columns={plans.map(({ title }) => title)}
           rows={MEMBERSHIP_COMPARE_PLANS}
         />
       </Collapse>
