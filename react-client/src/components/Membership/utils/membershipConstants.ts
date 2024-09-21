@@ -1,12 +1,12 @@
-import { MembershipPlan } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import { MEMBERSHIP_PLANS } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
 
-const MEMBERSHIP_PLANS: MembershipPlan[] = [
-  "Annual Protection",
-  "Lifetime",
-  "Lifetime Plus",
-];
+type CompareType = {
+  availableColumns: string[];
+  label: string;
+  title: string;
+};
 
-export const MEMBERSHIP_COMPARE_PLANS = [
+export const MEMBERSHIP_COMPARE_PLANS: CompareType[] = [
   {
     availableColumns: MEMBERSHIP_PLANS,
     label:

@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { MembershipPlan, TableActions } from "~/domain/checkout/CheckoutModels";
+import { TableActions } from "~/domain/checkout/CheckoutModels";
 import { Button, Icon, Text, TextSpan, Title } from "../design-system";
 
 type TableRow = {
   label: string;
   title: string;
-  availableColumns: MembershipPlan[];
+  availableColumns: string[];
 };
 
 type MembershipComparingPlanTableProps = {
   actions: TableActions[];
-  columns: MembershipPlan[];
+  columns: string[];
   onClick?: () => void;
   rows: TableRow[];
 };

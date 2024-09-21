@@ -11,7 +11,7 @@ export type MembershipInfo = {
   price: string;
   priceInfo: string;
   subTitle: string;
-  title: MembershipPlan;
+  title: string;
 };
 
 export type MembershipPlan = "Annual Protection" | "Lifetime" | "Lifetime Plus";
