@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { PetAlertMessage } from "./PetAlertMessage";
-import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 
 const { getByRole, getByText, getAllByRole } = screen;
 
@@ -60,30 +60,30 @@ describe("AlertMessage", () => {
     expect(buttons[1]).toHaveClass("lg:hidden");
   });
 
-  it("should call onClick when user clicks on action button", async () => {
-    const onClick = jest.fn();
-    getRenderer({ onClick });
+  it("should render LinkButton with correct route", () => {
+    const testRoute = "/test-route";
+    getRenderer({ route: testRoute });
 
-    const buttons = getAllByRole("button", { name: /Get Quote Now/i });
-
-    expect(onClick).not.toHaveBeenCalled();
-    await userEvent.click(buttons[0]);
-    expect(onClick).toHaveBeenCalledTimes(1);
+    const buttons = getAllByRole("link", { name: /Get Quote Now/i });
+    expect(buttons[0]).toHaveAttribute("href", testRoute);
+    expect(buttons[1]).toHaveAttribute("href", testRoute);
   });
 });
 
 function getRenderer({
   icon,
-  onClick,
   message = "Message",
   title = "Title",
+  route = "/default-route",
 }: Partial<ComponentProps<typeof PetAlertMessage>> = {}) {
   return render(
-    <PetAlertMessage
-      icon={icon}
-      message={message}
-      onClick={onClick}
-      title={title}
-    />
+    <MemoryRouter>
+      <PetAlertMessage
+        icon={icon}
+        message={message}
+        route={route}
+        title={title}
+      />
+    </MemoryRouter>
   );
 }
