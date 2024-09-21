@@ -7,6 +7,14 @@ import {
   FormSchema,
 } from "~/components/design-system";
 
+export const baseAccountDetailsIds = {
+  email: "email-address",
+  name: "first-name",
+  phone: "phone-default",
+  secondaryPhone: "phone-secondary",
+  surname: "last-name",
+}
+
 const requiredPhoneInput: ElementInputPhone = {
   defaultType: "Home",
   disabledType: true,
@@ -14,7 +22,7 @@ const requiredPhoneInput: ElementInputPhone = {
     "You’re not required to own a ‘Home’ phone, however if it’s left blank, our system will auto-populate this field with your mobile or work number. This will not impact our ability to contact you if your pet is lost and found",
   elementType: "input",
   errorMessage: "Please fill out your phone number before continuing.",
-  id: "phone-default",
+  id: baseAccountDetailsIds.phone,
   label: "Phone Number",
   requiredCondition: {
     inputId: "phone-secondary",
@@ -26,7 +34,7 @@ const requiredPhoneInput: ElementInputPhone = {
 
 const optionalPhoneInput: ElementInputPhone = {
   elementType: "input",
-  id: "phone-secondary",
+  id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
   type: "phone",
 };
@@ -34,7 +42,7 @@ const optionalPhoneInput: ElementInputPhone = {
 const firstNameInput: ElementInputText = {
   elementType: "input",
   errorMessage: "First Name is a required field",
-  id: "first-name",
+  id: baseAccountDetailsIds.name,
   label: "First Name",
   requiredCondition: true,
   type: "text",
@@ -43,7 +51,7 @@ const firstNameInput: ElementInputText = {
 const lastNameInput: ElementInputText = {
   elementType: "input",
   errorMessage: "Last Name is a required field",
-  id: "last-name",
+  id: baseAccountDetailsIds.surname,
   label: "Last Name",
   requiredCondition: true,
   type: "text",
@@ -52,7 +60,7 @@ const lastNameInput: ElementInputText = {
 const emailInput: ElementInputText = {
   elementType: "input",
   errorMessage: "Email is a required field",
-  id: "email-address",
+  id: baseAccountDetailsIds.email,
   label: "Email Address",
   requiredCondition: true,
   type: "email",

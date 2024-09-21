@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { DragAndDropFileUpload, Text, Title } from "~/components/design-system";
+import { ErrorDialog } from "~/components/design-system/dialog/ErrorDialog";
 import { PetCardRecord } from "~/components/Pet/PetCardRecord";
 import {
   DocumentFileType,
@@ -8,23 +10,60 @@ import {
 import { getFileExtension } from "~/util/stringUtil";
 
 type PetDocumentViewProps = {
+  clearDownloadError: () => void;
   documents: PetDocument[];
   documentType: PetDocumentTypeId;
+  downloadError: string | null;
   onDelete: (document: PetDocument) => () => void;
   onDownload: (document: PetDocument) => () => void;
-  onUpload: (file: FileList) => () => void;
+  onUpload: (files: File[]) => () => void;
   uploadingNamesList: string[];
 };
 
 export const PetDocumentsView = ({
+  clearDownloadError,
   documents,
   documentType,
+  downloadError,
   onDelete,
   onDownload,
   onUpload,
   uploadingNamesList,
 }: PetDocumentViewProps) => {
+  const [errorType, setErrorType] = useState<"upload" | "download" | null>(
+    null
+  );
+  const isErrorDialogOpen = !!errorType;
+
   const isUploading = !!uploadingNamesList.length;
+
+  const errorDialogContent = {
+    upload: {
+      message:
+        "We couldn't upload your pet's document. Please check your file and try again. If the problem persists, ensure your file is in a supported format and size.",
+      title: "Document Upload Failed",
+    },
+    download: {
+      message:
+        "We're having trouble downloading your pet's document. This could be due to a temporary server issue or a problem with the file. Please try again later.",
+      title: "Document Download Failed",
+    },
+  };
+
+  useEffect(() => {
+    if (downloadError) {
+      setErrorType("download");
+    }
+  }, [downloadError]);
+
+  const handleCloseErrorDialog = () => {
+    clearDownloadError();
+    setErrorType(null);
+  };
+
+  const onUploadError = () => {
+    setErrorType("upload");
+  };
 
   return (
     <div className="grid gap-large">
@@ -50,9 +89,13 @@ export const PetDocumentsView = ({
       </Title>
 
       <DragAndDropFileUpload
-        ariaLabel="Upload document"
+        allowedFileTypes={["png", "jpg", "pdf", "txt", "doc"]}
+        allowedFileSizeLimitInMb={10}
+        ariaLabel="Upload pet documents"
         handleFiles={onHandleFiles}
+        id="upload-pet-documents"
         multiple
+        onError={onUploadError}
       />
 
       {isUploading && (
@@ -70,10 +113,19 @@ export const PetDocumentsView = ({
           ))}
         </div>
       )}
+
+      {errorType && (
+        <ErrorDialog
+          isOpen={isErrorDialogOpen}
+          onClose={handleCloseErrorDialog}
+          message={errorDialogContent[errorType].message}
+          title={errorDialogContent[errorType].title}
+        />
+      )}
     </div>
   );
 
-  function onHandleFiles(files: FileList) {
+  function onHandleFiles(files: File[]) {
     onUpload(files)();
   }
 };

@@ -1,9 +1,9 @@
 import {
-  Button,
   ButtonProps,
   Card,
   Icon,
   IconKeys,
+  LinkButton,
   Text,
   Title,
 } from "../design-system";
@@ -11,14 +11,14 @@ import {
 type AlertMessageProps = {
   icon?: IconKeys;
   message: string;
-  onClick?: () => void;
+  route: string;
   title: string;
 };
 
 export const PetAlertMessage = ({
   icon,
   message,
-  onClick,
+  route,
   title,
 }: AlertMessageProps) => {
   return (
@@ -51,9 +51,9 @@ export const PetAlertMessage = ({
 
   function renderGetQuoteButton(props: Pick<ButtonProps, "className">) {
     return (
-      <Button {...props} onClick={onClick}>
+      <LinkButton {...props} variant="primary" to={route}>
         Get Quote Now
-      </Button>
+      </LinkButton>
     );
   }
 };

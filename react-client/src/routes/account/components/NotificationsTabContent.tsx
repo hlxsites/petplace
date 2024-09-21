@@ -1,8 +1,11 @@
+import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import {
   Card,
   DisplayUncontrolledForm,
   Title,
 } from "~/components/design-system";
+import { AccountNotificationModel } from "~/domain/models/user/UserModels";
+import { getAccountNotificationsData } from "../form/formDataUtil";
 import { notificationsFormSchema } from "../form/notificationForm";
 import {
   LostAndFoundNotifications,
@@ -10,11 +13,13 @@ import {
 } from "./LostAndFoundNotifications";
 
 type NotificationsTabProps = {
+  accountNotifications?: Promise<AccountNotificationModel | null>;
   isExternalLogin?: boolean;
   lostPetsHistory?: LostNotification[];
 };
 
 export const NotificationsTabContent = ({
+  accountNotifications,
   isExternalLogin,
   lostPetsHistory,
 }: NotificationsTabProps) => {
@@ -25,12 +30,17 @@ export const NotificationsTabContent = ({
       </Title>
       <Card role="region">
         <div className="p-xxlarge">
-          <DisplayUncontrolledForm
-            onSubmit={({ values }) => {
-              console.log("onSubmit values", values);
-            }}
-            schema={notificationsFormSchema}
-          />
+          <SuspenseAwait resolve={accountNotifications}>
+            {(accountNotifications) => (
+              <DisplayUncontrolledForm
+              onSubmit={({ values }) => {
+                console.log("onSubmit values", values);
+              }}
+              schema={notificationsFormSchema}
+              initialValues={getAccountNotificationsData(accountNotifications)}
+            />
+            )}
+          </SuspenseAwait>
         </div>
       </Card>
       {isExternalLogin && (
