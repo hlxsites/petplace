@@ -1,8 +1,13 @@
+import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
-import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 
-export type MembershipInfoCard = {
+type MembershipDescriptionOffer = {
+  isNotAvailableOnPlan?: boolean;
+  offerLabel: string;
+};
+
+export type MembershipInfo = {
   buttonLabel: string;
   isHighlighted?: boolean;
   infoFooter?: string;
@@ -11,11 +16,6 @@ export type MembershipInfoCard = {
   priceInfo: string;
   subTitle: string;
   title: MembershipPlan;
-};
-
-export type MembershipDescriptionOffer = {
-  isNotAvailableOnPlan?: boolean;
-  offerLabel: string;
 };
 
 export type MembershipPlan = "Annual Protection" | "Lifetime" | "Lifetime Plus";
@@ -45,7 +45,7 @@ type CheckoutData = {
 export type CheckoutResolvedData = {
   actionButtons: TableActions[];
   availablePlans: MembershipPlan[];
-  plans: MembershipInfoCard[];
+  plans: MembershipInfo[];
 };
 
 export class GetCheckoutUseCase implements GetCheckoutRepository {
@@ -83,7 +83,7 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
   private ANNUAL_LIST_OFFERS = this.addIconToOffers(2);
   private LIFETIME_LIST_OFFERS = this.addIconToOffers(5);
 
-  private MEMBERSHIP_CARD_OPTIONS: MembershipInfoCard[] = [
+  private MEMBERSHIP_CARD_OPTIONS: MembershipInfo[] = [
     {
       buttonLabel: "Get 1 Year Protection",
       membershipDescriptionOffers: this.ANNUAL_LIST_OFFERS,

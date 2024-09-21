@@ -1,6 +1,8 @@
+import { MembershipInfo } from "~/domain/useCases/checkout/GetCheckoutUseCase";
 import { classNames } from "~/util/styleUtil";
 import { Button, Card, Icon, Text, Title } from "../design-system";
-import { MembershipInfoCard } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+
+type MembershipCardProps = MembershipInfo;
 
 export const MembershipCard = ({
   buttonLabel,
@@ -11,7 +13,7 @@ export const MembershipCard = ({
   priceInfo,
   subTitle,
   title,
-}: MembershipInfoCard) => {
+}: MembershipCardProps) => {
   const buttonVariant = isHighlighted ? "primary" : "secondary";
 
   return (
