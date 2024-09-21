@@ -21,7 +21,7 @@ export const MembershipOfferSection = () => {
 
   return (
     <div
-      className="grid w-full grid-flow-row grid-cols-3 justify-center gap-xxlarge"
+      className="flex w-full justify-center gap-xxlarge [&>*]:flex-1"
       role="region"
     >
       {membershipCards}
