@@ -8,6 +8,8 @@ export const MembershipComparingPlansSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { actionButtons, plans } = useCheckoutIndexViewModel();
 
+  if (!plans.length) return null;
+
   return (
     <div className="hidden w-full md:block">
       <Collapse
