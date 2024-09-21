@@ -1,4 +1,4 @@
-import { MembershipInfo } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { classNames } from "~/util/styleUtil";
 import { Button, Card, Icon, Text, Title } from "../design-system";
 

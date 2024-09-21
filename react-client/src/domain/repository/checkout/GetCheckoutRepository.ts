@@ -1,5 +1,5 @@
-import { CheckoutResolvedData } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import { CheckoutQueryReturnData } from "~/domain/checkout/CheckoutModels";
 
 export interface GetCheckoutRepository {
-  query(petId: string): Promise<CheckoutResolvedData | null>;
+  query(petId: string): Promise<CheckoutQueryReturnData | null>;
 }

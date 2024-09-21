@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { MembershipPlan, TableActions } from "~/domain/checkout/CheckoutModels";
 import { Button, Icon, Text, TextSpan, Title } from "../design-system";
-import {
-  MembershipPlan,
-  TableActions,
-} from "~/domain/useCases/checkout/GetCheckoutUseCase";
 
 type TableRow = {
   label: string;

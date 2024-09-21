@@ -1,5 +1,5 @@
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { GetCheckoutUseCase } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import getCheckoutFactory from "~/domain/useCases/checkout/getCheckoutFactory";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { requireAuthToken } from "~/util/authUtil";
 
@@ -12,22 +12,23 @@ export const loader = (async ({ request }) => {
   invariantResponse(petId, "petId param is required");
 
   const authToken = requireAuthToken();
-  const useCase = new GetCheckoutUseCase(authToken);
+  const useCase = getCheckoutFactory(authToken);
 
   const checkoutData = await useCase.query(petId);
 
   return defer({
-    checkoutData,
+    actionButtons: checkoutData?.actionButtons || [],
+    plans: checkoutData?.plans || [],
   });
 }) satisfies LoaderFunction;
 
 export const useCheckoutIndexViewModel = () => {
-  const { checkoutData } = useLoaderData<typeof loader>();
+  const { actionButtons, plans } = useLoaderData<typeof loader>();
   const renderMobileVersion = useWindowWidth() < 768;
 
   return {
-    actionButtons: checkoutData?.actionButtons || [],
+    actionButtons,
     renderMobileVersion,
-    plans: checkoutData?.plans || [],
+    plans,
   };
 };
