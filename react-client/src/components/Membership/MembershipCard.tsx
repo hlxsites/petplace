@@ -2,7 +2,7 @@ import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { classNames } from "~/util/styleUtil";
 import { Button, Card, Icon, Text, Title } from "../design-system";
 
-type MembershipCardProps = MembershipInfo;
+type MembershipCardProps = Omit<MembershipInfo, "comparePlansButtonLabel">;
 
 export const MembershipCard = ({
   buttonLabel,

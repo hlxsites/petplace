@@ -5,6 +5,7 @@ export type MembershipDescriptionOffer = {
 
 export type MembershipInfo = {
   buttonLabel: string;
+  comparePlansButtonLabel: string;
   isHighlighted?: boolean;
   infoFooter?: string;
   membershipDescriptionOffers?: MembershipDescriptionOffer[];
@@ -16,12 +17,6 @@ export type MembershipInfo = {
 
 export type MembershipPlan = "Annual Protection" | "Lifetime" | "Lifetime Plus";
 
-export type TableActions = {
-  label: string;
-  isPrimary?: boolean;
-};
-
 export type CheckoutQueryReturnData = {
-  actionButtons: TableActions[];
   plans: MembershipInfo[];
 };

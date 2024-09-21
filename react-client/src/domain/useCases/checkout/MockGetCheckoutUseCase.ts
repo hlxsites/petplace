@@ -6,7 +6,6 @@ export class MockGetCheckoutUseCase implements GetCheckoutRepository {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     // TODO: Implement the mock data
     return {
-      actionButtons: [],
       plans: [],
     };
   };

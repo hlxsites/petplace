@@ -6,7 +6,7 @@ import { MEMBERSHIP_COMPARE_PLANS } from "../utils/membershipConstants";
 
 export const MembershipComparingPlansSection = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { actionButtons, plans } = useCheckoutIndexViewModel();
+  const { plans } = useCheckoutIndexViewModel();
 
   if (!plans.length) return null;
 
@@ -19,8 +19,7 @@ export const MembershipComparingPlansSection = () => {
         padding="large"
       >
         <MembershipComparingPlanTable
-          actions={actionButtons}
-          columns={plans.map(({ title }) => title)}
+          plans={plans}
           rows={MEMBERSHIP_COMPARE_PLANS}
         />
       </Collapse>

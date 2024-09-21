@@ -1,18 +1,23 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
-import { MembershipPlan, TableActions } from "~/domain/checkout/CheckoutModels";
+import { MembershipPlan } from "~/domain/checkout/CheckoutModels";
+import {
+  ANNUAL_PROTECTION_PLAN_TITLE,
+  LIFETIME_PLAN_TITLE,
+  LIFETIME_PLUS_PLAN_TITLE,
+} from "~/domain/useCases/checkout/GetCheckoutUseCase";
 import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
 
-const { getAllByRole, getByText } = screen;
+const { getAllByRole, getByRole, getByText } = screen;
 
 describe("MembershipComparingPlanTable", () => {
   it("should render the table with columns and rows", () => {
     getRenderer();
 
     // Verify columns are rendered
-    COLUMNS.forEach((column) => {
-      expect(getByText(column)).toBeInTheDocument();
+    PLANS.forEach(({ title }) => {
+      expect(getByText(title)).toBeInTheDocument();
     });
 
     // Verify rows are rendered
@@ -40,8 +45,8 @@ describe("MembershipComparingPlanTable", () => {
     getRenderer({ onClick });
 
     let clickCount = 0;
-    for (const { label } of ACTIONS) {
-      const button = getByText(label);
+    for (const { comparePlansButtonLabel } of PLANS) {
+      const button = getByRole("button", { name: comparePlansButtonLabel });
       expect(button).toBeInTheDocument();
       // Expect the previous click count
       expect(onClick).toHaveBeenCalledTimes(clickCount);
@@ -55,41 +60,48 @@ describe("MembershipComparingPlanTable", () => {
   });
 });
 
+// Test helpers
+type Props = ComponentProps<typeof MembershipComparingPlanTable>;
 function getRenderer({
-  actions = ACTIONS,
-  columns = COLUMNS,
   onClick,
+  plans = PLANS,
   rows = ROWS,
-}: Partial<ComponentProps<typeof MembershipComparingPlanTable>> = {}) {
+}: Partial<Props> = {}) {
   return render(
-    <MembershipComparingPlanTable
-      actions={actions}
-      columns={columns}
-      onClick={onClick}
-      rows={rows}
-    />
+    <MembershipComparingPlanTable onClick={onClick} plans={plans} rows={rows} />
   );
 }
 
 // Mock data
-const ACTIONS: TableActions[] = [
-  { label: "Action 1" },
-  { label: "Action 2", isPrimary: true },
-];
-const COLUMNS: MembershipPlan[] = [
-  "Annual Protection",
-  "Lifetime",
-  "Lifetime Plus",
+const PLANS: Props["plans"] = [
+  {
+    comparePlansButtonLabel: "Action 1",
+    isHighlighted: false,
+    title: ANNUAL_PROTECTION_PLAN_TITLE,
+  },
+  {
+    comparePlansButtonLabel: "Action 2",
+    isHighlighted: true,
+    title: LIFETIME_PLAN_TITLE,
+  },
+  {
+    comparePlansButtonLabel: "Action 3",
+    isHighlighted: false,
+    title: LIFETIME_PLUS_PLAN_TITLE,
+  },
 ];
 const ROWS = [
   {
     label: "Label 1",
     title: "Title 1",
-    availableColumns: ["Lifetime", "Lifetime Plus"] as MembershipPlan[],
+    availableColumns: [
+      LIFETIME_PLAN_TITLE,
+      LIFETIME_PLUS_PLAN_TITLE,
+    ] satisfies MembershipPlan[],
   },
   {
     label: "Label 2",
     title: "Title 2",
-    availableColumns: ["Annual Protection"] as MembershipPlan[],
+    availableColumns: [ANNUAL_PROTECTION_PLAN_TITLE] satisfies MembershipPlan[],
   },
 ];

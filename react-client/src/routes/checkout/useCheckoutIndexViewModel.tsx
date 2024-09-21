@@ -17,17 +17,15 @@ export const loader = (async ({ request }) => {
   const checkoutData = await useCase.query(petId);
 
   return defer({
-    actionButtons: checkoutData?.actionButtons || [],
     plans: checkoutData?.plans || [],
   });
 }) satisfies LoaderFunction;
 
 export const useCheckoutIndexViewModel = () => {
-  const { actionButtons, plans } = useLoaderData<typeof loader>();
+  const { plans } = useLoaderData<typeof loader>();
   const renderMobileVersion = useWindowWidth() < 768;
 
   return {
-    actionButtons,
     renderMobileVersion,
     plans,
   };

@@ -7,20 +7,20 @@ import { GetCheckoutUseCase } from "./GetCheckoutUseCase";
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
 describe("GetCheckoutUseCase", () => {
-  it("should return null when there is no data", async () => {
+  it("should return empty plans list when there is no data", async () => {
     const httpClient = new MockHttpClient({ data: null });
     const sut = makeSut(httpClient);
     const result = await sut.query("petId");
-    expect(result).toBeNull();
+    expect(result).toStrictEqual({ plans: [] });
   });
 
-  it("should return null when there is an error", async () => {
+  it("should return empty plans list when there is an error", async () => {
     const httpClient = new MockHttpClient({
       error: new Error("Error"),
     });
     const sut = makeSut(httpClient);
     const result = await sut.query("petId");
-    expect(result).toBeNull();
+    expect(result).toStrictEqual({ plans: [] });
   });
 
   it("should return correct data for US locale", async () => {
@@ -38,7 +38,6 @@ describe("GetCheckoutUseCase", () => {
 
     expect(result).not.toBeNull();
     expect(result?.plans).toHaveLength(3);
-    expect(result?.actionButtons).toHaveLength(3);
   });
 
   it("should return correct data for CA locale", async () => {
@@ -55,7 +54,6 @@ describe("GetCheckoutUseCase", () => {
 
     expect(result).not.toBeNull();
     expect(result?.plans).toHaveLength(2);
-    expect(result?.actionButtons).toHaveLength(2);
   });
 
   it("should default to US locale when Country is not provided", async () => {
@@ -72,7 +70,6 @@ describe("GetCheckoutUseCase", () => {
 
     expect(result).not.toBeNull();
     expect(result?.plans).toHaveLength(3);
-    expect(result?.actionButtons).toHaveLength(3);
   });
 });
 
