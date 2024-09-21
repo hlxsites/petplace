@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   CheckoutQueryReturnData,
   MembershipDescriptionOffer,
@@ -8,32 +9,11 @@ import {
 import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
+import { parseData } from "../util/parseData";
 
-type Locale = "US" | "CA";
-type CheckoutData = {
-  Country?: string | null;
-  MembershipProducts?: {
-    AnnualMembership?: {
-      SalesPrice?: string | null;
-    } | null;
-    LPMMembership?: {
-      ItemPrice?: string | null;
-    } | null;
-    LPMPlusMembership?: {
-      ItemPrice?: string | null;
-    } | null;
-  } | null;
-};
-
-const ANNUAL_PROTECTION_PLAN_TITLE = "Annual Protection";
-const LIFETIME_PLAN_TITLE = "Lifetime";
-const LIFETIME_PLUS_PLAN_TITLE = "Lifetime Plus";
-
-const MEMBERSHIP_PLANS: MembershipPlan[] = [
-  ANNUAL_PROTECTION_PLAN_TITLE,
-  LIFETIME_PLAN_TITLE,
-  LIFETIME_PLUS_PLAN_TITLE,
-];
+export const ANNUAL_PROTECTION_PLAN_TITLE = "Annual Protection";
+export const LIFETIME_PLAN_TITLE = "Lifetime";
+export const LIFETIME_PLUS_PLAN_TITLE = "Lifetime Plus";
 
 const MEMBERSHIP_LIST_OFFERS: MembershipDescriptionOffer[] = [
   { offerLabel: "Get help finding your lost pet." },
@@ -98,6 +78,21 @@ const MEMBERSHIP_COMPARING_PLANS_BUTTONS: TableActions[] = [
   },
 ];
 
+const membershipProductSchema = z.object({
+  AutoRenew: z.boolean().nullish(),
+  ItemId: z.string().nullish(),
+  ItemName: z.string().nullish(),
+  ItemPrice: z.string().nullish(),
+  RenewalPrice: z.string().nullish(),
+  SalesPrice: z.string().nullish(),
+  IsMostPopular: z.boolean().nullish(),
+});
+
+const checkoutSchema = z.object({
+  Country: z.union([z.literal("US"), z.literal("CA")]),
+  MembershipProducts: z.record(z.string(), membershipProductSchema.nullable()),
+});
+
 export class GetCheckoutUseCase implements GetCheckoutRepository {
   private httpClient: HttpClientRepository;
 
@@ -109,55 +104,73 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
     }
   }
 
-  private handleError = (error: unknown): null => {
-    console.error("GetCheckoutUseCase query error", error);
-    return null;
-  };
+  query = async (petId: string): Promise<CheckoutQueryReturnData> => {
+    const emptyResult: CheckoutQueryReturnData = {
+      actionButtons: [],
+      plans: [],
+    };
 
-  query = async (petId: string): Promise<CheckoutQueryReturnData | null> => {
     try {
       const result = await this.httpClient.get(
         `api/Pet/${petId}/available-products`
       );
 
-      const data = result.data as CheckoutData;
+      const data = result.data;
+      const parsedData = parseData(checkoutSchema, data);
 
-      if (data) {
-        const locale = this.getLocale(data.Country);
-        return this.getPlansFeatures(locale);
-      }
+      if (!parsedData) return emptyResult;
 
-      return null;
+      const isCanadaLocale = parsedData.Country === "CA";
+      const plans: MembershipInfo[] = [];
+
+      Object.keys(parsedData.MembershipProducts).forEach((key) => {
+        if (key.toLowerCase().includes("membership")) {
+          const planData = parsedData.MembershipProducts[key];
+          if (!planData) return;
+
+          const title = convertMembershipKeyToMembershipPlanTitle(key);
+
+          // Shouldn't be doing this here, this should be handled by the server
+          // However, we're trying to protect the FE code from the server's data
+          if (isCanadaLocale && title === ANNUAL_PROTECTION_PLAN_TITLE) {
+            // Skip the annual plan for Canada
+            return;
+          }
+
+          const price = planData.SalesPrice || planData.ItemPrice || "-";
+          plans.push({
+            ...MEMBERSHIP_INFO_OPTIONS[title],
+            isHighlighted: !!planData.IsMostPopular,
+            price: `$${price}`,
+            title: title,
+          });
+        }
+      });
+
+      const actionButtons = isCanadaLocale
+        ? MEMBERSHIP_COMPARING_PLANS_BUTTONS.slice(1)
+        : MEMBERSHIP_COMPARING_PLANS_BUTTONS;
+
+      return { actionButtons, plans };
     } catch (error) {
-      return this.handleError(error);
+      console.error("GetCheckoutUseCase query error", error);
+      return emptyResult;
     }
   };
+}
 
-  private getLocale(locale?: string | null): Locale {
-    const availableLocales: Locale[] = ["US", "CA"];
-    if (locale && availableLocales.includes(locale as Locale)) {
-      return locale as Locale;
-    }
-    return "US" as Locale;
+function convertMembershipKeyToMembershipPlanTitle(
+  key: string
+): MembershipPlan {
+  const lowercasedKey = key.toLowerCase();
+
+  // This code is fragile, but it's the best we can do with the current server data
+
+  if (lowercasedKey.includes("annual")) {
+    return ANNUAL_PROTECTION_PLAN_TITLE;
   }
-
-  private getPlansFeatures(locale: Locale): CheckoutQueryReturnData {
-    const isCanadaLocale = locale === "CA";
-
-    const plans: MembershipInfo[] = [];
-    MEMBERSHIP_PLANS.forEach((planTitle) => {
-      // Annual Protection plan is not available for Canada
-      if (isCanadaLocale && planTitle === ANNUAL_PROTECTION_PLAN_TITLE) {
-        return false;
-      }
-
-      return plans.push(MEMBERSHIP_INFO_OPTIONS[planTitle]);
-    });
-
-    const actionButtons = isCanadaLocale
-      ? MEMBERSHIP_COMPARING_PLANS_BUTTONS.slice(1)
-      : MEMBERSHIP_COMPARING_PLANS_BUTTONS;
-
-    return { actionButtons, plans };
+  if (lowercasedKey.includes("lpmplus")) {
+    return LIFETIME_PLUS_PLAN_TITLE;
   }
+  return LIFETIME_PLAN_TITLE;
 }
