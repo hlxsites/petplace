@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { MembershipCard } from "./MembershipCard";
 import { ComponentProps } from "react";
 import { MembershipPlan } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import { MembershipCard } from "./MembershipCard";
 
 const { getByRole, getByText, queryByText } = screen;
 
@@ -10,7 +10,7 @@ describe("MembershipCard", () => {
     "Lifetime",
     "Lifetime Plus",
     "Annual Protection",
-  ] as MembershipPlan[])("should render the given title", (title) => {
+  ] satisfies MembershipPlan[])("should render the given title", (title) => {
     getRenderer({ title });
     expect(getByRole("heading", { name: title })).toBeInTheDocument();
   });
