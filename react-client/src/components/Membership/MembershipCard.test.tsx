@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { MembershipPlan } from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import { MembershipPlan } from "~/domain/checkout/CheckoutModels";
 import { MembershipCard } from "./MembershipCard";
 
 const { getByRole, getByText, queryByText } = screen;

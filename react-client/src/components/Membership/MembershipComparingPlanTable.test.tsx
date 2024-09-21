@@ -1,11 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
+import { MembershipPlan, TableActions } from "~/domain/checkout/CheckoutModels";
 import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
-import {
-  MembershipPlan,
-  TableActions,
-} from "~/domain/useCases/checkout/GetCheckoutUseCase";
 
 const { getAllByRole, getByText } = screen;
 
