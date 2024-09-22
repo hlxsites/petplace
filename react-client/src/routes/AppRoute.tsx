@@ -67,10 +67,10 @@ const routes: PetPlaceRouteObject[] = [
         path: `${AppRoutePaths.account}/${AppRoutePaths.myPets}`,
         children: [
           {
-            element: <AccountIndex />,
-            id: "accountIndex",
+            id: "myPetsIndex",
             index: true,
             loader: MyPetsIndexLoader,
+            element: <MyPetsIndex />,
           },
           {
             element: <PetProfileLayout />,
@@ -79,39 +79,20 @@ const routes: PetPlaceRouteObject[] = [
             path: AppRoutePaths.petProfile,
             children: [
               {
-                id: "myPetsIndex",
+                element: <PetProfileIndex />,
+                id: "petProfileIndex",
                 index: true,
-                loader: MyPetsIndexLoader,
-                element: <MyPetsIndex />,
               },
               {
-                element: <PetProfileLayout />,
-                id: "petProfile",
-                loader: PetProfileLayoutLoader,
-                path: AppRoutePaths.petProfile,
+                id: "petProfileDocuments",
+                path: AppRoutePaths.petProfileDocuments,
+                element: <PetProfileIndex />,
                 children: [
                   {
-                    element: <PetProfileIndex />,
-                    id: "petProfileIndex",
-                    index: true,
-                  },
-                  {
-                    id: "petProfileDocuments",
-                    path: AppRoutePaths.petProfileDocuments,
-                    element: <PetProfileIndex />,
-                    children: [
-                      {
-                        id: "petProfileDocumentType",
-                        loader: DocumentTypeIndexLoader,
-                        path: AppRoutePaths.petProfileDocumentType,
-                        element: <DocumentTypeIndex />,
-                      },
-                    ],
-                  },
-                  {
-                    id: "petEdit",
-                    path: AppRoutePaths.petEdit,
-                    element: <PetEditIndex />,
+                    id: "petProfileDocumentType",
+                    loader: DocumentTypeIndexLoader,
+                    path: AppRoutePaths.petProfileDocumentType,
+                    element: <DocumentTypeIndex />,
                   },
                 ],
               },
