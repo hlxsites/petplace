@@ -10,9 +10,13 @@ import { getStatus } from "~/routes/my-pets/petId/utils/petServiceStatusUtils";
 
 type PetWatchSectionProp = {
   petServiceStatus: PetServices;
+  route?: string;
 };
 
-export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
+export const PetWatchSection = ({
+  petServiceStatus,
+  route,
+}: PetWatchSectionProp) => {
   const { isDrawerOpen, onOpenDrawer, onCloseDrawer } =
     useDrawerContentState("pet-watch");
 
@@ -51,6 +55,7 @@ export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
             }
           >
             <PetWatchDrawerServiceContent
+              route={route}
               serviceStatus={petServiceStatus.membershipStatus}
             />
           </Drawer>

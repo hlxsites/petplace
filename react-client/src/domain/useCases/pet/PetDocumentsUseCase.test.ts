@@ -1,13 +1,13 @@
-import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
-import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetPetDocumentsUseCase } from "./GetPetDocumentsUseCase";
+import { MockHttpClient } from "../../mocks/MockHttpClient";
+import { HttpClientRepository } from "../../repository/HttpClientRepository";
+import { PetDocumentsUseCase } from "./PetDocumentsUseCase";
 import getPetDocumentsMock from "./mocks/getPetDocumentsMock.json";
 import getPetDocumentsMock2 from "./mocks/getPetDocumentsMock2.json";
 
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
-describe("GetPetDocumentsUseCase", () => {
+describe("PetDocumentsUseCase", () => {
   it("should return an empty array when no documents are found", async () => {
     const sut = makeSut();
     expect(await sut.query("pet-id", "medical")).toStrictEqual([]);
@@ -70,7 +70,7 @@ describe("GetPetDocumentsUseCase", () => {
 
 // Test helpers
 function makeSut(httpClient?: HttpClientRepository) {
-  return new GetPetDocumentsUseCase(
+  return new PetDocumentsUseCase(
     "token",
     httpClient ||
       new MockHttpClient({

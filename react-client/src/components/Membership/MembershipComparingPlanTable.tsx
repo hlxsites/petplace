@@ -1,23 +1,26 @@
 import { useEffect, useRef, useState } from "react";
+import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { Button, Icon, Text, TextSpan, Title } from "../design-system";
-import { MembershipPlan, TableActions } from "./utils/MembershipTypes";
 
 type TableRow = {
   label: string;
   title: string;
-  availableColumns: MembershipPlan[];
+  availableColumns: string[];
 };
 
+type Plan = Pick<
+  MembershipInfo,
+  "comparePlansButtonLabel" | "isHighlighted" | "title"
+>;
+
 type MembershipComparingPlanTableProps = {
-  actions: TableActions[];
-  columns: MembershipPlan[];
+  plans: Plan[];
   onClick?: () => void;
   rows: TableRow[];
 };
 
 export const MembershipComparingPlanTable = ({
-  actions,
-  columns,
+  plans,
   onClick,
   rows,
 }: MembershipComparingPlanTableProps) => {
@@ -31,7 +34,7 @@ export const MembershipComparingPlanTable = ({
     const updateHighlightPosition = () => {
       if (tableRef.current) {
         const table = tableRef.current;
-        const secondLastColumnIndex = columns.length - 1;
+        const secondLastColumnIndex = plans.length - 1;
         const tableHeaderCells = table.querySelectorAll("th");
 
         if (tableHeaderCells.length > secondLastColumnIndex) {
@@ -51,7 +54,19 @@ export const MembershipComparingPlanTable = ({
     window.addEventListener("resize", updateHighlightPosition);
 
     return () => window.removeEventListener("resize", updateHighlightPosition);
-  }, [columns]);
+  }, [plans]);
+
+  const actions: { label: string; isHighlighted?: boolean }[] = [];
+  const columns: string[] = [];
+
+  plans.forEach(({ comparePlansButtonLabel, isHighlighted, title }) => {
+    actions.push({
+      label: comparePlansButtonLabel,
+      isHighlighted,
+    });
+
+    columns.push(title);
+  });
 
   return (
     <div className="relative overflow-x-auto">
@@ -111,10 +126,13 @@ export const MembershipComparingPlanTable = ({
           ))}
           <tr>
             <td>{/* Placeholder */}</td>
-            {actions.map(({ label, ...rest }) => (
+            {actions.map(({ label, isHighlighted }) => (
               <td className="text-center" key={label}>
                 <div className="space-x-4 flex justify-evenly pt-xlarge">
-                  <Button {...rest} onClick={onClick}>
+                  <Button
+                    onClick={onClick}
+                    variant={isHighlighted ? "primary" : "secondary"}
+                  >
                     {label}
                   </Button>
                 </div>

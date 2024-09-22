@@ -447,7 +447,3 @@ export const getLostPetsHistory = () => {
     return { petName, petHistory };
   });
 };
-
-export const getAuthLogin = () => {
-  return true;
-};

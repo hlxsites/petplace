@@ -42,7 +42,7 @@ export function parseJwt(token: string) {
 export function readJwtClaim() {
   const schema = z.object({
     extension_CustRelationId: z.string(),
-    postalCode: z.string(),
+    postalCode: z.string().nullish(),
   });
 
   const parsedJwt = parseJwt(requireAuthToken());
