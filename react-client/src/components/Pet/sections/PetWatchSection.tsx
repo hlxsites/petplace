@@ -41,7 +41,7 @@ export const PetWatchSection = ({
             ariaLabel="24 Pet Watch benefits"
             id="24PetWatchDrawer"
             isOpen={isDrawerOpen}
-            onClose={onCloseDrawer}
+            onClose={() => onCloseDrawer({ persistOtherParams: true })}
             width={440}
             trigger={
               <Button
