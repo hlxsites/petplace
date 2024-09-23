@@ -48,7 +48,7 @@ function convertToAccountNotificationModel(
     const { data, error, success } = serverResponseSchema.safeParse(userData);
     if (success) return data;
 
-    console.error("Error parsing user data", { userData, error });
+    console.error("Error parsing notifications data", { userData, error });
     return null;
   };
 
