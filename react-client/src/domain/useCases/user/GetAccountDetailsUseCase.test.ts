@@ -24,14 +24,12 @@ describe("GetAccountDetailsUseCase", () => {
       surname: "Waters",
       email: "augustus.ok@email.com",
       phoneNumber: "(234) 345 6876",
-      zipCode: "23456",
     });
   });
 
   it("should return null when the data doesn't match the schema", async () => {
     const invalidMockData = {
-      name: "Samantha",
-      surname: "Kingston",
+      FirstName: 2,
     };
     const httpClient = new MockHttpClient({ data: invalidMockData });
     const sut = makeSut(httpClient);

@@ -33,9 +33,7 @@ describe("GetAccountNotificationsUseCase", () => {
 
   it("should return null when the data doesn't match the schema", async () => {
     const invalidMockData = {
-      partnerOffer: true,
-      signedCatNewsletter: true,
-      signedDogNewsletter: true,
+      DogNewsletterOptIn: "true",
     };
     const httpClient = new MockHttpClient({ data: invalidMockData });
     const sut = makeSut(httpClient);

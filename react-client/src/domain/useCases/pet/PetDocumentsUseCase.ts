@@ -9,7 +9,16 @@ import { getFileExtension } from "~/util/stringUtil";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
-export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
+const DOCUMENT_BASE_URL = "api/Document";
+
+type UploadDocumentType = {
+  file: File;
+  petId: string;
+  microchip?: string;
+  type: PetDocumentTypeId;
+};
+
+export class PetDocumentsUseCase implements GetPetDocumentsRepository {
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
@@ -21,13 +30,16 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
   }
 
   private handleError(error: unknown): [] {
-    console.error("GetPetDocumentsUseCase query error", error);
+    console.error("PetDocumentsUseCase query error", error);
     return [];
   }
 
-  async query(petId: string, type: PetDocumentTypeId): Promise<PetDocument[]> {
+  query = async (
+    petId: string,
+    type: PetDocumentTypeId
+  ): Promise<PetDocument[]> => {
     try {
-      const result = await this.httpClient.get(`Pet/${petId}/documents`);
+      const result = await this.httpClient.get(`api/Pet/${petId}/documents`);
 
       if (!result.data) return [];
 
@@ -37,13 +49,16 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
     } catch (error) {
       return this.handleError(error);
     }
-  }
+  };
 
-  async fetchDocumentBlob(documentId: string): Promise<Blob | null> {
+  fetchDocumentBlob = async (documentId: string): Promise<Blob | null> => {
     try {
-      const result = await this.httpClient.get(`Document/${documentId}`, {
-        responseType: "blob",
-      });
+      const result = await this.httpClient.get(
+        `${DOCUMENT_BASE_URL}/${documentId}`,
+        {
+          responseType: "blob",
+        }
+      );
 
       if (result.error || !result.data) {
         console.error("Error fetching document blob", result.error);
@@ -55,7 +70,57 @@ export class GetPetDocumentsUseCase implements GetPetDocumentsRepository {
       console.error("Error fetching document blob", error);
       return null;
     }
-  }
+  };
+
+  deleteDocument = async (documentId: string): Promise<boolean> => {
+    try {
+      const result = await this.httpClient.delete(
+        `${DOCUMENT_BASE_URL}/${documentId}`
+      );
+
+      if ("error" in result) {
+        console.error("Error deleting document", result.error);
+        return false;
+      }
+
+      return result.statusCode === 204;
+    } catch (error) {
+      console.error("Error deleting document", error);
+      return false;
+    }
+  };
+
+  uploadDocument = async ({
+    file,
+    microchip,
+    petId,
+    type,
+  }: UploadDocumentType): Promise<boolean> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("PetId", petId);
+    formData.append("Microchip", microchip ?? "");
+    formData.append("Type", convertToRecordTypeEnum(type).toString());
+
+    try {
+      const response = await this.httpClient.postFormData(`api/Pet/document`, {
+        body: formData,
+      });
+
+      if ("error" in response) {
+        console.error("Error uploading document", response.error);
+        return false;
+      }
+
+      return response.statusCode >= 200 && response.statusCode < 300;
+    } catch (error) {
+      console.error(
+        "An unexpected error occurred while uploading the document",
+        error
+      );
+      return false;
+    }
+  };
 }
 
 type PetDocumentWithType = PetDocument & {
@@ -86,7 +151,7 @@ function convertToPetDocuments(data: unknown): PetDocumentWithType[] {
       // @ts-expect-error - asdfa
       fileType: getFileExtension(petDocument.Name),
       id: petDocument.Id,
-      type: getPetRecordDocumentType(petDocument.DocumentType),
+      type: convertNumberToPetDocumentType(petDocument.DocumentType),
     } satisfies PetDocumentWithType);
   });
 
@@ -100,7 +165,7 @@ enum PetDocumentRecordType {
   Other = 1024,
 }
 
-function getPetRecordDocumentType(record?: number): PetDocumentTypeId {
+function convertNumberToPetDocumentType(record?: number): PetDocumentTypeId {
   const documentRecordTypeMap: Record<
     PetDocumentRecordType,
     PetDocumentTypeId
@@ -112,4 +177,15 @@ function getPetRecordDocumentType(record?: number): PetDocumentTypeId {
   };
 
   return documentRecordTypeMap[record as PetDocumentRecordType] || "other";
+}
+
+function convertToRecordTypeEnum(documentType: PetDocumentTypeId) {
+  const mapper: Record<PetDocumentTypeId, PetDocumentRecordType> = {
+    medical: PetDocumentRecordType.MedicalRecord,
+    other: PetDocumentRecordType.Other,
+    tests: PetDocumentRecordType.Test,
+    vaccines: PetDocumentRecordType.Vaccine,
+  };
+
+  return mapper[documentType] || PetDocumentRecordType.Other;
 }

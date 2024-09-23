@@ -4,7 +4,9 @@ import { AccountNotificationModel } from "../../models/user/UserModels";
 import { GetAccountNotificationRepository } from "../../repository/user/GetAccountNotificationRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
-export class GetAccountNotificationsUseCase implements GetAccountNotificationRepository {
+export class GetAccountNotificationsUseCase
+  implements GetAccountNotificationRepository
+{
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
@@ -17,7 +19,7 @@ export class GetAccountNotificationsUseCase implements GetAccountNotificationRep
 
   async query(): Promise<AccountNotificationModel | null> {
     try {
-      const result = await this.httpClient.get("User");
+      const result = await this.httpClient.get("adopt/api/User");
       if (result.data) return convertToAccountNotificationModel(result.data);
 
       return null;
@@ -28,16 +30,18 @@ export class GetAccountNotificationsUseCase implements GetAccountNotificationRep
   }
 }
 
-function convertToAccountNotificationModel(data: unknown): AccountNotificationModel | null {
+function convertToAccountNotificationModel(
+  data: unknown
+): AccountNotificationModel | null {
   if (!data) return null;
 
   const serverResponseSchema = z.object({
-    CatNewsletterOptIn: z.boolean(),
-    DogNewsletterOptIn: z.boolean(),
-    EmailOptIn: z.boolean(),
-    PartnerOffer: z.boolean(),
-    PetPlaceOffer: z.boolean(),
-    SmsOptIn: z.boolean(),
+    CatNewsletterOptIn: z.boolean().nullish(),
+    DogNewsletterOptIn: z.boolean().nullish(),
+    EmailOptIn: z.boolean().nullish(),
+    PartnerOffer: z.boolean().nullish(),
+    PetPlaceOffer: z.boolean().nullish(),
+    SmsOptIn: z.boolean().nullish(),
   });
 
   const parseUserData = (userData: unknown) => {
@@ -51,11 +55,11 @@ function convertToAccountNotificationModel(data: unknown): AccountNotificationMo
   const user = parseUserData(data);
   if (!user) return null;
   return {
-    emailAlert: user.EmailOptIn,
-    petPlaceOffer: user.PetPlaceOffer,
-    partnerOffer: user.PartnerOffer,
-    signedCatNewsletter: user.CatNewsletterOptIn,
-    signedDogNewsletter: user.DogNewsletterOptIn,
-    smsAlert: user.SmsOptIn,
+    emailAlert: !!user.EmailOptIn,
+    petPlaceOffer: !!user.PetPlaceOffer,
+    partnerOffer: !!user.PartnerOffer,
+    signedCatNewsletter: !!user.CatNewsletterOptIn,
+    signedDogNewsletter: !!user.DogNewsletterOptIn,
+    smsAlert: !!user.SmsOptIn,
   };
 }

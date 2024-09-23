@@ -7,10 +7,10 @@ import { AdditionalProtectionSection } from "~/components/Membership/sections/Ad
 import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
 import { CheckoutProductsSection } from "~/components/Membership/sections/CheckoutProductsSection";
 import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
-import { useCheckoutIndexViewModel } from "../useCheckoutIndexViewModel";
+import { useCheckoutProductsViewModel } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
-  const { products } = useCheckoutIndexViewModel();
+  const { products } = useCheckoutProductsViewModel();
   const [isOpen, setIsOpen] = useState(false);
 
   return (

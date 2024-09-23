@@ -1,6 +1,19 @@
 import { ChangePassword } from "../ChangePassword";
 
 export const ChangePasswordSection = () => {
-  // TODO: must provide the onChangePassword callback
-  return <ChangePassword />;
+  return <ChangePassword onChangePassword={triggerChangePassword}/>;
+
+  function triggerChangePassword () {
+    const passwordChangeButton = document.getElementById('react-password-change');
+
+    if (passwordChangeButton) {
+      const event = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+
+      passwordChangeButton.dispatchEvent(event);
+    }
+  };
 };

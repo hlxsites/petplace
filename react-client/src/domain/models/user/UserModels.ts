@@ -12,7 +12,6 @@ export type AccountDetailsModel = {
   name: string;
   phoneNumber: string;
   surname: string;
-  zipCode: string;
 };
 
 export type AccountEmergencyContactModel = {

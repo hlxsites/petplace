@@ -24,10 +24,43 @@ export const basicSchema: FormSchema = {
     },
     {
       elementType: "input",
-      id: "last name",
+      id: "last-name",
       label: "Non required field",
       requiredCondition: false,
       type: "text",
+    },
+    SUBMIT_BUTTON,
+  ],
+};
+
+export const fieldDependOnAnotherSchema: FormSchema = {
+  ...COMMON_PROPS,
+  children: [
+    {
+      elementType: "row",
+      children: [
+        {
+          elementType: "input",
+          id: "name",
+          label: "Pet",
+          requiredCondition: true,
+          options: ["Bob", "Duda"],
+          type: "select",
+        },
+        {
+          disabledCondition: true,
+          elementType: "input",
+          id: "microchip",
+          label: "Microchip",
+          requiredCondition: true,
+          shouldDisplay: {
+            inputId: "name",
+            type: "exists",
+            value: "",
+          },
+          type: "text",
+        },
+      ],
     },
     SUBMIT_BUTTON,
   ],

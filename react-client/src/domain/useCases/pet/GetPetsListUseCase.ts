@@ -16,9 +16,9 @@ export class GetPetsListUseCase implements GetPetsListRepository {
     }
   }
 
-  async query(): Promise<PetCommon[]> {
+  query = async (): Promise<PetCommon[]> => {
     try {
-      const result = await this.httpClient.get("Pet");
+      const result = await this.httpClient.get("api/Pet");
 
       if (result.data) return convertToPetModelList(result.data);
 
@@ -27,7 +27,7 @@ export class GetPetsListUseCase implements GetPetsListRepository {
       console.error("GetPetsListUseCase query error", error);
       return [];
     }
-  }
+  };
 }
 
 function convertToPetModelList(data: unknown): PetCommon[] {
@@ -48,9 +48,13 @@ function convertToPetModelList(data: unknown): PetCommon[] {
 
     if (!pet) return;
 
+    const isProtected = pet?.MembershipStatus
+      ? pet.MembershipStatus !== "Not a member"
+      : false;
+
     list.push({
       id: pet.Id,
-      isProtected: !!pet.MembershipStatus,
+      isProtected,
       microchip: pet.Microchip,
       name: pet.Name,
     });

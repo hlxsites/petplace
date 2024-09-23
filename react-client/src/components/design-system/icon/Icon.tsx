@@ -22,6 +22,7 @@ import DocFileIcon from "./assets/doc-file-icon.svg";
 import DoubleArrowLeftIcon from "./assets/double-arrow-left-icon.svg";
 import DoubleArrowRightIcon from "./assets/double-arrow-right-icon.svg";
 import DownloadIcon from "./assets/download-icon.svg";
+import DownloadEmailIcon from "./assets/download-email-icon.svg";
 import EditIcon from "./assets/edit-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import EllipseWithStrokeIcon from "./assets/ellipse-with-stroke-icon.svg";
@@ -80,6 +81,7 @@ export const IconMap = Object.freeze({
   doubleArrowRight: <DoubleArrowRightIcon />,
   docFile: <DocFileIcon />,
   download: <DownloadIcon />,
+  downloadEmail: <DownloadEmailIcon />,
   edit: <EditIcon />,
   ellipse: <EllipseIcon />,
   ellipseWithStroke: <EllipseWithStrokeIcon />,

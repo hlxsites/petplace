@@ -65,7 +65,14 @@ describe("PetWatchDrawerHeader", () => {
 
 function getRenderer({
   onClick = jest.fn(),
+  serviceStatus = "Annual member",
   ...props
 }: Partial<ComponentProps<typeof PetWatchDrawerHeader>> = {}) {
-  return render(<PetWatchDrawerHeader onClick={onClick} {...props} />);
+  return render(
+    <PetWatchDrawerHeader
+      onClick={onClick}
+      serviceStatus={serviceStatus}
+      {...props}
+    />
+  );
 }

@@ -1,11 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRevalidator } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 
+import { useEffect, useRef, useState } from "react";
 import {
   isValidPetDocumentId,
   PetDocument,
 } from "~/domain/models/pet/PetDocument";
-import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
+import { PetDocumentsUseCase } from "~/domain/useCases/pet/PetDocumentsUseCase";
 import { requireAuthToken } from "~/util/authUtil";
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
@@ -20,37 +21,61 @@ export const loader = (({ params }) => {
   );
 
   const authToken = requireAuthToken();
-  const useCase = new GetPetDocumentsUseCase(authToken);
+  const useCase = new PetDocumentsUseCase(authToken);
 
   return defer({
     id: documentType,
     documents: useCase.query(petId, documentType),
     downloadPetDocument: useCase.fetchDocumentBlob,
+    deletePetDocument: useCase.deleteDocument,
+    petId,
+    uploadDocument: useCase.uploadDocument,
   });
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
   const navigate = useNavigate();
-  const { documents, downloadPetDocument, id } = useLoaderData<typeof loader>();
-  const { documentTypes } = usePetProfileContext();
+  const {
+    deletePetDocument,
+    documents,
+    downloadPetDocument,
+    id,
+    petId,
+    uploadDocument,
+  } = useLoaderData<typeof loader>();
+  const { documentTypes, petInfo: petInfoPromise } = usePetProfileContext();
+
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [uploadingNamesList, setUploadingNamesList] = useState<string[]>([]);
+
+  const revalidator = useRevalidator();
 
   const documentType = documentTypes.find((dt) => dt.id === id);
   invariant(documentType, "Document type must be found here");
+
+  const isMounted = useRef(true);
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   const onClose = () => {
     navigate("..");
   };
 
-  const onDelete = (document: PetDocument) => {
-    return () => {
-      // TODO: Implement real delete action when backend is ready
-      console.log("implement delete document", document);
+  const onDelete = (documentId: PetDocument) => {
+    return async () => {
+      await deletePetDocument(documentId["id"]);
+      revalidator.revalidate();
     };
   };
 
   const onDownload = ({ id, fileName, fileType }: PetDocument) => {
     return async () => {
       try {
+        setDownloadError(null);
+
         const blob = await downloadPetDocument(id);
         if (blob instanceof Blob) {
           const downloadProps: DownloadFileProps = {
@@ -64,15 +89,61 @@ export const useDocumentTypeIndexViewModel = () => {
         }
       } catch (error) {
         console.error("Error downloading document:", error);
+        if (isMounted.current) {
+          setDownloadError(
+            error instanceof Error
+              ? error.message
+              : "Unknown error occurred during download"
+          );
+        }
       }
     };
   };
 
+  const clearDownloadError = () => {
+    setDownloadError(null);
+  };
+
+  const handleFileUpload = async (file: File, microchip?: string) => {
+    const fileName = file.name;
+    setUploadingNamesList((prev) => [...prev, fileName]);
+
+    await uploadDocument({
+      file,
+      microchip,
+      petId,
+      type: id,
+    });
+    revalidator.revalidate();
+
+    setUploadingNamesList((prev) => prev.filter((name) => name !== fileName));
+  };
+
+  const onUpload = (files: File[]) => {
+    return async () => {
+      const petInfo = await petInfoPromise;
+
+      const promisesList: Promise<void>[] = [];
+
+      files.forEach((file) => {
+        const microchip = petInfo?.microchip || undefined;
+        promisesList.push(handleFileUpload(file, microchip));
+      });
+
+      await Promise.allSettled(promisesList);
+      revalidator.revalidate();
+    };
+  };
+
   return {
+    clearDownloadError,
     documents,
     documentType,
+    downloadError,
     onClose,
     onDelete,
     onDownload,
+    onUpload,
+    uploadingNamesList,
   };
 };

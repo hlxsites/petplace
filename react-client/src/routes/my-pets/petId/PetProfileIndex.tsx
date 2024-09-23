@@ -8,7 +8,10 @@ import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 import { PetModel } from "~/domain/models/pet/PetModel";
-import { MY_PETS_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import {
+  CHECKOUT_FULL_ROUTE,
+  MY_PETS_FULL_ROUTE,
+} from "~/routes/AppRoutePaths";
 import { invariant } from "~/util/invariant";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
@@ -42,9 +45,11 @@ export const PetProfileIndex = () => {
 
     const { id, membershipStatus, products } = pet;
 
+    const checkoutPath = CHECKOUT_FULL_ROUTE(id);
+
     return (
       <>
-        <PetAlertSection />
+        <PetAlertSection route={checkoutPath} />
         <Header
           backButtonTo={MY_PETS_FULL_ROUTE}
           pageTitle="Pet Profile"
@@ -53,7 +58,10 @@ export const PetProfileIndex = () => {
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
           <AdvertisingSection />
-          <PetWatchSection petServiceStatus={{ membershipStatus, products }} />
+          <PetWatchSection
+            petServiceStatus={{ membershipStatus, products }}
+            route={checkoutPath}
+          />
           <PetInsuranceSection />
           <PetLostUpdatesSection {...pet} />
         </div>
