@@ -17,7 +17,7 @@ export class MockAccountDetailsCase implements AccountDetailsRepository {
   async mutate(data: AccountDetailsModel): Promise<boolean> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    data
+    console.log({ data });
     return true;
   }
 }

@@ -1,4 +1,4 @@
-export type AccountNotificationModel = {
+export type AccountNotificationsModel = {
   emailAlert?: boolean;
   petPlaceOffer?: boolean;
   partnerOffer?: boolean;
