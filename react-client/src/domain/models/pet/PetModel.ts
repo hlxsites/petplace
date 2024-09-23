@@ -59,6 +59,7 @@ export type PetModel = PetCommon &
     missingStatus?: MissingStatus;
     mixedBreed?: boolean;
     onboardCompleted?: boolean;
+    policyInsurance?: string[];
     sex?: string;
     sourceType?: "MyPetHealth" | "PetPoint";
     spayedNeutered?: boolean;

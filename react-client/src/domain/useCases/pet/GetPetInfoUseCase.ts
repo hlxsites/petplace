@@ -49,6 +49,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     MixedBreed: z.boolean().nullish(),
     Name: z.string(),
     Neutered: z.boolean().nullish(),
+    PolicyNumbers: z.array(z.string()).nullish(),
     Products: z.array(
       z.object({
         Id: z.string(),
