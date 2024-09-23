@@ -20,3 +20,5 @@ export type MembershipStatus =
   | "Lifetime protect member"
   | "Lifetime plus protect member"
   | "Not a member";
+
+export type CA_MembershipStatus = Exclude<MembershipStatus, "Annual member">;

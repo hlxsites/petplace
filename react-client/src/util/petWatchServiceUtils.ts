@@ -1,15 +1,29 @@
-import { PetServices } from "~/domain/models/pet/PetModel";
-import { MembershipStatus } from "~/routes/my-pets/petId/types/PetServicesTypes";
-import { PetWatchOptionBasedOnMembershipStatus_US } from "~/routes/my-pets/petId/utils/petWatchConstants";
+import { Locale, PetServices } from "~/domain/models/pet/PetModel";
+import {
+  CA_MembershipStatus,
+  MembershipStatus,
+} from "~/routes/my-pets/petId/types/PetServicesTypes";
+import {
+  PetWatchOptionBasedOnMembershipStatus_CA,
+  PetWatchOptionBasedOnMembershipStatus_US,
+} from "~/routes/my-pets/petId/utils/petWatchConstants";
 
 export function getPetWatchServiceOption(
-  serviceStatus: PetServices["membershipStatus"]
+  serviceStatus: PetServices["membershipStatus"],
+  locale?: Locale | null
 ) {
-  return (
-    PetWatchOptionBasedOnMembershipStatus_US[
-      serviceStatus as MembershipStatus
-    ] || PetWatchOptionBasedOnMembershipStatus_US["Not a member"]
-  );
+  const PetWatchOptionsBasedOnLocale = {
+    US:
+      PetWatchOptionBasedOnMembershipStatus_US[
+        serviceStatus as MembershipStatus
+      ] || PetWatchOptionBasedOnMembershipStatus_US["Not a member"],
+    CA: PetWatchOptionBasedOnMembershipStatus_CA[
+      (serviceStatus as CA_MembershipStatus) ||
+        PetWatchOptionBasedOnMembershipStatus_CA["Not a member"]
+    ],
+  };
+
+  return PetWatchOptionsBasedOnLocale[locale ?? "US"];
 }
 
 export function shouldRenderStandardServiceDrawer(
