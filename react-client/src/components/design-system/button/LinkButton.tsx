@@ -9,15 +9,36 @@ type LinkButtonProps = Pick<
   LinkProps,
   "preventScrollReset" | "relative" | "replace" | "to"
 > &
-  ButtonProps;
+  ButtonProps & {
+    openInNewTab?: boolean;
+  };
 
 export const LinkButton = ({
   preventScrollReset,
   relative,
   replace,
+  openInNewTab,
   to,
   ...buttonProps
 }: LinkButtonProps) => {
+  const isExternalLink = typeof to === "string" && to.startsWith("http");
+
+  if (isExternalLink) {
+    return (
+      <a
+        href={to}
+        className={classNames("no-underline", {
+          "w-full": buttonProps.fullWidth,
+        })}
+        target={openInNewTab ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        tabIndex={-1}
+      >
+        <Button variant="link" {...buttonProps} />
+      </a>
+    );
+  }
+
   return (
     <Link
       className={classNames("no-underline", {
