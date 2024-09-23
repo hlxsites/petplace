@@ -1,9 +1,10 @@
 import { FormValues } from "~/components/design-system";
 import {
   AccountDetailsModel,
-  AccountNotificationModel,
+  AccountNotificationsModel,
 } from "~/domain/models/user/UserModels";
 import { baseAccountDetailsIds } from "./accountForms";
+import { accountNotificationIds } from "./notificationForm";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
@@ -17,7 +18,7 @@ export function getAccountDetailsData(
 }
 
 export function getAccountNotificationsData(
-  accountNotifications?: AccountNotificationModel | null
+  accountNotifications?: AccountNotificationsModel | null
 ): FormValues {
   const newsLetter = [];
   if (accountNotifications?.signedCatNewsletter) newsLetter.push("Cat");
@@ -37,20 +38,40 @@ export function getAccountNotificationsData(
 
 export function buildAccountDetails(values: FormValues): AccountDetailsModel {
   const accountDetails: AccountDetailsModel = {
-    email: values["email-address"] as string,
-    name: values["first-name"] as string,
-    phoneNumber: values["phone-default"] as string,
-    surname: values["last-name"] as string,
+    email: values[baseAccountDetailsIds.email] as string,
+    name: values[baseAccountDetailsIds.name] as string,
+    phoneNumber: values[baseAccountDetailsIds.phone] as string,
+    surname: values[baseAccountDetailsIds.surname] as string,
   };
 
   return accountDetails;
 }
 
 export function validateAccountDetails(accountDetails: AccountDetailsModel) {
-  return validateNameOrSurname(accountDetails.name) && validateNameOrSurname(accountDetails.surname)
+  return (
+    validateNameOrSurname(accountDetails.name) &&
+    validateNameOrSurname(accountDetails.surname)
+  );
 }
 
 function validateNameOrSurname(value: string) {
   const pattern = /^[A-Za-z'-\s]+$/;
   return pattern.test(value);
+}
+
+export function buildAccountNotifications(
+  values: FormValues
+): AccountNotificationsModel {
+  const newsletter = values[accountNotificationIds.newsletter] as string[];
+  const alerts = values[accountNotificationIds.petPlaceAdoptAlerts] as string[];
+  const accountDetails: AccountNotificationsModel = {
+    emailAlert: alerts.includes("Email"),
+    petPlaceOffer: values[accountNotificationIds.petPlaceOffers] as boolean,
+    partnerOffer: values[accountNotificationIds.partnerOffers] as boolean,
+    signedCatNewsletter: newsletter.includes("Cat"),
+    signedDogNewsletter: newsletter.includes("Dog"),
+    smsAlert: alerts.includes("SMS"),
+  };
+
+  return accountDetails;
 }

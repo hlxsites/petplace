@@ -3,7 +3,10 @@ import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { getLostPetsHistory } from "~/mocks/MockRestApiServer";
 import { requireAuthToken } from "~/util/authUtil";
 
-import { AccountDetailsModel } from "~/domain/models/user/UserModels";
+import {
+  AccountDetailsModel,
+  AccountNotificationsModel,
+} from "~/domain/models/user/UserModels";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
 import { validateAccountDetails } from "./form/formDataUtil";
@@ -20,11 +23,16 @@ export const loader = (() => {
       void accountDetailsUseCase.mutate(values);
   }
 
+  function onSubmitAccountNotifications(values: AccountNotificationsModel) {
+    void accountNotificationsUseCase.mutate(values);
+  }
+
   return defer({
     accountDetails: accountDetailsUseCase.query(),
     accountNotifications: accountNotificationsUseCase.query(),
     lostPetsHistory: getLostPetsHistory(),
     onSubmitAccountDetails,
+    onSubmitAccountNotifications,
   });
 }) satisfies LoaderFunction;
 
@@ -34,6 +42,7 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     lostPetsHistory,
     onSubmitAccountDetails,
+    onSubmitAccountNotifications,
   } = useLoaderData<typeof loader>();
 
   return {
@@ -41,6 +50,7 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     lostPetsHistory,
     onSubmitAccountDetails,
+    onSubmitAccountNotifications,
   };
 };
 
