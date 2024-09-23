@@ -48,8 +48,6 @@ function convertToPetModelList(data: unknown): PetCommon[] {
 
     if (!pet) return;
 
-    console.log(pet.MembershipStatus);
-
     const isProtected = pet?.MembershipStatus
       ? pet.MembershipStatus !== "Not a member"
       : false;
