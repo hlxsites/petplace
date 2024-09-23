@@ -41,7 +41,7 @@ export function parseJwt(token: string) {
 
 export function readJwtClaim() {
   const schema = z.object({
-    extension_CustRelationId: z.string(),
+    extension_CustRelationId: z.string().nullish(),
     postalCode: z.string().nullish(),
   });
 
