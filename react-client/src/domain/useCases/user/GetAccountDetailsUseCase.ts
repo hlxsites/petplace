@@ -17,18 +17,26 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
   }
 
   async query(): Promise<AccountDetailsModel | null> {
-    const isExternalLogin = checkIsExternalLogin()
+    const isInternalLogin = !checkIsExternalLogin()
 
     try {
-      let result;
-
-      if (isExternalLogin) {
+      let result = await this.httpClient.get("adopt/api/User");
+      let accountDetails: AccountDetailsModel | null;
+      if (result.data) {
+        accountDetails = convertToInternalAccountDetailsModel(result.data);
+        if(isInternalLogin) return accountDetails
+        
+        // The server doesn't update name and surname for the API of external login,
+        // so we use the values from the internal login API
         result = await this.httpClient.get("adopt/api/UserProfile");
-        if (result.data) return convertToExternalAccountDetailsModel(result.data);
-
-      } else {
-        result = await this.httpClient.get("adopt/api/User");
-        if (result.data) return convertToInternalAccountDetailsModel(result.data);
+        if (result.data){
+          accountDetails = {
+            ...convertToExternalAccountDetailsModel(result.data),
+            name: accountDetails?.name,
+            surname: accountDetails?.surname
+          };
+          return accountDetails
+        }
       }
 
       return null;
@@ -42,8 +50,6 @@ export class GetAccountDetailsUseCase implements GetAccountDetailsRepository {
 function convertToInternalAccountDetailsModel(
   data: unknown
 ): InternalAccountDetailsModel | null {
-  if (!data) return null;
-
   const serverResponseSchema = z.object({
     Email: z.string().nullish(),
     FirstName: z.string().nullish(),
@@ -75,8 +81,6 @@ function convertToInternalAccountDetailsModel(
 function convertToExternalAccountDetailsModel(
   data: unknown
 ): ExternalAccountDetailsModel | null {
-  if (!data) return null;
-
   const serverResponseSchema = z.object({
     Address: z.object({
       Unit: z.string().nullish(),

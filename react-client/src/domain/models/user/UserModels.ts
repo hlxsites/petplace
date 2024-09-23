@@ -12,17 +12,17 @@ export type AccountDetailsModel =
   | ExternalAccountDetailsModel;
 
 export type InternalAccountDetailsModel = {
-  email: string;
-  name: string;
-  defaultPhone: string;
-  surname: string;
+  email?: string;
+  name?: string;
+  defaultPhone?: string;
+  surname?: string;
 };
 
 export type ExternalAccountDetailsModel = InternalAccountDetailsModel & {
   address: AccountAddressModel;
-  secondaryPhone: string;
-  contactConsent: boolean;
-  informationConsent: boolean;
+  secondaryPhone?: string;
+  contactConsent?: boolean;
+  informationConsent?: boolean;
 };
 
 export type AccountAddressModel = {
