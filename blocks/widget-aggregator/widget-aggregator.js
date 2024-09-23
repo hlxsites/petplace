@@ -12,13 +12,14 @@ export default async function decorate(block) {
   const { source, script } = blockMetadata;
 
   if (script) {
-    block.setAttribute('id', 'widgetTarget');
+    block.setAttribute('id', 'petplace-quote-form');
 
     const widget = document.createElement('script');
     widget.setAttribute('brand', 'petplace');
     widget.setAttribute('source', source);
     widget.text = script;
 
-    block.replaceChildren(widget);
+    block.innerText = '';
+    document.body.append(widget);
   }
 }
