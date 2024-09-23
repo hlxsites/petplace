@@ -1,12 +1,12 @@
+import { PetServices } from "~/domain/models/pet/PetModel";
 import { useDrawerContentState } from "~/hooks/useDrawerContentState";
 import {
   PET_WATCH_OFFERS,
   PET_WATCH_TAGS,
 } from "~/routes/my-pets/petId/utils/petServiceConstants";
+import { getStatus } from "~/routes/my-pets/petId/utils/petServiceStatusUtils";
 import { Button, Card, Drawer, Tag, Text, Title } from "../../design-system";
 import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
-import { PetServices } from "~/domain/models/pet/PetModel";
-import { getStatus } from "~/routes/my-pets/petId/utils/petServiceStatusUtils";
 
 type PetWatchSectionProp = {
   petServiceStatus: PetServices;
@@ -41,7 +41,7 @@ export const PetWatchSection = ({
             ariaLabel="24 Pet Watch benefits"
             id="24PetWatchDrawer"
             isOpen={isDrawerOpen}
-            onClose={() => onCloseDrawer({ persistOtherParams: true })}
+            onClose={onCloseDrawer}
             width={440}
             trigger={
               <Button
