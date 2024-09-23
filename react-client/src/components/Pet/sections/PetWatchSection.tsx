@@ -5,15 +5,17 @@ import {
 } from "~/routes/my-pets/petId/utils/petServiceConstants";
 import { Button, Card, Drawer, Tag, Text, Title } from "../../design-system";
 import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
-import { PetServices } from "~/domain/models/pet/PetModel";
+import { Locale, PetServices } from "~/domain/models/pet/PetModel";
 import { getStatus } from "~/routes/my-pets/petId/utils/petServiceStatusUtils";
 
 type PetWatchSectionProp = {
+  locale?: Locale | null;
   petServiceStatus: PetServices;
   route?: string;
 };
 
 export const PetWatchSection = ({
+  locale,
   petServiceStatus,
   route,
 }: PetWatchSectionProp) => {
@@ -21,6 +23,10 @@ export const PetWatchSection = ({
     useDrawerContentState("pet-watch");
 
   const serviceStatus = getStatus(petServiceStatus);
+
+  // This safe guard avoid inconsistences from the API to bring "annual membership" for canadian animals
+  // This should be removed once better business rule is defined
+  if (serviceStatus === "annual" && locale === "CA") return null;
 
   const { buttonLabel, icon, message } = PET_WATCH_OFFERS[serviceStatus];
   const { label, tagStatus } = PET_WATCH_TAGS[serviceStatus];
@@ -55,6 +61,7 @@ export const PetWatchSection = ({
             }
           >
             <PetWatchDrawerServiceContent
+              locale={locale}
               route={route}
               serviceStatus={petServiceStatus.membershipStatus}
             />

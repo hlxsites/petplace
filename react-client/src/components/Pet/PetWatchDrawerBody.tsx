@@ -1,4 +1,4 @@
-import { PetServices } from "~/domain/models/pet/PetModel";
+import { Locale, PetServices } from "~/domain/models/pet/PetModel";
 import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
@@ -9,6 +9,7 @@ import { PetWatchServices } from "./PetWatchServices";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;
+  locale?: Locale | null;
   onClick: (label?: string) => () => void;
   route?: string;
   serviceStatus: PetServices["membershipStatus"];
@@ -16,6 +17,7 @@ type PetWatchDrawerBodyProps = {
 
 export const PetWatchDrawerBody = ({
   contentDetails,
+  locale,
   onClick,
   route,
   serviceStatus,
@@ -45,7 +47,11 @@ export const PetWatchDrawerBody = ({
 
   return (
     <div className="grid gap-xlarge">
-      <PetWatchServices onClick={onClick} serviceStatus={serviceStatus} />
+      <PetWatchServices
+        onClick={onClick}
+        serviceStatus={serviceStatus}
+        locale={locale}
+      />
       {standardServiceDrawerElement}
       {annualServiceElement}
     </div>

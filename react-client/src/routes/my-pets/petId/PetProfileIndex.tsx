@@ -43,7 +43,7 @@ export const PetProfileIndex = () => {
       return contentParam === "pet-watch-purchase-success";
     })();
 
-    const { id, membershipStatus, products } = pet;
+    const { id, locale, membershipStatus, products } = pet;
 
     const checkoutPath = CHECKOUT_FULL_ROUTE(id);
 
@@ -59,6 +59,7 @@ export const PetProfileIndex = () => {
           <PetCardSection pet={pet} />
           <AdvertisingSection />
           <PetWatchSection
+            locale={locale}
             petServiceStatus={{ membershipStatus, products }}
             route={checkoutPath}
           />
