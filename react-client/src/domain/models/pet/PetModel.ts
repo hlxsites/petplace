@@ -45,9 +45,12 @@ export type PetProduct = {
 };
 
 export type PetServices = {
+  locale?: Locale | null;
   membershipStatus?: string;
   products?: PetProduct[];
 };
+
+export type Locale = "CA" | "US";
 
 export type PetModel = PetCommon &
   PetServices & {

@@ -24,6 +24,7 @@ describe("GetPetsInfoUseCase", () => {
       breed: "Labrador",
       dateOfBirth: "2020-01-01T00:00:00",
       id: "A123",
+      locale: "US",
       membershipStatus: "Annual member",
       microchip: "123456789",
       mixedBreed: false,

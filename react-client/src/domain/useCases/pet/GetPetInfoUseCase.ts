@@ -40,6 +40,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
   const serverResponseSchema = z.object({
     Age: z.string(),
     Breed: z.string(),
+    CountryCode: z.union([z.literal("US"), z.literal("CA")]).nullish(),
     DateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
       message: "Invalid date format",
     }),
@@ -78,6 +79,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     breed: info.Breed,
     dateOfBirth: info.DateOfBirth,
     id: info.Id,
+    locale: info.CountryCode,
     membershipStatus: info.MembershipStatus,
     microchip: info.Microchip,
     mixedBreed: !!info.MixedBreed,
