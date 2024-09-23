@@ -14,3 +14,13 @@ export type AccountDetailsModel = {
   surname: string;
   zipCode: string;
 };
+
+export type AccountEmergencyContactModel = {
+  email: string;
+  id: string;
+  name: string;
+  phoneNumber: string;
+  surname: string;
+};
+
+
