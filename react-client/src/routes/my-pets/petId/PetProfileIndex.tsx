@@ -47,6 +47,11 @@ export const PetProfileIndex = () => {
 
     const checkoutPath = CHECKOUT_FULL_ROUTE(id);
 
+    const petInsuranceSectionElement = (() => {
+      if (!policyInsurance?.length) return null;
+      return <PetInsuranceSection />;
+    })();
+
     return (
       <>
         <PetAlertSection route={checkoutPath} />
@@ -62,7 +67,7 @@ export const PetProfileIndex = () => {
             petServiceStatus={{ membershipStatus, products }}
             route={checkoutPath}
           />
-          {policyInsurance?.length && <PetInsuranceSection />}
+          {petInsuranceSectionElement}
           <PetLostUpdatesSection {...pet} />
         </div>
         <Outlet context={viewModel} />
