@@ -28,6 +28,7 @@ describe("GetPetsInfoUseCase", () => {
       microchip: "123456789",
       mixedBreed: false,
       name: "Buddy",
+      policyInsurance: [],
       products: [],
       sex: "Male",
       spayedNeutered: true,
