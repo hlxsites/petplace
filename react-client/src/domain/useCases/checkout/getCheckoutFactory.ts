@@ -1,10 +1,10 @@
+import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { ENABLE_MOCK } from "~/util/envUtil";
-import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 import { GetCheckoutUseCase } from "./GetCheckoutUseCase";
 import { MockGetCheckoutUseCase } from "./MockGetCheckoutUseCase";
 
-export default function (
+export default function getCheckoutFactory(
   authToken: string,
   httpClient?: HttpClientRepository
 ): GetCheckoutRepository {
