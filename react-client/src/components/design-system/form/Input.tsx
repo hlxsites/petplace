@@ -24,6 +24,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       iconRight,
       id,
       onChange,
+      maxLength,
+      minLength,
       placeholder,
       type = "text",
       value,
@@ -58,6 +60,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                   }
                 )}
                 id={id}
+                maxLength={maxLength}
+                minLength={minLength}
                 name={id}
                 onChange={handleOnChange}
                 placeholder={placeholder}

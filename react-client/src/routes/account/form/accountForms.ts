@@ -6,6 +6,7 @@ import {
   ElementSection,
   FormSchema,
 } from "~/components/design-system";
+import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const baseAccountDetailsIds = {
   email: "email-address",
@@ -13,7 +14,8 @@ export const baseAccountDetailsIds = {
   phone: "phone-default",
   secondaryPhone: "phone-secondary",
   surname: "last-name",
-}
+  zipCode: "zip-code",
+};
 
 const requiredPhoneInput: ElementInputPhone = {
   defaultType: "Home",
@@ -37,6 +39,7 @@ const optionalPhoneInput: ElementInputPhone = {
   id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
   type: "phone",
+  shouldDisplay: checkIsExternalLogin(),
 };
 
 const firstNameInput: ElementInputText = {
@@ -44,6 +47,8 @@ const firstNameInput: ElementInputText = {
   errorMessage: "First Name is a required field",
   id: baseAccountDetailsIds.name,
   label: "First Name",
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -53,6 +58,8 @@ const lastNameInput: ElementInputText = {
   errorMessage: "Last Name is a required field",
   id: baseAccountDetailsIds.surname,
   label: "Last Name",
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -63,6 +70,7 @@ const emailInput: ElementInputText = {
   id: baseAccountDetailsIds.email,
   label: "Email Address",
   requiredCondition: true,
+  disabledCondition: true,
   type: "email",
 };
 
@@ -127,8 +135,9 @@ const intersectionInput: ElementInputText = {
 const zipCodeInput: ElementInputText = {
   className: "w-1/2",
   elementType: "input",
-  id: "zip-code",
+  id: baseAccountDetailsIds.zipCode,
   label: "Zip Code",
+  maxLength: 15,
   requiredCondition: true,
   type: "text",
 };
@@ -168,7 +177,12 @@ const userDetailsSection: ElementSection = {
       elementType: "row",
       children: [firstNameInput, lastNameInput],
     },
-    emailInput,
+    {
+      elementType: "row",
+      children: checkIsExternalLogin()
+        ? [emailInput]
+        : [emailInput, {...zipCodeInput, className: ""}],
+    },
   ],
 };
 

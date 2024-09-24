@@ -3,18 +3,17 @@ import {
   AccountDetailsModel,
   AccountNotificationModel,
 } from "~/domain/models/user/UserModels";
-import { readJwtClaim } from "~/util/authUtil";
 import { baseAccountDetailsIds } from "./accountForms";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
 ): FormValues {
-  const data = readJwtClaim();
   return {
-    [baseAccountDetailsIds.name]: data?.given_name ?? "",
-    [baseAccountDetailsIds.surname]: data?.family_name ?? "",
-    [baseAccountDetailsIds.email]: data?.emails?.[0] ?? "",
+    [baseAccountDetailsIds.email]: accountDetails?.email ?? "",
+    [baseAccountDetailsIds.name]: accountDetails?.name ?? "",
     [baseAccountDetailsIds.phone]: accountDetails?.phoneNumber ?? "",
+    [baseAccountDetailsIds.surname]: accountDetails?.surname ?? "",
+    [baseAccountDetailsIds.zipCode]: accountDetails?.zipCode ?? "",
   };
 }
 
@@ -35,4 +34,25 @@ export function getAccountNotificationsData(
     "partner-offers": !!accountNotifications?.partnerOffer,
     "pet-place-adopt-alerts": alerts,
   };
+}
+
+export function buildAccountDetails(values: FormValues): AccountDetailsModel {
+  const accountDetails: AccountDetailsModel = {
+    email: values[baseAccountDetailsIds.email] as string,
+    name: values[baseAccountDetailsIds.name] as string,
+    phoneNumber: values[baseAccountDetailsIds.phone] as string,
+    surname: values[baseAccountDetailsIds.surname] as string,
+    zipCode: values[baseAccountDetailsIds.zipCode] as string,
+  };
+
+  return accountDetails;
+}
+
+export function validateAccountDetails(accountDetails: AccountDetailsModel) {
+  return validateNameOrSurname(accountDetails.name) && validateNameOrSurname(accountDetails.surname)
+}
+
+function validateNameOrSurname(value: string) {
+  const pattern = /^[A-Za-z'-\s]+$/;
+  return pattern.test(value);
 }

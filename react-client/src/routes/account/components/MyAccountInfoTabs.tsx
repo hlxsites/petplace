@@ -9,13 +9,13 @@ import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const MyAccountInfoTabs = () => {
   const viewModel = useAccountContext();
-  const { accountDetails, accountNotifications, lostPetsHistory } = viewModel;
+  const { accountDetails, accountNotifications, lostPetsHistory, onSubmitAccountDetails } = viewModel;
   const isExternalLogin = checkIsExternalLogin()
 
   const myAccountTabOptions: RouteTab[] = [
     {
       content: () => (
-        <AccountDetailsTabContent isExternalLogin={isExternalLogin} accountDetails={accountDetails} />
+        <AccountDetailsTabContent isExternalLogin={isExternalLogin} accountDetails={accountDetails} onSubmitAccountDetails={onSubmitAccountDetails} />
       ),
       exactRoute: true,
       icon: "user",

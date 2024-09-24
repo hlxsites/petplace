@@ -5,7 +5,7 @@ import { CheckoutConclusionModal } from "~/components/Membership/CheckoutConclus
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
-import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
+import { PetInsuranceSection } from "~/components/Pet/sections/PetInsuranceSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 import { PetModel } from "~/domain/models/pet/PetModel";
 import {
@@ -43,9 +43,14 @@ export const PetProfileIndex = () => {
       return contentParam === "pet-watch-purchase-success";
     })();
 
-    const { id, locale, membershipStatus, products } = pet;
+    const { id, locale, membershipStatus, policyInsurance, products } = pet;
 
     const checkoutPath = CHECKOUT_FULL_ROUTE(id);
+
+    const petInsuranceSectionElement = (() => {
+      if (!policyInsurance?.length) return null;
+      return <PetInsuranceSection />;
+    })();
 
     return (
       <>
@@ -62,7 +67,7 @@ export const PetProfileIndex = () => {
             petServiceStatus={{ locale, membershipStatus, products }}
             route={checkoutPath}
           />
-          <PetInsuranceSection />
+          {petInsuranceSectionElement}
           <PetLostUpdatesSection {...pet} />
         </div>
         <Outlet context={viewModel} />
