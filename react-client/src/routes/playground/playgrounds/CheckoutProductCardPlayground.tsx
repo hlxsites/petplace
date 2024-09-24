@@ -25,7 +25,7 @@ export const CheckoutProductCardPlayground = () => {
         productSpecifications={
           <CheckoutProductColorSize
             productColors={["black"]}
-            productSizes={["L", "M/S"]}
+            productSizes={["L", "S/M"]}
           />
         }
       />
