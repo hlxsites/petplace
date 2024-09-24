@@ -8,7 +8,7 @@ export default function (
   authToken: string,
   httpClient?: HttpClientRepository
 ): GetAccountEmergencyContactsRepository {
-  if (!ENABLE_MOCK) return new MockGetAccountEmergencyContactUseCase();
+  if (ENABLE_MOCK) return new MockGetAccountEmergencyContactUseCase();
 
   return new GetAccountEmergencyContactsUseCase(authToken, httpClient);
 }

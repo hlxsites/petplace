@@ -53,10 +53,7 @@ export function parseJwt(token: string) {
 
 export function readJwtClaim() {
   const schema = z.object({
-    extension_CustRelationId: z.string().nullish(),
-    given_name: z.string().nullish(),
-    family_name: z.string().nullish(),
-    emails: z.array(z.string()),
+    extension_CustRelationId: z.string(),
   });
 
   const parsedJwt = parseJwt(requireAuthToken());
@@ -72,7 +69,7 @@ export function readJwtClaim() {
 
 export function checkIsExternalLogin() {
   const claim = readJwtClaim();
-  return !(
+  return (
     !!claim?.extension_CustRelationId &&
     Number(claim.extension_CustRelationId) !== 0
   );

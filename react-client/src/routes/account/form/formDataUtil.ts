@@ -8,14 +8,14 @@ import { baseAccountDetailsIds } from "./accountForms";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
-): FormValues {
-  const data = readJwtClaim();
+) {
   return {
-    [baseAccountDetailsIds.name]: data?.given_name ?? "",
-    [baseAccountDetailsIds.surname]: data?.family_name ?? "",
-    [baseAccountDetailsIds.email]: data?.emails?.[0] ?? "",
-    [baseAccountDetailsIds.phone]: accountDetails?.phoneNumber ?? "",
-  };
+    [baseAccountDetailsIds.name]: accountDetails?.name,
+    [baseAccountDetailsIds.surname]: accountDetails?.surname,
+    [baseAccountDetailsIds.email]: accountDetails?.email,
+    [baseAccountDetailsIds.phone]: accountDetails?.phoneNumber,
+  } as FormValues;
+}
 }
 
 export function getAccountNotificationsData(
