@@ -1,36 +1,37 @@
 import { Text } from "~/components/design-system";
-import {
-  CheckoutProduct,
-  Colors,
-  Image,
-  Sizes,
-} from "~/mocks/MockRestApiServer";
+import { Image } from "~/mocks/MockRestApiServer";
 import { classNames } from "~/util/styleUtil";
 import { CartItemImages } from "../CartItemImages";
 import { CheckoutProductCard } from "../CheckoutProductCard";
 import { CheckoutProductColorSize } from "../CheckoutProductColorSize";
 import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
 import { useCartItemsDetails } from "../hooks/useCartItemDetails";
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 
 type CheckoutProductsSectionProps = {
-  products: CheckoutProduct[];
+  products: ProductDescription[];
 };
 
 export const CheckoutProductsSection = ({
   products,
 }: CheckoutProductsSectionProps) => {
   const { item, openItemDetails, goBack } = useCartItemsDetails();
-  const gridColumns = getGridColumns(products.length);
+
+  const validProducts = Array.isArray(products)
+    ? products.filter(isValidProduct)
+    : [];
+
+  const gridColumns = getGridColumns(validProducts.length);
 
   return (
     <>
       <div className={classNames("grid gap-large", gridColumns)}>
-        {products.map((product) => (
+        {validProducts.map((product, index) => (
           <CheckoutProductCard
             {...product}
-            key={product.id}
+            key={product.id || `product-${index}`}
             onClick={() => openItemDetails(product.id)}
-            product={renderProductImage(product.title, product.images)}
+            product={renderProductImage(product.title)}
             productSpecifications={renderProductSpecifications(
               product.description,
               product.availableColors,
@@ -42,6 +43,23 @@ export const CheckoutProductsSection = ({
       {item && <CheckoutItemDetailsDrawer item={item} onClose={goBack} />}
     </>
   );
+
+  function isValidProduct(
+    product: ProductDescription
+  ): product is ProductDescription & {
+    id: string;
+    title: string;
+    price: string;
+  } {
+    return (
+      !!product.id &&
+      !!product.title &&
+      !!product.price &&
+      typeof product.id === "string" &&
+      typeof product.title === "string" &&
+      typeof product.price === "string"
+    );
+  }
 };
 
 function getGridColumns(productsLength: number) {
@@ -50,19 +68,27 @@ function getGridColumns(productsLength: number) {
   return "grid-cols-1";
 }
 
-function renderProductImage(title: string, images?: Image[] | null) {
+function renderProductImage(
+  title: ProductDescription["title"],
+  images?: Image[] | null
+) {
   return images && images.length ? (
-    <CartItemImages images={images} name={title} />
+    <CartItemImages images={images} name={title || "image"} />
   ) : null;
 }
 
 function renderProductSpecifications(
-  description?: string,
-  availableColors?: Colors[],
-  availableSizes?: Sizes[]
+  description?: ProductDescription["description"],
+  availableColors?: ProductDescription["availableColors"],
+  availableSizes?: ProductDescription["availableSizes"]
 ) {
-  if (description) return <Text>{description}</Text>;
-  if (availableColors && availableSizes) {
+  if (description)
+    return (
+      <Text color="background-color-tertiary" size="12">
+        {description}
+      </Text>
+    );
+  if (availableColors || availableSizes) {
     return (
       <CheckoutProductColorSize
         productColors={availableColors}
