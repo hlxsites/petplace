@@ -4,21 +4,29 @@ import {
   DisplayUncontrolledForm,
 } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
-import { AccountDetailsModel } from "~/domain/models/user/UserModels";
+import {
+  AccountDetailsModel,
+  AccountEmergencyContactModel,
+} from "~/domain/models/user/UserModels";
 import {
   emergencyContactFormSchema,
   externalAccountDetailsFormSchema,
   internalAccountDetailsFormSchema,
 } from "../form/accountForms";
-import { getAccountDetailsData } from "../form/formDataUtil";
+import {
+  getAccountDetailsData,
+  getAccountEmergencyContactsData,
+} from "../form/formDataUtil";
 
 type AccountDetailsTabContentProps = {
   accountDetails?: Promise<AccountDetailsModel | null>;
+  emergencyContacts?: Promise<AccountEmergencyContactModel[] | null>;
   isExternalLogin?: boolean;
 };
 
 export const AccountDetailsTabContent = ({
   accountDetails,
+  emergencyContacts,
   isExternalLogin,
 }: AccountDetailsTabContentProps) => {
   const formSchema = isExternalLogin
@@ -52,12 +60,18 @@ export const AccountDetailsTabContent = ({
   function renderEmergencyContactForm() {
     return (
       <Card padding="xlarge">
-        <DisplayUncontrolledForm
-          onSubmit={({ values }) => {
-            console.log("onSubmit values", values);
-          }}
-          schema={emergencyContactFormSchema}
-        />
+        <SuspenseAwait resolve={emergencyContacts}>
+          {(emergencyContacts) => (
+            <DisplayUncontrolledForm
+              onSubmit={({ event, values }) => {
+                event.preventDefault();
+                console.log("onSubmit values", values);
+              }}
+              schema={emergencyContactFormSchema}
+              initialValues={getAccountEmergencyContactsData(emergencyContacts)}
+            />
+          )}
+        </SuspenseAwait>
       </Card>
     );
   }

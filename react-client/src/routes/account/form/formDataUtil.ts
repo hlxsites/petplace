@@ -1,10 +1,10 @@
 import { FormValues } from "~/components/design-system";
 import {
   AccountDetailsModel,
+  AccountEmergencyContactModel,
   AccountNotificationModel,
 } from "~/domain/models/user/UserModels";
-import { readJwtClaim } from "~/util/authUtil";
-import { baseAccountDetailsIds } from "./accountForms";
+import { baseAccountDetailsIds, emergencyContactIds } from "./accountForms";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
@@ -16,11 +16,26 @@ export function getAccountDetailsData(
     [baseAccountDetailsIds.phone]: accountDetails?.phoneNumber,
   } as FormValues;
 }
+
+export function getAccountEmergencyContactsData(
+  emergencyContacts?: AccountEmergencyContactModel[] | null
+) {
+  const contacts: FormValues[] = [];
+  emergencyContacts?.forEach((contact) =>
+    contacts.push({
+      [emergencyContactIds.name]: contact.name,
+      [emergencyContactIds.surname]: contact.surname,
+      [emergencyContactIds.email]: contact.email,
+      [emergencyContactIds.phone]: contact.phoneNumber,
+    })
+  );
+
+  return { [emergencyContactIds.repeaterId]: contacts };
 }
 
 export function getAccountNotificationsData(
   accountNotifications?: AccountNotificationModel | null
-): FormValues {
+) {
   const newsLetter = [];
   if (accountNotifications?.signedCatNewsletter) newsLetter.push("Cat");
   if (accountNotifications?.signedDogNewsletter) newsLetter.push("Dog");
@@ -31,8 +46,8 @@ export function getAccountNotificationsData(
 
   return {
     newsletter: newsLetter,
-    "pet-place-offers": !!accountNotifications?.petPlaceOffer,
-    "partner-offers": !!accountNotifications?.partnerOffer,
+    "pet-place-offers": accountNotifications?.petPlaceOffer,
+    "partner-offers": accountNotifications?.partnerOffer,
     "pet-place-adopt-alerts": alerts,
-  };
+  } as FormValues;
 }
