@@ -16,7 +16,6 @@ export type AccountDetailsModel = {
 
 export type AccountEmergencyContactModel = {
   email: string;
-  id: string;
   name: string;
   phoneNumber: string;
   surname: string;

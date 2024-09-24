@@ -5,6 +5,15 @@ import { GetAccountEmergencyContactsRepository } from "../../repository/user/Get
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
+const serverResponseSchema = z.object({
+  FirstName: z.string().nullish(),
+  Email: z.string().nullish(),
+  LastName: z.string().nullish(),
+  PhoneNumber: z.string().nullish(),
+});
+
+type PutAccountEmergencyContactRequest = z.infer<typeof serverResponseSchema>
+
 export class GetAccountEmergencyContactsUseCase implements GetAccountEmergencyContactsRepository {
   private httpClient: HttpClientRepository;
 
@@ -16,7 +25,7 @@ export class GetAccountEmergencyContactsUseCase implements GetAccountEmergencyCo
     }
   }
 
-  async query(): Promise<AccountEmergencyContactModel[] | []> {
+  query = async (): Promise<AccountEmergencyContactModel[] | []> => {
     try {
       const result = await this.httpClient.get("adopt/api/UserProfile/EmergencyContacts");
       if (result.data) return convertToAccountEmergencyContact(result.data);
@@ -27,20 +36,32 @@ export class GetAccountEmergencyContactsUseCase implements GetAccountEmergencyCo
       return [];
     }
   }
+
+  mutate = async (data: AccountEmergencyContactModel[]): Promise<boolean> => {
+    const body = convertToServerEmergencyContact(data);
+    const isValid = body.every((contact) => serverResponseSchema.safeParse(contact).success)
+
+    try {
+      if (isValid) {
+        const result = await this.httpClient.post("adopt/api/UserProfile/EmergencyContacts", {
+          body: JSON.stringify(body),
+        });
+
+        if (result.statusCode === 204) return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("AccountDetailsUseCase mutation error", error);
+      return false;
+    }
+  };
 }
 
 function convertToAccountEmergencyContact(
   data: unknown
 ): AccountEmergencyContactModel[] | [] {
   if (!data|| !Array.isArray(data)) return [];
-
-  const serverResponseSchema = z.object({
-    ContactPersonId: z.string(),
-    FirstName: z.string().nullish(),
-    Email: z.string().nullish(),
-    LastName: z.string().nullish(),
-    PhoneNumber: z.string().nullish(),
-  });
 
   let list: AccountEmergencyContactModel[] = [];
 
@@ -51,7 +72,6 @@ function convertToAccountEmergencyContact(
 
     list.push({
       email: contact.Email ?? "",
-      id: contact.ContactPersonId,
       name: contact.FirstName ?? "",
       surname: contact.LastName ?? "",
       phoneNumber: contact.PhoneNumber ?? "",
@@ -61,4 +81,15 @@ function convertToAccountEmergencyContact(
   if (list.length > 2) list = list.slice(list.length - 2)
 
   return list.reverse();
+}
+
+function convertToServerEmergencyContact(
+  data: AccountEmergencyContactModel[]
+): PutAccountEmergencyContactRequest[] | [] {
+  return data.map((contact) => ({
+    Email: contact.email,
+    FirstName: contact.name,
+    LastName: contact.surname,
+    PhoneNumber: contact.phoneNumber,
+  }));
 }
