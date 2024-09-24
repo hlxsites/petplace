@@ -79,7 +79,6 @@ export const MembershipComparingPlanTable = ({
           top: 0,
           bottom: 0,
           height: "100%",
-          zIndex: 10,
         }}
       ></div>
       <table className="my-small w-full border-collapse" ref={tableRef}>

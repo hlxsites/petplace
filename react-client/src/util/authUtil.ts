@@ -2,6 +2,18 @@ import { z } from "zod";
 import { AUTH_TOKEN } from "./envUtil";
 import { invariantResponse } from "./invariant";
 
+export function refreshAuthToken() {
+  // Try to find the invisible refresh button
+  const refreshButton = document.getElementById("refresh-auth-token");
+
+  const event = new MouseEvent("click", {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+  });
+  refreshButton?.dispatchEvent(event);
+}
+
 export function getAuthToken() {
   const authToken = document
     .getElementById("auth-token")
