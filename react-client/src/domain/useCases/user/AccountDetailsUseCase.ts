@@ -5,14 +5,16 @@ import { AccountDetailsModel } from "../../models/user/UserModels";
 import { AccountDetailsRepository } from "../../repository/user/AccountDetailsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
-const serverPutRequestSchema = z.object({
+const serverSchema = z.object({
   FirstName: z.string().nullish(),
   LastName: z.string().nullish(),
   PhoneNumber: z.string().nullish(),
   ZipCode: z.string().nullish(),
 });
 
-export type PutAccountDetailsRequest = z.infer<typeof serverPutRequestSchema>;
+export type PutAccountDetailsRequest = z.infer<typeof serverSchema>;
+
+const BASE_URL = "adopt/api/User";
 
 export class AccountDetailsUseCase implements AccountDetailsRepository {
   private httpClient: HttpClientRepository;
@@ -27,7 +29,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
   query = async (): Promise<AccountDetailsModel | null> => {
     try {
-      const result = await this.httpClient.get("adopt/api/User");
+      const result = await this.httpClient.get(BASE_URL);
       if (result.data) return convertToAccountDetailsModel(result.data);
 
       return null;
@@ -42,15 +44,12 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
     const body = convertToServerAccountDetails(data, zipCode);
 
     try {
-      if (serverPutRequestSchema.safeParse(body).success) {
-        const result = await this.httpClient.put("adopt/api/User", {
-          body: JSON.stringify(body),
-        });
+      const result = await this.httpClient.put(BASE_URL, {
+        body: JSON.stringify(body),
+      });
 
-        if (result.statusCode === 204) return true;
-      }
-
-      return false;
+      if (!result.statusCode) return false;
+      return result.statusCode >= 200 && result.statusCode < 300;
     } catch (error) {
       console.error("AccountDetailsUseCase mutation error", error);
       return false;

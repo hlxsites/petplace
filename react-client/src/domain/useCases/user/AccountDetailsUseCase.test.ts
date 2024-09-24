@@ -3,7 +3,7 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 
-jest.mock('~/util/authUtil', () => ({
+jest.mock("~/util/authUtil", () => ({
   readJwtClaim: jest.fn(),
 }));
 
@@ -11,7 +11,7 @@ jest.mock('~/util/authUtil', () => ({
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
 describe("AccountDetailsUseCase", () => {
-  describe("GET", () => {
+  describe("query", () => {
     it("should return null whenever it finds no data", async () => {
       const httpClient = new MockHttpClient({ data: null });
       const sut = makeSut(httpClient);
@@ -53,7 +53,7 @@ describe("AccountDetailsUseCase", () => {
     });
   });
 
-  describe("PUT", () => {
+  describe("mutate", () => {
     const validAccountDetails = {
       name: "Jane",
       surname: "Doe",
