@@ -38,6 +38,7 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlan, MembershipInfo> = {
   [ANNUAL_PROTECTION_PLAN_TITLE]: {
     buttonLabel: "Get 1 Year Protection",
     comparePlansButtonLabel: "Get Annual",
+    id: "AnnualMembership",
     membershipDescriptionOffers: ANNUAL_LIST_OFFERS,
     price: "$45.95",
     priceInfo: "For the first year, $19.95/year thereafter",
@@ -47,6 +48,7 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlan, MembershipInfo> = {
   [LIFETIME_PLAN_TITLE]: {
     buttonLabel: "Get the Best Value",
     comparePlansButtonLabel: "Get Lifetime",
+    id: "LPMMembership",
     isHighlighted: true,
     infoFooter: "* Complimentary for 1 year",
     membershipDescriptionOffers: LIFETIME_LIST_OFFERS,
@@ -58,6 +60,7 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlan, MembershipInfo> = {
   [LIFETIME_PLUS_PLAN_TITLE]: {
     buttonLabel: "Unlock Complete Care",
     comparePlansButtonLabel: "Get Lifetime +",
+    id: "LPMPlusMembership",
     infoFooter: "* Complimentary for 1 year",
     membershipDescriptionOffers: MEMBERSHIP_LIST_OFFERS,
     price: "$199.95",
