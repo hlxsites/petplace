@@ -1,4 +1,4 @@
-import { Button, Card, Title } from "~/components/design-system";
+import { Card, LinkButton, Title } from "~/components/design-system";
 
 export const PetInsuranceSection = () => {
   return (
@@ -6,9 +6,14 @@ export const PetInsuranceSection = () => {
       <div className="grid grid-cols-1 items-center justify-items-center gap-large p-large md:items-start md:justify-items-start">
         <Title level="h4">See pet's insurance in MyPetHealth</Title>
 
-        <Button fullWidth={true} variant="secondary">
+        <LinkButton
+          fullWidth={true}
+          openInNewTab={true}
+          to={"https://www.mypethealth.com/external/petplacelogin"}
+          variant="secondary"
+        >
           View insurance details
-        </Button>
+        </LinkButton>
       </div>
     </Card>
   );
