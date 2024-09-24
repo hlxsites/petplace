@@ -36,6 +36,7 @@ describe("GetPetsListUseCase", () => {
     expect(result).toStrictEqual([
       {
         id: "lili",
+        img: undefined,
         isProtected: true,
         img: undefined,
         microchip: "81238123A",
@@ -43,6 +44,7 @@ describe("GetPetsListUseCase", () => {
       },
       {
         id: "bob",
+        img: undefined,
         isProtected: false,
         img: undefined,
         microchip: "D118123",
