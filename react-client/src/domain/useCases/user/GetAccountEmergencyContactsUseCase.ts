@@ -42,7 +42,7 @@ function convertToAccountEmergencyContact(
     PhoneNumber: z.string().nullish(),
   });
 
-  const list: AccountEmergencyContactModel[] = [];
+  let list: AccountEmergencyContactModel[] = [];
 
   data.forEach((contactData) => {
     const contact = parseData(serverResponseSchema, contactData);
@@ -58,5 +58,7 @@ function convertToAccountEmergencyContact(
     })
   })
 
-  return list;
+  if (list.length > 2) list = list.slice(list.length - 2)
+
+  return list.reverse();
 }
