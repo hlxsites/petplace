@@ -21,7 +21,7 @@ export const ProductsIndex = () => {
           <AdditionalProtectionSection onClick={onOpenCart} />
           <div className="grid gap-large">
             <OptInsSection />
-            <CheckoutProductsSection products={products} />
+            {products && <CheckoutProductsSection products={products} />}
             <Button fullWidth>Proceed to checkout</Button>
           </div>
           <CheckoutInfoSection />
