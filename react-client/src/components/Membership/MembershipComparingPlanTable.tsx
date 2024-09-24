@@ -10,7 +10,7 @@ type TableRow = {
 
 type Plan = Pick<
   MembershipInfo,
-  "comparePlansButtonLabel" | "isHighlighted" | "title"
+  "comparePlansButtonLabel" | "id" | "isHighlighted" | "title"
 >;
 
 type MembershipComparingPlanTableProps = {

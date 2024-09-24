@@ -1,18 +1,8 @@
 import {
   MembershipDescriptionOffer,
   MembershipInfo,
-  MembershipPlan,
+  MembershipPlanId,
 } from "~/domain/checkout/CheckoutModels";
-
-export const ANNUAL_PROTECTION_PLAN_TITLE = "Annual Protection";
-export const LIFETIME_PLAN_TITLE = "Lifetime";
-export const LIFETIME_PLUS_PLAN_TITLE = "Lifetime Plus";
-
-export const MEMBERSHIP_PLANS: MembershipPlan[] = [
-  ANNUAL_PROTECTION_PLAN_TITLE,
-  LIFETIME_PLAN_TITLE,
-  LIFETIME_PLUS_PLAN_TITLE,
-];
 
 export const MEMBERSHIP_LIST_OFFERS: MembershipDescriptionOffer[] = [
   { offerLabel: "Get help finding your lost pet." },
@@ -34,38 +24,102 @@ const addIconToOffers = (startIndex: number): MembershipDescriptionOffer[] =>
 const ANNUAL_LIST_OFFERS = addIconToOffers(2);
 const LIFETIME_LIST_OFFERS = addIconToOffers(5);
 
-export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlan, MembershipInfo> = {
-  [ANNUAL_PROTECTION_PLAN_TITLE]: {
-    buttonLabel: "Get 1 Year Protection",
-    comparePlansButtonLabel: "Get Annual",
-    id: "AnnualMembership",
-    membershipDescriptionOffers: ANNUAL_LIST_OFFERS,
-    price: "$45.95",
-    priceInfo: "For the first year, $19.95/year thereafter",
-    subTitle: "Keep Your Pet Safe All Year",
-    title: ANNUAL_PROTECTION_PLAN_TITLE,
-  },
-  [LIFETIME_PLAN_TITLE]: {
-    buttonLabel: "Get the Best Value",
-    comparePlansButtonLabel: "Get Lifetime",
-    id: "LPMMembership",
-    isHighlighted: true,
-    infoFooter: "* Complimentary for 1 year",
-    membershipDescriptionOffers: LIFETIME_LIST_OFFERS,
-    price: "$99.95",
-    priceInfo: "One-time fee",
-    subTitle: "The Best Value Lost Pet Protection",
-    title: LIFETIME_PLAN_TITLE,
-  },
-  [LIFETIME_PLUS_PLAN_TITLE]: {
-    buttonLabel: "Unlock Complete Care",
-    comparePlansButtonLabel: "Get Lifetime +",
-    id: "LPMPlusMembership",
-    infoFooter: "* Complimentary for 1 year",
-    membershipDescriptionOffers: MEMBERSHIP_LIST_OFFERS,
-    price: "$199.95",
-    priceInfo: "One-time fee",
-    subTitle: "Complete Lost Pet Protection",
-    title: LIFETIME_PLUS_PLAN_TITLE,
-  },
+export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
+  {
+    AnnualMembership: {
+      buttonLabel: "Get 1 Year Protection",
+      comparePlansButtonLabel: "Get Annual",
+      id: "AnnualMembership",
+      membershipDescriptionOffers: ANNUAL_LIST_OFFERS,
+      price: "$45.95",
+      priceInfo: "For the first year, $19.95/year thereafter",
+      subTitle: "Keep Your Pet Safe All Year",
+      title: "Annual Protection",
+    },
+    LPMMembership: {
+      buttonLabel: "Get the Best Value",
+      comparePlansButtonLabel: "Get Lifetime",
+      id: "LPMMembership",
+      isHighlighted: true,
+      infoFooter: "* Complimentary for 1 year",
+      membershipDescriptionOffers: LIFETIME_LIST_OFFERS,
+      price: "$99.95",
+      priceInfo: "One-time fee",
+      subTitle: "The Best Value Lost Pet Protection",
+      title: "abc",
+    },
+    LPMPlusMembership: {
+      buttonLabel: "Unlock Complete Care",
+      comparePlansButtonLabel: "Get Lifetime +",
+      id: "LPMPlusMembership",
+      infoFooter: "* Complimentary for 1 year",
+      membershipDescriptionOffers: MEMBERSHIP_LIST_OFFERS,
+      price: "$199.95",
+      priceInfo: "One-time fee",
+      subTitle: "Complete Lost Pet Protection",
+      title: "lif +",
+    },
+  };
+
+type CompareType = {
+  availableColumns: string[];
+  label: string;
+  title: string;
 };
+
+const ALL_PLANS = ["AnnualMembership", "LPMMembership", "LPMPlusMembership"];
+const ONLY_LIFETIME_PLANS = ["LPMMembership", "LPMPlusMembership"];
+
+export const MEMBERSHIP_COMPARE_PLANS: CompareType[] = [
+  {
+    availableColumns: ALL_PLANS,
+    label:
+      "Quickly report a lost or found pet through the portal or our Customer Service Representatives.",
+    title: "Access to Portal",
+  },
+  {
+    availableColumns: ALL_PLANS,
+    label:
+      "Get access to specialists who can quickly launch the process of finding your pet.",
+    title: "Lost Pet Support",
+  },
+  {
+    availableColumns: ALL_PLANS,
+    label: "Connect with your pet's finder and arrange a quick, safe reunion.",
+    title: "DirectConnect",
+  },
+  {
+    availableColumns: ONLY_LIFETIME_PLANS,
+    label:
+      "Reach veterinary professionals anytime by phone, email or live chat, provided by whiskerDocs.",
+    title: "24/7 VetHelpline",
+  },
+  {
+    availableColumns: ONLY_LIFETIME_PLANS,
+    label:
+      "Critical medical and behavioral information will be relayed to the shelter or vet when found.",
+    title: "24PetMedAlert®",
+  },
+  {
+    availableColumns: ONLY_LIFETIME_PLANS,
+    label: "Save on pet-sitting and dog-walking services from Rover.com.",
+    title: "$30 Rover Coupon",
+  },
+  {
+    availableColumns: ONLY_LIFETIME_PLANS,
+    label:
+      "Redeem for in-store purchases at Petco with Petco Vital Care member sign-up.",
+    title: "$25 Petco Coupon",
+  },
+  {
+    availableColumns: ["LPMPlusMembership"],
+    label:
+      "Get an ID tag customized with your pet’s name and unique microchip number.",
+    title: "Lifetime Warranty ID Tag",
+  },
+  {
+    availableColumns: ["LPMPlusMembership"],
+    label: "Simple, easy to follow lessons for you and your pet.",
+    title: "Petcademy",
+  },
+];

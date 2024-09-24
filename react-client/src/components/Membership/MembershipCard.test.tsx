@@ -1,19 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { MembershipPlan } from "~/domain/checkout/CheckoutModels";
 import { MembershipCard } from "./MembershipCard";
 
 const { getByRole, getByText, queryByText } = screen;
 
 describe("MembershipCard", () => {
-  it.each([
-    "Lifetime",
-    "Lifetime Plus",
-    "Annual Protection",
-  ] satisfies MembershipPlan[])("should render the given title", (title) => {
-    getRenderer({ title });
-    expect(getByRole("heading", { name: title })).toBeInTheDocument();
-  });
+  it.each(["Lifetime", "Lifetime Plus", "Annual Protection"])(
+    "should render the given title",
+    (title) => {
+      getRenderer({ title });
+      expect(getByRole("heading", { name: title })).toBeInTheDocument();
+    }
+  );
 
   it.each(["My sub title", "Awesome sub title"])(
     "should render the given sub title",
