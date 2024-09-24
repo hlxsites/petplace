@@ -244,6 +244,14 @@ export const externalAccountDetailsFormSchema: FormSchema = {
   version: 0,
 };
 
+export const emergencyContactIds = {
+  repeaterId: "emergency-contact",
+  email: "contact-email-address",
+  name: "contact-first-name",
+  phone: "contact-contact-phone",
+  surname: "contact-last-name",
+}
+
 export const emergencyContactFormSchema: FormSchema = {
   id: "emergency-contact-form",
   children: [
@@ -256,7 +264,7 @@ export const emergencyContactFormSchema: FormSchema = {
       children: [
         {
           elementType: "repeater",
-          id: "emergency-contact",
+          id: emergencyContactIds.repeaterId,
           maxRepeat: 2,
           minRepeat: 1,
           labels: {
@@ -276,11 +284,11 @@ export const emergencyContactFormSchema: FormSchema = {
                   children: [
                     {
                       ...firstNameInput,
-                      id: "contact-first-name",
+                      id: emergencyContactIds.name,
                     },
                     {
                       ...lastNameInput,
-                      id: "contact-last-name",
+                      id: emergencyContactIds.surname,
                     },
                   ],
                 },
@@ -289,13 +297,13 @@ export const emergencyContactFormSchema: FormSchema = {
                   children: [
                     {
                       ...emailInput,
-                      id: "contact-email-address",
+                      id: emergencyContactIds.email,
                     },
                     {
                       elementType: "input",
                       errorMessage: "Phone Number is a required field",
                       hideType: true,
-                      id: "contact-phone",
+                      id: emergencyContactIds.phone,
                       label: "Phone Number",
                       requiredCondition: true,
                       type: "phone",
