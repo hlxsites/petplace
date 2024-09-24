@@ -28,7 +28,6 @@ export type ExternalAccountDetailsModel = InternalAccountDetailsModel & {
 export type AccountAddressModel = {
   address1?: string;
   address2?: string;
-  intersection?: string;
   city?: string;
   zipCode?: string;
   country?: string;

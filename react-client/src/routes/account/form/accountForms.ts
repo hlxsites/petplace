@@ -137,14 +137,6 @@ const cityInput: ElementInputText = {
   type: "text",
 };
 
-const intersectionInput: ElementInputText = {
-  elementType: "input",
-  id: accountAddressIds.intersection,
-  label: "Intersection/Address",
-  requiredCondition: true,
-  type: "text",
-};
-
 const zipCodeInput: ElementInputText = {
   className: "w-1/2",
   elementType: "input",
@@ -222,7 +214,7 @@ export const externalAccountDetailsFormSchema: FormSchema = {
         },
         {
           elementType: "row",
-          children: [cityInput, intersectionInput],
+          children: [cityInput],
         },
         zipCodeInput,
       ],

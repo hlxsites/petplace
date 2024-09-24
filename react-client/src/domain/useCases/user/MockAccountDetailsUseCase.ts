@@ -12,7 +12,6 @@ export class MockAccountDetailsCase implements AccountDetailsRepository {
         address2: "",
         city: "Rio de Janeiro",
         country: "BR",
-        intersection: "",
         state: "RJ",
         zipCode: "012345",
       },

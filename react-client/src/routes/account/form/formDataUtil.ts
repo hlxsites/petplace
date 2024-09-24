@@ -41,7 +41,6 @@ export function getExternalAccountDetailsData(
     ...getInternalAccountDetailsData(accountDetails),
     [accountAddressIds.country]: accountDetails.address.country,
     [accountAddressIds.state]: accountDetails.address.state,
-    [accountAddressIds.intersection]: accountDetails.address.intersection,
     [accountAddressIds.city]: accountDetails.address.city,
     [accountAddressIds.zipCode]: accountDetails.address.zipCode,
     [accountAddressIds.address1]: accountDetails.address.address1,
