@@ -22,6 +22,11 @@ export const PetWatchSection = ({
 
   const serviceStatus = getStatus(petServiceStatus);
 
+  // This safe guard avoid inconsistences from the API to bring "annual membership" for canadian animals
+  // This should be removed once better business rule is defined
+  if (serviceStatus === "annual" && petServiceStatus.locale === "CA")
+    return null;
+
   const { buttonLabel, icon, message } = PET_WATCH_OFFERS[serviceStatus];
   const { label, tagStatus } = PET_WATCH_TAGS[serviceStatus];
 
@@ -55,6 +60,7 @@ export const PetWatchSection = ({
             }
           >
             <PetWatchDrawerServiceContent
+              locale={petServiceStatus.locale}
               route={route}
               serviceStatus={petServiceStatus.membershipStatus}
             />

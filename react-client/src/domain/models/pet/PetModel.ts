@@ -1,3 +1,5 @@
+import { Locale } from "../misc/Locale";
+
 export type MissingStatus = "missing" | "found";
 export type DocumentationStatus =
   | "none"
@@ -45,6 +47,7 @@ export type PetProduct = {
 };
 
 export type PetServices = {
+  locale?: Locale | null;
   membershipStatus?: string;
   products?: PetProduct[];
 };
