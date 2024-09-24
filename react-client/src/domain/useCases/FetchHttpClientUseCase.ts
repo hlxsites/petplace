@@ -114,13 +114,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         body: options.body,
       });
 
-      let data: unknown = null;
-
-      if (
-        result.status !== 204
-      ) {
-        data = await result.json();
-      }
+      const data: unknown = await result.json();
 
       return { data, statusCode: result.status };
     } catch (error) {

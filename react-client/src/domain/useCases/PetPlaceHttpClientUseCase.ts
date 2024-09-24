@@ -101,9 +101,11 @@ export class PetPlaceHttpClientUseCase implements HttpClientRepository {
     path: string,
     options: Omit<HttpOptions, "headers"> = {}
   ): Promise<HttpResponse> => {
-    return this.httpClient.put(path, {
-      ...options,
-      headers: this.createHeaders,
-    });
+    const callback = () =>
+      this.httpClient.put(path, {
+        ...options,
+        headers: this.createHeaders,
+      });
+    return this.responseStatusMiddleware(callback);
   };
 }

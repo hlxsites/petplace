@@ -92,7 +92,7 @@ function convertToAccountDetailsModel(
 
 function convertToServerAccountDetails(
   data: AccountDetailsModel,
-  zipCode?: string
+  zipCode?: string | null
 ): PutAccountDetailsRequest {
   return {
     FirstName: data.name ?? "",
