@@ -14,7 +14,7 @@ export const baseAccountDetailsIds = {
   phone: "phone-default",
   secondaryPhone: "phone-secondary",
   surname: "last-name",
-}
+};
 
 const requiredPhoneInput: ElementInputPhone = {
   defaultType: "Home",
@@ -38,7 +38,7 @@ const optionalPhoneInput: ElementInputPhone = {
   id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
   type: "phone",
-  shouldDisplay: checkIsExternalLogin()
+  shouldDisplay: checkIsExternalLogin(),
 };
 
 const firstNameInput: ElementInputText = {
@@ -46,8 +46,8 @@ const firstNameInput: ElementInputText = {
   errorMessage: "First Name is a required field",
   id: baseAccountDetailsIds.name,
   label: "First Name",
-  max: 100,
-  min: 2,
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -57,8 +57,8 @@ const lastNameInput: ElementInputText = {
   errorMessage: "Last Name is a required field",
   id: baseAccountDetailsIds.surname,
   label: "Last Name",
-  max: 100,
-  min: 2,
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -135,7 +135,7 @@ const zipCodeInput: ElementInputText = {
   elementType: "input",
   id: "zip-code",
   label: "Zip Code",
-  max: 15,
+  maxLength: 15,
   requiredCondition: true,
   type: "text",
 };
