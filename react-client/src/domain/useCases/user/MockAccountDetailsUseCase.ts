@@ -11,6 +11,7 @@ export class MockAccountDetailsCase implements AccountDetailsRepository {
       name: "Johene",
       phoneNumber: "(234) 123-4566",
       surname: "Smith",
+      zipCode: "01234",
     };
   }
 

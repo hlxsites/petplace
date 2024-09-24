@@ -14,6 +14,7 @@ export const baseAccountDetailsIds = {
   phone: "phone-default",
   secondaryPhone: "phone-secondary",
   surname: "last-name",
+  zipCode: "zip-code",
 };
 
 const requiredPhoneInput: ElementInputPhone = {
@@ -68,6 +69,7 @@ const emailInput: ElementInputText = {
   errorMessage: "Email is a required field",
   id: baseAccountDetailsIds.email,
   label: "Email Address",
+  requiredCondition: true,
   disabledCondition: true,
   type: "email",
 };
@@ -133,7 +135,7 @@ const intersectionInput: ElementInputText = {
 const zipCodeInput: ElementInputText = {
   className: "w-1/2",
   elementType: "input",
-  id: "zip-code",
+  id: baseAccountDetailsIds.zipCode,
   label: "Zip Code",
   maxLength: 15,
   requiredCondition: true,
@@ -175,7 +177,12 @@ const userDetailsSection: ElementSection = {
       elementType: "row",
       children: [firstNameInput, lastNameInput],
     },
-    emailInput,
+    {
+      elementType: "row",
+      children: checkIsExternalLogin()
+        ? [emailInput]
+        : [emailInput, {...zipCodeInput, className: ""}],
+    },
   ],
 };
 

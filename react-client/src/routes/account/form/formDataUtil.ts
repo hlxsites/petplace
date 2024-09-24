@@ -9,10 +9,11 @@ export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
 ): FormValues {
   return {
-    [baseAccountDetailsIds.name]: accountDetails?.name ?? "",
-    [baseAccountDetailsIds.surname]: accountDetails?.surname ?? "",
     [baseAccountDetailsIds.email]: accountDetails?.email ?? "",
+    [baseAccountDetailsIds.name]: accountDetails?.name ?? "",
     [baseAccountDetailsIds.phone]: accountDetails?.phoneNumber ?? "",
+    [baseAccountDetailsIds.surname]: accountDetails?.surname ?? "",
+    [baseAccountDetailsIds.zipCode]: accountDetails?.zipCode ?? "",
   };
 }
 
@@ -37,10 +38,11 @@ export function getAccountNotificationsData(
 
 export function buildAccountDetails(values: FormValues): AccountDetailsModel {
   const accountDetails: AccountDetailsModel = {
-    email: values["email-address"] as string,
-    name: values["first-name"] as string,
-    phoneNumber: values["phone-default"] as string,
-    surname: values["last-name"] as string,
+    email: values[baseAccountDetailsIds.email] as string,
+    name: values[baseAccountDetailsIds.name] as string,
+    phoneNumber: values[baseAccountDetailsIds.phone] as string,
+    surname: values[baseAccountDetailsIds.surname] as string,
+    zipCode: values[baseAccountDetailsIds.zipCode] as string,
   };
 
   return accountDetails;

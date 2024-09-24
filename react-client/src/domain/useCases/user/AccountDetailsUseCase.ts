@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { readJwtClaim } from "~/util/authUtil";
 import { AccountDetailsModel } from "../../models/user/UserModels";
 import { AccountDetailsRepository } from "../../repository/user/AccountDetailsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
@@ -40,8 +39,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
   };
 
   mutate = async (data: AccountDetailsModel): Promise<boolean> => {
-    const zipCode = readJwtClaim()?.postalCode;
-    const body = convertToServerAccountDetails(data, zipCode);
+    const body = convertToServerAccountDetails(data);
 
     try {
       const result = await this.httpClient.put(BASE_URL, {
@@ -67,6 +65,7 @@ function convertToAccountDetailsModel(
     FirstName: z.string().nullish(),
     LastName: z.string().nullish(),
     PhoneNumber: z.string().nullish(),
+    ZipCode: z.string().nullish(),
   });
 
   const parseUserDetailsData = (userData: unknown) => {
@@ -79,24 +78,24 @@ function convertToAccountDetailsModel(
 
   const user = parseUserDetailsData(data);
   if (!user) return null;
-  const { Email, FirstName, LastName, PhoneNumber } = user;
+  const { Email, FirstName, LastName, PhoneNumber, ZipCode } = user;
 
   return {
     email: Email ?? "",
     name: FirstName ?? "",
     phoneNumber: PhoneNumber ?? "",
     surname: LastName ?? "",
+    zipCode: ZipCode ?? "",
   };
 }
 
 function convertToServerAccountDetails(
   data: AccountDetailsModel,
-  zipCode?: string | null
 ): PutAccountDetailsRequest {
   return {
     FirstName: data.name ?? "",
     PhoneNumber: data.phoneNumber ? data.phoneNumber.split("|")[0] : "",
     LastName: data.surname ?? "",
-    ZipCode: zipCode ?? "00000",
+    ZipCode: data.zipCode ?? "00000",
   };
 }
