@@ -12,6 +12,11 @@ import {
   getAccountDetailsData,
 } from "../form/formDataUtil";
 
+// TODO: This shouldn't be needed after refactoring how to handle account form
+jest.mock("~/util/authUtil", () => ({
+  checkIsExternalLogin: jest.fn().mockReturnValue(false),
+}));
+
 type AccountDetailsTabContentProps = {
   accountDetails?: Promise<AccountDetailsModel | null>;
   isExternalLogin?: boolean;
