@@ -1,12 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
-import { MembershipPlan } from "~/domain/checkout/CheckoutModels";
-import {
-  ANNUAL_PROTECTION_PLAN_TITLE,
-  LIFETIME_PLAN_TITLE,
-  LIFETIME_PLUS_PLAN_TITLE,
-} from "~/domain/useCases/checkout/GetCheckoutUseCase";
+import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
 import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
 
 const { getAllByRole, getByRole, getByText } = screen;
@@ -75,33 +70,37 @@ function getRenderer({
 // Mock data
 const PLANS: Props["plans"] = [
   {
+    id: "AnnualMembership",
     comparePlansButtonLabel: "Action 1",
     isHighlighted: false,
-    title: ANNUAL_PROTECTION_PLAN_TITLE,
+    title: "Test 1",
   },
   {
+    id: "LPMMembership",
     comparePlansButtonLabel: "Action 2",
     isHighlighted: true,
-    title: LIFETIME_PLAN_TITLE,
+    title: "Test 2",
   },
   {
+    id: "LPMPlusMembership",
     comparePlansButtonLabel: "Action 3",
     isHighlighted: false,
-    title: LIFETIME_PLUS_PLAN_TITLE,
+    title: "Test 3",
   },
 ];
+
 const ROWS = [
   {
     label: "Label 1",
     title: "Title 1",
     availableColumns: [
-      LIFETIME_PLAN_TITLE,
-      LIFETIME_PLUS_PLAN_TITLE,
-    ] satisfies MembershipPlan[],
+      "LPMMembership",
+      "LPMPlusMembership",
+    ] satisfies MembershipPlanId[],
   },
   {
     label: "Label 2",
     title: "Title 2",
-    availableColumns: [ANNUAL_PROTECTION_PLAN_TITLE] satisfies MembershipPlan[],
+    availableColumns: ["AnnualMembership"] satisfies MembershipPlanId[],
   },
 ];

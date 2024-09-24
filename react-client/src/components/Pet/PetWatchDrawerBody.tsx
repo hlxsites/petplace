@@ -9,6 +9,7 @@ import { PetWatchServices } from "./PetWatchServices";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;
+  locale?: PetServices["locale"];
   onClick: (label?: string) => () => void;
   route?: string;
   serviceStatus: PetServices["membershipStatus"];
@@ -16,6 +17,7 @@ type PetWatchDrawerBodyProps = {
 
 export const PetWatchDrawerBody = ({
   contentDetails,
+  locale,
   onClick,
   route,
   serviceStatus,
@@ -45,7 +47,11 @@ export const PetWatchDrawerBody = ({
 
   return (
     <div className="grid gap-xlarge">
-      <PetWatchServices onClick={onClick} serviceStatus={serviceStatus} />
+      <PetWatchServices
+        onClick={onClick}
+        serviceStatus={serviceStatus}
+        locale={locale}
+      />
       {standardServiceDrawerElement}
       {annualServiceElement}
     </div>
