@@ -2,6 +2,7 @@ import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import {
   Card,
   DisplayUncontrolledForm,
+  FormValues,
 } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 import {
@@ -10,10 +11,12 @@ import {
 } from "~/domain/models/user/UserModels";
 import {
   emergencyContactFormSchema,
+  emergencyContactIds,
   externalAccountDetailsFormSchema,
   internalAccountDetailsFormSchema,
 } from "../form/accountForms";
 import {
+  buildAccountEmergencyContactsList,
   getAccountDetailsData,
   getAccountEmergencyContactsData,
 } from "../form/formDataUtil";
@@ -22,12 +25,14 @@ type AccountDetailsTabContentProps = {
   accountDetails?: Promise<AccountDetailsModel | null>;
   emergencyContacts?: Promise<AccountEmergencyContactModel[] | null>;
   isExternalLogin?: boolean;
+  onSubmitEmergencyContacts?: (data: AccountEmergencyContactModel[]) => void;
 };
 
 export const AccountDetailsTabContent = ({
   accountDetails,
   emergencyContacts,
   isExternalLogin,
+  onSubmitEmergencyContacts,
 }: AccountDetailsTabContentProps) => {
   const formSchema = isExternalLogin
     ? externalAccountDetailsFormSchema
@@ -65,7 +70,7 @@ export const AccountDetailsTabContent = ({
             <DisplayUncontrolledForm
               onSubmit={({ event, values }) => {
                 event.preventDefault();
-                console.log("onSubmit values", values);
+                onSubmitEmergencyContacts?.(buildAccountEmergencyContactsList(values[emergencyContactIds.repeaterId] as unknown as FormValues[]))
               }}
               schema={emergencyContactFormSchema}
               initialValues={getAccountEmergencyContactsData(emergencyContacts)}

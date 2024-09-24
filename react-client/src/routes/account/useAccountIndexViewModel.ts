@@ -3,6 +3,7 @@ import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { getLostPetsHistory } from "~/mocks/MockRestApiServer";
 import { requireAuthToken } from "~/util/authUtil";
 
+import { AccountEmergencyContactModel } from "~/domain/models/user/UserModels";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountEmergencyContactsUseCaseFactory from "~/domain/useCases/user/accountEmergencyContactsUseCaseFactory";
 import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
@@ -15,11 +16,16 @@ export const loader = (() => {
     accountNotificationsUseCaseFactory(authToken);
   const accountEmergencyContactsUseCase =
     accountEmergencyContactsUseCaseFactory(authToken);
+    
+    function onSubmitEmergencyContacts (data: AccountEmergencyContactModel[]){
+      void accountEmergencyContactsUseCase.mutate(data)
+    }
 
   return defer({
     accountDetails: accountDetailsUseCase.query(),
     accountNotifications: accountNotificationsUseCase.query(),
     emergencyContacts: accountEmergencyContactsUseCase.query(),
+    onSubmitEmergencyContacts: onSubmitEmergencyContacts,
     lostPetsHistory: getLostPetsHistory(),
   });
 }) satisfies LoaderFunction;
@@ -30,6 +36,7 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     emergencyContacts,
     lostPetsHistory,
+    onSubmitEmergencyContacts,
   } = useLoaderData<typeof loader>();
 
   return {
@@ -37,6 +44,7 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     emergencyContacts,
     lostPetsHistory,
+    onSubmitEmergencyContacts,
   };
 };
 
