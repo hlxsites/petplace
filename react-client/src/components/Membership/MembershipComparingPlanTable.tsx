@@ -57,15 +57,15 @@ export const MembershipComparingPlanTable = ({
   }, [plans]);
 
   const actions: { label: string; isHighlighted?: boolean }[] = [];
-  const columns: string[] = [];
+  const columns: { id: string; title: string }[] = [];
 
-  plans.forEach(({ comparePlansButtonLabel, isHighlighted, title }) => {
+  plans.forEach(({ comparePlansButtonLabel, id, isHighlighted, title }) => {
     actions.push({
       label: comparePlansButtonLabel,
       isHighlighted,
     });
 
-    columns.push(title);
+    columns.push({ id, title });
   });
 
   return (
@@ -85,9 +85,9 @@ export const MembershipComparingPlanTable = ({
         <thead>
           <tr>
             <th>{/* Placeholder */}</th>
-            {columns.map((column) => (
-              <th key={column}>
-                <TextSpan fontFamily="raleway">{column}</TextSpan>
+            {columns.map(({ id, title }) => (
+              <th key={id}>
+                <TextSpan fontFamily="raleway">{title}</TextSpan>
               </th>
             ))}
           </tr>
@@ -101,12 +101,12 @@ export const MembershipComparingPlanTable = ({
                 {/* Neutral border container */}
                 <div className="pointer-events-none absolute inset-0 my-small rounded-2xl border border-solid border-neutral-300"></div>
               </td>
-              {columns.map((column, colIndex) => (
+              {columns.map(({ id }, colIndex) => (
                 <td
-                  key={`${column} icon ${colIndex}`}
+                  key={`${id}_icon_${colIndex}`}
                   className="relative text-center"
                 >
-                  {row.availableColumns.includes(column) ? (
+                  {row.availableColumns.includes(id) ? (
                     <Icon
                       className="text-green-300"
                       display="checkCircle"
