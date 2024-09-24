@@ -1,26 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { LostPetUpdate, MissingStatus } from "~/domain/models/pet/PetModel";
+import { Colors, Sizes } from "~/domain/models/products/ProductModel";
 import { PETS_LIST } from "~/domain/useCases/pet/mocks/petsListMock";
-
-export type PetInfo = {
-  age?: string | undefined;
-  breed?: string;
-  dateOfBirth?: string;
-  id: string;
-  img?: string;
-  isProtected?: boolean;
-  microchipNumber?: number;
-  mixedBreed?: boolean;
-  name: string;
-  onboardCompleted?: boolean;
-  sex?: string;
-  spayedNeutered?: boolean;
-  species?: string;
-  documentationStatus?: DocumentationStatus;
-  missingStatus?: MissingStatus;
-  lostPetHistory?: LostPetUpdate[];
-};
 
 export type DocumentationStatus =
   | "none"
@@ -29,9 +10,9 @@ export type DocumentationStatus =
   | "failed"
   | "inProgress";
 
-export type Colors = "black";
-export type Sizes = "L" | "M/S" | "One Size";
 export type Image = { src: string; alt?: string };
+
+// TODO This will be deleted once the description of the product is done
 
 export type CheckoutProduct = {
   availableColors?: Colors[];
@@ -46,7 +27,7 @@ export type CheckoutProduct = {
 
 const BytetagSlide: CheckoutProduct = {
   availableColors: ["black"],
-  availableSizes: ["L", "M/S"],
+  availableSizes: ["L", "S/M"],
   id: "bytetag-slide",
   images: [
     {
@@ -109,13 +90,6 @@ const VetHelpline: CheckoutProduct = {
   price: "$15.00",
   title: "24/7 Vet Helpline",
 };
-
-const CHECKOUT_PRODUCTS: CheckoutProduct[] = [
-  BytetagSlide,
-  BytetagRound,
-  PetMedAlert,
-  VetHelpline,
-];
 
 export type DetailedCartItem = CheckoutProduct & {
   additionalInfo?: string;
@@ -180,10 +154,6 @@ const CHECKOUT_SERVICES: CheckoutServices[] = [
   PetMedAlert as CheckoutServices,
   VetHelpline as CheckoutServices,
 ];
-
-export const getProductsList = () => {
-  return CHECKOUT_PRODUCTS;
-};
 
 export const getServicesList = () => {
   return CHECKOUT_SERVICES;
