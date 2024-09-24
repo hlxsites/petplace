@@ -1,72 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { PetDocument } from "~/domain/models/pet/PetDocument";
 import { LostPetUpdate, MissingStatus } from "~/domain/models/pet/PetModel";
 import { PETS_LIST } from "~/domain/useCases/pet/mocks/petsListMock";
-
-const PET_RECORDS = {
-  buddy: {
-    "medical-records": [
-      {
-        id: "medical-1",
-        downloadPath:
-          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
-        fileName: "Buddy's medical record #1",
-        fileType: "pdf",
-      },
-      {
-        id: "medical-2",
-        downloadPath:
-          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
-        fileName: "Buddy's medical record #2",
-        fileType: "pdf",
-      },
-    ],
-    other: [
-      {
-        downloadPath:
-          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
-        fileName: "PDF-Git sheet",
-        fileType: "pdf",
-        id: "756",
-      },
-    ],
-  },
-  lily: {
-    vaccines: [
-      {
-        id: "vaccine-1",
-        downloadPath:
-          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
-        fileName: "Lily's vaccine record #1",
-        fileType: "pdf",
-      },
-      {
-        id: "vaccine-2",
-        downloadPath:
-          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
-        fileName: "Lily's vaccine record #2",
-        fileType: "pdf",
-      },
-    ],
-    other: [
-      {
-        downloadPath:
-          "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg",
-        fileName: "Lily's photo",
-        fileType: "jpg",
-        id: "123",
-      },
-      {
-        downloadPath:
-          "https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf",
-        fileName: "PDF-Git sheet",
-        fileType: "pdf",
-        id: "756",
-      },
-    ],
-  },
-};
 
 export type PetInfo = {
   age?: string | undefined;
@@ -245,21 +180,6 @@ const CHECKOUT_SERVICES: CheckoutServices[] = [
   PetMedAlert as CheckoutServices,
   VetHelpline as CheckoutServices,
 ];
-
-export const getPetDocuments = ({
-  petId,
-  type,
-}: {
-  petId: string;
-  type: string;
-}): PetDocument[] => {
-  try {
-    // @ts-expect-error - ignoring mock function
-    return (PET_RECORDS[petId]?.[type] as PetDocument[]) || [];
-  } catch (_) {
-    return [];
-  }
-};
 
 export const getProductsList = () => {
   return CHECKOUT_PRODUCTS;
