@@ -25,36 +25,35 @@ export default async function decorate(block) {
       if (doc.getElementById(id)) return;
       js = doc.createElement(tag);
       js.id = id;
-      js.src = '${script}';
+      js.src = 'https://dev-quote.petted.com/Scripts/lib/widgets/petplace/quote-form/widget.min.js';
       js.async = true;
       js.type = "text/javascript";
       doc.body.appendChild(js);
-    }
-    (document, 'script', 'petplace-quote-engine'));
-    
-    window.addEventListener("load", () => {
-      if (typeof QuoteEngine === 'undefined') {
-        // Failed to load Quote Form Widget
-        console.error('Failed to load Quote Engine Widget');
-        return;
-      }
+    })(document, 'script', 'petplace-quote-engine');
 
-      QuoteEngine.setOptions({
-        targetId: "petplace-quote-form",
-        redirectUrl: "https://dev-quote.petted.com/quote",
-        baseUrl: "https://dev-quote.petted.com/",
-        urlParam: {
-          source: 'petplace-widget',
-          utm_source: '',
-          utm_medium: '',
-          utm_campaign: '',
-          utm_content: '',
-          utm_term: '',
-        },  
-        refCode: 'petplace',
-      });
-      QuoteEngine.init();
-    }, false);`
+    function waitForQuoteEngine() {
+      setTimeout(() => {
+        if (window.QuoteEngine) {
+          window.QuoteEngine.setOptions({
+            targetId: "petplace-quote-form",
+            redirectUrl: "https://dev-quote.petted.com/quote",
+            baseUrl: "https://dev-quote.petted.com/",
+            urlParam: {
+              source: 'petplace-widget',
+              utm_source: '',
+              utm_medium: '',
+              utm_campaign: '',
+              utm_content: '',
+              utm_term: '',
+            },
+            refCode: 'petplace',
+          });
+          window.QuoteEngine.init();
+        }
+      }, 100);
+    }
+
+    waitForQuoteEngine();`;
 
     block.innerText = '';
     document.body.append(widget);
