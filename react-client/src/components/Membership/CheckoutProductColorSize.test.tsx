@@ -35,7 +35,7 @@ describe("CheckoutProductColorSize", () => {
   });
 
   it("should allow user to select sizes options", async () => {
-    getRenderer({ productSizes: ["L", "M/S"] });
+    getRenderer({ productSizes: ["L", "S/M"] });
     const buttons = getAllByRole("button");
 
     expect(buttons[0]).not.toHaveClass(
