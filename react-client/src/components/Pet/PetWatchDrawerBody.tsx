@@ -1,4 +1,4 @@
-import { Locale, PetServices } from "~/domain/models/pet/PetModel";
+import { PetServices } from "~/domain/models/pet/PetModel";
 import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
@@ -9,7 +9,7 @@ import { PetWatchServices } from "./PetWatchServices";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;
-  locale?: Locale | null;
+  locale?: PetServices["locale"];
   onClick: (label?: string) => () => void;
   route?: string;
   serviceStatus: PetServices["membershipStatus"];

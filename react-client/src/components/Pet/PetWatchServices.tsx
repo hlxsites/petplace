@@ -1,9 +1,9 @@
-import { Locale, PetServices } from "~/domain/models/pet/PetModel";
-import { PetCardPetWatch } from "./PetCardPetWatch";
+import { PetServices } from "~/domain/models/pet/PetModel";
 import { getPetWatchServiceOption } from "~/util/petWatchServiceUtils";
+import { PetCardPetWatch } from "./PetCardPetWatch";
 
 type PetWatchServicesProps = {
-  locale?: Locale | null;
+  locale?: PetServices["locale"];
   onClick: (label?: string) => () => void;
   serviceStatus: PetServices["membershipStatus"];
 };

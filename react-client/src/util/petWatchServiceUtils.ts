@@ -1,4 +1,4 @@
-import { Locale, PetServices } from "~/domain/models/pet/PetModel";
+import { PetServices } from "~/domain/models/pet/PetModel";
 import {
   CA_MembershipStatus,
   MembershipStatus,
@@ -10,7 +10,7 @@ import {
 
 export function getPetWatchServiceOption(
   serviceStatus: PetServices["membershipStatus"],
-  locale?: Locale | null
+  locale?: PetServices["locale"]
 ) {
   const PetWatchOptionsBasedOnLocale = {
     US:

@@ -1,10 +1,10 @@
+import { PetServices } from "~/domain/models/pet/PetModel";
 import { useContentDetails } from "~/hooks/useContentDetails";
-import { PetWatchDrawerHeader } from "./PetWatchDrawerHeader";
 import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
-import { Locale, PetServices } from "~/domain/models/pet/PetModel";
+import { PetWatchDrawerHeader } from "./PetWatchDrawerHeader";
 
 type PetWatchDrawerServiceContentProps = {
-  locale?: Locale | null;
+  locale?: PetServices["locale"];
   serviceStatus: PetServices["membershipStatus"];
   route?: string;
 };

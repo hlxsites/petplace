@@ -59,8 +59,7 @@ export const PetProfileIndex = () => {
           <PetCardSection pet={pet} />
           <AdvertisingSection />
           <PetWatchSection
-            locale={locale}
-            petServiceStatus={{ membershipStatus, products }}
+            petServiceStatus={{ locale, membershipStatus, products }}
             route={checkoutPath}
           />
           <PetInsuranceSection />

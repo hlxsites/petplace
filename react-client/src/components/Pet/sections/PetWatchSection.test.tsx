@@ -7,6 +7,7 @@ import { PetWatchSection } from "./PetWatchSection";
 const { getByRole, getByText, queryByRole } = screen;
 
 const MOCK_PET_SERVICE_STATUS: PetServices = {
+  locale: "US",
   membershipStatus: "Annual member",
   products: [],
 };
@@ -104,7 +105,9 @@ describe("PetWatchSection", () => {
   );
 
   it("should not render section when membershipStatus is 'Annual member' and locale is 'CA'", () => {
-    getRenderer({ locale: "CA" });
+    getRenderer({
+      petServiceStatus: { ...MOCK_PET_SERVICE_STATUS, locale: "CA" },
+    });
     expect(
       queryByRole("heading", { name: /Lost Pet Protection/i })
     ).not.toBeInTheDocument();
@@ -112,12 +115,11 @@ describe("PetWatchSection", () => {
 });
 
 function getRenderer({
-  locale = "US",
   petServiceStatus = MOCK_PET_SERVICE_STATUS,
 }: Partial<ComponentProps<typeof PetWatchSection>> = {}) {
   return render(
     <MemoryRouter>
-      <PetWatchSection locale={locale} petServiceStatus={petServiceStatus} />
+      <PetWatchSection petServiceStatus={petServiceStatus} />
     </MemoryRouter>
   );
 }
