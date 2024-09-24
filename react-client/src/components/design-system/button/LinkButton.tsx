@@ -21,36 +21,38 @@ export const LinkButton = ({
   to,
   ...buttonProps
 }: LinkButtonProps) => {
-  const isExternalLink = typeof to === "string" && to.startsWith("http");
+  const commonProps = {
+    className: classNames("no-underline", {
+      "w-full": buttonProps.fullWidth,
+    }),
+    tabIndex: -1,
+  };
 
+  const buttonElement = <Button variant="link" {...buttonProps} />;
+
+  const isExternalLink = typeof to === "string" && to.startsWith("http");
   if (isExternalLink) {
     return (
       <a
         href={to}
-        className={classNames("no-underline", {
-          "w-full": buttonProps.fullWidth,
-        })}
-        target={openInNewTab ? "_blank" : undefined}
+        {...commonProps}
         rel="noopener noreferrer"
-        tabIndex={-1}
+        target={openInNewTab ? "_blank" : undefined}
       >
-        <Button variant="link" {...buttonProps} />
+        {buttonElement}
       </a>
     );
   }
 
   return (
     <Link
-      className={classNames("no-underline", {
-        "w-full": buttonProps.fullWidth,
-      })}
+      {...commonProps}
       preventScrollReset={preventScrollReset}
       relative={relative}
       replace={replace}
-      tabIndex={-1}
       to={to}
     >
-      <Button variant="link" {...buttonProps} />
+      {buttonElement}
     </Link>
   );
 };
