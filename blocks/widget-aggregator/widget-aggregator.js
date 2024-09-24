@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable func-names */
 export default async function decorate(block) {
   const blockMetadata = {};
 
@@ -17,7 +19,42 @@ export default async function decorate(block) {
     const widget = document.createElement('script');
     widget.setAttribute('brand', 'petplace');
     widget.setAttribute('source', source);
-    widget.text = script;
+    widget.text = `
+    (function (doc, tag, id) {
+      let js = doc.getElementsByTagName(tag)[0];
+      if (doc.getElementById(id)) return;
+      js = doc.createElement(tag);
+      js.id = id;
+      js.src = '${script}';
+      js.async = true;
+      js.type = "text/javascript";
+      doc.body.appendChild(js);
+    }
+    (document, 'script', 'petplace-quote-engine'));
+    
+    window.addEventListener("load", () => {
+      if (typeof QuoteEngine === 'undefined') {
+        // Failed to load Quote Form Widget
+        console.error('Failed to load Quote Engine Widget');
+        return;
+      }
+
+      QuoteEngine.setOptions({
+        targetId: "petplace-quote-form",
+        redirectUrl: "https://dev-quote.petted.com/quote",
+        baseUrl: "https://dev-quote.petted.com/",
+        urlParam: {
+          source: 'petplace-widget',
+          utm_source: '',
+          utm_medium: '',
+          utm_campaign: '',
+          utm_content: '',
+          utm_term: '',
+        },  
+        refCode: 'petplace',
+      });
+      QuoteEngine.init();
+    }, false);`
 
     block.innerText = '';
     document.body.append(widget);
