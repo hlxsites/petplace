@@ -4,7 +4,14 @@ import { CartFooter } from "./CartFooter";
 import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
 import { useCartCheckout } from "./hooks/useCartCheckout";
-import { CartDrawerProps } from "./utils/cartTypes";
+
+import { CartItem } from "~/domain/models/cart/CartModel";
+
+type CartDrawerProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  items?: CartItem[];
+};
 
 export const CartDrawer = ({ items = [], ...props }: CartDrawerProps) => {
   const { cartItems, subtotal, onUpdateQuantity } = useCartCheckout(

@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
 import { CartDrawer } from "./CartDrawer";
-import { CartItem } from "./utils/cartTypes";
+import { CartItem } from "~/domain/models/cart/CartModel";
 
 const { getByLabelText, getAllByRole, getByText } = screen;
 

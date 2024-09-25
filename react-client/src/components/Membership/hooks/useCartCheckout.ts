@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { CartItem } from "~/components/Membership/utils/cartTypes";
+import { CartItem } from "~/domain/models/cart/CartModel";
+
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 
 export function useCartCheckout(initialItems: CartItem[] = []) {

@@ -1,6 +1,6 @@
+import { CartItem } from "~/domain/models/cart/CartModel";
 import { Card, Text } from "../design-system";
 import { CartItemQuantityManager } from "./CartItemQuantityManager";
-import { CartItem } from "./utils/cartTypes";
 
 type CartItemCardProps = CartItem & {
   onUpdateQuantity: (id: string, value: number) => void;

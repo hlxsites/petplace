@@ -1,4 +1,4 @@
-import { CartItem } from "~/components/Membership/utils/cartTypes";
+import { CartItem } from "~/domain/models/cart/CartModel";
 
 export const mockCartItems: CartItem[] = [
   {
