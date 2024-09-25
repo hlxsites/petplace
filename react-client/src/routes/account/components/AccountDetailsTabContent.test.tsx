@@ -5,6 +5,7 @@ const { getByRole } = screen;
 
 jest.mock("~/util/authUtil", () => ({
   readJwtClaim: jest.fn(),
+  checkIsExternalLogin: jest.fn(),
 }));
 
 describe("AccountDetailsTabContent", () => {

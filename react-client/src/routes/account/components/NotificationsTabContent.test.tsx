@@ -3,6 +3,11 @@ import { userEvent } from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 
+jest.mock("~/util/authUtil", () => ({
+  readJwtClaim: jest.fn(),
+  checkIsExternalLogin: jest.fn(),
+}));
+
 const { getByRole, queryByRole } = screen;
 
 describe("NotificationsTabContent", () => {
