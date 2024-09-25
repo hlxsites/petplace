@@ -39,6 +39,7 @@ export function getExternalAccountDetailsData(
 ) {
   return {
     ...getInternalAccountDetailsData(accountDetails),
+    [baseAccountDetailsIds.secondaryPhone]: accountDetails.secondaryPhone,
     [accountAddressIds.country]: accountDetails.address.country,
     [accountAddressIds.state]: accountDetails.address.state,
     [accountAddressIds.city]: accountDetails.address.city,
@@ -78,15 +79,29 @@ export function getAccountNotificationsData(
   } as FormValues;
 }
 
-export function buildAccountDetails(values: FormValues): AccountDetailsModel {
+export function buildAccountDetails(values: FormValues, isExternalLogin?: boolean): AccountDetailsModel {
   const accountDetails: AccountDetailsModel = {
-    email: values["email-address"] as string,
-    name: values["first-name"] as string,
-    defaultPhone: values["phone-default"] as string,
-    surname: values["last-name"] as string,
+    email: values[baseAccountDetailsIds.email] as string,
+    name: values[baseAccountDetailsIds.name] as string,
+    defaultPhone: values[baseAccountDetailsIds.phone] as string,
+    surname: values[baseAccountDetailsIds.surname] as string,
   };
 
-  return accountDetails;
+  if (!isExternalLogin) return accountDetails;
+
+  return { ...accountDetails,
+    address: {
+      address1: values[accountAddressIds.address1] as string,
+      address2: values[accountAddressIds.address2] as string,
+      city: values[accountAddressIds.city] as string,
+      country: values[accountAddressIds.country] as string,
+      state: values[accountAddressIds.state] as string,
+      zipCode: values[accountAddressIds.zipCode] as string,
+    },
+    contactConsent: !!(values[accountAgreementsIds.contactConsent] as string[]).length,
+    informationConsent: !!(values[accountAgreementsIds.informationConsent] as string[]).length,
+    secondaryPhone: values[baseAccountDetailsIds.secondaryPhone] as string,
+   }
 }
 
 export function validateAccountDetails(accountDetails: AccountDetailsModel) {

@@ -35,7 +35,7 @@ export const AccountDetailsTabContent = ({
             <DisplayUncontrolledForm
             initialValues={getAccountDetailsData(accountDetails, isExternalLogin)}
               onSubmit={({ values }) =>
-                onSubmitAccountDetails?.(buildAccountDetails(values))
+                onSubmitAccountDetails?.(buildAccountDetails(values, isExternalLogin))
               }
               schema={formSchema}
               variables={{
