@@ -4,6 +4,7 @@ import { AccountDetailsTabContent } from "./AccountDetailsTabContent";
 const { getByRole } = screen;
 
 jest.mock("~/util/authUtil", () => ({
+  checkIsExternalLogin: jest.fn().mockReturnValue(false),
   readJwtClaim: jest.fn(),
 }));
 
