@@ -30,7 +30,7 @@ export default async function decorate(block) {
       js.type = "text/javascript";
       js.onload = function() {
 
-      if (typeof window.QuoteEngine !== 'undefined') {
+      if (window.QuoteEngine) {
         window.QuoteEngine.setOptions({
           targetId: "petplace-quote-form",
           redirectUrl: "https://dev-quote.petted.com/quote",
