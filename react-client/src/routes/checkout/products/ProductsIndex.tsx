@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "~/components/design-system";
 import { CartDrawer } from "~/components/Membership/CartDrawer";
 import { CheckoutFooter } from "~/components/Membership/CheckoutFooter";
@@ -14,9 +14,7 @@ export const ProductsIndex = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Run on first mount only
-  useEffect(() => {
-    onClearCart();
-  }, []);
+  onClearCart();
 
   return (
     <div className="min-h-[100dvh] bg-neutral-50">
