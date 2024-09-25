@@ -1,4 +1,5 @@
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
+import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
 import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
@@ -14,19 +15,27 @@ export const loader = (async ({ request }) => {
   invariantResponse(plan, "plan param is required");
 
   const authToken = requireAuthToken();
-  const useCase = getProductsFactory(authToken);
 
-  const productsData = await useCase.query(petId, plan);
+  const productsUseCase = getProductsFactory(authToken);
+  const productsData = await productsUseCase.query(petId, plan);
+
+  const cartCheckoutUseCase = getCartCheckoutFactory(authToken);
+
+  const onClearCart = () => {
+    void cartCheckoutUseCase.post();
+  };
 
   return defer({
+    onClearCart,
     products: productsData,
   });
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { products } = useLoaderData<typeof loader>();
+  const { onClearCart, products } = useLoaderData<typeof loader>();
 
   return {
+    onClearCart,
     products,
   };
 };
