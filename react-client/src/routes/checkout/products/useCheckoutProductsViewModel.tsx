@@ -16,7 +16,7 @@ export const loader = (async ({ request }) => {
   const authToken = requireAuthToken();
   const useCase = getProductsFactory(authToken);
 
-  const productsData = await useCase.query(petId);
+  const productsData = await useCase.query(petId, plan);
 
   return defer({
     products: productsData,

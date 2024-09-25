@@ -10,14 +10,14 @@ describe("GetProductsUseCase", () => {
   it("should return null when there is no data", async () => {
     const httpClient = new MockHttpClient({ data: null });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId");
+    const result = await sut.query("petId", "lifetime");
     expect(result).toBeNull();
   });
 
   it("should return the correct products", async () => {
     const httpClient = new MockHttpClient({ data: getProductsMock });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId");
+    const result = await sut.query("petId", "AnnualMembership");
 
     expect(result).toStrictEqual([
       {
@@ -59,7 +59,7 @@ describe("GetProductsUseCase", () => {
     };
     const httpClient = new MockHttpClient({ data: invalidMockData });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId");
+    const result = await sut.query("petId", "lifetime");
 
     expect(result).toBeNull();
   });
@@ -69,7 +69,7 @@ describe("GetProductsUseCase", () => {
       error: new Error("Error"),
     });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId");
+    const result = await sut.query("petId", "lifetime");
     expect(result).toBeNull();
   });
 });

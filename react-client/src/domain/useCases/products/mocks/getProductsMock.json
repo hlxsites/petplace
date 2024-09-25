@@ -1,6 +1,6 @@
 {
   "MembershipProducts": {
-    "AnnualPlan": {
+    "AnnualMembership": {
       "AdditionalProductList": [
         {
           "ItemId": "item1",
