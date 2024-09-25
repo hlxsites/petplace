@@ -1,4 +1,4 @@
-import { DetailedCartItem } from "~/mocks/MockRestApiServer";
+import { DetailedCartItem } from "~/domain/models/products/ProductModel";
 import { Drawer } from "../design-system";
 import { CheckoutItemDetailedContent } from "./CheckoutItemDetailedContent";
 

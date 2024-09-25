@@ -1,22 +1,20 @@
-import { Image } from "~/mocks/MockRestApiServer";
 import { ImageCarousel } from "../design-system";
 
 type CartItemImagesProps = {
-  images: Image[];
+  images: string[];
   name?: string;
 };
 
 export const CartItemImages = ({ images, name }: CartItemImagesProps) => {
-  const validImages = Array.isArray(images) && images.length > 0 ? images : [];
-  const validImagesLength = validImages.length;
+  if (!images.length) return null;
 
-  if (!validImagesLength) return null;
+  const altText = name ? `product: ${name}` : "Product image";
 
-  if (validImagesLength === 1) {
+  if (images.length === 1) {
     return (
       <img
-        {...images[0]}
-        alt={name ? `product: ${name}` : "Product image"}
+        src={images[0]}
+        alt={altText}
         className="h-[265px] w-full object-contain"
       />
     );
@@ -24,7 +22,7 @@ export const CartItemImages = ({ images, name }: CartItemImagesProps) => {
 
   return (
     <ImageCarousel
-      items={validImages}
+      items={images.map((src, index) => ({ alt: `${altText} #${index}`, src }))}
       ariaLabel={`Images of product: ${name || "Product"}`}
     />
   );

@@ -1,12 +1,11 @@
 import { Text } from "~/components/design-system";
-import { Image } from "~/mocks/MockRestApiServer";
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { classNames } from "~/util/styleUtil";
 import { CartItemImages } from "../CartItemImages";
+import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
 import { CheckoutProductCard } from "../CheckoutProductCard";
 import { CheckoutProductColorSize } from "../CheckoutProductColorSize";
-import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
 import { useCartItemsDetails } from "../hooks/useCartItemDetails";
-import { ProductDescription } from "~/domain/models/products/ProductModel";
 
 type CheckoutProductsSectionProps = {
   products: ProductDescription[];
@@ -70,7 +69,7 @@ function getGridColumns(productsLength: number) {
 
 function renderProductImage(
   title: ProductDescription["title"],
-  images?: Image[] | null
+  images?: string[] | null
 ) {
   return images && images.length ? (
     <CartItemImages images={images} name={title || "image"} />

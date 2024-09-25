@@ -1,4 +1,4 @@
-import { DetailedCartItem } from "~/mocks/MockRestApiServer";
+import { DetailedCartItem } from "~/domain/models/products/ProductModel";
 import { Button, Text, TextSpan, Title } from "../design-system";
 import { CartItemImages } from "./CartItemImages";
 import { CheckoutProductColorSize } from "./CheckoutProductColorSize";

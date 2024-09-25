@@ -1,8 +1,4 @@
-import {
-  Colors,
-  ProductDescription,
-  Sizes,
-} from "~/domain/models/products/ProductModel";
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { GetProductsRepository } from "~/domain/repository/products/GetProductsRepository";
 
 export class MockGetProductsUseCase implements GetProductsRepository {
@@ -10,22 +6,24 @@ export class MockGetProductsUseCase implements GetProductsRepository {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const products: ProductDescription[] = [
       {
-        availableColors: ["black"] as Colors[],
-        availableSizes: null,
+        availableColors: ["black"],
+        images: [],
         id: "ByteTag-Black R Cat",
         title: "ByteTag - Black Round Cat",
         price: "$19.95",
       },
       {
-        availableColors: ["black"] as Colors[],
-        availableSizes: ["L"] as Sizes[],
+        availableColors: ["black"],
+        availableSizes: ["L"],
+        images: [],
         id: "ByteTag-Black-S-Lg",
         title: "ByteTag Slide Black - Lg",
         price: "$19.95",
       },
       {
-        availableColors: ["black"] as Colors[],
-        availableSizes: ["S/M"] as Sizes[],
+        availableColors: ["black"],
+        availableSizes: ["S/M"],
+        images: [],
         id: "ByteTag-Black-S-Sm/M",
         title: "ByteTag Slide Black - sm/M",
         price: "$19.95",

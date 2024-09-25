@@ -1,12 +1,17 @@
-export type Colors = "black" | "white";
-export type Sizes = "L" | "S/M" | "One Size" | "S";
-
 export type ProductDescription = {
-  availableColors?: Colors[] | null;
-  availableSizes?: Sizes[] | null;
+  availableColors?: string[];
+  availableSizes?: string[];
   description?: string | null;
-  id?: string | null;
+  id: string;
+  images: string[];
   isAnnual?: boolean;
-  title?: string | null;
-  price?: string | null;
+  title: string;
+  price: string;
+};
+
+export type DetailedCartItem = ProductDescription & {
+  additionalInfo?: string;
+  privacyFeatures?: string;
+  sizing?: string;
+  tagFeatures?: string[];
 };

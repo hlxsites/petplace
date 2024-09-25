@@ -1,13 +1,9 @@
 import { z } from "zod";
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { GetProductsRepository } from "~/domain/repository/products/GetProductsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { GetProductsRepository } from "~/domain/repository/products/GetProductsRepository";
-import {
-  Colors,
-  ProductDescription,
-  Sizes,
-} from "~/domain/models/products/ProductModel";
 import { ADDITIONAL_PRODUCTS } from "./utils/productsHardCodedData";
 
 export class GetProductsUseCase implements GetProductsRepository {
@@ -46,11 +42,11 @@ function convertToProductModelInfo(data: unknown): ProductDescription[] | null {
 
   const productSchema = z.array(
     z.object({
-      Color: z.string().nullish(),
+      Color: z.union([z.array(z.string()), z.string()]).nullish(),
       ItemId: z.string().nullish(),
       ItemName: z.string().nullish(),
       Price: z.string().nullish(),
-      Size: z.string().nullish(),
+      Size: z.union([z.array(z.string()), z.string()]).nullish(),
       SpeciesId: z.string().nullish(),
       UIName: z.string().nullish(),
     })
@@ -85,14 +81,17 @@ function convertToProductModelInfo(data: unknown): ProductDescription[] | null {
         const id = item.ItemId as string;
         const description = ADDITIONAL_PRODUCTS[id];
 
+        const itemPrice = typeof item.Price === "string" ? item.Price : "-";
         products.push({
           id,
           description,
-          price: `$${item.Price}`,
+          price: `$${itemPrice}`,
           title: item.UIName as string,
+          images: [],
         });
       });
     }
+
     if (key.toLowerCase() === "tags") {
       const filteredProductByteTag = (
         parsedData.MembershipProducts[key] as Record<string, unknown>
@@ -104,15 +103,27 @@ function convertToProductModelInfo(data: unknown): ProductDescription[] | null {
         if (!productsData) return null;
 
         productsData.forEach((item) => {
-          const availableColors = item.Color
-            ? ([item.Color.toLocaleLowerCase()] as Colors[])
-            : null;
-          const availableSizes = convertSizeToProductSize(item.Size);
+          const availableColors = (() => {
+            if (Array.isArray(item.Color)) return item.Color;
+            if (item.Color) return [item.Color.toLowerCase()];
+            return [];
+          })();
+
+          const availableSizes = (() => {
+            if (Array.isArray(item.Size)) {
+              return item.Size.map((size) => convertSizeToProductSize(size));
+            }
+            const size = convertSizeToProductSize(item.Size);
+            return [size];
+          })();
+
+          if (!item.ItemId || !item.ItemName || !item.Price) return;
 
           products.push({
             availableColors,
             availableSizes,
             id: item.ItemId,
+            images: [],
             price: `$${item.Price}`,
             title: item.ItemName,
           });
@@ -124,12 +135,14 @@ function convertToProductModelInfo(data: unknown): ProductDescription[] | null {
   return products;
 }
 
-function convertSizeToProductSize(size?: string | null): Sizes[] {
-  const sizeMapping: Record<string, Sizes[]> = {
-    "Small/Medium": ["S/M"],
-    Large: ["L"],
-    Small: ["S"],
-    "": ["One Size"],
-  };
-  return sizeMapping[size || ""] || ["One Size"];
+function convertSizeToProductSize(size?: string | null): string {
+  const defaultSize = "One Size";
+  if (!size) return defaultSize;
+
+  const lowercaseSize = size.toLowerCase();
+  if (lowercaseSize === "small/medium") return "S/M";
+  if (lowercaseSize === "large") return "L";
+  if (lowercaseSize === "small") return "S";
+
+  return defaultSize;
 }
