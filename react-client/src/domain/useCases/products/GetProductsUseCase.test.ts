@@ -34,22 +34,6 @@ describe("GetProductsUseCase", () => {
         price: "$30.00",
         title: "Product 2",
       },
-      {
-        availableColors: ["green"],
-        availableSizes: ["S/M"],
-        id: "item3",
-        images: [],
-        price: "$15.00",
-        title: "Product 3",
-      },
-      {
-        availableColors: ["yellow"],
-        availableSizes: ["L"],
-        id: "item4",
-        images: [],
-        price: "$25.00",
-        title: "Product 4",
-      },
     ]);
   });
 

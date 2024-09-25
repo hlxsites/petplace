@@ -1,6 +1,11 @@
+type RequiredLabelID = {
+  label: string;
+  id: string;
+};
+
 export type ProductDescription = {
-  availableColors?: string[];
-  availableSizes?: string[];
+  availableColors?: RequiredLabelID[];
+  availableSizes?: RequiredLabelID[];
   description?: string | null;
   id: string;
   images: string[];

@@ -22,16 +22,16 @@
           "ItemId": "item3",
           "ItemName": "Product 3",
           "Price": "15.00",
-          "Color": "Green",
-          "Size": "Small/Medium",
+          "Color": [{"label": "Green", "id": "green id"}],
+          "Size": [{"label": "Small/Medium", "id": "sm id"}],
           "SpeciesId": "Bird"
         },
         {
           "ItemId": "item4",
           "ItemName": "Product 4",
           "Price": "25.00",
-          "Color": "Yellow",
-          "Size": "Large",
+          "Color":[{"label": "Yellow", "id": "yellow id"}],
+          "Size": [{"label": "Large", "id": "large id"}],
           "SpeciesId": "Dog"
         }
       ]

@@ -30,7 +30,7 @@ export const CheckoutProductColorSize = ({
 
   return (
     <div className="flex h-fit w-full gap-large">
-      {productColors && (
+      {!!productColors?.length && (
         <div className="grid gap-small">
           <Text color="background-color-tertiary" size="14">
             Color choice:
@@ -38,7 +38,7 @@ export const CheckoutProductColorSize = ({
           <div className="flex gap-xsmall">
             {productColors.map((productColor, index) => (
               <Button
-                aria-label={`color: ${productColor}`}
+                aria-label={`color: ${productColor.label}`}
                 className={classNames(
                   "h-[30px] w-[30px] border-2 border-solid !px-0 lg:!px-0",
                   {
@@ -46,12 +46,12 @@ export const CheckoutProductColorSize = ({
                       colorRefs.current[index]
                     ),
                     "bg-black hover:!bg-black focus:bg-black":
-                      productColor === "black",
+                      productColor.label === "black",
                     "focus:neutral-white border-neutral-500 bg-neutral-white hover:!bg-neutral-white":
-                      productColor === "white",
+                      productColor.label === "white",
                   }
                 )}
-                key={productColor}
+                key={`${productColor} - ${index}`}
                 onClick={() => handleColorSelect(colorRefs.current[index])}
                 ref={colorRefs.current[index]}
               />
@@ -59,7 +59,7 @@ export const CheckoutProductColorSize = ({
           </div>
         </div>
       )}
-      {productSizes && (
+      {!!productSizes?.length && (
         <div className="grid gap-small">
           <Text color="background-color-tertiary" size="14">
             Select a size:
@@ -71,12 +71,12 @@ export const CheckoutProductColorSize = ({
                   "border-2 border-orange-300-contrast text-orange-300-contrast":
                     isSizeSelected(sizeRefs.current[index]),
                 })}
-                key={productSize}
+                key={`${productSize.id} - ${index}`}
                 onClick={() => handleSizeSelect(sizeRefs.current[index])}
                 variant="secondary"
                 ref={sizeRefs.current[index]}
               >
-                {productSize}
+                {productSize.label}
               </Button>
             ))}
           </div>

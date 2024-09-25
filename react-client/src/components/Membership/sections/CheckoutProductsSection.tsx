@@ -28,7 +28,7 @@ export const CheckoutProductsSection = ({
         {validProducts.map((product, index) => (
           <CheckoutProductCard
             {...product}
-            key={product.id || `product-${index}`}
+            key={`${product.id}-${index}` || `product-${index}`}
             onClick={() => openItemDetails(product.id)}
             product={renderProductImage(product.title)}
             productSpecifications={renderProductSpecifications(

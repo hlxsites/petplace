@@ -115,32 +115,27 @@ function convertToProductsList(
 
         if (!productsData) return null;
 
-        productsData.forEach((item) => {
-          const availableColors = (() => {
-            if (Array.isArray(item.Color)) return item.Color;
-            if (item.Color) return [item.Color.toLowerCase()];
-            return [];
-          })();
+        // Filter and handle ByteTag Slide
+        const byteTagSlideItems = productsData.filter((item) =>
+          item.ItemName?.toLowerCase().includes("bytetag slide")
+        );
+        if (byteTagSlideItems.length > 0) {
+          const combinedByteTagSlide = filterByteTagSlide(byteTagSlideItems);
+          if (combinedByteTagSlide) {
+            products.push(combinedByteTagSlide);
+          }
+        }
 
-          const availableSizes = (() => {
-            if (Array.isArray(item.Size)) {
-              return item.Size.map((size) => convertSizeToProductSize(size));
-            }
-            const size = convertSizeToProductSize(item.Size);
-            return [size];
-          })();
-
-          if (!item.ItemId || !item.ItemName || !item.Price) return;
-
-          products.push({
-            availableColors,
-            availableSizes,
-            id: item.ItemId,
-            images: [],
-            price: `$${item.Price}`,
-            title: item.ItemName,
-          });
-        });
+        // Filter and handle ByteTag Round
+        const byteTagRoundItems = productsData.filter((item) =>
+          item.ItemName?.toLowerCase().includes("round")
+        );
+        if (byteTagRoundItems.length > 0) {
+          const combinedByteTagRound = filterByteTagRound(byteTagRoundItems);
+          if (combinedByteTagRound) {
+            products.push(combinedByteTagRound);
+          }
+        }
       }
     }
   });
@@ -158,4 +153,55 @@ function convertSizeToProductSize(size?: string | null): string {
   if (lowercaseSize === "small") return "S";
 
   return defaultSize;
+}
+
+function filterByteTagRound(productsData: any[]): ProductDescription | null {
+  const availableColors = productsData.map((item) => ({
+    label: item.Color ? item.Color.toLowerCase() : "unknown",
+    id: item.ItemId,
+  }));
+
+  return {
+    availableColors,
+    availableSizes: [], // No sizes for Round items - hard code based on API
+    id: productsData[0].ItemId,
+    images: [],
+    price: `$${productsData[0].Price}`,
+    title: "ByteTag Round",
+  };
+}
+
+function filterByteTagSlide(productsData: any[]): ProductDescription | null {
+  const availableColors: { label: string; id: string }[] = [];
+  const availableSizes: { label: string; id: string }[] = [];
+
+  const addedColors = new Set<string>();
+
+  productsData.forEach((item) => {
+    const color = item.Color ? item.Color.toLowerCase() : "unknown";
+    const size = convertSizeToProductSize(item.Size);
+
+    // Only add color if it hasn't been added before
+    if (!addedColors.has(color)) {
+      availableColors.push({
+        label: color,
+        id: item.Color ? `ByteTag Slide - ${item.Color}` : "unknown",
+      });
+      addedColors.add(color);
+    }
+
+    availableSizes.push({
+      label: size,
+      id: item.ItemId,
+    });
+  });
+
+  return {
+    availableColors,
+    availableSizes,
+    id: productsData[0].ItemId,
+    images: [],
+    price: `$${productsData[0].Price}`,
+    title: "ByteTag Slide",
+  };
 }
