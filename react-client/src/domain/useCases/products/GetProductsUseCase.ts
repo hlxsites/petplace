@@ -22,13 +22,16 @@ export class GetProductsUseCase implements GetProductsRepository {
     return null;
   };
 
-  query = async (petId: string): Promise<ProductDescription[] | null> => {
+  query = async (
+    petId: string,
+    plan: string
+  ): Promise<ProductDescription[] | null> => {
     try {
       const result = await this.httpClient.get(
         `api/Pet/${petId}/available-products`
       );
 
-      if (result.data) return convertToProductModelInfo(result.data);
+      if (result.data) return convertToProductsList(result.data, plan);
 
       return null;
     } catch (error) {
@@ -37,7 +40,10 @@ export class GetProductsUseCase implements GetProductsRepository {
   };
 }
 
-function convertToProductModelInfo(data: unknown): ProductDescription[] | null {
+function convertToProductsList(
+  data: unknown,
+  plan: string
+): ProductDescription[] | null {
   if (!data || typeof data !== "object") return null;
 
   const productSchema = z.array(
@@ -63,7 +69,9 @@ function convertToProductModelInfo(data: unknown): ProductDescription[] | null {
   const products: ProductDescription[] = [];
 
   Object.keys(parsedData.MembershipProducts).forEach((key) => {
-    if (key.toLowerCase().includes("annual")) {
+    // This is a hardcoded check for the annual plan
+    // It should't be doing that on the FE code, but it's a requirement for now
+    if (key.toLowerCase().includes("annual") && key === plan) {
       const annualProduct = parsedData.MembershipProducts[key] as Record<
         string,
         unknown
@@ -78,20 +86,25 @@ function convertToProductModelInfo(data: unknown): ProductDescription[] | null {
       if (!additionalProductList) return null;
 
       additionalProductList?.forEach((item) => {
-        const id = item.ItemId as string;
-        const description = ADDITIONAL_PRODUCTS[id];
+        const id = typeof item.ItemId === "string" ? item.ItemId : null;
+        const price = typeof item.Price === "string" ? item.Price : null;
+        const title = typeof item.UIName === "string" ? item.UIName : null;
 
-        const itemPrice = typeof item.Price === "string" ? item.Price : "-";
+        // Skip if any of the required fields are missing
+        if (!id || !title || !price) return;
+
+        const description = ADDITIONAL_PRODUCTS[id];
         products.push({
           id,
           description,
-          price: `$${itemPrice}`,
-          title: item.UIName as string,
+          price: `$${price}`,
+          title,
           images: [],
         });
       });
     }
 
+    // Hardcoded check for ByteTag products, also something we want to refactor in the future
     if (key.toLowerCase() === "tags") {
       const filteredProductByteTag = (
         parsedData.MembershipProducts[key] as Record<string, unknown>
