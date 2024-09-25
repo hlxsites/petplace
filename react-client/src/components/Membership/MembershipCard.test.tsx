@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
+import { MemoryRouter } from "react-router-dom";
 import { MembershipCard } from "./MembershipCard";
 
 const { getByRole, getByText, queryByText } = screen;
@@ -135,6 +136,7 @@ describe("MembershipCard", () => {
 
 function getRenderer({
   buttonLabel = "Test button label",
+  id = "LPMMembership",
   price = "Test price",
   priceInfo = "Test info price label",
   subTitle = "Test info sub title",
@@ -142,13 +144,16 @@ function getRenderer({
   ...props
 }: Partial<ComponentProps<typeof MembershipCard>> = {}) {
   return render(
-    <MembershipCard
-      buttonLabel={buttonLabel}
-      price={price}
-      priceInfo={priceInfo}
-      subTitle={subTitle}
-      title={title}
-      {...props}
-    />
+    <MemoryRouter>
+      <MembershipCard
+        buttonLabel={buttonLabel}
+        id={id}
+        price={price}
+        priceInfo={priceInfo}
+        subTitle={subTitle}
+        title={title}
+        {...props}
+      />
+    </MemoryRouter>
   );
 }

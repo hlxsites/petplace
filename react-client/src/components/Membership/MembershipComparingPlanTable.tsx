@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
-import { Button, Icon, Text, TextSpan, Title } from "../design-system";
+import { Icon, Text, TextSpan, Title } from "../design-system";
+import { MembershipComparingPlanLinkButton } from "./MembershipComparingPlanLinkButton";
 
 type TableRow = {
   label: string;
@@ -15,13 +16,11 @@ type Plan = Pick<
 
 type MembershipComparingPlanTableProps = {
   plans: Plan[];
-  onClick?: () => void;
   rows: TableRow[];
 };
 
 export const MembershipComparingPlanTable = ({
   plans,
-  onClick,
   rows,
 }: MembershipComparingPlanTableProps) => {
   const [highlightStyles, setHighlightStyles] = useState<{
@@ -56,11 +55,16 @@ export const MembershipComparingPlanTable = ({
     return () => window.removeEventListener("resize", updateHighlightPosition);
   }, [plans]);
 
-  const actions: { label: string; isHighlighted?: boolean }[] = [];
+  const actions: {
+    id: string;
+    isHighlighted?: boolean;
+    label: string;
+  }[] = [];
   const columns: { id: string; title: string }[] = [];
 
   plans.forEach(({ comparePlansButtonLabel, id, isHighlighted, title }) => {
     actions.push({
+      id,
       label: comparePlansButtonLabel,
       isHighlighted,
     });
@@ -125,15 +129,10 @@ export const MembershipComparingPlanTable = ({
           ))}
           <tr>
             <td>{/* Placeholder */}</td>
-            {actions.map(({ label, isHighlighted }) => (
-              <td className="text-center" key={label}>
+            {actions.map((props) => (
+              <td className="text-center" key={props.id}>
                 <div className="space-x-4 flex justify-evenly pt-xlarge">
-                  <Button
-                    onClick={onClick}
-                    variant={isHighlighted ? "primary" : "secondary"}
-                  >
-                    {label}
-                  </Button>
+                  <MembershipComparingPlanLinkButton {...props} />
                 </div>
               </td>
             ))}

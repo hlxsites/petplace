@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
+import { MemoryRouter } from "react-router-dom";
 import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
 import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
 
-const { getAllByRole, getByRole, getByText } = screen;
+const { getAllByRole, getByText } = screen;
 
 describe("MembershipComparingPlanTable", () => {
   it("should render the table with columns and rows", () => {
@@ -35,35 +35,16 @@ describe("MembershipComparingPlanTable", () => {
     expect(secondRow.querySelectorAll(".text-red-300").length).toBe(2);
   });
 
-  it("should render action buttons and handles click events", async () => {
-    const onClick = jest.fn();
-    getRenderer({ onClick });
-
-    let clickCount = 0;
-    for (const { comparePlansButtonLabel } of PLANS) {
-      const button = getByRole("button", { name: comparePlansButtonLabel });
-      expect(button).toBeInTheDocument();
-      // Expect the previous click count
-      expect(onClick).toHaveBeenCalledTimes(clickCount);
-
-      await userEvent.click(button);
-      // Increment the click count after each click
-      clickCount += 1;
-      // Validate the new click count
-      expect(onClick).toHaveBeenCalledTimes(clickCount);
-    }
-  });
+  it.todo("should render correct button link");
 });
 
 // Test helpers
 type Props = ComponentProps<typeof MembershipComparingPlanTable>;
-function getRenderer({
-  onClick,
-  plans = PLANS,
-  rows = ROWS,
-}: Partial<Props> = {}) {
+function getRenderer({ plans = PLANS, rows = ROWS }: Partial<Props> = {}) {
   return render(
-    <MembershipComparingPlanTable onClick={onClick} plans={plans} rows={rows} />
+    <MemoryRouter>
+      <MembershipComparingPlanTable plans={plans} rows={rows} />
+    </MemoryRouter>
   );
 }
 
