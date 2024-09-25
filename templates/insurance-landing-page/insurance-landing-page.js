@@ -60,7 +60,7 @@ function createSpanBlock(main) {
       if (isValidZipcode(code)) {
         removeAllErrorMessage(searchContainers);
         const utmParams = getUrlParamString();
-        const pageUrl = `https://quote.petplace.com/questionnaire?zipCode=${code}${utmParams ? `&${utmParams}` : ''}`;
+        const pageUrl = `https://quote.petplace.com/quote?zipCode=${code}${utmParams ? `&${utmParams}` : ''}`;
         window.open(pageUrl);
       } else {
         errorMsg.style.display = 'block';
