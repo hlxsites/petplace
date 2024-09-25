@@ -24,8 +24,11 @@ export const CheckoutProductCardPlayground = () => {
         product={renderProduct()}
         productSpecifications={
           <CheckoutProductColorSize
-            productColors={["black"]}
-            productSizes={["L", "S/M"]}
+            productColors={[{ label: "black", id: "black color" }]}
+            productSizes={[
+              { label: "L", id: "large" },
+              { label: "S/M", id: "small medium" },
+            ]}
           />
         }
       />

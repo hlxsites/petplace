@@ -7,7 +7,10 @@ const { getByText, queryByText, getByRole, getAllByRole } = screen;
 
 describe("CheckoutProductColorSize", () => {
   it("should renders color and size options when both props are provided", () => {
-    getRenderer({ productColors: ["black"], productSizes: ["L"] });
+    getRenderer({
+      productColors: [{ label: "black", id: "color black" }],
+      productSizes: [{ label: "L", id: "large size" }],
+    });
 
     expect(getByText("Color choice:")).toBeInTheDocument();
     expect(getByText("Select a size:")).toBeInTheDocument();
@@ -21,13 +24,13 @@ describe("CheckoutProductColorSize", () => {
   });
 
   it("should render color button with aria-label", () => {
-    getRenderer({ productColors: ["black"] });
+    getRenderer({ productColors: [{ label: "black", id: "color black" }] });
 
     expect(getByRole("button")).toHaveAttribute("aria-label", "color: black");
   });
 
   it("should allow user to select color", async () => {
-    getRenderer({ productColors: ["black"] });
+    getRenderer({ productColors: [{ label: "black", id: "color black" }] });
 
     expect(getByRole("button")).not.toHaveClass("border-orange-300-main");
     await userEvent.click(getByRole("button"));
@@ -35,7 +38,12 @@ describe("CheckoutProductColorSize", () => {
   });
 
   it("should allow user to select sizes options", async () => {
-    getRenderer({ productSizes: ["L", "S/M"] });
+    getRenderer({
+      productSizes: [
+        { label: "L", id: "large" },
+        { label: "S/M", id: "small medium" },
+      ],
+    });
     const buttons = getAllByRole("button");
 
     expect(buttons[0]).not.toHaveClass(

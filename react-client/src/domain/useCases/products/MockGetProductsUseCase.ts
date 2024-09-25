@@ -6,23 +6,23 @@ export class MockGetProductsUseCase implements GetProductsRepository {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const products: ProductDescription[] = [
       {
-        availableColors: ["black"],
+        availableColors: [{ label: "black", id: "black cat" }],
         images: [],
         id: "ByteTag-Black R Cat",
         title: "ByteTag - Black Round Cat",
         price: "$19.95",
       },
       {
-        availableColors: ["black"],
-        availableSizes: ["L"],
+        availableColors: [{ label: "black", id: "black slide" }],
+        availableSizes: [{ label: "L", id: "large slide" }],
         images: [],
         id: "ByteTag-Black-S-Lg",
         title: "ByteTag Slide Black - Lg",
         price: "$19.95",
       },
       {
-        availableColors: ["black"],
-        availableSizes: ["S/M"],
+        availableColors: [{ label: "black", id: "black slide" }],
+        availableSizes: [{ label: "S/M", id: "sm slide" }],
         images: [],
         id: "ByteTag-Black-S-Sm/M",
         title: "ByteTag Slide Black - sm/M",
