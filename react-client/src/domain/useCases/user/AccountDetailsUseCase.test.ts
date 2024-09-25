@@ -1,10 +1,10 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import * as authUtil from '../../../util/authUtil';
+import * as authUtil from "../../../util/authUtil";
 import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 
-jest.mock('~/util/authUtil', () => ({
+jest.mock("~/util/authUtil", () => ({
   checkIsExternalLogin: jest.fn(),
   readJwtClaim: jest.fn(),
 }));
@@ -19,7 +19,7 @@ describe("AccountDetailsUseCase", () => {
 
   describe("GET", () => {
     it("should return null whenever it finds no data", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false); 
+      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
       const httpClient = new MockHttpClient({ data: null });
       const sut = makeSut(httpClient);
       const result = await sut.query();
@@ -27,7 +27,7 @@ describe("AccountDetailsUseCase", () => {
     });
 
     it("should return internal account details", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false); 
+      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
       const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
       const sut = makeSut(httpClient);
       const result = await sut.query();
@@ -41,27 +41,27 @@ describe("AccountDetailsUseCase", () => {
     });
 
     it("should return external account details", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(true); 
+      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(true);
       const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
       const sut = makeSut(httpClient);
       const result = await sut.query();
 
       expect(result).toStrictEqual({
-           address: {
-             address1: "808 Benninghaus Rd",
-             address2: "",
-             city: "Baltimore",
-             country: "US",
-             state: "MD",
-             zipCode: "21212-3943",
-          },
-          contactConsent: true,
-          defaultPhone: "71 988776655|Work",
-          email: "augustus.ok@email.com",
-          informationConsent: false,
-          name: "Augustus",
-          secondaryPhone: "416-709-5781|Home",
-          surname: "Waters",
+        address: {
+          address1: "808 Benninghaus Rd",
+          address2: "",
+          city: "Baltimore",
+          country: "US",
+          state: "MD",
+          zipCode: "21212-3943",
+        },
+        contactConsent: true,
+        defaultPhone: "71 988776655|Work",
+        email: "augustus.ok@email.com",
+        informationConsent: false,
+        name: "Augustus",
+        secondaryPhone: "416-709-5781|Home",
+        surname: "Waters",
       });
     });
 

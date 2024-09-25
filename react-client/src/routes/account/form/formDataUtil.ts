@@ -79,7 +79,10 @@ export function getAccountNotificationsData(
   } as FormValues;
 }
 
-export function buildAccountDetails(values: FormValues, isExternalLogin?: boolean): AccountDetailsModel {
+export function buildAccountDetails(
+  values: FormValues,
+  isExternalLogin?: boolean
+): AccountDetailsModel {
   const accountDetails: AccountDetailsModel = {
     email: values[baseAccountDetailsIds.email] as string,
     name: values[baseAccountDetailsIds.name] as string,
@@ -89,7 +92,8 @@ export function buildAccountDetails(values: FormValues, isExternalLogin?: boolea
 
   if (!isExternalLogin) return accountDetails;
 
-  return { ...accountDetails,
+  return {
+    ...accountDetails,
     address: {
       address1: values[accountAddressIds.address1] as string,
       address2: values[accountAddressIds.address2] as string,
@@ -98,14 +102,20 @@ export function buildAccountDetails(values: FormValues, isExternalLogin?: boolea
       state: values[accountAddressIds.state] as string,
       zipCode: values[accountAddressIds.zipCode] as string,
     },
-    contactConsent: !!(values[accountAgreementsIds.contactConsent] as string[]).length,
-    informationConsent: !!(values[accountAgreementsIds.informationConsent] as string[]).length,
+    contactConsent: !!(values[accountAgreementsIds.contactConsent] as string[])
+      .length,
+    informationConsent: !!(
+      values[accountAgreementsIds.informationConsent] as string[]
+    ).length,
     secondaryPhone: values[baseAccountDetailsIds.secondaryPhone] as string,
-   }
+  };
 }
 
 export function validateAccountDetails(accountDetails: AccountDetailsModel) {
-  return validateNameOrSurname(accountDetails.name) && validateNameOrSurname(accountDetails.surname)
+  return (
+    validateNameOrSurname(accountDetails.name) &&
+    validateNameOrSurname(accountDetails.surname)
+  );
 }
 
 function validateNameOrSurname(value?: string) {

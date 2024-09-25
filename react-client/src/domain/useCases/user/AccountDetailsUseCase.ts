@@ -19,6 +19,8 @@ import {
 export class AccountDetailsUseCase implements AccountDetailsRepository {
   private httpClient: HttpClientRepository;
   private isInternalLogin = !checkIsExternalLogin();
+  private internalLoginEndPoint = "adopt/api/User";
+  private externalLoginEndPoint = "adopt/api/UserProfile";
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -30,7 +32,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
   async query(): Promise<AccountDetailsModel | null> {
     try {
-      let result = await this.httpClient.get("adopt/api/User");
+      let result = await this.httpClient.get(this.internalLoginEndPoint);
       let accountDetails: AccountDetailsModel | null;
       if (result.data) {
         accountDetails = convertToAccountDetailsModel(result.data);
@@ -38,7 +40,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
         // The server doesn't update name and surname for the API of external login,
         // so we use the values from the internal login API
-        result = await this.httpClient.get("adopt/api/UserProfile");
+        result = await this.httpClient.get(this.externalLoginEndPoint);
         if (result.data) {
           accountDetails = {
             ...convertToExternalAccountDetailsModel(result.data),
@@ -65,7 +67,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
     try {
       if (serverInternalAccountSchema.safeParse(internalAccountBody).success) {
-        const result = await this.httpClient.put("adopt/api/User", {
+        const result = await this.httpClient.put(this.internalLoginEndPoint, {
           body: JSON.stringify(internalAccountBody),
         });
 
@@ -75,9 +77,12 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
           const externalAccountBody = convertToServerExternalAccountDetails(
             data as ExternalAccountDetailsModel
           );
-          const result2 = await this.httpClient.put("adopt/api/UserProfile", {
-            body: JSON.stringify(externalAccountBody),
-          });
+          const result2 = await this.httpClient.put(
+            this.externalLoginEndPoint,
+            {
+              body: JSON.stringify(externalAccountBody),
+            }
+          );
 
           if (result.statusCode === 204 && result2.statusCode === 204)
             return true;
@@ -204,19 +209,14 @@ function convertToServerExternalAccountDetails(
   const [defaultPhone, defaultType] = data.defaultPhone?.split("|") ?? ["", ""];
 
   function managePhoneTypes() {
-    let phoneType;
     switch (defaultType) {
       case "Mobile":
-        phoneType = "Cellular";
-        break;
+        return "CellularPhone";
       case "Work":
-        phoneType = "Business";
-        break;
+        return "BusinessPhone";
       default:
-        phoneType = "Home";
+        return "HomePhone";
     }
-
-    return phoneType.concat("Phone");
   }
 
   function manageSecondaryPhone() {

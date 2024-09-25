@@ -53,7 +53,7 @@ const optionalPhoneInput: ElementInputPhone = {
   id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
   type: "phone",
-  shouldDisplay: checkIsExternalLogin()
+  shouldDisplay: checkIsExternalLogin(),
 };
 
 const firstNameInput: ElementInputText = {

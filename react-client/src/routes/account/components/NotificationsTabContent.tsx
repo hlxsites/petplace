@@ -33,12 +33,14 @@ export const NotificationsTabContent = ({
           <SuspenseAwait resolve={accountNotifications}>
             {(accountNotifications) => (
               <DisplayUncontrolledForm
-              onSubmit={({ values }) => {
-                console.log("onSubmit values", values);
-              }}
-              schema={notificationsFormSchema}
-              initialValues={getAccountNotificationsData(accountNotifications)}
-            />
+                onSubmit={({ values }) => {
+                  console.log("onSubmit values", values);
+                }}
+                schema={notificationsFormSchema}
+                initialValues={getAccountNotificationsData(
+                  accountNotifications
+                )}
+              />
             )}
           </SuspenseAwait>
         </div>
