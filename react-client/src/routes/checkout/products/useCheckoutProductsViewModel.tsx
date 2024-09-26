@@ -1,3 +1,4 @@
+import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 
@@ -30,3 +31,6 @@ export const useCheckoutProductsViewModel = () => {
     products,
   };
 };
+
+export const useCheckoutProductsViewModelContext = () =>
+  useOutletContext<ReturnType<typeof useCheckoutProductsViewModel>>();
