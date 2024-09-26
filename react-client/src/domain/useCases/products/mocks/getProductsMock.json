@@ -30,7 +30,7 @@
           "ItemId": "item4",
           "ItemName": "Product 4",
           "Price": "25.00",
-          "Color": "Yellow",
+          "Color":"Yellow",
           "Size": "Large",
           "SpeciesId": "Dog"
         }

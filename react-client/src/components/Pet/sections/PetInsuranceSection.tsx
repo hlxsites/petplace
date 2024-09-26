@@ -1,6 +1,10 @@
 import { Card, LinkButton, Title } from "~/components/design-system";
 
-export const PetInsuranceSection = () => {
+type PetInsuranceSectionProps = {
+  petId: string;
+};
+
+export const PetInsuranceSection = ({ petId }: PetInsuranceSectionProps) => {
   return (
     <Card>
       <div className="grid grid-cols-1 items-center justify-items-center gap-large p-large md:items-start md:justify-items-start">
@@ -9,7 +13,7 @@ export const PetInsuranceSection = () => {
         <LinkButton
           fullWidth={true}
           openInNewTab={true}
-          to={"https://www.mypethealth.com/external/petplacelogin"}
+          to={`https://mph-qay.pethealthinc.com/petplace/policy?animalID=${petId}`}
           variant="secondary"
         >
           View insurance details

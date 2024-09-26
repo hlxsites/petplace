@@ -48,11 +48,11 @@ function convertToProductsList(
 
   const productSchema = z.array(
     z.object({
-      Color: z.union([z.array(z.string()), z.string()]).nullish(),
+      Color: z.string().nullish(),
       ItemId: z.string().nullish(),
       ItemName: z.string().nullish(),
       Price: z.string().nullish(),
-      Size: z.union([z.array(z.string()), z.string()]).nullish(),
+      Size: z.string().nullish(),
       SpeciesId: z.string().nullish(),
       UIName: z.string().nullish(),
     })
@@ -95,9 +95,16 @@ function convertToProductsList(
 
         const description = ADDITIONAL_PRODUCTS[id];
         products.push({
+          availableColors: [],
+          availableSizes: [],
+          availableOptions: {
+            default: {
+              id,
+              price,
+            },
+          },
           id,
           description,
-          price: `$${price}`,
           title,
           images: [],
         });
@@ -115,32 +122,58 @@ function convertToProductsList(
 
         if (!productsData) return null;
 
+        const productsMap = new Map<string, ProductDescription>();
+
+        const uniqueArray = (arr: string[]) => Array.from(new Set(arr));
+
         productsData.forEach((item) => {
-          const availableColors = (() => {
-            if (Array.isArray(item.Color)) return item.Color;
-            if (item.Color) return [item.Color.toLowerCase()];
-            return [];
-          })();
+          const fullProductName = item.ItemName;
+          const id = item.ItemId;
+          const price = item.Price;
+          if (!fullProductName || !id || !price) return;
 
-          const availableSizes = (() => {
-            if (Array.isArray(item.Size)) {
-              return item.Size.map((size) => convertSizeToProductSize(size));
-            }
-            const size = convertSizeToProductSize(item.Size);
-            return [size];
-          })();
+          const [productName] = fullProductName.split("-");
+          const color = item?.Color?.toLowerCase() || "unknown";
+          const size = convertSizeToProductSize(item.Size);
+          const productColorSizeKey = `${color}|${size}`;
 
-          if (!item.ItemId || !item.ItemName || !item.Price) return;
+          if (productsMap.has(productName)) {
+            // Add color and size to existing product
+            const product = productsMap.get(productName);
+            if (!product) return;
 
-          products.push({
-            availableColors,
-            availableSizes,
-            id: item.ItemId,
-            images: [],
-            price: `$${item.Price}`,
-            title: item.ItemName,
-          });
+            productsMap.set(productName, {
+              ...product,
+              availableColors: uniqueArray([...product.availableColors, color]),
+              availableSizes: uniqueArray([...product.availableSizes, size]),
+              availableOptions: {
+                ...product.availableOptions,
+                [productColorSizeKey]: {
+                  id,
+                  price,
+                },
+              },
+            });
+          } else {
+            // Create new product
+            productsMap.set(productName, {
+              availableColors: [color],
+              availableSizes: [size],
+              availableOptions: {
+                [productColorSizeKey]: {
+                  id,
+                  price,
+                },
+              },
+              // We are using the product name as the id for this kind of products
+              id: productName,
+              images: [],
+              title: productName,
+            });
+          }
         });
+
+        products.push(...Array.from(productsMap.values()));
       }
     }
   });
@@ -149,13 +182,12 @@ function convertToProductsList(
 }
 
 function convertSizeToProductSize(size?: string | null): string {
-  const defaultSize = "One Size";
-  if (!size) return defaultSize;
+  if (!size) return "One Size";
 
   const lowercaseSize = size.toLowerCase();
   if (lowercaseSize === "small/medium") return "S/M";
   if (lowercaseSize === "large") return "L";
   if (lowercaseSize === "small") return "S";
 
-  return defaultSize;
+  return lowercaseSize;
 }
