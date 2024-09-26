@@ -49,7 +49,7 @@ export const PetProfileIndex = () => {
 
     const petInsuranceSectionElement = (() => {
       if (!policyInsurance?.length) return null;
-      return <PetInsuranceSection />;
+      return <PetInsuranceSection petId={id} />;
     })();
 
     return (
