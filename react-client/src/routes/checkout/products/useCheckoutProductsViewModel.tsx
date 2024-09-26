@@ -21,18 +21,18 @@ export const loader = (async ({ request }) => {
 
   const cartCheckoutUseCase = getCartCheckoutFactory(authToken);
 
-  const onClearCart = () => {
-    void cartCheckoutUseCase.post();
-  };
-
   return defer({
-    onClearCart,
+    cartCheckoutUseCase,
     products: productsData,
   });
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { onClearCart, products } = useLoaderData<typeof loader>();
+  const { cartCheckoutUseCase, products } = useLoaderData<typeof loader>();
+
+  const onClearCart = () => {
+    void cartCheckoutUseCase.post();
+  };
 
   return {
     onClearCart,
