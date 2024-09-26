@@ -15,7 +15,6 @@ const VALID_CART_ITEM: CartItem = {
 
 const VALID_ANIMAL_INFO: AnimalInfo = {
   id: "animal1",
-  name: "Buddy",
 };
 
 describe("CartCheckoutUseCase", () => {
