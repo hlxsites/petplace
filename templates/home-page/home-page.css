@@ -169,6 +169,90 @@ main a:hover {
   height: 380px;
 }
 
+.home-page .tiles-container.tiles-with-bg>div:last-child {
+  margin-top: .5rem;
+  margin-bottom: 2rem;
+}
+
+.home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) .button-container {
+  justify-content: center;
+}
+
+.home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) .button-container a.button {
+  background-color: transparent;
+  color: var(--link-color);
+  padding: 0;
+  margin: 0;
+  border: none;
+  font-weight: normal;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) a::after {
+  content: '';
+  mask: url(../../icons/arrow.svg) center / 100% 100%;
+  background-color: var(--link-color);
+  padding: 0.5rem;
+  display: inline-block;
+}
+
+.home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) a.button:hover,
+.home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) a.button:focus,
+.home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) button:hover,
+.home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) button:focus {
+  background-color: transparent !important;
+}
+
+@media screen and (min-width: 768px) {
+  .home-page .section.tiles-container.tiles-with-bg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "title link"
+      "tiles tiles";
+  }
+
+  .home-page .tiles-wrapper {
+    grid-area: tiles;
+  }
+
+  .home-page .tiles-container.tiles-with-bg>.tiles-wrapper .tiles-block-container {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .home-page .tiles-container.tiles-with-bg>div:first-child {
+    grid-area: title;
+    justify-self: flex-start;
+  }
+
+  .home-page .tiles-container.tiles-with-bg>div:first-child h2 {
+    text-align: left;
+  }
+
+  .home-page .tiles-container.tiles-with-bg>div:last-child {
+    grid-area: link;
+    justify-self: flex-end;
+  }
+
+  .home-page .tiles-container.tiles-with-bg>div:last-child .button-container {
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 1392px) {
+  .section.tiles-container.tiles-with-bg {
+    padding-left: calc((100% - 1344px) / 2);
+    padding-right: calc((100% - 1344px) / 2);
+  }
+}
+
 @media (max-width: 768px) {
   .home-banner-bg {
     margin-bottom: 6rem !important;
