@@ -1,5 +1,5 @@
-import { AnimalInfo, CartItem } from "~/domain/models/cart/CartModel";
+import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
 export interface CartCheckoutRepository {
-  post(data?: CartItem, animalInfo?: AnimalInfo): Promise<boolean>;
+  post(data?: CommonCartItem, petId?: string): Promise<boolean>;
 }
