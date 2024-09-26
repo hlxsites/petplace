@@ -1,4 +1,6 @@
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
+import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
+import { CommonCartItem } from "~/domain/models/cart/CartModel";
 import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
 import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 
@@ -23,15 +25,28 @@ export const loader = (async ({ request }) => {
 
   return defer({
     cartCheckoutUseCase,
+    petId,
+    plan,
     products: productsData,
   });
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { cartCheckoutUseCase, products } = useLoaderData<typeof loader>();
+  const { cartCheckoutUseCase, petId, plan, products } =
+    useLoaderData<typeof loader>();
 
-  const onClearCart = () => {
-    void cartCheckoutUseCase.post();
+  const onClearCart = (data: MembershipInfo[]) => {
+    const filteredPlan = data.find((item) => item.type === plan);
+
+    if (!filteredPlan) return null;
+
+    const selectedDataPlan: CommonCartItem = {
+      id: filteredPlan.id,
+      quantity: 1,
+      type: filteredPlan.type,
+    };
+
+    void cartCheckoutUseCase.post(selectedDataPlan, petId);
   };
 
   return {

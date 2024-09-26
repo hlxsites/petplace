@@ -10,11 +10,15 @@ import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
 import { useCheckoutProductsViewModel } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
-  const { products, onClearCart } = useCheckoutProductsViewModel();
+  const { products } = useCheckoutProductsViewModel();
+
+  // TODO: get plans correctly and uncomment the onClearCart
+  // const { plans } = useCheckoutIndexViewModel();
+
   const [isOpen, setIsOpen] = useState(false);
 
   // Run on first mount only
-  onClearCart();
+  // onClearCart(plans);
 
   return (
     <div className="min-h-[100dvh] bg-neutral-50">
