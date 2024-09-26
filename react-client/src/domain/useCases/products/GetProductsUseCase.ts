@@ -4,7 +4,10 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetProductsRepository } from "~/domain/repository/products/GetProductsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { ADDITIONAL_PRODUCTS } from "./utils/productsHardCodedData";
+import {
+  ADDITIONAL_PRODUCTS,
+  IMAGES_PRODUCTS,
+} from "./utils/productsHardCodedData";
 
 export class GetProductsUseCase implements GetProductsRepository {
   private httpClient: HttpClientRepository;
@@ -94,6 +97,9 @@ function convertToProductsList(
         if (!id || !title || !price) return;
 
         const description = ADDITIONAL_PRODUCTS[id];
+
+        console.log(id);
+
         products.push({
           availableColors: [],
           availableSizes: [],
@@ -106,7 +112,7 @@ function convertToProductsList(
           id,
           description,
           title,
-          images: [],
+          images: IMAGES_PRODUCTS[id] ?? [],
         });
       });
     }
@@ -153,6 +159,7 @@ function convertToProductsList(
                   price,
                 },
               },
+              images: IMAGES_PRODUCTS[id] ?? [],
             });
           } else {
             // Create new product
@@ -167,7 +174,7 @@ function convertToProductsList(
               },
               // We are using the product name as the id for this kind of products
               id: productName,
-              images: [],
+              images: IMAGES_PRODUCTS[id] ?? [],
               title: productName,
             });
           }
