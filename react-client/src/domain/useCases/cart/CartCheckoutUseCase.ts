@@ -1,7 +1,7 @@
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { CartCheckoutRepository } from "~/domain/repository/cart/CartCheckoutRepository";
-import { AnimalInfo, CartItem } from "~/domain/models/cart/CartModel";
+import { CommonCartItem } from "~/domain/models/cart/CartModel";
 import { z } from "zod";
 
 const cartItemServerSchema = z.object({
@@ -33,13 +33,13 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
     return false;
   };
 
-  post = async (data?: CartItem, animalInfo?: AnimalInfo): Promise<boolean> => {
+  post = async (data?: CommonCartItem, petId?: string): Promise<boolean> => {
     let body: PostCartCheckoutRequest;
 
-    if (!data && !animalInfo) {
+    if (!data && !petId) {
       body = { Items: [] };
     } else {
-      const convertedBody = convertToServerCartCheckout(data, animalInfo);
+      const convertedBody = convertToServerCartCheckout(data, petId);
       if (!convertedBody) {
         return this.handleError(
           new Error("Missing required fields for cart checkout")
@@ -62,22 +62,22 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
   };
 }
 
-function hasRequiredFields(data: CartItem, animalInfo: AnimalInfo): boolean {
-  return Boolean(data.id && data.type && data.quantity && animalInfo.id);
+function hasRequiredFields(data: CommonCartItem, petId: string): boolean {
+  return Boolean(data.id && data.type && data.quantity && petId);
 }
 
 function convertToServerCartCheckout(
-  data?: CartItem,
-  animalInfo?: AnimalInfo
+  data?: CommonCartItem,
+  petId?: string
 ): PostCartCheckoutRequest | null {
-  if (!data || !animalInfo || !hasRequiredFields(data, animalInfo)) {
+  if (!data || !petId || !hasRequiredFields(data, petId)) {
     return null;
   }
 
   return {
     Items: [
       {
-        AnimalId: animalInfo.id,
+        AnimalId: petId,
         ItemId: data.id,
         ItemType: data.type,
         Quantity: data.quantity,
