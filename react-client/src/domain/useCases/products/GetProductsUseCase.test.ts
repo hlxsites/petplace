@@ -2,7 +2,6 @@ import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetProductsUseCase } from "./GetProductsUseCase";
 import getProductsMock from "./mocks/getProductsMock.json";
-// Make sure this has descriptions for item1 and item2
 
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
@@ -47,6 +46,32 @@ describe("GetProductsUseCase", () => {
         id: "item2",
         images: [],
         title: "Product 2",
+      },
+      {
+        availableColors: ["green"],
+        availableOptions: {
+          "green|S/M": {
+            id: "item3",
+            price: "15.00",
+          },
+        },
+        availableSizes: ["S/M"],
+        id: "Product 3",
+        images: [],
+        title: "Product 3",
+      },
+      {
+        availableColors: ["yellow"],
+        availableOptions: {
+          "yellow|L": {
+            id: "item4",
+            price: "25.00",
+          },
+        },
+        availableSizes: ["L"],
+        id: "Product 4",
+        images: [],
+        title: "Product 4",
       },
     ]);
   });
