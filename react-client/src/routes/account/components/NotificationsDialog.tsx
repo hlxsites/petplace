@@ -1,10 +1,10 @@
 import { Button, Dialog, Text, TextSpan } from "~/components/design-system";
-import { LostPetUpdate } from "~/domain/models/pet/PetModel";
+import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 
 type NotificationsDialogProps = {
   isOpen: boolean;
   onClose?: () => void;
-  viewData?: LostPetUpdate[];
+  viewData?: LostPetUpdateModel;
   petName?: string;
 };
 
@@ -14,7 +14,7 @@ export const NotificationsDialog = ({
   viewData,
   petName,
 }: NotificationsDialogProps) => {
-  const foundedBy = viewData?.[0]?.foundedBy;
+  const foundedBy = viewData?.foundedBy;
   const finderName = foundedBy?.finderName ?? "Unknown Finder";
 
   return (
@@ -30,7 +30,7 @@ export const NotificationsDialog = ({
     >
       <div className="grid w-[640px] gap-large pt-large">
         <Text size="16" isResponsive>
-          {`${petName} with identifier ${viewData?.[0]?.id} has been found. Contact the
+          {`${petName} with identifier ${viewData?.id} has been found. Contact the
           finder listed below to coordinate a pickup. Once you've been reunited
           with ${petName}, be sure to turn off the found pet alerts by clicking the
           button below.`}
@@ -55,11 +55,16 @@ export const NotificationsDialog = ({
           Thank you for registering your pet.
         </Text>
 
-        {/* TODO: This block of code should be refactored once API is defined */}
         <div className="grid">
           <Text>The following people have been contacted:</Text>
           <Text>Owner</Text>
-          <Text>dana.rayman@pethealthinc.com at 03:14 PM Email</Text>
+          {foundedBy?.contact?.map(({ email, date }, i) => {
+            return (
+              <Text key={`${i}-${date}`}>
+                {email} at {date}
+              </Text>
+            );
+          })}
         </div>
 
         <Button fullWidth variant="secondary" onClick={onClose}>

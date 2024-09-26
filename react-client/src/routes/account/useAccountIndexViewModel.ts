@@ -1,11 +1,11 @@
 import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { getLostPetsHistory } from "~/mocks/MockRestApiServer";
 import { requireAuthToken } from "~/util/authUtil";
 
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
+import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
 import { validateAccountDetails } from "./form/formDataUtil";
 
 export const loader = (() => {
@@ -14,6 +14,8 @@ export const loader = (() => {
   const accountDetailsUseCase = accountDetailsUseCaseFactory(authToken);
   const accountNotificationsUseCase =
     accountNotificationsUseCaseFactory(authToken);
+  const lostPetNotificationsUseCase =
+    lostPetNotificationsUseCaseFactory(authToken);
 
   function onSubmitAccountDetails(values: AccountDetailsModel) {
     if (validateAccountDetails(values))
@@ -23,7 +25,7 @@ export const loader = (() => {
   return defer({
     accountDetails: accountDetailsUseCase.query(),
     accountNotifications: accountNotificationsUseCase.query(),
-    lostPetsHistory: getLostPetsHistory(),
+    lostPetsHistory: lostPetNotificationsUseCase.query(),
     onSubmitAccountDetails,
   });
 }) satisfies LoaderFunction;

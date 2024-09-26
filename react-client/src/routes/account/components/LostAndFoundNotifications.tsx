@@ -1,28 +1,19 @@
-import { Card, Checkbox, Title } from "~/components/design-system";
-import { LostPetUpdate } from "~/domain/models/pet/PetModel";
+import { Card, Title } from "~/components/design-system";
 import { ViewNotifications } from "./ViewNotifications";
 
 import { Fragment, useState } from "react";
+import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 import { NotificationsDialog } from "./NotificationsDialog";
 
-export type LostNotification = {
-  petHistory?: LostPetUpdate[];
-  petName: string;
-};
-
 export type LostAndFoundNotificationsProps = {
-  notifications?: LostNotification[];
+  notifications?: LostPetUpdateModel[] | null;
 };
 
 export const LostAndFoundNotifications = ({
   notifications = [],
 }: LostAndFoundNotificationsProps) => {
-  const [selectedPet, setSelectedPet] = useState<LostNotification | null>(null);
-
-  const checkboxesFilters = [
-    { label: "All" },
-    { label: "Incoming found pet alerts" },
-  ];
+  const [selectedNotification, setSelectedNotification] =
+    useState<LostPetUpdateModel | null>(null);
 
   return (
     <>
@@ -30,12 +21,10 @@ export const LostAndFoundNotifications = ({
         <div className="p-xxlarge">
           <div className="flex items-center justify-between pb-large">
             <Title level="h3">Lost & Found notifications</Title>
-            <div className="flex gap-large">
-              {renderCheckboxes(checkboxesFilters)}
-            </div>
+            <div className="flex gap-large"></div>
           </div>
 
-          {notifications.length > 0 && (
+          {notifications && notifications.length > 0 && (
             <Card>
               <div className="p-large">
                 {notifications.map((notification, index) =>
@@ -47,51 +36,44 @@ export const LostAndFoundNotifications = ({
         </div>
       </Card>
 
-      {selectedPet && (
+      {selectedNotification && (
         <NotificationsDialog
-          isOpen={!!selectedPet}
+          isOpen={!!selectedNotification}
           onClose={onCloseDialog}
-          viewData={selectedPet.petHistory}
-          petName={selectedPet.petName}
+          viewData={selectedNotification}
+          petName={selectedNotification.petName}
         />
       )}
     </>
   );
 
-  function renderCheckboxes(checkboxes: { label: string }[]) {
-    return checkboxes.map(({ label }) => (
-      <Checkbox id={label} key={label} label={label} variant="purple" />
-    ));
-  }
-
-  function renderNotification(notification: LostNotification, index: number) {
+  function renderNotification(notification: LostPetUpdateModel, index: number) {
+    const { date, id, foundedBy, petName } = notification;
     return (
-      <Fragment key={`notification-${notification.petName}-${index}`}>
-        {notification.petHistory?.map(({ date, id, foundedBy }) => (
-          <div key={`${notification.petName}-${id}`}>
-            <ViewNotifications
-              dateFoundOrLost={date}
-              foundedBy={foundedBy?.finderName}
-              onClick={() => onOpenDialog(notification)}
-              petName={notification.petName}
-            />
-            {renderHorizontalDivider(index + 1)}
-          </div>
-        ))}
+      <Fragment key={`notification-${petName}-${index}`}>
+        <div key={`${petName}-${id}`}>
+          <ViewNotifications
+            dateFoundOrLost={date}
+            foundedBy={foundedBy?.finderName}
+            onClick={() => onOpenDialog(notification)}
+            petName={petName}
+          />
+          {renderHorizontalDivider(index + 1)}
+        </div>
       </Fragment>
     );
   }
 
   function renderHorizontalDivider(index: number) {
-    if (notifications.length === index) return null;
+    if (notifications && notifications.length === index) return null;
     return <hr className="-mx-[10%] border-neutral-300" />;
   }
 
-  function onOpenDialog(pet: LostNotification) {
-    setSelectedPet(pet);
+  function onOpenDialog(notification: LostPetUpdateModel) {
+    setSelectedNotification(notification);
   }
 
   function onCloseDialog() {
-    setSelectedPet(null);
+    setSelectedNotification(null);
   }
 };

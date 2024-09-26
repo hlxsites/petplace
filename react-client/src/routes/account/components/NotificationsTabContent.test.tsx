@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { ComponentProps } from "react";
-import { LostNotification } from "./LostAndFoundNotifications";
+import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 
 const { getByRole, queryByRole } = screen;
@@ -79,7 +79,7 @@ describe("NotificationsTabContent", () => {
   it("should render the given lost notifications", () => {
     getRenderer({
       isExternalLogin: true,
-      lostPetsHistory: MOCK_PET_HISTORY,
+      lostPetsHistory: Promise.resolve(MOCK_PET_HISTORY),
     });
     expect(getByRole("button", { name: /view/i })).toBeInTheDocument();
   });
@@ -99,19 +99,17 @@ function getRenderer({
   return render(<NotificationsTabContent {...props} />);
 }
 
-const MOCK_PET_HISTORY: LostNotification[] = [
+const MOCK_PET_HISTORY: LostPetUpdateModel[] = [
   {
-    petHistory: [
-      {
-        date: 628021800000,
-        foundedBy: {
-          finderName: "Mrs Smart",
-        },
-        id: 0,
-        status: "missing",
-        update: 0,
-      },
-    ],
+    communicationId: "sample-id",
+    date: 628021800000,
+    foundedBy: {
+      finderName: "Mrs Smart",
+    },
+    id: "0",
+    petId: "AUN19623620",
     petName: "Mag",
+    status: "missing",
+    update: 0,
   },
 ];
