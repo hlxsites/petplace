@@ -35,4 +35,5 @@ export const AppRoutePathsIndexes = {
   myPetsIndex: undefined,
   petProfileIndex: undefined,
   playgroundIndex: undefined,
+  productsIndex: undefined,
 } as const;

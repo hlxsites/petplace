@@ -1,17 +1,16 @@
 import { ProductDescription } from "~/domain/models/products/ProductModel";
+import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 import { classNames } from "~/util/styleUtil";
 import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
 import { CheckoutProductCard } from "../CheckoutProductCard";
 import { useCartItemsDetails } from "../hooks/useCartItemDetails";
 
-type CheckoutProductsSectionProps = {
-  products: ProductDescription[];
-};
+export const CheckoutProductsSection = () => {
+  const { products } = useCheckoutProductsViewModelContext();
 
-export const CheckoutProductsSection = ({
-  products,
-}: CheckoutProductsSectionProps) => {
   const { item, goBack } = useCartItemsDetails();
+
+  if (!products) return null;
 
   const gridColumns = getGridColumns(products.length);
 
@@ -22,8 +21,6 @@ export const CheckoutProductsSection = ({
   const handleMoreInfo = (product: ProductDescription) => () => {
     console.log("product", product);
   };
-
-  // TODO: This component should have a viewModel which will control its children components
 
   return (
     <>
