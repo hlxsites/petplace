@@ -16,6 +16,7 @@ const membershipProductSchema = z.object({
   ItemId: z.string().nullish(),
   ItemName: z.string().nullish(),
   ItemPrice: z.string().nullish(),
+  ItemType: z.string().nullish(),
   RenewalPrice: z.string().nullish(),
   SalesPrice: z.string().nullish(),
 });
@@ -86,6 +87,7 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
             isHighlighted,
             price,
             title: planData.ItemName || hardCodedPlan.title,
+            type: planData.ItemType ?? hardCodedPlan.type,
           });
         }
       });
