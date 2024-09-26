@@ -169,6 +169,9 @@ main a:hover {
   height: 380px;
 }
 
+/*
+* Tiles
+*/
 .home-page .tiles-container.tiles-with-bg>div:last-child {
   margin-top: .5rem;
   margin-bottom: 2rem;
@@ -206,7 +209,13 @@ main a:hover {
 .home-page .tiles-container.tiles-with-bg>div:not(.tiles-wrapper) button:focus {
   background-color: transparent !important;
 }
+/*
+* /Tiles
+*/
 
+/*
+* Tiles @media
+*/
 @media screen and (min-width: 768px) {
   .home-page .section.tiles-container.tiles-with-bg {
     display: grid;
@@ -252,6 +261,9 @@ main a:hover {
     padding-right: calc((100% - 1344px) / 2);
   }
 }
+/*
+* /Tiles @media
+*/
 
 @media (max-width: 768px) {
   .home-banner-bg {
