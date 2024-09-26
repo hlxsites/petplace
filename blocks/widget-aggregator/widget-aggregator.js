@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable func-names */
 export default async function decorate(block) {
   const blockMetadata = {};
 
@@ -13,9 +11,16 @@ export default async function decorate(block) {
   }
   const { source, script } = blockMetadata;
 
-  if (script) {
-    block.setAttribute('id', 'petplace-quote-form');
+  block.setAttribute('id', 'petplace-quote-form');
+  block.innerText = '';
+  if (script === 'iframe') {
+    const frame = document.createElement('iframe');
+    frame.id = source;
+    frame.src = 'https://dev-quote.petted.com/widget/petplace';
+    frame.setAttribute('style', 'width:100%;border:0px;height:100%;');
 
+    block.append(frame);
+  } else if (script === 'widget') {
     const widget = document.createElement('script');
     widget.setAttribute('brand', 'petplace');
     widget.setAttribute('source', source);
@@ -29,7 +34,6 @@ export default async function decorate(block) {
       js.async = true;
       js.type = "text/javascript";
       js.onload = function() {
-
       if (window.QuoteEngine) {
         window.QuoteEngine.setOptions({
           targetId: "petplace-quote-form",
