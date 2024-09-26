@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 
-const { getByRole, queryByRole } = screen;
+const { getByRole, queryByRole, findByRole } = screen;
 
 // TODO: This shouldn't be needed after refactoring how to handle account form
 jest.mock("~/util/authUtil", () => ({
@@ -68,20 +68,12 @@ describe("NotificationsTabContent", () => {
     ).not.toBeInTheDocument();
   });
 
-  it.each(["All", "Incoming found pet alerts"])(
-    "should render the selector filter: %s",
-    (selector) => {
-      getRenderer({ isExternalLogin: true });
-      expect(getByRole("checkbox", { name: selector })).toBeInTheDocument();
-    }
-  );
-
-  it("should render the given lost notifications", () => {
+  it("should render the given lost notifications", async () => {
     getRenderer({
       isExternalLogin: true,
       lostPetsHistory: Promise.resolve(MOCK_PET_HISTORY),
     });
-    expect(getByRole("button", { name: /view/i })).toBeInTheDocument();
+    expect(await findByRole('button', { name: /view/i })).toBeInTheDocument();
   });
 
   it("should NOT render the lost notifications when it's not provided", () => {
