@@ -98,8 +98,6 @@ function convertToProductsList(
 
         const description = ADDITIONAL_PRODUCTS[id];
 
-        console.log(id);
-
         products.push({
           availableColors: [],
           availableSizes: [],
