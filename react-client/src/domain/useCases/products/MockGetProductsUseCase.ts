@@ -9,48 +9,35 @@ export class MockGetProductsUseCase implements GetProductsRepository {
         availableColors: ["black"],
         availableSizes: [],
         availableOptions: {
-          black: {
+          "black|": {
             id: "ByteTag-Black R Cat",
-            price: "$19.95",
+            price: "19.95",
           },
         },
         id: "ByteTag-Black",
         images: [],
-        title: "ByteTag - Black Round Cat",
-      },
-      {
-        availableColors: ["black"],
-        availableSizes: ["L"],
-        availableOptions: {
-          "black|L": {
-            id: "ByteTag-Black-S-Lg",
-            price: "$19.95",
-          },
-        },
-        id: "ByteTag-Black",
-        images: [],
-        title: "ByteTag Slide Black - Lg",
+        title: "ByteTag Round Cat",
       },
       {
         availableColors: ["black", "white"],
-        availableSizes: ["S/M"],
+        availableSizes: ["S/M", "L"],
         availableOptions: {
           "black|S/M": {
             id: "ByteTag-Black-S-Sm/M",
-            price: "$19.95",
+            price: "19.95",
           },
           "white|S/M": {
             id: "ByteTag-White-S-Sm/M",
-            price: "$19.95",
+            price: "19.95",
           },
           "black|L": {
             id: "ByteTag-Black-L",
-            price: "$15.95",
+            price: "15.95",
           },
         },
         id: "ByteTag-Black",
         images: [],
-        title: "ByteTag Slide Black - sm/M",
+        title: "ByteTag Slide",
       },
     ];
     return products;

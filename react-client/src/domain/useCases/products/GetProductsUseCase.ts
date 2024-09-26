@@ -100,7 +100,7 @@ function convertToProductsList(
           availableOptions: {
             default: {
               id,
-              price: `$${price}`,
+              price,
             },
           },
           id,
@@ -150,7 +150,7 @@ function convertToProductsList(
                 ...product.availableOptions,
                 [productColorSizeKey]: {
                   id,
-                  price: `$${price}`,
+                  price,
                 },
               },
             });
@@ -162,7 +162,7 @@ function convertToProductsList(
               availableOptions: {
                 [productColorSizeKey]: {
                   id,
-                  price: `$${price}`,
+                  price,
                 },
               },
               // We are using the product name as the id for this kind of products

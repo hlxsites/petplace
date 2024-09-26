@@ -19,7 +19,7 @@ const DEFAULT_ITEM: ProductDescription = {
 const { getByRole, getByText, queryByText, queryByRole } = screen;
 
 describe("CheckoutItemDetailedContent", () => {
-  it.each(["$19.95", "$100.00"])(
+  it.each(["19.95", "100.00"])(
     "should render component with given price",
     (price) => {
       getRenderer({
@@ -33,7 +33,7 @@ describe("CheckoutItemDetailedContent", () => {
           },
         },
       });
-      expect(getByText(price)).toBeInTheDocument();
+      expect(getByText(`$${price}`)).toBeInTheDocument();
     }
   );
 

@@ -26,7 +26,7 @@ describe("GetProductsUseCase", () => {
         availableOptions: {
           default: {
             id: "item1",
-            price: "$20.00",
+            price: "20.00",
           },
         },
         description: undefined,
@@ -39,7 +39,7 @@ describe("GetProductsUseCase", () => {
         availableOptions: {
           default: {
             id: "item2",
-            price: "$30.00",
+            price: "30.00",
           },
         },
         availableSizes: [],
