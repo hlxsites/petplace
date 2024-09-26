@@ -6,12 +6,9 @@ import { z } from "zod";
 
 const cartItemServerSchema = z.object({
   AnimalId: z.string().nullish(),
-  AnimalName: z.string().nullish(),
-  AutoRenew: z.number().nullish(),
   ItemId: z.string().nullish(),
   ItemType: z.string().nullish(),
   Quantity: z.number().nullish(),
-  UnitPrice: z.string().nullish(),
 });
 
 const serverSchema = z.object({
@@ -66,9 +63,7 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
 }
 
 function hasRequiredFields(data: CartItem, animalInfo: AnimalInfo): boolean {
-  return Boolean(
-    data.id && data.type && data.quantity && animalInfo.id && animalInfo.name
-  );
+  return Boolean(data.id && data.type && data.quantity && animalInfo.id);
 }
 
 function convertToServerCartCheckout(
@@ -79,18 +74,13 @@ function convertToServerCartCheckout(
     return null;
   }
 
-  const unitPrice = data.price ? data.price.replace(/\$/g, "") : undefined;
-
   return {
     Items: [
       {
         AnimalId: animalInfo.id,
-        AnimalName: animalInfo.name,
         ItemId: data.id,
         ItemType: data.type,
         Quantity: data.quantity,
-        AutoRenew: 0,
-        UnitPrice: unitPrice,
       },
     ],
   };

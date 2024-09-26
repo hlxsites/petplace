@@ -1,6 +1,6 @@
 import { PetCommon } from "../pet/PetModel";
 
-export type AnimalInfo = Pick<PetCommon, "id" | "name">;
+export type AnimalInfo = Pick<PetCommon, "id">;
 
 export type CartItem = {
   acquisitionMessage?: string;
