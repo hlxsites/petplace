@@ -21,17 +21,31 @@ describe("GetProductsUseCase", () => {
 
     expect(result).toStrictEqual([
       {
+        availableColors: [],
+        availableSizes: [],
+        availableOptions: {
+          default: {
+            id: "item1",
+            price: "$20.00",
+          },
+        },
         description: undefined,
         id: "item1",
         images: [],
-        price: "$20.00",
         title: "Product 1",
       },
       {
+        availableColors: [],
+        availableOptions: {
+          default: {
+            id: "item2",
+            price: "$30.00",
+          },
+        },
+        availableSizes: [],
         description: undefined,
         id: "item2",
         images: [],
-        price: "$30.00",
         title: "Product 2",
       },
     ]);

@@ -47,9 +47,11 @@ function getRenderer({
 }
 
 const MOCK_ITEM: DetailedCartItem = {
+  availableColors: [],
+  availableSizes: [],
+  availableOptions: {},
   id: "test-item",
   title: "Test Item",
-  price: "$100",
   images: ["test-image.jpg"],
   description: "Test Description",
 };

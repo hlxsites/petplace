@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import { CheckoutProductColorSize } from "./CheckoutProductColorSize";
-import { ComponentProps } from "react";
 import userEvent from "@testing-library/user-event";
+import { ComponentProps } from "react";
+import { CheckoutProductColorSize } from "./CheckoutProductColorSize";
 
 const { getByText, queryByText, getByRole, getAllByRole } = screen;
 
 describe("CheckoutProductColorSize", () => {
   it("should renders color and size options when both props are provided", () => {
     getRenderer({
-      productColors: [{ label: "black", id: "color black" }],
-      productSizes: [{ label: "L", id: "large size" }],
+      productColors: ["black"],
+      productSizes: ["L"],
     });
 
     expect(getByText("Color choice:")).toBeInTheDocument();
@@ -24,13 +24,13 @@ describe("CheckoutProductColorSize", () => {
   });
 
   it("should render color button with aria-label", () => {
-    getRenderer({ productColors: [{ label: "black", id: "color black" }] });
+    getRenderer({ productColors: ["black"] });
 
     expect(getByRole("button")).toHaveAttribute("aria-label", "color: black");
   });
 
   it("should allow user to select color", async () => {
-    getRenderer({ productColors: [{ label: "black", id: "color black" }] });
+    getRenderer({ productColors: ["black"] });
 
     expect(getByRole("button")).not.toHaveClass("border-orange-300-main");
     await userEvent.click(getByRole("button"));
@@ -39,10 +39,7 @@ describe("CheckoutProductColorSize", () => {
 
   it("should allow user to select sizes options", async () => {
     getRenderer({
-      productSizes: [
-        { label: "L", id: "large" },
-        { label: "S/M", id: "small medium" },
-      ],
+      productSizes: ["L", "S/M"],
     });
     const buttons = getAllByRole("button");
 

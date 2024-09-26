@@ -1,9 +1,9 @@
 import { createRef, useRef } from "react";
 import { useButtonSelection } from "~/hooks/useButtonSelection";
 
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { classNames } from "~/util/styleUtil";
 import { Button, Text } from "../design-system";
-import { ProductDescription } from "~/domain/models/products/ProductModel";
 
 type CheckoutProductColorSizeProps = {
   productColors?: ProductDescription["availableColors"];
@@ -38,7 +38,7 @@ export const CheckoutProductColorSize = ({
           <div className="flex gap-xsmall">
             {productColors.map((productColor, index) => (
               <Button
-                aria-label={`color: ${productColor.label}`}
+                aria-label={`color: ${productColor}`}
                 className={classNames(
                   "h-[30px] w-[30px] border-2 border-solid !px-0 lg:!px-0",
                   {
@@ -46,9 +46,9 @@ export const CheckoutProductColorSize = ({
                       colorRefs.current[index]
                     ),
                     "bg-black hover:!bg-black focus:bg-black":
-                      productColor.label === "black",
+                      productColor === "black",
                     "focus:neutral-white border-neutral-500 bg-neutral-white hover:!bg-neutral-white":
-                      productColor.label === "white",
+                      productColor === "white",
                   }
                 )}
                 key={`${productColor} - ${index}`}
@@ -71,12 +71,12 @@ export const CheckoutProductColorSize = ({
                   "border-2 border-orange-300-contrast text-orange-300-contrast":
                     isSizeSelected(sizeRefs.current[index]),
                 })}
-                key={`${productSize.id} - ${index}`}
+                key={productSize}
                 onClick={() => handleSizeSelect(sizeRefs.current[index])}
                 variant="secondary"
                 ref={sizeRefs.current[index]}
               >
-                {productSize.label}
+                {productSize}
               </Button>
             ))}
           </div>

@@ -20,11 +20,13 @@ export const CheckoutItemDetailedContent = ({
     images,
     isAnnual,
     title,
-    price,
     privacyFeatures,
     sizing,
     tagFeatures,
   } = item;
+
+  // TODO: get the price from the availableOptions
+  const price = "$20";
 
   return (
     <div className="flex flex-col gap-base">

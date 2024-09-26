@@ -50,13 +50,12 @@ export const CheckoutProductsSection = ({
     title: string;
     price: string;
   } {
+    // TODO: Revalidate how to check if a product is valid
     return (
       !!product.id &&
       !!product.title &&
-      !!product.price &&
       typeof product.id === "string" &&
-      typeof product.title === "string" &&
-      typeof product.price === "string"
+      typeof product.title === "string"
     );
   }
 };

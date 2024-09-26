@@ -48,11 +48,11 @@ function convertToProductsList(
 
   const productSchema = z.array(
     z.object({
-      Color: z.union([z.array(z.string()), z.string()]).nullish(),
+      Color: z.string().nullish(),
       ItemId: z.string().nullish(),
       ItemName: z.string().nullish(),
       Price: z.string().nullish(),
-      Size: z.union([z.array(z.string()), z.string()]).nullish(),
+      Size: z.string().nullish(),
       SpeciesId: z.string().nullish(),
       UIName: z.string().nullish(),
     })
@@ -95,9 +95,16 @@ function convertToProductsList(
 
         const description = ADDITIONAL_PRODUCTS[id];
         products.push({
+          availableColors: [],
+          availableSizes: [],
+          availableOptions: {
+            default: {
+              id,
+              price: `$${price}`,
+            },
+          },
           id,
           description,
-          price: `$${price}`,
           title,
           images: [],
         });
@@ -115,27 +122,58 @@ function convertToProductsList(
 
         if (!productsData) return null;
 
-        // Filter and handle ByteTag Slide
-        const byteTagSlideItems = productsData.filter((item) =>
-          item.ItemName?.toLowerCase().includes("bytetag slide")
-        );
-        if (byteTagSlideItems.length > 0) {
-          const combinedByteTagSlide = filterByteTagSlide(byteTagSlideItems);
-          if (combinedByteTagSlide) {
-            products.push(combinedByteTagSlide);
-          }
-        }
+        const productsMap = new Map<string, ProductDescription>();
 
-        // Filter and handle ByteTag Round
-        const byteTagRoundItems = productsData.filter((item) =>
-          item.ItemName?.toLowerCase().includes("round")
-        );
-        if (byteTagRoundItems.length > 0) {
-          const combinedByteTagRound = filterByteTagRound(byteTagRoundItems);
-          if (combinedByteTagRound) {
-            products.push(combinedByteTagRound);
+        const uniqueArray = (arr: string[]) => Array.from(new Set(arr));
+
+        productsData.forEach((item) => {
+          const fullProductName = item.ItemName;
+          const id = item.ItemId;
+          const price = item.Price;
+          if (!fullProductName || !id || !price) return;
+
+          const [productName] = fullProductName.split("-");
+          const color = item?.Color?.toLowerCase() || "unknown";
+          const size = convertSizeToProductSize(item.Size);
+          const productColorSizeKey = `${color}|${size}`;
+
+          if (productsMap.has(productName)) {
+            // Add color and size to existing product
+            const product = productsMap.get(productName);
+            if (!product) return;
+
+            productsMap.set(productName, {
+              ...product,
+              availableColors: uniqueArray([...product.availableColors, color]),
+              availableSizes: uniqueArray([...product.availableSizes, size]),
+              availableOptions: {
+                ...product.availableOptions,
+                [productColorSizeKey]: {
+                  id,
+                  price: `$${price}`,
+                },
+              },
+            });
+          } else {
+            // Create new product
+            productsMap.set(productName, {
+              availableColors: [color],
+              availableSizes: [size],
+              availableOptions: {
+                [productColorSizeKey]: {
+                  id,
+                  price: `$${price}`,
+                },
+              },
+              // We are using the product name as the id for this kind of products
+              id: productName,
+              images: [],
+              title: productName,
+            });
           }
-        }
+        });
+
+        products.push(...Array.from(productsMap.values()));
       }
     }
   });
@@ -144,64 +182,12 @@ function convertToProductsList(
 }
 
 function convertSizeToProductSize(size?: string | null): string {
-  const defaultSize = "One Size";
-  if (!size) return defaultSize;
+  if (!size) return "One Size";
 
   const lowercaseSize = size.toLowerCase();
   if (lowercaseSize === "small/medium") return "S/M";
   if (lowercaseSize === "large") return "L";
   if (lowercaseSize === "small") return "S";
 
-  return defaultSize;
-}
-
-function filterByteTagRound(productsData: any[]): ProductDescription | null {
-  const availableColors = productsData.map((item) => ({
-    label: item.Color ? item.Color.toLowerCase() : "unknown",
-    id: item.ItemId,
-  }));
-
-  return {
-    availableColors,
-    availableSizes: [], // No sizes for Round items - hard code based on API
-    id: productsData[0].ItemId,
-    images: [],
-    price: `$${productsData[0].Price}`,
-    title: "ByteTag Round",
-  };
-}
-
-function filterByteTagSlide(productsData: any[]): ProductDescription | null {
-  const availableColors: { label: string; id: string }[] = [];
-  const availableSizes: { label: string; id: string }[] = [];
-
-  const addedColors = new Set<string>();
-
-  productsData.forEach((item) => {
-    const color = item.Color ? item.Color.toLowerCase() : "unknown";
-    const size = convertSizeToProductSize(item.Size);
-
-    // Only add color if it hasn't been added before
-    if (!addedColors.has(color)) {
-      availableColors.push({
-        label: color,
-        id: item.Color ? `ByteTag Slide - ${item.Color}` : "unknown",
-      });
-      addedColors.add(color);
-    }
-
-    availableSizes.push({
-      label: size,
-      id: item.ItemId,
-    });
-  });
-
-  return {
-    availableColors,
-    availableSizes,
-    id: productsData[0].ItemId,
-    images: [],
-    price: `$${productsData[0].Price}`,
-    title: "ByteTag Slide",
-  };
+  return lowercaseSize;
 }

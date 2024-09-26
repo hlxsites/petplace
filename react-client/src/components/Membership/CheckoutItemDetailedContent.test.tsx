@@ -1,14 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { CheckoutItemDetailedContent } from "./CheckoutItemDetailedContent";
 
 const ADD_TO_CART_BUTTON_LABEL = "Add to cart";
 const YEAR_LABEL = "/year";
-const DEFAULT_ITEM = {
+const DEFAULT_ITEM: ProductDescription = {
+  availableColors: [],
+  availableSizes: [],
+  availableOptions: {},
   id: "item-id",
   title: "Item title",
-  price: "Item price",
   description: "Item description",
   images: [],
 };
@@ -19,7 +22,17 @@ describe("CheckoutItemDetailedContent", () => {
   it.each(["$19.95", "$100.00"])(
     "should render component with given price",
     (price) => {
-      getRenderer({ item: { ...DEFAULT_ITEM, price } });
+      getRenderer({
+        item: {
+          ...DEFAULT_ITEM,
+          availableOptions: {
+            default: {
+              id: "ByteTag-Black R Cat",
+              price,
+            },
+          },
+        },
+      });
       expect(getByText(price)).toBeInTheDocument();
     }
   );

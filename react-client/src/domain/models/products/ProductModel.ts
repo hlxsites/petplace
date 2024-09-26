@@ -1,17 +1,17 @@
-type RequiredLabelID = {
-  label: string;
+export type ProductOption = {
   id: string;
+  price: string;
 };
 
 export type ProductDescription = {
-  availableColors?: RequiredLabelID[];
-  availableSizes?: RequiredLabelID[];
+  availableColors: string[];
+  availableSizes: string[];
+  availableOptions: Record<string, ProductOption>;
   description?: string | null;
   id: string;
   images: string[];
   isAnnual?: boolean;
   title: string;
-  price: string;
 };
 
 export type DetailedCartItem = ProductDescription & {
