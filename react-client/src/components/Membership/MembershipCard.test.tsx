@@ -141,6 +141,7 @@ function getRenderer({
   priceInfo = "Test info price label",
   subTitle = "Test info sub title",
   title = "Lifetime",
+  type = "LPPM",
   ...props
 }: Partial<ComponentProps<typeof MembershipCard>> = {}) {
   return render(
@@ -152,6 +153,7 @@ function getRenderer({
         priceInfo={priceInfo}
         subTitle={subTitle}
         title={title}
+        type={type}
         {...props}
       />
     </MemoryRouter>

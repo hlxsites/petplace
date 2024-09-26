@@ -14,6 +14,7 @@ export type MembershipInfo = {
   priceInfo: string;
   subTitle: string;
   title: string;
+  type: string;
 };
 
 export type MembershipPlanId =

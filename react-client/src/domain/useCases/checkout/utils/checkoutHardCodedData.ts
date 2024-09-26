@@ -35,6 +35,7 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       priceInfo: "For the first year, $19.95/year thereafter",
       subTitle: "Keep Your Pet Safe All Year",
       title: "Annual Protection",
+      type: "AnnualProduct",
     },
     LPMMembership: {
       buttonLabel: "Get the Best Value",
@@ -47,6 +48,7 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       priceInfo: "One-time fee",
       subTitle: "The Best Value Lost Pet Protection",
       title: "abc",
+      type: "LPMProduct",
     },
     LPMPlusMembership: {
       buttonLabel: "Unlock Complete Care",
@@ -58,6 +60,7 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       priceInfo: "One-time fee",
       subTitle: "Complete Lost Pet Protection",
       title: "lif +",
+      type: "LPMPLUSProduct",
     },
   };
 
