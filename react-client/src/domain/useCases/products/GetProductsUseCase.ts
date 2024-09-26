@@ -167,6 +167,7 @@ function convertToProductsList(
               },
               // We are using the product name as the id for this kind of products
               id: productName,
+              // TODO: connect hard coded images hosted on the SharePoint
               images: [],
               title: productName,
             });
