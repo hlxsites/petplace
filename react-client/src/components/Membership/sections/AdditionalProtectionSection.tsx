@@ -2,10 +2,12 @@ import { Text, Title } from "~/components/design-system";
 import { ButtonWithBadge } from "~/components/design-system/button/ButtonWithBadge";
 
 type AdditionalProtectionSectionProps = {
+  cartItemsLength?: number;
   onClick?: () => void;
 };
 
 export const AdditionalProtectionSection = ({
+  cartItemsLength,
   onClick,
 }: AdditionalProtectionSectionProps) => {
   return (
@@ -23,7 +25,7 @@ export const AdditionalProtectionSection = ({
         <ButtonWithBadge
           iconProps={{ className: "text-orange-300-contrast" }}
           iconLeft="shoppingCart"
-          badge={2}
+          badge={cartItemsLength}
           onClick={onClick}
         >
           Shopping cart

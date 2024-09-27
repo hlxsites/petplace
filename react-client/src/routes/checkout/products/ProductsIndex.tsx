@@ -10,22 +10,21 @@ import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
 import { useCheckoutProductsViewModel } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
-  const { products } = useCheckoutProductsViewModel();
-
-  // TODO: get plans correctly and uncomment the onClearCart
-  // const { plans } = useCheckoutIndexViewModel();
-
+  const { cartItems, products } = useCheckoutProductsViewModel();
   const [isOpen, setIsOpen] = useState(false);
 
   // Run on first mount only
-  // onClearCart(plans);
+  // onUpdateCartCheckout();
 
   return (
     <div className="min-h-[100dvh] bg-neutral-50">
       <CheckoutHeader />
       <main className="m-auto w-full px-base py-[80px] xl:w-[1080px] xl:px-0">
         <div className="grid place-items-center gap-xxlarge">
-          <AdditionalProtectionSection onClick={onOpenCart} />
+          <AdditionalProtectionSection
+            cartItemsLength={cartItems?.length}
+            onClick={onOpenCart}
+          />
           <div className="grid gap-large">
             <OptInsSection />
             {products && <CheckoutProductsSection products={products} />}
