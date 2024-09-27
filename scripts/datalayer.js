@@ -135,7 +135,7 @@ const handleComparePlanClicks = (className) => {
       'CTA Button',
       btn.innerText,
       'button',
-      'https://quote.petplace.com/questionnaire',
+      'https://quote.petplace.com/quote',
     );
   });
 };
