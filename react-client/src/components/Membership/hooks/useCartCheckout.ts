@@ -10,7 +10,7 @@ export function useCartCheckout(initialItems: CartItem[] = []) {
   useEffect(() => {
     function calculateSubtotal(): number {
       return cartItems.reduce((total, item) => {
-        const itemPrice = getValueFromPrice(item.price);
+        const itemPrice = getValueFromPrice(item.price.toString());
         const itemQuantity = item.quantity ?? 1;
         return total + itemPrice * itemQuantity;
       }, 0);
