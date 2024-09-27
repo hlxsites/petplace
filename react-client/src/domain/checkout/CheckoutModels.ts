@@ -6,7 +6,7 @@ export type MembershipDescriptionOffer = {
 export type MembershipInfo = {
   buttonLabel: string;
   comparePlansButtonLabel: string;
-  id: MembershipPlanId;
+  id: string;
   isHighlighted?: boolean;
   infoFooter?: string;
   membershipDescriptionOffers?: MembershipDescriptionOffer[];

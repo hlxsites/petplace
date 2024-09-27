@@ -60,14 +60,17 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
           const planData = parsedData.MembershipProducts[key];
           if (!planData) return;
 
-          const id = convertMembershipKeyToMembershipPlanId(key);
+          const membershipPlan = convertMembershipKeyToMembershipPlanId(key);
 
-          const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[id];
+          const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[membershipPlan];
           if (!hardCodedPlan) return;
 
           // Shouldn't be doing this here, this should be handled by the server
           // However, we're trying to protect the FE code from the server's data
-          if (isCanadaLocale && id.toLowerCase().includes("annual")) {
+          if (
+            isCanadaLocale &&
+            membershipPlan.toLowerCase().includes("annual")
+          ) {
             // Skip the annual plan for Canada
             return;
           }
@@ -84,6 +87,7 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
 
           plans.push({
             ...hardCodedPlan,
+            id: planData.ItemId || hardCodedPlan.id,
             isHighlighted,
             price,
             title: planData.ItemName || hardCodedPlan.title,

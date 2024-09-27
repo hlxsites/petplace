@@ -202,13 +202,14 @@ function convertSizeToProductSize(size?: string | null): string {
 }
 
 function convertMembershipPlanIdToMembershipKey(id: MembershipPlanId) {
+  const lowercasedId = id.toLocaleLowerCase();
   // This code is fragile, but it's the best we can do with the current server data
 
-  const MembershipPlan: Record<MembershipPlanId, string> = {
-    AnnualProduct: "AnnualMembership",
-    LPMPLUSProduct: "LPMPlusMembership",
-    PLH_000007: "LPMMembership",
-  };
-
-  return MembershipPlan[id];
+  if (lowercasedId.includes("annual")) {
+    return "AnnualMembership";
+  }
+  if (lowercasedId.includes("plus")) {
+    return "LPMPlusMembership";
+  }
+  return "LPMMembership";
 }
