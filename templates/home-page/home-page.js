@@ -27,7 +27,7 @@ function createSpanBlock(main) {
       formEl.classList.remove('error-spacing');
       searchInput.value = '';
       window.open(
-        `https://quote.petplace.com/questionnaire?zipCode=${code}`,
+        `https://quote.petplace.com/quote?zipCode=${code}`,
         '_blank',
       );
     } else {
