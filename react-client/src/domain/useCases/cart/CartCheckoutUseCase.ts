@@ -110,6 +110,7 @@ function convertToCartItem(data: unknown): CommonCartItem[] | null {
   parsedCart.OrderLines?.forEach((cartItem) => {
     items.push({
       id: cartItem.ItemId ?? "",
+      petId: cartItem.AnimalId ?? "",
       quantity: cartItem.Quantity ?? 0,
       type: cartItem.ItemType ?? "",
     });

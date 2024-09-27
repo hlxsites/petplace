@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { CommonCartItem } from "~/domain/models/cart/CartModel";
 import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
@@ -22,9 +22,17 @@ export const loader = (async ({ request }) => {
 
   const useCase = getCheckoutFactory(authToken);
   const checkoutData = await useCase.query(petId);
+
   const plans = checkoutData?.plans || [];
-  const selectedPlan = plans.find((item) => item.id === plan);
-  invariantResponse(selectedPlan, "plan is required");
+  const selectedPlanItem = plans.find((item) => item.id === plan);
+  invariantResponse(selectedPlanItem, "plan is required");
+
+  const selectedPlan = {
+    petId,
+    id: selectedPlanItem.id,
+    quantity: 1,
+    type: selectedPlanItem.type,
+  };
 
   const productsUseCase = getProductsFactory(authToken);
   const productsData = await productsUseCase.query(petId, plan);
@@ -37,7 +45,6 @@ export const loader = (async ({ request }) => {
 
   return defer({
     currentCart,
-    getCart,
     petId,
     postCart,
     products: productsData,
@@ -46,17 +53,42 @@ export const loader = (async ({ request }) => {
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { currentCart, petId, postCart, products } =
+  const { currentCart, petId, postCart, products, selectedPlan } =
     useLoaderData<typeof loader>();
   const [cartItems, setCartItems] = useState<CommonCartItem[]>([]);
 
-  useDeepCompareEffect(() => {
-    // do the logic to understand if the current cart is valid and them update the state
+  const onUpdateCartMembership = useCallback(
+    (newMembership: CommonCartItem) => {
+      setCartItems((prevState) => {
+        const existingItem = prevState.find(
+          (item) => item.id === newMembership.id
+        );
 
-    if (currentCart) {
-      // setCartItems(currentCart.items
-    }
-  }, [currentCart]);
+        // The code uses stringify to compare the entire object for safety purposes
+        if (
+          existingItem &&
+          JSON.stringify(existingItem) === JSON.stringify(newMembership)
+        ) {
+          return prevState;
+        }
+
+        // If the item is new or has changed, update the state
+        const updatedState = existingItem
+          ? prevState.map((item) =>
+              item.id === newMembership.id ? newMembership : item
+            )
+          : [...prevState, newMembership];
+
+        void postCart(updatedState, petId);
+        return updatedState;
+      });
+    },
+    [postCart, petId]
+  );
+
+  useDeepCompareEffect(() => {
+    onUpdateCartMembership(selectedPlan);
+  }, [currentCart, selectedPlan, onUpdateCartMembership]);
 
   const onUpdateCartProduct = (product: CommonCartItem) => {
     setCartItems((prevState) => {
@@ -77,22 +109,6 @@ export const useCheckoutProductsViewModel = () => {
       return updatedState;
     });
   };
-
-  // const onUpdateCartMembership = (newMembership: CommonCartItem) => {
-  //   setCartItems((prevState) => {
-  //     const updatedState = prevState.map((item)  => {
-  //       // find the current membership in the cart
-  //       if (item.id === newMembership.id) {
-  //         return newMembership;
-  //       }
-
-  //       return item;
-  //     })
-
-  //     void postCart(updatedState, petId);
-  //     return updatedState;
-  //   })
-  // }
 
   return {
     cartItems,

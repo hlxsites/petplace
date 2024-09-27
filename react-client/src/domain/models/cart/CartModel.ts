@@ -1,4 +1,5 @@
 export type CommonCartItem = {
+  petId?: string;
   id: string;
   quantity: number;
   type: string;
