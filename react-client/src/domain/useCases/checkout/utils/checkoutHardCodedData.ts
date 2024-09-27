@@ -26,10 +26,10 @@ const LIFETIME_LIST_OFFERS = addIconToOffers(5);
 
 export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
   {
-    AnnualMembership: {
+    AnnualProduct: {
       buttonLabel: "Get 1 Year Protection",
       comparePlansButtonLabel: "Get Annual",
-      id: "AnnualMembership",
+      id: "AnnualProduct",
       membershipDescriptionOffers: ANNUAL_LIST_OFFERS,
       price: "$45.95",
       priceInfo: "For the first year, $19.95/year thereafter",
@@ -37,10 +37,10 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       title: "Annual Protection",
       type: "AnnualProduct",
     },
-    LPMMembership: {
+    PLH_000007: {
       buttonLabel: "Get the Best Value",
       comparePlansButtonLabel: "Get Lifetime",
-      id: "LPMMembership",
+      id: "PLH_000007",
       isHighlighted: true,
       infoFooter: "* Complimentary for 1 year",
       membershipDescriptionOffers: LIFETIME_LIST_OFFERS,
@@ -50,10 +50,10 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       title: "abc",
       type: "LPMProduct",
     },
-    LPMPlusMembership: {
+    LPMPLUSProduct: {
       buttonLabel: "Unlock Complete Care",
       comparePlansButtonLabel: "Get Lifetime +",
-      id: "LPMPlusMembership",
+      id: "LPMPLUSProduct",
       infoFooter: "* Complimentary for 1 year",
       membershipDescriptionOffers: MEMBERSHIP_LIST_OFFERS,
       price: "$199.95",

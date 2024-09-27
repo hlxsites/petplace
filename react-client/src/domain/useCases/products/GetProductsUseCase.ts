@@ -8,6 +8,7 @@ import {
   ADDITIONAL_PRODUCTS,
   IMAGES_PRODUCTS,
 } from "./utils/productsHardCodedData";
+import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
 
 export class GetProductsUseCase implements GetProductsRepository {
   private httpClient: HttpClientRepository;
@@ -27,7 +28,7 @@ export class GetProductsUseCase implements GetProductsRepository {
 
   query = async (
     petId: string,
-    plan: string
+    plan: MembershipPlanId
   ): Promise<ProductDescription[] | null> => {
     try {
       const result = await this.httpClient.get(
@@ -45,7 +46,7 @@ export class GetProductsUseCase implements GetProductsRepository {
 
 function convertToProductsList(
   data: unknown,
-  plan: string
+  plan: MembershipPlanId
 ): ProductDescription[] | null {
   if (!data || typeof data !== "object") return null;
 
@@ -74,7 +75,10 @@ function convertToProductsList(
   Object.keys(parsedData.MembershipProducts).forEach((key) => {
     // This is a hardcoded check for the annual plan
     // It should't be doing that on the FE code, but it's a requirement for now
-    if (key.toLowerCase().includes("annual") && key === plan) {
+
+    const planId = convertMembershipPlanIdToMembershipKey(plan);
+
+    if (key.toLowerCase().includes("annual") && key === planId) {
       const annualProduct = parsedData.MembershipProducts[key] as Record<
         string,
         unknown
@@ -195,4 +199,16 @@ function convertSizeToProductSize(size?: string | null): string {
   if (lowercaseSize === "small") return "S";
 
   return lowercaseSize;
+}
+
+function convertMembershipPlanIdToMembershipKey(id: MembershipPlanId) {
+  // This code is fragile, but it's the best we can do with the current server data
+
+  const MembershipPlan: Record<MembershipPlanId, string> = {
+    AnnualProduct: "AnnualMembership",
+    LPMPLUSProduct: "LPMPlusMembership",
+    PLH_000007: "LPMMembership",
+  };
+
+  return MembershipPlan[id];
 }

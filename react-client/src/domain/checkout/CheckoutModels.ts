@@ -18,9 +18,9 @@ export type MembershipInfo = {
 };
 
 export type MembershipPlanId =
-  | "AnnualMembership"
-  | "LPMMembership"
-  | "LPMPlusMembership";
+  | "AnnualProduct"
+  | "PLH_000007"
+  | "LPMPLUSProduct";
 
 export type CheckoutQueryReturnData = {
   plans: MembershipInfo[];

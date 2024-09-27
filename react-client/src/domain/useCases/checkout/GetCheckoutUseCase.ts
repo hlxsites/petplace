@@ -106,10 +106,10 @@ function convertMembershipKeyToMembershipPlanId(key: string): MembershipPlanId {
   // This code is fragile, but it's the best we can do with the current server data
 
   if (lowercasedKey.includes("annual")) {
-    return "AnnualMembership";
+    return "AnnualProduct";
   }
   if (lowercasedKey.includes("lpmplus")) {
-    return "LPMPlusMembership";
+    return "LPMPLUSProduct";
   }
-  return "LPMMembership";
+  return "PLH_000007";
 }
