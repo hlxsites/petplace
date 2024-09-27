@@ -9,7 +9,7 @@ export class GetLostPetNotificationsUseCase
   implements GetLostPetNotificationsRepository
 {
   private httpClient: HttpClientRepository;
-  private categoryId: number = 0;
+  private categoryId: number = 1;
   private endpoint: string = `/api/Alert/category/${this.categoryId}`;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
