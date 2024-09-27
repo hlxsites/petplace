@@ -2,7 +2,6 @@ import { loadScript } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
   const blockMetadata = {};
-  block.innerText = '';
 
   // eslint-disable-next-line no-restricted-syntax
   for (const row of block.children) {
@@ -21,8 +20,10 @@ export default async function decorate(block) {
     frame.src = 'https://dev-quote.petted.com/widget/petplace';
     frame.setAttribute('loading', 'lazy');
 
+    block.innerText = '';
     block.append(frame);
   } else if (script === 'widget') {
+    block.innerText = '';
     loadScript('https://dev-quote.petted.com/Scripts/lib/widgets/petplace/quote-form/widget.min.js', { async: true }).then(() => {
       if (window.QuoteEngine) {
         window.QuoteEngine.setOptions({
