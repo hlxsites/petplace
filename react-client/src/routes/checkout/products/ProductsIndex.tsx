@@ -13,9 +13,6 @@ export const ProductsIndex = () => {
   const { cartItems, products } = useCheckoutProductsViewModel();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Run on first mount only
-  // onUpdateCartCheckout();
-
   return (
     <div className="min-h-[100dvh] bg-neutral-50">
       <CheckoutHeader />

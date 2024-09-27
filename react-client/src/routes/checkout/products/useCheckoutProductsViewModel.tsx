@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { CommonCartItem } from "~/domain/models/cart/CartModel";
 import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
+import getCheckoutFactory from "~/domain/useCases/checkout/getCheckoutFactory";
 import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
+import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
@@ -19,6 +20,12 @@ export const loader = (async ({ request }) => {
 
   const authToken = requireAuthToken();
 
+  const useCase = getCheckoutFactory(authToken);
+  const checkoutData = await useCase.query(petId);
+  const plans = checkoutData?.plans || [];
+  const selectedPlan = plans.find((item) => item.id === plan);
+  invariantResponse(selectedPlan, "plan is required");
+
   const productsUseCase = getProductsFactory(authToken);
   const productsData = await productsUseCase.query(petId, plan);
 
@@ -26,57 +33,70 @@ export const loader = (async ({ request }) => {
   const postCart = cartCheckoutUseCase.post;
   const getCart = cartCheckoutUseCase.query;
 
+  const currentCart = await getCart();
+
   return defer({
+    currentCart,
     getCart,
     petId,
-    plan,
     postCart,
     products: productsData,
+    selectedPlan,
   });
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { getCart, petId, plan, postCart, products } =
+  const { currentCart, petId, postCart, products } =
     useLoaderData<typeof loader>();
-  const [cartItems, setCartItems] = useState<CommonCartItem[] | null>(null);
+  const [cartItems, setCartItems] = useState<CommonCartItem[]>([]);
 
-  const fetchCartItems = async () => {
-    try {
-      const items = await getCart();
-      setCartItems(items);
-    } catch (error) {
-      console.error("Error fetching cart items:", error);
+  useDeepCompareEffect(() => {
+    // do the logic to understand if the current cart is valid and them update the state
+
+    if (currentCart) {
+      // setCartItems(currentCart.items
     }
+  }, [currentCart]);
+
+  const onUpdateCartProduct = (product: CommonCartItem) => {
+    setCartItems((prevState) => {
+      let updatedState: CommonCartItem[] = [];
+      // The product already exists in the cart
+      const exist = prevState.find((item) => item.id === product.id);
+      if (exist) {
+        updatedState = prevState.map((item) => {
+          if (item.id === product.id) return product;
+
+          return item;
+        });
+      } else {
+        updatedState = [...prevState, product];
+      }
+
+      void postCart(updatedState, petId);
+      return updatedState;
+    });
   };
 
-  const onClearCart = () => {
-    void postCart();
-  };
+  // const onUpdateCartMembership = (newMembership: CommonCartItem) => {
+  //   setCartItems((prevState) => {
+  //     const updatedState = prevState.map((item)  => {
+  //       // find the current membership in the cart
+  //       if (item.id === newMembership.id) {
+  //         return newMembership;
+  //       }
 
-  const onUpdateCartCheckout = async (data: MembershipInfo[]) => {
-    await fetchCartItems();
+  //       return item;
+  //     })
 
-    const filteredPlan = data.find((item) => item.type === plan);
-
-    if (!filteredPlan) return null;
-
-    const selectedDataPlan: CommonCartItem = {
-      id: filteredPlan.id,
-      quantity: 1,
-      type: filteredPlan.type,
-    };
-
-    const itemsToPost = cartItems
-      ? [...cartItems, selectedDataPlan]
-      : [selectedDataPlan];
-
-    void postCart(itemsToPost, petId);
-  };
+  //     void postCart(updatedState, petId);
+  //     return updatedState;
+  //   })
+  // }
 
   return {
     cartItems,
-    onClearCart,
-    onUpdateCartCheckout,
+    onUpdateCartProduct,
     products,
   };
 };
