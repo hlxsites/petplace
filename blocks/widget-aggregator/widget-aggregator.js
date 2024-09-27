@@ -1,5 +1,8 @@
+import { loadScript } from '../../scripts/lib-franklin.js';
+
 export default async function decorate(block) {
   const blockMetadata = {};
+  block.innerText = '';
 
   // eslint-disable-next-line no-restricted-syntax
   for (const row of block.children) {
@@ -12,12 +15,11 @@ export default async function decorate(block) {
   const { source, script } = blockMetadata;
 
   block.setAttribute('id', 'petplace-quote-form');
-  block.innerText = '';
   if (script === 'iframe') {
     const frame = document.createElement('iframe');
     frame.id = source;
     frame.src = 'https://dev-quote.petted.com/widget/petplace';
-    frame.setAttribute('style', 'width:100%;border:0px;height:100%;');
+    frame.setAttribute('loading', 'lazy');
 
     block.append(frame);
   } else if (script === 'widget') {
