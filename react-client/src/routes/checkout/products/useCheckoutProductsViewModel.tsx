@@ -22,18 +22,18 @@ export const loader = (async ({ request }) => {
   const productsData = await productsUseCase.query(petId, plan);
 
   const cartCheckoutUseCase = getCartCheckoutFactory(authToken);
+  const postCart = cartCheckoutUseCase.post;
 
   return defer({
-    cartCheckoutUseCase,
     petId,
     plan,
+    postCart,
     products: productsData,
   });
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { cartCheckoutUseCase, petId, plan, products } =
-    useLoaderData<typeof loader>();
+  const { petId, plan, postCart, products } = useLoaderData<typeof loader>();
 
   const onClearCart = (data: MembershipInfo[]) => {
     const filteredPlan = data.find((item) => item.type === plan);
@@ -46,7 +46,7 @@ export const useCheckoutProductsViewModel = () => {
       type: filteredPlan.type,
     };
 
-    void cartCheckoutUseCase.post(selectedDataPlan, petId);
+    void postCart(selectedDataPlan, petId);
   };
 
   return {
