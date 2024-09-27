@@ -136,7 +136,7 @@ export const DialogBase = ({
             />
           )}
 
-          <div className="grid h-fit max-h-full overflow-auto">
+          <div className="grid h-fit overflow-auto">
             {renderChildren}
           </div>
         </div>
