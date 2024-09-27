@@ -164,7 +164,7 @@
 
 /* Tables */
 .insurance-page .table {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .insurance-page .table table {
