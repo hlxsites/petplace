@@ -1,8 +1,16 @@
 import { Button, Text } from "../design-system";
 
-type CartFooterProps = { subtotal: string; onClick?: () => void };
+type CartFooterProps = {
+  onClick?: () => void;
+  shouldProceedToCheckout?: boolean;
+  subtotal: string;
+};
 
-export const CartFooter = ({ subtotal, onClick }: CartFooterProps) => {
+export const CartFooter = ({
+  onClick,
+  shouldProceedToCheckout,
+  subtotal,
+}: CartFooterProps) => {
   return (
     <>
       <div className="flex w-full justify-between">
@@ -19,7 +27,9 @@ export const CartFooter = ({ subtotal, onClick }: CartFooterProps) => {
         </Text>
       </div>
 
-      <Button onClick={onClick}>Proceed to checkout</Button>
+      <Button onClick={onClick} disabled={shouldProceedToCheckout}>
+        Proceed to checkout
+      </Button>
     </>
   );
 };

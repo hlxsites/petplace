@@ -1,4 +1,3 @@
-import { mockCartItems } from "~/mocks/mockCartItems";
 import { Drawer, Text } from "../design-system";
 import { CartFooter } from "./CartFooter";
 import { CartHeader } from "./CartHeader";
@@ -13,10 +12,8 @@ type CartDrawerProps = {
   items?: CartItem[];
 };
 
-export const CartDrawer = ({ items = [], ...props }: CartDrawerProps) => {
-  const { cartItems, subtotal, onUpdateQuantity } = useCartCheckout(
-    mockCartItems ?? items
-  );
+export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
+  const { cartItems, subtotal, onUpdateQuantity } = useCartCheckout(items);
 
   return (
     <Drawer
@@ -41,7 +38,10 @@ export const CartDrawer = ({ items = [], ...props }: CartDrawerProps) => {
           ))}
         </div>
 
-        <CartFooter subtotal={subtotal} />
+        <CartFooter
+          shouldProceedToCheckout={!cartItems?.length}
+          subtotal={subtotal}
+        />
       </div>
     </Drawer>
   );
