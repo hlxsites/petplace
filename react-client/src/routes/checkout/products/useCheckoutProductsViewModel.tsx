@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { CommonCartItem } from "~/domain/models/cart/CartModel";
@@ -23,8 +24,10 @@ export const loader = (async ({ request }) => {
 
   const cartCheckoutUseCase = getCartCheckoutFactory(authToken);
   const postCart = cartCheckoutUseCase.post;
+  const getCart = cartCheckoutUseCase.query;
 
   return defer({
+    getCart,
     petId,
     plan,
     postCart,
@@ -33,9 +36,26 @@ export const loader = (async ({ request }) => {
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { petId, plan, postCart, products } = useLoaderData<typeof loader>();
+  const { getCart, petId, plan, postCart, products } =
+    useLoaderData<typeof loader>();
+  const [cartItems, setCartItems] = useState<CommonCartItem[] | null>(null);
 
-  const onClearCart = (data: MembershipInfo[]) => {
+  const fetchCartItems = async () => {
+    try {
+      const items = await getCart();
+      setCartItems(items);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+
+  const onClearCart = () => {
+    void postCart();
+  };
+
+  const onUpdateCartCheckout = async (data: MembershipInfo[]) => {
+    await fetchCartItems();
+
     const filteredPlan = data.find((item) => item.type === plan);
 
     if (!filteredPlan) return null;
@@ -46,11 +66,17 @@ export const useCheckoutProductsViewModel = () => {
       type: filteredPlan.type,
     };
 
-    void postCart(selectedDataPlan, petId);
+    const itemsToPost = cartItems
+      ? [...cartItems, selectedDataPlan]
+      : [selectedDataPlan];
+
+    void postCart(itemsToPost, petId);
   };
 
   return {
+    cartItems,
     onClearCart,
+    onUpdateCartCheckout,
     products,
   };
 };
