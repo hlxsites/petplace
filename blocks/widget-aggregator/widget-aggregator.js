@@ -13,25 +13,23 @@ export default async function decorate(block) {
   }
   const { source, script } = blockMetadata;
 
-  // TODO: change "dev-quote" to "quote" for prod
-
   block.setAttribute('id', 'petplace-quote-form');
   if (script === 'iframe') {
     const frame = document.createElement('iframe');
     frame.id = source;
-    frame.src = 'https://dev-quote.petted.com/widget/petplace';
+    frame.src = 'https://quote.petted.com/widget/petplace';
     frame.setAttribute('loading', 'lazy');
 
     block.innerText = '';
     block.append(frame);
   } else if (script === 'widget') {
     block.innerText = '';
-    loadScript('https://dev-quote.petted.com/Scripts/lib/widgets/petplace/quote-form/widget.min.js', { async: true }).then(() => {
+    loadScript('https://quote.petted.com/Scripts/lib/widgets/petplace/quote-form/widget.min.js', { async: true }).then(() => {
       if (window.QuoteEngine) {
         window.QuoteEngine.setOptions({
           targetId: 'petplace-quote-form',
-          redirectUrl: 'https://dev-quote.petted.com/quote',
-          baseUrl: 'https://dev-quote.petted.com/',
+          redirectUrl: 'https://quote.petted.com/quote',
+          baseUrl: 'https://quote.petted.com/',
           urlParam: {
             source: 'petplace-widget',
             utm_source: '',
@@ -45,5 +43,7 @@ export default async function decorate(block) {
         window.QuoteEngine.init();
       }
     });
+  } else {
+    block.innerText = '';
   }
 }
