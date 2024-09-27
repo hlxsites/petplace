@@ -16,12 +16,16 @@ type NotificationsTabProps = {
   accountNotifications?: Promise<AccountNotificationModel | null>;
   isExternalLogin?: boolean;
   lostPetsHistory?: Promise<LostPetUpdateModel[] | null>;
+  getLostPetNotificationDetails?: (
+    notification: LostPetUpdateModel
+  ) => Promise<LostPetUpdateModel | null>;
 };
 
 export const NotificationsTabContent = ({
   accountNotifications,
   isExternalLogin,
   lostPetsHistory,
+  getLostPetNotificationDetails,
 }: NotificationsTabProps) => {
   return (
     <div className="mt-xxxlarge grid gap-large">
@@ -48,7 +52,10 @@ export const NotificationsTabContent = ({
       {isExternalLogin && (
         <SuspenseAwait resolve={lostPetsHistory}>
           {(lostPetsHistory) => (
-            <LostAndFoundNotifications notifications={lostPetsHistory} />
+            <LostAndFoundNotifications
+              notifications={lostPetsHistory}
+              getLostPetNotificationDetails={getLostPetNotificationDetails}
+            />
           )}
         </SuspenseAwait>
       )}

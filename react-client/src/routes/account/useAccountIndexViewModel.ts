@@ -2,9 +2,13 @@ import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { requireAuthToken } from "~/util/authUtil";
 
-import { AccountDetailsModel } from "~/domain/models/user/UserModels";
+import {
+  AccountDetailsModel,
+  LostPetUpdateModel,
+} from "~/domain/models/user/UserModels";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
+import lostPetNotificationDetailsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationDetailsUseCaseFactory";
 import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
 import { validateAccountDetails } from "./form/formDataUtil";
 
@@ -16,6 +20,8 @@ export const loader = (() => {
     accountNotificationsUseCaseFactory(authToken);
   const lostPetNotificationsUseCase =
     lostPetNotificationsUseCaseFactory(authToken);
+  const lostPetNotificationDetailsUseCase =
+    lostPetNotificationDetailsUseCaseFactory(authToken);
 
   function onSubmitAccountDetails(values: AccountDetailsModel) {
     if (validateAccountDetails(values))
@@ -25,6 +31,8 @@ export const loader = (() => {
   return defer({
     accountDetails: accountDetailsUseCase.query(),
     accountNotifications: accountNotificationsUseCase.query(),
+    getLostPetNotification: (id: LostPetUpdateModel) =>
+      lostPetNotificationDetailsUseCase.query(id),
     lostPetsHistory: lostPetNotificationsUseCase.query(),
     onSubmitAccountDetails,
   });
@@ -34,6 +42,7 @@ export const useAccountIndexViewModel = () => {
   const {
     accountDetails,
     accountNotifications,
+    getLostPetNotification,
     lostPetsHistory,
     onSubmitAccountDetails,
   } = useLoaderData<typeof loader>();
@@ -43,6 +52,7 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     lostPetsHistory,
     onSubmitAccountDetails,
+    getLostPetNotification,
   };
 };
 

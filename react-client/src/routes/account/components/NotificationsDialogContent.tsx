@@ -1,42 +1,28 @@
-import { Button, Dialog, Text, TextSpan } from "~/components/design-system";
+import { Button, Text, TextSpan } from "~/components/design-system";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 
-type NotificationsDialogProps = {
+type NotificationsDialogContentProps = {
   isOpen: boolean;
   onClose?: () => void;
   viewData?: LostPetUpdateModel;
-  petName?: string;
 };
 
-export const NotificationsDialog = ({
-  isOpen,
+export const NotificationsDialogContent = ({
   onClose,
   viewData,
-  petName,
-}: NotificationsDialogProps) => {
+}: NotificationsDialogContentProps) => {
   const foundedBy = viewData?.foundedBy;
   const finderName = foundedBy?.finderName ?? "Unknown Finder";
 
   return (
-    <Dialog
-      ariaLabel="Notifications"
-      id="notifications-dialog"
-      isOpen={isOpen}
-      onClose={onClose}
-      title={`Pet ${petName} is found by ${finderName}.`}
-      titleSize="32"
-      trigger={undefined}
-      isTitleResponsive
-    >
-      <div className="grid w-[640px] gap-large pt-large">
+      <div className="grid max-w-[640px] md:min-h-[350px] gap-large pt-large">
         <Text size="16" isResponsive>
-          {`${petName} with identifier ${viewData?.id} has been found. Contact the
+          {`${viewData?.petName} with identifier ${viewData?.id} has been found. Contact the
           finder listed below to coordinate a pickup. Once you've been reunited
-          with ${petName}, be sure to turn off the found pet alerts by clicking the
+          with ${viewData?.petName}, be sure to turn off the found pet alerts by clicking the
           button below.`}
         </Text>
 
-        {/* TODO: This block of code should be refactored once API is defined */}
         <div className="grid gap-xsmall">
           <Text fontFamily="raleway" size="14">
             <TextSpan fontWeight="bold">Finder's name:</TextSpan> {finderName}
@@ -59,9 +45,16 @@ export const NotificationsDialog = ({
           <Text>The following people have been contacted:</Text>
           <Text>Owner</Text>
           {foundedBy?.contact?.map(({ email, date }, i) => {
+            let localDateTimeString;
+            if (date) {
+              const dateObject = new Date(date);
+              const localDate = dateObject.toLocaleDateString("en-CA");
+              const localTime = dateObject.toTimeString().slice(0, 8);
+              localDateTimeString = `${localDate} ${localTime}`;
+            }
             return (
               <Text key={`${i}-${date}`}>
-                {email} at {date}
+                {email} at {localDateTimeString ?? date}
               </Text>
             );
           })}
@@ -71,6 +64,5 @@ export const NotificationsDialog = ({
           Dismiss
         </Button>
       </div>
-    </Dialog>
   );
 };

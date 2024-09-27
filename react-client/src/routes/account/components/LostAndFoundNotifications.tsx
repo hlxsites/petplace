@@ -1,16 +1,21 @@
-import { Card, Title } from "~/components/design-system";
+import { Card, Dialog, Title } from "~/components/design-system";
 import { ViewNotifications } from "./ViewNotifications";
 
 import { Fragment, useState } from "react";
+import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
-import { NotificationsDialog } from "./NotificationsDialog";
+import { NotificationsDialogContent } from "./NotificationsDialogContent";
 
 export type LostAndFoundNotificationsProps = {
   notifications?: LostPetUpdateModel[] | null;
+  getLostPetNotificationDetails?: (
+    notification: LostPetUpdateModel
+  ) => Promise<LostPetUpdateModel | null>;
 };
 
 export const LostAndFoundNotifications = ({
   notifications = [],
+  getLostPetNotificationDetails,
 }: LostAndFoundNotificationsProps) => {
   const [selectedNotification, setSelectedNotification] =
     useState<LostPetUpdateModel | null>(null);
@@ -36,14 +41,7 @@ export const LostAndFoundNotifications = ({
         </div>
       </Card>
 
-      {selectedNotification && (
-        <NotificationsDialog
-          isOpen={!!selectedNotification}
-          onClose={onCloseDialog}
-          viewData={selectedNotification}
-          petName={selectedNotification.petName}
-        />
-      )}
+      {selectedNotification && renderNotificationDialog(selectedNotification)}
     </>
   );
 
@@ -62,6 +60,35 @@ export const LostAndFoundNotifications = ({
         </div>
       </Fragment>
     );
+  }
+
+  function renderNotificationDialog(selectedNotification: LostPetUpdateModel){
+    return (
+      <Dialog
+        ariaLabel="Notifications"
+        id="notifications-dialog"
+        isOpen={!!selectedNotification}
+        onClose={onCloseDialog}
+        title={`Pet ${selectedNotification?.petName} is found by ${selectedNotification.foundedBy?.finderName}.`}
+        titleSize="32"
+        trigger={undefined}
+        isTitleResponsive
+      >
+        <SuspenseAwait
+          resolve={getLostPetNotificationDetails?.(selectedNotification)}
+        >
+          {(selectedNotificationDetails) =>
+            selectedNotificationDetails && (
+              <NotificationsDialogContent
+                isOpen={!!selectedNotificationDetails}
+                onClose={onCloseDialog}
+                viewData={selectedNotificationDetails}
+              />
+            )
+          }
+        </SuspenseAwait>
+      </Dialog>
+    )
   }
 
   function renderHorizontalDivider(index: number) {
