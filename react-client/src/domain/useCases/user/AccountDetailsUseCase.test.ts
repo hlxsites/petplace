@@ -4,6 +4,7 @@ import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 
 jest.mock("~/util/authUtil", () => ({
+  checkIsExternalLogin: jest.fn(),
   readJwtClaim: jest.fn(),
 }));
 
@@ -25,11 +26,10 @@ describe("AccountDetailsUseCase", () => {
       const result = await sut.query();
 
       expect(result).toStrictEqual({
+        defaultPhone: "71 988776655|Home",
+        email: "augustus.ok@email.com",
         name: "Augustus",
         surname: "Waters",
-        email: "augustus.ok@email.com",
-        phoneNumber: "(234) 345 6876",
-        zipCode: "23456",
       });
     });
 
