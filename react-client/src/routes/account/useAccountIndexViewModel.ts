@@ -12,6 +12,7 @@ export const loader = (() => {
   const authToken = requireAuthToken();
 
   const accountDetailsUseCase = accountDetailsUseCaseFactory(authToken);
+  // TODO: This must be moved to another viewModel, specific for /account/notifications route
   const accountNotificationsUseCase =
     accountNotificationsUseCaseFactory(authToken);
 
