@@ -6,6 +6,7 @@ import {
   ElementSection,
   FormSchema,
 } from "~/components/design-system";
+import { COUNTRIES_LABELS } from "~/domain/useCases/util/countriesUtil";
 import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const baseAccountDetailsIds = {
@@ -92,8 +93,8 @@ const countryInput: ElementInputSingleSelect = {
   elementType: "input",
   id: accountAddressIds.country,
   label: "Country",
-  options: "{{countryOptions|string[]}}",
-  optionsType: "dynamic",
+  options: COUNTRIES_LABELS,
+  optionsType: "static",
   requiredCondition: true,
   type: "select",
 };

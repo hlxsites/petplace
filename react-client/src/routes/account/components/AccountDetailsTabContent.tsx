@@ -42,7 +42,6 @@ export const AccountDetailsTabContent = ({
               }
               schema={formSchema}
               variables={{
-                countryOptions: ["Canada", "United States"],
                 stateOptions: [],
               }}
             />

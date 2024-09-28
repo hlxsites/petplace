@@ -5,6 +5,7 @@ import {
   ExternalAccountDetailsModel,
   InternalAccountDetailsModel,
 } from "~/domain/models/user/UserModels";
+import { getCountryLabel } from "~/domain/useCases/util/countriesUtil";
 import {
   accountAddressIds,
   accountAgreementsIds,
@@ -39,7 +40,9 @@ export function getExternalAccountDetailsData(
 ) {
   return {
     ...getInternalAccountDetailsData(accountDetails),
-    [accountAddressIds.country]: accountDetails.address.country,
+    [accountAddressIds.country]:
+      getCountryLabel(accountDetails.address.country) ?? "",
+    // TODO: manage state selection
     [accountAddressIds.state]: accountDetails.address.state,
     [accountAddressIds.intersection]: accountDetails.address.intersection,
     [accountAddressIds.city]: accountDetails.address.city,
