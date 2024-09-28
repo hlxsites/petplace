@@ -55,7 +55,7 @@ export const NotificationsTabContent = ({
       {isExternalLogin && (
         <SuspenseAwait resolve={lostPetsHistory}>
           {(lostPetsHistory) => (
-            <LostAndFoundNotifications notifications={lostPetsHistory} />
+            <LostAndFoundNotifications notifications={lostPetsHistory || []} />
           )}
         </SuspenseAwait>
       )}

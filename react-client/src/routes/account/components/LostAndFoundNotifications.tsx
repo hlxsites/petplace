@@ -1,12 +1,12 @@
 import { Card, Title } from "~/components/design-system";
 import { ViewNotifications } from "./ViewNotifications";
 
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 import { NotificationsDialog } from "./NotificationsDialog";
 
 export type LostAndFoundNotificationsProps = {
-  notifications?: LostPetUpdateModel[] | null;
+  notifications: LostPetUpdateModel[];
 };
 
 export const LostAndFoundNotifications = ({
@@ -23,12 +23,10 @@ export const LostAndFoundNotifications = ({
             <Title level="h3">Lost & Found notifications</Title>
           </div>
 
-          {notifications && notifications.length > 0 && (
+          {!!notifications.length && (
             <Card>
               <div className="p-large">
-                {notifications.map((notification, index) =>
-                  renderNotification(notification, index)
-                )}
+                {notifications.map(renderNotification)}
               </div>
             </Card>
           )}
@@ -48,24 +46,24 @@ export const LostAndFoundNotifications = ({
 
   function renderNotification(notification: LostPetUpdateModel, index: number) {
     const { date, id, foundedBy, petName } = notification;
-    return (
-      <Fragment key={`notification-${petName}-${index}`}>
-        <div key={`${petName}-${id}`}>
-          <ViewNotifications
-            dateFoundOrLost={date}
-            foundedBy={foundedBy?.finderName}
-            onClick={() => onOpenDialog(notification)}
-            petName={petName}
-          />
-          {renderHorizontalDivider(index + 1)}
-        </div>
-      </Fragment>
-    );
-  }
+    const isLast = notifications.length === index + 1;
 
-  function renderHorizontalDivider(index: number) {
-    if (notifications && notifications.length === index) return null;
-    return <hr className="-mx-[10%] border-neutral-300" />;
+    const dividerElement = (() => {
+      if (isLast) return null;
+      return <hr className="-mx-[10%] border-neutral-300" />;
+    })();
+
+    return (
+      <div key={`${petName}-${id}`}>
+        <ViewNotifications
+          dateFoundOrLost={date}
+          foundedBy={foundedBy?.finderName}
+          onClick={() => onOpenDialog(notification)}
+          petName={petName}
+        />
+        {dividerElement}
+      </div>
+    );
   }
 
   function onOpenDialog(notification: LostPetUpdateModel) {
