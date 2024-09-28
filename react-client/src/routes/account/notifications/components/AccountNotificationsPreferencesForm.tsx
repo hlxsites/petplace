@@ -10,8 +10,6 @@ export const AccountNotificationsPreferencesForm = () => {
 
   if (isLoading) return <DefaultLoading minHeight={460} />;
 
-  console.log("isDirty", isDirty);
-
   return (
     <DisplayForm
       isDirty={isDirty}
