@@ -1,28 +1,24 @@
-import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import { DisplayUncontrolledForm } from "~/components/design-system";
+import { DisplayForm } from "~/components/design-system";
 
+import { DefaultLoading } from "~/components/design-system/loading/DefaultLoading";
 import { notificationsFormSchema } from "../../form/notificationForm";
-import {
-  buildAccountNotifications,
-  getAccountNotificationsData,
-} from "../../util/formDataUtil";
 import { useAccountNotificationsIndexViewModel } from "../useAccountNotificationsIndexViewModel";
 
 export const AccountNotificationsPreferencesForm = () => {
-  const { accountNotifications, onSubmitAccountNotifications } =
+  const { isDirty, formValues, isLoading, onChangeForm, onSubmit } =
     useAccountNotificationsIndexViewModel();
 
+  if (isLoading) return <DefaultLoading minHeight={460} />;
+
+  console.log("isDirty", isDirty);
+
   return (
-    <SuspenseAwait resolve={accountNotifications}>
-      {(accountNotifications) => (
-        <DisplayUncontrolledForm
-          onSubmit={({ values }) => {
-            onSubmitAccountNotifications?.(buildAccountNotifications(values));
-          }}
-          schema={notificationsFormSchema}
-          initialValues={getAccountNotificationsData(accountNotifications)}
-        />
-      )}
-    </SuspenseAwait>
+    <DisplayForm
+      isDirty={isDirty}
+      onChange={onChangeForm}
+      onSubmit={onSubmit}
+      schema={notificationsFormSchema}
+      values={formValues}
+    />
   );
 };

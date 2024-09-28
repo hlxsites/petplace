@@ -2,7 +2,6 @@ import { FormValues } from "~/components/design-system";
 import {
   AccountDetailsModel,
   AccountEmergencyContactModel,
-  AccountNotificationsModel,
   ExternalAccountDetailsModel,
   InternalAccountDetailsModel,
 } from "~/domain/models/user/UserModels";
@@ -12,7 +11,6 @@ import {
   baseAccountDetailsIds,
   emergencyContactIds,
 } from "../form/accountForms";
-import { accountNotificationIds } from "../form/notificationForm";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null,
@@ -94,24 +92,7 @@ export function buildAccountEmergencyContactsList(
   return list;
 }
 
-export function getAccountNotificationsData(
-  accountNotifications?: AccountNotificationsModel | null
-): FormValues {
-  const newsLetter = [];
-  if (accountNotifications?.signedCatNewsletter) newsLetter.push("Cat");
-  if (accountNotifications?.signedDogNewsletter) newsLetter.push("Dog");
 
-  const alerts = [];
-  if (accountNotifications?.smsAlert) alerts.push("SMS");
-  if (accountNotifications?.emailAlert) alerts.push("Email");
-
-  return {
-    newsletter: newsLetter,
-    "pet-place-offers": accountNotifications?.petPlaceOffer ?? "",
-    "partner-offers": accountNotifications?.partnerOffer ?? "",
-    "pet-place-adopt-alerts": alerts,
-  } satisfies FormValues;
-}
 
 export function buildAccountDetails(
   values: FormValues,
@@ -155,21 +136,4 @@ export function validateAccountDetails(accountDetails: AccountDetailsModel) {
 function validateNameOrSurname(value?: string) {
   const pattern = /^[A-Za-z'-\s]+$/;
   return value ? pattern.test(value) : false;
-}
-
-export function buildAccountNotifications(
-  values: FormValues
-): AccountNotificationsModel {
-  const newsletter = values[accountNotificationIds.newsletter] as string[];
-  const alerts = values[accountNotificationIds.petPlaceAdoptAlerts] as string[];
-  const accountDetails: AccountNotificationsModel = {
-    emailAlert: alerts.includes("Email"),
-    petPlaceOffer: values[accountNotificationIds.petPlaceOffers] as boolean,
-    partnerOffer: values[accountNotificationIds.partnerOffers] as boolean,
-    signedCatNewsletter: newsletter.includes("Cat"),
-    signedDogNewsletter: newsletter.includes("Dog"),
-    smsAlert: alerts.includes("SMS"),
-  };
-
-  return accountDetails;
 }
