@@ -35,9 +35,9 @@ export const LostAndFoundNotifications = ({
         </div>
       </Card>
 
-      {selectedNotification && (
+      {!!selectedNotification && (
         <NotificationsDialog
-          isOpen={!!selectedNotification}
+          isOpen
           onClose={onCloseDialog}
           viewData={selectedNotification}
           petName={selectedNotification.petName}
