@@ -31,6 +31,9 @@ describe("CartDrawer", () => {
 function getRenderer({
   items = DEFAULT_ITEMS as CartItem[],
   onClose = jest.fn(),
+  subtotal = "19.99",
 }: Partial<ComponentProps<typeof CartDrawer>> = {}) {
-  return render(<CartDrawer items={items} isOpen onClose={onClose} />);
+  return render(
+    <CartDrawer items={items} isOpen onClose={onClose} subtotal={subtotal} />
+  );
 }

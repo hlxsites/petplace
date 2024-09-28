@@ -1,11 +1,10 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { CartCheckoutUseCase } from "./CartCheckoutUseCase";
-import { CartItem } from "~/domain/models/cart/CartModel";
+import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
-const VALID_CART_ITEM: CartItem = {
-  description: "A fun toy for pets",
+const VALID_CART_ITEM: CommonCartItem = {
   id: "item1",
   name: "Pet Toy",
   price: "$10.00",
@@ -20,14 +19,14 @@ describe("CartCheckoutUseCase", () => {
     it("should return true for a successful post", async () => {
       const httpClient = new MockHttpClient({ statusCode: 200 });
       const sut = makeSut(httpClient);
-      const result = await sut.post(VALID_CART_ITEM, PET_ID);
+      const result = await sut.post([VALID_CART_ITEM], PET_ID);
       expect(result).toBe(true);
     });
 
     it("should return false for an unsuccessful post", async () => {
       const httpClient = new MockHttpClient({ statusCode: 400 });
       const sut = makeSut(httpClient);
-      const result = await sut.post(VALID_CART_ITEM, PET_ID);
+      const result = await sut.post([VALID_CART_ITEM], PET_ID);
       expect(result).toBe(false);
     });
 
@@ -36,18 +35,18 @@ describe("CartCheckoutUseCase", () => {
       const sut = makeSut(httpClient);
 
       // Test when CartItem is missing
-      let result = await sut.post(undefined, PET_ID);
+      let result = await sut.post([], PET_ID);
       expect(result).toBe(false);
 
       // Test when AnimalInfo is missing
-      result = await sut.post(VALID_CART_ITEM, undefined);
+      result = await sut.post([VALID_CART_ITEM], "");
       expect(result).toBe(false);
     });
 
     it("should return false when there is an error", async () => {
       const httpClient = new MockHttpClient({ error: new Error("Error") });
       const sut = makeSut(httpClient);
-      const result = await sut.post(VALID_CART_ITEM, PET_ID);
+      const result = await sut.post([VALID_CART_ITEM], PET_ID);
       expect(result).toBe(false);
     });
 
@@ -56,13 +55,13 @@ describe("CartCheckoutUseCase", () => {
       const sut = makeSut(httpClient);
 
       // @ts-expect-error for testing purpose
-      const incompleteCartItem: CartItem = {
+      const incompleteCartItem: CommonCartItem = {
         id: "item1",
         quantity: 2,
         price: "$10.00",
       };
 
-      const result = await sut.post(incompleteCartItem, PET_ID);
+      const result = await sut.post([incompleteCartItem], PET_ID);
 
       expect(result).toBe(false);
     });

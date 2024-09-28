@@ -30,7 +30,7 @@ export const CartItemCard = ({
           </div>
           <div>
             <Text fontWeight="bold" size="20">
-              {price}
+              {`$${price}`}
             </Text>
           </div>
         </div>
