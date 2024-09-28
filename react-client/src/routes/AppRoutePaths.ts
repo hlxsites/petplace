@@ -4,6 +4,7 @@ export const AppRoutePaths = {
   root: "/",
   account: "account",
   accountNotifications: "notifications",
+  accountNotificationId: ":notificationId",
   accountPayment: "payment-information",
   addNewPet: "add",
   checkout: "checkout",

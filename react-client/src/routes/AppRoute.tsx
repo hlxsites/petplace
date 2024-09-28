@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { loader as AccountNotificationIdLoader } from "./account/notifications/notificationId/useNotificationsIdViewModel";
 import { loader as AccountNotificationsIndexLoader } from "./account/notifications/useAccountNotificationsIndexViewModel";
 import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { loader as AccountRootLoader } from "./account/useAccountRootViewModel";
@@ -18,6 +19,7 @@ import { IS_DEV_ENV } from "~/util/envUtil";
 import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
 import { AccountNotificationsIndex } from "./account/notifications/AccountNotificationsIndex";
+import { AccountNotificationId } from "./account/notifications/notificationId/AccountNotificationId";
 import { AccountPaymentInformationIndex } from "./account/payment-information/AccountPaymentInformationIndex";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { CheckoutProductsLayout } from "./checkout/products/CheckoutProductsLayout";
@@ -59,6 +61,15 @@ const routes: PetPlaceRouteObject[] = [
             id: "accountNotifications",
             loader: AccountNotificationsIndexLoader,
             path: AppRoutePaths.accountNotifications,
+            shouldRevalidate: () => false,
+            children: [
+              {
+                id: "accountNotificationId",
+                element: <AccountNotificationId />,
+                loader: AccountNotificationIdLoader,
+                path: AppRoutePaths.accountNotificationId,
+              },
+            ],
           },
           {
             element: <AccountPaymentInformationIndex />,
