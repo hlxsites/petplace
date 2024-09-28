@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
-import { AccountDetailsTabContent } from "./AccountDetailsTabContent";
+import { AccountIndex } from "./AccountIndex";
 
 const { getByRole, queryByRole } = screen;
 
@@ -10,8 +10,8 @@ jest.mock("~/util/authUtil", () => ({
   readJwtClaim: jest.fn(),
 }));
 
-// TODO: mock the useAccountContext hook
-describe.skip("AccountDetailsTabContent", () => {
+// TODO: mock the useAccountIndexViewModel hook
+describe.skip("AccountIndex", () => {
   it("should render expected 'account-details-form'", () => {
     const { container } = getRenderer();
     expect(
@@ -70,6 +70,6 @@ describe.skip("AccountDetailsTabContent", () => {
 
 function getRenderer({
   ...props
-}: Partial<ComponentProps<typeof AccountDetailsTabContent>> = {}) {
-  return render(<AccountDetailsTabContent {...props} />);
+}: Partial<ComponentProps<typeof AccountIndex>> = {}) {
+  return render(<AccountIndex {...props} />);
 }
