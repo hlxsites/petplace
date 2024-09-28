@@ -2,17 +2,13 @@ import { z } from "zod";
 import {
   CheckoutQueryReturnData,
   MembershipInfo,
-  MembershipPlan,
+  MembershipPlanId,
 } from "~/domain/checkout/CheckoutModels";
 import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import { MEMBERSHIP_INFO_OPTIONS } from "./utils/checkoutHardCodedData";
-
-export const ANNUAL_PROTECTION_PLAN_TITLE = "Annual Protection";
-export const LIFETIME_PLAN_TITLE = "Lifetime";
-export const LIFETIME_PLUS_PLAN_TITLE = "Lifetime Plus";
 
 const membershipProductSchema = z.object({
   AutoRenew: z.boolean().nullish(),
@@ -63,19 +59,19 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
           const planData = parsedData.MembershipProducts[key];
           if (!planData) return;
 
-          const title = convertMembershipKeyToMembershipPlanTitle(key);
+          const id = convertMembershipKeyToMembershipPlanId(key);
+
+          const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[id];
+          if (!hardCodedPlan) return;
 
           // Shouldn't be doing this here, this should be handled by the server
           // However, we're trying to protect the FE code from the server's data
-          if (isCanadaLocale && title === ANNUAL_PROTECTION_PLAN_TITLE) {
+          if (isCanadaLocale && id.toLowerCase().includes("annual")) {
             // Skip the annual plan for Canada
             return;
           }
 
           const price = planData.SalesPrice || planData.ItemPrice || "-";
-
-          const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[title];
-          if (!hardCodedPlan) return;
 
           const isHighlighted = (() => {
             if (typeof planData.IsMostPopular === "boolean") {
@@ -88,8 +84,8 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
           plans.push({
             ...hardCodedPlan,
             isHighlighted,
-            price: `$${price}`,
-            title: planData.ItemName || title,
+            price,
+            title: planData.ItemName || hardCodedPlan.title,
           });
         }
       });
@@ -102,18 +98,16 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
   };
 }
 
-function convertMembershipKeyToMembershipPlanTitle(
-  key: string
-): MembershipPlan {
+function convertMembershipKeyToMembershipPlanId(key: string): MembershipPlanId {
   const lowercasedKey = key.toLowerCase();
 
   // This code is fragile, but it's the best we can do with the current server data
 
   if (lowercasedKey.includes("annual")) {
-    return ANNUAL_PROTECTION_PLAN_TITLE;
+    return "AnnualMembership";
   }
   if (lowercasedKey.includes("lpmplus")) {
-    return LIFETIME_PLUS_PLAN_TITLE;
+    return "LPMPlusMembership";
   }
-  return LIFETIME_PLAN_TITLE;
+  return "LPMMembership";
 }

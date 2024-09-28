@@ -3,6 +3,7 @@ import {
   DisplayUncontrolledForm,
   FormSchema,
 } from "~/components/design-system";
+import { COUNTRIES_LABELS } from "~/domain/useCases/util/countriesUtil";
 
 const formSchema: FormSchema = {
   id: "lost-pet-form",
@@ -59,8 +60,8 @@ const formSchema: FormSchema = {
               id: "country",
               label: "Country",
               requiredCondition: true,
-              options: "{{countryOptions|string[]}}",
-              optionsType: "dynamic",
+              options: COUNTRIES_LABELS,
+              optionsType: "static",
               type: "select",
             },
             {
@@ -151,7 +152,6 @@ export const FoundPetIndex = () => {
           }}
           schema={formSchema}
           variables={{
-            countryOptions: ["Canada", "United States"],
             stateOptions: [],
           }}
         />

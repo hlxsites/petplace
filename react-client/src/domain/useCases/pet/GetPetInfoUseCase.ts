@@ -40,15 +40,18 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
   const serverResponseSchema = z.object({
     Age: z.string(),
     Breed: z.string(),
+    CountryCode: z.union([z.literal("US"), z.literal("CA")]).nullish(),
     DateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
       message: "Invalid date format",
     }),
     Id: z.string(),
+    ImageUrl: z.string().nullish(),
     MembershipStatus: z.string(),
     Microchip: z.string().nullish(),
     MixedBreed: z.boolean().nullish(),
     Name: z.string(),
     Neutered: z.boolean().nullish(),
+    PolicyNumbers: z.array(z.string()).nullish(),
     Products: z.array(
       z.object({
         Id: z.string(),
@@ -78,10 +81,13 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     breed: info.Breed,
     dateOfBirth: info.DateOfBirth,
     id: info.Id,
+    img: info.ImageUrl ?? undefined,
+    locale: info.CountryCode,
     membershipStatus: info.MembershipStatus,
     microchip: info.Microchip,
     mixedBreed: !!info.MixedBreed,
     name: info.Name,
+    policyInsurance: info.PolicyNumbers ?? [],
     products,
     sex: info.Sex,
     sourceType: info.Source === 1 ? "MyPetHealth" : "PetPoint",

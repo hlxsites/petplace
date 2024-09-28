@@ -1,8 +1,5 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import {
-  Card,
-  DisplayUncontrolledForm,
-} from "~/components/design-system";
+import { Card, DisplayUncontrolledForm } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 import {
   AccountDetailsModel,
@@ -14,20 +11,23 @@ import {
   internalAccountDetailsFormSchema,
 } from "../form/accountForms";
 import {
+  buildAccountDetails,
   getAccountDetailsData,
-  getAccountEmergencyContactsData,
+  getAccountEmergencyContactsData
 } from "../form/formDataUtil";
 
 type AccountDetailsTabContentProps = {
   accountDetails?: Promise<AccountDetailsModel | null>;
   emergencyContacts?: Promise<AccountEmergencyContactModel[] | null>;
   isExternalLogin?: boolean;
+  onSubmitAccountDetails?: (values: AccountDetailsModel) => void;
 };
 
 export const AccountDetailsTabContent = ({
   accountDetails,
   emergencyContacts,
   isExternalLogin,
+  onSubmitAccountDetails,
 }: AccountDetailsTabContentProps) => {
   const formSchema = isExternalLogin
     ? externalAccountDetailsFormSchema
@@ -39,13 +39,15 @@ export const AccountDetailsTabContent = ({
         <SuspenseAwait resolve={accountDetails}>
           {(accountDetails) => (
             <DisplayUncontrolledForm
-              initialValues={getAccountDetailsData(accountDetails)}
-              onSubmit={({ values }) => {
-                console.log("onSubmit values", values);
-              }}
+              initialValues={getAccountDetailsData(
+                accountDetails,
+                isExternalLogin
+              )}
+              onSubmit={({ values }) =>
+                onSubmitAccountDetails?.(buildAccountDetails(values))
+              }
               schema={formSchema}
               variables={{
-                countryOptions: ["Canada", "United States"],
                 stateOptions: [],
               }}
             />

@@ -3,16 +3,32 @@ import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { getLostPetsHistory } from "~/mocks/MockRestApiServer";
 import { requireAuthToken } from "~/util/authUtil";
 
+import {
+  AccountDetailsModel,
+  AccountNotificationsModel,
+} from "~/domain/models/user/UserModels";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountEmergencyContactsUseCaseFactory from "~/domain/useCases/user/accountEmergencyContactsUseCaseFactory";
 import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
+import { validateAccountDetails } from "./form/formDataUtil";
 
 export const loader = (() => {
   const authToken = requireAuthToken();
 
   const accountDetailsUseCase = accountDetailsUseCaseFactory(authToken);
+  // TODO: This must be moved to another viewModel, specific for /account/notifications route
   const accountNotificationsUseCase =
     accountNotificationsUseCaseFactory(authToken);
+
+  function onSubmitAccountDetails(values: AccountDetailsModel) {
+    if (validateAccountDetails(values))
+      void accountDetailsUseCase.mutate(values);
+  }
+
+  function onSubmitAccountNotifications(values: AccountNotificationsModel) {
+    void accountNotificationsUseCase.mutate(values);
+  }
+
   const accountEmergencyContactsUseCase =
     accountEmergencyContactsUseCaseFactory(authToken);
 
@@ -21,6 +37,8 @@ export const loader = (() => {
     accountNotifications: accountNotificationsUseCase.query(),
     emergencyContacts: accountEmergencyContactsUseCase.query(),
     lostPetsHistory: getLostPetsHistory(),
+    onSubmitAccountDetails,
+    onSubmitAccountNotifications,
   });
 }) satisfies LoaderFunction;
 
@@ -30,6 +48,8 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     emergencyContacts,
     lostPetsHistory,
+    onSubmitAccountDetails,
+    onSubmitAccountNotifications,
   } = useLoaderData<typeof loader>();
 
   return {
@@ -37,6 +57,8 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     emergencyContacts,
     lostPetsHistory,
+    onSubmitAccountDetails,
+    onSubmitAccountNotifications,
   };
 };
 

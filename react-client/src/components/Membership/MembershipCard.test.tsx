@@ -1,19 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { MembershipPlan } from "~/domain/checkout/CheckoutModels";
+import { MemoryRouter } from "react-router-dom";
 import { MembershipCard } from "./MembershipCard";
 
 const { getByRole, getByText, queryByText } = screen;
 
 describe("MembershipCard", () => {
-  it.each([
-    "Lifetime",
-    "Lifetime Plus",
-    "Annual Protection",
-  ] satisfies MembershipPlan[])("should render the given title", (title) => {
-    getRenderer({ title });
-    expect(getByRole("heading", { name: title })).toBeInTheDocument();
-  });
+  it.each(["Lifetime", "Lifetime Plus", "Annual Protection"])(
+    "should render the given title",
+    (title) => {
+      getRenderer({ title });
+      expect(getByRole("heading", { name: title })).toBeInTheDocument();
+    }
+  );
 
   it.each(["My sub title", "Awesome sub title"])(
     "should render the given sub title",
@@ -137,6 +136,7 @@ describe("MembershipCard", () => {
 
 function getRenderer({
   buttonLabel = "Test button label",
+  id = "LPMMembership",
   price = "Test price",
   priceInfo = "Test info price label",
   subTitle = "Test info sub title",
@@ -144,13 +144,16 @@ function getRenderer({
   ...props
 }: Partial<ComponentProps<typeof MembershipCard>> = {}) {
   return render(
-    <MembershipCard
-      buttonLabel={buttonLabel}
-      price={price}
-      priceInfo={priceInfo}
-      subTitle={subTitle}
-      title={title}
-      {...props}
-    />
+    <MemoryRouter>
+      <MembershipCard
+        buttonLabel={buttonLabel}
+        id={id}
+        price={price}
+        priceInfo={priceInfo}
+        subTitle={subTitle}
+        title={title}
+        {...props}
+      />
+    </MemoryRouter>
   );
 }

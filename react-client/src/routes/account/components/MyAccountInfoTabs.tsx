@@ -1,21 +1,33 @@
 import { ACCOUNT_FULL_ROUTE, AppRoutePaths } from "~/routes/AppRoutePaths";
 import { getRouteFor } from "~/routes/util/getRouteFor";
+import { checkIsExternalLogin } from "~/util/authUtil";
 import { RouteBasedTabs, RouteTab } from "../../../components/design-system";
 import { useAccountContext } from "../useAccountIndexViewModel";
 import { AccountDetailsTabContent } from "./AccountDetailsTabContent";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 import { PaymentInformationTabContent } from "./PaymentInformationTabContent";
-import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const MyAccountInfoTabs = () => {
   const viewModel = useAccountContext();
-  const { accountDetails, accountNotifications, emergencyContacts, lostPetsHistory } = viewModel;
-  const isExternalLogin = checkIsExternalLogin()
+  const {
+    accountDetails,
+    accountNotifications,
+    emergencyContacts,
+    lostPetsHistory,
+    onSubmitAccountDetails,
+    onSubmitAccountNotifications,
+  } = viewModel;
+  const isExternalLogin = checkIsExternalLogin();
 
   const myAccountTabOptions: RouteTab[] = [
     {
       content: () => (
-        <AccountDetailsTabContent isExternalLogin={isExternalLogin} accountDetails={accountDetails} emergencyContacts={emergencyContacts} />
+        <AccountDetailsTabContent
+          isExternalLogin={isExternalLogin}
+          accountDetails={accountDetails}
+          onSubmitAccountDetails={onSubmitAccountDetails}
+          emergencyContacts={emergencyContacts}
+        />
       ),
       exactRoute: true,
       icon: "user",
@@ -28,6 +40,7 @@ export const MyAccountInfoTabs = () => {
           isExternalLogin={isExternalLogin}
           lostPetsHistory={lostPetsHistory}
           accountNotifications={accountNotifications}
+          onSubmitAccountNotifications={onSubmitAccountNotifications}
         />
       ),
       icon: "bell",
