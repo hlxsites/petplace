@@ -5,7 +5,7 @@ type CartItemQuantityManagerProps = {
   id: string;
   purchaseLimit?: number;
   quantity: number;
-  onUpdateQuantity: (id: string, quantity: number) => void;
+  // onUpdateQuantity: (id: string, quantity: number) => void;
 };
 
 type AddRemoveButtonVariation = "add" | "remove";
@@ -25,7 +25,6 @@ export const CartItemQuantityManager = ({
   id,
   purchaseLimit,
   quantity,
-  onUpdateQuantity,
 }: CartItemQuantityManagerProps) => {
   return (
     <div className="flex w-full justify-end">
@@ -88,10 +87,10 @@ export const CartItemQuantityManager = ({
   }
 
   function addOne() {
-    onUpdateQuantity(id, quantity + 1);
+    // TODO update quantity;
   }
 
   function removeOne() {
-    onUpdateQuantity(id, quantity - 1);
+    // TODO update quantity;
   }
 };

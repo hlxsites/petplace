@@ -10,7 +10,7 @@ import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
 import { useCheckoutProductsViewModel } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
-  const { cartItems, products } = useCheckoutProductsViewModel();
+  const { cartItems, products, subtotal } = useCheckoutProductsViewModel();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -31,7 +31,12 @@ export const ProductsIndex = () => {
         </div>
       </main>
       <CheckoutFooter />
-      <CartDrawer items={cartItems} isOpen={isOpen} onClose={onCloseCart} />
+      <CartDrawer
+        items={cartItems}
+        isOpen={isOpen}
+        onClose={onCloseCart}
+        subtotal={subtotal}
+      />
     </div>
   );
 

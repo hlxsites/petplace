@@ -3,10 +3,7 @@ import { Card, LinkButton, Text } from "../design-system";
 import { CartItemQuantityManager } from "./CartItemQuantityManager";
 import { CHECKOUT_FULL_ROUTE } from "~/routes/AppRoutePaths";
 
-type CartItemCardProps = CartItem & {
-  onUpdateQuantity: (id: string, value: number) => void;
-};
-
+type CartItemCardProps = CartItem;
 export const CartItemCard = ({
   description,
   isService,

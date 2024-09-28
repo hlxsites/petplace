@@ -9,6 +9,7 @@ import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
+import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 
 export const loader = (async ({ request }) => {
   const url = new URL(request.url);
@@ -67,6 +68,7 @@ export const useCheckoutProductsViewModel = () => {
   const { currentCart, petId, postCart, products, selectedPlan } =
     useLoaderData<typeof loader>();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [subtotal, setSubtotal] = useState<string>("");
 
   const onUpdateCartMembership = useCallback(
     (newMembership: CommonCartItem) => {
@@ -101,6 +103,31 @@ export const useCheckoutProductsViewModel = () => {
     onUpdateCartMembership(selectedPlan);
   }, [currentCart, selectedPlan, onUpdateCartMembership]);
 
+  useDeepCompareEffect(() => {
+    function calculateSubtotal(): number {
+      return cartItems.reduce((total, item) => {
+        if (!item.price) return 0;
+
+        const itemPrice = getValueFromPrice(item.price.toString());
+        const itemQuantity = item.quantity ?? 1;
+        return total + itemPrice * itemQuantity;
+      }, 0);
+    }
+
+    setSubtotal(formatPrice(calculateSubtotal()));
+  }, [cartItems]);
+
+  const onUpdateQuantity = (id: string, newQuantity: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      })
+    );
+  };
+
   const onUpdateCartProduct = (product: CommonCartItem) => {
     setCartItems((prevState) => {
       let updatedState: CommonCartItem[] = [];
@@ -124,6 +151,8 @@ export const useCheckoutProductsViewModel = () => {
   return {
     cartItems,
     onUpdateCartProduct,
+    onUpdateQuantity,
     products,
+    subtotal,
   };
 };

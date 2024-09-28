@@ -2,7 +2,6 @@ import { Drawer, Text } from "../design-system";
 import { CartFooter } from "./CartFooter";
 import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
-import { useCartCheckout } from "./hooks/useCartCheckout";
 
 import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
@@ -10,13 +9,10 @@ type CartDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
   items?: CommonCartItem[];
+  subtotal: string;
 };
 
-export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
-  console.log("items", items);
-
-  const { subtotal, onUpdateQuantity } = useCartCheckout(items);
-
+export const CartDrawer = ({ items, subtotal, ...props }: CartDrawerProps) => {
   return (
     <Drawer
       id="cart-drawer"
@@ -35,16 +31,13 @@ export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
           {items?.map((item) => (
             <CartItemCard
               key={item.id}
-              onUpdateQuantity={onUpdateQuantity}
+              // onUpdateQuantity={onUpdateQuantity}
               {...item}
             />
           ))}
         </div>
 
-        <CartFooter
-          shouldProceedToCheckout={!!items?.length}
-          subtotal={subtotal}
-        />
+        <CartFooter subtotal={subtotal} />
       </div>
     </Drawer>
   );
