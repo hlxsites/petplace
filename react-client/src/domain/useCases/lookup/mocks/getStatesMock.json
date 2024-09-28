@@ -1,0 +1,54 @@
+[
+    {
+      "stateId": "AB",
+      "name": "Alberta"
+    },
+    {
+      "stateId": "BC",
+      "name": "British Columbia"
+    },
+    {
+      "stateId": "MB",
+      "name": "Manitoba"
+    },
+    {
+      "stateId": "NB",
+      "name": "New Brunswick"
+    },
+    {
+      "stateId": "NL",
+      "name": "Newfoundland and Labrador"
+    },
+    {
+      "stateId": "NS",
+      "name": "Nova Scotia"
+    },
+    {
+      "stateId": "NT",
+      "name": "Northwest Territories"
+    },
+    {
+      "stateId": "NU",
+      "name": "Nunavut"
+    },
+    {
+      "stateId": "ON",
+      "name": "Ontario"
+    },
+    {
+      "stateId": "PE",
+      "name": "Prince Edward Island"
+    },
+    {
+      "stateId": "QC",
+      "name": "Quebec"
+    },
+    {
+      "stateId": "SK",
+      "name": "Saskatchewan"
+    },
+    {
+      "stateId": "YT",
+      "name": "Yukon"
+    }
+]
