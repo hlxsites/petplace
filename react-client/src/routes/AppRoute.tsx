@@ -16,6 +16,7 @@ import { IS_DEV_ENV } from "~/util/envUtil";
 import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
+import { CheckoutProductsLayout } from "./checkout/products/CheckoutProductsLayout";
 import { ProductsIndex } from "./checkout/products/ProductsIndex";
 import { loader as CheckoutProductsIndexLoader } from "./checkout/products/useCheckoutProductsViewModel";
 import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
@@ -76,6 +77,10 @@ const routes: PetPlaceRouteObject[] = [
             element: <PetProfileLayout />,
             id: "petProfile",
             loader: PetProfileLayoutLoader,
+            shouldRevalidate: ({ currentParams, nextParams }) => {
+              // We want to revalidate the pet profile layout when the pet ID changes
+              return currentParams.petId !== nextParams.petId;
+            },
             path: AppRoutePaths.petProfile,
             children: [
               {
@@ -139,10 +144,18 @@ const routes: PetPlaceRouteObject[] = [
             element: <CheckoutIndex />,
           },
           {
+            element: <CheckoutProductsLayout />,
             id: "products",
-            element: <ProductsIndex />,
             loader: CheckoutProductsIndexLoader,
             path: AppRoutePaths.products,
+            shouldRevalidate: () => false,
+            children: [
+              {
+                id: "productsIndex",
+                index: true,
+                element: <ProductsIndex />,
+              },
+            ],
           },
         ],
       },

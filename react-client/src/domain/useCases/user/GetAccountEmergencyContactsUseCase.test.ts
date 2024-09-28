@@ -43,14 +43,12 @@ describe("GetAccountEmergencyContactsUseCase", () => {
     expect(result).toStrictEqual([
       {
         email: "becker.r@email.com",
-        id: "000001",
         name: "Rudy",
         phoneNumber: "989 765 4321",
         surname: "Becker",
       },
       {
         email: "h-grace@email.com",
-        id: "000000",
         name: "Hazel",
         phoneNumber: "989 345 4321",
         surname: "Grace",

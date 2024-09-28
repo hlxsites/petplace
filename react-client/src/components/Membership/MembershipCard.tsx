@@ -1,11 +1,13 @@
 import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { classNames } from "~/util/styleUtil";
-import { Button, Card, Icon, Text, Title } from "../design-system";
+import { Card, Icon, LinkButton, Text, Title } from "../design-system";
+import { useMembershipProductsLink } from "./hooks/useMembershipProductsLink";
 
 type MembershipCardProps = Omit<MembershipInfo, "comparePlansButtonLabel">;
 
 export const MembershipCard = ({
   buttonLabel,
+  id,
   infoFooter,
   isHighlighted,
   membershipDescriptionOffers,
@@ -14,6 +16,8 @@ export const MembershipCard = ({
   subTitle,
   title,
 }: MembershipCardProps) => {
+  const buttonLink = useMembershipProductsLink(id);
+
   const buttonVariant = isHighlighted ? "primary" : "secondary";
 
   return (
@@ -34,7 +38,9 @@ export const MembershipCard = ({
           </Text>
           <Text color="text-color-supporting">{priceInfo}</Text>
         </div>
-        <Button variant={buttonVariant}>{buttonLabel}</Button>
+        <LinkButton variant={buttonVariant} to={buttonLink} fullWidth>
+          {buttonLabel}
+        </LinkButton>
         <div
           className={classNames("grid gap-small", {
             "pb-xxlarge": !infoFooter,

@@ -9,13 +9,27 @@ import { PaymentInformationTabContent } from "./PaymentInformationTabContent";
 
 export const MyAccountInfoTabs = () => {
   const viewModel = useAccountContext();
-  const { accountDetails, accountNotifications, emergencyContacts, lostPetsHistory, onSubmitEmergencyContacts } = viewModel;
-  const isExternalLogin = checkIsExternalLogin()
+  const {
+    accountDetails,
+    accountNotifications,
+    emergencyContacts,
+    lostPetsHistory,
+    onSubmitAccountDetails,
+    onSubmitAccountNotifications,
+    onSubmitEmergencyContacts,
+  } = viewModel;
+  const isExternalLogin = checkIsExternalLogin();
 
   const myAccountTabOptions: RouteTab[] = [
     {
       content: () => (
-        <AccountDetailsTabContent isExternalLogin={isExternalLogin} accountDetails={accountDetails} emergencyContacts={emergencyContacts} onSubmitEmergencyContacts={onSubmitEmergencyContacts}/>
+        <AccountDetailsTabContent
+          isExternalLogin={isExternalLogin}
+          accountDetails={accountDetails}
+          emergencyContacts={emergencyContacts}
+          onSubmitAccountDetails={onSubmitAccountDetails}
+          onSubmitEmergencyContacts={onSubmitEmergencyContacts}
+        />
       ),
       exactRoute: true,
       icon: "user",
@@ -28,6 +42,7 @@ export const MyAccountInfoTabs = () => {
           isExternalLogin={isExternalLogin}
           lostPetsHistory={lostPetsHistory}
           accountNotifications={accountNotifications}
+          onSubmitAccountNotifications={onSubmitAccountNotifications}
         />
       ),
       icon: "bell",

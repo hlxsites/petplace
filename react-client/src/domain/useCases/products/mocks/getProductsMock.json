@@ -1,0 +1,40 @@
+{
+  "MembershipProducts": {
+    "AnnualMembership": {
+      "AdditionalProductList": [
+        {
+          "ItemId": "item1",
+          "UIName": "Product 1",
+          "Price": "20.00",
+          "SpeciesId": "Dog"
+        },
+        {
+          "ItemId": "item2",
+          "UIName": "Product 2",
+          "Price": "30.00",
+          "SpeciesId": "Cat"
+        }
+      ]
+    },
+    "Tags": {
+      "ByteTag": [
+        {
+          "ItemId": "item3",
+          "ItemName": "Product 3",
+          "Price": "15.00",
+          "Color": "Green",
+          "Size": "Small/Medium",
+          "SpeciesId": "Bird"
+        },
+        {
+          "ItemId": "item4",
+          "ItemName": "Product 4",
+          "Price": "25.00",
+          "Color":"Yellow",
+          "Size": "Large",
+          "SpeciesId": "Dog"
+        }
+      ]
+    }
+  }
+}

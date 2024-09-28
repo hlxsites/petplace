@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
-import { Button, Icon, Text, TextSpan, Title } from "../design-system";
+import { Icon, Text, TextSpan, Title } from "../design-system";
+import { MembershipComparingPlanLinkButton } from "./MembershipComparingPlanLinkButton";
 
 type TableRow = {
   label: string;
@@ -10,18 +11,16 @@ type TableRow = {
 
 type Plan = Pick<
   MembershipInfo,
-  "comparePlansButtonLabel" | "isHighlighted" | "title"
+  "comparePlansButtonLabel" | "id" | "isHighlighted" | "title"
 >;
 
 type MembershipComparingPlanTableProps = {
   plans: Plan[];
-  onClick?: () => void;
   rows: TableRow[];
 };
 
 export const MembershipComparingPlanTable = ({
   plans,
-  onClick,
   rows,
 }: MembershipComparingPlanTableProps) => {
   const [highlightStyles, setHighlightStyles] = useState<{
@@ -56,16 +55,21 @@ export const MembershipComparingPlanTable = ({
     return () => window.removeEventListener("resize", updateHighlightPosition);
   }, [plans]);
 
-  const actions: { label: string; isHighlighted?: boolean }[] = [];
-  const columns: string[] = [];
+  const actions: {
+    id: string;
+    isHighlighted?: boolean;
+    label: string;
+  }[] = [];
+  const columns: { id: string; title: string }[] = [];
 
-  plans.forEach(({ comparePlansButtonLabel, isHighlighted, title }) => {
+  plans.forEach(({ comparePlansButtonLabel, id, isHighlighted, title }) => {
     actions.push({
+      id,
       label: comparePlansButtonLabel,
       isHighlighted,
     });
 
-    columns.push(title);
+    columns.push({ id, title });
   });
 
   return (
@@ -79,16 +83,15 @@ export const MembershipComparingPlanTable = ({
           top: 0,
           bottom: 0,
           height: "100%",
-          zIndex: 10,
         }}
       ></div>
       <table className="my-small w-full border-collapse" ref={tableRef}>
         <thead>
           <tr>
             <th>{/* Placeholder */}</th>
-            {columns.map((column) => (
-              <th key={column}>
-                <TextSpan fontFamily="raleway">{column}</TextSpan>
+            {columns.map(({ id, title }) => (
+              <th key={id}>
+                <TextSpan fontFamily="raleway">{title}</TextSpan>
               </th>
             ))}
           </tr>
@@ -102,12 +105,12 @@ export const MembershipComparingPlanTable = ({
                 {/* Neutral border container */}
                 <div className="pointer-events-none absolute inset-0 my-small rounded-2xl border border-solid border-neutral-300"></div>
               </td>
-              {columns.map((column, colIndex) => (
+              {columns.map(({ id }, colIndex) => (
                 <td
-                  key={`${column} icon ${colIndex}`}
+                  key={`${id}_icon_${colIndex}`}
                   className="relative text-center"
                 >
-                  {row.availableColumns.includes(column) ? (
+                  {row.availableColumns.includes(id) ? (
                     <Icon
                       className="text-green-300"
                       display="checkCircle"
@@ -126,15 +129,10 @@ export const MembershipComparingPlanTable = ({
           ))}
           <tr>
             <td>{/* Placeholder */}</td>
-            {actions.map(({ label, isHighlighted }) => (
-              <td className="text-center" key={label}>
+            {actions.map((props) => (
+              <td className="text-center" key={props.id}>
                 <div className="space-x-4 flex justify-evenly pt-xlarge">
-                  <Button
-                    onClick={onClick}
-                    variant={isHighlighted ? "primary" : "secondary"}
-                  >
-                    {label}
-                  </Button>
+                  <MembershipComparingPlanLinkButton {...props} />
                 </div>
               </td>
             ))}

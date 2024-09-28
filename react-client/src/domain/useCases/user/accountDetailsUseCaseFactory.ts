@@ -1,14 +1,14 @@
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetAccountDetailsRepository } from "~/domain/repository/user/GetAccountDetailsRepository";
+import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
 import { ENABLE_MOCK } from "~/util/envUtil";
-import { GetAccountDetailsUseCase } from "./GetAccountDetailsUseCase";
-import { MockGetAccountDetailsCase } from "./MockGetAccountDetailsUseCase";
+import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
+import { MockAccountDetailsCase } from "./MockAccountDetailsUseCase";
 
-export default function (
+export default function accountDetailsUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
-): GetAccountDetailsRepository {
-  if (ENABLE_MOCK) return new MockGetAccountDetailsCase();
+): AccountDetailsRepository {
+  if (ENABLE_MOCK) return new MockAccountDetailsCase();
 
-  return new GetAccountDetailsUseCase(authToken, httpClient);
+  return new AccountDetailsUseCase(authToken, httpClient);
 }

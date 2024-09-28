@@ -4,8 +4,11 @@ import {
   DisplayUncontrolledForm,
   Title,
 } from "~/components/design-system";
-import { AccountNotificationModel } from "~/domain/models/user/UserModels";
-import { getAccountNotificationsData } from "../form/formDataUtil";
+import { AccountNotificationsModel } from "~/domain/models/user/UserModels";
+import {
+  buildAccountNotifications,
+  getAccountNotificationsData,
+} from "../form/formDataUtil";
 import { notificationsFormSchema } from "../form/notificationForm";
 import {
   LostAndFoundNotifications,
@@ -13,15 +16,18 @@ import {
 } from "./LostAndFoundNotifications";
 
 type NotificationsTabProps = {
-  accountNotifications?: Promise<AccountNotificationModel | null>;
+  accountNotifications?: Promise<AccountNotificationsModel | null>;
   isExternalLogin?: boolean;
   lostPetsHistory?: LostNotification[];
+  onSubmitEmergencyContacts?: (data: AccountNotificationsModel) => void;
+  onSubmitAccountNotifications?: (values: AccountNotificationsModel) => void;
 };
 
 export const NotificationsTabContent = ({
   accountNotifications,
   isExternalLogin,
   lostPetsHistory,
+  onSubmitAccountNotifications,
 }: NotificationsTabProps) => {
   return (
     <div className="mt-xxxlarge grid gap-large">
@@ -33,12 +39,16 @@ export const NotificationsTabContent = ({
           <SuspenseAwait resolve={accountNotifications}>
             {(accountNotifications) => (
               <DisplayUncontrolledForm
-              onSubmit={({ values }) => {
-                console.log("onSubmit values", values);
-              }}
-              schema={notificationsFormSchema}
-              initialValues={getAccountNotificationsData(accountNotifications)}
-            />
+                onSubmit={({ values }) => {
+                  onSubmitAccountNotifications?.(
+                    buildAccountNotifications(values)
+                  );
+                }}
+                schema={notificationsFormSchema}
+                initialValues={getAccountNotificationsData(
+                  accountNotifications
+                )}
+              />
             )}
           </SuspenseAwait>
         </div>
