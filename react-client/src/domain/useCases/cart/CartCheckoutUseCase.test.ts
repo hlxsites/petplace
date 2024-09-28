@@ -1,17 +1,19 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { CartCheckoutUseCase } from "./CartCheckoutUseCase";
-import { CartItem } from "~/domain/models/cart/CartModel";
+import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
-const VALID_CART_ITEM: CartItem = {
-  description: "A fun toy for pets",
-  id: "item1",
-  name: "Pet Toy",
-  price: "$10.00",
-  quantity: 2,
-  type: "toy",
-};
+const VALID_CART_ITEM: CommonCartItem[] = [
+  {
+    petId: "AUAU",
+    id: "item1",
+    name: "Pet Toy",
+    price: "$10.00",
+    quantity: 2,
+    type: "toy",
+  },
+];
 
 const PET_ID = "animal1";
 
@@ -36,11 +38,11 @@ describe("CartCheckoutUseCase", () => {
       const sut = makeSut(httpClient);
 
       // Test when CartItem is missing
-      let result = await sut.post(undefined, PET_ID);
+      let result = await sut.post([], PET_ID);
       expect(result).toBe(false);
 
       // Test when AnimalInfo is missing
-      result = await sut.post(VALID_CART_ITEM, undefined);
+      result = await sut.post(VALID_CART_ITEM, "");
       expect(result).toBe(false);
     });
 
@@ -55,12 +57,13 @@ describe("CartCheckoutUseCase", () => {
       const httpClient = new MockHttpClient({ statusCode: 200 });
       const sut = makeSut(httpClient);
 
-      // @ts-expect-error for testing purpose
-      const incompleteCartItem: CartItem = {
-        id: "item1",
-        quantity: 2,
-        price: "$10.00",
-      };
+      const incompleteCartItem: CommonCartItem[] = [
+        // @ts-ignore for test purpose
+        {
+          id: "item1",
+          price: "$10.00",
+        },
+      ];
 
       const result = await sut.post(incompleteCartItem, PET_ID);
 
