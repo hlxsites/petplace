@@ -10,6 +10,7 @@ import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
+import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
 
 export const loader = (async ({ request }) => {
   const url = new URL(request.url);
@@ -37,6 +38,7 @@ export const loader = (async ({ request }) => {
   };
 
   const selectedPlan = {
+    autoRenew: false,
     petId,
     id: selectedPlanItem.id,
     name: selectedPlanItem.title,
@@ -69,6 +71,8 @@ export const useCheckoutProductsViewModel = () => {
     useLoaderData<typeof loader>();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [subtotal, setSubtotal] = useState<string>("");
+  // TODO: the initial state should be from get
+  const [autoRenew, setAutoRenew] = useState<boolean>(selectedPlan.autoRenew);
 
   const onUpdateCartMembership = useCallback(
     (newMembership: CommonCartItem) => {
@@ -98,6 +102,25 @@ export const useCheckoutProductsViewModel = () => {
     },
     [postCart, petId]
   );
+
+  const onUpdateOptIn = useCallback(() => {
+    setAutoRenew((prevAutoRenew) => {
+      const newAutoRenew = !prevAutoRenew;
+
+      setCartItems((prevCartItems) => {
+        const updatedCartItems = prevCartItems.map((item) =>
+          item.id === selectedPlan.id
+            ? { ...item, autoRenew: newAutoRenew }
+            : item
+        );
+
+        void postCart(updatedCartItems, petId);
+        return updatedCartItems;
+      });
+
+      return newAutoRenew;
+    });
+  }, [selectedPlan.id, petId, postCart]);
 
   useDeepCompareEffect(() => {
     onUpdateCartMembership(selectedPlan);
@@ -148,10 +171,17 @@ export const useCheckoutProductsViewModel = () => {
     });
   };
 
+  function getOptInLabel() {
+    return OPT_IN_LABEL[selectedPlan.type] ?? OPT_IN_LABEL["default"];
+  }
+
   return {
+    autoRenew,
     cartItems,
+    optInLabel: getOptInLabel(),
     onUpdateCartProduct,
     onUpdateQuantity,
+    onUpdateOptIn,
     products,
     subtotal,
   };
