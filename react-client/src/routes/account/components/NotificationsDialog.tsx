@@ -4,17 +4,15 @@ import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 type NotificationsDialogProps = {
   isOpen: boolean;
   onClose?: () => void;
-  viewData?: LostPetUpdateModel;
-  petName?: string;
+  viewData: LostPetUpdateModel;
 };
 
 export const NotificationsDialog = ({
   isOpen,
   onClose,
   viewData,
-  petName,
 }: NotificationsDialogProps) => {
-  const foundedBy = viewData?.foundedBy;
+  const { foundedBy, id, petName } = viewData;
   const finderName = foundedBy?.finderName ?? "Unknown Finder";
 
   return (
@@ -30,7 +28,7 @@ export const NotificationsDialog = ({
     >
       <div className="grid w-[640px] gap-large pt-large">
         <Text size="16" isResponsive>
-          {`${petName} with identifier ${viewData?.id} has been found. Contact the
+          {`${petName} with identifier ${id} has been found. Contact the
           finder listed below to coordinate a pickup. Once you've been reunited
           with ${petName}, be sure to turn off the found pet alerts by clicking the
           button below.`}

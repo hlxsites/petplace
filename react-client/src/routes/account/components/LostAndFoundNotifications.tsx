@@ -38,7 +38,6 @@ export const LostAndFoundNotifications = ({
           isOpen
           onClose={onCloseDialog}
           viewData={selectedNotification}
-          petName={selectedNotification.petName}
         />
       )}
     </>
