@@ -21,7 +21,6 @@ export const LostAndFoundNotifications = ({
         <div className="p-xxlarge">
           <div className="flex items-center justify-between pb-large">
             <Title level="h3">Lost & Found notifications</Title>
-            <div className="flex gap-large"></div>
           </div>
 
           {notifications && notifications.length > 0 && (
