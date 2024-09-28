@@ -5,31 +5,21 @@ import { useAccountContext } from "../useAccountIndexViewModel";
 import { AccountDetailsTabContent } from "./AccountDetailsTabContent";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 import { PaymentInformationTabContent } from "./PaymentInformationTabContent";
-import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const MyAccountInfoTabs = () => {
   const viewModel = useAccountContext();
-  const { accountDetails, accountNotifications, lostPetsHistory, onSubmitAccountDetails } = viewModel;
-  const isExternalLogin = checkIsExternalLogin()
+  const { isExternalLogin } = viewModel;
 
   const myAccountTabOptions: RouteTab[] = [
     {
-      content: () => (
-        <AccountDetailsTabContent isExternalLogin={isExternalLogin} accountDetails={accountDetails} onSubmitAccountDetails={onSubmitAccountDetails} />
-      ),
+      content: () => <AccountDetailsTabContent />,
       exactRoute: true,
       icon: "user",
       label: "Account details",
       route: getRouteFor(ACCOUNT_FULL_ROUTE, ""),
     },
     {
-      content: () => (
-        <NotificationsTabContent
-          isExternalLogin={isExternalLogin}
-          lostPetsHistory={lostPetsHistory}
-          accountNotifications={accountNotifications}
-        />
-      ),
+      content: () => <NotificationsTabContent />,
       icon: "bell",
       label: "Notifications",
       route: getRouteFor(

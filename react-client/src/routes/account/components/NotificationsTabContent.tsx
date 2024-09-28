@@ -4,25 +4,15 @@ import {
   DisplayUncontrolledForm,
   Title,
 } from "~/components/design-system";
-import { AccountNotificationModel } from "~/domain/models/user/UserModels";
-import { getAccountNotificationsData } from "../form/formDataUtil";
+import { getAccountNotificationsData } from "../util/formDataUtil";
 import { notificationsFormSchema } from "../form/notificationForm";
-import {
-  LostAndFoundNotifications,
-  LostNotification,
-} from "./LostAndFoundNotifications";
+import { LostAndFoundNotifications } from "./LostAndFoundNotifications";
+import { useAccountContext } from "../useAccountIndexViewModel";
 
-type NotificationsTabProps = {
-  accountNotifications?: Promise<AccountNotificationModel | null>;
-  isExternalLogin?: boolean;
-  lostPetsHistory?: LostNotification[];
-};
+export const NotificationsTabContent = () => {
+  const viewModel = useAccountContext();
+  const { accountNotifications, isExternalLogin, lostPetsHistory } = viewModel;
 
-export const NotificationsTabContent = ({
-  accountNotifications,
-  isExternalLogin,
-  lostPetsHistory,
-}: NotificationsTabProps) => {
   return (
     <div className="mt-xxxlarge grid gap-large">
       <Title level="h2" size="24">
@@ -33,12 +23,14 @@ export const NotificationsTabContent = ({
           <SuspenseAwait resolve={accountNotifications}>
             {(accountNotifications) => (
               <DisplayUncontrolledForm
-              onSubmit={({ values }) => {
-                console.log("onSubmit values", values);
-              }}
-              schema={notificationsFormSchema}
-              initialValues={getAccountNotificationsData(accountNotifications)}
-            />
+                onSubmit={({ values }) => {
+                  console.log("onSubmit values", values);
+                }}
+                schema={notificationsFormSchema}
+                initialValues={getAccountNotificationsData(
+                  accountNotifications
+                )}
+              />
             )}
           </SuspenseAwait>
         </div>
