@@ -1,22 +1,22 @@
 import { CartItem } from "~/domain/models/cart/CartModel";
-import { Card, Text } from "../design-system";
+import { Card, LinkButton, Text } from "../design-system";
 import { CartItemQuantityManager } from "./CartItemQuantityManager";
+import { CHECKOUT_FULL_ROUTE } from "~/routes/AppRoutePaths";
 
 type CartItemCardProps = CartItem & {
   onUpdateQuantity: (id: string, value: number) => void;
 };
 
 export const CartItemCard = ({
-  acquisitionMessage,
   description,
+  isService,
   name,
+  petId,
   price,
   recurrence,
   type,
   ...rest
 }: CartItemCardProps) => {
-  const isService = type === "service";
-
   return (
     <Card role="listitem">
       <div className="flex flex-col gap-base p-base">
@@ -25,9 +25,11 @@ export const CartItemCard = ({
             <Text display="block" fontWeight="bold" size="18">
               {name}
             </Text>
-            <Text color="background-color-tertiary" size="14">
-              {description}
-            </Text>
+            {description && (
+              <Text color="background-color-tertiary" size="14">
+                {description}
+              </Text>
+            )}
           </div>
           <div>
             <Text fontWeight="bold" size="20">
@@ -39,9 +41,12 @@ export const CartItemCard = ({
         {isService && (
           <div className="flex justify-between">
             <Text color="background-color-tertiary">{recurrence}</Text>
-            <Text color="orange-300-contrast" fontWeight="bold" size="14">
-              {acquisitionMessage}
-            </Text>
+            <LinkButton
+              className="text-14 font-bold text-orange-300-contrast"
+              to={CHECKOUT_FULL_ROUTE(`${petId}`)}
+            >
+              Change membership plan
+            </LinkButton>
           </div>
         )}
         {!isService && <CartItemQuantityManager {...rest} />}

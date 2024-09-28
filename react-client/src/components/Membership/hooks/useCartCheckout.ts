@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { CartItem } from "~/domain/models/cart/CartModel";
+import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 
-export function useCartCheckout(initialItems: CartItem[] = []) {
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialItems);
+export function useCartCheckout(initialItems: CommonCartItem[] = []) {
+  const [cartItems, setCartItems] = useState<CommonCartItem[]>(initialItems);
   const [subtotal, setSubtotal] = useState("");
 
   useEffect(() => {
     function calculateSubtotal(): number {
       return cartItems.reduce((total, item) => {
+        if (!item.price) return 0;
+
         const itemPrice = getValueFromPrice(item.price.toString());
         const itemQuantity = item.quantity ?? 1;
         return total + itemPrice * itemQuantity;

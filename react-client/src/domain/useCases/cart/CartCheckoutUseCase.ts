@@ -11,6 +11,7 @@ const cartItemServerSchema = z.object({
   ItemName: z.string().nullish(),
   ItemType: z.string().nullish(),
   Quantity: z.number().nullish(),
+  UnitPrice: z.number().nullish(),
 });
 
 const serverSchema = z.object({
@@ -110,7 +111,9 @@ function convertToCartItem(data: unknown): CommonCartItem[] | null {
   parsedCart.OrderLines?.forEach((cartItem) => {
     items.push({
       id: cartItem.ItemId ?? "",
+      name: cartItem.ItemName ?? "",
       petId: cartItem.AnimalId ?? "",
+      price: cartItem.UnitPrice ?? 0,
       quantity: cartItem.Quantity ?? 0,
       type: cartItem.ItemType ?? "",
     });

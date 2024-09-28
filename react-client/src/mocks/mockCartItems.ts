@@ -7,7 +7,6 @@ export const mockCartItems: CartItem[] = [
     type: "service",
     description: "24/7 Vet Help & Lost Pet Protection and more...",
     recurrence: "One-time fee",
-    acquisitionMessage: "Change membership plan",
     price: "$99.95",
     quantity: 1,
   },

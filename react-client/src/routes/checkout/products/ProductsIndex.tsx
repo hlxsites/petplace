@@ -31,7 +31,7 @@ export const ProductsIndex = () => {
         </div>
       </main>
       <CheckoutFooter />
-      <CartDrawer isOpen={isOpen} onClose={onCloseCart} />
+      <CartDrawer items={cartItems} isOpen={isOpen} onClose={onCloseCart} />
     </div>
   );
 

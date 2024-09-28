@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { CommonCartItem } from "~/domain/models/cart/CartModel";
+import { CartItem, CommonCartItem } from "~/domain/models/cart/CartModel";
 import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
 import getCheckoutFactory from "~/domain/useCases/checkout/getCheckoutFactory";
 import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
@@ -27,11 +27,22 @@ export const loader = (async ({ request }) => {
   const selectedPlanItem = plans.find((item) => item.id === plan);
   invariantResponse(selectedPlanItem, "plan is required");
 
+  const isService = (type: string): boolean => {
+    return (
+      type === "AnnualProduct" ||
+      type === "LPMPLUSProduct" ||
+      type === "LPMProduct"
+    );
+  };
+
   const selectedPlan = {
     petId,
     id: selectedPlanItem.id,
+    name: selectedPlanItem.title,
+    price: selectedPlanItem.price,
     quantity: 1,
     type: selectedPlanItem.type,
+    isService: isService(selectedPlanItem.type),
   };
 
   const productsUseCase = getProductsFactory(authToken);
@@ -55,7 +66,7 @@ export const loader = (async ({ request }) => {
 export const useCheckoutProductsViewModel = () => {
   const { currentCart, petId, postCart, products, selectedPlan } =
     useLoaderData<typeof loader>();
-  const [cartItems, setCartItems] = useState<CommonCartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const onUpdateCartMembership = useCallback(
     (newMembership: CommonCartItem) => {

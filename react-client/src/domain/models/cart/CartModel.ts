@@ -3,13 +3,13 @@ export type CommonCartItem = {
   id: string;
   quantity: number;
   type: string;
+  name: string;
+  price?: number | string;
 };
 
 export type CartItem = CommonCartItem & {
-  acquisitionMessage?: string;
-  description: string;
-  name: string;
-  price: number;
+  description?: string;
+  isService?: boolean;
   purchaseLimit?: number;
   recurrence?: string;
 };

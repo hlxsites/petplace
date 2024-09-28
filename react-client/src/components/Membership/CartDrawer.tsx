@@ -4,16 +4,18 @@ import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
 import { useCartCheckout } from "./hooks/useCartCheckout";
 
-import { CartItem } from "~/domain/models/cart/CartModel";
+import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
 type CartDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
-  items?: CartItem[];
+  items?: CommonCartItem[];
 };
 
 export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
-  const { cartItems, subtotal, onUpdateQuantity } = useCartCheckout(items);
+  console.log("items", items);
+
+  const { subtotal, onUpdateQuantity } = useCartCheckout(items);
 
   return (
     <Drawer
@@ -21,6 +23,7 @@ export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
       ariaLabel="Cart Drawer"
       {...props}
       trigger={undefined}
+      width={400}
     >
       <div className="flex flex-col gap-large">
         <CartHeader />
@@ -29,7 +32,7 @@ export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
             Items
           </Text>
 
-          {cartItems.map((item) => (
+          {items?.map((item) => (
             <CartItemCard
               key={item.id}
               onUpdateQuantity={onUpdateQuantity}
@@ -39,7 +42,7 @@ export const CartDrawer = ({ items, ...props }: CartDrawerProps) => {
         </div>
 
         <CartFooter
-          shouldProceedToCheckout={!cartItems?.length}
+          shouldProceedToCheckout={!!items?.length}
           subtotal={subtotal}
         />
       </div>
