@@ -8,6 +8,9 @@ pushly-sdk-worker.js
 worker/bin
 worker/pkg
 
+# Ignore auth pages directory
+auth-pages/
+
 # Ignore the react-client directory & build generated files
 react-client/
 blocks/react/react*

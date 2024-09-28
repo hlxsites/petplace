@@ -6,6 +6,7 @@ import {
   ElementSection,
   FormSchema,
 } from "~/components/design-system";
+import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const baseAccountDetailsIds = {
   email: "email-address",
@@ -52,6 +53,7 @@ const optionalPhoneInput: ElementInputPhone = {
   id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
   type: "phone",
+  shouldDisplay: checkIsExternalLogin(),
 };
 
 const firstNameInput: ElementInputText = {
@@ -59,6 +61,8 @@ const firstNameInput: ElementInputText = {
   errorMessage: "First Name is a required field",
   id: baseAccountDetailsIds.name,
   label: "First Name",
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -68,6 +72,8 @@ const lastNameInput: ElementInputText = {
   errorMessage: "Last Name is a required field",
   id: baseAccountDetailsIds.surname,
   label: "Last Name",
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -78,6 +84,7 @@ const emailInput: ElementInputText = {
   id: baseAccountDetailsIds.email,
   label: "Email Address",
   requiredCondition: true,
+  disabledCondition: true,
   type: "email",
 };
 
@@ -144,6 +151,7 @@ const zipCodeInput: ElementInputText = {
   elementType: "input",
   id: accountAddressIds.zipCode,
   label: "Zip Code",
+  maxLength: 15,
   requiredCondition: true,
   type: "text",
 };
@@ -183,7 +191,12 @@ const userDetailsSection: ElementSection = {
       elementType: "row",
       children: [firstNameInput, lastNameInput],
     },
-    emailInput,
+    {
+      elementType: "row",
+      children: checkIsExternalLogin()
+        ? [emailInput]
+        : [emailInput, { ...zipCodeInput, className: "" }],
+    },
   ],
 };
 

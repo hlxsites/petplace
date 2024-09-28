@@ -31,4 +31,6 @@ export interface HttpClientRepository {
     path: string,
     options: HttpFormDataOptions
   ): Promise<HttpResponse>;
+
+  put(path: string, options?: HttpOptions): Promise<HttpResponse>;
 }

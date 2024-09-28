@@ -1,3 +1,5 @@
+import { Locale } from "../misc/Locale";
+
 export type MissingStatus = "missing" | "found";
 export type DocumentationStatus =
   | "none"
@@ -45,6 +47,7 @@ export type PetProduct = {
 };
 
 export type PetServices = {
+  locale?: Locale | null;
   membershipStatus?: string;
   products?: PetProduct[];
 };
@@ -59,6 +62,7 @@ export type PetModel = PetCommon &
     missingStatus?: MissingStatus;
     mixedBreed?: boolean;
     onboardCompleted?: boolean;
+    policyInsurance?: string[];
     sex?: string;
     sourceType?: "MyPetHealth" | "PetPoint";
     spayedNeutered?: boolean;

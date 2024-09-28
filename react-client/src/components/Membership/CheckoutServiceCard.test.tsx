@@ -40,12 +40,12 @@ describe("CheckoutServiceCard", () => {
   });
 
   it("should render service image", () => {
-    getRenderer({ images: [{ src: "some-src" }] });
+    getRenderer({ images: ["some-src"] });
     expect(getByRole("img")).toBeInTheDocument();
   });
 
   it("should render all service images", () => {
-    getRenderer({ images: [{ src: "some-src" }, { src: "another-src" }] });
+    getRenderer({ images: ["some-src", "another-src"] });
     expect(getAllByRole("img")).toHaveLength(2);
   });
 

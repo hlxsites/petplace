@@ -1,6 +1,7 @@
 {
   "Age": "2",
   "Breed": "Labrador",
+  "CountryCode": "US",
   "DateOfBirth": "2020-01-01T00:00:00",
   "Id": "A123",
   "MembershipStatus": "Annual member",

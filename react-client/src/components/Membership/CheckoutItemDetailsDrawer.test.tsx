@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
-import { DetailedCartItem } from "~/mocks/MockRestApiServer";
+import { DetailedCartItem } from "~/domain/models/products/ProductModel";
 import { CheckoutItemDetailsDrawer } from "./CheckoutItemDetailsDrawer";
 
 const { getByLabelText, getByText } = screen;
@@ -47,10 +47,12 @@ function getRenderer({
 }
 
 const MOCK_ITEM: DetailedCartItem = {
+  availableColors: [],
+  availableSizes: [],
+  availableOptions: {},
   id: "test-item",
   title: "Test Item",
-  price: "$100",
-  images: [{ src: "test-image.jpg", alt: "Test Image" }],
+  images: ["test-image.jpg"],
   description: "Test Description",
 };
 const MOCK_ON_ADD_TO_CART = jest.fn();

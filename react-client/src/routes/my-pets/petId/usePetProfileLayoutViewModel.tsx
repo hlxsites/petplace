@@ -1,6 +1,6 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { GetPetInfoUseCase } from "~/domain/useCases/pet/GetPetInfoUseCase";
+import getPetInfoUseCaseFactory from "~/domain/useCases/pet/getPetInfoUseCaseFactory";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
@@ -11,7 +11,7 @@ export const loader = (({ params }) => {
   invariantResponse(petId, "Pet ID is required in this route");
 
   const authToken = requireAuthToken();
-  const useCase = new GetPetInfoUseCase(authToken);
+  const useCase = getPetInfoUseCaseFactory(authToken);
   const petInfoPromise = useCase.query(petId);
 
   return defer({

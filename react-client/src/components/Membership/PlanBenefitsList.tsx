@@ -1,13 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
+import { MEMBERSHIP_COMPARE_PLANS } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
 import { Collapse, Text } from "../design-system";
 import { PlanBenefitCard } from "./PlanBenefitCard";
 
-import { MEMBERSHIP_COMPARE_PLANS } from "./utils/membershipConstants";
-import { MembershipPlan } from "./utils/MembershipTypes";
-
 type PlanBenefitListProps = {
   isOpen: boolean;
-  title: MembershipPlan;
+  title: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
