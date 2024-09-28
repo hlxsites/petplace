@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
-import { NotificationsTabContent } from "./NotificationsTabContent";
+import { AccountNotificationsIndex } from "./AccountNotificationsIndex";
 
 jest.mock("~/util/authUtil", () => ({
   readJwtClaim: jest.fn(),
@@ -93,8 +93,8 @@ describe.skip("NotificationsTabContent", () => {
 
 function getRenderer({
   ...props
-}: Partial<ComponentProps<typeof NotificationsTabContent>> = {}) {
-  return render(<NotificationsTabContent {...props} />);
+}: Partial<ComponentProps<typeof AccountNotificationsIndex>> = {}) {
+  return render(<AccountNotificationsIndex {...props} />);
 }
 
 const MOCK_PET_HISTORY: LostPetUpdateModel[] = [

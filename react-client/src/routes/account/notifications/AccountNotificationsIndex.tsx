@@ -5,15 +5,15 @@ import {
   Title,
 } from "~/components/design-system";
 
+import { LostAndFoundNotifications } from "../components/LostAndFoundNotifications";
 import { notificationsFormSchema } from "../form/notificationForm";
 import { useAccountContext } from "../useAccountIndexViewModel";
 import {
   buildAccountNotifications,
   getAccountNotificationsData,
 } from "../util/formDataUtil";
-import { LostAndFoundNotifications } from "./LostAndFoundNotifications";
 
-export const NotificationsTabContent = () => {
+export const AccountNotificationsIndex = () => {
   const {
     accountNotifications,
     isExternalLogin,
