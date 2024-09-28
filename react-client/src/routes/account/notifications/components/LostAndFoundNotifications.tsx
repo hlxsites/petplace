@@ -1,10 +1,10 @@
 import { Card, Dialog, Title } from "~/components/design-system";
-import { ViewNotifications } from "./ViewNotifications";
+import { ViewNotifications } from "../../components/ViewNotifications";
 
 import { useState } from "react";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
-import { NotificationsDialogContent } from "./NotificationsDialogContent";
+import { NotificationsDialogContent } from "../../components/NotificationsDialogContent";
 
 export type LostAndFoundNotificationsProps = {
   notifications: LostPetUpdateModel[];

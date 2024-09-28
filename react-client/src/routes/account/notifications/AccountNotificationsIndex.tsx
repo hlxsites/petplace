@@ -5,13 +5,13 @@ import {
   Title,
 } from "~/components/design-system";
 
-import { LostAndFoundNotifications } from "../components/LostAndFoundNotifications";
 import { notificationsFormSchema } from "../form/notificationForm";
-import { useAccountContext } from "../useAccountIndexViewModel";
 import {
   buildAccountNotifications,
   getAccountNotificationsData,
 } from "../util/formDataUtil";
+import { LostAndFoundNotifications } from "./components/LostAndFoundNotifications";
+import { useAccountNotificationsIndexViewModel } from "./useAccountNotificationsIndexViewModel";
 
 export const AccountNotificationsIndex = () => {
   const {
@@ -20,7 +20,7 @@ export const AccountNotificationsIndex = () => {
     lostPetsHistory,
     getLostPetNotification,
     onSubmitAccountNotifications,
-  } = useAccountContext();
+  } = useAccountNotificationsIndexViewModel();
 
   return (
     <div className="mt-xxxlarge grid gap-large">

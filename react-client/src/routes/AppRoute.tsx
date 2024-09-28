@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { loader as AccountNotificationsIndexLoader } from "./account/notifications/useAccountNotificationsIndexViewModel";
 import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
@@ -53,6 +54,7 @@ const routes: PetPlaceRouteObject[] = [
           },
           {
             id: "accountNotifications",
+            loader: AccountNotificationsIndexLoader,
             path: AppRoutePaths.accountNotifications,
             element: <AccountNotificationsIndex />,
           },
