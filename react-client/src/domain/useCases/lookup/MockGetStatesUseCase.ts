@@ -1,7 +1,7 @@
 import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository";
 
 export class MockGetStatesUseCase implements GetStatesRepository {
-  async query(): Promise<string[] | []> {
+  async query(): Promise<string[]> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 

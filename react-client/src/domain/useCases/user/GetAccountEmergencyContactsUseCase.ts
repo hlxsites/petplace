@@ -12,9 +12,11 @@ const serverResponseSchema = z.object({
   PhoneNumber: z.string().nullish(),
 });
 
-type PutAccountEmergencyContactRequest = z.infer<typeof serverResponseSchema>
+type PutAccountEmergencyContactRequest = z.infer<typeof serverResponseSchema>;
 
-export class GetAccountEmergencyContactsUseCase implements GetAccountEmergencyContactsRepository {
+export class GetAccountEmergencyContactsUseCase
+  implements GetAccountEmergencyContactsRepository
+{
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
@@ -25,9 +27,11 @@ export class GetAccountEmergencyContactsUseCase implements GetAccountEmergencyCo
     }
   }
 
-  query = async (): Promise<AccountEmergencyContactModel[] | []> => {
+  query = async (): Promise<AccountEmergencyContactModel[]> => {
     try {
-      const result = await this.httpClient.get("adopt/api/UserProfile/EmergencyContacts");
+      const result = await this.httpClient.get(
+        "adopt/api/UserProfile/EmergencyContacts"
+      );
       if (result.data) return convertToAccountEmergencyContact(result.data);
 
       return [];
@@ -35,17 +39,22 @@ export class GetAccountEmergencyContactsUseCase implements GetAccountEmergencyCo
       console.error("GetUserUseCase query error", error);
       return [];
     }
-  }
+  };
 
   mutate = async (data: AccountEmergencyContactModel[]): Promise<boolean> => {
     const body = convertToServerEmergencyContact(data);
-    const isValid = body.every((contact) => serverResponseSchema.safeParse(contact).success)
+    const isValid = body.every(
+      (contact) => serverResponseSchema.safeParse(contact).success
+    );
 
     try {
       if (isValid) {
-        const result = await this.httpClient.post("adopt/api/UserProfile/EmergencyContacts", {
-          body: JSON.stringify(body),
-        });
+        const result = await this.httpClient.post(
+          "adopt/api/UserProfile/EmergencyContacts",
+          {
+            body: JSON.stringify(body),
+          }
+        );
 
         if (result.statusCode === 204) return true;
       }
@@ -60,8 +69,8 @@ export class GetAccountEmergencyContactsUseCase implements GetAccountEmergencyCo
 
 function convertToAccountEmergencyContact(
   data: unknown
-): AccountEmergencyContactModel[] | [] {
-  if (!data|| !Array.isArray(data)) return [];
+): AccountEmergencyContactModel[] {
+  if (!data || !Array.isArray(data)) return [];
 
   let list: AccountEmergencyContactModel[] = [];
 
@@ -75,17 +84,17 @@ function convertToAccountEmergencyContact(
       name: contact.FirstName ?? "",
       surname: contact.LastName ?? "",
       phoneNumber: contact.PhoneNumber ?? "",
-    })
-  })
+    });
+  });
 
-  if (list.length > 2) list = list.slice(list.length - 2)
+  if (list.length > 2) list = list.slice(list.length - 2);
 
   return list.reverse();
 }
 
 function convertToServerEmergencyContact(
   data: AccountEmergencyContactModel[]
-): PutAccountEmergencyContactRequest[] | [] {
+): PutAccountEmergencyContactRequest[] {
   return data.map((contact) => ({
     Email: contact.email,
     FirstName: contact.name,

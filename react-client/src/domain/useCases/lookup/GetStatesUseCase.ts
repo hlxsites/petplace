@@ -16,7 +16,7 @@ export class GetStatesUseCase implements GetStatesRepository {
     }
   }
 
-   query = async (country: string): Promise<string[] | []> => {
+  query = async (country: string): Promise<string[]> => {
     try {
       const result = await this.httpClient.get(this.endpoint(country));
       if (result.data) return validateStates(result.data);
@@ -26,10 +26,10 @@ export class GetStatesUseCase implements GetStatesRepository {
       console.error("GetStatesUseCase query error", error);
       return [];
     }
-  }
+  };
 }
 
-function validateStates(data: unknown): string[] | [] {
+function validateStates(data: unknown): string[] {
   if (!data || !Array.isArray(data)) return [];
 
   const serverResponseSchema = z

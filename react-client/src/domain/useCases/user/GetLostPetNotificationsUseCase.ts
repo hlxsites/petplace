@@ -20,7 +20,7 @@ export class GetLostPetNotificationsUseCase
     }
   }
 
-  async query(): Promise<LostPetUpdateModel[] | []> {
+  async query(): Promise<LostPetUpdateModel[]> {
     try {
       const result = await this.httpClient.get(this.endpoint);
       if (result.data) return convertToLostPetHistoryModel(result.data);
@@ -33,9 +33,7 @@ export class GetLostPetNotificationsUseCase
   }
 }
 
-function convertToLostPetHistoryModel(
-  data: unknown
-): LostPetUpdateModel[] | [] {
+function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
   if (!data || !Array.isArray(data)) return [];
 
   const serverResponseSchema = z.object({
