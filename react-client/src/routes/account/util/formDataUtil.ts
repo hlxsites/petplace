@@ -3,7 +3,7 @@ import {
   AccountDetailsModel,
   AccountNotificationModel,
 } from "~/domain/models/user/UserModels";
-import { baseAccountDetailsIds } from "./accountForms";
+import { baseAccountDetailsIds } from "../form/accountForms";
 
 export function getAccountDetailsData(
   accountDetails?: AccountDetailsModel | null
