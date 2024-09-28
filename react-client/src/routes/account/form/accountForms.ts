@@ -7,7 +7,6 @@ import {
   ElementUnion,
   FormSchema,
 } from "~/components/design-system";
-import { COUNTRIES_LABELS } from "~/domain/useCases/util/countriesUtil";
 
 export const baseAccountDetailsIds = {
   email: "email-address",
@@ -92,8 +91,8 @@ const countryInput: ElementInputSingleSelect = {
   elementType: "input",
   id: accountAddressIds.country,
   label: "Country",
-  options: COUNTRIES_LABELS,
-  optionsType: "static",
+  options: "{{countryOptions|string[]}}",
+  optionsType: "dynamic",
   requiredCondition: true,
   type: "select",
 };

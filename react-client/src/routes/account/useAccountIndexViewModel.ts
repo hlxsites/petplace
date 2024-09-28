@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { checkIsExternalLogin, requireAuthToken } from "~/util/authUtil";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormValues } from "~/components/design-system";
 import {
   AccountDetailsModel,
@@ -45,7 +45,7 @@ export const loader = (() => {
     void accountEmergencyContactsUseCase.mutate(data);
   }
 
-  const getCountriesUseCase = getCountriesUseCaseFactory(authToken);
+  const getCountriesUseCase = getCountriesUseCaseFactory();
   const getStatesUseCase = getStatesUseCaseFactory(authToken);
 
   return defer({
@@ -57,7 +57,7 @@ export const loader = (() => {
       lostPetNotificationDetailsUseCase.query(id),
     lostPetsHistory: lostPetNotificationsUseCase.query(),
     onSubmitAccountNotifications,
-    getCountries: getCountriesUseCase.query,
+    countries: getCountriesUseCase.query(),
     getStates: getStatesUseCase.query,
     mutateAccountDetails: accountDetailsUseCase.mutate,
   });
@@ -69,28 +69,19 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     emergencyContacts,
     getLostPetNotification,
-    getCountries,
-    getStates,
+    countries,
     lostPetsHistory,
     mutateAccountDetails,
     onSubmitEmergencyContacts,
     onSubmitAccountNotifications,
   } = useLoaderData<typeof loader>();
 
-  const [countryVariables, setCountryVariables] = useState<string[]>([]);
   // TODO implement dynamic state call based in country selector
   const [stateVariables] = useState([]);
 
   const isExternalLogin = checkIsExternalLogin();
 
-  useEffect(() => {
-    async function collectCountries() {
-      const countries = await getCountries();
-      setCountryVariables(countries);
-    }
-
-    void collectCountries();
-  }, [getCountries, getStates]);
+  const countryOptions = countries.map((country) => country.title);
 
   const onSubmitAccountDetails = (formValues: FormValues) => {
     const accountDetails: AccountDetailsModel = buildAccountDetails(formValues);
@@ -109,7 +100,7 @@ export const useAccountIndexViewModel = () => {
     onSubmitAccountNotifications,
     getLostPetNotification,
     accountDetailsFormVariables: {
-      countryOptions: countryVariables,
+      countryOptions,
       stateOptions: stateVariables,
     },
   };

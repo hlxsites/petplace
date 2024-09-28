@@ -1,3 +1,5 @@
+import { CountryModel } from "~/domain/models/lockup/CountryModel";
+
 export interface GetCountriesRepository {
-  query(): Promise<string[] | []>;
+  query(): CountryModel[];
 }
