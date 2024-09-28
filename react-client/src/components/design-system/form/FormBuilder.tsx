@@ -1,11 +1,4 @@
-import { isEqual } from "lodash";
-import {
-  Fragment,
-  useRef,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from "react";
+import { Fragment, useState, type FormEvent, type ReactNode } from "react";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
@@ -49,27 +42,27 @@ type RenderedInput = Omit<
   required: boolean;
 };
 
+export type OnSubmitFn = (props: OnSubmitProps) => void;
+
 export type FormBuilderProps = {
-  schema: FormSchema;
+  isDirty?: boolean;
   onChange: (values: FormValues) => void;
-  onSubmit: (props: OnSubmitProps) => void;
+  onSubmit: OnSubmitFn;
+  schema: FormSchema;
   values: FormValues;
 };
 
 export const FormBuilder = ({
-  schema,
+  isDirty,
   onChange: onChangeFormValues,
   onSubmit,
+  schema,
   values,
 }: FormBuilderProps) => {
-  const initialValuesRef = useRef<FormValues>(values || {});
-
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Array to store the rendered inputs, can't use a ref because we want a clean array on each render
   const renderedInputs: RenderedInput[] = [];
-
-  const isFormChanged = !isEqual(initialValuesRef.current, values);
 
   return (
     <form
@@ -106,7 +99,7 @@ export const FormBuilder = ({
     } else if (elementType === "button") {
       const disabled = (() => {
         if (matchConditionExpression(element.enabledCondition ?? false))
-          return !isFormChanged;
+          return !isDirty;
 
         return matchConditionExpression(element.disabledCondition ?? false);
       })();
@@ -487,10 +480,17 @@ export const FormBuilder = ({
 
     if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
       if (input.repeaterMetadata) {
-        const inputMetadata = input.id.split("_repeater_")
+        const inputMetadata = input.id.split("_repeater_");
         // @ts-expect-error this value is too deep for ts to understand
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (!isEmailValid(values[input.repeaterMetadata.repeaterId][inputMetadata[1]][inputMetadata[0]] as string)) return "Please enter a valid email address.";
+        if (
+          !isEmailValid(
+            values[input.repeaterMetadata.repeaterId][inputMetadata[1]][
+              inputMetadata[0]
+            ] as string
+          )
+        )
+          return "Please enter a valid email address.";
       } else {
         return "Please enter a valid email address.";
       }
