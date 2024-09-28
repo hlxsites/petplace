@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { CartItemImages } from "./CartItemImages";
 import { ComponentProps } from "react";
-import { Image } from "~/mocks/MockRestApiServer";
+import { CartItemImages } from "./CartItemImages";
 
 const { getByAltText, getByLabelText } = screen;
 
@@ -16,7 +15,7 @@ describe("CartItemImages", () => {
 
   it("should render ImageCarousel when images array has multiple items", () => {
     getRenderer({
-      images: [...MOCK_IMAGE, { src: "image2.jpg", alt: "Image 2" }],
+      images: [...MOCK_IMAGE, "image2.jpg"],
       name: "Test Product",
     });
 
@@ -44,4 +43,4 @@ function getRenderer({
   return render(<CartItemImages images={images} {...rest} />);
 }
 
-const MOCK_IMAGE: Image[] = [{ src: "image1.jpg", alt: "Image 1" }];
+const MOCK_IMAGE = ["image1.jpg"];

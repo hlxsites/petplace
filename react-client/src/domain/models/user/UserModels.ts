@@ -1,4 +1,4 @@
-export type AccountNotificationModel = {
+export type AccountNotificationsModel = {
   emailAlert?: boolean;
   petPlaceOffer?: boolean;
   partnerOffer?: boolean;
@@ -13,9 +13,16 @@ export type AccountDetailsModel =
 
 export type InternalAccountDetailsModel = {
   email?: string;
-  name?: string;
+  name: string;
   defaultPhone?: string;
-  surname?: string;
+  surname: string;
+};
+
+export type AccountEmergencyContactModel = {
+  email: string;
+  name: string;
+  phoneNumber: string;
+  surname: string;
 };
 
 export type ExternalAccountDetailsModel = InternalAccountDetailsModel & {
@@ -26,10 +33,10 @@ export type ExternalAccountDetailsModel = InternalAccountDetailsModel & {
 };
 
 export type AccountAddressModel = {
-  address1?: string;
-  address2?: string;
-  city?: string;
-  zipCode?: string;
-  country?: string;
-  state?: string;
+  address1: string;
+  address2: string;
+  city: string;
+  zipCode: string;
+  country: string;
+  state: string;
 };

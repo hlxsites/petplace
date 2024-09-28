@@ -44,8 +44,8 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
         if (result.data) {
           accountDetails = {
             ...convertToExternalAccountDetailsModel(result.data),
-            name: accountDetails?.name,
-            surname: accountDetails?.surname,
+            name: accountDetails?.name ?? "",
+            surname: accountDetails?.surname ?? "",
           };
           return accountDetails;
         }
@@ -138,7 +138,7 @@ function convertToExternalAccountDetailsModel(
   if (!address) return null;
 
   const {
-    Address: { City, Country, PostalCode, StateProvince, Street, Unit },
+    Address,
     BusinessPhone,
     CellularPhone,
     ContactConsent,
@@ -150,6 +150,9 @@ function convertToExternalAccountDetailsModel(
     PhoneNumber,
     PhoneType,
   } = address;
+
+  const { City, Country, PostalCode, StateProvince, Street, Unit } =
+    Address ?? {};
 
   return {
     address: {
@@ -184,12 +187,15 @@ function convertToExternalAccountDetailsModel(
   }
 
   function findSecondaryPhoneNumber() {
-    if (BusinessPhone?.length && BusinessPhone !== PhoneNumber)
+    if (BusinessPhone?.length && BusinessPhone !== PhoneNumber) {
       return `${BusinessPhone}|Work`;
-    if (CellularPhone?.length && CellularPhone !== PhoneNumber)
+    }
+    if (CellularPhone?.length && CellularPhone !== PhoneNumber) {
       return `${CellularPhone}|Mobile`;
-    if (HomePhone?.length && HomePhone !== PhoneNumber)
+    }
+    if (HomePhone?.length && HomePhone !== PhoneNumber) {
       return `${HomePhone}|Home`;
+    }
     return "";
   }
 }

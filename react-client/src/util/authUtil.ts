@@ -2,6 +2,18 @@ import { z } from "zod";
 import { AUTH_TOKEN } from "./envUtil";
 import { invariantResponse } from "./invariant";
 
+export function refreshAuthToken() {
+  // Try to find the invisible refresh button
+  const refreshButton = document.getElementById("refresh-auth-token");
+
+  const event = new MouseEvent("click", {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+  });
+  refreshButton?.dispatchEvent(event);
+}
+
 export function getAuthToken() {
   const authToken = document
     .getElementById("auth-token")
@@ -42,7 +54,10 @@ export function parseJwt(token: string) {
 export function readJwtClaim() {
   const schema = z.object({
     extension_CustRelationId: z.string(),
-    postalCode: z.string(),
+    given_name: z.string().optional().nullish(),
+    family_name: z.string().nullish(),
+    emails: z.array(z.string()),
+    postalCode: z.string().nullish(),
   });
 
   const parsedJwt = parseJwt(requireAuthToken());

@@ -29,5 +29,9 @@ export const serverExternalAccountSchema = z.object({
   InformationReleaseConsent: z.boolean(),
 });
 
-export type PutExternalAccountDetailsRequest = z.infer<typeof serverExternalAccountSchema>;
-export type PutInternalAccountDetailsRequest = z.infer<typeof serverInternalAccountSchema>;
+export type PutExternalAccountDetailsRequest = z.infer<
+  typeof serverExternalAccountSchema
+>;
+export type PutInternalAccountDetailsRequest = z.infer<
+  typeof serverInternalAccountSchema
+>;

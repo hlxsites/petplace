@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Account Activation</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+        background-color: #FFFFFF;
+        display: grid;
+        grid-template-rows: 88px auto 224px;
+        margin: 0px;
+        min-height: 100dvh;
+        overflow: scroll;
+        position: relative;
+      }
+
+      header {
+        margin: 0px;
+        width: 100%;
+      }
+
+      main {
+        font-family: "Libre Franklin", sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        width: 100%;
+      }
+
+      input {
+        align-items: center;
+        background-color: #FFF;
+        border: solid, 1px, #3B092C;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 16px;
+        height: auto;
+        padding: 14px 16px;
+        width: 100%;
+      }
+
+      input:focus {
+        border: solid, 2px, #6F69A8;
+        outline: none;
+      }
+
+      footer {
+        background: #3B092C;
+        width: 100%;
+      }
+
+      .header-logo {
+        padding: 16px 40px 16px 64px;
+      }
+
+      .panel-background {
+        display: flex;
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
+
+      .panel-background::after{
+        background: url(https://www.petplace.com/images/auth-page-images/confetti-bg.svg) no-repeat;
+        background-color: #D3D3D3;
+        background-size: cover;
+        bottom: 0;
+        content: "";
+        left: 0;
+        opacity: 0.2;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+      }
+
+      .panel-container {
+        align-items: center;
+        display: flex;
+        gap: 64px;
+        margin: 64px auto;
+        width: 84%;
+      }
+
+      .panel-greeting-container {
+        align-items: center;
+        display: flex;
+        width: 100%;
+      }
+
+      .panel-greeting-item {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+      }
+      .panel-pet-single-image {
+        background-color: #EBE8FC;
+        border-radius: 50%;
+        height: 276px;
+        object-fit: cover;
+        width: 276px;
+      }
+
+      .panel-pets-pictures {
+        background-color: #EBE8FC;
+        border: 4px solid #F1F0F7;
+        border-radius: 50%;
+        height: 158px;
+        margin-left: -64px;
+        object-fit: cover;
+        overflow: hidden;
+        width: 158px;
+      }
+
+      .pet-image {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .panel-pets-count {
+        color: #000000;
+        font-family: "Raleway", sans-serif;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -0.97px;
+        line-height: 27px;
+        margin-left: 6px;
+      }
+
+      .pet-name {
+        color: #302280;
+      }
+
+      .panel-greeting-message,
+      .panel-form-heading {
+        color: #000000;
+        font-family: "Raleway", sans-serif;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -0.64px;
+        line-height: 36px;
+        text-align: center;
+      }
+
+      .panel-form-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .panel-form-card {
+        align-items: flex-start;
+        background-color: #FFFFFF;
+        border: 1px solid #e4e4eb;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        margin: auto;
+        padding: 40px;
+        max-width: 593px;
+      }
+
+      .panel-form-message {
+        font-size: 18px;
+        line-height: 28px;
+        padding-top: 24px;
+      }
+
+      .agreement-message {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        padding-top: 16px;
+        word-break: break-word;
+      }
+
+      .terms-and-conditions {
+        color: #C74D2F;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .footer-container {
+        background-color: #FFFFFF;
+        padding: 48px 80px;
+      }
+
+      .footer-container p {
+        color: #28061E;
+        font-family: "Libre Franklin", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0;
+      }
+
+      .password-message {
+        color: #4162A0;
+        display: flex;
+        font-size: 14px;
+        gap: 8px;
+        padding-bottom: 48px;
+        padding-top: 12px;
+      }
+
+      .password-message p {
+        margin: 0px;
+      }
+
+      #api {
+        position: relative;
+        width: 100%;
+      }
+
+      @media screen and (max-width: 1120px) {
+        body {
+          grid-template-rows: 74px auto 224px;
+        }
+
+        .header-logo {
+          padding: 16px;
+        }
+
+        .panel-container {
+          flex-direction: column;
+          gap: 32px;
+          margin: 32px auto;
+          justify-content: center;
+          max-width: 480px;
+        }
+
+        .panel-greeting-container {
+          align-items: center;
+          height: 40%;
+        }
+
+        .panel-greeting-message {
+          font-size: 24px;
+          letter-spacing: -0.48px;
+          line-height: 28px;
+          max-width: 340px;
+        }
+
+        .panel-pet-single-image {
+          height: 160px;
+          width: 160px;
+        }
+
+        .panel-pets-pictures {
+          height: 102px;
+          margin-left: -44px;
+          width: 102px;
+        }
+
+        .panel-pets-count{
+          font-size: 27px;
+          letter-spacing: -0.557px;
+          line-height: 31px;
+        }
+
+        .panel-form-container {
+          display: table-column;
+          float: none;
+        }
+
+        .panel-form-heading {
+          font-size: 18px;
+          letter-spacing: -0.36px;
+          line-height: 20px;
+        }
+
+        .panel-form-message {
+          font-size: 14px;
+          line-height: 20px
+        }
+
+        .footer-container {
+          padding: 48px 16px;
+        }
+      }
+
+      @media screen and (max-width: 375px) {
+        .panel-container {
+          width: 88%;
+        }
+      }
+
+      /* CSS adjust elements from Azure*/
+      ul {
+        list-style: none;
+        margin-top: 48px;
+        padding: 0px;
+      }
+      li{
+        padding-bottom: 16px;
+      }
+      #api .heading, #api .helpLink, #api .intro, form label {
+        display: none;
+      }
+      form .attrEntry {
+        display: flex;
+        flex-direction: column;
+      }
+      form .attrEntry .itemLevel {
+        order: 2;
+      }
+      form .attrEntry input {
+        order: 1;
+      }
+      form button[type="submit"] {
+        background-color: #C74D2F;
+        border-radius: 360px;
+        border: solid, 1px, #C74D2F;
+        color: #FFF;
+        font-size: 18px;
+        height: 48px;
+        width: 100%;
+      }
+      @supports selector(form .validate:has(.error)) {
+        form .validate:has(.error[aria-hidden="false"]) input {
+          border: solid, 1px, #D31510;
+          color: #D31510;
+        }
+      }
+      .validate #password {
+        margin-bottom: 35px;
+      }
+      .pageLevel {
+        padding-left: 4px;
+        position: absolute;
+        bottom: 70px;
+      }
+      .error {
+        color: #D31510;
+      }
+      .itemLevel {
+        font-size:14px;
+        padding: 4px;
+      }
+
+      @media screen and (min-width: 1400px) {
+        .pageLevel {
+        bottom: 90px;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        .pageLevel {
+        bottom: 75px;
+        }
+        .validate #password {
+        margin-bottom: 60px;
+       }
+      }
+
+    </style>
+
+    <script src="account-activation.js" async></script>
+  </head>
+  <body>
+    <header>
+        <img alt="Pet Place Logo" class="header-logo" src="https://www.petplace.com/images/auth-page-images/logo.svg" />
+    </header>
+
+    <main>
+      <div class="panel-background">
+        <div class="panel-container">
+          <div class="panel-greeting-container">
+            <div class="panel-greeting-item">
+              <div class="pet-image" id="pet-image">
+                <!-- images will be injected here dynamically  -->
+              </div>
+              <div class="panel-greeting-message">
+                <div>
+                  <span role="img" aria-label="waving-hand-emoji">👋</span>
+                  <span role="text"> Say hello to <span class="pet-name" id="pet-name" role="text">your pet</span>!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-form-container">
+            <div class="panel-form-card">
+              <div class="panel-form-heading">
+                <span id="owner-name" role="heading">
+                  Hi!
+                  <!-- owner name will be injected dynamically here -->
+                </span>
+              </div>
+              <div class="panel-form-message">
+                <span role="text">
+                  Access all the important
+                  <strong id="pets-names" role="text">
+                    <!-- pets names will be injected dynamically here -->
+                    pet
+                  </strong><strong role="text">'s</strong> documents and information by creating a password, and activating your PetPlace account.
+                </span>
+              </div>
+
+              <!-- Azure Form starts here -->
+              <div id="api">
+              </div>
+              <!-- Azure Form ends here -->
+
+                <div class="agreement-message">
+                  <span>
+                    By clicking Sign Up you're confirming that you agree with our
+                    <a
+                      class="terms-and-conditions"
+                      href="https://www.petplace.com/terms-of-use"
+                      rel="license noopener noreferrer"
+                      target="_blank"
+                    >
+                      Terms and Conditions.
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </di>
+
+      </div>
+
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <img alt="Pet Place Logo" src="https://www.petplace.com/images/auth-page-images/logo.svg" />
+        <p>By Vets. For Pets.</p>
+      </div>
+
+    </footer>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { getProductById } from "~/mocks/MockRestApiServer";
+import { DetailedCartItem } from "~/domain/models/products/ProductModel";
 
 const CART_ITEM_PARAM = "item";
 
@@ -7,7 +7,10 @@ export function useCartItemsDetails() {
   const [searchParams, setSearchParams] = useSearchParams();
   const itemId = searchParams.get(CART_ITEM_PARAM);
 
-  const item = getProductById(itemId);
+  // TODO: Implement the logic to get the item details from the server
+  console.log("itemId", itemId);
+
+  const item: DetailedCartItem | null = null;
 
   function goBack() {
     searchParams.delete(CART_ITEM_PARAM);

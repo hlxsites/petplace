@@ -6,6 +6,7 @@ import {
   ElementSection,
   FormSchema,
 } from "~/components/design-system";
+import { COUNTRIES_LABELS } from "~/domain/useCases/util/countriesUtil";
 import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const baseAccountDetailsIds = {
@@ -61,8 +62,8 @@ const firstNameInput: ElementInputText = {
   errorMessage: "First Name is a required field",
   id: baseAccountDetailsIds.name,
   label: "First Name",
-  max: 100,
-  min: 2,
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -72,8 +73,8 @@ const lastNameInput: ElementInputText = {
   errorMessage: "Last Name is a required field",
   id: baseAccountDetailsIds.surname,
   label: "Last Name",
-  max: 100,
-  min: 2,
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
@@ -83,6 +84,7 @@ const emailInput: ElementInputText = {
   errorMessage: "Email is a required field",
   id: baseAccountDetailsIds.email,
   label: "Email Address",
+  requiredCondition: true,
   disabledCondition: true,
   type: "email",
 };
@@ -91,8 +93,8 @@ const countryInput: ElementInputSingleSelect = {
   elementType: "input",
   id: accountAddressIds.country,
   label: "Country",
-  options: "{{countryOptions|string[]}}",
-  optionsType: "dynamic",
+  options: COUNTRIES_LABELS,
+  optionsType: "static",
   requiredCondition: true,
   type: "select",
 };
@@ -142,7 +144,7 @@ const zipCodeInput: ElementInputText = {
   elementType: "input",
   id: accountAddressIds.zipCode,
   label: "Zip Code",
-  max: 15,
+  maxLength: 15,
   requiredCondition: true,
   type: "text",
 };
@@ -182,7 +184,12 @@ const userDetailsSection: ElementSection = {
       elementType: "row",
       children: [firstNameInput, lastNameInput],
     },
-    emailInput,
+    {
+      elementType: "row",
+      children: checkIsExternalLogin()
+        ? [emailInput]
+        : [emailInput, { ...zipCodeInput, className: "" }],
+    },
   ],
 };
 
@@ -258,6 +265,14 @@ export const externalAccountDetailsFormSchema: FormSchema = {
   version: 0,
 };
 
+export const emergencyContactIds = {
+  repeaterId: "emergency-contact",
+  email: "contact-email-address",
+  name: "contact-first-name",
+  phone: "contact-contact-phone",
+  surname: "contact-last-name",
+}
+
 export const emergencyContactFormSchema: FormSchema = {
   id: "emergency-contact-form",
   children: [
@@ -270,7 +285,7 @@ export const emergencyContactFormSchema: FormSchema = {
       children: [
         {
           elementType: "repeater",
-          id: "emergency-contact",
+          id: emergencyContactIds.repeaterId,
           maxRepeat: 2,
           minRepeat: 1,
           labels: {
@@ -290,11 +305,11 @@ export const emergencyContactFormSchema: FormSchema = {
                   children: [
                     {
                       ...firstNameInput,
-                      id: "contact-first-name",
+                      id: emergencyContactIds.name,
                     },
                     {
                       ...lastNameInput,
-                      id: "contact-last-name",
+                      id: emergencyContactIds.surname,
                     },
                   ],
                 },
@@ -303,13 +318,13 @@ export const emergencyContactFormSchema: FormSchema = {
                   children: [
                     {
                       ...emailInput,
-                      id: "contact-email-address",
+                      id: emergencyContactIds.email,
                     },
                     {
                       elementType: "input",
                       errorMessage: "Phone Number is a required field",
                       hideType: true,
-                      id: "contact-phone",
+                      id: emergencyContactIds.phone,
                       label: "Phone Number",
                       requiredCondition: true,
                       type: "phone",

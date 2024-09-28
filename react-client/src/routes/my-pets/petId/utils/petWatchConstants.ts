@@ -1,8 +1,9 @@
 import { ASSET_IMAGES } from "~/assets";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
-import { MembershipStatus } from "../types/PetServicesTypes";
-
-// The logic of this file should be revisited once user locale is defined by API
+import {
+  CA_MembershipStatus,
+  MembershipStatus,
+} from "../types/PetServicesTypes";
 
 export const PET_WATCH_COMMON_OPTIONS: PetCardPetWatchProps[] = [
   {
@@ -66,6 +67,17 @@ export const PetWatchOptionBasedOnMembershipStatus_US: Record<
 > = {
   "Annual member": PET_WATCH_ANNUAL_AVAILABLE_OPTIONS,
   "Lifetime protect member": PET_WATCH_COMMON_OPTIONS,
+  "Lifetime plus protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS,
+  "Not a member": PET_WATCH_NOT_STANDARD_OPTIONS,
+};
+
+export const PetWatchOptionBasedOnMembershipStatus_CA: Record<
+  CA_MembershipStatus,
+  PetCardPetWatchProps[]
+> = {
+  "Lifetime protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS.filter(
+    (item) => item.id !== "petco-coupon"
+  ),
   "Lifetime plus protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS,
   "Not a member": PET_WATCH_NOT_STANDARD_OPTIONS,
 };

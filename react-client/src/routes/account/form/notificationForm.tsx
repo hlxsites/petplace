@@ -1,10 +1,17 @@
 import { FormSchema, InputsUnion, Text } from "~/components/design-system";
 
+export const accountNotificationIds = {
+  newsletter: "newsletter",
+  petPlaceOffers: "pet-place-offers",
+  partnerOffers: "partner-offers",
+  petPlaceAdoptAlerts: "pet-place-adopt-alerts",
+};
+
 const newsletterRadioGroupInput: InputsUnion = {
   className: "flex flex-row justify-end !gap-large",
   elementType: "input",
   hideLabel: true,
-  id: "newsletter",
+  id: accountNotificationIds.newsletter,
   label: "Newsletter",
   options: ["Cat", "Dog"],
   type: "checkboxGroup",
@@ -14,7 +21,7 @@ const newsletterRadioGroupInput: InputsUnion = {
 const petPlaceOffersSwitchInput: InputsUnion = {
   className: "flex flex-row justify-end -mt-[12px]",
   elementType: "input",
-  id: "pet-place-offers",
+  id: accountNotificationIds.petPlaceOffers,
   label: "PetPlace Offers",
   conditionalLabel: ["On", "Off"],
   type: "switch",
@@ -24,7 +31,7 @@ const petPlaceOffersSwitchInput: InputsUnion = {
 const partnerOffersSwitchInput: InputsUnion = {
   className: "flex flex-row justify-end -mt-[12px]",
   elementType: "input",
-  id: "partner-offers",
+  id: accountNotificationIds.partnerOffers,
   label: "Partner Offers",
   conditionalLabel: ["On", "Off"],
   type: "switch",
@@ -35,7 +42,7 @@ const petPlaceAdoptAlertsRadioGroupInput: InputsUnion = {
   className: "flex flex-row justify-end !gap-large ",
   elementType: "input",
   hideLabel: true,
-  id: "pet-place-adopt-alerts",
+  id: accountNotificationIds.petPlaceAdoptAlerts,
   label: "PetPlace Adopt Alerts",
   options: ["SMS", "Email"],
   type: "checkboxGroup",

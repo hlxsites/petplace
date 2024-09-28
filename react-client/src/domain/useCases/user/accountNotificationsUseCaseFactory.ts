@@ -1,14 +1,14 @@
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetAccountNotificationRepository } from "~/domain/repository/user/GetAccountNotificationRepository";
+import { AccountNotificationRepository } from "~/domain/repository/user/AccountNotificationRepository";
 import { ENABLE_MOCK } from "~/util/envUtil";
-import { GetAccountNotificationsUseCase } from "./GetAccountNotificationsUseCase";
-import { MockGetAccountNotificationsUseCase } from "./MockGetAccountNotificationsUseCase";
+import { AccountNotificationsUseCase } from "./AccountNotificationsUseCase";
+import { MockAccountNotificationsUseCase } from "./MockAccountNotificationsUseCase";
 
-export default function (
+export default function accountNotificationsUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
-): GetAccountNotificationRepository {
-  if (ENABLE_MOCK) return new MockGetAccountNotificationsUseCase();
+): AccountNotificationRepository {
+  if (ENABLE_MOCK) return new MockAccountNotificationsUseCase();
 
-  return new GetAccountNotificationsUseCase(authToken, httpClient);
+  return new AccountNotificationsUseCase(authToken, httpClient);
 }

@@ -12,8 +12,11 @@ export const MyAccountInfoTabs = () => {
   const {
     accountDetails,
     accountNotifications,
+    emergencyContacts,
     lostPetsHistory,
     onSubmitAccountDetails,
+    onSubmitAccountNotifications,
+    onSubmitEmergencyContacts,
   } = viewModel;
   const isExternalLogin = checkIsExternalLogin();
 
@@ -23,7 +26,9 @@ export const MyAccountInfoTabs = () => {
         <AccountDetailsTabContent
           isExternalLogin={isExternalLogin}
           accountDetails={accountDetails}
+          emergencyContacts={emergencyContacts}
           onSubmitAccountDetails={onSubmitAccountDetails}
+          onSubmitEmergencyContacts={onSubmitEmergencyContacts}
         />
       ),
       exactRoute: true,
@@ -37,6 +42,7 @@ export const MyAccountInfoTabs = () => {
           isExternalLogin={isExternalLogin}
           lostPetsHistory={lostPetsHistory}
           accountNotifications={accountNotifications}
+          onSubmitAccountNotifications={onSubmitAccountNotifications}
         />
       ),
       icon: "bell",

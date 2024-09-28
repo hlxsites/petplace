@@ -486,7 +486,14 @@ export const FormBuilder = ({
     }
 
     if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
-      return "Please enter a valid email address.";
+      if (input.repeaterMetadata) {
+        const inputMetadata = input.id.split("_repeater_")
+        // @ts-expect-error this value is too deep for ts to understand
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (!isEmailValid(values[input.repeaterMetadata.repeaterId][inputMetadata[1]][inputMetadata[0]] as string)) return "Please enter a valid email address.";
+      } else {
+        return "Please enter a valid email address.";
+      }
     }
 
     return null;

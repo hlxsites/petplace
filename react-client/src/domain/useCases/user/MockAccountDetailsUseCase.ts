@@ -24,10 +24,10 @@ export class MockAccountDetailsCase implements AccountDetailsRepository {
     };
   }
 
-  async mutate(data: AccountDetailsModel): Promise<boolean> {
+  async mutate(): Promise<boolean> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    data;
+
     return true;
   }
 }

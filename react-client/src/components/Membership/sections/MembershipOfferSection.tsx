@@ -8,28 +8,23 @@ import { PlanBenefitsList } from "../PlanBenefitsList";
 export const MembershipOfferSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { plans, renderMobileVersion } = useCheckoutIndexViewModel();
-  const membershipCards = renderMembershipCards();
+  const membershipCards = plans.map(({ title, ...props }) => (
+    <Fragment key={title}>
+      <MembershipCard title={title} {...props} />
+      <PlanBenefitsList isOpen={isOpen} title={title} setIsOpen={setIsOpen} />
+    </Fragment>
+  ));
+
+  if (renderMobileVersion) {
+    return <Carousel ariaLabel="Membership carousel" items={membershipCards} />;
+  }
 
   return (
-    <>
-      <div
-        className="hidden w-full grid-flow-row grid-cols-3 justify-center gap-xxlarge md:grid"
-        role="region"
-      >
-        {membershipCards}
-      </div>
-      {renderMobileVersion && (
-        <Carousel ariaLabel="Membership carousel" items={membershipCards} />
-      )}
-    </>
+    <div
+      className="flex w-full justify-center gap-xxlarge [&>*]:flex-1"
+      role="region"
+    >
+      {membershipCards}
+    </div>
   );
-
-  function renderMembershipCards() {
-    return plans.map(({ title, ...props }) => (
-      <Fragment key={title}>
-        <MembershipCard key={title} title={title} {...props} />
-        <PlanBenefitsList isOpen={isOpen} title={title} setIsOpen={setIsOpen} />
-      </Fragment>
-    ));
-  }
 };

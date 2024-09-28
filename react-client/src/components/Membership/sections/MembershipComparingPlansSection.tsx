@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Collapse, Title } from "~/components/design-system";
+import { MEMBERSHIP_COMPARE_PLANS } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
 import { useCheckoutIndexViewModel } from "~/routes/checkout/useCheckoutIndexViewModel";
 import { MembershipComparingPlanTable } from "../MembershipComparingPlanTable";
-import {
-  MEMBERSHIP_COMPARE_PLANS,
-  MEMBERSHIP_COMPARING_PLANS_BUTTONS,
-} from "../utils/membershipConstants";
 
 export const MembershipComparingPlansSection = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { availablePlans, isCanadaLocale } = useCheckoutIndexViewModel();
+  const { plans } = useCheckoutIndexViewModel();
+
+  if (!plans.length) return null;
 
   return (
     <div className="hidden w-full md:block">
@@ -20,17 +19,10 @@ export const MembershipComparingPlansSection = () => {
         padding="large"
       >
         <MembershipComparingPlanTable
-          actions={getActionButtons()}
-          columns={availablePlans}
+          plans={plans}
           rows={MEMBERSHIP_COMPARE_PLANS}
         />
       </Collapse>
     </div>
   );
-
-  function getActionButtons() {
-    return isCanadaLocale
-      ? MEMBERSHIP_COMPARING_PLANS_BUTTONS.slice(1)
-      : MEMBERSHIP_COMPARING_PLANS_BUTTONS;
-  }
 };

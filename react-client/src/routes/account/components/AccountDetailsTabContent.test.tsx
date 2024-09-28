@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { AccountDetailsTabContent } from "./AccountDetailsTabContent";
-import userEvent from "@testing-library/user-event";
 
 const { getByRole, queryByRole } = screen;
 
 jest.mock("~/util/authUtil", () => ({
+  checkIsExternalLogin: jest.fn().mockReturnValue(false),
   readJwtClaim: jest.fn(),
-  checkIsExternalLogin: jest.fn(),
 }));
 
 describe("AccountDetailsTabContent", () => {
@@ -44,14 +44,16 @@ describe("AccountDetailsTabContent", () => {
     "should NOT render %s section title",
     (expected) => {
       getRenderer();
-      expect(queryByRole("heading", { name: expected })).not.toBeInTheDocument();
+      expect(
+        queryByRole("heading", { name: expected })
+      ).not.toBeInTheDocument();
     }
   );
 
   it.each([/^address$/i, /^emergency contact info$/i])(
     "should render %s section title when is external login",
     (expected) => {
-      getRenderer({ isExternalLogin: true});
+      getRenderer({ isExternalLogin: true });
       expect(getByRole("heading", { name: expected })).toBeInTheDocument();
     }
   );

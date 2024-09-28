@@ -1,32 +1,59 @@
-import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
-import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 import { PetServices } from "~/domain/models/pet/PetModel";
-import { PetWatchServices } from "./PetWatchServices";
-import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
-import { Button, Text } from "../design-system";
+import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
+import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
+import { LinkButton, Text } from "../design-system";
 import { PetCardPetWatch } from "./PetCardPetWatch";
+import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
+import { PetWatchServices } from "./PetWatchServices";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;
+  locale?: PetServices["locale"];
   onClick: (label?: string) => () => void;
+  route?: string;
   serviceStatus: PetServices["membershipStatus"];
 };
 
 export const PetWatchDrawerBody = ({
   contentDetails,
+  locale,
   onClick,
+  route,
   serviceStatus,
 }: PetWatchDrawerBodyProps) => {
   if (contentDetails) return <PetServiceDetailsCard {...contentDetails} />;
 
+  const upgradeMembershipButton = (() => {
+    if (!route) return null;
+    return (
+      <LinkButton fullWidth to={route} variant="primary">
+        Upgrade membership
+      </LinkButton>
+    );
+  })();
+
+  const standardServiceDrawerElement = (() => {
+    if (shouldRenderStandardServiceDrawer(serviceStatus)) {
+      return upgradeMembershipButton;
+    }
+    return null;
+  })();
+
+  const annualServiceElement = (() => {
+    if (serviceStatus !== "Annual member") return null;
+    return renderAnnualService();
+  })();
+
   return (
     <div className="grid gap-xlarge">
-      <PetWatchServices onClick={onClick} serviceStatus={serviceStatus} />
-      {shouldRenderStandardServiceDrawer(serviceStatus) ? (
-        <Button fullWidth>Upgrade membership</Button>
-      ) : null}
-      {serviceStatus === "Annual member" && renderAnnualService()}
+      <PetWatchServices
+        onClick={onClick}
+        serviceStatus={serviceStatus}
+        locale={locale}
+      />
+      {standardServiceDrawerElement}
+      {annualServiceElement}
     </div>
   );
 
@@ -42,7 +69,7 @@ export const PetWatchDrawerBody = ({
             <PetCardPetWatch key={id} onClick={onClick} {...props} />
           ))}
         </div>
-        <Button fullWidth>Upgrade membership</Button>
+        {upgradeMembershipButton}
       </div>
     );
   }
