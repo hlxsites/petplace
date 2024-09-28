@@ -12,11 +12,11 @@
       "Country": "US",
       "StateProvince": "MD"
     },
-  "PhoneType": "BusinessPhone",
-  "PhoneNumber": "71 988776655",
-  "HomePhone": "416-709-5781",
+  "PhoneType": "HomePhone",
+  "PhoneNumber": "21 33426754",
+  "HomePhone": "21 33426754",
   "CellularPhone": "",
-  "BusinessPhone": "71 988776655",
+  "BusinessPhone": "",
   "ContactConsent": true,
   "InformationReleaseConsent": false
 }

@@ -4,6 +4,11 @@ import { ComponentProps } from "react";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 
+jest.mock("~/util/authUtil", () => ({
+  readJwtClaim: jest.fn(),
+  checkIsExternalLogin: jest.fn(),
+}));
+
 const { getByRole, queryByRole, findByRole } = screen;
 
 // TODO: This shouldn't be needed after refactoring how to handle account form
@@ -73,7 +78,7 @@ describe("NotificationsTabContent", () => {
       isExternalLogin: true,
       lostPetsHistory: Promise.resolve(MOCK_PET_HISTORY),
     });
-    expect(await findByRole('button', { name: /view/i })).toBeInTheDocument();
+    expect(await findByRole("button", { name: /view/i })).toBeInTheDocument();
   });
 
   it("should NOT render the lost notifications when it's not provided", () => {

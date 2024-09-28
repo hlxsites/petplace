@@ -1,9 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { PetInsuranceSection } from "./PetInsuranceSection";
 import { MemoryRouter } from "react-router-dom";
+import { ComponentProps } from "react";
 
 const BUTTON_LABEL = /View insurance details/i;
-const EXTERNAL_URL = "https://www.mypethealth.com/external/petplacelogin";
+const EXTERNAL_URL =
+  "https://mph-qay.pethealthinc.com/petplace/policy?animalID=";
 const TITLE_LABEL = /See pet's insurance in MyPetHealth/i;
 
 const { getByRole } = screen;
@@ -19,11 +21,14 @@ describe("PetInsuranceSection", () => {
     expect(getByRole("link", { name: BUTTON_LABEL })).toBeInTheDocument();
   });
 
-  it("should link to the correct external URL", () => {
-    getRenderer();
-    const link = screen.getByRole("link", { name: BUTTON_LABEL });
-    expect(link).toHaveAttribute("href", EXTERNAL_URL);
-  });
+  it.each(["Test1", "Test2"])(
+    "should link to the correct external URL with dynamic petId",
+    (petId) => {
+      getRenderer({ petId });
+      const link = screen.getByRole("link", { name: BUTTON_LABEL });
+      expect(link).toHaveAttribute("href", `${EXTERNAL_URL}${petId}`);
+    }
+  );
 
   it("should open the link in a new tab", () => {
     getRenderer();
@@ -33,10 +38,12 @@ describe("PetInsuranceSection", () => {
   });
 });
 
-function getRenderer() {
+function getRenderer({
+  petId = "AmazingPet",
+}: Partial<ComponentProps<typeof PetInsuranceSection>> = {}) {
   return render(
     <MemoryRouter>
-      <PetInsuranceSection />
+      <PetInsuranceSection petId={petId} />
     </MemoryRouter>
   );
 }

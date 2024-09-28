@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 import { PETS_LIST } from "~/domain/useCases/pet/mocks/petsListMock";
 
 export type DocumentationStatus =

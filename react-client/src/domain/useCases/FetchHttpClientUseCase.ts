@@ -60,6 +60,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "POST",
         headers: options.headers,
+        body: options.body,
       });
 
       const data: unknown = await result.json();
