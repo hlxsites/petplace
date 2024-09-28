@@ -1,4 +1,5 @@
 export type CommonCartItem = {
+  autoRenew: boolean;
   petId?: string;
   id: string;
   quantity: number;

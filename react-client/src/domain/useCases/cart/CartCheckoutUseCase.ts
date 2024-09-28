@@ -7,6 +7,7 @@ import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
 const cartItemServerSchema = z.object({
   AnimalId: z.string().nullish(),
+  AutoRenew: z.number().nullish(),
   ItemId: z.string().nullish(),
   ItemName: z.string().nullish(),
   ItemType: z.string().nullish(),
@@ -73,6 +74,7 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
 
       body = {
         Items: validItems.map((item) => ({
+          AutoRenew: convertAutoRenewFromBooleanToNumber(item.autoRenew),
           AnimalId: petId,
           ItemId: item.id,
           ItemType: item.type,
@@ -110,6 +112,7 @@ function convertToCartItem(data: unknown): CommonCartItem[] | null {
 
   parsedCart.OrderLines?.forEach((cartItem) => {
     items.push({
+      autoRenew: convertAutoRenewFromNumberToBoolean(cartItem.AutoRenew),
       id: cartItem.ItemId ?? "",
       name: cartItem.ItemName ?? "",
       petId: cartItem.AnimalId ?? "",
@@ -120,4 +123,18 @@ function convertToCartItem(data: unknown): CommonCartItem[] | null {
   });
 
   return items;
+}
+
+function convertAutoRenewFromNumberToBoolean(data?: number | null) {
+  const AutoRenew: Record<number, boolean> = {
+    0: false,
+    1: true,
+  };
+
+  return AutoRenew[data ?? 0];
+}
+
+function convertAutoRenewFromBooleanToNumber(data: boolean) {
+  if (data) return 1;
+  return 0;
 }
