@@ -10,7 +10,14 @@ import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
 import { useCheckoutProductsViewModel } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
-  const { cartItems, products, subtotal } = useCheckoutProductsViewModel();
+  const {
+    autoRenew,
+    cartItems,
+    products,
+    subtotal,
+    onUpdateOptIn,
+    optInLabel,
+  } = useCheckoutProductsViewModel();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -23,7 +30,11 @@ export const ProductsIndex = () => {
             onClick={onOpenCart}
           />
           <div className="grid gap-large">
-            <OptInsSection />
+            <OptInsSection
+              onClick={onUpdateOptIn}
+              autoRenew={autoRenew}
+              optInLabel={optInLabel}
+            />
             {products && <CheckoutProductsSection products={products} />}
             <Button fullWidth>Proceed to checkout</Button>
           </div>
