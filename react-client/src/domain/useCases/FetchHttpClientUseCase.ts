@@ -62,10 +62,15 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         headers: options.headers,
         body: options.body,
       });
+      const statusCode = result.status;
+
+      // No content HTTP status code
+      if (result.status === 204) {
+        return { data: null, statusCode };
+      }
 
       const data: unknown = await result.json();
-
-      return { data, statusCode: result.status };
+      return { data, statusCode };
     } catch (error) {
       return { error };
     }
@@ -114,10 +119,15 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         headers: options.headers,
         body: options.body,
       });
+      const statusCode = result.status;
+
+      // No content HTTP status code
+      if (result.status === 204) {
+        return { data: null, statusCode };
+      }
 
       const data: unknown = await result.json();
-
-      return { data, statusCode: result.status };
+      return { data, statusCode };
     } catch (error) {
       console.error("Error in PUT request:", error);
       return { error };
