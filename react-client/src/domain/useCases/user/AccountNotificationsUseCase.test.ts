@@ -1,81 +1,53 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import * as authUtil from "../../../util/authUtil";
-import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
-import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
+import { AccountNotificationsUseCase } from "./AccountNotificationsUseCase";
+import getAccountNotificationsMock from "./mocks/getAccountNotificationsMock.json";
+import * as authUtil from '~/util/authUtil';
 
-jest.mock("~/util/authUtil", () => ({
-  checkIsExternalLogin: jest.fn(),
+jest.mock('~/util/authUtil', () => ({
   readJwtClaim: jest.fn(),
 }));
 
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
-describe("AccountDetailsUseCase", () => {
-  beforeEach(() => {
-    (authUtil.checkIsExternalLogin as jest.Mock).mockReset();
-  });
-
+describe("AccountNotificationsUseCase", () => {
   describe("GET", () => {
     it("should return null whenever it finds no data", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
       const httpClient = new MockHttpClient({ data: null });
       const sut = makeSut(httpClient);
       const result = await sut.query();
       expect(result).toBeNull();
     });
-
-    it("should return internal account details", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
-      const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
+  
+    it("should return account notifications preferences", async () => {
+      const httpClient = new MockHttpClient({
+        data: getAccountNotificationsMock,
+      });
       const sut = makeSut(httpClient);
       const result = await sut.query();
-
+  
       expect(result).toStrictEqual({
-        name: "Augustus",
-        surname: "Waters",
-        email: "augustus.ok@email.com",
-        defaultPhone: "71 988776655|Home",
+        emailAlert: true,
+        petPlaceOffer: true,
+        partnerOffer: true,
+        signedCatNewsletter: true,
+        signedDogNewsletter: true,
+        smsAlert: false,
       });
     });
-
-    it("should return external account details", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(true);
-      const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
-      const sut = makeSut(httpClient);
-      const result = await sut.query();
-
-      expect(result).toStrictEqual({
-        address: {
-          address1: "808 Benninghaus Rd",
-          address2: "",
-          city: "Baltimore",
-          country: "US",
-          state: "MD",
-          zipCode: "21212-3943",
-        },
-        contactConsent: true,
-        defaultPhone: "71 988776655|Work",
-        email: "augustus.ok@email.com",
-        informationConsent: false,
-        name: "Augustus",
-        secondaryPhone: "416-709-5781|Home",
-        surname: "Waters",
-      });
-    });
-
+  
     it("should return null when the data doesn't match the schema", async () => {
       const invalidMockData = {
-        FirstName: 2,
+        DogNewsletterOptIn: "true",
       };
       const httpClient = new MockHttpClient({ data: invalidMockData });
       const sut = makeSut(httpClient);
       const result = await sut.query();
-
+  
       expect(result).toBeNull();
     });
-
+  
     it("should return null when there is an error", async () => {
       const httpClient = new MockHttpClient({
         error: new Error("Error"),
@@ -84,26 +56,37 @@ describe("AccountDetailsUseCase", () => {
       const result = await sut.query();
       expect(result).toBeNull();
     });
-  });
+  })
+
 
   describe("PUT", () => {
-    const validAccountDetails = {
-      name: "Jane",
-      surname: "Doe",
-      email: "jane.doe@example.com",
-      phoneNumber: "555-1234|Home",
+    const validAccountNotifications = {
+      emailAlert: true,
+      petPlaceOffer: true,
+      partnerOffer: true,
+      signedCatNewsletter: true,
+      signedDogNewsletter: true,
+      smsAlert: true,
     };
 
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
+
     it("should update successfully without data returning", async () => {
+      (authUtil.readJwtClaim as jest.Mock).mockReturnValue({
+        postalCode: "12345",
+      });
       const httpClient = new MockHttpClient({ statusCode: 204 });
       const sut = makeSut(httpClient);
-      const result = await sut.mutate(validAccountDetails);
+      const result = await sut.mutate(validAccountNotifications);
       expect(result).toBe(true);
     });
 
     it("should return false when data contains invalid characters", async () => {
-      const invalidDetails = { ...validAccountDetails, name: "Invalid#Name" };
+      const invalidDetails = { ...validAccountNotifications, emailAlert: "True" };
       const sut = makeSut();
+      // @ts-expect-error the test aims to stop wrong type values 
       const result = await sut.mutate(invalidDetails);
       expect(result).toBe(false);
     });
@@ -113,7 +96,7 @@ describe("AccountDetailsUseCase", () => {
         error: new Error("Server error"),
       });
       const sut = makeSut(httpClient);
-      const result = await sut.mutate(validAccountDetails);
+      const result = await sut.mutate(validAccountNotifications);
       expect(result).toBe(false);
     });
   });
@@ -121,7 +104,7 @@ describe("AccountDetailsUseCase", () => {
 
 // Test helpers
 function makeSut(httpClient?: HttpClientRepository) {
-  return new AccountDetailsUseCase(
+  return new AccountNotificationsUseCase(
     "token",
     httpClient ||
       new MockHttpClient({

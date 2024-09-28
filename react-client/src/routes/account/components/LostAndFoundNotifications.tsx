@@ -1,28 +1,24 @@
-import { Card, Checkbox, Title } from "~/components/design-system";
-import { LostPetUpdate } from "~/domain/models/pet/PetModel";
+import { Card, Dialog, Title } from "~/components/design-system";
 import { ViewNotifications } from "./ViewNotifications";
 
-import { Fragment, useState } from "react";
-import { NotificationsDialog } from "./NotificationsDialog";
-
-export type LostNotification = {
-  petHistory?: LostPetUpdate[];
-  petName: string;
-};
+import { useState } from "react";
+import { SuspenseAwait } from "~/components/await/SuspenseAwait";
+import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { NotificationsDialogContent } from "./NotificationsDialogContent";
 
 export type LostAndFoundNotificationsProps = {
-  notifications?: LostNotification[];
+  notifications: LostPetUpdateModel[];
+  getLostPetNotificationDetails?: (
+    notification: LostPetUpdateModel
+  ) => Promise<LostPetUpdateModel | null>;
 };
 
 export const LostAndFoundNotifications = ({
   notifications = [],
+  getLostPetNotificationDetails,
 }: LostAndFoundNotificationsProps) => {
-  const [selectedPet, setSelectedPet] = useState<LostNotification | null>(null);
-
-  const checkboxesFilters = [
-    { label: "All" },
-    { label: "Incoming found pet alerts" },
-  ];
+  const [selectedNotification, setSelectedNotification] =
+    useState<LostPetUpdateModel | null>(null);
 
   return (
     <>
@@ -30,68 +26,80 @@ export const LostAndFoundNotifications = ({
         <div className="p-xxlarge">
           <div className="flex items-center justify-between pb-large">
             <Title level="h3">Lost & Found notifications</Title>
-            <div className="flex gap-large">
-              {renderCheckboxes(checkboxesFilters)}
-            </div>
           </div>
 
-          {notifications.length > 0 && (
+          {!!notifications.length && (
             <Card>
               <div className="p-large">
-                {notifications.map((notification, index) =>
-                  renderNotification(notification, index)
-                )}
+                {notifications.map(renderNotification)}
               </div>
             </Card>
           )}
         </div>
       </Card>
 
-      {selectedPet && (
-        <NotificationsDialog
-          isOpen={!!selectedPet}
-          onClose={onCloseDialog}
-          viewData={selectedPet.petHistory}
-          petName={selectedPet.petName}
-        />
-      )}
+      {renderNotificationDialog()}
     </>
   );
 
-  function renderCheckboxes(checkboxes: { label: string }[]) {
-    return checkboxes.map(({ label }) => (
-      <Checkbox id={label} key={label} label={label} variant="purple" />
-    ));
-  }
+  function renderNotification(notification: LostPetUpdateModel, index: number) {
+    const { date, id, foundedBy, petName } = notification;
+    const isLast = notifications.length === index + 1;
 
-  function renderNotification(notification: LostNotification, index: number) {
+    const dividerElement = (() => {
+      if (isLast) return null;
+      return <hr className="-mx-[10%] border-neutral-300" />;
+    })();
+
     return (
-      <Fragment key={`notification-${notification.petName}-${index}`}>
-        {notification.petHistory?.map(({ date, id, foundedBy }) => (
-          <div key={`${notification.petName}-${id}`}>
-            <ViewNotifications
-              dateFoundOrLost={date}
-              foundedBy={foundedBy?.finderName}
-              onClick={() => onOpenDialog(notification)}
-              petName={notification.petName}
-            />
-            {renderHorizontalDivider(index + 1)}
-          </div>
-        ))}
-      </Fragment>
+      <div key={`${petName}-${id}`}>
+        <ViewNotifications
+          dateFoundOrLost={date}
+          foundedBy={foundedBy?.finderName}
+          onClick={() => onOpenDialog(notification)}
+          petName={petName}
+        />
+        {dividerElement}
+      </div>
     );
   }
 
-  function renderHorizontalDivider(index: number) {
-    if (notifications.length === index) return null;
-    return <hr className="-mx-[10%] border-neutral-300" />;
+  function renderNotificationDialog() {
+    if (!selectedNotification) return null;
+
+    return (
+      <Dialog
+        ariaLabel="Notifications"
+        id="notifications-dialog"
+        isOpen={!!selectedNotification}
+        onClose={onCloseDialog}
+        title={`Pet ${selectedNotification.petName} is found by ${selectedNotification.foundedBy?.finderName}.`}
+        titleSize="32"
+        trigger={undefined}
+        isTitleResponsive
+      >
+        <SuspenseAwait
+          resolve={getLostPetNotificationDetails?.(selectedNotification)}
+        >
+          {(selectedNotificationDetails) =>
+            !!selectedNotificationDetails && (
+              <NotificationsDialogContent
+                isOpen={!!selectedNotificationDetails}
+                onClose={onCloseDialog}
+                viewData={selectedNotificationDetails}
+              />
+            )
+          }
+        </SuspenseAwait>
+      </Dialog>
+    );
   }
 
-  function onOpenDialog(pet: LostNotification) {
-    setSelectedPet(pet);
+  function onOpenDialog(notification: LostPetUpdateModel) {
+    setSelectedNotification(notification);
   }
 
   function onCloseDialog() {
-    setSelectedPet(null);
+    setSelectedNotification(null);
   }
 };

@@ -4,14 +4,23 @@ import {
   DisplayUncontrolledForm,
   Title,
 } from "~/components/design-system";
-import { getAccountNotificationsData } from "../util/formDataUtil";
+
 import { notificationsFormSchema } from "../form/notificationForm";
-import { LostAndFoundNotifications } from "./LostAndFoundNotifications";
 import { useAccountContext } from "../useAccountIndexViewModel";
+import {
+  buildAccountNotifications,
+  getAccountNotificationsData,
+} from "../util/formDataUtil";
+import { LostAndFoundNotifications } from "./LostAndFoundNotifications";
 
 export const NotificationsTabContent = () => {
-  const viewModel = useAccountContext();
-  const { accountNotifications, isExternalLogin, lostPetsHistory } = viewModel;
+  const {
+    accountNotifications,
+    isExternalLogin,
+    lostPetsHistory,
+    getLostPetNotification,
+    onSubmitAccountNotifications,
+  } = useAccountContext();
 
   return (
     <div className="mt-xxxlarge grid gap-large">
@@ -24,7 +33,9 @@ export const NotificationsTabContent = () => {
             {(accountNotifications) => (
               <DisplayUncontrolledForm
                 onSubmit={({ values }) => {
-                  console.log("onSubmit values", values);
+                  onSubmitAccountNotifications?.(
+                    buildAccountNotifications(values)
+                  );
                 }}
                 schema={notificationsFormSchema}
                 initialValues={getAccountNotificationsData(
@@ -36,7 +47,14 @@ export const NotificationsTabContent = () => {
         </div>
       </Card>
       {isExternalLogin && (
-        <LostAndFoundNotifications notifications={lostPetsHistory} />
+        <SuspenseAwait resolve={lostPetsHistory}>
+          {(lostPetsHistory) => (
+            <LostAndFoundNotifications
+              notifications={lostPetsHistory || []}
+              getLostPetNotificationDetails={getLostPetNotification}
+            />
+          )}
+        </SuspenseAwait>
       )}
     </div>
   );

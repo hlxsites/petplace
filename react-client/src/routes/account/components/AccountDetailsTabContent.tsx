@@ -1,17 +1,33 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import { Card, DisplayUncontrolledForm } from "~/components/design-system";
+import {
+  Card,
+  DisplayUncontrolledForm,
+  FormValues,
+} from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
+
 import {
   emergencyContactFormSchema,
+  emergencyContactIds,
   externalAccountDetailsFormSchema,
   internalAccountDetailsFormSchema,
 } from "../form/accountForms";
-import { getAccountDetailsData } from "../util/formDataUtil";
 import { useAccountContext } from "../useAccountIndexViewModel";
+import {
+  buildAccountEmergencyContactsList,
+  getAccountDetailsData,
+  getAccountEmergencyContactsData,
+} from "../util/formDataUtil";
 
 export const AccountDetailsTabContent = () => {
-  const viewModel = useAccountContext();
-  const { accountDetails, accountDetailsFormVariables, isExternalLogin, onSubmitAccountDetails } = viewModel;
+  const {
+    accountDetails,
+    accountDetailsFormVariables,
+    emergencyContacts,
+    isExternalLogin,
+    onSubmitEmergencyContacts,
+    onSubmitAccountDetails,
+  } = useAccountContext();
 
   const formSchema = isExternalLogin
     ? externalAccountDetailsFormSchema
@@ -23,7 +39,10 @@ export const AccountDetailsTabContent = () => {
         <SuspenseAwait resolve={accountDetails}>
           {(accountDetails) => (
             <DisplayUncontrolledForm
-              initialValues={getAccountDetailsData(accountDetails)}
+              initialValues={getAccountDetailsData(
+                accountDetails,
+                isExternalLogin
+              )}
               onSubmit={({ values }) => onSubmitAccountDetails(values)}
               schema={formSchema}
               variables={accountDetailsFormVariables}
@@ -39,12 +58,24 @@ export const AccountDetailsTabContent = () => {
   function renderEmergencyContactForm() {
     return (
       <Card padding="xlarge">
-        <DisplayUncontrolledForm
-          onSubmit={({ values }) => {
-            console.log("onSubmit values", values);
-          }}
-          schema={emergencyContactFormSchema}
-        />
+        <SuspenseAwait resolve={emergencyContacts}>
+          {(emergencyContacts) => (
+            <DisplayUncontrolledForm
+              onSubmit={({ event, values }) => {
+                event.preventDefault();
+                onSubmitEmergencyContacts?.(
+                  buildAccountEmergencyContactsList(
+                    values[
+                      emergencyContactIds.repeaterId
+                    ] as unknown as FormValues[]
+                  )
+                );
+              }}
+              schema={emergencyContactFormSchema}
+              initialValues={getAccountEmergencyContactsData(emergencyContacts)}
+            />
+          )}
+        </SuspenseAwait>
       </Card>
     );
   }
