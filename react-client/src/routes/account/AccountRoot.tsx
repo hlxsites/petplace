@@ -8,10 +8,10 @@ import {
 import { Header } from "~/components/design-system/header/Header";
 import { ACCOUNT_FULL_ROUTE, AppRoutePaths } from "../AppRoutePaths";
 import { getRouteFor } from "../util/getRouteFor";
-import { useAccountIndexViewModel } from "./useAccountIndexViewModel";
+import { useAccountRootViewModel } from "./useAccountRootViewModel";
 
 export const AccountRoot = () => {
-  const viewModel = useAccountIndexViewModel();
+  const viewModel = useAccountRootViewModel();
 
   return (
     <LayoutBasic>
@@ -26,7 +26,7 @@ export const AccountRoot = () => {
   );
 
   function getRouteTabs(): RouteTab[] {
-    const children = <Outlet context={viewModel} />;
+    const children = <Outlet />;
 
     const tabs: RouteTab[] = [
       {

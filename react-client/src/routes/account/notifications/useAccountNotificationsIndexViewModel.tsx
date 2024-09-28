@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { checkIsExternalLogin, requireAuthToken } from "~/util/authUtil";
+import { requireAuthToken } from "~/util/authUtil";
 
 import {
   AccountNotificationsModel,
@@ -9,6 +9,8 @@ import {
 import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
 import lostPetNotificationDetailsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationDetailsUseCaseFactory";
 import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
+import { useRouteMatchesData } from "~/domain/useRouteMatchesData";
+import { AccountRootLoaderData } from "../useAccountRootViewModel";
 
 export const loader = (() => {
   const authToken = requireAuthToken();
@@ -41,7 +43,8 @@ export const useAccountNotificationsIndexViewModel = () => {
     onSubmitAccountNotifications,
   } = useLoaderData<typeof loader>();
 
-  const isExternalLogin = checkIsExternalLogin();
+  const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
+  const isExternalLogin = !!accountRootData?.isExternalLogin;
 
   return {
     accountNotifications,

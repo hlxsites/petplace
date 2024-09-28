@@ -1,6 +1,5 @@
-import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { checkIsExternalLogin, requireAuthToken } from "~/util/authUtil";
+import { requireAuthToken } from "~/util/authUtil";
 
 import { useState } from "react";
 import { FormValues } from "~/components/design-system";
@@ -12,6 +11,8 @@ import getCountriesUseCaseFactory from "~/domain/useCases/lookup/getCountriesUse
 import getStatesUseCaseFactory from "~/domain/useCases/lookup/getStatesUseCaseFactory";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountEmergencyContactsUseCaseFactory from "~/domain/useCases/user/accountEmergencyContactsUseCaseFactory";
+import { useRouteMatchesData } from "~/domain/useRouteMatchesData";
+import { AccountRootLoaderData } from "./useAccountRootViewModel";
 import {
   buildAccountDetails,
   validateAccountDetails,
@@ -54,7 +55,8 @@ export const useAccountIndexViewModel = () => {
   // TODO implement dynamic state call based in country selector
   const [stateVariables] = useState([]);
 
-  const isExternalLogin = checkIsExternalLogin();
+  const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
+  const isExternalLogin = !!accountRootData?.isExternalLogin;
 
   const countryOptions = countries.map((country) => country.title);
 
@@ -76,6 +78,3 @@ export const useAccountIndexViewModel = () => {
     },
   };
 };
-
-export const useAccountContext = () =>
-  useOutletContext<ReturnType<typeof useAccountIndexViewModel>>();
