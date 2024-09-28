@@ -1,4 +1,4 @@
-export type AccountNotificationModel = {
+export type AccountNotificationsModel = {
   emailAlert?: boolean;
   petPlaceOffer?: boolean;
   partnerOffer?: boolean;
@@ -7,12 +7,38 @@ export type AccountNotificationModel = {
   smsAlert?: boolean;
 };
 
-export type AccountDetailsModel = {
+export type AccountDetailsModel =
+  | InternalAccountDetailsModel
+  | ExternalAccountDetailsModel;
+
+export type InternalAccountDetailsModel = {
+  email?: string;
+  name: string;
+  defaultPhone?: string;
+  surname: string;
+};
+
+export type AccountEmergencyContactModel = {
   email: string;
   name: string;
   phoneNumber: string;
   surname: string;
+};
+
+export type ExternalAccountDetailsModel = InternalAccountDetailsModel & {
+  address: AccountAddressModel;
+  secondaryPhone?: string;
+  contactConsent?: boolean;
+  informationConsent?: boolean;
+};
+
+export type AccountAddressModel = {
+  address1: string;
+  address2: string;
+  city: string;
   zipCode: string;
+  country: string;
+  state: string;
 };
 
 export type MissingStatus = "missing" | "found";

@@ -20,11 +20,22 @@ export const CheckoutItemDetailedContent = ({
     images,
     isAnnual,
     title,
-    price,
     privacyFeatures,
     sizing,
     tagFeatures,
   } = item;
+
+  // TODO: get the price from the availableOptions
+  const price = "$20";
+
+  // TODO: get the selected color and size from the availableOptions
+  const selectedColor = "";
+  const selectedSize = "";
+
+  const handleOnChange = ({ color, size }: { color: string; size: string }) => {
+    // TODO: implement this
+    console.log({ color, size });
+  };
 
   return (
     <div className="flex flex-col gap-base">
@@ -73,8 +84,11 @@ export const CheckoutItemDetailedContent = ({
       )}
       {availableColors && availableSizes && (
         <CheckoutProductColorSize
-          productColors={availableColors}
-          productSizes={availableSizes}
+          availableColors={availableColors}
+          availableSizes={availableSizes}
+          onChange={handleOnChange}
+          selectedColor={selectedColor}
+          selectedSize={selectedSize}
         />
       )}
       <Button fullWidth onClick={onAddToCart} variant="tertiary">

@@ -7,18 +7,27 @@ export class MockAccountDetailsCase implements AccountDetailsRepository {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return {
-      email: "johene@email.com",
-      name: "Johene",
-      phoneNumber: "(234) 123-4566",
-      surname: "Smith",
-      zipCode: "01234",
+      address: {
+        address1: "Rua da Glória",
+        address2: "",
+        city: "Rio de Janeiro",
+        country: "BR",
+        state: "RJ",
+        zipCode: "012345",
+      },
+      contactConsent: true,
+      email: "e.jones@email.com",
+      informationConsent: true,
+      name: "Jones",
+      defaultPhone: "762-786-2364",
+      surname: "Elliot",
     };
   }
 
-  async mutate(data: AccountDetailsModel): Promise<boolean> {
+  async mutate(): Promise<boolean> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    data
+
     return true;
   }
 }

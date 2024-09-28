@@ -38,7 +38,7 @@ export const MembershipCard = ({
           </Text>
           <Text color="text-color-supporting">{priceInfo}</Text>
         </div>
-        <LinkButton variant={buttonVariant} to={buttonLink}>
+        <LinkButton variant={buttonVariant} to={buttonLink} fullWidth>
           {buttonLabel}
         </LinkButton>
         <div

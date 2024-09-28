@@ -84,7 +84,7 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
           plans.push({
             ...hardCodedPlan,
             isHighlighted,
-            price: `$${price}`,
+            price,
             title: planData.ItemName || hardCodedPlan.title,
           });
         }
