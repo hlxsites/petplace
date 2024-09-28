@@ -4,7 +4,7 @@ import { ENABLE_MOCK } from "~/util/envUtil";
 import { GetAccountNotificationsUseCase } from "./GetAccountNotificationsUseCase";
 import { MockGetAccountNotificationsUseCase } from "./MockGetAccountNotificationsUseCase";
 
-export default function accountDetailsUseCaseFactory(
+export default function accountNotificationsUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
 ): GetAccountNotificationRepository {
