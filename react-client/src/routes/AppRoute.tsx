@@ -15,8 +15,8 @@ import { lazy } from "react";
 import { IS_DEV_ENV } from "~/util/envUtil";
 import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
-import { PaymentInformationTabContent } from "./account/components/PaymentInformationTabContent";
 import { AccountNotificationsIndex } from "./account/notifications/AccountNotificationsIndex";
+import { AccountPaymentInformationIndex } from "./account/payment-information/AccountPaymentInformationIndex";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { CheckoutProductsLayout } from "./checkout/products/CheckoutProductsLayout";
 import { ProductsIndex } from "./checkout/products/ProductsIndex";
@@ -59,7 +59,7 @@ const routes: PetPlaceRouteObject[] = [
           {
             id: "accountPayment",
             path: AppRoutePaths.accountPayment,
-            element: <PaymentInformationTabContent />,
+            element: <AccountPaymentInformationIndex />,
           },
         ],
       },

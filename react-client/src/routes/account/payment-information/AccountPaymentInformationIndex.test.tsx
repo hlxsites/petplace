@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { PaymentInformationTabContent } from "./PaymentInformationTabContent";
+import { AccountPaymentInformationIndex } from "./AccountPaymentInformationIndex";
 
 const { getByRole, getByText } = screen;
 
@@ -39,5 +39,5 @@ describe("PaymentInformationTabContent", () => {
 });
 
 function getRenderer() {
-  return render(<PaymentInformationTabContent />);
+  return render(<AccountPaymentInformationIndex />);
 }

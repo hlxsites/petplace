@@ -1,7 +1,7 @@
 import { Title } from "~/components/design-system";
 import { BasicActionCard } from "~/components/design-system/card/BasicActionCard";
 
-export const PaymentInformationTabContent = () => {
+export const AccountPaymentInformationIndex = () => {
   const actionsSections = [
     {
       buttonLabel: "Manage payment settings",
