@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { readJwtClaim } from "~/util/authUtil";
-import { AccountNotificationsModel } from "../../models/user/UserModels";
-import { AccountNotificationRepository } from "../../repository/user/AccountNotificationRepository";
+import { AccountNotificationPreferencesModel } from "../../models/user/UserModels";
+import { AccountNotificationPreferencesRepository } from "../../repository/user/AccountNotificationRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
 const serverSchema = z.object({
@@ -14,10 +14,10 @@ const serverSchema = z.object({
   SmsOptIn: z.boolean().nullish(),
 });
 
-export type PutAccountNotificationsRequest = z.infer<typeof serverSchema>;
+export type MutationInput = z.infer<typeof serverSchema>;
 
-export class AccountNotificationsUseCase
-  implements AccountNotificationRepository
+export class AccountNotificationPreferencesUseCase
+  implements AccountNotificationPreferencesRepository
 {
   private httpClient: HttpClientRepository;
 
@@ -29,7 +29,7 @@ export class AccountNotificationsUseCase
     }
   }
 
-  query = async (): Promise<AccountNotificationsModel | null> => {
+  query = async (): Promise<AccountNotificationPreferencesModel | null> => {
     try {
       const result = await this.httpClient.get("adopt/api/User");
       if (result.data) return convertToAccountNotificationsModel(result.data);
@@ -41,10 +41,12 @@ export class AccountNotificationsUseCase
     }
   };
 
-  mutate = async (data: AccountNotificationsModel): Promise<boolean> => {
+  mutate = async (
+    data: AccountNotificationPreferencesModel
+  ): Promise<boolean> => {
     const zipCode = readJwtClaim()?.postalCode;
     if (!zipCode) return false;
-    const body = convertToServerAccountNotifications(data);
+    const body = convertToMutationInput(data);
 
     try {
       if (serverSchema.safeParse(body).success) {
@@ -65,7 +67,7 @@ export class AccountNotificationsUseCase
 
 function convertToAccountNotificationsModel(
   data: unknown
-): AccountNotificationsModel | null {
+): AccountNotificationPreferencesModel | null {
   if (!data) return null;
 
   const parseUserData = (userData: unknown) => {
@@ -88,9 +90,9 @@ function convertToAccountNotificationsModel(
   };
 }
 
-function convertToServerAccountNotifications(
-  data: AccountNotificationsModel
-): PutAccountNotificationsRequest {
+function convertToMutationInput(
+  data: AccountNotificationPreferencesModel
+): MutationInput {
   return {
     CatNewsletterOptIn: data.signedCatNewsletter,
     DogNewsletterOptIn: data.signedDogNewsletter,

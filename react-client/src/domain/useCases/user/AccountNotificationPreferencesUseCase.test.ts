@@ -1,10 +1,10 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { AccountNotificationsUseCase } from "./AccountNotificationsUseCase";
+import * as authUtil from "~/util/authUtil";
+import { AccountNotificationPreferencesUseCase } from "./AccountNotificationPreferencesUseCase";
 import getAccountNotificationsMock from "./mocks/getAccountNotificationsMock.json";
-import * as authUtil from '~/util/authUtil';
 
-jest.mock('~/util/authUtil', () => ({
+jest.mock("~/util/authUtil", () => ({
   readJwtClaim: jest.fn(),
 }));
 
@@ -19,14 +19,14 @@ describe("AccountNotificationsUseCase", () => {
       const result = await sut.query();
       expect(result).toBeNull();
     });
-  
+
     it("should return account notifications preferences", async () => {
       const httpClient = new MockHttpClient({
         data: getAccountNotificationsMock,
       });
       const sut = makeSut(httpClient);
       const result = await sut.query();
-  
+
       expect(result).toStrictEqual({
         emailAlert: true,
         petPlaceOffer: true,
@@ -36,7 +36,7 @@ describe("AccountNotificationsUseCase", () => {
         smsAlert: false,
       });
     });
-  
+
     it("should return null when the data doesn't match the schema", async () => {
       const invalidMockData = {
         DogNewsletterOptIn: "true",
@@ -44,10 +44,10 @@ describe("AccountNotificationsUseCase", () => {
       const httpClient = new MockHttpClient({ data: invalidMockData });
       const sut = makeSut(httpClient);
       const result = await sut.query();
-  
+
       expect(result).toBeNull();
     });
-  
+
     it("should return null when there is an error", async () => {
       const httpClient = new MockHttpClient({
         error: new Error("Error"),
@@ -56,8 +56,7 @@ describe("AccountNotificationsUseCase", () => {
       const result = await sut.query();
       expect(result).toBeNull();
     });
-  })
-
+  });
 
   describe("PUT", () => {
     const validAccountNotifications = {
@@ -84,9 +83,12 @@ describe("AccountNotificationsUseCase", () => {
     });
 
     it("should return false when data contains invalid characters", async () => {
-      const invalidDetails = { ...validAccountNotifications, emailAlert: "True" };
+      const invalidDetails = {
+        ...validAccountNotifications,
+        emailAlert: "True",
+      };
       const sut = makeSut();
-      // @ts-expect-error the test aims to stop wrong type values 
+      // @ts-expect-error the test aims to stop wrong type values
       const result = await sut.mutate(invalidDetails);
       expect(result).toBe(false);
     });
@@ -104,7 +106,7 @@ describe("AccountNotificationsUseCase", () => {
 
 // Test helpers
 function makeSut(httpClient?: HttpClientRepository) {
-  return new AccountNotificationsUseCase(
+  return new AccountNotificationPreferencesUseCase(
     "token",
     httpClient ||
       new MockHttpClient({

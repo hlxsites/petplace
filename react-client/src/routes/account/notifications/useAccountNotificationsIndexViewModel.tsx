@@ -6,8 +6,8 @@ import { useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { FormValues } from "~/components/design-system";
 import { OnSubmitFn } from "~/components/design-system/form/FormBuilder";
-import { AccountNotificationsModel } from "~/domain/models/user/UserModels";
-import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
+import { AccountNotificationPreferencesModel } from "~/domain/models/user/UserModels";
+import accountNotificationPreferencesUseCaseFactory from "~/domain/useCases/user/accountNotificationPreferencesUseCaseFactory";
 import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
 import { useRouteMatchesData } from "~/domain/useRouteMatchesData";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
@@ -17,15 +17,15 @@ import { AccountRootLoaderData } from "../useAccountRootViewModel";
 export const loader = (() => {
   const authToken = requireAuthToken();
 
-  const accountNotificationsUseCase =
-    accountNotificationsUseCaseFactory(authToken);
+  const notificationPreferencesUseCase =
+    accountNotificationPreferencesUseCaseFactory(authToken);
   const lostPetNotificationsUseCase =
     lostPetNotificationsUseCaseFactory(authToken);
 
   return defer({
     lostPetsHistory: lostPetNotificationsUseCase.query(),
-    mutation: accountNotificationsUseCase.mutate,
-    query: accountNotificationsUseCase.query,
+    mutation: notificationPreferencesUseCase.mutate,
+    query: notificationPreferencesUseCase.query,
   });
 }) satisfies LoaderFunction;
 
@@ -88,7 +88,7 @@ export const useAccountNotificationsIndexContext = () =>
   useOutletContext<ReturnType<typeof useAccountNotificationsIndexViewModel>>();
 
 function getFormInitialDataFroModel(
-  accountNotifications?: AccountNotificationsModel | null
+  accountNotifications?: AccountNotificationPreferencesModel | null
 ): FormValues {
   const newsLetter = [];
   if (accountNotifications?.signedCatNewsletter) newsLetter.push("Cat");
@@ -108,10 +108,10 @@ function getFormInitialDataFroModel(
 
 function convertFormValuesToModel(
   values: FormValues
-): AccountNotificationsModel {
+): AccountNotificationPreferencesModel {
   const newsletter = values[accountNotificationIds.newsletter] as string[];
   const alerts = values[accountNotificationIds.petPlaceAdoptAlerts] as string[];
-  const accountDetails: AccountNotificationsModel = {
+  const accountDetails: AccountNotificationPreferencesModel = {
     emailAlert: alerts.includes("Email"),
     petPlaceOffer: values[accountNotificationIds.petPlaceOffers] as boolean,
     partnerOffer: values[accountNotificationIds.partnerOffers] as boolean,
