@@ -9,15 +9,15 @@ export class MockAccountDetailsCase implements AccountDetailsRepository {
     return {
       email: "johene@email.com",
       name: "Johene",
-      phoneNumber: "(234) 123-4566",
+      defaultPhone: "(234) 123-4566|Home",
       surname: "Smith",
     };
   }
 
-  async mutate(data: AccountDetailsModel): Promise<boolean> {
+  async mutate(): Promise<boolean> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log({ data });
+
     return true;
   }
 }

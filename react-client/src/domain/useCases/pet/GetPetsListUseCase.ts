@@ -36,6 +36,7 @@ function convertToPetModelList(data: unknown): PetCommon[] {
 
   const serverResponseSchema = z.object({
     Id: z.string(),
+    ImageUrl: z.string().nullish(),
     MembershipStatus: z.string().nullish(),
     Microchip: z.string().nullish(),
     Name: z.string(),
@@ -48,11 +49,16 @@ function convertToPetModelList(data: unknown): PetCommon[] {
 
     if (!pet) return;
 
+    const isProtected = pet?.MembershipStatus
+      ? pet.MembershipStatus !== "Not a member"
+      : false;
+
     list.push({
       id: pet.Id,
-      isProtected: !!pet.MembershipStatus,
+      isProtected,
       microchip: pet.Microchip,
       name: pet.Name,
+      img: pet.ImageUrl ?? undefined,
     });
   });
 

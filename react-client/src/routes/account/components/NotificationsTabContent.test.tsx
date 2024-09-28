@@ -1,9 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { ComponentProps } from "react";
+import { LostNotification } from "./LostAndFoundNotifications";
 import { NotificationsTabContent } from "./NotificationsTabContent";
 
 const { getByRole, queryByRole } = screen;
+
+// TODO: This shouldn't be needed after refactoring how to handle account form
+jest.mock("~/util/authUtil", () => ({
+  checkIsExternalLogin: jest.fn().mockReturnValue(false),
+}));
 
 describe("NotificationsTabContent", () => {
   it("should render the expected title for this tab content", () => {
@@ -73,7 +79,6 @@ describe("NotificationsTabContent", () => {
   it("should render the given lost notifications", () => {
     getRenderer({
       isExternalLogin: true,
-      // @ts-expect-error - ignoring for test purposes only
       lostPetsHistory: MOCK_PET_HISTORY,
     });
     expect(getByRole("button", { name: /view/i })).toBeInTheDocument();
@@ -94,7 +99,7 @@ function getRenderer({
   return render(<NotificationsTabContent {...props} />);
 }
 
-const MOCK_PET_HISTORY = [
+const MOCK_PET_HISTORY: LostNotification[] = [
   {
     petHistory: [
       {
@@ -102,6 +107,9 @@ const MOCK_PET_HISTORY = [
         foundedBy: {
           finderName: "Mrs Smart",
         },
+        id: 0,
+        status: "missing",
+        update: 0,
       },
     ],
     petName: "Mag",

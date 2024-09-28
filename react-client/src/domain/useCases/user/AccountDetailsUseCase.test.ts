@@ -3,7 +3,8 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 
-jest.mock('~/util/authUtil', () => ({
+jest.mock("~/util/authUtil", () => ({
+  checkIsExternalLogin: jest.fn(),
   readJwtClaim: jest.fn(),
 }));
 
@@ -11,7 +12,7 @@ jest.mock('~/util/authUtil', () => ({
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
 describe("AccountDetailsUseCase", () => {
-  describe("GET", () => {
+  describe("query", () => {
     it("should return null whenever it finds no data", async () => {
       const httpClient = new MockHttpClient({ data: null });
       const sut = makeSut(httpClient);
@@ -25,10 +26,10 @@ describe("AccountDetailsUseCase", () => {
       const result = await sut.query();
 
       expect(result).toStrictEqual({
+        defaultPhone: "71 988776655|Home",
+        email: "augustus.ok@email.com",
         name: "Augustus",
         surname: "Waters",
-        email: "augustus.ok@email.com",
-        phoneNumber: "(234) 345 6876",
       });
     });
 
@@ -53,12 +54,13 @@ describe("AccountDetailsUseCase", () => {
     });
   });
 
-  describe("PUT", () => {
+  describe("mutate", () => {
     const validAccountDetails = {
       name: "Jane",
       surname: "Doe",
       email: "jane.doe@example.com",
       phoneNumber: "555-1234|Home",
+      zipCode: "51234",
     };
 
     it("should update successfully without data returning", async () => {

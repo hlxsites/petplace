@@ -6,7 +6,7 @@ import {
   isValidPetDocumentId,
   PetDocument,
 } from "~/domain/models/pet/PetDocument";
-import { GetPetDocumentsUseCase } from "~/domain/useCases/pet/GetPetDocumentsUseCase";
+import { PetDocumentsUseCase } from "~/domain/useCases/pet/PetDocumentsUseCase";
 import { requireAuthToken } from "~/util/authUtil";
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
@@ -21,7 +21,7 @@ export const loader = (({ params }) => {
   );
 
   const authToken = requireAuthToken();
-  const useCase = new GetPetDocumentsUseCase(authToken);
+  const useCase = new PetDocumentsUseCase(authToken);
 
   return defer({
     id: documentType,

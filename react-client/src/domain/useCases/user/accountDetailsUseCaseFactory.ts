@@ -4,7 +4,7 @@ import { ENABLE_MOCK } from "~/util/envUtil";
 import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import { MockAccountDetailsCase } from "./MockAccountDetailsUseCase";
 
-export default function (
+export default function accountDetailsUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
 ): AccountDetailsRepository {

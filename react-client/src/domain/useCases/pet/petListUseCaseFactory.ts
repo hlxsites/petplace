@@ -4,7 +4,7 @@ import { ENABLE_MOCK } from "~/util/envUtil";
 import { GetPetsListUseCase } from "./GetPetsListUseCase";
 import { MockGetPetsListUseCase } from "./MockGetPetsListUseCase";
 
-export default function (
+export default function petListUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
 ): GetPetsListRepository {

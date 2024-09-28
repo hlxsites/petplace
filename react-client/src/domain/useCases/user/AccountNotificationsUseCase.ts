@@ -45,14 +45,12 @@ export class AccountNotificationsUseCase
     const zipCode = readJwtClaim()?.postalCode;
     if (!zipCode) return false;
     const body = convertToServerAccountNotifications(data);
-    console.log("🚀 ~ body", body);
 
     try {
       if (serverSchema.safeParse(body).success) {
         const result = await this.httpClient.put("adopt/api/User", {
           body: JSON.stringify({ ...body, ZipCode: zipCode }),
         });
-        console.log("🚀 ~ result", result);
 
         if (result.statusCode === 204) return true;
       }

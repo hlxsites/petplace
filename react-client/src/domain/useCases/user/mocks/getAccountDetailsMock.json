@@ -1,7 +1,22 @@
 {
   "Email": "augustus.ok@email.com",
   "FirstName": "Augustus",
-  "PhoneNumber": "(234) 345 6876",
   "LastName": "Waters",
-  "ZipCode": "23456"
+  "ZipCode": "23456",
+  "Address": {
+      "Unit": "",
+      "Street": "808 Benninghaus Rd",
+      "Intersection": null,
+      "City": "Baltimore",
+      "PostalCode": "21212-3943",
+      "Country": "US",
+      "StateProvince": "MD"
+    },
+  "PhoneType": "BusinessPhone",
+  "PhoneNumber": "71 988776655",
+  "HomePhone": "416-709-5781",
+  "CellularPhone": "",
+  "BusinessPhone": "71 988776655",
+  "ContactConsent": true,
+  "InformationReleaseConsent": false
 }
