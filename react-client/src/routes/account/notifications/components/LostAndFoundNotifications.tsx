@@ -1,67 +1,75 @@
 import { Card, Dialog, Title } from "~/components/design-system";
 import { ViewNotifications } from "../../components/ViewNotifications";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 import { NotificationsDialogContent } from "../../components/NotificationsDialogContent";
+import { useAccountNotificationsIndexViewModel } from "../useAccountNotificationsIndexViewModel";
 
-export type LostAndFoundNotificationsProps = {
-  notifications: LostPetUpdateModel[];
-  getLostPetNotificationDetails?: (
-    notification: LostPetUpdateModel
-  ) => Promise<LostPetUpdateModel | null>;
-};
+export const LostAndFoundNotifications = () => {
+  const { isExternalLogin, lostPetsHistory, getLostPetNotification } =
+    useAccountNotificationsIndexViewModel();
 
-export const LostAndFoundNotifications = ({
-  notifications = [],
-  getLostPetNotificationDetails,
-}: LostAndFoundNotificationsProps) => {
   const [selectedNotification, setSelectedNotification] =
     useState<LostPetUpdateModel | null>(null);
 
+  if (!isExternalLogin) return null;
+
   return (
-    <>
-      <Card>
-        <div className="p-xxlarge">
-          <div className="flex items-center justify-between pb-large">
-            <Title level="h3">Lost & Found notifications</Title>
-          </div>
-
-          {!!notifications.length && (
-            <Card>
-              <div className="p-large">
-                {notifications.map(renderNotification)}
-              </div>
-            </Card>
-          )}
-        </div>
-      </Card>
-
-      {renderNotificationDialog()}
-    </>
+    <SuspenseAwait resolve={lostPetsHistory}>
+      {renderLostPetUpdateModel}
+    </SuspenseAwait>
   );
 
-  function renderNotification(notification: LostPetUpdateModel, index: number) {
-    const { date, id, foundedBy, petName } = notification;
-    const isLast = notifications.length === index + 1;
-
-    const dividerElement = (() => {
-      if (isLast) return null;
-      return <hr className="-mx-[10%] border-neutral-300" />;
-    })();
-
+  function renderLostPetUpdateModel(notifications: LostPetUpdateModel[]) {
+    console.log("notifications", notifications);
     return (
-      <div key={`${petName}-${id}`}>
-        <ViewNotifications
-          dateFoundOrLost={date}
-          foundedBy={foundedBy?.finderName}
-          onClick={() => onOpenDialog(notification)}
-          petName={petName}
-        />
-        {dividerElement}
-      </div>
+      <>
+        <Card>
+          <div className="p-xxlarge">
+            <div className="flex items-center justify-between pb-large">
+              <Title level="h3">Lost & Found notifications</Title>
+            </div>
+
+            {!!notifications.length && (
+              <Card>
+                <div className="p-large">
+                  {notifications.map(renderNotification)}
+                </div>
+              </Card>
+            )}
+          </div>
+        </Card>
+
+        {renderNotificationDialog()}
+      </>
     );
+
+    function renderNotification(
+      notification: LostPetUpdateModel,
+      index: number
+    ) {
+      const { communicationId, date, foundedBy, petName } = notification;
+      const isLast = notifications.length === index + 1;
+
+      const dividerElement = (() => {
+        if (isLast) return null;
+        return <hr className="-mx-[10%] border-neutral-300" />;
+      })();
+
+      return (
+        <Fragment key={communicationId}>
+          <ViewNotifications
+            dateFoundOrLost={date}
+            foundedBy={foundedBy?.finderName}
+            onClick={() => onOpenDialog(notification)}
+            petName={petName}
+          />
+          {dividerElement}
+        </Fragment>
+      );
+    }
   }
 
   function renderNotificationDialog() {
@@ -78,9 +86,7 @@ export const LostAndFoundNotifications = ({
         trigger={undefined}
         isTitleResponsive
       >
-        <SuspenseAwait
-          resolve={getLostPetNotificationDetails?.(selectedNotification)}
-        >
+        <SuspenseAwait resolve={getLostPetNotification?.(selectedNotification)}>
           {(selectedNotificationDetails) =>
             !!selectedNotificationDetails && (
               <NotificationsDialogContent

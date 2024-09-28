@@ -1,27 +1,9 @@
-import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import {
-  Card,
-  DisplayUncontrolledForm,
-  Title,
-} from "~/components/design-system";
+import { Card, Title } from "~/components/design-system";
 
-import { notificationsFormSchema } from "../form/notificationForm";
-import {
-  buildAccountNotifications,
-  getAccountNotificationsData,
-} from "../util/formDataUtil";
+import { AccountNotificationsPreferencesForm } from "./components/AccountNotificationsPreferencesForm";
 import { LostAndFoundNotifications } from "./components/LostAndFoundNotifications";
-import { useAccountNotificationsIndexViewModel } from "./useAccountNotificationsIndexViewModel";
 
 export const AccountNotificationsIndex = () => {
-  const {
-    accountNotifications,
-    isExternalLogin,
-    lostPetsHistory,
-    getLostPetNotification,
-    onSubmitAccountNotifications,
-  } = useAccountNotificationsIndexViewModel();
-
   return (
     <div className="mt-xxxlarge grid gap-large">
       <Title level="h2" size="24">
@@ -29,33 +11,10 @@ export const AccountNotificationsIndex = () => {
       </Title>
       <Card role="region">
         <div className="p-xxlarge">
-          <SuspenseAwait resolve={accountNotifications}>
-            {(accountNotifications) => (
-              <DisplayUncontrolledForm
-                onSubmit={({ values }) => {
-                  onSubmitAccountNotifications?.(
-                    buildAccountNotifications(values)
-                  );
-                }}
-                schema={notificationsFormSchema}
-                initialValues={getAccountNotificationsData(
-                  accountNotifications
-                )}
-              />
-            )}
-          </SuspenseAwait>
+          <AccountNotificationsPreferencesForm />
         </div>
       </Card>
-      {isExternalLogin && (
-        <SuspenseAwait resolve={lostPetsHistory}>
-          {(lostPetsHistory) => (
-            <LostAndFoundNotifications
-              notifications={lostPetsHistory || []}
-              getLostPetNotificationDetails={getLostPetNotification}
-            />
-          )}
-        </SuspenseAwait>
-      )}
+      <LostAndFoundNotifications />
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { requireAuthToken } from "~/util/authUtil";
 
@@ -54,6 +53,3 @@ export const useAccountNotificationsIndexViewModel = () => {
     getLostPetNotification,
   };
 };
-
-export const useAccountNotificationsIndexContext = () =>
-  useOutletContext<ReturnType<typeof useAccountNotificationsIndexViewModel>>();
