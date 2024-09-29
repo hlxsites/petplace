@@ -41,7 +41,7 @@ const requiredPhoneInput: ElementInputPhone = {
   id: baseAccountDetailsIds.phone,
   label: "Phone Number",
   requiredCondition: {
-    inputId: "phone-secondary",
+    inputId: baseAccountDetailsIds.secondaryPhone,
     type: "null",
     value: "",
   },
@@ -50,8 +50,24 @@ const requiredPhoneInput: ElementInputPhone = {
 
 const optionalPhoneInput: ElementInputPhone = {
   elementType: "input",
+  disallowedTypes: ["Home"],
   id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
+  requiredCondition: {
+    operator: "and",
+    conditions: [
+      {
+        inputId: baseAccountDetailsIds.phone,
+        type: "null",
+        value: "",
+      },
+      {
+        inputId: baseAccountDetailsIds.secondaryPhone,
+        type: "exists",
+        value: "",
+      },
+    ],
+  },
   type: "phone",
 };
 
