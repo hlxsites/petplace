@@ -1,16 +1,16 @@
-import { Button, Text } from "~/components/design-system";
+import { LinkButton, Text } from "~/components/design-system";
 
 export type ViewNotificationsProps = {
   dateFoundOrLost: number;
   foundedBy?: string;
-  onClick?: () => void;
+  notificationId: string;
   petName: string;
 };
 
 export const ViewNotifications = ({
   dateFoundOrLost,
   foundedBy,
-  onClick,
+  notificationId,
   petName,
 }: ViewNotificationsProps) => {
   // TODO use parseDate after API defines that this is string datetime
@@ -26,14 +26,14 @@ export const ViewNotifications = ({
       </div>
 
       <div className="flex justify-end pt-medium lg:pt-0">
-        <Button
+        <LinkButton
           className="text-orange-300-contrast"
           iconLeft="eye"
-          onClick={onClick}
           variant="link"
+          to={notificationId}
         >
           View
-        </Button>
+        </LinkButton>
       </div>
     </div>
   );

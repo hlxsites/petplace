@@ -21,7 +21,7 @@ describe("Dialog", () => {
   it("should apply correct class names for dialog", () => {
     getRenderer();
     expect(getByRole("dialog")).toHaveClass(
-      "fixed inset-0 z-50 m-auto max-h-max max-w-max rounded-2xl bg-neutral-white p-xlarge ease-out"
+      "fixed inset-0 z-50 m-auto max-h-fit max-w-max rounded-2xl bg-neutral-white p-xlarge ease-out"
     );
   });
 

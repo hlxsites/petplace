@@ -7,11 +7,8 @@ import { AdditionalProtectionSection } from "~/components/Membership/sections/Ad
 import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
 import { CheckoutProductsSection } from "~/components/Membership/sections/CheckoutProductsSection";
 import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
-import { useCheckoutProductsViewModel } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
-  const { products } = useCheckoutProductsViewModel();
-
   // TODO: get plans correctly and uncomment the onClearCart
   // const { plans } = useCheckoutIndexViewModel();
 
@@ -28,7 +25,7 @@ export const ProductsIndex = () => {
           <AdditionalProtectionSection onClick={onOpenCart} />
           <div className="grid gap-large">
             <OptInsSection />
-            {products && <CheckoutProductsSection products={products} />}
+            <CheckoutProductsSection />
             <Button fullWidth>Proceed to checkout</Button>
           </div>
           <CheckoutInfoSection />

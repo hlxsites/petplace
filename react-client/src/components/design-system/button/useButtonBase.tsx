@@ -31,7 +31,7 @@ function useButtonBase({
         isSecondary,
       "bg-orange-100 text-orange-500": isTertiary,
 
-      "!cursor-not-allowed hover:!bg-inherit text-neutral-500 !bg-transparent":
+      "!cursor-not-allowed hover:!bg-background-inactive text-neutral-500 !bg-background-inactive text-text-inactive":
         disabled,
       "w-full": fullWidth,
       loading: isLoading,

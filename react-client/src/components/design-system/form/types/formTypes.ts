@@ -169,9 +169,13 @@ export type ElementInputText = InputCommon & {
   type: "text" | "email" | "password" | "number";
 };
 
+export const AVAILABLE_PHONE_TYPES = ["Home", "Mobile", "Work"] as const;
+type PhoneType = (typeof AVAILABLE_PHONE_TYPES)[number];
+
 export type ElementInputPhone = InputCommon & {
   defaultType?: string;
   disabledType?: ConditionExpression;
+  disallowedTypes?: PhoneType[];
   hideType?: ConditionExpression;
   type: "phone";
 };

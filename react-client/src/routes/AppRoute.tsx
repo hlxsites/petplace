@@ -1,5 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { loader as AccountNotificationIdLoader } from "./account/notifications/notificationId/useNotificationsIdViewModel";
+import { loader as AccountNotificationsIndexLoader } from "./account/notifications/useAccountNotificationsIndexViewModel";
 import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
+import { loader as AccountRootLoader } from "./account/useAccountRootViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
@@ -15,7 +18,11 @@ import { lazy } from "react";
 import { IS_DEV_ENV } from "~/util/envUtil";
 import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
+import { AccountNotificationsIndex } from "./account/notifications/AccountNotificationsIndex";
+import { AccountNotificationId } from "./account/notifications/notificationId/AccountNotificationId";
+import { AccountPaymentInformationIndex } from "./account/payment-information/AccountPaymentInformationIndex";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
+import { CheckoutProductsLayout } from "./checkout/products/CheckoutProductsLayout";
 import { ProductsIndex } from "./checkout/products/ProductsIndex";
 import { loader as CheckoutProductsIndexLoader } from "./checkout/products/useCheckoutProductsViewModel";
 import { loader as CheckoutIndexLoader } from "./checkout/useCheckoutIndexViewModel";
@@ -40,23 +47,34 @@ const routes: PetPlaceRouteObject[] = [
       {
         element: <AccountRoot />,
         id: "account",
-        loader: AccountIndexLoader,
+        loader: AccountRootLoader,
         path: AppRoutePaths.account,
         children: [
           {
             element: <AccountIndex />,
             id: "accountIndex",
+            loader: AccountIndexLoader,
             index: true,
           },
           {
+            element: <AccountNotificationsIndex />,
             id: "accountNotifications",
+            loader: AccountNotificationsIndexLoader,
             path: AppRoutePaths.accountNotifications,
-            element: <AccountIndex />,
+            shouldRevalidate: () => false,
+            children: [
+              {
+                id: "accountNotificationId",
+                element: <AccountNotificationId />,
+                loader: AccountNotificationIdLoader,
+                path: AppRoutePaths.accountNotificationId,
+              },
+            ],
           },
           {
+            element: <AccountPaymentInformationIndex />,
             id: "accountPayment",
             path: AppRoutePaths.accountPayment,
-            element: <AccountIndex />,
           },
         ],
       },
@@ -143,10 +161,18 @@ const routes: PetPlaceRouteObject[] = [
             element: <CheckoutIndex />,
           },
           {
+            element: <CheckoutProductsLayout />,
             id: "products",
-            element: <ProductsIndex />,
             loader: CheckoutProductsIndexLoader,
             path: AppRoutePaths.products,
+            shouldRevalidate: () => false,
+            children: [
+              {
+                id: "productsIndex",
+                index: true,
+                element: <ProductsIndex />,
+              },
+            ],
           },
         ],
       },

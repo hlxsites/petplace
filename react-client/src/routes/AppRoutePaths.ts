@@ -4,6 +4,7 @@ export const AppRoutePaths = {
   root: "/",
   account: "account",
   accountNotifications: "notifications",
+  accountNotificationId: ":notificationId",
   accountPayment: "payment-information",
   addNewPet: "add",
   checkout: "checkout",
@@ -35,4 +36,5 @@ export const AppRoutePathsIndexes = {
   myPetsIndex: undefined,
   petProfileIndex: undefined,
   playgroundIndex: undefined,
+  productsIndex: undefined,
 } as const;

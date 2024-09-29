@@ -174,7 +174,6 @@ export const LostPetIndex = () => {
           }}
           schema={formSchema}
           variables={{
-            countryOptions: ["Canada", "United States"],
             petOptions: pets.map((pet) => pet.name),
             stateOptions: [],
           }}

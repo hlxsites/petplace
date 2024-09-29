@@ -1,3 +1,4 @@
+import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { CommonCartItem } from "~/domain/models/cart/CartModel";
@@ -54,3 +55,6 @@ export const useCheckoutProductsViewModel = () => {
     products,
   };
 };
+
+export const useCheckoutProductsViewModelContext = () =>
+  useOutletContext<ReturnType<typeof useCheckoutProductsViewModel>>();

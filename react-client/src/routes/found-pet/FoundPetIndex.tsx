@@ -151,7 +151,6 @@ export const FoundPetIndex = () => {
           }}
           schema={formSchema}
           variables={{
-            countryOptions: ["Canada", "United States"],
             stateOptions: [],
           }}
         />
