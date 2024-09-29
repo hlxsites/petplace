@@ -1,15 +1,11 @@
 import { Text, Title } from "~/components/design-system";
 import { ButtonWithBadge } from "~/components/design-system/button/ButtonWithBadge";
+import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 
-type AdditionalProtectionSectionProps = {
-  cartItemsLength?: number;
-  onClick?: () => void;
-};
+export const AdditionalProtectionSection = () => {
+  const { cartItems, onOpenCart } = useCheckoutProductsViewModelContext();
+  const cartItemsLength = cartItems?.length;
 
-export const AdditionalProtectionSection = ({
-  cartItemsLength,
-  onClick,
-}: AdditionalProtectionSectionProps) => {
   return (
     <div className="relative flex w-full justify-between">
       <div>
@@ -26,7 +22,7 @@ export const AdditionalProtectionSection = ({
           iconProps={{ className: "text-orange-300-contrast" }}
           iconLeft="shoppingCart"
           badge={cartItemsLength}
-          onClick={onClick}
+          onClick={onOpenCart}
         >
           Shopping cart
         </ButtonWithBadge>

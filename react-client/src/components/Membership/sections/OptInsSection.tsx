@@ -1,18 +1,12 @@
 import { Button, Card, Checkbox, Title } from "~/components/design-system";
+import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 import { CheckoutServicesDrawer } from "../CheckoutServicesDrawer";
 import { useServicesDetails } from "../hooks/useServicesDetails";
 
-type OptInsSectionProps = {
-  autoRenew: boolean;
-  onClick: () => void;
-  optInLabel: string;
-};
+export const OptInsSection = () => {
+  const { autoRenew, onUpdateOptIn, optInLabel } =
+    useCheckoutProductsViewModelContext();
 
-export const OptInsSection = ({
-  autoRenew,
-  onClick,
-  optInLabel,
-}: OptInsSectionProps) => {
   const { items, goBack, openServiceDetails } = useServicesDetails();
 
   return (
@@ -25,7 +19,7 @@ export const OptInsSection = ({
               id="opt-in-renew"
               label={optInLabel}
               checked={autoRenew}
-              onClick={onClick}
+              onClick={onUpdateOptIn}
             />
             <Button
               className="text-sm min-w-[90px] font-franklin text-orange-300-contrast"

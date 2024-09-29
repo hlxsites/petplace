@@ -1,23 +1,19 @@
+import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 import { Drawer, Text } from "../design-system";
 import { CartFooter } from "./CartFooter";
 import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
 
-import { CommonCartItem } from "~/domain/models/cart/CartModel";
+export const CartDrawer = () => {
+  const { cartItems, isOpenCart, onCloseCart, subtotal } =
+    useCheckoutProductsViewModelContext();
 
-type CartDrawerProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  items?: CommonCartItem[];
-  subtotal: string;
-};
-
-export const CartDrawer = ({ items, subtotal, ...props }: CartDrawerProps) => {
   return (
     <Drawer
       id="cart-drawer"
       ariaLabel="Cart Drawer"
-      {...props}
+      isOpen={isOpenCart}
+      onClose={onCloseCart}
       trigger={undefined}
       width={400}
     >
@@ -28,7 +24,7 @@ export const CartDrawer = ({ items, subtotal, ...props }: CartDrawerProps) => {
             Items
           </Text>
 
-          {items?.map((item) => (
+          {cartItems?.map((item) => (
             <CartItemCard
               key={item.id}
               // onUpdateQuantity={onUpdateQuantity}

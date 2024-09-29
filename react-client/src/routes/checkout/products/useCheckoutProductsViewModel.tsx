@@ -75,6 +75,8 @@ export const useCheckoutProductsViewModel = () => {
   // TODO: the initial state should be from get
   const [autoRenew, setAutoRenew] = useState<boolean>(selectedPlan.autoRenew);
 
+  const [isOpenCart, setIsOpenCart] = useState(false);
+
   const onUpdateCartMembership = useCallback(
     (newMembership: CommonCartItem) => {
       setCartItems((prevState) => {
@@ -176,10 +178,21 @@ export const useCheckoutProductsViewModel = () => {
     return OPT_IN_LABEL[selectedPlan.type] ?? OPT_IN_LABEL["default"];
   }
 
+  function onCloseCart() {
+    setIsOpenCart(false);
+  }
+
+  function onOpenCart() {
+    setIsOpenCart(true);
+  }
+
   return {
     autoRenew,
     cartItems,
+    isOpenCart,
     optInLabel: getOptInLabel(),
+    onCloseCart,
+    onOpenCart,
     onUpdateCartProduct,
     onUpdateQuantity,
     onUpdateOptIn,
