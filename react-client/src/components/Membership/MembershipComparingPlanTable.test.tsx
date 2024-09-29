@@ -51,19 +51,19 @@ function getRenderer({ plans = PLANS, rows = ROWS }: Partial<Props> = {}) {
 // Mock data
 const PLANS: Props["plans"] = [
   {
-    id: "AnnualProduct",
+    hardCodedPlanId: "AnnualMembership",
     comparePlansButtonLabel: "Action 1",
     isHighlighted: false,
     title: "Test 1",
   },
   {
-    id: "PLH_000007",
+    hardCodedPlanId: "LPMMembership",
     comparePlansButtonLabel: "Action 2",
     isHighlighted: true,
     title: "Test 2",
   },
   {
-    id: "LPMPLUSProduct",
+    hardCodedPlanId: "LPMPlusMembership",
     comparePlansButtonLabel: "Action 3",
     isHighlighted: false,
     title: "Test 3",
@@ -75,13 +75,13 @@ const ROWS = [
     label: "Label 1",
     title: "Title 1",
     availableColumns: [
-      "PLH_000007",
-      "LPMPLUSProduct",
+      "LPMMembership",
+      "LPMPlusMembership",
     ] satisfies MembershipPlanId[],
   },
   {
     label: "Label 2",
     title: "Title 2",
-    availableColumns: ["AnnualProduct"] satisfies MembershipPlanId[],
+    availableColumns: ["AnnualMembership"] satisfies MembershipPlanId[],
   },
 ];

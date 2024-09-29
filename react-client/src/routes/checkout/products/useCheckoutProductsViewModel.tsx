@@ -7,6 +7,7 @@ import getCheckoutFactory from "~/domain/useCases/checkout/getCheckoutFactory";
 import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
+import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
@@ -30,11 +31,11 @@ export const loader = (async ({ request }) => {
   const selectedPlanItem = plans.find((item) => item.id === plan);
   invariantResponse(selectedPlanItem, "plan is required");
 
-  const isService = (type: string): boolean => {
+  const isService = (id: MembershipPlanId): boolean => {
     return (
-      type === "AnnualProduct" ||
-      type === "LPMPLUSProduct" ||
-      type === "LPMProduct"
+      id === "AnnualMembership" ||
+      id === "LPMPlusMembership" ||
+      id === "LPMMembership"
     );
   };
 
@@ -46,7 +47,7 @@ export const loader = (async ({ request }) => {
     price: selectedPlanItem.price,
     quantity: 1,
     type: selectedPlanItem.type,
-    isService: isService(selectedPlanItem.type),
+    isService: isService(selectedPlanItem.hardCodedPlanId),
   };
 
   const productsUseCase = getProductsFactory(authToken);

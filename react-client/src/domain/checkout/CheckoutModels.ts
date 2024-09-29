@@ -3,10 +3,16 @@ export type MembershipDescriptionOffer = {
   offerLabel: string;
 };
 
+export type MembershipPlanId =
+  | "AnnualMembership"
+  | "LPMMembership"
+  | "LPMPlusMembership";
+
 export type MembershipInfo = {
   buttonLabel: string;
   comparePlansButtonLabel: string;
   id: string;
+  hardCodedPlanId: MembershipPlanId;
   isHighlighted?: boolean;
   infoFooter?: string;
   membershipDescriptionOffers?: MembershipDescriptionOffer[];
@@ -16,11 +22,6 @@ export type MembershipInfo = {
   title: string;
   type: string;
 };
-
-export type MembershipPlanId =
-  | "AnnualProduct"
-  | "PLH_000007"
-  | "LPMPLUSProduct";
 
 export type CheckoutQueryReturnData = {
   plans: MembershipInfo[];

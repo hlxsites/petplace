@@ -19,6 +19,7 @@ const membershipProductSchema = z.object({
   ItemType: z.string().nullish(),
   RenewalPrice: z.string().nullish(),
   SalesPrice: z.string().nullish(),
+  UiName: z.string().nullish(),
 });
 
 const checkoutSchema = z.object({
@@ -61,9 +62,19 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
           if (!planData) return;
 
           const membershipPlan = convertMembershipKeyToMembershipPlanId(key);
+          if (!membershipPlan) {
+            console.error(
+              "Failed to convert key to hardcoded membership plan id",
+              { key }
+            );
+            return;
+          }
 
           const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[membershipPlan];
-          if (!hardCodedPlan) return;
+          if (!hardCodedPlan) {
+            console.error("Failed to find hard-coded plan", { membershipPlan });
+            return;
+          }
 
           // Shouldn't be doing this here, this should be handled by the server
           // However, we're trying to protect the FE code from the server's data
@@ -75,7 +86,17 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
             return;
           }
 
-          const price = planData.SalesPrice || planData.ItemPrice || "-";
+          const id = planData.ItemId;
+          const price = planData.SalesPrice || planData.ItemPrice;
+
+          // Skip the plan if the id or the price is not available
+          if (!id || !price) {
+            console.error("Membership doesn't include required props", {
+              id,
+              price,
+            });
+            return;
+          }
 
           const isHighlighted = (() => {
             if (typeof planData.IsMostPopular === "boolean") {
@@ -87,10 +108,10 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
 
           plans.push({
             ...hardCodedPlan,
-            id: planData.ItemId || hardCodedPlan.id,
+            id,
             isHighlighted,
             price,
-            title: planData.ItemName || hardCodedPlan.title,
+            title: planData.UiName || hardCodedPlan.title,
             type: planData.ItemType ?? hardCodedPlan.type,
           });
         }
@@ -104,16 +125,20 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
   };
 }
 
-function convertMembershipKeyToMembershipPlanId(key: string): MembershipPlanId {
+function convertMembershipKeyToMembershipPlanId(
+  key: string
+): MembershipPlanId | null {
   const lowercasedKey = key.toLowerCase();
 
   // This code is fragile, but it's the best we can do with the current server data
-
   if (lowercasedKey.includes("annual")) {
-    return "AnnualProduct";
+    return "AnnualMembership";
   }
   if (lowercasedKey.includes("lpmplus")) {
-    return "LPMPLUSProduct";
+    return "LPMPlusMembership";
   }
-  return "PLH_000007";
+  if (lowercasedKey.includes("lpm")) {
+    return "LPMMembership";
+  }
+  return null;
 }

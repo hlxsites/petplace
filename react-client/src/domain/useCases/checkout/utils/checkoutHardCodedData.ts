@@ -26,10 +26,11 @@ const LIFETIME_LIST_OFFERS = addIconToOffers(5);
 
 export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
   {
-    AnnualProduct: {
+    AnnualMembership: {
       buttonLabel: "Get 1 Year Protection",
       comparePlansButtonLabel: "Get Annual",
-      id: "AnnualProduct",
+      id: "Annual Plan-DOGS",
+      hardCodedPlanId: "AnnualMembership",
       membershipDescriptionOffers: ANNUAL_LIST_OFFERS,
       price: "$45.95",
       priceInfo: "For the first year, $19.95/year thereafter",
@@ -37,10 +38,11 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       title: "Annual Protection",
       type: "AnnualProduct",
     },
-    PLH_000007: {
+    LPMMembership: {
       buttonLabel: "Get the Best Value",
       comparePlansButtonLabel: "Get Lifetime",
       id: "PLH_000007",
+      hardCodedPlanId: "LPMMembership",
       isHighlighted: true,
       infoFooter: "* Complimentary for 1 year",
       membershipDescriptionOffers: LIFETIME_LIST_OFFERS,
@@ -50,10 +52,11 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       title: "abc",
       type: "LPMProduct",
     },
-    LPMPLUSProduct: {
+    LPMPlusMembership: {
       buttonLabel: "Unlock Complete Care",
       comparePlansButtonLabel: "Get Lifetime +",
-      id: "LPMPLUSProduct",
+      id: "LPM-PLUS",
+      hardCodedPlanId: "LPMPlusMembership",
       infoFooter: "* Complimentary for 1 year",
       membershipDescriptionOffers: MEMBERSHIP_LIST_OFFERS,
       price: "$199.95",
@@ -65,13 +68,20 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
   };
 
 type CompareType = {
-  availableColumns: string[];
+  availableColumns: MembershipPlanId[];
   label: string;
   title: string;
 };
 
-const ALL_PLANS = ["AnnualMembership", "LPMMembership", "LPMPlusMembership"];
-const ONLY_LIFETIME_PLANS = ["LPMMembership", "LPMPlusMembership"];
+const ALL_PLANS: MembershipPlanId[] = [
+  "AnnualMembership",
+  "LPMMembership",
+  "LPMPlusMembership",
+];
+const ONLY_LIFETIME_PLANS: MembershipPlanId[] = [
+  "LPMMembership",
+  "LPMPlusMembership",
+];
 
 export const MEMBERSHIP_COMPARE_PLANS: CompareType[] = [
   {
