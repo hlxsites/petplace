@@ -7,9 +7,11 @@ export class MockCartCheckoutUseCase implements CartCheckoutRepository {
 
     return [
       {
+        autoRenew: false,
         id: "Test id",
         quantity: 1,
         type: "Annual product",
+        name: "Annual Protection",
       },
     ];
   };

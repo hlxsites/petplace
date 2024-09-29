@@ -2,6 +2,7 @@ import { CartItem } from "~/domain/models/cart/CartModel";
 
 export const mockCartItems: CartItem[] = [
   {
+    autoRenew: false,
     id: "pet-plan",
     name: "Lifetime",
     type: "service",
@@ -11,6 +12,7 @@ export const mockCartItems: CartItem[] = [
     quantity: 1,
   },
   {
+    autoRenew: false,
     id: "byte-tag",
     name: "ByteTag",
     type: "product",
