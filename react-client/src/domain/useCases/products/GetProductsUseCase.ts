@@ -8,7 +8,6 @@ import {
   ADDITIONAL_PRODUCTS,
   IMAGES_PRODUCTS,
 } from "./utils/productsHardCodedData";
-import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
 
 export class GetProductsUseCase implements GetProductsRepository {
   private httpClient: HttpClientRepository;
@@ -28,14 +27,14 @@ export class GetProductsUseCase implements GetProductsRepository {
 
   query = async (
     petId: string,
-    plan: MembershipPlanId
+    planId: string
   ): Promise<ProductDescription[] | null> => {
     try {
       const result = await this.httpClient.get(
         `api/Pet/${petId}/available-products`
       );
 
-      if (result.data) return convertToProductsList(result.data, plan);
+      if (result.data) return convertToProductsList(result.data, planId);
 
       return null;
     } catch (error) {
@@ -46,7 +45,7 @@ export class GetProductsUseCase implements GetProductsRepository {
 
 function convertToProductsList(
   data: unknown,
-  plan: MembershipPlanId
+  planId: string
 ): ProductDescription[] | null {
   if (!data || typeof data !== "object") return null;
 
@@ -56,6 +55,7 @@ function convertToProductsList(
       ItemId: z.string().nullish(),
       ItemName: z.string().nullish(),
       Price: z.string().nullish(),
+      SalesPrice: z.string().nullish(),
       Size: z.string().nullish(),
       SpeciesId: z.string().nullish(),
       UIName: z.string().nullish(),
@@ -73,16 +73,16 @@ function convertToProductsList(
   const products: ProductDescription[] = [];
 
   Object.keys(parsedData.MembershipProducts).forEach((key) => {
-    // This is a hardcoded check for the annual plan
+    // This is a hardcoded check for the annual planId
     // It should't be doing that on the FE code, but it's a requirement for now
-
-    const planId = convertMembershipPlanIdToMembershipKey(plan);
-
-    if (key.toLowerCase().includes("annual") && key === planId) {
+    if (key.toLowerCase().includes("annual")) {
       const annualProduct = parsedData.MembershipProducts[key] as Record<
         string,
         unknown
       > | null;
+
+      // Skip if the planId doesn't match the annual plan
+      if (planId !== annualProduct?.["ItemId"]) return null;
 
       if (!annualProduct) return null;
 
@@ -137,8 +137,15 @@ function convertToProductsList(
         productsData.forEach((item) => {
           const fullProductName = item.ItemName;
           const id = item.ItemId;
-          const price = item.Price;
-          if (!fullProductName || !id || !price) return;
+          const price = item.SalesPrice || item.Price;
+          if (!fullProductName || !id || !price) {
+            console.error("Product doesn't have required props", {
+              fullProductName,
+              id,
+              price,
+            });
+            return;
+          }
 
           const [productName] = fullProductName.split("-");
           const color = item?.Color?.toLowerCase() || "unknown";
@@ -199,17 +206,4 @@ function convertSizeToProductSize(size?: string | null): string {
   if (lowercaseSize === "small") return "S";
 
   return lowercaseSize;
-}
-
-function convertMembershipPlanIdToMembershipKey(id: MembershipPlanId) {
-  const lowercasedId = id.toLocaleLowerCase();
-  // This code is fragile, but it's the best we can do with the current server data
-
-  if (lowercasedId.includes("annual")) {
-    return "AnnualMembership";
-  }
-  if (lowercasedId.includes("plus")) {
-    return "LPMPlusMembership";
-  }
-  return "LPMMembership";
 }

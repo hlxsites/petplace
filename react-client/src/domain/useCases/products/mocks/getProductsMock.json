@@ -14,7 +14,15 @@
           "Price": "30.00",
           "SpeciesId": "Cat"
         }
-      ]
+      ],
+      "AutoRenew": true,
+      "DataAreaId": "phsu",
+      "ItemId": "Annual Plan-DOGS",
+      "ItemName": "Annual Maintenance Plan DOG",
+      "ItemType": "AnnualProduct",
+      "RenewalPrice": "19.95",
+      "SalesPrice": "59.95",
+      "UiName": "Annual Protection"
     },
     "Tags": {
       "ByteTag": [
@@ -30,7 +38,7 @@
           "ItemId": "item4",
           "ItemName": "Product 4",
           "Price": "25.00",
-          "Color":"Yellow",
+          "Color": "Yellow",
           "Size": "Large",
           "SpeciesId": "Dog"
         }

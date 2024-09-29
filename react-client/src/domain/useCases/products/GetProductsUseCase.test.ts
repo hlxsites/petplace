@@ -16,7 +16,7 @@ describe("GetProductsUseCase", () => {
   it("should return the correct products", async () => {
     const httpClient = new MockHttpClient({ data: getProductsMock });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId", "AnnualProduct");
+    const result = await sut.query("petId", "Annual Plan-DOGS");
 
     expect(result).toStrictEqual([
       {
