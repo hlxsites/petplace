@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { CartItem, CommonCartItem } from "~/domain/models/cart/CartModel";
 import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
@@ -186,3 +187,6 @@ export const useCheckoutProductsViewModel = () => {
     subtotal,
   };
 };
+
+export const useCheckoutProductsViewModelContext = () =>
+  useOutletContext<ReturnType<typeof useCheckoutProductsViewModel>>();

@@ -7,7 +7,6 @@ import { AdditionalProtectionSection } from "~/components/Membership/sections/Ad
 import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
 import { CheckoutProductsSection } from "~/components/Membership/sections/CheckoutProductsSection";
 import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
-import { useCheckoutProductsViewModel } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
   const {
@@ -35,7 +34,7 @@ export const ProductsIndex = () => {
               autoRenew={autoRenew}
               optInLabel={optInLabel}
             />
-            {products && <CheckoutProductsSection products={products} />}
+            <CheckoutProductsSection />
             <Button fullWidth>Proceed to checkout</Button>
           </div>
           <CheckoutInfoSection />

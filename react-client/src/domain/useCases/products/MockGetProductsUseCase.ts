@@ -7,9 +7,9 @@ export class MockGetProductsUseCase implements GetProductsRepository {
     const products: ProductDescription[] = [
       {
         availableColors: ["black"],
-        availableSizes: [],
+        availableSizes: ["One Size"],
         availableOptions: {
-          "black|": {
+          "black|One Size": {
             id: "ByteTag-Black R Cat",
             price: "19.95",
           },

@@ -1,9 +1,11 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import * as authUtil from "../../../util/authUtil";
 import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 
 jest.mock("~/util/authUtil", () => ({
+  checkIsExternalLogin: jest.fn(),
   readJwtClaim: jest.fn(),
 }));
 
@@ -11,15 +13,21 @@ jest.mock("~/util/authUtil", () => ({
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
 describe("AccountDetailsUseCase", () => {
-  describe("query", () => {
+  beforeEach(() => {
+    (authUtil.checkIsExternalLogin as jest.Mock).mockReset();
+  });
+
+  describe("GET", () => {
     it("should return null whenever it finds no data", async () => {
+      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
       const httpClient = new MockHttpClient({ data: null });
       const sut = makeSut(httpClient);
       const result = await sut.query();
       expect(result).toBeNull();
     });
 
-    it("should return account details", async () => {
+    it("should return internal account details", async () => {
+      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
       const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
       const sut = makeSut(httpClient);
       const result = await sut.query();
@@ -28,8 +36,32 @@ describe("AccountDetailsUseCase", () => {
         name: "Augustus",
         surname: "Waters",
         email: "augustus.ok@email.com",
-        phoneNumber: "(234) 345 6876",
-        zipCode: "23456",
+        defaultPhone: "71 988776655|Home",
+      });
+    });
+
+    it("should return external account details", async () => {
+      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(true);
+      const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
+      const sut = makeSut(httpClient);
+      const result = await sut.query();
+
+      expect(result).toStrictEqual({
+        address: {
+          address1: "808 Benninghaus Rd",
+          address2: "",
+          city: "Baltimore",
+          country: "US",
+          state: "MD",
+          zipCode: "21212-3943",
+        },
+        contactConsent: true,
+        defaultPhone: "71 988776655|Work",
+        email: "augustus.ok@email.com",
+        informationConsent: false,
+        name: "Augustus",
+        secondaryPhone: "416-709-5781|Home",
+        surname: "Waters",
       });
     });
 
@@ -54,13 +86,12 @@ describe("AccountDetailsUseCase", () => {
     });
   });
 
-  describe("mutate", () => {
+  describe("PUT", () => {
     const validAccountDetails = {
       name: "Jane",
       surname: "Doe",
       email: "jane.doe@example.com",
       phoneNumber: "555-1234|Home",
-      zipCode: "51234",
     };
 
     it("should update successfully without data returning", async () => {
