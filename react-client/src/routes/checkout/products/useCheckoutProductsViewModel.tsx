@@ -8,6 +8,7 @@ import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
 import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
+import { REDIRECT_TO_CHECKOUT_URL } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
@@ -187,11 +188,18 @@ export const useCheckoutProductsViewModel = () => {
     setIsOpenCart(true);
   }
 
+  const onContinueToCheckoutPayment = () => {
+    // TODO:  wait if there is a post request in progress
+
+    window.location.href = REDIRECT_TO_CHECKOUT_URL;
+  };
+
   return {
     autoRenew,
     cartItems,
     isOpenCart,
     optInLabel: getOptInLabel(),
+    onContinueToCheckoutPayment,
     onCloseCart,
     onOpenCart,
     onUpdateCartProduct,

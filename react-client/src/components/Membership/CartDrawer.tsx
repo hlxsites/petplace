@@ -5,8 +5,13 @@ import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
 
 export const CartDrawer = () => {
-  const { cartItems, isOpenCart, onCloseCart, subtotal } =
-    useCheckoutProductsViewModelContext();
+  const {
+    cartItems,
+    isOpenCart,
+    onContinueToCheckoutPayment,
+    onCloseCart,
+    subtotal,
+  } = useCheckoutProductsViewModelContext();
 
   return (
     <Drawer
@@ -33,7 +38,7 @@ export const CartDrawer = () => {
           ))}
         </div>
 
-        <CartFooter subtotal={subtotal} />
+        <CartFooter onClick={onContinueToCheckoutPayment} subtotal={subtotal} />
       </div>
     </Drawer>
   );

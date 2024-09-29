@@ -6,8 +6,10 @@ import { AdditionalProtectionSection } from "~/components/Membership/sections/Ad
 import { CheckoutInfoSection } from "~/components/Membership/sections/CheckoutInfoSection";
 import { CheckoutProductsSection } from "~/components/Membership/sections/CheckoutProductsSection";
 import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
+import { useCheckoutProductsViewModelContext } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
+  const { onContinueToCheckoutPayment } = useCheckoutProductsViewModelContext();
   return (
     <div className="min-h-[100dvh] bg-neutral-50">
       <CheckoutHeader />
@@ -17,7 +19,9 @@ export const ProductsIndex = () => {
           <div className="grid gap-large">
             <OptInsSection />
             <CheckoutProductsSection />
-            <Button fullWidth>Proceed to checkout</Button>
+            <Button fullWidth onClick={onContinueToCheckoutPayment}>
+              Proceed to checkout
+            </Button>
           </div>
           <CheckoutInfoSection />
         </div>
