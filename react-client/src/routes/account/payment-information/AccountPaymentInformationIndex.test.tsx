@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { AccountPaymentInformationIndex } from "./AccountPaymentInformationIndex";
 
 const { getByRole, getByText } = screen;
@@ -20,7 +21,7 @@ describe("PaymentInformationTabContent", () => {
       getByText(/Verify, update, or change your payment settings./i)
     ).toBeInTheDocument();
     expect(
-      getByRole("button", { name: /Manage payment settings/i })
+      getByRole("link", { name: /Manage payment settings/i })
     ).toBeInTheDocument();
   });
 
@@ -32,12 +33,14 @@ describe("PaymentInformationTabContent", () => {
     expect(
       getByText(/Direct link to your claim submissions on mypethealth.com./i)
     ).toBeInTheDocument();
-    expect(
-      getByRole("button", { name: /Submit a claim/i })
-    ).toBeInTheDocument();
+    expect(getByRole("link", { name: /Submit a claim/i })).toBeInTheDocument();
   });
 });
 
 function getRenderer() {
-  return render(<AccountPaymentInformationIndex />);
+  return render(
+    <MemoryRouter>
+      <AccountPaymentInformationIndex />
+    </MemoryRouter>
+  );
 }
