@@ -17,7 +17,7 @@ export const AdditionalProtectionSection = () => {
           Comprehensive Pet Safety.
         </Text>
       </div>
-      <div className="absolute bottom-[160px] right-10 lg:bottom-0">
+      <div className="absolute bottom-[160px] right-0 z-20 md:static lg:bottom-0">
         <ButtonWithBadge
           iconProps={{ className: "text-orange-300-contrast" }}
           iconLeft="shoppingCart"
