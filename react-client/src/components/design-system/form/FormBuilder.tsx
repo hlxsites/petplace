@@ -394,8 +394,19 @@ export const FormBuilder = ({
     value,
     type,
   }: ConditionCriteria): boolean {
-    // Get the current value from form values
-    const currentValue = values?.[inputId];
+    // Get the current value from form value
+    const targetInput = getInputSchemaFromFormSchema(inputId);
+
+    const currentValue: InputValue = (() => {
+      const curr = values[inputId];
+      if (!targetInput) return curr;
+
+      if (targetInput.type === "phone" && typeof curr === "string") {
+        return curr.split("|")[0];
+      }
+
+      return curr;
+    })();
 
     if (type === "contains") {
       if (typeof currentValue !== "string") {
@@ -506,6 +517,10 @@ export const FormBuilder = ({
 
     if (typeof value === "undefined") return false;
 
+    if (input.type === "phone" && typeof value === "string") {
+      return !!value.split("|")[0];
+    }
+
     if (Array.isArray(value)) return !!value.length;
 
     return !!value;
@@ -526,5 +541,23 @@ export const FormBuilder = ({
   function getInputId({ id, repeaterMetadata }: RenderedInput) {
     if (!repeaterMetadata) return id;
     return id.split("_repeater_")[0];
+  }
+
+  function getInputSchemaFromFormSchema(id: string): InputsUnion | null {
+    let targetInput: InputsUnion | null = null;
+
+    const findInput = (element: ElementUnion): boolean => {
+      if (element.elementType === "input" && element.id === id) {
+        targetInput = element;
+      } else if ("children" in element) {
+        element.children.some(findInput);
+      }
+
+      return !!targetInput;
+    };
+
+    schema.children.some(findInput);
+
+    return targetInput;
   }
 };
