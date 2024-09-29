@@ -3,6 +3,7 @@ import { classNames } from "~/util/styleUtil";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import Select from "./Select";
 import {
+  AVAILABLE_PHONE_TYPES,
   type ElementInputPhone,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
@@ -25,6 +26,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
       autoFocus,
       defaultType,
       disabledType,
+      disallowedTypes,
       hideType,
       id,
       onChange,
@@ -61,6 +63,14 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
       handleOnChange({ newValue: target.value });
     };
 
+    const phoneTypeOptions: string[] = (() => {
+      const options = [...AVAILABLE_PHONE_TYPES];
+      if (disallowedTypes) {
+        return options.filter((t) => !disallowedTypes.includes(t));
+      }
+      return options;
+    })();
+
     return (
       <InputAccessibilityWrapper id={id} {...rest}>
         {({ hasError, inputProps }) => {
@@ -74,7 +84,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
                   id="phone-category"
                   label="Contact category"
                   placeholder="Choose"
-                  options={["Home", "Mobile", "Work"]}
+                  options={phoneTypeOptions}
                   onChange={handleOnChangeType}
                   value={selectedType}
                 />
