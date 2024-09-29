@@ -1,10 +1,11 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
-import { CartCheckoutUseCase } from "./CartCheckoutUseCase";
 import { CommonCartItem } from "~/domain/models/cart/CartModel";
+import { CartCheckoutUseCase } from "./CartCheckoutUseCase";
 
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
 const VALID_CART_ITEM: CommonCartItem = {
+  autoRenew: false,
   id: "item1",
   name: "Pet Toy",
   price: "$10.00",

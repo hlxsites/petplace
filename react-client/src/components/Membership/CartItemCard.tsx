@@ -1,9 +1,9 @@
 import { CartItem } from "~/domain/models/cart/CartModel";
+import { CHECKOUT_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { Card, LinkButton, Text } from "../design-system";
 import { CartItemQuantityManager } from "./CartItemQuantityManager";
-import { CHECKOUT_FULL_ROUTE } from "~/routes/AppRoutePaths";
 
-type CartItemCardProps = CartItem;
+type CartItemCardProps = Omit<CartItem, "autoRenew" | "type">;
 export const CartItemCard = ({
   description,
   isService,
@@ -11,9 +11,13 @@ export const CartItemCard = ({
   petId,
   price,
   recurrence,
-  type,
   ...rest
 }: CartItemCardProps) => {
+  const onUpdateQuantity = (id: string, quantity: number) => {
+    // TODO: implement it
+    console.log(id, quantity);
+  };
+
   return (
     <Card role="listitem">
       <div className="flex flex-col gap-base p-base">
@@ -46,7 +50,12 @@ export const CartItemCard = ({
             </LinkButton>
           </div>
         )}
-        {!isService && <CartItemQuantityManager {...rest} />}
+        {!isService && (
+          <CartItemQuantityManager
+            {...rest}
+            onUpdateQuantity={onUpdateQuantity}
+          />
+        )}
       </div>
     </Card>
   );

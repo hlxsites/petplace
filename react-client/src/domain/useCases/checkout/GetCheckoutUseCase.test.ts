@@ -27,9 +27,9 @@ describe("GetCheckoutUseCase", () => {
     const mockData = {
       Country: "US",
       MembershipProducts: {
-        AnnualMembership: { SalesPrice: "45.95" },
-        LPMMembership: { ItemPrice: "99.95" },
-        LPMPlusMembership: { ItemPrice: "199.95" },
+        AnnualMembership: { ItemId: "annual", SalesPrice: "45.95" },
+        LPMMembership: { ItemId: "lifetime", ItemPrice: "99.95" },
+        LPMPlusMembership: { ItemId: "lifetimeplus", ItemPrice: "199.95" },
       },
     };
     const httpClient = new MockHttpClient({ data: mockData });
@@ -44,8 +44,8 @@ describe("GetCheckoutUseCase", () => {
     const mockData = {
       Country: "CA",
       MembershipProducts: {
-        LPMMembership: { ItemPrice: "99.95" },
-        LPMPlusMembership: { ItemPrice: "199.95" },
+        LPMMembership: { ItemId: "lifetime", ItemPrice: "99.95" },
+        LPMPlusMembership: { ItemId: "lifetimeplus", ItemPrice: "199.95" },
       },
     };
     const httpClient = new MockHttpClient({ data: mockData });
@@ -59,9 +59,9 @@ describe("GetCheckoutUseCase", () => {
   it("should default to US locale when Country is not provided", async () => {
     const mockData = {
       MembershipProducts: {
-        AnnualMembership: { SalesPrice: "45.95" },
-        LPMMembership: { ItemPrice: "99.95" },
-        LPMPlusMembership: { ItemPrice: "199.95" },
+        AnnualMembership: { ItemId: "annual", SalesPrice: "45.95" },
+        LPMMembership: { ItemId: "lifetime", ItemPrice: "99.95" },
+        LPMPlusMembership: { ItemId: "lifetimeplus", ItemPrice: "199.95" },
       },
     };
     const httpClient = new MockHttpClient({ data: mockData });
@@ -70,6 +70,40 @@ describe("GetCheckoutUseCase", () => {
 
     expect(result).not.toBeNull();
     expect(result?.plans).toHaveLength(3);
+  });
+
+  it("should skip the annual plan for Canada", async () => {
+    const mockData = {
+      Country: "CA",
+      MembershipProducts: {
+        AnnualMembership: { ItemId: "annual", SalesPrice: "45.95" },
+        LPMMembership: { ItemId: "lifetime", ItemPrice: "99.95" },
+        LPMPlusMembership: { ItemId: "lifetimeplus", ItemPrice: "199.95" },
+      },
+    };
+    const httpClient = new MockHttpClient({ data: mockData });
+    const sut = makeSut(httpClient);
+    const result = await sut.query("petId");
+
+    expect(result).not.toBeNull();
+    expect(result?.plans).toHaveLength(2);
+  });
+
+  it("should skip the plan if the id or the price is not available", async () => {
+    const mockData = {
+      Country: "US",
+      MembershipProducts: {
+        AnnualMembership: { ItemId: "annual" },
+        LPMMembership: { ItemPrice: "99.95" },
+        LPMPlusMembership: { ItemId: "lifetimeplus" },
+      },
+    };
+    const httpClient = new MockHttpClient({ data: mockData });
+    const sut = makeSut(httpClient);
+    const result = await sut.query("petId");
+
+    expect(result).not.toBeNull();
+    expect(result?.plans).toHaveLength(0);
   });
 });
 

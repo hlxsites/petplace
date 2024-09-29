@@ -3,9 +3,9 @@ import { IconButton, IconKeys, Text } from "../design-system";
 
 type CartItemQuantityManagerProps = {
   id: string;
+  onUpdateQuantity: (id: string, quantity: number) => void;
   purchaseLimit?: number;
   quantity: number;
-  // onUpdateQuantity: (id: string, quantity: number) => void;
 };
 
 type AddRemoveButtonVariation = "add" | "remove";
@@ -23,6 +23,7 @@ type ButtonVariables = Record<
 
 export const CartItemQuantityManager = ({
   id,
+  onUpdateQuantity,
   purchaseLimit,
   quantity,
 }: CartItemQuantityManagerProps) => {
@@ -87,10 +88,10 @@ export const CartItemQuantityManager = ({
   }
 
   function addOne() {
-    // TODO update quantity;
+    onUpdateQuantity(id, quantity + 1);
   }
 
   function removeOne() {
-    // TODO update quantity;
+    onUpdateQuantity(id, quantity - 1);
   }
 };
