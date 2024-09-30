@@ -9,11 +9,10 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
-  const accessToken = env.VITE_ROLLBAR_ACCESS_TOKEN;
   const version = env.VITE_APP_VERSION;
 
   const rollbarConfig = {
-    accessToken,
+    accessToken: env.ROLLBAR_SERVER_TOKEN,
     version,
     baseUrl: "www.petplace.com",
     ignoreUploadErrors: true,
