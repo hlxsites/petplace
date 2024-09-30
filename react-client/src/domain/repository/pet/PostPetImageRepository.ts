@@ -1,8 +1,5 @@
-export type MutationProps = {
-  petId: string;
-  petImage: File;
-};
+import { PetImageMutationInput } from "~/domain/models/pet/PetImage";
 
 export interface PostPetImageRepository {
-  mutate(props: MutationProps): Promise<boolean | null>;
+  mutate(props: PetImageMutationInput): Promise<boolean | null>;
 }

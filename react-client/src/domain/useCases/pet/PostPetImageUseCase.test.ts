@@ -2,12 +2,12 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PostPetImageUseCase } from "./PostPetImageUseCase";
 
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
-import { MutationProps } from "~/domain/repository/pet/PostPetImageRepository";
+import { PetImageMutationInput } from "~/domain/models/pet/PetImage";
 
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
-const DEFAULT_ARGS: MutationProps = {
+const DEFAULT_ARGS: PetImageMutationInput = {
   petId: "pet-id",
   petImage: new File(["file-bits"], "pet-image"),
 };

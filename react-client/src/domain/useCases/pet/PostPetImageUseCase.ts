@@ -1,8 +1,6 @@
+import { PetImageMutationInput } from "~/domain/models/pet/PetImage";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import {
-  MutationProps,
-  PostPetImageRepository,
-} from "~/domain/repository/pet/PostPetImageRepository";
+import { PostPetImageRepository } from "~/domain/repository/pet/PostPetImageRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
 export class PostPetImageUseCase implements PostPetImageRepository {
@@ -24,7 +22,7 @@ export class PostPetImageUseCase implements PostPetImageRepository {
   mutate = async ({
     petId,
     petImage,
-  }: MutationProps): Promise<boolean | null> => {
+  }: PetImageMutationInput): Promise<boolean | null> => {
     const formData = new FormData();
     formData.append("file", petImage);
 
@@ -35,7 +33,7 @@ export class PostPetImageUseCase implements PostPetImageRepository {
           body: formData,
         }
       );
-      
+
       if (result.data) return result.data as boolean;
 
       return null;
