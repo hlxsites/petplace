@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { CartItem } from "~/domain/models/cart/CartModel";
 import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
@@ -17,8 +17,11 @@ import {
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
+import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
+
+const CART_CONTENT_KEY = "cart";
 
 export const loader = (async ({ request }) => {
   const url = new URL(request.url);
@@ -74,10 +77,11 @@ export const loader = (async ({ request }) => {
 export const useCheckoutProductsViewModel = () => {
   const { savedCart, petId, postCart, products, selectedPlan } =
     useLoaderData<typeof loader>();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const [isOpenCart, setIsOpenCart] = useState(false);
+  const isOpenCart = searchParams.get(CONTENT_PARAM_KEY) === CART_CONTENT_KEY;
 
   const autoRenew = !!cartItems.find((item) => item.id === selectedPlan.id)
     ?.autoRenew;
@@ -198,11 +202,17 @@ export const useCheckoutProductsViewModel = () => {
   }
 
   function onCloseCart() {
-    setIsOpenCart(false);
+    setSearchParams((nextSearchParams) => {
+      nextSearchParams.delete(CONTENT_PARAM_KEY);
+      return nextSearchParams;
+    });
   }
 
   function onOpenCart() {
-    setIsOpenCart(true);
+    setSearchParams((nextSearchParams) => {
+      nextSearchParams.set(CONTENT_PARAM_KEY, CART_CONTENT_KEY);
+      return nextSearchParams;
+    });
   }
 
   const onContinueToCheckoutPayment = () => {
