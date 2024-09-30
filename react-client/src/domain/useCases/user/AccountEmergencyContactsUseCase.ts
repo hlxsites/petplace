@@ -26,7 +26,7 @@ export class AccountEmergencyContactsUseCase
   implements AccountEmergencyContactsRepository
 {
   private httpClient: HttpClientRepository;
-  private endpoint: string = "adopt/api/UserProfile/EmergencyContacts";
+  private endpoint: string = "adopt/api/UserProfile/EmergencyContact";
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -39,7 +39,7 @@ export class AccountEmergencyContactsUseCase
   query = async (): Promise<AccountEmergencyContactModel[] | []> => {
     try {
       const result = await this.httpClient.get(
-        this.endpoint
+        `${this.endpoint}s`
       );
       if (result.data) return convertToAccountEmergencyContact(result.data);
 
@@ -59,7 +59,7 @@ export class AccountEmergencyContactsUseCase
     try {
       if (isValid) {
         const result = await this.httpClient.post(
-          this.endpoint,
+          `${this.endpoint}s`,
           {
             body: JSON.stringify(body),
           }
@@ -121,7 +121,7 @@ function convertToAccountEmergencyContact(
     });
   });
 
-  return list.reverse();
+  return list;
 }
 
 function convertToServerEmergencyContact(
