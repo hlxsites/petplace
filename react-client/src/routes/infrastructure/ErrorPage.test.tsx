@@ -38,7 +38,7 @@ describe("ErrorPage", () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it("should render RootErrorPage when there is an error and no fallback", () => {
+  it("should render RootErrorPage when there is an error and no fallback provided", () => {
     mockedUseRouteError.mockReturnValue(new Error("Test error"));
 
     getRenderer();
