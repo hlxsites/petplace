@@ -52,6 +52,7 @@ type RenderedInput = Omit<
 export type FormBuilderProps = {
   schema: FormSchema;
   onChange: (values: FormValues) => void;
+  onDeleteRepeater?: (values: FormValues) => void;
   onSubmit: (props: OnSubmitProps) => void;
   values: FormValues;
 };
@@ -59,6 +60,7 @@ export type FormBuilderProps = {
 export const FormBuilder = ({
   schema,
   onChange: onChangeFormValues,
+  onDeleteRepeater,
   onSubmit,
   values,
 }: FormBuilderProps) => {
@@ -134,6 +136,7 @@ export const FormBuilder = ({
             onChange={(newValues) => {
               onChangeFormValues({ ...values, [element.id]: newValues });
             }}
+            onDelete={onDeleteRepeater}
             renderElement={renderElement}
             values={values}
           />
