@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { ProductDescription } from "~/domain/models/products/ProductModel";
+import { getProductPrice } from "~/domain/util/checkoutProductUtil";
 import { classNames } from "~/util/styleUtil";
 import { Button, Card, Text, Title } from "../design-system";
 import { CartItemImages } from "./CartItemImages";
@@ -7,38 +7,22 @@ import { CheckoutProductColorSize } from "./CheckoutProductColorSize";
 
 type CheckoutProductCardProps = {
   isAnnual?: boolean;
+  onChange: ({ color, size }: { color: string; size: string }) => void;
   onClickAddToCart: () => void;
   onClickMoreInfo: () => void;
   product: ProductDescription;
+  selectedColorSize: string;
 };
 
 export const CheckoutProductCard = ({
   isAnnual,
+  onChange,
   onClickAddToCart,
   onClickMoreInfo,
   product,
+  selectedColorSize,
 }: CheckoutProductCardProps) => {
-  const initialColorSizeState = (() => {
-    const availableColors = product.availableColors ?? [];
-    const availableSizes = product.availableSizes ?? [];
-
-    return `${availableColors[0] ?? ""}|${availableSizes[0] ?? ""}`;
-  })();
-
-  const [selectedColorSize, setSelectedColorSize] = useState<string>(
-    initialColorSizeState
-  );
-  const handleOnChange = ({ color, size }: { color: string; size: string }) => {
-    setSelectedColorSize(`${color}|${size}`);
-  };
-
-  const price = (() => {
-    const productOption = product.availableOptions[selectedColorSize];
-    if (productOption) return productOption.price;
-
-    // try the default option
-    return product.availableOptions?.["default"]?.price || null;
-  })();
+  const price = getProductPrice(product, selectedColorSize);
 
   const [selectedColor, selectedSize] = selectedColorSize.split("|");
   const imageElement = renderProductImage();
@@ -76,7 +60,7 @@ export const CheckoutProductCard = ({
           <CheckoutProductColorSize
             availableColors={product.availableColors ?? []}
             availableSizes={product.availableSizes ?? []}
-            onChange={handleOnChange}
+            onChange={onChange}
             selectedColor={selectedColor}
             selectedSize={selectedSize}
           />

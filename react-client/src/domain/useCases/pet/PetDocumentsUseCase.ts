@@ -5,6 +5,7 @@ import {
 } from "~/domain/models/pet/PetDocument";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { getFileExtension } from "~/util/stringUtil";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
@@ -30,7 +31,7 @@ export class PetDocumentsUseCase implements GetPetDocumentsRepository {
   }
 
   private handleError(error: unknown): [] {
-    console.error("PetDocumentsUseCase query error", error);
+    logError("PetDocumentsUseCase query error", error);
     return [];
   }
 
@@ -61,13 +62,13 @@ export class PetDocumentsUseCase implements GetPetDocumentsRepository {
       );
 
       if (result.error || !result.data) {
-        console.error("Error fetching document blob", result.error);
+        logError("Error fetching document blob", result.error);
         return null;
       }
 
       return result.data as Blob;
     } catch (error) {
-      console.error("Error fetching document blob", error);
+      logError("Error fetching document blob", error);
       return null;
     }
   };
@@ -79,13 +80,13 @@ export class PetDocumentsUseCase implements GetPetDocumentsRepository {
       );
 
       if ("error" in result) {
-        console.error("Error deleting document", result.error);
+        logError("Error deleting document", result.error);
         return false;
       }
 
       return result.statusCode === 204;
     } catch (error) {
-      console.error("Error deleting document", error);
+      logError("Error deleting document", error);
       return false;
     }
   };
@@ -108,13 +109,13 @@ export class PetDocumentsUseCase implements GetPetDocumentsRepository {
       });
 
       if ("error" in response) {
-        console.error("Error uploading document", response.error);
+        logError("Error uploading document", response.error);
         return false;
       }
 
       return response.statusCode >= 200 && response.statusCode < 300;
     } catch (error) {
-      console.error(
+      logError(
         "An unexpected error occurred while uploading the document",
         error
       );

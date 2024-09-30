@@ -11,7 +11,7 @@ type TableRow = {
 
 type Plan = Pick<
   MembershipInfo,
-  "comparePlansButtonLabel" | "id" | "isHighlighted" | "title"
+  "comparePlansButtonLabel" | "hardCodedPlanId" | "isHighlighted" | "title"
 >;
 
 type MembershipComparingPlanTableProps = {
@@ -62,15 +62,22 @@ export const MembershipComparingPlanTable = ({
   }[] = [];
   const columns: { id: string; title: string }[] = [];
 
-  plans.forEach(({ comparePlansButtonLabel, id, isHighlighted, title }) => {
-    actions.push({
-      id,
-      label: comparePlansButtonLabel,
+  plans.forEach(
+    ({
+      comparePlansButtonLabel,
+      hardCodedPlanId: id,
       isHighlighted,
-    });
+      title,
+    }) => {
+      actions.push({
+        id,
+        label: comparePlansButtonLabel,
+        isHighlighted,
+      });
 
-    columns.push({ id, title });
-  });
+      columns.push({ id, title });
+    }
+  );
 
   return (
     <div className="relative overflow-x-auto">

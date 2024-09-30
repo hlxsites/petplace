@@ -7,6 +7,7 @@ import {
 } from "../../models/user/UserModels";
 
 import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import {
@@ -53,7 +54,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
       return null;
     } catch (error) {
-      console.error("AccountDetailsUseCase query error", error);
+      logError("AccountDetailsUseCase query error", error);
       return null;
     }
   }
@@ -91,7 +92,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
       return false;
     } catch (error) {
-      console.error("AccountDetailsUseCase mutation error", error);
+      logError("AccountDetailsUseCase mutation error", error);
       return false;
     }
   };

@@ -3,7 +3,10 @@ import { classNames } from "~/util/styleUtil";
 import { Card, Icon, LinkButton, Text, Title } from "../design-system";
 import { useMembershipProductsLink } from "./hooks/useMembershipProductsLink";
 
-type MembershipCardProps = Omit<MembershipInfo, "comparePlansButtonLabel">;
+type MembershipCardProps = Omit<
+  MembershipInfo,
+  "comparePlansButtonLabel" | "hardCodedPlanId"
+>;
 
 export const MembershipCard = ({
   buttonLabel,

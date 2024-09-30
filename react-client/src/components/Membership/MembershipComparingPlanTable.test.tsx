@@ -51,19 +51,19 @@ function getRenderer({ plans = PLANS, rows = ROWS }: Partial<Props> = {}) {
 // Mock data
 const PLANS: Props["plans"] = [
   {
-    id: "AnnualMembership",
+    hardCodedPlanId: "AnnualMembership",
     comparePlansButtonLabel: "Action 1",
     isHighlighted: false,
     title: "Test 1",
   },
   {
-    id: "LPMMembership",
+    hardCodedPlanId: "LPMMembership",
     comparePlansButtonLabel: "Action 2",
     isHighlighted: true,
     title: "Test 2",
   },
   {
-    id: "LPMPlusMembership",
+    hardCodedPlanId: "LPMPlusMembership",
     comparePlansButtonLabel: "Action 3",
     isHighlighted: false,
     title: "Test 3",

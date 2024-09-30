@@ -4,7 +4,7 @@ import { GetLostPetNotificationsRepository } from "../../repository/user/GetLost
 export class MockGetLostPetNotificationsUseCase
   implements GetLostPetNotificationsRepository
 {
-  async query(): Promise<LostPetUpdateModel[] | []> {
+  async query(): Promise<LostPetUpdateModel[]> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 

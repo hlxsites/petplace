@@ -2,7 +2,6 @@ import { Button, Text, TextSpan } from "~/components/design-system";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 
 type NotificationsDialogContentProps = {
-  isOpen: boolean;
   onClose?: () => void;
   viewData: LostPetUpdateModel;
 };

@@ -5,7 +5,6 @@ import {
   FormSchema,
   FormValues,
 } from "~/components/design-system";
-import { COUNTRIES_LABELS } from "~/domain/useCases/util/countriesUtil";
 import { useLostPetIndexViewModel } from "./useLostPetIndexViewModel";
 
 export const LostPetIndex = () => {
@@ -86,8 +85,8 @@ export const LostPetIndex = () => {
                 id: "country",
                 label: "Country",
                 requiredCondition: true,
-                options: COUNTRIES_LABELS,
-                optionsType: "static",
+                options: "{{countryOptions|string[]}}",
+                optionsType: "dynamic",
                 type: "select",
               },
               {

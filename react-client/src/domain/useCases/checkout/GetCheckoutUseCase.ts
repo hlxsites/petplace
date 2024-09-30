@@ -6,6 +6,7 @@ import {
 } from "~/domain/checkout/CheckoutModels";
 import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import { MEMBERSHIP_INFO_OPTIONS } from "./utils/checkoutHardCodedData";
@@ -16,8 +17,10 @@ const membershipProductSchema = z.object({
   ItemId: z.string().nullish(),
   ItemName: z.string().nullish(),
   ItemPrice: z.string().nullish(),
+  ItemType: z.string().nullish(),
   RenewalPrice: z.string().nullish(),
   SalesPrice: z.string().nullish(),
+  UiName: z.string().nullish(),
 });
 
 const checkoutSchema = z.object({
@@ -59,19 +62,42 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
           const planData = parsedData.MembershipProducts[key];
           if (!planData) return;
 
-          const id = convertMembershipKeyToMembershipPlanId(key);
+          const membershipPlan = convertMembershipKeyToMembershipPlanId(key);
+          if (!membershipPlan) {
+            console.error(
+              "Failed to convert key to hardcoded membership plan id",
+              { key }
+            );
+            return;
+          }
 
-          const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[id];
-          if (!hardCodedPlan) return;
+          const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[membershipPlan];
+          if (!hardCodedPlan) {
+            console.error("Failed to find hard-coded plan", { membershipPlan });
+            return;
+          }
 
           // Shouldn't be doing this here, this should be handled by the server
           // However, we're trying to protect the FE code from the server's data
-          if (isCanadaLocale && id.toLowerCase().includes("annual")) {
+          if (
+            isCanadaLocale &&
+            membershipPlan.toLowerCase().includes("annual")
+          ) {
             // Skip the annual plan for Canada
             return;
           }
 
-          const price = planData.SalesPrice || planData.ItemPrice || "-";
+          const id = planData.ItemId;
+          const price = planData.SalesPrice || planData.ItemPrice;
+
+          // Skip the plan if the id or the price is not available
+          if (!id || !price) {
+            console.error("Membership doesn't include required props", {
+              id,
+              price,
+            });
+            return;
+          }
 
           const isHighlighted = (() => {
             if (typeof planData.IsMostPopular === "boolean") {
@@ -83,31 +109,37 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
 
           plans.push({
             ...hardCodedPlan,
+            id,
             isHighlighted,
             price,
-            title: planData.ItemName || hardCodedPlan.title,
+            title: planData.UiName || hardCodedPlan.title,
+            type: planData.ItemType ?? hardCodedPlan.type,
           });
         }
       });
 
       return { plans };
     } catch (error) {
-      console.error("GetCheckoutUseCase query error", error);
+      logError("GetCheckoutUseCase query error", error);
       return emptyResult;
     }
   };
 }
 
-function convertMembershipKeyToMembershipPlanId(key: string): MembershipPlanId {
+function convertMembershipKeyToMembershipPlanId(
+  key: string
+): MembershipPlanId | null {
   const lowercasedKey = key.toLowerCase();
 
   // This code is fragile, but it's the best we can do with the current server data
-
   if (lowercasedKey.includes("annual")) {
     return "AnnualMembership";
   }
   if (lowercasedKey.includes("lpmplus")) {
     return "LPMPlusMembership";
   }
-  return "LPMMembership";
+  if (lowercasedKey.includes("lpm")) {
+    return "LPMMembership";
+  }
+  return null;
 }

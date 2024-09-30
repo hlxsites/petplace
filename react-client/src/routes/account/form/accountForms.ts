@@ -4,10 +4,9 @@ import {
   ElementInputSingleSelect,
   ElementInputText,
   ElementSection,
+  ElementUnion,
   FormSchema,
 } from "~/components/design-system";
-import { COUNTRIES_LABELS } from "~/domain/useCases/util/countriesUtil";
-import { checkIsExternalLogin } from "~/util/authUtil";
 
 export const baseAccountDetailsIds = {
   email: "email-address",
@@ -42,7 +41,7 @@ const requiredPhoneInput: ElementInputPhone = {
   id: baseAccountDetailsIds.phone,
   label: "Phone Number",
   requiredCondition: {
-    inputId: "phone-secondary",
+    inputId: baseAccountDetailsIds.secondaryPhone,
     type: "null",
     value: "",
   },
@@ -51,10 +50,25 @@ const requiredPhoneInput: ElementInputPhone = {
 
 const optionalPhoneInput: ElementInputPhone = {
   elementType: "input",
+  disallowedTypes: ["Home"],
   id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
+  requiredCondition: {
+    operator: "and",
+    conditions: [
+      {
+        inputId: baseAccountDetailsIds.phone,
+        type: "null",
+        value: "",
+      },
+      {
+        inputId: baseAccountDetailsIds.secondaryPhone,
+        type: "exists",
+        value: "",
+      },
+    ],
+  },
   type: "phone",
-  shouldDisplay: checkIsExternalLogin(),
 };
 
 const firstNameInput: ElementInputText = {
@@ -93,8 +107,8 @@ const countryInput: ElementInputSingleSelect = {
   elementType: "input",
   id: accountAddressIds.country,
   label: "Country",
-  options: COUNTRIES_LABELS,
-  optionsType: "static",
+  options: "{{countryOptions|string[]}}",
+  optionsType: "dynamic",
   requiredCondition: true,
   type: "select",
 };
@@ -158,7 +172,7 @@ const submitButton: ElementButton = {
   type: "submit",
 };
 
-const contactInfoSection: ElementSection = {
+const contactInfoSection = (children: ElementUnion[]): ElementSection => ({
   elementType: "section",
   title: {
     label: "Contact Info",
@@ -168,12 +182,12 @@ const contactInfoSection: ElementSection = {
   children: [
     {
       elementType: "row",
-      children: [requiredPhoneInput, optionalPhoneInput],
+      children,
     },
   ],
-};
+});
 
-const userDetailsSection: ElementSection = {
+const userDetailsSection = (children: ElementUnion[]): ElementSection => ({
   elementType: "section",
   title: {
     label: "User details",
@@ -186,24 +200,26 @@ const userDetailsSection: ElementSection = {
     },
     {
       elementType: "row",
-      children: checkIsExternalLogin()
-        ? [emailInput]
-        : [emailInput, { ...zipCodeInput, className: "" }],
+      children,
     },
   ],
-};
+});
 
 export const internalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
-  children: [contactInfoSection, userDetailsSection, submitButton],
+  children: [
+    contactInfoSection([{ ...requiredPhoneInput, className: "w-1/2" }]),
+    userDetailsSection([emailInput, { ...zipCodeInput, className: "" }]),
+    submitButton,
+  ],
   version: 0,
 };
 
 export const externalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
   children: [
-    contactInfoSection,
-    userDetailsSection,
+    contactInfoSection([requiredPhoneInput, optionalPhoneInput]),
+    userDetailsSection([emailInput]),
     {
       elementType: "section",
       title: {
@@ -221,9 +237,8 @@ export const externalAccountDetailsFormSchema: FormSchema = {
         },
         {
           elementType: "row",
-          children: [cityInput],
+          children: [cityInput, zipCodeInput],
         },
-        zipCodeInput,
       ],
     },
     {
@@ -271,7 +286,7 @@ export const emergencyContactIds = {
   name: "contact-first-name",
   phone: "contact-contact-phone",
   surname: "contact-last-name",
-}
+};
 
 export const emergencyContactFormSchema: FormSchema = {
   id: "emergency-contact-form",
@@ -319,6 +334,7 @@ export const emergencyContactFormSchema: FormSchema = {
                     {
                       ...emailInput,
                       id: emergencyContactIds.email,
+                      disabledCondition: false,
                     },
                     {
                       elementType: "input",

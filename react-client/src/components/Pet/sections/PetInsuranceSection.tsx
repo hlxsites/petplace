@@ -13,7 +13,7 @@ export const PetInsuranceSection = ({ petId }: PetInsuranceSectionProps) => {
         <LinkButton
           fullWidth={true}
           openInNewTab={true}
-          to={`https://mph-qay.pethealthinc.com/petplace/policy?animalID=${petId}`}
+          to={`https://mph-qay.pethealthinc.com/external/petplacelogin?redirecturl=petplace/policy?animalID=${petId}`}
           variant="secondary"
         >
           View insurance details

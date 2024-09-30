@@ -19,6 +19,7 @@ interface ImportMetaEnv {
   readonly VITE_PETPLACE_SERVER_STG_URL: string;
   readonly VITE_PETPLACE_SERVER_PROD_URL: string;
   readonly VITE_ENABLE_MOCK: string;
+  readonly VITE_ROLLBAR_ACCESS_TOKEN: string;
 }
 
 interface ImportMeta {

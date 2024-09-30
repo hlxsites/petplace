@@ -1,10 +1,10 @@
-export type AccountNotificationsModel = {
-  emailAlert?: boolean;
-  petPlaceOffer?: boolean;
-  partnerOffer?: boolean;
-  signedCatNewsletter?: boolean;
-  signedDogNewsletter?: boolean;
-  smsAlert?: boolean;
+export type AccountNotificationPreferencesModel = {
+  emailAlert: boolean;
+  petPlaceOffer: boolean;
+  partnerOffer: boolean;
+  signedCatNewsletter: boolean;
+  signedDogNewsletter: boolean;
+  smsAlert: boolean;
 };
 
 export type AccountDetailsModel =

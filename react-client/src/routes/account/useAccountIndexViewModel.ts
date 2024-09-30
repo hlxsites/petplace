@@ -1,40 +1,27 @@
-import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { requireAuthToken } from "~/util/authUtil";
 
+import { useState } from "react";
+import { FormValues } from "~/components/design-system";
 import {
   AccountDetailsModel,
   AccountEmergencyContactModel,
-  AccountNotificationsModel,
-  LostPetUpdateModel,
 } from "~/domain/models/user/UserModels";
+import getCountriesUseCaseFactory from "~/domain/useCases/lookup/getCountriesUseCaseFactory";
+import getStatesUseCaseFactory from "~/domain/useCases/lookup/getStatesUseCaseFactory";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountEmergencyContactsUseCaseFactory from "~/domain/useCases/user/accountEmergencyContactsUseCaseFactory";
-import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
-import lostPetNotificationDetailsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationDetailsUseCaseFactory";
-import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
-import { validateAccountDetails } from "./form/formDataUtil";
+import { useRouteMatchesData } from "~/domain/useRouteMatchesData";
+import { AccountRootLoaderData } from "./useAccountRootViewModel";
+import {
+  buildAccountDetails,
+  validateAccountDetails,
+} from "./util/formDataUtil";
 
 export const loader = (() => {
   const authToken = requireAuthToken();
 
   const accountDetailsUseCase = accountDetailsUseCaseFactory(authToken);
-  // TODO: This must be moved to another viewModel, specific for /account/notifications route
-  const accountNotificationsUseCase =
-    accountNotificationsUseCaseFactory(authToken);
-  const lostPetNotificationsUseCase =
-    lostPetNotificationsUseCaseFactory(authToken);
-  const lostPetNotificationDetailsUseCase =
-    lostPetNotificationDetailsUseCaseFactory(authToken);
-
-  function onSubmitAccountDetails(values: AccountDetailsModel) {
-    if (validateAccountDetails(values))
-      void accountDetailsUseCase.mutate(values);
-  }
-
-  function onSubmitAccountNotifications(values: AccountNotificationsModel) {
-    void accountNotificationsUseCase.mutate(values);
-  }
 
   const accountEmergencyContactsUseCase =
     accountEmergencyContactsUseCaseFactory(authToken);
@@ -43,42 +30,51 @@ export const loader = (() => {
     void accountEmergencyContactsUseCase.mutate(data);
   }
 
+  const getCountriesUseCase = getCountriesUseCaseFactory();
+  const getStatesUseCase = getStatesUseCaseFactory(authToken);
+
   return defer({
     accountDetails: accountDetailsUseCase.query(),
-    accountNotifications: accountNotificationsUseCase.query(),
     emergencyContacts: accountEmergencyContactsUseCase.query(),
     onSubmitEmergencyContacts: onSubmitEmergencyContacts,
-    getLostPetNotification: (id: LostPetUpdateModel) =>
-      lostPetNotificationDetailsUseCase.query(id),
-    lostPetsHistory: lostPetNotificationsUseCase.query(),
-    onSubmitAccountDetails,
-    onSubmitAccountNotifications,
+    countries: getCountriesUseCase.query(),
+    getStates: getStatesUseCase.query,
+    mutateAccountDetails: accountDetailsUseCase.mutate,
   });
 }) satisfies LoaderFunction;
 
 export const useAccountIndexViewModel = () => {
   const {
     accountDetails,
-    accountNotifications,
     emergencyContacts,
-    getLostPetNotification,
-    lostPetsHistory,
+    countries,
+    mutateAccountDetails,
     onSubmitEmergencyContacts,
-    onSubmitAccountDetails,
-    onSubmitAccountNotifications,
   } = useLoaderData<typeof loader>();
+
+  // TODO implement dynamic state call based in country selector
+  const [stateVariables] = useState([]);
+
+  const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
+  const isExternalLogin = !!accountRootData?.isExternalLogin;
+
+  const countryOptions = countries.map((country) => country.title);
+
+  const onSubmitAccountDetails = (formValues: FormValues) => {
+    const accountDetails: AccountDetailsModel = buildAccountDetails(formValues);
+    if (validateAccountDetails(accountDetails))
+      void mutateAccountDetails(accountDetails);
+  };
 
   return {
     accountDetails,
-    accountNotifications,
     emergencyContacts,
-    lostPetsHistory,
+    isExternalLogin,
     onSubmitEmergencyContacts,
     onSubmitAccountDetails,
-    onSubmitAccountNotifications,
-    getLostPetNotification,
+    accountDetailsFormVariables: {
+      countryOptions,
+      stateOptions: stateVariables,
+    },
   };
 };
-
-export const useAccountContext = () =>
-  useOutletContext<ReturnType<typeof useAccountIndexViewModel>>();

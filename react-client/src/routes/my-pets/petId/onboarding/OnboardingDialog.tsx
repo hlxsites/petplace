@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
 import { DocumentationStatus, PetModel } from "~/domain/models/pet/PetModel";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 import { OnboardingStepFive } from "./OnboardingStepFive";
@@ -37,7 +38,7 @@ export const OnboardingDialog = () => {
         setPetInfo(resolvedPetInfo);
         setStatus(resolvedPetInfo?.documentationStatus ?? "none");
       } catch (error) {
-        console.error("Failed to resolve petInfo:", error);
+        logError("Failed to resolve petInfo:", error);
       }
     };
 

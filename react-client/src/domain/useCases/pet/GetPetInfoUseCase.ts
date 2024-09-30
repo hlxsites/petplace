@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
@@ -16,11 +17,6 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
     }
   }
 
-  private handleError = (error: unknown): null => {
-    console.error("GetPetInfoUseCase query error", error);
-    return null;
-  };
-
   query = async (petId: string): Promise<PetModel | null> => {
     try {
       const result = await this.httpClient.get(`api/Pet/${petId}`);
@@ -29,7 +25,8 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
 
       return null;
     } catch (error) {
-      return this.handleError(error);
+      logError("GetPetInfoUseCase query error", error);
+      return null;
     }
   };
 }

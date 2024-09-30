@@ -1,11 +1,5 @@
-import { isEqual } from "lodash";
-import {
-  Fragment,
-  useRef,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from "react";
+import { Fragment, useState, type FormEvent, type ReactNode } from "react";
+import { logWarning } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
@@ -49,27 +43,27 @@ type RenderedInput = Omit<
   required: boolean;
 };
 
+export type OnSubmitFn = (props: OnSubmitProps) => void;
+
 export type FormBuilderProps = {
-  schema: FormSchema;
+  isDirty?: boolean;
   onChange: (values: FormValues) => void;
-  onSubmit: (props: OnSubmitProps) => void;
+  onSubmit: OnSubmitFn;
+  schema: FormSchema;
   values: FormValues;
 };
 
 export const FormBuilder = ({
-  schema,
+  isDirty,
   onChange: onChangeFormValues,
   onSubmit,
+  schema,
   values,
 }: FormBuilderProps) => {
-  const initialValuesRef = useRef<FormValues>(values || {});
-
   const [didSubmit, setDidSubmit] = useState(false);
 
   // Array to store the rendered inputs, can't use a ref because we want a clean array on each render
   const renderedInputs: RenderedInput[] = [];
-
-  const isFormChanged = !isEqual(initialValuesRef.current, values);
 
   return (
     <form
@@ -106,7 +100,7 @@ export const FormBuilder = ({
     } else if (elementType === "button") {
       const disabled = (() => {
         if (matchConditionExpression(element.enabledCondition ?? false))
-          return !isFormChanged;
+          return !isDirty;
 
         return matchConditionExpression(element.disabledCondition ?? false);
       })();
@@ -401,12 +395,23 @@ export const FormBuilder = ({
     value,
     type,
   }: ConditionCriteria): boolean {
-    // Get the current value from form values
-    const currentValue = values?.[inputId];
+    // Get the current value from form value
+    const targetInput = getInputSchemaFromFormSchema(inputId);
+
+    const currentValue: InputValue = (() => {
+      const curr = values[inputId];
+      if (!targetInput) return curr;
+
+      if (targetInput.type === "phone" && typeof curr === "string") {
+        return curr.split("|")[0];
+      }
+
+      return curr;
+    })();
 
     if (type === "contains") {
       if (typeof currentValue !== "string") {
-        console.warn('"contains" condition can only be used for strings');
+        logWarning('"contains" condition can only be used for strings');
         return false;
       }
 
@@ -415,7 +420,7 @@ export const FormBuilder = ({
 
     if (type === "regex") {
       if (typeof currentValue !== "string" || typeof value !== "string") {
-        console.warn('"regex" condition can only be used for strings');
+        logWarning('"regex" condition can only be used for strings');
         return false;
       }
 
@@ -423,7 +428,7 @@ export const FormBuilder = ({
         const regex = new RegExp(value);
         return regex.test(currentValue);
       } catch (error) {
-        console.warn('Invalid regex pattern for "regex" condition');
+        logWarning('Invalid regex pattern for "regex" condition');
         return false;
       }
     }
@@ -460,7 +465,7 @@ export const FormBuilder = ({
         return numericalComparison(currentValue.getTime(), value.getTime());
       }
 
-      console.warn(
+      logWarning(
         "Cannot compare non-numeric/non-date values for numeric/date operation"
       );
     }
@@ -487,10 +492,18 @@ export const FormBuilder = ({
 
     if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
       if (input.repeaterMetadata) {
-        const inputMetadata = input.id.split("_repeater_")
-        // @ts-expect-error this value is too deep for ts to understand
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (!isEmailValid(values[input.repeaterMetadata.repeaterId][inputMetadata[1]][inputMetadata[0]] as string)) return "Please enter a valid email address.";
+        const inputMetadata = input.id.split("_repeater_");
+        if (
+          !isEmailValid(
+            // @ts-expect-error this value is too deep for ts to understand
+            values[input.repeaterMetadata.repeaterId][inputMetadata[1]][
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              inputMetadata[0]
+            ] as string
+          )
+        ) {
+          return "Please enter a valid email address.";
+        }
       } else {
         return "Please enter a valid email address.";
       }
@@ -503,6 +516,10 @@ export const FormBuilder = ({
     const value = getInputValue(input);
 
     if (typeof value === "undefined") return false;
+
+    if (input.type === "phone" && typeof value === "string") {
+      return !!value.split("|")[0];
+    }
 
     if (Array.isArray(value)) return !!value.length;
 
@@ -524,5 +541,23 @@ export const FormBuilder = ({
   function getInputId({ id, repeaterMetadata }: RenderedInput) {
     if (!repeaterMetadata) return id;
     return id.split("_repeater_")[0];
+  }
+
+  function getInputSchemaFromFormSchema(id: string): InputsUnion | null {
+    let targetInput: InputsUnion | null = null;
+
+    const findInput = (element: ElementUnion): boolean => {
+      if (element.elementType === "input" && element.id === id) {
+        targetInput = element;
+      } else if ("children" in element) {
+        element.children.some(findInput);
+      }
+
+      return !!targetInput;
+    };
+
+    schema.children.some(findInput);
+
+    return targetInput;
   }
 };
