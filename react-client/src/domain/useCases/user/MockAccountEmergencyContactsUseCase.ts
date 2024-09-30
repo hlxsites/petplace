@@ -1,8 +1,8 @@
 import { AccountEmergencyContactModel } from "~/domain/models/user/UserModels";
-import { GetAccountEmergencyContactsRepository } from "../../repository/user/GetAccountEmergencyContactsRepository";
+import { AccountEmergencyContactsRepository } from "../../repository/user/AccountEmergencyContactsRepository";
 
-export class MockGetAccountEmergencyContactUseCase
-  implements GetAccountEmergencyContactsRepository
+export class MockAccountEmergencyContactUseCase
+  implements AccountEmergencyContactsRepository
 {
   async query(): Promise<AccountEmergencyContactModel[]> {
     // Simulate a delay
@@ -10,15 +10,24 @@ export class MockGetAccountEmergencyContactUseCase
 
     return [
       {
+        contactId: "",
         email: "alaska@email.com",
         name: "Alaska",
         phoneNumber: "(234) 123-4566",
         surname: "Thunder",
+        stagingId: 0,
       },
     ];
   }
 
   async mutate(): Promise<boolean> {
+    // Simulate a delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return true;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async delete(_data: AccountEmergencyContactModel): Promise<boolean> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return true;
