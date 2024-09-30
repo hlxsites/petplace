@@ -1,3 +1,4 @@
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { CartItem } from "../models/cart/CartModel";
 import { ProductDescription } from "../models/products/ProductModel";
 
@@ -61,7 +62,7 @@ export const convertProductToCartItem = (
   const id = product.availableOptions[selectedColorSize]?.id;
   const price = getProductPrice(product, selectedColorSize);
   if (!id || !price) {
-    console.error("Failed to load the product price to insert into the cart", {
+    logError("Failed to load the product price to insert into the cart", {
       id,
       price,
     });

@@ -10,6 +10,7 @@ import { classNames } from "~/util/styleUtil";
 import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
 import { CheckoutProductCard } from "../CheckoutProductCard";
 import { useCartItemsDetails } from "../hooks/useCartItemDetails";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export const CheckoutProductsSection = () => {
   const { products, onUpdateCartProduct } =
@@ -38,10 +39,10 @@ export const CheckoutProductsSection = () => {
     const id = product.availableOptions[productOptions[product.id]]?.id;
     const price = getProductPrice(product, selectedColorSize);
     if (!id || !price) {
-      console.error(
-        "Failed to load the product price to insert into the cart",
-        { id, price }
-      );
+      logError("Failed to load the product price to insert into the cart", {
+        id,
+        price,
+      });
       return;
     }
 

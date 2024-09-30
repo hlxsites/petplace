@@ -64,16 +64,15 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
 
           const membershipPlan = convertMembershipKeyToMembershipPlanId(key);
           if (!membershipPlan) {
-            console.error(
-              "Failed to convert key to hardcoded membership plan id",
-              { key }
-            );
+            logError("Failed to convert key to hardcoded membership plan id", {
+              key,
+            });
             return;
           }
 
           const hardCodedPlan = MEMBERSHIP_INFO_OPTIONS[membershipPlan];
           if (!hardCodedPlan) {
-            console.error("Failed to find hard-coded plan", { membershipPlan });
+            logError("Failed to find hard-coded plan", { membershipPlan });
             return;
           }
 
@@ -92,7 +91,7 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
 
           // Skip the plan if the id or the price is not available
           if (!id || !price) {
-            console.error("Membership doesn't include required props", {
+            logError("Membership doesn't include required props", {
               id,
               price,
             });

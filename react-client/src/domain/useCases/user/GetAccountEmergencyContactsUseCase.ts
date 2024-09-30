@@ -4,6 +4,7 @@ import { AccountEmergencyContactModel } from "../../models/user/UserModels";
 import { GetAccountEmergencyContactsRepository } from "../../repository/user/GetAccountEmergencyContactsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 const serverResponseSchema = z.object({
   FirstName: z.string().nullish(),
@@ -36,7 +37,7 @@ export class GetAccountEmergencyContactsUseCase
 
       return [];
     } catch (error) {
-      console.error("GetUserUseCase query error", error);
+      logError("GetUserUseCase query error", error);
       return [];
     }
   };
@@ -61,7 +62,7 @@ export class GetAccountEmergencyContactsUseCase
 
       return false;
     } catch (error) {
-      console.error("AccountDetailsUseCase mutation error", error);
+      logError("AccountDetailsUseCase mutation error", error);
       return false;
     }
   };

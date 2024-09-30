@@ -4,6 +4,7 @@ import { LostPetUpdateModel } from "../../models/user/UserModels";
 import { GetLostPetNotificationsRepository } from "../../repository/user/GetLostPetNotificationsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export class GetLostPetNotificationsUseCase
   implements GetLostPetNotificationsRepository
@@ -27,7 +28,7 @@ export class GetLostPetNotificationsUseCase
 
       return [];
     } catch (error) {
-      console.error("GetUserUseCase query error", error);
+      logError("GetUserUseCase query error", error);
       return [];
     }
   }

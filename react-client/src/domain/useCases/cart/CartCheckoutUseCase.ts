@@ -4,6 +4,7 @@ import { CartCheckoutRepository } from "~/domain/repository/cart/CartCheckoutRep
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 const cartItemServerSchema = z.object({
   AnimalId: z.string().nullish(),
@@ -33,7 +34,7 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
   }
 
   private handleError = (error: unknown, message?: string): false => {
-    console.error(message ?? "CartCheckoutUseCase error", error);
+    logError(message ?? "CartCheckoutUseCase error", error);
     return false;
   };
 
@@ -44,7 +45,7 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
         return convertToCartItem(result.data);
       }
     } catch (error) {
-      console.error("CartCheckoutUseCase query error", error);
+      logError("CartCheckoutUseCase query error", error);
     }
     return [];
   };
@@ -120,7 +121,7 @@ function convertToCartItem(data: unknown): QueryCartItem[] {
     const id = cartItem.ItemId ?? "";
 
     if (!petId || !quantity || !id) {
-      console.error("Missing required fields for cart item", {
+      logError("Missing required fields for cart item", {
         id,
         petId,
         quantity,

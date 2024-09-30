@@ -102,7 +102,7 @@ function convertToProductsList(
 
         // Skip if any of the required fields are missing
         if (!id || !title || !price || !type) {
-          console.error(
+          logError(
             "additional membership product doesn't have required props",
             {
               id,
@@ -155,7 +155,7 @@ function convertToProductsList(
           const type = item.ItemType;
           const price = item.SalesPrice || item.Price;
           if (!fullProductName || !id || !price || !type) {
-            console.error("Product doesn't have required props", {
+            logError("Product doesn't have required props", {
               fullProductName,
               id,
               price,

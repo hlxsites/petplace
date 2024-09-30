@@ -3,6 +3,7 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export class GetStatesUseCase implements GetStatesRepository {
   private httpClient: HttpClientRepository;
@@ -23,7 +24,7 @@ export class GetStatesUseCase implements GetStatesRepository {
 
       return [];
     } catch (error) {
-      console.error("GetStatesUseCase query error", error);
+      logError("GetStatesUseCase query error", error);
       return [];
     }
   };

@@ -4,6 +4,7 @@ import { readJwtClaim } from "~/util/authUtil";
 import { AccountNotificationPreferencesModel } from "../../models/user/UserModels";
 import { AccountNotificationPreferencesRepository } from "../../repository/user/AccountNotificationRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 const serverSchema = z.object({
   CatNewsletterOptIn: z.boolean().nullish(),
@@ -36,7 +37,7 @@ export class AccountNotificationPreferencesUseCase
 
       return null;
     } catch (error) {
-      console.error("GetUserUseCase query error", error);
+      logError("GetUserUseCase query error", error);
       return null;
     }
   };
@@ -59,7 +60,7 @@ export class AccountNotificationPreferencesUseCase
 
       return false;
     } catch (error) {
-      console.error("AccountDetailsUseCase mutation error", error);
+      logError("AccountDetailsUseCase mutation error", error);
       return false;
     }
   };
@@ -74,7 +75,7 @@ function convertToAccountNotificationsModel(
     const { data, error, success } = serverSchema.safeParse(userData);
     if (success) return data;
 
-    console.error("Error parsing user data", { userData, error });
+    logError("Error parsing user data", { userData, error });
     return null;
   };
 
