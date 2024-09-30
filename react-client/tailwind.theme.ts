@@ -61,7 +61,7 @@ export const THEME_COLORS = {
   "neutral-50": "var(--neutral-50)",
   "neutral-white": "var(--neutral-white)",
   "text-inactive": "var(--text-inactive)",
-  "background-inactive": "var(--background-inactive)",
+  "background-inactive": "var(--bg-inactive)",
   "background-disabled": "var(--background-disabled)",
   "primary-900": "var(--text-primary-900)",
   "secondary-700": "var(--text-secondary-700)",
