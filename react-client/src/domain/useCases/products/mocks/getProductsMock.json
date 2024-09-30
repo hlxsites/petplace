@@ -5,12 +5,14 @@
         {
           "ItemId": "item1",
           "UIName": "Product 1",
+          "ItemType": "AnnualAddProduct",
           "Price": "20.00",
           "SpeciesId": "Dog"
         },
         {
           "ItemId": "item2",
           "UIName": "Product 2",
+          "ItemType": "AnnualAddProduct",
           "Price": "30.00",
           "SpeciesId": "Cat"
         }
@@ -29,6 +31,7 @@
         {
           "ItemId": "item3",
           "ItemName": "Product 3",
+          "ItemType": "TagProduct",
           "Price": "15.00",
           "Color": "Green",
           "Size": "Small/Medium",
@@ -37,6 +40,7 @@
         {
           "ItemId": "item4",
           "ItemName": "Product 4",
+          "ItemType": "TagProduct",
           "Price": "25.00",
           "Color": "Yellow",
           "Size": "Large",

@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
+import { MemoryRouter } from "react-router-dom";
 import { CartItemCard } from "./CartItemCard";
 
 const { getByText } = screen;
@@ -11,7 +12,7 @@ describe("CartItemCard", () => {
   it.each(["a name", "another name"])(
     "should render correct %s name",
     (expected) => {
-      getRenderer({ name: expected });
+      getRenderer({ title: expected });
       expect(getByText(expected)).toBeInTheDocument();
     }
   );
@@ -33,19 +34,21 @@ describe("CartItemCard", () => {
 function getRenderer({
   id = "test-id",
   description = "Test description",
-  name = "Test name",
+  title: name = "Test name",
   price = "100.00",
   quantity = DEFAULT_QUANTITY,
   ...props
 }: Partial<ComponentProps<typeof CartItemCard>> = {}) {
   return render(
-    <CartItemCard
-      id={id}
-      description={description}
-      name={name}
-      price={price}
-      quantity={quantity}
-      {...props}
-    />
+    <MemoryRouter>
+      <CartItemCard
+        id={id}
+        description={description}
+        title={name}
+        price={price}
+        quantity={quantity}
+        {...props}
+      />
+    </MemoryRouter>
   );
 }

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { CartItem, CommonCartItem } from "~/domain/models/cart/CartModel";
+import { CartItem } from "~/domain/models/cart/CartModel";
 import getCartCheckoutFactory from "~/domain/useCases/cart/getCartCheckoutFactory";
 import getCheckoutFactory from "~/domain/useCases/checkout/getCheckoutFactory";
 import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
@@ -9,6 +9,11 @@ import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
 import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
 import { REDIRECT_TO_CHECKOUT_URL } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
+import {
+  convertProductToCartItem,
+  findProductBasedOnOptionId,
+  getProductColorSizeBasedOnCartId,
+} from "~/domain/util/checkoutProductUtil";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
@@ -41,27 +46,24 @@ export const loader = (async ({ request }) => {
   };
 
   const selectedPlan = {
+    ...selectedPlanItem,
     autoRenew: false,
     petId,
-    id: selectedPlanItem.id,
-    name: selectedPlanItem.title,
-    price: selectedPlanItem.price,
     quantity: 1,
-    type: selectedPlanItem.type,
     isService: isService(selectedPlanItem.hardCodedPlanId),
   };
 
   const productsUseCase = getProductsFactory(authToken);
-  const productsData = await productsUseCase.query(petId, plan);
+  const productsData = (await productsUseCase.query(petId, plan)) || [];
 
   const cartCheckoutUseCase = getCartCheckoutFactory(authToken);
   const postCart = cartCheckoutUseCase.post;
   const getCart = cartCheckoutUseCase.query;
 
-  const currentCart = await getCart();
+  const savedCart = await getCart();
 
   return defer({
-    currentCart,
+    savedCart,
     petId,
     postCart,
     products: productsData,
@@ -70,43 +72,43 @@ export const loader = (async ({ request }) => {
 }) satisfies LoaderFunction;
 
 export const useCheckoutProductsViewModel = () => {
-  const { currentCart, petId, postCart, products, selectedPlan } =
+  const { savedCart, petId, postCart, products, selectedPlan } =
     useLoaderData<typeof loader>();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [subtotal, setSubtotal] = useState<string>("");
+
   // TODO: the initial state should be from get
   const [autoRenew, setAutoRenew] = useState<boolean>(selectedPlan.autoRenew);
 
   const [isOpenCart, setIsOpenCart] = useState(false);
 
-  const onUpdateCartMembership = useCallback(
-    (newMembership: CommonCartItem) => {
-      setCartItems((prevState) => {
-        const existingItem = prevState.find(
-          (item) => item.id === newMembership.id
-        );
+  // const onUpdateCartMembership = useCallback(
+  //   (newMembership: CommonCartItem) => {
+  //     setCartItems((prevState) => {
+  //       const existingItem = prevState.find(
+  //         (item) => item.id === newMembership.id
+  //       );
 
-        // The code uses stringify to compare the entire object for safety purposes
-        if (
-          existingItem &&
-          JSON.stringify(existingItem) === JSON.stringify(newMembership)
-        ) {
-          return prevState;
-        }
+  //       // The code uses stringify to compare the entire object for safety purposes
+  //       if (
+  //         existingItem &&
+  //         JSON.stringify(existingItem) === JSON.stringify(newMembership)
+  //       ) {
+  //         return prevState;
+  //       }
 
-        // If the item is new or has changed, update the state
-        const updatedState = existingItem
-          ? prevState.map((item) =>
-              item.id === newMembership.id ? newMembership : item
-            )
-          : [...prevState, newMembership];
+  //       // If the item is new or has changed, update the state
+  //       const updatedState = existingItem
+  //         ? prevState.map((item) =>
+  //             item.id === newMembership.id ? newMembership : item
+  //           )
+  //         : [...prevState, newMembership];
 
-        void postCart(updatedState, petId);
-        return updatedState;
-      });
-    },
-    [postCart, petId]
-  );
+  //       void postCart(updatedState, petId);
+  //       return updatedState;
+  //     });
+  //   },
+  //   [postCart, petId]
+  // );
 
   const onUpdateOptIn = useCallback(() => {
     setAutoRenew((prevAutoRenew) => {
@@ -128,22 +130,49 @@ export const useCheckoutProductsViewModel = () => {
   }, [selectedPlan.id, petId, postCart]);
 
   useDeepCompareEffect(() => {
-    onUpdateCartMembership(selectedPlan);
-  }, [currentCart, selectedPlan, onUpdateCartMembership]);
+    const manageInitialCartItems = () => {
+      let didAddMembership = false;
+      const initialCartItems: CartItem[] = [];
 
-  useDeepCompareEffect(() => {
-    function calculateSubtotal(): number {
-      return cartItems.reduce((total, item) => {
-        if (!item.price) return 0;
+      savedCart.forEach((savedProduct) => {
+        if (savedProduct.petId !== petId) return;
 
-        const itemPrice = getValueFromPrice(item.price.toString());
-        const itemQuantity = item.quantity ?? 1;
-        return total + itemPrice * itemQuantity;
-      }, 0);
+        // Handle membership plan
+        if (selectedPlan.id === savedProduct.id) {
+          didAddMembership = true;
+          initialCartItems.push({
+            ...selectedPlan,
+            autoRenew: savedProduct.autoRenew,
+          });
+          return;
+        }
+
+        // Handle products
+        const product = findProductBasedOnOptionId(savedProduct.id, products);
+        if (!product) return;
+
+        const selectedColorSize = getProductColorSizeBasedOnCartId(
+          savedProduct.id,
+          product
+        );
+        if (!selectedColorSize) return;
+
+        const item = convertProductToCartItem(product, selectedColorSize);
+        if (item)
+          initialCartItems.push({ ...item, quantity: savedProduct.quantity });
+      });
+
+      if (!didAddMembership) {
+        // We want to add the membership plan to the cart if it's not there yet
+        initialCartItems.unshift(selectedPlan);
+      }
+      setCartItems(initialCartItems);
+    };
+
+    if (!cartItems.length && savedCart && products.length && selectedPlan) {
+      manageInitialCartItems();
     }
-
-    setSubtotal(formatPrice(calculateSubtotal()));
-  }, [cartItems]);
+  }, [cartItems.length, products, savedCart, selectedPlan]);
 
   const onUpdateQuantity = (id: string, newQuantity: number) => {
     setCartItems((prevItems) =>
@@ -156,9 +185,9 @@ export const useCheckoutProductsViewModel = () => {
     );
   };
 
-  const onUpdateCartProduct = (product: CommonCartItem) => {
+  const onUpdateCartProduct = (product: CartItem) => {
     setCartItems((prevState) => {
-      let updatedState: CommonCartItem[] = [];
+      let updatedState: CartItem[] = [];
       // The product already exists in the cart
       const exist = prevState.find((item) => item.id === product.id);
       if (exist) {
@@ -193,6 +222,18 @@ export const useCheckoutProductsViewModel = () => {
 
     window.location.href = REDIRECT_TO_CHECKOUT_URL;
   };
+
+  const subtotal = (() => {
+    const sum = cartItems.reduce((total, item) => {
+      if (!item.price) return 0;
+
+      const itemPrice = getValueFromPrice(item.price.toString());
+      const itemQuantity = item.quantity ?? 1;
+      return total + itemPrice * itemQuantity;
+    }, 0);
+
+    return formatPrice(sum);
+  })();
 
   return {
     autoRenew,

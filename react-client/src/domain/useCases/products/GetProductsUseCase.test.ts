@@ -32,6 +32,7 @@ describe("GetProductsUseCase", () => {
         id: "item1",
         images: [],
         title: "Product 1",
+        type: "AnnualAddProduct",
       },
       {
         availableColors: [],
@@ -46,6 +47,7 @@ describe("GetProductsUseCase", () => {
         id: "item2",
         images: [],
         title: "Product 2",
+        type: "AnnualAddProduct",
       },
       {
         availableColors: ["green"],
@@ -59,6 +61,7 @@ describe("GetProductsUseCase", () => {
         id: "Product 3",
         images: [],
         title: "Product 3",
+        type: "TagProduct",
       },
       {
         availableColors: ["yellow"],
@@ -72,6 +75,7 @@ describe("GetProductsUseCase", () => {
         id: "Product 4",
         images: [],
         title: "Product 4",
+        type: "TagProduct",
       },
     ]);
   });

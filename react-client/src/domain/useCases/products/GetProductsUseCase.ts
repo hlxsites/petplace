@@ -54,6 +54,7 @@ function convertToProductsList(
       Color: z.string().nullish(),
       ItemId: z.string().nullish(),
       ItemName: z.string().nullish(),
+      ItemType: z.string().nullish(),
       Price: z.string().nullish(),
       SalesPrice: z.string().nullish(),
       Size: z.string().nullish(),
@@ -96,9 +97,21 @@ function convertToProductsList(
         const id = typeof item.ItemId === "string" ? item.ItemId : null;
         const price = typeof item.Price === "string" ? item.Price : null;
         const title = typeof item.UIName === "string" ? item.UIName : null;
+        const type = typeof item.ItemType === "string" ? item.ItemType : null;
 
         // Skip if any of the required fields are missing
-        if (!id || !title || !price) return;
+        if (!id || !title || !price || !type) {
+          console.error(
+            "additional membership product doesn't have required props",
+            {
+              id,
+              price,
+              title,
+              type,
+            }
+          );
+          return;
+        }
 
         const description = ADDITIONAL_PRODUCTS[id];
 
@@ -112,9 +125,10 @@ function convertToProductsList(
             },
           },
           id,
+          images: IMAGES_PRODUCTS[id] ?? [],
           description,
           title,
-          images: IMAGES_PRODUCTS[id] ?? [],
+          type,
         });
       });
     }
@@ -137,12 +151,14 @@ function convertToProductsList(
         productsData.forEach((item) => {
           const fullProductName = item.ItemName;
           const id = item.ItemId;
+          const type = item.ItemType;
           const price = item.SalesPrice || item.Price;
-          if (!fullProductName || !id || !price) {
+          if (!fullProductName || !id || !price || !type) {
             console.error("Product doesn't have required props", {
               fullProductName,
               id,
               price,
+              type,
             });
             return;
           }
@@ -185,6 +201,7 @@ function convertToProductsList(
               id: productName,
               images: IMAGES_PRODUCTS[id] ?? [],
               title: productName,
+              type,
             });
           }
         });

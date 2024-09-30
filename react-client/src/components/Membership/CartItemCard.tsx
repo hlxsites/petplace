@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { CartItem } from "~/domain/models/cart/CartModel";
 import { CHECKOUT_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { Card, LinkButton, Text } from "../design-system";
@@ -7,12 +8,15 @@ type CartItemCardProps = Omit<CartItem, "autoRenew" | "type">;
 export const CartItemCard = ({
   description,
   isService,
-  name,
-  petId,
+  title: name,
   price,
   recurrence,
   ...rest
 }: CartItemCardProps) => {
+  const [searchParams] = useSearchParams();
+
+  const petId = searchParams.get("petId") || "";
+
   const onUpdateQuantity = (id: string, quantity: number) => {
     // TODO: implement it
     console.log(id, quantity);

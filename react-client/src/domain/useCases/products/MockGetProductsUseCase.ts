@@ -17,6 +17,7 @@ export class MockGetProductsUseCase implements GetProductsRepository {
         id: "ByteTag-Black",
         images: [],
         title: "ByteTag Round Cat",
+        type: "TagProduct",
       },
       {
         availableColors: ["black", "white"],
@@ -38,6 +39,7 @@ export class MockGetProductsUseCase implements GetProductsRepository {
         id: "ByteTag-Black",
         images: [],
         title: "ByteTag Slide",
+        type: "TagProduct",
       },
     ];
     return products;
