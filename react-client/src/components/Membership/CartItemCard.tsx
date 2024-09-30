@@ -4,23 +4,22 @@ import { CHECKOUT_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { Card, LinkButton, Text } from "../design-system";
 import { CartItemQuantityManager } from "./CartItemQuantityManager";
 
-type CartItemCardProps = Omit<CartItem, "autoRenew" | "type">;
+type CartItemCardProps = Omit<CartItem, "autoRenew" | "type"> & {
+  onUpdateQuantity: (id: string, quantity: number) => void;
+};
+
 export const CartItemCard = ({
   description,
   isService,
-  title: name,
+  onUpdateQuantity,
   price,
   recurrence,
+  title,
   ...rest
 }: CartItemCardProps) => {
   const [searchParams] = useSearchParams();
 
   const petId = searchParams.get("petId") || "";
-
-  const onUpdateQuantity = (id: string, quantity: number) => {
-    // TODO: implement it
-    console.log(id, quantity);
-  };
 
   return (
     <Card role="listitem">
@@ -28,7 +27,7 @@ export const CartItemCard = ({
         <div className="flex justify-between">
           <div>
             <Text display="block" fontWeight="bold" size="18">
-              {name}
+              {title}
             </Text>
             {description && (
               <Text color="background-color-tertiary" size="14">

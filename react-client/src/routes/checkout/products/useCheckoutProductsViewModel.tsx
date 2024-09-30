@@ -74,60 +74,36 @@ export const loader = (async ({ request }) => {
 export const useCheckoutProductsViewModel = () => {
   const { savedCart, petId, postCart, products, selectedPlan } =
     useLoaderData<typeof loader>();
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // TODO: the initial state should be from get
-  const [autoRenew, setAutoRenew] = useState<boolean>(selectedPlan.autoRenew);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const [isOpenCart, setIsOpenCart] = useState(false);
 
-  // const onUpdateCartMembership = useCallback(
-  //   (newMembership: CommonCartItem) => {
-  //     setCartItems((prevState) => {
-  //       const existingItem = prevState.find(
-  //         (item) => item.id === newMembership.id
-  //       );
+  const autoRenew = !!cartItems.find((item) => item.id === selectedPlan.id)
+    ?.autoRenew;
 
-  //       // The code uses stringify to compare the entire object for safety purposes
-  //       if (
-  //         existingItem &&
-  //         JSON.stringify(existingItem) === JSON.stringify(newMembership)
-  //       ) {
-  //         return prevState;
-  //       }
+  const updateCartItemsState = useCallback(
+    (
+      callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[],
+      saveOnServer = true
+    ) => {
+      setCartItems((prevState) => {
+        const updatedState = Array.isArray(callback)
+          ? callback
+          : callback(prevState);
 
-  //       // If the item is new or has changed, update the state
-  //       const updatedState = existingItem
-  //         ? prevState.map((item) =>
-  //             item.id === newMembership.id ? newMembership : item
-  //           )
-  //         : [...prevState, newMembership];
+        // Sort the cart items so that the membership plan is always at the top
+        updatedState.sort((a, b) => (a.isService && !b.isService ? -1 : 1));
 
-  //       void postCart(updatedState, petId);
-  //       return updatedState;
-  //     });
-  //   },
-  //   [postCart, petId]
-  // );
+        if (saveOnServer) {
+          void postCart(updatedState, petId);
+        }
 
-  const onUpdateOptIn = useCallback(() => {
-    setAutoRenew((prevAutoRenew) => {
-      const newAutoRenew = !prevAutoRenew;
-
-      setCartItems((prevCartItems) => {
-        const updatedCartItems = prevCartItems.map((item) =>
-          item.id === selectedPlan.id
-            ? { ...item, autoRenew: newAutoRenew }
-            : item
-        );
-
-        void postCart(updatedCartItems, petId);
-        return updatedCartItems;
+        return updatedState;
       });
-
-      return newAutoRenew;
-    });
-  }, [selectedPlan.id, petId, postCart]);
+    },
+    [petId, postCart]
+  );
 
   useDeepCompareEffect(() => {
     const manageInitialCartItems = () => {
@@ -164,9 +140,9 @@ export const useCheckoutProductsViewModel = () => {
 
       if (!didAddMembership) {
         // We want to add the membership plan to the cart if it's not there yet
-        initialCartItems.unshift(selectedPlan);
+        initialCartItems.push(selectedPlan);
       }
-      setCartItems(initialCartItems);
+      updateCartItemsState(initialCartItems, false);
     };
 
     if (!cartItems.length && savedCart && products.length && selectedPlan) {
@@ -174,8 +150,22 @@ export const useCheckoutProductsViewModel = () => {
     }
   }, [cartItems.length, products, savedCart, selectedPlan]);
 
+  const onUpdateOptIn = () => {
+    const newAutoRenew = !autoRenew;
+
+    updateCartItemsState((prevCartItems) => {
+      const updatedCartItems = prevCartItems.map((item) =>
+        item.id === selectedPlan.id
+          ? { ...item, autoRenew: newAutoRenew }
+          : item
+      );
+
+      return updatedCartItems;
+    });
+  };
+
   const onUpdateQuantity = (id: string, newQuantity: number) => {
-    setCartItems((prevItems) =>
+    updateCartItemsState((prevItems) =>
       prevItems.map((item) => {
         if (item.id === id) {
           return { ...item, quantity: newQuantity };
@@ -186,7 +176,7 @@ export const useCheckoutProductsViewModel = () => {
   };
 
   const onUpdateCartProduct = (product: CartItem) => {
-    setCartItems((prevState) => {
+    updateCartItemsState((prevState) => {
       let updatedState: CartItem[] = [];
       // The product already exists in the cart
       const exist = prevState.find((item) => item.id === product.id);
@@ -199,8 +189,6 @@ export const useCheckoutProductsViewModel = () => {
       } else {
         updatedState = [...prevState, product];
       }
-
-      void postCart(updatedState, petId);
       return updatedState;
     });
   };

@@ -34,9 +34,10 @@ describe("CartItemCard", () => {
 function getRenderer({
   id = "test-id",
   description = "Test description",
-  title: name = "Test name",
-  price = "100.00",
+  onUpdateQuantity = jest.fn(),
   quantity = DEFAULT_QUANTITY,
+  price = "100.00",
+  title = "Test name",
   ...props
 }: Partial<ComponentProps<typeof CartItemCard>> = {}) {
   return render(
@@ -44,9 +45,10 @@ function getRenderer({
       <CartItemCard
         id={id}
         description={description}
-        title={name}
-        price={price}
+        onUpdateQuantity={onUpdateQuantity}
         quantity={quantity}
+        price={price}
+        title={title}
         {...props}
       />
     </MemoryRouter>

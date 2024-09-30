@@ -10,6 +10,7 @@ export const CartDrawer = () => {
     isOpenCart,
     onContinueToCheckoutPayment,
     onCloseCart,
+    onUpdateQuantity,
     subtotal,
   } = useCheckoutProductsViewModelContext();
 
@@ -32,7 +33,7 @@ export const CartDrawer = () => {
           {cartItems?.map((item) => (
             <CartItemCard
               key={item.id}
-              // onUpdateQuantity={onUpdateQuantity}
+              onUpdateQuantity={onUpdateQuantity}
               {...item}
             />
           ))}
