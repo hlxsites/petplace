@@ -1,4 +1,5 @@
 interface EnvVariables {
+  VITE_APP_VERSION?: string;
   VITE_AUTH_TOKEN?: string;
   PROD?: boolean;
   DEV?: boolean;
@@ -22,10 +23,13 @@ const getEnvVariable = <T>(key: keyof EnvVariables, defaultValue?: T) => {
 };
 
 // Export variables with default values
+export const APP_VERSION = getEnvVariable("VITE_APP_VERSION", "");
 export const AUTH_TOKEN = getEnvVariable("VITE_AUTH_TOKEN", "");
 export const IS_PROD_ENV = getEnvVariable("PROD", false);
 export const IS_DEV_ENV = getEnvVariable("DEV", false);
-export const ROLLBAR_TOKEN = getEnvVariable("VITE_ROLLBAR_ACCESS_TOKEN");
+export const ROLLBAR_TOKEN = getEnvVariable<string>(
+  "VITE_ROLLBAR_ACCESS_TOKEN"
+);
 
 export const ENABLE_MOCK = (() => {
   const envValue = getEnvVariable<string>("VITE_ENABLE_MOCK");

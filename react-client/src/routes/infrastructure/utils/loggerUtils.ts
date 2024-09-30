@@ -1,9 +1,7 @@
 import Rollbar from "rollbar";
+import { ROLLBAR_CONFIG } from "../telemetry/rollbar/rollbarConfig";
 
-const rollbar = new Rollbar({
-  accessToken: process.env.VITE_ROLLBAR_ACCESS_TOKEN,
-  environment: process.env.NODE_ENV,
-});
+const rollbar = new Rollbar(ROLLBAR_CONFIG);
 
 export const logError = (message: string, error?: unknown) => {
   const newError = errorHandler(error);
@@ -19,5 +17,9 @@ function errorHandler(error: unknown) {
   if (error instanceof Error) {
     return error;
   }
+  if (typeof error === "object") {
+    return new Error(JSON.stringify(error));
+  }
+
   return new Error(String(error));
 }

@@ -1,24 +1,11 @@
-import { ReactNode } from "react";
 import { Provider } from "@rollbar/react";
+import { ReactNode } from "react";
+import { ROLLBAR_CONFIG } from "./telemetry/rollbar/rollbarConfig";
 
 type RollbarProps = {
   children: ReactNode;
 };
 
-const rollbarConfig = {
-  accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-  payload: {
-    client: {
-      javascript: {
-        code_version: "1.0.0",
-        source_map_enabled: true,
-      },
-    },
-  },
-};
-
 export const Rollbar = ({ children }: RollbarProps) => {
-  return <Provider config={rollbarConfig}>{children}</Provider>;
+  return <Provider config={ROLLBAR_CONFIG}>{children}</Provider>;
 };
