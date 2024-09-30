@@ -4,7 +4,7 @@ import { PetModel } from "~/domain/models/pet/PetModel";
 
 const inputId = "pet-image-file-input";
 
-export const ImageInput = ({
+export const PetImageInput = ({
   onRemove,
   onSelectFile,
   pet,

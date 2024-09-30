@@ -8,9 +8,9 @@ import { Header } from "~/components/design-system/header/Header";
 import { PetModel } from "~/domain/models/pet/PetModel";
 import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { invariant } from "~/util/invariant";
+import { PetImageInput } from "../components/PetImageInput";
 import { editPetProfileFormSchema } from "../form/petForm";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
-import { ImageInput } from "../components/ImageInput";
 
 export const PetEditIndex = () => {
   const { petInfo, onRemoveImage, onSelectImage } = usePetProfileContext();
@@ -41,7 +41,11 @@ export const PetEditIndex = () => {
         <Title level="h3">Profile Picture</Title>
         <div className="h-base" />
         <div className="mb-xxxlarge">
-          <ImageInput pet={pet} onRemove={onRemoveImage} onSelectFile={onSelectImage}/>
+          <PetImageInput
+            pet={pet}
+            onRemove={onRemoveImage}
+            onSelectFile={onSelectImage}
+          />
         </div>
       </>
     );
