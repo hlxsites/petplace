@@ -62,8 +62,10 @@ export const CheckoutProductColorSize = ({
                       "border-orange-300-main": isSelected,
                       "bg-black hover:!bg-black focus:bg-black":
                         productColor === "black",
-                      "focus:neutral-white border-neutral-500 bg-neutral-white hover:!bg-neutral-white":
+                      "border-neutral-500 bg-white hover:!bg-white focus:bg-white":
                         productColor === "white",
+                      "border-2 border-solid border-orange-300-main bg-white":
+                        productColor === "white" && isSelected,
                     }
                   )}
                   key={`${productColor} - ${index}`}
