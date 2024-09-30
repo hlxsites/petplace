@@ -31,14 +31,15 @@ export const usePetProfileLayoutViewModel = () => {
     navigate(AppRoutePaths.petEdit);
   };
 
-  return { ...rest, onEditPet, onRemoveImage, onSelectImage };
+  const onRemoveImage = () => {
+    // TODO: implement image deletion
+  };
 
-  // TODO: implement image deletion
-  function onRemoveImage() {}
-
-  function onSelectImage(petId: string, file: File) {
+  const onSelectImage = (petId: string, file: File) => {
     void mutatePetImage({ petId, petImage: file });
-  }
+  };
+
+  return { ...rest, onEditPet, onRemoveImage, onSelectImage };
 };
 
 export const usePetProfileContext = () =>
