@@ -525,7 +525,7 @@ export default async function decorate(block) {
       // eslint-disable-next-line no-inner-declarations
       function checkInterface() {
         if (isTablet()) {
-          /* if (document.querySelector('body').classList.contains('body-locked')) {
+           if (document.querySelector('body').classList.contains('body-locked')) {
             navClose.click();
           } else {
             navToolsMobile.classList.add('hidden');
@@ -535,7 +535,7 @@ export default async function decorate(block) {
             document.querySelector('.nav-language-selector').classList.add('hidden');
             document.querySelector('.btn-regions-list').classList.remove('active');
             document.querySelector('.regions-list').classList.add('hidden');
-          } */
+          } 
         } else {
           navClose.classList.add('hidden');
           navHamburger.classList.add('hidden');
