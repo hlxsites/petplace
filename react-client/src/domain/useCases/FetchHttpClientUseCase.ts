@@ -115,7 +115,14 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         body: options.body,
       });
 
-      const data: unknown = await result.json();
+      let data: unknown;
+      const contentType = result.headers.get('Content-Type');
+  
+      if (result.status === 204 || (contentType && !contentType.includes('application/json'))) {
+        data = null;
+      } else {
+        data = await result.json();
+      }
 
       return { data, statusCode: result.status };
     } catch (error) {
