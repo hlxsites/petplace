@@ -2,6 +2,7 @@ import { PetImageMutationInput } from "~/domain/models/pet/PetImage";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PostPetImageRepository } from "~/domain/repository/pet/PostPetImageRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export class PostPetImageUseCase implements PostPetImageRepository {
   private httpClient: HttpClientRepository;
@@ -15,7 +16,7 @@ export class PostPetImageUseCase implements PostPetImageRepository {
   }
 
   private handleError = (error: unknown): null => {
-    console.error("PostPetImageUseCase query error", error);
+    logError("PostPetImageUseCase query error", error);
     return null;
   };
 
