@@ -1,10 +1,25 @@
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
+// @ts-expect-error - Vite plugin is not typed
+import viteRollbar from "vite-plugin-rollbar";
 import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
+  const accessToken = env.VITE_ROLLBAR_ACCESS_TOKEN;
+  const version = env.VITE_APP_VERSION;
+
+  const rollbarConfig = {
+    accessToken,
+    version,
+    baseUrl: "www.petplace.com",
+    ignoreUploadErrors: true,
+    silent: true,
+  };
+
   return {
     base: "./",
     build: {
@@ -26,8 +41,13 @@ export default defineConfig(() => {
           },
         },
       },
+      // Enable sourcemaps to help with debugging
+      // It will be uploaded to Rollbar
+      sourcemap: true,
     },
     plugins: [
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      viteRollbar(rollbarConfig),
       react(),
       svgr({
         svgrOptions: {
