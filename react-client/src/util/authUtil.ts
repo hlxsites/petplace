@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { AUTH_TOKEN } from "./envUtil";
 import { invariantResponse } from "./invariant";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export function refreshAuthToken() {
   // Try to find the invisible refresh button

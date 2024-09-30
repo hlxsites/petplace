@@ -7,11 +7,11 @@ import {
   PetDocument,
 } from "~/domain/models/pet/PetDocument";
 import { PetDocumentsUseCase } from "~/domain/useCases/pet/PetDocumentsUseCase";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { requireAuthToken } from "~/util/authUtil";
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export const loader = (({ params }) => {
   const { petId, documentType } = params;

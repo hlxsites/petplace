@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+
 import "./index.css";
+import { RollbarProvider } from "./infrastructure/telemetry/rollbar/RollbarProvider";
 import { AppRouter } from "./routes/AppRoute";
 import { resetBodyStyles } from "./util/styleUtil";
-import { Rollbar } from "./routes/infrastructure/Rollbar";
 
 function App() {
   useEffect(() => {
@@ -10,9 +11,9 @@ function App() {
   }, []);
 
   return (
-    <Rollbar>
+    <RollbarProvider>
       <AppRouter />
-    </Rollbar>
+    </RollbarProvider>
   );
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
 import { DocumentationStatus, PetModel } from "~/domain/models/pet/PetModel";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 import { OnboardingStepFive } from "./OnboardingStepFive";
@@ -10,7 +11,6 @@ import { OnboardingStepThree } from "./OnboardingStepThree";
 import { OnboardingStepTwo } from "./OnboardingStepTwo";
 import { OnboardingStepFour } from "./step-four-content/OnboardingStepFour";
 import { useOnboardingSteps } from "./useOnboardingSteps";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export type CommonOnboardingProps = {
   alignment: "center" | "left";

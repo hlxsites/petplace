@@ -1,4 +1,5 @@
 import { Fragment, useState, type FormEvent, type ReactNode } from "react";
+import { logWarning } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
@@ -26,7 +27,6 @@ import {
   textWithRepeaterMetadata,
 } from "./utils/formRepeaterUtils";
 import { isEmailValid } from "./utils/formValidationUtils";
-import { logWarning } from "~/routes/infrastructure/utils/loggerUtils";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 

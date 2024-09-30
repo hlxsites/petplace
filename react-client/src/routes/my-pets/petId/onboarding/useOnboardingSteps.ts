@@ -1,5 +1,5 @@
 import { useLocalStorage } from "~/hooks/useLocalStorage";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 const STEP_PARAM_KEY = "step";
 const COUNT = 5;

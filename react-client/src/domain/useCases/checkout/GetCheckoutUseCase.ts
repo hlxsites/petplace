@@ -6,10 +6,10 @@ import {
 } from "~/domain/checkout/CheckoutModels";
 import { GetCheckoutRepository } from "~/domain/repository/checkout/GetCheckoutRepository";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import { MEMBERSHIP_INFO_OPTIONS } from "./utils/checkoutHardCodedData";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 const membershipProductSchema = z.object({
   AutoRenew: z.boolean().nullish(),

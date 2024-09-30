@@ -5,10 +5,10 @@ import {
 } from "~/domain/models/pet/PetDocument";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { getFileExtension } from "~/util/stringUtil";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 const DOCUMENT_BASE_URL = "api/Document";
 

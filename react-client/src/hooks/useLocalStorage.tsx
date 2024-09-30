@@ -2,11 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 
 import type { Dispatch, SetStateAction } from "react";
 
+import { logError, logWarning } from "~/infrastructure/telemetry/logUtils";
 import { useEventListener } from "./useEventListener";
-import {
-  logError,
-  logWarning,
-} from "~/routes/infrastructure/utils/loggerUtils";
 
 declare global {
   interface WindowEventMap {

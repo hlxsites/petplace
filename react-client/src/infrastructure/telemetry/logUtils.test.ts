@@ -1,5 +1,5 @@
-import { logError, logWarning } from "./loggerUtils";
 import Rollbar from "rollbar";
+import { logError, logWarning } from "./logUtils";
 
 // Mock Rollbar methods
 jest.mock("rollbar");
@@ -28,7 +28,7 @@ describe("logError and logWarning", () => {
 
       expect(mockRollbar.prototype.error).toHaveBeenCalledWith(
         "A non-error occurred",
-        new Error("[object Object]")
+        new Error('{"message":"Not an error"}')
       );
     });
 
@@ -59,7 +59,7 @@ describe("logError and logWarning", () => {
 
       expect(mockRollbar.prototype.warning).toHaveBeenCalledWith(
         "A non-warning occurred",
-        new Error("[object Object]")
+        new Error('{"message":"Not a warning"}')
       );
     });
 

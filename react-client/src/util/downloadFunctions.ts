@@ -1,4 +1,4 @@
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export type DownloadFileProps = {
   blob?: Blob;

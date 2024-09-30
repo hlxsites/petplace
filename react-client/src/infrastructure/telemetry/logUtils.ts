@@ -1,5 +1,5 @@
 import Rollbar from "rollbar";
-import { ROLLBAR_CONFIG } from "../telemetry/rollbar/rollbarConfig";
+import { ROLLBAR_CONFIG } from "./rollbar/rollbarConfig";
 
 const rollbar = new Rollbar(ROLLBAR_CONFIG);
 

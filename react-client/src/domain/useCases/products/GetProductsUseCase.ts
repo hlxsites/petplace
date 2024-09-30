@@ -2,13 +2,13 @@ import { z } from "zod";
 import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetProductsRepository } from "~/domain/repository/products/GetProductsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import {
   ADDITIONAL_PRODUCTS,
   IMAGES_PRODUCTS,
 } from "./utils/productsHardCodedData";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export class GetProductsUseCase implements GetProductsRepository {
   private httpClient: HttpClientRepository;

@@ -7,6 +7,7 @@ import {
 } from "../../models/user/UserModels";
 
 import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import {
@@ -15,7 +16,6 @@ import {
   serverExternalAccountSchema,
   serverInternalAccountSchema,
 } from "./userTypesAndSchemas";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export class AccountDetailsUseCase implements AccountDetailsRepository {
   private httpClient: HttpClientRepository;

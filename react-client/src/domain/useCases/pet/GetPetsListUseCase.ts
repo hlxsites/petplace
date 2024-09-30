@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetCommon } from "../../models/pet/PetModel";
 import { GetPetsListRepository } from "../../repository/pet/GetPetsListRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export class GetPetsListUseCase implements GetPetsListRepository {
   private httpClient: HttpClientRepository;

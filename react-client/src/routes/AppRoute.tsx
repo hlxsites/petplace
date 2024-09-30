@@ -33,7 +33,7 @@ import { DocumentTypeIndex } from "./my-pets/petId/documents/documentType/Docume
 import { loader as DocumentTypeIndexLoader } from "./my-pets/petId/documents/documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/petId/PetProfileLayout";
-import { ErrorPage } from "./infrastructure/ErrorPage";
+import { RootErrorPage } from "./root-error-page";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -42,7 +42,7 @@ const routes: PetPlaceRouteObject[] = [
     id: "root",
     path: AppRoutePaths.root,
     element: <Root />,
-    errorElement: <ErrorPage />,
+    errorElement: <RootErrorPage />,
     children: [
       {
         element: <AccountRoot />,
