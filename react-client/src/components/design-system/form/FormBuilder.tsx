@@ -495,7 +495,6 @@ export const FormBuilder = ({
         if (
           !isEmailValid(
             // @ts-expect-error this value is too deep for ts to understand
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             values[input.repeaterMetadata.repeaterId][inputMetadata[1]][
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               inputMetadata[0]
