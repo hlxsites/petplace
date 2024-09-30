@@ -11,6 +11,7 @@ import { requireAuthToken } from "~/util/authUtil";
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export const loader = (({ params }) => {
   const { petId, documentType } = params;
@@ -85,10 +86,10 @@ export const useDocumentTypeIndexViewModel = () => {
           };
           downloadFile(downloadProps);
         } else {
-          console.error("Downloaded content is not a Blob");
+          logError("Downloaded content is not a Blob");
         }
       } catch (error) {
-        console.error("Error downloading document:", error);
+        logError("Error downloading document:", error);
         if (isMounted.current) {
           setDownloadError(
             error instanceof Error

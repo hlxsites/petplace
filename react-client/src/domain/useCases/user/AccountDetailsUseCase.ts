@@ -15,6 +15,7 @@ import {
   serverExternalAccountSchema,
   serverInternalAccountSchema,
 } from "./userTypesAndSchemas";
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export class AccountDetailsUseCase implements AccountDetailsRepository {
   private httpClient: HttpClientRepository;
@@ -53,7 +54,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
       return null;
     } catch (error) {
-      console.error("AccountDetailsUseCase query error", error);
+      logError("AccountDetailsUseCase query error", error);
       return null;
     }
   }
@@ -91,7 +92,7 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
       return false;
     } catch (error) {
-      console.error("AccountDetailsUseCase mutation error", error);
+      logError("AccountDetailsUseCase mutation error", error);
       return false;
     }
   };

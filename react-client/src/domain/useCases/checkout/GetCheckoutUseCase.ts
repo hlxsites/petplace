@@ -9,6 +9,7 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import { MEMBERSHIP_INFO_OPTIONS } from "./utils/checkoutHardCodedData";
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 const membershipProductSchema = z.object({
   AutoRenew: z.boolean().nullish(),
@@ -119,7 +120,7 @@ export class GetCheckoutUseCase implements GetCheckoutRepository {
 
       return { plans };
     } catch (error) {
-      console.error("GetCheckoutUseCase query error", error);
+      logError("GetCheckoutUseCase query error", error);
       return emptyResult;
     }
   };

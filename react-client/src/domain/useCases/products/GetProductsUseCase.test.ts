@@ -5,6 +5,13 @@ import getProductsMock from "./mocks/getProductsMock.json";
 
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
+// Mock Rollbar error method
+jest.mock("@rollbar/react", () => ({
+  useRollbar: jest.fn().mockReturnValue({
+    error: jest.fn(),
+  }),
+}));
+
 describe("GetProductsUseCase", () => {
   it("should return null when there is no data", async () => {
     const httpClient = new MockHttpClient({ data: null });

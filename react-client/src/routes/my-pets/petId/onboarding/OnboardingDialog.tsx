@@ -10,6 +10,7 @@ import { OnboardingStepThree } from "./OnboardingStepThree";
 import { OnboardingStepTwo } from "./OnboardingStepTwo";
 import { OnboardingStepFour } from "./step-four-content/OnboardingStepFour";
 import { useOnboardingSteps } from "./useOnboardingSteps";
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export type CommonOnboardingProps = {
   alignment: "center" | "left";
@@ -37,7 +38,7 @@ export const OnboardingDialog = () => {
         setPetInfo(resolvedPetInfo);
         setStatus(resolvedPetInfo?.documentationStatus ?? "none");
       } catch (error) {
-        console.error("Failed to resolve petInfo:", error);
+        logError("Failed to resolve petInfo:", error);
       }
     };
 

@@ -8,6 +8,7 @@ import {
   ADDITIONAL_PRODUCTS,
   IMAGES_PRODUCTS,
 } from "./utils/productsHardCodedData";
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export class GetProductsUseCase implements GetProductsRepository {
   private httpClient: HttpClientRepository;
@@ -21,7 +22,7 @@ export class GetProductsUseCase implements GetProductsRepository {
   }
 
   private handleError = (error: unknown): null => {
-    console.error("GetProductsUseCase query error", error);
+    logError("GetProductsUseCase query error", error);
     return null;
   };
 

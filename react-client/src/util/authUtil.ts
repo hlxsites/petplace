@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { AUTH_TOKEN } from "./envUtil";
 import { invariantResponse } from "./invariant";
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export function refreshAuthToken() {
   // Try to find the invisible refresh button
@@ -46,8 +47,8 @@ export function parseJwt(token: string) {
     const parsedValue = JSON.parse(jsonPayload) as Record<string, unknown>;
 
     return parsedValue;
-  } catch (e) {
-    console.error("Error parsing token", e);
+  } catch (error) {
+    logError("Error parsing token", error);
   }
 }
 
@@ -66,7 +67,7 @@ export function readJwtClaim() {
   try {
     return schema.parse(parsedJwt);
   } catch (error) {
-    console.error("Error parsing jwt claim", error);
+    logError("Error parsing jwt claim", error);
     return null;
   }
 }

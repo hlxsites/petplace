@@ -26,6 +26,7 @@ import {
   textWithRepeaterMetadata,
 } from "./utils/formRepeaterUtils";
 import { isEmailValid } from "./utils/formValidationUtils";
+import { logWarning } from "~/routes/infrastructure/utils/loggerUtils";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -410,7 +411,7 @@ export const FormBuilder = ({
 
     if (type === "contains") {
       if (typeof currentValue !== "string") {
-        console.warn('"contains" condition can only be used for strings');
+        logWarning('"contains" condition can only be used for strings');
         return false;
       }
 
@@ -419,7 +420,7 @@ export const FormBuilder = ({
 
     if (type === "regex") {
       if (typeof currentValue !== "string" || typeof value !== "string") {
-        console.warn('"regex" condition can only be used for strings');
+        logWarning('"regex" condition can only be used for strings');
         return false;
       }
 
@@ -427,7 +428,7 @@ export const FormBuilder = ({
         const regex = new RegExp(value);
         return regex.test(currentValue);
       } catch (error) {
-        console.warn('Invalid regex pattern for "regex" condition');
+        logWarning('Invalid regex pattern for "regex" condition');
         return false;
       }
     }
@@ -464,7 +465,7 @@ export const FormBuilder = ({
         return numericalComparison(currentValue.getTime(), value.getTime());
       }
 
-      console.warn(
+      logWarning(
         "Cannot compare non-numeric/non-date values for numeric/date operation"
       );
     }

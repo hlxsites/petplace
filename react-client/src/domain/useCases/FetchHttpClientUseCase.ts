@@ -1,3 +1,4 @@
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 import {
   HttpClientRepository,
   HttpFormDataOptions,
@@ -104,7 +105,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
 
       return { data, statusCode: result.status };
     } catch (error) {
-      console.error("Error in POST request:", error);
+      logError("Error in POST request:", error);
       return { error };
     }
   };
@@ -129,7 +130,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
       const data: unknown = await result.json();
       return { data, statusCode };
     } catch (error) {
-      console.error("Error in PUT request:", error);
+      logError("Error in PUT request:", error);
       return { error };
     }
   };

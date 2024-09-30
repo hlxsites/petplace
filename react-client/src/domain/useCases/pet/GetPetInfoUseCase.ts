@@ -4,6 +4,7 @@ import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoReposito
 import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
+import { logError } from "~/routes/infrastructure/utils/loggerUtils";
 
 export class GetPetInfoUseCase implements GetPetInfoRepository {
   private httpClient: HttpClientRepository;
@@ -16,11 +17,6 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
     }
   }
 
-  private handleError = (error: unknown): null => {
-    console.error("GetPetInfoUseCase query error", error);
-    return null;
-  };
-
   query = async (petId: string): Promise<PetModel | null> => {
     try {
       const result = await this.httpClient.get(`api/Pet/${petId}`);
@@ -29,7 +25,8 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
 
       return null;
     } catch (error) {
-      return this.handleError(error);
+      logError("GetPetInfoUseCase query error", error);
+      return null;
     }
   };
 }

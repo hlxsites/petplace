@@ -6,6 +6,13 @@ import { GetCheckoutUseCase } from "./GetCheckoutUseCase";
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
+// Mock Rollbar error method
+jest.mock("@rollbar/react", () => ({
+  useRollbar: jest.fn().mockReturnValue({
+    error: jest.fn(),
+  }),
+}));
+
 describe("GetCheckoutUseCase", () => {
   it("should return empty plans list when there is no data", async () => {
     const httpClient = new MockHttpClient({ data: null });
