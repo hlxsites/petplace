@@ -71,30 +71,38 @@ export function getAccountEmergencyContactsData(
   const contacts: FormValues[] = [];
   emergencyContacts?.forEach((contact) =>
     contacts.push({
-      [emergencyContactIds.name]: contact.name,
-      [emergencyContactIds.surname]: contact.surname,
-      [emergencyContactIds.email]: contact.email,
-      [emergencyContactIds.phone]: contact.phoneNumber,
+      [emergencyContactIds.contactId]: contact.contactId ?? "",
+      [emergencyContactIds.name]: contact.name ?? "",
+      [emergencyContactIds.surname]: contact.surname ?? "",
+      [emergencyContactIds.email]: contact.email ?? "",
+      [emergencyContactIds.phone]: contact.phoneNumber ?? "",
+      [emergencyContactIds.stagingId]: contact.stagingId ?? 0,
     })
   );
 
   return { [emergencyContactIds.repeaterId]: contacts };
 }
 
-export function buildAccountEmergencyContactsList(
-  values: FormValues[]
-): AccountEmergencyContactModel[] {
+export function buildAccountEmergencyContactsList(values: FormValues[]) {
   const list: AccountEmergencyContactModel[] = [];
   values.forEach((contact) =>
-    list.push({
-      email: contact[emergencyContactIds.email] as string,
-      name: contact[emergencyContactIds.name] as string,
-      phoneNumber: contact[emergencyContactIds.phone] as string,
-      surname: contact[emergencyContactIds.surname] as string,
-    })
+    list.push(convertToAccountEmergencyContactModel(contact))
   );
 
   return list;
+}
+
+export function convertToAccountEmergencyContactModel(
+  contact: FormValues
+): AccountEmergencyContactModel {
+  return {
+    contactId: contact[emergencyContactIds.contactId] as string,
+    email: contact[emergencyContactIds.email] as string,
+    name: contact[emergencyContactIds.name] as string,
+    phoneNumber: contact[emergencyContactIds.phone] as string,
+    surname: contact[emergencyContactIds.surname] as string,
+    stagingId: contact[emergencyContactIds.surname] as number,
+  };
 }
 
 export function getAccountNotificationsData(
@@ -167,8 +175,8 @@ export function buildAccountNotifications(
   const alerts = values[accountNotificationIds.petPlaceAdoptAlerts] as string[];
   const accountDetails: AccountNotificationsModel = {
     emailAlert: alerts.includes("Email"),
-    petPlaceOffer: values[accountNotificationIds.petPlaceOffers] as boolean,
-    partnerOffer: values[accountNotificationIds.partnerOffers] as boolean,
+    petPlaceOffer: !!values[accountNotificationIds.petPlaceOffers],
+    partnerOffer: !!values[accountNotificationIds.partnerOffers],
     signedCatNewsletter: newsletter.includes("Cat"),
     signedDogNewsletter: newsletter.includes("Dog"),
     smsAlert: alerts.includes("SMS"),

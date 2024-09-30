@@ -43,10 +43,15 @@ export const loader = (() => {
     void accountEmergencyContactsUseCase.mutate(data);
   }
 
+  function onDeleteEmergencyContact(data: AccountEmergencyContactModel) {
+    void accountEmergencyContactsUseCase.delete(data);
+  }
+
   return defer({
     accountDetails: accountDetailsUseCase.query(),
     accountNotifications: accountNotificationsUseCase.query(),
     emergencyContacts: accountEmergencyContactsUseCase.query(),
+    onDeleteEmergencyContact,
     onSubmitEmergencyContacts: onSubmitEmergencyContacts,
     getLostPetNotification: (id: LostPetUpdateModel) =>
       lostPetNotificationDetailsUseCase.query(id),
@@ -63,6 +68,7 @@ export const useAccountIndexViewModel = () => {
     emergencyContacts,
     getLostPetNotification,
     lostPetsHistory,
+    onDeleteEmergencyContact,
     onSubmitEmergencyContacts,
     onSubmitAccountDetails,
     onSubmitAccountNotifications,
@@ -73,6 +79,7 @@ export const useAccountIndexViewModel = () => {
     accountNotifications,
     emergencyContacts,
     lostPetsHistory,
+    onDeleteEmergencyContact,
     onSubmitEmergencyContacts,
     onSubmitAccountDetails,
     onSubmitAccountNotifications,

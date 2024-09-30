@@ -14,6 +14,7 @@ export const MyAccountInfoTabs = () => {
     accountNotifications,
     emergencyContacts,
     lostPetsHistory,
+    onDeleteEmergencyContact,
     onSubmitAccountDetails,
     onSubmitAccountNotifications,
     onSubmitEmergencyContacts,
@@ -28,6 +29,7 @@ export const MyAccountInfoTabs = () => {
           isExternalLogin={isExternalLogin}
           accountDetails={accountDetails}
           emergencyContacts={emergencyContacts}
+          onDeleteEmergencyContact={onDeleteEmergencyContact}
           onSubmitAccountDetails={onSubmitAccountDetails}
           onSubmitEmergencyContacts={onSubmitEmergencyContacts}
         />

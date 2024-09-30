@@ -18,6 +18,7 @@ import {
 import {
   buildAccountDetails,
   buildAccountEmergencyContactsList,
+  convertToAccountEmergencyContactModel,
   getAccountDetailsData,
   getAccountEmergencyContactsData,
 } from "../form/formDataUtil";
@@ -26,6 +27,7 @@ type AccountDetailsTabContentProps = {
   accountDetails?: Promise<AccountDetailsModel | null>;
   emergencyContacts?: Promise<AccountEmergencyContactModel[] | null>;
   isExternalLogin?: boolean;
+  onDeleteEmergencyContact?: (data: AccountEmergencyContactModel) => void;
   onSubmitEmergencyContacts?: (data: AccountEmergencyContactModel[]) => void;
   onSubmitAccountDetails?: (values: AccountDetailsModel) => void;
 };
@@ -34,6 +36,7 @@ export const AccountDetailsTabContent = ({
   accountDetails,
   emergencyContacts,
   isExternalLogin,
+  onDeleteEmergencyContact,
   onSubmitEmergencyContacts,
   onSubmitAccountDetails,
 }: AccountDetailsTabContentProps) => {
@@ -85,6 +88,11 @@ export const AccountDetailsTabContent = ({
                   )
                 );
               }}
+              onDeleteRepeater={(contact) =>
+                onDeleteEmergencyContact?.(
+                  convertToAccountEmergencyContactModel(contact)
+                )
+              }
               schema={emergencyContactFormSchema}
               initialValues={getAccountEmergencyContactsData(emergencyContacts)}
             />
