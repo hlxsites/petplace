@@ -25,7 +25,7 @@ const mockedIsRouteErrorResponse = isRouteErrorResponse as jest.MockedFunction<
 >;
 const mockedLogError = logError as jest.MockedFunction<typeof logError>;
 
-describe("ErrorPage", () => {
+describe("ErrorPage.", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
