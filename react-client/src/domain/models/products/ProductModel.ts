@@ -12,6 +12,7 @@ export type ProductDescription = {
   images: string[];
   isAnnual?: boolean;
   title: string;
+  type: string;
 };
 
 export type DetailedCartItem = ProductDescription & {

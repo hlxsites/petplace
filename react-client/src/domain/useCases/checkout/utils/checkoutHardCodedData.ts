@@ -4,6 +4,9 @@ import {
   MembershipPlanId,
 } from "~/domain/checkout/CheckoutModels";
 
+export const REDIRECT_TO_CHECKOUT_URL =
+  "https://mph-qay.pethealthinc.com/External/Petplacelogin?redirecturl=petplace/pages/cart";
+
 export const MEMBERSHIP_LIST_OFFERS: MembershipDescriptionOffer[] = [
   { offerLabel: "Get help finding your lost pet." },
   { offerLabel: "Direct connection to your pet's finder." },

@@ -7,7 +7,7 @@ jest.mock("../PetPlaceHttpClientUseCase", () => {});
 const VALID_CART_ITEM: CommonCartItem = {
   autoRenew: false,
   id: "item1",
-  name: "Pet Toy",
+  title: "Pet Toy",
   price: "$10.00",
   quantity: 2,
   type: "toy",

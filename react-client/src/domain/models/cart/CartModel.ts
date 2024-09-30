@@ -1,11 +1,10 @@
 export type CommonCartItem = {
-  autoRenew: boolean;
-  petId?: string;
+  autoRenew?: boolean;
   id: string;
   quantity: number;
+  price: string;
+  title: string;
   type: string;
-  name: string;
-  price?: number | string;
 };
 
 export type CartItem = CommonCartItem & {
@@ -13,4 +12,11 @@ export type CartItem = CommonCartItem & {
   isService?: boolean;
   purchaseLimit?: number;
   recurrence?: string;
+};
+
+export type QueryCartItem = Pick<
+  CommonCartItem,
+  "autoRenew" | "id" | "quantity"
+> & {
+  petId: string;
 };

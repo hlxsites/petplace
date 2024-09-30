@@ -1,18 +1,16 @@
+import { z } from "zod";
+import { CommonCartItem, QueryCartItem } from "~/domain/models/cart/CartModel";
+import { CartCheckoutRepository } from "~/domain/repository/cart/CartCheckoutRepository";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
-import { CartCheckoutRepository } from "~/domain/repository/cart/CartCheckoutRepository";
-import { z } from "zod";
 import { parseData } from "../util/parseData";
-import { CommonCartItem } from "~/domain/models/cart/CartModel";
 
 const cartItemServerSchema = z.object({
   AnimalId: z.string().nullish(),
   AutoRenew: z.number().nullish(),
   ItemId: z.string().nullish(),
-  ItemName: z.string().nullish(),
   ItemType: z.string().nullish(),
   Quantity: z.number().nullish(),
-  UnitPrice: z.number().nullish(),
 });
 
 const serverSchema = z.object({
@@ -39,17 +37,16 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
     return false;
   };
 
-  query = async (): Promise<CommonCartItem[] | null> => {
+  query = async (): Promise<QueryCartItem[]> => {
     try {
       const result = await this.httpClient.get(`${BASE_URL}/Cart`);
-
-      if (result.data) return convertToCartItem(result.data);
-
-      return null;
+      if (result.data) {
+        return convertToCartItem(result.data);
+      }
     } catch (error) {
       console.error("CartCheckoutUseCase query error", error);
-      return null;
     }
+    return [];
   };
 
   private hasRequiredFields(item: CommonCartItem, petId: string): boolean {
@@ -97,28 +94,45 @@ export class CartCheckoutUseCase implements CartCheckoutRepository {
   };
 }
 
-function convertToCartItem(data: unknown): CommonCartItem[] | null {
-  if (!data) return null;
+function convertToCartItem(data: unknown): QueryCartItem[] {
+  if (!data) return [];
+
+  const itemSchema = z.object({
+    AnimalId: z.string().nullish(),
+    AutoRenew: z.number().nullish(),
+    ItemId: z.string().nullish(),
+    Quantity: z.number().nullish(),
+  });
 
   const serverResponseSchema = z.object({
-    OrderLines: z.array(cartItemServerSchema).nullish(),
+    OrderLines: z.array(itemSchema).nullish(),
   });
 
   const parsedCart = parseData(serverResponseSchema, data);
 
-  if (!parsedCart || !parsedCart.OrderLines?.length) return null;
+  if (!parsedCart || !parsedCart.OrderLines?.length) return [];
 
-  const items: CommonCartItem[] = [];
+  const items: QueryCartItem[] = [];
 
   parsedCart.OrderLines?.forEach((cartItem) => {
+    const petId = cartItem.AnimalId ?? "";
+    const quantity = cartItem.Quantity ?? 0;
+    const id = cartItem.ItemId ?? "";
+
+    if (!petId || !quantity || !id) {
+      console.error("Missing required fields for cart item", {
+        id,
+        petId,
+        quantity,
+      });
+      return;
+    }
+
     items.push({
       autoRenew: convertAutoRenewFromNumberToBoolean(cartItem.AutoRenew),
-      id: cartItem.ItemId ?? "",
-      name: cartItem.ItemName ?? "",
-      petId: cartItem.AnimalId ?? "",
-      price: cartItem.UnitPrice ?? 0,
-      quantity: cartItem.Quantity ?? 0,
-      type: cartItem.ItemType ?? "",
+      id,
+      petId,
+      quantity,
     });
   });
 
@@ -134,7 +148,7 @@ function convertAutoRenewFromNumberToBoolean(data?: number | null) {
   return AutoRenew[data ?? 0];
 }
 
-function convertAutoRenewFromBooleanToNumber(data: boolean) {
+function convertAutoRenewFromBooleanToNumber(data: boolean | undefined) {
   if (data) return 1;
   return 0;
 }

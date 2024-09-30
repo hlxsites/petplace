@@ -5,7 +5,7 @@ import { ComponentProps } from "react";
 
 const BUTTON_LABEL = /View insurance details/i;
 const EXTERNAL_URL =
-  "https://mph-qay.pethealthinc.com/petplace/policy?animalID=";
+  "https://mph-qay.pethealthinc.com/external/petplacelogin?redirecturl=petplace/policy?animalID=";
 const TITLE_LABEL = /See pet's insurance in MyPetHealth/i;
 
 const { getByRole } = screen;

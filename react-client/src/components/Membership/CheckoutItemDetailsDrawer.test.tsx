@@ -54,5 +54,6 @@ const MOCK_ITEM: DetailedCartItem = {
   title: "Test Item",
   images: ["test-image.jpg"],
   description: "Test Description",
+  type: "test-type",
 };
 const MOCK_ON_ADD_TO_CART = jest.fn();

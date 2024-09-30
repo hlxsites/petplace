@@ -14,6 +14,7 @@ const DEFAULT_ITEM: ProductDescription = {
   title: "Item title",
   description: "Item description",
   images: [],
+  type: "item-type",
 };
 
 const { getByRole, getByText, queryByText, queryByRole } = screen;

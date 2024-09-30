@@ -5,8 +5,14 @@ import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
 
 export const CartDrawer = () => {
-  const { cartItems, isOpenCart, onCloseCart, subtotal } =
-    useCheckoutProductsViewModelContext();
+  const {
+    cartItems,
+    isOpenCart,
+    onContinueToCheckoutPayment,
+    onCloseCart,
+    onUpdateQuantity,
+    subtotal,
+  } = useCheckoutProductsViewModelContext();
 
   return (
     <Drawer
@@ -27,13 +33,13 @@ export const CartDrawer = () => {
           {cartItems?.map((item) => (
             <CartItemCard
               key={item.id}
-              // onUpdateQuantity={onUpdateQuantity}
+              onUpdateQuantity={onUpdateQuantity}
               {...item}
             />
           ))}
         </div>
 
-        <CartFooter subtotal={subtotal} />
+        <CartFooter onClick={onContinueToCheckoutPayment} subtotal={subtotal} />
       </div>
     </Drawer>
   );
