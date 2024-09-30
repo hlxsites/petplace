@@ -169,6 +169,10 @@ export type ElementInputText = InputCommon & {
   type: "text" | "email" | "password" | "number";
 };
 
+export type ElementInputHidden = InputCommon & {
+  type: "hidden";
+};
+
 export type ElementInputPhone = InputCommon & {
   defaultType?: string;
   disabledType?: ConditionExpression;
@@ -241,7 +245,8 @@ export type InputsUnion =
   | ElementInputNumber
   | ElementInputDate
   | ElementInputSingleSelect
-  | ElementInputMultiSelect;
+  | ElementInputMultiSelect
+  | ElementInputHidden;
 
 export type ElementUnion =
   | ElementButton

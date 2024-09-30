@@ -13,6 +13,7 @@ import { Title } from "../text/Title";
 import { FormRepeater } from "./FormRepeater";
 import Input from "./Input";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
+import { InputHidden } from "./InputHidden";
 import { InputPhone } from "./InputPhone";
 import { InputRadio } from "./InputRadio";
 import { InputSwitch } from "./InputSwitch";
@@ -275,6 +276,16 @@ export const FormBuilder = ({
       );
     }
 
+    if (type === "hidden") {
+      return (
+        <InputHidden
+          {...commonProps}
+          onChange={handleInputChange}
+          value={getStringValue()}
+        />
+      );
+    }
+
     if (
       type === "email" ||
       type === "text" ||
@@ -490,10 +501,17 @@ export const FormBuilder = ({
 
     if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
       if (input.repeaterMetadata) {
-        const inputMetadata = input.id.split("_repeater_")
-        // @ts-expect-error this value is too deep for ts to understand
+        const metadata = input.repeaterMetadata;
+        const [inputId, index] = input.id.split("_repeater_");
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (!isEmailValid(values[input.repeaterMetadata.repeaterId][inputMetadata[1]][inputMetadata[0]] as string)) return "Please enter a valid email address.";
+        if (
+          !isEmailValid(
+            // @ts-expect-error this goes to deep for ts to understand
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            values[metadata.repeaterId][inputId][index] as string
+          )
+        )
+          return "Please enter a valid email address.";
       } else {
         return "Please enter a valid email address.";
       }
