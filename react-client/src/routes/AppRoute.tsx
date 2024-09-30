@@ -11,7 +11,6 @@ import { PetProfileIndex } from "./my-pets/petId/PetProfileIndex";
 import { loader as PetProfileLayoutLoader } from "./my-pets/petId/usePetProfileLayoutViewModel";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
 import { Root } from "./root";
-import { RootErrorPage } from "./root-error-page";
 import { PetPlaceRouteObject } from "./types/routerTypes";
 
 import { lazy } from "react";
@@ -34,6 +33,7 @@ import { DocumentTypeIndex } from "./my-pets/petId/documents/documentType/Docume
 import { loader as DocumentTypeIndexLoader } from "./my-pets/petId/documents/documentType/useDocumentTypeIndexViewModel";
 import { PetEditIndex } from "./my-pets/petId/edit/PetEditIndex";
 import { PetProfileLayout } from "./my-pets/petId/PetProfileLayout";
+import { ErrorPage } from "./infrastructure/ErrorPage";
 
 const PlaygroundPage = lazy(() => import("./playground/PlaygroundIndex"));
 
@@ -42,7 +42,7 @@ const routes: PetPlaceRouteObject[] = [
     id: "root",
     path: AppRoutePaths.root,
     element: <Root />,
-    errorElement: <RootErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         element: <AccountRoot />,
