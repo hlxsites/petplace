@@ -1,13 +1,13 @@
 import { z } from "zod";
+import { CountryStateModel } from "~/domain/models/lockup/CountryStateModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export class GetStatesUseCase implements GetStatesRepository {
   private httpClient: HttpClientRepository;
-  private endpoint = (country: string) => `lookup/state?country=${country}`;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -17,32 +17,52 @@ export class GetStatesUseCase implements GetStatesRepository {
     }
   }
 
-  query = async (country: string): Promise<string[]> => {
+  query = async (countryId: string): Promise<CountryStateModel[]> => {
     try {
-      const result = await this.httpClient.get(this.endpoint(country));
-      if (result.data) return validateStates(result.data);
-
-      return [];
+      // The server expects "US" instead of "USA"
+      const id = countryId === "USA" ? "US" : countryId;
+      const result = await this.httpClient.get(`lookup/state?country=${id}`);
+      if (result.data) return parseStatesFromServer(result.data);
     } catch (error) {
       logError("GetStatesUseCase query error", error);
-      return [];
     }
+    return [];
   };
 }
 
-function validateStates(data: unknown): string[] {
-  if (!data || !Array.isArray(data)) return [];
+function parseStatesFromServer(data: unknown): CountryStateModel[] {
+  const transformedData = (() => {
+    // The server is returns this request as an string atm
+    if (typeof data === "string") {
+      try {
+        return JSON.parse(data) as unknown;
+      } catch (error) {
+        logError("parseStatesFromServer error", error);
+        return null;
+      }
+    }
+    return data;
+  })();
 
   const serverResponseSchema = z
     .array(
-      z
-        .object({ stateId: z.string().nullish(), name: z.string().nullish() })
-        .nullish()
+      z.object({ stateId: z.string().nullish(), name: z.string().nullish() })
     )
     .nullish();
 
-  const statesData = parseData(serverResponseSchema, data);
+  const statesData = parseData(serverResponseSchema, transformedData);
   if (!statesData) return [];
 
-  return statesData.map((state) => (state && state.name ? state.name : ""));
+  const list: CountryStateModel[] = [];
+
+  statesData.forEach((state) => {
+    if (state.stateId && state.name) {
+      list.push({
+        id: state.stateId,
+        title: state.name,
+      });
+    }
+  });
+
+  return list;
 }
