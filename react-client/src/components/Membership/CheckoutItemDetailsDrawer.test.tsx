@@ -37,12 +37,20 @@ describe("CheckoutItemDetailsDrawer", () => {
 });
 
 function getRenderer({
-  item = MOCK_ITEM,
+  product = MOCK_ITEM,
   onClose = jest.fn(),
-  ...rest
+  onAddToCart = jest.fn(),
+  onChange = jest.fn(),
+  selectedColorSize = "black | L",
 }: Partial<ComponentProps<typeof CheckoutItemDetailsDrawer>> = {}) {
   return render(
-    <CheckoutItemDetailsDrawer item={item} onClose={onClose} {...rest} />
+    <CheckoutItemDetailsDrawer
+      product={product}
+      onClose={onClose}
+      onAddToCart={onAddToCart}
+      onChange={onChange}
+      selectedColorSize={selectedColorSize}
+    />
   );
 }
 

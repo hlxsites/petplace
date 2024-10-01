@@ -2,15 +2,20 @@ import { DetailedCartItem } from "~/domain/models/products/ProductModel";
 import { Button, Text, TextSpan, Title } from "../design-system";
 import { CartItemImages } from "./CartItemImages";
 import { CheckoutProductColorSize } from "./CheckoutProductColorSize";
+import { getProductPrice } from "~/domain/util/checkoutProductUtil";
 
 type CheckoutItemDetailedContentProps = {
-  item: DetailedCartItem;
   onAddToCart?: () => void;
+  onChange: ({ color, size }: { color: string; size: string }) => void;
+  product: DetailedCartItem;
+  selectedColorSize: string;
 };
 
 export const CheckoutItemDetailedContent = ({
-  item,
   onAddToCart,
+  onChange,
+  product,
+  selectedColorSize,
 }: CheckoutItemDetailedContentProps) => {
   const {
     additionalInfo,
@@ -23,19 +28,11 @@ export const CheckoutItemDetailedContent = ({
     privacyFeatures,
     sizing,
     tagFeatures,
-  } = item;
+  } = product;
 
-  // TODO: get the price from the availableOptions
-  const price = "$20";
+  const price = getProductPrice(product, selectedColorSize);
 
-  // TODO: get the selected color and size from the availableOptions
-  const selectedColor = "";
-  const selectedSize = "";
-
-  const handleOnChange = ({ color, size }: { color: string; size: string }) => {
-    // TODO: implement this
-    console.log({ color, size });
-  };
+  const [selectedColor, selectedSize] = selectedColorSize.split("|");
 
   return (
     <div className="flex flex-col gap-base">
@@ -86,7 +83,7 @@ export const CheckoutItemDetailedContent = ({
         <CheckoutProductColorSize
           availableColors={availableColors}
           availableSizes={availableSizes}
-          onChange={handleOnChange}
+          onChange={onChange}
           selectedColor={selectedColor}
           selectedSize={selectedSize}
         />

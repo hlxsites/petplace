@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { ProductDescription } from "~/domain/models/products/ProductModel";
+import {
+  DetailedCartItem,
+  ProductDescription,
+} from "~/domain/models/products/ProductModel";
 import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 
 import {
@@ -9,13 +12,16 @@ import {
 import { classNames } from "~/util/styleUtil";
 import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
 import { CheckoutProductCard } from "../CheckoutProductCard";
-import { useCartItemsDetails } from "../hooks/useCartItemDetails";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export const CheckoutProductsSection = () => {
-  const { products, onUpdateCartProduct } =
-    useCheckoutProductsViewModelContext();
-  const { item, goBack } = useCartItemsDetails();
+  const {
+    products,
+    onCloseMoreInfo,
+    onUpdateCartProduct,
+    onOpenMoreInfo,
+    isMoreInfoOpen,
+  } = useCheckoutProductsViewModelContext();
 
   const initialProductOptions = (products || []).reduce(
     (acc, product) => {
@@ -29,6 +35,8 @@ export const CheckoutProductsSection = () => {
   const [productOptions, setProductOptions] = useState<Record<string, string>>(
     initialProductOptions
   );
+  const [selectedProduct, setSelectedProduct] =
+    useState<DetailedCartItem | null>(null);
 
   const gridColumns = getGridColumns(products.length);
 
@@ -63,7 +71,8 @@ export const CheckoutProductsSection = () => {
   };
 
   const handleMoreInfo = (product: ProductDescription) => () => {
-    console.log("product", product);
+    setSelectedProduct(product);
+    onOpenMoreInfo(product.id);
   };
 
   const handleOnChangeProductOptions = (productId: string) => {
@@ -91,7 +100,15 @@ export const CheckoutProductsSection = () => {
           );
         })}
       </div>
-      {item && <CheckoutItemDetailsDrawer item={item} onClose={goBack} />}
+      {isMoreInfoOpen && selectedProduct && (
+        <CheckoutItemDetailsDrawer
+          onAddToCart={handleAddToCart(selectedProduct)}
+          onClose={onCloseMoreInfo}
+          onChange={handleOnChangeProductOptions(selectedProduct.id)}
+          product={selectedProduct}
+          selectedColorSize={productOptions[selectedProduct.id]}
+        />
+      )}
     </>
   );
 };
