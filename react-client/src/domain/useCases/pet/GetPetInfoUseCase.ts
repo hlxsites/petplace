@@ -6,6 +6,19 @@ import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
+const putServerSchema = z.object({
+  Id: z.string(),
+  Name: z.string(),
+  Sex: z.string(),
+  DateOfBirth: z.string(),
+  Neutered: z.boolean(),
+  SpeciesId: z.number(),
+  BreedId: z.number(),
+  MixedBreed: z.boolean(),
+});
+
+export type PutPetInfoRequest = z.infer<typeof putServerSchema>;
+
 export class GetPetInfoUseCase implements GetPetInfoRepository {
   private httpClient: HttpClientRepository;
 
@@ -27,6 +40,28 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
     } catch (error) {
       logError("GetPetInfoUseCase query error", error);
       return null;
+    }
+  };
+
+  mutate = async (body: PutPetInfoRequest): Promise<boolean> => {
+    try {
+      if (putServerSchema.safeParse(body).success) {
+        const result = await this.httpClient.put("api/Pet", {
+          body: JSON.stringify(body),
+        });
+
+        if (
+          result.statusCode &&
+          result.statusCode >= 200 &&
+          result.statusCode < 300
+        )
+          return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("AccountDetailsUseCase mutation error", error);
+      return false;
     }
   };
 }
