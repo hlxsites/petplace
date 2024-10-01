@@ -3,6 +3,7 @@ import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { PostRenewMembershipRepository } from "~/domain/repository/renew/PostRenewMembershipRepository";
 import { RenewMembershipModel } from "~/domain/models/renew/RenewMembershipModel";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 const renewMembershipServerSchema = z.object({
   AnimalId: z.string().nullish(),
@@ -37,7 +38,7 @@ export class PostRenewMembershipUseCase
 
       return response.statusCode >= 200 && response.statusCode < 300;
     } catch (error) {
-      console.error("PostRenewMembershipUseCase post error", error);
+      logError("PostRenewMembershipUseCase post error", error);
       return false;
     }
   };
