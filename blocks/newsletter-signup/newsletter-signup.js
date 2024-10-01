@@ -80,9 +80,11 @@ async function submitForm(block, fd) {
 }
 
 export default async function decorate(block) {
-  const form = await createForm('/newsletter.json', (fd) =>
-    submitForm(block, fd),
+  const form = await createForm(
+    '/newsletter.json',
+    (fd) => submitForm(block, fd),
   );
+
   form.querySelector('label[for="firstname"]').classList.add('sr-only');
   form.querySelector('label[for="lastname"]').classList.add('sr-only');
   form.querySelector('label[for="email"]').classList.add('sr-only');
@@ -101,16 +103,16 @@ export default async function decorate(block) {
 
   const inputDiv = document.createElement('div');
   inputDiv.classList.add('inputs-main-div');
-  block.querySelectorAll('.form-text-wrapper').forEach(wrapper => {
+  block.querySelectorAll('.form-text-wrapper').forEach((wrapper) => {
     inputDiv.append(wrapper);
-  })
-  
+  });
+
   const checkboxDiv = document.createElement('div');
   const checkboxLabel = document.createElement('label');
   checkboxLabel.innerText = 'Please select your preferred newsletter(s):';
   checkboxLabel.classList.add('checkbox-label');
   checkboxDiv.classList.add('checkbox-main-div');
-  block.querySelectorAll('.form-checkbox-wrapper').forEach(wrapper => {
+  block.querySelectorAll('.form-checkbox-wrapper').forEach((wrapper) => {
     checkboxDiv.append(wrapper);
   });
 
@@ -118,7 +120,7 @@ export default async function decorate(block) {
 
   form.prepend(messageDiv);
   form.prepend(checkboxDiv);
-  form.prepend(checkboxLabel)
+  form.prepend(checkboxLabel);
   form.prepend(inputDiv);
 
   block.querySelectorAll('a').forEach((link) => {
