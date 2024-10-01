@@ -32,8 +32,7 @@
     "eslint-plugin-import": "2.27.5",
     "nodemon": "^3.1.4",
     "stylelint": "16.2.1",
-    "stylelint-config-standard": "36.0.0",
-    "vite-plugin-rollbar": "^0.0.14"
+    "stylelint-config-standard": "36.0.0"
   },
   "workspaces": [
     "react-client"
