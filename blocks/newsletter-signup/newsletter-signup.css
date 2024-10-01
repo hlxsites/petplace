@@ -9,6 +9,11 @@ main .newsletter-signup input {
   color: var(--text-color-inverted);
 }
 
+.newsletter-signup img {
+  max-width: 100%;
+  height: auto;
+}
+
 .popup .newsletter-signup img {
   width: 90%;
 }
@@ -21,24 +26,6 @@ main .newsletter-signup input {
 }
 
 .newsletter-signup .popup-close::before {
-  content: 'X';
-  font-weight: 800;
-  font-size: 1.5rem;
-}
-
-.newsletter-signup img {
-  max-width: 100%;
-  height: auto;
-}
-
-.popup .newsletter-signup .popup-close {
-  background-color: var(--background-color-dark);
-  line-height: 1;
-  width: 40px;
-  float: right;
-}
-
-.popup .newsletter-signup .popup-close::before {
   content: 'X';
   font-weight: 800;
   font-size: 1.5rem;
