@@ -2,6 +2,7 @@ import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoReposito
 import { PetModel } from "../../models/pet/PetModel";
 
 import { PETS_LIST } from "./mocks/petsListMock";
+import { PutPetInfoRequest } from "./GetPetInfoUseCase";
 
 export class MockGetPetInfoUseCase implements GetPetInfoRepository {
   query = async (petId: string): Promise<PetModel | null> => {
@@ -9,4 +10,12 @@ export class MockGetPetInfoUseCase implements GetPetInfoRepository {
 
     return PETS_LIST.find((pet) => pet.id === petId) ?? null;
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async mutate(_data: PutPetInfoRequest): Promise<boolean> {
+    // Simulate a delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    return true;
+  }
 }
