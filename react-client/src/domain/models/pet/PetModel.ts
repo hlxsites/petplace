@@ -32,6 +32,14 @@ export type LostPetUpdate = {
   foundedBy?: FoundedByInfo | null;
 };
 
+export type LostAndFountNotification = {
+  date: string;
+  update: string;
+  status: MissingStatus;
+  id: number;
+  note: string;
+}
+
 export type PetCommon = {
   id: string;
   img?: string;
