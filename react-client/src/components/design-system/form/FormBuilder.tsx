@@ -7,6 +7,7 @@ import { Title } from "../text/Title";
 import { FormRepeater } from "./FormRepeater";
 import Input from "./Input";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
+import { InputHidden } from "./InputHidden";
 import { InputPhone } from "./InputPhone";
 import { InputRadio } from "./InputRadio";
 import { InputSwitch } from "./InputSwitch";
@@ -177,7 +178,9 @@ export const FormBuilder = ({
 
     const { repeaterMetadata } = inputProps;
     const id = idWithRepeaterMetadata(inputId, repeaterMetadata);
-    const label = textWithRepeaterMetadata(inputLabel, repeaterMetadata);
+    const label = inputLabel
+      ? textWithRepeaterMetadata(inputLabel, repeaterMetadata)
+      : "";
 
     const commonProps = {
       id,
@@ -198,6 +201,10 @@ export const FormBuilder = ({
 
     // Display the error message only if the form has been submitted
     commonProps.errorMessage = didSubmit ? errorMessage : undefined;
+
+    if (type === "hidden") {
+      return <InputHidden id={id} value={getStringValue()} />;
+    }
 
     if (type === "select") {
       const { options } = inputProps;
