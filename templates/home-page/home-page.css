@@ -27,6 +27,7 @@ main a:hover {
 }
 
 .home-banner-bg {
+  position: relative;
   background-color: #EBE8FC;
   margin-bottom: 5rem;
 }
@@ -34,11 +35,14 @@ main a:hover {
 .home-banner-bg::after {
   content: "";
   width: 100%;
-  height: 10rem;
-  margin-top: -80px;
+  height: 100px;
   position: absolute;
   left: 0;
-  background: url("../../icons/home-bg-desktop.svg") center / 100% 100%;
+  background: url(../../icons/home-bg-desktop2.svg) center center no-repeat;
+  max-width: 1344px;
+  right: 0;
+  margin: 0 auto;
+  top: 100%;
 }
 
 /* pre footer */
@@ -170,13 +174,13 @@ main a:hover {
 }
 
 @media (max-width: 768px) {
-  .home-banner-bg {
+ /*  .home-banner-bg {
     margin-bottom: 6rem !important;
-  }  
+  }   */
 
-  .home-banner-bg::after {
+ /*  .home-banner-bg::after {
     background: url("../../icons/home-bg-mobile.svg") center / 100% 100%;
-  }
+  } */
 
   .columns-container {
     margin-top: -2rem;
