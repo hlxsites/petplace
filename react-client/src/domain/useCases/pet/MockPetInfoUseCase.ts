@@ -1,10 +1,10 @@
-import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoRepository";
+import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
 import { PetModel } from "../../models/pet/PetModel";
 
 import { PETS_LIST } from "./mocks/petsListMock";
-import { PutPetInfoRequest } from "./GetPetInfoUseCase";
+import { PutPetInfoRequest } from "./PetInfoUseCase";
 
-export class MockGetPetInfoUseCase implements GetPetInfoRepository {
+export class MockPetInfoUseCase implements PetInfoRepository {
   query = async (petId: string): Promise<PetModel | null> => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
