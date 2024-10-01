@@ -6,6 +6,7 @@ import { sampleRUM } from '../../scripts/lib-franklin.js';
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
   messageElement.innerText = message;
+  messageElement.style.display = 'block';
   messageElement.classList.remove('success', 'error');
   messageElement.classList.add(clazz);
 }
@@ -25,7 +26,7 @@ async function submitForm(block, fd) {
     last_name: formData.get('lastname'),
     catnewsletter: isCatBox,
     dognewsletter: isDogBox,
-    // country: DEFAULT_REGION, // rework later
+    country: DEFAULT_REGION, // rework later
   };
 
   const apiKey = 'APIEvent-74e121c6-6308-c35e-8320-d335ee59f191';
@@ -43,7 +44,7 @@ async function submitForm(block, fd) {
   };
 
   if (!isCatBox && !isDogBox) {
-    showMessage(block, 'Please select one of the checkboxes above!', 'error');
+    showMessage(block, '*Please select at least one newsletter (cat, dog, or both) to complete your sign-up.', 'error');
     block.querySelector('button').removeAttribute('disabled');
     return;
   }
