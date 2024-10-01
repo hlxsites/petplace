@@ -5,14 +5,21 @@ import { notificationsFormSchema } from "../../form/notificationForm";
 import { useAccountNotificationsIndexViewModel } from "../useAccountNotificationsIndexViewModel";
 
 export const AccountNotificationsPreferencesForm = () => {
-  const { isDirty, formValues, isLoading, onChangeForm, onSubmit } =
-    useAccountNotificationsIndexViewModel();
+  const {
+    isDirty,
+    formValues,
+    isLoading,
+    isSubmitting,
+    onChangeForm,
+    onSubmit,
+  } = useAccountNotificationsIndexViewModel();
 
   if (isLoading) return <DefaultLoading minHeight={460} />;
 
   return (
     <DisplayForm
       isDirty={isDirty}
+      isSubmitting={isSubmitting}
       onChange={onChangeForm}
       onSubmit={onSubmit}
       schema={notificationsFormSchema}
