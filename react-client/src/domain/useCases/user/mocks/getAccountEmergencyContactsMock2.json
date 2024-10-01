@@ -5,22 +5,20 @@
     "LastName": "Lee",
     "Email": "lee.nas@email.com",
     "PhoneNumber": "21 987766784",
-    "StagingIdentifier": "unknown"
+    "StagingIdentifier": 123
   },
   {
-    "ContactPersonId": "000000",
     "FirstName": "Hazel",
     "LastName": "Grace",
     "Email": "h-grace@email.com",
     "PhoneNumber": "989 345 4321",
-    "StagingIdentifier": "unknown"
+    "StagingIdentifier": null
   },
   {
     "ContactPersonId": "000001",
     "FirstName": "Rudy",
     "LastName": "Becker",
     "Email": "becker.r@email.com",
-    "PhoneNumber": "989 765 4321",
-    "StagingIdentifier": "unknown"
+    "PhoneNumber": "989 765 4321"
   }
 ]

@@ -1,14 +1,14 @@
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetAccountEmergencyContactsRepository } from "~/domain/repository/user/GetAccountEmergencyContactsRepository";
+import { AccountEmergencyContactsRepository } from "~/domain/repository/user/AccountEmergencyContactsRepository";
 import { ENABLE_MOCK } from "~/util/envUtil";
-import { GetAccountEmergencyContactsUseCase } from "./GetAccountEmergencyContactsUseCase";
-import { MockGetAccountEmergencyContactUseCase } from "./MockGetAccountEmergencyContactsUseCase";
+import { AccountEmergencyContactsUseCase } from "./AccountEmergencyContactsUseCase";
+import { MockAccountEmergencyContactUseCase } from "./MockAccountEmergencyContactsUseCase";
 
 export default function (
   authToken: string,
   httpClient?: HttpClientRepository
-): GetAccountEmergencyContactsRepository {
-  if (ENABLE_MOCK) return new MockGetAccountEmergencyContactUseCase();
+): AccountEmergencyContactsRepository {
+  if (ENABLE_MOCK) return new MockAccountEmergencyContactUseCase();
 
-  return new GetAccountEmergencyContactsUseCase(authToken, httpClient);
+  return new AccountEmergencyContactsUseCase(authToken, httpClient);
 }

@@ -281,11 +281,13 @@ export const externalAccountDetailsFormSchema: FormSchema = {
 };
 
 export const emergencyContactIds = {
+  contactId: "contact-id",
   repeaterId: "emergency-contact",
   email: "contact-email-address",
   name: "contact-first-name",
   phone: "contact-contact-phone",
   surname: "contact-last-name",
+  stagingId: "contact-staging-id",
 };
 
 export const emergencyContactFormSchema: FormSchema = {
@@ -346,6 +348,16 @@ export const emergencyContactFormSchema: FormSchema = {
                       type: "phone",
                     },
                   ],
+                },
+                {
+                  elementType: "input",
+                  id: emergencyContactIds.contactId,
+                  type: "hidden",
+                },
+                {
+                  elementType: "input",
+                  id: emergencyContactIds.stagingId,
+                  type: "hidden",
                 },
               ],
             },

@@ -1,30 +1,30 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import {
   Card,
+  DisplayForm,
   DisplayUncontrolledForm,
-  FormValues,
 } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 
+import { DefaultLoading } from "~/components/design-system/loading/DefaultLoading";
 import {
   emergencyContactFormSchema,
-  emergencyContactIds,
   externalAccountDetailsFormSchema,
   internalAccountDetailsFormSchema,
 } from "./form/accountForms";
 import { useAccountIndexViewModel } from "./useAccountIndexViewModel";
-import {
-  buildAccountEmergencyContactsList,
-  getAccountDetailsData,
-  getAccountEmergencyContactsData,
-} from "./util/formDataUtil";
+import { getAccountDetailsData } from "./util/formDataUtil";
 
 export const AccountIndex = () => {
   const {
     accountDetails,
     accountDetailsFormVariables,
-    emergencyContacts,
+    emergencyContactsFormValues,
+    isDirty,
     isExternalLogin,
+    isSubmitting,
+    isLoading,
+    onChangesEmergencyContactsFormValues,
     onSubmitEmergencyContacts,
     onSubmitAccountDetails,
   } = useAccountIndexViewModel();
@@ -43,7 +43,7 @@ export const AccountIndex = () => {
                 accountDetails,
                 isExternalLogin
               )}
-              onSubmit={({ values }) => onSubmitAccountDetails(values)}
+              onSubmit={onSubmitAccountDetails}
               schema={formSchema}
               variables={accountDetailsFormVariables}
             />
@@ -56,27 +56,22 @@ export const AccountIndex = () => {
   );
 
   function renderEmergencyContactForm() {
-    return (
-      <Card padding="xlarge">
-        <SuspenseAwait resolve={emergencyContacts}>
-          {(emergencyContacts) => (
-            <DisplayUncontrolledForm
-              onSubmit={({ event, values }) => {
-                event.preventDefault();
-                onSubmitEmergencyContacts?.(
-                  buildAccountEmergencyContactsList(
-                    values[
-                      emergencyContactIds.repeaterId
-                    ] as unknown as FormValues[]
-                  )
-                );
-              }}
-              schema={emergencyContactFormSchema}
-              initialValues={getAccountEmergencyContactsData(emergencyContacts)}
-            />
-          )}
-        </SuspenseAwait>
-      </Card>
-    );
+    const children = (() => {
+      if (isLoading.emergencyContacts)
+        return <DefaultLoading minHeight={400} />;
+
+      return (
+        <DisplayForm
+          isDirty={isDirty.emergencyContacts}
+          isSubmitting={isSubmitting.emergencyContacts}
+          onChange={onChangesEmergencyContactsFormValues}
+          onSubmit={onSubmitEmergencyContacts}
+          schema={emergencyContactFormSchema}
+          values={emergencyContactsFormValues}
+        />
+      );
+    })();
+
+    return <Card padding="xlarge">{children}</Card>;
   }
 };

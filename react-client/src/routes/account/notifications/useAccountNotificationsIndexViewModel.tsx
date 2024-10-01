@@ -37,7 +37,7 @@ export const useAccountNotificationsIndexViewModel = () => {
   const { lostPetsHistory, mutation, query } = useLoaderData<typeof loader>();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formValues, setFormValues] = useState<FormValues>({});
 
   const isDirty = !isEqual(formValues, initialFormValues.current);

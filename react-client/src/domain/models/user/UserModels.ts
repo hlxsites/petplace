@@ -19,9 +19,11 @@ export type InternalAccountDetailsModel = {
 };
 
 export type AccountEmergencyContactModel = {
+  contactId: string;
   email: string;
   name: string;
   phoneNumber: string;
+  stagingId: number;
   surname: string;
 };
 

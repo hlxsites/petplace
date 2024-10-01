@@ -76,24 +76,6 @@ export function getAccountEmergencyContactsData(
   return { [emergencyContactIds.repeaterId]: contacts };
 }
 
-export function buildAccountEmergencyContactsList(
-  values: FormValues[]
-): AccountEmergencyContactModel[] {
-  const list: AccountEmergencyContactModel[] = [];
-  values.forEach((contact) =>
-    list.push({
-      email: contact[emergencyContactIds.email] as string,
-      name: contact[emergencyContactIds.name] as string,
-      phoneNumber: contact[emergencyContactIds.phone] as string,
-      surname: contact[emergencyContactIds.surname] as string,
-    })
-  );
-
-  return list;
-}
-
-
-
 export function buildAccountDetails(
   values: FormValues,
   isExternalLogin?: boolean
