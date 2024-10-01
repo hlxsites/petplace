@@ -159,6 +159,7 @@ main .newsletter-signup input {
   .newsletter-signup.horizontal form .inputs-main-div {
     display: flex;
     justify-content: space-evenly;
+    gap: 1rem;
   }
 
   .newsletter-signup.horizontal form .checkbox-main-div {
@@ -166,6 +167,15 @@ main .newsletter-signup input {
     margin: auto;
     width: 75%;
     justify-content: space-around;
+  }
+
+  .newsletter-signup.horizontal form .form-submit-wrapper {
+    margin: auto;
+    width: 50%;
+  }
+
+  .newsletter-signup.horizontal form label {
+    text-align: center;
   }
 }
 
