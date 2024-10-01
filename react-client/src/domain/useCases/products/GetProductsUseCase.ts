@@ -6,8 +6,8 @@ import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import {
-  ADDITIONAL_PRODUCTS,
   IMAGES_PRODUCTS,
+  PRODUCT_DESCRIPTION,
 } from "./utils/productsHardCodedData";
 
 export class GetProductsUseCase implements GetProductsRepository {
@@ -114,7 +114,7 @@ function convertToProductsList(
           return;
         }
 
-        const description = ADDITIONAL_PRODUCTS[id];
+        const description = PRODUCT_DESCRIPTION[id];
 
         products.push({
           availableColors: [],
