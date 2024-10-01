@@ -3,6 +3,7 @@ import { Drawer, Text } from "../design-system";
 import { CartFooter } from "./CartFooter";
 import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
+import { useEffect, useState } from "react";
 
 export const CartDrawer = () => {
   const {
@@ -13,6 +14,12 @@ export const CartDrawer = () => {
     onUpdateQuantity,
     subtotal,
   } = useCheckoutProductsViewModelContext();
+
+  const [filteredCartItems, setFilteredCartItems] = useState(cartItems);
+
+  useEffect(() => {
+    setFilteredCartItems(cartItems.filter((item) => item.quantity > 0));
+  }, [cartItems]);
 
   return (
     <Drawer
@@ -30,13 +37,16 @@ export const CartDrawer = () => {
             Items
           </Text>
 
-          {cartItems?.map((item) => (
-            <CartItemCard
-              key={item.id}
-              onUpdateQuantity={onUpdateQuantity}
-              {...item}
-            />
-          ))}
+          {filteredCartItems?.map((item) => {
+            if (item.quantity === 0) return null;
+            return (
+              <CartItemCard
+                key={item.id}
+                onUpdateQuantity={onUpdateQuantity}
+                {...item}
+              />
+            );
+          })}
         </div>
 
         <CartFooter onClick={onContinueToCheckoutPayment} subtotal={subtotal} />
