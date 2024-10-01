@@ -37,7 +37,7 @@ export const CheckoutItemDetailedContent = ({
   return (
     <div className="flex flex-col gap-base">
       <Text fontWeight="bold">
-        <TextSpan size="24">{price}</TextSpan>
+        <TextSpan size="24">{`$${price}`}</TextSpan>
         {`${isAnnual ? "/year" : ""}`}
       </Text>
 
