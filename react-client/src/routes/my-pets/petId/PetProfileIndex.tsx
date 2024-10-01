@@ -70,7 +70,6 @@ export const PetProfileIndex = () => {
           {petInsuranceSectionElement}
           <SuspenseAwait resolve={lostAndFoundNotifications}>
             {(lostAndFoundNotifications) => {
-              console.log("🚀 ~ lostAndFoundNotifications", lostAndFoundNotifications)
               return (
                 <PetLostUpdatesSection
                   lostPetHistory={lostAndFoundNotifications}

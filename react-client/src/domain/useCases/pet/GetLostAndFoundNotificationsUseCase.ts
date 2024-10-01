@@ -24,7 +24,6 @@ export class GetLostAndFoundNotificationsUseCase
   query = async (id: string): Promise<LostAndFountNotification[]> => {
     try {
       const result = await this.httpClient.get(this.endpoint(id));
-      console.log("🚀 ~ result", result)
       if (result.data)
         return convertToLostAndFoundNotificationModel(result.data);
 
