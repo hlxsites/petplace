@@ -321,6 +321,7 @@ export const emergencyContactFormSchema: FormSchema = {
                     {
                       ...emailInput,
                       id: emergencyContactIds.email,
+                      disabledCondition: false,
                     },
                     {
                       elementType: "input",
@@ -335,7 +336,6 @@ export const emergencyContactFormSchema: FormSchema = {
                 },
                 {
                   elementType: "row",
-                  shouldDisplay: false,
                   children: [
                     {
                       elementType: "input",

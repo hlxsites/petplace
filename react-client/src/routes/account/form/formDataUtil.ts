@@ -101,7 +101,7 @@ export function convertToAccountEmergencyContactModel(
     name: contact[emergencyContactIds.name] as string,
     phoneNumber: contact[emergencyContactIds.phone] as string,
     surname: contact[emergencyContactIds.surname] as string,
-    stagingId: contact[emergencyContactIds.surname] as number,
+    stagingId: contact[emergencyContactIds.stagingId] as number,
   };
 }
 

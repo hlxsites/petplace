@@ -501,17 +501,12 @@ export const FormBuilder = ({
 
     if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
       if (input.repeaterMetadata) {
-        const metadata = input.repeaterMetadata;
+        const { repeaterId } = input.repeaterMetadata;
         const [inputId, index] = input.id.split("_repeater_");
+        // @ts-expect-error this goes too deep for ts to understand
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (
-          !isEmailValid(
-            // @ts-expect-error this goes to deep for ts to understand
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            values[metadata.repeaterId][inputId][index] as string
-          )
-        )
-          return "Please enter a valid email address.";
+        const value = values[repeaterId][index][inputId] as string;
+        if (!isEmailValid(value)) return "Please enter a valid email address.";
       } else {
         return "Please enter a valid email address.";
       }
