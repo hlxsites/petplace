@@ -121,7 +121,7 @@ function convertToAccountEmergencyContact(
     });
   });
 
-  return list;
+  return list.reverse();
 }
 
 function convertToServerEmergencyContact(
