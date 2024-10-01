@@ -98,6 +98,28 @@ export default async function decorate(block) {
     target.append(form);
   }
 
+  const inputDiv = document.createElement('div');
+  inputDiv.classList.add('inputs-main-div');
+  block.querySelectorAll('.form-text-wrapper').forEach(wrapper => {
+    inputDiv.append(wrapper);
+  })
+  
+  const checkboxDiv = document.createElement('div');
+  const checkboxLabel = document.createElement('label');
+  checkboxLabel.innerText = 'Please select your preferred newsletter(s):';
+  checkboxLabel.classList.add('checkbox-label');
+  checkboxDiv.classList.add('checkbox-main-div');
+  block.querySelectorAll('.form-checkbox-wrapper').forEach(wrapper => {
+    checkboxDiv.append(wrapper);
+  });
+
+  const messageDiv = block.querySelector('.newsletter-message');
+
+  form.prepend(messageDiv);
+  form.prepend(checkboxDiv);
+  form.prepend(checkboxLabel)
+  form.prepend(inputDiv);
+
   block.querySelectorAll('a').forEach((link) => {
     link.setAttribute('target', '_blank');
   });
