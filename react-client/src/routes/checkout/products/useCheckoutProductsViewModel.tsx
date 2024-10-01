@@ -9,6 +9,7 @@ import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
 import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
 import { REDIRECT_TO_CHECKOUT_URL } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
+import { PRODUCT_DETAILS } from "~/domain/useCases/products/utils/productsHardCodedData";
 import {
   convertProductToCartItem,
   findProductBasedOnOptionId,
@@ -20,7 +21,6 @@ import { invariantResponse } from "~/util/invariant";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
-import { PRODUCT_DETAILS } from "~/domain/useCases/products/utils/productsHardCodedData";
 
 const CART_CONTENT_KEY = "cart";
 
@@ -183,14 +183,18 @@ export const useCheckoutProductsViewModel = () => {
   };
 
   const onUpdateQuantity = (id: string, newQuantity: number) => {
-    updateCartItemsState((prevItems) =>
-      prevItems.map((item) => {
+    updateCartItemsState((prevItems) => {
+      // Remove the item from the cart if the quantity is 0
+      if (newQuantity === 0) {
+        return prevItems.filter((item) => item.id !== id);
+      }
+      return prevItems.map((item) => {
         if (item.id === id) {
           return { ...item, quantity: newQuantity };
         }
         return item;
-      })
-    );
+      });
+    });
   };
 
   const onUpdateCartProduct = (product: CartItem) => {
