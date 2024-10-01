@@ -70,6 +70,12 @@ export const CheckoutProductsSection = () => {
     });
   };
 
+  const handleAddToCartFromMoreInfoDrawer =
+    (product: ProductDescription) => () => {
+      handleAddToCart(product)();
+      onCloseMoreInfo();
+    };
+
   const handleMoreInfo = (product: ProductDescription) => () => {
     setSelectedProduct(product);
     onOpenMoreInfo(product.id);
@@ -102,7 +108,7 @@ export const CheckoutProductsSection = () => {
       </div>
       {isMoreInfoOpen && selectedProduct && (
         <CheckoutItemDetailsDrawer
-          onAddToCart={handleAddToCart(selectedProduct)}
+          onAddToCart={handleAddToCartFromMoreInfoDrawer(selectedProduct)}
           onClose={onCloseMoreInfo}
           onChange={handleOnChangeProductOptions(selectedProduct.id)}
           product={selectedProduct}
