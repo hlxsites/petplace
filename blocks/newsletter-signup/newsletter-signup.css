@@ -14,6 +14,21 @@ main .newsletter-signup input {
   height: auto;
 }
 
+.popup .newsletter-signup form .inputs-main-div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.popup .newsletter-signup form .form-text-wrapper {
+  flex: 1 0 50%;
+  padding: 0 0.5rem;
+}
+
+.popup .newsletter-signup form .form-text-wrapper:last-child {
+  flex: 0 1 100%;
+}
+
 .popup .newsletter-signup img {
   width: 90%;
 }
@@ -100,8 +115,6 @@ main .newsletter-signup input {
 
 .popup .newsletter-signup p {
   font-size: 1rem;
-  margin: auto;
-  width: 80%;
 }
 
 .newsletter-signup > div > div > p:last-child {
