@@ -12,11 +12,16 @@ import {
 import { TableColumn } from "~/components/design-system/table/TableTypes";
 import { TextProps } from "~/components/design-system/types/TextTypes";
 import {
+  LostAndFountNotification,
   LostPetUpdate,
   MissingStatus,
-  PetModel,
 } from "~/domain/models/pet/PetModel";
 import { classNames } from "~/util/styleUtil";
+
+type PetLostUpdatesSectionProps = {
+  lostPetHistory: LostAndFountNotification[];
+  missingStatus: MissingStatus;
+};
 
 const columns: TableColumn[] = [
   { key: "id", minWidth: "100px", label: "Case ID" },
@@ -31,7 +36,7 @@ const ITEMS_PER_PAGE = 5;
 export const PetLostUpdatesSection = ({
   lostPetHistory,
   missingStatus,
-}: PetModel) => {
+}: PetLostUpdatesSectionProps) => {
   const dataSource = (() => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
@@ -84,7 +89,7 @@ export const PetLostUpdatesSection = ({
     status,
     id,
     note,
-  }: LostPetUpdate) {
+  }: LostAndFountNotification) {
     return {
       data: {
         // TODO use parseDate after API defines that this is string datetime

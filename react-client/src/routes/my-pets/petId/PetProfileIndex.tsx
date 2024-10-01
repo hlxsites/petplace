@@ -23,7 +23,7 @@ import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
-  const { petInfo } = viewModel;
+  const { petInfo, lostAndFoundNotifications } = viewModel;
 
   return (
     <SuspenseAwait minHeight={"80dvh"} resolve={petInfo}>
@@ -68,7 +68,17 @@ export const PetProfileIndex = () => {
             route={checkoutPath}
           />
           {petInsuranceSectionElement}
-          <PetLostUpdatesSection {...pet} />
+          <SuspenseAwait resolve={lostAndFoundNotifications}>
+            {(lostAndFoundNotifications) => {
+              console.log("🚀 ~ lostAndFoundNotifications", lostAndFoundNotifications)
+              return (
+                <PetLostUpdatesSection
+                  lostPetHistory={lostAndFoundNotifications}
+                  missingStatus={lostAndFoundNotifications[0]?.status ?? "found"}
+                />
+              );
+            }}
+          </SuspenseAwait>
         </div>
         <Outlet context={viewModel} />
         {displayOnboarding && <OnboardingDialog />}

@@ -1,5 +1,6 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
+import getLostAndFoundNotificationsUseCaseFactory from "~/domain/useCases/pet/getLostAndFoundNotificationsUseCaseFactory";
 import getPetInfoUseCaseFactory from "~/domain/useCases/pet/getPetInfoUseCaseFactory";
 import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
@@ -12,6 +13,7 @@ export const loader = (({ params }) => {
   invariantResponse(petId, "Pet ID is required in this route");
 
   const authToken = requireAuthToken();
+  const getLostAndFoundNotificationsUseCase = getLostAndFoundNotificationsUseCaseFactory(authToken);
   const getPetInfoUseCase = getPetInfoUseCaseFactory(authToken);
   const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
   const petInfoPromise = getPetInfoUseCase.query(petId);
@@ -20,6 +22,7 @@ export const loader = (({ params }) => {
     documentTypes: PET_DOCUMENT_TYPES_LIST,
     petInfo: petInfoPromise,
     mutatePetImage: postPetImageUseCase.mutate,
+    lostAndFoundNotifications: getLostAndFoundNotificationsUseCase.query(petId)
   });
 }) satisfies LoaderFunction;
 
