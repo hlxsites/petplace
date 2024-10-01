@@ -1,6 +1,6 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetPetInfoUseCase } from "./GetPetInfoUseCase";
+import { PetInfoUseCase } from "./PetInfoUseCase";
 import getPetInfoMock from "./mocks/getPetInfoMock.json";
 
 // We don't care about the implementation while running those tests
@@ -13,7 +13,14 @@ jest.mock("@rollbar/react", () => ({
   }),
 }));
 
-describe("GetPetInfoUseCase", () => {
+// Mock Rollbar error method
+jest.mock("@rollbar/react", () => ({
+  useRollbar: jest.fn().mockReturnValue({
+    error: jest.fn(),
+  }),
+}));
+
+describe("PetInfoUseCase", () => {
   describe("GET", () => {
     it("should return null when there is no data", async () => {
       const httpClient = new MockHttpClient({ data: null });
@@ -111,7 +118,7 @@ describe("GetPetInfoUseCase", () => {
 
 // Test helpers
 function makeSut(httpClient?: HttpClientRepository) {
-  return new GetPetInfoUseCase(
+  return new PetInfoUseCase(
     "token",
     httpClient ||
       new MockHttpClient({

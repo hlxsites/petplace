@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoRepository";
+import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
@@ -19,7 +19,7 @@ const putServerSchema = z.object({
 
 export type PutPetInfoRequest = z.infer<typeof putServerSchema>;
 
-export class GetPetInfoUseCase implements GetPetInfoRepository {
+export class PetInfoUseCase implements PetInfoRepository {
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
@@ -60,7 +60,7 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
 
       return false;
     } catch (error) {
-      console.error("AccountDetailsUseCase mutation error", error);
+      console.error("PetInfoUseCase mutation error", error);
       return false;
     }
   };
