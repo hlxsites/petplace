@@ -1,0 +1,27 @@
+{
+  "CommunicationGroupId": "dba9ae21-764f-43cb-90a1-b020bbfea796",
+  "NotificationRequestId": "99ff6bba-66f0-4bc0-b5a6-3cee7ad39b20",
+  "NotificationRequestStatus": "A",
+  "NotificationRequestStatusDate": null,
+  "Message": "<html />",
+  "Communications": [{
+      "AlertCommunicationId": null,
+      "RecipientName": "Ellen Cao",
+      "RecipientType": "O_M",
+      "EmailMessage": "<html />",
+      "EmailSubject": "No_chip has been found",
+      "EmailDate": "2024-07-17T10:08:47.89",
+      "EmailCommunicationId": "dba9ae21-764f-43cb-90a1-b020bbfea796",
+      "EmailId": "yilan.cao@pethealthinc.com",
+      "SMSPhoneNumber": null,
+      "SMSMessage": null,
+      "SMSDate": null,
+      "SMSCommunicationId": null,
+      "PhoneCallPhoneNumber": null,
+      "PhoneCallDate": null,
+      "PhoneCallMessage": null,
+      "PhoneCallCommunicationId": null,
+      "Sequence": 1
+  }],
+  "IsRead": false
+}

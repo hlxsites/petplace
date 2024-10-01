@@ -1,3 +1,4 @@
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import {
   HttpClientRepository,
   HttpFormDataOptions,
@@ -60,11 +61,17 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
       const result = await fetch(`${this.baseUrl}/${path}`, {
         method: "POST",
         headers: options.headers,
+        body: options.body,
       });
+      const statusCode = result.status;
+
+      // No content HTTP status code
+      if (result.status === 204) {
+        return { data: null, statusCode };
+      }
 
       const data: unknown = await result.json();
-
-      return { data, statusCode: result.status };
+      return { data, statusCode };
     } catch (error) {
       return { error };
     }
@@ -98,7 +105,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
 
       return { data, statusCode: result.status };
     } catch (error) {
-      console.error("Error in POST request:", error);
+      logError("Error in POST request:", error);
       return { error };
     }
   };
@@ -113,12 +120,17 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
         headers: options.headers,
         body: options.body,
       });
+      const statusCode = result.status;
+
+      // No content HTTP status code
+      if (result.status === 204) {
+        return { data: null, statusCode };
+      }
 
       const data: unknown = await result.json();
-
-      return { data, statusCode: result.status };
+      return { data, statusCode };
     } catch (error) {
-      console.error("Error in PUT request:", error);
+      logError("Error in PUT request:", error);
       return { error };
     }
   };

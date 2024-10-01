@@ -3,9 +3,9 @@ import { IconButton, IconKeys, Text } from "../design-system";
 
 type CartItemQuantityManagerProps = {
   id: string;
+  onUpdateQuantity: (id: string, quantity: number) => void;
   purchaseLimit?: number;
   quantity: number;
-  onUpdateQuantity: (id: string, quantity: number) => void;
 };
 
 type AddRemoveButtonVariation = "add" | "remove";
@@ -23,9 +23,9 @@ type ButtonVariables = Record<
 
 export const CartItemQuantityManager = ({
   id,
+  onUpdateQuantity,
   purchaseLimit,
   quantity,
-  onUpdateQuantity,
 }: CartItemQuantityManagerProps) => {
   return (
     <div className="flex w-full justify-end">

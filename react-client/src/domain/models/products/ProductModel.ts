@@ -12,9 +12,12 @@ export type ProductDescription = {
   images: string[];
   isAnnual?: boolean;
   title: string;
+  type: string;
 };
 
-export type DetailedCartItem = ProductDescription & {
+export type DetailedCartItem = ProductDescription & MoreInfoDetailed;
+
+export type MoreInfoDetailed = {
   additionalInfo?: string;
   privacyFeatures?: string;
   sizing?: string;

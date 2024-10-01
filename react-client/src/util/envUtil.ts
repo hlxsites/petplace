@@ -1,10 +1,14 @@
 interface EnvVariables {
+  VITE_APP_VERSION?: string;
   VITE_AUTH_TOKEN?: string;
   PROD?: boolean;
   DEV?: boolean;
   VITE_PETPLACE_SERVER_STG_URL?: string;
   VITE_PETPLACE_SERVER_PROD_URL?: string;
   VITE_ENABLE_MOCK?: string;
+  VITE_R_A_T?: string;
+  VITE_R_A_T2?: string;
+  VITE_R_A_T3?: string;
 }
 
 // Determine which environment object to use
@@ -21,6 +25,7 @@ const getEnvVariable = <T>(key: keyof EnvVariables, defaultValue?: T) => {
 };
 
 // Export variables with default values
+export const APP_VERSION = getEnvVariable("VITE_APP_VERSION", "");
 export const AUTH_TOKEN = getEnvVariable("VITE_AUTH_TOKEN", "");
 export const IS_PROD_ENV = getEnvVariable("PROD", false);
 export const IS_DEV_ENV = getEnvVariable("DEV", false);
@@ -41,3 +46,12 @@ export const IS_PROD_URL =
 export const PETPLACE_SERVER_BASE_URL = IS_PROD_URL
   ? SERVER_POD_URL
   : SERVER_STG_URL;
+
+// Hacky way to get the Rollbar access token and preventing it to be a single string saved on the repository
+export const ROLLBAR_TOKEN = (() => {
+  const part1 = getEnvVariable<string>("VITE_R_A_T");
+  const part2 = getEnvVariable<string>("VITE_R_A_T2");
+  const part3 = getEnvVariable<string>("VITE_R_A_T3");
+
+  return `${part1}${part2}${part3}`;
+})();

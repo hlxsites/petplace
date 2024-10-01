@@ -6,6 +6,13 @@ import getPetInfoMock from "./mocks/getPetInfoMock.json";
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
+// Mock Rollbar error method
+jest.mock("@rollbar/react", () => ({
+  useRollbar: jest.fn().mockReturnValue({
+    error: jest.fn(),
+  }),
+}));
+
 describe("GetPetsInfoUseCase", () => {
   it("should return null when there is no data", async () => {
     const httpClient = new MockHttpClient({ data: null });

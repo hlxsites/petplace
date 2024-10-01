@@ -1,15 +1,19 @@
 import { Dispatch, SetStateAction } from "react";
+import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { MEMBERSHIP_COMPARE_PLANS } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
 import { Collapse, Text } from "../design-system";
 import { PlanBenefitCard } from "./PlanBenefitCard";
 
-type PlanBenefitListProps = {
+type PlanBenefitListProps = Pick<
+  MembershipInfo,
+  "hardCodedPlanId" | "title"
+> & {
   isOpen: boolean;
-  title: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const PlanBenefitsList = ({
+  hardCodedPlanId,
   isOpen,
   title,
   setIsOpen,
@@ -33,7 +37,7 @@ export const PlanBenefitsList = ({
               <PlanBenefitCard
                 {...benefitProps}
                 key={benefitProps.title}
-                isAvailable={availableColumns.includes(title)}
+                isAvailable={availableColumns.includes(hardCodedPlanId)}
               />
             )
           )}

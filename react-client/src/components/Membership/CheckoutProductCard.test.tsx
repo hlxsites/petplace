@@ -97,16 +97,20 @@ describe("CheckoutProductCard", () => {
 // Test helpers
 function getRenderer({
   isAnnual,
+  onChange = jest.fn(),
   onClickAddToCart = jest.fn(),
   onClickMoreInfo = jest.fn(),
   product = mockProductItem(),
+  selectedColorSize = "",
 }: Partial<ComponentProps<typeof CheckoutProductCard>> = {}) {
   return render(
     <CheckoutProductCard
       product={product}
       isAnnual={isAnnual}
+      onChange={onChange}
       onClickAddToCart={onClickAddToCart}
       onClickMoreInfo={onClickMoreInfo}
+      selectedColorSize={selectedColorSize}
     />
   );
 }
@@ -122,6 +126,7 @@ function mockProductItem(
     title: "Item title",
     description: "Item description",
     images: [],
+    type: "item-type",
     ...props,
   };
 }

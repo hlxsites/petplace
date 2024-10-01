@@ -1,8 +1,11 @@
 import { Button, Text } from "../design-system";
 
-type CartFooterProps = { subtotal: string; onClick?: () => void };
+type CartFooterProps = {
+  onClick?: () => void;
+  subtotal: string;
+};
 
-export const CartFooter = ({ subtotal, onClick }: CartFooterProps) => {
+export const CartFooter = ({ onClick, subtotal }: CartFooterProps) => {
   return (
     <>
       <div className="flex w-full justify-between">

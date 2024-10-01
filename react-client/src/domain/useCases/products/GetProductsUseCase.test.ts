@@ -5,18 +5,25 @@ import getProductsMock from "./mocks/getProductsMock.json";
 
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
+// Mock Rollbar error method
+jest.mock("@rollbar/react", () => ({
+  useRollbar: jest.fn().mockReturnValue({
+    error: jest.fn(),
+  }),
+}));
+
 describe("GetProductsUseCase", () => {
   it("should return null when there is no data", async () => {
     const httpClient = new MockHttpClient({ data: null });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId", "lifetime");
+    const result = await sut.query("petId", "PLH_000007");
     expect(result).toBeNull();
   });
 
   it("should return the correct products", async () => {
     const httpClient = new MockHttpClient({ data: getProductsMock });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId", "AnnualMembership");
+    const result = await sut.query("petId", "Annual Plan-DOGS");
 
     expect(result).toStrictEqual([
       {
@@ -32,6 +39,7 @@ describe("GetProductsUseCase", () => {
         id: "item1",
         images: [],
         title: "Product 1",
+        type: "AnnualAddProduct",
       },
       {
         availableColors: [],
@@ -46,6 +54,7 @@ describe("GetProductsUseCase", () => {
         id: "item2",
         images: [],
         title: "Product 2",
+        type: "AnnualAddProduct",
       },
       {
         availableColors: ["green"],
@@ -59,6 +68,7 @@ describe("GetProductsUseCase", () => {
         id: "Product 3",
         images: [],
         title: "Product 3",
+        type: "TagProduct",
       },
       {
         availableColors: ["yellow"],
@@ -72,6 +82,7 @@ describe("GetProductsUseCase", () => {
         id: "Product 4",
         images: [],
         title: "Product 4",
+        type: "TagProduct",
       },
     ]);
   });
@@ -82,7 +93,7 @@ describe("GetProductsUseCase", () => {
     };
     const httpClient = new MockHttpClient({ data: invalidMockData });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId", "lifetime");
+    const result = await sut.query("petId", "PLH_000007");
 
     expect(result).toBeNull();
   });
@@ -92,7 +103,7 @@ describe("GetProductsUseCase", () => {
       error: new Error("Error"),
     });
     const sut = makeSut(httpClient);
-    const result = await sut.query("petId", "lifetime");
+    const result = await sut.query("petId", "PLH_000007");
     expect(result).toBeNull();
   });
 });

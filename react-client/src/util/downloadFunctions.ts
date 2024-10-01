@@ -1,3 +1,5 @@
+import { logError } from "~/infrastructure/telemetry/logUtils";
+
 export type DownloadFileProps = {
   blob?: Blob;
   fileName: string;
@@ -23,6 +25,6 @@ export function downloadFile({ blob, fileName, fileType }: DownloadFileProps) {
     document.body.removeChild(downloadLink);
     URL.revokeObjectURL(url);
   } catch (error) {
-    console.error("Error downloading the file: ", error);
+    logError("Error downloading the file: ", error);
   }
 }

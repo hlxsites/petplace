@@ -2,9 +2,13 @@ import { z } from "zod";
 import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetProductsRepository } from "~/domain/repository/products/GetProductsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { ADDITIONAL_PRODUCTS } from "./utils/productsHardCodedData";
+import {
+  IMAGES_PRODUCTS,
+  PRODUCT_DESCRIPTION,
+} from "./utils/productsHardCodedData";
 
 export class GetProductsUseCase implements GetProductsRepository {
   private httpClient: HttpClientRepository;
@@ -18,20 +22,20 @@ export class GetProductsUseCase implements GetProductsRepository {
   }
 
   private handleError = (error: unknown): null => {
-    console.error("GetProductsUseCase query error", error);
+    logError("GetProductsUseCase query error", error);
     return null;
   };
 
   query = async (
     petId: string,
-    plan: string
+    planId: string
   ): Promise<ProductDescription[] | null> => {
     try {
       const result = await this.httpClient.get(
         `api/Pet/${petId}/available-products`
       );
 
-      if (result.data) return convertToProductsList(result.data, plan);
+      if (result.data) return convertToProductsList(result.data, planId);
 
       return null;
     } catch (error) {
@@ -42,7 +46,7 @@ export class GetProductsUseCase implements GetProductsRepository {
 
 function convertToProductsList(
   data: unknown,
-  plan: string
+  planId: string
 ): ProductDescription[] | null {
   if (!data || typeof data !== "object") return null;
 
@@ -51,7 +55,9 @@ function convertToProductsList(
       Color: z.string().nullish(),
       ItemId: z.string().nullish(),
       ItemName: z.string().nullish(),
+      ItemType: z.string().nullish(),
       Price: z.string().nullish(),
+      SalesPrice: z.string().nullish(),
       Size: z.string().nullish(),
       SpeciesId: z.string().nullish(),
       UIName: z.string().nullish(),
@@ -69,13 +75,16 @@ function convertToProductsList(
   const products: ProductDescription[] = [];
 
   Object.keys(parsedData.MembershipProducts).forEach((key) => {
-    // This is a hardcoded check for the annual plan
+    // This is a hardcoded check for the annual planId
     // It should't be doing that on the FE code, but it's a requirement for now
-    if (key.toLowerCase().includes("annual") && key === plan) {
+    if (key.toLowerCase().includes("annual")) {
       const annualProduct = parsedData.MembershipProducts[key] as Record<
         string,
         unknown
       > | null;
+
+      // Skip if the planId doesn't match the annual plan
+      if (planId !== annualProduct?.["ItemId"]) return null;
 
       if (!annualProduct) return null;
 
@@ -89,11 +98,24 @@ function convertToProductsList(
         const id = typeof item.ItemId === "string" ? item.ItemId : null;
         const price = typeof item.Price === "string" ? item.Price : null;
         const title = typeof item.UIName === "string" ? item.UIName : null;
+        const type = typeof item.ItemType === "string" ? item.ItemType : null;
 
         // Skip if any of the required fields are missing
-        if (!id || !title || !price) return;
+        if (!id || !title || !price || !type) {
+          logError(
+            "additional membership product doesn't have required props",
+            {
+              id,
+              price,
+              title,
+              type,
+            }
+          );
+          return;
+        }
 
-        const description = ADDITIONAL_PRODUCTS[id];
+        const description = PRODUCT_DESCRIPTION[id];
+
         products.push({
           availableColors: [],
           availableSizes: [],
@@ -104,9 +126,10 @@ function convertToProductsList(
             },
           },
           id,
+          images: IMAGES_PRODUCTS[id] ?? [],
           description,
           title,
-          images: [],
+          type,
         });
       });
     }
@@ -129,8 +152,17 @@ function convertToProductsList(
         productsData.forEach((item) => {
           const fullProductName = item.ItemName;
           const id = item.ItemId;
-          const price = item.Price;
-          if (!fullProductName || !id || !price) return;
+          const type = item.ItemType;
+          const price = item.SalesPrice || item.Price;
+          if (!fullProductName || !id || !price || !type) {
+            logError("Product doesn't have required props", {
+              fullProductName,
+              id,
+              price,
+              type,
+            });
+            return;
+          }
 
           const [productName] = fullProductName.split("-");
           const color = item?.Color?.toLowerCase() || "unknown";
@@ -153,6 +185,7 @@ function convertToProductsList(
                   price,
                 },
               },
+              images: IMAGES_PRODUCTS[id] ?? [],
             });
           } else {
             // Create new product
@@ -167,9 +200,9 @@ function convertToProductsList(
               },
               // We are using the product name as the id for this kind of products
               id: productName,
-              // TODO: connect hard coded images hosted on the SharePoint
-              images: [],
+              images: IMAGES_PRODUCTS[id] ?? [],
               title: productName,
+              type,
             });
           }
         });

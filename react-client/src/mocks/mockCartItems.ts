@@ -1,19 +1,20 @@
-import { CartItem } from "~/components/Membership/utils/cartTypes";
+import { CartItem } from "~/domain/models/cart/CartModel";
 
 export const mockCartItems: CartItem[] = [
   {
+    autoRenew: false,
     id: "pet-plan",
-    name: "Lifetime",
+    title: "Lifetime",
     type: "service",
     description: "24/7 Vet Help & Lost Pet Protection and more...",
     recurrence: "One-time fee",
-    acquisitionMessage: "Change membership plan",
     price: "$99.95",
     quantity: 1,
   },
   {
+    autoRenew: false,
     id: "byte-tag",
-    name: "ByteTag",
+    title: "ByteTag",
     type: "product",
     description: "Slide - Medium",
     purchaseLimit: 5,

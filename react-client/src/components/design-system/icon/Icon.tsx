@@ -18,6 +18,7 @@ import CloseXMarkIcon from "./assets/close-x-mark-icon.svg";
 import CloseXMarkRegularIcon from "./assets/close-x-mark-regular-icon.svg";
 import CopyRegularIcon from "./assets/copy-regular-icon.svg";
 import CpuChipIcon from "./assets/cpu-chip-icon.svg";
+import Delete2Icon from "./assets/delete-2-icon.svg";
 import DocFileIcon from "./assets/doc-file-icon.svg";
 import DoubleArrowLeftIcon from "./assets/double-arrow-left-icon.svg";
 import DoubleArrowRightIcon from "./assets/double-arrow-right-icon.svg";
@@ -40,6 +41,7 @@ import PawIcon from "./assets/paw-icon.svg";
 import PaymentCardIcon from "./assets/payment-card-icon.svg";
 import PdfFileIcon from "./assets/pdf-file-icon.svg";
 import PhoneIcon from "./assets/phone-icon.svg";
+import PhotoCamera from "./assets/photo-camera-icon.svg";
 import PippetIcon from "./assets/pippet-icon.svg";
 import PngFileIcon from "./assets/png-file-icon.svg";
 import RemoveCircleIcon from "./assets/remove-circle-icon.svg";
@@ -77,6 +79,7 @@ export const IconMap = Object.freeze({
   closeXMarkRegular: <CloseXMarkRegularIcon />,
   copyRegular: <CopyRegularIcon />,
   cpuChip: <CpuChipIcon />,
+  delete2: <Delete2Icon />,
   doubleArrowLeft: <DoubleArrowLeftIcon />,
   doubleArrowRight: <DoubleArrowRightIcon />,
   docFile: <DocFileIcon />,
@@ -99,6 +102,7 @@ export const IconMap = Object.freeze({
   paymentCard: <PaymentCardIcon />,
   pdfFile: <PdfFileIcon />,
   phone: <PhoneIcon />,
+  photoCamera: <PhotoCamera />,
   pippet: <PippetIcon />,
   pngFile: <PngFileIcon />,
   removeCircle: <RemoveCircleIcon />,

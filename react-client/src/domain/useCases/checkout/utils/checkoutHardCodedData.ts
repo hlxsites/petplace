@@ -4,6 +4,9 @@ import {
   MembershipPlanId,
 } from "~/domain/checkout/CheckoutModels";
 
+export const REDIRECT_TO_CHECKOUT_URL =
+  "https://mph-qay.pethealthinc.com/External/Petplacelogin?redirecturl=petplace/pages/cart";
+
 export const MEMBERSHIP_LIST_OFFERS: MembershipDescriptionOffer[] = [
   { offerLabel: "Get help finding your lost pet." },
   { offerLabel: "Direct connection to your pet's finder." },
@@ -29,17 +32,20 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
     AnnualMembership: {
       buttonLabel: "Get 1 Year Protection",
       comparePlansButtonLabel: "Get Annual",
-      id: "AnnualMembership",
+      id: "Annual Plan-DOGS",
+      hardCodedPlanId: "AnnualMembership",
       membershipDescriptionOffers: ANNUAL_LIST_OFFERS,
       price: "$45.95",
       priceInfo: "For the first year, $19.95/year thereafter",
       subTitle: "Keep Your Pet Safe All Year",
       title: "Annual Protection",
+      type: "AnnualProduct",
     },
     LPMMembership: {
       buttonLabel: "Get the Best Value",
       comparePlansButtonLabel: "Get Lifetime",
-      id: "LPMMembership",
+      id: "PLH_000007",
+      hardCodedPlanId: "LPMMembership",
       isHighlighted: true,
       infoFooter: "* Complimentary for 1 year",
       membershipDescriptionOffers: LIFETIME_LIST_OFFERS,
@@ -47,28 +53,38 @@ export const MEMBERSHIP_INFO_OPTIONS: Record<MembershipPlanId, MembershipInfo> =
       priceInfo: "One-time fee",
       subTitle: "The Best Value Lost Pet Protection",
       title: "abc",
+      type: "LPMProduct",
     },
     LPMPlusMembership: {
       buttonLabel: "Unlock Complete Care",
       comparePlansButtonLabel: "Get Lifetime +",
-      id: "LPMPlusMembership",
+      id: "LPM-PLUS",
+      hardCodedPlanId: "LPMPlusMembership",
       infoFooter: "* Complimentary for 1 year",
       membershipDescriptionOffers: MEMBERSHIP_LIST_OFFERS,
       price: "$199.95",
       priceInfo: "One-time fee",
       subTitle: "Complete Lost Pet Protection",
       title: "lif +",
+      type: "LPMPLUSProduct",
     },
   };
 
 type CompareType = {
-  availableColumns: string[];
+  availableColumns: MembershipPlanId[];
   label: string;
   title: string;
 };
 
-const ALL_PLANS = ["AnnualMembership", "LPMMembership", "LPMPlusMembership"];
-const ONLY_LIFETIME_PLANS = ["LPMMembership", "LPMPlusMembership"];
+const ALL_PLANS: MembershipPlanId[] = [
+  "AnnualMembership",
+  "LPMMembership",
+  "LPMPlusMembership",
+];
+const ONLY_LIFETIME_PLANS: MembershipPlanId[] = [
+  "LPMMembership",
+  "LPMPlusMembership",
+];
 
 export const MEMBERSHIP_COMPARE_PLANS: CompareType[] = [
   {
