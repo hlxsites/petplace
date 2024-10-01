@@ -44,11 +44,13 @@ type RenderedInput = Omit<
   required: boolean;
 };
 
+export type OnChangeFn = (values: FormValues) => void;
 export type OnSubmitFn = (props: OnSubmitProps) => void;
 
 export type FormBuilderProps = {
   isDirty?: boolean;
-  onChange: (values: FormValues) => void;
+  isSubmitting?: boolean;
+  onChange: OnChangeFn;
   onSubmit: OnSubmitFn;
   schema: FormSchema;
   values: FormValues;
@@ -56,6 +58,7 @@ export type FormBuilderProps = {
 
 export const FormBuilder = ({
   isDirty,
+  isSubmitting,
   onChange: onChangeFormValues,
   onSubmit,
   schema,
@@ -106,13 +109,15 @@ export const FormBuilder = ({
         return matchConditionExpression(element.disabledCondition ?? false);
       })();
 
+      const isSubmitButton = element.type === "submit";
       return (
         <Button
           className={element.className}
           disabled={disabled}
+          isLoading={isSubmitButton && isSubmitting}
           key={element.id}
           type={element.type}
-          variant={element.type === "submit" ? "primary" : "secondary"}
+          variant={isSubmitButton ? "primary" : "secondary"}
         >
           {element.label}
         </Button>
