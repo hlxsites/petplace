@@ -20,6 +20,7 @@ import { invariantResponse } from "~/util/invariant";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
+import { PRODUCT_DETAILS } from "~/domain/useCases/products/utils/productsHardCodedData";
 
 const CART_CONTENT_KEY = "cart";
 
@@ -78,10 +79,15 @@ export const useCheckoutProductsViewModel = () => {
   const { savedCart, petId, postCart, products, selectedPlan } =
     useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const isOpenCart = searchParams.get(CONTENT_PARAM_KEY) === CART_CONTENT_KEY;
+  const detailedProducts = getDetailedProducts();
+
+  const contentParam = searchParams.get(CONTENT_PARAM_KEY);
+  const isOpenCart = contentParam === CART_CONTENT_KEY;
+  const isMoreInfoOpen =
+    contentParam !== null &&
+    detailedProducts.some((item) => item.id === contentParam);
 
   const autoRenew = !!cartItems.find((item) => item.id === selectedPlan.id)
     ?.autoRenew;
@@ -128,7 +134,10 @@ export const useCheckoutProductsViewModel = () => {
         }
 
         // Handle products
-        const product = findProductBasedOnOptionId(savedProduct.id, products);
+        const product = findProductBasedOnOptionId(
+          savedProduct.id,
+          detailedProducts
+        );
         if (!product) return;
 
         const selectedColorSize = getProductColorSizeBasedOnCartId(
@@ -149,10 +158,15 @@ export const useCheckoutProductsViewModel = () => {
       updateCartItemsState(initialCartItems, false);
     };
 
-    if (!cartItems.length && savedCart && products.length && selectedPlan) {
+    if (
+      !cartItems.length &&
+      savedCart &&
+      detailedProducts.length &&
+      selectedPlan
+    ) {
       manageInitialCartItems();
     }
-  }, [cartItems.length, products, savedCart, selectedPlan]);
+  }, [cartItems.length, detailedProducts, savedCart, selectedPlan]);
 
   const onUpdateOptIn = () => {
     const newAutoRenew = !autoRenew;
@@ -197,6 +211,19 @@ export const useCheckoutProductsViewModel = () => {
     });
   };
 
+  function getDetailedProducts() {
+    return products.map((item) => {
+      const { additionalInfo, privacyFeatures, tagFeatures } =
+        PRODUCT_DETAILS[item.id];
+      return {
+        ...item,
+        additionalInfo,
+        privacyFeatures,
+        tagFeatures,
+      };
+    });
+  }
+
   function getOptInLabel() {
     return OPT_IN_LABEL[selectedPlan.type] ?? OPT_IN_LABEL["default"];
   }
@@ -212,6 +239,20 @@ export const useCheckoutProductsViewModel = () => {
     setSearchParams((nextSearchParams) => {
       nextSearchParams.set(CONTENT_PARAM_KEY, CART_CONTENT_KEY);
       return nextSearchParams;
+    });
+  }
+
+  function onOpenMoreInfo(itemId: string) {
+    setSearchParams((nextSearchParams) => {
+      nextSearchParams.set(CONTENT_PARAM_KEY, itemId);
+      return nextSearchParams;
+    });
+  }
+
+  function onCloseMoreInfo() {
+    setSearchParams((searchParams) => {
+      searchParams.delete(CONTENT_PARAM_KEY);
+      return searchParams;
     });
   }
 
@@ -236,15 +277,19 @@ export const useCheckoutProductsViewModel = () => {
   return {
     autoRenew,
     cartItems,
+    detailedProducts,
+    isMoreInfoOpen,
     isOpenCart,
     optInLabel: getOptInLabel(),
     onContinueToCheckoutPayment,
     onCloseCart,
+    onCloseMoreInfo,
     onOpenCart,
+    onOpenMoreInfo,
     onUpdateCartProduct,
     onUpdateQuantity,
     onUpdateOptIn,
-    products,
+    products: detailedProducts,
     subtotal,
   };
 };
