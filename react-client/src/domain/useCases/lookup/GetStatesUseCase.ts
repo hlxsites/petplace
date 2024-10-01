@@ -6,6 +6,8 @@ import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
+const cache = new Map<string, CountryStateModel[]>();
+
 export class GetStatesUseCase implements GetStatesRepository {
   private httpClient: HttpClientRepository;
 
@@ -18,11 +20,20 @@ export class GetStatesUseCase implements GetStatesRepository {
   }
 
   query = async (countryId: string): Promise<CountryStateModel[]> => {
+    // The server expects "US" instead of "USA"
+    const id = countryId === "USA" ? "US" : countryId;
+
+    // Use cache to avoid unnecessary requests on the same country
+    const cached = cache.get(id);
+    if (cached) return cached;
+
     try {
-      // The server expects "US" instead of "USA"
-      const id = countryId === "USA" ? "US" : countryId;
       const result = await this.httpClient.get(`lookup/state?country=${id}`);
-      if (result.data) return parseStatesFromServer(result.data);
+      if (result.data) {
+        const list = parseStatesFromServer(result.data);
+        cache.set(id, list);
+        return list;
+      }
     } catch (error) {
       logError("GetStatesUseCase query error", error);
     }
