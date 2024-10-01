@@ -14,10 +14,16 @@ export const IMAGES_PRODUCTS: Record<string, string[]> = {
   "WD Annual Membership": [ASSET_IMAGES.wdAnnualMembership],
 
   // TAGS
-  "ByteTag-Black R Dog": [ASSET_IMAGES.byteTagRoundBlackDog],
-  "ByteTag-Black-S-Sm/M": [ASSET_IMAGES.byteTagSlideBlackSmall],
-  "ByteTag-Black-S-Lg": [ASSET_IMAGES.byteTagSlideBlackLarge],
-  "ByteTag-White R Dog": [ASSET_IMAGES.byteTagRoundWhiteDog],
+  "ByteTag-Black R Dog": [],
+  "ByteTag-Black-S-Sm/M": [
+    ASSET_IMAGES.byteTagSlideBlackSmall,
+    ASSET_IMAGES.byteTagSlideBlackLarge,
+  ],
+  "ByteTag-Black-S-Lg": [],
+  "ByteTag-White R Dog": [
+    ASSET_IMAGES.byteTagRoundBlackDog,
+    ASSET_IMAGES.byteTagRoundWhiteDog,
+  ],
   "ByteTag-Black R Cat": [ASSET_IMAGES.byteTagRoundBlackCat],
 };
 
