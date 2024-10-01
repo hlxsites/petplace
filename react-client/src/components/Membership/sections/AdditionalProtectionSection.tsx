@@ -4,7 +4,9 @@ import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/
 
 export const AdditionalProtectionSection = () => {
   const { cartItems, onOpenCart } = useCheckoutProductsViewModelContext();
-  const cartItemsLength = cartItems?.length;
+
+  const cartItemsLength =
+    cartItems?.filter((item) => item.quantity > 0).length || 0;
 
   return (
     <div className="relative flex w-full justify-between">
