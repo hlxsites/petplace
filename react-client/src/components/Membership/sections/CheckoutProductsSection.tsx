@@ -1,18 +1,15 @@
 import { useState } from "react";
-import {
-  DetailedCartItem,
-  ProductDescription,
-} from "~/domain/models/products/ProductModel";
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 
 import {
   getInitialProductColorSize,
   getProductPrice,
 } from "~/domain/util/checkoutProductUtil";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
 import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
 import { CheckoutProductCard } from "../CheckoutProductCard";
-import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export const CheckoutProductsSection = () => {
   const {
@@ -20,7 +17,7 @@ export const CheckoutProductsSection = () => {
     onCloseMoreInfo,
     onUpdateCartProduct,
     onOpenMoreInfo,
-    isMoreInfoOpen,
+    selectedProduct,
   } = useCheckoutProductsViewModelContext();
 
   const initialProductOptions = (products || []).reduce(
@@ -35,8 +32,6 @@ export const CheckoutProductsSection = () => {
   const [productOptions, setProductOptions] = useState<Record<string, string>>(
     initialProductOptions
   );
-  const [selectedProduct, setSelectedProduct] =
-    useState<DetailedCartItem | null>(null);
 
   const gridColumns = getGridColumns(products.length);
 
@@ -77,7 +72,6 @@ export const CheckoutProductsSection = () => {
     };
 
   const handleMoreInfo = (product: ProductDescription) => () => {
-    setSelectedProduct(product);
     onOpenMoreInfo(product.id);
   };
 
@@ -106,7 +100,7 @@ export const CheckoutProductsSection = () => {
           );
         })}
       </div>
-      {isMoreInfoOpen && selectedProduct && (
+      {selectedProduct && (
         <CheckoutItemDetailsDrawer
           onAddToCart={handleAddToCartFromMoreInfoDrawer(selectedProduct)}
           onClose={onCloseMoreInfo}

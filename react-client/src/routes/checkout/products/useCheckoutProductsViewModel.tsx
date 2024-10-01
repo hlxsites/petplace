@@ -81,13 +81,8 @@ export const useCheckoutProductsViewModel = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const detailedProducts = getDetailedProducts();
-
   const contentParam = searchParams.get(CONTENT_PARAM_KEY);
   const isOpenCart = contentParam === CART_CONTENT_KEY;
-  const isMoreInfoOpen =
-    contentParam !== null &&
-    detailedProducts.some((item) => item.id === contentParam);
 
   const autoRenew = !!cartItems.find((item) => item.id === selectedPlan.id)
     ?.autoRenew;
@@ -134,10 +129,7 @@ export const useCheckoutProductsViewModel = () => {
         }
 
         // Handle products
-        const product = findProductBasedOnOptionId(
-          savedProduct.id,
-          detailedProducts
-        );
+        const product = findProductBasedOnOptionId(savedProduct.id, products);
         if (!product) return;
 
         const selectedColorSize = getProductColorSizeBasedOnCartId(
@@ -158,15 +150,10 @@ export const useCheckoutProductsViewModel = () => {
       updateCartItemsState(initialCartItems, false);
     };
 
-    if (
-      !cartItems.length &&
-      savedCart &&
-      detailedProducts.length &&
-      selectedPlan
-    ) {
+    if (!cartItems.length && savedCart && products.length && selectedPlan) {
       manageInitialCartItems();
     }
-  }, [cartItems.length, detailedProducts, savedCart, selectedPlan]);
+  }, [cartItems.length, products, savedCart, selectedPlan]);
 
   const onUpdateOptIn = () => {
     const newAutoRenew = !autoRenew;
@@ -215,19 +202,6 @@ export const useCheckoutProductsViewModel = () => {
     });
   };
 
-  function getDetailedProducts() {
-    return products.map((item) => {
-      const { additionalInfo, privacyFeatures, tagFeatures } =
-        PRODUCT_DETAILS[item.id];
-      return {
-        ...item,
-        additionalInfo,
-        privacyFeatures,
-        tagFeatures,
-      };
-    });
-  }
-
   function getOptInLabel() {
     return OPT_IN_LABEL[selectedPlan.type] ?? OPT_IN_LABEL["default"];
   }
@@ -266,6 +240,24 @@ export const useCheckoutProductsViewModel = () => {
     window.location.href = REDIRECT_TO_CHECKOUT_URL;
   };
 
+  const selectedProduct = (() => {
+    // If the cart is open, we don't want to show the detailed product view
+    if (isOpenCart) return null;
+
+    const product = products.find(({ id }) => id === contentParam);
+    if (!product) return null;
+
+    // Get additional hard-coded info, privacy features, and tag features
+    const { additionalInfo, privacyFeatures, tagFeatures } =
+      PRODUCT_DETAILS[product.id];
+    return {
+      ...product,
+      additionalInfo,
+      privacyFeatures,
+      tagFeatures,
+    };
+  })();
+
   const subtotal = (() => {
     const sum = cartItems.reduce((total, item) => {
       if (!item.price) return 0;
@@ -281,8 +273,6 @@ export const useCheckoutProductsViewModel = () => {
   return {
     autoRenew,
     cartItems,
-    detailedProducts,
-    isMoreInfoOpen,
     isOpenCart,
     optInLabel: getOptInLabel(),
     onContinueToCheckoutPayment,
@@ -293,7 +283,8 @@ export const useCheckoutProductsViewModel = () => {
     onUpdateCartProduct,
     onUpdateQuantity,
     onUpdateOptIn,
-    products: detailedProducts,
+    products,
+    selectedProduct,
     subtotal,
   };
 };
