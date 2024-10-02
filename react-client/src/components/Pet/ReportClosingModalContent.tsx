@@ -37,7 +37,7 @@ export const ReportClosingModalContent = ({
             : undefined
         }
       />
-      <div className="mt-xxxxxlarge flex w-full gap-base flex-col-reverse md:flex-row md:h-[42px]">
+      <div className="mt-xxxxxlarge flex w-full gap-base flex-col-reverse md:flex-row">
         <LinkButton variant="secondary" to={petProfilePath} fullWidth>
           Cancel
         </LinkButton>
