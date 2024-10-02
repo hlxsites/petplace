@@ -34,15 +34,15 @@ main a:hover {
 
 .home-banner-bg::after {
   content: "";
-  width: 100%;
-  height: 100px;
   position: absolute;
+  top: 100%;
   left: 0;
-  background: url(../../icons/home-bg-desktop2.svg) center center no-repeat;
-  max-width: 1344px;
   right: 0;
   margin: 0 auto;
-  top: 100%;
+  width: 100%;
+  height: 100px;
+  background: url(../../icons/home-bg-desktop.svg) center bottom no-repeat;
+  background-size: cover;
 }
 
 /* pre footer */
