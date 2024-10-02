@@ -19,6 +19,7 @@ import { ReportLostPetButton } from "./components/ReportLostPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
+import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
@@ -35,6 +36,7 @@ export const PetProfileIndex = () => {
     invariant(pet, "Pet not found");
 
     const displayOnboarding = !!searchParams.get("onboarding");
+    const displayClosingReport = !!searchParams.get("close-report");
 
     const displayCheckoutSuccessModal = (() => {
       const contentParam = searchParams.get(CONTENT_PARAM_KEY);
@@ -73,6 +75,7 @@ export const PetProfileIndex = () => {
         <Outlet context={viewModel} />
         {displayOnboarding && <OnboardingDialog />}
         {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
+        {displayClosingReport && <ReportClosingModal petId={id} />}
       </>
     );
 
