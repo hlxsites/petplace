@@ -28,6 +28,8 @@ main a:hover {
 
 .home-page .widget-aggregator-container {
   margin-top: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .home-page .tiles-container + .home-banner-container {
