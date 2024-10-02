@@ -1,4 +1,4 @@
-import { CountryModel } from "~/domain/models/lockup/CountryModel";
+import { CountryModel } from "~/domain/models/lookup/CountryModel";
 import { GetCountriesRepository } from "../../repository/lookup/GetCountriesRepository";
 
 export class GetCountriesUseCase implements GetCountriesRepository {
