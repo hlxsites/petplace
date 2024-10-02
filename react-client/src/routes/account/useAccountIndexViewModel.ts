@@ -27,7 +27,10 @@ import {
   accountAddressIds,
   accountAgreementsIds,
   baseAccountDetailsIds,
+  emergencyContactFormSchema,
   emergencyContactIds,
+  externalAccountDetailsFormSchema,
+  internalAccountDetailsFormSchema,
 } from "./form/accountForms";
 import { AccountRootLoaderData } from "./useAccountRootViewModel";
 
@@ -232,30 +235,34 @@ export const useAccountIndexViewModel = () => {
     void asyncSubmitAccountDetails(values);
   };
 
+  const accountFormSchema = isExternalLogin
+    ? externalAccountDetailsFormSchema
+    : internalAccountDetailsFormSchema;
+
   return {
-    accountFormValues,
-    emergencyContactsFormValues,
-    isDirty: {
-      account: isDirtyAccountForm,
-      emergencyContacts: isDirtyEmergencyContactsForm,
+    accountForm: {
+      isDirty: isDirtyAccountForm,
+      isLoading: isLoadingAccount,
+      isSubmitting: isSubmittingAccount,
+      onChange: onChangesAccountFormValues,
+      onSubmit: onSubmitAccountDetails,
+      schema: accountFormSchema,
+      values: accountFormValues,
+      variables: {
+        countryOptions,
+        stateOptions,
+      },
+    },
+    emergencyContactsForm: {
+      isDirty: isDirtyEmergencyContactsForm,
+      isLoading: isLoadingEmergencyContacts,
+      isSubmitting: isSubmittingEmergencyContacts,
+      onChange: onChangesEmergencyContactsFormValues,
+      onSubmit: onSubmitEmergencyContacts,
+      schema: emergencyContactFormSchema,
+      values: emergencyContactsFormValues,
     },
     isExternalLogin,
-    isLoading: {
-      account: isLoadingAccount,
-      emergencyContacts: isLoadingEmergencyContacts,
-    },
-    isSubmitting: {
-      account: isSubmittingAccount,
-      emergencyContacts: isSubmittingEmergencyContacts,
-    },
-    onChangesAccountFormValues,
-    onChangesEmergencyContactsFormValues,
-    onSubmitEmergencyContacts,
-    onSubmitAccountDetails,
-    accountDetailsFormVariables: {
-      countryOptions,
-      stateOptions,
-    },
   };
 };
 
