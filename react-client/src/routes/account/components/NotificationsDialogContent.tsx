@@ -1,5 +1,6 @@
 import { Button, Text, TextSpan } from "~/components/design-system";
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { parseDateTime } from "~/util/dateUtils";
 
 type NotificationsDialogContentProps = {
   onClose?: () => void;
@@ -44,16 +45,10 @@ export const NotificationsDialogContent = ({
         <Text>The following people have been contacted:</Text>
         <Text>Owner</Text>
         {foundedBy?.contact?.map(({ email, date }, i) => {
-          let localDateTimeString;
-          if (date) {
-            const dateObject = new Date(date);
-            const localDate = dateObject.toLocaleDateString("en-CA");
-            const localTime = dateObject.toTimeString().slice(0, 8);
-            localDateTimeString = `${localDate} ${localTime}`;
-          }
+          const localDateTimeString = date ? parseDateTime(date) : "";
           return (
             <Text key={`${i}-${date}`}>
-              {email} at {localDateTimeString ?? date}
+              {email} {localDateTimeString ? `at ${localDateTimeString}` : ""}
             </Text>
           );
         })}

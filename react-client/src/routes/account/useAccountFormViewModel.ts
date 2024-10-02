@@ -150,7 +150,6 @@ export const useAccountFormViewModel = ({
       countryOptions,
       stateOptions,
     },
-    isExternalLogin,
   };
 };
 

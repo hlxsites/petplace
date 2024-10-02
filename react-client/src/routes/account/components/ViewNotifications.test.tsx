@@ -26,11 +26,9 @@ describe("ViewNotifications", () => {
     }
   );
 
-  it("should render the given dateFoundOrLost=%s", () => {
-    // TODO use parseDate after API defines that this is string datetime
-    const convertedDate = new Date(628021800000).toISOString().split("T")[0];
-    getRenderer({ dateFoundOrLost: 628021800000 });
-    expect(getByText(`${convertedDate}`)).toBeInTheDocument();
+  it("should render the given dateFoundOrLost", () => {
+    getRenderer({ dateFoundOrLost: "2024-07-17T10:08:41.857" });
+    expect(getByText("7/17/2024")).toBeInTheDocument();
   });
 
   it("should render button with expected icon and label", () => {
@@ -43,7 +41,7 @@ describe("ViewNotifications", () => {
 });
 
 function getRenderer({
-  dateFoundOrLost = 628021800000,
+  dateFoundOrLost = "2024-07-19T10:08:41.857",
   foundedBy = "Jane Doe",
   notificationId = "notification-id",
   petName = "Juan",
