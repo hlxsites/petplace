@@ -99,7 +99,7 @@ export const PetLostUpdatesSection = ({
         id,
         note: note || "-",
       },
-      key: `${id}-${date}`,
+      key: `${id}-${date}-${update}`,
       isSelectable: false,
     };
   }
