@@ -6,10 +6,9 @@ import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
-const cache = new Map<string, CountryStateModel[]>();
-
 export class GetStatesUseCase implements GetStatesRepository {
   private httpClient: HttpClientRepository;
+  private cache = new Map<string, CountryStateModel[]>();
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -24,14 +23,14 @@ export class GetStatesUseCase implements GetStatesRepository {
     const id = countryId === "USA" ? "US" : countryId;
 
     // Use cache to avoid unnecessary requests on the same country
-    const cached = cache.get(id);
+    const cached = this.cache.get(id);
     if (cached) return cached;
 
     try {
       const result = await this.httpClient.get(`lookup/state?country=${id}`);
       if (result.data) {
         const list = parseStatesFromServer(result.data);
-        cache.set(id, list);
+        this.cache.set(id, list);
         return list;
       }
     } catch (error) {
