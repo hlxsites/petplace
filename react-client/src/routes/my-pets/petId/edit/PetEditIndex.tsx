@@ -13,72 +13,65 @@ import { editPetProfileFormSchema } from "../form/petForm";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 
 export const PetEditIndex = () => {
-  const { petInfo, onRemoveImage, onSelectImage } = usePetProfileContext();
+  const {
+    getPetInfoFormData,
+    onSubmitPetInfo,
+    petInfo,
+    petInfoVariables,
+    onRemoveImage,
+    onSelectImage,
+  } = usePetProfileContext();
 
-  return (
-    <SuspenseAwait resolve={petInfo}>
-      {(pet) => {
-        invariant(pet, "Pet not found");
-        return (
-          <>
-            <Header
-              backButtonTo={PET_PROFILE_FULL_ROUTE(pet.id)}
-              pageTitle="Edit Pet Profile"
-            />
-            <Card padding="xlarge">
-              {renderPetImage(pet)}
-              {renderPetForm(pet)}
-            </Card>
-          </>
-        );
-      }}
-    </SuspenseAwait>
-  );
+  return <SuspenseAwait resolve={petInfo}>{renderPetForm}</SuspenseAwait>;
 
-  function renderPetImage(pet: PetModel) {
+  function renderPetForm(pet: PetModel | null) {
+    invariant(pet, "Pet not found");
+    const hasPolicy = !!pet.policyInsurance?.length;
+
     return (
       <>
-        <Title level="h3">Profile Picture</Title>
-        <div className="h-base" />
-        <div className="mb-xxxlarge">
-          <PetImageInput
-            pet={pet}
-            onRemove={onRemoveImage}
-            onSelectFile={onSelectImage}
-          />
-        </div>
-      </>
-    );
-  }
-
-  function renderPetForm(pet: PetModel) {
-    return (
-      <>
-        <Title level="h3">Pet info</Title>
-        <div className="h-xxlarge" />
-        <DisplayUncontrolledForm
-          onSubmit={({ values }) => {
-            console.log("onSubmit values", values);
-          }}
-          schema={editPetProfileFormSchema}
-          variables={{
-            // This could come from an API request, for example
-            breedOptions: [
-              "Poodle",
-              "Golden Retriever",
-              "Labrador",
-              "Pug",
-              "Beagle",
-            ],
-            breedTypeOptions: [],
-            colorOptions: ["Black", "White", "Brown", "Grey", "Golden"],
-          }}
-          // @ts-expect-error - This is a mock data
-          values={{
-            ...pet,
-          }}
+        <Header
+          backButtonTo={PET_PROFILE_FULL_ROUTE(pet.id)}
+          pageTitle="Edit Pet Profile"
         />
+        <Card padding="xlarge">
+          {renderPetImage(pet)}
+          {renderPetForm(pet)}
+        </Card>
       </>
     );
+
+    function renderPetImage(pet: PetModel) {
+      return (
+        <>
+          <Title level="h3">Profile Picture</Title>
+          <div className="h-base" />
+          <div className="mb-xxxlarge">
+            <PetImageInput
+              pet={pet}
+              onRemove={onRemoveImage}
+              onSelectFile={onSelectImage}
+            />
+          </div>
+        </>
+      );
+    }
+
+    function renderPetForm(pet: PetModel) {
+      return (
+        <>
+          <Title level="h3">Pet info</Title>
+          <div className="h-xxlarge" />
+          <DisplayUncontrolledForm
+            onSubmit={({ values }) => {
+              onSubmitPetInfo(values);
+            }}
+            schema={editPetProfileFormSchema(hasPolicy)}
+            variables={petInfoVariables}
+            initialValues={getPetInfoFormData(pet)}
+          />
+        </>
+      );
+    }
   }
 };
