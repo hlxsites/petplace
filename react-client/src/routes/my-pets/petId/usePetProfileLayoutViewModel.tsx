@@ -95,8 +95,6 @@ export const usePetProfileLayoutViewModel = () => {
       [petInfoIds.insurance]: (values.policyInsurance as string[])[0] ?? "",
     };
 
-    console.log("🚀 ~ formValues", formValues);
-
     return formValues;
   }
 
