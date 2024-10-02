@@ -23,7 +23,7 @@ export const DocumentTypeIndex = () => {
       onClose={onClose}
       title={label}
       trigger={undefined}
-      width={400}
+      width={"auto"}
     >
       <SuspenseAwait minHeight={100} resolve={documents}>
         {(resolvedDocuments) => (
