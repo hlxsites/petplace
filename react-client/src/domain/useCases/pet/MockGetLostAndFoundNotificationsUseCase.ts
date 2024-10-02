@@ -23,6 +23,34 @@ export class MockGetLostAndFoundNotificationsUseCase
         id: 748744,
         note: "Found by the fair market",
       },
+      {
+        date: "2023-06-28T00:01:00",
+        update: "2023-06-28T00:01:00",
+        status: "missing",
+        id: 897464,
+        note: "",
+      },
+      {
+        date: "2023-06-28T00:11:00",
+        update: "2023-06-28T00:11:00",
+        status: "found",
+        id: 748744,
+        note: "Found by the hospital",
+      },
+      {
+        date: "2023-06-28T00:12:00",
+        update: "2023-06-28T00:01:00",
+        status: "missing",
+        id: 897464,
+        note: "",
+      },
+      {
+        date: "2023-06-28T00:22:00",
+        update: "2023-06-28T00:11:00",
+        status: "found",
+        id: 748744,
+        note: "Found by the hotel",
+      },
     ];
   }
 }
