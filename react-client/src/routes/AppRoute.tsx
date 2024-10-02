@@ -77,10 +77,7 @@ const routes: PetPlaceRouteObject[] = [
             element: <PetProfileLayout />,
             id: "petProfile",
             loader: PetProfileLayoutLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) => {
-              // We want to revalidate the pet profile layout when the pet ID changes
-              return currentParams.petId !== nextParams.petId;
-            },
+            shouldRevalidate: () => true,
             path: AppRoutePaths.petProfile,
             children: [
               {
