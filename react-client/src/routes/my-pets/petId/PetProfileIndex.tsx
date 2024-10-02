@@ -73,7 +73,11 @@ export const PetProfileIndex = () => {
               return (
                 <PetLostUpdatesSection
                   lostPetHistory={lostAndFoundNotifications}
-                  missingStatus={lostAndFoundNotifications[0]?.status ?? "found"}
+                  missingStatus={
+                    lostAndFoundNotifications[
+                      lostAndFoundNotifications.length - 1
+                    ]?.status ?? "found"
+                  }
                 />
               );
             }}
