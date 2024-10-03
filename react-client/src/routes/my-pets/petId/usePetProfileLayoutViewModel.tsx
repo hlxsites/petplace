@@ -41,7 +41,7 @@ export const loader = (({ params }) => {
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
-  const { documentTypes, mutatePetImage, petInfo } =
+  const { documentTypes, mutatePetImage, petInfo, reportClosingReasons } =
     useLoaderData<typeof loader>();
 
   function closeReport(petId: string, reasonId: number) {
@@ -165,6 +165,7 @@ export const usePetProfileLayoutViewModel = () => {
     petInfo,
     petWatchBenefits: getPetWatchAvailableBenefits(),
     petWatchInfo: getPetWatchInfo(),
+    reportClosingReasons,
   };
 };
 
