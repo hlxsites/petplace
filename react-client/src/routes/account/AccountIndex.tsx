@@ -11,7 +11,7 @@ export const AccountIndex = () => {
 
   return (
     <div className="grid gap-xxxlarge pt-xlarge" role="region">
-      <Card padding="xlarge">{renderAccountForm()}</Card>
+      {renderAccountForm()}
       {renderEmergencyContactForm()}
       <ChangePasswordSection />
     </div>
