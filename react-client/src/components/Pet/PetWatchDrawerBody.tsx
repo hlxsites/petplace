@@ -1,13 +1,13 @@
 import { PetServices } from "~/domain/models/pet/PetModel";
+import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
+import { SuspenseAwait } from "../await/SuspenseAwait";
 import { LinkButton, Text } from "../design-system";
 import { PetCardPetWatch } from "./PetCardPetWatch";
 import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 import { PetWatchServices } from "./PetWatchServices";
-import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
-import { SuspenseAwait } from "../await/SuspenseAwait";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;

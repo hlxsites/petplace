@@ -1,23 +1,23 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
+import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
+import { PetModel } from "~/domain/models/pet/PetModel";
 import getPetInfoUseCaseFactory from "~/domain/useCases/pet/getPetInfoUseCaseFactory";
 import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
-import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
-import { getStatus } from "./utils/petServiceStatusUtils";
-import { PET_WATCH_OFFERS, PET_WATCH_TAGS } from "./utils/petServiceConstants";
-import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
-import {
-  PetWatchOptionBasedOnMembershipStatus_CA,
-  PetWatchOptionBasedOnMembershipStatus_US,
-} from "./utils/petWatchConstants";
 import {
   CA_MembershipStatus,
   MembershipStatus,
 } from "./types/PetServicesTypes";
-import { PetModel } from "~/domain/models/pet/PetModel";
+import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
+import { PET_WATCH_OFFERS, PET_WATCH_TAGS } from "./utils/petServiceConstants";
+import { getStatus } from "./utils/petServiceStatusUtils";
+import {
+  PetWatchOptionBasedOnMembershipStatus_CA,
+  PetWatchOptionBasedOnMembershipStatus_US,
+} from "./utils/petWatchConstants";
 
 export const loader = (({ params }) => {
   const { petId } = params;
@@ -133,9 +133,11 @@ export const usePetProfileLayoutViewModel = () => {
       selectedPet?.membershipStatus?.toLowerCase().includes("annual") &&
       products?.length
     ) {
-      let formattedAvailableBenefits: PetCardPetWatchProps[] = [];
+      const formattedAvailableBenefits: PetCardPetWatchProps[] = [];
+      console.log("formattedAvailableBenefits", formattedAvailableBenefits);
 
       if (products.some((item) => item.isExpired)) {
+        // TODO: implement this
       }
       // TODO: colocar os casos aqui e retornar o valor
     }
