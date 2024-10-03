@@ -92,7 +92,7 @@ export const DragAndDropFileUpload = ({
 
     Array.from(filesList).forEach((file) => {
       const isAllowedType = Array.from(allowedFileTypesSet).includes(file.type);
-      const isAllowedSize = file.size <= allowedFileSizeLimitInMb * 1 * 1;
+      const isAllowedSize = file.size <= allowedFileSizeLimitInMb * 1024 * 1024;
 
       if (isAllowedType && isAllowedSize) {
         files.push(file);
