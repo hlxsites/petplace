@@ -15,7 +15,7 @@ import {
 import { invariant } from "~/util/invariant";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
-import { ReportLostPetButton } from "./components/ReportLostPetButton";
+import { ReportPetButton } from "./components/ReportPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
@@ -90,14 +90,14 @@ export const PetProfileIndex = () => {
     );
 
     function renderActionsButton() {
-      const isFromMyPetHealth = pet?.sourceType === "MyPetHealth";
+      // const isFromMyPetHealth = pet?.sourceType === "MyPetHealth";
 
       return (
         <>
           <PetActionsDropdownMenu className="hidden lg:flex" />
-          <ReportLostPetButton
+          <ReportPetButton
             className="flex lg:hidden"
-            disabled={!isFromMyPetHealth}
+            disabled={false}
           />
         </>
       );

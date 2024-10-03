@@ -16,6 +16,7 @@ import {
   LostPetUpdate,
   MissingStatus,
 } from "~/domain/models/pet/PetModel";
+import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
 import { classNames } from "~/util/styleUtil";
 
 type PetLostUpdatesSectionProps = {
@@ -40,6 +41,8 @@ export const PetLostUpdatesSection = ({
   const dataSource = (() => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
+
+  const { redirectToLostPet, openReportClosingModal } = useLostAndFoundReport();
 
   const isMissing = missingStatus === "missing";
   const [isOpen, setIsOpen] = useState(isMissing);
@@ -116,11 +119,11 @@ export const PetLostUpdatesSection = ({
   }
 
   function renderReportButton() {
-    const { icon, iconColor, message } = reportingVariables(
+    const { icon, iconColor, message, onClick } = reportingVariables(
       missingStatus ?? "found"
     );
     return (
-      <Button variant="secondary" fullWidth>
+      <Button variant="secondary" onClick={onClick} fullWidth>
         <Icon display={icon} className={`mr-base ${iconColor}`} /> {message}
       </Button>
     );
@@ -132,29 +135,36 @@ export const PetLostUpdatesSection = ({
     const offsetFinishIndex = offsetStartIndex + itemsPerPage;
     setCurrentRows(dataSource.slice(offsetStartIndex, offsetFinishIndex));
   }
+
+  function reportingVariables(status: MissingStatus) {
+    type ReportVariable = Record<
+      MissingStatus,
+      {
+        icon: IconKeys;
+        iconColor: string;
+        message: string;
+        onClick: () => void;
+      }
+    >;
+
+    return (
+      {
+        missing: {
+          icon: "checkCircle",
+          iconColor: "text-brand-main",
+          message: "Report pet as found",
+          onClick: openReportClosingModal,
+        },
+        found: {
+          icon: "warning",
+          iconColor: "text-yellow-300",
+          message: "Report pet as missing",
+          onClick: redirectToLostPet,
+        },
+      } satisfies ReportVariable
+    )[status];
+  }
 };
-
-function reportingVariables(status: MissingStatus) {
-  type ReportVariable = Record<
-    MissingStatus,
-    { icon: IconKeys; iconColor: string; message: string }
-  >;
-
-  return (
-    {
-      missing: {
-        icon: "checkCircle",
-        iconColor: "text-brand-main",
-        message: "Report pet as found",
-      },
-      found: {
-        icon: "warning",
-        iconColor: "text-yellow-300",
-        message: "Report pet as missing",
-      },
-    } satisfies ReportVariable
-  )[status];
-}
 
 function convertStatusVariable(status: MissingStatus) {
   type ConvertVariable = Record<
