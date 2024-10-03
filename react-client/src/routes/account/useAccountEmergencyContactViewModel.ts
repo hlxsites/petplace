@@ -17,7 +17,6 @@ type UseAccountEmergencyContactViewModelProps = {
     data: AccountEmergencyContactModel
   ) => Promise<boolean>;
   emergencyContactsQuery: Promise<AccountEmergencyContactModel[]>;
-  isExternalLogin: boolean;
   submitEmergencyContactsMutation: (
     data: AccountEmergencyContactModel[]
   ) => Promise<boolean>;
@@ -26,7 +25,6 @@ type UseAccountEmergencyContactViewModelProps = {
 export const useAccountEmergencyContactViewModel = ({
   deleteEmergencyContactMutation,
   emergencyContactsQuery,
-  isExternalLogin,
   submitEmergencyContactsMutation,
 }: UseAccountEmergencyContactViewModelProps) => {
   const originalEmergencyContactsRef = useRef<AccountEmergencyContactModel[]>(
@@ -105,7 +103,6 @@ export const useAccountEmergencyContactViewModel = ({
     onSubmit: onSubmitEmergencyContacts,
     schema: emergencyContactFormSchema,
     values: emergencyContactsFormValues,
-    isExternalLogin,
   };
 };
 

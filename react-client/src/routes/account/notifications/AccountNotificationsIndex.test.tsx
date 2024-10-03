@@ -100,7 +100,7 @@ function getRenderer({
 const MOCK_PET_HISTORY: LostPetUpdateModel[] = [
   {
     communicationId: "sample-id",
-    date: 628021800000,
+    date: "2024-07-17T10:08:41.857",
     foundedBy: {
       finderName: "Mrs Smart",
     },
@@ -108,6 +108,6 @@ const MOCK_PET_HISTORY: LostPetUpdateModel[] = [
     petId: "AUN19623620",
     petName: "Mag",
     status: "missing",
-    update: 0,
+    update: "2024-07-19T00:03:07.17",
   },
 ];

@@ -37,7 +37,7 @@ export const MembershipCard = ({
         </div>
         <div className="grid gap-xsmall">
           <Text fontWeight="bold" size="40">
-            {price}
+            {`$${price}`}
           </Text>
           <Text color="text-color-supporting">{priceInfo}</Text>
         </div>

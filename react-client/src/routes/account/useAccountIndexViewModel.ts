@@ -45,10 +45,12 @@ export const useAccountIndexViewModel = () => {
   } = useLoaderData<typeof loader>();
   const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
 
+  const isExternalLogin = !!accountRootData?.isExternalLogin;
+
   const accountForm = useAccountFormViewModel({
     accountDetailsQuery,
     countries,
-    isExternalLogin: !!accountRootData?.isExternalLogin,
+    isExternalLogin,
     mutateAccountDetails,
     statesQuery,
   });
@@ -56,11 +58,8 @@ export const useAccountIndexViewModel = () => {
   const emergencyContactsForm = useAccountEmergencyContactViewModel({
     deleteEmergencyContactMutation,
     emergencyContactsQuery,
-    isExternalLogin: !!accountRootData?.isExternalLogin,
     submitEmergencyContactsMutation,
   });
-
-  const isExternalLogin = !!accountRootData?.isExternalLogin;
 
   return {
     accountForm,

@@ -22,9 +22,9 @@ describe("MembershipCard", () => {
     }
   );
 
-  it.each(["$99.99", "Free"])("should render the given price", (price) => {
+  it.each(["99.99", "Free"])("should render the given price", (price) => {
     getRenderer({ price });
-    expect(getByText(price)).toBeInTheDocument();
+    expect(getByText(`$${price}`)).toBeInTheDocument();
   });
 
   it.each(["One-time fee", "First time fee"])(
