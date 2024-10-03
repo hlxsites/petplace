@@ -64,7 +64,7 @@ export const PetCardInfo = ({ ...petInfo }: PetModel) => {
         <ReportPetButton
           missingStatus={missingStatus}
           className="hidden lg:flex"
-          disabled={false}
+          disabled={petInfo.sourceType !== "MyPetHealth"}
         />
         <PetActionsDropdownMenu className="flex lg:hidden" />
       </div>

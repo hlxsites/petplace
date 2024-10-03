@@ -90,14 +90,14 @@ export const PetProfileIndex = () => {
     );
 
     function renderActionsButton() {
-      // const isFromMyPetHealth = pet?.sourceType === "MyPetHealth";
+      const isFromMyPetHealth = pet?.sourceType === "MyPetHealth";
 
       return (
         <>
           <PetActionsDropdownMenu className="hidden lg:flex" />
           <ReportPetButton
             className="flex lg:hidden"
-            disabled={false}
+            disabled={!isFromMyPetHealth}
           />
         </>
       );
