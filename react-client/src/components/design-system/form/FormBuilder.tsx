@@ -278,15 +278,6 @@ export const FormBuilder = ({
       );
     }
 
-    if (type === "hidden") {
-      return (
-        <InputHidden
-          {...commonProps}
-          value={getStringValue()}
-        />
-      );
-    }
-
     if (
       type === "email" ||
       type === "text" ||
