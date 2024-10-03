@@ -40,12 +40,14 @@ export class MockHttpClient implements HttpClientRepository {
 
   post(): Promise<HttpResponse> {
     if (this.error) {
-      // @ts-expect-error - this is a mock implementation
-      return { error: this.error };
+      return Promise.resolve({ error: this.error });
     }
 
     // @ts-expect-error - this is a mock implementation
-    return { data: this.data };
+    return Promise.resolve({
+      data: this.data,
+      statusCode: this.statusCode,
+    });
   }
 
   postFormData(): Promise<HttpResponse> {

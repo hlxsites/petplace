@@ -1,3 +1,4 @@
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import {
   HttpClientRepository,
   HttpFormDataOptions,
@@ -8,8 +9,7 @@ import {
 export class FetchHttpClientUseCase implements HttpClientRepository {
   private baseUrl: string;
 
-  constructor(defaultUrl: string) {
-    const baseUrl = defaultUrl.replace(/\/api$/, "");
+  constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
   }
 
@@ -17,117 +17,92 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     path: string,
     options: HttpOptions = {}
   ): Promise<HttpResponse> => {
-    try {
-      const result = await fetch(`${this.baseUrl}/${path}`, {
-        method: "DELETE",
-        headers: options.headers,
-      });
-
-      return { data: true, statusCode: result.status };
-    } catch (error) {
-      return { error };
-    }
+    return fetchMiddleware(`${this.baseUrl}/${path}`, {
+      method: "DELETE",
+      headers: options.headers,
+    });
   };
 
   get = async (
     path: string,
     options: HttpOptions = {}
   ): Promise<HttpResponse> => {
-    try {
-      const result = await fetch(`${this.baseUrl}/${path}`, {
-        method: "GET",
-        headers: options.headers,
-      });
-
-      const data: unknown = await (async () => {
-        if (options.responseType === "blob") {
-          return result.blob();
-        }
-        return result.json();
-      })();
-
-      return { data, statusCode: result.status };
-    } catch (error) {
-      return { error };
-    }
+    return fetchMiddleware(`${this.baseUrl}/${path}`, {
+      method: "GET",
+      headers: options.headers,
+    });
   };
 
   post = async (
     path: string,
     options: HttpOptions = {}
   ): Promise<HttpResponse> => {
-    try {
-      const result = await fetch(`${this.baseUrl}/${path}`, {
-        method: "POST",
-        headers: options.headers,
-        body: options.body,
-      });
-
-      const data: unknown = await result.json();
-
-      return { data, statusCode: result.status };
-    } catch (error) {
-      return { error };
-    }
+    return fetchMiddleware(`${this.baseUrl}/${path}`, {
+      method: "POST",
+      headers: options.headers,
+      body: options.body,
+    });
   };
 
   postFormData = async (
     path: string,
     options: HttpFormDataOptions
   ): Promise<HttpResponse> => {
-    try {
-      const headers = options.headers || {};
+    const headers = options.headers || {};
 
-      if (headers["Content-Type"]) {
-        // Delete the content type when using FormData
-        delete headers["Content-Type"];
-      }
-
-      const result = await fetch(`${this.baseUrl}/${path}`, {
-        method: "POST",
-        body: options.body,
-        headers,
-      });
-
-      let data: unknown;
-      const contentType = result.headers.get("content-type");
-      if (contentType?.includes("application/json")) {
-        data = await result.json();
-      } else {
-        data = await result.text();
-      }
-
-      return { data, statusCode: result.status };
-    } catch (error) {
-      console.error("Error in POST request:", error);
-      return { error };
+    if (headers["Content-Type"]) {
+      // Delete the content type when using FormData
+      delete headers["Content-Type"];
     }
+
+    return fetchMiddleware(`${this.baseUrl}/${path}`, {
+      body: options.body,
+      headers,
+      isBlobRequest: options.responseType === "blob",
+      method: "POST",
+    });
   };
 
   put = async (
     path: string,
     options: HttpOptions = {}
   ): Promise<HttpResponse> => {
-    try {
-      const result = await fetch(`${this.baseUrl}/${path}`, {
-        method: "PUT",
-        headers: options.headers,
-        body: options.body,
-      });
-
-      let data: unknown;
-      const contentType = result.headers.get('Content-Type');
-  
-      if (result.status === 204 || (contentType && !contentType.includes('application/json'))) {
-        data = null;
-      } else {
-        data = await result.json();
-      }
-
-      return { data, statusCode: result.status };
-    } catch (error) {
-      console.error("Error in PUT request:", error);
-      return { error };
-    }
+    return fetchMiddleware(`${this.baseUrl}/${path}`, {
+      method: "PUT",
+      headers: options.headers,
+      body: options.body,
+    });
   };
+}
+
+async function fetchMiddleware(
+  url: string,
+  options?: RequestInit & {
+    isBlobRequest?: boolean;
+  }
+): Promise<HttpResponse> {
+  try {
+    const { isBlobRequest, ...rest } = options || {};
+
+    const response = await fetch(url, rest);
+    const contentType = response.headers.get("Content-Type");
+
+    const data: unknown = await (async () => {
+      // No content HTTP status code
+      if (response.status === 204) return null;
+
+      if (isBlobRequest) return response.blob();
+
+      // Check if the response is json
+      if (contentType?.includes("application/json")) {
+        return response.json();
+      }
+      return response.text();
+    })();
+
+    return { data, statusCode: response.status };
+  } catch (error) {
+    logError("Fetch request error:", error);
+    return { error };
+  }
 }

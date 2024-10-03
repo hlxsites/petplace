@@ -4,6 +4,7 @@ import { AccountEmergencyContactModel } from "../../models/user/UserModels";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 import { AccountEmergencyContactsRepository } from "~/domain/repository/user/AccountEmergencyContactsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 const serverSchema = z.object({
   FirstName: z.string().nullish(),
@@ -14,13 +15,7 @@ const serverSchema = z.object({
   StagingIdentifier: z.number().nullish(),
 });
 
-const deletionSchema = z.object({
-  ContactPersonId: z.string(),
-  StagingIdentifier: z.number(),
-});
-
 type PutAccountEmergencyContactRequest = z.infer<typeof serverSchema>;
-type DeleteAccountEmergencyContactRequest = z.infer<typeof deletionSchema>;
 
 export class AccountEmergencyContactsUseCase
   implements AccountEmergencyContactsRepository
@@ -38,64 +33,51 @@ export class AccountEmergencyContactsUseCase
 
   query = async (): Promise<AccountEmergencyContactModel[] | []> => {
     try {
-      const result = await this.httpClient.get(
-        `${this.endpoint}s`
-      );
+      const result = await this.httpClient.get(`${this.endpoint}s`);
       if (result.data) return convertToAccountEmergencyContact(result.data);
 
       return [];
     } catch (error) {
-      console.error("AccountEmergencyContactsUseCase query error", error);
+      logError("AccountEmergencyContactsUseCase query error", error);
       return [];
     }
   };
 
   mutate = async (data: AccountEmergencyContactModel[]): Promise<boolean> => {
-    const body = convertToServerEmergencyContact(data);
-    const isValid = body.every(
-      (contact) => serverSchema.safeParse(contact).success
-    );
-
     try {
-      if (isValid) {
-        const result = await this.httpClient.post(
-          `${this.endpoint}s`,
-          {
-            body: JSON.stringify(body),
-          }
-        );
+      const body = convertToServerEmergencyContact(data);
+      const isValid = body.every(
+        (contact) => serverSchema.safeParse(contact).success
+      );
+      if (!isValid) return false;
 
-        if (result.statusCode === 204) return true;
-      }
+      const result = await this.httpClient.post(`${this.endpoint}s`, {
+        body: JSON.stringify(body),
+      });
 
-      return false;
+      return !!result.statusCode && !result.error;
     } catch (error) {
-      console.error("AccountEmergencyContactsUseCase mutation error", error);
-      return false;
+      logError("AccountEmergencyContactsUseCase mutation error", error);
     }
+    return false;
   };
 
   delete = async (data: AccountEmergencyContactModel): Promise<boolean> => {
-    const body = extractDeletionRequestBody(data);
-    const isValid = serverSchema.safeParse(data).success;
+    const body = {
+      ContactPersonId: data.contactId ?? "",
+      StagingIdentifier: data.stagingId ?? 0,
+    };
 
     try {
-      if (isValid) {
-        const result = await this.httpClient.put(
-          this.endpoint,
-          {
-            body: JSON.stringify(body),
-          }
-        );
+      const result = await this.httpClient.put(this.endpoint, {
+        body: JSON.stringify(body),
+      });
 
-        if (result.statusCode === 204) return true;
-      }
-
-      return false;
+      return !!result.statusCode && !result.error;
     } catch (error) {
-      console.error("AccountEmergencyContactsUseCase deletion error", error);
-      return false;
+      logError("AccountEmergencyContactsUseCase deletion error", error);
     }
+    return false;
   };
 }
 
@@ -108,7 +90,6 @@ function convertToAccountEmergencyContact(
 
   data.forEach((contactData) => {
     const contact = parseData(serverSchema, contactData);
-
     if (!contact) return;
 
     list.push({
@@ -135,13 +116,4 @@ function convertToServerEmergencyContact(
     PhoneNumber: contact.phoneNumber,
     StagingIdentifier: contact.stagingId,
   }));
-}
-
-function extractDeletionRequestBody(
-  contact: AccountEmergencyContactModel
-): DeleteAccountEmergencyContactRequest {
-  return {
-    ContactPersonId: contact.contactId ?? "",
-    StagingIdentifier: contact.stagingId ?? 0,
-  };
 }

@@ -1,4 +1,5 @@
 import { useLocalStorage } from "~/hooks/useLocalStorage";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 const STEP_PARAM_KEY = "step";
 const COUNT = 5;
@@ -13,7 +14,7 @@ export const useOnboardingSteps = () => {
       if (newStep > 0 && newStep <= COUNT) {
         return newStep;
       }
-      console.error(
+      logError(
         `Invalid step: ${newStep}. Step must be between 1 and ${COUNT}.`
       );
       return prevStep;

@@ -4,6 +4,17 @@
 // In order to use new images on the project, upload them to the SharePoint folder and update the filename here
 
 export const ASSET_IMAGES = {
+  // Services
+  petMedInfoFees: getImageUrl("pet-med-info-fees.jpg"),
+  wdAnnualMembership: getImageUrl("wd-annual-membership.jpg"),
+
+  // Tags
+  byteTagRoundWhiteDog: getImageUrl("byte-tag-round-white-dog.jpg"),
+  byteTagRoundBlackDog: getImageUrl("byte-tag-round-black-dog.jpg"),
+  byteTagRoundBlackCat: getImageUrl("byte-tag-round-black-cat.jpg"),
+  byteTagSlideBlackLarge: getImageUrl("byte-tag-slide-black-large.jpg"),
+  byteTagSlideBlackSmall: getImageUrl("byte-tag-slide-black-small.jpg"),
+
   catAvatar: getImageUrl("cat-avatar.svg"),
   comfyDogAndCat: getImageUrl("onboarding-comfy-dog-and-cat.png"),
   dogAvatar: getImageUrl("dog-avatar.svg"),

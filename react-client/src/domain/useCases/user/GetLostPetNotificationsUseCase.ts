@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { LostPetUpdateModel } from "../../models/user/UserModels";
 import { GetLostPetNotificationsRepository } from "../../repository/user/GetLostPetNotificationsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
@@ -20,22 +21,20 @@ export class GetLostPetNotificationsUseCase
     }
   }
 
-  async query(): Promise<LostPetUpdateModel[] | []> {
+  async query(): Promise<LostPetUpdateModel[]> {
     try {
       const result = await this.httpClient.get(this.endpoint);
       if (result.data) return convertToLostPetHistoryModel(result.data);
 
       return [];
     } catch (error) {
-      console.error("GetUserUseCase query error", error);
+      logError("GetUserUseCase query error", error);
       return [];
     }
   }
 }
 
-function convertToLostPetHistoryModel(
-  data: unknown
-): LostPetUpdateModel[] | [] {
+function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
   if (!data || !Array.isArray(data)) return [];
 
   const serverResponseSchema = z.object({
@@ -74,7 +73,7 @@ function convertToLostPetHistoryModel(
 
     notifications.push({
       communicationId: CommunicationGroupId ?? "",
-      date: RequestDate ? new Date(RequestDate).getTime() : 0,
+      date: RequestDate ?? "",
       foundedBy: {
         contact: [],
         finderName: FinderName ?? undefined,
@@ -86,7 +85,7 @@ function convertToLostPetHistoryModel(
       petId: AnimalId ?? "",
       petName: PetName ?? "",
       status: Type === "FoundPet" ? "found" : "missing",
-      update: CommunicationDate ? new Date(CommunicationDate).getTime() : 0,
+      update: CommunicationDate ?? "",
     });
   });
 

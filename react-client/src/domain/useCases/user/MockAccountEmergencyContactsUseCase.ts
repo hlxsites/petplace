@@ -4,6 +4,10 @@ import { AccountEmergencyContactsRepository } from "../../repository/user/Accoun
 export class MockAccountEmergencyContactUseCase
   implements AccountEmergencyContactsRepository
 {
+  delete(): Promise<boolean> {
+    return new Promise((resolve) => resolve(true));
+  }
+
   async query(): Promise<AccountEmergencyContactModel[]> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -14,6 +18,7 @@ export class MockAccountEmergencyContactUseCase
         email: "alaska@email.com",
         name: "Alaska",
         phoneNumber: "(234) 123-4566",
+        stagingId: 0,
         surname: "Thunder",
         stagingId: 0,
       },

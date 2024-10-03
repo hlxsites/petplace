@@ -1,6 +1,6 @@
-import { AccountNotificationsModel } from "../../models/user/UserModels";
+import { AccountNotificationPreferencesModel } from "../../models/user/UserModels";
 
-export interface AccountNotificationRepository {
-  query(): Promise<AccountNotificationsModel | null>;
-  mutate(data: AccountNotificationsModel): Promise<boolean>;
+export interface AccountNotificationPreferencesRepository {
+  query(): Promise<AccountNotificationPreferencesModel | null>;
+  mutate(data: AccountNotificationPreferencesModel): Promise<boolean>;
 }

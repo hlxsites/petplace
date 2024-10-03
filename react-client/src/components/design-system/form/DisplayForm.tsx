@@ -4,7 +4,7 @@ import { replaceVariablesInSettings } from "./utils/variableUtils";
 
 type DisplayFormProps = Pick<
   FormBuilderProps,
-  "onChange" | "onSubmit" | "values" | "onDeleteRepeater"
+  "isDirty" | "isSubmitting" | "onChange" | "onSubmit" | "values"
 > & {
   schema: FormSchema;
   variables?: FormVariableValues;

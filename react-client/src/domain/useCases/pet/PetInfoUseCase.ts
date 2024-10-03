@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
@@ -29,11 +30,6 @@ export class PetInfoUseCase implements PetInfoRepository {
     }
   }
 
-  private handleError = (error: unknown): null => {
-    console.error("PetInfoUseCase query error", error);
-    return null;
-  };
-
   query = async (petId: string): Promise<PetModel | null> => {
     try {
       const result = await this.httpClient.get(`api/Pet/${petId}`);
@@ -42,7 +38,8 @@ export class PetInfoUseCase implements PetInfoRepository {
 
       return null;
     } catch (error) {
-      return this.handleError(error);
+      logError("PetInfoUseCase query error", error);
+      return null;
     }
   };
 
@@ -63,7 +60,7 @@ export class PetInfoUseCase implements PetInfoRepository {
 
       return false;
     } catch (error) {
-      console.error("PetInfoUseCase mutation error", error);
+      logError("PetInfoUseCase mutation error", error);
       return false;
     }
   };

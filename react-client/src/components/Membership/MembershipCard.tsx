@@ -3,7 +3,10 @@ import { classNames } from "~/util/styleUtil";
 import { Card, Icon, LinkButton, Text, Title } from "../design-system";
 import { useMembershipProductsLink } from "./hooks/useMembershipProductsLink";
 
-type MembershipCardProps = Omit<MembershipInfo, "comparePlansButtonLabel">;
+type MembershipCardProps = Omit<
+  MembershipInfo,
+  "comparePlansButtonLabel" | "hardCodedPlanId"
+>;
 
 export const MembershipCard = ({
   buttonLabel,
@@ -34,7 +37,7 @@ export const MembershipCard = ({
         </div>
         <div className="grid gap-xsmall">
           <Text fontWeight="bold" size="40">
-            {price}
+            {`$${price}`}
           </Text>
           <Text color="text-color-supporting">{priceInfo}</Text>
         </div>

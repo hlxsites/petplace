@@ -72,8 +72,8 @@ export type InputType =
   | "url"
   | "date"
   | "time"
-  | "hidden"
   | "select"
+  | "hidden"
   | "multiSelect"
   | "switch"
   | "checkboxGroup"
@@ -169,13 +169,19 @@ export type ElementInputText = InputCommon & {
   type: "text" | "email" | "password" | "number";
 };
 
-export type ElementInputHidden = InputCommon & {
+export type ElementInputHidden = Omit<InputCommon, "label" | "placeholder"> & {
+  label?: string;
+  id: string;
   type: "hidden";
 };
+
+export const AVAILABLE_PHONE_TYPES = ["Home", "Mobile", "Work"] as const;
+type PhoneType = (typeof AVAILABLE_PHONE_TYPES)[number];
 
 export type ElementInputPhone = InputCommon & {
   defaultType?: string;
   disabledType?: ConditionExpression;
+  disallowedTypes?: PhoneType[];
   hideType?: ConditionExpression;
   type: "phone";
 };
@@ -238,6 +244,7 @@ export type InputsUnion =
   | ElementInputText
   | ElementInputTextarea
   | ElementInputBoolean
+  | ElementInputHidden
   | ElementInputSwitch
   | ElementInputPhone
   | ElementInputRadio

@@ -25,9 +25,11 @@ describe("AccountEmergencyContactsUseCase", () => {
 
       expect(result).toStrictEqual([
         {
+          contactId: "000000",
           email: "moana.r@email.com",
           name: "Moana",
           phoneNumber: "989 765 4321",
+          stagingId: 2576,
           surname: "Right",
         },
       ]);
@@ -42,16 +44,28 @@ describe("AccountEmergencyContactsUseCase", () => {
 
       expect(result).toStrictEqual([
         {
+          contactId: "000001",
           email: "becker.r@email.com",
           name: "Rudy",
           phoneNumber: "989 765 4321",
+          stagingId: 0,
           surname: "Becker",
         },
         {
+          contactId: "",
           email: "h-grace@email.com",
           name: "Hazel",
           phoneNumber: "989 345 4321",
+          stagingId: 0,
           surname: "Grace",
+        },
+        {
+          contactId: "000000",
+          name: "Jonas",
+          email: "lee.nas@email.com",
+          phoneNumber: "21 987766784",
+          stagingId: 123,
+          surname: "Lee",
         },
       ]);
     });

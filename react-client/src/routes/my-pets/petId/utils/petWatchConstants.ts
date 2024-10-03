@@ -43,13 +43,11 @@ const PET_WATCH_LIFETIME_PLUS_OPTIONS: PetCardPetWatchProps[] = [
 
 const PET_WATCH_ANNUAL_AVAILABLE_OPTIONS: PetCardPetWatchProps[] = [
   { label: "DirectConnect", id: "direct-connect" },
-  { label: "24PetMedAlert", id: "24-pet-med-alert" },
 ];
 
 export const PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS: PetCardPetWatchProps[] =
   PET_WATCH_LIFETIME_PLUS_OPTIONS.filter(
-    (option) =>
-      option.id !== "direct-connect" && option.id !== "24-pet-med-alert"
+    (option) => option.id !== "direct-connect"
   ).map((item) => ({
     ...item,
     isDisabled: true,

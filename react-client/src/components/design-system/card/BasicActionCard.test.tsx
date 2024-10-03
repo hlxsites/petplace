@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { BasicActionCard } from "./BasicActionCard";
 import { ComponentProps } from "react";
+import { MemoryRouter } from "react-router-dom";
+import { BasicActionCard } from "./BasicActionCard";
 
 const { getByRole, getByText } = screen;
 
@@ -30,37 +31,31 @@ describe("BasicActionCard", () => {
     "should render the given button label",
     (buttonLabel) => {
       getRenderer({ buttonLabel });
-      expect(getByRole("button", { name: buttonLabel })).toBeInTheDocument();
+      expect(getByRole("link", { name: buttonLabel })).toBeInTheDocument();
     }
   );
 
-  it("should accept the given titleProps", () => {
-    const color = "blue-300";
-
-    getRenderer({ title: "Test", titleProps: { color } });
-
-    expect(getByRole("heading", { name: "Test" })).toHaveClass(`text-${color}`);
-  });
-
-  it("should accept the given buttonProps", () => {
-    getRenderer({ buttonProps: { variant: "primary" } });
-    expect(getByRole("button", { name: "Test button label" })).toHaveClass(
-      "bg-orange-300-contrast text-white"
-    );
-  });
-
-  it("should accept the given textProps", () => {
-    getRenderer({
-      message: "Message",
-      textProps: { fontFamily: "raleway" },
-    });
-    expect(getByText("Message")).toHaveClass("font-raleway");
-  });
+  it.each(["/random", "/amazing"])(
+    "should render the given button link",
+    (buttonLink) => {
+      getRenderer({ buttonLink });
+      expect(getByRole("link")).toHaveAttribute("href", buttonLink);
+    }
+  );
 });
 
 function getRenderer({
   buttonLabel = "Test button label",
-  ...props
+  buttonLink = "/something",
+  ...rest
 }: Partial<ComponentProps<typeof BasicActionCard>> = {}) {
-  return render(<BasicActionCard {...props} buttonLabel={buttonLabel} />);
+  return render(
+    <MemoryRouter>
+      <BasicActionCard
+        {...rest}
+        buttonLabel={buttonLabel}
+        buttonLink={buttonLink}
+      />
+    </MemoryRouter>
+  );
 }

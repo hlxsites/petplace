@@ -108,7 +108,7 @@ export const DialogBase = ({
           )}
           id={id}
           role="dialog"
-          style={{ width }}
+          style={{ width: width === "auto" ? "auto" : width }}
           tabIndex={-1}
         >
           {!!icon && <Icon display={icon} {...iconProps} />}
@@ -136,9 +136,7 @@ export const DialogBase = ({
             />
           )}
 
-          <div className="grid h-fit overflow-auto">
-            {renderChildren}
-          </div>
+          <div className="grid h-fit overflow-auto">{renderChildren}</div>
         </div>
       </FocusTrap>
     </>

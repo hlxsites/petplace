@@ -8,10 +8,17 @@ import { PlanBenefitsList } from "../PlanBenefitsList";
 export const MembershipOfferSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { plans, renderMobileVersion } = useCheckoutIndexViewModel();
-  const membershipCards = plans.map(({ title, ...props }) => (
+
+  const membershipCards = plans.map(({ hardCodedPlanId, title, ...props }) => (
     <Fragment key={title}>
       <MembershipCard title={title} {...props} />
-      <PlanBenefitsList isOpen={isOpen} title={title} setIsOpen={setIsOpen} />
+      <PlanBenefitsList
+        hardCodedPlanId={hardCodedPlanId}
+        isOpen={isOpen}
+        title={title}
+        setIsOpen={setIsOpen}
+        {...props}
+      />
     </Fragment>
   ));
 

@@ -7,6 +7,7 @@ import {
   PetDocument,
 } from "~/domain/models/pet/PetDocument";
 import { PetDocumentsUseCase } from "~/domain/useCases/pet/PetDocumentsUseCase";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { requireAuthToken } from "~/util/authUtil";
 import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
@@ -85,10 +86,10 @@ export const useDocumentTypeIndexViewModel = () => {
           };
           downloadFile(downloadProps);
         } else {
-          console.error("Downloaded content is not a Blob");
+          logError("Downloaded content is not a Blob");
         }
       } catch (error) {
-        console.error("Error downloading document:", error);
+        logError("Error downloading document:", error);
         if (isMounted.current) {
           setDownloadError(
             error instanceof Error

@@ -22,9 +22,9 @@ describe("MembershipCard", () => {
     }
   );
 
-  it.each(["$99.99", "Free"])("should render the given price", (price) => {
+  it.each(["99.99", "Free"])("should render the given price", (price) => {
     getRenderer({ price });
-    expect(getByText(price)).toBeInTheDocument();
+    expect(getByText(`$${price}`)).toBeInTheDocument();
   });
 
   it.each(["One-time fee", "First time fee"])(
@@ -141,6 +141,7 @@ function getRenderer({
   priceInfo = "Test info price label",
   subTitle = "Test info sub title",
   title = "Lifetime",
+  type = "LPPM",
   ...props
 }: Partial<ComponentProps<typeof MembershipCard>> = {}) {
   return render(
@@ -152,6 +153,7 @@ function getRenderer({
         priceInfo={priceInfo}
         subTitle={subTitle}
         title={title}
+        type={type}
         {...props}
       />
     </MemoryRouter>

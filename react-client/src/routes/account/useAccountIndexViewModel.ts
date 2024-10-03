@@ -1,91 +1,69 @@
-import { useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { requireAuthToken } from "~/util/authUtil";
 
-import {
-  AccountDetailsModel,
-  AccountEmergencyContactModel,
-  AccountNotificationsModel,
-  LostPetUpdateModel,
-} from "~/domain/models/user/UserModels";
+import getCountriesUseCaseFactory from "~/domain/useCases/lookup/getCountriesUseCaseFactory";
+import getStatesUseCaseFactory from "~/domain/useCases/lookup/getStatesUseCaseFactory";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountEmergencyContactsUseCaseFactory from "~/domain/useCases/user/accountEmergencyContactsUseCaseFactory";
-import accountNotificationsUseCaseFactory from "~/domain/useCases/user/accountNotificationsUseCaseFactory";
-import lostPetNotificationDetailsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationDetailsUseCaseFactory";
-import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
-import { validateAccountDetails } from "./form/formDataUtil";
+import { useRouteMatchesData } from "~/domain/useRouteMatchesData";
+
+import { useAccountEmergencyContactViewModel } from "./useAccountEmergencyContactViewModel";
+import { useAccountFormViewModel } from "./useAccountFormViewModel";
+import { AccountRootLoaderData } from "./useAccountRootViewModel";
 
 export const loader = (() => {
   const authToken = requireAuthToken();
 
   const accountDetailsUseCase = accountDetailsUseCaseFactory(authToken);
-  // TODO: This must be moved to another viewModel, specific for /account/notifications route
-  const accountNotificationsUseCase =
-    accountNotificationsUseCaseFactory(authToken);
-  const lostPetNotificationsUseCase =
-    lostPetNotificationsUseCaseFactory(authToken);
-  const lostPetNotificationDetailsUseCase =
-    lostPetNotificationDetailsUseCaseFactory(authToken);
-
-  function onSubmitAccountDetails(values: AccountDetailsModel) {
-    if (validateAccountDetails(values))
-      void accountDetailsUseCase.mutate(values);
-  }
-
-  function onSubmitAccountNotifications(values: AccountNotificationsModel) {
-    void accountNotificationsUseCase.mutate(values);
-  }
 
   const accountEmergencyContactsUseCase =
     accountEmergencyContactsUseCaseFactory(authToken);
 
-  function onSubmitEmergencyContacts(data: AccountEmergencyContactModel[]) {
-    void accountEmergencyContactsUseCase.mutate(data);
-  }
-
-  function onDeleteEmergencyContact(data: AccountEmergencyContactModel) {
-    void accountEmergencyContactsUseCase.delete(data);
-  }
+  const getCountriesUseCase = getCountriesUseCaseFactory();
+  const getStatesUseCase = getStatesUseCaseFactory(authToken);
 
   return defer({
-    accountDetails: accountDetailsUseCase.query(),
-    accountNotifications: accountNotificationsUseCase.query(),
-    emergencyContacts: accountEmergencyContactsUseCase.query(),
-    onDeleteEmergencyContact,
-    onSubmitEmergencyContacts: onSubmitEmergencyContacts,
-    getLostPetNotification: (id: LostPetUpdateModel) =>
-      lostPetNotificationDetailsUseCase.query(id),
-    lostPetsHistory: lostPetNotificationsUseCase.query(),
-    onSubmitAccountDetails,
-    onSubmitAccountNotifications,
+    accountDetailsQuery: accountDetailsUseCase.query(),
+    deleteEmergencyContactMutation: accountEmergencyContactsUseCase.delete,
+    emergencyContactsQuery: accountEmergencyContactsUseCase.query(),
+    countries: getCountriesUseCase.query(),
+    mutateAccountDetails: accountDetailsUseCase.mutate,
+    submitEmergencyContactsMutation: accountEmergencyContactsUseCase.mutate,
+    statesQuery: getStatesUseCase.query,
   });
 }) satisfies LoaderFunction;
 
 export const useAccountIndexViewModel = () => {
   const {
-    accountDetails,
-    accountNotifications,
-    emergencyContacts,
-    getLostPetNotification,
-    lostPetsHistory,
-    onDeleteEmergencyContact,
-    onSubmitEmergencyContacts,
-    onSubmitAccountDetails,
-    onSubmitAccountNotifications,
+    accountDetailsQuery,
+    deleteEmergencyContactMutation,
+    emergencyContactsQuery,
+    countries,
+    mutateAccountDetails,
+    submitEmergencyContactsMutation,
+    statesQuery,
   } = useLoaderData<typeof loader>();
+  const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
+
+  const isExternalLogin = !!accountRootData?.isExternalLogin;
+
+  const accountForm = useAccountFormViewModel({
+    accountDetailsQuery,
+    countries,
+    isExternalLogin,
+    mutateAccountDetails,
+    statesQuery,
+  });
+
+  const emergencyContactsForm = useAccountEmergencyContactViewModel({
+    deleteEmergencyContactMutation,
+    emergencyContactsQuery,
+    submitEmergencyContactsMutation,
+  });
 
   return {
-    accountDetails,
-    accountNotifications,
-    emergencyContacts,
-    lostPetsHistory,
-    onDeleteEmergencyContact,
-    onSubmitEmergencyContacts,
-    onSubmitAccountDetails,
-    onSubmitAccountNotifications,
-    getLostPetNotification,
+    accountForm,
+    emergencyContactsForm,
+    isExternalLogin,
   };
 };
-
-export const useAccountContext = () =>
-  useOutletContext<ReturnType<typeof useAccountIndexViewModel>>();

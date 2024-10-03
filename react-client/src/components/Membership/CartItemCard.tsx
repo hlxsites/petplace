@@ -1,21 +1,25 @@
-import { Card, Text } from "../design-system";
+import { useSearchParams } from "react-router-dom";
+import { CartItem } from "~/domain/models/cart/CartModel";
+import { CHECKOUT_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import { Card, LinkButton, Text } from "../design-system";
 import { CartItemQuantityManager } from "./CartItemQuantityManager";
-import { CartItem } from "./utils/cartTypes";
 
-type CartItemCardProps = CartItem & {
-  onUpdateQuantity: (id: string, value: number) => void;
+type CartItemCardProps = Omit<CartItem, "autoRenew" | "type"> & {
+  onUpdateQuantity: (id: string, quantity: number) => void;
 };
 
 export const CartItemCard = ({
-  acquisitionMessage,
   description,
-  name,
+  isService,
+  onUpdateQuantity,
   price,
   recurrence,
-  type,
+  title,
   ...rest
 }: CartItemCardProps) => {
-  const isService = type === "service";
+  const [searchParams] = useSearchParams();
+
+  const petId = searchParams.get("petId") || "";
 
   return (
     <Card role="listitem">
@@ -23,15 +27,17 @@ export const CartItemCard = ({
         <div className="flex justify-between">
           <div>
             <Text display="block" fontWeight="bold" size="18">
-              {name}
+              {title}
             </Text>
-            <Text color="background-color-tertiary" size="14">
-              {description}
-            </Text>
+            {description && (
+              <Text color="background-color-tertiary" size="14">
+                {description}
+              </Text>
+            )}
           </div>
           <div>
             <Text fontWeight="bold" size="20">
-              {price}
+              {`$${price}`}
             </Text>
           </div>
         </div>
@@ -39,12 +45,20 @@ export const CartItemCard = ({
         {isService && (
           <div className="flex justify-between">
             <Text color="background-color-tertiary">{recurrence}</Text>
-            <Text color="orange-300-contrast" fontWeight="bold" size="14">
-              {acquisitionMessage}
-            </Text>
+            <LinkButton
+              className="text-14 font-bold text-orange-300-contrast"
+              to={CHECKOUT_FULL_ROUTE(`${petId}`)}
+            >
+              Change membership plan
+            </LinkButton>
           </div>
         )}
-        {!isService && <CartItemQuantityManager {...rest} />}
+        {!isService && (
+          <CartItemQuantityManager
+            {...rest}
+            onUpdateQuantity={onUpdateQuantity}
+          />
+        )}
       </div>
     </Card>
   );

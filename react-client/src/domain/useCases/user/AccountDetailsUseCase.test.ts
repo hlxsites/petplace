@@ -12,6 +12,13 @@ jest.mock("~/util/authUtil", () => ({
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
+// Mock Rollbar error method
+jest.mock("@rollbar/react", () => ({
+  useRollbar: jest.fn().mockReturnValue({
+    error: jest.fn(),
+  }),
+}));
+
 describe("AccountDetailsUseCase", () => {
   beforeEach(() => {
     (authUtil.checkIsExternalLogin as jest.Mock).mockReset();

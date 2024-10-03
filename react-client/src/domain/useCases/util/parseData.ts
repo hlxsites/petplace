@@ -1,4 +1,5 @@
 import { ZodSchema } from "zod";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 // Generic function to parse data using any Zod schema
 export function parseData<T>(schema: ZodSchema<T>, data: unknown): T | null {
@@ -7,7 +8,7 @@ export function parseData<T>(schema: ZodSchema<T>, data: unknown): T | null {
   if (result.success) {
     return result.data;
   } else {
-    console.error("Error parsing data", { data, error: result.error });
+    logError("Error parsing data", { data, error: result.error });
     return null;
   }
 }
