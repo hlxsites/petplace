@@ -42,7 +42,7 @@ export const AdvertisingBannerImageRight = ({
         <div className="relative m-[-24px] flex w-auto lg:max-h-[500px] lg:max-w-[500px]">
           {renderImage()}
 
-          <div className="absolute bottom-[24px] z-50 block w-full px-large lg:hidden">
+          <div className="absolute bottom-[24px] block w-full px-large lg:hidden">
             {renderActionButton()}
           </div>
         </div>

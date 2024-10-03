@@ -12,12 +12,12 @@ const DEFAULT_NOTIFICATION: LostPetUpdateModel = {
   foundedBy: {
     contact: [],
   },
-  date: 0,
+  date: "2024-07-17T10:08:41.857",
   id: "",
   petId: "",
   petName: "",
   status: "found",
-  update: 0,
+  update: "",
 };
 
 describe("GetLostPetNotificationDetailsUseCase", () => {
@@ -37,11 +37,11 @@ describe("GetLostPetNotificationDetailsUseCase", () => {
 
     expect(result).toStrictEqual({
       communicationId: "5e8ad486",
-      date: 0,
+      date: "2024-07-17T10:08:41.857",
       foundedBy: {
         contact: [
           {
-            date: 1721221727890,
+            date: "2024-07-17T10:08:47.89",
             email: "yilan.cao@pethealthinc.com",
           },
         ],
@@ -50,7 +50,7 @@ describe("GetLostPetNotificationDetailsUseCase", () => {
       petId: "",
       petName: "",
       status: "found",
-      update: 0,
+      update: "",
     });
   });
 

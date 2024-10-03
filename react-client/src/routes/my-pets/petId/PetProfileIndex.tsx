@@ -45,7 +45,7 @@ export const PetProfileIndex = () => {
       return contentParam === "pet-watch-purchase-success";
     })();
 
-    const { id, locale, membershipStatus, policyInsurance, products } = pet;
+    const { id, policyInsurance } = pet;
 
     const checkoutPath = CHECKOUT_FULL_ROUTE(id);
 
@@ -65,10 +65,7 @@ export const PetProfileIndex = () => {
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
           <AdvertisingSection />
-          <PetWatchSection
-            petServiceStatus={{ locale, membershipStatus, products }}
-            route={checkoutPath}
-          />
+          <PetWatchSection route={checkoutPath} />
           {petInsuranceSectionElement}
           <PetLostUpdatesSection {...pet} />
         </div>

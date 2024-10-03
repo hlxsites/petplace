@@ -1,3 +1,5 @@
+import { CountryStateModel } from "~/domain/models/lockup/CountryStateModel";
+
 export interface GetStatesRepository {
-  query(country: string): Promise<string[]>;
+  query(countryId: string): Promise<CountryStateModel[]>;
 }

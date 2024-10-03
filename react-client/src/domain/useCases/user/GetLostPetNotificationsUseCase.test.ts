@@ -25,7 +25,7 @@ describe("GetLostPetNotificationsUseCase", () => {
     expect(result).toStrictEqual([
       {
         communicationId: "5e8ad486",
-        date: 1721221721857,
+        date: "2024-07-17T10:08:41.857",
         foundedBy: {
           contact: [],
           finderName: "Test",
@@ -37,11 +37,11 @@ describe("GetLostPetNotificationsUseCase", () => {
         petId: "AUN19623526",
         petName: "No_chip",
         status: "found",
-        update: 1721358187170,
+        update: "2024-07-19T00:03:07.17",
       },
       {
         communicationId: "f79edb4c",
-        date: 1721221721857,
+        date: "2024-07-17T10:08:41.857",
         foundedBy: {
           contact: [],
           finderName: "Test",
@@ -53,7 +53,7 @@ describe("GetLostPetNotificationsUseCase", () => {
         petId: "AUN19623526",
         petName: "No_chip",
         status: "found",
-        update: 1725332406767,
+        update: "2024-09-03T00:00:06.767",
       },
     ]);
   });
@@ -68,7 +68,7 @@ describe("GetLostPetNotificationsUseCase", () => {
     expect(result).toStrictEqual([
       {
         communicationId: "dba9ae21-764f-43cb-90a1-b020bbfea796",
-        date: 1721221721857,
+        date: "2024-07-17T10:08:41.857",
         foundedBy: {
           contact: [],
           finderName: "Test",
@@ -80,7 +80,7 @@ describe("GetLostPetNotificationsUseCase", () => {
         petId: "AUN19623526",
         petName: "No_chip",
         status: "found",
-        update: 1721221727890,
+        update: "2024-07-17T10:08:47.89",
       },
     ]);
   });

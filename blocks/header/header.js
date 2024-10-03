@@ -1,9 +1,12 @@
+import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
+import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import {
   decorateIcons,
+  fetchPlaceholders,
   getMetadata,
   sampleRUM,
-  fetchPlaceholders,
 } from '../../scripts/lib-franklin.js';
+import { isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 import {
   ACTIVE_REGIONS,
   DEFAULT_REGION,
@@ -13,10 +16,7 @@ import {
   getPlaceholder,
   isTablet,
 } from '../../scripts/scripts.js';
-import { constants as AriaDialog } from '../../scripts/aria/aria-dialog.js';
-import { constants as AriaTreeView } from '../../scripts/aria/aria-treeview.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
-import { isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
 
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const { unitedStates, unitedKingdom } = placeholders;
@@ -525,7 +525,7 @@ export default async function decorate(block) {
       // eslint-disable-next-line no-inner-declarations
       function checkInterface() {
         if (isTablet()) {
-           if (document.querySelector('body').classList.contains('body-locked')) {
+          if (document.querySelector('body').classList.contains('body-locked')) {
             navClose.click();
           } else {
             navToolsMobile.classList.add('hidden');
@@ -535,7 +535,7 @@ export default async function decorate(block) {
             document.querySelector('.nav-language-selector').classList.add('hidden');
             document.querySelector('.btn-regions-list').classList.remove('active');
             document.querySelector('.regions-list').classList.add('hidden');
-          } 
+          }
         } else {
           navClose.classList.add('hidden');
           navHamburger.classList.add('hidden');
