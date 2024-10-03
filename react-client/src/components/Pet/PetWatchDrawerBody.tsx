@@ -6,10 +6,11 @@ import { LinkButton, Text } from "../design-system";
 import { PetCardPetWatch } from "./PetCardPetWatch";
 import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 import { PetWatchServices } from "./PetWatchServices";
+import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
+import { SuspenseAwait } from "../await/SuspenseAwait";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;
-  locale?: PetServices["locale"];
   onClick: (label?: string) => () => void;
   route?: string;
   serviceStatus: PetServices["membershipStatus"];
@@ -17,11 +18,11 @@ type PetWatchDrawerBodyProps = {
 
 export const PetWatchDrawerBody = ({
   contentDetails,
-  locale,
   onClick,
   route,
   serviceStatus,
 }: PetWatchDrawerBodyProps) => {
+  const { petWatchBenefits } = usePetProfileContext();
   if (contentDetails) return <PetServiceDetailsCard {...contentDetails} />;
 
   const upgradeMembershipButton = (() => {
@@ -47,11 +48,15 @@ export const PetWatchDrawerBody = ({
 
   return (
     <div className="grid gap-xlarge">
-      <PetWatchServices
-        onClick={onClick}
-        serviceStatus={serviceStatus}
-        locale={locale}
-      />
+      <SuspenseAwait resolve={petWatchBenefits}>
+        {({ petWatchAvailableBenefits }) => (
+          <PetWatchServices
+            onClick={onClick}
+            petWatchBenefits={petWatchAvailableBenefits}
+          />
+        )}
+      </SuspenseAwait>
+
       {standardServiceDrawerElement}
       {annualServiceElement}
     </div>

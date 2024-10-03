@@ -4,13 +4,11 @@ import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
 import { PetWatchDrawerHeader } from "./PetWatchDrawerHeader";
 
 type PetWatchDrawerServiceContentProps = {
-  locale?: PetServices["locale"];
   serviceStatus: PetServices["membershipStatus"];
   route?: string;
 };
 
 export const PetWatchDrawerServiceContent = ({
-  locale,
   serviceStatus,
   route,
 }: PetWatchDrawerServiceContentProps) => {
@@ -25,7 +23,6 @@ export const PetWatchDrawerServiceContent = ({
       />
       <PetWatchDrawerBody
         contentDetails={contentDetails}
-        locale={locale}
         onClick={handleContentChange}
         route={route}
         serviceStatus={serviceStatus}
