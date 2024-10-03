@@ -15,12 +15,12 @@ export const ReportClosingModalContent = ({
   options,
   petId,
 }: ReportClosingModalContentProps) => {
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState<string | undefined>();
   const [didSubmit, setDidSubmit] = useState(false);
   const petProfilePath = PET_PROFILE_FULL_ROUTE(petId);
 
   return (
-    <div className="pt-base grid gap-large">
+    <div className="grid gap-large pt-base">
       <Text size="16">
         Please select one of the following to close the report:
       </Text>
@@ -28,16 +28,16 @@ export const ReportClosingModalContent = ({
         id="pet-status"
         label="Pet Status"
         required
-        options={options.map(({ reason }) => reason)}
+        options={options?.map(({ reason }) => reason) ?? []}
         onChange={handleChange}
-        value={reason}
+        value={reason ?? ""}
         errorMessage={
           didSubmit && !reason
             ? "Select a reason for closing the report"
             : undefined
         }
       />
-      <div className="mt-xxxxxlarge flex w-full gap-base flex-col-reverse md:flex-row">
+      <div className="mt-xxxxxlarge flex w-full flex-col-reverse gap-base md:flex-row">
         <LinkButton variant="secondary" to={petProfilePath} fullWidth>
           Cancel
         </LinkButton>
@@ -54,9 +54,7 @@ export const ReportClosingModalContent = ({
 
   function handleSubmit() {
     setDidSubmit(true);
-    if (reason)
-      onCloseReport(
-        options.find((option) => reason === option.reason)!.id
-      );
+    if (options?.length && reason?.length)
+      onCloseReport(options.find((option) => reason === option.reason)!.id);
   }
 };
