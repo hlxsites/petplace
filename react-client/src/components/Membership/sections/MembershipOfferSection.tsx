@@ -9,8 +9,6 @@ export const MembershipOfferSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { plans, renderMobileVersion } = useCheckoutIndexViewModel();
 
-  console.log("plans", plans);
-
   const membershipCards = plans.map(({ hardCodedPlanId, title, ...props }) => (
     <Fragment key={title}>
       <MembershipCard title={title} {...props} />
