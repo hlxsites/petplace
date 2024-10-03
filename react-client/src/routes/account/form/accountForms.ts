@@ -141,7 +141,6 @@ const addressLineTwoInput: ElementInputText = {
   elementType: "input",
   id: accountAddressIds.address2,
   label: "Address Line 2",
-  requiredCondition: true,
   type: "text",
 };
 
@@ -350,15 +349,20 @@ export const emergencyContactFormSchema: FormSchema = {
                   ],
                 },
                 {
-                  elementType: "input",
-                  id: emergencyContactIds.contactId,
-                  type: "hidden",
-                },
-                {
-                  elementType: "input",
-                  id: emergencyContactIds.stagingId,
-                  type: "hidden",
-                },
+                  elementType: "row",
+                  children: [
+                    {
+                      elementType: "input",
+                      type: "hidden",
+                      id: emergencyContactIds.contactId,
+                    },
+                    {
+                      elementType: "input",
+                      type: "hidden",
+                      id: emergencyContactIds.stagingId,
+                    },
+                  ],
+                }
               ],
             },
           ],

@@ -252,7 +252,8 @@ export type InputsUnion =
   | ElementInputNumber
   | ElementInputDate
   | ElementInputSingleSelect
-  | ElementInputMultiSelect;
+  | ElementInputMultiSelect
+  | ElementInputHidden;
 
 export type ElementUnion =
   | ElementButton

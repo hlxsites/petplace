@@ -1,54 +1,250 @@
 [
-    {
-      "stateId": "AB",
-      "name": "Alberta"
-    },
-    {
-      "stateId": "BC",
-      "name": "British Columbia"
-    },
-    {
-      "stateId": "MB",
-      "name": "Manitoba"
-    },
-    {
-      "stateId": "NB",
-      "name": "New Brunswick"
-    },
-    {
-      "stateId": "NL",
-      "name": "Newfoundland and Labrador"
-    },
-    {
-      "stateId": "NS",
-      "name": "Nova Scotia"
-    },
-    {
-      "stateId": "NT",
-      "name": "Northwest Territories"
-    },
-    {
-      "stateId": "NU",
-      "name": "Nunavut"
-    },
-    {
-      "stateId": "ON",
-      "name": "Ontario"
-    },
-    {
-      "stateId": "PE",
-      "name": "Prince Edward Island"
-    },
-    {
-      "stateId": "QC",
-      "name": "Quebec"
-    },
-    {
-      "stateId": "SK",
-      "name": "Saskatchewan"
-    },
-    {
-      "stateId": "YT",
-      "name": "Yukon"
-    }
+  {
+      "stateId": "AA",
+      "name": ""
+  },
+  {
+      "stateId": "AE",
+      "name": ""
+  },
+  {
+      "stateId": "AK",
+      "name": "Alaska"
+  },
+  {
+      "stateId": "AL",
+      "name": "Alabama"
+  },
+  {
+      "stateId": "AP",
+      "name": ""
+  },
+  {
+      "stateId": "AR",
+      "name": "Arkansas"
+  },
+  {
+      "stateId": "AS",
+      "name": ""
+  },
+  {
+      "stateId": "AZ",
+      "name": "Arizona"
+  },
+  {
+      "stateId": "CA",
+      "name": "California"
+  },
+  {
+      "stateId": "CO",
+      "name": "Colorado"
+  },
+  {
+      "stateId": "CT",
+      "name": "Connecticut"
+  },
+  {
+      "stateId": "DC",
+      "name": "District of Columbia"
+  },
+  {
+      "stateId": "DE",
+      "name": "Delaware"
+  },
+  {
+      "stateId": "FL",
+      "name": "Florida"
+  },
+  {
+      "stateId": "FM",
+      "name": ""
+  },
+  {
+      "stateId": "GA",
+      "name": "Georgia"
+  },
+  {
+      "stateId": "GU",
+      "name": ""
+  },
+  {
+      "stateId": "HI",
+      "name": "Hawaii"
+  },
+  {
+      "stateId": "IA",
+      "name": "Iowa"
+  },
+  {
+      "stateId": "ID",
+      "name": "Idaho"
+  },
+  {
+      "stateId": "IL",
+      "name": "Illinois"
+  },
+  {
+      "stateId": "IN",
+      "name": "Indiana"
+  },
+  {
+      "stateId": "KS",
+      "name": "Kansas"
+  },
+  {
+      "stateId": "KY",
+      "name": "Kentucky"
+  },
+  {
+      "stateId": "LA",
+      "name": "Louisiana"
+  },
+  {
+      "stateId": "MA",
+      "name": "Massachusetts"
+  },
+  {
+      "stateId": "MD",
+      "name": "Maryland"
+  },
+  {
+      "stateId": "ME",
+      "name": "Maine"
+  },
+  {
+      "stateId": "MH",
+      "name": ""
+  },
+  {
+      "stateId": "MI",
+      "name": "Michigan"
+  },
+  {
+      "stateId": "MN",
+      "name": "Minnesota"
+  },
+  {
+      "stateId": "MO",
+      "name": "Missouri"
+  },
+  {
+      "stateId": "MP",
+      "name": ""
+  },
+  {
+      "stateId": "MS",
+      "name": "Mississippi"
+  },
+  {
+      "stateId": "MT",
+      "name": "Montana"
+  },
+  {
+      "stateId": "NC",
+      "name": "North Carolina"
+  },
+  {
+      "stateId": "ND",
+      "name": "North Dakota"
+  },
+  {
+      "stateId": "NE",
+      "name": "Nebraska"
+  },
+  {
+      "stateId": "NH",
+      "name": "New Hampshire"
+  },
+  {
+      "stateId": "NJ",
+      "name": "New Jersey"
+  },
+  {
+      "stateId": "NM",
+      "name": "New Mexico"
+  },
+  {
+      "stateId": "NV",
+      "name": "Nevada"
+  },
+  {
+      "stateId": "NY",
+      "name": "New York"
+  },
+  {
+      "stateId": "OH",
+      "name": "Ohio"
+  },
+  {
+      "stateId": "OK",
+      "name": "Oklahoma"
+  },
+  {
+      "stateId": "OR",
+      "name": "Oregon"
+  },
+  {
+      "stateId": "PA",
+      "name": "Pennsylvania"
+  },
+  {
+      "stateId": "PR",
+      "name": ""
+  },
+  {
+      "stateId": "PW",
+      "name": ""
+  },
+  {
+      "stateId": "RI",
+      "name": "Rhode Island"
+  },
+  {
+      "stateId": "SC",
+      "name": "South Carolina"
+  },
+  {
+      "stateId": "SD",
+      "name": "South Dakota"
+  },
+  {
+      "stateId": "TN",
+      "name": "Tennessee"
+  },
+  {
+      "stateId": "TX",
+      "name": "Texas"
+  },
+  {
+      "stateId": "UT",
+      "name": "Utah"
+  },
+  {
+      "stateId": "VA",
+      "name": "Virginia"
+  },
+  {
+      "stateId": "VI",
+      "name": ""
+  },
+  {
+      "stateId": "VT",
+      "name": "Vermont"
+  },
+  {
+      "stateId": "WA",
+      "name": "Washington"
+  },
+  {
+      "stateId": "WI",
+      "name": "Wisconsin"
+  },
+  {
+      "stateId": "WV",
+      "name": "West Virginia"
+  },
+  {
+      "stateId": "WY",
+      "name": "Wyoming"
+  }
 ]

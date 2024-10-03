@@ -25,6 +25,7 @@ export const CheckoutItemDetailsDrawer = ({
       onClose={onClose}
       title={product.title}
       trigger={undefined}
+      width={440}
     >
       <CheckoutItemDetailedContent
         onAddToCart={onAddToCart}

@@ -8,6 +8,7 @@ import { ElementRepeater, ElementUnion, FormValues } from "./types/formTypes";
 
 type FormRepeaterProps = ElementRepeater & {
   onChange: (values: FormValues[]) => void;
+  onDelete?: (index: FormValues) => void;
   renderElement: (element: ElementUnion, index: number) => ReactNode;
   values: FormValues;
 };
@@ -19,6 +20,7 @@ export const FormRepeater = ({
   maxRepeat,
   minRepeat = 0,
   onChange,
+  onDelete,
   renderElement,
   values,
 }: FormRepeaterProps) => {
@@ -46,6 +48,7 @@ export const FormRepeater = ({
       if (type === "add") {
         onChange([...repeaterValues, {}]);
       } else {
+        onDelete?.(repeaterValues[index]);
         const newValue = repeaterValues.filter((_, i) => i !== index);
         onChange(newValue);
       }

@@ -4,7 +4,7 @@ import { DialogCommonProps } from "../types/DialogBaseTypes";
 
 export const Drawer = ({
   children,
-  width = 336,
+  width = "auto",
   ...rest
 }: DialogCommonProps) => {
   const windowWidth = useWindowWidth();

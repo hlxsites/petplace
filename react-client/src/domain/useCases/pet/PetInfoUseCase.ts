@@ -1,12 +1,25 @@
 import { z } from "zod";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetPetInfoRepository } from "~/domain/repository/pet/GetPetInfoRepository";
+import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
-export class GetPetInfoUseCase implements GetPetInfoRepository {
+const putServerSchema = z.object({
+  Id: z.string(),
+  Name: z.string(),
+  Sex: z.string(),
+  DateOfBirth: z.string(),
+  Neutered: z.boolean(),
+  SpeciesId: z.number(),
+  BreedId: z.number(),
+  MixedBreed: z.boolean(),
+});
+
+export type PutPetInfoRequest = z.infer<typeof putServerSchema>;
+
+export class PetInfoUseCase implements PetInfoRepository {
   private httpClient: HttpClientRepository;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
@@ -25,8 +38,30 @@ export class GetPetInfoUseCase implements GetPetInfoRepository {
 
       return null;
     } catch (error) {
-      logError("GetPetInfoUseCase query error", error);
+      logError("PetInfoUseCase query error", error);
       return null;
+    }
+  };
+
+  mutate = async (body: PutPetInfoRequest): Promise<boolean> => {
+    try {
+      if (putServerSchema.safeParse(body).success) {
+        const result = await this.httpClient.put("api/Pet", {
+          body: JSON.stringify(body),
+        });
+
+        if (
+          result.statusCode &&
+          result.statusCode >= 200 &&
+          result.statusCode < 300
+        )
+          return true;
+      }
+
+      return false;
+    } catch (error) {
+      logError("PetInfoUseCase mutation error", error);
+      return false;
     }
   };
 }

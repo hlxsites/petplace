@@ -4,7 +4,7 @@ import { ENABLE_MOCK } from "~/util/envUtil";
 import { AccountEmergencyContactsUseCase } from "./AccountEmergencyContactsUseCase";
 import { MockAccountEmergencyContactUseCase } from "./MockAccountEmergencyContactsUseCase";
 
-export default function (
+export default function accountEmergencyContactsUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
 ): AccountEmergencyContactsRepository {

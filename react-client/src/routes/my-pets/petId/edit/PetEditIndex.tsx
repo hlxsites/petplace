@@ -13,7 +13,14 @@ import { editPetProfileFormSchema } from "../form/petForm";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 
 export const PetEditIndex = () => {
-  const { petInfo, onRemoveImage, onSelectImage } = usePetProfileContext();
+  const {
+    getPetInfoFormData,
+    onSubmitPetInfo,
+    petInfo,
+    petInfoVariables,
+    onRemoveImage,
+    onSelectImage,
+  } = usePetProfileContext();
 
   return (
     <SuspenseAwait resolve={petInfo}>
@@ -52,31 +59,18 @@ export const PetEditIndex = () => {
   }
 
   function renderPetForm(pet: PetModel) {
+    const hasPolicy = !!pet.policyInsurance?.length;
     return (
       <>
         <Title level="h3">Pet info</Title>
         <div className="h-xxlarge" />
         <DisplayUncontrolledForm
           onSubmit={({ values }) => {
-            console.log("onSubmit values", values);
+            onSubmitPetInfo(values);
           }}
-          schema={editPetProfileFormSchema}
-          variables={{
-            // This could come from an API request, for example
-            breedOptions: [
-              "Poodle",
-              "Golden Retriever",
-              "Labrador",
-              "Pug",
-              "Beagle",
-            ],
-            breedTypeOptions: [],
-            colorOptions: ["Black", "White", "Brown", "Grey", "Golden"],
-          }}
-          // @ts-expect-error - This is a mock data
-          values={{
-            ...pet,
-          }}
+          schema={editPetProfileFormSchema(hasPolicy)}
+          variables={petInfoVariables}
+          initialValues={getPetInfoFormData(pet)}
         />
       </>
     );

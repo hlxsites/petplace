@@ -1,23 +1,28 @@
 import { Dispatch, SetStateAction } from "react";
 import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { MEMBERSHIP_COMPARE_PLANS } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
-import { Collapse, Text } from "../design-system";
+import { Collapse, LinkButton, Text } from "../design-system";
 import { PlanBenefitCard } from "./PlanBenefitCard";
+import { useMembershipProductsLink } from "./hooks/useMembershipProductsLink";
 
 type PlanBenefitListProps = Pick<
   MembershipInfo,
-  "hardCodedPlanId" | "title"
+  "hardCodedPlanId" | "title" | "comparePlansButtonLabel" | "id"
 > & {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const PlanBenefitsList = ({
+  comparePlansButtonLabel,
   hardCodedPlanId,
+  id,
   isOpen,
   title,
   setIsOpen,
 }: PlanBenefitListProps) => {
+  const buttonLink = useMembershipProductsLink(id);
+
   return (
     <div className="mt-medium md:hidden">
       <Collapse
@@ -41,6 +46,10 @@ export const PlanBenefitsList = ({
               />
             )
           )}
+
+          <LinkButton to={buttonLink} variant="primary" fullWidth>
+            {comparePlansButtonLabel}
+          </LinkButton>
         </div>
       </Collapse>
     </div>
