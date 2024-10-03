@@ -9,7 +9,7 @@ export type DocumentationStatus =
   | "inProgress";
 
 type ContactDone = {
-  date: number;
+  date: string;
   email?: string;
   methodContact?: string;
   phoneNumber?: string;
@@ -24,8 +24,8 @@ export type FoundedByInfo = {
 };
 
 export type LostPetUpdate = {
-  date: number;
-  update: number;
+  date: string;
+  update: string;
   status: MissingStatus;
   id: number;
   note?: string;

@@ -6,7 +6,7 @@ export class GetCountriesUseCase implements GetCountriesRepository {
     return [
       {
         id: "CA",
-        title: "CANADA",
+        title: "Canada",
       },
       {
         id: "US",

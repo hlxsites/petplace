@@ -46,7 +46,7 @@ export type AccountAddressModel = {
 export type MissingStatus = "missing" | "found";
 
 export type ContactDone = {
-  date?: number;
+  date?: string;
   email?: string;
 };
 
@@ -58,13 +58,13 @@ export type FoundedByInfo = {
 };
 
 export type LostPetUpdateModel = {
-  date: number;
+  date: string;
   id: string;
   communicationId: string;
   note?: string;
   petId: string;
   petName: string;
   status: MissingStatus;
-  update: number;
+  update: string;
   foundedBy?: FoundedByInfo;
 };

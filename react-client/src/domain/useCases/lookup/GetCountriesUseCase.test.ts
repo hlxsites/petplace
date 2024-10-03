@@ -8,7 +8,7 @@ describe("GetCountriesUseCase", () => {
     expect(result).toStrictEqual([
       {
         id: "CA",
-        title: "CANADA",
+        title: "Canada",
       },
       {
         id: "US",

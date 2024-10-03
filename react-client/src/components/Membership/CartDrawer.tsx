@@ -21,7 +21,6 @@ export const CartDrawer = () => {
       isOpen={isOpenCart}
       onClose={onCloseCart}
       trigger={undefined}
-      width={400}
     >
       <div className="flex flex-col gap-large">
         <CartHeader />
