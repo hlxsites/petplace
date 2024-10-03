@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CountryStateModel } from "~/domain/models/lockup/CountryStateModel";
+import { CountryStateModel } from "~/domain/models/lookup/CountryStateModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository";
