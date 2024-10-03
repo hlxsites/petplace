@@ -15,7 +15,7 @@ import {
 import { invariant } from "~/util/invariant";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
-import { ReportLostPetButton } from "./components/ReportLostPetButton";
+import { ReportPetButton } from "./components/ReportPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
@@ -24,7 +24,7 @@ import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
-  const { petInfo } = viewModel;
+  const { petInfo, lostAndFoundNotifications } = viewModel;
 
   return (
     <SuspenseAwait minHeight={"80dvh"} resolve={petInfo}>
@@ -70,7 +70,20 @@ export const PetProfileIndex = () => {
             route={checkoutPath}
           />
           {petInsuranceSectionElement}
-          <PetLostUpdatesSection {...pet} />
+          <SuspenseAwait resolve={lostAndFoundNotifications}>
+            {(lostAndFoundNotifications) => {
+              return (
+                <PetLostUpdatesSection
+                  lostPetHistory={lostAndFoundNotifications}
+                  missingStatus={
+                    lostAndFoundNotifications[
+                      lostAndFoundNotifications.length - 1
+                    ]?.status ?? "found"
+                  }
+                />
+              );
+            }}
+          </SuspenseAwait>
         </div>
         <Outlet context={viewModel} />
         {displayOnboarding && <OnboardingDialog />}
@@ -85,7 +98,7 @@ export const PetProfileIndex = () => {
       return (
         <>
           <PetActionsDropdownMenu className="hidden lg:flex" />
-          <ReportLostPetButton
+          <ReportPetButton
             className="flex lg:hidden"
             disabled={!isFromMyPetHealth}
           />

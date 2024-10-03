@@ -7,12 +7,15 @@ import {
 import { PetModel } from "~/domain/models/pet/PetModel";
 import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { getRouteFor } from "~/routes/util/getRouteFor";
+import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
-import { ReportLostPetButton } from "./ReportLostPetButton";
+import { ReportPetButton } from "./ReportPetButton";
 
 export const PetCardInfo = ({ ...petInfo }: PetModel) => {
+  const viewModel = usePetProfileContext();
+  const { missingStatus } = viewModel;
   const {
     age,
     breed,
@@ -58,7 +61,8 @@ export const PetCardInfo = ({ ...petInfo }: PetModel) => {
       <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
         <Title isResponsive>{name}</Title>
 
-        <ReportLostPetButton
+        <ReportPetButton
+          missingStatus={missingStatus}
           className="hidden lg:flex"
           disabled={petInfo.sourceType !== "MyPetHealth"}
         />
