@@ -40,7 +40,7 @@ export const loader = (({ params }) => {
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
-  const { documentTypes, mutatePetImage, petInfo } =
+  const { documentTypes, lostAndFoundNotifications, mutatePetImage, petInfo } =
     useLoaderData<typeof loader>();
 
   const onEditPet = () => {
@@ -153,6 +153,7 @@ export const usePetProfileLayoutViewModel = () => {
 
   return {
     documentTypes,
+    lostAndFoundNotifications,
     onEditPet,
     onRemoveImage,
     onSelectImage,
