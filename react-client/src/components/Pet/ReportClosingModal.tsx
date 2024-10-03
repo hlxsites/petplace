@@ -34,7 +34,6 @@ export const ReportClosingModal = ({ petId }: ReportClosingModalProps) => {
   );
 
   function handleCloseReport(reasonId: number) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     closeReport(petId, reasonId);
   }
 };
