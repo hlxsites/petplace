@@ -70,6 +70,7 @@ export class MockHttpClient implements HttpClientRepository {
       return Promise.resolve({
         data: null,
         statusCode: this.statusCode,
+        success: true
       });
     }
 

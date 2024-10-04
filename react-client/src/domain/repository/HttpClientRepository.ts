@@ -13,11 +13,13 @@ export type HttpResponse =
       data: unknown;
       statusCode: number;
       error?: undefined;
+      success?: boolean;
     }
   | {
       data?: undefined;
       statusCode?: undefined;
       error: unknown;
+      success?: boolean;
     };
 
 export interface HttpClientRepository {

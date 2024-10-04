@@ -30,7 +30,7 @@ export class PutReportClosingUseCase implements PutReportClosingRepository {
     return false;
   };
 
-  mutate = async (data: ReportClosingModel): Promise<boolean> => {
+  mutate = async (data: ReportClosingModel): Promise<boolean | null> => {
     const body = convertToServerSchema(data);
     const isValid = serverResponseSchema.safeParse(body).success
 
@@ -42,13 +42,12 @@ export class PutReportClosingUseCase implements PutReportClosingRepository {
           body: JSON.stringify(body),
         }
       );
-      console.log("🚀 ~ result", result)
 
-      if (result.data) return result.data as boolean;
+      if (result.success) return result.success;
     }
 
 
-      return false;
+      return null;
     } catch (error) {
       return this.handleError(error);
     }

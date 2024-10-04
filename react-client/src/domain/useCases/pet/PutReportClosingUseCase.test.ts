@@ -20,7 +20,7 @@ describe("PutReportClosingUseCase", () => {
   });
 
   it("should return true when it succeeds", async () => {
-    const httpClient = new MockHttpClient({ data: true });
+    const httpClient = new MockHttpClient({ data: true, statusCode: 204 });
     const sut = makeSut(httpClient);
     const result = await sut.mutate(DEFAULT_ARGS);
     expect(result).toBe(true);
