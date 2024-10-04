@@ -9,6 +9,7 @@ import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsuranceSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
 import { PetModel } from "~/domain/models/pet/PetModel";
+import { useTransferPet } from "~/hooks/useTransferPet";
 import {
   CHECKOUT_FULL_ROUTE,
   MY_PETS_FULL_ROUTE,
@@ -17,6 +18,7 @@ import { invariant } from "~/util/invariant";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
 import { ReportPetButton } from "./components/ReportPetButton";
+import { TransferPetModal } from "./components/TransferPetModal";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
@@ -25,6 +27,7 @@ export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
   const { petInfo, lostAndFoundNotifications } = viewModel;
+  const { isTransferringPet } = useTransferPet();
 
   return (
     <SuspenseAwait minHeight={"80dvh"} resolve={petInfo}>
@@ -86,6 +89,7 @@ export const PetProfileIndex = () => {
         {displayClosingReport && (
           <ReportClosingModal petId={id} microchip={microchip} />
         )}
+        {isTransferringPet && <TransferPetModal />}
       </>
     );
 

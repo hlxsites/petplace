@@ -2,6 +2,7 @@ import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Button, DropdownMenu } from "~/components/design-system";
 import { PetUnavailableActionDialog } from "~/components/Pet/PetUnavailableActionDialog";
 import { PetModel } from "~/domain/models/pet/PetModel";
+import { useTransferPet } from "~/hooks/useTransferPet";
 import { invariant } from "~/util/invariant";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 
@@ -13,6 +14,7 @@ export const PetActionsDropdownMenu = ({
   className,
 }: PetActionsDropdownMenuProps) => {
   const viewModel = usePetProfileContext();
+  const { onTransferPet } = useTransferPet();
 
   return (
     <SuspenseAwait minHeight={"80dvh"} resolve={viewModel.petInfo}>
@@ -48,19 +50,11 @@ export const PetActionsDropdownMenu = ({
             icon: "edit",
             label: "Edit pet profile",
             onClick: viewModel.onEditPet,
-            variant: "highlight",
-          },
-          {
-            icon: "trash",
-            label: "Download pet ID",
-          },
-          {
-            icon: "trash",
-            label: "Remove this pet",
           },
           {
             icon: "trash",
             label: "Transfer this pet",
+            onClick: onTransferPet,
           },
         ]}
       />
