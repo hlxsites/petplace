@@ -1,6 +1,5 @@
 import { PetServices } from "~/domain/models/pet/PetModel";
 import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
-import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
 import { SuspenseAwait } from "../await/SuspenseAwait";
 import { LinkButton, Text } from "../design-system";
@@ -9,20 +8,16 @@ import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 import { PetWatchServices } from "./PetWatchServices";
 
 type PetWatchDrawerBodyProps = {
-  contentDetails?: PetWatchServiceProps;
-  onClick: (label?: string) => () => void;
   route?: string;
   serviceStatus: PetServices["membershipStatus"];
 };
 
 export const PetWatchDrawerBody = ({
-  contentDetails,
-  onClick,
   route,
   serviceStatus,
 }: PetWatchDrawerBodyProps) => {
-  const { petWatchBenefits } = usePetProfileContext();
-  if (contentDetails) return <PetServiceDetailsCard {...contentDetails} />;
+  const { petWatchBenefits, getContentDetails, handleContentChange } =
+    usePetProfileContext();
 
   const upgradeMembershipButton = (() => {
     if (!route) return null;
@@ -48,16 +43,25 @@ export const PetWatchDrawerBody = ({
   return (
     <div className="grid gap-xlarge">
       <SuspenseAwait resolve={petWatchBenefits}>
-        {({ petWatchAvailableBenefits }) => (
-          <PetWatchServices
-            onClick={onClick}
-            petWatchBenefits={petWatchAvailableBenefits}
-          />
-        )}
-      </SuspenseAwait>
+        {({ petWatchAvailableBenefits }) => {
+          const contentDetails = getContentDetails(petWatchAvailableBenefits);
 
-      {standardServiceDrawerElement}
-      {annualServiceElement}
+          if (contentDetails) {
+            return <PetServiceDetailsCard {...contentDetails} />;
+          }
+
+          return (
+            <>
+              <PetWatchServices
+                onClick={handleContentChange}
+                petWatchBenefits={petWatchAvailableBenefits}
+              />
+              {standardServiceDrawerElement}
+              {annualServiceElement}
+            </>
+          );
+        }}
+      </SuspenseAwait>
     </div>
   );
 
@@ -72,7 +76,11 @@ export const PetWatchDrawerBody = ({
           <SuspenseAwait resolve={petWatchBenefits}>
             {({ petWatchAnnualUnavailableBenefits }) =>
               petWatchAnnualUnavailableBenefits?.map(({ id, ...props }) => (
-                <PetCardPetWatch key={id} onClick={onClick} {...props} />
+                <PetCardPetWatch
+                  key={id}
+                  onClick={handleContentChange}
+                  {...props}
+                />
               ))
             }
           </SuspenseAwait>

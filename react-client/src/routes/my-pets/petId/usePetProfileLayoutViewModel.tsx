@@ -1,4 +1,8 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
+import {
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
 import { PetModel } from "~/domain/models/pet/PetModel";
@@ -19,6 +23,8 @@ import {
   PetWatchOptionBasedOnMembershipStatus_CA,
   PetWatchOptionBasedOnMembershipStatus_US,
 } from "./utils/petWatchConstants";
+import { ITEM_PARAM_KEY } from "~/util/searchParamsKeys";
+import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetails";
 
 export const loader = (({ params }) => {
   const { petId } = params;
@@ -38,6 +44,7 @@ export const loader = (({ params }) => {
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { documentTypes, mutatePetImage, petInfo } =
     useLoaderData<typeof loader>();
 
@@ -183,8 +190,51 @@ export const usePetProfileLayoutViewModel = () => {
     }
   };
 
+  const getContentDetails = (benefits: PetCardPetWatchProps[]) => {
+    const selectedContent = searchParams.get(ITEM_PARAM_KEY);
+    let contentDetails = PET_WATCH_SERVICES_DETAILS.find(
+      ({ id }) => id === selectedContent
+    );
+
+    const selectedBenefit = benefits.find(
+      (benefit) => benefit.id === selectedContent
+    );
+    if (selectedBenefit && selectedBenefit.isExpired && contentDetails) {
+      contentDetails = {
+        ...contentDetails,
+        primaryAction: {
+          label: "Renew service",
+        },
+      };
+    }
+
+    return contentDetails;
+  };
+
+  const handleContentChange = (label?: string) => {
+    return () => {
+      if (label) {
+        setSelectedContent(label);
+      } else {
+        resetContent();
+      }
+    };
+  };
+
+  const setSelectedContent = (value: string) => {
+    searchParams.set(ITEM_PARAM_KEY, value);
+    setSearchParams(searchParams);
+  };
+
+  const resetContent = () => {
+    searchParams.delete(ITEM_PARAM_KEY);
+    setSearchParams(searchParams);
+  };
+
   return {
     documentTypes,
+    getContentDetails,
+    handleContentChange,
     onEditPet,
     onRemoveImage,
     onSelectImage,

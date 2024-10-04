@@ -1,40 +1,48 @@
 import { ASSET_IMAGES } from "~/assets";
-import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { IconButton, Text, Title } from "../design-system";
 import { PetServices } from "~/domain/models/pet/PetModel";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
+import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
+import { SuspenseAwait } from "../await/SuspenseAwait";
 
 type PetWatchDrawerHeaderProps = {
-  contentDetails?: PetWatchServiceProps;
-  onClick: () => void;
   serviceStatus: PetServices["membershipStatus"];
 };
 
 export const PetWatchDrawerHeader = ({
-  contentDetails,
-  onClick,
   serviceStatus,
 }: PetWatchDrawerHeaderProps) => {
-  if (!contentDetails) return mainHeader();
+  const { petWatchBenefits, getContentDetails, handleContentChange } =
+    usePetProfileContext();
 
   return (
-    <div className="mb-xxlarge">
-      <div className="flex items-center">
-        <IconButton
-          icon="chevronLeft"
-          label="go back"
-          variant="link"
-          className="text-orange-300-contrast"
-          onClick={onClick}
-        />
-        <Title level="h4">{contentDetails?.title}</Title>
-      </div>
-      {contentDetails.subtitle && (
-        <div className="-mt-small ml-[26px] lg:ml-[42px]">
-          <Text color="tertiary-600">{contentDetails?.subtitle}</Text>
-        </div>
-      )}
-    </div>
+    <SuspenseAwait resolve={petWatchBenefits}>
+      {({ petWatchAvailableBenefits }) => {
+        const contentDetails = getContentDetails(petWatchAvailableBenefits);
+
+        if (!contentDetails) return mainHeader();
+
+        return (
+          <div className="mb-xxlarge">
+            <div className="flex items-center">
+              <IconButton
+                icon="chevronLeft"
+                label="go back"
+                variant="link"
+                className="text-orange-300-contrast"
+                onClick={handleContentChange()}
+              />
+              <Title level="h4">{contentDetails.title}</Title>
+            </div>
+            {contentDetails.subtitle && (
+              <div className="-mt-small ml-[26px] lg:ml-[42px]">
+                <Text color="tertiary-600">{contentDetails.subtitle}</Text>
+              </div>
+            )}
+          </div>
+        );
+      }}
+    </SuspenseAwait>
   );
 
   function mainHeader() {
