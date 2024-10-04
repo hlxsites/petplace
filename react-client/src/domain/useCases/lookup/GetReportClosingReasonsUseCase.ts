@@ -6,9 +6,10 @@ import { GetReportClosingReasonsRepository } from "../../repository/lookup/GetRe
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
-export class GetReportClosingReasonsUseCase implements GetReportClosingReasonsRepository {
+export class GetReportClosingReasonsUseCase
+  implements GetReportClosingReasonsRepository
+{
   private httpClient: HttpClientRepository;
-  private endpoint: string = "/lookup/resolvereason";
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -20,23 +21,30 @@ export class GetReportClosingReasonsUseCase implements GetReportClosingReasonsRe
 
   query = async (): Promise<ReportClosingReasonModel[]> => {
     try {
-      const result = await this.httpClient.get(this.endpoint);
+      const result = await this.httpClient.get("/lookup/resolvereason");
       if (result.data) {
-        // the server is returning the value as a string, so first we need to parse it
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const parsedResult = JSON.parse(result.data as string)
-        return validateStates(parsedResult);}
-
-      return [];
+        return readResolveReasonOptions(result.data);
+      }
     } catch (error) {
       logError("GetReportClosingReasonsUseCase query error", error);
-      return [];
     }
+    return [];
   };
 }
 
-function validateStates(data: unknown): ReportClosingReasonModel[] {
-  if (!data || !Array.isArray(data)) return [];
+function readResolveReasonOptions(data: unknown): ReportClosingReasonModel[] {
+  const transformedData = (() => {
+    // The server is returns this request as an string atm
+    if (typeof data === "string") {
+      try {
+        return JSON.parse(data) as unknown;
+      } catch (error) {
+        logError("parseStatesFromServer error", error);
+        return null;
+      }
+    }
+    return data;
+  })();
 
   const serverResponseSchema = z
     .array(
@@ -46,7 +54,7 @@ function validateStates(data: unknown): ReportClosingReasonModel[] {
     )
     .nullish();
 
-  const statesData = parseData(serverResponseSchema, data);
+  const statesData = parseData(serverResponseSchema, transformedData);
   if (!statesData) return [];
 
   const reasonsList: ReportClosingReasonModel[] = [];
