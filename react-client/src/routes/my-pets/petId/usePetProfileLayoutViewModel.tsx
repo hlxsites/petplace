@@ -146,6 +146,11 @@ export const usePetProfileLayoutViewModel = () => {
     const { selectedPet } = await getSelectedPetAndLocale(petInfo);
     const membershipStatus = selectedPet?.membershipStatus?.toLowerCase();
     const products = selectedPet?.products;
+    const hasAnnualProduct = products?.some(
+      (product) =>
+        product.id.toLocaleLowerCase().includes("dogs") ||
+        product.id.toLocaleLowerCase().includes("cats")
+    );
 
     // If not a member, return all benefits as is
     if (membershipStatus?.includes("not a member")) {
@@ -153,12 +158,13 @@ export const usePetProfileLayoutViewModel = () => {
     }
 
     // If annual member with no products, return only direct-connect and recovery-specialists
-    if (membershipStatus?.includes("annual") && !products?.length) {
-      return petWatchAvailableBenefits.filter(
-        (benefit) =>
-          benefit.id === "direct-connect" ||
-          benefit.id === "recovery-specialists"
-      );
+    if (membershipStatus?.includes("annual")) {
+      if (!products?.length || hasAnnualProduct)
+        return petWatchAvailableBenefits.filter(
+          (benefit) =>
+            benefit.id === "direct-connect" ||
+            benefit.id === "recovery-specialists"
+        );
     }
 
     // If there are products, check for expired ones and update benefits accordingly
