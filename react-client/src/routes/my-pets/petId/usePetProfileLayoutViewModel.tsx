@@ -27,8 +27,9 @@ import {
   CONFIRM_RENEW_PARAM_KEY,
   ITEM_PARAM_KEY,
 } from "~/util/searchParamsKeys";
-import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetails";
+import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetailsConstants";
 import postRenewMembershipUseCaseFactory from "~/domain/useCases/renew/postRenewMembershipFactory";
+import { RenewDialogDetails } from "./utils/renewServiceConstants";
 
 export const loader = (({ params }) => {
   const { petId } = params;
@@ -271,11 +272,13 @@ export const usePetProfileLayoutViewModel = () => {
 
     if (!selectedContent) return null;
 
-    return await postRenew({
+    const result = await postRenew({
       autoRenew: true,
       id: selectedContent,
       petId,
     });
+
+    return RenewDialogDetails[result ? "success" : "error"];
   };
 
   return {

@@ -6,6 +6,11 @@ import { LinkButton, Text } from "../design-system";
 import { PetCardPetWatch } from "./PetCardPetWatch";
 import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 import { PetWatchServices } from "./PetWatchServices";
+import {
+  ConfirmDialog,
+  ConfirmDialogDetails,
+} from "../design-system/dialog/ConfirmDialog";
+import { useState } from "react";
 
 type PetWatchDrawerBodyProps = {
   route?: string;
@@ -24,6 +29,10 @@ export const PetWatchDrawerBody = ({
     petWatchBenefits,
     onRenewMembership,
   } = usePetProfileContext();
+
+  const [resultDialog, setResultDialog] = useState<ConfirmDialogDetails | null>(
+    null
+  );
 
   const upgradeMembershipButton = (() => {
     if (!route) return null;
@@ -54,12 +63,25 @@ export const PetWatchDrawerBody = ({
 
           if (contentDetails) {
             return (
-              <PetServiceDetailsCard
-                {...contentDetails}
-                isModalOpen={isConfirmRenewModalOpen}
-                onCloseModal={closeConfirmRenewModal}
-                onConfirmModal={handleOnConfirmRenew}
-              />
+              <>
+                <PetServiceDetailsCard
+                  {...contentDetails}
+                  isModalOpen={isConfirmRenewModalOpen}
+                  onCloseModal={closeConfirmRenewModal}
+                  onConfirmModal={handleOnConfirmRenew}
+                />
+                {resultDialog && (
+                  <ConfirmDialog
+                    icon={resultDialog.icon}
+                    isOpen={true}
+                    onClose={onCloseConfirmDialog}
+                    confirmButtonLabel={resultDialog.confirmButtonLabel}
+                    message={resultDialog.message}
+                    title={resultDialog.title}
+                    type={resultDialog.type}
+                  />
+                )}
+              </>
             );
           }
 
@@ -103,8 +125,14 @@ export const PetWatchDrawerBody = ({
     );
   }
 
-  function handleOnConfirmRenew() {
-    onRenewMembership();
+  async function handleOnConfirmRenew() {
+    const result = await onRenewMembership();
     closeConfirmRenewModal();
+
+    setResultDialog(result);
+  }
+
+  function onCloseConfirmDialog() {
+    setResultDialog(null);
   }
 };
