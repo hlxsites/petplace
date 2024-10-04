@@ -19,7 +19,6 @@ export const DropdownMenuPlayground = () => {
             onClick: () => {
               alert("delete menu item onClick callback");
             },
-            variant: "highlight",
           },
         ]}
       />
