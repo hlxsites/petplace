@@ -1,4 +1,5 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
+import { PetMutateInput } from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetInfoUseCase } from "./PetInfoUseCase";
 import getPetInfoMock from "./mocks/getPetInfoMock.json";
@@ -79,15 +80,15 @@ describe("PetInfoUseCase", () => {
   });
 
   describe("PUT", () => {
-    const validPetInfo = {
-      Id: "AU234NOUH76",
-      Name: "Zion",
-      Sex: "1",
-      DateOfBirth: "2023-06-28T00:00:00",
-      Neutered: true,
-      SpeciesId: 1,
-      BreedId: 5654345,
-      MixedBreed: false,
+    const validPetInfo: PetMutateInput = {
+      breedId: 5654345,
+      dateOfBirth: "2023-06-28T00:00:00",
+      id: "AU234NOUH76",
+      mixedBreed: false,
+      name: "Zion",
+      sex: "Male",
+      spayedNeutered: true,
+      specieId: 1,
     };
 
     it("should update successfully without data returning", async () => {
@@ -100,7 +101,6 @@ describe("PetInfoUseCase", () => {
     it("should return false when data contains invalid characters", async () => {
       const invalidDetails = { ...validPetInfo, MixedBreed: "True" };
       const sut = makeSut();
-      // @ts-expect-error the test aims to stop wrong type values
       const result = await sut.mutate(invalidDetails);
       expect(result).toBe(false);
     });
