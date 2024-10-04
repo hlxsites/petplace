@@ -20,7 +20,11 @@ export class GetBreedListUseCase implements GetBreedListRepository {
   query = async (): Promise<BreedModel[]> => {
     try {
       const result = await this.httpClient.get(this.endpoint);
-      if (result.data) return convertToBreedList(result.data);
+      if (result.data) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const parsedData = JSON.parse(result.data as string)
+        return convertToBreedList(parsedData);
+      }
 
       return [];
     } catch (error) {

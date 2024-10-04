@@ -20,7 +20,11 @@ export class GetSpeciesListUseCase implements GetSpeciesListRepository {
   query = async (): Promise<SpeciesModel[]> => {
     try {
       const result = await this.httpClient.get(this.endpoint);
-      if (result.data) return convertToSpeciesList(result.data);
+      if (result.data) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const parsedData = JSON.parse(result.data as string)
+        return convertToSpeciesList(parsedData);
+      }
 
       return [];
     } catch (error) {

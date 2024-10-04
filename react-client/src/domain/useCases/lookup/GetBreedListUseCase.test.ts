@@ -15,7 +15,7 @@ describe("GetBreedListUseCase", () => {
   });
 
   it("should return the breed list", async () => {
-    const httpClient = new MockHttpClient({ data: getBreedListMock });
+    const httpClient = new MockHttpClient({ data: JSON.stringify(getBreedListMock) });
     const sut = makeSut(httpClient);
     const result = await sut.query();
 

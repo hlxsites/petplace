@@ -15,7 +15,7 @@ describe("GetSpeciesListUseCase", () => {
   });
 
   it("should return the correct pet info", async () => {
-    const httpClient = new MockHttpClient({ data: getSpeciesListMock });
+    const httpClient = new MockHttpClient({ data: JSON.stringify(getSpeciesListMock) });
     const sut = makeSut(httpClient);
     const result = await sut.query();
 
