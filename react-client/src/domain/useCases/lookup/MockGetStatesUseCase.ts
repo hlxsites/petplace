@@ -1,4 +1,4 @@
-import { CountryStateModel } from "~/domain/models/lockup/CountryStateModel";
+import { CountryStateModel } from "~/domain/models/lookup/CountryStateModel";
 import { GetStatesRepository } from "~/domain/repository/lookup/GetStatesRepository";
 
 export class MockGetStatesUseCase implements GetStatesRepository {
