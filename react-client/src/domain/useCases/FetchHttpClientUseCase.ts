@@ -30,6 +30,7 @@ export class FetchHttpClientUseCase implements HttpClientRepository {
     return fetchMiddleware(`${this.baseUrl}/${path}`, {
       method: "GET",
       headers: options.headers,
+      isBlobRequest: options.responseType === "blob",
     });
   };
 
