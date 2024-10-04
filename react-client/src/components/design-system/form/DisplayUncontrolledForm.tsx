@@ -7,7 +7,7 @@ import {
   type FormVariableValues,
 } from "./types/formTypes";
 
-type DisplayFormProps = Pick<FormBuilderProps, "onSubmit" | "onDeleteRepeater"> & {
+type DisplayFormProps = Pick<FormBuilderProps, "onSubmit" > & {
   initialValues?: FormValues;
   schema: FormSchema;
   variables?: FormVariableValues;
