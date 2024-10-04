@@ -39,7 +39,7 @@ const adsDivCreator = (adLoc) => {
   }
 
   if (adLoc === 'article_side') {
-    const content = document.querySelector('.article-content-container');
+    const content = document.querySelector('.sidebar-container');
     mainAdsDiv.classList.add('skyscraper');
     content.append(mainAdsDiv);
   }
