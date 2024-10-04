@@ -79,7 +79,7 @@ export const usePetProfileLayoutViewModel = () => {
   useEffect(() => {
     async function getMissingStatus() {
       const status = await lostAndFoundNotifications;
-      setMissingStatus(status[status.length - 1]?.status ?? "found");
+      setMissingStatus(status[0]?.status ?? "found");
     }
 
     void getMissingStatus();

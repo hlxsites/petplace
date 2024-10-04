@@ -35,7 +35,7 @@ describe("PetInfoUseCase", () => {
         products: [],
         sex: "Male",
         spayedNeutered: true,
-        sourceType: "PetPoint",
+        sourceType: "MyPetHealth",
         species: "Dog",
       });
     });

@@ -87,13 +87,10 @@ export const PetLostUpdatesSection = ({
     );
   }
 
-  function convertUpdateToRow({
-    date,
-    update,
-    status,
-    id,
-    note,
-  }: LostAndFountNotification) {
+  function convertUpdateToRow(
+    { date, update, status, id, note }: LostAndFountNotification,
+    index: number
+  ) {
     return {
       data: {
         date: parseDate(date),
@@ -102,7 +99,7 @@ export const PetLostUpdatesSection = ({
         id,
         note: note || "-",
       },
-      key: `${id}-${date}-${update}`,
+      key: `${id}-${date}-${note}-${index}`,
       isSelectable: false,
     };
   }

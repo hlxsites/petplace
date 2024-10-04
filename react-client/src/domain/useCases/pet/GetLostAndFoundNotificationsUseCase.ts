@@ -59,7 +59,10 @@ function convertToLostAndFoundNotificationModel(
     petHistory.push({
       date: Opened ?? "",
       update: LastUpdate ?? "",
-      status: Status === "Reunited with my pet" ? "found" : "missing",
+      status:
+        Status && ["No Resolution", "Reported missing"].includes(Status)
+          ? "missing"
+          : "found",
       id: Id ?? 0,
       note: Note ?? "",
     });
