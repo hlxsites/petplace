@@ -22,6 +22,7 @@ export const PetWatchDrawerBody = ({
     handleContentChange,
     isConfirmRenewModalOpen,
     petWatchBenefits,
+    onRenewMembership,
   } = usePetProfileContext();
 
   const upgradeMembershipButton = (() => {
@@ -57,6 +58,7 @@ export const PetWatchDrawerBody = ({
                 {...contentDetails}
                 isModalOpen={isConfirmRenewModalOpen}
                 onCloseModal={closeConfirmRenewModal}
+                onConfirmModal={onRenewMembership}
               />
             );
           }

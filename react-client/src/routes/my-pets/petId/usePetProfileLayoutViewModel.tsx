@@ -28,27 +28,33 @@ import {
   ITEM_PARAM_KEY,
 } from "~/util/searchParamsKeys";
 import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetails";
+import postRenewMembershipUseCaseFactory from "~/domain/useCases/renew/postRenewMembershipFactory";
 
 export const loader = (({ params }) => {
   const { petId } = params;
   invariantResponse(petId, "Pet ID is required in this route");
 
   const authToken = requireAuthToken();
+
+  const renewUseCase = postRenewMembershipUseCaseFactory(authToken);
   const getPetInfoUseCase = getPetInfoUseCaseFactory(authToken);
   const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
+
   const petInfoPromise = getPetInfoUseCase.query(petId);
 
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
     petInfo: petInfoPromise,
     mutatePetImage: postPetImageUseCase.mutate,
+    postRenew: renewUseCase.post,
+    petId,
   });
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { documentTypes, mutatePetImage, petInfo } =
+  const { documentTypes, mutatePetImage, petInfo, petId, postRenew } =
     useLoaderData<typeof loader>();
 
   const onEditPet = () => {
@@ -252,6 +258,18 @@ export const usePetProfileLayoutViewModel = () => {
 
   const isConfirmRenewModalOpen = searchParams.has(CONFIRM_RENEW_PARAM_KEY);
 
+  const onRenewMembership = () => {
+    const selectedContent = searchParams.get(ITEM_PARAM_KEY);
+
+    if (!selectedContent) return null;
+
+    void postRenew({
+      autoRenew: true,
+      id: selectedContent,
+      petId,
+    });
+  };
+
   return {
     closeConfirmRenewModal,
     documentTypes,
@@ -260,6 +278,7 @@ export const usePetProfileLayoutViewModel = () => {
     isConfirmRenewModalOpen,
     onEditPet,
     onRemoveImage,
+    onRenewMembership,
     onSelectImage,
     petInfo,
     petWatchBenefits: getPetWatchBenefits(),

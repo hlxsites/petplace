@@ -8,6 +8,7 @@ export type PetServiceDetailsCardProps = {
   description: ReactNode;
   isModalOpen: boolean;
   onCloseModal: () => void;
+  onConfirmModal: () => void;
   primaryAction?: ServiceAction;
   secondaryActions?: (ServiceAction & { icon: IconKeys })[];
 };
@@ -26,6 +27,7 @@ export const PetServiceDetailsCard = ({
   description,
   isModalOpen,
   onCloseModal,
+  onConfirmModal,
   primaryAction,
   secondaryActions,
 }: PetServiceDetailsCardProps) => {
@@ -66,6 +68,7 @@ export const PetServiceDetailsCard = ({
           isOpen={isModalOpen}
           message={primaryAction.message}
           onClose={onCloseModal}
+          onClickPrimaryButton={onConfirmModal}
           confirmButtonLabel={primaryAction.confirmButtonLabel}
           title={primaryAction.title ?? ""}
           type="confirm"
