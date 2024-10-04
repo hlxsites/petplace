@@ -94,7 +94,23 @@ const routes: PetPlaceRouteObject[] = [
             element: <PetProfileLayout />,
             id: "petProfile",
             loader: PetProfileLayoutLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) => {
+            shouldRevalidate: ({
+              currentParams,
+              currentUrl,
+              nextParams,
+              nextUrl,
+            }) => {
+              const includesEditPath = (pathname: string) =>
+                pathname.includes(AppRoutePaths.petEdit);
+
+              // We want to revalidate the pet profile layout when we navigate away from the pet edit page
+              if (
+                includesEditPath(currentUrl.pathname) &&
+                !includesEditPath(nextUrl.pathname)
+              ) {
+                return true;
+              }
+
               // We want to revalidate the pet profile layout when the pet ID changes
               return currentParams.petId !== nextParams.petId;
             },
