@@ -9,47 +9,20 @@ main .newsletter-signup input {
   color: var(--text-color-inverted);
 }
 
+.newsletter-signup form .inputs-main-div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .newsletter-signup img {
   max-width: 100%;
   height: auto;
 }
 
-.popup .newsletter-signup form .inputs-main-div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.popup .newsletter-signup form .form-text-wrapper {
-  flex: 1 0 50%;
-  padding: 0 0.5rem;
-}
-
-.popup .newsletter-signup form .form-text-wrapper:last-child {
-  flex: 0 1 100%;
-}
-
-.popup .newsletter-signup img {
-  width: 90%;
-}
-
-.popup .newsletter-signup .popup-close {
-  background-color: var(--background-color-dark);
-  line-height: 1;
-  width: 40px;
-  float: right;
-}
-
-.newsletter-signup .popup-close::before {
-  content: 'X';
-  font-weight: 800;
-  font-size: 1.5rem;
-}
-
 .newsletter-signup > div > div {
   padding: 1.5rem;
   gap: 1rem;
-  max-width: 450px;
+  max-width: 600px;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -84,10 +57,6 @@ main .newsletter-signup input {
   margin-bottom: 1rem;
 }
 
-.popup .newsletter-signup .form-checkbox-wrapper {
-  align-self: center;
-}
-
 .newsletter-signup form {
   display: flex;
   flex-direction: column;
@@ -104,6 +73,7 @@ main .newsletter-signup input {
   padding: 0;
   font-size: 1.5rem;
   text-align: left;
+  color: #fff;
 }
 
 .newsletter-signup > div > div p {
@@ -111,10 +81,6 @@ main .newsletter-signup input {
   padding: 0;
   color: #fff;
   text-align: left;
-}
-
-.popup .newsletter-signup p {
-  font-size: 1rem;
 }
 
 .newsletter-signup > div > div > p:last-child {
@@ -141,9 +107,9 @@ main .newsletter-signup input {
 }
 
 .newsletter-signup input[type="text"]::placeholder {
-  color: #000;
+  color: #909090;
   opacity: .75;
-  font-weight: 500;
+  font-weight: normal;
 }
 
 .newsletter-signup .newsletter-message {
@@ -157,11 +123,57 @@ main .newsletter-signup input {
 
 /* .newsletter-signup .newsletter-message.error {
 }
-
 .newsletter-signup .newsletter-message.success {
 } */
 
-@media (min-width: 901px) {
+/* POPUPS */
+
+.popup .newsletter-signup form {
+  gap: 0.5rem;
+}
+
+.popup .newsletter-signup p {
+  font-size: 1rem;
+}
+
+.popup .newsletter-signup img {
+  width: 90%;
+}
+
+.popup .newsletter-signup .form-checkbox-wrapper {
+  align-self: center;
+  margin-bottom: 0.5rem;
+}
+
+.popup .newsletter-signup form .inputs-main-div {
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.popup .newsletter-signup form .form-text-wrapper {
+  flex: 1 0 50%;
+  padding: 0 0.5rem;
+}
+
+.popup .newsletter-signup form .form-text-wrapper:last-child {
+  flex: 0 1 100%;
+}
+
+
+.newsletter-signup .popup-close {
+  background-color: var(--background-color-dark);
+  line-height: 1;
+  width: 40px;
+  float: right;
+}
+
+.newsletter-signup .popup-close::before {
+  content: 'X';
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+@media (min-width: 1025px) {
   /* horizontal variant */
   .newsletter-signup.horizontal > div > div {
     padding: 3rem 0;
@@ -170,7 +182,6 @@ main .newsletter-signup input {
   }
 
   .newsletter-signup.horizontal form .inputs-main-div {
-    display: flex;
     justify-content: space-evenly;
     gap: 1rem;
   }
@@ -178,8 +189,8 @@ main .newsletter-signup input {
   .newsletter-signup.horizontal form .checkbox-main-div {
     display: flex;
     margin: auto;
-    width: 75%;
-    justify-content: space-around;
+    width: 80%;
+    justify-content: space-evenly;
   }
 
   .newsletter-signup.horizontal form .form-submit-wrapper {
@@ -192,8 +203,17 @@ main .newsletter-signup input {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .popup .newsletter-signup p {
     width: 95%;
+  }
+
+  .newsletter-signup form .form-text-wrapper {
+    flex: 1 0 50%;
+    padding: 0 0.5rem;
+  }
+  
+  .newsletter-signup form .form-text-wrapper:last-child {
+    flex: 0 1 100%;
   }
 }
