@@ -1,5 +1,5 @@
 import { CountryStateModel } from "~/domain/models/lockup/CountryStateModel";
-import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository";
+import { GetStatesRepository } from "~/domain/repository/lookup/GetStatesRepository";
 
 export class MockGetStatesUseCase implements GetStatesRepository {
   async query(): Promise<CountryStateModel[]> {

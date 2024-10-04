@@ -1,8 +1,8 @@
 import { z } from "zod";
+import { PetModel } from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
-import { PetModel } from "../../models/pet/PetModel";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 

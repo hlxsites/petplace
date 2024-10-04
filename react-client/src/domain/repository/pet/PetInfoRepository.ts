@@ -1,5 +1,5 @@
+import { PetModel } from "~/domain/models/pet/PetModel";
 import { PutPetInfoRequest } from "~/domain/useCases/pet/PetInfoUseCase";
-import { PetModel } from "../../models/pet/PetModel";
 
 export interface PetInfoRepository {
   query(petId: string): Promise<PetModel | null>;

@@ -1,5 +1,5 @@
+import { PetModel } from "~/domain/models/pet/PetModel";
 import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
-import { PetModel } from "../../models/pet/PetModel";
 
 import { PETS_LIST } from "./mocks/petsListMock";
 import { PutPetInfoRequest } from "./PetInfoUseCase";

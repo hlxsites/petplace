@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { SpeciesModel } from "~/domain/models/lookup/LookupModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { GetSpeciesListRepository } from "../../repository/lookup/GetSpeciesListRepository";
+import { GetSpeciesListRepository } from "~/domain/repository/lookup/GetSpeciesListRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 

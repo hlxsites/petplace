@@ -1,5 +1,5 @@
 import { CountryModel } from "~/domain/models/lockup/CountryModel";
-import { GetCountriesRepository } from "../../repository/lookup/GetCountriesRepository";
+import { GetCountriesRepository } from "~/domain/repository/lookup/GetCountriesRepository";
 
 export class GetCountriesUseCase implements GetCountriesRepository {
   query = (): CountryModel[] => {

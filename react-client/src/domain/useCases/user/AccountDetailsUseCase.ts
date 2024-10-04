@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { checkIsExternalLogin, readJwtClaim } from "~/util/authUtil";
 import {
   AccountDetailsModel,
   ExternalAccountDetailsModel,
-} from "../../models/user/UserModels";
+} from "~/domain/models/user/UserModels";
+import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { checkIsExternalLogin, readJwtClaim } from "~/util/authUtil";
 
 import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
