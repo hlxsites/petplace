@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { AdvertisingBannerImageRight } from "./AdvertisingBannerImageRight";
 import { ComponentProps } from "react";
+import { AdvertisingBannerImageRight } from "./AdvertisingBannerImageRight";
+import { MemoryRouter } from "react-router-dom";
 
-const { getByRole, getByAltText, getAllByRole, queryByAltText } = screen;
+const { getByRole, getByText, getByAltText, getAllByRole, queryByAltText } = screen;
 
 describe("AdvertisingBannerImageRight", () => {
   it.each(["My custom title", "Insurance"])(
@@ -19,7 +20,16 @@ describe("AdvertisingBannerImageRight", () => {
     (message) => {
       getRenderer({ message });
 
-      expect(getByRole("paragraph")).toHaveTextContent(message);
+      expect(getByText(message)).toBeInTheDocument();
+    }
+  );
+
+  it.each(["A sub-message", "Another sub-message"])(
+    "should render the sub-message with the expected text content",
+    (subMessage) => {
+      getRenderer({ subMessage });
+
+      expect(getByText(subMessage)).toBeInTheDocument();
     }
   );
 
@@ -118,12 +128,14 @@ function getRenderer({
   ...props
 }: Partial<ComponentProps<typeof AdvertisingBannerImageRight>> = {}) {
   return render(
-    <AdvertisingBannerImageRight
-      cardStyleProps={cardStyleProps}
-      imgName={imgName}
-      img={img}
-      title={title}
-      {...props}
-    />
+    <MemoryRouter>
+      <AdvertisingBannerImageRight
+        cardStyleProps={cardStyleProps}
+        imgName={imgName}
+        img={img}
+        title={title}
+        {...props}
+      />
+    </MemoryRouter>
   );
 }
