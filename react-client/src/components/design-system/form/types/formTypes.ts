@@ -72,14 +72,16 @@ export type InputType =
   | "url"
   | "date"
   | "time"
-  | "hidden"
   | "select"
+  | "hidden"
+  | "multiSelect"
   | "switch"
   | "checkboxGroup"
   | "radio";
 
 export type RepeaterMetadata = {
   index: number;
+  repeaterId: string;
 };
 
 type ElementCommon = {
@@ -135,11 +137,12 @@ export type ElementButton = ElementCommon & {
 };
 
 export type InputCommon = ElementCommon & {
+  autoComplete?: HTMLInputElement["autocomplete"];
   autoFocus?: boolean;
   description?: string;
   disabledCondition?: ConditionExpression;
   elementType: "input";
-  errorMessage?: string;
+  errorMessage?: string | null;
   hideLabel?: boolean;
   id: string;
   label: string;
@@ -161,31 +164,35 @@ export type InputWithoutFormBuilderProps<T = InputCommon> = Omit<
 };
 
 export type ElementInputText = InputCommon & {
-  onChange?: (newValue: string) => void;
+  maxLength?: number;
+  minLength?: number;
   type: "text" | "email" | "password" | "number";
-  value?: string;
 };
+
+export type ElementInputHidden = Omit<InputCommon, "label" | "placeholder"> & {
+  label?: string;
+  id: string;
+  type: "hidden";
+};
+
+export const AVAILABLE_PHONE_TYPES = ["Home", "Mobile", "Work"] as const;
+type PhoneType = (typeof AVAILABLE_PHONE_TYPES)[number];
 
 export type ElementInputPhone = InputCommon & {
   defaultType?: string;
   disabledType?: ConditionExpression;
+  disallowedTypes?: PhoneType[];
   hideType?: ConditionExpression;
-  onChange?: (newValue: string) => void;
   type: "phone";
-  value?: string;
 };
 
 export type ElementInputTextarea = InputCommon & {
-  onChange?: (newValue: string) => void;
   rows?: number;
   type: "textarea";
-  value?: string;
 };
 
 export type ElementInputBoolean = Omit<InputCommon, "placeholder"> & {
-  onChange?: (newValue: boolean) => void;
   type: "boolean";
-  value?: boolean;
 };
 
 type OptionType =
@@ -200,58 +207,44 @@ type OptionType =
 
 export type ElementInputRadio = Omit<InputCommon, "placeholder"> &
   OptionType & {
-    onChange?: (newValue: string) => void;
     type: "radio";
-    value?: string;
   };
 
 export type ElementInputCheckboxGroup = Omit<InputCommon, "placeholder"> &
   OptionType & {
-    onChange?: (newValue: string[]) => void;
     type: "checkboxGroup";
-    value?: string[];
     variant?: CheckboxVariant;
   };
 
 export type ElementInputSwitch = Omit<InputCommon, "placeholder"> & {
   conditionalLabel?: [string, string];
-  onChange?: (newValue: boolean) => void;
   type: "switch";
-  value?: boolean;
   variant?: SwitchVariant;
 };
 
 export type ElementInputNumber = InputCommon & {
-  onChange?: (newValue: number) => void;
   type: "number";
-  value?: number;
 };
 
 export type ElementInputDate = InputCommon & {
-  onChange?: (newValue: Date) => void;
   type: "date";
-  value?: Date;
 };
 
-type ElementInputSelectCommon = InputCommon &
-  OptionType & {
-    type: "select";
-  };
+type ElementInputSelectCommon = InputCommon & OptionType;
 
 export type ElementInputSingleSelect = ElementInputSelectCommon & {
-  onChange?: (newValue: string) => void;
-  value?: string;
+  type: "select";
 };
 
 export type ElementInputMultiSelect = ElementInputSelectCommon & {
-  onChange?: (newValue: string[]) => void;
-  value?: string[];
+  type: "multiSelect";
 };
 
 export type InputsUnion =
   | ElementInputText
   | ElementInputTextarea
   | ElementInputBoolean
+  | ElementInputHidden
   | ElementInputSwitch
   | ElementInputPhone
   | ElementInputRadio

@@ -1,47 +1,28 @@
-import { Collapse, Title } from "~/components/design-system";
-import { MembershipComparingPlanTable } from "../MembershipComparingPlanTable";
 import { useState } from "react";
-import { Locales } from "../types/MembershipTypes";
-import {
-  CA_MEMBERSHIP_PLANS,
-  MEMBERSHIP_COMPARE_PLANS,
-  MEMBERSHIP_COMPARING_PLANS_BUTTONS,
-  US_MEMBERSHIP_PLANS,
-} from "../utils/membershipConstants";
+import { Collapse, Title } from "~/components/design-system";
+import { MEMBERSHIP_COMPARE_PLANS } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
+import { useCheckoutIndexViewModel } from "~/routes/checkout/useCheckoutIndexViewModel";
+import { MembershipComparingPlanTable } from "../MembershipComparingPlanTable";
 
-type MembershipComparingPlansSectionProps = {
-  locale: Locales;
-};
-
-export const MembershipComparingPlansSection = ({
-  locale,
-}: MembershipComparingPlansSectionProps) => {
+export const MembershipComparingPlansSection = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const isCanadaLocale = locale === "ca";
+  const { plans } = useCheckoutIndexViewModel();
+
+  if (!plans.length) return null;
 
   return (
-    <div className="w-full">
+    <div className="hidden w-full md:block">
       <Collapse
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         title={<Title level="h3">Compare plans</Title>}
+        padding="large"
       >
         <MembershipComparingPlanTable
-          actions={getActionButtons()}
-          columns={getMembershipTitles()}
+          plans={plans}
           rows={MEMBERSHIP_COMPARE_PLANS}
         />
       </Collapse>
     </div>
   );
-
-  function getMembershipTitles() {
-    return isCanadaLocale ? CA_MEMBERSHIP_PLANS : US_MEMBERSHIP_PLANS;
-  }
-
-  function getActionButtons() {
-    return isCanadaLocale
-      ? MEMBERSHIP_COMPARING_PLANS_BUTTONS.slice(1)
-      : MEMBERSHIP_COMPARING_PLANS_BUTTONS;
-  }
 };

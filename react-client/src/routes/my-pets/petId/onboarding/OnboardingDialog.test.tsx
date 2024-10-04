@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { getByTextContent } from "~/util/testingFunctions";
 import * as petProfileLayoutViewModel from "../usePetProfileLayoutViewModel";
 import { OnboardingDialog } from "./OnboardingDialog";
@@ -18,7 +18,6 @@ jest.mock("../usePetProfileLayoutViewModel", () => ({
 }));
 
 const DEFAULT_NAME = "Romã";
-
 const { getByRole, getByText, getByAltText } = screen;
 
 describe("OnboardingDialog", () => {
@@ -39,25 +38,34 @@ describe("OnboardingDialog", () => {
     localStorage.clear();
   });
 
-  it("should render Dialog with initial content", () => {
-    getRenderer();
+  it("should render Dialog with initial content", async () => {
+    localStorage.setItem("step", "1");
+    await getRenderer({
+      name: DEFAULT_NAME,
+      documentationStatus: "none",
+    });
 
-    expect(
-      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[1].title })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[1].title })
+      ).toBeInTheDocument()
+    );
     expect(getByText(ONBOARDING_STEPS_TEXTS[1].message)).toBeInTheDocument();
     expect(getByAltText(ONBOARDING_STEPS_TEXTS[1].imgAlt)).toBeInTheDocument();
   });
 
-  it("should render step 2 content", () => {
+  it("should render step 2 content", async () => {
     localStorage.setItem("step", "2");
-    getRenderer();
+    await getRenderer({
+      name: DEFAULT_NAME,
+      documentationStatus: "none",
+    });
 
-    expect(
-      getByRole("heading", {
-        name: ONBOARDING_STEPS_TEXTS[2].title,
-      })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[2].title })
+      ).toBeInTheDocument()
+    );
     expect(getByText(ONBOARDING_STEPS_TEXTS[2].message)).toBeInTheDocument();
     expect(
       getByAltText(ONBOARDING_STEPS_TEXTS[2].imgAlt24Pet)
@@ -67,30 +75,37 @@ describe("OnboardingDialog", () => {
     ).toBeInTheDocument();
   });
 
-  it("should render step 3 content", () => {
+  it("should render step 3 content", async () => {
     localStorage.setItem("step", "3");
-    getRenderer();
+    await getRenderer({
+      name: DEFAULT_NAME,
+      documentationStatus: "none",
+    });
 
-    expect(
-      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[3].title })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[3].title })
+      ).toBeInTheDocument()
+    );
     expect(getByText(ONBOARDING_STEPS_TEXTS[3].message)).toBeInTheDocument();
     expect(getByAltText(ONBOARDING_STEPS_TEXTS[3].imgAlt)).toBeInTheDocument();
   });
 
-  it("should render step 4 content for none documentationStatus by default", () => {
+  it("should render step 4 content for none documentationStatus by default", async () => {
     localStorage.setItem("step", "4");
-    useMockedDocumentationStatus("none");
-    getRenderer();
+    await getRenderer({
+      name: DEFAULT_NAME,
+      documentationStatus: "none",
+    });
 
     const [string1, string2] =
       ONBOARDING_STEPS_TEXTS[4].none.message(DEFAULT_NAME);
 
-    expect(
-      getByRole("heading", {
-        name: ONBOARDING_STEPS_TEXTS[4].none.title,
-      })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[4].none.title })
+      ).toBeInTheDocument()
+    );
     expect(getByTextContent(`${string1}${string2}`)).toBeInTheDocument();
     expect(
       getByAltText(ONBOARDING_STEPS_TEXTS[4].none.imgAlt)
@@ -120,24 +135,32 @@ describe("OnboardingDialog", () => {
     ],
   ])(
     "should render step 4 dynamic content for documentationStatus %s",
-    (documentationStatus, title, description) => {
+    async (documentationStatus, title, description) => {
       localStorage.setItem("step", "4");
-      useMockedDocumentationStatus(documentationStatus);
-      getRenderer();
+      await getRenderer({
+        name: DEFAULT_NAME,
+        documentationStatus,
+      });
 
-      expect(getByRole("heading", { name: title })).toBeInTheDocument();
+      await waitFor(() =>
+        expect(getByRole("heading", { name: title })).toBeInTheDocument()
+      );
       expect(getByText(description)).toBeInTheDocument();
     }
   );
 
-  it("should render step 5 content with status none message", () => {
+  it("should render step 5 content with status none message", async () => {
     localStorage.setItem("step", "5");
-    useMockedDocumentationStatus("none");
-    getRenderer();
+    await getRenderer({
+      name: DEFAULT_NAME,
+      documentationStatus: "none",
+    });
 
-    expect(
-      getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
+      ).toBeInTheDocument()
+    );
     expect(
       getByText(ONBOARDING_STEPS_TEXTS[5].message("none"))
     ).toBeInTheDocument();
@@ -148,14 +171,18 @@ describe("OnboardingDialog", () => {
 
   it.each(["sent", "approved", "inProgress", "failed"])(
     "should render step 5 content with message for other status",
-    (expected) => {
+    async (expected) => {
       localStorage.setItem("step", "5");
-      useMockedDocumentationStatus(expected);
-      getRenderer();
+      await getRenderer({
+        name: DEFAULT_NAME,
+        documentationStatus: expected,
+      });
 
-      expect(
-        getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
-      ).toBeInTheDocument();
+      await waitFor(() =>
+        expect(
+          getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
+        ).toBeInTheDocument()
+      );
       expect(
         getByText(ONBOARDING_STEPS_TEXTS[5].message(expected))
       ).toBeInTheDocument();
@@ -172,17 +199,21 @@ describe("OnboardingDialog", () => {
   );
 });
 
-function getRenderer() {
-  return render(<OnboardingDialog />);
-}
+type PetInfo = {
+  name: string;
+  documentationStatus: string;
+};
 
-function useMockedDocumentationStatus(status: string) {
+async function getRenderer(petInfo: PetInfo) {
   (petProfileLayoutViewModel.usePetProfileContext as jest.Mock).mockReturnValue(
     {
-      petInfo: {
-        name: DEFAULT_NAME,
-        documentationStatus: status,
-      },
+      petInfo: Promise.resolve(petInfo),
+      petServiceStatus: null,
+      documentTypes: [],
     }
   );
+  render(<OnboardingDialog />);
+  await waitFor(() => {
+    expect(getByRole("heading")).toBeInTheDocument();
+  });
 }

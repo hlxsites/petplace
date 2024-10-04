@@ -16,6 +16,7 @@ import {
   MissingStatus,
   PetModel,
 } from "~/domain/models/pet/PetModel";
+import { parseDate } from "~/util/dateUtils";
 import { classNames } from "~/util/styleUtil";
 
 const columns: TableColumn[] = [
@@ -49,6 +50,7 @@ export const PetLostUpdatesSection = ({
       onOpenChange={setIsOpen}
       title={<Title level="h4">Lost Pets Status Update</Title>}
       isLocked={isMissing}
+      padding="large"
     >
       {renderDescriptionMessage()}
       <Table
@@ -86,8 +88,8 @@ export const PetLostUpdatesSection = ({
   }: LostPetUpdate) {
     return {
       data: {
-        date: new Date(date).toLocaleString(),
-        update: new Date(update).toLocaleString(),
+        date: parseDate(date),
+        update: parseDate(update),
         status: convertStatus(status),
         id,
         note: note || "-",

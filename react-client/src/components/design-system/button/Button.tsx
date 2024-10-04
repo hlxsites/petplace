@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { classNames } from "~/util/styleUtil";
 import { Icon, IconProps } from "../icon/Icon";
+import { Loading } from "../loading/Loading";
 import useButtonBase, { type UseButtonBase } from "./useButtonBase";
 
 type ButtonIcon = IconProps["display"];
@@ -29,7 +30,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const { className: baseClassName } = useButtonBase({
-      disabled: rest.disabled,
+      disabled: isLoading || rest.disabled,
       fullWidth,
       isLoading,
       variant,
@@ -43,7 +44,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...rest}
       >
         {iconLeft && renderIcon({ display: iconLeft, className: "mr-small" })}
-        {children}
+        {isLoading ? <Loading size={16} /> : children}
         {iconRight && renderIcon({ display: iconRight, className: "ml-small" })}
       </button>
     );

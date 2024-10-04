@@ -1,21 +1,33 @@
+import { MembershipInfo } from "~/domain/checkout/CheckoutModels";
 import { classNames } from "~/util/styleUtil";
-import { Button, Card, Icon, Text, Title } from "../design-system";
-import { MembershipInfoCard } from "./utils/MembershipTypes";
+import { Card, Icon, LinkButton, Text, Title } from "../design-system";
+import { useMembershipProductsLink } from "./hooks/useMembershipProductsLink";
+
+type MembershipCardProps = Omit<
+  MembershipInfo,
+  "comparePlansButtonLabel" | "hardCodedPlanId"
+>;
 
 export const MembershipCard = ({
   buttonLabel,
-  cardProps,
+  id,
   infoFooter,
+  isHighlighted,
   membershipDescriptionOffers,
   price,
   priceInfo,
   subTitle,
   title,
-}: MembershipInfoCard) => {
-  const buttonVariant = cardProps ? "primary" : "secondary";
+}: MembershipCardProps) => {
+  const buttonLink = useMembershipProductsLink(id);
+
+  const buttonVariant = isHighlighted ? "primary" : "secondary";
 
   return (
-    <Card {...cardProps} role="region">
+    <Card
+      backgroundColor={isHighlighted ? "bg-purple-100" : undefined}
+      role="region"
+    >
       <div className="grid gap-large p-large">
         <div className="grid gap-xsmall">
           <Title level="h4">{title}</Title>
@@ -29,29 +41,40 @@ export const MembershipCard = ({
           </Text>
           <Text color="text-color-supporting">{priceInfo}</Text>
         </div>
-        <Button variant={buttonVariant}>{buttonLabel}</Button>
+        <LinkButton variant={buttonVariant} to={buttonLink} fullWidth>
+          {buttonLabel}
+        </LinkButton>
         <div
           className={classNames("grid gap-small", {
             "pb-xxlarge": !infoFooter,
           })}
           role="list"
         >
-          {membershipDescriptionOffers?.map(({ icon, offerLabel }, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-xsmall"
-              role="listitem"
-            >
-              <Icon
-                className={icon ? "text-red-300" : "text-green-300"}
-                display={icon ?? "checkCircle"}
-                size={16}
-              />
-              <Text size="14" textDecoration={icon ? "line-through" : "none"}>
-                {offerLabel}
-              </Text>
-            </div>
-          ))}
+          {membershipDescriptionOffers?.map(
+            ({ offerLabel, isNotAvailableOnPlan }, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-xsmall"
+                role="listitem"
+              >
+                <Icon
+                  className={
+                    isNotAvailableOnPlan ? "text-red-300" : "text-green-300"
+                  }
+                  display={isNotAvailableOnPlan ? "clearCircle" : "checkCircle"}
+                  size={16}
+                />
+                <Text
+                  size="14"
+                  textDecoration={
+                    isNotAvailableOnPlan ? "line-through" : "none"
+                  }
+                >
+                  {offerLabel}
+                </Text>
+              </div>
+            )
+          )}
         </div>
         {infoFooter && <Text>{infoFooter}</Text>}
       </div>

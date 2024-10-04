@@ -39,9 +39,16 @@ function getRenderer({
   isOpen = true,
   onClose = jest.fn(),
   title = "Test title",
+  trigger = undefined,
 }: Partial<ComponentProps<typeof Drawer>> = {}) {
   return render(
-    <Drawer id={id} isOpen={isOpen} onClose={onClose} title={title}>
+    <Drawer
+      id={id}
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      trigger={trigger}
+    >
       {children}
     </Drawer>
   );

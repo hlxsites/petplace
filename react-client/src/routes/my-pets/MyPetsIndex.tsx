@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LostOrFoundDialog } from "~/components/Pet/LostOrFoundDialog";
 import { PetCard } from "~/components/Pet/PetCard";
+import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import {
   Button,
   ButtonProps,
@@ -27,26 +28,28 @@ export const MyPetsIndex = () => {
           className: "md:hidden w-full",
         })}
       />
-
-      <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-large sm:grid-cols-2 lg:grid-cols-3">
-        {pets.map(({ isProtected, ...rest }) => (
-          <Link className="no-underline" key={rest.id} to={rest.id}>
-            <PetCard
-              displayProtectedBadge={{ isProtected: !!isProtected }}
-              key={rest.name}
-              shadow="elevation-1"
-              variant="md"
-              {...rest}
-            >
-              <div className="text-2xl p-base font-bold leading-none text-black">
-                <Title level="h3">{rest.name}</Title>
-              </div>
-            </PetCard>
-          </Link>
-        ))}
-      </div>
-
-      {openReportLostOrFoundModal()}
+      <SuspenseAwait minHeight={336} resolve={pets}>
+        {(pets) => (
+          <div className="grid w-full grid-flow-row grid-cols-1 justify-center gap-large sm:grid-cols-2 lg:grid-cols-3">
+            {pets.map(({ id, isProtected, name, img }) => (
+              <Link className="no-underline" key={id} to={id}>
+                <PetCard
+                  displayProtectedBadge={{ isProtected: !!isProtected }}
+                  key={name}
+                  name={name}
+                  shadow="elevation-1"
+                  variant="md"
+                  img={img}
+                >
+                  <div className="text-2xl p-base font-bold leading-none text-black">
+                    <Title level="h3">{name}</Title>
+                  </div>
+                </PetCard>
+              </Link>
+            ))}
+          </div>
+        )}
+      </SuspenseAwait>
     </Layout>
   );
 
@@ -54,14 +57,20 @@ export const MyPetsIndex = () => {
     props: Pick<ButtonProps, "className">
   ) {
     return (
-      <Button
-        variant="secondary"
-        iconLeft="warningTriangle"
-        onClick={onHandleReportLostOrFound}
-        {...props}
-      >
-        Report a lost or found pet
-      </Button>
+      <LostOrFoundDialog
+        isOpen={isLostOrFoundDialogOpen}
+        onClose={() => setIsLostOrFoundDialogOpen(false)}
+        trigger={
+          <Button
+            variant="secondary"
+            iconLeft="warningTriangle"
+            onClick={onHandleReportLostOrFound}
+            {...props}
+          >
+            Report a lost or found pet
+          </Button>
+        }
+      />
     );
   }
 
@@ -86,14 +95,5 @@ export const MyPetsIndex = () => {
 
   function onHandleReportLostOrFound() {
     setIsLostOrFoundDialogOpen(true);
-  }
-
-  function openReportLostOrFoundModal() {
-    return (
-      <LostOrFoundDialog
-        isOpen={isLostOrFoundDialogOpen}
-        onClose={() => setIsLostOrFoundDialogOpen(false)}
-      />
-    );
   }
 };

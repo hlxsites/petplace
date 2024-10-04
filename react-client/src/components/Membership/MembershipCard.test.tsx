@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { MembershipCard } from "./MembershipCard";
 import { ComponentProps } from "react";
+import { MemoryRouter } from "react-router-dom";
+import { MembershipCard } from "./MembershipCard";
 
 const { getByRole, getByText, queryByText } = screen;
 
 describe("MembershipCard", () => {
-  it.each(["My title", "Awesome title"])(
+  it.each(["Lifetime", "Lifetime Plus", "Annual Protection"])(
     "should render the given title",
     (title) => {
       getRenderer({ title });
@@ -42,31 +43,32 @@ describe("MembershipCard", () => {
     }
   );
 
-  it("should render button with primary variant class when cardProps is provided", () => {
+  it("should render button with primary variant class when isHighlighted=true", () => {
     getRenderer({
-      cardProps: {
-        backgroundColor: "bg-black",
-      },
+      isHighlighted: true,
     });
     expect(getByRole("button", { name: "Test button label" })).toHaveClass(
       "bg-orange-300-contrast"
     );
   });
 
-  it("should render the button with secondary variant class when no cardProps is provided", () => {
-    getRenderer();
-    expect(getByRole("button", { name: "Test button label" })).toHaveClass(
-      "bg-white"
-    );
-  });
+  it.each([false, undefined])(
+    "should render the button with secondary variant class when isHighlighted=%s",
+    (isHighlighted) => {
+      getRenderer({
+        isHighlighted,
+      });
+      expect(getByRole("button", { name: "Test button label" })).toHaveClass(
+        "bg-white"
+      );
+    }
+  );
 
-  it("should pass the given card props for style purpose", () => {
+  it("should render background card with specific class='bg-purple-100' to highlight the membership card when isHighlighted=true", () => {
     getRenderer({
-      cardProps: {
-        backgroundColor: "bg-black",
-      },
+      isHighlighted: true,
     });
-    expect(getByRole("region")).toHaveClass("bg-black");
+    expect(getByRole("region")).toHaveClass("bg-purple-100");
   });
 
   it.each(["footer information", "awesome information"])(
@@ -92,26 +94,23 @@ describe("MembershipCard", () => {
     ).toBeInTheDocument();
   });
 
-  it("should render the given membership offer with it's own icon when provided", () => {
+  it("should render the given membership offer with clearCircle icon when isNotAvailableOnPlan is set to true", () => {
     getRenderer({
       membershipDescriptionOffers: [
-        {
-          icon: "add",
-          offerLabel: "Another amazing offer",
-        },
+        { offerLabel: "Amazing offer", isNotAvailableOnPlan: true },
       ],
     });
-    expect(getByText("Another amazing offer")).toBeInTheDocument();
+    expect(getByText("Amazing offer")).toBeInTheDocument();
     expect(
-      document.querySelector("svg[data-file-name='SvgAddIcon']")
+      document.querySelector("svg[data-file-name='SvgClearCircleIcon']")
     ).toBeInTheDocument();
   });
 
-  it("should render text on membership offer with decoration when icon is provided", () => {
+  it("should render text on membership offer with decoration when isNotAvailableOnPlan=true", () => {
     getRenderer({
       membershipDescriptionOffers: [
         {
-          icon: "cpuChip",
+          isNotAvailableOnPlan: true,
           offerLabel: "My custom offer",
         },
       ],
@@ -119,34 +118,44 @@ describe("MembershipCard", () => {
     expect(getByText("My custom offer")).toHaveClass("line-through");
   });
 
-  it("should NOT render text on membership offer with decoration when no icon is provided", () => {
-    getRenderer({
-      membershipDescriptionOffers: [
-        {
-          offerLabel: "Test custom offer",
-        },
-      ],
-    });
-    expect(getByText("Test custom offer")).not.toHaveClass("line-through");
-  });
+  it.each([false, undefined])(
+    "should NOT render text on membership offer with decoration when isNotAvailableOnPlan=false",
+    (isNotAvailableOnPlan) => {
+      getRenderer({
+        membershipDescriptionOffers: [
+          {
+            isNotAvailableOnPlan,
+            offerLabel: "Test custom offer",
+          },
+        ],
+      });
+      expect(getByText("Test custom offer")).not.toHaveClass("line-through");
+    }
+  );
 });
 
 function getRenderer({
   buttonLabel = "Test button label",
+  id = "LPMMembership",
   price = "Test price",
   priceInfo = "Test info price label",
   subTitle = "Test info sub title",
-  title = "Test title",
+  title = "Lifetime",
+  type = "LPPM",
   ...props
 }: Partial<ComponentProps<typeof MembershipCard>> = {}) {
   return render(
-    <MembershipCard
-      buttonLabel={buttonLabel}
-      price={price}
-      priceInfo={priceInfo}
-      subTitle={subTitle}
-      title={title}
-      {...props}
-    />
+    <MemoryRouter>
+      <MembershipCard
+        buttonLabel={buttonLabel}
+        id={id}
+        price={price}
+        priceInfo={priceInfo}
+        subTitle={subTitle}
+        title={title}
+        type={type}
+        {...props}
+      />
+    </MemoryRouter>
   );
 }

@@ -1,18 +1,28 @@
-import { mockCartItems } from "~/mocks/mockCartItems";
+import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 import { Drawer, Text } from "../design-system";
 import { CartFooter } from "./CartFooter";
 import { CartHeader } from "./CartHeader";
 import { CartItemCard } from "./CartItemCard";
-import { useCartCheckout } from "./hooks/useCartCheckout";
-import { CartDrawerProps } from "./utils/cartTypes";
 
-export const CartDrawer = ({ items = [], ...props }: CartDrawerProps) => {
-  const { cartItems, subtotal, onUpdateQuantity } = useCartCheckout(
-    mockCartItems ?? items
-  );
+export const CartDrawer = () => {
+  const {
+    cartItems,
+    isOpenCart,
+    onContinueToCheckoutPayment,
+    onCloseCart,
+    onUpdateQuantity,
+    subtotal,
+  } = useCheckoutProductsViewModelContext();
 
   return (
-    <Drawer id="cart-drawer" ariaLabel="Cart Drawer" {...props}>
+    <Drawer
+      id="cart-drawer"
+      ariaLabel="Cart Drawer"
+      isOpen={isOpenCart}
+      onClose={onCloseCart}
+      trigger={undefined}
+      width={400}
+    >
       <div className="flex flex-col gap-large">
         <CartHeader />
         <div className="flex flex-col gap-small">
@@ -29,7 +39,7 @@ export const CartDrawer = ({ items = [], ...props }: CartDrawerProps) => {
           ))}
         </div>
 
-        <CartFooter subtotal={subtotal} />
+        <CartFooter onClick={onContinueToCheckoutPayment} subtotal={subtotal} />
       </div>
     </Drawer>
   );

@@ -1,5 +1,5 @@
 import FocusTrap from "focus-trap-react";
-import { useEffect } from "react";
+import { cloneElement, isValidElement, ReactElement, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
 import { classNames, resetBodyStyles } from "~/util/styleUtil";
@@ -24,6 +24,7 @@ export const DialogBase = ({
   onClose,
   padding = "p-xlarge",
   title,
+  trigger,
   width,
 }: DialogBaseProps) => {
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
@@ -51,7 +52,18 @@ export const DialogBase = ({
     };
   }, [isClosing, isOpen, onCloseWithAnimation]);
 
-  if (!isOpen) return null;
+  const renderTrigger = (() => {
+    if (!trigger || !isValidElement(trigger)) return null;
+
+    // @ts-expect-error - We know that trigger is a valid element
+    return cloneElement<ReactElement<HTMLButtonElement>>(trigger, {
+      "aria-controls": id,
+      "aria-haspopup": "dialog",
+      "aria-expanded": isOpen,
+    });
+  })();
+
+  if (!isOpen) return renderTrigger;
 
   const hasTitle = !!title;
   const titleId = hasTitle ? `${id}-title` : undefined;
@@ -124,11 +136,18 @@ export const DialogBase = ({
             />
           )}
 
-          <div className="h-90vh grid overflow-auto">{renderChildren}</div>
+          <div className="grid h-fit overflow-auto">
+            {renderChildren}
+          </div>
         </div>
       </FocusTrap>
     </>
   );
 
-  return createPortal(portalContent, document.body);
+  return (
+    <>
+      {renderTrigger}
+      {createPortal(portalContent, document.body)}
+    </>
+  );
 };

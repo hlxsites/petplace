@@ -1,3 +1,5 @@
+import { Locale } from "../misc/Locale";
+
 export type MissingStatus = "missing" | "found";
 export type DocumentationStatus =
   | "none"
@@ -6,9 +8,8 @@ export type DocumentationStatus =
   | "failed"
   | "inProgress";
 
-
 type ContactDone = {
-  date: number;
+  date: string;
   email?: string;
   methodContact?: string;
   phoneNumber?: string;
@@ -23,29 +24,47 @@ export type FoundedByInfo = {
 };
 
 export type LostPetUpdate = {
-  date: number;
-  update: number;
+  date: string;
+  update: string;
   status: MissingStatus;
   id: number;
   note?: string;
   foundedBy?: FoundedByInfo | null;
 };
 
-export type PetModel = {
-  age?: string | undefined;
-  breed?: string;
-  dateOfBirth?: string;
+export type PetCommon = {
   id: string;
   img?: string;
   isProtected?: boolean;
   microchip?: string | null;
-  mixedBreed?: string;
   name: string;
-  onboardCompleted?: boolean;
-  sex?: string;
-  spayedNeutered?: boolean;
-  species?: string;
-  documentationStatus?: DocumentationStatus;
-  missingStatus?: MissingStatus;
-  lostPetHistory?: LostPetUpdate[];
 };
+
+export type PetProduct = {
+  id: string;
+  isExpired: boolean;
+  name: string;
+};
+
+export type PetServices = {
+  locale?: Locale | null;
+  membershipStatus?: string;
+  products?: PetProduct[];
+};
+
+export type PetModel = PetCommon &
+  PetServices & {
+    age?: string | undefined;
+    breed?: string;
+    dateOfBirth?: string;
+    documentationStatus?: DocumentationStatus;
+    lostPetHistory?: LostPetUpdate[];
+    missingStatus?: MissingStatus;
+    mixedBreed?: boolean;
+    onboardCompleted?: boolean;
+    policyInsurance?: string[];
+    sex?: string;
+    sourceType?: "MyPetHealth" | "PetPoint";
+    spayedNeutered?: boolean;
+    species?: string;
+  };

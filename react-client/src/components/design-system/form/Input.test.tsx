@@ -104,7 +104,18 @@ function getRenderer({
   id = "input",
   label = "The Input",
   required = true,
+  onChange = jest.fn(),
+  value = "",
   ...rest
 }: Partial<InputProps> = {}) {
-  return render(<Input id={id} label={label} required={required} {...rest} />);
+  return render(
+    <Input
+      id={id}
+      label={label}
+      onChange={onChange}
+      required={required}
+      value={value}
+      {...rest}
+    />
+  );
 }

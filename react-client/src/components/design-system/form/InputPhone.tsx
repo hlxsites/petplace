@@ -3,6 +3,7 @@ import { classNames } from "~/util/styleUtil";
 import { InputAccessibilityWrapper } from "./InputAccessibilityWrapper";
 import Select from "./Select";
 import {
+  AVAILABLE_PHONE_TYPES,
   type ElementInputPhone,
   type InputWithoutFormBuilderProps,
 } from "./types/formTypes";
@@ -15,6 +16,8 @@ type InputPhoneProps = Omit<
   defaultType?: string;
   disabledType?: boolean;
   hideType?: boolean;
+  onChange: (newValue: string) => void;
+  value: string;
 };
 
 export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
@@ -23,6 +26,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
       autoFocus,
       defaultType,
       disabledType,
+      disallowedTypes,
       hideType,
       id,
       onChange,
@@ -32,13 +36,11 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
     },
     ref
   ) => {
-    const [value, type] = combinedValue?.split("|") || [];
+    const [value, type] = combinedValue?.split("|") || ["", ""];
 
     const selectedType = (() => {
       if (type) return type;
-
       if (defaultType) return defaultType;
-
       return "";
     })();
 
@@ -49,8 +51,8 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
       newType?: string;
       newValue?: string;
     }) => {
-      const newCombinedValue = `${newValue || value}|${newType || selectedType}`;
-      onChange?.(newCombinedValue);
+      const newCombinedValue = `${newValue ?? value}|${newType ?? selectedType}`;
+      onChange(newCombinedValue);
     };
 
     const handleOnChangeType = (newType: string) => {
@@ -61,6 +63,14 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
       handleOnChange({ newValue: target.value });
     };
 
+    const phoneTypeOptions: string[] = (() => {
+      const options = [...AVAILABLE_PHONE_TYPES];
+      if (disallowedTypes) {
+        return options.filter((t) => !disallowedTypes.includes(t));
+      }
+      return options;
+    })();
+
     return (
       <InputAccessibilityWrapper id={id} {...rest}>
         {({ hasError, inputProps }) => {
@@ -68,14 +78,15 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
             <div className="flex gap-medium">
               {!hideType && (
                 <Select
+                  autoComplete="off"
                   disabled={disabledType}
                   hideLabel
                   id="phone-category"
                   label="Contact category"
                   placeholder="Choose"
-                  options={["Home", "Mobile", "Work"]}
+                  options={phoneTypeOptions}
                   onChange={handleOnChangeType}
-                  value={type || defaultType}
+                  value={selectedType}
                 />
               )}
               <div

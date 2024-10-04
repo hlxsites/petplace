@@ -11,7 +11,9 @@ import { FORM_STYLES } from "./utils/formStyleUtils";
 type InputProps = InputWithoutFormBuilderProps<ElementInputText> & {
   iconLeft?: IconProps;
   iconRight?: IconProps;
+  onChange: (newValue: string) => void;
   type?: "text" | "email" | "password" | "number";
+  value: string;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -22,6 +24,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       iconRight,
       id,
       onChange,
+      maxLength,
+      minLength,
       placeholder,
       type = "text",
       value,
@@ -50,12 +54,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 autoFocus={autoFocus}
                 className={classNames(
                   FORM_STYLES.input,
-                  "border-none text-base",
+                  "text-base border-none",
                   {
                     [FORM_STYLES.inputError]: hasError,
                   }
                 )}
                 id={id}
+                maxLength={maxLength}
+                minLength={minLength}
                 name={id}
                 onChange={handleOnChange}
                 placeholder={placeholder}

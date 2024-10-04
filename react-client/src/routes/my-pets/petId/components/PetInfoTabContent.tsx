@@ -1,5 +1,7 @@
 import { Text, TextSpan } from "~/components/design-system";
 import { PetModel } from "~/domain/models/pet/PetModel";
+import { parseDate } from "~/util/dateUtils";
+import { getAnimalSex } from "~/util/getAnimalDetails";
 
 export type GetPetInfoTabProps = Omit<
   PetModel,
@@ -26,7 +28,7 @@ export function PetInfoTabContent({
     },
     {
       label: "Sex",
-      value: sex,
+      value: getAnimalSex(sex),
     },
     {
       label: "Breed",
@@ -34,20 +36,15 @@ export function PetInfoTabContent({
     },
     {
       label: "DOB",
-      value: dateOfBirth,
+      value: parseDate(dateOfBirth),
     },
     {
       label: "Mixed breed",
-      value: mixedBreed,
+      value: renderBooleanField(mixedBreed),
     },
     {
       label: "Spayed/Neutered",
-      value:
-        typeof spayedNeutered === "boolean"
-          ? spayedNeutered
-            ? "Yes"
-            : "No"
-          : "",
+      value: renderBooleanField(spayedNeutered),
     },
   ];
 
@@ -65,4 +62,8 @@ export function PetInfoTabContent({
       ))}
     </div>
   );
+}
+
+function renderBooleanField(field?: boolean) {
+  return typeof field === "boolean" ? (field ? "Yes" : "No") : "";
 }

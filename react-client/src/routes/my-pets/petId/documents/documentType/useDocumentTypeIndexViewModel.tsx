@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
-import { LoaderFunction, useLoaderData, useNavigate } from "react-router-dom";
-import { PetRecord } from "~/components/Pet/types/PetRecordsTypes";
-import { getPetDocuments } from "~/mocks/MockRestApiServer";
-import { LoaderData } from "~/types/LoaderData";
+import { useNavigate, useRevalidator } from "react-router-dom";
+import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
+
+import { useEffect, useRef, useState } from "react";
+import {
+  isValidPetDocumentId,
+  PetDocument,
+} from "~/domain/models/pet/PetDocument";
+import { PetDocumentsUseCase } from "~/domain/useCases/pet/PetDocumentsUseCase";
+import { logError } from "~/infrastructure/telemetry/logUtils";
+import { requireAuthToken } from "~/util/authUtil";
+import { downloadFile, DownloadFileProps } from "~/util/downloadFunctions";
 import { invariant, invariantResponse } from "~/util/invariant";
 import { usePetProfileContext } from "../../usePetProfileLayoutViewModel";
-import { isValidPetDocumentId } from "../petDocumentTypeUtils";
 
 export const loader = (({ params }) => {
   const { petId, documentType } = params;
@@ -15,36 +21,130 @@ export const loader = (({ params }) => {
     "Invalid document type"
   );
 
-  return { id: documentType, petId };
+  const authToken = requireAuthToken();
+  const useCase = new PetDocumentsUseCase(authToken);
+
+  return defer({
+    id: documentType,
+    documents: useCase.query(petId, documentType),
+    downloadPetDocument: useCase.fetchDocumentBlob,
+    deletePetDocument: useCase.deleteDocument,
+    petId,
+    uploadDocument: useCase.uploadDocument,
+  });
 }) satisfies LoaderFunction;
 
 export const useDocumentTypeIndexViewModel = () => {
-  const { id, petId } = useLoaderData() as LoaderData<typeof loader>;
-  const { documentTypes } = usePetProfileContext();
   const navigate = useNavigate();
-  const [documents, setDocuments] = useState<PetRecord[]>([]);
+  const {
+    deletePetDocument,
+    documents,
+    downloadPetDocument,
+    id,
+    petId,
+    uploadDocument,
+  } = useLoaderData<typeof loader>();
+  const { documentTypes, petInfo: petInfoPromise } = usePetProfileContext();
+
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [uploadingNamesList, setUploadingNamesList] = useState<string[]>([]);
+
+  const revalidator = useRevalidator();
 
   const documentType = documentTypes.find((dt) => dt.id === id);
-  // Since the loader gave us a valid document type id, we can safely assume it's not undefined
   invariant(documentType, "Document type must be found here");
 
+  const isMounted = useRef(true);
   useEffect(() => {
-    setDocuments(getPetDocuments({ petId, type: id }));
-  }, [petId, id, setDocuments]);
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   const onClose = () => {
     navigate("..");
   };
 
-  const onDelete = (recordId: string) => {
-    // TODO: Implement real delete action when backend is ready
-    setDocuments((prev) => prev.filter((doc) => doc.id !== recordId));
+  const onDelete = (documentId: PetDocument) => {
+    return async () => {
+      await deletePetDocument(documentId["id"]);
+      revalidator.revalidate();
+    };
+  };
+
+  const onDownload = ({ id, fileName, fileType }: PetDocument) => {
+    return async () => {
+      try {
+        setDownloadError(null);
+
+        const blob = await downloadPetDocument(id);
+        if (blob instanceof Blob) {
+          const downloadProps: DownloadFileProps = {
+            blob,
+            fileName,
+            fileType,
+          };
+          downloadFile(downloadProps);
+        } else {
+          logError("Downloaded content is not a Blob");
+        }
+      } catch (error) {
+        logError("Error downloading document:", error);
+        if (isMounted.current) {
+          setDownloadError(
+            error instanceof Error
+              ? error.message
+              : "Unknown error occurred during download"
+          );
+        }
+      }
+    };
+  };
+
+  const clearDownloadError = () => {
+    setDownloadError(null);
+  };
+
+  const handleFileUpload = async (file: File, microchip?: string) => {
+    const fileName = file.name;
+    setUploadingNamesList((prev) => [...prev, fileName]);
+
+    await uploadDocument({
+      file,
+      microchip,
+      petId,
+      type: id,
+    });
+    revalidator.revalidate();
+
+    setUploadingNamesList((prev) => prev.filter((name) => name !== fileName));
+  };
+
+  const onUpload = (files: File[]) => {
+    return async () => {
+      const petInfo = await petInfoPromise;
+
+      const promisesList: Promise<void>[] = [];
+
+      files.forEach((file) => {
+        const microchip = petInfo?.microchip || undefined;
+        promisesList.push(handleFileUpload(file, microchip));
+      });
+
+      await Promise.allSettled(promisesList);
+      revalidator.revalidate();
+    };
   };
 
   return {
+    clearDownloadError,
     documents,
     documentType,
+    downloadError,
     onClose,
     onDelete,
+    onDownload,
+    onUpload,
+    uploadingNamesList,
   };
 };

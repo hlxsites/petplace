@@ -4,8 +4,32 @@ import {
   ElementInputSingleSelect,
   ElementInputText,
   ElementSection,
+  ElementUnion,
   FormSchema,
 } from "~/components/design-system";
+
+export const baseAccountDetailsIds = {
+  email: "email-address",
+  name: "first-name",
+  phone: "phone-default",
+  secondaryPhone: "phone-secondary",
+  surname: "last-name",
+};
+
+export const accountAddressIds = {
+  country: "country",
+  state: "state",
+  address1: "address-1",
+  address2: "address-2",
+  city: "city",
+  intersection: "intersection-address",
+  zipCode: "zip-code",
+};
+
+export const accountAgreementsIds = {
+  contactConsent: "contact-availability",
+  informationConsent: "pet-health-services",
+};
 
 const requiredPhoneInput: ElementInputPhone = {
   defaultType: "Home",
@@ -13,10 +37,11 @@ const requiredPhoneInput: ElementInputPhone = {
   description:
     "You’re not required to own a ‘Home’ phone, however if it’s left blank, our system will auto-populate this field with your mobile or work number. This will not impact our ability to contact you if your pet is lost and found",
   elementType: "input",
-  id: "phone-default",
+  errorMessage: "Please fill out your phone number before continuing.",
+  id: baseAccountDetailsIds.phone,
   label: "Phone Number",
   requiredCondition: {
-    inputId: "phone-secondary",
+    inputId: baseAccountDetailsIds.secondaryPhone,
     type: "null",
     value: "",
   },
@@ -25,38 +50,62 @@ const requiredPhoneInput: ElementInputPhone = {
 
 const optionalPhoneInput: ElementInputPhone = {
   elementType: "input",
-  id: "phone-secondary",
+  disallowedTypes: ["Home"],
+  id: baseAccountDetailsIds.secondaryPhone,
   label: "Phone Number 2",
+  requiredCondition: {
+    operator: "and",
+    conditions: [
+      {
+        inputId: baseAccountDetailsIds.phone,
+        type: "null",
+        value: "",
+      },
+      {
+        inputId: baseAccountDetailsIds.secondaryPhone,
+        type: "exists",
+        value: "",
+      },
+    ],
+  },
   type: "phone",
 };
 
 const firstNameInput: ElementInputText = {
   elementType: "input",
-  id: "first-name",
+  errorMessage: "First Name is a required field",
+  id: baseAccountDetailsIds.name,
   label: "First Name",
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
 
 const lastNameInput: ElementInputText = {
   elementType: "input",
-  id: "last-name",
+  errorMessage: "Last Name is a required field",
+  id: baseAccountDetailsIds.surname,
   label: "Last Name",
+  maxLength: 100,
+  minLength: 2,
   requiredCondition: true,
   type: "text",
 };
 
 const emailInput: ElementInputText = {
   elementType: "input",
-  id: "email-address",
+  errorMessage: "Email is a required field",
+  id: baseAccountDetailsIds.email,
   label: "Email Address",
   requiredCondition: true,
+  disabledCondition: true,
   type: "email",
 };
 
 const countryInput: ElementInputSingleSelect = {
   elementType: "input",
-  id: "country",
+  id: accountAddressIds.country,
   label: "Country",
   options: "{{countryOptions|string[]}}",
   optionsType: "dynamic",
@@ -66,18 +115,23 @@ const countryInput: ElementInputSingleSelect = {
 
 const stateInput: ElementInputSingleSelect = {
   elementType: "input",
-  id: "state",
+  id: accountAddressIds.state,
   label: "Province/State",
   options: "{{stateOptions|string[]}}",
   optionsType: "dynamic",
   requiredCondition: true,
+  disabledCondition: {
+    inputId: "country",
+    type: "null",
+    value: "",
+  },
   placeholder: "State",
   type: "select",
 };
 
 const addressLineOneInput: ElementInputText = {
   elementType: "input",
-  id: "address-1",
+  id: accountAddressIds.address1,
   label: "Address Line 1",
   requiredCondition: true,
   type: "text",
@@ -85,24 +139,15 @@ const addressLineOneInput: ElementInputText = {
 
 const addressLineTwoInput: ElementInputText = {
   elementType: "input",
-  id: "address-2",
+  id: accountAddressIds.address2,
   label: "Address Line 2",
-  requiredCondition: true,
   type: "text",
 };
 
 const cityInput: ElementInputText = {
   elementType: "input",
-  id: "city",
+  id: accountAddressIds.city,
   label: "City",
-  requiredCondition: true,
-  type: "text",
-};
-
-const intersectionInput: ElementInputText = {
-  elementType: "input",
-  id: "intersection-address",
-  label: "Intersection/Address",
   requiredCondition: true,
   type: "text",
 };
@@ -110,8 +155,9 @@ const intersectionInput: ElementInputText = {
 const zipCodeInput: ElementInputText = {
   className: "w-1/2",
   elementType: "input",
-  id: "zip-code",
+  id: accountAddressIds.zipCode,
   label: "Zip Code",
+  maxLength: 15,
   requiredCondition: true,
   type: "text",
 };
@@ -119,13 +165,13 @@ const zipCodeInput: ElementInputText = {
 const submitButton: ElementButton = {
   className: "!mt-xxlarge w-full",
   elementType: "button",
-  disabledCondition: true,
+  enabledCondition: true,
   id: "submit-button",
   label: "Save changes",
   type: "submit",
 };
 
-const contactInfoSection: ElementSection = {
+const contactInfoSection = (children: ElementUnion[]): ElementSection => ({
   elementType: "section",
   title: {
     label: "Contact Info",
@@ -135,12 +181,12 @@ const contactInfoSection: ElementSection = {
   children: [
     {
       elementType: "row",
-      children: [requiredPhoneInput, optionalPhoneInput],
+      children,
     },
   ],
-};
+});
 
-const userDetailsSection: ElementSection = {
+const userDetailsSection = (children: ElementUnion[]): ElementSection => ({
   elementType: "section",
   title: {
     label: "User details",
@@ -151,39 +197,18 @@ const userDetailsSection: ElementSection = {
       elementType: "row",
       children: [firstNameInput, lastNameInput],
     },
-    emailInput,
+    {
+      elementType: "row",
+      children,
+    },
   ],
-};
-
-const addressSection: ElementSection = {
-  elementType: "section",
-  title: {
-    label: "Address",
-    level: "h3",
-  },
-  children: [
-    {
-      elementType: "row",
-      children: [countryInput, stateInput],
-    },
-    {
-      elementType: "row",
-      children: [addressLineOneInput, addressLineTwoInput],
-    },
-    {
-      elementType: "row",
-      children: [cityInput, intersectionInput],
-    },
-    zipCodeInput,
-  ],
-};
+});
 
 export const internalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
   children: [
-    contactInfoSection,
-    userDetailsSection,
-    addressSection,
+    contactInfoSection([{ ...requiredPhoneInput, className: "w-1/2" }]),
+    userDetailsSection([emailInput, { ...zipCodeInput, className: "" }]),
     submitButton,
   ],
   version: 0,
@@ -192,9 +217,29 @@ export const internalAccountDetailsFormSchema: FormSchema = {
 export const externalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
   children: [
-    contactInfoSection,
-    userDetailsSection,
-    addressSection,
+    contactInfoSection([requiredPhoneInput, optionalPhoneInput]),
+    userDetailsSection([emailInput]),
+    {
+      elementType: "section",
+      title: {
+        label: "Address",
+        level: "h3",
+      },
+      children: [
+        {
+          elementType: "row",
+          children: [countryInput, stateInput],
+        },
+        {
+          elementType: "row",
+          children: [addressLineOneInput, addressLineTwoInput],
+        },
+        {
+          elementType: "row",
+          children: [cityInput, zipCodeInput],
+        },
+      ],
+    },
     {
       elementType: "section",
       description: {
@@ -210,23 +255,21 @@ export const externalAccountDetailsFormSchema: FormSchema = {
         {
           elementType: "input",
           hideLabel: true,
-          id: "pet-health-services",
-          label: "Consent to terms of service",
+          id: accountAgreementsIds.informationConsent,
+          label: "Consent to release information",
           options: [
             `With your 24Pet® microchip, Pethealth Services (USA) Inc. ("PSU") may offer you free lost pet services, as well as exclusive offers, promotions and the latest information from 24Pet regarding microchip services. Additionally, PSU's affiliates, including PTZ Insurance Agency, Ltd., PetPartners, Inc. and Independence Pet Group, Inc., and their subsidiaries (collectively, "PTZ") may offer you promotions and the latest information regarding pet insurance services and products. PSU may also have or benefit from contractual arrangements with third parties ("Partners") who may offer you related services, products, offers and/or promotions.By giving consent, you agree that PSU, its Partners and/or PTZ may contact you for the purposes identified herein via commercial electronic messages at the e-mail address you provided, via mailer at the mailing address you provided and/or via automatic telephone dialing systems, pre-recorded/automated messages and/or text messages at the telephone number(s) you provided. Data and message rates may apply. This consent is not a condition of the purchase of any goods or services. You understand that if you choose not to provide your consent, you will not receive the above-mentioned communications or free lost pet services, which includes being contacted with information in the event that your pet goes missing.You may withdraw your consent at any time.`,
           ],
-          requiredCondition: true,
           type: "checkboxGroup",
         },
         {
           elementType: "input",
           hideLabel: true,
-          id: "contact-availability",
+          id: accountAgreementsIds.contactConsent,
           label: "Consent to release information",
           options: [
             `In the event that your pet is missing and is found by a Good Samaritan, you give your consent for us to release your contact information to the finder. This may include your name, phone number, address and email address.`,
           ],
-          requiredCondition: true,
           type: "checkboxGroup",
         },
       ],
@@ -234,6 +277,16 @@ export const externalAccountDetailsFormSchema: FormSchema = {
     submitButton,
   ],
   version: 0,
+};
+
+export const emergencyContactIds = {
+  contactId: "contact-id",
+  repeaterId: "emergency-contact",
+  email: "contact-email-address",
+  name: "contact-first-name",
+  phone: "contact-contact-phone",
+  surname: "contact-last-name",
+  stagingId: "contact-staging-id",
 };
 
 export const emergencyContactFormSchema: FormSchema = {
@@ -248,7 +301,7 @@ export const emergencyContactFormSchema: FormSchema = {
       children: [
         {
           elementType: "repeater",
-          id: "emergency-contact",
+          id: emergencyContactIds.repeaterId,
           maxRepeat: 2,
           minRepeat: 1,
           labels: {
@@ -268,11 +321,11 @@ export const emergencyContactFormSchema: FormSchema = {
                   children: [
                     {
                       ...firstNameInput,
-                      id: "contact-first-name",
+                      id: emergencyContactIds.name,
                     },
                     {
                       ...lastNameInput,
-                      id: "contact-last-name",
+                      id: emergencyContactIds.surname,
                     },
                   ],
                 },
@@ -281,17 +334,29 @@ export const emergencyContactFormSchema: FormSchema = {
                   children: [
                     {
                       ...emailInput,
-                      id: "contact-email-address",
+                      id: emergencyContactIds.email,
+                      disabledCondition: false,
                     },
                     {
                       elementType: "input",
+                      errorMessage: "Phone Number is a required field",
                       hideType: true,
-                      id: "contact-phone",
+                      id: emergencyContactIds.phone,
                       label: "Phone Number",
                       requiredCondition: true,
                       type: "phone",
                     },
                   ],
+                },
+                {
+                  elementType: "input",
+                  id: emergencyContactIds.contactId,
+                  type: "hidden",
+                },
+                {
+                  elementType: "input",
+                  id: emergencyContactIds.stagingId,
+                  type: "hidden",
                 },
               ],
             },

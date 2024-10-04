@@ -1,16 +1,21 @@
-import { DetailedCartItem } from "~/mocks/MockRestApiServer";
+import { DetailedCartItem } from "~/domain/models/products/ProductModel";
 import { Button, Text, TextSpan, Title } from "../design-system";
 import { CartItemImages } from "./CartItemImages";
 import { CheckoutProductColorSize } from "./CheckoutProductColorSize";
+import { getProductPrice } from "~/domain/util/checkoutProductUtil";
 
 type CheckoutItemDetailedContentProps = {
-  item: DetailedCartItem;
   onAddToCart?: () => void;
+  onChange: ({ color, size }: { color: string; size: string }) => void;
+  product: DetailedCartItem;
+  selectedColorSize: string;
 };
 
 export const CheckoutItemDetailedContent = ({
-  item,
   onAddToCart,
+  onChange,
+  product,
+  selectedColorSize,
 }: CheckoutItemDetailedContentProps) => {
   const {
     additionalInfo,
@@ -20,16 +25,19 @@ export const CheckoutItemDetailedContent = ({
     images,
     isAnnual,
     title,
-    price,
     privacyFeatures,
     sizing,
     tagFeatures,
-  } = item;
+  } = product;
+
+  const price = getProductPrice(product, selectedColorSize);
+
+  const [selectedColor, selectedSize] = selectedColorSize.split("|");
 
   return (
     <div className="flex flex-col gap-base">
       <Text fontWeight="bold">
-        <TextSpan size="24">{price}</TextSpan>
+        <TextSpan size="24">{`$${price}`}</TextSpan>
         {`${isAnnual ? "/year" : ""}`}
       </Text>
 
@@ -73,8 +81,11 @@ export const CheckoutItemDetailedContent = ({
       )}
       {availableColors && availableSizes && (
         <CheckoutProductColorSize
-          productColors={availableColors}
-          productSizes={availableSizes}
+          availableColors={availableColors}
+          availableSizes={availableSizes}
+          onChange={onChange}
+          selectedColor={selectedColor}
+          selectedSize={selectedSize}
         />
       )}
       <Button fullWidth onClick={onAddToCart} variant="tertiary">

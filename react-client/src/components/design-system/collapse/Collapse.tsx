@@ -11,16 +11,20 @@ type CollapseProps = {
   children: ReactNode;
   disabled?: boolean;
   isOpen: boolean;
-  onOpenChange: (isOpen: boolean) => void;
-  title: ReactNode;
   isLocked?: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  padding?: "medium" | "large" | "base" | "xlarge" | "xxlarge" | undefined;
+  triggerNoMargin?: boolean;
+  title: ReactNode;
 };
 
 export const Collapse = ({
   children,
   isOpen,
   isLocked,
+  padding,
   title,
+  triggerNoMargin,
   ...rest
 }: CollapseProps) => {
   const [measureRef, { height }] = useMeasure<HTMLDivElement>();
@@ -36,14 +40,16 @@ export const Collapse = ({
   });
 
   return (
-    <Card padding="large">
+    <Card padding={padding}>
       <Collapsible.Root {...rest} data-testid="collapse" open={isOpen}>
         {isLocked ? (
           <div>{title}</div>
         ) : (
           <Collapsible.Trigger
             className={classNames(
-              "flex w-full justify-between rounded-none bg-transparent p-0 text-black hover:bg-transparent focus:bg-transparent focus:outline-none active:bg-transparent"
+              "flex w-full justify-between rounded-none bg-transparent p-0 text-black hover:bg-transparent focus:bg-transparent focus:outline-none active:bg-transparent", {
+                "my-0": triggerNoMargin,
+              }
             )}
           >
             {title}

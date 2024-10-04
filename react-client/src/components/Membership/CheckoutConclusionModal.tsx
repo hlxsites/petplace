@@ -19,6 +19,7 @@ export const CheckoutConclusionModal = ({
       isOpen
       align="center"
       padding="p-0"
+      trigger={undefined}
     >
       <div className="flex flex-col items-center gap-xxlarge px-large py-xxlarge md:w-[708px] md:px-xxlarge">
         <Icon display="shieldGood" size={72} className="text-green-300" />
@@ -34,14 +35,6 @@ export const CheckoutConclusionModal = ({
         <div className="flex w-full flex-col gap-medium md:flex-row md:gap-small">
           <LinkButton fullWidth replace to={petProfilePath} variant="secondary">
             Back to pet profile
-          </LinkButton>
-          <LinkButton
-            fullWidth
-            replace
-            to={`${petProfilePath}?content=pet-watch`}
-            variant="primary"
-          >
-            See my benefits
           </LinkButton>
         </div>
       </div>

@@ -1,45 +1,114 @@
-import { Text } from "~/components/design-system";
+import { useState } from "react";
+import { ProductDescription } from "~/domain/models/products/ProductModel";
+import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
+
 import {
-  CheckoutProduct,
-  Colors,
-  Image,
-  Sizes,
-} from "~/mocks/MockRestApiServer";
+  getInitialProductColorSize,
+  getProductPrice,
+} from "~/domain/util/checkoutProductUtil";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
-import { CartItemImages } from "../CartItemImages";
-import { CheckoutProductCard } from "../CheckoutProductCard";
-import { CheckoutProductColorSize } from "../CheckoutProductColorSize";
 import { CheckoutItemDetailsDrawer } from "../CheckoutItemDetailsDrawer";
-import { useCartItemsDetails } from "../hooks/useCartItemDetails";
+import { CheckoutProductCard } from "../CheckoutProductCard";
 
-type CheckoutProductsSectionProps = {
-  products: CheckoutProduct[];
-};
+export const CheckoutProductsSection = () => {
+  const {
+    products,
+    onCloseMoreInfo,
+    onUpdateCartProduct,
+    onOpenMoreInfo,
+    selectedProduct,
+  } = useCheckoutProductsViewModelContext();
 
-export const CheckoutProductsSection = ({
-  products,
-}: CheckoutProductsSectionProps) => {
-  const { item, openItemDetails, goBack } = useCartItemsDetails();
+  const initialProductOptions = (products || []).reduce(
+    (acc, product) => {
+      const initialColorSizeState = getInitialProductColorSize(product);
+      acc[product.id] = initialColorSizeState;
+      return acc;
+    },
+    {} as Record<string, string>
+  );
+
+  const [productOptions, setProductOptions] = useState<Record<string, string>>(
+    initialProductOptions
+  );
+
   const gridColumns = getGridColumns(products.length);
+
+  const handleAddToCart = (product: ProductDescription) => () => {
+    const selectedColorSize = productOptions[product.id];
+
+    // This is a fragile hacky way to get the product id and price
+    const id = product.availableOptions[productOptions[product.id]]?.id;
+    const price = getProductPrice(product, selectedColorSize);
+    if (!id || !price) {
+      logError("Failed to load the product price to insert into the cart", {
+        id,
+        price,
+      });
+      return;
+    }
+
+    const [color, size] = selectedColorSize.split("|");
+    const description = (() => {
+      if (color && size) return `${color} - ${size}`;
+      return "";
+    })();
+
+    onUpdateCartProduct({
+      description,
+      id,
+      quantity: 1,
+      type: product.type,
+      title: product.title,
+      price,
+    });
+  };
+
+  const handleAddToCartFromMoreInfoDrawer =
+    (product: ProductDescription) => () => {
+      handleAddToCart(product)();
+      onCloseMoreInfo();
+    };
+
+  const handleMoreInfo = (product: ProductDescription) => () => {
+    onOpenMoreInfo(product.id);
+  };
+
+  const handleOnChangeProductOptions = (productId: string) => {
+    return ({ color, size }: { color: string; size: string }) => {
+      setProductOptions((prev) => ({
+        ...prev,
+        [productId]: `${color}|${size}`,
+      }));
+    };
+  };
 
   return (
     <>
       <div className={classNames("grid gap-large", gridColumns)}>
-        {products.map((product) => (
-          <CheckoutProductCard
-            {...product}
-            key={product.id}
-            onClick={() => openItemDetails(product.id)}
-            product={renderProductImage(product.title, product.images)}
-            productSpecifications={renderProductSpecifications(
-              product.description,
-              product.availableColors,
-              product.availableSizes
-            )}
-          />
-        ))}
+        {products?.map((product, index) => {
+          return (
+            <CheckoutProductCard
+              key={`${product.id}-${index}` || `product-${index}`}
+              onChange={handleOnChangeProductOptions(product.id)}
+              onClickAddToCart={handleAddToCart(product)}
+              onClickMoreInfo={handleMoreInfo(product)}
+              product={product}
+              selectedColorSize={productOptions[product.id]}
+            />
+          );
+        })}
       </div>
-      {item && <CheckoutItemDetailsDrawer item={item} onClose={goBack} />}
+      {selectedProduct && (
+        <CheckoutItemDetailsDrawer
+          onAddToCart={handleAddToCartFromMoreInfoDrawer(selectedProduct)}
+          onClose={onCloseMoreInfo}
+          onChange={handleOnChangeProductOptions(selectedProduct.id)}
+          product={selectedProduct}
+          selectedColorSize={productOptions[selectedProduct.id]}
+        />
+      )}
     </>
   );
 };
@@ -48,27 +117,4 @@ function getGridColumns(productsLength: number) {
   if (productsLength > 2) return "lg:grid-cols-3";
   if (productsLength >= 1) return "lg:grid-cols-2";
   return "grid-cols-1";
-}
-
-function renderProductImage(title: string, images?: Image[] | null) {
-  return images && images.length ? (
-    <CartItemImages images={images} name={title} />
-  ) : null;
-}
-
-function renderProductSpecifications(
-  description?: string,
-  availableColors?: Colors[],
-  availableSizes?: Sizes[]
-) {
-  if (description) return <Text>{description}</Text>;
-  if (availableColors && availableSizes) {
-    return (
-      <CheckoutProductColorSize
-        productColors={availableColors}
-        productSizes={availableSizes}
-      />
-    );
-  }
-  return null;
 }

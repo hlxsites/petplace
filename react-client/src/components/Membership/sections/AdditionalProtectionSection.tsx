@@ -1,13 +1,12 @@
 import { Text, Title } from "~/components/design-system";
 import { ButtonWithBadge } from "~/components/design-system/button/ButtonWithBadge";
+import { useCheckoutProductsViewModelContext } from "~/routes/checkout/products/useCheckoutProductsViewModel";
 
-type AdditionalProtectionSectionProps = {
-  onClick?: () => void;
-};
+export const AdditionalProtectionSection = () => {
+  const { cartItems, onOpenCart } = useCheckoutProductsViewModelContext();
 
-export const AdditionalProtectionSection = ({
-  onClick,
-}: AdditionalProtectionSectionProps) => {
+  const cartItemsLength = cartItems.length;
+
   return (
     <div className="relative flex w-full justify-between">
       <div>
@@ -19,12 +18,12 @@ export const AdditionalProtectionSection = ({
           Comprehensive Pet Safety.
         </Text>
       </div>
-      <div className="absolute bottom-[160px] right-10 lg:bottom-0">
+      <div className="absolute bottom-[160px] right-0 z-20 md:static lg:bottom-0">
         <ButtonWithBadge
           iconProps={{ className: "text-orange-300-contrast" }}
           iconLeft="shoppingCart"
-          badge={2}
-          onClick={onClick}
+          badge={cartItemsLength}
+          onClick={onOpenCart}
         >
           Shopping cart
         </ButtonWithBadge>

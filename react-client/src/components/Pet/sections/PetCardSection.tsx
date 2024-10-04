@@ -4,11 +4,7 @@ import { PetCard } from "../PetCard";
 
 export const PetCardSection = ({ pet }: { pet: PetModel }) => {
   return (
-    <PetCard
-      classNames={{ root: "lg:flex" }}
-      variant="lg"
-      {...pet}
-    >
+    <PetCard classNames={{ root: "lg:flex" }} name={pet.name} img={pet.img} variant="lg">
       <PetCardInfo {...pet} name={pet.name} />
     </PetCard>
   );

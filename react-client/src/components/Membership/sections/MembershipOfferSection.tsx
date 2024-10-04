@@ -1,30 +1,36 @@
+import { useState } from "react";
+import { Fragment } from "react/jsx-runtime";
 import { Carousel } from "~/components/design-system";
-import { useWindowWidth } from "~/hooks/useWindowWidth";
+import { useCheckoutIndexViewModel } from "~/routes/checkout/useCheckoutIndexViewModel";
 import { MembershipCard } from "../MembershipCard";
-import { MEMBERSHIP_CARD_OPTIONS } from "../utils/membershipConstants";
+import { PlanBenefitsList } from "../PlanBenefitsList";
 
 export const MembershipOfferSection = () => {
-  const shouldRenderContentInCarousel = useWindowWidth() < 768;
+  const [isOpen, setIsOpen] = useState(false);
+  const { plans, renderMobileVersion } = useCheckoutIndexViewModel();
 
-  const membershipCards = renderMembershipCards();
+  const membershipCards = plans.map(({ hardCodedPlanId, title, ...props }) => (
+    <Fragment key={title}>
+      <MembershipCard title={title} {...props} />
+      <PlanBenefitsList
+        hardCodedPlanId={hardCodedPlanId}
+        isOpen={isOpen}
+        title={title}
+        setIsOpen={setIsOpen}
+      />
+    </Fragment>
+  ));
+
+  if (renderMobileVersion) {
+    return <Carousel ariaLabel="Membership carousel" items={membershipCards} />;
+  }
 
   return (
-    <>
-      <div
-        className="hidden w-full grid-flow-row grid-cols-3 justify-center gap-xxlarge md:grid"
-        role="region"
-      >
-        {membershipCards}
-      </div>
-      {shouldRenderContentInCarousel && (
-        <Carousel ariaLabel="Membership carousel" items={membershipCards} />
-      )}
-    </>
+    <div
+      className="flex w-full justify-center gap-xxlarge [&>*]:flex-1"
+      role="region"
+    >
+      {membershipCards}
+    </div>
   );
-
-  function renderMembershipCards() {
-    return MEMBERSHIP_CARD_OPTIONS.map(({ ...props }) => (
-      <MembershipCard key={props.title} {...props} />
-    ));
-  }
 };

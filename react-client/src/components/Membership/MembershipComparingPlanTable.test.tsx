@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
-import { MembershipPlans, TableActions } from "./types/MembershipTypes";
 import { ComponentProps } from "react";
-import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
+import { MembershipComparingPlanTable } from "./MembershipComparingPlanTable";
 
 const { getAllByRole, getByText } = screen;
 
@@ -11,8 +11,8 @@ describe("MembershipComparingPlanTable", () => {
     getRenderer();
 
     // Verify columns are rendered
-    COLUMNS.forEach((column) => {
-      expect(getByText(column)).toBeInTheDocument();
+    PLANS.forEach(({ title }) => {
+      expect(getByText(title)).toBeInTheDocument();
     });
 
     // Verify rows are rendered
@@ -35,57 +35,53 @@ describe("MembershipComparingPlanTable", () => {
     expect(secondRow.querySelectorAll(".text-red-300").length).toBe(2);
   });
 
-  it("should render action buttons and handles click events", async () => {
-    const onClick = jest.fn();
-    getRenderer({ onClick });
-
-    for (const { label } of ACTIONS) {
-      const button = getByText(label);
-      expect(button).toBeInTheDocument();
-      expect(onClick).not.toHaveBeenCalled();
-
-      await userEvent.click(button);
-      expect(onClick).toHaveBeenCalledTimes(1);
-      onClick.mockClear();
-    }
-  });
+  it.todo("should render correct button link");
 });
 
-function getRenderer({
-  actions = ACTIONS,
-  columns = COLUMNS,
-  onClick,
-  rows = ROWS,
-}: Partial<ComponentProps<typeof MembershipComparingPlanTable>> = {}) {
+// Test helpers
+type Props = ComponentProps<typeof MembershipComparingPlanTable>;
+function getRenderer({ plans = PLANS, rows = ROWS }: Partial<Props> = {}) {
   return render(
-    <MembershipComparingPlanTable
-      actions={actions}
-      columns={columns}
-      onClick={onClick}
-      rows={rows}
-    />
+    <MemoryRouter>
+      <MembershipComparingPlanTable plans={plans} rows={rows} />
+    </MemoryRouter>
   );
 }
 
 // Mock data
-const ACTIONS: TableActions[] = [
-  { label: "Action 1", variant: "secondary" },
-  { label: "Action 2" },
+const PLANS: Props["plans"] = [
+  {
+    hardCodedPlanId: "AnnualMembership",
+    comparePlansButtonLabel: "Action 1",
+    isHighlighted: false,
+    title: "Test 1",
+  },
+  {
+    hardCodedPlanId: "LPMMembership",
+    comparePlansButtonLabel: "Action 2",
+    isHighlighted: true,
+    title: "Test 2",
+  },
+  {
+    hardCodedPlanId: "LPMPlusMembership",
+    comparePlansButtonLabel: "Action 3",
+    isHighlighted: false,
+    title: "Test 3",
+  },
 ];
-const COLUMNS: MembershipPlans[] = [
-  "Annual Protection",
-  "Lifetime",
-  "Lifetime Plus",
-];
+
 const ROWS = [
   {
     label: "Label 1",
     title: "Title 1",
-    availableColumns: ["Lifetime", "Lifetime Plus"] as MembershipPlans[],
+    availableColumns: [
+      "LPMMembership",
+      "LPMPlusMembership",
+    ] satisfies MembershipPlanId[],
   },
   {
     label: "Label 2",
     title: "Title 2",
-    availableColumns: ["Annual Protection"] as MembershipPlans[],
+    availableColumns: ["AnnualMembership"] satisfies MembershipPlanId[],
   },
 ];

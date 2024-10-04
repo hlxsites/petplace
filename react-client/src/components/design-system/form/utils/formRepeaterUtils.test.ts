@@ -4,12 +4,14 @@ import {
   textWithRepeaterMetadata,
 } from "./formRepeaterUtils";
 
+const DEFAULT_ID = "repeater-id";
+
 describe("textWithRepeaterMetadata", () => {
   it.each([2, 10])(
     "should replace '{{index}}' with the %i plus one",
     (index) => {
       const text = "Item {{index}}";
-      const metadata: RepeaterMetadata = { index };
+      const metadata: RepeaterMetadata = { index, repeaterId: DEFAULT_ID };
       const result = textWithRepeaterMetadata(text, metadata);
       expect(result).toBe(`Item ${index + 1}`);
     }
@@ -29,7 +31,7 @@ describe("idWithRepeaterMetadata", () => {
     "should append '_repeater_' and the index %i to the id",
     (index) => {
       const id = "input";
-      const metadata: RepeaterMetadata = { index };
+      const metadata: RepeaterMetadata = { index, repeaterId: DEFAULT_ID };
       const result = idWithRepeaterMetadata(id, metadata);
       expect(result).toBe(`input_repeater_${index}`);
     }

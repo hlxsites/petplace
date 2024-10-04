@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, ReactNode } from "react";
+import { ComponentProps, CSSProperties, ReactElement, ReactNode } from "react";
 import { IconProps } from "../icon/Icon";
 import { Title } from "../text/Title";
 
@@ -24,6 +24,8 @@ export type DialogTitleProps = {
     }
 );
 
+export type DialogTrigger = ReactElement | undefined;
+
 export type DialogBaseProps = DialogIconProps &
   DialogTitleProps & {
     align?: "center" | "right";
@@ -39,6 +41,7 @@ export type DialogBaseProps = DialogIconProps &
     isOpen: boolean;
     onClose?: () => void;
     padding?: "p-0" | "p-large" | "p-xlarge";
+    trigger: DialogTrigger;
     width?: CSSProperties["width"];
   };
 

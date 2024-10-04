@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
+import { DialogTrigger } from "../types/DialogBaseTypes";
 import { Dialog } from "./Dialog";
 
 type ConfirmDeletionDialogProps = {
@@ -8,6 +9,7 @@ type ConfirmDeletionDialogProps = {
   message?: ReactNode | string;
   onCancel: () => void;
   onConfirm: () => void;
+  trigger: DialogTrigger;
 };
 
 export const ConfirmDeletionDialog = ({
@@ -15,6 +17,7 @@ export const ConfirmDeletionDialog = ({
   message,
   onCancel,
   onConfirm,
+  ...rest
 }: ConfirmDeletionDialogProps) => {
   const messageElement = (() => {
     if (message && typeof message !== "string") return message;
@@ -35,6 +38,7 @@ export const ConfirmDeletionDialog = ({
       onClose={onCancel}
       title="Are you sure you want to delete this file?"
       titleSize="32"
+      {...rest}
     >
       {({ onCloseWithAnimation }) => (
         <div className="grid gap-xlarge pt-xlarge">
