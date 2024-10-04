@@ -19,11 +19,14 @@ export const ASSET_IMAGES = {
   comfyDogAndCat: getImageUrl("onboarding-comfy-dog-and-cat.png"),
   dogAvatar: getImageUrl("dog-avatar.svg"),
   friendlyDogAndCat: getImageUrl("onboarding-friendly-dog-and-cat.png"),
+  insuranceImage: getImageUrl("insurance-image.png"),
   petServices: getImageUrl("onboarding-pet-services.png"),
   petServicesSm: getImageUrl("onboarding-pet-services-sm.png"),
   petPlaceLogo: getImageUrl("pet-place-logo.png"),
   petcoLogo: getImageUrl("petco-logo.png"),
   petWatchLogo: getImageUrl("24-pet-watch-logo.png"),
+  squareCatAvatar: getImageUrl("square-cat-placeholder.jpg"),
+  squareDogAvatar: getImageUrl("square-dog-placeholder.jpg"),
   roverLogo: getImageUrl("rover-logo.png"),
 };
 
