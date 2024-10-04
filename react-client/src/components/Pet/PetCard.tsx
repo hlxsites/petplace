@@ -28,7 +28,7 @@ export const PetCard = ({
   ...props
 }: PetCardProps) => {
   const avatar =
-    species === "cat" ? ASSET_IMAGES.catAvatar : ASSET_IMAGES.dogAvatar;
+    species === "cat" ? ASSET_IMAGES.squareCatAvatar : ASSET_IMAGES.squareDogAvatar;
   return (
     <Card {...props} radius="sm">
       <div className={classNames?.root}>
