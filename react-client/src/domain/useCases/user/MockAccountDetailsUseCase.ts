@@ -1,5 +1,5 @@
 import { AccountDetailsModel } from "~/domain/models/user/UserModels";
-import { AccountDetailsRepository } from "../../repository/user/AccountDetailsRepository";
+import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
 
 export class MockAccountDetailsCase implements AccountDetailsRepository {
   async query(): Promise<AccountDetailsModel> {

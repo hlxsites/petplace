@@ -1,4 +1,4 @@
-import { PetCommon } from "../../models/pet/PetModel";
+import { PetCommon } from "~/domain/models/pet/PetModel";
 
 export interface GetPetsListRepository {
   query(): Promise<PetCommon[]>;
