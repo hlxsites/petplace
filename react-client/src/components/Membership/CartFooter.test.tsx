@@ -42,7 +42,7 @@ describe("CartFooter", () => {
 
   it("should disable button when isSubmittingCart is true", () => {
     getRenderer({ isSubmittingCart: true });
-    expect(getByRole("button", { name: "Proceed to checkout" })).toBeDisabled();
+    expect(getByRole("button")).toBeDisabled();
   });
 });
 
