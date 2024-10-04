@@ -14,15 +14,15 @@ describe("PostRenewMembershipUseCase", () => {
     };
 
     it("should return true for a successful request", async () => {
-      const mockGet = jest.fn().mockResolvedValue({ statusCode: 200 });
-      const httpClient = { get: mockGet } as unknown as HttpClientRepository;
+      const mockPost = jest.fn().mockResolvedValue({ statusCode: 200 });
+      const httpClient = { post: mockPost } as unknown as HttpClientRepository;
 
       const sut = new PostRenewMembershipUseCase("fakeToken", httpClient);
 
       const result = await sut.post(validRenewMembershipModel);
 
       expect(result).toBe(true);
-      expect(mockGet).toHaveBeenCalledWith("api/Checkout/renew", {
+      expect(mockPost).toHaveBeenCalledWith("api/Checkout/renew", {
         body: JSON.stringify({
           AnimalId: "123",
           AutoRenew: true,
