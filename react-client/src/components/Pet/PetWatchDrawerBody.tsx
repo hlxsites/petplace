@@ -16,8 +16,13 @@ export const PetWatchDrawerBody = ({
   route,
   serviceStatus,
 }: PetWatchDrawerBodyProps) => {
-  const { petWatchBenefits, getContentDetails, handleContentChange } =
-    usePetProfileContext();
+  const {
+    closeConfirmRenewModal,
+    getContentDetails,
+    handleContentChange,
+    isConfirmRenewModalOpen,
+    petWatchBenefits,
+  } = usePetProfileContext();
 
   const upgradeMembershipButton = (() => {
     if (!route) return null;
@@ -47,7 +52,13 @@ export const PetWatchDrawerBody = ({
           const contentDetails = getContentDetails(petWatchAvailableBenefits);
 
           if (contentDetails) {
-            return <PetServiceDetailsCard {...contentDetails} />;
+            return (
+              <PetServiceDetailsCard
+                {...contentDetails}
+                isModalOpen={isConfirmRenewModalOpen}
+                onCloseModal={closeConfirmRenewModal}
+              />
+            );
           }
 
           return (

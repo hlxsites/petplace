@@ -23,7 +23,10 @@ import {
   PetWatchOptionBasedOnMembershipStatus_CA,
   PetWatchOptionBasedOnMembershipStatus_US,
 } from "./utils/petWatchConstants";
-import { ITEM_PARAM_KEY } from "~/util/searchParamsKeys";
+import {
+  CONFIRM_RENEW_PARAM_KEY,
+  ITEM_PARAM_KEY,
+} from "~/util/searchParamsKeys";
 import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetails";
 
 export const loader = (({ params }) => {
@@ -203,7 +206,13 @@ export const usePetProfileLayoutViewModel = () => {
       contentDetails = {
         ...contentDetails,
         primaryAction: {
-          label: "Renew service",
+          buttonLabel: "Renew service",
+          confirmButtonLabel: "Confirm Renew",
+          message: `Would you like to renew ${contentDetails.title} for another year? This ensures continued protection for your pet's.`,
+          title: "Confirm Renewal",
+          onClick: () => {
+            openModal("renew");
+          },
         },
       };
     }
@@ -231,10 +240,24 @@ export const usePetProfileLayoutViewModel = () => {
     setSearchParams(searchParams);
   };
 
+  const openModal = (modalType: string) => {
+    searchParams.set(CONFIRM_RENEW_PARAM_KEY, modalType);
+    setSearchParams(searchParams);
+  };
+
+  const closeConfirmRenewModal = () => {
+    searchParams.delete(CONFIRM_RENEW_PARAM_KEY);
+    setSearchParams(searchParams);
+  };
+
+  const isConfirmRenewModalOpen = searchParams.has(CONFIRM_RENEW_PARAM_KEY);
+
   return {
+    closeConfirmRenewModal,
     documentTypes,
     getContentDetails,
     handleContentChange,
+    isConfirmRenewModalOpen,
     onEditPet,
     onRemoveImage,
     onSelectImage,
