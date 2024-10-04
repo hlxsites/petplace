@@ -118,7 +118,7 @@ export const usePetEditViewModel = () => {
       [petInfoIds.sex]: values.sex === "1" ? "Male" : "Female",
       [petInfoIds.species]: values.species ?? "",
       [petInfoIds.microchip]: values.microchip ?? "",
-      [petInfoIds.insurance]: (values.policyInsurance as string[])[0] ?? "",
+      [petInfoIds.insurance]: values.policyInsurance?.[0] ?? "",
     };
 
     return formValues;
