@@ -2,6 +2,7 @@ import { z } from "zod";
 import { SpeciesModel } from "~/domain/models/lookup/LookupModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetSpeciesListRepository } from "~/domain/repository/lookup/GetSpeciesListRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
@@ -19,7 +20,7 @@ export class GetSpeciesListUseCase implements GetSpeciesListRepository {
 
   query = async (): Promise<SpeciesModel[]> => {
     // Use cache to avoid unnecessary requests
-    if (this.cache) return this.cache;
+    if (this.cache.length) return this.cache;
 
     try {
       const result = await this.httpClient.get("lookup/species");
@@ -34,7 +35,18 @@ export class GetSpeciesListUseCase implements GetSpeciesListRepository {
 }
 
 function convertToSpeciesList(data: unknown): SpeciesModel[] {
-  if (!data || !Array.isArray(data)) return [];
+  const transformedData = (() => {
+    // The server is returns this request as an string atm
+    if (typeof data === "string") {
+      try {
+        return JSON.parse(data) as unknown;
+      } catch (error) {
+        logError("convertToSpeciesList error", error);
+        return null;
+      }
+    }
+    return data;
+  })();
 
   const serverResponseSchema = z
     .array(
@@ -47,7 +59,7 @@ function convertToSpeciesList(data: unknown): SpeciesModel[] {
 
   const speciesList: SpeciesModel[] = [];
 
-  const speciesData = parseData(serverResponseSchema, data);
+  const speciesData = parseData(serverResponseSchema, transformedData);
   if (!speciesData) return [];
 
   speciesData.forEach(({ id, name }) => {
