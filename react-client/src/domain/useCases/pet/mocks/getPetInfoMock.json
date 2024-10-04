@@ -4,6 +4,7 @@
   "CountryCode": "US",
   "DateOfBirth": "2020-01-01T00:00:00",
   "Id": "A123",
+  "InsuranceAggregatorUrl": "www.insurance-url.co",
   "MembershipStatus": "Annual member",
   "Microchip": "123456789",
   "MixedBreed": false,
