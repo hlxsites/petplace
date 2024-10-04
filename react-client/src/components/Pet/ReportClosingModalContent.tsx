@@ -14,7 +14,7 @@ export const ReportClosingModalContent = ({
   onCloseReport,
   options,
 }: ReportClosingModalContentProps) => {
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState<string | undefined>();
   const [didSubmit, setDidSubmit] = useState(false);
   const { closeReportClosingModal } = useLostAndFoundReport();
 
@@ -27,9 +27,9 @@ export const ReportClosingModalContent = ({
         id="pet-status"
         label="Pet Status"
         required
-        options={options.map(({ reason }) => reason)}
+        options={options?.map(({ reason }) => reason) ?? []}
         onChange={handleChange}
-        value={reason}
+        value={reason ?? ""}
         errorMessage={
           didSubmit && !reason
             ? "Select a reason for closing the report"
@@ -53,7 +53,7 @@ export const ReportClosingModalContent = ({
 
   function handleSubmit() {
     setDidSubmit(true);
-    if (reason.length)
+    if (options?.length && reason?.length)
       onCloseReport(options.find((option) => reason === option.reason)!.id);
   }
 };

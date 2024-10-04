@@ -39,11 +39,11 @@ export const loader = (({ params }) => {
   const authToken = requireAuthToken();
   const getLostAndFoundNotificationsUseCase =
     getLostAndFoundNotificationsUseCaseFactory(authToken);
-  const getReportClosingReasonsUseCase =
-    getReportClosingReasonsUseCaseFactory(authToken);
   const breedList = getBreedListUseCaseFactory(authToken).query();
   const speciesList = getSpeciesListUseCaseFactory(authToken).query();
   const getPetInfoUseCase = petInfoUseCaseFactory(authToken);
+  const getReportClosingReasonsUseCase =
+    getReportClosingReasonsUseCaseFactory(authToken);
   const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
   const putReportClosingUseCase = putReportClosingUseCaseFactory(authToken);
   const petInfoPromise = getPetInfoUseCase.query(petId);
@@ -64,14 +64,15 @@ export const loader = (({ params }) => {
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
   const {
-    mutateReport,
+    breedList,
+    documentTypes,
     lostAndFoundNotifications,
     mutatePetImage,
-    updatePetInfo,
-    breedList,
-    speciesList,
-    documentTypes,
+    mutateReport,
     petInfo,
+    speciesList,
+    reportClosingReasons,
+    updatePetInfo,
     ...rest
   } = useLoaderData<typeof loader>();
   const [missingStatus, setMissingStatus] = useState<MissingStatus>("found");
@@ -218,16 +219,17 @@ export const usePetProfileLayoutViewModel = () => {
     closeReport,
     lostAndFoundNotifications,
     missingStatus,
+    documentTypes,
     onEditPet,
     onRemoveImage,
     onSelectImage,
-    documentTypes,
     getPetInfoFormData,
     onSubmitPetInfo,
     petInfo,
     petInfoVariables: getPetInfoVariables(),
     petWatchBenefits: getPetWatchAvailableBenefits(),
     petWatchInfo: getPetWatchInfo(),
+    reportClosingReasons,
   };
 
   function closeReport(petId: string, microchip: string, reason: number) {
