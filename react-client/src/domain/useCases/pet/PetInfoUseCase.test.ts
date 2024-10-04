@@ -50,9 +50,29 @@ describe("PetInfoUseCase", () => {
         products: [],
         sex: "Male",
         spayedNeutered: true,
-        sourceType: "PetPoint",
+        sourceType: "MyPetHealth",
         species: "Dog",
       });
+    });
+
+    it('should return pet info with "PetPoint" as sourceType', async () => {
+      const httpClient = new MockHttpClient({
+        data: { ...getPetInfoMock, Source: 1 },
+      });
+      const sut = makeSut(httpClient);
+      const result = await sut.query("petId");
+
+      expect(result?.sourceType).toEqual("PetPoint");
+    });
+
+    it('should return pet info with "MyPetHealth" as sourceType', async () => {
+      const httpClient = new MockHttpClient({
+        data: { ...getPetInfoMock, Source: 2 },
+      });
+      const sut = makeSut(httpClient);
+      const result = await sut.query("petId");
+
+      expect(result?.sourceType).toEqual("MyPetHealth");
     });
 
     it("should return null when the data doesn't match the schema", async () => {
