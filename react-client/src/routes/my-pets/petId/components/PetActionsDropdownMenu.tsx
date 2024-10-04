@@ -52,7 +52,7 @@ export const PetActionsDropdownMenu = ({
             onClick: viewModel.onEditPet,
           },
           {
-            icon: "trash",
+            icon: "exchange",
             label: "Transfer this pet",
             onClick: onTransferPet,
           },

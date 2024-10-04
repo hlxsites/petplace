@@ -28,6 +28,7 @@ import EditIcon from "./assets/edit-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import EllipseWithStrokeIcon from "./assets/ellipse-with-stroke-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
+import ExchangeIcon from "./assets/exchange-icon.svg";
 import EyeIcon from "./assets/eye-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
 import ForwardedCallIcon from "./assets/forwarded-call-icon.svg";
@@ -90,6 +91,7 @@ export const IconMap = Object.freeze({
   ellipseWithStroke: <EllipseWithStrokeIcon />,
   emptyEllipse: <EmptyEllipseIcon />,
   eye: <EyeIcon />,
+  exchange: <ExchangeIcon />,
   file: <FileIcon />,
   forwardedCall: <ForwardedCallIcon />,
   information: <InformationIcon />,
