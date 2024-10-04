@@ -1,8 +1,9 @@
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
 import { PetModel } from "~/domain/models/pet/PetModel";
 import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
 import {
@@ -28,12 +29,16 @@ export const loader = (({ params }) => {
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
     petInfo: petInfoPromise,
-    updatePetInfo: useCase.mutate,
   });
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
+  const navigate = useNavigate();
   const { documentTypes, petInfo } = useLoaderData<typeof loader>();
+
+  const onEditPet = () => {
+    navigate(AppRoutePaths.petEdit);
+  };
 
   const getSelectedPetAndLocale = async (petInfo: Promise<PetModel | null>) => {
     const selectedPet = await petInfo;
@@ -133,6 +138,7 @@ export const usePetProfileLayoutViewModel = () => {
 
   return {
     documentTypes,
+    onEditPet,
     petInfo,
     petWatchBenefits: getPetWatchAvailableBenefits(),
     petWatchInfo: getPetWatchInfo(),
