@@ -58,7 +58,7 @@ export const PetWatchDrawerBody = ({
                 {...contentDetails}
                 isModalOpen={isConfirmRenewModalOpen}
                 onCloseModal={closeConfirmRenewModal}
-                onConfirmModal={onRenewMembership}
+                onConfirmModal={handleOnConfirmRenew}
               />
             );
           }
@@ -101,5 +101,10 @@ export const PetWatchDrawerBody = ({
         {upgradeMembershipButton}
       </div>
     );
+  }
+
+  function handleOnConfirmRenew() {
+    onRenewMembership();
+    closeConfirmRenewModal();
   }
 };
