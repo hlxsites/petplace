@@ -10,7 +10,7 @@ import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { invariant } from "~/util/invariant";
 import { PetImageInput } from "../components/PetImageInput";
 import { editPetProfileFormSchema } from "../form/petForm";
-import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
+import { usePetEditViewModel } from "./usePetEditViewModel";
 
 export const PetEditIndex = () => {
   const {
@@ -20,7 +20,7 @@ export const PetEditIndex = () => {
     petInfoVariables,
     onRemoveImage,
     onSelectImage,
-  } = usePetProfileContext();
+  } = usePetEditViewModel();
 
   return <SuspenseAwait resolve={petInfo}>{renderMain}</SuspenseAwait>;
 

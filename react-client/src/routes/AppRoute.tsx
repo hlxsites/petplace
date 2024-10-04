@@ -7,6 +7,7 @@ import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
+import { loader as PetEditLoader } from "./my-pets/petId/edit/usePetEditViewModel";
 import { PetProfileIndex } from "./my-pets/petId/PetProfileIndex";
 import { loader as PetProfileLayoutLoader } from "./my-pets/petId/usePetProfileLayoutViewModel";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
@@ -135,9 +136,10 @@ const routes: PetPlaceRouteObject[] = [
                 ],
               },
               {
-                id: "petEdit",
-                path: AppRoutePaths.petEdit,
                 element: <PetEditIndex />,
+                id: "petEdit",
+                loader: PetEditLoader,
+                path: AppRoutePaths.petEdit,
               },
             ],
           },
