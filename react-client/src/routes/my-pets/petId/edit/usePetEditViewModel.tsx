@@ -30,18 +30,25 @@ export const loader = (({ params }) => {
 
   return defer({
     breedList,
+    mutatePetImage: postPetImageUseCase.mutate,
+    petId,
     petInfo: petInfoPromise,
     speciesList,
     updatePetInfo: useCase.mutate,
-    mutatePetImage: postPetImageUseCase.mutate,
   });
 }) satisfies LoaderFunction;
 
 export const usePetEditViewModel = () => {
   const navigate = useNavigate();
 
-  const { breedList, mutatePetImage, petInfo, speciesList, updatePetInfo } =
-    useLoaderData<typeof loader>();
+  const {
+    breedList,
+    mutatePetImage,
+    petId,
+    petInfo,
+    speciesList,
+    updatePetInfo,
+  } = useLoaderData<typeof loader>();
 
   const [petInfoVariables, setPetInfoVariables] =
     useState<PetInfoFormVariables>();
@@ -64,8 +71,7 @@ export const usePetEditViewModel = () => {
     // TODO: implement image deletion
   };
 
-  const onSelectImage = (petId: string, file: File) => {
-    console.log("onSelectImage", petId, file);
+  const onSelectImage = (file: File) => {
     void mutatePetImage({ petId, petImage: file });
   };
 
