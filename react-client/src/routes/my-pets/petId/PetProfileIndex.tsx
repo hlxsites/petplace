@@ -64,7 +64,7 @@ export const PetProfileIndex = () => {
         />
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
-          <AdvertisingSection />
+          <AdvertisingSection linkTo={pet.insuranceUrl} />
           <PetWatchSection route={checkoutPath} />
           {petInsuranceSectionElement}
           <SuspenseAwait resolve={lostAndFoundNotifications}>

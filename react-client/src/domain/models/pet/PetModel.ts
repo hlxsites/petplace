@@ -66,6 +66,7 @@ export type PetModel = PetCommon &
     breed?: string;
     dateOfBirth?: string;
     documentationStatus?: DocumentationStatus;
+    insuranceUrl?: string;
     lostPetHistory?: LostPetUpdate[];
     missingStatus?: MissingStatus;
     mixedBreed?: boolean;
