@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { CountryStateModel } from "~/domain/models/lookup/CountryStateModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { GetStatesRepository } from "~/domain/repository/lookup/GetStatesRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
-import { GetStatesRepository } from "../../repository/lookup/GetStatesRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 

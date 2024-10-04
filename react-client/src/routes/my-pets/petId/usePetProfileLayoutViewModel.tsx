@@ -3,8 +3,7 @@ import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
 import { PetModel } from "~/domain/models/pet/PetModel";
 import getReportClosingReasonsUseCaseFactory from "~/domain/useCases/lookup/getReportClosingReasonsUseCaseFactory";
-import getPetInfoUseCaseFactory from "~/domain/useCases/pet/getPetInfoUseCaseFactory";
-import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
+import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
@@ -25,39 +24,30 @@ export const loader = (({ params }) => {
   invariantResponse(petId, "Pet ID is required in this route");
 
   const authToken = requireAuthToken();
-  const getPetInfoUseCase = getPetInfoUseCaseFactory(authToken);
+  const useCase = petInfoUseCaseFactory(authToken);
+  const petInfoPromise = useCase.query(petId);
   const getReportClosingReasonsUseCase =
     getReportClosingReasonsUseCaseFactory(authToken);
-  const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
-  const petInfoPromise = getPetInfoUseCase.query(petId);
 
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
+    petId,
     petInfo: petInfoPromise,
-    mutatePetImage: postPetImageUseCase.mutate,
     reportClosingReasons: getReportClosingReasonsUseCase.query(),
   });
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
-  const { documentTypes, mutatePetImage, petInfo, reportClosingReasons } =
+  const { documentTypes, petId, petInfo, reportClosingReasons } =
     useLoaderData<typeof loader>();
-
-  function closeReport(petId: string, reasonId: number) {
-    console.log("🚀 ~ petId, reasonId", petId, reasonId);
-  }
 
   const onEditPet = () => {
     navigate(AppRoutePaths.petEdit);
   };
 
-  const onRemoveImage = () => {
-    // TODO: implement image deletion
-  };
-
-  const onSelectImage = (petId: string, file: File) => {
-    void mutatePetImage({ petId, petImage: file });
+  const closeReport = (reasonId: number) => {
+    console.log("🚀 ~ petId, reasonId", petId, reasonId);
   };
 
   const getSelectedPetAndLocale = async (petInfo: Promise<PetModel | null>) => {
@@ -160,8 +150,6 @@ export const usePetProfileLayoutViewModel = () => {
     closeReport,
     documentTypes,
     onEditPet,
-    onRemoveImage,
-    onSelectImage,
     petInfo,
     petWatchBenefits: getPetWatchAvailableBenefits(),
     petWatchInfo: getPetWatchInfo(),

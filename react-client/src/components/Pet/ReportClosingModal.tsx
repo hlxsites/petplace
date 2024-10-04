@@ -23,7 +23,7 @@ export const ReportClosingModal = ({ petId }: ReportClosingModalProps) => {
         <SuspenseAwait resolve={reportClosingReasons}>
           {(options) => (
             <ReportClosingModalContent
-              onCloseReport={handleCloseReport}
+              onCloseReport={closeReport}
               options={options}
               petId={petId}
             />
@@ -32,8 +32,4 @@ export const ReportClosingModal = ({ petId }: ReportClosingModalProps) => {
       </div>
     </Dialog>
   );
-
-  function handleCloseReport(reasonId: number) {
-    closeReport(petId, reasonId);
-  }
 };

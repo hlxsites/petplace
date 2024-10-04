@@ -1,4 +1,4 @@
-import { AccountNotificationPreferencesModel } from "../../models/user/UserModels";
+import { AccountNotificationPreferencesModel } from "~/domain/models/user/UserModels";
 
 export interface AccountNotificationPreferencesRepository {
   query(): Promise<AccountNotificationPreferencesModel | null>;

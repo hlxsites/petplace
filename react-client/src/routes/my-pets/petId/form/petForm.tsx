@@ -1,8 +1,22 @@
 import { FormSchema, InputsUnion, Text } from "~/components/design-system";
 
+export const petInfoIds = {
+  age: "age",
+  breed: "breed",
+  dateOfBirth: "dob",
+  insurance: "insurance",
+  microchip: "microchip",
+  mixedBreed: "mixedBreed",
+  name: "name",
+  neuteredSpayed: "neuteredSpayed",
+  petId: "id",
+  sex: "sex",
+  species: "species",
+};
+
 const petNameInput: InputsUnion = {
   elementType: "input",
-  id: "name",
+  id: petInfoIds.name,
   label: "Pet name",
   errorMessage: "Please enter your pet's name.",
   requiredCondition: true,
@@ -11,7 +25,7 @@ const petNameInput: InputsUnion = {
 
 const speciesInput: InputsUnion = {
   elementType: "input",
-  id: "type",
+  id: petInfoIds.species,
   label: "Species",
   options: ["Dog", "Cat"],
   requiredCondition: true,
@@ -20,33 +34,44 @@ const speciesInput: InputsUnion = {
 
 const sexInput: InputsUnion = {
   elementType: "input",
-  id: "sex",
-  label: "What's their gender?",
-  options: ["Male", "Female"],
+  id: petInfoIds.sex,
+  label: "Sex",
+  options: ["Female", "Male"],
   requiredCondition: true,
   type: "select",
 };
 
 const breedInput: InputsUnion = {
   elementType: "input",
-  id: "breed",
+  id: petInfoIds.breed,
   label: "Breed",
   options: "{{breedOptions|string[]}}",
   optionsType: "dynamic",
   type: "select",
 };
 
+const mixedBreedInput: InputsUnion = {
+  elementType: "input",
+  id: petInfoIds.mixedBreed,
+  label: "Mixed Breed",
+  options: ["Yes", "No"],
+  optionsType: "static",
+  requiredCondition: true,
+  type: "select",
+};
+
 const ageInput: InputsUnion = {
   elementType: "input",
-  id: "age",
+  id: petInfoIds.age,
   label: "Age",
   requiredCondition: true,
+  disabledCondition: true,
   type: "text",
 };
 
 const dobInput: InputsUnion = {
   elementType: "input",
-  id: "dob",
+  id: petInfoIds.dateOfBirth,
   label: "Date of birth",
   requiredCondition: true,
   type: "text",
@@ -54,7 +79,7 @@ const dobInput: InputsUnion = {
 
 const microchipInput: InputsUnion = {
   elementType: "input",
-  id: "microchip",
+  id: petInfoIds.microchip,
   label: "Microchip #",
   requiredCondition: true,
   type: "number",
@@ -62,10 +87,20 @@ const microchipInput: InputsUnion = {
 
 const insuranceInput: InputsUnion = {
   elementType: "input",
-  id: "insurance",
+  id: petInfoIds.insurance,
   label: "Insurance #",
   requiredCondition: true,
-  type: "number",
+  type: "text",
+};
+
+const neuteredSpayedInput: InputsUnion = {
+  elementType: "input",
+  id: petInfoIds.neuteredSpayed,
+  label: "Spayed/Neutered",
+  options: ["Yes", "No"],
+  optionsType: "static",
+  requiredCondition: true,
+  type: "select",
 };
 
 export const addPetProfileFormSchema: FormSchema = {
@@ -180,31 +215,49 @@ export const addPetProfileFormSchema: FormSchema = {
   version: 0,
 };
 
-export const editPetProfileFormSchema: FormSchema = {
+export const editPetProfileFormSchema: (hasPolicy: boolean) => FormSchema = (
+  hasPolicy
+) => ({
   id: "edit-pet-profile-form",
   children: [
     {
       elementType: "row",
       children: [
         { ...petNameInput, label: "Name" },
-        { ...breedInput, disabledCondition: true, requiredCondition: true },
+        { ...speciesInput, disabledCondition: hasPolicy },
       ],
     },
     {
       elementType: "row",
-      children: [ageInput, dobInput],
+      children: [
+        {
+          ...breedInput,
+          disabledCondition: hasPolicy,
+          requiredCondition: true,
+        },
+        { ...mixedBreedInput, disabledCondition: hasPolicy },
+      ],
     },
     {
       elementType: "row",
-      children: [microchipInput],
+      children: [
+        { ...dobInput, disabledCondition: true },
+        { ...ageInput, disabledCondition: true },
+      ],
     },
     {
       elementType: "row",
-      children: [speciesInput],
+      children: [
+        { ...sexInput, disabledCondition: true },
+        { ...neuteredSpayedInput, disabledCondition: true },
+      ],
     },
     {
       elementType: "row",
-      children: [sexInput, { ...insuranceInput, disabledCondition: true }],
+      children: [
+        { ...microchipInput, disabledCondition: true },
+        { ...insuranceInput, disabledCondition: true },
+      ],
     },
     {
       className: "!mt-xxlarge",
@@ -226,4 +279,4 @@ export const editPetProfileFormSchema: FormSchema = {
     },
   ],
   version: 0,
-};
+});

@@ -10,7 +10,7 @@ import { OptInsSection } from "~/components/Membership/sections/OptInsSection";
 import { useCheckoutProductsViewModelContext } from "./useCheckoutProductsViewModel";
 
 export const ProductsIndex = () => {
-  const { onContinueToCheckoutPayment, products } =
+  const { isSubmittingCart, onContinueToCheckoutPayment, products } =
     useCheckoutProductsViewModelContext();
 
   const productsSection = (() => {
@@ -27,7 +27,11 @@ export const ProductsIndex = () => {
           <div className="grid gap-large">
             <OptInsSection />
             {productsSection}
-            <Button fullWidth onClick={onContinueToCheckoutPayment}>
+            <Button
+              fullWidth
+              isLoading={isSubmittingCart}
+              onClick={onContinueToCheckoutPayment}
+            >
               Proceed to checkout
             </Button>
           </div>
