@@ -12,7 +12,6 @@ export * from "./formBuilder/FormBuilderPlayground";
 export * from "./MyAccountPagePlayground";
 export * from "./OnboardingDialogPlayground";
 export * from "./PetCardRecordPlayground";
-export * from "./PetServicesDetailsPlayground";
 export * from "./StepProgressPlayground";
 export * from "./SwitchPlayground";
 export * from "./TablePlayground";
