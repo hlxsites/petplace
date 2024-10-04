@@ -15,6 +15,7 @@ import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
 import { PET_WATCH_OFFERS, PET_WATCH_TAGS } from "./utils/petServiceConstants";
 import { getStatus } from "./utils/petServiceStatusUtils";
 import {
+  PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS,
   PetWatchOptionBasedOnMembershipStatus_CA,
   PetWatchOptionBasedOnMembershipStatus_US,
 } from "./utils/petWatchConstants";
@@ -97,11 +98,8 @@ export const usePetProfileLayoutViewModel = () => {
     return { petWatchOffersAndTags, membershipStatus };
   };
 
-  const getPetWatchAvailableBenefits = async () => {
+  const getPetWatchBenefits = async () => {
     const { locale } = await getSelectedPetAndLocale(petInfo);
-
-    // TODO improve here
-    const petWatchAnnualUnavailableBenefits = null;
 
     const petWatchInfo = await getPetServiceInfo();
     const membershipStatus = petWatchInfo?.membershipStatus ?? "Not a member";
@@ -116,36 +114,73 @@ export const usePetProfileLayoutViewModel = () => {
         ],
       };
 
-    const petWatchAvailableBenefits = getBenefitsBasedOnStatus(
+    const petWatchAvailableBenefits = await getAvailableBenefitsBasedOnStatus(
       PetWatchOptionsBasedOnLocale[locale]
     );
+
+    const petWatchAnnualUnavailableBenefits =
+      await getUnavailableBenefitsBasedOnStatus(petWatchAvailableBenefits);
 
     return { petWatchAvailableBenefits, petWatchAnnualUnavailableBenefits };
   };
 
-  const getBenefitsBasedOnStatus = async (
+  const getAvailableBenefitsBasedOnStatus = async (
+    petWatchAvailableBenefits: PetCardPetWatchProps[]
+  ): Promise<PetCardPetWatchProps[]> => {
+    const { selectedPet } = await getSelectedPetAndLocale(petInfo);
+    const membershipStatus = selectedPet?.membershipStatus?.toLowerCase();
+    const products = selectedPet?.products;
+
+    // If not a member, return all benefits as is
+    if (membershipStatus?.includes("not a member")) {
+      return petWatchAvailableBenefits;
+    }
+
+    // If annual member with no products, return only direct-connect
+    if (membershipStatus?.includes("annual") && !products?.length) {
+      return petWatchAvailableBenefits.filter(
+        (benefit) => benefit.id === "direct-connect"
+      );
+    }
+
+    // If there are products, check for expired ones and update benefits accordingly
+    if (products && products.length > 0) {
+      const expiredProductIds = new Set(
+        products
+          .filter(
+            (product): product is NonNullable<typeof product> =>
+              !!product && !!product.id && product.isExpired
+          )
+          .map((product) => product.id)
+      );
+
+      return petWatchAvailableBenefits.map((benefit) => {
+        if (benefit.id && expiredProductIds.has(benefit.id)) {
+          return { ...benefit, isExpired: true };
+        }
+        return benefit;
+      });
+    }
+
+    // Default case
+    return petWatchAvailableBenefits;
+  };
+
+  const getUnavailableBenefitsBasedOnStatus = async (
     petWatchAvailableBenefits: PetCardPetWatchProps[]
   ) => {
     const { selectedPet } = await getSelectedPetAndLocale(petInfo);
-    const products = selectedPet?.products;
+    const membershipStatus = selectedPet?.membershipStatus?.toLowerCase();
 
-    if (
-      selectedPet?.membershipStatus?.toLowerCase().includes("annual") &&
-      products?.length
-    ) {
-      const formattedAvailableBenefits: PetCardPetWatchProps[] = [];
-      console.log("formattedAvailableBenefits", formattedAvailableBenefits);
+    if (membershipStatus?.includes("annual")) {
+      const availableBenefitIds = new Set(
+        petWatchAvailableBenefits.map((benefit) => benefit.id)
+      );
 
-      if (products.some((item) => item.isExpired)) {
-        // TODO: implement this
-      }
-      // TODO: colocar os casos aqui e retornar o valor
+      return PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS.filter(
+        (option) => !availableBenefitIds.has(option.id)
+      );
     }
-
-    console.log("petWatchAvailableBenefits", petWatchAvailableBenefits);
-    console.log("selectedPet", selectedPet);
-
-    return petWatchAvailableBenefits;
   };
 
   return {
@@ -154,7 +189,7 @@ export const usePetProfileLayoutViewModel = () => {
     onRemoveImage,
     onSelectImage,
     petInfo,
-    petWatchBenefits: getPetWatchAvailableBenefits(),
+    petWatchBenefits: getPetWatchBenefits(),
     petWatchInfo: getPetWatchInfo(),
   };
 };
