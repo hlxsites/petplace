@@ -37,7 +37,7 @@ export const PetWatchSection = ({ route }: PetWatchSectionProp) => {
                   id="24PetWatchDrawer"
                   isOpen={isDrawerOpen}
                   onClose={onCloseDrawer}
-                  width={440}
+                  width={480}
                   trigger={
                     <Button
                       className="text-orange-300-contrast"
