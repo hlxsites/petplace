@@ -89,7 +89,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     ),
     description:
       "This protects your pet by relaying your pet’s critical medical and behavioral information to veterinary care personnel, animal shelters or animal rescue organizations if your pet is lost.",
-    id: "24-pet-med-alert",
+    id: "PetMedInfo Fees",
     primaryAction: {
       label: "Download form",
     },
@@ -105,7 +105,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     ),
     description:
       "Can’t decide whether or not to bring your pet the vet? Veterinary experts available 24/7 through phone, email or live chat, provided by whiskerDocs.",
-    id: "vet-helpline",
+    id: "WD Annual Membership",
     title: "24/7 Vet Helpline",
   },
   {

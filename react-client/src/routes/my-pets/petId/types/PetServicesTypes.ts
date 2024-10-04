@@ -18,7 +18,7 @@ export type PetServiceTypes =
 export type MembershipStatus =
   | "Annual member"
   | "Lifetime protect member"
-  | "Lifetime plus protect member"
+  | "Lifetime protect member Plus"
   | "Not a member";
 
 export type CA_MembershipStatus = Exclude<MembershipStatus, "Annual member">;
