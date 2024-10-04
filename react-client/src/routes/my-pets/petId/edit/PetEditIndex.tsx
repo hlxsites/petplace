@@ -22,9 +22,9 @@ export const PetEditIndex = () => {
     onSelectImage,
   } = usePetProfileContext();
 
-  return <SuspenseAwait resolve={petInfo}>{renderPetForm}</SuspenseAwait>;
+  return <SuspenseAwait resolve={petInfo}>{renderMain}</SuspenseAwait>;
 
-  function renderPetForm(pet: PetModel | null) {
+  function renderMain(pet: PetModel | null) {
     invariant(pet, "Pet not found");
     const hasPolicy = !!pet.policyInsurance?.length;
 
@@ -63,9 +63,7 @@ export const PetEditIndex = () => {
           <Title level="h3">Pet info</Title>
           <div className="h-xxlarge" />
           <DisplayUncontrolledForm
-            onSubmit={({ values }) => {
-              onSubmitPetInfo(values);
-            }}
+            onSubmit={onSubmitPetInfo}
             schema={editPetProfileFormSchema(hasPolicy)}
             variables={petInfoVariables}
             initialValues={getPetInfoFormData(pet)}

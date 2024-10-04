@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { FormValues } from "~/components/design-system";
+import { OnSubmitFn } from "~/components/design-system/form/FormBuilder";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
 import { BreedModel, SpeciesModel } from "~/domain/models/lookup/LookupModel";
 import { PetModel, PetMutateInput } from "~/domain/models/pet/PetModel";
@@ -183,24 +184,7 @@ export const usePetProfileLayoutViewModel = () => {
     return petWatchAvailableBenefits;
   };
 
-  return {
-    documentTypes,
-    getPetInfoFormData,
-    onEditPet,
-    onSubmitPetInfo,
-    onRemoveImage,
-    onSelectImage,
-    petInfo,
-    petInfoVariables: getPetInfoVariables(),
-    petWatchBenefits: getPetWatchAvailableBenefits(),
-    petWatchInfo: getPetWatchInfo(),
-  };
-
-  function onSubmitPetInfo(values: FormValues) {
-    void updateAndRedirect(values);
-  }
-
-  async function updateAndRedirect(values: FormValues) {
+  const updateAndRedirect = async (values: FormValues) => {
     const petModel = buildPetInfo(values);
     const serverModel = convertToServerPetInfo(petModel);
 
@@ -216,7 +200,24 @@ export const usePetProfileLayoutViewModel = () => {
     } else {
       // TODO: handle error
     }
-  }
+  };
+
+  const onSubmitPetInfo: OnSubmitFn = ({ values }) => {
+    void updateAndRedirect(values);
+  };
+
+  return {
+    documentTypes,
+    getPetInfoFormData,
+    onEditPet,
+    onSubmitPetInfo,
+    onRemoveImage,
+    onSelectImage,
+    petInfo,
+    petInfoVariables: getPetInfoVariables(),
+    petWatchBenefits: getPetWatchAvailableBenefits(),
+    petWatchInfo: getPetWatchInfo(),
+  };
 
   function getPetInfoFormData(values: PetModel): FormValues {
     const formValues: FormValues = {
