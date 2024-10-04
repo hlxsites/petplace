@@ -5,6 +5,16 @@
 <link rel="icon" href="/favicon.ico">
 <link rel="alternate" type="application/rss+xml" href="/rss.xml">
 <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+<script type="speculationrules">
+  {
+    "prerender": [{
+      "where": {
+        "href_matches": "/*"
+      },
+      "eagerness": "moderate"
+    }]
+  }
+</script>
 <script>
   window.googletag ||= { cmd: [] };
   window.dataLayer ||= [];
