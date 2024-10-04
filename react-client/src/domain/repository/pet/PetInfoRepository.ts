@@ -1,7 +1,6 @@
-import { PetModel } from "~/domain/models/pet/PetModel";
-import { PutPetInfoRequest } from "~/domain/useCases/pet/PetInfoUseCase";
+import { PetModel, PetMutateInput } from "~/domain/models/pet/PetModel";
 
 export interface PetInfoRepository {
   query(petId: string): Promise<PetModel | null>;
-  mutate(data: PutPetInfoRequest): Promise<boolean>;
+  mutate(data: PetMutateInput): Promise<boolean>;
 }

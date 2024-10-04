@@ -4,10 +4,9 @@ import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { FormValues } from "~/components/design-system";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
 import { BreedModel, SpeciesModel } from "~/domain/models/lookup/LookupModel";
-import { PetModel } from "~/domain/models/pet/PetModel";
+import { PetModel, PetMutateInput } from "~/domain/models/pet/PetModel";
 import getBreedListUseCaseFactory from "~/domain/useCases/lookup/getBreedListUseCaseFactory";
 import getSpeciesListUseCaseFactory from "~/domain/useCases/lookup/getSpeciesListUseCaseFactory";
-import { PutPetInfoRequest } from "~/domain/useCases/pet/PetInfoUseCase";
 import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
 import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
 import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
@@ -198,14 +197,25 @@ export const usePetProfileLayoutViewModel = () => {
   };
 
   function onSubmitPetInfo(values: FormValues) {
-    const petModel = buildPetInfo(values);
-    const serverModel = convertToServerPetInfo(petModel);
-    void updateAndRedirect(serverModel);
+    void updateAndRedirect(values);
   }
 
-  async function updateAndRedirect(data: PutPetInfoRequest) {
-    const didUpdate = await updatePetInfo(data);
-    if (didUpdate) navigate(PET_PROFILE_FULL_ROUTE(data.Id));
+  async function updateAndRedirect(values: FormValues) {
+    const petModel = buildPetInfo(values);
+    const serverModel = convertToServerPetInfo(petModel);
+
+    if (!serverModel) {
+      // TODO: handle error
+      return;
+    }
+
+    const didUpdate = await updatePetInfo(serverModel);
+
+    if (didUpdate) {
+      navigate(PET_PROFILE_FULL_ROUTE(petModel.id));
+    } else {
+      // TODO: handle error
+    }
   }
 
   function getPetInfoFormData(values: PetModel): FormValues {
@@ -223,27 +233,22 @@ export const usePetProfileLayoutViewModel = () => {
       [petInfoIds.insurance]: (values.policyInsurance as string[])[0] ?? "",
     };
 
-    console.log("🚀 ~ formValues", formValues);
-
     return formValues;
   }
 
-  function convertToServerPetInfo(data: PetModel): PutPetInfoRequest {
+  function convertToServerPetInfo(data: PetModel): PetMutateInput | null {
+    const breedId = petInfoVariables?.breedVariables.find(
+      ({ name }) => data.breed === name
+    )?.id;
+    const specieId = petInfoVariables?.speciesVariables.find(
+      ({ name }) => data.species === name
+    )?.id;
+    if (!breedId || !specieId) return null;
+
     return {
-      Id: data.id,
-      Name: data.name,
-      Sex: data.sex === "Male" ? "1" : "2",
-      DateOfBirth: data.dateOfBirth ?? "",
-      Neutered: !!data.spayedNeutered,
-      SpeciesId:
-        petInfoVariables?.speciesVariables.find(
-          ({ name }) => data.species === name
-        )?.id ?? 1,
-      BreedId:
-        // @ts-expect-error the ? check seems not to be resolving the undefined possibility for the next line
-        petInfoVariables?.breedVariables.find(({ name }) => data.breed === name)
-          .id ?? 0,
-      MixedBreed: !!data.mixedBreed,
+      ...data,
+      breedId,
+      specieId,
     };
   }
 

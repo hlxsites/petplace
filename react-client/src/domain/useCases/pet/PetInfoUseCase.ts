@@ -1,23 +1,10 @@
 import { z } from "zod";
-import { PetModel } from "~/domain/models/pet/PetModel";
+import { PetModel, PetMutateInput } from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-
-const putServerSchema = z.object({
-  Id: z.string(),
-  Name: z.string(),
-  Sex: z.string(),
-  DateOfBirth: z.string(),
-  Neutered: z.boolean(),
-  SpeciesId: z.number(),
-  BreedId: z.number(),
-  MixedBreed: z.boolean(),
-});
-
-export type PutPetInfoRequest = z.infer<typeof putServerSchema>;
 
 export class PetInfoUseCase implements PetInfoRepository {
   private httpClient: HttpClientRepository;
@@ -43,26 +30,22 @@ export class PetInfoUseCase implements PetInfoRepository {
     }
   };
 
-  mutate = async (body: PutPetInfoRequest): Promise<boolean> => {
+  mutate = async (pet: PetMutateInput): Promise<boolean> => {
     try {
-      if (putServerSchema.safeParse(body).success) {
-        const result = await this.httpClient.put("api/Pet", {
-          body: JSON.stringify(body),
-        });
+      const body = convertToServerPetInfo(pet);
+      const result = await this.httpClient.put("api/Pet", {
+        body: JSON.stringify(body),
+      });
 
-        if (
-          result.statusCode &&
-          result.statusCode >= 200 &&
-          result.statusCode < 300
-        )
-          return true;
-      }
-
-      return false;
+      return (
+        !!result.statusCode &&
+        result.statusCode >= 200 &&
+        result.statusCode < 300
+      );
     } catch (error) {
       console.error("PetInfoUseCase mutation error", error);
-      return false;
     }
+    return false;
   };
 }
 
@@ -125,5 +108,29 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     sourceType: info.Source === 1 ? "MyPetHealth" : "PetPoint",
     spayedNeutered: !!info.Neutered,
     species: info.Species,
+  };
+}
+
+type PetUpdateServerInput = {
+  BreedId: number;
+  DateOfBirth: string;
+  Id: string;
+  MixedBreed: boolean;
+  Name: string;
+  Neutered: boolean;
+  Sex: "1" | "2";
+  SpeciesId: number;
+};
+
+function convertToServerPetInfo(data: PetMutateInput): PetUpdateServerInput {
+  return {
+    Id: data.id,
+    Name: data.name,
+    Sex: data.sex === "Male" ? "1" : "2",
+    DateOfBirth: data.dateOfBirth ?? "",
+    Neutered: !!data.spayedNeutered,
+    SpeciesId: data.specieId,
+    BreedId: data.breedId,
+    MixedBreed: !!data.mixedBreed,
   };
 }
