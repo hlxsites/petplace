@@ -12,9 +12,11 @@ import getLostAndFoundNotificationsUseCaseFactory from "~/domain/useCases/pet/ge
 import { PutPetInfoRequest } from "~/domain/useCases/pet/PetInfoUseCase";
 import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
 import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
+import putReportClosingUseCaseFactory from "~/domain/useCases/pet/putReportClosingUseCaseFactory";
 import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
+import { forceRedirect } from "~/util/redirectUtil";
 import { petInfoIds } from "./form/petForm";
 import { PetInfoFormVariables } from "./types/PetInfoTypes";
 import {
@@ -43,10 +45,12 @@ export const loader = (({ params }) => {
   const speciesList = getSpeciesListUseCaseFactory(authToken).query();
   const getPetInfoUseCase = petInfoUseCaseFactory(authToken);
   const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
+  const putReportClosingUseCase = putReportClosingUseCaseFactory(authToken);
   const petInfoPromise = getPetInfoUseCase.query(petId);
 
   return defer({
     breedList,
+    mutateReport: putReportClosingUseCase.mutate,
     documentTypes: PET_DOCUMENT_TYPES_LIST,
     petInfo: petInfoPromise,
     speciesList,
@@ -60,6 +64,7 @@ export const loader = (({ params }) => {
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
   const {
+    mutateReport,
     lostAndFoundNotifications,
     mutatePetImage,
     updatePetInfo,
@@ -79,10 +84,6 @@ export const usePetProfileLayoutViewModel = () => {
 
     void getMissingStatus();
   }, [lostAndFoundNotifications]);
-
-  function closeReport(petId: string, reasonId: number) {
-    console.log("🚀 ~ petId, reasonId", petId, reasonId);
-  }
 
   const [petInfoVariables, setPetInfoVariables] =
     useState<PetInfoFormVariables>();
@@ -110,7 +111,10 @@ export const usePetProfileLayoutViewModel = () => {
   };
 
   const onSelectImage = (petId: string, file: File) => {
-    void mutatePetImage({ petId, petImage: file });
+    void (async () => {
+      const closed = await mutatePetImage({ petId, petImage: file });
+      if (closed) forceRedirect(PET_PROFILE_FULL_ROUTE(petId));
+    })();
   };
 
   const getSelectedPetAndLocale = async (petInfo: Promise<PetModel | null>) => {
@@ -226,6 +230,13 @@ export const usePetProfileLayoutViewModel = () => {
     petWatchInfo: getPetWatchInfo(),
   };
 
+  function closeReport(petId: string, microchip: string, reason: number) {
+    void (async () => {
+      const closed = await mutateReport({ petId, microchip, reason });
+      if (closed) forceRedirect(PET_PROFILE_FULL_ROUTE(petId));
+    })();
+  }
+
   function onSubmitPetInfo(values: FormValues) {
     const petModel = buildPetInfo(values);
     const serverModel = convertToServerPetInfo(petModel);
@@ -249,7 +260,7 @@ export const usePetProfileLayoutViewModel = () => {
       [petInfoIds.sex]: values.sex === "1" ? "Male" : "Female",
       [petInfoIds.species]: values.species ?? "",
       [petInfoIds.microchip]: values.microchip ?? "",
-      [petInfoIds.insurance]: (values.policyInsurance as string[])[0] ?? "",
+      [petInfoIds.insurance]: (values.policyInsurance as string[])?.[0] ?? "",
     };
 
     return formValues;

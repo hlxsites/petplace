@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ReportClosingReasonModel } from "~/domain/models/lookup/ReportClosingReasonModel";
-import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
-import { Button, LinkButton, Text } from "../design-system";
+import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
+import { Button, Text } from "../design-system";
 import Select from "../design-system/form/Select";
 
 type ReportClosingModalContentProps = {
@@ -13,14 +13,13 @@ type ReportClosingModalContentProps = {
 export const ReportClosingModalContent = ({
   onCloseReport,
   options,
-  petId,
 }: ReportClosingModalContentProps) => {
   const [reason, setReason] = useState("");
   const [didSubmit, setDidSubmit] = useState(false);
-  const petProfilePath = PET_PROFILE_FULL_ROUTE(petId);
+  const { closeReportClosingModal } = useLostAndFoundReport();
 
   return (
-    <div className="pt-base grid gap-large">
+    <div className="grid gap-large pt-base">
       <Text size="16">
         Please select one of the following to close the report:
       </Text>
@@ -37,10 +36,10 @@ export const ReportClosingModalContent = ({
             : undefined
         }
       />
-      <div className="mt-xxxxxlarge flex w-full gap-base flex-col-reverse md:flex-row">
-        <LinkButton variant="secondary" to={petProfilePath} fullWidth>
+      <div className="mt-xxxxxlarge flex w-full flex-col-reverse gap-base md:flex-row">
+        <Button variant="secondary" onClick={closeReportClosingModal} fullWidth>
           Cancel
-        </LinkButton>
+        </Button>
         <Button fullWidth onClick={handleSubmit}>
           Submit
         </Button>
@@ -54,9 +53,7 @@ export const ReportClosingModalContent = ({
 
   function handleSubmit() {
     setDidSubmit(true);
-    if (reason)
-      onCloseReport(
-        options.find((option) => reason === option.reason)!.id
-      );
+    if (reason.length)
+      onCloseReport(options.find((option) => reason === option.reason)!.id);
   }
 };

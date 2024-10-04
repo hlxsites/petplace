@@ -35,7 +35,7 @@ export class PostPetImageUseCase implements PostPetImageRepository {
         }
       );
 
-      if (result.data) return result.data as boolean;
+      if (result.success) return result.success;
 
       return null;
     } catch (error) {

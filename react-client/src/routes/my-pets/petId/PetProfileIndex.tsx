@@ -2,6 +2,7 @@ import { Outlet, useSearchParams } from "react-router-dom";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Header } from "~/components/design-system/header/Header";
 import { CheckoutConclusionModal } from "~/components/Membership/CheckoutConclusionModal";
+import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
@@ -45,7 +46,7 @@ export const PetProfileIndex = () => {
       return contentParam === "pet-watch-purchase-success";
     })();
 
-    const { id, policyInsurance } = pet;
+    const { id, policyInsurance, microchip } = pet;
 
     const checkoutPath = CHECKOUT_FULL_ROUTE(id);
 
@@ -85,7 +86,9 @@ export const PetProfileIndex = () => {
         <Outlet context={viewModel} />
         {displayOnboarding && <OnboardingDialog />}
         {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
-        {displayClosingReport && <ReportClosingModal petId={id} />}
+        {displayClosingReport && (
+          <ReportClosingModal petId={id} microchip={microchip} />
+        )}
       </>
     );
 

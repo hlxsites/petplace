@@ -5,9 +5,13 @@ import { ReportClosingModalContent } from "./ReportClosingModalContent";
 
 type ReportClosingModalProps = {
   petId: string;
+  microchip?: string | null;
 };
 
-export const ReportClosingModal = ({ petId }: ReportClosingModalProps) => {
+export const ReportClosingModal = ({
+  petId,
+  microchip,
+}: ReportClosingModalProps) => {
   const viewModel = usePetProfileContext();
   const { reportClosingReasons, closeReport } = viewModel;
   return (
@@ -34,7 +38,6 @@ export const ReportClosingModal = ({ petId }: ReportClosingModalProps) => {
   );
 
   function handleCloseReport(reasonId: number) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    closeReport(petId, reasonId);
+    closeReport(petId, microchip ?? "", reasonId);
   }
 };
