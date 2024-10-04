@@ -20,7 +20,6 @@ import { ReportPetButton } from "./components/ReportPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
-import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
@@ -65,7 +64,7 @@ export const PetProfileIndex = () => {
         />
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
-          <AdvertisingSection linkTo={pet.insuranceUrl} />
+          <AdvertisingSection />
           <PetWatchSection route={checkoutPath} />
           {petInsuranceSectionElement}
           <SuspenseAwait resolve={lostAndFoundNotifications}>
@@ -74,9 +73,7 @@ export const PetProfileIndex = () => {
                 <PetLostUpdatesSection
                   lostPetHistory={lostAndFoundNotifications}
                   missingStatus={
-                    lostAndFoundNotifications[
-                      lostAndFoundNotifications.length - 1
-                    ]?.status ?? "found"
+                    lostAndFoundNotifications[0]?.status ?? "found"
                   }
                 />
               );
