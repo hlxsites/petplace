@@ -16,7 +16,7 @@ describe("GetReportClosingReasonsUseCase", () => {
 
   it("should return an array of states", async () => {
     const httpClient = new MockHttpClient({
-      data: getReportClosingReasonsMock,
+      data: JSON.stringify(getReportClosingReasonsMock),
     });
     const sut = makeSut(httpClient);
     const result = await sut.query();
