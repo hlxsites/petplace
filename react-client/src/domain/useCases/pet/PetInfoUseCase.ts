@@ -124,7 +124,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     policyInsurance: info.PolicyNumbers ?? [],
     products,
     sex: info.Sex,
-    sourceType: info.Source === 1 ? "MyPetHealth" : "PetPoint",
+    sourceType: info.Source === 1 ? "PetPoint" : "MyPetHealth",
     spayedNeutered: !!info.Neutered,
     species: info.Species,
   };
