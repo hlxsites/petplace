@@ -1,7 +1,6 @@
 import { PetServices } from "~/domain/models/pet/PetModel";
 import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
-import { PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
 import { SuspenseAwait } from "../await/SuspenseAwait";
 import { LinkButton, Text } from "../design-system";
@@ -70,9 +69,13 @@ export const PetWatchDrawerBody = ({
         </Text>
 
         <div className="grid gap-small">
-          {PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS.map(({ id, ...props }) => (
-            <PetCardPetWatch key={id} onClick={onClick} {...props} />
-          ))}
+          <SuspenseAwait resolve={petWatchBenefits}>
+            {({ petWatchAnnualUnavailableBenefits }) =>
+              petWatchAnnualUnavailableBenefits?.map(({ id, ...props }) => (
+                <PetCardPetWatch key={id} onClick={onClick} {...props} />
+              ))
+            }
+          </SuspenseAwait>
         </div>
         {upgradeMembershipButton}
       </div>
