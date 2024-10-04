@@ -4,7 +4,7 @@ import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCa
 
 export type PetWatchServiceProps = Omit<
   PetServiceDetailsCardProps,
-  "isModalOpen" | "onCloseModal"
+  "isModalOpen" | "onCloseModal" | "onConfirmModal"
 > & {
   id?: string;
   title: string;

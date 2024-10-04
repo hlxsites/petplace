@@ -30,7 +30,7 @@ export class PostRenewMembershipUseCase
     try {
       const body = convertToServerRenewMembership(data);
 
-      const response = await this.httpClient.get("api/Checkout/renew", {
+      const response = await this.httpClient.post("api/Checkout/renew", {
         body: JSON.stringify(body),
       });
 
