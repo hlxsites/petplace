@@ -152,10 +152,12 @@ export const usePetProfileLayoutViewModel = () => {
       return petWatchAvailableBenefits;
     }
 
-    // If annual member with no products, return only direct-connect
+    // If annual member with no products, return only direct-connect and recovery-specialists
     if (membershipStatus?.includes("annual") && !products?.length) {
       return petWatchAvailableBenefits.filter(
-        (benefit) => benefit.id === "direct-connect"
+        (benefit) =>
+          benefit.id === "direct-connect" ||
+          benefit.id === "recovery-specialists"
       );
     }
 
@@ -258,12 +260,12 @@ export const usePetProfileLayoutViewModel = () => {
 
   const isConfirmRenewModalOpen = searchParams.has(CONFIRM_RENEW_PARAM_KEY);
 
-  const onRenewMembership = () => {
+  const onRenewMembership = async () => {
     const selectedContent = searchParams.get(ITEM_PARAM_KEY);
 
     if (!selectedContent) return null;
 
-    void postRenew({
+    return await postRenew({
       autoRenew: true,
       id: selectedContent,
       petId,

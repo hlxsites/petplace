@@ -47,6 +47,10 @@ const PET_WATCH_LIFETIME_PLUS_OPTIONS: PetCardPetWatchProps[] = [
 
 const PET_WATCH_ANNUAL_AVAILABLE_OPTIONS: PetCardPetWatchProps[] = [
   { label: "DirectConnect", id: "direct-connect" },
+  {
+    label: "Lost Pet Recovery Specialists",
+    id: "recovery-specialists",
+  },
   { label: "24PetMedAlert", id: "PetMedInfo Fees", icon: "file" },
   {
     label: "24/7 Vet Helpline",
