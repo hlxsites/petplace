@@ -7,7 +7,7 @@ import { parseData } from "../util/parseData";
 
 export class GetSpeciesListUseCase implements GetSpeciesListRepository {
   private httpClient: HttpClientRepository;
-  private endpoint: string = "lookup/species";
+  private cache: SpeciesModel[] = [];
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -18,8 +18,11 @@ export class GetSpeciesListUseCase implements GetSpeciesListRepository {
   }
 
   query = async (): Promise<SpeciesModel[]> => {
+    // Use cache to avoid unnecessary requests
+    if (this.cache) return this.cache;
+
     try {
-      const result = await this.httpClient.get(this.endpoint);
+      const result = await this.httpClient.get("lookup/species");
       if (result.data) return convertToSpeciesList(result.data);
 
       return [];
@@ -48,7 +51,8 @@ function convertToSpeciesList(data: unknown): SpeciesModel[] {
   if (!speciesData) return [];
 
   speciesData.forEach(({ id, name }) => {
-    speciesList.push({ id: id ?? 0, name: name ?? "" });
+    if (!id || !name) return;
+    speciesList.push({ id, name });
   });
 
   return speciesList;

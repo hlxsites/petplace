@@ -7,7 +7,7 @@ import { parseData } from "../util/parseData";
 
 export class GetBreedListUseCase implements GetBreedListRepository {
   private httpClient: HttpClientRepository;
-  private endpoint: string = "lookup/breed";
+  private cache: BreedModel[] = [];
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -18,8 +18,11 @@ export class GetBreedListUseCase implements GetBreedListRepository {
   }
 
   query = async (): Promise<BreedModel[]> => {
+    // Use cache to avoid unnecessary requests
+    if (this.cache) return this.cache;
+
     try {
-      const result = await this.httpClient.get(this.endpoint);
+      const result = await this.httpClient.get("lookup/breed");
       if (result.data) return convertToBreedList(result.data);
 
       return [];
@@ -48,7 +51,8 @@ function convertToBreedList(data: unknown): BreedModel[] {
   if (!breedData) return [];
 
   breedData.forEach(({ id, name }) => {
-    breedList.push({ id: id ?? 0, name: name ?? "" });
+    if (!id || !name) return;
+    breedList.push({ id, name });
   });
 
   return breedList;
