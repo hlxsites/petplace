@@ -27,7 +27,7 @@ function createSpanBlock(main) {
       formEl.classList.remove('error-spacing');
       searchInput.value = '';
       window.open(
-        `https://quote.petplace.com/questionnaire?zipCode=${code}`,
+        `https://quote.petplace.com/quote?zipCode=${code}`,
         '_blank',
       );
     } else {
@@ -138,7 +138,9 @@ export async function loadLazy(document) {
   }, options);
 
   // Start Observing
-  observer.observe(targetElements[0]);
+  if (targetElements.length) {
+    observer.observe(targetElements[0]);
+  }
 
   const { adsenseFunc } = await import('../../scripts/adsense.js');
   adsenseFunc('home', 'create');

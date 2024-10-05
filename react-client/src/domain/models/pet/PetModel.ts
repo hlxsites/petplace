@@ -76,3 +76,32 @@ export type PetMutateInput = Pick<
   breedId: number;
   specieId: number;
 };
+
+export type PetProduct = {
+  id: string;
+  isExpired: boolean;
+  name: string;
+};
+
+export type PetServices = {
+  locale?: Locale | null;
+  membershipStatus?: string;
+  products?: PetProduct[];
+};
+
+export type PetModel = PetCommon &
+  PetServices & {
+    age?: string | undefined;
+    breed?: string;
+    dateOfBirth?: string;
+    documentationStatus?: DocumentationStatus;
+    lostPetHistory?: LostPetUpdate[];
+    missingStatus?: MissingStatus;
+    mixedBreed?: boolean;
+    onboardCompleted?: boolean;
+    policyInsurance?: string[];
+    sex?: string;
+    sourceType?: "MyPetHealth" | "PetPoint";
+    spayedNeutered?: boolean;
+    species?: string;
+  };

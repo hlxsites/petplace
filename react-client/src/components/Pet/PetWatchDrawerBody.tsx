@@ -11,6 +11,7 @@ import { PetWatchServices } from "./PetWatchServices";
 
 type PetWatchDrawerBodyProps = {
   contentDetails?: PetWatchServiceProps;
+  locale?: PetServices["locale"];
   onClick: (label?: string) => () => void;
   route?: string;
   serviceStatus: PetServices["membershipStatus"];
@@ -18,6 +19,7 @@ type PetWatchDrawerBodyProps = {
 
 export const PetWatchDrawerBody = ({
   contentDetails,
+  locale,
   onClick,
   route,
   serviceStatus,
