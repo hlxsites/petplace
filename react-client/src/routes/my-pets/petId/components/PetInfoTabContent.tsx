@@ -5,7 +5,13 @@ import { getAnimalSex } from "~/util/getAnimalDetails";
 
 export type GetPetInfoTabProps = Omit<
   PetModel,
-  "id" | "img" | "isProtected" | "microchip" | "name"
+  | "id"
+  | "img"
+  | "isProtected"
+  | "locale"
+  | "missingStatus"
+  | "microchip"
+  | "name"
 >;
 
 export function PetInfoTabContent({

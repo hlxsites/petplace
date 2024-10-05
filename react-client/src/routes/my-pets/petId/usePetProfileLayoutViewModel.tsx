@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import {
   useNavigate,
   useOutletContext,
@@ -5,70 +6,138 @@ import {
 } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
-import { PetModel } from "~/domain/models/pet/PetModel";
-import getPetInfoUseCaseFactory from "~/domain/useCases/pet/getPetInfoUseCaseFactory";
-import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
+import {
+  LostAndFountNotification,
+  MissingStatus,
+  PetModel,
+} from "~/domain/models/pet/PetModel";
+import getReportClosingReasonsUseCaseFactory from "~/domain/useCases/lookup/getReportClosingReasonsUseCaseFactory";
+import getLostAndFoundNotificationsUseCaseFactory from "~/domain/useCases/pet/getLostAndFoundNotificationsUseCaseFactory";
+import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
+import putReportClosingUseCaseFactory from "~/domain/useCases/pet/putReportClosingUseCaseFactory";
+import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
+import { ITEM_PARAM_KEY } from "~/util/searchParamsKeys";
 import {
   CA_MembershipStatus,
   MembershipStatus,
 } from "./types/PetServicesTypes";
+import { useLostAndFoundReportViewModel } from "./useLostAndFoundReportViewModel";
 import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
 import { PET_WATCH_OFFERS, PET_WATCH_TAGS } from "./utils/petServiceConstants";
+import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetails";
 import { getStatus } from "./utils/petServiceStatusUtils";
 import {
   PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS,
   PetWatchOptionBasedOnMembershipStatus_CA,
   PetWatchOptionBasedOnMembershipStatus_US,
 } from "./utils/petWatchConstants";
-import { ITEM_PARAM_KEY } from "~/util/searchParamsKeys";
-import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetails";
 
 export const loader = (({ params }) => {
   const { petId } = params;
   invariantResponse(petId, "Pet ID is required in this route");
 
   const authToken = requireAuthToken();
-  const getPetInfoUseCase = getPetInfoUseCaseFactory(authToken);
-  const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
-  const petInfoPromise = getPetInfoUseCase.query(petId);
+  const getLostAndFoundNotificationsUseCase =
+    getLostAndFoundNotificationsUseCaseFactory(authToken);
+  const useCase = petInfoUseCaseFactory(authToken);
+  const petInfoPromise = useCase.query(petId);
+  const getReportClosingReasonsUseCase =
+    getReportClosingReasonsUseCaseFactory(authToken);
+  const putReportClosingUseCase = putReportClosingUseCaseFactory(authToken);
 
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
-    petInfo: petInfoPromise,
-    mutatePetImage: postPetImageUseCase.mutate,
+    petId,
+    petInfoPromise,
+    mutateReport: putReportClosingUseCase.mutate,
+    lostAndFoundNotificationsPromise: getLostAndFoundNotificationsUseCase.query,
+    reportClosingReasons: getReportClosingReasonsUseCase.query(),
   });
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { documentTypes, mutatePetImage, petInfo } =
-    useLoaderData<typeof loader>();
+  const {
+    documentTypes,
+    lostAndFoundNotificationsPromise,
+    mutateReport,
+    petId,
+    petInfoPromise,
+    reportClosingReasons,
+  } = useLoaderData<typeof loader>();
+
+  const [isLoadingPetInfo, setIsLoadingPetInfo] = useState(true);
+  const [isLoadingLostPetHistory, setIsLoadingLostPetHistory] = useState(true);
+
+  const [petInfo, setPetInfo] = useState<PetModel | null>(null);
+
+  const [lostPetHistory, setLostPetHistory] = useState<
+    LostAndFountNotification[]
+  >([]);
+
+  const isLoading = isLoadingPetInfo || isLoadingLostPetHistory;
+
+  const missingStatus: MissingStatus = (() => {
+    if (!lostPetHistory.length) return "found";
+
+    const latestEntry = lostPetHistory[0];
+    return latestEntry.status;
+  })();
+
+  const selectedPet: PetModel | null = (() => {
+    if (!petInfo) return null;
+
+    return {
+      ...petInfo,
+      missingStatus,
+    };
+  })();
+
+  const fetchLostPetHistory = useCallback(async () => {
+    setIsLoadingLostPetHistory(true);
+
+    const lostPetHistory = await lostAndFoundNotificationsPromise(petId);
+    setLostPetHistory(lostPetHistory);
+
+    setIsLoadingLostPetHistory(false);
+  }, [lostAndFoundNotificationsPromise, petId]);
+
+  const lostAndFoundViewModel = useLostAndFoundReportViewModel({
+    fetchLostPetHistory,
+    mutateReport,
+    pet: selectedPet,
+    reportClosingReasons,
+  });
+
+  useDeepCompareEffect(() => {
+    async function resolvePetInfoPromise() {
+      const petInfo = await petInfoPromise;
+      setPetInfo(petInfo);
+      setIsLoadingPetInfo(false);
+    }
+
+    void resolvePetInfoPromise();
+  }, [petInfoPromise]);
+
+  useDeepCompareEffect(() => {
+    void fetchLostPetHistory();
+  }, [fetchLostPetHistory]);
 
   const onEditPet = () => {
     navigate(AppRoutePaths.petEdit);
   };
 
-  const onRemoveImage = () => {
-    // TODO: implement image deletion
+  const getSelectedPetLocale = () => {
+    const locale = petInfo?.locale ?? "US"; //
+    return { locale };
   };
 
-  const onSelectImage = (petId: string, file: File) => {
-    void mutatePetImage({ petId, petImage: file });
-  };
-
-  const getSelectedPetAndLocale = async (petInfo: Promise<PetModel | null>) => {
-    const selectedPet = await petInfo;
-    const locale = selectedPet?.locale ?? "US"; //
-
-    return { selectedPet, locale };
-  };
-
-  const getPetServiceInfo = async () => {
-    const { selectedPet, locale } = await getSelectedPetAndLocale(petInfo);
+  const getPetServiceInfo = () => {
+    const { locale } = getSelectedPetLocale();
 
     const membershipStatus = selectedPet?.membershipStatus;
 
@@ -79,10 +148,8 @@ export const usePetProfileLayoutViewModel = () => {
     )
       return { membershipStatus: null, serviceStatus: null };
 
-    const petProducts = selectedPet?.products;
-
     const serviceStatus = getStatus({
-      products: petProducts,
+      products: selectedPet?.products,
       locale,
       membershipStatus,
     });
@@ -90,8 +157,8 @@ export const usePetProfileLayoutViewModel = () => {
     return { membershipStatus, serviceStatus };
   };
 
-  const getPetWatchInfo = async () => {
-    const { membershipStatus, serviceStatus } = await getPetServiceInfo();
+  const getPetWatchInfo = () => {
+    const { membershipStatus, serviceStatus } = getPetServiceInfo();
 
     if (serviceStatus === null) {
       return { petWatchOffersAndTags: null, membershipStatus };
@@ -105,10 +172,10 @@ export const usePetProfileLayoutViewModel = () => {
     return { petWatchOffersAndTags, membershipStatus };
   };
 
-  const getPetWatchBenefits = async () => {
-    const { locale } = await getSelectedPetAndLocale(petInfo);
+  const getPetWatchBenefits = () => {
+    const { locale } = getSelectedPetLocale();
 
-    const petWatchInfo = await getPetServiceInfo();
+    const petWatchInfo = getPetServiceInfo();
     const membershipStatus = petWatchInfo?.membershipStatus ?? "Not a member";
 
     const PetWatchOptionsBasedOnLocale: Record<string, PetCardPetWatchProps[]> =
@@ -121,20 +188,19 @@ export const usePetProfileLayoutViewModel = () => {
         ],
       };
 
-    const petWatchAvailableBenefits = await getAvailableBenefitsBasedOnStatus(
+    const petWatchAvailableBenefits = getAvailableBenefitsBasedOnStatus(
       PetWatchOptionsBasedOnLocale[locale]
     );
 
     const petWatchAnnualUnavailableBenefits =
-      await getUnavailableBenefitsBasedOnStatus(petWatchAvailableBenefits);
+      getUnavailableBenefitsBasedOnStatus(petWatchAvailableBenefits);
 
     return { petWatchAvailableBenefits, petWatchAnnualUnavailableBenefits };
   };
 
-  const getAvailableBenefitsBasedOnStatus = async (
+  const getAvailableBenefitsBasedOnStatus = (
     petWatchAvailableBenefits: PetCardPetWatchProps[]
-  ): Promise<PetCardPetWatchProps[]> => {
-    const { selectedPet } = await getSelectedPetAndLocale(petInfo);
+  ) => {
     const membershipStatus = selectedPet?.membershipStatus?.toLowerCase();
     const products = selectedPet?.products;
 
@@ -173,10 +239,9 @@ export const usePetProfileLayoutViewModel = () => {
     return petWatchAvailableBenefits;
   };
 
-  const getUnavailableBenefitsBasedOnStatus = async (
+  const getUnavailableBenefitsBasedOnStatus = (
     petWatchAvailableBenefits: PetCardPetWatchProps[]
   ) => {
-    const { selectedPet } = await getSelectedPetAndLocale(petInfo);
     const membershipStatus = selectedPet?.membershipStatus?.toLowerCase();
 
     if (membershipStatus?.includes("annual")) {
@@ -235,12 +300,13 @@ export const usePetProfileLayoutViewModel = () => {
     documentTypes,
     getContentDetails,
     handleContentChange,
+    isLoading,
+    lostPetHistory,
     onEditPet,
-    onRemoveImage,
-    onSelectImage,
-    petInfo,
+    pet: selectedPet,
     petWatchBenefits: getPetWatchBenefits(),
     petWatchInfo: getPetWatchInfo(),
+    ...lostAndFoundViewModel,
   };
 };
 

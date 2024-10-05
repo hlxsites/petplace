@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { LostOrFoundDialog } from "~/components/Pet/LostOrFoundDialog";
 import { PetCard } from "~/components/Pet/PetCard";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import {
@@ -12,12 +10,12 @@ import {
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
 import { IS_DEV_ENV } from "~/util/envUtil";
+import { redirectToLostPet } from "~/util/forceRedirectUtil";
 import { AppRoutePaths } from "../AppRoutePaths";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
-  const [isLostOrFoundDialogOpen, setIsLostOrFoundDialogOpen] = useState(false);
 
   return (
     <Layout>
@@ -57,20 +55,14 @@ export const MyPetsIndex = () => {
     props: Pick<ButtonProps, "className">
   ) {
     return (
-      <LostOrFoundDialog
-        isOpen={isLostOrFoundDialogOpen}
-        onClose={() => setIsLostOrFoundDialogOpen(false)}
-        trigger={
-          <Button
-            variant="secondary"
-            iconLeft="warningTriangle"
-            onClick={onHandleReportLostOrFound}
-            {...props}
-          >
-            Report a lost or found pet
-          </Button>
-        }
-      />
+      <Button
+        variant="secondary"
+        iconLeft="warningTriangle"
+        onClick={redirectToLostPet}
+        {...props}
+      >
+        Report a lost or found pet
+      </Button>
     );
   }
 
@@ -91,9 +83,5 @@ export const MyPetsIndex = () => {
         )}
       </div>
     );
-  }
-
-  function onHandleReportLostOrFound() {
-    setIsLostOrFoundDialogOpen(true);
   }
 };

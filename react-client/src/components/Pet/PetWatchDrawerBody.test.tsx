@@ -27,7 +27,7 @@ describe.skip("PetWatchDrawerBody", () => {
   );
 
   it("should render service details when selected", () => {
-    getRenderer({ contentDetails: DEFAULT_CONTENT });
+    getRenderer();
     expect(getByText(DEFAULT_CONTENT.description)).toBeInTheDocument();
   });
 
@@ -43,7 +43,6 @@ describe.skip("PetWatchDrawerBody", () => {
 });
 
 function getRenderer({
-  onClick = jest.fn(),
   route = "/default-route",
   serviceStatus = "Annual member",
   ...props
@@ -51,7 +50,6 @@ function getRenderer({
   return render(
     <MemoryRouter>
       <PetWatchDrawerBody
-        onClick={onClick}
         route={route}
         serviceStatus={serviceStatus}
         {...props}

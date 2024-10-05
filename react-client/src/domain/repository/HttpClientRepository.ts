@@ -11,13 +11,15 @@ export type HttpFormDataOptions = Omit<HttpOptions, "body"> & {
 export type HttpResponse =
   | {
       data: unknown;
-      statusCode: number;
       error?: undefined;
+      statusCode: number;
+      success: boolean;
     }
   | {
       data?: undefined;
-      statusCode?: undefined;
       error: unknown;
+      success?: false;
+      statusCode?: undefined;
     };
 
 export interface HttpClientRepository {

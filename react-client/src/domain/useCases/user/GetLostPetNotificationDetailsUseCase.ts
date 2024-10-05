@@ -1,8 +1,8 @@
 import { z } from "zod";
+import { ContactDone, LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { GetLostPetNotificationDetailsRepository } from "~/domain/repository/user/GetLostPetNotificationDetailsRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
-import { ContactDone, LostPetUpdateModel } from "../../models/user/UserModels";
-import { GetLostPetNotificationDetailsRepository } from "../../repository/user/GetLostPetNotificationDetailsRepository";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 

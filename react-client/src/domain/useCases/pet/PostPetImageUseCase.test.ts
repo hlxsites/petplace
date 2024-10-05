@@ -13,35 +13,29 @@ const DEFAULT_ARGS: PetImageMutationInput = {
 };
 
 describe("PostPetImageUseCase", () => {
-  it("should return null when it fails", async () => {
+  it("should return false when it fails", async () => {
     const sut = makeSut();
-    expect(await sut.mutate(DEFAULT_ARGS)).toBeNull();
+    expect(await sut.mutate(DEFAULT_ARGS)).toEqual(false);
   });
 
   it("should return true when it succeeds", async () => {
-    const httpClient = new MockHttpClient({ data: true });
+    const httpClient = new MockHttpClient({ statusCode: 200 });
     const sut = makeSut(httpClient);
     const result = await sut.mutate(DEFAULT_ARGS);
     expect(result).toBe(true);
   });
 
-  it("should return null when there is an error", async () => {
+  it("should return false when there is an error", async () => {
     const httpClient = new MockHttpClient({
       error: new Error("Error"),
     });
     const sut = makeSut(httpClient);
     const result = await sut.mutate(DEFAULT_ARGS);
-    expect(result).toBeNull();
+    expect(result).toEqual(false);
   });
 });
 
 // Test helpers
 function makeSut(httpClient?: HttpClientRepository) {
-  return new PostPetImageUseCase(
-    "token",
-    httpClient ||
-      new MockHttpClient({
-        data: false,
-      })
-  );
+  return new PostPetImageUseCase("token", httpClient || new MockHttpClient());
 }

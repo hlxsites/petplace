@@ -1,8 +1,5 @@
-import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Button, DropdownMenu } from "~/components/design-system";
 import { PetUnavailableActionDialog } from "~/components/Pet/PetUnavailableActionDialog";
-import { PetModel } from "~/domain/models/pet/PetModel";
-import { invariant } from "~/util/invariant";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 
 type PetActionsDropdownMenuProps = {
@@ -12,58 +9,50 @@ type PetActionsDropdownMenuProps = {
 export const PetActionsDropdownMenu = ({
   className,
 }: PetActionsDropdownMenuProps) => {
-  const viewModel = usePetProfileContext();
+  const { isLoading, onEditPet, pet } = usePetProfileContext();
 
-  return (
-    <SuspenseAwait minHeight={"80dvh"} resolve={viewModel.petInfo}>
-      {render}
-    </SuspenseAwait>
+  if (isLoading || !pet) return null;
+
+  const isFromMyPetHealth = pet.sourceType === "MyPetHealth";
+
+  const trigger = (
+    <Button
+      className={className}
+      iconLeft="apps"
+      iconProps={{ className: "text-brand-secondary" }}
+      variant="secondary"
+    >
+      Actions
+    </Button>
   );
 
-  function render(pet: PetModel | null) {
-    invariant(pet, "Pet not found");
-
-    const isFromMyPetHealth = pet?.sourceType === "MyPetHealth";
-
-    const trigger = (
-      <Button
-        className={className}
-        iconLeft="apps"
-        iconProps={{ className: "text-brand-secondary" }}
-        variant="secondary"
-      >
-        Actions
-      </Button>
-    );
-
-    if (!isFromMyPetHealth) {
-      return <PetUnavailableActionDialog trigger={trigger} />;
-    }
-
-    return (
-      <DropdownMenu
-        trigger={trigger}
-        items={[
-          {
-            icon: "edit",
-            label: "Edit pet profile",
-            onClick: viewModel.onEditPet,
-            variant: "highlight",
-          },
-          {
-            icon: "trash",
-            label: "Download pet ID",
-          },
-          {
-            icon: "trash",
-            label: "Remove this pet",
-          },
-          {
-            icon: "trash",
-            label: "Transfer this pet",
-          },
-        ]}
-      />
-    );
+  if (!isFromMyPetHealth) {
+    return <PetUnavailableActionDialog trigger={trigger} />;
   }
+
+  return (
+    <DropdownMenu
+      trigger={trigger}
+      items={[
+        {
+          icon: "edit",
+          label: "Edit pet profile",
+          onClick: onEditPet,
+          variant: "highlight",
+        },
+        {
+          icon: "trash",
+          label: "Download pet ID",
+        },
+        {
+          icon: "trash",
+          label: "Remove this pet",
+        },
+        {
+          icon: "trash",
+          label: "Transfer this pet",
+        },
+      ]}
+    />
+  );
 };

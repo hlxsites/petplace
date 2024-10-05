@@ -40,7 +40,7 @@ export type DialogBaseProps = DialogIconProps &
     id: string;
     isOpen: boolean;
     onClose?: () => void;
-    padding?: "p-0" | "p-large" | "p-xlarge";
+    padding?: "p-0" | "p-large" | "p-xlarge" | "p-xxlarge" | "p-xxxlarge";
     trigger: DialogTrigger;
     width?: CSSProperties["width"];
   };
