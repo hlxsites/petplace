@@ -1,5 +1,4 @@
 import { PetServices } from "~/domain/models/pet/PetModel";
-import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
 import { SuspenseAwait } from "../await/SuspenseAwait";
 import { LinkButton, Text } from "../design-system";
@@ -10,6 +9,7 @@ import {
   ConfirmDialog,
   ConfirmDialogDetails,
 } from "../design-system/dialog/ConfirmDialog";
+import { useRenewMembershipViewModel } from "~/routes/my-pets/petId/useRenewMembershipViewModel";
 import { useState } from "react";
 
 type PetWatchDrawerBodyProps = {
@@ -28,7 +28,7 @@ export const PetWatchDrawerBody = ({
     isConfirmRenewModalOpen,
     petWatchBenefits,
     onRenewMembership,
-  } = usePetProfileContext();
+  } = useRenewMembershipViewModel();
 
   const [resultDialog, setResultDialog] = useState<ConfirmDialogDetails | null>(
     null
@@ -54,6 +54,17 @@ export const PetWatchDrawerBody = ({
     if (serviceStatus !== "Annual member") return null;
     return renderAnnualService();
   })();
+
+  function handleOnConfirmRenew() {
+    void onRenewMembership().then((result) => {
+      closeConfirmRenewModal();
+      setResultDialog(result);
+    });
+  }
+
+  function onCloseConfirmDialog() {
+    setResultDialog(null);
+  }
 
   return (
     <div className="grid gap-xlarge">
@@ -123,16 +134,5 @@ export const PetWatchDrawerBody = ({
         {upgradeMembershipButton}
       </div>
     );
-  }
-
-  async function handleOnConfirmRenew() {
-    const result = await onRenewMembership();
-    closeConfirmRenewModal();
-
-    setResultDialog(result);
-  }
-
-  function onCloseConfirmDialog() {
-    setResultDialog(null);
   }
 };

@@ -1,15 +1,15 @@
 import { useDrawerContentState } from "~/hooks/useDrawerContentState";
 import { Button, Card, Drawer, Tag, Text, Title } from "../../design-system";
 import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
-import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
+import { useRenewMembershipViewModel } from "~/routes/my-pets/petId/useRenewMembershipViewModel";
 
 type PetWatchSectionProp = {
   route?: string;
 };
 
 export const PetWatchSection = ({ route }: PetWatchSectionProp) => {
-  const { petWatchInfo } = usePetProfileContext();
+  const { petWatchInfo } = useRenewMembershipViewModel();
 
   const { isDrawerOpen, onOpenDrawer, onCloseDrawer } =
     useDrawerContentState("pet-watch");

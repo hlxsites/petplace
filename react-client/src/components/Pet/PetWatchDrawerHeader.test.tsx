@@ -3,11 +3,11 @@ import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import { ASSET_IMAGES } from "~/assets";
 import { PetWatchDrawerHeader } from "./PetWatchDrawerHeader";
-import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
+import { useRenewMembershipContext } from "~/routes/my-pets/petId/useRenewMembershipViewModel";
 
 // Mock the context hook
-jest.mock("~/routes/my-pets/petId/usePetProfileLayoutViewModel", () => ({
-  usePetProfileContext: jest.fn(),
+jest.mock("~/routes/my-pets/petId/useRenewMembershipViewModel", () => ({
+  useRenewMembershipContext: jest.fn(),
 }));
 
 const { getByText, getByRole, queryByRole, queryByText } = screen;
@@ -30,7 +30,7 @@ describe("PetWatchDrawerHeader", () => {
   };
 
   beforeEach(() => {
-    (usePetProfileContext as jest.Mock).mockReturnValue(mockContextValue);
+    (useRenewMembershipContext as jest.Mock).mockReturnValue(mockContextValue);
   });
 
   it("should render default title when no contentDetails is provided", async () => {

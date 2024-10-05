@@ -2,8 +2,8 @@ import { ASSET_IMAGES } from "~/assets";
 import { IconButton, Text, Title } from "../design-system";
 import { PetServices } from "~/domain/models/pet/PetModel";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
-import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { SuspenseAwait } from "../await/SuspenseAwait";
+import { useRenewMembershipContext } from "~/routes/my-pets/petId/useRenewMembershipViewModel";
 
 type PetWatchDrawerHeaderProps = {
   serviceStatus: PetServices["membershipStatus"];
@@ -13,7 +13,7 @@ export const PetWatchDrawerHeader = ({
   serviceStatus,
 }: PetWatchDrawerHeaderProps) => {
   const { petWatchBenefits, getContentDetails, handleContentChange } =
-    usePetProfileContext();
+    useRenewMembershipContext();
 
   return (
     <SuspenseAwait resolve={petWatchBenefits}>
@@ -30,7 +30,7 @@ export const PetWatchDrawerHeader = ({
                 label="go back"
                 variant="link"
                 className="text-orange-300-contrast"
-                onClick={handleContentChange()}
+                onClick={() => handleContentChange()}
               />
               <Title level="h4">{contentDetails.title}</Title>
             </div>
