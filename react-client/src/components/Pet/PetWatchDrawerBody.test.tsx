@@ -3,7 +3,6 @@ import { ComponentProps } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { PET_WATCH_COMMON_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
-import { MemoryRouter } from "react-router-dom";
 
 const { getByText, getByRole } = screen;
 

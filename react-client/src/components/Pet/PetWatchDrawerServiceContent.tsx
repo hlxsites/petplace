@@ -23,7 +23,6 @@ export const PetWatchDrawerServiceContent = ({
       />
       <PetWatchDrawerBody
         contentDetails={contentDetails}
-        locale={locale}
         onClick={handleContentChange}
         route={route}
         serviceStatus={serviceStatus}
