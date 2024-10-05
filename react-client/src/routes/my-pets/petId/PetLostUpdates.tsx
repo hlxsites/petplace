@@ -18,6 +18,7 @@ import {
 } from "~/domain/models/pet/PetModel";
 import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
 import { parseDate } from "~/util/dateUtils";
+import { redirectToLostPet } from "~/util/forceRedirectUtil";
 import { classNames } from "~/util/styleUtil";
 
 type PetLostUpdatesSectionProps = {
@@ -43,7 +44,7 @@ export const PetLostUpdatesSection = ({
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
 
-  const { redirectToLostPet, openReportClosingModal } = useLostAndFoundReport();
+  const { openReportClosingModal } = useLostAndFoundReport();
 
   const isMissing = missingStatus === "missing";
   const [isOpen, setIsOpen] = useState(isMissing);

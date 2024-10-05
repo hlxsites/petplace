@@ -9,14 +9,13 @@ import {
 } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { Layout } from "~/components/design-system/layout/Layout";
-import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
 import { IS_DEV_ENV } from "~/util/envUtil";
+import { redirectToLostPet } from "~/util/forceRedirectUtil";
 import { AppRoutePaths } from "../AppRoutePaths";
 import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
   const { pets } = useMyPetsIndexViewModel();
-  const { redirectToLostPet } = useLostAndFoundReport();
 
   return (
     <Layout>

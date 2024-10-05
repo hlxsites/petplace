@@ -1,7 +1,8 @@
 import { Button } from "~/components/design-system";
 import { PetUnavailableActionDialog } from "~/components/Pet/PetUnavailableActionDialog";
+import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 import { MissingStatus } from "~/domain/models/pet/PetModel";
-import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
+import { redirectToLostPet } from "~/util/forceRedirectUtil";
 
 type ReportPetButtonProps = {
   className?: string;
@@ -14,20 +15,18 @@ export const ReportPetButton = ({
   disabled,
   missingStatus,
 }: ReportPetButtonProps) => {
-  const { redirectToLostPet, openReportClosingModal } = useLostAndFoundReport();
-
   const button = (() => {
     if (missingStatus === "found") {
       return renderButton("Report lost pet", redirectToLostPet);
     }
-    return renderButton("Report pet as found", openReportClosingModal);
+    return <ReportClosingModal trigger={renderButton("Report pet as found")} />;
   })();
 
   if (!disabled) return button;
 
   return <PetUnavailableActionDialog trigger={button} />;
 
-  function renderButton(label: string, onClick: () => void) {
+  function renderButton(label: string, onClick?: () => void) {
     return (
       <Button
         className={className}

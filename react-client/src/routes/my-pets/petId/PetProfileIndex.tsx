@@ -2,7 +2,6 @@ import { Outlet, useSearchParams } from "react-router-dom";
 import { Header } from "~/components/design-system/header/Header";
 import { DefaultLoading } from "~/components/design-system/loading/DefaultLoading";
 import { CheckoutConclusionModal } from "~/components/Membership/CheckoutConclusionModal";
-import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
@@ -68,7 +67,6 @@ export const PetProfileIndex = () => {
       <Outlet context={viewModel} />
       {displayOnboarding && <OnboardingDialog pet={pet} />}
       {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
-      <ReportClosingModal />
     </>
   );
 
