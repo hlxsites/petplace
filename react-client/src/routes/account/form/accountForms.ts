@@ -141,7 +141,6 @@ const addressLineTwoInput: ElementInputText = {
   elementType: "input",
   id: accountAddressIds.address2,
   label: "Address Line 2",
-  requiredCondition: true,
   type: "text",
 };
 

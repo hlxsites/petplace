@@ -1,5 +1,5 @@
-import { PetModel } from "../../models/pet/PetModel";
-import { GetPetsListRepository } from "../../repository/pet/GetPetsListRepository";
+import { PetModel } from "~/domain/models/pet/PetModel";
+import { GetPetsListRepository } from "~/domain/repository/pet/GetPetsListRepository";
 import { PETS_LIST } from "./mocks/petsListMock";
 
 export class MockGetPetsListUseCase implements GetPetsListRepository {

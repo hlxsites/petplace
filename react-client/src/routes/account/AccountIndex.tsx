@@ -1,75 +1,43 @@
-import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import {
-  Card,
-  DisplayForm,
-  DisplayUncontrolledForm,
-} from "~/components/design-system";
+import { Card, DisplayForm } from "~/components/design-system";
 import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePasswordSection";
 
 import { DefaultLoading } from "~/components/design-system/loading/DefaultLoading";
-import {
-  emergencyContactFormSchema,
-  externalAccountDetailsFormSchema,
-  internalAccountDetailsFormSchema,
-} from "./form/accountForms";
+
 import { useAccountIndexViewModel } from "./useAccountIndexViewModel";
-import { getAccountDetailsData } from "./util/formDataUtil";
 
 export const AccountIndex = () => {
-  const {
-    accountDetails,
-    accountDetailsFormVariables,
-    emergencyContactsFormValues,
-    isDirty,
-    isExternalLogin,
-    isSubmitting,
-    isLoading,
-    onChangesEmergencyContactsFormValues,
-    onSubmitEmergencyContacts,
-    onSubmitAccountDetails,
-  } = useAccountIndexViewModel();
-
-  const formSchema = isExternalLogin
-    ? externalAccountDetailsFormSchema
-    : internalAccountDetailsFormSchema;
+  const { accountForm, emergencyContactsForm, isExternalLogin } =
+    useAccountIndexViewModel();
 
   return (
     <div className="grid gap-xxxlarge pt-xlarge" role="region">
-      <Card padding="xlarge">
-        <SuspenseAwait resolve={accountDetails}>
-          {(accountDetails) => (
-            <DisplayUncontrolledForm
-              initialValues={getAccountDetailsData(
-                accountDetails,
-                isExternalLogin
-              )}
-              onSubmit={onSubmitAccountDetails}
-              schema={formSchema}
-              variables={accountDetailsFormVariables}
-            />
-          )}
-        </SuspenseAwait>
-      </Card>
-      {isExternalLogin && renderEmergencyContactForm()}
+      {renderAccountForm()}
+      {renderEmergencyContactForm()}
       <ChangePasswordSection />
     </div>
   );
 
-  function renderEmergencyContactForm() {
+  function renderAccountForm() {
     const children = (() => {
-      if (isLoading.emergencyContacts)
-        return <DefaultLoading minHeight={400} />;
+      if (accountForm.isLoading) {
+        return <DefaultLoading minHeight={800} />;
+      }
 
-      return (
-        <DisplayForm
-          isDirty={isDirty.emergencyContacts}
-          isSubmitting={isSubmitting.emergencyContacts}
-          onChange={onChangesEmergencyContactsFormValues}
-          onSubmit={onSubmitEmergencyContacts}
-          schema={emergencyContactFormSchema}
-          values={emergencyContactsFormValues}
-        />
-      );
+      return <DisplayForm {...accountForm} />;
+    })();
+
+    return <Card padding="xlarge">{children}</Card>;
+  }
+
+  function renderEmergencyContactForm() {
+    if (!isExternalLogin) return null;
+
+    const children = (() => {
+      if (emergencyContactsForm.isLoading) {
+        return <DefaultLoading minHeight={500} />;
+      }
+
+      return <DisplayForm {...emergencyContactsForm} />;
     })();
 
     return <Card padding="xlarge">{children}</Card>;

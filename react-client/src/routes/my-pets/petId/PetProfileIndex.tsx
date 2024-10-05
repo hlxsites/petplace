@@ -2,6 +2,7 @@ import { Outlet, useSearchParams } from "react-router-dom";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Header } from "~/components/design-system/header/Header";
 import { CheckoutConclusionModal } from "~/components/Membership/CheckoutConclusionModal";
+import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
@@ -23,7 +24,7 @@ import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
-  const { petInfo, lostAndFoundNotifications } = viewModel;
+  const { petInfo, lostPetHistory, missingStatus } = viewModel;
 
   return (
     <SuspenseAwait minHeight={"80dvh"} resolve={petInfo}>
@@ -35,6 +36,7 @@ export const PetProfileIndex = () => {
     invariant(pet, "Pet not found");
 
     const displayOnboarding = !!searchParams.get("onboarding");
+    const displayClosingReport = !!searchParams.get("close-report");
 
     const displayCheckoutSuccessModal = (() => {
       const contentParam = searchParams.get(CONTENT_PARAM_KEY);
@@ -43,7 +45,7 @@ export const PetProfileIndex = () => {
       return contentParam === "pet-watch-purchase-success";
     })();
 
-    const { id, locale, membershipStatus, policyInsurance, products } = pet;
+    const { id, policyInsurance } = pet;
 
     const checkoutPath = CHECKOUT_FULL_ROUTE(id);
 
@@ -63,29 +65,17 @@ export const PetProfileIndex = () => {
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
           <AdvertisingSection />
-          <PetWatchSection
-            petServiceStatus={{ locale, membershipStatus, products }}
-            route={checkoutPath}
-          />
+          <PetWatchSection route={checkoutPath} />
           {petInsuranceSectionElement}
-          <SuspenseAwait resolve={lostAndFoundNotifications}>
-            {(lostAndFoundNotifications) => {
-              return (
-                <PetLostUpdatesSection
-                  lostPetHistory={lostAndFoundNotifications}
-                  missingStatus={
-                    lostAndFoundNotifications[
-                      lostAndFoundNotifications.length - 1
-                    ]?.status ?? "found"
-                  }
-                />
-              );
-            }}
-          </SuspenseAwait>
+          <PetLostUpdatesSection
+            lostPetHistory={lostPetHistory}
+            missingStatus={missingStatus}
+          />
         </div>
         <Outlet context={viewModel} />
         {displayOnboarding && <OnboardingDialog />}
         {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
+        {displayClosingReport && <ReportClosingModal petId={id} />}
       </>
     );
 

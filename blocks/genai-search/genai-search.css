@@ -406,6 +406,7 @@ body:not(.gen-ai) .genai-search .search-box-wrapper .search-button {
   display: grid;
   grid-template-rows: auto;
   padding: 0;
+  max-width: 875px;
 }
 
 .genai-search-container .insurance-card .search-card-warning {

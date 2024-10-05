@@ -17,6 +17,7 @@ import {
   MissingStatus,
 } from "~/domain/models/pet/PetModel";
 import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
+import { parseDate } from "~/util/dateUtils";
 import { classNames } from "~/util/styleUtil";
 
 type PetLostUpdatesSectionProps = {
@@ -95,9 +96,8 @@ export const PetLostUpdatesSection = ({
   }: LostAndFountNotification) {
     return {
       data: {
-        // TODO use parseDate after API defines that this is string datetime
-        date: new Date(date).toLocaleString(),
-        update: new Date(update).toLocaleString(),
+        date: parseDate(date),
+        update: parseDate(update),
         status: convertStatus(status),
         id,
         note: note || "-",

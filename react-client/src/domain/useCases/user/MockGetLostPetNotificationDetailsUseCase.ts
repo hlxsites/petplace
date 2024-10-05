@@ -1,5 +1,5 @@
 import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
-import { GetLostPetNotificationDetailsRepository } from "../../repository/user/GetLostPetNotificationDetailsRepository";
+import { GetLostPetNotificationDetailsRepository } from "~/domain/repository/user/GetLostPetNotificationDetailsRepository";
 
 export class MockGetLostPetNotificationDetailsUseCase
   implements GetLostPetNotificationDetailsRepository
@@ -10,18 +10,18 @@ export class MockGetLostPetNotificationDetailsUseCase
 
     return {
       communicationId: "1234567",
-      date: 1722300534,
+      date: "2024-07-17T10:08:41.857",
       id: "1234567",
       note: "Lost report from submitted",
       status: "missing",
       petId: "AUN19623620",
       petName: "Billy",
-      update: 1722354747,
+      update: "2024-07-19T00:03:07.17",
       foundedBy: {
         finderName: "Nico",
         finderPhoneNumber: "987-666-5432",
         finderOrganization: "Lucico",
-        contact: [{ date: 628021800000, email: "Hellen Badu" }],
+        contact: [{ date: "2024-07-21T00:03:07.17", email: "Hellen Badu" }],
       },
     };
   }

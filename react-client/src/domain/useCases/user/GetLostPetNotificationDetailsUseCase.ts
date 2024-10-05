@@ -1,10 +1,13 @@
 import { z } from "zod";
+import {
+  ContactDone,
+  LostPetUpdateModel,
+} from "~/domain/models/user/UserModels";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { ContactDone, LostPetUpdateModel } from "../../models/user/UserModels";
-import { GetLostPetNotificationDetailsRepository } from "../../repository/user/GetLostPetNotificationDetailsRepository";
+import { GetLostPetNotificationDetailsRepository } from "~/domain/repository/user/GetLostPetNotificationDetailsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export class GetLostPetNotificationDetailsUseCase
   implements GetLostPetNotificationDetailsRepository
@@ -67,7 +70,7 @@ function convertToLostPetDetailedNotificationModel(
   notificationDetails.Communications?.forEach(({ EmailId, EmailDate }) => {
     contact.push({
       email: EmailId ?? "",
-      date: EmailDate ? new Date(EmailDate).getTime() : 0,
+      date: EmailDate ?? "",
     });
   });
 

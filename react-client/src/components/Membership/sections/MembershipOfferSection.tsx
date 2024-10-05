@@ -17,6 +17,7 @@ export const MembershipOfferSection = () => {
         isOpen={isOpen}
         title={title}
         setIsOpen={setIsOpen}
+        {...props}
       />
     </Fragment>
   ));

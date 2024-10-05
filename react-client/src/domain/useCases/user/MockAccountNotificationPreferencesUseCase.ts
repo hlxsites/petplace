@@ -1,5 +1,5 @@
 import { AccountNotificationPreferencesModel } from "~/domain/models/user/UserModels";
-import { AccountNotificationPreferencesRepository } from "../../repository/user/AccountNotificationRepository";
+import { AccountNotificationPreferencesRepository } from "~/domain/repository/user/AccountNotificationRepository";
 
 export class MockAccountNotificationPreferencesUseCase
   implements AccountNotificationPreferencesRepository

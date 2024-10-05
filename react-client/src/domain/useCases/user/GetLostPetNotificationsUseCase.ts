@@ -1,10 +1,10 @@
 import { z } from "zod";
+import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { LostPetUpdateModel } from "../../models/user/UserModels";
-import { GetLostPetNotificationsRepository } from "../../repository/user/GetLostPetNotificationsRepository";
+import { GetLostPetNotificationsRepository } from "~/domain/repository/user/GetLostPetNotificationsRepository";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export class GetLostPetNotificationsUseCase
   implements GetLostPetNotificationsRepository
@@ -73,7 +73,7 @@ function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
 
     notifications.push({
       communicationId: CommunicationGroupId ?? "",
-      date: RequestDate ? new Date(RequestDate).getTime() : 0,
+      date: RequestDate ?? "",
       foundedBy: {
         contact: [],
         finderName: FinderName ?? undefined,
@@ -85,7 +85,7 @@ function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
       petId: AnimalId ?? "",
       petName: PetName ?? "",
       status: Type === "FoundPet" ? "found" : "missing",
-      update: CommunicationDate ? new Date(CommunicationDate).getTime() : 0,
+      update: CommunicationDate ?? "",
     });
   });
 
