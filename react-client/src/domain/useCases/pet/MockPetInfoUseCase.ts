@@ -10,7 +10,6 @@ export class MockPetInfoUseCase implements PetInfoRepository {
     return PETS_LIST.find((pet) => pet.id === petId) ?? null;
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async mutate(): Promise<boolean> {
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
