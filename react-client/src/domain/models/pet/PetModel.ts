@@ -76,3 +76,11 @@ export type PetModel = PetCommon &
     spayedNeutered?: boolean;
     species?: string;
   };
+
+export type PetMutateInput = Pick<
+  PetModel,
+  "dateOfBirth" | "id" | "mixedBreed" | "name" | "sex" | "spayedNeutered"
+> & {
+  breedId: number;
+  specieId: number;
+};

@@ -1,4 +1,4 @@
-import { AccountEmergencyContactModel } from "../../models/user/UserModels";
+import { AccountEmergencyContactModel } from "~/domain/models/user/UserModels";
 
 export interface AccountEmergencyContactsRepository {
   query(): Promise<AccountEmergencyContactModel[]>;

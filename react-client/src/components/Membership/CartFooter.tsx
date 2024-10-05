@@ -1,11 +1,16 @@
 import { Button, Text } from "../design-system";
 
 type CartFooterProps = {
-  onClick?: () => void;
+  isSubmittingCart: boolean;
+  onClick: () => void;
   subtotal: string;
 };
 
-export const CartFooter = ({ onClick, subtotal }: CartFooterProps) => {
+export const CartFooter = ({
+  isSubmittingCart,
+  onClick,
+  subtotal,
+}: CartFooterProps) => {
   return (
     <>
       <div className="flex w-full justify-between">
@@ -22,7 +27,9 @@ export const CartFooter = ({ onClick, subtotal }: CartFooterProps) => {
         </Text>
       </div>
 
-      <Button onClick={onClick}>Proceed to checkout</Button>
+      <Button isLoading={isSubmittingCart} onClick={onClick}>
+        Proceed to checkout
+      </Button>
     </>
   );
 };

@@ -1,8 +1,8 @@
 import { z } from "zod";
+import { AccountEmergencyContactModel } from "~/domain/models/user/UserModels";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { AccountEmergencyContactsRepository } from "~/domain/repository/user/AccountEmergencyContactsRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
-import { AccountEmergencyContactModel } from "../../models/user/UserModels";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 

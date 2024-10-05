@@ -1,0 +1,26 @@
+[
+  {
+    "id": 4,
+    "name": "I picked up my pet from the shelter/finder"
+  },
+  {
+    "id": 2,
+    "name": "I found my pet myself"
+  },
+  {
+    "id": 11,
+    "name": "I surrendered my pet"
+  },
+  {
+    "id": 1,
+    "name": "My pet was never lost"
+  },
+  {
+    "id": 18,
+    "name": "I do not own this pet"
+  },
+  {
+    "id": 3,
+    "name": "This pet is deceased"
+  }
+]

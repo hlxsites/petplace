@@ -1,8 +1,6 @@
-import { ChangeEvent, ReactNode } from "react";
+import { ChangeEvent, createRef } from "react";
 import { Button } from "~/components/design-system";
 import { PetModel } from "~/domain/models/pet/PetModel";
-
-const inputId = "pet-image-file-input";
 
 export const PetImageInput = ({
   onRemove,
@@ -11,8 +9,10 @@ export const PetImageInput = ({
 }: {
   pet: PetModel;
   onRemove: () => void;
-  onSelectFile: (petId: string, file: File) => void;
-}): ReactNode => {
+  onSelectFile: (file: File) => void;
+}) => {
+  const inputFileRef = createRef<HTMLInputElement>();
+
   return (
     <div className="flex gap-base">
       <img
@@ -25,16 +25,17 @@ export const PetImageInput = ({
           Remove photo
         </Button>
         <input
-          type="file"
-          id={inputId}
           className="absolute h-0 w-0 opacity-0"
+          id="pet-image-file-input"
           onChange={handleFileChange}
+          ref={inputFileRef}
+          type="file"
         />
         <Button
-          variant="secondary"
-          iconLeft="photoCamera"
-          onClick={handleClick}
           fullWidth
+          iconLeft="photoCamera"
+          onClick={onSelectPhotoClick}
+          variant="secondary"
         >
           Select photo
         </Button>
@@ -44,13 +45,10 @@ export const PetImageInput = ({
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     if (event.target && event.target.files?.length)
-      onSelectFile(pet.id, event.target.files[0]);
+      onSelectFile(event.target.files[0]);
   }
 
-  function handleClick() {
-    const fileInput = document.getElementById(inputId);
-    if (fileInput) {
-      fileInput.click();
-    }
+  function onSelectPhotoClick() {
+    inputFileRef.current?.click();
   }
 };

@@ -1,10 +1,10 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import getLostAndFoundNotificationsUseCaseFactory from "~/domain/useCases/pet/getLostAndFoundNotificationsUseCaseFactory";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
 import { PetModel } from "~/domain/models/pet/PetModel";
-import getPetInfoUseCaseFactory from "~/domain/useCases/pet/getPetInfoUseCaseFactory";
-import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
+import getReportClosingReasonsUseCaseFactory from "~/domain/useCases/lookup/getReportClosingReasonsUseCaseFactory";
+import getLostAndFoundNotificationsUseCaseFactory from "~/domain/useCases/pet/getLostAndFoundNotificationsUseCaseFactory";
+import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
 import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
@@ -25,34 +25,38 @@ export const loader = (({ params }) => {
   invariantResponse(petId, "Pet ID is required in this route");
 
   const authToken = requireAuthToken();
-  const getLostAndFoundNotificationsUseCase = getLostAndFoundNotificationsUseCaseFactory(authToken);
-  const getPetInfoUseCase = getPetInfoUseCaseFactory(authToken);
-  const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
-  const petInfoPromise = getPetInfoUseCase.query(petId);
+  const getLostAndFoundNotificationsUseCase =
+    getLostAndFoundNotificationsUseCaseFactory(authToken);
+  const useCase = petInfoUseCaseFactory(authToken);
+  const petInfoPromise = useCase.query(petId);
+  const getReportClosingReasonsUseCase =
+    getReportClosingReasonsUseCaseFactory(authToken);
 
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
+    petId,
     petInfo: petInfoPromise,
-    mutatePetImage: postPetImageUseCase.mutate,
-    lostAndFoundNotifications: getLostAndFoundNotificationsUseCase.query(petId)
+    lostAndFoundNotifications: getLostAndFoundNotificationsUseCase.query(petId),
+    reportClosingReasons: getReportClosingReasonsUseCase.query(),
   });
 }) satisfies LoaderFunction;
 
 export const usePetProfileLayoutViewModel = () => {
   const navigate = useNavigate();
-  const { documentTypes, lostAndFoundNotifications, mutatePetImage, petInfo } =
-    useLoaderData<typeof loader>();
+  const {
+    documentTypes,
+    lostAndFoundNotifications,
+    petId,
+    petInfo,
+    reportClosingReasons,
+  } = useLoaderData<typeof loader>();
 
   const onEditPet = () => {
     navigate(AppRoutePaths.petEdit);
   };
 
-  const onRemoveImage = () => {
-    // TODO: implement image deletion
-  };
-
-  const onSelectImage = (petId: string, file: File) => {
-    void mutatePetImage({ petId, petImage: file });
+  const closeReport = (reasonId: number) => {
+    console.log("🚀 ~ petId, reasonId", petId, reasonId);
   };
 
   const getSelectedPetAndLocale = async (petInfo: Promise<PetModel | null>) => {
@@ -152,14 +156,14 @@ export const usePetProfileLayoutViewModel = () => {
   };
 
   return {
+    closeReport,
     documentTypes,
     lostAndFoundNotifications,
     onEditPet,
-    onRemoveImage,
-    onSelectImage,
     petInfo,
     petWatchBenefits: getPetWatchAvailableBenefits(),
     petWatchInfo: getPetWatchInfo(),
+    reportClosingReasons,
   };
 };
 

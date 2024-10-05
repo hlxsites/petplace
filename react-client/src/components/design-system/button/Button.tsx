@@ -18,6 +18,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       children,
       className,
+      disabled,
       fullWidth,
       isLoading,
       type = "button",
@@ -29,8 +30,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
+    const isDisabled = isLoading || disabled;
+
     const { className: baseClassName } = useButtonBase({
-      disabled: isLoading || rest.disabled,
+      disabled: isDisabled,
       fullWidth,
       isLoading,
       variant,
@@ -39,6 +42,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={classNames(baseClassName, className)}
+        disabled={isDisabled}
         ref={ref}
         type={type}
         {...rest}

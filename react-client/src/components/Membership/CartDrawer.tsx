@@ -8,6 +8,7 @@ export const CartDrawer = () => {
   const {
     cartItems,
     isOpenCart,
+    isSubmittingCart,
     onContinueToCheckoutPayment,
     onCloseCart,
     onUpdateQuantity,
@@ -38,7 +39,11 @@ export const CartDrawer = () => {
           ))}
         </div>
 
-        <CartFooter onClick={onContinueToCheckoutPayment} subtotal={subtotal} />
+        <CartFooter
+          isSubmittingCart={isSubmittingCart}
+          onClick={onContinueToCheckoutPayment}
+          subtotal={subtotal}
+        />
       </div>
     </Drawer>
   );
