@@ -19,6 +19,7 @@ import {
   CA_MembershipStatus,
   MembershipStatus,
 } from "./types/PetServicesTypes";
+import { useLostAndFoundReportViewModel } from "./useLostAndFoundReportViewModel";
 import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
 import { PET_WATCH_OFFERS, PET_WATCH_TAGS } from "./utils/petServiceConstants";
 import { getStatus } from "./utils/petServiceStatusUtils";
@@ -65,8 +66,6 @@ export const usePetProfileLayoutViewModel = () => {
   const [isLoadingLostPetHistory, setIsLoadingLostPetHistory] = useState(true);
 
   const [petInfo, setPetInfo] = useState<PetModel | null>(null);
-  const [isSubmittingFoundPetReport, setIsSubmittingFoundPetReport] =
-    useState(false);
 
   const [lostPetHistory, setLostPetHistory] = useState<
     LostAndFountNotification[]
@@ -90,6 +89,22 @@ export const usePetProfileLayoutViewModel = () => {
     };
   })();
 
+  const fetchLostPetHistory = useCallback(async () => {
+    setIsLoadingLostPetHistory(true);
+
+    const lostPetHistory = await lostAndFoundNotificationsPromise(petId);
+    setLostPetHistory(lostPetHistory);
+
+    setIsLoadingLostPetHistory(false);
+  }, [lostAndFoundNotificationsPromise, petId]);
+
+  const lostAndFoundViewModel = useLostAndFoundReportViewModel({
+    fetchLostPetHistory,
+    mutateReport,
+    pet: selectedPet,
+    reportClosingReasons,
+  });
+
   useDeepCompareEffect(() => {
     async function resolvePetInfoPromise() {
       const petInfo = await petInfoPromise;
@@ -100,33 +115,12 @@ export const usePetProfileLayoutViewModel = () => {
     void resolvePetInfoPromise();
   }, [petInfoPromise]);
 
-  const fetchLostPetHistory = useCallback(async () => {
-    setIsLoadingLostPetHistory(true);
-
-    const lostPetHistory = await lostAndFoundNotificationsPromise(petId);
-    setLostPetHistory(lostPetHistory);
-
-    setIsLoadingLostPetHistory(false);
-  }, [lostAndFoundNotificationsPromise, petId]);
-
   useDeepCompareEffect(() => {
     void fetchLostPetHistory();
   }, [fetchLostPetHistory]);
 
   const onEditPet = () => {
     navigate(AppRoutePaths.petEdit);
-  };
-
-  const submitPetFoundReport = (reason: number) => {
-    setIsSubmittingFoundPetReport(true);
-
-    void (async () => {
-      const microchip = selectedPet?.microchip ?? "";
-      await mutateReport({ petId, microchip, reason });
-      await fetchLostPetHistory();
-
-      setIsSubmittingFoundPetReport(false);
-    })();
   };
 
   const getSelectedPetLocale = () => {
@@ -218,16 +212,14 @@ export const usePetProfileLayoutViewModel = () => {
   };
 
   return {
-    submitPetFoundReport,
     documentTypes,
     isLoading,
-    isSubmittingFoundPetReport,
     lostPetHistory,
     onEditPet,
     pet: selectedPet,
     petWatchBenefits: getPetWatchAvailableBenefits(),
     petWatchInfo: getPetWatchInfo(),
-    reportClosingReasons,
+    ...lostAndFoundViewModel,
   };
 };
 

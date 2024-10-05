@@ -22,7 +22,7 @@ import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
-  const { isLoading, pet, lostPetHistory } = viewModel;
+  const { isLoading, pet, lostPetHistory, onClickReportPetFound } = viewModel;
 
   if (isLoading) return <DefaultLoading minHeight="80dvh" />;
 
@@ -61,6 +61,7 @@ export const PetProfileIndex = () => {
         {petInsuranceSectionElement}
         <PetLostUpdatesSection
           lostPetHistory={lostPetHistory}
+          onClickReportPetFound={onClickReportPetFound}
           missingStatus={pet.missingStatus}
         />
       </div>

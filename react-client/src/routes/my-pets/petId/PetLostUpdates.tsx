@@ -16,7 +16,6 @@ import {
   LostPetUpdateModel,
   MissingStatus,
 } from "~/domain/models/pet/PetModel";
-import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
 import { parseDate } from "~/util/dateUtils";
 import { redirectToLostPet } from "~/util/forceRedirectUtil";
 import { classNames } from "~/util/styleUtil";
@@ -24,6 +23,7 @@ import { classNames } from "~/util/styleUtil";
 type PetLostUpdatesSectionProps = {
   lostPetHistory: LostAndFountNotification[];
   missingStatus: MissingStatus;
+  onClickReportPetFound: () => void;
 };
 
 const columns: TableColumn[] = [
@@ -39,12 +39,11 @@ const ITEMS_PER_PAGE = 5;
 export const PetLostUpdatesSection = ({
   lostPetHistory,
   missingStatus,
+  onClickReportPetFound,
 }: PetLostUpdatesSectionProps) => {
   const dataSource = (() => {
     return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
   })();
-
-  const { openReportClosingModal } = useLostAndFoundReport();
 
   const isMissing = missingStatus === "missing";
   const [isOpen, setIsOpen] = useState(isMissing);
@@ -154,7 +153,7 @@ export const PetLostUpdatesSection = ({
           icon: "checkCircle",
           iconColor: "text-brand-main",
           message: "Report pet as found",
-          onClick: openReportClosingModal,
+          onClick: onClickReportPetFound,
         },
         found: {
           icon: "warning",
