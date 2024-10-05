@@ -11,7 +11,7 @@ import {
   MembershipStatus,
 } from "./types/PetServicesTypes";
 import { PET_WATCH_OFFERS, PET_WATCH_TAGS } from "./utils/petServiceConstants";
-import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetails";
+import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetailsConstants";
 import { getStatus } from "./utils/petServiceStatusUtils";
 import {
   PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS,
