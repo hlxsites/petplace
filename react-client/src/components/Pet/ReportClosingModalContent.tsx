@@ -15,7 +15,7 @@ export const ReportClosingModalContent = ({
   options,
   petId,
 }: ReportClosingModalContentProps) => {
-  const [reason, setReason] = useState<string | undefined>();
+  const [reason, setReason] = useState("");
   const [didSubmit, setDidSubmit] = useState(false);
   const petProfilePath = PET_PROFILE_FULL_ROUTE(petId);
 
@@ -35,7 +35,7 @@ export const ReportClosingModalContent = ({
         required
         options={options?.map(({ reason }) => reason)}
         onChange={setReason}
-        value={reason ?? ""}
+        value={reason}
         errorMessage={errorMessage}
       />
       <div className="mt-xxxxxlarge flex w-full flex-col-reverse gap-base md:flex-row">
