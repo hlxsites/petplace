@@ -11,6 +11,7 @@ import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
 import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
 import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
+import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { petInfoIds } from "../form/petForm";
 import { PetInfoFormVariables } from "../types/PetInfoTypes";
@@ -72,7 +73,11 @@ export const usePetEditViewModel = () => {
   };
 
   const onSelectImage = (file: File) => {
-    void mutatePetImage({ petId, petImage: file });
+    void (async () => {
+      const success = await mutatePetImage({ petId, petImage: file });
+      // TODO: this should be gracefully handled by the UI instead of a force redirect
+      if (success) forceRedirect(PET_PROFILE_FULL_ROUTE(petId));
+    })();
   };
 
   const updateAndRedirect = async (values: FormValues) => {

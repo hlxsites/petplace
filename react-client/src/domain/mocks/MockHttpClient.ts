@@ -6,77 +6,53 @@ import {
 export class MockHttpClient implements HttpClientRepository {
   private data: unknown;
   private error: unknown;
-  private statusCode?: number;
+  private statusCode: number;
 
   constructor({
     data,
     error,
     statusCode,
   }: { data?: unknown; error?: unknown; statusCode?: number } = {}) {
-    this.data = data;
+    this.data = data || null;
     this.error = error;
-    this.statusCode = statusCode;
+    this.statusCode = statusCode || 500;
   }
 
-  delete(): Promise<HttpResponse> {
-    if (this.error) {
-      // @ts-expect-error - this is a mock implementation
-      return { error: this.error };
-    }
-
-    // @ts-expect-error - this is a mock implementation
-    return { data: this.data };
+  get success(): boolean {
+    return this.statusCode >= 200 && this.statusCode < 300;
   }
 
-  get(): Promise<HttpResponse> {
-    if (this.error) {
-      // @ts-expect-error - this is a mock implementation
-      return { error: this.error };
-    }
-
-    // @ts-expect-error - this is a mock implementation
-    return { data: this.data };
-  }
-
-  post(): Promise<HttpResponse> {
-    if (this.error) {
-      return Promise.resolve({ error: this.error });
-    }
-
-    // @ts-expect-error - this is a mock implementation
-    return Promise.resolve({
-      data: this.data,
-      statusCode: this.statusCode,
-    });
-  }
-
-  postFormData(): Promise<HttpResponse> {
-    if (this.error) {
-      // @ts-expect-error - this is a mock implementation
-      return { error: this.error };
-    }
-
-    // @ts-expect-error - this is a mock implementation
-    return { data: this.data };
-  }
-
-  put(): Promise<HttpResponse> {
+  get defaultResponse(): Promise<HttpResponse> {
     if (this.error) {
       return Promise.resolve({
         error: this.error,
       });
     }
-    if (this.statusCode === 204) {
-      return Promise.resolve({
-        data: null,
-        statusCode: this.statusCode,
-        success: true,
-      });
-    }
 
-    // @ts-expect-error - this is a mock implementation
     return Promise.resolve({
       data: this.data,
+      statusCode: this.statusCode,
+      success: this.success,
     });
+  }
+
+  delete(): Promise<HttpResponse> {
+    return this.defaultResponse;
+  }
+
+  get(): Promise<HttpResponse> {
+    return this.defaultResponse;
+  }
+
+  post(): Promise<HttpResponse> {
+    return this.defaultResponse;
+  }
+
+  postFormData(): Promise<HttpResponse> {
+    return this.defaultResponse;
+  }
+
+  put(): Promise<HttpResponse> {
+    return this.defaultResponse;
   }
 }
