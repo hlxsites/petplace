@@ -4,14 +4,16 @@ import { Button, Text } from "../design-system";
 import Select from "../design-system/form/Select";
 
 type ReportClosingModalContentProps = {
+  isSubmitting: boolean;
   onCancel: () => void;
-  onCloseReport: (reasonId: number) => void;
+  onSubmit: (reasonId: number) => void;
   options: ReportClosingReasonModel[];
 };
 
 export const ReportClosingModalContent = ({
+  isSubmitting,
   onCancel,
-  onCloseReport,
+  onSubmit,
   options,
 }: ReportClosingModalContentProps) => {
   const [reason, setReason] = useState("");
@@ -37,10 +39,15 @@ export const ReportClosingModalContent = ({
         errorMessage={errorMessage}
       />
       <div className="mt-xxxxxlarge flex w-full flex-col-reverse gap-base md:flex-row">
-        <Button fullWidth onClick={onCancel} variant="secondary">
+        <Button
+          disabled={isSubmitting}
+          fullWidth
+          onClick={onCancel}
+          variant="secondary"
+        >
           Cancel
         </Button>
-        <Button fullWidth onClick={handleSubmit}>
+        <Button fullWidth isLoading={isSubmitting} onClick={handleSubmit}>
           Submit
         </Button>
       </div>
@@ -51,6 +58,6 @@ export const ReportClosingModalContent = ({
     setDidSubmit(true);
 
     const selectedReason = options.find((option) => reason === option.reason);
-    if (selectedReason) onCloseReport(selectedReason.id);
+    if (selectedReason) onSubmit(selectedReason.id);
   }
 };

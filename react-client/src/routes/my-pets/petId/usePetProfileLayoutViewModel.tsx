@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
@@ -12,9 +12,8 @@ import getLostAndFoundNotificationsUseCaseFactory from "~/domain/useCases/pet/ge
 import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
 import putReportClosingUseCaseFactory from "~/domain/useCases/pet/putReportClosingUseCaseFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
-import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import { AppRoutePaths } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
-import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import {
   CA_MembershipStatus,
@@ -46,8 +45,7 @@ export const loader = (({ params }) => {
     petId,
     petInfoPromise,
     mutateReport: putReportClosingUseCase.mutate,
-    lostAndFoundNotificationsPromise:
-      getLostAndFoundNotificationsUseCase.query(petId),
+    lostAndFoundNotificationsPromise: getLostAndFoundNotificationsUseCase.query,
     reportClosingReasons: getReportClosingReasonsUseCase.query(),
   });
 }) satisfies LoaderFunction;
@@ -63,18 +61,18 @@ export const usePetProfileLayoutViewModel = () => {
     reportClosingReasons,
   } = useLoaderData<typeof loader>();
 
-  const isLoadingRef = useRef({
-    petInfo: true,
-    lostPetHistory: true,
-  });
+  const [isLoadingPetInfo, setIsLoadingPetInfo] = useState(true);
+  const [isLoadingLostPetHistory, setIsLoadingLostPetHistory] = useState(true);
 
   const [petInfo, setPetInfo] = useState<PetModel | null>(null);
+  const [isSubmittingFoundPetReport, setIsSubmittingFoundPetReport] =
+    useState(false);
 
   const [lostPetHistory, setLostPetHistory] = useState<
     LostAndFountNotification[]
   >([]);
 
-  const isLoading = Object.values(isLoadingRef.current).some(Boolean);
+  const isLoading = isLoadingPetInfo || isLoadingLostPetHistory;
 
   const missingStatus: MissingStatus = (() => {
     if (!lostPetHistory.length) return "found";
@@ -95,32 +93,39 @@ export const usePetProfileLayoutViewModel = () => {
   useDeepCompareEffect(() => {
     async function resolvePetInfoPromise() {
       const petInfo = await petInfoPromise;
-      isLoadingRef.current.petInfo = false;
       setPetInfo(petInfo);
+      setIsLoadingPetInfo(false);
     }
 
     void resolvePetInfoPromise();
   }, [petInfoPromise]);
 
-  useDeepCompareEffect(() => {
-    async function resolveLostAndFoundNotificationsPromise() {
-      const lostPetHistory = await lostAndFoundNotificationsPromise;
-      isLoadingRef.current.lostPetHistory = false;
-      setLostPetHistory(lostPetHistory);
-    }
+  const fetchLostPetHistory = useCallback(async () => {
+    setIsLoadingLostPetHistory(true);
 
-    void resolveLostAndFoundNotificationsPromise();
-  }, [lostAndFoundNotificationsPromise]);
+    const lostPetHistory = await lostAndFoundNotificationsPromise(petId);
+    setLostPetHistory(lostPetHistory);
+
+    setIsLoadingLostPetHistory(false);
+  }, [lostAndFoundNotificationsPromise, petId]);
+
+  useDeepCompareEffect(() => {
+    void fetchLostPetHistory();
+  }, [fetchLostPetHistory]);
 
   const onEditPet = () => {
     navigate(AppRoutePaths.petEdit);
   };
 
-  const closeReport = (reason: number) => {
+  const submitPetFoundReport = (reason: number) => {
+    setIsSubmittingFoundPetReport(true);
+
     void (async () => {
       const microchip = selectedPet?.microchip ?? "";
-      const closed = await mutateReport({ petId, microchip, reason });
-      if (closed) forceRedirect(PET_PROFILE_FULL_ROUTE(petId));
+      await mutateReport({ petId, microchip, reason });
+      await fetchLostPetHistory();
+
+      setIsSubmittingFoundPetReport(false);
     })();
   };
 
@@ -212,12 +217,11 @@ export const usePetProfileLayoutViewModel = () => {
     return petWatchAvailableBenefits;
   };
 
-  console.log("selectedPet", selectedPet);
-
   return {
-    closeReport,
+    submitPetFoundReport,
     documentTypes,
     isLoading,
+    isSubmittingFoundPetReport,
     lostPetHistory,
     onEditPet,
     pet: selectedPet,
