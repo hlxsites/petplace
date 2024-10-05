@@ -2,9 +2,28 @@ import { PetServices } from "~/domain/models/pet/PetModel";
 import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
 import { LinkButton, Text } from "../design-system";
+import {
+  ConfirmDialog,
+  ConfirmDialogDetails,
+} from "../design-system/dialog/ConfirmDialog";
 import { PetCardPetWatch } from "./PetCardPetWatch";
 import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
 import { PetWatchServices } from "./PetWatchServices";
+
+const ERROR_DETAILS: ConfirmDialogDetails = {
+  confirmButtonLabel: "Check Payment Settings",
+  message:
+    "We were unable to renew your service. Please check your payment settings to ensure your information is up to date.",
+  title: "Renewal Failed",
+  type: "error",
+};
+
+const SUCCESS_DETAILS: ConfirmDialogDetails = {
+  icon: "checkCircle",
+  message: "Your service has been successfully renewed for another year.",
+  title: "Renewal Successful",
+  type: "success",
+};
 
 type PetWatchDrawerBodyProps = {
   route?: string;
@@ -19,13 +38,19 @@ export const PetWatchDrawerBody = ({
     closeConfirmRenewModal,
     getContentDetails,
     handleContentChange,
-    isConfirmRenewModalOpen,
+    isOpenModalType,
     onRenewMembership,
     petWatchBenefits: {
       petWatchAvailableBenefits,
       petWatchAnnualUnavailableBenefits,
     },
   } = usePetProfileContext();
+
+  const resultDialog: ConfirmDialogDetails | null = (() => {
+    if (isOpenModalType === "error") return ERROR_DETAILS;
+    if (isOpenModalType === "success") return SUCCESS_DETAILS;
+    return null;
+  })();
 
   const upgradeMembershipButton = (() => {
     if (!route) return null;
@@ -53,12 +78,25 @@ export const PetWatchDrawerBody = ({
   const servicesElement = (() => {
     if (contentDetails) {
       return (
-        <PetServiceDetailsCard
-          {...contentDetails}
-          isModalOpen={isConfirmRenewModalOpen}
-          onCloseModal={closeConfirmRenewModal}
-          onConfirmModal={handleOnConfirmRenew}
-        />
+        <>
+          <PetServiceDetailsCard
+            {...contentDetails}
+            isModalOpen={isOpenModalType === "renew"}
+            onCloseModal={closeConfirmRenewModal}
+            onConfirmModal={handleOnConfirmRenew}
+          />
+          {resultDialog && (
+            <ConfirmDialog
+              icon={resultDialog.icon}
+              isOpen={true}
+              onClose={onCloseConfirmDialog}
+              confirmButtonLabel={resultDialog.confirmButtonLabel}
+              message={resultDialog.message}
+              title={resultDialog.title}
+              type={resultDialog.type}
+            />
+          )}
+        </>
       );
     }
 
@@ -101,6 +139,9 @@ export const PetWatchDrawerBody = ({
 
   function handleOnConfirmRenew() {
     void onRenewMembership();
-    closeConfirmRenewModal();
+  }
+
+  function onCloseConfirmDialog() {
+    onCloseConfirmDialog();
   }
 };

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { PetCardPetWatchProps } from "~/components/Pet/PetCardPetWatch";
 import { PetModel } from "~/domain/models/pet/PetModel";
@@ -24,11 +25,17 @@ type UseRenewMembershipViewModelProps = {
   postRenew: (data: RenewMembershipModel) => Promise<boolean>;
 };
 
+type ModalType = "error" | "renew" | "success";
+
 export const useRenewMembershipViewModel = ({
   selectedPet,
   postRenew,
 }: UseRenewMembershipViewModelProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [resultModal, setResultModal] = useState<"error" | "success" | null>(
+    null
+  );
 
   const locale = selectedPet?.locale ?? "US";
 
@@ -173,9 +180,7 @@ export const useRenewMembershipViewModel = ({
           confirmButtonLabel: "Confirm Renew",
           message: `Would you like to renew ${contentDetails.title} for another year? This ensures continued protection for your pet's.`,
           title: "Confirm Renewal",
-          onClick: () => {
-            openModal("renew");
-          },
+          onClick: openModal,
         },
       };
     }
@@ -194,43 +199,63 @@ export const useRenewMembershipViewModel = ({
   };
 
   const setSelectedContent = (value: string) => {
-    searchParams.set(ITEM_PARAM_KEY, value);
-    setSearchParams(searchParams);
+    setSearchParams((nextSearchParams) => {
+      nextSearchParams.set(ITEM_PARAM_KEY, value);
+      return nextSearchParams;
+    });
   };
 
   const resetContent = () => {
-    searchParams.delete(ITEM_PARAM_KEY);
-    setSearchParams(searchParams);
+    setSearchParams((nextSearchParams) => {
+      nextSearchParams.delete(ITEM_PARAM_KEY);
+      return nextSearchParams;
+    });
   };
 
-  const openModal = (modalType: string) => {
-    searchParams.set(CONFIRM_RENEW_PARAM_KEY, modalType);
-    setSearchParams(searchParams);
+  const openModal = () => {
+    setSearchParams((nextSearchParams) => {
+      nextSearchParams.set(CONFIRM_RENEW_PARAM_KEY, "renew");
+      return nextSearchParams;
+    });
   };
 
   const closeConfirmRenewModal = () => {
-    searchParams.delete(CONFIRM_RENEW_PARAM_KEY);
-    setSearchParams(searchParams);
+    setSearchParams(
+      (nextSearchParams) => {
+        nextSearchParams.delete(CONFIRM_RENEW_PARAM_KEY);
+        return nextSearchParams;
+      },
+      {
+        replace: true,
+      }
+    );
   };
 
-  const isConfirmRenewModalOpen = searchParams.has(CONFIRM_RENEW_PARAM_KEY);
+  const isOpenModalType: ModalType | null = (() => {
+    if (searchParams.has(CONFIRM_RENEW_PARAM_KEY)) return "renew";
+    return resultModal;
+  })();
 
   const onRenewMembership = async () => {
     const selectedContent = searchParams.get(ITEM_PARAM_KEY);
     if (!selectedContent || !selectedPet) return null;
 
-    return await postRenew({
+    const response = await postRenew({
       autoRenew: true,
       id: selectedContent,
       petId: selectedPet.id,
     });
+
+    setResultModal(response ? "success" : "error");
+    closeConfirmRenewModal();
+    return response;
   };
 
   return {
     closeConfirmRenewModal,
     getContentDetails,
     handleContentChange,
-    isConfirmRenewModalOpen,
+    isOpenModalType,
     onRenewMembership,
     petWatchBenefits: getPetWatchBenefits(),
     petWatchInfo: getPetWatchInfo(),
