@@ -156,7 +156,7 @@ const adsenseSetup = (adArgs, catVal) => {
 };
 
 const adsDefineSlot = async (adArgs, catVal) => {
-  window.googletag.cmd.push(async () => {
+  const fn = async () => {
     // separate function to return the anchor slot
     const anchorSlot = await adsenseSetup(adArgs, catVal);
 
@@ -164,7 +164,17 @@ const adsDefineSlot = async (adArgs, catVal) => {
     const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
     if (anchorSlot) newArgs.push(anchorSlot);
     gtagDisplay(newArgs);
-  });
+  };
+
+  // Speculative prerender-aware adsense instrumentation
+  // based on https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API#unsafe_prerendering
+  if (document.prerendering) {
+    document.addEventListener('prerenderingchange', () => {
+      window.googletag.cmd.push(fn);
+    }, { once: true });
+  } else {
+    window.googletag.cmd.push(fn);
+  }
 };
 
 // google tag for adsense
