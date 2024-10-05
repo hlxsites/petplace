@@ -17,42 +17,6 @@ export const PETS_LIST: PetModel[] = [
     spayedNeutered: false,
     species: "Dog",
     documentationStatus: "none",
-    lostPetHistory: [
-      {
-        date: "2023-08-29T12:02:14Z",
-        update: "2023-08-30T02:25:47Z",
-        status: "missing",
-        id: 1234567,
-        note: "Lost report from submitted",
-      },
-      {
-        date: "1989-11-09T00:00:00Z",
-        update: "2023-08-31T12:25:47Z",
-        status: "found",
-        id: 2234567,
-        note: "",
-        foundedBy: {
-          finderName: "Erica Wong",
-          contact: [
-            {
-              date: "2023-08-30T12:02:14Z",
-              methodContact: "Phone Call",
-              phoneNumber: "289-218-6754",
-            },
-            {
-              date: "2023-08-30T12:02:14Z",
-              methodContact: "Text Message",
-              phoneNumber: "289-218-6754",
-            },
-            {
-              date: "2023-08-30T12:02:14Z",
-              methodContact: "Email",
-              email: "dana.rayman@pethealthinc.com",
-            },
-          ],
-        },
-      },
-    ],
   },
   {
     age: "Senior",
@@ -68,78 +32,6 @@ export const PETS_LIST: PetModel[] = [
     sex: "Female",
     spayedNeutered: true,
     species: "Cat",
-    lostPetHistory: [
-      {
-        date: "2023-08-29T12:02:14Z",
-        update: "2023-08-30T02:25:47Z",
-        status: "missing",
-        id: 1637427,
-        note: "Lost report from submitted",
-      },
-      {
-        date: "2023-08-30T12:02:14Z",
-        update: "2023-08-31T12:25:47Z",
-        status: "found",
-        id: 2637427,
-        note: "",
-        foundedBy: {
-          finderName: "Erica Wong",
-          contact: [
-            {
-              date: "2023-08-30T12:02:14Z",
-              methodContact: "Phone Call",
-              phoneNumber: "289-218-6754",
-            },
-            {
-              date: "2023-08-30T12:02:14Z",
-              methodContact: "Text Message",
-              phoneNumber: "289-218-6754",
-            },
-            {
-              date: "2023-08-30T12:02:14Z",
-              methodContact: "Email",
-              email: "dana.rayman@pethealthinc.com",
-            },
-          ],
-        },
-      },
-      {
-        date: "2023-08-30T12:57:14Z",
-        update: "2023-08-31T12:25:47Z",
-        status: "missing",
-        id: 3637427,
-        note: "Lost report from submitted",
-      },
-      {
-        date: "2023-08-30T12:02:14Z",
-        update: "2023-08-31T12:25:47Z",
-        status: "found",
-        id: 4637427,
-        note: "",
-        foundedBy: null,
-      },
-      {
-        date: "2023-08-30T12:57:14Z",
-        update: "2023-08-31T12:25:47Z",
-        status: "missing",
-        id: 5637427,
-        note: "Lost report from submitted",
-      },
-      {
-        date: "1970-01-01T00:00:06Z",
-        update: "2023-08-31T12:25:47Z",
-        status: "found",
-        id: 6637427,
-        note: "",
-      },
-      {
-        date: "1970-01-01T00:00:07Z",
-        update: "2023-08-31T12:25:47Z",
-        status: "missing",
-        id: 7637427,
-        note: "Lost report from submitted",
-      },
-    ],
   },
   {
     breed: "Flufy dog",
@@ -152,6 +44,5 @@ export const PETS_LIST: PetModel[] = [
     sex: "Male",
     spayedNeutered: true,
     species: "Dog",
-    lostPetHistory: [],
   },
 ];

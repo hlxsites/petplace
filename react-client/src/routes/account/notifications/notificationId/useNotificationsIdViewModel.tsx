@@ -3,7 +3,7 @@ import { requireAuthToken } from "~/util/authUtil";
 
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import lostPetNotificationDetailsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationDetailsUseCaseFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { invariantResponse } from "~/util/invariant";

@@ -13,7 +13,7 @@ import { TableColumn } from "~/components/design-system/table/TableTypes";
 import { TextProps } from "~/components/design-system/types/TextTypes";
 import {
   LostAndFountNotification,
-  LostPetUpdate,
+  LostPetUpdateModel,
   MissingStatus,
 } from "~/domain/models/pet/PetModel";
 import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
@@ -107,7 +107,7 @@ export const PetLostUpdatesSection = ({
     };
   }
 
-  function convertStatus(status: LostPetUpdate["status"]) {
+  function convertStatus(status: LostPetUpdateModel["status"]) {
     const { message, textColor, bgColor } = convertStatusVariable(status);
     return (
       <div

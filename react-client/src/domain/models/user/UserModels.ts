@@ -42,29 +42,3 @@ export type AccountAddressModel = {
   country: string;
   state: string;
 };
-
-export type MissingStatus = "missing" | "found";
-
-export type ContactDone = {
-  date?: string;
-  email?: string;
-};
-
-export type FoundedByInfo = {
-  contact?: ContactDone[];
-  finderName?: string;
-  finderOrganization?: string;
-  finderPhoneNumber?: string;
-};
-
-export type LostPetUpdateModel = {
-  date: string;
-  id: string;
-  communicationId: string;
-  note?: string;
-  petId: string;
-  petName: string;
-  status: MissingStatus;
-  update: string;
-  foundedBy?: FoundedByInfo;
-};

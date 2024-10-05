@@ -1,4 +1,4 @@
-import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { GetLostPetNotificationsRepository } from "~/domain/repository/user/GetLostPetNotificationsRepository";
 
 export class MockGetLostPetNotificationsUseCase
