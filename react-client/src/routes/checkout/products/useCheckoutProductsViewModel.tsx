@@ -204,7 +204,9 @@ export const useCheckoutProductsViewModel = () => {
   };
 
   function getOptInLabel() {
-    return OPT_IN_LABEL[selectedPlan.type] ?? OPT_IN_LABEL["default"];
+    const planType = selectedPlan.type.toLowerCase();
+    if (planType.includes("annual")) return OPT_IN_LABEL["AnnualProduct"];
+    return OPT_IN_LABEL["default"];
   }
 
   function onCloseCart() {
