@@ -2,12 +2,13 @@ import { Outlet, useSearchParams } from "react-router-dom";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Header } from "~/components/design-system/header/Header";
 import { CheckoutConclusionModal } from "~/components/Membership/CheckoutConclusionModal";
+import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsuranceSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
-import { PetModel } from "~/domain/models/pet/PetModel";
+import { MissingStatus, PetModel } from "~/domain/models/pet/PetModel";
 import {
   CHECKOUT_FULL_ROUTE,
   MY_PETS_FULL_ROUTE,
@@ -19,7 +20,6 @@ import { ReportLostPetButton } from "./components/ReportLostPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
-import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
@@ -68,15 +68,19 @@ export const PetProfileIndex = () => {
           <PetWatchSection route={checkoutPath} />
           {petInsuranceSectionElement}
           <SuspenseAwait resolve={lostAndFoundNotifications}>
-            {(lostAndFoundNotifications) => {
+            {(lostPetHistory) => {
+              // TODO: this logic must be moved to the view model
+              const missingStatus: MissingStatus = (() => {
+                if (!lostPetHistory.length) return "found";
+
+                const latestEntry = lostPetHistory[0];
+                return latestEntry.status;
+              })();
+
               return (
                 <PetLostUpdatesSection
-                  lostPetHistory={lostAndFoundNotifications}
-                  missingStatus={
-                    lostAndFoundNotifications[
-                      lostAndFoundNotifications.length - 1
-                    ]?.status ?? "found"
-                  }
+                  lostPetHistory={lostPetHistory}
+                  missingStatus={missingStatus}
                 />
               );
             }}
