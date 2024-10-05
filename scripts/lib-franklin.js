@@ -897,16 +897,16 @@ function init() {
   document.body.style.display = 'none';
   setup();
 
+  const cb = () => {
+    sampleRUM('top');
+    window.addEventListener('load', () => sampleRUM('load'));
+  };
   // Speculative prerender-aware sampleRUM instrumentation
   // based on https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API#unsafe_prerendering
   if (document.prerendering) {
-    document.addEventListener('prerenderingchange', () => {
-      sampleRUM('top');
-      window.addEventListener('load', () => sampleRUM('load'));
-    }, { once: true });
+    document.addEventListener('prerenderingchange', cb, { once: true });
   } else {
-    sampleRUM('top');
-    window.addEventListener('load', () => sampleRUM('load'));
+    cb();
   }
 
   window.addEventListener('unhandledrejection', (event) => {

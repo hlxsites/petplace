@@ -1,3 +1,4 @@
+import { onPageActivation } from './scripts.js';
 import { isMiddleAd, mappingHelper, sizingArr } from './utils/helpers.js';
 
 window.googletag ||= { cmd: [] };
@@ -166,15 +167,7 @@ const adsDefineSlot = async (adArgs, catVal) => {
     gtagDisplay(newArgs);
   };
 
-  // Speculative prerender-aware adsense instrumentation
-  // based on https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API#unsafe_prerendering
-  if (document.prerendering) {
-    document.addEventListener('prerenderingchange', () => {
-      window.googletag.cmd.push(fn);
-    }, { once: true });
-  } else {
-    window.googletag.cmd.push(fn);
-  }
+  onPageActivation(() => window.googletag.cmd.push(fn));
 };
 
 // google tag for adsense
