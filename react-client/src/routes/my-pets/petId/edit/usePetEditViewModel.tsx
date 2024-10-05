@@ -15,7 +15,7 @@ import { invariantResponse } from "~/util/invariant";
 import { petInfoIds } from "../form/petForm";
 import { PetInfoFormVariables } from "../types/PetInfoTypes";
 
-import { buildPetInfo } from "../utils/formDataUtil";
+type EditPetModel = Omit<PetModel, "locale" | "missingStatus">;
 
 export const loader = (({ params }) => {
   const { petId } = params;
@@ -124,7 +124,7 @@ export const usePetEditViewModel = () => {
     return formValues;
   }
 
-  function convertToServerPetInfo(data: PetModel): PetMutateInput | null {
+  function convertToServerPetInfo(data: EditPetModel): PetMutateInput | null {
     const breedId = petInfoVariables?.breedVariables.find(
       ({ name }) => data.breed === name
     )?.id;
@@ -151,3 +151,18 @@ export const usePetEditViewModel = () => {
     return list.map(({ name }) => name);
   }
 };
+
+function buildPetInfo(values: FormValues): EditPetModel {
+  const petInfo: EditPetModel = {
+    id: values[petInfoIds.petId] as string,
+    breed: values[petInfoIds.breed] as string,
+    dateOfBirth: values[petInfoIds.dateOfBirth] as string,
+    mixedBreed: values[petInfoIds.mixedBreed] === "Yes",
+    name: values[petInfoIds.name] as string,
+    spayedNeutered: values[petInfoIds.neuteredSpayed] === "Yes",
+    sex: values[petInfoIds.sex] as string,
+    species: values[petInfoIds.species] as string,
+  };
+
+  return petInfo;
+}
