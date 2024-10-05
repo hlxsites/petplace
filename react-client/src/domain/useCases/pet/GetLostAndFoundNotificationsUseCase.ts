@@ -10,8 +10,6 @@ export class GetLostAndFoundNotificationsUseCase
   implements GetLostAndFoundNotificationsRepository
 {
   private httpClient: HttpClientRepository;
-  private endpoint: (id: string) => string = (id) =>
-    `api/Pet/${id}/lost-found-status`;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -23,15 +21,16 @@ export class GetLostAndFoundNotificationsUseCase
 
   query = async (id: string): Promise<LostAndFountNotification[]> => {
     try {
-      const result = await this.httpClient.get(this.endpoint(id));
-      if (result.data)
+      const result = await this.httpClient.get(
+        `api/Pet/${id}/lost-found-status`
+      );
+      if (result.data) {
         return convertToLostAndFoundNotificationModel(result.data);
-
-      return [];
+      }
     } catch (error) {
       logError("GetLostAndFoundNotificationsUseCase query error", error);
-      return [];
     }
+    return [];
   };
 }
 
@@ -40,27 +39,40 @@ function convertToLostAndFoundNotificationModel(
 ): LostAndFountNotification[] {
   if (!data || !Array.isArray(data)) return [];
 
-  const serverResponseSchema = z.object({
-    Id: z.number().nullish(),
-    LastUpdate: z.string().nullish(),
-    Note: z.string().nullish(),
-    Opened: z.string().nullish(),
-    Status: z.string().nullish(),
-  });
+  const serverResponseSchema = z.array(
+    z.object({
+      Id: z.number().nullish(),
+      LastUpdate: z.string().nullish(),
+      Note: z.string().nullish(),
+      Opened: z.string().nullish(),
+      Status: z.string().nullish(),
+    })
+  );
+
+  const parsedData = parseData(serverResponseSchema, data);
+  if (!parsedData) return [];
 
   const petHistory: LostAndFountNotification[] = [];
 
-  data.forEach((serverUpdate) => {
-    const update = parseData(serverResponseSchema, serverUpdate);
-    if (!update) return;
+  parsedData.forEach((item) => {
+    const { Opened, LastUpdate, Status, Note, Id } = item;
 
-    const { Opened, LastUpdate, Status, Note, Id } = update;
+    // If there is no ID, we can't use this data
+    if (!Id) return;
+
+    const status = (() => {
+      const lowercaseStatus = Status?.toLowerCase();
+
+      // Very fragile implementation, but this is how the server sends the status
+      if (lowercaseStatus === "reunited with my pet") return "found";
+      return "missing";
+    })();
 
     petHistory.push({
       date: Opened ?? "",
       update: LastUpdate ?? "",
-      status: Status === "Reunited with my pet" ? "found" : "missing",
-      id: Id ?? 0,
+      status,
+      id: Id,
       note: Note ?? "",
     });
   });
