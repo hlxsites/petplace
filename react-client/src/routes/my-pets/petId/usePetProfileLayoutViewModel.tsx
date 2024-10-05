@@ -10,9 +10,11 @@ import {
 import getReportClosingReasonsUseCaseFactory from "~/domain/useCases/lookup/getReportClosingReasonsUseCaseFactory";
 import getLostAndFoundNotificationsUseCaseFactory from "~/domain/useCases/pet/getLostAndFoundNotificationsUseCaseFactory";
 import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
+import putReportClosingUseCaseFactory from "~/domain/useCases/pet/putReportClosingUseCaseFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
+import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
+import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import {
   CA_MembershipStatus,
@@ -37,11 +39,13 @@ export const loader = (({ params }) => {
   const petInfoPromise = useCase.query(petId);
   const getReportClosingReasonsUseCase =
     getReportClosingReasonsUseCaseFactory(authToken);
+  const putReportClosingUseCase = putReportClosingUseCaseFactory(authToken);
 
   return defer({
     documentTypes: PET_DOCUMENT_TYPES_LIST,
     petId,
     petInfoPromise,
+    mutateReport: putReportClosingUseCase.mutate,
     lostAndFoundNotificationsPromise:
       getLostAndFoundNotificationsUseCase.query(petId),
     reportClosingReasons: getReportClosingReasonsUseCase.query(),
@@ -53,6 +57,7 @@ export const usePetProfileLayoutViewModel = () => {
   const {
     documentTypes,
     lostAndFoundNotificationsPromise,
+    mutateReport,
     petId,
     petInfoPromise,
     reportClosingReasons,
@@ -111,8 +116,12 @@ export const usePetProfileLayoutViewModel = () => {
     navigate(AppRoutePaths.petEdit);
   };
 
-  const closeReport = (reasonId: number) => {
-    console.log("🚀 ~ petId, reasonId", petId, reasonId);
+  const closeReport = (reason: number) => {
+    void (async () => {
+      const microchip = selectedPet?.microchip ?? "";
+      const closed = await mutateReport({ petId, microchip, reason });
+      if (closed) forceRedirect(PET_PROFILE_FULL_ROUTE(petId));
+    })();
   };
 
   const getSelectedPetLocale = () => {
