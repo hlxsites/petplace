@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
-import { PostRenewMembershipRepository } from "~/domain/repository/renew/PostRenewMembershipRepository";
 import { RenewMembershipModel } from "~/domain/models/renew/RenewMembershipModel";
+import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
+import { PostRenewMembershipRepository } from "~/domain/repository/renew/PostRenewMembershipRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
+import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
 const renewMembershipServerSchema = z.object({
   AnimalId: z.string().nullish(),
@@ -34,13 +34,11 @@ export class PostRenewMembershipUseCase
         body: JSON.stringify(body),
       });
 
-      if (!response.statusCode) return false;
-
-      return response.statusCode >= 200 && response.statusCode < 300;
+      return !!response.success;
     } catch (error) {
       logError("PostRenewMembershipUseCase post error", error);
-      return false;
     }
+    return false;
   };
 }
 

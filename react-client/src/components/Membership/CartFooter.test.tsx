@@ -27,18 +27,35 @@ describe("CartFooter", () => {
     }
   );
 
-  it("should call onClick callback", async () => {
+  it("should call onClick callback when clicking on proceed to checkout button", async () => {
     const onClick = jest.fn();
     getRenderer({ onClick });
 
     await userEvent.click(getByRole("button", { name: "Proceed to checkout" }));
     expect(onClick).toHaveBeenCalled();
   });
+
+  it("should enable button when isSubmittingCart is false", () => {
+    getRenderer({ isSubmittingCart: false });
+    expect(getByRole("button", { name: "Proceed to checkout" })).toBeEnabled();
+  });
+
+  it("should disable button when isSubmittingCart is true", () => {
+    getRenderer({ isSubmittingCart: true });
+    expect(getByRole("button")).toBeDisabled();
+  });
 });
 
 function getRenderer({
-  subtotal = "123.45",
+  isSubmittingCart = false,
   onClick = jest.fn(),
+  subtotal = "123.45",
 }: Partial<ComponentProps<typeof CartFooter>> = {}) {
-  return render(<CartFooter subtotal={subtotal} onClick={onClick} />);
+  return render(
+    <CartFooter
+      subtotal={subtotal}
+      onClick={onClick}
+      isSubmittingCart={isSubmittingCart}
+    />
+  );
 }

@@ -1,7 +1,6 @@
 import { PetServices } from "~/domain/models/pet/PetModel";
 import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
-import { SuspenseAwait } from "../await/SuspenseAwait";
 import { LinkButton, Text } from "../design-system";
 import { PetCardPetWatch } from "./PetCardPetWatch";
 import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
@@ -21,8 +20,11 @@ export const PetWatchDrawerBody = ({
     getContentDetails,
     handleContentChange,
     isConfirmRenewModalOpen,
-    petWatchBenefits,
     onRenewMembership,
+    petWatchBenefits: {
+      petWatchAvailableBenefits,
+      petWatchAnnualUnavailableBenefits,
+    },
   } = usePetProfileContext();
 
   const upgradeMembershipButton = (() => {
@@ -46,35 +48,33 @@ export const PetWatchDrawerBody = ({
     return renderAnnualService();
   })();
 
+  const contentDetails = getContentDetails(petWatchAvailableBenefits);
+
+  const servicesElement = (() => {
+    if (contentDetails) {
+      return (
+        <PetServiceDetailsCard
+          {...contentDetails}
+          isModalOpen={isConfirmRenewModalOpen}
+          onCloseModal={closeConfirmRenewModal}
+          onConfirmModal={handleOnConfirmRenew}
+        />
+      );
+    }
+
+    return (
+      <PetWatchServices
+        onClick={handleContentChange}
+        petWatchBenefits={petWatchAvailableBenefits}
+      />
+    );
+  })();
+
   return (
     <div className="grid gap-xlarge">
-      <SuspenseAwait resolve={petWatchBenefits}>
-        {({ petWatchAvailableBenefits }) => {
-          const contentDetails = getContentDetails(petWatchAvailableBenefits);
-
-          if (contentDetails) {
-            return (
-              <PetServiceDetailsCard
-                {...contentDetails}
-                isModalOpen={isConfirmRenewModalOpen}
-                onCloseModal={closeConfirmRenewModal}
-                onConfirmModal={handleOnConfirmRenew}
-              />
-            );
-          }
-
-          return (
-            <>
-              <PetWatchServices
-                onClick={handleContentChange}
-                petWatchBenefits={petWatchAvailableBenefits}
-              />
-              {standardServiceDrawerElement}
-              {annualServiceElement}
-            </>
-          );
-        }}
-      </SuspenseAwait>
+      {servicesElement}
+      {standardServiceDrawerElement}
+      {annualServiceElement}
     </div>
   );
 
@@ -86,17 +86,13 @@ export const PetWatchDrawerBody = ({
         </Text>
 
         <div className="grid gap-small">
-          <SuspenseAwait resolve={petWatchBenefits}>
-            {({ petWatchAnnualUnavailableBenefits }) =>
-              petWatchAnnualUnavailableBenefits?.map(({ id, ...props }) => (
-                <PetCardPetWatch
-                  key={id}
-                  onClick={handleContentChange}
-                  {...props}
-                />
-              ))
-            }
-          </SuspenseAwait>
+          {petWatchAnnualUnavailableBenefits?.map(({ id, ...props }) => (
+            <PetCardPetWatch
+              key={id}
+              onClick={handleContentChange}
+              {...props}
+            />
+          ))}
         </div>
         {upgradeMembershipButton}
       </div>
@@ -104,7 +100,7 @@ export const PetWatchDrawerBody = ({
   }
 
   function handleOnConfirmRenew() {
-    onRenewMembership();
+    void onRenewMembership();
     closeConfirmRenewModal();
   }
 };

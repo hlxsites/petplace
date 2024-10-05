@@ -131,6 +131,7 @@ function getRenderer({
   description = "Test description",
   isModalOpen = false,
   onCloseModal = jest.fn(),
+  onConfirmModal = jest.fn(),
   ...props
 }: Partial<ComponentProps<typeof PetServiceDetailsCard>> = {}) {
   return render(
@@ -138,6 +139,7 @@ function getRenderer({
       description={description}
       isModalOpen={isModalOpen}
       onCloseModal={onCloseModal}
+      onConfirmModal={onConfirmModal}
       {...props}
     />
   );

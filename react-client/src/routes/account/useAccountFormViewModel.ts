@@ -5,8 +5,8 @@ import {
   OnChangeFn,
   OnSubmitFn,
 } from "~/components/design-system/form/FormBuilder";
-import { CountryModel } from "~/domain/models/lockup/CountryModel";
-import { CountryStateModel } from "~/domain/models/lockup/CountryStateModel";
+import { CountryModel } from "~/domain/models/lookup/CountryModel";
+import { CountryStateModel } from "~/domain/models/lookup/CountryStateModel";
 import {
   AccountDetailsModel,
   ExternalAccountDetailsModel,

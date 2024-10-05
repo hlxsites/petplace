@@ -1,6 +1,6 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import * as authUtil from "../../../util/authUtil";
+import * as authUtil from "~/util/authUtil";
 import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 

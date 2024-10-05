@@ -11,7 +11,11 @@ type TableRow = {
 
 type Plan = Pick<
   MembershipInfo,
-  "comparePlansButtonLabel" | "hardCodedPlanId" | "isHighlighted" | "title"
+  | "comparePlansButtonLabel"
+  | "hardCodedPlanId"
+  | "id"
+  | "isHighlighted"
+  | "title"
 >;
 
 type MembershipComparingPlanTableProps = {
@@ -57,25 +61,28 @@ export const MembershipComparingPlanTable = ({
 
   const actions: {
     id: string;
+    hardCodedPlanId: string;
     isHighlighted?: boolean;
     label: string;
   }[] = [];
-  const columns: { id: string; title: string }[] = [];
+  const columns: { hardCodedPlanId: string; title: string }[] = [];
 
   plans.forEach(
     ({
       comparePlansButtonLabel,
-      hardCodedPlanId: id,
+      hardCodedPlanId,
+      id,
       isHighlighted,
       title,
     }) => {
       actions.push({
+        hardCodedPlanId,
         id,
         label: comparePlansButtonLabel,
         isHighlighted,
       });
 
-      columns.push({ id, title });
+      columns.push({ hardCodedPlanId, title });
     }
   );
 
@@ -96,8 +103,8 @@ export const MembershipComparingPlanTable = ({
         <thead>
           <tr>
             <th>{/* Placeholder */}</th>
-            {columns.map(({ id, title }) => (
-              <th key={id}>
+            {columns.map(({ hardCodedPlanId, title }) => (
+              <th key={hardCodedPlanId}>
                 <TextSpan fontFamily="raleway">{title}</TextSpan>
               </th>
             ))}
@@ -112,12 +119,12 @@ export const MembershipComparingPlanTable = ({
                 {/* Neutral border container */}
                 <div className="pointer-events-none absolute inset-0 my-small rounded-2xl border border-solid border-neutral-300"></div>
               </td>
-              {columns.map(({ id }, colIndex) => (
+              {columns.map(({ hardCodedPlanId }, colIndex) => (
                 <td
-                  key={`${id}_icon_${colIndex}`}
+                  key={`${hardCodedPlanId}_icon_${colIndex}`}
                   className="relative text-center"
                 >
-                  {row.availableColumns.includes(id) ? (
+                  {row.availableColumns.includes(hardCodedPlanId) ? (
                     <Icon
                       className="text-green-300"
                       display="checkCircle"
@@ -137,7 +144,7 @@ export const MembershipComparingPlanTable = ({
           <tr>
             <td>{/* Placeholder */}</td>
             {actions.map((props) => (
-              <td className="text-center" key={props.id}>
+              <td className="text-center" key={props.hardCodedPlanId}>
                 <div className="space-x-4 flex justify-evenly pt-xlarge">
                   <MembershipComparingPlanLinkButton {...props} />
                 </div>

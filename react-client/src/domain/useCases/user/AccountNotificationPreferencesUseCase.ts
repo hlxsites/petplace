@@ -1,10 +1,10 @@
 import { z } from "zod";
+import { AccountNotificationPreferencesModel } from "~/domain/models/user/UserModels";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { readJwtClaim } from "~/util/authUtil";
-import { AccountNotificationPreferencesModel } from "../../models/user/UserModels";
-import { AccountNotificationPreferencesRepository } from "../../repository/user/AccountNotificationRepository";
-import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
+import { AccountNotificationPreferencesRepository } from "~/domain/repository/user/AccountNotificationRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
+import { readJwtClaim } from "~/util/authUtil";
+import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
 const serverSchema = z.object({
   CatNewsletterOptIn: z.boolean().nullish(),

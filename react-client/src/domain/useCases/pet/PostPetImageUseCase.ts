@@ -1,8 +1,8 @@
 import { PetImageMutationInput } from "~/domain/models/pet/PetImage";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PostPetImageRepository } from "~/domain/repository/pet/PostPetImageRepository";
-import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { logError } from "~/infrastructure/telemetry/logUtils";
+import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 
 export class PostPetImageUseCase implements PostPetImageRepository {
   private httpClient: HttpClientRepository;
@@ -15,15 +15,10 @@ export class PostPetImageUseCase implements PostPetImageRepository {
     }
   }
 
-  private handleError = (error: unknown): null => {
-    logError("PostPetImageUseCase query error", error);
-    return null;
-  };
-
   mutate = async ({
     petId,
     petImage,
-  }: PetImageMutationInput): Promise<boolean | null> => {
+  }: PetImageMutationInput): Promise<boolean> => {
     const formData = new FormData();
     formData.append("file", petImage);
 
@@ -34,12 +29,10 @@ export class PostPetImageUseCase implements PostPetImageRepository {
           body: formData,
         }
       );
-
-      if (result.data) return result.data as boolean;
-
-      return null;
+      return !!result.success;
     } catch (error) {
-      return this.handleError(error);
+      logError("PostPetImageUseCase query error", error);
     }
+    return false;
   };
 }
