@@ -109,7 +109,7 @@ function getRenderer({
   onClickPrimaryButton = jest.fn(),
   title = DIALOG_TITLE,
   trigger = undefined,
-  type = "confirm",
+  type = "info",
   ...rest
 }: Partial<ComponentProps<typeof ConfirmDialog>> = {}) {
   return render(

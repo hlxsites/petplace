@@ -71,7 +71,7 @@ export const PetServiceDetailsCard = ({
           onClickPrimaryButton={onConfirmModal}
           confirmButtonLabel={primaryAction.confirmButtonLabel}
           title={primaryAction.title ?? ""}
-          type="confirm"
+          type="info"
           trigger={
             <Button onClick={primaryAction.onClick} fullWidth>
               {primaryAction.buttonLabel}

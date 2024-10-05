@@ -1,21 +1,26 @@
 import { ReactNode } from "react";
+import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
+import { Icon, IconKeys } from "../icon/Icon";
 import { Text } from "../text/Text";
+import { Title } from "../text/Title";
 import { DialogTrigger } from "../types/DialogBaseTypes";
 import { Dialog } from "./Dialog";
-import { Title } from "../text/Title";
-import { Icon, IconKeys } from "../icon/Icon";
-import { classNames } from "~/util/styleUtil";
 
-type ConfirmDialogProps = {
+export type ConfirmDialogType = "error" | "info" | "success";
+
+export type ConfirmDialogDetails = {
+  confirmButtonLabel?: string;
   icon?: IconKeys;
-  isOpen: boolean;
   message?: ReactNode | string;
+  title: string;
+  type: ConfirmDialogType;
+};
+
+type ConfirmDialogProps = ConfirmDialogDetails & {
+  isOpen: boolean;
   onClickPrimaryButton?: () => void;
   onClose: () => void;
-  confirmButtonLabel?: string;
-  title: string;
-  type: "error" | "confirm";
   trigger?: DialogTrigger;
 };
 
@@ -56,8 +61,9 @@ export const ConfirmDialog = ({
             className={classNames(
               "flex h-16 w-16 items-center justify-center rounded-full bg-red-300",
               {
+                "bg-green-300": type === "success",
                 "bg-red-300": type === "error",
-                "bg-blue-300": type === "confirm",
+                "bg-blue-300": type === "info",
               }
             )}
           >

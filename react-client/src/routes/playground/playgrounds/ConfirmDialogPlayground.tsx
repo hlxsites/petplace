@@ -5,6 +5,7 @@ import { ConfirmDialog } from "~/components/design-system/dialog/ConfirmDialog";
 export const ConfirmDialogPlayground = () => {
   const [isOpenErrorDialog, setIsOpenErrorDialog] = useState(false);
   const [isOpenConfirmDialog, setIsOpenConfirmDialog] = useState(false);
+  const [isOpenSuccessDialog, setIsOpenSuccessDialog] = useState(false);
 
   return (
     <>
@@ -23,9 +24,20 @@ export const ConfirmDialogPlayground = () => {
         onClose={onCloseConfirmDialog}
         confirmButtonLabel="Confirm Renewal"
         title="Confirm Renewal"
-        type="confirm"
+        type="info"
         trigger={
           <Button onClick={onOpenConfirmDialog}>Open confirm dialog</Button>
+        }
+      />
+      <ConfirmDialog
+        icon="info"
+        isOpen={isOpenSuccessDialog}
+        message="There is life on the moon, by clicking on dismiss means that's true!"
+        onClose={onCloseSuccessDialog}
+        title="Success"
+        type="success"
+        trigger={
+          <Button onClick={onOpenSuccessDialog}>Open success dialog</Button>
         }
       />
     </>
@@ -35,15 +47,23 @@ export const ConfirmDialogPlayground = () => {
     setIsOpenErrorDialog(true);
   }
 
-  function onClose() {
-    setIsOpenErrorDialog(false);
+  function onOpenSuccessDialog() {
+    setIsOpenSuccessDialog(true);
   }
 
   function onOpenConfirmDialog() {
     setIsOpenConfirmDialog(true);
   }
 
+  function onClose() {
+    setIsOpenErrorDialog(false);
+  }
+
   function onCloseConfirmDialog() {
     setIsOpenConfirmDialog(false);
+  }
+
+  function onCloseSuccessDialog() {
+    setIsOpenSuccessDialog(false);
   }
 };
