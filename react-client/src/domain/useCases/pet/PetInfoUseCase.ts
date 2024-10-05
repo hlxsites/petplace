@@ -25,7 +25,7 @@ export class PetInfoUseCase implements PetInfoRepository {
 
       return null;
     } catch (error) {
-      logError("GetPetInfoUseCase query error", error);
+      logError("PetInfoUseCase query error", error);
       return null;
     }
   };
@@ -100,6 +100,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     locale: info.CountryCode,
     membershipStatus: info.MembershipStatus,
     microchip: info.Microchip,
+    missingStatus: "found",
     mixedBreed: !!info.MixedBreed,
     name: info.Name,
     policyInsurance: info.PolicyNumbers ?? [],

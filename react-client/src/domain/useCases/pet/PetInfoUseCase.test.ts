@@ -44,6 +44,7 @@ describe("PetInfoUseCase", () => {
         locale: "US",
         membershipStatus: "Annual member",
         microchip: "123456789",
+        missingStatus: "found",
         mixedBreed: false,
         name: "Buddy",
         policyInsurance: [],

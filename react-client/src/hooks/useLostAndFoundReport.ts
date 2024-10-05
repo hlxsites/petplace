@@ -7,14 +7,25 @@ const LOST_PET_EXPERIENCE =
 export function useLostAndFoundReport() {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const isOpen = searchParams.has(CLOSE_REPORT_PARAM);
+
   function openReportClosingModal() {
-    searchParams.set(CLOSE_REPORT_PARAM, "true");
-    setSearchParams(searchParams);
+    setSearchParams((nextSearchParams) => {
+      nextSearchParams.set(CLOSE_REPORT_PARAM, "true");
+      return nextSearchParams;
+    });
   }
 
   function closeReportClosingModal() {
-    searchParams.delete(CLOSE_REPORT_PARAM);
-    setSearchParams(searchParams);
+    setSearchParams(
+      (nextSearchParams) => {
+        nextSearchParams.delete(CLOSE_REPORT_PARAM);
+        return nextSearchParams;
+      },
+      {
+        replace: true,
+      }
+    );
   }
 
   function redirectToLostPet() {
@@ -22,8 +33,9 @@ export function useLostAndFoundReport() {
   }
 
   return {
-    openReportClosingModal,
+    isOpen,
     closeReportClosingModal,
+    openReportClosingModal,
     redirectToLostPet,
   };
 }

@@ -3,7 +3,6 @@ import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayout
 import { PetWatchServiceProps } from "~/routes/my-pets/petId/utils/petServiceDetails";
 import { PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS } from "~/routes/my-pets/petId/utils/petWatchConstants";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
-import { SuspenseAwait } from "../await/SuspenseAwait";
 import { LinkButton, Text } from "../design-system";
 import { PetCardPetWatch } from "./PetCardPetWatch";
 import { PetServiceDetailsCard } from "./PetServiceDetailsCard";
@@ -48,14 +47,10 @@ export const PetWatchDrawerBody = ({
 
   return (
     <div className="grid gap-xlarge">
-      <SuspenseAwait resolve={petWatchBenefits}>
-        {({ petWatchAvailableBenefits }) => (
-          <PetWatchServices
-            onClick={onClick}
-            petWatchBenefits={petWatchAvailableBenefits}
-          />
-        )}
-      </SuspenseAwait>
+      <PetWatchServices
+        onClick={onClick}
+        petWatchBenefits={petWatchBenefits.petWatchAvailableBenefits}
+      />
 
       {standardServiceDrawerElement}
       {annualServiceElement}

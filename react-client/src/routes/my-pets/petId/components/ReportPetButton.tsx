@@ -6,7 +6,7 @@ import { useLostAndFoundReport } from "~/hooks/useLostAndFoundReport";
 type ReportPetButtonProps = {
   className?: string;
   disabled: boolean;
-  missingStatus?: MissingStatus;
+  missingStatus: MissingStatus;
 };
 
 export const ReportPetButton = ({
@@ -16,10 +16,12 @@ export const ReportPetButton = ({
 }: ReportPetButtonProps) => {
   const { redirectToLostPet, openReportClosingModal } = useLostAndFoundReport();
 
-  const button =
-    missingStatus === "found"
-      ? renderButton("Report lost pet", redirectToLostPet)
-      : renderButton("Report pet as found", openReportClosingModal);
+  const button = (() => {
+    if (missingStatus === "found") {
+      return renderButton("Report lost pet", redirectToLostPet);
+    }
+    return renderButton("Report pet as found", openReportClosingModal);
+  })();
 
   if (!disabled) return button;
 

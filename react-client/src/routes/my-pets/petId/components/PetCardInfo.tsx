@@ -7,19 +7,19 @@ import {
 import { PetModel } from "~/domain/models/pet/PetModel";
 import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { getRouteFor } from "~/routes/util/getRouteFor";
-import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
 import { ReportPetButton } from "./ReportPetButton";
 
-export const PetCardInfo = ({ ...petInfo }: PetModel) => {
-  const viewModel = usePetProfileContext();
-  const { missingStatus } = viewModel;
+type PetCardInfoProps = Omit<PetModel, "locale">;
+
+export const PetCardInfo = ({ ...petInfo }: PetCardInfoProps) => {
   const {
     age,
     breed,
     dateOfBirth,
+    missingStatus,
     microchip,
     name,
     mixedBreed,

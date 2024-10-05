@@ -1,9 +1,8 @@
-import { SuspenseAwait } from "../await/SuspenseAwait";
 import { PetCardPetWatch, PetCardPetWatchProps } from "./PetCardPetWatch";
 
 type PetWatchServicesProps = {
   onClick: (label?: string) => () => void;
-  petWatchBenefits: Promise<PetCardPetWatchProps[]>;
+  petWatchBenefits: PetCardPetWatchProps[];
 };
 
 export const PetWatchServices = ({
@@ -12,13 +11,9 @@ export const PetWatchServices = ({
 }: PetWatchServicesProps) => {
   return (
     <div className="grid gap-small pt-large">
-      <SuspenseAwait resolve={petWatchBenefits}>
-        {(petWatchBenefits) =>
-          petWatchBenefits.map(({ id, ...props }) => (
-            <PetCardPetWatch key={id} onClick={onClick(id)} {...props} />
-          ))
-        }
-      </SuspenseAwait>
+      {petWatchBenefits.map(({ id, ...props }) => (
+        <PetCardPetWatch key={id} onClick={onClick(id)} {...props} />
+      ))}
     </div>
   );
 };

@@ -17,7 +17,14 @@ export const OnboardingDialogPlayground = () => {
       >
         Open onboarding dialog
       </Button>
-      {!!isOpen && <OnboardingDialog />}
+      {!!isOpen && (
+        <OnboardingDialog
+          pet={{
+            documentationStatus: "none",
+            name: "Bob",
+          }}
+        />
+      )}
     </div>
   );
 };

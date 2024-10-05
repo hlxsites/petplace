@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
 import { DocumentationStatus, PetModel } from "~/domain/models/pet/PetModel";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
-import { logError } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
-import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
 import { OnboardingStepFive } from "./OnboardingStepFive";
 import { OnboardingStepOne } from "./OnboardingStepOne";
 import { OnboardingStepThree } from "./OnboardingStepThree";
@@ -22,29 +20,18 @@ export type CommonOnboardingProps = {
   step: number;
 };
 
-export const OnboardingDialog = () => {
-  const isSmallerScreen = useWindowWidth() < 768;
-  const viewModel = usePetProfileContext();
+type OnboardingDialogProps = {
+  pet: Pick<PetModel, "documentationStatus" | "name">;
+};
 
-  const [petInfo, setPetInfo] = useState<PetModel | null>(null);
-  const [status, setStatus] = useState<DocumentationStatus>("none");
+export const OnboardingDialog = ({ pet }: OnboardingDialogProps) => {
+  const isSmallerScreen = useWindowWidth() < 768;
+
+  const [status, setStatus] = useState<DocumentationStatus>(
+    pet.documentationStatus ?? "none"
+  );
 
   const { step, onNextStep, reset, totalSteps } = useOnboardingSteps();
-
-  useEffect(() => {
-    const resolvePetInfo = async () => {
-      try {
-        const resolvedPetInfo = await viewModel.petInfo;
-        setPetInfo(resolvedPetInfo);
-        setStatus(resolvedPetInfo?.documentationStatus ?? "none");
-      } catch (error) {
-        logError("Failed to resolve petInfo:", error);
-      }
-    };
-
-    // Ensure the promise is handled, and the lint rule is satisfied
-    void resolvePetInfo();
-  }, [viewModel.petInfo]);
 
   return (
     <Dialog
@@ -89,7 +76,7 @@ export const OnboardingDialog = () => {
       case 3:
         return <OnboardingStepThree {...commonProps} />;
       case 4:
-        return <OnboardingStepFour {...commonProps} name={petInfo?.name} />;
+        return <OnboardingStepFour {...commonProps} name={pet?.name} />;
       case 5:
       default:
         return <OnboardingStepFive {...commonProps} />;
