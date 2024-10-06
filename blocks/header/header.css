@@ -409,6 +409,10 @@ header .header {
   mask: url("../../icons/logout-icon.svg") center / 100% 100%;
 }
 
+#nav .my-pets-link.hidden {
+  display: none;
+}
+
 #nav .account-options a:hover::before,
 #nav .account-options button:hover::before {
   background-color: var(--purple-500);
