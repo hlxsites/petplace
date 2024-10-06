@@ -1,5 +1,5 @@
 mountpoints:
-  /: https://adobe.sharepoint.com/sites/HelixProjects/Shared%20Documents/sites/petplace
+  /: https://adobe.sharepoint.com/:f:/r/sites/HelixScreensProjects/Shared%20Documents/petplace
 
 folders:
   /article/category/: /article/category/default

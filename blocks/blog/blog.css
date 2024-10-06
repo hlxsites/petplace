@@ -1,0 +1,10 @@
+h1{
+    color: black;
+    font-size:50px;
+    text-align: center;
+}
+
+.article-image{
+    display: block;
+    margin: 0 auto;
+}
