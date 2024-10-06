@@ -27,8 +27,15 @@ export const PetCard = ({
   species,
   ...props
 }: PetCardProps) => {
-  const avatar =
-    species === "cat" ? ASSET_IMAGES.catAvatar : ASSET_IMAGES.dogAvatar;
+  const petImage = (() => {
+    if (img) return img;
+
+    if (species === "cat") {
+      return ASSET_IMAGES.squareCatAvatar;
+    }
+    return ASSET_IMAGES.squareDogAvatar;
+  })();
+
   return (
     <Card {...props} radius="sm">
       <div className={classNames?.root}>
@@ -40,7 +47,7 @@ export const PetCard = ({
           })}
         >
           <img
-            src={img || avatar}
+            src={petImage}
             alt={`Image of ${name}`}
             className="h-full w-full object-cover"
           />
