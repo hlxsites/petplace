@@ -1,6 +1,7 @@
 import { Button, DropdownMenu } from "~/components/design-system";
 import { PetUnavailableActionDialog } from "~/components/Pet/PetUnavailableActionDialog";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
+import { useTransferPetViewModel } from "./useTransferPetViewModel";
 
 type PetActionsDropdownMenuProps = {
   className?: string;
@@ -10,6 +11,8 @@ export const PetActionsDropdownMenu = ({
   className,
 }: PetActionsDropdownMenuProps) => {
   const { isLoading, onEditPet, pet } = usePetProfileContext();
+
+  const { onOpenDialog: onOpenTransferPetDialog } = useTransferPetViewModel();
 
   if (isLoading || !pet) return null;
 
@@ -42,6 +45,7 @@ export const PetActionsDropdownMenu = ({
         {
           icon: "exchange",
           label: "Transfer this pet",
+          onClick: onOpenTransferPetDialog,
         },
       ]}
     />

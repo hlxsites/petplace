@@ -15,6 +15,7 @@ import { invariant } from "~/util/invariant";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
 import { ReportPetButton } from "./components/ReportPetButton";
+import { TransferPetDialog } from "./components/TransferPetDialog";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
@@ -68,6 +69,7 @@ export const PetProfileIndex = () => {
       <Outlet context={viewModel} />
       {displayOnboarding && <OnboardingDialog pet={pet} />}
       {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
+      <TransferPetDialog />
     </>
   );
 
