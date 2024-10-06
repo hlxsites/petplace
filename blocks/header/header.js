@@ -18,6 +18,8 @@ import {
 } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
+import { getAuthToken, parseJwt } from '../../scripts/parse-jwt.js';
+
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const { unitedStates, unitedKingdom } = placeholders;
 
@@ -187,10 +189,32 @@ export default async function decorate(block) {
             userLinks.classList.add('account-btn');
 
             const linkText = userLinks.textContent.toLowerCase();
+
+            // The "My Pets" menu link is treated differently
+            if (linkText === 'my pets') {
+              getAuthToken().then((authToken) => {
+                if (!authToken) return;
+
+                // check if the user has the required claims to access the link
+                const claim = parseJwt(authToken);
+                if (!claim) return;
+
+                const hasRelationId = claim.extension_CustRelationId !== '0';
+                const hasAdoptionId = !!claim.extension_AdoptionId;
+
+                // if the user have the required claims, include the link
+                if (hasRelationId && hasAdoptionId) {
+                  userLinks.classList.add('my-pets-link');
+                  loginBtnsContainer.append(userLinks);
+                }
+              });
+
+              // early return to avoid appending the link twice
+              return;
+            }
+
             if (linkText === 'my account') {
               userLinks.classList.add('my-account-link');
-            } else if (linkText === 'my pets') {
-              userLinks.classList.add('my-pets-link');
             } else if (linkText === 'pet adoption') {
               userLinks.classList.add('pet-adoption-link');
             }
