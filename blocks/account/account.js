@@ -1,13 +1,13 @@
 /* eslint-disable indent */
 // eslint-disable-next-line
-import TabsManual from './tabs-manual.js';
-import endPoints from '../../variables/endpoints.js';
 import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
+import endPoints from '../../variables/endpoints.js';
+import TabsManual from './tabs-manual.js';
 // eslint-disable-next-line
 import { createAccountFavoritesPanel } from './account-favorites.js';
+import { createAccountInquiriesPanel } from './account-inquiries.js';
 import { createSavedSearchPanel } from './account-saved-searches.js';
 import { createAccountSurveyPanel } from './account-survey.js';
-import { createAccountInquiriesPanel } from './account-inquiries.js';
 
 async function createTabComponent() {
     const tabArray = [
@@ -20,7 +20,7 @@ async function createTabComponent() {
     tabs.className = 'account-tabs';
     const title = document.createElement('h2');
     title.className = 'account-tabs-title';
-    title.textContent = 'My Account';
+    title.textContent = 'Pet Adoption';
     tabs.append(title);
     // create tab list for desktop display
     const tablist = document.createElement('ul');
