@@ -38,18 +38,9 @@ export const PetActionsDropdownMenu = ({
           icon: "edit",
           label: "Edit pet profile",
           onClick: onEditPet,
-          variant: "highlight",
         },
         {
-          icon: "trash",
-          label: "Download pet ID",
-        },
-        {
-          icon: "trash",
-          label: "Remove this pet",
-        },
-        {
-          icon: "trash",
+          icon: "exchange",
           label: "Transfer this pet",
         },
       ]}
