@@ -22,12 +22,13 @@ import Delete2Icon from "./assets/delete-2-icon.svg";
 import DocFileIcon from "./assets/doc-file-icon.svg";
 import DoubleArrowLeftIcon from "./assets/double-arrow-left-icon.svg";
 import DoubleArrowRightIcon from "./assets/double-arrow-right-icon.svg";
-import DownloadIcon from "./assets/download-icon.svg";
 import DownloadEmailIcon from "./assets/download-email-icon.svg";
+import DownloadIcon from "./assets/download-icon.svg";
 import EditIcon from "./assets/edit-icon.svg";
 import EllipseIcon from "./assets/ellipse-icon.svg";
 import EllipseWithStrokeIcon from "./assets/ellipse-with-stroke-icon.svg";
 import EmptyEllipseIcon from "./assets/empty-ellipse-icon.svg";
+import ExchangeIcon from "./assets/exchange-icon.svg";
 import EyeIcon from "./assets/eye-icon.svg";
 import FileIcon from "./assets/file-icon.svg";
 import ForwardedCallIcon from "./assets/forwarded-call-icon.svg";
@@ -89,6 +90,7 @@ export const IconMap = Object.freeze({
   ellipse: <EllipseIcon />,
   ellipseWithStroke: <EllipseWithStrokeIcon />,
   emptyEllipse: <EmptyEllipseIcon />,
+  exchange: <ExchangeIcon />,
   eye: <EyeIcon />,
   file: <FileIcon />,
   forwardedCall: <ForwardedCallIcon />,
