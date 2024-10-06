@@ -41,6 +41,7 @@ describe("PetInfoUseCase", () => {
         dateOfBirth: "2020-01-01T00:00:00",
         id: "A123",
         img: undefined,
+        insuranceUrl: "www.insurance-url.co",
         locale: "US",
         membershipStatus: "Annual member",
         microchip: "123456789",
