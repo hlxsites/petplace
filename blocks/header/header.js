@@ -185,6 +185,16 @@ export default async function decorate(block) {
           if (item.querySelector('a')) {
             const userLinks = item.querySelector('a');
             userLinks.classList.add('account-btn');
+
+            const linkText = userLinks.textContent.toLowerCase();
+            if (linkText === 'my account') {
+              userLinks.classList.add('my-account-link');
+            } else if (linkText === 'my pets') {
+              userLinks.classList.add('my-pets-link');
+            } else if (linkText === 'pet adoption') {
+              userLinks.classList.add('pet-adoption-link');
+            }
+
             loginBtnsContainer.append(userLinks);
           } else if (item.querySelector('picture')) {
             userMenu.classList.add('user-btn', 'hidden');
@@ -192,7 +202,7 @@ export default async function decorate(block) {
             navLogin.append(userMenu);
           } else {
             const signOutBtn = document.createElement('button');
-            signOutBtn.className = 'sign-out-btn';
+            signOutBtn.className = 'sign-out-btn logout-link';
             signOutBtn.setAttribute('aria-label', 'sign out');
             signOutBtn.textContent = item.textContent;
             loginBtnsContainer.append(signOutBtn);
