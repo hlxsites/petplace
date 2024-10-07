@@ -13,11 +13,6 @@ jest.mock(
     )
 );
 
-jest.mock("../usePetProfileLayoutViewModel", () => ({
-  usePetProfileLayoutViewModel: jest.fn(),
-  usePetProfileContext: jest.fn(),
-}));
-
 const DEFAULT_NAME = "Romã";
 const { getByRole, getByText, getByAltText } = screen;
 
@@ -40,7 +35,7 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render Dialog with initial content", async () => {
-    localStorage.setItem("step", "1");
+    localStorage.setItem("onboarding-step", "1");
     await getRenderer({
       pet: { name: DEFAULT_NAME },
       status: "none",
@@ -56,7 +51,7 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render step 2 content", async () => {
-    localStorage.setItem("step", "2");
+    localStorage.setItem("onboarding-step", "2");
     await getRenderer({
       pet: { name: DEFAULT_NAME },
       status: "none",
@@ -77,7 +72,7 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render step 3 content", async () => {
-    localStorage.setItem("step", "3");
+    localStorage.setItem("onboarding-step", "3");
     await getRenderer({
       pet: { name: DEFAULT_NAME },
       status: "none",
@@ -93,7 +88,7 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render step 4 content for none documentationStatus by default", async () => {
-    localStorage.setItem("step", "4");
+    localStorage.setItem("onboarding-step", "4");
     await getRenderer({
       pet: { name: DEFAULT_NAME },
       status: "none",
@@ -137,7 +132,7 @@ describe("OnboardingDialog", () => {
   ] satisfies [DocumentationStatus, string, string][])(
     "should render step 4 dynamic content for documentationStatus %s",
     async (status, title, description) => {
-      localStorage.setItem("step", "4");
+      localStorage.setItem("onboarding-step", "4");
       await getRenderer({
         pet: { name: DEFAULT_NAME },
         status,
@@ -151,7 +146,7 @@ describe("OnboardingDialog", () => {
   );
 
   it("should render step 5 content with status none message", async () => {
-    localStorage.setItem("step", "5");
+    localStorage.setItem("onboarding-step", "5");
     await getRenderer({
       pet: { name: DEFAULT_NAME },
       status: "none",
@@ -176,7 +171,7 @@ describe("OnboardingDialog", () => {
   ] satisfies DocumentationStatus[])(
     "should render step 5 content with message for other status",
     async (expected) => {
-      localStorage.setItem("step", "5");
+      localStorage.setItem("onboarding-step", "5");
       await getRenderer({
         pet: { name: DEFAULT_NAME },
         status: expected,
