@@ -15,7 +15,7 @@ export function downloadFile({ blob, fileName, fileType }: DownloadFileProps) {
     const downloadLink = document.createElement("a");
     downloadLink.style.display = "none";
     downloadLink.href = url;
-    downloadLink.download = `${fileName ?? "sample"}.${fileType}`;
+    downloadLink.download = `${fileName ?? "sample"}`;
 
     // for firefox browsers
     document.body.appendChild(downloadLink);
