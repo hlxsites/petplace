@@ -251,12 +251,17 @@ export const useRenewMembershipViewModel = ({
     return response;
   };
 
+  const onCloseConfirmDialog = () => {
+    setResultModal(null);
+  };
+
   return {
     closeConfirmRenewModal,
     getContentDetails,
     handleContentChange,
     isOpenModalType,
     onRenewMembership,
+    onCloseConfirmDialog,
     petWatchBenefits: getPetWatchBenefits(),
     petWatchInfo: getPetWatchInfo(),
   };
