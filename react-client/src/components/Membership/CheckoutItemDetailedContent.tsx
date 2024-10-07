@@ -21,7 +21,7 @@ export const CheckoutItemDetailedContent = ({
     additionalInfo,
     availableColors,
     availableSizes,
-    description,
+    detailedDescription,
     images,
     isAnnual,
     title,
@@ -44,7 +44,7 @@ export const CheckoutItemDetailedContent = ({
       <CartItemImages images={images} name={title} />
       <div className="flex flex-col gap-base">
         <Text color="background-color-tertiary" size="14">
-          {description}
+          {detailedDescription}
         </Text>
         {additionalInfo && (
           <Text color="background-color-tertiary">{additionalInfo}</Text>
