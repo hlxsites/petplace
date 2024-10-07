@@ -254,11 +254,16 @@ export const useCheckoutProductsViewModel = () => {
     if (!product) return null;
 
     // Get additional hard-coded info, privacy features, and tag features
-    const { additionalInfo, privacyFeatures, tagFeatures } =
-      PRODUCT_DETAILS[product.id];
+    const {
+      additionalInfo,
+      detailedDescription,
+      privacyFeatures,
+      tagFeatures,
+    } = PRODUCT_DETAILS[product.id];
     return {
       ...product,
       additionalInfo,
+      detailedDescription,
       privacyFeatures,
       tagFeatures,
     };
