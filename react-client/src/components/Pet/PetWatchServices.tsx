@@ -1,25 +1,24 @@
-import { PetServices } from "~/domain/models/pet/PetModel";
-import { getPetWatchServiceOption } from "~/util/petWatchServiceUtils";
-import { PetCardPetWatch } from "./PetCardPetWatch";
+import { SuspenseAwait } from "../await/SuspenseAwait";
+import { PetCardPetWatch, PetCardPetWatchProps } from "./PetCardPetWatch";
 
 type PetWatchServicesProps = {
-  locale?: PetServices["locale"];
   onClick: (label?: string) => () => void;
-  serviceStatus: PetServices["membershipStatus"];
+  petWatchBenefits: Promise<PetCardPetWatchProps[]>;
 };
 
 export const PetWatchServices = ({
-  locale,
   onClick,
-  serviceStatus,
+  petWatchBenefits,
 }: PetWatchServicesProps) => {
-  const renderPetWatchOptions = getPetWatchServiceOption(serviceStatus, locale);
-
   return (
     <div className="grid gap-small pt-large">
-      {renderPetWatchOptions.map(({ id, ...props }) => (
-        <PetCardPetWatch key={id} onClick={onClick(id)} {...props} />
-      ))}
+      <SuspenseAwait resolve={petWatchBenefits}>
+        {(petWatchBenefits) =>
+          petWatchBenefits.map(({ id, ...props }) => (
+            <PetCardPetWatch key={id} onClick={onClick(id)} {...props} />
+          ))
+        }
+      </SuspenseAwait>
     </div>
   );
 };

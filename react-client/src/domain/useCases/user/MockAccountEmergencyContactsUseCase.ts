@@ -1,5 +1,5 @@
 import { AccountEmergencyContactModel } from "~/domain/models/user/UserModels";
-import { AccountEmergencyContactsRepository } from "../../repository/user/AccountEmergencyContactsRepository";
+import { AccountEmergencyContactsRepository } from "~/domain/repository/user/AccountEmergencyContactsRepository";
 
 export class MockAccountEmergencyContactUseCase
   implements AccountEmergencyContactsRepository

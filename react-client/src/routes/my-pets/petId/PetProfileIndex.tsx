@@ -19,6 +19,7 @@ import { ReportLostPetButton } from "./components/ReportLostPetButton";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
+import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
@@ -35,6 +36,7 @@ export const PetProfileIndex = () => {
     invariant(pet, "Pet not found");
 
     const displayOnboarding = !!searchParams.get("onboarding");
+    const displayClosingReport = !!searchParams.get("close-report");
 
     const displayCheckoutSuccessModal = (() => {
       const contentParam = searchParams.get(CONTENT_PARAM_KEY);
@@ -43,7 +45,7 @@ export const PetProfileIndex = () => {
       return contentParam === "pet-watch-purchase-success";
     })();
 
-    const { id, locale, membershipStatus, policyInsurance, products } = pet;
+    const { id, policyInsurance } = pet;
 
     const checkoutPath = CHECKOUT_FULL_ROUTE(id);
 
@@ -63,16 +65,14 @@ export const PetProfileIndex = () => {
         <div className="flex flex-col gap-xlarge">
           <PetCardSection pet={pet} />
           <AdvertisingSection />
-          <PetWatchSection
-            petServiceStatus={{ locale, membershipStatus, products }}
-            route={checkoutPath}
-          />
+          <PetWatchSection route={checkoutPath} />
           {petInsuranceSectionElement}
           <PetLostUpdatesSection {...pet} />
         </div>
         <Outlet context={viewModel} />
         {displayOnboarding && <OnboardingDialog />}
         {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
+        {displayClosingReport && <ReportClosingModal petId={id} />}
       </>
     );
 

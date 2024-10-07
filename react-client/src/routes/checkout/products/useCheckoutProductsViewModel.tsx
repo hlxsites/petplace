@@ -80,6 +80,7 @@ export const useCheckoutProductsViewModel = () => {
     useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isSubmittingCart, setIsSubmittingCart] = useState(false);
 
   const contentParam = searchParams.get(CONTENT_PARAM_KEY);
   const isOpenCart = contentParam === CART_CONTENT_KEY;
@@ -119,7 +120,7 @@ export const useCheckoutProductsViewModel = () => {
         if (savedProduct.petId !== petId) return;
 
         // Handle membership plan
-        if (selectedPlan.id === savedProduct.id) {
+        if (selectedPlan.id === savedProduct.id && !didAddMembership) {
           didAddMembership = true;
           initialCartItems.push({
             ...selectedPlan,
@@ -235,9 +236,12 @@ export const useCheckoutProductsViewModel = () => {
   }
 
   const onContinueToCheckoutPayment = () => {
-    // TODO:  wait if there is a post request in progress
+    setIsSubmittingCart(true);
+    void (async () => {
+      await postCart(cartItems, petId);
 
-    window.location.href = REDIRECT_TO_CHECKOUT_URL;
+      window.location.href = REDIRECT_TO_CHECKOUT_URL;
+    })();
   };
 
   const selectedProduct = (() => {
@@ -274,6 +278,7 @@ export const useCheckoutProductsViewModel = () => {
     autoRenew,
     cartItems,
     isOpenCart,
+    isSubmittingCart,
     optInLabel: getOptInLabel(),
     onContinueToCheckoutPayment,
     onCloseCart,

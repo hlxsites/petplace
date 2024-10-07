@@ -7,6 +7,7 @@ import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
 import { loader as AddNewPetIndexLoader } from "./add-pet/useAddNewPetIndexViewModel";
 import { AppRoutePaths } from "./AppRoutePaths";
 import { MyPetsIndex } from "./my-pets/MyPetsIndex";
+import { loader as PetEditLoader } from "./my-pets/petId/edit/usePetEditViewModel";
 import { PetProfileIndex } from "./my-pets/petId/PetProfileIndex";
 import { loader as PetProfileLayoutLoader } from "./my-pets/petId/usePetProfileLayoutViewModel";
 import { loader as MyPetsIndexLoader } from "./my-pets/useMyPetsIndexViewModel";
@@ -94,7 +95,23 @@ const routes: PetPlaceRouteObject[] = [
             element: <PetProfileLayout />,
             id: "petProfile",
             loader: PetProfileLayoutLoader,
-            shouldRevalidate: ({ currentParams, nextParams }) => {
+            shouldRevalidate: ({
+              currentParams,
+              currentUrl,
+              nextParams,
+              nextUrl,
+            }) => {
+              const includesEditPath = (pathname: string) =>
+                pathname.includes(AppRoutePaths.petEdit);
+
+              // We want to revalidate the pet profile layout when we navigate away from the pet edit page
+              if (
+                includesEditPath(currentUrl.pathname) &&
+                !includesEditPath(nextUrl.pathname)
+              ) {
+                return true;
+              }
+
               // We want to revalidate the pet profile layout when the pet ID changes
               return currentParams.petId !== nextParams.petId;
             },
@@ -119,9 +136,10 @@ const routes: PetPlaceRouteObject[] = [
                 ],
               },
               {
-                id: "petEdit",
-                path: AppRoutePaths.petEdit,
                 element: <PetEditIndex />,
+                id: "petEdit",
+                loader: PetEditLoader,
+                path: AppRoutePaths.petEdit,
               },
             ],
           },
