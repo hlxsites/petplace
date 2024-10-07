@@ -29,11 +29,31 @@ export const useOnboardingSteps = () => {
     setStep(step - 1);
   };
 
+  const onSubmitConsent = (consent: boolean) => {
+    // TODO: Implement submitConsent
+    console.log("consent", consent);
+    // const microchips: string[] = [];
+    // pets.forEach((pet) => {
+    //   if (pet.microchip) microchips.push(pet.microchip);
+    // });
+
+    // try {
+    //   await submitConsent({
+    //     consent,
+    //     microchips,
+    //   });
+    //   onNextStep();
+    // } catch (error) {
+    //   logError("Error submitting consent", error);
+    // }
+  };
+
   return {
     step,
     setStep,
     onNextStep,
     onPrevStep,
+    onSubmitConsent,
     isFirstStep: step === 1,
     isLastStep: step === COUNT,
     reset,
