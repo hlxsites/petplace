@@ -65,10 +65,12 @@ let b2cPolicies = {
   },
 };
 
+const currentUrl = window.location.href;
+
 // if URL contains "www.petplace.com", merge prodConfigs into b2cPolicies
-if (window.location.href.includes('www.petplace.com') || window.location.href.includes('main--petplace--hlxsites')) {
+if (currentUrl.includes('www.petplace.com') || currentUrl.includes('main--petplace--hlxsites')) {
   b2cPolicies = { ...b2cPolicies, ...prodConfigs };
-} else if (window.location.href.includes('adopt-test--petplace--hlxsites')) {
+} else if (currentUrl.includes('adopt-test--petplace--hlxsites') || currentUrl.includes('release')) {
   b2cPolicies = { ...b2cPolicies, ...stageAltConfigs };
 } else {
   b2cPolicies = { ...b2cPolicies, ...stageConfigs };
