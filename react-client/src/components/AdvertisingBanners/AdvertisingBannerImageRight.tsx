@@ -33,9 +33,9 @@ export const AdvertisingBannerImageRight = ({
 }: AdvertisingBannerImageRightProps) => {
   return (
     <Card {...cardStyleProps} role="region">
-      <div className="grid grid-cols-1 justify-between p-large lg:flex">
+      <div className="grid grid-cols-1 justify-between p-large lg:flex lg:max-h-[310px]">
         <div className="flex max-w-[455px] flex-col items-start justify-between pr-xxxxxlarge">
-          <div className="grid gap-base pb-xxxxxlarge">
+          <div className="grid gap-base">
             {title}
             {message && <Text size="18">{message}</Text>}
             {subMessage && <Text size="12">{subMessage}</Text>}
