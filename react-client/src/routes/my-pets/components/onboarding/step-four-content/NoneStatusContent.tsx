@@ -5,11 +5,16 @@ import { OnboardingContent } from "../components/OnboardingContent";
 import { CommonOnboardingProps } from "../OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "../onboardingTexts";
 
+type NoneStatusContentProps = CommonOnboardingProps & {
+  name?: string;
+  onSubmitConsent: (consent: boolean) => void;
+};
+
 export const NoneStatusContent = ({
   name,
-  setStatus,
+  onSubmitConsent,
   ...props
-}: CommonOnboardingProps & { name?: string }) => {
+}: NoneStatusContentProps) => {
   return (
     <OnboardingContent
       {...props}
@@ -79,19 +84,20 @@ export const NoneStatusContent = ({
   function renderUploadButtons() {
     return (
       <div className="flex flex-col-reverse items-stretch gap-base md:grid md:grid-cols-2">
-        <Button variant="secondary" onClick={props.onNextStep}>
+        <Button variant="secondary" onClick={handleNotConsent}>
           Not now
         </Button>
-        <Button onClick={handleUpload}>Yes, upload documents</Button>
+        <Button onClick={handleConsent}>Yes, upload documents</Button>
       </div>
     );
   }
 
-  function handleUpload() {
-    setStatus("sent");
+  function handleNotConsent() {
+    onSubmitConsent(false);
+    props.onNextStep();
+  }
 
-    setTimeout(() => {
-      setStatus("inProgress");
-    }, 1500);
+  function handleConsent() {
+    onSubmitConsent(true);
   }
 };
