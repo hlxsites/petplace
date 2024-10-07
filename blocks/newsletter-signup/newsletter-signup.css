@@ -4,10 +4,12 @@ main .newsletter-signup input {
   padding: 0;
 }
 
-.newsletter-signup {
+main .newsletter-signup {
   background-color: var(--background-color-dark);
   color: var(--text-color-inverted);
 }
+
+/* FOOTER FORM */
 
 .newsletter-signup form .inputs-main-div {
   display: flex;
@@ -83,12 +85,6 @@ main .newsletter-signup input {
   text-align: left;
 }
 
-.newsletter-signup > div > div > p:last-child {
-  font-size: var(--body-font-size-xs);
-  text-align: center;
-  display: block;
-}
-
 .newsletter-signup > div > div > p:last-child a,
 .newsletter-signup > div > div > p:last-child a:visited,
 .newsletter-signup > div > div > p:last-child a:focus {
@@ -159,7 +155,6 @@ main .newsletter-signup input {
   flex: 0 1 100%;
 }
 
-
 .newsletter-signup .popup-close {
   background-color: var(--background-color-dark);
   line-height: 1;
@@ -171,6 +166,12 @@ main .newsletter-signup input {
   content: 'X';
   font-weight: 800;
   font-size: 1.5rem;
+}
+
+.newsletter-signup > div > div > p:last-child {
+  font-size: var(--body-font-size-xs);
+  text-align: center;
+  display: block;
 }
 
 @media (min-width: 1025px) {
