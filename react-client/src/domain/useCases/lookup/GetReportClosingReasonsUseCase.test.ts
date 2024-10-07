@@ -14,7 +14,7 @@ describe("GetReportClosingReasonsUseCase", () => {
     expect(result).toStrictEqual([]);
   });
 
-  it("should return an array of states", async () => {
+  it("should return a list of reasons", async () => {
     const httpClient = new MockHttpClient({
       data: getReportClosingReasonsMock,
     });

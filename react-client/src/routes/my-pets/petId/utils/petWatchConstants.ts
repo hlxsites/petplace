@@ -11,8 +11,12 @@ export const PET_WATCH_COMMON_OPTIONS: PetCardPetWatchProps[] = [
     id: "recovery-specialists",
   },
   { label: "DirectConnect", id: "direct-connect" },
-  { label: "24PetMedAlert", id: "24-pet-med-alert", icon: "file" },
-  { label: "24/7 Vet Helpline", id: "vet-helpline", icon: "downloadEmail" },
+  { label: "24PetMedAlert", id: "PetMedInfo Fees", icon: "file" },
+  {
+    label: "24/7 Vet Helpline",
+    id: "WD Annual Membership",
+    icon: "downloadEmail",
+  },
   {
     label: "Customized Pet Training",
     id: "customized-pet-training",
@@ -43,6 +47,16 @@ const PET_WATCH_LIFETIME_PLUS_OPTIONS: PetCardPetWatchProps[] = [
 
 const PET_WATCH_ANNUAL_AVAILABLE_OPTIONS: PetCardPetWatchProps[] = [
   { label: "DirectConnect", id: "direct-connect" },
+  {
+    label: "Lost Pet Recovery Specialists",
+    id: "recovery-specialists",
+  },
+  { label: "24PetMedAlert", id: "PetMedInfo Fees", icon: "file" },
+  {
+    label: "24/7 Vet Helpline",
+    id: "WD Annual Membership",
+    icon: "downloadEmail",
+  },
 ];
 
 export const PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS: PetCardPetWatchProps[] =
@@ -65,7 +79,7 @@ export const PetWatchOptionBasedOnMembershipStatus_US: Record<
 > = {
   "Annual member": PET_WATCH_ANNUAL_AVAILABLE_OPTIONS,
   "Lifetime protect member": PET_WATCH_COMMON_OPTIONS,
-  "Lifetime plus protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS,
+  "Lifetime protect member Plus": PET_WATCH_LIFETIME_PLUS_OPTIONS,
   "Not a member": PET_WATCH_NOT_STANDARD_OPTIONS,
 };
 
@@ -76,6 +90,6 @@ export const PetWatchOptionBasedOnMembershipStatus_CA: Record<
   "Lifetime protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS.filter(
     (item) => item.id !== "petco-coupon"
   ),
-  "Lifetime plus protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS,
+  "Lifetime protect member Plus": PET_WATCH_LIFETIME_PLUS_OPTIONS,
   "Not a member": PET_WATCH_NOT_STANDARD_OPTIONS,
 };

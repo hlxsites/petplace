@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { ComponentProps } from "react";
+import { DocumentationStatus } from "~/domain/models/pet/PetModel";
 import { getByTextContent } from "~/util/testingFunctions";
-import * as petProfileLayoutViewModel from "../usePetProfileLayoutViewModel";
 import { OnboardingDialog } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
@@ -133,7 +134,7 @@ describe("OnboardingDialog", () => {
       ONBOARDING_STEPS_TEXTS[4].failed.title,
       ONBOARDING_STEPS_TEXTS[4].failed.message,
     ],
-  ])(
+  ] satisfies [DocumentationStatus, string, string][])(
     "should render step 4 dynamic content for documentationStatus %s",
     async (documentationStatus, title, description) => {
       localStorage.setItem("step", "4");
@@ -169,7 +170,12 @@ describe("OnboardingDialog", () => {
     expect(getByText(ONBOARDING_STEPS_TEXTS[5].protection)).toBeInTheDocument();
   });
 
-  it.each(["sent", "approved", "inProgress", "failed"])(
+  it.each([
+    "sent",
+    "approved",
+    "inProgress",
+    "failed",
+  ] satisfies DocumentationStatus[])(
     "should render step 5 content with message for other status",
     async (expected) => {
       localStorage.setItem("step", "5");
@@ -199,20 +205,10 @@ describe("OnboardingDialog", () => {
   );
 });
 
-type PetInfo = {
-  name: string;
-  documentationStatus: string;
-};
-
-async function getRenderer(petInfo: PetInfo) {
-  (petProfileLayoutViewModel.usePetProfileContext as jest.Mock).mockReturnValue(
-    {
-      petInfo: Promise.resolve(petInfo),
-      petServiceStatus: null,
-      documentTypes: [],
-    }
-  );
-  render(<OnboardingDialog />);
+async function getRenderer(
+  pet: ComponentProps<typeof OnboardingDialog>["pet"]
+) {
+  render(<OnboardingDialog pet={pet} />);
   await waitFor(() => {
     expect(getByRole("heading")).toBeInTheDocument();
   });

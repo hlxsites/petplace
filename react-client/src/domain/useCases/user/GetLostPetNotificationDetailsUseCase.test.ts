@@ -1,5 +1,5 @@
 import { MockHttpClient } from "~/domain/mocks/MockHttpClient";
-import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetLostPetNotificationDetailsUseCase } from "./GetLostPetNotificationDetailsUseCase";
 import getLostPetNotificationDetailsMock from "./mocks/getLostPetNotificationDetailsMock.json";

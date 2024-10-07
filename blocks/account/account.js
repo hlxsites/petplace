@@ -1,18 +1,16 @@
 /* eslint-disable indent */
 // eslint-disable-next-line
-import TabsManual from './tabs-manual.js';
-import endPoints from '../../variables/endpoints.js';
 import { acquireToken } from '../../scripts/lib/msal/msal-authentication.js';
+import endPoints from '../../variables/endpoints.js';
+import TabsManual from './tabs-manual.js';
 // eslint-disable-next-line
-import { bindAccountDetailsEvents, createAccountDetailsPanel } from './account-details.js';
 import { createAccountFavoritesPanel } from './account-favorites.js';
+import { createAccountInquiriesPanel } from './account-inquiries.js';
 import { createSavedSearchPanel } from './account-saved-searches.js';
 import { createAccountSurveyPanel } from './account-survey.js';
-import { createAccountInquiriesPanel } from './account-inquiries.js';
 
 async function createTabComponent() {
     const tabArray = [
-        { title: 'Account Details', hash: 'details' },
         { title: 'Search Alerts', hash: 'searchalerts' },
         { title: 'Favorites', hash: 'favorites' },
         { title: 'Inquiries', hash: 'inquiries' },
@@ -22,7 +20,7 @@ async function createTabComponent() {
     tabs.className = 'account-tabs';
     const title = document.createElement('h2');
     title.className = 'account-tabs-title';
-    title.textContent = 'My Account';
+    title.textContent = 'Pet Adoption';
     tabs.append(title);
     // create tab list for desktop display
     const tablist = document.createElement('ul');
@@ -117,11 +115,9 @@ export default async function decorate(block) {
     if (token) {
         initialUserData = await callUserApi(token);
         block.append(await createTabComponent());
-        block.querySelector('#details').append(await createAccountDetailsPanel(initialUserData));
         block.querySelector('#favorites').append(await createAccountFavoritesPanel(token));
         block.querySelector('#searchalerts').append(await createSavedSearchPanel(token));
         block.querySelector('#survey').append(await createAccountSurveyPanel(block, token, initialUserData));
         block.querySelector('#inquiries').append(await createAccountInquiriesPanel(token));
-        await bindAccountDetailsEvents(block, token, initialUserData);
     }
 }

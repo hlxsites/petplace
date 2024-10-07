@@ -6,12 +6,6 @@ import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
 
 const { getByText, getByRole } = screen;
 
-const DEFAULT_CONTENT = {
-  title: "Test title",
-  subtitle: "Test subtitle",
-  description: "Test description",
-};
-
 const PET_WATCH_OPTIONS_LABELS = PET_WATCH_COMMON_OPTIONS.map(
   ({ label }) => label
 );
@@ -26,11 +20,6 @@ describe.skip("PetWatchDrawerBody", () => {
     }
   );
 
-  it("should render service details when selected", () => {
-    getRenderer({ contentDetails: DEFAULT_CONTENT });
-    expect(getByText(DEFAULT_CONTENT.description)).toBeInTheDocument();
-  });
-
   it("should render LinkButton with correct route", () => {
     const testRoute = "/test-route";
     getRenderer({ route: testRoute, serviceStatus: "Not a member" });
@@ -43,19 +32,12 @@ describe.skip("PetWatchDrawerBody", () => {
 });
 
 function getRenderer({
-  onClick = jest.fn(),
   route = "/default-route",
   serviceStatus = "Annual member",
-  ...props
 }: Partial<ComponentProps<typeof PetWatchDrawerBody>> = {}) {
   return render(
     <MemoryRouter>
-      <PetWatchDrawerBody
-        onClick={onClick}
-        route={route}
-        serviceStatus={serviceStatus}
-        {...props}
-      />
+      <PetWatchDrawerBody route={route} serviceStatus={serviceStatus} />
     </MemoryRouter>
   );
 }

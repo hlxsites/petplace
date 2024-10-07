@@ -44,7 +44,7 @@ export const useDocumentTypeIndexViewModel = () => {
     petId,
     uploadDocument,
   } = useLoaderData<typeof loader>();
-  const { documentTypes, petInfo: petInfoPromise } = usePetProfileContext();
+  const { documentTypes, pet } = usePetProfileContext();
 
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [uploadingNamesList, setUploadingNamesList] = useState<string[]>([]);
@@ -122,12 +122,10 @@ export const useDocumentTypeIndexViewModel = () => {
 
   const onUpload = (files: File[]) => {
     return async () => {
-      const petInfo = await petInfoPromise;
-
       const promisesList: Promise<void>[] = [];
 
       files.forEach((file) => {
-        const microchip = petInfo?.microchip || undefined;
+        const microchip = pet?.microchip || undefined;
         promisesList.push(handleFileUpload(file, microchip));
       });
 

@@ -2,7 +2,10 @@ import { LinkButton, Text, TextSpan } from "~/components/design-system";
 import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
 
-export type PetWatchServiceProps = PetServiceDetailsCardProps & {
+export type PetWatchServiceProps = Omit<
+  PetServiceDetailsCardProps,
+  "isModalOpen" | "onCloseModal" | "onConfirmModal"
+> & {
   id?: string;
   title: string;
   subtitle?: string;
@@ -14,10 +17,10 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     description:
       "Quickly report a lost or found pet through our customer portal or speak with our Customer Service Representatives. We will do everythign we can to help get  your pet home safely.",
     id: "lost-pet-support",
-    primaryAction: { label: "Report this pet as lost" },
+    primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
-      { icon: "copyRegular", label: "Copy number" },
-      { icon: "forwardedCall", label: "Call" },
+      { icon: "copyRegular", buttonLabel: "Copy number" },
+      { icon: "forwardedCall", buttonLabel: "Call" },
     ],
     subtitle: "Find your pet 24/7",
     title: "MyPetHealth Portal",
@@ -27,10 +30,10 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     description:
       "Our Lot Pet Recovery Specialists are dedicated to helping reunite lost pets with their owners 24/7/365 and can be reached at",
     id: "recovery-specialists",
-    primaryAction: { label: "Report this pet as lost" },
+    primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
-      { icon: "copyRegular", label: "Copy number" },
-      { icon: "forwardedCall", label: "Call" },
+      { icon: "copyRegular", buttonLabel: "Copy number" },
+      { icon: "forwardedCall", buttonLabel: "Call" },
     ],
     title: "Lost Pet Recovery Specialists",
   },
@@ -50,7 +53,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       </Text>
     ),
     primaryAction: {
-      label: "Go to Rover Website",
+      buttonLabel: "Go to Rover Website",
     },
     title: "$30 Rover Discount",
   },
@@ -59,7 +62,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       "Buy your pet something special! Find your coupon in your email. Redeemable for any in-store purchase when you sign up as a Pals Reward member.",
     id: "petco-coupon",
     primaryAction: {
-      label: "Go to Petco Website",
+      buttonLabel: "Go to Petco Website",
     },
     title: "$25 Petco Coupon",
   },
@@ -89,11 +92,11 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     ),
     description:
       "This protects your pet by relaying your pet’s critical medical and behavioral information to veterinary care personnel, animal shelters or animal rescue organizations if your pet is lost.",
-    id: "24-pet-med-alert",
+    id: "PetMedInfo Fees",
     primaryAction: {
-      label: "Download form",
+      buttonLabel: "Download form",
     },
-    secondaryActions: [{ label: "Copy email", icon: "copyRegular" }],
+    secondaryActions: [{ buttonLabel: "Copy email", icon: "copyRegular" }],
     title: "24PetMedAlert",
   },
   {
@@ -105,7 +108,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     ),
     description:
       "Can’t decide whether or not to bring your pet the vet? Veterinary experts available 24/7 through phone, email or live chat, provided by whiskerDocs.",
-    id: "vet-helpline",
+    id: "WD Annual Membership",
     title: "24/7 Vet Helpline",
   },
   {

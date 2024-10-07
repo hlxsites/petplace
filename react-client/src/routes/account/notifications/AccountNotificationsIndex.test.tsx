@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { ComponentProps } from "react";
-import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { AccountNotificationsIndex } from "./AccountNotificationsIndex";
 
 jest.mock("~/util/authUtil", () => ({

@@ -1,5 +1,5 @@
 import { classNames } from "~/util/styleUtil";
-import { Icon, IconButton, IconKeys, Text } from "../design-system";
+import { Icon, IconButton, IconKeys, Tag, Text } from "../design-system";
 import { PetCardOption } from "./PetCardOption";
 
 export type PetCardPetWatchProps = {
@@ -8,8 +8,8 @@ export type PetCardPetWatchProps = {
   imgBrand?: string;
   imgLabel?: string;
   isDisabled?: boolean;
+  isExpired?: boolean;
   label: string;
-  labelStatus?: string;
   onClick?: () => void;
 };
 
@@ -18,8 +18,8 @@ export const PetCardPetWatch = ({
   imgBrand,
   imgLabel,
   isDisabled,
+  isExpired,
   label,
-  labelStatus,
   onClick,
 }: PetCardPetWatchProps) => {
   return (
@@ -28,7 +28,7 @@ export const PetCardPetWatch = ({
       iconLeft={getIconLeft()}
       isDisabled={isDisabled}
       text={
-        <div className={"flex flex-col pl-base"}>
+        <div className={"flex items-center justify-between gap-large pl-base"}>
           <Text
             color={isDisabled ? "neutral-500" : "secondary-700"}
             fontFamily="raleway"
@@ -37,7 +37,7 @@ export const PetCardPetWatch = ({
           >
             {label}
           </Text>
-          <Text color="neutral-500">{labelStatus}</Text>
+          {isExpired && <Tag label="Expired" tagStatus="warning" />}
         </div>
       }
     />

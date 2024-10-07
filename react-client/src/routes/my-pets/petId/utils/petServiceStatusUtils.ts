@@ -12,7 +12,7 @@ export function getStatus(petServiceStatus: PetServices) {
   const Statuses: Record<MembershipStatus, PetServiceTypes> = {
     "Annual member": "annual",
     "Lifetime protect member": "lifetime",
-    "Lifetime plus protect member": "lifetimePlus",
+    "Lifetime protect member Plus": "lifetimePlus",
     "Not a member": "standard",
   };
 

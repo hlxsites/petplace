@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { DragAndDropFileUpload, Text, Title } from "~/components/design-system";
-import { ErrorDialog } from "~/components/design-system/dialog/ErrorDialog";
+import { ConfirmDialog } from "~/components/design-system/dialog/ConfirmDialog";
+
 import { PetCardRecord } from "~/components/Pet/PetCardRecord";
 import {
   DocumentFileType,
@@ -115,11 +116,12 @@ export const PetDocumentsView = ({
       )}
 
       {errorType && (
-        <ErrorDialog
+        <ConfirmDialog
           isOpen={isErrorDialogOpen}
           onClose={handleCloseErrorDialog}
           message={errorDialogContent[errorType].message}
           title={errorDialogContent[errorType].title}
+          type="error"
         />
       )}
     </div>

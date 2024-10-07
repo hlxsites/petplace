@@ -3,7 +3,7 @@ import { ViewNotifications } from "../../components/ViewNotifications";
 
 import { Fragment } from "react";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { useAccountNotificationsIndexViewModel } from "../useAccountNotificationsIndexViewModel";
 
 export const LostAndFoundNotifications = () => {

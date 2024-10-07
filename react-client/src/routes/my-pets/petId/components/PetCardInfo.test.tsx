@@ -38,12 +38,18 @@ describe.skip("PetCardInfo", () => {
 
 function getRenderer({
   id = "testId",
+  missingStatus = "found",
   name = "Test pet card info",
   ...rest
 }: Partial<ComponentProps<typeof PetCardInfo>> = {}) {
   return render(
     <MemoryRouter initialEntries={["/test"]}>
-      <PetCardInfo id={id} name={name} {...rest} />
+      <PetCardInfo
+        id={id}
+        missingStatus={missingStatus}
+        name={name}
+        {...rest}
+      />
     </MemoryRouter>
   );
 }

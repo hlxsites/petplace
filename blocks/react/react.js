@@ -1,17 +1,5 @@
-import { acquireToken, changePassword, isLoggedIn, login } from '../../scripts/lib/msal/msal-authentication.js';
-
-async function getAuthToken() {
-  try {
-    // We need to call isLoggedIn() first to prevent acquireToken() from breaking franklin flow
-    const loggedIn = await isLoggedIn()
-    if (!loggedIn) return null;
-
-    return await acquireToken() || null;
-  } catch (_) {
-    return null;
-  }
-}
-
+import { changePassword, login } from '../../scripts/lib/msal/msal-authentication.js';
+import { getAuthToken } from '../../scripts/parse-jwt.js';
 
 export default async function decorate(block) {
   const token = await getAuthToken();

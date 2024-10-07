@@ -18,12 +18,33 @@ import {
 } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
 
+import { getAuthToken, parseJwt } from '../../scripts/parse-jwt.js';
+
 const placeholders = await fetchPlaceholders('/pet-adoption');
 const { unitedStates, unitedKingdom } = placeholders;
+
+const USER_NAV_MY_PETS_ID = 'user-nav-my-pets-link';
 
 function isPopoverSupported() {
   // eslint-disable-next-line no-prototype-builtins
   return HTMLElement.prototype.hasOwnProperty('popover');
+}
+
+async function setupMyPetsLink() {
+  const authToken = await getAuthToken();
+  if (!authToken) return;
+
+  // check if the user has the required claims to access the link
+  const claim = parseJwt(authToken);
+  if (!claim) return;
+
+  const hasRelationId = claim.extension_CustRelationId !== '0';
+  const hasAdoptionId = !!claim.extension_AdoptionId;
+
+  // if the user have the required claims, include the link
+  if (hasRelationId && hasAdoptionId) {
+    document.getElementById(USER_NAV_MY_PETS_ID)?.classList.remove('hidden');
+  }
 }
 
 /**
@@ -185,6 +206,22 @@ export default async function decorate(block) {
           if (item.querySelector('a')) {
             const userLinks = item.querySelector('a');
             userLinks.classList.add('account-btn');
+
+            const linkText = userLinks.textContent.toLowerCase();
+
+            // The "My Pets" menu link is treated differently
+            if (linkText === 'my pets') {
+              userLinks.setAttribute('id', USER_NAV_MY_PETS_ID);
+              userLinks.classList.add('my-pets-link', 'hidden');
+              setupMyPetsLink();
+            }
+
+            if (linkText === 'my account') {
+              userLinks.classList.add('my-account-link');
+            } else if (linkText === 'pet adoption') {
+              userLinks.classList.add('pet-adoption-link');
+            }
+
             loginBtnsContainer.append(userLinks);
           } else if (item.querySelector('picture')) {
             userMenu.classList.add('user-btn', 'hidden');
@@ -192,7 +229,7 @@ export default async function decorate(block) {
             navLogin.append(userMenu);
           } else {
             const signOutBtn = document.createElement('button');
-            signOutBtn.className = 'sign-out-btn';
+            signOutBtn.className = 'sign-out-btn logout-link';
             signOutBtn.setAttribute('aria-label', 'sign out');
             signOutBtn.textContent = item.textContent;
             loginBtnsContainer.append(signOutBtn);
@@ -212,6 +249,8 @@ export default async function decorate(block) {
             if (isLoggedIn()) {
               event.target.classList.add('hidden');
               userMenu.classList.remove('hidden');
+
+              setupMyPetsLink();
             } else {
               event.target.classList.remove('hidden');
               userMenu.classList.add('hidden');

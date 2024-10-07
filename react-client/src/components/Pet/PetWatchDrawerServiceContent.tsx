@@ -1,5 +1,4 @@
 import { PetServices } from "~/domain/models/pet/PetModel";
-import { useContentDetails } from "~/hooks/useContentDetails";
 import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
 import { PetWatchDrawerHeader } from "./PetWatchDrawerHeader";
 
@@ -12,21 +11,10 @@ export const PetWatchDrawerServiceContent = ({
   serviceStatus,
   route,
 }: PetWatchDrawerServiceContentProps) => {
-  const { handleContentChange, contentDetails } = useContentDetails();
-
   return (
     <>
-      <PetWatchDrawerHeader
-        contentDetails={contentDetails}
-        onClick={handleContentChange()}
-        serviceStatus={serviceStatus}
-      />
-      <PetWatchDrawerBody
-        contentDetails={contentDetails}
-        onClick={handleContentChange}
-        route={route}
-        serviceStatus={serviceStatus}
-      />
+      <PetWatchDrawerHeader serviceStatus={serviceStatus} />
+      <PetWatchDrawerBody route={route} serviceStatus={serviceStatus} />
     </>
   );
 };

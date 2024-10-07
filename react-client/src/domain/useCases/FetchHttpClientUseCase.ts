@@ -88,6 +88,8 @@ async function fetchMiddleware(
     const response = await fetch(url, rest);
     const contentType = response.headers.get("Content-Type");
 
+    const success = response.status >= 200 && response.status < 300;
+
     const data: unknown = await (async () => {
       // No content HTTP status code
       if (response.status === 204) return null;
@@ -101,7 +103,7 @@ async function fetchMiddleware(
       return response.text();
     })();
 
-    return { data, statusCode: response.status };
+    return { data, statusCode: response.status, success };
   } catch (error) {
     logError("Fetch request error:", error);
     return { error };

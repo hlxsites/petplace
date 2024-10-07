@@ -1,16 +1,23 @@
 import { ReactNode } from "react";
 import { Button, Card, Icon, IconKeys, Text, Title } from "../design-system";
+import { ConfirmDialog } from "../design-system/dialog/ConfirmDialog";
 
 export type PetServiceDetailsCardProps = {
   additionalInfo?: ReactNode;
   contact?: string;
   description: ReactNode;
+  isModalOpen: boolean;
+  onCloseModal: () => void;
+  onConfirmModal: () => void;
   primaryAction?: ServiceAction;
   secondaryActions?: (ServiceAction & { icon: IconKeys })[];
 };
 
 type ServiceAction = {
-  label: string;
+  buttonLabel: string;
+  confirmButtonLabel?: string;
+  message?: string;
+  title?: string;
   onClick?: () => void;
 };
 
@@ -18,6 +25,9 @@ export const PetServiceDetailsCard = ({
   additionalInfo,
   contact,
   description,
+  isModalOpen,
+  onCloseModal,
+  onConfirmModal,
   primaryAction,
   secondaryActions,
 }: PetServiceDetailsCardProps) => {
@@ -41,7 +51,7 @@ export const PetServiceDetailsCard = ({
       )}
       {secondaryActions && (
         <div className="flex justify-between gap-small">
-          {secondaryActions.map(({ icon, label, onClick }) => (
+          {secondaryActions.map(({ icon, buttonLabel: label, onClick }) => (
             <Button variant="secondary" key={label} onClick={onClick} fullWidth>
               <Icon
                 display={icon}
@@ -52,10 +62,22 @@ export const PetServiceDetailsCard = ({
           ))}
         </div>
       )}
-      {primaryAction && (
-        <Button onClick={primaryAction.onClick} fullWidth>
-          {primaryAction.label}
-        </Button>
+      {primaryAction?.confirmButtonLabel && (
+        <ConfirmDialog
+          icon="info"
+          isOpen={isModalOpen}
+          message={primaryAction.message}
+          onClose={onCloseModal}
+          onClickPrimaryButton={onConfirmModal}
+          confirmButtonLabel={primaryAction.confirmButtonLabel}
+          title={primaryAction.title ?? ""}
+          type="info"
+          trigger={
+            <Button onClick={primaryAction.onClick} fullWidth>
+              {primaryAction.buttonLabel}
+            </Button>
+          }
+        />
       )}
     </div>
   );

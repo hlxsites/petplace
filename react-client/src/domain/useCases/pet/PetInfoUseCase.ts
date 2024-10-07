@@ -25,7 +25,7 @@ export class PetInfoUseCase implements PetInfoRepository {
 
       return null;
     } catch (error) {
-      logError("GetPetInfoUseCase query error", error);
+      logError("PetInfoUseCase query error", error);
       return null;
     }
   };
@@ -61,6 +61,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     }),
     Id: z.string(),
     ImageUrl: z.string().nullish(),
+    InsuranceAggregatorUrl: z.string().nullish(),
     MembershipStatus: z.string(),
     Microchip: z.string().nullish(),
     MixedBreed: z.boolean().nullish(),
@@ -97,9 +98,11 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     dateOfBirth: info.DateOfBirth,
     id: info.Id,
     img: info.ImageUrl ?? undefined,
+    insuranceUrl: info.InsuranceAggregatorUrl ?? "",
     locale: info.CountryCode,
     membershipStatus: info.MembershipStatus,
     microchip: info.Microchip,
+    missingStatus: "found",
     mixedBreed: !!info.MixedBreed,
     name: info.Name,
     policyInsurance: info.PolicyNumbers ?? [],

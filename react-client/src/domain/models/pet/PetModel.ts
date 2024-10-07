@@ -8,11 +8,9 @@ export type DocumentationStatus =
   | "failed"
   | "inProgress";
 
-type ContactDone = {
-  date: string;
+export type ContactDone = {
+  date?: string;
   email?: string;
-  methodContact?: string;
-  phoneNumber?: string;
 };
 
 export type FoundedByInfo = {
@@ -20,16 +18,26 @@ export type FoundedByInfo = {
   finderName?: string;
   finderOrganization?: string;
   finderPhoneNumber?: string;
-  name?: string;
 };
 
-export type LostPetUpdate = {
+export type LostPetUpdateModel = {
+  date: string;
+  id: string;
+  communicationId: string;
+  note?: string;
+  petId: string;
+  petName: string;
+  status: MissingStatus;
+  update: string;
+  foundedBy?: FoundedByInfo;
+};
+
+export type LostAndFountNotification = {
   date: string;
   update: string;
   status: MissingStatus;
   id: number;
-  note?: string;
-  foundedBy?: FoundedByInfo | null;
+  note: string;
 };
 
 export type PetCommon = {
@@ -58,8 +66,8 @@ export type PetModel = PetCommon &
     breed?: string;
     dateOfBirth?: string;
     documentationStatus?: DocumentationStatus;
-    lostPetHistory?: LostPetUpdate[];
-    missingStatus?: MissingStatus;
+    insuranceUrl?: string;
+    missingStatus: MissingStatus;
     mixedBreed?: boolean;
     onboardCompleted?: boolean;
     policyInsurance?: string[];

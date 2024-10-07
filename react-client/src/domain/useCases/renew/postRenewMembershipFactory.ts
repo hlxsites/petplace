@@ -4,7 +4,7 @@ import { PostRenewMembershipRepository } from "~/domain/repository/renew/PostRen
 import { PostRenewMembershipUseCase } from "./PostRenewMembershipUseCase";
 import { MockPostRenewMembershipUseCase } from "./MockPostRenewMembershipUseCase";
 
-export default function petListUseCaseFactory(
+export default function postRenewMembershipUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
 ): PostRenewMembershipRepository {

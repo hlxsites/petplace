@@ -1,5 +1,5 @@
 import { Button, Text, TextSpan } from "~/components/design-system";
-import { LostPetUpdateModel } from "~/domain/models/user/UserModels";
+import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { parseDateTime } from "~/util/dateUtils";
 
 type NotificationsDialogContentProps = {
