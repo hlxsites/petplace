@@ -101,7 +101,7 @@ export const useCheckoutProductsViewModel = () => {
 
         const updatedStateWithAdditionalService = updatedState.map((item) => ({
           ...item,
-          isAnnual:
+          isAdditionalService:
             getAnnualProductPurchaseLimit(getProductType(item.id)) === 1,
         }));
 
