@@ -3,7 +3,6 @@ import { Button } from "~/components/design-system";
 import { PetModel } from "~/domain/models/pet/PetModel";
 
 export const PetImageInput = ({
-  onRemove,
   onSelectFile,
   pet,
 }: {
@@ -21,9 +20,6 @@ export const PetImageInput = ({
         className="h-[160px] w-[160px]"
       />
       <div className="flex flex-col justify-end gap-small">
-        <Button variant="secondary" iconLeft="delete2" onClick={onRemove}>
-          Remove photo
-        </Button>
         <input
           className="absolute h-0 w-0 opacity-0"
           id="pet-image-file-input"
