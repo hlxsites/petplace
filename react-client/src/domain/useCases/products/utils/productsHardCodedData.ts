@@ -54,6 +54,8 @@ const byteTagSlide = {
 };
 
 const byteTagRound = {
+  detailedDescription:
+    "ByteTag Round is a scannable pet tag containing all of your pets important information conveniently in one profile.",
   privacyFeatures:
     "You can choose to hide your phone number and address from your pet's profile until your pet has been marked as lost.",
   tagFeatures: [
