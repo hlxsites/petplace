@@ -99,14 +99,21 @@ export const useCheckoutProductsViewModel = () => {
           ? callback
           : callback(prevState);
 
-        // Sort the cart items so that the membership plan is always at the top
-        updatedState.sort((a, b) => (a.isService && !b.isService ? -1 : 1));
+        const updatedStateWithAdditionalService = updatedState.map((item) => ({
+          ...item,
+          isAnnual:
+            getAnnualProductPurchaseLimit(getProductType(item.id)) === 1,
+        }));
+
+        updatedStateWithAdditionalService.sort((a, b) =>
+          a.isService && !b.isService ? -1 : 1
+        );
 
         if (saveOnServer) {
-          void postCart(updatedState, petId);
+          void postCart(updatedStateWithAdditionalService, petId);
         }
 
-        return updatedState;
+        return updatedStateWithAdditionalService;
       });
     },
     [petId, postCart]
@@ -173,13 +180,20 @@ export const useCheckoutProductsViewModel = () => {
 
   const onUpdateQuantity = (id: string, newQuantity: number) => {
     updateCartItemsState((prevItems) => {
-      // Remove the item from the cart if the quantity is 0
-      if (newQuantity === 0) {
+      const productType = getProductType(id);
+      const purchaseLimit = getAnnualProductPurchaseLimit(productType);
+
+      const adjustedQuantity = purchaseLimit
+        ? Math.min(newQuantity, purchaseLimit)
+        : newQuantity;
+
+      if (adjustedQuantity === 0) {
         return prevItems.filter((item) => item.id !== id);
       }
+
       return prevItems.map((item) => {
         if (item.id === id) {
-          return { ...item, quantity: newQuantity };
+          return { ...item, quantity: adjustedQuantity };
         }
         return item;
       });
@@ -282,6 +296,19 @@ export const useCheckoutProductsViewModel = () => {
 
     return formatPrice(sum);
   })();
+
+  const getProductType = (id: string): string | undefined => {
+    const product = products.find((p) => p.id === id);
+    return product?.type;
+  };
+
+  const getAnnualProductPurchaseLimit = (
+    productType?: string,
+    purchaseLimit?: number
+  ) => {
+    const isAnnualProduct = productType?.toLocaleLowerCase().includes("annual");
+    return isAnnualProduct ? 1 : purchaseLimit;
+  };
 
   return {
     autoRenew,
