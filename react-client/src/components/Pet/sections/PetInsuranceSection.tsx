@@ -1,4 +1,5 @@
 import { Card, LinkButton, Title } from "~/components/design-system";
+import { redirectToMph } from "~/util/mphRedirectUtil";
 
 type PetInsuranceSectionProps = {
   petId: string;
@@ -13,7 +14,7 @@ export const PetInsuranceSection = ({ petId }: PetInsuranceSectionProps) => {
         <LinkButton
           fullWidth={true}
           openInNewTab={true}
-          to={`https://mph-qay.pethealthinc.com/external/petplacelogin?redirecturl=petplace/policy?animalID=${petId}`}
+          to={redirectToMph(`petplace/policy?animalID=${petId}`)}
           variant="secondary"
         >
           View insurance details

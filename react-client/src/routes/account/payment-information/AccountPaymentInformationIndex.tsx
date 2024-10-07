@@ -1,12 +1,12 @@
 import { Title } from "~/components/design-system";
 import { BasicActionCard } from "~/components/design-system/card/BasicActionCard";
+import { redirectToMph } from "~/util/mphRedirectUtil";
 
 export const AccountPaymentInformationIndex = () => {
   const actionsSections = [
     {
       buttonLabel: "Manage payment settings",
-      buttonLink:
-        "https://mph-qay.pethealthinc.com/External/Petplacelogin?redirecturl=petplace/payment-setting",
+      buttonLink: redirectToMph("petplace/payment-setting"),
       message: "Verify, update, or change your payment settings.",
       title: "Payment settings",
     },
