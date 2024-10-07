@@ -17,6 +17,7 @@ export const serverExternalAccountSchema = z.object({
     StateProvince: z.string().nullish(),
   }),
   Email: z.string().nullish(),
+  InsuranceClaimsUrl: z.string().nullish(),
   FirstName: z.string().nullish(),
   LastName: z.string().nullish(),
   ZipCode: z.string().nullish(),
