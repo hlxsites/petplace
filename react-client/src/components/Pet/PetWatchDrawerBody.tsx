@@ -40,6 +40,7 @@ export const PetWatchDrawerBody = ({
     handleContentChange,
     isOpenModalType,
     onRenewMembership,
+    onCloseConfirmDialog,
     petWatchBenefits: {
       petWatchAvailableBenefits,
       petWatchAnnualUnavailableBenefits,
@@ -139,9 +140,5 @@ export const PetWatchDrawerBody = ({
 
   function handleOnConfirmRenew() {
     void onRenewMembership();
-  }
-
-  function onCloseConfirmDialog() {
-    onCloseConfirmDialog();
   }
 };
