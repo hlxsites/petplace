@@ -1,6 +1,7 @@
 import { PetServices } from "~/domain/models/pet/PetModel";
 import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { shouldRenderStandardServiceDrawer } from "~/util/petWatchServiceUtils";
+import { SuspenseAwait } from "../await/SuspenseAwait";
 import { LinkButton, Text } from "../design-system";
 import {
   ConfirmDialog,

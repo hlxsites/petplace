@@ -19,6 +19,7 @@ import { TransferPetDialog } from "./components/TransferPetDialog";
 import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
+import { ReportClosingModal } from "~/components/Pet/ReportClosingModal";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
