@@ -89,6 +89,24 @@ export const useCheckoutProductsViewModel = () => {
   const autoRenew = !!cartItems.find((item) => item.id === selectedPlan.id)
     ?.autoRenew;
 
+  const getProductType = useCallback(
+    (id: string): string | undefined => {
+      const product = products.find((p) => p.id === id);
+      return product?.type;
+    },
+    [products]
+  );
+
+  const getAnnualProductPurchaseLimit = useCallback(
+    (productType?: string, purchaseLimit?: number) => {
+      const isAnnualProduct = productType
+        ?.toLocaleLowerCase()
+        .includes("annual");
+      return isAnnualProduct ? 1 : purchaseLimit;
+    },
+    []
+  );
+
   const updateCartItemsState = useCallback(
     (
       callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[],
@@ -116,7 +134,7 @@ export const useCheckoutProductsViewModel = () => {
         return updatedStateWithAdditionalService;
       });
     },
-    [petId, postCart]
+    [petId, postCart, getProductType, getAnnualProductPurchaseLimit]
   );
 
   useDeepCompareEffect(() => {
@@ -296,19 +314,6 @@ export const useCheckoutProductsViewModel = () => {
 
     return formatPrice(sum);
   })();
-
-  const getProductType = (id: string): string | undefined => {
-    const product = products.find((p) => p.id === id);
-    return product?.type;
-  };
-
-  const getAnnualProductPurchaseLimit = (
-    productType?: string,
-    purchaseLimit?: number
-  ) => {
-    const isAnnualProduct = productType?.toLocaleLowerCase().includes("annual");
-    return isAnnualProduct ? 1 : purchaseLimit;
-  };
 
   return {
     autoRenew,
