@@ -32,6 +32,7 @@ export type ExternalAccountDetailsModel = InternalAccountDetailsModel & {
   secondaryPhone?: string;
   contactConsent?: boolean;
   informationConsent?: boolean;
+  insuranceUrl?: string;
 };
 
 export type AccountAddressModel = {
