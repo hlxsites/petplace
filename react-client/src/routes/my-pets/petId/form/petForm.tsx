@@ -260,7 +260,7 @@ export const editPetProfileFormSchema: (hasPolicy: boolean) => FormSchema = (
       ],
     },
     {
-      className: "!mt-xxlarge",
+      className: "!mt-xxlarge h-[100px] lg:h-auto",
       elementType: "row",
       children: [
         {
