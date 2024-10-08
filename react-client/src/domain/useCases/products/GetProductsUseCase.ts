@@ -114,6 +114,10 @@ function convertToProductsList(
           return;
         }
 
+        const isAnnual =
+          typeof item.ItemType === "string"
+            ? item.ItemType.toLocaleLowerCase().includes("annual")
+            : false;
         const description = PRODUCT_DESCRIPTION[id];
 
         products.push({
@@ -126,6 +130,7 @@ function convertToProductsList(
             },
           },
           id,
+          isAnnual,
           images: IMAGES_PRODUCTS[id] ?? [],
           description,
           title,

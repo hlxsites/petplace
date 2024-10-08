@@ -17,7 +17,7 @@ describe("<Backdrop />", () => {
   it("should render the backdrop with initial animation classes", () => {
     getRenderer();
     expect(getByTestId(TEST_ID)).toHaveClass(
-      "absolute backdrop-blur-sm animate-fadeIn bg-black/30"
+      "fixed inset-0 z-40 backdrop-blur-sm animate-fadeIn bg-black/30"
     );
   });
 

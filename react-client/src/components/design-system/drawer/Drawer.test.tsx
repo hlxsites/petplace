@@ -21,7 +21,7 @@ describe("Drawer", () => {
   it("should apply correct classNames for drawer", () => {
     getRenderer();
     expect(getByRole("dialog")).toHaveClass(
-      "fixed bottom-0 left-0 right-0 z-50 max-h-90vh w-full rounded-t-2xl bg-neutral-white p-xlarge duration-300 ease-in-out lg:left-auto lg:top-0 lg:max-h-screen lg:rounded-none animate-slideInFromBottom lg:animate-slideInFromRight"
+      "fixed z-50 bg-neutral-white duration-300 ease-in-out bottom-0 right-0 top-0 rounded-l-2xl p-xlarge animate-slideInFromBottom lg:animate-slideInFromRight"
     );
   });
 

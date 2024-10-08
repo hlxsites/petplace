@@ -3,6 +3,7 @@ export const PET_ID_ROUTE_PARAM = "petId";
 export const AppRoutePaths = {
   root: "/",
   account: "account",
+  accountOnboarding: "onboarding",
   accountNotifications: "notifications",
   accountNotificationId: ":notificationId",
   accountPayment: "payment-information",

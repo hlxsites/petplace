@@ -10,7 +10,6 @@ export * from "./DragAndDropZonePlayground";
 export * from "./DropdownMenuPlayground";
 export * from "./formBuilder/FormBuilderPlayground";
 export * from "./MyAccountPagePlayground";
-export * from "./OnboardingDialogPlayground";
 export * from "./PetCardRecordPlayground";
 export * from "./StepProgressPlayground";
 export * from "./SwitchPlayground";

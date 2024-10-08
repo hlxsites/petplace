@@ -3,6 +3,7 @@ import { IconButton, IconKeys, Text } from "../design-system";
 
 type CartItemQuantityManagerProps = {
   id: string;
+  isAdditionalService?: boolean;
   onUpdateQuantity: (id: string, quantity: number) => void;
   purchaseLimit?: number;
   quantity: number;
@@ -23,6 +24,7 @@ type ButtonVariables = Record<
 
 export const CartItemQuantityManager = ({
   id,
+  isAdditionalService,
   onUpdateQuantity,
   purchaseLimit,
   quantity,
@@ -77,7 +79,10 @@ export const CartItemQuantityManager = ({
           disabled: removeLimit,
         },
         add: {
-          className: addLimit ? "text-neutral-600" : "text-orange-300-contrast",
+          className:
+            isAdditionalService || addLimit
+              ? "text-neutral-600"
+              : "text-orange-300-contrast",
           icon: "addCircle",
           label: "Add one",
           onClick: addOne,

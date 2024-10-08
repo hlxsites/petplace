@@ -49,8 +49,8 @@ export const ONBOARDING_STEPS_TEXTS = {
     },
   },
   5: {
-    message: (status: string) =>
-      `Your pet's microchip is registered${status !== "none" ? " and adoption documents are digitally available" : ""}. Now let’s ensure your pet's safety with added layers of protection.`,
+    message:
+      "Your pet's microchip is registered. Now let’s ensure your pet's safety with added layers of protection.",
     title: "Almost there!",
     microchip: "Microchip registration",
     documents: "Digital documents",

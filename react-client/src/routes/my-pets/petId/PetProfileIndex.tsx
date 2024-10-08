@@ -16,7 +16,6 @@ import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
 import { ReportPetButton } from "./components/ReportPetButton";
 import { TransferPetDialog } from "./components/TransferPetDialog";
-import { OnboardingDialog } from "./onboarding/OnboardingDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 
@@ -28,8 +27,6 @@ export const PetProfileIndex = () => {
   if (isLoading) return <DefaultLoading minHeight="80dvh" />;
 
   invariant(pet, "Pet not found");
-
-  const displayOnboarding = !!searchParams.get("onboarding");
 
   const displayCheckoutSuccessModal = (() => {
     const contentParam = searchParams.get(CONTENT_PARAM_KEY);
@@ -67,7 +64,6 @@ export const PetProfileIndex = () => {
         />
       </div>
       <Outlet context={viewModel} />
-      {displayOnboarding && <OnboardingDialog pet={pet} />}
       {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
       <TransferPetDialog />
     </>

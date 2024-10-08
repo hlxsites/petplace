@@ -1,8 +1,14 @@
 import FocusTrap from "focus-trap-react";
-import { cloneElement, isValidElement, ReactElement, useEffect } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  ReactElement,
+  useEffect,
+  useRef,
+} from "react";
 import { createPortal } from "react-dom";
 import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
-import { classNames, resetBodyStyles } from "~/util/styleUtil";
+import { classNames } from "~/util/styleUtil";
 import { Backdrop } from "../backdrop/Backdrop";
 import { IconButton } from "../button/IconButton";
 import { Icon } from "../icon/Icon";
@@ -30,13 +36,21 @@ export const DialogBase = ({
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
     onClose,
   });
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "visible";
-    document.body.style.position = isOpen ? "relative" : "static";
+    const bodyStyle = document.body.style;
+    const originalOverflow = bodyStyle.overflow;
 
-    // Reset body styles when unmounting
-    return resetBodyStyles;
+    if (isOpen) {
+      bodyStyle.overflow = "hidden";
+    }
+
+    return () => {
+      if (isOpen) {
+        bodyStyle.overflow = originalOverflow;
+      }
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -79,7 +93,6 @@ export const DialogBase = ({
     <>
       <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
       <FocusTrap
-        // TODO: disabled by a debt tech problem, see our documentation
         active={false}
         focusTrapOptions={{
           clickOutsideDeactivates: true,
@@ -87,10 +100,12 @@ export const DialogBase = ({
         }}
       >
         <div
+          ref={dialogRef}
           aria-label={ariaLabel}
           aria-labelledby={titleId}
           aria-modal="true"
           className={classNames(
+            "fixed z-50",
             className?.modal,
             padding,
             {
@@ -108,7 +123,9 @@ export const DialogBase = ({
           )}
           id={id}
           role="dialog"
-          style={{ width: width === "auto" ? "auto" : width }}
+          style={{
+            width: width === "auto" ? "auto" : width,
+          }}
           tabIndex={-1}
         >
           {!!icon && <Icon display={icon} {...iconProps} />}
@@ -136,7 +153,12 @@ export const DialogBase = ({
             />
           )}
 
-          <div className="grid h-fit overflow-auto">{renderChildren}</div>
+          <div
+            className="overflow-y-auto"
+            style={{ maxHeight: "calc(100vh - 100px)" }}
+          >
+            {renderChildren}
+          </div>
         </div>
       </FocusTrap>
     </>

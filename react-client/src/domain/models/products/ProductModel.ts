@@ -19,6 +19,7 @@ export type DetailedCartItem = ProductDescription & MoreInfoDetailed;
 
 export type MoreInfoDetailed = {
   additionalInfo?: string;
+  detailedDescription?: string;
   privacyFeatures?: string;
   sizing?: string;
   tagFeatures?: string[];

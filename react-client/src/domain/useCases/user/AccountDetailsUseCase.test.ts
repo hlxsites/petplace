@@ -66,6 +66,7 @@ describe("AccountDetailsUseCase", () => {
         defaultPhone: "71 988776655|Work",
         email: "augustus.ok@email.com",
         informationConsent: false,
+        insuranceUrl: "www.mock-url.co",
         name: "Augustus",
         secondaryPhone: "416-709-5781|Home",
         surname: "Waters",

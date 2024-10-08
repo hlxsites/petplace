@@ -13,11 +13,6 @@ jest.mock(
     )
 );
 
-jest.mock("../usePetProfileLayoutViewModel", () => ({
-  usePetProfileLayoutViewModel: jest.fn(),
-  usePetProfileContext: jest.fn(),
-}));
-
 const DEFAULT_NAME = "Romã";
 const { getByRole, getByText, getByAltText } = screen;
 
@@ -40,10 +35,10 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render Dialog with initial content", async () => {
-    localStorage.setItem("step", "1");
+    localStorage.setItem("onboarding-step", "1");
     await getRenderer({
-      name: DEFAULT_NAME,
-      documentationStatus: "none",
+      pet: { name: DEFAULT_NAME },
+      status: "none",
     });
 
     await waitFor(() =>
@@ -56,10 +51,10 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render step 2 content", async () => {
-    localStorage.setItem("step", "2");
+    localStorage.setItem("onboarding-step", "2");
     await getRenderer({
-      name: DEFAULT_NAME,
-      documentationStatus: "none",
+      pet: { name: DEFAULT_NAME },
+      status: "none",
     });
 
     await waitFor(() =>
@@ -77,10 +72,10 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render step 3 content", async () => {
-    localStorage.setItem("step", "3");
+    localStorage.setItem("onboarding-step", "3");
     await getRenderer({
-      name: DEFAULT_NAME,
-      documentationStatus: "none",
+      pet: { name: DEFAULT_NAME },
+      status: "none",
     });
 
     await waitFor(() =>
@@ -93,10 +88,10 @@ describe("OnboardingDialog", () => {
   });
 
   it("should render step 4 content for none documentationStatus by default", async () => {
-    localStorage.setItem("step", "4");
+    localStorage.setItem("onboarding-step", "4");
     await getRenderer({
-      name: DEFAULT_NAME,
-      documentationStatus: "none",
+      pet: { name: DEFAULT_NAME },
+      status: "none",
     });
 
     const [string1, string2] =
@@ -136,11 +131,11 @@ describe("OnboardingDialog", () => {
     ],
   ] satisfies [DocumentationStatus, string, string][])(
     "should render step 4 dynamic content for documentationStatus %s",
-    async (documentationStatus, title, description) => {
-      localStorage.setItem("step", "4");
+    async (status, title, description) => {
+      localStorage.setItem("onboarding-step", "4");
       await getRenderer({
-        name: DEFAULT_NAME,
-        documentationStatus,
+        pet: { name: DEFAULT_NAME },
+        status,
       });
 
       await waitFor(() =>
@@ -151,10 +146,10 @@ describe("OnboardingDialog", () => {
   );
 
   it("should render step 5 content with status none message", async () => {
-    localStorage.setItem("step", "5");
+    localStorage.setItem("onboarding-step", "5");
     await getRenderer({
-      name: DEFAULT_NAME,
-      documentationStatus: "none",
+      pet: { name: DEFAULT_NAME },
+      status: "none",
     });
 
     await waitFor(() =>
@@ -162,9 +157,7 @@ describe("OnboardingDialog", () => {
         getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
       ).toBeInTheDocument()
     );
-    expect(
-      getByText(ONBOARDING_STEPS_TEXTS[5].message("none"))
-    ).toBeInTheDocument();
+    expect(getByText(ONBOARDING_STEPS_TEXTS[5].message)).toBeInTheDocument();
     expect(getByText(ONBOARDING_STEPS_TEXTS[5].microchip)).toBeInTheDocument();
     expect(getByText(ONBOARDING_STEPS_TEXTS[5].documents)).toBeInTheDocument();
     expect(getByText(ONBOARDING_STEPS_TEXTS[5].protection)).toBeInTheDocument();
@@ -178,10 +171,10 @@ describe("OnboardingDialog", () => {
   ] satisfies DocumentationStatus[])(
     "should render step 5 content with message for other status",
     async (expected) => {
-      localStorage.setItem("step", "5");
+      localStorage.setItem("onboarding-step", "5");
       await getRenderer({
-        name: DEFAULT_NAME,
-        documentationStatus: expected,
+        pet: { name: DEFAULT_NAME },
+        status: expected,
       });
 
       await waitFor(() =>
@@ -189,9 +182,7 @@ describe("OnboardingDialog", () => {
           getByRole("heading", { name: ONBOARDING_STEPS_TEXTS[5].title })
         ).toBeInTheDocument()
       );
-      expect(
-        getByText(ONBOARDING_STEPS_TEXTS[5].message(expected))
-      ).toBeInTheDocument();
+      expect(getByText(ONBOARDING_STEPS_TEXTS[5].message)).toBeInTheDocument();
       expect(
         getByText(ONBOARDING_STEPS_TEXTS[5].microchip)
       ).toBeInTheDocument();
@@ -205,10 +196,20 @@ describe("OnboardingDialog", () => {
   );
 });
 
-async function getRenderer(
-  pet: ComponentProps<typeof OnboardingDialog>["pet"]
-) {
-  render(<OnboardingDialog pet={pet} />);
+async function getRenderer({
+  onFinish = jest.fn(),
+  onSubmitConsent = jest.fn(),
+  pet = null,
+  status = "none",
+}: Partial<ComponentProps<typeof OnboardingDialog>> = {}) {
+  render(
+    <OnboardingDialog
+      onFinish={onFinish}
+      onSubmitConsent={onSubmitConsent}
+      pet={pet}
+      status={status}
+    />
+  );
   await waitFor(() => {
     expect(getByRole("heading")).toBeInTheDocument();
   });

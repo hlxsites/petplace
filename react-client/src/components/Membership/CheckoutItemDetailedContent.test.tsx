@@ -12,7 +12,7 @@ const DEFAULT_ITEM: DetailedCartItem = {
   availableOptions: {},
   id: "item-id",
   title: "Item title",
-  description: "Item description",
+  detailedDescription: "Item description",
   images: [],
   type: "item-type",
 };
@@ -41,9 +41,9 @@ describe("CheckoutItemDetailedContent", () => {
 
   it.each(["A description", "Another description"])(
     "should render component with given description",
-    (description) => {
-      getRenderer({ product: { ...DEFAULT_ITEM, description } });
-      expect(getByText(description)).toBeInTheDocument();
+    (detailedDescription) => {
+      getRenderer({ product: { ...DEFAULT_ITEM, detailedDescription } });
+      expect(getByText(detailedDescription)).toBeInTheDocument();
     }
   );
 

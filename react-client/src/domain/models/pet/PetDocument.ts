@@ -24,3 +24,8 @@ export type PetDocument = {
   fileType: DocumentFileType;
   id: string;
 };
+
+export type PetDocumentConsentMutationInput = {
+  consent: boolean;
+  microchips: string[];
+};

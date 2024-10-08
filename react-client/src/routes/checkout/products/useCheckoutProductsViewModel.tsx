@@ -8,7 +8,6 @@ import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
 import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
-import { REDIRECT_TO_CHECKOUT_URL } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
 import { PRODUCT_DETAILS } from "~/domain/useCases/products/utils/productsHardCodedData";
 import {
   convertProductToCartItem,
@@ -17,7 +16,9 @@ import {
 } from "~/domain/util/checkoutProductUtil";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
+import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
+import { redirectToMph } from "~/util/mphRedirectUtil";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
@@ -88,6 +89,24 @@ export const useCheckoutProductsViewModel = () => {
   const autoRenew = !!cartItems.find((item) => item.id === selectedPlan.id)
     ?.autoRenew;
 
+  const getProductType = useCallback(
+    (id: string): string | undefined => {
+      const product = products.find((p) => p.id === id);
+      return product?.type;
+    },
+    [products]
+  );
+
+  const getAnnualProductPurchaseLimit = useCallback(
+    (productType?: string, purchaseLimit?: number) => {
+      const isAnnualProduct = productType
+        ?.toLocaleLowerCase()
+        .includes("annual");
+      return isAnnualProduct ? 1 : purchaseLimit;
+    },
+    []
+  );
+
   const updateCartItemsState = useCallback(
     (
       callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[],
@@ -98,17 +117,24 @@ export const useCheckoutProductsViewModel = () => {
           ? callback
           : callback(prevState);
 
-        // Sort the cart items so that the membership plan is always at the top
-        updatedState.sort((a, b) => (a.isService && !b.isService ? -1 : 1));
+        const updatedStateWithAdditionalService = updatedState.map((item) => ({
+          ...item,
+          isAdditionalService:
+            getAnnualProductPurchaseLimit(getProductType(item.id)) === 1,
+        }));
+
+        updatedStateWithAdditionalService.sort((a, b) =>
+          a.isService && !b.isService ? -1 : 1
+        );
 
         if (saveOnServer) {
-          void postCart(updatedState, petId);
+          void postCart(updatedStateWithAdditionalService, petId);
         }
 
-        return updatedState;
+        return updatedStateWithAdditionalService;
       });
     },
-    [petId, postCart]
+    [petId, postCart, getProductType, getAnnualProductPurchaseLimit]
   );
 
   useDeepCompareEffect(() => {
@@ -172,13 +198,20 @@ export const useCheckoutProductsViewModel = () => {
 
   const onUpdateQuantity = (id: string, newQuantity: number) => {
     updateCartItemsState((prevItems) => {
-      // Remove the item from the cart if the quantity is 0
-      if (newQuantity === 0) {
+      const productType = getProductType(id);
+      const purchaseLimit = getAnnualProductPurchaseLimit(productType);
+
+      const adjustedQuantity = purchaseLimit
+        ? Math.min(newQuantity, purchaseLimit)
+        : newQuantity;
+
+      if (adjustedQuantity === 0) {
         return prevItems.filter((item) => item.id !== id);
       }
+
       return prevItems.map((item) => {
         if (item.id === id) {
-          return { ...item, quantity: newQuantity };
+          return { ...item, quantity: adjustedQuantity };
         }
         return item;
       });
@@ -242,7 +275,8 @@ export const useCheckoutProductsViewModel = () => {
     void (async () => {
       await postCart(cartItems, petId);
 
-      window.location.href = REDIRECT_TO_CHECKOUT_URL;
+      const uri = redirectToMph("petplace/cart");
+      forceRedirect(uri);
     })();
   };
 
@@ -254,11 +288,16 @@ export const useCheckoutProductsViewModel = () => {
     if (!product) return null;
 
     // Get additional hard-coded info, privacy features, and tag features
-    const { additionalInfo, privacyFeatures, tagFeatures } =
-      PRODUCT_DETAILS[product.id];
+    const {
+      additionalInfo,
+      detailedDescription,
+      privacyFeatures,
+      tagFeatures,
+    } = PRODUCT_DETAILS[product.id];
     return {
       ...product,
       additionalInfo,
+      detailedDescription,
       privacyFeatures,
       tagFeatures,
     };

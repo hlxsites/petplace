@@ -10,6 +10,7 @@ type CartItemCardProps = Omit<CartItem, "autoRenew" | "type"> & {
 
 export const CartItemCard = ({
   description,
+  isAdditionalService,
   isService,
   onUpdateQuantity,
   price,
@@ -56,6 +57,7 @@ export const CartItemCard = ({
         {!isService && (
           <CartItemQuantityManager
             {...rest}
+            isAdditionalService={isAdditionalService}
             onUpdateQuantity={onUpdateQuantity}
           />
         )}

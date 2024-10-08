@@ -9,6 +9,7 @@ export type CommonCartItem = {
 
 export type CartItem = CommonCartItem & {
   description?: string;
+  isAdditionalService?: boolean;
   isService?: boolean;
   purchaseLimit?: number;
   recurrence?: string;
