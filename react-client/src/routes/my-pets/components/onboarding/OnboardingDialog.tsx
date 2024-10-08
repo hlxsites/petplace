@@ -23,7 +23,7 @@ type OnboardingDialogProps = {
   onFinish: () => void;
   onSubmitConsent: (consent: boolean) => void;
   status: DocumentationStatus;
-  pet: Pick<PetCommon, "name"> | null;
+  pet: Pick<PetCommon, "name" | "microchip"> | null;
 };
 
 export const OnboardingDialog = ({
@@ -95,7 +95,7 @@ export const OnboardingDialog = ({
         return (
           <OnboardingStepFour
             {...commonProps}
-            name={pet?.name}
+            name={pet?.name || pet?.microchip?.toString()}
             onSubmitConsent={onSubmitConsent}
             status={status}
           />
