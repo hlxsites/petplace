@@ -109,8 +109,7 @@ export const useCheckoutProductsViewModel = () => {
 
   const updateCartItemsState = useCallback(
     (
-      callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[],
-      saveOnServer = true
+      callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[]
     ) => {
       setCartItems((prevState) => {
         const updatedState = Array.isArray(callback)
@@ -126,10 +125,6 @@ export const useCheckoutProductsViewModel = () => {
         updatedStateWithAdditionalService.sort((a, b) =>
           a.isService && !b.isService ? -1 : 1
         );
-
-        if (saveOnServer) {
-          void postCart(updatedStateWithAdditionalService, petId);
-        }
 
         return updatedStateWithAdditionalService;
       });
@@ -174,7 +169,7 @@ export const useCheckoutProductsViewModel = () => {
         // We want to add the membership plan to the cart if it's not there yet
         initialCartItems.push(selectedPlan);
       }
-      updateCartItemsState(initialCartItems, false);
+      updateCartItemsState(initialCartItems);
     };
 
     if (!cartItems.length && savedCart && products.length && selectedPlan) {
