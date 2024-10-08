@@ -7,7 +7,6 @@ export type AppRoutePathIds = keyof typeof AppRoutePaths;
 type AppRouteIndexPathIds = keyof typeof AppRoutePathsIndexes;
 
 type RouteHandle = {
-  ignorePageLayout?: boolean;
   title?: (data?: unknown) => string;
 };
 
