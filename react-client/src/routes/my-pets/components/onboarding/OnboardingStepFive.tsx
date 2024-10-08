@@ -6,18 +6,16 @@ import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
 export const OnboardingStepFive = ({
   isSmallerScreen,
-  status,
-  reset,
+  onFinish,
   ...props
 }: CommonOnboardingProps & {
-  status: string;
-  reset: () => void;
+  onFinish: () => void;
 }) => {
   return (
     <OnboardingContent
       {...props}
       footer={renderFinalActions()}
-      message={ONBOARDING_STEPS_TEXTS[5].message(status)}
+      message={ONBOARDING_STEPS_TEXTS[5].message}
       title={ONBOARDING_STEPS_TEXTS[5].title}
     >
       <div className="flex w-full justify-center">
@@ -88,12 +86,9 @@ export const OnboardingStepFive = ({
 
   function renderFinalActions() {
     return (
-      <div className="flex flex-col-reverse items-stretch gap-base md:grid md:grid-cols-2">
-        <Button variant="secondary" onClick={reset}>
-          See my pet
-        </Button>
-        <Button onClick={reset}>See my options</Button>
-      </div>
+      <Button fullWidth onClick={onFinish}>
+        Finish
+      </Button>
     );
   }
 };
