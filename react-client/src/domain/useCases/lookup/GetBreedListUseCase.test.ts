@@ -6,18 +6,20 @@ import getBreedListMock from "./mocks/getBreedListMock.json";
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
+const DEFAULT_ID = 1
+
 describe("GetBreedListUseCase", () => {
   it("should return null when there is no data", async () => {
     const httpClient = new MockHttpClient({ data: null });
     const sut = makeSut(httpClient);
-    const result = await sut.query();
+    const result = await sut.query(DEFAULT_ID);
     expect(result).toStrictEqual([]);
   });
 
   it("should return the breed list", async () => {
     const httpClient = new MockHttpClient({ data: getBreedListMock });
     const sut = makeSut(httpClient);
-    const result = await sut.query();
+    const result = await sut.query(DEFAULT_ID);
 
     expect(result).toStrictEqual([
       { id: 1, name: "Poodle" },
@@ -32,7 +34,7 @@ describe("GetBreedListUseCase", () => {
     const invalidMockData = [{ id: "234" }];
     const httpClient = new MockHttpClient({ data: invalidMockData });
     const sut = makeSut(httpClient);
-    const result = await sut.query();
+    const result = await sut.query(DEFAULT_ID);
 
     expect(result).toStrictEqual([]);
   });
@@ -42,7 +44,7 @@ describe("GetBreedListUseCase", () => {
       error: new Error("Error"),
     });
     const sut = makeSut(httpClient);
-    const result = await sut.query();
+    const result = await sut.query(DEFAULT_ID);
     expect(result).toStrictEqual([]);
   });
 });
