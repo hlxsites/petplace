@@ -108,9 +108,7 @@ export const useCheckoutProductsViewModel = () => {
   );
 
   const updateCartItemsState = useCallback(
-    (
-      callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[]
-    ) => {
+    (callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[]) => {
       setCartItems((prevState) => {
         const updatedState = Array.isArray(callback)
           ? callback
@@ -129,7 +127,7 @@ export const useCheckoutProductsViewModel = () => {
         return updatedStateWithAdditionalService;
       });
     },
-    [petId, postCart, getProductType, getAnnualProductPurchaseLimit]
+    [getProductType, getAnnualProductPurchaseLimit]
   );
 
   useDeepCompareEffect(() => {
