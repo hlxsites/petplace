@@ -61,13 +61,13 @@ export const Carousel = ({ ariaLabel, items }: CarouselProps) => {
         <div
           className="flex gap-xsmall transition-transform duration-300 ease-out"
           style={{
-            transform: `translateX(-${currentIndex * 82}%)`,
+            transform: `translateX(-${currentIndex * 97}%)`,
           }}
         >
           {items.map((item, index) => (
             <div
               key={`carousel-item-${index}`}
-              className="w-[87%] flex-shrink-0"
+              className="w-[97%] flex-shrink-0"
             >
               {item}
             </div>
