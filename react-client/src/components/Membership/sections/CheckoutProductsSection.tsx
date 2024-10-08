@@ -91,6 +91,7 @@ export const CheckoutProductsSection = () => {
           return (
             <CheckoutProductCard
               key={`${product.id}-${index}` || `product-${index}`}
+              isAnnual={product.isAnnual}
               onChange={handleOnChangeProductOptions(product.id)}
               onClickAddToCart={handleAddToCart(product)}
               onClickMoreInfo={handleMoreInfo(product)}
