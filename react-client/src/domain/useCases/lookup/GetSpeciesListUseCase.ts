@@ -28,7 +28,7 @@ export class GetSpeciesListUseCase implements GetSpeciesListRepository {
 
       return [];
     } catch (error) {
-      console.error("GetSpeciesListUseCase query error", error);
+      logError("GetSpeciesListUseCase query error", error);
       return [];
     }
   };

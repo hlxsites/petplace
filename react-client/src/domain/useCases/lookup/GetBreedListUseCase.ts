@@ -28,7 +28,7 @@ export class GetBreedListUseCase implements GetBreedListRepository {
 
       return [];
     } catch (error) {
-      console.error("GetCountriesUseCase query error", error);
+      logError("GetCountriesUseCase query error", error);
       return [];
     }
   };
