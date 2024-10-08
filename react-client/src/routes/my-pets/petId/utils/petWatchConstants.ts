@@ -78,7 +78,7 @@ export const PetWatchOptionBasedOnMembershipStatus_US: Record<
   PetCardPetWatchProps[]
 > = {
   "Annual member": PET_WATCH_ANNUAL_AVAILABLE_OPTIONS,
-  "Lifetime protect member": PET_WATCH_COMMON_OPTIONS,
+  "Lifetime protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS,
   "Lifetime protect member Plus": PET_WATCH_LIFETIME_PLUS_OPTIONS,
   "Not a member": PET_WATCH_NOT_STANDARD_OPTIONS,
 };
