@@ -1,32 +1,20 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
-import {
-  Card,
-  DisplayUncontrolledForm,
-  Title,
-} from "~/components/design-system";
+import { Card, DisplayForm, Title } from "~/components/design-system";
 import { Header } from "~/components/design-system/header/Header";
 import { PetModel } from "~/domain/models/pet/PetModel";
 import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { invariant } from "~/util/invariant";
 import { PetImageInput } from "../components/PetImageInput";
-import { editPetProfileFormSchema } from "../form/petForm";
 import { usePetEditViewModel } from "./usePetEditViewModel";
 
 export const PetEditIndex = () => {
-  const {
-    getPetInfoFormData,
-    onSubmitPetInfo,
-    petInfo,
-    petInfoVariables,
-    onRemoveImage,
-    onSelectImage,
-  } = usePetEditViewModel();
+  const { form, petInfoQuery, onRemoveImage, onSelectImage } =
+    usePetEditViewModel();
 
-  return <SuspenseAwait resolve={petInfo}>{renderMain}</SuspenseAwait>;
+  return <SuspenseAwait resolve={petInfoQuery}>{renderMain}</SuspenseAwait>;
 
   function renderMain(pet: PetModel | null) {
     invariant(pet, "Pet not found");
-    const hasPolicy = !!pet.policyInsurance?.length;
 
     return (
       <>
@@ -36,7 +24,7 @@ export const PetEditIndex = () => {
         />
         <Card padding="xlarge">
           {renderPetImage(pet)}
-          {renderPetForm(pet)}
+          {renderPetForm()}
         </Card>
       </>
     );
@@ -57,17 +45,12 @@ export const PetEditIndex = () => {
       );
     }
 
-    function renderPetForm(pet: PetModel) {
+    function renderPetForm() {
       return (
         <>
           <Title level="h3">Pet info</Title>
           <div className="h-xxlarge" />
-          <DisplayUncontrolledForm
-            onSubmit={onSubmitPetInfo}
-            schema={editPetProfileFormSchema(hasPolicy)}
-            variables={petInfoVariables}
-            initialValues={getPetInfoFormData(pet)}
-          />
+          <DisplayForm {...form} />
         </>
       );
     }
