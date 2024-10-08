@@ -543,6 +543,17 @@ function fixHyperLinks(main) {
     });
 }
 
+function googleAnalyticsBodyScript(main) {
+  const noscript = document.createElement('noscript');
+  const iframe = document.createElement('iframe');
+  iframe.setAttribute('src', 'https://www.googletagmanager.com/ns.html?id=GTM-NLMNL9ZH');
+  iframe.setAttribute('height', '0');
+  iframe.setAttribute('width', '0');
+  iframe.setAttribute('style', 'display:none;visibility:hidden');
+  noscript.appendChild(iframe);
+  main.parentNode.prepend(noscript);
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -554,6 +565,7 @@ function buildAutoBlocks(main) {
     buildHyperlinkedImages(main);
     buildCookieConsent(main);
     fixHyperLinks(main);
+    googleAnalyticsBodyScript(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
