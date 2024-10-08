@@ -45,6 +45,13 @@ const PET_WATCH_LIFETIME_PLUS_OPTIONS: PetCardPetWatchProps[] = [
   },
 ];
 
+const PET_WATCH_LIFETIME_OPTIONS: PetCardPetWatchProps[] =
+  PET_WATCH_LIFETIME_PLUS_OPTIONS.filter(
+    (option) =>
+      option.id !== "customized-pet-training" &&
+      option.id !== "lifetime-warranty-iD-tag"
+  );
+
 const PET_WATCH_ANNUAL_AVAILABLE_OPTIONS: PetCardPetWatchProps[] = [
   { label: "DirectConnect", id: "direct-connect" },
   {
@@ -78,7 +85,7 @@ export const PetWatchOptionBasedOnMembershipStatus_US: Record<
   PetCardPetWatchProps[]
 > = {
   "Annual member": PET_WATCH_ANNUAL_AVAILABLE_OPTIONS,
-  "Lifetime protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS,
+  "Lifetime protect member": PET_WATCH_LIFETIME_OPTIONS,
   "Lifetime protect member Plus": PET_WATCH_LIFETIME_PLUS_OPTIONS,
   "Not a member": PET_WATCH_NOT_STANDARD_OPTIONS,
 };
@@ -87,7 +94,7 @@ export const PetWatchOptionBasedOnMembershipStatus_CA: Record<
   CA_MembershipStatus,
   PetCardPetWatchProps[]
 > = {
-  "Lifetime protect member": PET_WATCH_LIFETIME_PLUS_OPTIONS.filter(
+  "Lifetime protect member": PET_WATCH_LIFETIME_OPTIONS.filter(
     (item) => item.id !== "petco-coupon"
   ),
   "Lifetime protect member Plus": PET_WATCH_LIFETIME_PLUS_OPTIONS,
