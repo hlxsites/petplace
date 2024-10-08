@@ -16,12 +16,12 @@ import {
 } from "~/domain/util/checkoutProductUtil";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
-import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { redirectToMph } from "~/util/mphRedirectUtil";
-import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
+import { ANIMAL_PLAN_PARAM, CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
+import { forceRedirect } from "~/util/forceRedirectUtil";
 
 const CART_CONTENT_KEY = "cart";
 
@@ -83,6 +83,7 @@ export const useCheckoutProductsViewModel = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isSubmittingCart, setIsSubmittingCart] = useState(false);
 
+  const animalPlanParam = searchParams.get(ANIMAL_PLAN_PARAM);
   const contentParam = searchParams.get(CONTENT_PARAM_KEY);
   const isOpenCart = contentParam === CART_CONTENT_KEY;
 
@@ -268,7 +269,10 @@ export const useCheckoutProductsViewModel = () => {
     void (async () => {
       await postCart(cartItems, petId);
 
-      const uri = redirectToMph("petplace/cart");
+      const uri = redirectToMph(
+        `petplace/cart?animalID=${petId}&planID=${animalPlanParam}`
+      );
+      console.log("URI", uri);
       forceRedirect(uri);
     })();
   };
