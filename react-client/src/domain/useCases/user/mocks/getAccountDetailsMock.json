@@ -18,5 +18,6 @@
   "CellularPhone": "",
   "BusinessPhone": "71 988776655",
   "ContactConsent": true,
-  "InformationReleaseConsent": false
+  "InformationReleaseConsent": false,
+  "InsuranceClaimsUrl": "www.mock-url.co"
 }

@@ -2,6 +2,16 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { AccountPaymentInformationIndex } from "./AccountPaymentInformationIndex";
 
+const DEFAULT_INSURANCE_URL = "www.mock-url.co"
+
+jest.mock('./useAccountPaymentInformationIndexViewModel', () => ({
+  useAccountPaymentInformationIndexViewModel: () => ({
+    accountDetailsQuery: {
+      insuranceUrl: DEFAULT_INSURANCE_URL
+    },
+  }),
+}));
+
 const { getByRole, getByText } = screen;
 
 describe("PaymentInformationTabContent", () => {
