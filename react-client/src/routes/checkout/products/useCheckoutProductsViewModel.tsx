@@ -18,12 +18,14 @@ import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { invariantResponse } from "~/util/invariant";
 import { redirectToMph } from "~/util/mphRedirectUtil";
-import { ANIMAL_PLAN_PARAM, CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
+import {
+  ANIMAL_PLAN_PARAM,
+  CART_CONTENT_KEY,
+  CONTENT_PARAM_KEY,
+} from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
 import { forceRedirect } from "~/util/forceRedirectUtil";
-
-const CART_CONTENT_KEY = "cart";
 
 export const loader = (async ({ request }) => {
   const url = new URL(request.url);
@@ -272,7 +274,6 @@ export const useCheckoutProductsViewModel = () => {
       const uri = redirectToMph(
         `petplace/cart?animalID=${petId}&planID=${animalPlanParam}`
       );
-      console.log("URI", uri);
       forceRedirect(uri);
     })();
   };
