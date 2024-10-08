@@ -3,6 +3,10 @@ interface EnvVariables {
   VITE_AUTH_TOKEN?: string;
   PROD?: boolean;
   DEV?: boolean;
+  VITE_MPH_DEV_URL?: string;
+  VITE_MPH_STG_URL?: string;
+  VITE_MPH_PROD_URL?: string;
+  VITE_PETPLACE_SERVER_DEV_URL?: string;
   VITE_PETPLACE_SERVER_STG_URL?: string;
   VITE_PETPLACE_SERVER_PROD_URL?: string;
   VITE_ENABLE_MOCK?: string;
@@ -35,17 +39,28 @@ export const ENABLE_MOCK = (() => {
   return envValue && ["true", "1"].includes(envValue.toLocaleLowerCase());
 })();
 
-const SERVER_STG_URL = getEnvVariable("VITE_PETPLACE_SERVER_STG_URL", "");
-const SERVER_POD_URL = getEnvVariable("VITE_PETPLACE_SERVER_PROD_URL", "");
-
 export const IS_PROD_URL =
   typeof window !== "undefined" &&
   (window.location.origin.includes("petplace.com") ||
     window.location.origin.includes("petplace--hlxsites.hlx.live"));
 
-export const PETPLACE_SERVER_BASE_URL = IS_PROD_URL
-  ? SERVER_POD_URL
-  : SERVER_STG_URL;
+export const IS_STG_URL =
+  typeof window !== "undefined" &&
+  window.location.origin.includes("petadopt-phase2-release");
+
+export const PETPLACE_SERVER_BASE_URL = (() => {
+  if (IS_PROD_URL) return getEnvVariable("VITE_PETPLACE_SERVER_PROD_URL", "");
+  if (IS_STG_URL) return getEnvVariable("VITE_PETPLACE_SERVER_STG_URL", "");
+
+  return getEnvVariable("VITE_PETPLACE_SERVER_DEV_URL", "");
+})();
+
+export const PETPLACE_MPH_BASE_URL = (() => {
+  if (IS_PROD_URL) return getEnvVariable("VITE_MPH_PROD_URL", "");
+  if (IS_STG_URL) return getEnvVariable("VITE_MPH_STG_URL", "");
+
+  return getEnvVariable("VITE_MPH_DEV_URL", "");
+})();
 
 // Hacky way to get the Rollbar access token and preventing it to be a single string saved on the repository
 export const ROLLBAR_TOKEN = (() => {

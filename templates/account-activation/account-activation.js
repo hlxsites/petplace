@@ -30,7 +30,7 @@ export async function loadEager(document) {
       id_token_hint: token,
       login_hint: email,
     },
-    redirectUri: window.location.origin,
+    redirectUri: `${window.location.origin}/account/onboarding`,
   };
   msalInstance.loginRedirect(loginRequest);
 }

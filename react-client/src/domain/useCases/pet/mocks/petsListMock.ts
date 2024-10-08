@@ -16,7 +16,6 @@ export const PETS_LIST: PetModel[] = [
     sex: "Male",
     spayedNeutered: false,
     species: "Dog",
-    documentationStatus: "none",
   },
   {
     age: "Senior",

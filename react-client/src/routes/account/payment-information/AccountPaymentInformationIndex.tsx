@@ -2,6 +2,7 @@ import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Title } from "~/components/design-system";
 import { BasicActionCard } from "~/components/design-system/card/BasicActionCard";
 import { ExternalAccountDetailsModel } from "~/domain/models/user/UserModels";
+import { redirectToMph } from "~/util/mphRedirectUtil";
 import { useAccountPaymentInformationIndexViewModel } from "./useAccountPaymentInformationIndexViewModel";
 
 export const AccountPaymentInformationIndex = () => {
@@ -30,8 +31,7 @@ export const AccountPaymentInformationIndex = () => {
     const actions = [
       {
         buttonLabel: "Manage payment settings",
-        buttonLink:
-          "https://mph-qay.pethealthinc.com/External/Petplacelogin?redirecturl=petplace/payment-setting",
+        buttonLink:redirectToMph("petplace/payment-setting"),
         message: "Verify, update, or change your payment settings.",
         title: "Payment settings",
       },

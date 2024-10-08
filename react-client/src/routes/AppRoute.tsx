@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { loader as AccountNotificationIdLoader } from "./account/notifications/notificationId/useNotificationsIdViewModel";
 import { loader as AccountNotificationsIndexLoader } from "./account/notifications/useAccountNotificationsIndexViewModel";
 import { loader as AccountPaymentInformationIndexLoader } from "./account/payment-information/useAccountPaymentInformationIndexViewModel";
+import { loader as AccountOnboardingIndexLoader } from "./account/onboarding/useAccountOnboardingViewModel";
 import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { loader as AccountRootLoader } from "./account/useAccountRootViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
@@ -21,6 +22,7 @@ import { AccountIndex } from "./account/AccountIndex";
 import { AccountRoot } from "./account/AccountRoot";
 import { AccountNotificationsIndex } from "./account/notifications/AccountNotificationsIndex";
 import { AccountNotificationId } from "./account/notifications/notificationId/AccountNotificationId";
+import { AccountOnboardingIndex } from "./account/onboarding/AccountOnboardingIndex";
 import { AccountPaymentInformationIndex } from "./account/payment-information/AccountPaymentInformationIndex";
 import { CheckoutIndex } from "./checkout/CheckoutIndex";
 import { CheckoutProductsLayout } from "./checkout/products/CheckoutProductsLayout";
@@ -80,6 +82,13 @@ const routes: PetPlaceRouteObject[] = [
             loader: AccountPaymentInformationIndexLoader,
           },
         ],
+      },
+      {
+        id: "accountOnboarding",
+        loader: AccountOnboardingIndexLoader,
+        // @ts-expect-error - this is a valid path but TS doesn't know it
+        path: `${AppRoutePaths.account}/${AppRoutePaths.accountOnboarding}`,
+        element: <AccountOnboardingIndex />,
       },
       {
         element: <MyPetsLayout />,

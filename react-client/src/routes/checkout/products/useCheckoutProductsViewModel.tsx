@@ -8,7 +8,6 @@ import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
 import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
-import { REDIRECT_TO_CHECKOUT_URL } from "~/domain/useCases/checkout/utils/checkoutHardCodedData";
 import { PRODUCT_DETAILS } from "~/domain/useCases/products/utils/productsHardCodedData";
 import {
   convertProductToCartItem,
@@ -17,7 +16,9 @@ import {
 } from "~/domain/util/checkoutProductUtil";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
+import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
+import { redirectToMph } from "~/util/mphRedirectUtil";
 import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
@@ -242,7 +243,8 @@ export const useCheckoutProductsViewModel = () => {
     void (async () => {
       await postCart(cartItems, petId);
 
-      window.location.href = REDIRECT_TO_CHECKOUT_URL;
+      const uri = redirectToMph("petplace/cart");
+      forceRedirect(uri);
     })();
   };
 

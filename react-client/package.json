@@ -8,9 +8,8 @@
     "build": "tsc && vite build -l error",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest",
-    "test:watch": "jest --watch"
-  },
+    "test": "VITE_MPH_DEV_URL=https://mph-qay.pethealthinc.com jest",
+    "test:watch": "VITE_MPH_DEV_URL=https://mph-qay.pethealthinc.com jest --watch" },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.0",

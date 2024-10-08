@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
-import { DocumentationStatus, PetModel } from "~/domain/models/pet/PetModel";
+import { DocumentationStatus, PetCommon } from "~/domain/models/pet/PetModel";
+import { useLocalStorageSteps } from "~/hooks/useLocalStorageSteps";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingStepFive } from "./OnboardingStepFive";
@@ -8,30 +8,49 @@ import { OnboardingStepOne } from "./OnboardingStepOne";
 import { OnboardingStepThree } from "./OnboardingStepThree";
 import { OnboardingStepTwo } from "./OnboardingStepTwo";
 import { OnboardingStepFour } from "./step-four-content/OnboardingStepFour";
-import { useOnboardingSteps } from "./useOnboardingSteps";
+
+const STEP_PARAM_KEY = "onboarding-step";
+const TOTAL_STEPS = 5;
 
 export type CommonOnboardingProps = {
   alignment: "center" | "left";
   isSmallerScreen?: boolean;
   onNextStep: () => void;
-  reset: () => void;
-  setStatus: (value: DocumentationStatus) => void;
-  status: DocumentationStatus;
   step: number;
 };
 
 type OnboardingDialogProps = {
-  pet: Pick<PetModel, "documentationStatus" | "name">;
+  onFinish: () => void;
+  onSubmitConsent: (consent: boolean) => void;
+  status: DocumentationStatus;
+  pet: Pick<PetCommon, "name"> | null;
 };
 
-export const OnboardingDialog = ({ pet }: OnboardingDialogProps) => {
+export const OnboardingDialog = ({
+  onFinish,
+  pet,
+  onSubmitConsent,
+  status,
+}: OnboardingDialogProps) => {
   const isSmallerScreen = useWindowWidth() < 768;
 
-  const [status, setStatus] = useState<DocumentationStatus>(
-    pet.documentationStatus ?? "none"
-  );
+  const {
+    currentStep: step,
+    onNextStep,
+    reset,
+  } = useLocalStorageSteps({
+    key: STEP_PARAM_KEY,
+    totalSteps: TOTAL_STEPS,
+  });
 
-  const { step, onNextStep, reset, totalSteps } = useOnboardingSteps();
+  const handleOnFinish = () => {
+    onFinish();
+
+    setTimeout(() => {
+      // Reset the steps on local storage
+      reset();
+    }, 500);
+  };
 
   return (
     <Dialog
@@ -51,7 +70,7 @@ export const OnboardingDialog = ({ pet }: OnboardingDialogProps) => {
           }
         )}
       >
-        <StepProgress count={totalSteps} current={step} />
+        <StepProgress count={TOTAL_STEPS} current={step} />
         {renderContent()}
       </div>
     </Dialog>
@@ -62,9 +81,6 @@ export const OnboardingDialog = ({ pet }: OnboardingDialogProps) => {
       alignment: isSmallerScreen ? "center" : "left",
       isSmallerScreen,
       onNextStep,
-      reset,
-      setStatus,
-      status,
       step,
     };
 
@@ -76,10 +92,19 @@ export const OnboardingDialog = ({ pet }: OnboardingDialogProps) => {
       case 3:
         return <OnboardingStepThree {...commonProps} />;
       case 4:
-        return <OnboardingStepFour {...commonProps} name={pet?.name} />;
+        return (
+          <OnboardingStepFour
+            {...commonProps}
+            name={pet?.name}
+            onSubmitConsent={onSubmitConsent}
+            status={status}
+          />
+        );
       case 5:
       default:
-        return <OnboardingStepFive {...commonProps} />;
+        return (
+          <OnboardingStepFive {...commonProps} onFinish={handleOnFinish} />
+        );
     }
   }
 };

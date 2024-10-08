@@ -17,6 +17,10 @@ interface ImportMetaEnv {
   readonly PROD: boolean;
   readonly VITE_APP_VERSION: string;
   readonly VITE_AUTH_TOKEN: string;
+  readonly VITE_MPH_DEV_URL: string;
+  readonly VITE_MPH_STG_URL: string;
+  readonly VITE_MPH_PROD_URL: string;
+  readonly VITE_PETPLACE_SERVER_DEV_URL: string;
   readonly VITE_PETPLACE_SERVER_STG_URL: string;
   readonly VITE_PETPLACE_SERVER_PROD_URL: string;
   readonly VITE_ENABLE_MOCK: string;
