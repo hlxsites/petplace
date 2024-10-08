@@ -35,7 +35,7 @@ export const PetProfileIndex = () => {
     return contentParam === "pet-watch-purchase-success";
   })();
 
-  const { id, policyInsurance } = pet;
+  const { id, membershipStatus, policyInsurance } = pet;
 
   const checkoutPath = CHECKOUT_FULL_ROUTE(id);
 
@@ -44,9 +44,12 @@ export const PetProfileIndex = () => {
     return <PetInsuranceSection petId={id} />;
   })();
 
+  const shouldRenderAlert =
+    membershipStatus === "Not a member" || !membershipStatus;
+
   return (
     <>
-      <PetAlertSection route={checkoutPath} />
+      {shouldRenderAlert && <PetAlertSection route={checkoutPath} />}
       <Header
         backButtonTo={MY_PETS_FULL_ROUTE}
         pageTitle="Pet Profile"
