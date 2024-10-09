@@ -108,7 +108,7 @@ export function sampleRUM(checkpoint, data = {}) {
           // use classic script to avoid CORS issues
           const script = document.createElement('script');
           script.src = new URL(
-            '.rum/@adobe/helix-rum-enhancer@^1/src/index.js',
+            '.rum/@adobe/helix-rum-enhancer@beta/src/index.js',
             sampleRUM.baseURL,
           ).href;
           document.head.appendChild(script);
@@ -897,17 +897,8 @@ function init() {
   document.body.style.display = 'none';
   setup();
 
-  const cb = () => {
-    sampleRUM('top');
-    window.addEventListener('load', () => sampleRUM('load'));
-  };
-  // Speculative prerender-aware sampleRUM instrumentation
-  // based on https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API#unsafe_prerendering
-  if (document.prerendering) {
-    document.addEventListener('prerenderingchange', cb, { once: true });
-  } else {
-    cb();
-  }
+  sampleRUM('top');
+  window.addEventListener('load', () => sampleRUM('load'));
 
   window.addEventListener('unhandledrejection', (event) => {
     sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
