@@ -283,7 +283,7 @@ export const useCheckoutProductsViewModel = () => {
 
       logAnalyticsEvent({
         category: "checkout",
-        action: "proceedToPayment",
+        action: "proceed_to_payment",
         nonInteraction: false,
       });
 
