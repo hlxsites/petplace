@@ -25,6 +25,7 @@ describe("GetPetsListUseCase", () => {
         isProtected: true,
         microchip: "948594034F",
         name: "Delilah",
+        speciesId: null,
       },
     ]);
   });
@@ -40,6 +41,7 @@ describe("GetPetsListUseCase", () => {
         isProtected: true,
         microchip: "81238123A",
         name: "Lili",
+        speciesId: null,
       },
       {
         id: "bob",
@@ -47,6 +49,7 @@ describe("GetPetsListUseCase", () => {
         isProtected: false,
         microchip: "D118123",
         name: "Bob",
+        speciesId: null,
       },
     ]);
   });

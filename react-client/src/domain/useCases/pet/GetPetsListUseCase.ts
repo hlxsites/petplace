@@ -41,6 +41,7 @@ function convertToPetModelList(data: unknown): PetCommon[] {
     MembershipStatus: z.string().nullish(),
     Microchip: z.string().nullish(),
     Name: z.string(),
+    SpeciesId: z.number().nullish(),
   });
 
   const list: PetCommon[] = [];
@@ -60,6 +61,7 @@ function convertToPetModelList(data: unknown): PetCommon[] {
       microchip: pet.Microchip,
       name: pet.Name,
       img: pet.ImageUrl ?? undefined,
+      speciesId: pet.SpeciesId,
     });
   });
 
