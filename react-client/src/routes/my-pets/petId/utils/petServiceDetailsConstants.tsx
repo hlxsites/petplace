@@ -28,7 +28,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   {
     contact: "1-866-597-2424",
     description:
-      "Our Lost Pet Recovery Specialists are dedicated to helping reunite lost pets with their owners 24/7/365 and can be reached at",
+      "Our Lost Pet Recovery Specialists are dedicated to helping reunite lost pets with their owners and can be reached at:",
     id: "recovery-specialists",
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
