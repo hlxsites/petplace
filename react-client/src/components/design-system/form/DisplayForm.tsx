@@ -2,7 +2,7 @@ import { FormBuilder, type FormBuilderProps } from "./FormBuilder";
 import { type FormSchema, type FormVariableValues } from "./types/formTypes";
 import { replaceVariablesInSettings } from "./utils/variableUtils";
 
-type DisplayFormProps = Pick<
+export type DisplayFormProps = Pick<
   FormBuilderProps,
   "isDirty" | "isSubmitting" | "onChange" | "onReset" | "onSubmit" | "values"
 > & {
