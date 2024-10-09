@@ -1,6 +1,10 @@
 import { LinkButton, Text, TextSpan } from "~/components/design-system";
 import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
+import {
+  acrobatReaderUrl,
+  copyTextToClipboard,
+} from "~/routes/my-pets/petId/utils/servicesUtils";
 
 export type PetWatchServiceProps = Omit<
   PetServiceDetailsCardProps,
@@ -79,7 +83,11 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
             </Text>
             <Text size="14">
               Note: this form requires Adobe Reader,
-              <LinkButton to={""} className="m-0 inline">
+              <LinkButton
+                className="m-0 inline"
+                openInNewTab
+                to={acrobatReaderUrl}
+              >
                 <TextSpan fontWeight="bold" size="14">
                   click here
                 </TextSpan>
@@ -105,7 +113,13 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     primaryAction: {
       buttonLabel: "Download form",
     },
-    secondaryActions: [{ buttonLabel: "Copy email", icon: "copyRegular" }],
+    secondaryActions: [
+      {
+        buttonLabel: "Copy email",
+        icon: "copyRegular",
+        onClick: () => copyTextToClipboard("24PetMedAlert@24petwatch.com"),
+      },
+    ],
     title: "24PetMedAlert",
   },
   {
