@@ -101,7 +101,7 @@ export const useCheckoutProductsViewModel = () => {
     [products]
   );
 
-  const getAnnualProductPurchaseLimit = useCallback(
+  const getProductPurchaseLimit = useCallback(
     (productType?: string, purchaseLimit?: number) => {
       const isAnnualProduct = productType
         ?.toLocaleLowerCase()
@@ -121,7 +121,7 @@ export const useCheckoutProductsViewModel = () => {
         const updatedStateWithAdditionalService = updatedState.map((item) => ({
           ...item,
           isAdditionalService:
-            getAnnualProductPurchaseLimit(getProductType(item.id)) === 1,
+            getProductPurchaseLimit(getProductType(item.id)) === 1,
         }));
 
         updatedStateWithAdditionalService.sort((a, b) =>
@@ -131,7 +131,7 @@ export const useCheckoutProductsViewModel = () => {
         return updatedStateWithAdditionalService;
       });
     },
-    [getProductType, getAnnualProductPurchaseLimit]
+    [getProductType, getProductPurchaseLimit]
   );
 
   useDeepCompareEffect(() => {
@@ -196,7 +196,7 @@ export const useCheckoutProductsViewModel = () => {
   const onUpdateQuantity = (id: string, newQuantity: number) => {
     updateCartItemsState((prevItems) => {
       const productType = getProductType(id);
-      const purchaseLimit = getAnnualProductPurchaseLimit(productType);
+      const purchaseLimit = getProductPurchaseLimit(productType, 1);
 
       const adjustedQuantity = purchaseLimit
         ? Math.min(newQuantity, purchaseLimit)

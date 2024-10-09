@@ -59,6 +59,7 @@ export const CartItemCard = ({
             {...rest}
             isAdditionalService={isAdditionalService}
             onUpdateQuantity={onUpdateQuantity}
+            purchaseLimit={1}
           />
         )}
       </div>
