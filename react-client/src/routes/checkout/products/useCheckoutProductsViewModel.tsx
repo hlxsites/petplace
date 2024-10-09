@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import ReactGA from "react-ga4";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { CartItem } from "~/domain/models/cart/CartModel";
@@ -16,6 +17,7 @@ import {
 } from "~/domain/util/checkoutProductUtil";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
+import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { redirectToMph } from "~/util/mphRedirectUtil";
 import {
@@ -25,7 +27,6 @@ import {
 } from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
-import { forceRedirect } from "~/util/forceRedirectUtil";
 
 export const loader = (async ({ request }) => {
   const url = new URL(request.url);
@@ -215,6 +216,14 @@ export const useCheckoutProductsViewModel = () => {
   };
 
   const onUpdateCartProduct = (product: CartItem) => {
+    ReactGA.event({
+      category: "checkout",
+      action: "update_cart",
+      label: product.title,
+      value: Number(product.price),
+      nonInteraction: false,
+    });
+
     updateCartItemsState((prevState) => {
       let updatedState: CartItem[] = [];
       // The product already exists in the cart
@@ -270,6 +279,12 @@ export const useCheckoutProductsViewModel = () => {
     setIsSubmittingCart(true);
     void (async () => {
       await postCart(cartItems, petId);
+
+      ReactGA.event({
+        category: "checkout",
+        action: "proceedToPayment",
+        nonInteraction: false,
+      });
 
       const uri = redirectToMph(
         `petplace/cart?animalID=${petId}&planID=${animalPlanParam}`
