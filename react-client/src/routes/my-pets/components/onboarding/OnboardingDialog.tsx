@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Dialog, StepProgress } from "~/components/design-system";
 import { DocumentationStatus, PetCommon } from "~/domain/models/pet/PetModel";
 import { useLocalStorageSteps } from "~/hooks/useLocalStorageSteps";
@@ -34,6 +35,8 @@ export const OnboardingDialog = ({
 }: OnboardingDialogProps) => {
   const isSmallerScreen = useWindowWidth() < 768;
 
+  const [didFinish, setDidFinish] = useState(false);
+
   const {
     currentStep: step,
     onNextStep,
@@ -44,17 +47,16 @@ export const OnboardingDialog = ({
   });
 
   const handleOnFinish = () => {
+    setDidFinish(true);
     onFinish();
 
-    setTimeout(() => {
-      // Reset the steps on local storage
-      reset();
-    }, 500);
+    // Reset the steps on local storage
+    setTimeout(reset, 300);
   };
 
   return (
     <Dialog
-      isOpen
+      isOpen={!didFinish}
       id="onboarding-steps"
       ariaLabel="Onboarding steps dialog"
       padding="p-0"
@@ -103,7 +105,11 @@ export const OnboardingDialog = ({
       case 5:
       default:
         return (
-          <OnboardingStepFive {...commonProps} onFinish={handleOnFinish} />
+          <OnboardingStepFive
+            {...commonProps}
+            onFinish={handleOnFinish}
+            status={status}
+          />
         );
     }
   }

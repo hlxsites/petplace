@@ -1,4 +1,5 @@
 import { Button, Icon, IconKeys, Text } from "~/components/design-system";
+import { DocumentationStatus } from "~/domain/models/pet/PetModel";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingContent } from "./components/OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
@@ -7,9 +8,11 @@ import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 export const OnboardingStepFive = ({
   isSmallerScreen,
   onFinish,
+  status,
   ...props
 }: CommonOnboardingProps & {
   onFinish: () => void;
+  status: DocumentationStatus;
 }) => {
   return (
     <OnboardingContent
