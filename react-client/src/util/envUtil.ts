@@ -9,6 +9,7 @@ interface EnvVariables {
   VITE_PETPLACE_SERVER_DEV_URL?: string;
   VITE_PETPLACE_SERVER_STG_URL?: string;
   VITE_PETPLACE_SERVER_PROD_URL?: string;
+  VITE_GOOGLE_ANALYTICS_ID?: string;
   VITE_ENABLE_MOCK?: string;
   VITE_R_A_T?: string;
   VITE_R_A_T2?: string;
@@ -31,6 +32,10 @@ const getEnvVariable = <T>(key: keyof EnvVariables, defaultValue?: T) => {
 // Export variables with default values
 export const APP_VERSION = getEnvVariable("VITE_APP_VERSION", "");
 export const AUTH_TOKEN = getEnvVariable("VITE_AUTH_TOKEN", "");
+export const GOOGLE_ANALYTICS_ID = getEnvVariable(
+  "VITE_GOOGLE_ANALYTICS_ID",
+  ""
+);
 export const IS_PROD_ENV = getEnvVariable("PROD", false);
 export const IS_DEV_ENV = getEnvVariable("DEV", false);
 

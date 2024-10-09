@@ -5,18 +5,15 @@ import { useRouteHandle } from "~/hooks/useRouteHandle";
 import { disableAemBaseMarkup, enableAemBaseMarkup } from "~/util/styleUtil";
 import { AppRoutePaths } from "./AppRoutePaths";
 
-// Initialize Google Analytics
-ReactGA.initialize("GTM-NLMNL9ZH");
-
 export const Root = () => {
   const oldLocationRef = useRef("");
   const location = useLocation();
 
-  const titleFn = useRouteHandle("title");
+  const titleFn = useRouteHandle<() => string>("title");
   const pageTitle: string = (() => {
     const end = "PetPlace.com";
     if (titleFn) return `${titleFn()} | ${end}`;
-    return end
+    return end;
   })();
 
   useEffect(() => {
@@ -24,7 +21,11 @@ export const Root = () => {
     document.title = pageTitle;
 
     // Register a pageview on every location change
-    ReactGA.send({ hitType: "pageview", page: location.pathname, title: pageTitle });
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname,
+      title: pageTitle,
+    });
 
     // Hacky way to detect when we're moving in and out of the checkout page
 

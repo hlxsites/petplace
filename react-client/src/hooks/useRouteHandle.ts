@@ -1,6 +1,6 @@
 import { useMatches } from "react-router-dom";
 
-export const useRouteHandle = (paramKey: string) => {
+export const useRouteHandle = <T>(paramKey: string) => {
   const matches = useMatches();
 
   // We want to find the last match with a handle
@@ -9,5 +9,5 @@ export const useRouteHandle = (paramKey: string) => {
 
   // @ts-expect-error - Find a way to type it
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return match?.handle?.[paramKey] || null;
+  return (match?.handle?.[paramKey] as T) || null;
 };
