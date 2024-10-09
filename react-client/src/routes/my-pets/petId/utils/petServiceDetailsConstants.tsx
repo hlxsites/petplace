@@ -15,7 +15,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   {
     contact: "1-866-597-2424",
     description:
-      "Quickly report a lost or found pet through our customer portal or speak with our Customer Service Representatives. We will do everythign we can to help get  your pet home safely.",
+      "Quickly report a lost or found pet through our customer portal or speak with our Customer Service Representatives. We will do everything we can to help get  your pet home safely.",
     id: "lost-pet-support",
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
@@ -28,7 +28,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   {
     contact: "1-866-597-2424",
     description:
-      "Our Lot Pet Recovery Specialists are dedicated to helping reunite lost pets with their owners 24/7/365 and can be reached at",
+      "Our Lost Pet Recovery Specialists are dedicated to helping reunite lost pets with their owners 24/7/365 and can be reached at",
     id: "recovery-specialists",
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
