@@ -16,14 +16,16 @@ import {
 } from "~/domain/util/checkoutProductUtil";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
-import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { redirectToMph } from "~/util/mphRedirectUtil";
-import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
+import {
+  ANIMAL_PLAN_PARAM,
+  CART_CONTENT_KEY,
+  CONTENT_PARAM_KEY,
+} from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
-
-const CART_CONTENT_KEY = "cart";
+import { forceRedirect } from "~/util/forceRedirectUtil";
 
 export const loader = (async ({ request }) => {
   const url = new URL(request.url);
@@ -83,6 +85,7 @@ export const useCheckoutProductsViewModel = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isSubmittingCart, setIsSubmittingCart] = useState(false);
 
+  const animalPlanParam = searchParams.get(ANIMAL_PLAN_PARAM);
   const contentParam = searchParams.get(CONTENT_PARAM_KEY);
   const isOpenCart = contentParam === CART_CONTENT_KEY;
 
@@ -108,10 +111,7 @@ export const useCheckoutProductsViewModel = () => {
   );
 
   const updateCartItemsState = useCallback(
-    (
-      callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[],
-      saveOnServer = true
-    ) => {
+    (callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[]) => {
       setCartItems((prevState) => {
         const updatedState = Array.isArray(callback)
           ? callback
@@ -127,14 +127,10 @@ export const useCheckoutProductsViewModel = () => {
           a.isService && !b.isService ? -1 : 1
         );
 
-        if (saveOnServer) {
-          void postCart(updatedStateWithAdditionalService, petId);
-        }
-
         return updatedStateWithAdditionalService;
       });
     },
-    [petId, postCart, getProductType, getAnnualProductPurchaseLimit]
+    [getProductType, getAnnualProductPurchaseLimit]
   );
 
   useDeepCompareEffect(() => {
@@ -174,7 +170,7 @@ export const useCheckoutProductsViewModel = () => {
         // We want to add the membership plan to the cart if it's not there yet
         initialCartItems.push(selectedPlan);
       }
-      updateCartItemsState(initialCartItems, false);
+      updateCartItemsState(initialCartItems);
     };
 
     if (!cartItems.length && savedCart && products.length && selectedPlan) {
@@ -275,7 +271,9 @@ export const useCheckoutProductsViewModel = () => {
     void (async () => {
       await postCart(cartItems, petId);
 
-      const uri = redirectToMph("petplace/cart");
+      const uri = redirectToMph(
+        `petplace/cart?animalID=${petId}&planID=${animalPlanParam}`
+      );
       forceRedirect(uri);
     })();
   };

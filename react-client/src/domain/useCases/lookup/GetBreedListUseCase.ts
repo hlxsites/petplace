@@ -34,7 +34,8 @@ export class GetBreedListUseCase implements GetBreedListRepository {
         return list;
       }
     } catch (error) {
-      logError("GetBreedListUseCase query error", error);
+      logError("GetCountriesUseCase query error", error);
+      return [];
     }
     return [];
   };

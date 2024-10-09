@@ -43,7 +43,7 @@ export class PetInfoUseCase implements PetInfoRepository {
         result.statusCode < 300
       );
     } catch (error) {
-      console.error("PetInfoUseCase mutation error", error);
+      logError("PetInfoUseCase mutation error", error);
     }
     return false;
   };

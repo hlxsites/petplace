@@ -28,7 +28,7 @@ export const PetWatchDrawerHeader = ({
             label="go back"
             variant="link"
             className="text-orange-300-contrast"
-            onClick={() => handleContentChange()}
+            onClick={handleContentChange()}
           />
           <Title level="h4">{contentDetails.title}</Title>
         </div>

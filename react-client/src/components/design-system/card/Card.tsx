@@ -3,7 +3,7 @@ import { CardProps } from "../types/CardTypes";
 
 export const Card = ({
   backgroundColor = "bg-neutral-white",
-  border = "border-neutral-300",
+  border = "border-neutral-200",
   children,
   overflow = "hidden",
   padding,

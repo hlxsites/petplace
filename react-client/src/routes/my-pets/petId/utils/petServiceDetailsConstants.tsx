@@ -90,8 +90,17 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
         }
       />
     ),
-    description:
-      "This protects your pet by relaying your pet’s critical medical and behavioral information to veterinary care personnel, animal shelters or animal rescue organizations if your pet is lost.",
+    description: (
+      <Text size="14">
+        This protects your pet by relaying your pet’s critical medical and
+        behavioral information to veterinary care personnel, animal shelters or
+        animal rescue organizations if your pet is lost.{" "}
+        <TextSpan fontWeight="bold" inherit>
+          Expires 1 year after purchase.
+        </TextSpan>{" "}
+        Available for renewal on an annual basis.
+      </Text>
+    ),
     id: "PetMedInfo Fees",
     primaryAction: {
       buttonLabel: "Download form",

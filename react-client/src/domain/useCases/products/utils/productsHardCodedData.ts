@@ -30,11 +30,15 @@ export const IMAGES_PRODUCTS: Record<string, string[]> = {
 const vetHelpLineDescriptions = {
   additionalInfo:
     "Your first year is complimentary with a Lifetime Protection Membership.",
+  detailedDescription:
+    "Contact a veterinary professional any time or day by phone, email or live chat. ",
 };
 
 const petMedAlert = {
   additionalInfo:
     "Your first year is complimentary with a Lifetime Protection Membership.",
+  detailedDescription:
+    "If your pet is lost and then brought to a shelter or vet, we are able to share all important information about them. This information may make all the difference to the care your pet.",
 };
 
 const byteTagSlide = {
