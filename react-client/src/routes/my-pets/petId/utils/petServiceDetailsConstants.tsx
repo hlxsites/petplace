@@ -117,7 +117,9 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       {
         buttonLabel: "Copy email",
         icon: "copyRegular",
-        onClick: () => copyTextToClipboard("24PetMedAlert@24petwatch.com"),
+        onClick: () => {
+          void copyTextToClipboard("24PetMedAlert@24petwatch.com")
+        },
       },
     ],
     title: "24PetMedAlert",

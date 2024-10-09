@@ -8,6 +8,5 @@ export const useRouteHandle = <T>(paramKey: string) => {
   if (!match) return null;
 
   // @ts-expect-error - Find a way to type it
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return (match?.handle?.[paramKey] as T) || null;
 };
