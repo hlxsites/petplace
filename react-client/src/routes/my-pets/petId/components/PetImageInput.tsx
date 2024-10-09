@@ -13,7 +13,7 @@ export const PetImageInput = ({
   const inputFileRef = createRef<HTMLInputElement>();
 
   return (
-    <div className="flex gap-base">
+    <div className="flex flex-wrap gap-base w-full">
       <img
         src={pet.img}
         alt={`Pet: ${pet.name}`}
@@ -28,7 +28,6 @@ export const PetImageInput = ({
           type="file"
         />
         <Button
-          fullWidth
           iconLeft="photoCamera"
           onClick={onSelectPhotoClick}
           variant="secondary"
