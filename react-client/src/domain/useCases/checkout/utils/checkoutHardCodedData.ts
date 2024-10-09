@@ -9,9 +9,9 @@ export const MEMBERSHIP_LIST_OFFERS: MembershipDescriptionOffer[] = [
   { offerLabel: "Direct connection to your pet's finder." },
   { offerLabel: "Discounts on pet sitting and supplies." },
   { offerLabel: "Critical info shared with shelter/vet. *" },
-  { offerLabel: "Talk to a licensed vet anytime 24/7.*" },
+  { offerLabel: "Talk to a licensed vet anytime 24/7. *" },
   { offerLabel: "Lifetime warranty ID tag." },
-  { offerLabel: "Pet Training Courses *." },
+  { offerLabel: "Pet Training Courses. *" },
 ];
 
 const addIconToOffers = (startIndex: number): MembershipDescriptionOffer[] =>
