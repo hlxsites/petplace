@@ -51,6 +51,7 @@ export type FormBuilderProps = {
   isDirty?: boolean;
   isSubmitting?: boolean;
   onChange: OnChangeFn;
+  onReset?: () => void;
   onSubmit: OnSubmitFn;
   schema: FormSchema;
   values: FormValues;
@@ -60,6 +61,7 @@ export const FormBuilder = ({
   isDirty,
   isSubmitting,
   onChange: onChangeFormValues,
+  onReset,
   onSubmit,
   schema,
   values,
@@ -110,11 +112,13 @@ export const FormBuilder = ({
       })();
 
       const isSubmitButton = element.type === "submit";
+      const isResetButton = element.type === "reset";
       return (
         <Button
           className={element.className}
           disabled={disabled}
           isLoading={isSubmitButton && isSubmitting}
+          onClick={isResetButton ? onReset : undefined}
           key={element.id}
           type={element.type}
           variant={isSubmitButton ? "primary" : "secondary"}

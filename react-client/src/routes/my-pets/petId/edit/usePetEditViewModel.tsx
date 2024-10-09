@@ -1,20 +1,24 @@
-import { useEffect, useState } from "react";
+import { isEqual } from "lodash";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { FormValues } from "~/components/design-system";
-import { OnSubmitFn } from "~/components/design-system/form/FormBuilder";
+import {
+  OnChangeFn,
+  OnSubmitFn,
+} from "~/components/design-system/form/FormBuilder";
 import { BreedModel, SpeciesModel } from "~/domain/models/lookup/LookupModel";
 import { PetModel, PetMutateInput } from "~/domain/models/pet/PetModel";
 import getBreedListUseCaseFactory from "~/domain/useCases/lookup/getBreedListUseCaseFactory";
 import getSpeciesListUseCaseFactory from "~/domain/useCases/lookup/getSpeciesListUseCaseFactory";
 import petInfoUseCaseFactory from "~/domain/useCases/pet/petInfoUseCaseFactory";
 import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCaseFactory";
+import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
-import { petInfoIds } from "../form/petForm";
-import { PetInfoFormVariables } from "../types/PetInfoTypes";
+import { editPetProfileFormSchema, petInfoIds } from "../form/petForm";
 
 type EditPetModel = Omit<PetModel, "locale" | "missingStatus">;
 
@@ -23,50 +27,91 @@ export const loader = (({ params }) => {
   invariantResponse(petId, "Pet ID is required in this route");
 
   const authToken = requireAuthToken();
-  const breedList = getBreedListUseCaseFactory(authToken).query();
-  const speciesList = getSpeciesListUseCaseFactory(authToken).query();
-  const useCase = petInfoUseCaseFactory(authToken);
+  const breedsQuery = getBreedListUseCaseFactory(authToken).query;
+  const speciesQuery = getSpeciesListUseCaseFactory(authToken).query;
+  const petInfoUseCase = petInfoUseCaseFactory(authToken);
   const postPetImageUseCase = postPetImageUseCaseFactory(authToken);
-  const petInfoPromise = useCase.query(petId);
+  const petInfoQuery = petInfoUseCase.query(petId);
 
   return defer({
-    breedList,
+    breedsQuery,
     mutatePetImage: postPetImageUseCase.mutate,
     petId,
-    petInfo: petInfoPromise,
-    speciesList,
-    updatePetInfo: useCase.mutate,
+    petInfoQuery,
+    speciesQuery,
+    mutatePetInfo: petInfoUseCase.mutate,
   });
 }) satisfies LoaderFunction;
 
 export const usePetEditViewModel = () => {
-  const navigate = useNavigate();
-
   const {
-    breedList,
+    breedsQuery,
     mutatePetImage,
     petId,
-    petInfo,
-    speciesList,
-    updatePetInfo,
+    petInfoQuery,
+    speciesQuery,
+    mutatePetInfo,
   } = useLoaderData<typeof loader>();
 
-  const [petInfoVariables, setPetInfoVariables] =
-    useState<PetInfoFormVariables>();
+  const navigate = useNavigate();
+  const [speciesList, setSpeciesList] = useState<SpeciesModel[]>([]);
+  const [breedsList, setBreedsList] = useState<BreedModel[]>([]);
+  const [hasPolicy, setHasPolicy] = useState(false);
 
-  useEffect(() => {
-    async function getPetInfoFormVariables() {
-      const breedVariables = await breedList;
-      const speciesVariables = await speciesList;
+  const initialPetFormValuesRef = useRef<FormValues>({});
 
-      setPetInfoVariables({
-        breedVariables,
-        speciesVariables,
-      });
+  const [petFormValues, setPetFormValues] = useState<FormValues>({});
+  const [isLoadingPet, setIsLoadingPet] = useState(true);
+  const [isSubmittingPet, setIsSubmittingPet] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
+
+  const selectedSpecies = speciesList.find(
+    (species) => species.name === petFormValues.species
+  );
+
+  const isDirtyPetForm = !isEqual(
+    petFormValues,
+    initialPetFormValuesRef.current
+  );
+
+  const isDiscardingPetForm = isDirtyPetForm && isLeaving
+
+  const fetchPetForm = useCallback(async () => {
+    const response = await petInfoQuery;
+    setHasPolicy(!!response?.policyInsurance?.length);
+
+    const initialValues = getPetInfoFormData(response);
+    const speciesResultList = await speciesQuery();
+    setSpeciesList(speciesResultList);
+    const selectedSpecies = speciesResultList.find(
+      ({ name }) => name === initialValues.species
+    );
+
+    if (selectedSpecies && initialValues.breed) {
+      const breedsResultList = await breedsQuery(selectedSpecies.id);
+      setBreedsList(breedsResultList);
     }
 
-    void getPetInfoFormVariables();
-  }, [breedList, speciesList]);
+    initialPetFormValuesRef.current = { ...initialValues };
+
+    setPetFormValues(initialValues);
+    setIsLoadingPet(false);
+  }, [breedsQuery, petInfoQuery, speciesQuery]);
+
+  useDeepCompareEffect(() => {
+    void fetchPetForm();
+  }, [fetchPetForm]);
+
+  useEffect(() => {
+    const fetchBreedsBySpecies = async (speciesId: number) => {
+      const breedsList = await breedsQuery(speciesId);
+      setBreedsList(breedsList);
+    };
+
+    if (selectedSpecies?.id) {
+      void fetchBreedsBySpecies(selectedSpecies.id);
+    }
+  }, [selectedSpecies?.id, breedsQuery]);
 
   const onRemoveImage = () => {
     // TODO: implement image deletion
@@ -80,62 +125,70 @@ export const usePetEditViewModel = () => {
     })();
   };
 
-  const updateAndRedirect = async (values: FormValues) => {
-    const petModel = buildPetInfo(values);
-    const serverModel = convertToServerPetInfo(petModel);
+  const onChangePetFormValues: OnChangeFn = (values) => {
+    setPetFormValues(values);
+  };
 
-    if (!serverModel) {
-      // TODO: handle error
-      return;
+  const asyncSubmitPetInfo = async (values: FormValues) => {
+    setIsSubmittingPet(true);
+
+    const petInfo = convertFormValuesToPetInfo(values);
+    const serverModel = convertToServerPetInfo(petInfo);
+
+    if (serverModel) {
+      const response = await mutatePetInfo(serverModel);
+      if (response) {
+        navigate(PET_PROFILE_FULL_ROUTE(petInfo.id));
+        initialPetFormValuesRef.current = values;
+      }
     }
 
-    const didUpdate = await updatePetInfo(serverModel);
-
-    if (didUpdate) {
-      navigate(PET_PROFILE_FULL_ROUTE(petModel.id));
-    } else {
-      // TODO: handle error
-    }
+    setIsSubmittingPet(false);
   };
 
   const onSubmitPetInfo: OnSubmitFn = ({ values }) => {
-    void updateAndRedirect(values);
+    void asyncSubmitPetInfo(values);
   };
+
+  const petFormSchema = editPetProfileFormSchema(hasPolicy);
 
   return {
-    getPetInfoFormData,
-    onSubmitPetInfo,
+    form: {
+      isDiscarding: isDiscardingPetForm,
+      isLoading: isLoadingPet,
+      isSubmitting: isSubmittingPet,
+      onChange: onChangePetFormValues,
+      onSubmit: onSubmitPetInfo,
+      schema: petFormSchema,
+      values: petFormValues,
+      variables: getPetInfoOptions(),
+    },
+    handleClose,
+    handleReset,
     onRemoveImage,
     onSelectImage,
-    petInfo,
-    petInfoVariables: getPetInfoVariables(),
+    onDiscard,
+    petInfoQuery,
+    setIsLeaving,
   };
 
-  function getPetInfoFormData(values: PetModel): FormValues {
-    const formValues: FormValues = {
-      [petInfoIds.petId]: values.id ?? "",
-      [petInfoIds.age]: values.age ?? "",
-      [petInfoIds.breed]: values.breed ?? "",
-      [petInfoIds.dateOfBirth]: values.dateOfBirth ?? "",
-      [petInfoIds.mixedBreed]: values.mixedBreed ? "Yes" : "No",
-      [petInfoIds.name]: values.name ?? "",
-      [petInfoIds.neuteredSpayed]: values.spayedNeutered ? "Yes" : "No",
-      [petInfoIds.sex]: values.sex === "1" ? "Male" : "Female",
-      [petInfoIds.species]: values.species ?? "",
-      [petInfoIds.microchip]: values.microchip ?? "",
-      [petInfoIds.insurance]: values.policyInsurance?.[0] ?? "",
-    };
+  function onDiscard (){
+    navigate(PET_PROFILE_FULL_ROUTE(petId))
+  }
 
-    return formValues;
+
+  function handleClose() {
+    setIsLeaving(false);
+  }
+
+  function handleReset() {
+    if (!isDirtyPetForm) onDiscard()
+    setIsLeaving(true);
   }
 
   function convertToServerPetInfo(data: EditPetModel): PetMutateInput | null {
-    const breedId = petInfoVariables?.breedVariables.find(
-      ({ name }) => data.breed === name
-    )?.id;
-    const specieId = petInfoVariables?.speciesVariables.find(
-      ({ name }) => data.species === name
-    )?.id;
+    const breedId = breedsList.find(({ name }) => data.breed === name)?.id;
+    const specieId = speciesList.find(({ name }) => data.species === name)?.id;
     if (!breedId || !specieId) return null;
 
     return {
@@ -145,19 +198,15 @@ export const usePetEditViewModel = () => {
     };
   }
 
-  function getPetInfoVariables() {
+  function getPetInfoOptions() {
     return {
-      breedOptions: convertToLabels(petInfoVariables?.breedVariables ?? []),
-      speciesOptions: convertToLabels(petInfoVariables?.breedVariables ?? []),
+      breedOptions: breedsList.map(({ name }) => name),
+      speciesOptions: speciesList.map(({ name }) => name),
     };
-  }
-
-  function convertToLabels(list: (BreedModel | SpeciesModel)[]) {
-    return list.map(({ name }) => name);
   }
 };
 
-function buildPetInfo(values: FormValues): EditPetModel {
+function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
   const petInfo: EditPetModel = {
     id: values[petInfoIds.petId] as string,
     breed: values[petInfoIds.breed] as string,
@@ -170,4 +219,22 @@ function buildPetInfo(values: FormValues): EditPetModel {
   };
 
   return petInfo;
+}
+
+function getPetInfoFormData(values: PetModel | null): FormValues {
+  if (!values) return {};
+
+  return {
+    [petInfoIds.petId]: values.id ?? "",
+    [petInfoIds.age]: values.age ?? "",
+    [petInfoIds.breed]: values.breed ?? "",
+    [petInfoIds.dateOfBirth]: values.dateOfBirth ?? "",
+    [petInfoIds.mixedBreed]: values.mixedBreed ? "Yes" : "No",
+    [petInfoIds.name]: values.name ?? "",
+    [petInfoIds.neuteredSpayed]: values.spayedNeutered ? "Yes" : "No",
+    [petInfoIds.sex]: values.sex === "1" ? "Male" : "Female",
+    [petInfoIds.species]: values.species ?? "",
+    [petInfoIds.microchip]: values.microchip ?? "",
+    [petInfoIds.insurance]: values.policyInsurance?.[0] ?? "",
+  };
 }

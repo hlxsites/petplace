@@ -37,10 +37,10 @@ describe("Tag", () => {
     }
   );
 
-  it.each(["info", "warning"] satisfies TagType)(
+  it(
     "should render info icon for tagStatus=%s",
-    (tagStatus) => {
-      const { container } = getRenderer({ tagStatus });
+    () => {
+      const { container } = getRenderer({ tagStatus: "warning" });
 
       expect(
         container.querySelector("svg[data-file-name='SvgInformationIcon']")

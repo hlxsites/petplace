@@ -46,6 +46,7 @@ export type PetCommon = {
   isProtected?: boolean;
   microchip?: string | null;
   name: string;
+  speciesId?: number | null;
 };
 
 export type PetProduct = {

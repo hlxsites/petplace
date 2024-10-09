@@ -9,6 +9,8 @@ interface EnvVariables {
   VITE_PETPLACE_SERVER_DEV_URL?: string;
   VITE_PETPLACE_SERVER_STG_URL?: string;
   VITE_PETPLACE_SERVER_PROD_URL?: string;
+  VITE_GOOGLE_ANALYTICS_ID_DEV?: string;
+  VITE_GOOGLE_ANALYTICS_ID_PROD?: string;
   VITE_ENABLE_MOCK?: string;
   VITE_R_A_T?: string;
   VITE_R_A_T2?: string;
@@ -47,6 +49,12 @@ export const IS_PROD_URL =
 export const IS_STG_URL =
   typeof window !== "undefined" &&
   window.location.origin.includes("petadopt-phase2-release");
+
+export const GOOGLE_ANALYTICS_ID = (() => {
+  if (IS_PROD_URL) return getEnvVariable("VITE_GOOGLE_ANALYTICS_ID_PROD", "");
+
+  return getEnvVariable("VITE_GOOGLE_ANALYTICS_ID_DEV", "");
+})();
 
 export const PETPLACE_SERVER_BASE_URL = (() => {
   if (IS_PROD_URL) return getEnvVariable("VITE_PETPLACE_SERVER_PROD_URL", "");

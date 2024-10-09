@@ -28,7 +28,7 @@ export const Tag = ({ label, tagStatus }: TagProps) => {
       <Text color={textColorClass} fontWeight="medium" size="16">
         {label}
       </Text>
-      {tagStatus !== "success" && <Icon display="information" size={16} />}
+      {!["success", "info"].includes(tagStatus) && <Icon display="information" size={16} />}
     </div>
   );
 };

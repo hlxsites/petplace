@@ -5,7 +5,7 @@ import getCountriesUseCaseFactory from "~/domain/useCases/lookup/getCountriesUse
 import getStatesUseCaseFactory from "~/domain/useCases/lookup/getStatesUseCaseFactory";
 import accountDetailsUseCaseFactory from "~/domain/useCases/user/accountDetailsUseCaseFactory";
 import accountEmergencyContactsUseCaseFactory from "~/domain/useCases/user/accountEmergencyContactsUseCaseFactory";
-import { useRouteMatchesData } from "~/domain/useRouteMatchesData";
+import { useRouteMatchesData } from "~/hooks/useRouteMatchesData";
 
 import { useAccountEmergencyContactViewModel } from "./useAccountEmergencyContactViewModel";
 import { useAccountFormViewModel } from "./useAccountFormViewModel";

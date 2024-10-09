@@ -14,16 +14,19 @@ import {
   findProductBasedOnOptionId,
   getProductColorSizeBasedOnCartId,
 } from "~/domain/util/checkoutProductUtil";
+import { logAnalyticsEvent } from "~/infrastructure/telemetry/logEvent";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { forceRedirect } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { redirectToMph } from "~/util/mphRedirectUtil";
-import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
+import {
+  ANIMAL_PLAN_PARAM,
+  CART_CONTENT_KEY,
+  CONTENT_PARAM_KEY,
+} from "~/util/searchParamsKeys";
 import { formatPrice, getValueFromPrice } from "~/util/stringUtil";
 import { OPT_IN_LABEL } from "./utils/hardCodedRenewPlan";
-
-const CART_CONTENT_KEY = "cart";
 
 export const loader = (async ({ request }) => {
   const url = new URL(request.url);
@@ -83,6 +86,7 @@ export const useCheckoutProductsViewModel = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isSubmittingCart, setIsSubmittingCart] = useState(false);
 
+  const animalPlanParam = searchParams.get(ANIMAL_PLAN_PARAM);
   const contentParam = searchParams.get(CONTENT_PARAM_KEY);
   const isOpenCart = contentParam === CART_CONTENT_KEY;
 
@@ -97,7 +101,7 @@ export const useCheckoutProductsViewModel = () => {
     [products]
   );
 
-  const getAnnualProductPurchaseLimit = useCallback(
+  const getProductPurchaseLimit = useCallback(
     (productType?: string, purchaseLimit?: number) => {
       const isAnnualProduct = productType
         ?.toLocaleLowerCase()
@@ -108,10 +112,7 @@ export const useCheckoutProductsViewModel = () => {
   );
 
   const updateCartItemsState = useCallback(
-    (
-      callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[],
-      saveOnServer = true
-    ) => {
+    (callback: ((prevState: CartItem[]) => CartItem[]) | CartItem[]) => {
       setCartItems((prevState) => {
         const updatedState = Array.isArray(callback)
           ? callback
@@ -120,21 +121,17 @@ export const useCheckoutProductsViewModel = () => {
         const updatedStateWithAdditionalService = updatedState.map((item) => ({
           ...item,
           isAdditionalService:
-            getAnnualProductPurchaseLimit(getProductType(item.id)) === 1,
+            getProductPurchaseLimit(getProductType(item.id)) === 1,
         }));
 
         updatedStateWithAdditionalService.sort((a, b) =>
           a.isService && !b.isService ? -1 : 1
         );
 
-        if (saveOnServer) {
-          void postCart(updatedStateWithAdditionalService, petId);
-        }
-
         return updatedStateWithAdditionalService;
       });
     },
-    [petId, postCart, getProductType, getAnnualProductPurchaseLimit]
+    [getProductType, getProductPurchaseLimit]
   );
 
   useDeepCompareEffect(() => {
@@ -174,7 +171,7 @@ export const useCheckoutProductsViewModel = () => {
         // We want to add the membership plan to the cart if it's not there yet
         initialCartItems.push(selectedPlan);
       }
-      updateCartItemsState(initialCartItems, false);
+      updateCartItemsState(initialCartItems);
     };
 
     if (!cartItems.length && savedCart && products.length && selectedPlan) {
@@ -199,7 +196,7 @@ export const useCheckoutProductsViewModel = () => {
   const onUpdateQuantity = (id: string, newQuantity: number) => {
     updateCartItemsState((prevItems) => {
       const productType = getProductType(id);
-      const purchaseLimit = getAnnualProductPurchaseLimit(productType);
+      const purchaseLimit = getProductPurchaseLimit(productType, 1);
 
       const adjustedQuantity = purchaseLimit
         ? Math.min(newQuantity, purchaseLimit)
@@ -219,6 +216,14 @@ export const useCheckoutProductsViewModel = () => {
   };
 
   const onUpdateCartProduct = (product: CartItem) => {
+    logAnalyticsEvent({
+      category: "checkout",
+      action: "update_cart",
+      label: product.title,
+      value: Number(product.price),
+      nonInteraction: false,
+    });
+
     updateCartItemsState((prevState) => {
       let updatedState: CartItem[] = [];
       // The product already exists in the cart
@@ -275,7 +280,15 @@ export const useCheckoutProductsViewModel = () => {
     void (async () => {
       await postCart(cartItems, petId);
 
-      const uri = redirectToMph("petplace/cart");
+      logAnalyticsEvent({
+        category: "checkout",
+        action: "proceedToPayment",
+        nonInteraction: false,
+      });
+
+      const uri = redirectToMph(
+        `petplace/cart?animalID=${petId}&planID=${animalPlanParam}`
+      );
       forceRedirect(uri);
     })();
   };

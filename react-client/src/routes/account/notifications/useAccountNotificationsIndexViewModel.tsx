@@ -9,8 +9,8 @@ import { OnSubmitFn } from "~/components/design-system/form/FormBuilder";
 import { AccountNotificationPreferencesModel } from "~/domain/models/user/UserModels";
 import accountNotificationPreferencesUseCaseFactory from "~/domain/useCases/user/accountNotificationPreferencesUseCaseFactory";
 import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
-import { useRouteMatchesData } from "~/domain/useRouteMatchesData";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
+import { useRouteMatchesData } from "~/hooks/useRouteMatchesData";
 import { accountNotificationIds } from "../form/notificationForm";
 import { AccountRootLoaderData } from "../useAccountRootViewModel";
 

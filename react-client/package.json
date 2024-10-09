@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "VITE_MPH_DEV_URL=https://mph-qay.pethealthinc.com jest",
-    "test:watch": "VITE_MPH_DEV_URL=https://mph-qay.pethealthinc.com jest --watch" },
+    "test:watch": "VITE_MPH_DEV_URL=https://mph-qay.pethealthinc.com jest --watch"
+  },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.0",
@@ -24,6 +25,7 @@
     "lodash.isequal": "^4.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-ga4": "^2.1.0",
     "react-router-dom": "^6.23.1",
     "react-router-typesafe": "^1.5.0",
     "react-spring": "^9.7.4",

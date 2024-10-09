@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { BreedModel } from "~/domain/models/lookup/LookupModel";
+import {
+  BreedModel
+} from "~/domain/models/lookup/LookupModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetBreedListRepository } from "~/domain/repository/lookup/GetBreedListRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
@@ -8,7 +10,7 @@ import { parseData } from "../util/parseData";
 
 export class GetBreedListUseCase implements GetBreedListRepository {
   private httpClient: HttpClientRepository;
-  private cache: BreedModel[] = [];
+  private cache = new Map<string, BreedModel[]>();
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -18,19 +20,24 @@ export class GetBreedListUseCase implements GetBreedListRepository {
     }
   }
 
-  query = async (): Promise<BreedModel[]> => {
-    // Use cache to avoid unnecessary requests
-    if (this.cache.length) return this.cache;
+  query = async (speciesId: number): Promise<BreedModel[]> => {
+    const id = speciesId === 1 ? "dog" : "cat";
+
+    const cached = this.cache.get(id);
+    if (cached) return cached;
 
     try {
-      const result = await this.httpClient.get("lookup/breed");
-      if (result.data) return convertToBreedList(result.data);
-
-      return [];
+      const result = await this.httpClient.get(`lookup/breed/${speciesId}`);
+      if (result.data) {
+        const list = convertToBreedList(result.data);
+        this.cache.set(id, list);
+        return list;
+      }
     } catch (error) {
-      console.error("GetCountriesUseCase query error", error);
+      logError("GetCountriesUseCase query error", error);
       return [];
     }
+    return [];
   };
 }
 

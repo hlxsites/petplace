@@ -15,9 +15,13 @@ export const ASSET_IMAGES = {
   byteTagSlideBlackLarge: getImageUrl("byte-tag-slide-black-large.jpg"),
   byteTagSlideBlackSmall: getImageUrl("byte-tag-slide-black-small.jpg"),
 
+  // Avatars
   catAvatar: getImageUrl("cat-avatar.svg"),
-  comfyDogAndCat: getImageUrl("onboarding-comfy-dog-and-cat.png"),
   dogAvatar: getImageUrl("dog-avatar.svg"),
+  squareCatAvatar: getImageUrl("square-cat-placeholder.jpg"),
+  squareDogAvatar: getImageUrl("square-dog-placeholder.jpg"),
+
+  comfyDogAndCat: getImageUrl("onboarding-comfy-dog-and-cat.png"),
   friendlyDogAndCat: getImageUrl("onboarding-friendly-dog-and-cat.png"),
   insuranceImage: getImageUrl("insurance-image.png"),
   petServices: getImageUrl("onboarding-pet-services.png"),
@@ -25,8 +29,6 @@ export const ASSET_IMAGES = {
   petPlaceLogo: getImageUrl("pet-place-logo.png"),
   petcoLogo: getImageUrl("petco-logo.png"),
   petWatchLogo: getImageUrl("24-pet-watch-logo.png"),
-  squareCatAvatar: getImageUrl("square-cat-placeholder.jpg"),
-  squareDogAvatar: getImageUrl("square-dog-placeholder.jpg"),
   roverLogo: getImageUrl("rover-logo.png"),
 };
 

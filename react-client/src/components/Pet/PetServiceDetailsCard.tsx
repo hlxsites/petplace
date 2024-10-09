@@ -1,5 +1,13 @@
 import { ReactNode } from "react";
-import { Button, Card, Icon, IconKeys, Text, Title } from "../design-system";
+import {
+  Button,
+  Card,
+  Icon,
+  IconKeys,
+  Text,
+  TextSpan,
+  Title,
+} from "../design-system";
 import { ConfirmDialog } from "../design-system/dialog/ConfirmDialog";
 
 export type PetServiceDetailsCardProps = {
@@ -35,7 +43,7 @@ export const PetServiceDetailsCard = ({
     <div className="flex flex-col gap-large">
       <div className="grid gap-small">
         <Title level="h5">Service Description:</Title>
-        <Text size="14">{description}</Text>
+        <TextSpan size="14">{description}</TextSpan>
       </div>
       {(additionalInfo || contact) && (
         <Card>

@@ -1,6 +1,10 @@
 import { LinkButton, Text, TextSpan } from "~/components/design-system";
 import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
+import {
+  acrobatReaderUrl,
+  copyTextToClipboard,
+} from "~/routes/my-pets/petId/utils/servicesUtils";
 
 export type PetWatchServiceProps = Omit<
   PetServiceDetailsCardProps,
@@ -15,7 +19,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   {
     contact: "1-866-597-2424",
     description:
-      "Quickly report a lost or found pet through our customer portal or speak with our Customer Service Representatives. We will do everythign we can to help get  your pet home safely.",
+      "Quickly report a lost or found pet through our customer portal or speak with our Customer Service Representatives. We will do everything we can to help get  your pet home safely.",
     id: "lost-pet-support",
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
@@ -28,7 +32,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   {
     contact: "1-866-597-2424",
     description:
-      "Our Lot Pet Recovery Specialists are dedicated to helping reunite lost pets with their owners 24/7/365 and can be reached at",
+      "Our Lost Pet Recovery Specialists are dedicated to helping reunite lost pets with their owners and can be reached at:",
     id: "recovery-specialists",
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
@@ -79,7 +83,11 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
             </Text>
             <Text size="14">
               Note: this form requires Adobe Reader,
-              <LinkButton to={""} className="m-0 inline">
+              <LinkButton
+                className="m-0 inline"
+                openInNewTab
+                to={acrobatReaderUrl}
+              >
                 <TextSpan fontWeight="bold" size="14">
                   click here
                 </TextSpan>
@@ -90,13 +98,30 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
         }
       />
     ),
-    description:
-      "This protects your pet by relaying your pet’s critical medical and behavioral information to veterinary care personnel, animal shelters or animal rescue organizations if your pet is lost.",
+    description: (
+      <Text size="14">
+        This protects your pet by relaying your pet’s critical medical and
+        behavioral information to veterinary care personnel, animal shelters or
+        animal rescue organizations if your pet is lost.{" "}
+        <TextSpan fontWeight="bold" inherit>
+          Expires 1 year after purchase.
+        </TextSpan>{" "}
+        Available for renewal on an annual basis.
+      </Text>
+    ),
     id: "PetMedInfo Fees",
     primaryAction: {
       buttonLabel: "Download form",
     },
-    secondaryActions: [{ buttonLabel: "Copy email", icon: "copyRegular" }],
+    secondaryActions: [
+      {
+        buttonLabel: "Copy email",
+        icon: "copyRegular",
+        onClick: () => {
+          void copyTextToClipboard("24PetMedAlert@24petwatch.com")
+        },
+      },
+    ],
     title: "24PetMedAlert",
   },
   {

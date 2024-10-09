@@ -13,7 +13,7 @@ type PetCardProps = CardProps & {
   };
   img?: string;
   name: string;
-  species?: string;
+  speciesId?: number | null;
   variant?: "sm" | "md" | "lg";
 };
 
@@ -24,13 +24,13 @@ export const PetCard = ({
   img,
   name,
   variant,
-  species,
+  speciesId,
   ...props
 }: PetCardProps) => {
   const petImage = (() => {
     if (img) return img;
 
-    if (species === "cat") {
+    if (speciesId === 2) {
       return ASSET_IMAGES.squareCatAvatar;
     }
     return ASSET_IMAGES.squareDogAvatar;
