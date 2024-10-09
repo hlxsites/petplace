@@ -52,7 +52,7 @@ export const PetAlertMessage = ({
   function renderGetQuoteButton(props: Pick<ButtonProps, "className">) {
     return (
       <LinkButton {...props} variant="primary" to={route}>
-        Get Quote Now
+        Protect my Pet
       </LinkButton>
     );
   }

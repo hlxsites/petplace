@@ -10,9 +10,9 @@ export const PetAlertSection = ({ route }: PetAlertSectionProps) => {
   return (
     <div className="pb-xxlarge">
       <PetAlertMessage
-        message="Explore options for accident and illness coverage. Powered by PTZ Insurance Agency Ltd."
+        message="It is stressful when a furry family member is lost. Protect and care for your pet with 24Petwatch enhanced  Lost Pet Protection. [1] The importance of pet identification and what to do if you lose (or find) a pet"
         route={route}
-        title="Protect your pet from the unexpected!"
+        title="Did you know that 1 in 3 pets go missing?"
       />
     </div>
   );
