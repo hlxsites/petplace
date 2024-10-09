@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import ReactGA from "react-ga4";
 import { Outlet, useLocation } from "react-router-dom";
-import { useRouteHandle } from "~/hooks/useRouteHandle";
+import { useRouteTitle } from "~/hooks/useRouteTitle";
 import { disableAemBaseMarkup, enableAemBaseMarkup } from "~/util/styleUtil";
 import { AppRoutePaths } from "./AppRoutePaths";
 
@@ -9,7 +9,7 @@ export const Root = () => {
   const oldLocationRef = useRef("");
   const location = useLocation();
 
-  const titleFn = useRouteHandle<() => string>("title");
+  const titleFn = useRouteTitle();
   const pageTitle: string = (() => {
     const end = "PetPlace.com";
     if (titleFn) return `${titleFn()} | ${end}`;
