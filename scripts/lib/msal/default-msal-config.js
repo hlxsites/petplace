@@ -73,7 +73,10 @@ if (currentUrl.includes('www.petplace.com') || currentUrl.includes('main--petpla
 } else if (currentUrl.includes('adopt-test--petplace--hlxsites') || currentUrl.includes('release')) {
   b2cPolicies = { ...b2cPolicies, ...stageAltConfigs };
 } else {
-  b2cPolicies = { ...b2cPolicies, ...stageConfigs };
+  // b2cPolicies = { ...b2cPolicies, ...stageConfigs };
+
+  // Using "release" as the default stage for the moment
+  b2cPolicies = { ...b2cPolicies, ...stageConfigs, ...stageAltConfigs };
 }
 
 export function getB2CPolicies() {
