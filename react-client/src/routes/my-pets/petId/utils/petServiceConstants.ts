@@ -44,5 +44,5 @@ export const PET_WATCH_TAGS: Record<PetServiceTypes, TagProps> = {
     label: "Active Lifetime plus Membership",
     tagStatus: "success",
   },
-  standard: { label: "Standard Protection", tagStatus: "info" },
+  standard: { label: "Standard", tagStatus: "info" },
 };
