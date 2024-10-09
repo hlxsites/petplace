@@ -9,7 +9,7 @@ export const logError = (message: string, error?: unknown) => {
   if (IS_DEV_ENV) {
     console.error(message, newError);
   }
-  rollbar.error(message, newError);
+  rollbar?.error(message, newError);
 };
 
 export const logWarning = (message: string, error?: unknown) => {
@@ -17,7 +17,7 @@ export const logWarning = (message: string, error?: unknown) => {
   if (IS_DEV_ENV) {
     console.error(message, newError);
   }
-  rollbar.warning(message, newError);
+  rollbar?.warning(message, newError);
 };
 
 function errorHandler(error: unknown) {
