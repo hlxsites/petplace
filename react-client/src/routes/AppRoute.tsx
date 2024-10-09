@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { loader as AccountNotificationIdLoader } from "./account/notifications/notificationId/useNotificationsIdViewModel";
 import { loader as AccountNotificationsIndexLoader } from "./account/notifications/useAccountNotificationsIndexViewModel";
-import { loader as AccountPaymentInformationIndexLoader } from "./account/payment-information/useAccountPaymentInformationIndexViewModel";
 import { loader as AccountOnboardingIndexLoader } from "./account/onboarding/useAccountOnboardingViewModel";
+import { loader as AccountPaymentInformationIndexLoader } from "./account/payment-information/useAccountPaymentInformationIndexViewModel";
 import { loader as AccountIndexLoader } from "./account/useAccountIndexViewModel";
 import { loader as AccountRootLoader } from "./account/useAccountRootViewModel";
 import { AddNewPetIndex } from "./add-pet/AddNewPetIndex";
@@ -56,6 +56,7 @@ const routes: PetPlaceRouteObject[] = [
         children: [
           {
             element: <AccountIndex />,
+            handle: { title: () => "My Account" },
             id: "accountIndex",
             loader: AccountIndexLoader,
             index: true,
@@ -63,6 +64,7 @@ const routes: PetPlaceRouteObject[] = [
           {
             element: <AccountNotificationsIndex />,
             id: "accountNotifications",
+            handle: { title: () => "Account notifications" },
             loader: AccountNotificationsIndexLoader,
             path: AppRoutePaths.accountNotifications,
             shouldRevalidate: () => false,
@@ -77,6 +79,7 @@ const routes: PetPlaceRouteObject[] = [
           },
           {
             element: <AccountPaymentInformationIndex />,
+            handle: { title: () => "Payment information" },
             id: "accountPayment",
             path: AppRoutePaths.accountPayment,
             loader: AccountPaymentInformationIndexLoader,
@@ -97,6 +100,7 @@ const routes: PetPlaceRouteObject[] = [
         path: `${AppRoutePaths.account}/${AppRoutePaths.myPets}`,
         children: [
           {
+            handle: { title: () => "My Pets" },
             id: "myPetsIndex",
             index: true,
             loader: MyPetsIndexLoader,
@@ -130,6 +134,7 @@ const routes: PetPlaceRouteObject[] = [
             children: [
               {
                 element: <PetProfileIndex />,
+                handle: { title: () => "Pet Profile" },
                 id: "petProfileIndex",
                 index: true,
               },
@@ -148,6 +153,7 @@ const routes: PetPlaceRouteObject[] = [
               },
               {
                 element: <PetEditIndex />,
+                handle: { title: () => "Edit pet profile" },
                 id: "petEdit",
                 loader: PetEditLoader,
                 path: AppRoutePaths.petEdit,
@@ -157,6 +163,7 @@ const routes: PetPlaceRouteObject[] = [
           {
             id: "addNewPet",
             path: AppRoutePaths.addNewPet,
+            handle: { title: () => "Add pet" },
             children: [
               {
                 id: "addNewPetIndex",
@@ -170,12 +177,14 @@ const routes: PetPlaceRouteObject[] = [
       },
       {
         element: <LostPetIndex />,
+        handle: { title: () => "Lost pet" },
         id: "lostPet",
         path: AppRoutePaths.lostPet,
         loader: LostPetIndexLoader,
       },
       {
         element: <FoundPetIndex />,
+        handle: { title: () => "Found pet" },
         id: "foundPet",
         path: AppRoutePaths.foundPet,
       },
@@ -184,6 +193,7 @@ const routes: PetPlaceRouteObject[] = [
         path: AppRoutePaths.checkout,
         children: [
           {
+            handle: { title: () => "Choose pet membership" },
             id: "checkoutIndex",
             index: true,
             loader: CheckoutIndexLoader,
@@ -191,6 +201,7 @@ const routes: PetPlaceRouteObject[] = [
           },
           {
             element: <CheckoutProductsLayout />,
+            handle: { title: () => "Checkout products" },
             id: "products",
             loader: CheckoutProductsIndexLoader,
             path: AppRoutePaths.products,

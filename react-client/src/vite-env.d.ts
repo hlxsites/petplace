@@ -23,6 +23,7 @@ interface ImportMetaEnv {
   readonly VITE_PETPLACE_SERVER_DEV_URL: string;
   readonly VITE_PETPLACE_SERVER_STG_URL: string;
   readonly VITE_PETPLACE_SERVER_PROD_URL: string;
+  readonly VITE_GOOGLE_ANALYTICS_ID: string;
   readonly VITE_ENABLE_MOCK: string;
   readonly VITE_R_A_T: string;
   readonly VITE_R_A_T2: string;
