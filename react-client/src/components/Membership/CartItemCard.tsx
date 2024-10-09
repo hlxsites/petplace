@@ -59,6 +59,7 @@ export const CartItemCard = ({
             {...rest}
             isAdditionalService={isAdditionalService}
             onUpdateQuantity={onUpdateQuantity}
+            // The purchase limit is set to 1 in accordance with what was defined on the task 84348
             purchaseLimit={1}
           />
         )}

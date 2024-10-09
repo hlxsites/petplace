@@ -196,6 +196,7 @@ export const useCheckoutProductsViewModel = () => {
   const onUpdateQuantity = (id: string, newQuantity: number) => {
     updateCartItemsState((prevItems) => {
       const productType = getProductType(id);
+      // The purchase limit is set to 1 in accordance with what was defined on the task 84348
       const purchaseLimit = getProductPurchaseLimit(productType, 1);
 
       const adjustedQuantity = purchaseLimit
