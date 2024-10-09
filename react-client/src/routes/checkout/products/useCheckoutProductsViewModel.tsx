@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import ReactGA from "react-ga4";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { CartItem } from "~/domain/models/cart/CartModel";
@@ -15,6 +14,7 @@ import {
   findProductBasedOnOptionId,
   getProductColorSizeBasedOnCartId,
 } from "~/domain/util/checkoutProductUtil";
+import { logAnalyticsEvent } from "~/infrastructure/telemetry/logEvent";
 import { PET_ID_ROUTE_PARAM } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
 import { forceRedirect } from "~/util/forceRedirectUtil";
@@ -216,7 +216,7 @@ export const useCheckoutProductsViewModel = () => {
   };
 
   const onUpdateCartProduct = (product: CartItem) => {
-    ReactGA.event({
+    logAnalyticsEvent({
       category: "checkout",
       action: "update_cart",
       label: product.title,
@@ -280,7 +280,7 @@ export const useCheckoutProductsViewModel = () => {
     void (async () => {
       await postCart(cartItems, petId);
 
-      ReactGA.event({
+      logAnalyticsEvent({
         category: "checkout",
         action: "proceedToPayment",
         nonInteraction: false,
