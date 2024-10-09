@@ -63,6 +63,7 @@ export const usePetEditViewModel = () => {
   const [petFormValues, setPetFormValues] = useState<FormValues>({});
   const [isLoadingPet, setIsLoadingPet] = useState(true);
   const [isSubmittingPet, setIsSubmittingPet] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
 
   const selectedSpecies = speciesList.find(
     (species) => species.name === petFormValues.species
@@ -72,6 +73,8 @@ export const usePetEditViewModel = () => {
     petFormValues,
     initialPetFormValuesRef.current
   );
+
+  const isDiscardingPetForm = isDirtyPetForm && isLeaving
 
   const fetchPetForm = useCallback(async () => {
     const response = await petInfoQuery;
@@ -151,7 +154,7 @@ export const usePetEditViewModel = () => {
 
   return {
     form: {
-      isDirty: isDirtyPetForm,
+      isDiscarding: isDiscardingPetForm,
       isLoading: isLoadingPet,
       isSubmitting: isSubmittingPet,
       onChange: onChangePetFormValues,
@@ -160,10 +163,28 @@ export const usePetEditViewModel = () => {
       values: petFormValues,
       variables: getPetInfoOptions(),
     },
+    handleClose,
+    handleReset,
     onRemoveImage,
     onSelectImage,
+    onDiscard,
     petInfoQuery,
+    setIsLeaving,
   };
+
+  function onDiscard (){
+    navigate(PET_PROFILE_FULL_ROUTE(petId))
+  }
+
+
+  function handleClose() {
+    setIsLeaving(false);
+  }
+
+  function handleReset() {
+    if (!isDirtyPetForm) onDiscard()
+    setIsLeaving(true);
+  }
 
   function convertToServerPetInfo(data: EditPetModel): PetMutateInput | null {
     const breedId = breedsList.find(({ name }) => data.breed === name)?.id;
