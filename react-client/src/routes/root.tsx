@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
+import ReactGA from "react-ga4";
 import { Outlet, useLocation } from "react-router-dom";
+import { useRouteHandle } from "~/hooks/useRouteHandle";
 import { disableAemBaseMarkup, enableAemBaseMarkup } from "~/util/styleUtil";
 import { AppRoutePaths } from "./AppRoutePaths";
 
@@ -7,8 +9,26 @@ export const Root = () => {
   const oldLocationRef = useRef("");
   const location = useLocation();
 
-  // Hacky way to detect when we're moving in and out of the checkout page
+  const titleFn = useRouteHandle<() => string>("title");
+  const pageTitle: string = (() => {
+    const end = "PetPlace.com";
+    if (titleFn) return `${titleFn()} | ${end}`;
+    return end;
+  })();
+
   useEffect(() => {
+    // Update the page title
+    document.title = pageTitle;
+
+    // Register a pageview on every location change
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname,
+      title: pageTitle,
+    });
+
+    // Hacky way to detect when we're moving in and out of the checkout page
+
     // Do nothing if we're on the first render
     if (!oldLocationRef.current) {
       // Update the old location before leaving
@@ -34,7 +54,7 @@ export const Root = () => {
     } else if (isMovingOutOfCheckout) {
       enableAemBaseMarkup();
     }
-  }, [location.pathname]);
+  }, [location.pathname, pageTitle]);
 
   return (
     <div className="w-full">
