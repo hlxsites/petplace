@@ -1,4 +1,5 @@
 import { ChangeEvent, createRef } from "react";
+import { ASSET_IMAGES } from "~/assets";
 import { Button } from "~/components/design-system";
 import { PetModel } from "~/domain/models/pet/PetModel";
 
@@ -10,11 +11,16 @@ type PetImageInputProps = {
 
 export const PetImageInput = ({ onSelectFile, pet }: PetImageInputProps) => {
   const inputFileRef = createRef<HTMLInputElement>();
+  const petImage = pet.img
+    ? pet.img
+    : pet.species === "Dog"
+      ? ASSET_IMAGES.squareDogAvatar
+      : ASSET_IMAGES.squareCatAvatar;
 
   return (
     <div className="flex w-full flex-col flex-wrap items-center gap-base lg:flex-row lg:items-end">
       <img
-        src={pet.img}
+        src={petImage}
         alt={`Pet: ${pet.name}`}
         className="h-[160px] w-[160px]"
       />
