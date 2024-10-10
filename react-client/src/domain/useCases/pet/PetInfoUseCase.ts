@@ -77,7 +77,8 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     ),
     Sex: z.string(),
     Source: z.number().nullish(),
-    Species: z.string(),
+    Species: z.string().nullish(),
+    SpeciesId: z.number().nullish(),
   });
 
   const info = parseData(serverResponseSchema, data);
@@ -110,7 +111,8 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     sex: info.Sex,
     sourceType: info.Source === 1 ? "PetPoint" : "MyPetHealth",
     spayedNeutered: !!info.Neutered,
-    species: info.Species,
+    species: info.Species ?? undefined,
+    speciesId: info.SpeciesId,
   };
 }
 
