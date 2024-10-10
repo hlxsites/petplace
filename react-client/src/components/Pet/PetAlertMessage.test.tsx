@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { PetAlertMessage } from "./PetAlertMessage";
 import { MemoryRouter } from "react-router-dom";
+import { PetAlertMessage } from "./PetAlertMessage";
 
 const { getByRole, getByText, getAllByRole } = screen;
 
@@ -49,14 +49,14 @@ describe("AlertMessage", () => {
   it("should render top action button only for large screens", () => {
     getRenderer();
 
-    const buttons = getAllByRole("button", { name: /Get Quote Now/i });
+    const buttons = getAllByRole("button", { name: /Protect my Pet/i });
     expect(buttons[0]).toHaveClass("hidden lg:flex");
   });
 
   it("should render lower action button when only for medium or small screens", () => {
     getRenderer();
 
-    const buttons = getAllByRole("button", { name: /Get Quote Now/i });
+    const buttons = getAllByRole("button", { name: /Protect my Pet/i });
     expect(buttons[1]).toHaveClass("lg:hidden");
   });
 
@@ -64,7 +64,7 @@ describe("AlertMessage", () => {
     const testRoute = "/test-route";
     getRenderer({ route: testRoute });
 
-    const buttons = getAllByRole("link", { name: /Get Quote Now/i });
+    const buttons = getAllByRole("link", { name: /Protect my Pet/i });
     expect(buttons[0]).toHaveAttribute("href", testRoute);
     expect(buttons[1]).toHaveAttribute("href", testRoute);
   });

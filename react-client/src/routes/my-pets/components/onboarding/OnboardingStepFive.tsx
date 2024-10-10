@@ -1,15 +1,26 @@
 import { Button, Icon, IconKeys, Text } from "~/components/design-system";
+import { DocumentationStatus } from "~/domain/models/pet/PetModel";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingContent } from "./components/OnboardingContent";
 import { CommonOnboardingProps } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
 
 export const OnboardingStepFive = ({
+  isCheckoutAvailable,
+  isProfileAvailable,
   isSmallerScreen,
   onFinish,
+  onSeeMyOptions,
+  onSeeMyPet,
+  status,
   ...props
 }: CommonOnboardingProps & {
+  isCheckoutAvailable: boolean;
+  isProfileAvailable: boolean;
   onFinish: () => void;
+  onSeeMyOptions: () => void;
+  onSeeMyPet: () => void;
+  status: DocumentationStatus;
 }) => {
   return (
     <OnboardingContent
@@ -85,10 +96,25 @@ export const OnboardingStepFive = ({
   }
 
   function renderFinalActions() {
+    if (!isCheckoutAvailable && !isProfileAvailable) {
+      return (
+        <Button fullWidth onClick={onFinish}>
+          Finish
+        </Button>
+      );
+    }
+
     return (
-      <Button fullWidth onClick={onFinish}>
-        Finish
-      </Button>
+      <div className="flex flex-col-reverse items-stretch gap-base md:grid md:grid-cols-2">
+        {isProfileAvailable && (
+          <Button variant="secondary" onClick={onSeeMyPet}>
+            See my pet
+          </Button>
+        )}
+        {isCheckoutAvailable && (
+          <Button onClick={onSeeMyOptions}>See my options</Button>
+        )}
+      </div>
     );
   }
 };

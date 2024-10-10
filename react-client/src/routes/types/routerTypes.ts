@@ -6,7 +6,7 @@ import { Modify } from "~/types/misc";
 export type AppRoutePathIds = keyof typeof AppRoutePaths;
 type AppRouteIndexPathIds = keyof typeof AppRoutePathsIndexes;
 
-type RouteHandle = {
+export type RouteHandle = {
   title?: (data?: unknown) => string;
 };
 

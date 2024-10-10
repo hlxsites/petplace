@@ -49,6 +49,11 @@ export type PetCommon = {
   speciesId?: number | null;
 };
 
+export type PetInAdoptionList = PetCommon & {
+  isCheckoutAvailable: boolean;
+  isProfileAvailable: boolean;
+};
+
 export type PetProduct = {
   id: string;
   isExpired: boolean;

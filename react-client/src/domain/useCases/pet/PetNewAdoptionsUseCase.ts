@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PetCommon } from "~/domain/models/pet/PetModel";
+import { PetInAdoptionList } from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetNewAdoptionsRepository } from "~/domain/repository/pet/PetNewAdoptionsRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
@@ -17,7 +17,7 @@ export class PetNewAdoptionsUseCase implements PetNewAdoptionsRepository {
     }
   }
 
-  query = async (): Promise<PetCommon[]> => {
+  query = async (): Promise<PetInAdoptionList[]> => {
     try {
       const result = await this.httpClient.get("api/Pet/new-adoptions");
 
@@ -31,19 +31,21 @@ export class PetNewAdoptionsUseCase implements PetNewAdoptionsRepository {
   };
 }
 
-function convertToPetModelList(data: unknown): PetCommon[] {
+function convertToPetModelList(data: unknown): PetInAdoptionList[] {
   // Data should be an array of pets
   if (!data || !Array.isArray(data)) return [];
 
   const serverResponseSchema = z.object({
+    CheckoutUrl: z.string().nullish(),
     Id: z.string(),
     ImageUrl: z.string().nullish(),
     MembershipStatus: z.string().nullish(),
     Microchip: z.string().nullish(),
     Name: z.string(),
+    PetProfileUrl: z.string().nullish(),
   });
 
-  const list: PetCommon[] = [];
+  const list: PetInAdoptionList[] = [];
 
   data.forEach((petData) => {
     const pet = parseData(serverResponseSchema, petData);
@@ -56,6 +58,8 @@ function convertToPetModelList(data: unknown): PetCommon[] {
 
     list.push({
       id: pet.Id,
+      isCheckoutAvailable: !!pet.CheckoutUrl,
+      isProfileAvailable: !!pet.PetProfileUrl,
       isProtected,
       microchip: pet.Microchip,
       name: pet.Name,

@@ -2,24 +2,23 @@ import { ChangeEvent, createRef } from "react";
 import { Button } from "~/components/design-system";
 import { PetModel } from "~/domain/models/pet/PetModel";
 
-export const PetImageInput = ({
-  onSelectFile,
-  pet,
-}: {
+type PetImageInputProps = {
   pet: PetModel;
   onRemove: () => void;
   onSelectFile: (file: File) => void;
-}) => {
+};
+
+export const PetImageInput = ({ onSelectFile, pet }: PetImageInputProps) => {
   const inputFileRef = createRef<HTMLInputElement>();
 
   return (
-    <div className="flex flex-wrap gap-base w-full">
+    <div className="flex w-full flex-col flex-wrap items-center gap-base lg:flex-row lg:items-end">
       <img
         src={pet.img}
         alt={`Pet: ${pet.name}`}
         className="h-[160px] w-[160px]"
       />
-      <div className="flex flex-col justify-end gap-small">
+      <div className="flex w-full flex-col justify-end gap-small lg:w-fit">
         <input
           className="absolute h-0 w-0 opacity-0"
           id="pet-image-file-input"

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { DocumentationStatus, PetCommon } from "~/domain/models/pet/PetModel";
+import {
+  DocumentationStatus,
+  PetInAdoptionList,
+} from "~/domain/models/pet/PetModel";
 import PetDocumentConsentFactoryUseCase from "~/domain/useCases/pet/PetDocumentConsentFactoryUseCase";
 
 import petListUseCaseFactory from "~/domain/useCases/pet/petListUseCaseFactory";
@@ -28,9 +31,15 @@ export const useMyPetsIndexViewModel = () => {
   const { newAdoptionsPetsPromise, petsPromise, submitConsent } =
     useLoaderData<typeof loader>();
 
-  const [adoptionPets, setAdoptionPets] = useState<PetCommon[]>([]);
+  const [adoptionPets, setAdoptionPets] = useState<PetInAdoptionList[]>([]);
   const [documentStatus, setDocumentStatus] =
     useState<DocumentationStatus>("none");
+
+  const selectedAdoptionPet = (() => {
+    const petId = searchParams.get("petId");
+    if (!petId) return null;
+    return adoptionPets.find((pet) => pet.id === petId) || null;
+  })();
 
   const shouldDisplayOnboarding = (() => {
     const contentParam = searchParams.get(CONTENT_PARAM_KEY);
@@ -77,12 +86,6 @@ export const useMyPetsIndexViewModel = () => {
       replace: true,
     });
   };
-
-  const selectedAdoptionPet = (() => {
-    const petId = searchParams.get("petId");
-    if (!petId) return null;
-    return adoptionPets.find((pet) => pet.id === petId) || null;
-  })();
 
   return {
     documentStatus,
