@@ -9,7 +9,7 @@ type AdvertisingSectionProps = {
 export const AdvertisingSection = ({ linkTo }: AdvertisingSectionProps) => {
   return (
     <AdvertisingBannerImageRight
-      buttonLabel="See quotes"
+      buttonLabel="Learn More"
       cardStyleProps={{
         backgroundColor: "bg-orange-100",
         border: "border-orange-100",
