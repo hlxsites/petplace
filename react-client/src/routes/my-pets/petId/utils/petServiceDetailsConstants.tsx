@@ -50,10 +50,13 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
   {
     id: "rover-discount",
     description: (
-      <Text>
+      <Text size="14">
         Need to step away? Find the perfect pet sitter. Use promo code provided
-        via email to redeem your gift card before it expires
-        <TextSpan fontWeight="semibold">X days after purchase.</TextSpan>
+        in your email to redeem your gift card before it expires
+        <TextSpan fontWeight="semibold" inherit>
+          1 year after purchase.
+        </TextSpan>{" "}
+        One time use.
       </Text>
     ),
     primaryAction: {
@@ -118,7 +121,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
         buttonLabel: "Copy email",
         icon: "copyRegular",
         onClick: () => {
-          void copyTextToClipboard("24PetMedAlert@24petwatch.com")
+          void copyTextToClipboard("24PetMedAlert@24petwatch.com");
         },
       },
     ],
