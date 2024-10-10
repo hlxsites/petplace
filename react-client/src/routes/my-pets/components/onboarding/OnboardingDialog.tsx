@@ -1,8 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, StepProgress } from "~/components/design-system";
-import { DocumentationStatus, PetCommon } from "~/domain/models/pet/PetModel";
+import {
+  DocumentationStatus,
+  PetInAdoptionList,
+} from "~/domain/models/pet/PetModel";
 import { useLocalStorageSteps } from "~/hooks/useLocalStorageSteps";
 import { useWindowWidth } from "~/hooks/useWindowWidth";
+import {
+  CHECKOUT_FULL_ROUTE,
+  PET_PROFILE_FULL_ROUTE,
+} from "~/routes/AppRoutePaths";
 import { classNames } from "~/util/styleUtil";
 import { OnboardingStepFive } from "./OnboardingStepFive";
 import { OnboardingStepOne } from "./OnboardingStepOne";
@@ -24,7 +32,10 @@ type OnboardingDialogProps = {
   onFinish: () => void;
   onSubmitConsent: (consent: boolean) => void;
   status: DocumentationStatus;
-  pet: Pick<PetCommon, "name" | "microchip"> | null;
+  pet: Pick<
+    PetInAdoptionList,
+    "id" | "isCheckoutAvailable" | "isProfileAvailable" | "name" | "microchip"
+  > | null;
 };
 
 export const OnboardingDialog = ({
@@ -33,6 +44,7 @@ export const OnboardingDialog = ({
   onSubmitConsent,
   status,
 }: OnboardingDialogProps) => {
+  const navigate = useNavigate();
   const isSmallerScreen = useWindowWidth() < 768;
 
   const [didFinish, setDidFinish] = useState(false);
@@ -46,12 +58,22 @@ export const OnboardingDialog = ({
     totalSteps: TOTAL_STEPS,
   });
 
-  const handleOnFinish = () => {
-    setDidFinish(true);
-    onFinish();
+  const handleOnFinish = (type: "checkout" | "finished" | "profile") => {
+    return () => {
+      setDidFinish(true);
 
-    // Reset the steps on local storage
-    setTimeout(reset, 300);
+      // Reset the steps on local storage
+      setTimeout(reset, 300);
+
+      // Hacky way to navigate to next page for the MVP
+      if (type === "checkout" && pet?.isCheckoutAvailable) {
+        navigate(CHECKOUT_FULL_ROUTE(pet.id));
+      } else if (type === "profile" && pet?.isProfileAvailable) {
+        navigate(PET_PROFILE_FULL_ROUTE(pet.id));
+      } else {
+        onFinish();
+      }
+    };
   };
 
   return (
@@ -107,7 +129,11 @@ export const OnboardingDialog = ({
         return (
           <OnboardingStepFive
             {...commonProps}
-            onFinish={handleOnFinish}
+            isCheckoutAvailable={!!pet?.isCheckoutAvailable}
+            isProfileAvailable={!!pet?.isProfileAvailable}
+            onFinish={handleOnFinish("finished")}
+            onSeeMyOptions={handleOnFinish("checkout")}
+            onSeeMyPet={handleOnFinish("profile")}
             status={status}
           />
         );

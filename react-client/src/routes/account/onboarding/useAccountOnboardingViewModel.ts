@@ -24,11 +24,14 @@ export const useAccountOnboardingViewModel = () => {
     const fetchPetsList = async () => {
       const list = await petsListPromise;
 
+      // Try to get a pet with checkout available
+      const selectedPet = list.find((p) => p.isCheckoutAvailable) || list[0];
+
       const url = (() => {
         const baseUrl = `${MY_PETS_FULL_ROUTE}?${CONTENT_PARAM_KEY}=onboarding`;
         if (!list.length) return baseUrl;
 
-        return `${baseUrl}&petId=${list[0].id}`;
+        return `${baseUrl}&petId=${selectedPet.id}`;
       })();
 
       navigate(url, { replace: true });

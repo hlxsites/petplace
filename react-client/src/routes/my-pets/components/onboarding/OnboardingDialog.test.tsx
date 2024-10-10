@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { DocumentationStatus } from "~/domain/models/pet/PetModel";
+import { DocumentationStatus, PetInAdoptionList } from "~/domain/models/pet/PetModel";
 import { getByTextContent } from "~/util/testingFunctions";
 import { OnboardingDialog } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
@@ -13,7 +13,13 @@ jest.mock(
     )
 );
 
-const DEFAULT_NAME = "Romã";
+const DEFAULT_PET:PetInAdoptionList = {
+  id: 'bob',
+  isCheckoutAvailable: true,
+  name: "Bob",
+  isProfileAvailable: true,
+}
+
 const { getByRole, getByText, getByAltText } = screen;
 
 describe("OnboardingDialog", () => {
@@ -37,7 +43,7 @@ describe("OnboardingDialog", () => {
   it("should render Dialog with initial content", async () => {
     localStorage.setItem("onboarding-step", "1");
     await getRenderer({
-      pet: { name: DEFAULT_NAME },
+      pet: DEFAULT_PET,
       status: "none",
     });
 
@@ -53,7 +59,7 @@ describe("OnboardingDialog", () => {
   it("should render step 2 content", async () => {
     localStorage.setItem("onboarding-step", "2");
     await getRenderer({
-      pet: { name: DEFAULT_NAME },
+      pet: DEFAULT_PET,
       status: "none",
     });
 
@@ -74,7 +80,7 @@ describe("OnboardingDialog", () => {
   it("should render step 3 content", async () => {
     localStorage.setItem("onboarding-step", "3");
     await getRenderer({
-      pet: { name: DEFAULT_NAME },
+      pet: DEFAULT_PET,
       status: "none",
     });
 
@@ -90,12 +96,12 @@ describe("OnboardingDialog", () => {
   it("should render step 4 content for none documentationStatus by default", async () => {
     localStorage.setItem("onboarding-step", "4");
     await getRenderer({
-      pet: { name: DEFAULT_NAME },
+      pet: DEFAULT_PET,
       status: "none",
     });
 
     const [string1, string2] =
-      ONBOARDING_STEPS_TEXTS[4].none.message(DEFAULT_NAME);
+      ONBOARDING_STEPS_TEXTS[4].none.message("Bob");
 
     await waitFor(() =>
       expect(
@@ -134,7 +140,7 @@ describe("OnboardingDialog", () => {
     async (status, title, description) => {
       localStorage.setItem("onboarding-step", "4");
       await getRenderer({
-        pet: { name: DEFAULT_NAME },
+        pet: DEFAULT_PET,
         status,
       });
 
@@ -148,7 +154,7 @@ describe("OnboardingDialog", () => {
   it("should render step 5 content with status none message", async () => {
     localStorage.setItem("onboarding-step", "5");
     await getRenderer({
-      pet: { name: DEFAULT_NAME },
+      pet: DEFAULT_PET,
       status: "none",
     });
 
@@ -173,7 +179,7 @@ describe("OnboardingDialog", () => {
     async (expected) => {
       localStorage.setItem("onboarding-step", "5");
       await getRenderer({
-        pet: { name: DEFAULT_NAME },
+        pet: DEFAULT_PET,
         status: expected,
       });
 
