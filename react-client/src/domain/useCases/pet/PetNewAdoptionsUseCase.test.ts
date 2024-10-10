@@ -22,8 +22,8 @@ describe("PetNewAdoptionsUseCase", () => {
       {
         id: "AUN19624033",
         img: undefined,
-        isCheckoutAvailable: true,
-        isProfileAvailable: true,
+        isCheckoutAvailable: false,
+        isProfileAvailable: false,
         isProtected: true,
         microchip: "948594034F",
         name: "Delilah",
@@ -39,8 +39,8 @@ describe("PetNewAdoptionsUseCase", () => {
       {
         id: "lili",
         img: undefined,
-        isCheckoutAvailable: true,
-        isProfileAvailable: true,
+        isCheckoutAvailable: false,
+        isProfileAvailable: false,
         isProtected: true,
         microchip: "81238123A",
         name: "Lili",
@@ -48,8 +48,8 @@ describe("PetNewAdoptionsUseCase", () => {
       {
         id: "bob",
         img: undefined,
-        isCheckoutAvailable: true,
-        isProfileAvailable: true,
+        isCheckoutAvailable: false,
+        isProfileAvailable: false,
         isProtected: false,
         microchip: "D118123",
         name: "Bob",
