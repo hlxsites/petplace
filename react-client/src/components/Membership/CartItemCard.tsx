@@ -9,12 +9,12 @@ type CartItemCardProps = Omit<CartItem, "autoRenew" | "type"> & {
 };
 
 export const CartItemCard = ({
-  description,
   isAdditionalService,
   isService,
   onUpdateQuantity,
   price,
   recurrence,
+  subTitle,
   title,
   ...rest
 }: CartItemCardProps) => {
@@ -30,9 +30,9 @@ export const CartItemCard = ({
             <Text display="block" fontWeight="bold" size="18">
               {title}
             </Text>
-            {description && (
+            {subTitle && (
               <Text color="background-color-tertiary" size="14">
-                {description}
+                {subTitle}
               </Text>
             )}
           </div>

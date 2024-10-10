@@ -4,6 +4,7 @@ export type CommonCartItem = {
   quantity: number;
   price: string;
   title: string;
+  subTitle?: string;
   type: string;
 };
 

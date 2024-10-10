@@ -18,9 +18,9 @@ describe("CartItemCard", () => {
   );
 
   it.each(["a description", "another description"])(
-    "should render correct %s description",
+    "should render correct %s subTitle",
     (expected) => {
-      getRenderer({ description: expected });
+      getRenderer({ subTitle: expected });
       expect(getByText(expected)).toBeInTheDocument();
     }
   );
@@ -33,7 +33,7 @@ describe("CartItemCard", () => {
 
 function getRenderer({
   id = "test-id",
-  description = "Test description",
+  subTitle = "Test description",
   onUpdateQuantity = jest.fn(),
   quantity = DEFAULT_QUANTITY,
   price = "100.00",
@@ -44,7 +44,7 @@ function getRenderer({
     <MemoryRouter>
       <CartItemCard
         id={id}
-        description={description}
+        subTitle={subTitle}
         onUpdateQuantity={onUpdateQuantity}
         quantity={quantity}
         price={price}
