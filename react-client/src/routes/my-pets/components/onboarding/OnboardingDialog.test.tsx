@@ -1,6 +1,10 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { ComponentProps } from "react";
-import { DocumentationStatus, PetInAdoptionList } from "~/domain/models/pet/PetModel";
+import { MemoryRouter } from "react-router-dom";
+import {
+  DocumentationStatus,
+  PetInAdoptionList,
+} from "~/domain/models/pet/PetModel";
 import { getByTextContent } from "~/util/testingFunctions";
 import { OnboardingDialog } from "./OnboardingDialog";
 import { ONBOARDING_STEPS_TEXTS } from "./onboardingTexts";
@@ -13,12 +17,12 @@ jest.mock(
     )
 );
 
-const DEFAULT_PET:PetInAdoptionList = {
-  id: 'bob',
+const DEFAULT_PET: PetInAdoptionList = {
+  id: "bob",
   isCheckoutAvailable: true,
   name: "Bob",
   isProfileAvailable: true,
-}
+};
 
 const { getByRole, getByText, getByAltText } = screen;
 
@@ -100,8 +104,7 @@ describe("OnboardingDialog", () => {
       status: "none",
     });
 
-    const [string1, string2] =
-      ONBOARDING_STEPS_TEXTS[4].none.message("Bob");
+    const [string1, string2] = ONBOARDING_STEPS_TEXTS[4].none.message("Bob");
 
     await waitFor(() =>
       expect(
@@ -209,12 +212,14 @@ async function getRenderer({
   status = "none",
 }: Partial<ComponentProps<typeof OnboardingDialog>> = {}) {
   render(
-    <OnboardingDialog
-      onFinish={onFinish}
-      onSubmitConsent={onSubmitConsent}
-      pet={pet}
-      status={status}
-    />
+    <MemoryRouter>
+      <OnboardingDialog
+        onFinish={onFinish}
+        onSubmitConsent={onSubmitConsent}
+        pet={pet}
+        status={status}
+      />
+    </MemoryRouter>
   );
   await waitFor(() => {
     expect(getByRole("heading")).toBeInTheDocument();
