@@ -26,6 +26,16 @@ main a:hover {
   font-size: 2rem;
 }
 
+.home-page .widget-aggregator-container {
+  margin-top: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.home-page .tiles-container + .home-banner-container {
+  margin-bottom: 2rem;
+}
+
 .home-banner-bg {
   background-color: #EBE8FC;
   margin-bottom: 5rem;
