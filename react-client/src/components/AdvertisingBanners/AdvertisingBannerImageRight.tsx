@@ -39,6 +39,7 @@ export const AdvertisingBannerImageRight = ({
             {title}
             {message && <Text size="18">{message}</Text>}
             {subMessage && <Text size="12">{subMessage}</Text>}
+            <br />
           </div>
 
           {renderActionButton("hidden lg:block")}
