@@ -65,11 +65,17 @@ export const OnboardingDialog = ({
       // Reset the steps on local storage
       setTimeout(reset, 300);
 
+      let redirectUrl = "";
+
       // Hacky way to navigate to next page for the MVP
       if (type === "checkout" && pet?.isCheckoutAvailable) {
-        navigate(CHECKOUT_FULL_ROUTE(pet.id));
+        redirectUrl = CHECKOUT_FULL_ROUTE(pet.id);
       } else if (type === "profile" && pet?.isProfileAvailable) {
-        navigate(PET_PROFILE_FULL_ROUTE(pet.id));
+        redirectUrl = PET_PROFILE_FULL_ROUTE(pet.id);
+      }
+
+      if (redirectUrl) {
+        navigate(redirectUrl, { replace: true });
       } else {
         onFinish();
       }
