@@ -9,3 +9,7 @@ export function redirectToLostPet() {
 export function forceRedirect(uri: string) {
   window.location.href = uri;
 }
+
+export function forceReload() {
+  window.location.reload();
+}

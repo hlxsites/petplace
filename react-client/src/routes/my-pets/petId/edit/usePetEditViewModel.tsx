@@ -17,7 +17,7 @@ import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCas
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
-import { forceRedirect } from "~/util/forceRedirectUtil";
+import { forceReload } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { editPetProfileFormSchema, petInfoIds } from "../form/petForm";
 
@@ -123,7 +123,7 @@ export const usePetEditViewModel = () => {
     void (async () => {
       const success = await mutatePetImage({ petId, petImage: file });
       // TODO: this should be gracefully handled by the UI instead of a force redirect
-      if (success) forceRedirect(PET_PROFILE_FULL_ROUTE(petId));
+      if (success) forceReload();
     })();
   };
 
