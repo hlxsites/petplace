@@ -13,7 +13,7 @@ function showMessage(block, message, clazz = 'success') {
 
 function showError(block, fd) {
   showMessage(block, fd.Failure, 'error');
-  block.querySelector('button').removeAttribute('disabled');
+  block.querySelector('.form-submit-wrapper button').removeAttribute('disabled');
 }
 
 async function submitForm(block, fd) {
@@ -45,7 +45,7 @@ async function submitForm(block, fd) {
 
   if (!isCatBox && !isDogBox) {
     showMessage(block, '*Please select at least one newsletter (cat, dog, or both) to complete your sign-up.', 'error');
-    block.querySelector('button').removeAttribute('disabled');
+    block.querySelector('.form-submit-wrapper button').removeAttribute('disabled');
     return;
   }
 
