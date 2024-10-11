@@ -54,6 +54,7 @@ describe("PetInfoUseCase", () => {
         spayedNeutered: true,
         sourceType: "MyPetHealth",
         species: "Dog",
+        speciesId: undefined,
       });
     });
 
