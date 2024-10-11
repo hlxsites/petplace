@@ -62,10 +62,11 @@ function convertToLostAndFoundNotificationModel(
 
     const status = (() => {
       const lowercaseStatus = Status?.toLowerCase();
+      const defaultStatuses = ["reunited with my pet", "i found my pet", "closed"]
 
       // Very fragile implementation, but this is how the server sends the status
-      if (lowercaseStatus === "reunited with my pet") return "found";
-      return "missing";
+      if (lowercaseStatus && !defaultStatuses.includes(lowercaseStatus)) return "missing";
+      return "found";
     })();
 
     petHistory.push({
