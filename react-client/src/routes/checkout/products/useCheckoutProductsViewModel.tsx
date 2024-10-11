@@ -8,6 +8,7 @@ import getProductsFactory from "~/domain/useCases/products/getProductsFactory";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 
 import { MembershipPlanId } from "~/domain/checkout/CheckoutModels";
+import { DetailedCartItem } from "~/domain/models/products/ProductModel";
 import { PRODUCT_DETAILS } from "~/domain/useCases/products/utils/productsHardCodedData";
 import {
   convertProductToCartItem,
@@ -294,7 +295,7 @@ export const useCheckoutProductsViewModel = () => {
     })();
   };
 
-  const selectedProduct = (() => {
+  const selectedProduct: DetailedCartItem | null = (() => {
     // If the cart is open, we don't want to show the detailed product view
     if (isOpenCart) return null;
 
@@ -302,12 +303,15 @@ export const useCheckoutProductsViewModel = () => {
     if (!product) return null;
 
     // Get additional hard-coded info, privacy features, and tag features
+    const productDetails = PRODUCT_DETAILS[product.id];
+    if (!productDetails) return null;
+
     const {
       additionalInfo,
       detailedDescription,
       privacyFeatures,
       tagFeatures,
-    } = PRODUCT_DETAILS[product.id];
+    } = productDetails;
     return {
       ...product,
       additionalInfo,

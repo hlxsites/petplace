@@ -8,22 +8,23 @@ export const PRODUCT_DESCRIPTION: Record<string, string> = {
     "Reach veterinary professionals anytime by phone, email or live chat, provided by whiskerDocs.",
 };
 
+// TODO: we shouldn't be hardcoding these images
 export const IMAGES_PRODUCTS: Record<string, string[]> = {
   // SERVICES
   "PetMedInfo Fees": [ASSET_IMAGES.petMedInfoFees],
   "WD Annual Membership": [ASSET_IMAGES.wdAnnualMembership],
 
   // TAGS
-  "ByteTag-Black R Dog": [],
+  "ByteTag-Black R Dog": [ASSET_IMAGES.byteTagRoundBlackDog],
   "ByteTag-Black-S-Sm/M": [
     ASSET_IMAGES.byteTagSlideBlackSmall,
     ASSET_IMAGES.byteTagSlideBlackLarge,
   ],
-  "ByteTag-Black-S-Lg": [],
-  "ByteTag-White R Dog": [
-    ASSET_IMAGES.byteTagRoundBlackDog,
-    ASSET_IMAGES.byteTagRoundWhiteDog,
+  "ByteTag-Black-S-Lg": [
+    ASSET_IMAGES.byteTagSlideBlackSmall,
+    ASSET_IMAGES.byteTagSlideBlackLarge,
   ],
+  "ByteTag-White R Dog": [ASSET_IMAGES.byteTagRoundWhiteDog],
   "ByteTag-Black R Cat": [ASSET_IMAGES.byteTagRoundBlackCat],
 };
 
@@ -75,7 +76,7 @@ const byteTagRound = {
 
 export const PRODUCT_DETAILS: Record<string, MoreInfoDetailed> = {
   ByteTag: byteTagRound,
-  "ByteTag Slide Black ": byteTagSlide,
+  "ByteTag Slide Black": byteTagSlide,
   "PetMedInfo Fees": petMedAlert,
   "WD Annual Membership": vetHelpLineDescriptions,
 };

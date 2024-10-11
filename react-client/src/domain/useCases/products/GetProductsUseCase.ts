@@ -170,16 +170,17 @@ function convertToProductsList(
           }
 
           const [productName] = fullProductName.split("-");
+          const sanitizedProductName = productName.trim();
           const color = item?.Color?.toLowerCase() || "unknown";
           const size = convertSizeToProductSize(item.Size);
           const productColorSizeKey = `${color}|${size}`;
 
-          if (productsMap.has(productName)) {
+          if (productsMap.has(sanitizedProductName)) {
             // Add color and size to existing product
-            const product = productsMap.get(productName);
+            const product = productsMap.get(sanitizedProductName);
             if (!product) return;
 
-            productsMap.set(productName, {
+            productsMap.set(sanitizedProductName, {
               ...product,
               availableColors: uniqueArray([...product.availableColors, color]),
               availableSizes: uniqueArray([...product.availableSizes, size]),
@@ -194,7 +195,7 @@ function convertToProductsList(
             });
           } else {
             // Create new product
-            productsMap.set(productName, {
+            productsMap.set(sanitizedProductName, {
               availableColors: [color],
               availableSizes: [size],
               availableOptions: {
@@ -204,9 +205,9 @@ function convertToProductsList(
                 },
               },
               // We are using the product name as the id for this kind of products
-              id: productName,
+              id: sanitizedProductName,
               images: IMAGES_PRODUCTS[id] ?? [],
-              title: productName,
+              title: sanitizedProductName,
               type,
             });
           }
