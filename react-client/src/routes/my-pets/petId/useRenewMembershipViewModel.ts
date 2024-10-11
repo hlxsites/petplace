@@ -177,7 +177,7 @@ export const useRenewMembershipViewModel = ({
         ...contentDetails,
         primaryAction: {
           buttonLabel: "Renew service",
-          confirmButtonLabel: "Confirm Renew",
+          confirmButtonLabel: "Confirm Renewal",
           message: `Would you like to renew ${contentDetails.title} for another year? This ensures continued protection for your pet's.`,
           title: "Confirm Renewal",
           onClick: openModal,

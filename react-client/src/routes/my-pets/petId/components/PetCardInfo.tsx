@@ -48,7 +48,7 @@ export const PetCardInfo = ({ ...petInfo }: PetCardInfoProps) => {
     {
       content: () => <PetDocumentsTabContent />,
       icon: "file",
-      label: "Pet documents",
+      label: "Documents",
       route: getRouteFor(
         PET_PROFILE_FULL_ROUTE(petInfo.id),
         AppRoutePaths.petProfileDocuments

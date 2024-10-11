@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { PetInsuranceSection } from "./PetInsuranceSection";
-import { MemoryRouter } from "react-router-dom";
 import { ComponentProps } from "react";
+import { MemoryRouter } from "react-router-dom";
+import { PetInsuranceSection } from "./PetInsuranceSection";
 
 const BUTTON_LABEL = /View insurance details/i;
 const EXTERNAL_URL =
-  "https://mph-qay.pethealthinc.com/external/petplacelogin?redirecturl=petplace/policy?animalID=";
+  "https://mph-qay.pethealthinc.com/external/petplacelogin?redirecturl=petplace%2Fpolicy%3FanimalID%3D";
 const TITLE_LABEL = /See pet's insurance in MyPetHealth/i;
 
 const { getByRole } = screen;

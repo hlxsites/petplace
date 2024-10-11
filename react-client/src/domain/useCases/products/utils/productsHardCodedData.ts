@@ -74,7 +74,7 @@ const byteTagRound = {
 };
 
 export const PRODUCT_DETAILS: Record<string, MoreInfoDetailed> = {
-  "ByteTag ": byteTagRound,
+  ByteTag: byteTagRound,
   "ByteTag Slide Black ": byteTagSlide,
   "PetMedInfo Fees": petMedAlert,
   "WD Annual Membership": vetHelpLineDescriptions,
