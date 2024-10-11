@@ -92,12 +92,13 @@ export const useAccountFormViewModel = ({
 
   useDeepCompareEffect(() => {
     void fetchAccountForm();
-  }, [fetchAccountForm, selectedCountry]);
+  }, [fetchAccountForm]);
 
   useEffect(() => {
     const fetchStatesForCountry = async (countryId: string) => {
       const statesList = await statesQuery(countryId);
       setCountryStateList(statesList);
+      setAccountFormValues({...accountFormValues, [accountAddressIds.state]: ""})
     };
 
     if (selectedCountry?.id) {

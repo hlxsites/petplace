@@ -107,6 +107,7 @@ export const usePetEditViewModel = () => {
     const fetchBreedsBySpecies = async (speciesId: number) => {
       const breedsList = await breedsQuery(speciesId);
       setBreedsList(breedsList);
+      setPetFormValues({ ...petFormValues, [petInfoIds.breed]: "" })
     };
 
     if (selectedSpecies?.id) {
