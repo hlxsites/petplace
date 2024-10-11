@@ -1,3 +1,4 @@
+import { format, formatISO } from "date-fns";
 import { isEqual } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -74,7 +75,7 @@ export const usePetEditViewModel = () => {
     initialPetFormValuesRef.current
   );
 
-  const isDiscardingPetForm = isDirtyPetForm && isLeaving
+  const isDiscardingPetForm = isDirtyPetForm && isLeaving;
 
   const fetchPetForm = useCallback(async () => {
     const response = await petInfoQuery;
@@ -172,17 +173,16 @@ export const usePetEditViewModel = () => {
     setIsLeaving,
   };
 
-  function onDiscard (){
-    navigate(PET_PROFILE_FULL_ROUTE(petId))
+  function onDiscard() {
+    navigate(PET_PROFILE_FULL_ROUTE(petId));
   }
-
 
   function handleClose() {
     setIsLeaving(false);
   }
 
   function handleReset() {
-    if (!isDirtyPetForm) onDiscard()
+    if (!isDirtyPetForm) onDiscard();
     setIsLeaving(true);
   }
 
@@ -207,10 +207,12 @@ export const usePetEditViewModel = () => {
 };
 
 function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
+  const dob = new Date(values[petInfoIds.dateOfBirth] as string)
+  
   const petInfo: EditPetModel = {
     id: values[petInfoIds.petId] as string,
     breed: values[petInfoIds.breed] as string,
-    dateOfBirth: values[petInfoIds.dateOfBirth] as string,
+    dateOfBirth: formatISO(dob),
     mixedBreed: values[petInfoIds.mixedBreed] === "Yes",
     name: values[petInfoIds.name] as string,
     spayedNeutered: values[petInfoIds.neuteredSpayed] === "Yes",
@@ -223,12 +225,13 @@ function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
 
 function getPetInfoFormData(values: PetModel | null): FormValues {
   if (!values) return {};
-
+  const dob = new Date(values.dateOfBirth ?? "")
+  
   return {
     [petInfoIds.petId]: values.id ?? "",
     [petInfoIds.age]: values.age ?? "",
     [petInfoIds.breed]: values.breed ?? "",
-    [petInfoIds.dateOfBirth]: values.dateOfBirth ?? "",
+    [petInfoIds.dateOfBirth]: format(dob, 'MM/dd/yyyy'),
     [petInfoIds.mixedBreed]: values.mixedBreed ? "Yes" : "No",
     [petInfoIds.name]: values.name ?? "",
     [petInfoIds.neuteredSpayed]: values.spayedNeutered ? "Yes" : "No",
