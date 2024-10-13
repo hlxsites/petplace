@@ -99,21 +99,21 @@ export const usePetEditViewModel = () => {
     setIsLoadingPet(false);
   }, [breedsQuery, petInfoQuery, speciesQuery]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     void fetchPetForm();
   }, [fetchPetForm]);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     const fetchBreedsBySpecies = async (speciesId: number) => {
       const breedsList = await breedsQuery(speciesId);
       setBreedsList(breedsList);
-      setPetFormValues({ ...petFormValues, [petInfoIds.breed]: "" })
+      setPetFormValues({ ...petFormValues, [petInfoIds.breed]: "" });
     };
 
     if (selectedSpecies?.id) {
       void fetchBreedsBySpecies(selectedSpecies.id);
     }
-  }, [selectedSpecies?.id, breedsQuery]);
+  }, [breedsQuery, selectedSpecies?.id, petFormValues]);
 
   const onRemoveImage = () => {
     // TODO: implement image deletion
@@ -208,8 +208,8 @@ export const usePetEditViewModel = () => {
 };
 
 function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
-  const dob = new Date(values[petInfoIds.dateOfBirth] as string)
-  
+  const dob = new Date(values[petInfoIds.dateOfBirth] as string);
+
   const petInfo: EditPetModel = {
     id: values[petInfoIds.petId] as string,
     breed: values[petInfoIds.breed] as string,
@@ -226,13 +226,13 @@ function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
 
 function getPetInfoFormData(values: PetModel | null): FormValues {
   if (!values) return {};
-  const dob = new Date(values.dateOfBirth ?? "")
-  
+  const dob = new Date(values.dateOfBirth ?? "");
+
   return {
     [petInfoIds.petId]: values.id ?? "",
     [petInfoIds.age]: values.age ?? "",
     [petInfoIds.breed]: values.breed ?? "",
-    [petInfoIds.dateOfBirth]: format(dob, 'MM/dd/yyyy'),
+    [petInfoIds.dateOfBirth]: format(dob, "MM/dd/yyyy"),
     [petInfoIds.mixedBreed]: values.mixedBreed ? "Yes" : "No",
     [petInfoIds.name]: values.name ?? "",
     [petInfoIds.neuteredSpayed]: values.spayedNeutered ? "Yes" : "No",

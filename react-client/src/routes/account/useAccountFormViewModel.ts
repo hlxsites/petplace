@@ -90,21 +90,24 @@ export const useAccountFormViewModel = ({
     setIsLoadingAccount(false);
   }, [accountDetailsQuery, countries, isExternalLogin, statesQuery]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     void fetchAccountForm();
   }, [fetchAccountForm]);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     const fetchStatesForCountry = async (countryId: string) => {
       const statesList = await statesQuery(countryId);
       setCountryStateList(statesList);
-      setAccountFormValues({...accountFormValues, [accountAddressIds.state]: ""})
+      setAccountFormValues({
+        ...accountFormValues,
+        [accountAddressIds.state]: "",
+      });
     };
 
     if (selectedCountry?.id) {
       void fetchStatesForCountry(selectedCountry.id);
     }
-  }, [selectedCountry?.id, statesQuery]);
+  }, [accountFormValues, selectedCountry?.id, statesQuery]);
 
   const onChangesAccountFormValues: OnChangeFn = (values) => {
     setAccountFormValues(values);
