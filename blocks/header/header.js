@@ -6,17 +6,23 @@ import {
   getMetadata,
   sampleRUM,
 } from '../../scripts/lib-franklin.js';
-import { isLoggedIn } from '../../scripts/lib/msal/msal-authentication.js';
+import { isLoggedIn, login } from '../../scripts/lib/msal/msal-authentication.js';
 import {
   ACTIVE_REGIONS,
   DEFAULT_REGION,
-  PREFERRED_REGION_KEY,
-  REGIONS,
   getId,
   getPlaceholder,
   isTablet,
+  PREFERRED_REGION_KEY,
+  REGIONS,
 } from '../../scripts/scripts.js';
 import { pushToDataLayer } from '../../scripts/utils/helpers.js';
+import { debounce } from '../../util/debouce.js';
+import {
+  addClassesTo, addClassesToSelector,
+  removeClassesFrom,
+  removeClassesFromSelector,
+} from '../../util/element-util.js';
 
 import { getAuthToken, parseJwt } from '../../scripts/parse-jwt.js';
 
@@ -56,6 +62,7 @@ export default async function decorate(block) {
   let navMeta = null;
   let navPath = '';
   let resp = null;
+
   if (document.documentElement.lang.toLowerCase() === 'en-us') {
     // Dev Note: this is a conditional check to use the minimal header
     // for the insurance paid page template
@@ -79,10 +86,10 @@ export default async function decorate(block) {
       headerWrapper.innerHTML = '';
 
       const headerContent = document.createElement('div');
-      headerContent.classList.add('header-content--minimal');
+      addClassesTo(headerContent, 'header-content--minimal');
 
       const headerContainer = document.createElement('div');
-      headerContainer.classList.add('header-container');
+      addClassesTo(headerContainer, 'header-container');
 
       headerContainer.innerHTML = html;
 
@@ -171,12 +178,12 @@ export default async function decorate(block) {
       navTools.innerHTML = '';
 
       const navToolsDesktop = document.createElement('div');
-      navToolsDesktop.classList.add('nav-tools-desktop', 'hidden');
+      addClassesTo(navToolsDesktop, 'nav-tools-desktop', 'hidden');
       navToolsDesktop.append(searchForm);
 
       const mobileSearchForm = searchForm.cloneNode(true);
       const navToolsMobile = document.createElement('div');
-      navToolsMobile.classList.add('nav-tools-mobile', 'hidden');
+      addClassesTo(navToolsMobile, 'nav-tools-mobile', 'hidden');
       navToolsMobile.append(mobileSearchForm);
 
       navTools.append(navToolsDesktop);
@@ -192,7 +199,7 @@ export default async function decorate(block) {
       const navLogin = nav.querySelector('.nav-login');
       const userMenu = document.createElement('button');
       const loginBtnsContainer = document.createElement('div');
-      loginBtnsContainer.classList.add('account-options', 'hidden');
+      addClassesTo(loginBtnsContainer, 'account-options', 'hidden');
       navLogin.querySelectorAll('li').forEach((item, index) => {
         if (index === 0) {
           const loginBtn = document.createElement('button');
@@ -205,26 +212,26 @@ export default async function decorate(block) {
         if (index > 0) {
           if (item.querySelector('a')) {
             const userLinks = item.querySelector('a');
-            userLinks.classList.add('account-btn');
+            addClassesTo(userLinks, 'account-btn');
 
             const linkText = userLinks.textContent.toLowerCase();
 
             // The "My Pets" menu link is treated differently
             if (linkText === 'my pets') {
               userLinks.setAttribute('id', USER_NAV_MY_PETS_ID);
-              userLinks.classList.add('my-pets-link', 'hidden');
+              addClassesTo(userLinks, 'my-pets-link', 'hidden');
               setupMyPetsLink();
             }
 
             if (linkText === 'my account') {
-              userLinks.classList.add('my-account-link');
+              addClassesTo(userLinks, 'my-account-link');
             } else if (linkText === 'pet adoption') {
-              userLinks.classList.add('pet-adoption-link');
+              addClassesTo(userLinks, 'pet-adoption-link');
             }
 
             loginBtnsContainer.append(userLinks);
           } else if (item.querySelector('picture')) {
-            userMenu.classList.add('user-btn', 'hidden');
+            addClassesTo(userMenu, 'user-btn', 'hidden');
             userMenu.append(item.querySelector('picture'));
             navLogin.append(userMenu);
           } else {
@@ -241,10 +248,6 @@ export default async function decorate(block) {
       navLogin
         .querySelector('.login-btn')
         .addEventListener('click', async (event) => {
-          // eslint-disable-next-line
-          const { login, isLoggedIn } = await import(
-            '../../scripts/lib/msal/msal-authentication.js'
-          );
           login(() => {
             if (isLoggedIn()) {
               event.target.classList.add('hidden');
@@ -253,7 +256,7 @@ export default async function decorate(block) {
               setupMyPetsLink();
             } else {
               event.target.classList.remove('hidden');
-              userMenu.classList.add('hidden');
+              addClassesTo(userMenu, 'hidden');
             }
           });
         });
@@ -270,8 +273,8 @@ export default async function decorate(block) {
           );
           logout(() => {
             if (!isLoggedIn()) {
-              navLogin.querySelector('.login-btn').classList.remove('hidden');
-              navLogin.querySelector('.user-btn').classList.add('hidden');
+              removeClassesFromSelector('.login-btn', 'hidden');
+              addClassesToSelector('.user-btn', 'hidden');
             }
           });
         });
@@ -290,7 +293,7 @@ export default async function decorate(block) {
       navClose.innerHTML = `<button type="button" aria-controls="nav" aria-label="${getPlaceholder(
         'closeNavigation',
       )}">${navClose.innerHTML}</button>`;
-      navClose.classList.add('hidden');
+      addClassesTo(navClose, 'hidden');
 
       // meganav and featuredArticle
       const megaNav = nav.querySelector('.nav-meganav');
@@ -303,21 +306,21 @@ export default async function decorate(block) {
       // featuredArticle
       const featuredArticle = nav.querySelector('.nav-featured-article');
       const articleTitle = document.createElement('span');
-      articleTitle.classList.add('article-title');
+      addClassesTo(articleTitle, 'article-title');
       articleTitle.innerText = featuredArticle.children[0].innerText;
       const articleImg = document.createElement('picture');
       articleImg.innerHTML = featuredArticle.querySelector('picture').innerHTML;
-      articleImg.classList.add('article-img');
+      addClassesTo(articleImg, 'article-img');
       const articleDescription = document.createElement('p');
       articleDescription.innerText = featuredArticle.children[2].innerText;
-      articleDescription.classList.add('article-desc');
+      addClassesTo(articleDescription, 'article-desc');
       const articleUrl = document.createElement('a');
       articleUrl.setAttribute(
         'href',
         featuredArticle.querySelector('a').getAttribute('href'),
       );
       articleUrl.innerText = featuredArticle.querySelector('a').innerText;
-      articleUrl.classList.add('article-url');
+      addClassesTo(articleUrl, 'article-url');
 
       featuredArticle.innerHTML = '';
       featuredArticle.append(articleTitle);
@@ -333,7 +336,7 @@ export default async function decorate(block) {
       [...megaNavContent.children].forEach((item, index) => {
         const listItem = document.createElement('li');
         const petSubMenuList = document.createElement('div');
-        petSubMenuList.classList.add('content', 'content-dropdown');
+        addClassesTo(petSubMenuList, 'content', 'content-dropdown');
 
         if (item.children.length === 1) {
           let menuTitle = document.createElement('button');
@@ -342,11 +345,12 @@ export default async function decorate(block) {
 
           if (menuTitle.querySelector('a') !== null) {
             menuTitle = menuTitle.querySelector('a');
-            menuTitle.classList.add('menu-item');
+            addClassesTo(menuTitle, 'menu-item');
           } else {
             menuTitle.innerText = item.innerText;
             menuTitle.setAttribute('role', 'button');
-            menuTitle.classList.add(
+            addClassesTo(
+              menuTitle,
               'collapsible',
               'menu-item',
               'button-dropdown',
@@ -361,21 +365,21 @@ export default async function decorate(block) {
           const aText = item.querySelector('a').innerText;
           const picEl = item.querySelector('picture');
           const pEl = item.querySelectorAll('p')[1];
-          pEl.classList.add('pet-topic-description');
+          addClassesTo(pEl, 'pet-topic-description');
 
           const aEl = document.createElement('a');
           aEl.setAttribute('href', aHref);
-          aEl.classList.add('pet-topic');
+          addClassesTo(aEl, 'pet-topic');
 
           const spanEl = document.createElement('span');
           spanEl.innerText = aText;
-          spanEl.classList.add('pet-topic-title');
+          addClassesTo(spanEl, 'pet-topic-title');
 
           const divEl = document.createElement('div');
-          divEl.classList.add('pet-topic-info');
+          addClassesTo(divEl, 'pet-topic-info');
 
           const breakLi = document.createElement('li');
-          breakLi.classList.add('break');
+          addClassesTo(breakLi, 'break');
 
           aEl.append(picEl);
           aEl.append(divEl);
@@ -390,7 +394,8 @@ export default async function decorate(block) {
             ulEl.append(breakLi);
           }
           tempLI.append(tempDiv);
-          tempDiv.previousElementSibling.classList.add(
+          addClassesTo(
+            tempDiv.previousElementSibling,
             'collapsible',
             'menu-item',
           );
@@ -400,7 +405,7 @@ export default async function decorate(block) {
             const newButton = document.createElement('button');
             newButton.textContent = parentEl.textContent;
             newButton.setAttribute('role', 'button');
-            newButton.classList.add('collapsible', 'menu-item');
+            addClassesTo(newButton, 'collapsible', 'menu-item');
             parentEl.parentNode.insertBefore(newButton, parentEl);
             parentEl.parentNode.removeChild(parentEl);
           }
@@ -409,10 +414,10 @@ export default async function decorate(block) {
 
       megaNav.innerHTML = '';
       megaNav.append(petMenuList);
-      megaNav.classList.add('hidden');
+      addClassesTo(megaNav, 'hidden');
       nav.insertBefore(navToolsMobile, megaNav);
       const megaNavBg = document.createElement('div');
-      megaNavBg.classList.add('meganav-bg', 'hidden');
+      addClassesTo(megaNavBg, 'meganav-bg', 'hidden');
       document.querySelector('.header-wrapper').append(megaNavBg);
 
       // region selector
@@ -442,27 +447,28 @@ export default async function decorate(block) {
                 ev.target.closest('a').getAttribute('hreflang'),
               );
             });
-            regionName.classList.add('region-name');
+            addClassesTo(regionName, 'region-name');
             regionName.textContent = DEFAULT_REGION === r ? unitedStates : unitedKingdom;
             const regionIcon = document.createElement('span');
-            regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
+            addClassesTo(regionIcon, 'icon', `icon-flag-${r.toLowerCase()}`);
             regionLink.append(regionIcon);
             regionLink.append(regionName);
             regionMenu.append(regionLink);
           });
         const regionSelectorIcon = document.createElement('span');
-        regionSelectorIcon.classList.add(
+        addClassesTo(
+          regionSelectorIcon,
           'icon',
           `icon-flag-${document.documentElement.lang.toLowerCase()}`,
         );
         regionSelector.append(regionSelectorIcon);
-        regionSelectorName.classList.add('region-name');
+        addClassesTo(regionSelectorName, 'region-name');
         regionSelectorName.textContent = document.documentElement.lang.toLowerCase() === 'en-us'
           ? unitedStates
           : unitedKingdom;
         regionSelector.append(regionSelectorName);
-        regionSelector.classList.add('btn-regions-list');
-        regionMenu.classList.add('regions-list', 'hidden');
+        addClassesTo(regionSelector, 'btn-regions-list');
+        addClassesTo(regionMenu, 'regions-list', 'hidden');
         regionSelector.addEventListener('click', () => {
           regionMenu.classList.toggle('hidden');
           regionSelector.classList.toggle('active');
@@ -493,59 +499,54 @@ export default async function decorate(block) {
           content.style.maxHeight = null;
         }
         if (isActive) {
-          collapsible.classList.remove('active');
+          removeClassesFrom(collapsible, 'active');
         }
       });
 
       block.querySelector('.nav-hamburger').addEventListener('click', (event) => {
-        navHamburger.classList.add('hidden');
-        navClose.classList.remove('hidden');
+        addClassesTo(navHamburger, 'hidden');
+        removeClassesFrom(navClose, 'hidden');
         navClose.querySelector('button').focus();
-        megaNavBg.classList.remove('hidden');
-        // document.querySelector('body').classList.add('body-locked');
-        navToolsDesktop.classList.add('hidden');
-        navToolsMobile.classList.remove('hidden');
-        megaNav.classList.remove('hidden');
+        removeClassesFrom(megaNavBg, 'hidden');
+        addClassesTo(navToolsDesktop, 'hidden');
+        removeClassesFrom(navToolsMobile, 'hidden');
+        removeClassesFrom(megaNav, 'hidden');
         megaNav.querySelectorAll('.collapsible').forEach((element) => {
-          element.classList.remove('active');
+          removeClassesFrom(element, 'active');
           element.nextSibling.style.maxHeight = '';
         });
-        document
-          .querySelector('.nav-language-selector')
-          .classList.remove('hidden');
-        document.querySelector('.btn-regions-list')?.classList.remove('active');
+        removeClassesFromSelector('.nav-language-selector', 'hidden');
+        removeClassesFromSelector('.btn-regions-list', 'active');
         const buttonDropdown = document.querySelector('.button-dropdown');
         const contentDropdown = document.querySelector('.content-dropdown');
         if (
           !document.querySelector('.content-dropdown').contains(event.target)
           && !document.querySelector('.button-dropdown').contains(event.target)
         ) {
-          buttonDropdown.classList.remove('active');
+          removeClassesFrom(buttonDropdown, 'active');
           contentDropdown.style.maxHeight = null;
         }
         if (
           !document.querySelector('.regions-list')?.contains(event.target)
           && !document.querySelector('.btn-regions-list')?.contains(event.target)
         ) {
-          document.querySelector('.regions-list')?.classList.add('hidden');
+          addClassesToSelector('.regions-list', 'hidden');
         }
       });
 
       block.querySelector('.nav-close').addEventListener('click', () => {
-        navClose.classList.add('hidden');
-        navHamburger.classList.remove('hidden');
+        addClassesTo(navClose, 'hidden');
+        removeClassesFrom(navHamburger, 'hidden');
         navHamburger.querySelector('button').focus();
-        document.querySelector('body').classList.remove('body-locked');
-        navToolsDesktop.classList.add('hidden');
-        navToolsMobile.classList.add('hidden');
-        megaNav.classList.add('hidden');
-        megaNavBg.classList.add('hidden');
-        document
-          .querySelector('.nav-language-selector')
-          .classList.add('hidden');
-        regionSelector.classList.remove('active');
-        document.querySelector('.btn-regions-list')?.classList.remove('active');
-        document.querySelector('.regions-list')?.classList.add('hidden');
+        removeClassesFromSelector('body', 'body-locked');
+        addClassesTo(navToolsDesktop, 'hidden');
+        addClassesTo(navToolsMobile, 'hidden');
+        addClassesTo(megaNav, 'hidden');
+        addClassesTo(megaNavBg, 'hidden');
+        addClassesToSelector('.nav-language-selector', 'hidden');
+        removeClassesFrom(regionSelector, 'active');
+        removeClassesFromSelector('.btn-regions-list', 'active');
+        addClassesToSelector('.regions-list', 'hidden');
       });
 
       block.querySelector('form').addEventListener('submit', (ev) => {
@@ -567,56 +568,53 @@ export default async function decorate(block) {
           if (document.querySelector('body').classList.contains('body-locked')) {
             navClose.click();
           } else {
-            navToolsMobile.classList.add('hidden');
-            navToolsDesktop.classList.add('hidden');
-            megaNav.classList.add('hidden');
-            navHamburger.classList.remove('hidden');
-            document.querySelector('.nav-language-selector').classList.add('hidden');
-            document.querySelector('.btn-regions-list').classList.remove('active');
-            document.querySelector('.regions-list').classList.add('hidden');
+            addClassesTo(navToolsMobile, 'hidden');
+            addClassesTo(navToolsDesktop, 'hidden');
+            addClassesTo(megaNav, 'hidden');
+            removeClassesFrom(navHamburger, 'hidden');
+            addClassesToSelector('.nav-language-selector', 'hidden');
+            removeClassesFromSelector('.btn-regions-list', 'active');
+            addClassesToSelector('.regions-list', 'hidden');
           }
         } else {
-          navClose.classList.add('hidden');
-          navHamburger.classList.add('hidden');
-          navToolsDesktop.classList.remove('hidden');
-          navToolsMobile.classList.add('hidden');
-          megaNav.classList.remove('hidden');
-          document
-            .querySelector('.nav-language-selector')
-            .classList.remove('hidden');
+          addClassesTo(navClose, 'hidden');
+          addClassesTo(navHamburger, 'hidden');
+          removeClassesFrom(navToolsDesktop, 'hidden');
+          addClassesTo(navToolsMobile, 'hidden');
+          removeClassesFrom(megaNav, 'hidden');
+          removeClassesFromSelector('.nav-language-selector', 'hidden');
         }
+
         isLoggedIn().then((isLoggedInParam) => {
           if (isLoggedInParam) {
-            navLogin.querySelector('.user-btn').classList.remove('hidden');
-            navLogin.querySelector('.login-btn').classList.add('hidden');
+            removeClassesFromSelector('.user-btn', 'hidden');
+            addClassesToSelector('.login-btn', 'hidden');
           } else {
-            navLogin.querySelector('.user-btn').classList.add('hidden');
-            navLogin.querySelector('.login-btn').classList.remove('hidden');
+            addClassesToSelector('.user-btn', 'hidden');
+            removeClassesFromSelector('.login-btn', 'hidden');
           }
         });
       }
 
       checkInterface();
 
-      setTimeout(() => {
-        checkInterface();
-      }, '1000');
+      // Schedule a new checkInterface call after 2 seconds
+      // to be sure that the interface is loaded correctly
+      setTimeout(checkInterface, 2000);
+
       if (isTablet()) {
-        document
-          .querySelector('.nav-language-selector')
-          .classList.add('hidden');
+        addClassesToSelector('.nav-language-selector', 'hidden');
       }
 
-      window.addEventListener('resize', () => {
-        checkInterface();
-      });
+      // Debounce the checkInterface function to avoid multiple calls when resizing the window
+      window.addEventListener('resize', debounce(checkInterface));
 
       document.addEventListener('click', (event) => {
         if (
           !document.querySelector('.account-options').contains(event.target)
           && !document.querySelector('.user-btn').contains(event.target)
         ) {
-          document.querySelector('.account-options').classList.add('hidden');
+          addClassesToSelector('.account-options', 'hidden');
         }
         const buttonDropdown = document.querySelector('.button-dropdown');
         const contentDropdown = document.querySelector('.content-dropdown');
@@ -624,14 +622,14 @@ export default async function decorate(block) {
           !document.querySelector('.content-dropdown').contains(event.target)
           && !document.querySelector('.button-dropdown').contains(event.target)
         ) {
-          buttonDropdown.classList.remove('active');
+          removeClassesFrom(buttonDropdown, 'active');
           contentDropdown.style.maxHeight = null;
         }
         if (document.querySelector('.regions-list')
           && !document.querySelector('.regions-list')?.contains(event.target)
           && !document.querySelector('.btn-regions-list')?.contains(event.target)
         ) {
-          document.querySelector('.regions-list')?.classList.add('hidden');
+          addClassesToSelector('.regions-list', 'hidden');
         }
       });
 
@@ -650,7 +648,7 @@ export default async function decorate(block) {
     }
 
     const headerWrapper = document.querySelector('.header-wrapper');
-    headerWrapper.classList.add('header-wrapper-gb');
+    addClassesTo(headerWrapper, 'header-wrapper-gb');
 
     let html = await response.text();
 
@@ -725,12 +723,13 @@ export default async function decorate(block) {
             );
           });
           const regionIcon = document.createElement('span');
-          regionIcon.classList.add('icon', `icon-flag-${r.toLowerCase()}`);
+          addClassesTo(regionIcon, 'icon', `icon-flag-${r.toLowerCase()}`);
           regionLink.append(regionIcon);
           regionMenu.append(regionLink);
         });
       const regionSelectorIcon = document.createElement('span');
-      regionSelectorIcon.classList.add(
+      addClassesTo(
+        regionSelectorIcon,
         'icon',
         `icon-flag-${document.documentElement.lang.toLowerCase()}`,
       );
@@ -764,7 +763,7 @@ export default async function decorate(block) {
     block.append(navWrapper);
 
     const navSidebar = document.createElement('div');
-    navSidebar.classList.add('nav-sidebar');
+    addClassesTo(navSidebar, 'nav-sidebar');
     response = await fetch(
       `${window.hlx.contentBasePath}/fragments/sidenav.plain.html`,
     );

@@ -12,7 +12,6 @@ import {
   ExternalAccountDetailsModel,
   InternalAccountDetailsModel,
 } from "~/domain/models/user/UserModels";
-import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import {
   accountAddressIds,
@@ -90,9 +89,9 @@ export const useAccountFormViewModel = ({
     setIsLoadingAccount(false);
   }, [accountDetailsQuery, countries, isExternalLogin, statesQuery]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     void fetchAccountForm();
-  }, [fetchAccountForm, selectedCountry]);
+  }, [fetchAccountForm]);
 
   useEffect(() => {
     const fetchStatesForCountry = async (countryId: string) => {
@@ -106,7 +105,20 @@ export const useAccountFormViewModel = ({
   }, [selectedCountry?.id, statesQuery]);
 
   const onChangesAccountFormValues: OnChangeFn = (values) => {
-    setAccountFormValues(values);
+    setAccountFormValues((prevState) => {
+      // verify if country has changed
+      const countryChanged =
+        values[accountAddressIds.country] !==
+        prevState[accountAddressIds.country];
+      if (countryChanged) {
+        // reset state when country changes
+        values[accountAddressIds.state] = "";
+
+        // reset states list when country changes
+        setCountryStateList([]);
+      }
+      return values;
+    });
   };
 
   const asyncSubmitAccountDetails = async (values: FormValues) => {

@@ -4,13 +4,24 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --container-height: calc(100vh - 64px - 64px - 196px);
+}
+
+#react-block-loading {
+    align-items: center;
+    display: flex;
+    height: var(--container-height);
+    justify-content: center;
+}
+
 #login-required-message {
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 400px;
     margin: 40px 0;
+    min-height: var(--container-height);
     text-align: center;
 }
 

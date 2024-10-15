@@ -78,8 +78,10 @@ export const useAccountEmergencyContactViewModel = ({
     );
     await Promise.all(deletePromisesList);
 
-    // Then, submit the new list
-    await submitEmergencyContactsMutation(data);
+    // Then, submit the new list if there are any contacts
+    if (data.length) {
+      await submitEmergencyContactsMutation(data);
+    }
 
     // Finally, fetch the new list
     await fetchEmergencyContacts();

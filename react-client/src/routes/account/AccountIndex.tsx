@@ -20,7 +20,7 @@ export const AccountIndex = () => {
   function renderAccountForm() {
     const children = (() => {
       if (accountForm.isLoading) {
-        return <DefaultLoading minHeight={800} />;
+        return <DefaultLoading minHeight={400} />;
       }
 
       return <DisplayForm {...accountForm} />;
@@ -34,7 +34,7 @@ export const AccountIndex = () => {
 
     const children = (() => {
       if (emergencyContactsForm.isLoading) {
-        return <DefaultLoading minHeight={500} />;
+        return <DefaultLoading minHeight={400} />;
       }
 
       return <DisplayForm {...emergencyContactsForm} />;

@@ -1,3 +1,4 @@
+import { format, formatISO } from "date-fns";
 import { isEqual } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +17,7 @@ import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCas
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
-import { forceRedirect } from "~/util/forceRedirectUtil";
+import { forceReload } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { editPetProfileFormSchema, petInfoIds } from "../form/petForm";
 
@@ -74,7 +75,7 @@ export const usePetEditViewModel = () => {
     initialPetFormValuesRef.current
   );
 
-  const isDiscardingPetForm = isDirtyPetForm && isLeaving
+  const isDiscardingPetForm = isDirtyPetForm && isLeaving;
 
   const fetchPetForm = useCallback(async () => {
     const response = await petInfoQuery;
@@ -98,11 +99,11 @@ export const usePetEditViewModel = () => {
     setIsLoadingPet(false);
   }, [breedsQuery, petInfoQuery, speciesQuery]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     void fetchPetForm();
   }, [fetchPetForm]);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     const fetchBreedsBySpecies = async (speciesId: number) => {
       const breedsList = await breedsQuery(speciesId);
       setBreedsList(breedsList);
@@ -111,7 +112,7 @@ export const usePetEditViewModel = () => {
     if (selectedSpecies?.id) {
       void fetchBreedsBySpecies(selectedSpecies.id);
     }
-  }, [selectedSpecies?.id, breedsQuery]);
+  }, [breedsQuery, selectedSpecies?.id]);
 
   const onRemoveImage = () => {
     // TODO: implement image deletion
@@ -121,12 +122,24 @@ export const usePetEditViewModel = () => {
     void (async () => {
       const success = await mutatePetImage({ petId, petImage: file });
       // TODO: this should be gracefully handled by the UI instead of a force redirect
-      if (success) forceRedirect(PET_PROFILE_FULL_ROUTE(petId));
+      if (success) forceReload();
     })();
   };
 
   const onChangePetFormValues: OnChangeFn = (values) => {
-    setPetFormValues(values);
+    setPetFormValues((prevState) => {
+      // verify if species has changed
+      const countryChanged =
+        values[petInfoIds.species] !== prevState[petInfoIds.species];
+      if (countryChanged) {
+        // reset breed when specie changes
+        values[petInfoIds.breed] = "";
+
+        // reset breeds list when specie changes
+        setBreedsList([]);
+      }
+      return values;
+    });
   };
 
   const asyncSubmitPetInfo = async (values: FormValues) => {
@@ -172,17 +185,16 @@ export const usePetEditViewModel = () => {
     setIsLeaving,
   };
 
-  function onDiscard (){
-    navigate(PET_PROFILE_FULL_ROUTE(petId))
+  function onDiscard() {
+    navigate(PET_PROFILE_FULL_ROUTE(petId));
   }
-
 
   function handleClose() {
     setIsLeaving(false);
   }
 
   function handleReset() {
-    if (!isDirtyPetForm) onDiscard()
+    if (!isDirtyPetForm) onDiscard();
     setIsLeaving(true);
   }
 
@@ -207,10 +219,12 @@ export const usePetEditViewModel = () => {
 };
 
 function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
+  const dob = new Date(values[petInfoIds.dateOfBirth] as string);
+
   const petInfo: EditPetModel = {
     id: values[petInfoIds.petId] as string,
     breed: values[petInfoIds.breed] as string,
-    dateOfBirth: values[petInfoIds.dateOfBirth] as string,
+    dateOfBirth: formatISO(dob),
     mixedBreed: values[petInfoIds.mixedBreed] === "Yes",
     name: values[petInfoIds.name] as string,
     spayedNeutered: values[petInfoIds.neuteredSpayed] === "Yes",
@@ -223,12 +237,13 @@ function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
 
 function getPetInfoFormData(values: PetModel | null): FormValues {
   if (!values) return {};
+  const dob = new Date(values.dateOfBirth ?? "");
 
   return {
     [petInfoIds.petId]: values.id ?? "",
     [petInfoIds.age]: values.age ?? "",
     [petInfoIds.breed]: values.breed ?? "",
-    [petInfoIds.dateOfBirth]: values.dateOfBirth ?? "",
+    [petInfoIds.dateOfBirth]: format(dob, "MM/dd/yyyy"),
     [petInfoIds.mixedBreed]: values.mixedBreed ? "Yes" : "No",
     [petInfoIds.name]: values.name ?? "",
     [petInfoIds.neuteredSpayed]: values.spayedNeutered ? "Yes" : "No",

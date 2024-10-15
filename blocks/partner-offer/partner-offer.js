@@ -1,5 +1,6 @@
 export default async function decorate(block) {
   if (block.children.length < 5) {
+    // eslint-disable-next-line no-console
     console.warn('Invalid structure for partner-offer block');
     return;
   }
