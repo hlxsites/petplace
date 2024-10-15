@@ -600,7 +600,7 @@ export default async function decorate(block) {
 
       // Schedule a new checkInterface call after 2 seconds
       // to be sure that the interface is loaded correctly
-      setTimeout(checkInterface, '2000');
+      setTimeout(checkInterface, 2000);
 
       if (isTablet()) {
         addClassesToSelector('.nav-language-selector', 'hidden');
