@@ -1,4 +1,4 @@
-import { Text } from "~/components/design-system";
+import ExternalLink from "~/components/design-system/anchor/ExternalLink";
 import { PetAlertMessage } from "../PetAlertMessage";
 
 type PetAlertSectionProps = {
@@ -14,14 +14,14 @@ export const PetAlertSection = ({ route }: PetAlertSectionProps) => {
     <div className="pb-xxlarge">
       <PetAlertMessage
         message={
-          <Text>
+          <>
             It is stressful when a furry family member is lost. Protect and care
             for your pet with 24Petwatch enhanced Lost Pet Protection.{" "}
-            <a href={alertLink} target="_blank">
+            <ExternalLink href={alertLink}>
               [1] The importance of pet identification and what to do if you
               lose (or find) a pet
-            </a>{" "}
-          </Text>
+            </ExternalLink>
+          </>
         }
         route={route}
         title="Did you know that 1 in 3 pets go missing?"
