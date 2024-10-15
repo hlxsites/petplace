@@ -16,6 +16,7 @@ export type InternalAccountDetailsModel = {
   name: string;
   defaultPhone?: string;
   surname: string;
+  zipCode: string;
 };
 
 export type AccountEmergencyContactModel = {
@@ -27,13 +28,17 @@ export type AccountEmergencyContactModel = {
   surname: string;
 };
 
-export type ExternalAccountDetailsModel = InternalAccountDetailsModel & {
-  address: AccountAddressModel;
-  secondaryPhone?: string;
-  contactConsent?: boolean;
-  informationConsent?: boolean;
-  insuranceUrl?: string;
-};
+// The zipCode is contained within the address object for external account
+export type ExternalAccountDetailsModel = Omit<
+  InternalAccountDetailsModel & {
+    address: AccountAddressModel;
+    secondaryPhone?: string;
+    contactConsent?: boolean;
+    informationConsent?: boolean;
+    insuranceUrl?: string;
+  },
+  "zipCode"
+>;
 
 export type AccountAddressModel = {
   address1: string;
