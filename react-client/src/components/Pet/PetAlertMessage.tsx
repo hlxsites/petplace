@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import {
   ButtonProps,
   Card,
@@ -10,7 +11,7 @@ import {
 
 type AlertMessageProps = {
   icon?: IconKeys;
-  message: string;
+  message: ReactNode;
   route: string;
   title: string;
 };
