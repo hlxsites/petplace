@@ -170,10 +170,14 @@ function getAccountDetailsInitialFormValue(
   isExternalLogin: boolean
 ): FormValues {
   if (!accountDetails) return {};
-  if (!isExternalLogin) return getInternalAccountDetailsData(accountDetails);
+  const baseAccountDetails = getInternalAccountDetailsData(
+    accountDetails as InternalAccountDetailsModel
+  );
+  if (!isExternalLogin) return baseAccountDetails;
 
   return getExternalAccountDetailsData(
-    accountDetails as ExternalAccountDetailsModel
+    accountDetails as ExternalAccountDetailsModel,
+    baseAccountDetails
   );
 }
 
@@ -185,19 +189,21 @@ function getInternalAccountDetailsData(
     [baseAccountDetailsIds.surname]: accountDetails.surname ?? "",
     [baseAccountDetailsIds.email]: accountDetails.email ?? "",
     [baseAccountDetailsIds.phone]: accountDetails.defaultPhone ?? "",
+    [baseAccountDetailsIds.zipCode]: accountDetails.zipCode ?? "",
   } satisfies FormValues;
 }
 
 function getExternalAccountDetailsData(
-  accountDetails: ExternalAccountDetailsModel
+  accountDetails: ExternalAccountDetailsModel,
+  baseAccountDetails: FormValues
 ) {
   return {
-    ...getInternalAccountDetailsData(accountDetails),
+    ...baseAccountDetails,
     [baseAccountDetailsIds.secondaryPhone]: accountDetails.secondaryPhone ?? "",
     [accountAddressIds.country]: accountDetails.address.country,
     [accountAddressIds.state]: accountDetails.address.state,
     [accountAddressIds.city]: accountDetails.address.city,
-    [accountAddressIds.zipCode]: accountDetails.address.zipCode,
+    [baseAccountDetailsIds.zipCode]: accountDetails.address.zipCode,
     [accountAddressIds.address1]: accountDetails.address.address1,
     [accountAddressIds.address2]: accountDetails.address.address2,
     [accountAgreementsIds.contactConsent]: !accountDetails.contactConsent
@@ -237,6 +243,7 @@ function convertFormValuesToAccountDetails(
     name: values[baseAccountDetailsIds.name] as string,
     defaultPhone: values[baseAccountDetailsIds.phone] as string,
     surname: values[baseAccountDetailsIds.surname] as string,
+    zipCode: values[baseAccountDetailsIds.zipCode] as string,
   };
 
   if (!isExternalLogin) return accountDetails;
@@ -267,7 +274,7 @@ function convertFormValuesToAccountDetails(
       city: values[accountAddressIds.city] as string,
       country,
       state,
-      zipCode: values[accountAddressIds.zipCode] as string,
+      zipCode: values[baseAccountDetailsIds.zipCode] as string,
     },
     contactConsent: !!(values[accountAgreementsIds.contactConsent] as string[])
       .length,

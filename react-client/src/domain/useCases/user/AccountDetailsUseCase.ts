@@ -2,9 +2,10 @@ import { z } from "zod";
 import {
   AccountDetailsModel,
   ExternalAccountDetailsModel,
+  InternalAccountDetailsModel,
 } from "~/domain/models/user/UserModels";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { checkIsExternalLogin, readJwtClaim } from "~/util/authUtil";
+import { checkIsExternalLogin } from "~/util/authUtil";
 
 import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
@@ -14,7 +15,6 @@ import {
   PutExternalAccountDetailsRequest,
   PutInternalAccountDetailsRequest,
   serverExternalAccountSchema,
-  serverInternalAccountSchema,
 } from "./userTypesAndSchemas";
 
 export class AccountDetailsUseCase implements AccountDetailsRepository {
@@ -33,22 +33,16 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
   async query(): Promise<AccountDetailsModel | null> {
     try {
-      let result = await this.httpClient.get(this.internalLoginEndPoint);
-      let accountDetails: AccountDetailsModel | null;
-      if (result.data) {
-        accountDetails = convertToAccountDetailsModel(result.data);
-        if (this.isInternalLogin) return accountDetails;
-
-        // The server doesn't update name and surname for the API of external login,
-        // so we use the values from the internal login API
-        result = await this.httpClient.get(this.externalLoginEndPoint);
+      if (this.isInternalLogin) {
+        const result = await this.httpClient.get(this.internalLoginEndPoint);
         if (result.data) {
-          accountDetails = {
-            ...convertToExternalAccountDetailsModel(result.data),
-            name: accountDetails?.name ?? "",
-            surname: accountDetails?.surname ?? "",
-          };
-          return accountDetails;
+          return convertToAccountDetailsModel(result.data);
+        }
+
+      } else {
+        const result = await this.httpClient.get(this.externalLoginEndPoint);
+        if (result.data) {
+          return convertToExternalAccountDetailsModel(result.data);
         }
       }
 
@@ -60,34 +54,26 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
   }
 
   mutate = async (data: AccountDetailsModel): Promise<boolean> => {
-    const zipCode = readJwtClaim()?.postalCode;
-    const internalAccountBody = convertToServerInternalAccountDetails(
-      data,
-      zipCode
-    );
-
     try {
-      if (serverInternalAccountSchema.safeParse(internalAccountBody).success) {
+      if (this.isInternalLogin) {
+        const accountBody = convertToServerInternalAccountDetails(
+          data as InternalAccountDetailsModel
+        );
         const result = await this.httpClient.put(this.internalLoginEndPoint, {
-          body: JSON.stringify(internalAccountBody),
+          body: JSON.stringify(accountBody),
         });
 
-        if (result.statusCode === 204 && this.isInternalLogin) return true;
+        if (result.success) return true;
 
-        if (!this.isInternalLogin) {
-          const externalAccountBody = convertToServerExternalAccountDetails(
-            data as ExternalAccountDetailsModel
-          );
-          const result2 = await this.httpClient.put(
-            this.externalLoginEndPoint,
-            {
-              body: JSON.stringify(externalAccountBody),
-            }
-          );
+      } else {
+        const accountBody = convertToServerExternalAccountDetails(
+          data as ExternalAccountDetailsModel
+        );
+        const result = await this.httpClient.put(this.externalLoginEndPoint, {
+          body: JSON.stringify(accountBody),
+        });
 
-          if (result.statusCode === 204 && result2.statusCode === 204)
-            return true;
-        }
+        if (result.success) return true;
       }
 
       return false;
@@ -106,29 +92,30 @@ function convertToAccountDetailsModel(
     FirstName: z.string().nullish(),
     LastName: z.string().nullish(),
     PhoneNumber: z.string().nullish(),
+    ZipCode: z.string().nullish(),
   });
 
   const user = parseData(serverResponseSchema, data);
   if (!user) return null;
-  const { Email, FirstName, LastName, PhoneNumber } = user;
+  const { Email, FirstName, LastName, PhoneNumber, ZipCode } = user;
 
   return {
     email: Email ?? "",
     name: FirstName ?? "",
     defaultPhone: PhoneNumber ? `${PhoneNumber}|Home` : "",
     surname: LastName ?? "",
+    zipCode: ZipCode ?? "",
   };
 }
 
 function convertToServerInternalAccountDetails(
-  data: AccountDetailsModel,
-  zipCode?: string | null
+  data: InternalAccountDetailsModel
 ): PutInternalAccountDetailsRequest {
   return {
     FirstName: data.name ?? "",
     PhoneNumber: data.defaultPhone ? data.defaultPhone.split("|")[0] : "",
     LastName: data.surname ?? "",
-    ZipCode: zipCode ?? "00000",
+    ZipCode: data.zipCode ?? "00000",
   };
 }
 
