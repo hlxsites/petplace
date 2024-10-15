@@ -38,19 +38,16 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
         if (result.data) {
           return convertToAccountDetailsModel(result.data);
         }
-
-      } else {
-        const result = await this.httpClient.get(this.externalLoginEndPoint);
-        if (result.data) {
-          return convertToExternalAccountDetailsModel(result.data);
-        }
       }
 
-      return null;
+      const result = await this.httpClient.get(this.externalLoginEndPoint);
+      if (result.data) {
+        return convertToExternalAccountDetailsModel(result.data);
+      }
     } catch (error) {
       logError("AccountDetailsUseCase query error", error);
-      return null;
     }
+    return null;
   }
 
   mutate = async (data: AccountDetailsModel): Promise<boolean> => {
@@ -63,24 +60,21 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
           body: JSON.stringify(accountBody),
         });
 
-        if (result.success) return true;
-
-      } else {
-        const accountBody = convertToServerExternalAccountDetails(
-          data as ExternalAccountDetailsModel
-        );
-        const result = await this.httpClient.put(this.externalLoginEndPoint, {
-          body: JSON.stringify(accountBody),
-        });
-
-        if (result.success) return true;
+        return !!result.success;
       }
 
-      return false;
+      const accountBody = convertToServerExternalAccountDetails(
+        data as ExternalAccountDetailsModel
+      );
+      const result = await this.httpClient.put(this.externalLoginEndPoint, {
+        body: JSON.stringify(accountBody),
+      });
+
+      return !!result.success;
     } catch (error) {
       logError("AccountDetailsUseCase mutation error", error);
-      return false;
     }
+    return false;
   };
 }
 

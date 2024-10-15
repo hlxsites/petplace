@@ -224,6 +224,7 @@ export const externalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
   children: [
     contactInfoSection([requiredPhoneInput, optionalPhoneInput]),
+    // Name and last name are disabled for external users
     userDetailsSection([emailInput], true),
     {
       elementType: "section",
