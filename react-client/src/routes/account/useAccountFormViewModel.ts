@@ -113,6 +113,9 @@ export const useAccountFormViewModel = ({
       if (countryChanged) {
         // reset state when country changes
         values[accountAddressIds.state] = "";
+
+        // reset states list when country changes
+        setCountryStateList([]);
       }
       return values;
     });

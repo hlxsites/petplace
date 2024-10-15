@@ -107,13 +107,12 @@ export const usePetEditViewModel = () => {
     const fetchBreedsBySpecies = async (speciesId: number) => {
       const breedsList = await breedsQuery(speciesId);
       setBreedsList(breedsList);
-      setPetFormValues({ ...petFormValues, [petInfoIds.breed]: "" });
     };
 
     if (selectedSpecies?.id) {
       void fetchBreedsBySpecies(selectedSpecies.id);
     }
-  }, [breedsQuery, selectedSpecies?.id, petFormValues]);
+  }, [breedsQuery, selectedSpecies?.id]);
 
   const onRemoveImage = () => {
     // TODO: implement image deletion
@@ -128,7 +127,19 @@ export const usePetEditViewModel = () => {
   };
 
   const onChangePetFormValues: OnChangeFn = (values) => {
-    setPetFormValues(values);
+    setPetFormValues((prevState) => {
+      // verify if species has changed
+      const countryChanged =
+        values[petInfoIds.species] !== prevState[petInfoIds.species];
+      if (countryChanged) {
+        // reset breed when specie changes
+        values[petInfoIds.breed] = "";
+
+        // reset breeds list when specie changes
+        setBreedsList([]);
+      }
+      return values;
+    });
   };
 
   const asyncSubmitPetInfo = async (values: FormValues) => {
