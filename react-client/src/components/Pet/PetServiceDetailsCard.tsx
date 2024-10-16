@@ -18,7 +18,7 @@ export type PetServiceDetailsCardProps = {
   onCloseModal: () => void;
   onConfirmModal: () => void;
   primaryAction?: ServiceAction;
-  secondaryActions?: (ServiceAction & { icon: IconKeys })[];
+  secondaryActions?: ServiceAction[];
 };
 
 type ServiceAction = {
@@ -27,6 +27,8 @@ type ServiceAction = {
   message?: string;
   title?: string;
   onClick?: () => void;
+  href?: string;
+  icon?: IconKeys;
 };
 
 export const PetServiceDetailsCard = ({
@@ -59,15 +61,7 @@ export const PetServiceDetailsCard = ({
       )}
       {secondaryActions && (
         <div className="flex justify-between gap-small">
-          {secondaryActions.map(({ icon, buttonLabel: label, onClick }) => (
-            <Button variant="secondary" key={label} onClick={onClick} fullWidth>
-              <Icon
-                display={icon}
-                className="mr-small text-orange-300-contrast"
-              />
-              {label}
-            </Button>
-          ))}
+          {secondaryActions.map(renderAction)}
         </div>
       )}
       {primaryAction?.confirmButtonLabel && (
@@ -89,4 +83,30 @@ export const PetServiceDetailsCard = ({
       )}
     </div>
   );
+
+  function renderAction({
+    icon,
+    buttonLabel: label,
+    onClick,
+    href,
+  }: ServiceAction) {
+    const button = (
+      <Button variant="secondary" key={label} onClick={onClick} fullWidth>
+        {icon && (
+          <Icon display={icon} className="mr-small text-orange-300-contrast" />
+        )}
+        {label}
+      </Button>
+    );
+
+    if (!href) {
+      return button;
+    }
+
+    return (
+      <a href={href} key={label} style={{ width: "100%" }}>
+        {button}
+      </a>
+    );
+  }
 };
