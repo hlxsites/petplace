@@ -21,7 +21,7 @@ export const Tabs = ({ onChange, tabs, ...rest }: TabsProps) => {
   return (
     <>
       <RadixTab.Root {...rest} onValueChange={onChange}>
-        <RadixTab.List className="flex">
+        <RadixTab.List className="flex overflow-x-scroll">
           {tabs.map(({ label, icon }) => (
             <RadixTab.Trigger
               aria-label={`Tab option: ${label}`}
