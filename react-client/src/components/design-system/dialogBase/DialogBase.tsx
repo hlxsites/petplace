@@ -111,7 +111,7 @@ export const DialogBase = ({
         />
       </div>
       <FocusTrap
-        active={true}
+        active={false}
         focusTrapOptions={{
           clickOutsideDeactivates: true,
           returnFocusOnDeactivate: true,
