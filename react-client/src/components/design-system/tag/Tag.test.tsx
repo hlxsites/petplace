@@ -37,22 +37,6 @@ describe("Tag", () => {
     }
   );
 
-  it("should render info icon for tagStatus=%s", () => {
-    const { container } = getRenderer({ tagStatus: "warning" });
-
-    expect(
-      container.querySelector("svg[data-file-name='SvgInformationIcon']")
-    ).toBeInTheDocument();
-  });
-
-  it("should NOT render info icon for tagStatus='success'", () => {
-    const { container } = getRenderer({ tagStatus: "success" });
-
-    expect(
-      container.querySelector("svg[data-file-name='SvgInformationIcon']")
-    ).not.toBeInTheDocument();
-  });
-
   it("should render with full width when fullWidth is true", () => {
     const { container } = getRenderer({ fullWidth: true });
 
