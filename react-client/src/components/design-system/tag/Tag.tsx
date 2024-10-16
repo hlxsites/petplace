@@ -2,17 +2,19 @@ import { Icon, Text } from "~/components/design-system";
 import { classNames } from "~/util/styleUtil";
 
 export type TagProps = {
+  fullWidth?: boolean;
   label: string;
   tagStatus: "info" | "success" | "warning";
 };
 
-export const Tag = ({ label, tagStatus }: TagProps) => {
+export const Tag = ({ fullWidth, label, tagStatus }: TagProps) => {
   const containerClass = classNames(
-    "flex max-w-max items-center gap-small rounded-lg px-small py-xsmall",
+    "flex items-center gap-small rounded-lg px-small py-xsmall",
     {
       "bg-blue-100 text-blue-500": tagStatus === "info",
       "bg-green-100 text-green-500": tagStatus === "success",
       "bg-yellow-100 text-yellow-500": tagStatus === "warning",
+      "w-full justify-center": fullWidth,
     }
   );
 
@@ -28,7 +30,9 @@ export const Tag = ({ label, tagStatus }: TagProps) => {
       <Text color={textColorClass} fontWeight="medium" size="16">
         {label}
       </Text>
-      {!["success", "info"].includes(tagStatus) && <Icon display="information" size={16} />}
+      {!["success", "info"].includes(tagStatus) && (
+        <Icon display="information" size={16} />
+      )}
     </div>
   );
 };

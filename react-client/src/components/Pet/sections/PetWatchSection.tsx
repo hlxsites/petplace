@@ -3,6 +3,7 @@ import { Button, Card, Drawer, Tag, Text, Title } from "../../design-system";
 import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
 import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
+import { useWindowWidth } from "~/hooks/useWindowWidth";
 
 type PetWatchSectionProp = {
   route?: string;
@@ -13,6 +14,8 @@ export const PetWatchSection = ({ route }: PetWatchSectionProp) => {
 
   const { isDrawerOpen, onOpenDrawer, onCloseDrawer } =
     useDrawerContentState("pet-watch");
+  const windowWidth = useWindowWidth();
+  const isMobileScreen = windowWidth < 768;
 
   return (
     <>
@@ -27,9 +30,13 @@ export const PetWatchSection = ({ route }: PetWatchSectionProp) => {
           return (
             <Card>
               <div className="grid gap-large p-large">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-base md:flex-row md:items-center md:justify-between">
                   <Title level="h4">Lost Pet Protection</Title>
-                  <Tag label={label} tagStatus={tagStatus} />
+                  <Tag
+                    label={label}
+                    tagStatus={tagStatus}
+                    fullWidth={isMobileScreen}
+                  />
                 </div>
                 <Text size="14">{message}</Text>
                 <Drawer
