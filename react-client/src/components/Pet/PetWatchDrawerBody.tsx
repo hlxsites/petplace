@@ -69,7 +69,7 @@ export const PetWatchDrawerBody = ({
             icon="info"
             isOpen={isAnnualRenewModalOpen}
             confirmButtonLabel="Confirm Renewal"
-            message="Would you like to renew the annual plan for another year? This ensures continued protection for your pet's."
+            message="Would you like to renew Annual Membership Plan for another year? This ensures continued protection for your pet's."
             onClickPrimaryButton={handleAnnualRenewal}
             onClose={() => setIsAnnualRenewModalOpen(false)}
             title="Confirm Renewal"
