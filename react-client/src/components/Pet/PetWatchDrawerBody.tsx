@@ -42,6 +42,7 @@ export const PetWatchDrawerBody = ({
     getContentDetails,
     handleContentChange,
     isOpenModalType,
+    isOpenSelectedBenefit,
     onRenewService,
     onCloseConfirmDialog,
     petWatchBenefits: {
@@ -97,7 +98,7 @@ export const PetWatchDrawerBody = ({
   })();
 
   const annualServiceElement = (() => {
-    if (serviceStatus !== "Annual member") return null;
+    if (serviceStatus !== "Annual member" || isOpenSelectedBenefit) return null;
     return renderAnnualService();
   })();
 

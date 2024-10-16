@@ -273,11 +273,14 @@ export const useRenewMembershipViewModel = ({
     setResultModal(null);
   };
 
+  const isOpenSelectedBenefit = searchParams.has(ITEM_PARAM_KEY);
+
   return {
     closeConfirmRenewModal,
     getContentDetails,
     handleContentChange,
     isOpenModalType,
+    isOpenSelectedBenefit,
     onRenewService,
     onCloseConfirmDialog,
     petWatchBenefits: getPetWatchBenefits(),
