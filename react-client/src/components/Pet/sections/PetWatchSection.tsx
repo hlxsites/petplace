@@ -20,7 +20,7 @@ export const PetWatchSection = ({ route }: PetWatchSectionProp) => {
         Active Pet Services
       </Text>
       <SuspenseAwait resolve={petWatchInfo}>
-        {({ petWatchOffersAndTags, membershipStatus }) => {
+        {({ petWatchOffersAndTags, membershipStatus, isAnnualPlanExpired }) => {
           if (!petWatchOffersAndTags) return null;
           const { buttonLabel, icon, message, label, tagStatus } =
             petWatchOffersAndTags;
@@ -50,6 +50,7 @@ export const PetWatchSection = ({ route }: PetWatchSectionProp) => {
                   }
                 >
                   <PetWatchDrawerServiceContent
+                    isAnnualPlanExpired={isAnnualPlanExpired}
                     route={route}
                     serviceStatus={membershipStatus}
                   />
