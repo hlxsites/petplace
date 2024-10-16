@@ -1,10 +1,8 @@
-import { LinkButton, Text, TextSpan } from "~/components/design-system";
+import { Button, Text, TextSpan } from "~/components/design-system";
 import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
-import {
-  acrobatReaderUrl,
-  copyTextToClipboard,
-} from "~/routes/my-pets/petId/utils/servicesUtils";
+import { copyTextToClipboard } from "~/routes/my-pets/petId/utils/servicesUtils";
+import { downloadFile } from "~/util/downloadFunctions";
 
 export type PetWatchServiceProps = Omit<
   PetServiceDetailsCardProps,
@@ -94,15 +92,19 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
             </Text>
             <Text size="14">
               Note: this form requires Adobe Reader,
-              <LinkButton
-                className="m-0 inline"
-                openInNewTab
-                to={acrobatReaderUrl}
+              <Button
+                className="inline font-bold"
+                onClick={() =>
+                  downloadFile({
+                    url: "https://drive.google.com/uc?export=download&id=164zo5X6eA3vDCSZw87BifbGvmaLNRi4p",
+                    fileName: "form.pdf",
+                  })
+                }
+                variant="link"
+                style={{ fontSize: 14 }}
               >
-                <TextSpan fontWeight="bold" size="14">
-                  click here
-                </TextSpan>
-              </LinkButton>{" "}
+                click here
+              </Button>
               to download.
             </Text>
           </>
