@@ -67,7 +67,7 @@ export const PetDocumentsView = ({
   };
 
   return (
-    <div className="grid gap-large">
+    <div className="flex flex-col gap-large">
       <Text color="tertiary-600" size="14">
         {`View, download and manage all ${documentType} records.`}
       </Text>
