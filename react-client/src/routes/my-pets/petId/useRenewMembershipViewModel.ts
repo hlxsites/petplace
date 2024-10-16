@@ -13,7 +13,10 @@ import {
 } from "./types/PetServicesTypes";
 import { PET_WATCH_OFFERS, PET_WATCH_TAGS } from "./utils/petServiceConstants";
 import { PET_WATCH_SERVICES_DETAILS } from "./utils/petServiceDetailsConstants";
-import { getStatus } from "./utils/petServiceStatusUtils";
+import {
+  getAnnualPlanStatusFromProducts,
+  getStatus,
+} from "./utils/petServiceStatusUtils";
 import {
   PET_WATCH_ANNUAL_UNAVAILABLE_OPTIONS,
   PetWatchOptionBasedOnMembershipStatus_CA,
@@ -55,11 +58,16 @@ export const useRenewMembershipViewModel = ({
       membershipStatus,
     });
 
-    return { membershipStatus, serviceStatus };
+    const isAnnualPlanExpired = getAnnualPlanStatusFromProducts(
+      selectedPet?.products
+    );
+
+    return { membershipStatus, serviceStatus, isAnnualPlanExpired };
   };
 
   const getPetWatchInfo = () => {
-    const { membershipStatus, serviceStatus } = getPetServiceInfo();
+    const { membershipStatus, serviceStatus, isAnnualPlanExpired } =
+      getPetServiceInfo();
 
     if (serviceStatus === null) {
       return { petWatchOffersAndTags: null, membershipStatus };
@@ -70,7 +78,7 @@ export const useRenewMembershipViewModel = ({
       ...PET_WATCH_TAGS[serviceStatus],
     };
 
-    return { petWatchOffersAndTags, membershipStatus };
+    return { petWatchOffersAndTags, membershipStatus, isAnnualPlanExpired };
   };
 
   const getPetWatchBenefits = () => {
@@ -103,11 +111,13 @@ export const useRenewMembershipViewModel = ({
     const membershipStatus = selectedPet?.membershipStatus?.toLowerCase();
     const products = selectedPet?.products;
 
-    const hasAnnualProduct = products?.some((product) => {
-      const id = product.id.toLowerCase();
-      // Fragile implementation, should be refactored to get this from the server
-      return id.includes("dogs") || id.includes("cats");
-    });
+    const hasAnnualProduct =
+      products?.length === 1 &&
+      products?.some((product) => {
+        const id = product.id.toLowerCase();
+        // Fragile implementation, should be refactored to get this from the server
+        return id.includes("annual plan");
+      });
 
     // If not a member, return all benefits as is
     if (membershipStatus?.includes("not a member")) {
@@ -115,14 +125,13 @@ export const useRenewMembershipViewModel = ({
     }
 
     // If annual member with no products, return only direct-connect and recovery-specialists
-    if (membershipStatus?.includes("annual")) {
-      if (!products?.length || hasAnnualProduct)
-        return petWatchAvailableBenefits.filter(
-          (benefit) =>
-            benefit.id === "direct-connect" ||
-            benefit.id === "recovery-specialists"
-        );
-    }
+
+    if (!products?.length || hasAnnualProduct)
+      return petWatchAvailableBenefits.filter(
+        (benefit) =>
+          benefit.id === "direct-connect" ||
+          benefit.id === "recovery-specialists"
+      );
 
     // If there are products, check for expired ones and update benefits accordingly
     if (products && products.length > 0) {
@@ -236,13 +245,22 @@ export const useRenewMembershipViewModel = ({
     return resultModal;
   })();
 
-  const onRenewMembership = async () => {
-    const selectedContent = searchParams.get(ITEM_PARAM_KEY);
-    if (!selectedContent || !selectedPet) return null;
+  const onRenewService = async (renewalType?: "annual") => {
+    let renewalId: string | undefined;
+
+    if (!renewalType) {
+      renewalId = searchParams.get(ITEM_PARAM_KEY) ?? undefined;
+    } else if (renewalType === "annual") {
+      renewalId = selectedPet?.products?.find((product) =>
+        product.id.toLowerCase().includes("annual plan")
+      )?.id;
+    }
+
+    if (!renewalId || !selectedPet) return null;
 
     const response = await postRenew({
       autoRenew: true,
-      id: selectedContent,
+      id: renewalId,
       petId: selectedPet.id,
     });
 
@@ -260,7 +278,7 @@ export const useRenewMembershipViewModel = ({
     getContentDetails,
     handleContentChange,
     isOpenModalType,
-    onRenewMembership,
+    onRenewService,
     onCloseConfirmDialog,
     petWatchBenefits: getPetWatchBenefits(),
     petWatchInfo: getPetWatchInfo(),
