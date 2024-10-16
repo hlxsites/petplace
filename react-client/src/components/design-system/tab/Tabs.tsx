@@ -1,5 +1,6 @@
 import * as RadixTab from "@radix-ui/react-tabs";
 import { ComponentProps, ReactNode } from "react";
+import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { Icon, IconProps } from "../icon/Icon";
 import { Text } from "../text/Text";
 
@@ -18,6 +19,7 @@ export type TabsProps = Pick<RadixTabProps, "value"> & {
 };
 
 export const Tabs = ({ onChange, tabs, ...rest }: TabsProps) => {
+  const shouldDisplayLabel = useWindowWidth() > 768;
   return (
     <>
       <RadixTab.Root {...rest} onValueChange={onChange}>
@@ -33,9 +35,11 @@ export const Tabs = ({ onChange, tabs, ...rest }: TabsProps) => {
             >
               <div className="flex place-items-center gap-small">
                 {!!icon && <Icon display={icon} size={16} />}
-                <Text color={"inherit"} size="16">
-                  {label}
-                </Text>
+                {shouldDisplayLabel && (
+                  <Text color={"inherit"} size="16">
+                    {label}
+                  </Text>
+                )}
               </div>
             </RadixTab.Trigger>
           ))}
