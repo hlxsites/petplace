@@ -896,9 +896,18 @@ export function setup() {
 function init() {
   document.body.style.display = 'none';
   setup();
-  sampleRUM('top');
 
-  window.addEventListener('load', () => sampleRUM('load'));
+  const cb = () => {
+    sampleRUM('top');
+    window.addEventListener('load', () => sampleRUM('load'));
+  };
+  // Speculative prerender-aware sampleRUM instrumentation
+  // based on https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API#unsafe_prerendering
+  if (document.prerendering) {
+    document.addEventListener('prerenderingchange', cb, { once: true });
+  } else {
+    cb();
+  }
 
   window.addEventListener('unhandledrejection', (event) => {
     sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });

@@ -6,22 +6,26 @@ import { sampleRUM } from '../../scripts/lib-franklin.js';
 function showMessage(block, message, clazz = 'success') {
   const messageElement = block.querySelector('.newsletter-message');
   messageElement.innerText = message;
+  messageElement.style.display = 'block';
   messageElement.classList.remove('success', 'error');
   messageElement.classList.add(clazz);
 }
 
 function showError(block, fd) {
   showMessage(block, fd.Failure, 'error');
-  block.querySelector('button').removeAttribute('disabled');
+  block.querySelector('.form-submit-wrapper button').removeAttribute('disabled');
 }
 
 async function submitForm(block, fd) {
   const formData = new FormData(block.querySelector('form'));
+  const isCatBox = formData.get('cats') === 'on';
+  const isDogBox = formData.get('dogs') === 'on';
   const formInfo = {
     email: formData.get('email'),
-    first_name: formData.get('name'),
-    catnewsletter: formData.get('cats') === 'on',
-    dognewsletter: formData.get('dogs') === 'on',
+    first_name: formData.get('firstname'),
+    last_name: formData.get('lastname'),
+    catnewsletter: isCatBox,
+    dognewsletter: isDogBox,
     country: DEFAULT_REGION, // rework later
   };
 
@@ -38,6 +42,12 @@ async function submitForm(block, fd) {
     body: JSON.stringify(payload),
     'Content-Type': 'application/json',
   };
+
+  if (!isCatBox && !isDogBox) {
+    showMessage(block, '*Please select at least one newsletter (cat, dog, or both) to complete your sign-up.', 'error');
+    block.querySelector('.form-submit-wrapper button').removeAttribute('disabled');
+    return;
+  }
 
   try {
     const baseUri = 'https://aem-eds-petplace.edgecompute.app/services/newsletter';
@@ -74,8 +84,10 @@ export default async function decorate(block) {
     '/newsletter.json',
     (fd) => submitForm(block, fd),
   );
+
+  form.querySelector('label[for="firstname"]').classList.add('sr-only');
+  form.querySelector('label[for="lastname"]').classList.add('sr-only');
   form.querySelector('label[for="email"]').classList.add('sr-only');
-  form.querySelector('label[for="name"]').classList.add('sr-only');
 
   const messageContainer = document.createElement('div');
   messageContainer.classList.add('newsletter-message');
@@ -88,6 +100,28 @@ export default async function decorate(block) {
   } else {
     target.append(form);
   }
+
+  const inputDiv = document.createElement('div');
+  inputDiv.classList.add('inputs-main-div');
+  block.querySelectorAll('.form-text-wrapper').forEach((wrapper) => {
+    inputDiv.append(wrapper);
+  });
+
+  const checkboxDiv = document.createElement('div');
+  const checkboxLabel = document.createElement('label');
+  checkboxLabel.innerText = 'Please select your preferred newsletter(s):';
+  checkboxLabel.classList.add('checkbox-label');
+  checkboxDiv.classList.add('checkbox-main-div');
+  block.querySelectorAll('.form-checkbox-wrapper').forEach((wrapper) => {
+    checkboxDiv.append(wrapper);
+  });
+
+  const messageDiv = block.querySelector('.newsletter-message');
+
+  form.prepend(messageDiv);
+  form.prepend(checkboxDiv);
+  form.prepend(checkboxLabel);
+  form.prepend(inputDiv);
 
   block.querySelectorAll('a').forEach((link) => {
     link.setAttribute('target', '_blank');
