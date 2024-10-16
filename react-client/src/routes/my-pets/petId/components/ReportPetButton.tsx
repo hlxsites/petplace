@@ -16,10 +16,12 @@ export const ReportPetButton = ({
   missingStatus,
 }: ReportPetButtonProps) => {
   const button = (() => {
-    if (missingStatus === "found") {
-      return renderButton("Report lost pet", redirectToLostPet);
+    if (missingStatus === "missing") {
+      return (
+        <ReportClosingModal trigger={renderButton("Report pet as found")} />
+      );
     }
-    return <ReportClosingModal trigger={renderButton("Report pet as found")} />;
+    return renderButton("Report lost pet", redirectToLostPet);
   })();
 
   if (!disabled) return button;

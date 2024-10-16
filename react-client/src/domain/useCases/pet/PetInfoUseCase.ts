@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { PetModel, PetMutateInput } from "~/domain/models/pet/PetModel";
+import {
+  MissingStatus,
+  PetModel,
+  PetMutateInput,
+} from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
@@ -62,6 +66,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     Id: z.string(),
     ImageUrl: z.string().nullish(),
     InsuranceAggregatorUrl: z.string().nullish(),
+    IsMissing: z.boolean().nullish(),
     MembershipStatus: z.string(),
     Microchip: z.string().nullish(),
     MixedBreed: z.boolean().nullish(),
@@ -93,6 +98,13 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     })
   );
 
+  const missingStatus: MissingStatus = (() => {
+    if (typeof info.IsMissing === "boolean") {
+      return info.IsMissing ? "missing" : "found";
+    }
+    return "unknown";
+  })();
+
   return {
     age: info.Age,
     breed: info.Breed,
@@ -103,7 +115,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
     locale: info.CountryCode,
     membershipStatus: info.MembershipStatus,
     microchip: info.Microchip,
-    missingStatus: "found",
+    missingStatus,
     mixedBreed: !!info.MixedBreed,
     name: info.Name,
     policyInsurance: info.PolicyNumbers ?? [],

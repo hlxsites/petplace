@@ -1,6 +1,6 @@
 import { Locale } from "../misc/Locale";
 
-export type MissingStatus = "missing" | "found";
+export type MissingStatus = "missing" | "found" | "unknown";
 export type DocumentationStatus =
   | "none"
   | "sent"
@@ -34,10 +34,11 @@ export type LostPetUpdateModel = {
 
 export type LostAndFountNotification = {
   date: string;
-  update: string;
-  status: MissingStatus;
   id: number;
   note: string;
+  status: MissingStatus;
+  statusMessage: string;
+  update: string;
 };
 
 export type PetCommon = {
