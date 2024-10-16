@@ -5,6 +5,7 @@ import {
   ReactElement,
   useEffect,
   useRef,
+  useState,
 } from "react";
 import { createPortal } from "react-dom";
 import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
@@ -33,10 +34,21 @@ export const DialogBase = ({
   trigger,
   width,
 }: DialogBaseProps) => {
+  // Global counter for z-index
+  let globalZIndex = 1000;
+
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
     onClose,
   });
   const dialogRef = useRef<HTMLDivElement>(null);
+  const [zIndex, setZIndex] = useState(globalZIndex);
+
+  useEffect(() => {
+    if (isOpen) {
+      globalZIndex += 2;
+      setZIndex(globalZIndex);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const bodyStyle = document.body.style;
@@ -91,9 +103,15 @@ export const DialogBase = ({
 
   const portalContent = (
     <>
-      <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
+      <div style={{ position: "fixed", inset: 0, zIndex: zIndex - 1 }}>
+        <Backdrop
+          isClosing={isClosing}
+          isOpen={true}
+          onClick={onCloseWithAnimation}
+        />
+      </div>
       <FocusTrap
-        active={false}
+        active={true}
         focusTrapOptions={{
           clickOutsideDeactivates: true,
           returnFocusOnDeactivate: true,
@@ -125,6 +143,7 @@ export const DialogBase = ({
           role="dialog"
           style={{
             width: width === "auto" ? "auto" : width,
+            zIndex: zIndex,
           }}
           tabIndex={-1}
         >
