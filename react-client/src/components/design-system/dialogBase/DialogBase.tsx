@@ -5,7 +5,6 @@ import {
   ReactElement,
   useEffect,
   useRef,
-  useState,
 } from "react";
 import { createPortal } from "react-dom";
 import { useCloseWithAnimation } from "~/hooks/useCloseWithAnimation";
@@ -41,12 +40,15 @@ export const DialogBase = ({
     onClose,
   });
   const dialogRef = useRef<HTMLDivElement>(null);
-  const [zIndex, setZIndex] = useState(GLOBAL_Z_INDEX);
+
+  const zIndexRef = useRef(GLOBAL_Z_INDEX);
+  const zIndex = zIndexRef.current;
 
   useEffect(() => {
+    // Increment global z-index by 2 each time the dialog is opened
     if (isOpen) {
       GLOBAL_Z_INDEX += 2;
-      setZIndex(GLOBAL_Z_INDEX);
+      zIndexRef.current = GLOBAL_Z_INDEX;
     }
   }, [isOpen]);
 
