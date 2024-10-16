@@ -9,8 +9,6 @@
   padding: 0;
 }
 
-.newsletter-signup p,
-.newsletter-signup h2,
 .newsletter-signup label,
 .newsletter-signup input,
 .newsletter-signup button {
@@ -118,6 +116,7 @@
 
 .newsletter-signup .newsletter-message {
   font-weight: normal;
+  font-family: 'Libre Franklin', sans-serif;
   font-size: var(--body-font-size-m);
   padding: 0.5rem;
   background-color: #FCEFED;
