@@ -5,6 +5,13 @@ function getProductStatus(products?: PetProduct[]) {
   return products ? products.some((product) => product.isExpired) : false;
 }
 
+export function getAnnualPlanStatusFromProducts(products?: PetProduct[]) {
+  return products?.some(
+    (product) =>
+      product.id.toLowerCase().includes("annual plan") && product.isExpired
+  );
+}
+
 export function getStatus(petServiceStatus: PetServices) {
   const isAnyProductExpired = getProductStatus(petServiceStatus.products);
   if (isAnyProductExpired) return "expired";

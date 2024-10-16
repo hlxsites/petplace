@@ -23,7 +23,13 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     id: "lost-pet-support",
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
-      { icon: "copyRegular", buttonLabel: "Copy number" },
+      {
+        icon: "copyRegular",
+        buttonLabel: "Copy number",
+        onClick: () => {
+          void copyTextToClipboard("1-866-597-2424");
+        },
+      },
       { icon: "forwardedCall", buttonLabel: "Call" },
     ],
     subtitle: "Find your pet 24/7",
@@ -36,7 +42,13 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     id: "recovery-specialists",
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
-      { icon: "copyRegular", buttonLabel: "Copy number" },
+      {
+        icon: "copyRegular",
+        buttonLabel: "Copy number",
+        onClick: () => {
+          void copyTextToClipboard("1-866-597-2424");
+        },
+      },
       { icon: "forwardedCall", buttonLabel: "Call" },
     ],
     title: "Lost Pet Recovery Specialists",

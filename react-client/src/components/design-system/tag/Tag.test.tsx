@@ -37,16 +37,13 @@ describe("Tag", () => {
     }
   );
 
-  it(
-    "should render info icon for tagStatus=%s",
-    () => {
-      const { container } = getRenderer({ tagStatus: "warning" });
+  it("should render info icon for tagStatus=%s", () => {
+    const { container } = getRenderer({ tagStatus: "warning" });
 
-      expect(
-        container.querySelector("svg[data-file-name='SvgInformationIcon']")
-      ).toBeInTheDocument();
-    }
-  );
+    expect(
+      container.querySelector("svg[data-file-name='SvgInformationIcon']")
+    ).toBeInTheDocument();
+  });
 
   it("should NOT render info icon for tagStatus='success'", () => {
     const { container } = getRenderer({ tagStatus: "success" });
@@ -54,6 +51,18 @@ describe("Tag", () => {
     expect(
       container.querySelector("svg[data-file-name='SvgInformationIcon']")
     ).not.toBeInTheDocument();
+  });
+
+  it("should render with full width when fullWidth is true", () => {
+    const { container } = getRenderer({ fullWidth: true });
+
+    expect(container.firstChild).toHaveClass("w-full");
+  });
+
+  it("should NOT have w-full class when fullWidth is false", () => {
+    const { container } = getRenderer({ fullWidth: false });
+
+    expect(container.firstChild).not.toHaveClass("w-full");
   });
 });
 
@@ -64,6 +73,9 @@ type TagType = Props["tagStatus"][];
 function getRenderer({
   label = "Test label",
   tagStatus = "success",
+  fullWidth = false,
 }: Partial<Props> = {}) {
-  return render(<Tag label={label} tagStatus={tagStatus} />);
+  return render(
+    <Tag label={label} tagStatus={tagStatus} fullWidth={fullWidth} />
+  );
 }

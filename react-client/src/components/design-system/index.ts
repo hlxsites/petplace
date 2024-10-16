@@ -2,6 +2,7 @@ import { DialogTrigger } from "./types/DialogBaseTypes";
 
 export type { DialogTrigger };
 
+export * from "./anchor/ExternalLink";
 export * from "./button/Button";
 export * from "./button/IconButton";
 export * from "./button/LinkButton";

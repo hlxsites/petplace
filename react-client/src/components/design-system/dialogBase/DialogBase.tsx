@@ -15,6 +15,9 @@ import { Icon } from "../icon/Icon";
 import { Title } from "../text/Title";
 import { DialogBaseProps } from "../types/DialogBaseTypes";
 
+// Global counter for z-index
+let GLOBAL_Z_INDEX = 1000;
+
 export const DialogBase = ({
   align,
   ariaLabel,
@@ -37,6 +40,17 @@ export const DialogBase = ({
     onClose,
   });
   const dialogRef = useRef<HTMLDivElement>(null);
+
+  const zIndexRef = useRef(GLOBAL_Z_INDEX);
+  const zIndex = zIndexRef.current;
+
+  useEffect(() => {
+    // Increment global z-index by 2 each time the dialog is opened
+    if (isOpen) {
+      GLOBAL_Z_INDEX += 2;
+      zIndexRef.current = GLOBAL_Z_INDEX;
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const bodyStyle = document.body.style;
@@ -91,7 +105,13 @@ export const DialogBase = ({
 
   const portalContent = (
     <>
-      <Backdrop isClosing={isClosing} isOpen onClick={onCloseWithAnimation} />
+      <div style={{ position: "fixed", inset: 0, zIndex: zIndex - 1 }}>
+        <Backdrop
+          isClosing={isClosing}
+          isOpen={true}
+          onClick={onCloseWithAnimation}
+        />
+      </div>
       <FocusTrap
         active={false}
         focusTrapOptions={{
@@ -125,6 +145,7 @@ export const DialogBase = ({
           role="dialog"
           style={{
             width: width === "auto" ? "auto" : width,
+            zIndex: zIndex,
           }}
           tabIndex={-1}
         >

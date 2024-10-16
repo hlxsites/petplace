@@ -4,7 +4,7 @@ import { ENABLE_MOCK } from "~/util/envUtil";
 import { GetLostPetNotificationsUseCase } from "./GetLostPetNotificationsUseCase";
 import { MockGetLostPetNotificationsUseCase } from "./MockGetLostPetNotificationsUseCase";
 
-export default function accountDetailsUseCaseFactory(
+export default function lostPetNotificationsUseCaseFactory(
   authToken: string,
   httpClient?: HttpClientRepository
 ): GetLostPetNotificationsRepository {

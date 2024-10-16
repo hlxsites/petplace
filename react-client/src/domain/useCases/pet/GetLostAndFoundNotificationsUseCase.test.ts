@@ -8,7 +8,7 @@ import getLostAndFoundNotificationsMock2 from "./mocks/getLostAndFoundNotificati
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
 
-const DEFAULT_ID = "test-id"
+const DEFAULT_ID = "test-id";
 
 describe("GetLostAndFoundNotificationsUseCase", () => {
   it("should return an empty array", async () => {
@@ -27,7 +27,8 @@ describe("GetLostAndFoundNotificationsUseCase", () => {
         date: "2023-06-28T00:00:00",
         id: 3872783,
         note: "",
-        status: "missing",
+        status: "found",
+        statusMessage: "Lost my pet",
         update: "2023-06-28T00:01:00",
       },
       {
@@ -35,6 +36,7 @@ describe("GetLostAndFoundNotificationsUseCase", () => {
         id: 5098734,
         note: "Found by the fair market",
         status: "found",
+        statusMessage: "Reunited with my pet",
         update: "2023-06-28T00:11:00",
       },
     ]);
@@ -51,7 +53,8 @@ describe("GetLostAndFoundNotificationsUseCase", () => {
         date: "2023-06-28T00:13:00",
         id: 209897,
         note: "",
-        status: "missing",
+        status: "found",
+        statusMessage: "Lost my pet",
         update: "2023-06-28T00:22:00",
       },
     ]);

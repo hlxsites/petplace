@@ -14,6 +14,7 @@ export const baseAccountDetailsIds = {
   phone: "phone-default",
   secondaryPhone: "phone-secondary",
   surname: "last-name",
+  zipCode: "zip-code",
 };
 
 export const accountAddressIds = {
@@ -23,7 +24,6 @@ export const accountAddressIds = {
   address2: "address-2",
   city: "city",
   intersection: "intersection-address",
-  zipCode: "zip-code",
 };
 
 export const accountAgreementsIds = {
@@ -155,7 +155,7 @@ const cityInput: ElementInputText = {
 const zipCodeInput: ElementInputText = {
   className: "w-1/2",
   elementType: "input",
-  id: accountAddressIds.zipCode,
+  id: baseAccountDetailsIds.zipCode,
   label: "Zip Code",
   maxLength: 15,
   requiredCondition: true,
@@ -186,7 +186,10 @@ const contactInfoSection = (children: ElementUnion[]): ElementSection => ({
   ],
 });
 
-const userDetailsSection = (children: ElementUnion[]): ElementSection => ({
+const userDetailsSection = (
+  children: ElementUnion[],
+  nameAndSurnameDisabled?: boolean
+): ElementSection => ({
   elementType: "section",
   title: {
     label: "User details",
@@ -195,7 +198,10 @@ const userDetailsSection = (children: ElementUnion[]): ElementSection => ({
   children: [
     {
       elementType: "row",
-      children: [firstNameInput, lastNameInput],
+      children: [
+        { ...firstNameInput, disabledCondition: !!nameAndSurnameDisabled },
+        { ...lastNameInput, disabledCondition: !!nameAndSurnameDisabled },
+      ],
     },
     {
       elementType: "row",
@@ -218,7 +224,8 @@ export const externalAccountDetailsFormSchema: FormSchema = {
   id: "account-details-form",
   children: [
     contactInfoSection([requiredPhoneInput, optionalPhoneInput]),
-    userDetailsSection([emailInput]),
+    // Name and last name are disabled for external users
+    userDetailsSection([emailInput], true),
     {
       elementType: "section",
       title: {

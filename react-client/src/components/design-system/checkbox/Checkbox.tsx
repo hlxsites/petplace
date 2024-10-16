@@ -65,6 +65,7 @@ export const Checkbox = forwardRef<
 function useCheckboxVariant(variant: CheckboxVariant) {
   const rootClassName = classNames(
     "flex h-5 w-5 items-center justify-center rounded-md border-solid border-neutral-600 bg-white p-0 focus:outline-none",
+    "data-[state=unchecked]:bg-white",
     { "focus:bg-purple-300 hover:bg-purple-300": variant === "purple" }
   );
 

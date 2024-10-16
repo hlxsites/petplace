@@ -57,24 +57,27 @@ function convertToLostAndFoundNotificationModel(
   parsedData.forEach((item) => {
     const { Opened, LastUpdate, Status, Note, Id } = item;
 
-    // If there is no ID, we can't use this data
-    if (!Id) return;
+    // If any of the required fields is missing, we can't use this data
+    if (!Id || !LastUpdate || !Status) return;
 
     const status = (() => {
-      const lowercaseStatus = Status?.toLowerCase();
-      const defaultStatuses = ["reunited with my pet", "i found my pet", "closed"]
+      const lowercaseStatus = Status.toLowerCase();
 
-      // Very fragile implementation, but this is how the server sends the status
-      if (lowercaseStatus && !defaultStatuses.includes(lowercaseStatus)) return "missing";
+      // Very fragile implementation, server should give us that information
+      if (lowercaseStatus.includes("missing")) {
+        return "missing";
+      }
+
       return "found";
     })();
 
     petHistory.push({
       date: Opened ?? "",
-      update: LastUpdate ?? "",
-      status,
       id: Id,
       note: Note ?? "",
+      status,
+      statusMessage: Status,
+      update: LastUpdate,
     });
   });
 

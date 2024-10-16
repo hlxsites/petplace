@@ -44,6 +44,7 @@ describe("AccountDetailsUseCase", () => {
         surname: "Waters",
         email: "augustus.ok@email.com",
         defaultPhone: "71 988776655|Home",
+        zipCode: "23456",
       });
     });
 
@@ -100,6 +101,7 @@ describe("AccountDetailsUseCase", () => {
       surname: "Doe",
       email: "jane.doe@example.com",
       phoneNumber: "555-1234|Home",
+      zipCode: "12345",
     };
 
     it("should update successfully without data returning", async () => {

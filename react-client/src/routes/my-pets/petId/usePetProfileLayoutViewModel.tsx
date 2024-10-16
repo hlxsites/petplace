@@ -70,6 +70,13 @@ export const usePetProfileLayoutViewModel = () => {
   const isLoading = isLoadingPetInfo || isLoadingLostPetHistory;
 
   const missingStatus: MissingStatus = (() => {
+    // If the server provided the status, use it
+    if (petInfo?.missingStatus && petInfo.missingStatus !== "unknown") {
+      return petInfo.missingStatus;
+    }
+
+    // Otherwise, fallback to the latest lost pet history entry
+
     if (!lostPetHistory.length) return "found";
 
     const latestEntry = lostPetHistory[0];
