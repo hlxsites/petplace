@@ -1,3 +1,4 @@
+import { onPageActivation } from './scripts.js';
 import { isMiddleAd, mappingHelper, sizingArr } from './utils/helpers.js';
 
 window.googletag ||= { cmd: [] };
@@ -156,7 +157,7 @@ const adsenseSetup = (adArgs, catVal) => {
 };
 
 const adsDefineSlot = async (adArgs, catVal) => {
-  window.googletag.cmd.push(async () => {
+  const fn = async () => {
     // separate function to return the anchor slot
     const anchorSlot = await adsenseSetup(adArgs, catVal);
 
@@ -164,7 +165,9 @@ const adsDefineSlot = async (adArgs, catVal) => {
     const newArgs = adArgs.filter((arg) => !arg.includes('anchor'));
     if (anchorSlot) newArgs.push(anchorSlot);
     gtagDisplay(newArgs);
-  });
+  };
+
+  onPageActivation(() => window.googletag.cmd.push(fn));
 };
 
 // google tag for adsense

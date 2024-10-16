@@ -1,6 +1,6 @@
 import { loadScript } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
-import { isMobile } from './scripts.js';
+import { isMobile, onPageActivation } from './scripts.js';
 
 async function loadAccessibeWidget() {
   await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', { async: true });
@@ -33,14 +33,18 @@ async function loadAccessibeWidget() {
 }
 
 function loadMSClarity() {
-  return loadScript('https://www.clarity.ms/tag/hz6a0je2i3?ref=gtm2', { async: true });
+  onPageActivation(() => {
+    loadScript('https://www.clarity.ms/tag/hz6a0je2i3?ref=gtm2', { async: true });
+  });
 }
 
 async function loadPushlySdk() {
   function pushly(...args) { window.PushlySDK.push(args); }
-  pushly('load', {
-    domainKey: 'cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq',
-    sw: '/scripts/pushly-sdk-worker.js',
+  onPageActivation(() => {
+    pushly('load', {
+      domainKey: 'cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq',
+      sw: '/scripts/pushly-sdk-worker.js',
+    });
   });
   return loadScript('https://cdn.p-n.io/pushly-sdk.min.js?domain_key=cfOCEQj2H76JJXktWCy3uK0OZCb1DMbfNUnq', { async: true });
 }
