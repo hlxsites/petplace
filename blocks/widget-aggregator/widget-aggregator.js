@@ -24,7 +24,7 @@ export default async function decorate(block) {
     block.append(frame);
   } else if (script === 'widget') {
     block.innerText = '';
-    loadScript('https://quote.petted.com/Scripts/lib/widgets/petplace/quote-form/widget.min.js', { async: true }).then(() => {
+    loadScript('https://quote.petted.com/Scripts/lib/widgets/petplace/quote-form/widget.min.js', { async: true, defer: true }).then(() => {
       if (window.QuoteEngine) {
         window.QuoteEngine.setOptions({
           targetId: 'petplace-quote-form',
