@@ -1,4 +1,5 @@
 import { FormSchema, InputsUnion, Text } from "~/components/design-system";
+import { disableInput } from "~/components/design-system/form/utils/formInputUtils";
 
 export const petInfoIds = {
   age: "age",
@@ -224,18 +225,20 @@ export const editPetProfileFormSchema: (hasPolicy: boolean) => FormSchema = (
       elementType: "row",
       children: [
         { ...petNameInput, label: "Name" },
-        { ...speciesInput, disabledCondition: hasPolicy },
+        disableInput(speciesInput, hasPolicy),
       ],
     },
     {
       elementType: "row",
       children: [
-        {
-          ...breedInput,
-          disabledCondition: hasPolicy,
-          requiredCondition: true,
-        },
-        { ...mixedBreedInput, disabledCondition: hasPolicy },
+        disableInput(
+          {
+            ...breedInput,
+            requiredCondition: true,
+          },
+          hasPolicy
+        ),
+        disableInput(mixedBreedInput, hasPolicy),
       ],
     },
     {

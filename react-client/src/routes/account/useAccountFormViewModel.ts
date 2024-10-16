@@ -45,6 +45,7 @@ export const useAccountFormViewModel = ({
   const [accountFormValues, setAccountFormValues] = useState<FormValues>({});
   const [isLoadingAccount, setIsLoadingAccount] = useState(true);
   const [isSubmittingAccount, setIsSubmittingAccount] = useState(false);
+  const [hasPolicy, setHasPolicy] = useState(false);
 
   const countryOptions = countries.map((country) => country.title);
   const selectedCountry = countries.find(
@@ -60,6 +61,8 @@ export const useAccountFormViewModel = ({
 
   const fetchAccountForm = useCallback(async () => {
     const response = await accountDetailsQuery;
+
+    setHasPolicy(!!(response as ExternalAccountDetailsModel).insuranceUrl);
 
     const initialValues = getAccountDetailsInitialFormValue(
       response,
@@ -147,7 +150,7 @@ export const useAccountFormViewModel = ({
   };
 
   const accountFormSchema = isExternalLogin
-    ? externalAccountDetailsFormSchema
+    ? externalAccountDetailsFormSchema(hasPolicy)
     : internalAccountDetailsFormSchema;
 
   return {

@@ -7,6 +7,7 @@ import {
   ElementUnion,
   FormSchema,
 } from "~/components/design-system";
+import { disableInput } from "~/components/design-system/form/utils/formInputUtils";
 
 export const baseAccountDetailsIds = {
   email: "email-address",
@@ -220,7 +221,9 @@ export const internalAccountDetailsFormSchema: FormSchema = {
   version: 0,
 };
 
-export const externalAccountDetailsFormSchema: FormSchema = {
+export const externalAccountDetailsFormSchema: (
+  hasPolicy: boolean
+) => FormSchema = (hasPolicy) => ({
   id: "account-details-form",
   children: [
     contactInfoSection([requiredPhoneInput, optionalPhoneInput]),
@@ -235,15 +238,24 @@ export const externalAccountDetailsFormSchema: FormSchema = {
       children: [
         {
           elementType: "row",
-          children: [countryInput, stateInput],
+          children: [
+            disableInput(countryInput, hasPolicy),
+            disableInput(stateInput, hasPolicy),
+          ],
         },
         {
           elementType: "row",
-          children: [addressLineOneInput, addressLineTwoInput],
+          children: [
+            disableInput(addressLineOneInput, hasPolicy),
+            disableInput(addressLineTwoInput, hasPolicy),
+          ],
         },
         {
           elementType: "row",
-          children: [cityInput, zipCodeInput],
+          children: [
+            disableInput(cityInput, hasPolicy),
+            disableInput(zipCodeInput, hasPolicy),
+          ],
         },
       ],
     },
@@ -284,7 +296,7 @@ export const externalAccountDetailsFormSchema: FormSchema = {
     submitButton,
   ],
   version: 0,
-};
+});
 
 export const emergencyContactIds = {
   contactId: "contact-id",
