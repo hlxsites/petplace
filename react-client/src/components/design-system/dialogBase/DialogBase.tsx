@@ -16,6 +16,9 @@ import { Icon } from "../icon/Icon";
 import { Title } from "../text/Title";
 import { DialogBaseProps } from "../types/DialogBaseTypes";
 
+// Global counter for z-index
+let GLOBAL_Z_INDEX = 1000;
+
 export const DialogBase = ({
   align,
   ariaLabel,
@@ -34,19 +37,16 @@ export const DialogBase = ({
   trigger,
   width,
 }: DialogBaseProps) => {
-  // Global counter for z-index
-  let globalZIndex = 1000;
-
   const { isClosing, onCloseWithAnimation } = useCloseWithAnimation({
     onClose,
   });
   const dialogRef = useRef<HTMLDivElement>(null);
-  const [zIndex, setZIndex] = useState(globalZIndex);
+  const [zIndex, setZIndex] = useState(GLOBAL_Z_INDEX);
 
   useEffect(() => {
     if (isOpen) {
-      globalZIndex += 2;
-      setZIndex(globalZIndex);
+      GLOBAL_Z_INDEX += 2;
+      setZIndex(GLOBAL_Z_INDEX);
     }
   }, [isOpen]);
 
