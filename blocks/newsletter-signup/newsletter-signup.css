@@ -1,12 +1,18 @@
-main .newsletter-signup input {
+.newsletter-signup {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-inverted);
+}
+
+.newsletter-signup input {
   width: unset;
   margin: 0;
   padding: 0;
 }
 
-main .newsletter-signup {
-  background-color: var(--background-color-dark);
-  color: var(--text-color-inverted);
+.newsletter-signup label,
+.newsletter-signup input,
+.newsletter-signup button {
+  font-family: 'Libre Franklin', sans-serif;
 }
 
 /* FOOTER FORM */
@@ -110,6 +116,7 @@ main .newsletter-signup {
 
 .newsletter-signup .newsletter-message {
   font-weight: normal;
+  font-family: 'Libre Franklin', sans-serif;
   font-size: var(--body-font-size-m);
   padding: 0.5rem;
   background-color: #FCEFED;
