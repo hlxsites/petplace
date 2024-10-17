@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   PetDocument,
   PetDocumentTypeId,
+  QueryDocumentsInput,
 } from "~/domain/models/pet/PetDocument";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetDocumentsRepository } from "~/domain/repository/pet/GetPetDocumentsRepository";
@@ -35,12 +36,21 @@ export class PetDocumentsUseCase implements GetPetDocumentsRepository {
     return [];
   }
 
-  query = async (
-    petId: string,
-    type: PetDocumentTypeId
-  ): Promise<PetDocument[]> => {
+  query = async ({
+    microchip,
+    petId,
+    type,
+  }: QueryDocumentsInput): Promise<PetDocument[]> => {
     try {
-      const result = await this.httpClient.get(`api/Pet/${petId}/documents`);
+      const url = (() => {
+        const baseUrl = "api/Pet/";
+
+        // If microchip is provided we need to fetch the documents using a different endpoint
+        if (microchip) return `${baseUrl}documents?microchip=${microchip}`;
+
+        return `${baseUrl}${petId}/documents`;
+      })();
+      const result = await this.httpClient.get(url);
 
       if (!result.data) return [];
 
