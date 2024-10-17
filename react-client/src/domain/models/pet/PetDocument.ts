@@ -19,6 +19,12 @@ export type DocumentFileType =
   | "jpeg"
   | "txt";
 
+export type QueryDocumentsInput = {
+  microchip?: string | null;
+  petId: string;
+  type: PetDocumentTypeId;
+};
+
 export type PetDocument = {
   fileName: string;
   fileType: DocumentFileType;

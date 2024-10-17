@@ -26,7 +26,7 @@ export const loader = (({ params }) => {
 
   return defer({
     id: documentType,
-    documents: useCase.query(petId, documentType),
+    documentsQuery: useCase.query,
     downloadPetDocument: useCase.fetchDocumentBlob,
     deletePetDocument: useCase.deleteDocument,
     petId,
@@ -38,7 +38,7 @@ export const useDocumentTypeIndexViewModel = () => {
   const navigate = useNavigate();
   const {
     deletePetDocument,
-    documents,
+    documentsQuery,
     downloadPetDocument,
     id,
     petId,
@@ -136,7 +136,7 @@ export const useDocumentTypeIndexViewModel = () => {
 
   return {
     clearDownloadError,
-    documents,
+    documents: documentsQuery({ microchip: pet?.microchip, petId, type: id }),
     documentType,
     downloadError,
     onClose,
