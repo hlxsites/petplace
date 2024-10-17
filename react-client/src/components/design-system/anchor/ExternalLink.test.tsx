@@ -22,11 +22,6 @@ describe("<ExternalLink />", () => {
     }
   );
 
-  it('should have target="__blank"', () => {
-    getRenderer();
-    expect(getByRole("link")).toHaveAttribute("target", "__blank");
-  });
-
   it('should have rel="noopener noreferrer"', () => {
     getRenderer();
     expect(getByRole("link")).toHaveAttribute("rel", "noopener noreferrer");
@@ -35,6 +30,21 @@ describe("<ExternalLink />", () => {
   it.each(["a-class", "another-class"])("should have class %p", (expected) => {
     getRenderer({ className: expected });
     expect(getByRole("link")).toHaveClass(expected);
+  });
+
+  it.each(["id1", "id2"])("should have id %p", (expected) => {
+    getRenderer({ id: expected });
+    expect(getByRole("link")).toHaveAttribute("id", expected);
+  });
+
+  it("should open in a new tab by default", () => {
+    getRenderer();
+    expect(getByRole("link")).toHaveAttribute("target", "_blank");
+  });
+
+  it("should not open in a new tab when openInNewTab is false", () => {
+    getRenderer({ openInNewTab: false });
+    expect(getByRole("link")).not.toHaveAttribute("target", "_blank");
   });
 });
 
