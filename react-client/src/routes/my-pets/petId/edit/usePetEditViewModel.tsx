@@ -1,4 +1,3 @@
-import { format, formatISO } from "date-fns";
 import { isEqual } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +16,7 @@ import postPetImageUseCaseFactory from "~/domain/useCases/pet/postPetImageUseCas
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
 import { requireAuthToken } from "~/util/authUtil";
+import { parseDateToFormat } from "~/util/dateUtils";
 import { forceReload } from "~/util/forceRedirectUtil";
 import { invariantResponse } from "~/util/invariant";
 import { editPetProfileFormSchema, petInfoIds } from "../form/petForm";
@@ -219,12 +219,10 @@ export const usePetEditViewModel = () => {
 };
 
 function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
-  const dob = new Date(values[petInfoIds.dateOfBirth] as string);
-
   const petInfo: EditPetModel = {
     id: values[petInfoIds.petId] as string,
     breed: values[petInfoIds.breed] as string,
-    dateOfBirth: formatISO(dob),
+    dateOfBirth: values[petInfoIds.dateOfBirth] as string,
     mixedBreed: values[petInfoIds.mixedBreed] === "Yes",
     name: values[petInfoIds.name] as string,
     spayedNeutered: values[petInfoIds.neuteredSpayed] === "Yes",
@@ -237,13 +235,15 @@ function convertFormValuesToPetInfo(values: FormValues): EditPetModel {
 
 function getPetInfoFormData(values: PetModel | null): FormValues {
   if (!values) return {};
-  const dob = new Date(values.dateOfBirth ?? "");
 
   return {
     [petInfoIds.petId]: values.id ?? "",
     [petInfoIds.age]: values.age ?? "",
     [petInfoIds.breed]: values.breed ?? "",
-    [petInfoIds.dateOfBirth]: format(dob, "MM/dd/yyyy"),
+    [petInfoIds.dateOfBirth]: values.dateOfBirth ?? "",
+    [petInfoIds.displayDateOfBirth]: parseDateToFormat(
+      values.dateOfBirth ?? ""
+    ),
     [petInfoIds.mixedBreed]: values.mixedBreed ? "Yes" : "No",
     [petInfoIds.name]: values.name ?? "",
     [petInfoIds.neuteredSpayed]: values.spayedNeutered ? "Yes" : "No",
