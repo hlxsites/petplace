@@ -3,6 +3,7 @@ import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalI
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
 import { copyTextToClipboard } from "~/routes/my-pets/petId/utils/servicesUtils";
 import { downloadFile } from "~/util/downloadFunctions";
+import { dialPhoneNumber } from "~/util/phoneUtils";
 
 export type PetWatchServiceProps = Omit<
   PetServiceDetailsCardProps,
@@ -43,7 +44,11 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
         buttonLabel: "Copy number",
         onClick: () => copyTextToClipboard("1-866-597-2424"),
       },
-      { icon: "forwardedCall", buttonLabel: "Call", href: "tel:+18665972424" },
+      {
+        icon: "forwardedCall",
+        buttonLabel: "Call",
+        onClick: () => dialPhoneNumber({ href: "tel:+18665972424" }),
+      },
     ],
     title: "Lost Pet Recovery Specialists",
   },
