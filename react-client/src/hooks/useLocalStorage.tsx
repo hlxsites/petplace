@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import type { Dispatch, SetStateAction } from "react";
 
+import { logError, logWarning } from "~/infrastructure/telemetry/logUtils";
 import { useEventListener } from "./useEventListener";
 
 declare global {
@@ -78,7 +79,7 @@ export function useLocalStorage<T>(
       try {
         parsed = JSON.parse(value);
       } catch (error) {
-        console.error("Error parsing JSON:", error);
+        logError("Error parsing JSON:", error);
         return defaultValue; // Return initialValue if parsing fails
       }
 
@@ -102,7 +103,7 @@ export function useLocalStorage<T>(
       const raw = window.localStorage.getItem(key);
       return raw ? deserializer(raw) : initialValueToUse;
     } catch (error) {
-      console.warn(`Error reading localStorage key “${key}”:`, error);
+      logWarning(`Error reading localStorage key “${key}”:`, error);
       return initialValueToUse;
     }
   }, [initialValue, key, deserializer]);
@@ -121,7 +122,7 @@ export function useLocalStorage<T>(
     (value) => {
       // Prevent build error "window is undefined" but keeps working
       if (IS_SERVER) {
-        console.warn(
+        logWarning(
           `Tried setting localStorage key “${key}” even though environment is not a client`
         );
       }
@@ -139,7 +140,7 @@ export function useLocalStorage<T>(
         // We dispatch a custom event so every similar useLocalStorage hook is notified
         window.dispatchEvent(new StorageEvent("local-storage", { key }));
       } catch (error) {
-        console.warn(`Error setting localStorage key “${key}”:`, error);
+        logWarning(`Error setting localStorage key “${key}”:`, error);
       }
     },
     [key, readValue, serializer]
@@ -148,7 +149,7 @@ export function useLocalStorage<T>(
   const removeValue = useCallback(() => {
     // Prevent build error "window is undefined" but keeps working
     if (IS_SERVER) {
-      console.warn(
+      logWarning(
         `Tried removing localStorage key “${key}” even though environment is not a client`
       );
     }

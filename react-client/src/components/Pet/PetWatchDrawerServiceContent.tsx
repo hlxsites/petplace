@@ -1,19 +1,25 @@
-import { useContentDetails } from "~/hooks/useContentDetails";
-import { PetWatchDrawerHeader } from "./PetWatchDrawerHeader";
+import { PetServices } from "~/domain/models/pet/PetModel";
 import { PetWatchDrawerBody } from "./PetWatchDrawerBody";
+import { PetWatchDrawerHeader } from "./PetWatchDrawerHeader";
 
-export const PetWatchDrawerServiceContent = () => {
-  const { handleContentChange, contentDetails } = useContentDetails();
+type PetWatchDrawerServiceContentProps = {
+  isAnnualPlanExpired?: boolean;
+  serviceStatus: PetServices["membershipStatus"];
+  route?: string;
+};
 
+export const PetWatchDrawerServiceContent = ({
+  isAnnualPlanExpired,
+  serviceStatus,
+  route,
+}: PetWatchDrawerServiceContentProps) => {
   return (
     <>
-      <PetWatchDrawerHeader
-        contentDetails={contentDetails}
-        onClick={handleContentChange()}
-      />
+      <PetWatchDrawerHeader serviceStatus={serviceStatus} />
       <PetWatchDrawerBody
-        contentDetails={contentDetails}
-        onClick={handleContentChange}
+        isAnnualPlanExpired={isAnnualPlanExpired}
+        route={route}
+        serviceStatus={serviceStatus}
       />
     </>
   );

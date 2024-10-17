@@ -1,5 +1,7 @@
 import { Button, DropdownMenu } from "~/components/design-system";
+import { PetUnavailableActionDialog } from "~/components/Pet/PetUnavailableActionDialog";
 import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
+import { useTransferPetViewModel } from "./useTransferPetViewModel";
 
 type PetActionsDropdownMenuProps = {
   className?: string;
@@ -8,38 +10,42 @@ type PetActionsDropdownMenuProps = {
 export const PetActionsDropdownMenu = ({
   className,
 }: PetActionsDropdownMenuProps) => {
-  const viewModel = usePetProfileContext();
+  const { isLoading, onEditPet, pet } = usePetProfileContext();
+
+  const { onOpenDialog: onOpenTransferPetDialog } = useTransferPetViewModel();
+
+  if (isLoading || !pet) return null;
+
+  const isFromMyPetHealth = pet.sourceType === "MyPetHealth";
+
+  const trigger = (
+    <Button
+      className={className}
+      iconLeft="apps"
+      iconProps={{ className: "text-brand-secondary" }}
+      variant="secondary"
+    >
+      Actions
+    </Button>
+  );
+
+  if (!isFromMyPetHealth) {
+    return <PetUnavailableActionDialog trigger={trigger} />;
+  }
 
   return (
     <DropdownMenu
-      trigger={
-        <Button
-          className={className}
-          iconLeft="apps"
-          variant="secondary"
-          iconProps={{ className: "text-brand-secondary" }}
-        >
-          Actions
-        </Button>
-      }
+      trigger={trigger}
       items={[
         {
           icon: "edit",
           label: "Edit pet profile",
-          onClick: viewModel.onEditPet,
-          variant: "highlight",
+          onClick: onEditPet,
         },
         {
-          icon: "trash",
-          label: "Download pet ID",
-        },
-        {
-          icon: "trash",
-          label: "Remove this pet",
-        },
-        {
-          icon: "trash",
+          icon: "exchange",
           label: "Transfer this pet",
+          onClick: onOpenTransferPetDialog,
         },
       ]}
     />

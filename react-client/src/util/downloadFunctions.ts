@@ -1,37 +1,43 @@
+import { logError } from "~/infrastructure/telemetry/logUtils";
+
 export type DownloadFileProps = {
-  downloadPath?: string;
+  blob?: Blob;
+  url?: string;
   fileName: string;
-  fileType?: "doc" | "docx" | "jpg" | "pdf" | "png" | "txt";
+  fileType?: string;
 };
 
-export async function downloadFile({
-  downloadPath,
+export function downloadFile({
+  blob,
+  url,
   fileName,
   fileType,
 }: DownloadFileProps) {
-  if (!downloadPath || !fileType) return;
+  if (!blob && !url) return;
 
   try {
-    const response = await fetch(downloadPath);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+    let downloadUrl = url;
+
+    if (blob) {
+      if (!fileType) return;
+      downloadUrl = URL.createObjectURL(blob);
     }
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
 
     const downloadLink = document.createElement("a");
     downloadLink.style.display = "none";
-    downloadLink.href = url;
-    downloadLink.download = `${fileName ?? "sample"}.${fileType}`;
+    downloadLink.href = downloadUrl!;
+    downloadLink.download = fileName;
 
     // for firefox browsers
     document.body.appendChild(downloadLink);
-
     downloadLink.click();
-
     document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(url);
+
+    // Clean up the object URL if it was created
+    if (blob && downloadUrl) {
+      URL.revokeObjectURL(downloadUrl);
+    }
   } catch (error) {
-    console.error("Error downloading the file: ", error);
+    logError("Error downloading the file: ", error);
   }
 }

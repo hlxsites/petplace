@@ -1,39 +1,45 @@
 import { ReactNode } from "react";
 import { FromColorClasses } from "~/routes/types/styleTypes";
 import { classNames } from "~/util/styleUtil";
-import { Button, ButtonProps, Card, Text } from "../design-system";
+import { ButtonProps, Card, LinkButton, Text } from "../design-system";
 import { CardProps } from "../design-system/types/CardTypes";
 
 type AdvertisingBannerImageRightProps = {
   buttonLabel?: string;
   buttonProps?: ButtonProps;
   cardStyleProps?: Omit<CardProps, "children">;
+  gradientColor?: FromColorClasses;
+  gradientDirection?: "top" | "right" | "bottom" | "left";
   img?: string;
   imgName?: string;
   message?: string;
+  subMessage?: string;
   title: ReactNode;
-  gradientColor?: FromColorClasses;
-  gradientDirection?: "top" | "right" | "bottom" | "left";
+  to?: string;
 };
 
 export const AdvertisingBannerImageRight = ({
   buttonLabel,
   buttonProps,
   cardStyleProps,
+  gradientColor,
+  gradientDirection,
   img,
   imgName,
   message,
+  subMessage,
   title,
-  gradientColor,
-  gradientDirection,
+  to,
 }: AdvertisingBannerImageRightProps) => {
   return (
     <Card {...cardStyleProps} role="region">
-      <div className="grid grid-cols-1 justify-between p-large lg:flex">
+      <div className="grid grid-cols-1 justify-between p-large lg:flex lg:max-h-[310px]">
         <div className="flex max-w-[455px] flex-col items-start justify-between pr-xxxxxlarge">
-          <div className="grid gap-base pb-xxxxxlarge">
+          <div className="grid gap-base">
             {title}
-            <Text size="lg">{message}</Text>
+            {message && <Text size="18">{message}</Text>}
+            {subMessage && <Text size="12">{subMessage}</Text>}
+            <br />
           </div>
 
           {renderActionButton("hidden lg:block")}
@@ -42,9 +48,9 @@ export const AdvertisingBannerImageRight = ({
         <div className="relative m-[-24px] flex w-auto lg:max-h-[500px] lg:max-w-[500px]">
           {renderImage()}
 
-          {renderActionButton(
-            "absolute bottom-[24px] left-[24px] z-50 lg:hidden block"
-          )}
+          <div className="absolute bottom-[24px] block w-full px-large lg:hidden">
+            {renderActionButton()}
+          </div>
         </div>
       </div>
     </Card>
@@ -52,12 +58,15 @@ export const AdvertisingBannerImageRight = ({
 
   function renderActionButton(customClasses?: string) {
     return (
-      <Button
+      <LinkButton
+        variant="primary"
         {...buttonProps}
+        to={to ?? ""}
         className={classNames(buttonProps?.className, customClasses)}
+        fullWidth
       >
         {buttonLabel}
-      </Button>
+      </LinkButton>
     );
   }
 

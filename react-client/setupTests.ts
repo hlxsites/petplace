@@ -20,3 +20,19 @@ window.ResizeObserver = jest.fn().mockImplementation(() => ({
   unobserve: jest.fn(),
   disconnect: jest.fn(),
 }));
+
+global.console = {
+  ...console,
+  debug: jest.fn(),
+  error: jest.fn(),
+  info: jest.fn(),
+};
+
+// Mock toLocaleDateString to always return 'en-US' format when running tests
+const origDate = global.Date.prototype.toLocaleDateString;
+jest
+  .spyOn(global.Date.prototype, "toLocaleDateString")
+  .mockImplementation(function () {
+    // @ts-expect-error - this is a mock
+    return origDate.call(this, "en-US");
+  });

@@ -23,7 +23,7 @@ function useButtonBase({
     "m-0 rounded-full border font-semibold focus:outline-none items-center flex justify-center px-base py-small lg:px-large text-base lg:py-medium",
     {
       "bg-red-300 text-white": isError,
-      "px-xsmall py-xsmall hover:bg-transparent hover:border-transparent bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent":
+      "px-xsmall py-xsmall hover:!bg-transparent hover:border-transparent !bg-transparent text-neutral-700 lg:px-small lg:py-small focus:bg-transparent":
         isLink,
       "bg-orange-300-contrast text-white hover:!bg-orange-500 focus:bg-orange-300-contrast":
         isPrimary,
@@ -31,7 +31,8 @@ function useButtonBase({
         isSecondary,
       "bg-orange-100 text-orange-500": isTertiary,
 
-      "!cursor-not-allowed hover:!bg-inherit": disabled,
+      "!cursor-not-allowed hover:!bg-background-inactive text-neutral-500 !bg-background-inactive text-text-inactive":
+        disabled,
       "w-full": fullWidth,
       loading: isLoading,
     }

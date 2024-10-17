@@ -1,49 +1,37 @@
-import { Card, DisplayForm, Title } from "~/components/design-system";
+import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Header } from "~/components/design-system/header/Header";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
-import { editPetProfileFormSchema } from "../form/petForm";
-import { usePetProfileContext } from "../usePetProfileLayoutViewModel";
+import { PetModel } from "~/domain/models/pet/PetModel";
+import { PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import { invariant } from "~/util/invariant";
+import { DiscardConfirmationModal } from "./components/DiscardConfirmationModal";
+import { FormSection } from "./components/FormSection";
+import { usePetEditViewModel } from "./usePetEditViewModel";
 
 export const PetEditIndex = () => {
-  const { petInfo } = usePetProfileContext();
+  const { form, handleClose, onDiscard, petInfoQuery, ...formUtility } =
+    usePetEditViewModel();
 
-  return (
-    <>
-      <Header
-        backButtonTo={`/${AppRoutePaths.myPets}/${petInfo.id}`}
-        pageTitle="Edit Pet Profile"
-      />
-      <Card padding="xlarge">
-        <Title level="h3">Pet info</Title>
-        <div className="h-xxlarge" />
-        <DisplayForm
-          onChange={(props) => {
-            console.log("onChange values", props);
-          }}
-          onSubmit={({ event, values }) => {
-            event.preventDefault();
+  return <SuspenseAwait resolve={petInfoQuery}>{renderMain}</SuspenseAwait>;
 
-            console.log("onSubmit values", values);
-          }}
-          schema={editPetProfileFormSchema}
-          variables={{
-            // This could come from an API request, for example
-            breedOptions: [
-              "Poodle",
-              "Golden Retriever",
-              "Labrador",
-              "Pug",
-              "Beagle",
-            ],
-            breedTypeOptions: [],
-            colorOptions: ["Black", "White", "Brown", "Grey", "Golden"],
-          }}
-          // @ts-expect-error - This is a mock data
-          values={{
-            ...petInfo,
-          }}
+  function renderMain(pet: PetModel | null) {
+    invariant(pet, "Pet not found");
+
+    const { isDiscarding, ...rest } = form;
+
+    return (
+      <>
+        <Header
+          backButtonTo={PET_PROFILE_FULL_ROUTE(pet.id)}
+          pageTitle="Edit Pet Profile"
         />
-      </Card>
-    </>
-  );
+        <FormSection pet={pet} form={rest} {...formUtility} />
+        {isDiscarding && (
+          <DiscardConfirmationModal
+            onClose={handleClose}
+            onConfirm={onDiscard}
+          />
+        )}
+      </>
+    );
+  }
 };

@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode } from "react";
+import { useCarouselControl } from "~/hooks/useCarouselControl";
 import { classNames } from "~/util/styleUtil";
 import { IconButton } from "../button/IconButton";
 import { Icon } from "../icon/Icon";
@@ -9,36 +10,9 @@ type CarouselProps = {
 };
 
 export const Carousel = ({ ariaLabel, items }: CarouselProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const goToNextSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-  }, [items.length]);
-
-  const goToPrevSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? items.length - 1 : prevIndex - 1
-    );
-  }, [items.length]);
-
-  // Keyboard navigation functionality - enhance accessibility
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      event.preventDefault();
-      if (event.key === "ArrowRight" || event.key === " ") {
-        goToNextSlide();
-      } else if (event.key === "ArrowLeft" || event.key === "Backspace") {
-        goToPrevSlide();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup event listener
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [goToNextSlide, goToPrevSlide]);
+  const { currentIndex, goToNextSlide, goToPrevSlide } = useCarouselControl(
+    items.length
+  );
 
   return (
     <div
@@ -87,13 +61,13 @@ export const Carousel = ({ ariaLabel, items }: CarouselProps) => {
         <div
           className="flex gap-xsmall transition-transform duration-300 ease-out"
           style={{
-            transform: `translateX(-${currentIndex * 82}%)`,
+            transform: `translateX(-${currentIndex * 97}%)`,
           }}
         >
           {items.map((item, index) => (
             <div
               key={`carousel-item-${index}`}
-              className="w-[87%] flex-shrink-0"
+              className="w-[97%] flex-shrink-0"
             >
               {item}
             </div>

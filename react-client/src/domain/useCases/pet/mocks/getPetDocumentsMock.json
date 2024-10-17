@@ -1,0 +1,9 @@
+[
+  {
+    "Id": "doc-1",
+    "ContentType": "application/pdf",
+    "DocumentType": 2,
+    "PetId": "pet-id",
+    "Name": "Vaccine Record.pdf"
+  }
+]

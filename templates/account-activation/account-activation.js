@@ -1,21 +1,6 @@
 import { redeemTokenRequest } from '../../scripts/lib/msal/default-msal-config.js';
 import { getDefaultMsalInstance } from '../../scripts/lib/msal/msal-instance.js';
-import { captureError } from '../../scripts/scripts.js';
-
-function parseJwt(token) {
-  if (!token) return null;
-
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''));
-
-    return JSON.parse(jsonPayload);
-  } catch (e) {
-    captureError('account activation parseJwt', e);
-    return null;
-  }
-}
+import { parseJwt } from '../../scripts/parse-jwt.js';
 
 export async function loadEager(document) {
   const searchParams = new URLSearchParams(window.location.search);
@@ -45,7 +30,7 @@ export async function loadEager(document) {
       id_token_hint: token,
       login_hint: email,
     },
-    redirectUri: window.location.origin,
+    redirectUri: `${window.location.origin}/account/onboarding`,
   };
   msalInstance.loginRedirect(loginRequest);
 }

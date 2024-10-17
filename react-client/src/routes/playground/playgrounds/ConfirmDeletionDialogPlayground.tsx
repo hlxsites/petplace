@@ -6,11 +6,11 @@ export const ConfirmDeletionDialogPlayground = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <Button onClick={onOpen}>Open confirm dialog</Button>
       <ConfirmDeletionDialog
         isOpen={isOpen}
         onCancel={onClose}
         onConfirm={onClose}
+        trigger={<Button onClick={onOpen}>Open confirm dialog</Button>}
       />
     </>
   );

@@ -3,3 +3,86 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --container-height: calc(100vh - 64px - 64px - 196px);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#react-block-loading {
+    align-items: center;
+    display: flex;
+    height: var(--container-height);
+    justify-content: center;
+}
+
+#login-required-message {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 40px 0;
+    min-height: var(--container-height);
+    text-align: center;
+}
+
+#login-required-message img {
+    height: 287px;
+    margin: 0 auto;
+    width: 450px;
+}
+
+#login-required-message h1 {
+    color: #000;
+    font-family: Raleway;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: -0.48px;
+    text-align: center;
+}
+
+#login-required-message p {
+    color: #000;
+    font-family: "Libre Franklin";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+}
+
+#login-required-message button {
+    align-items: center;
+    display: flex;
+    height: 48px;
+    justify-content: center;
+    margin-top: 24px;
+    padding: 14px 24px;
+    width: 262px;
+}
+
+@media (max-width: 900px) {
+    #login-required-message img {
+        width: calc(100% - 32px);
+        height: 192px;
+    }
+
+    #login-required-message h1 {
+        font-size: 18px;
+        line-height: 20px;
+    }
+}

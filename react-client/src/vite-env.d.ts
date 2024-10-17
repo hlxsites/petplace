@@ -15,7 +15,20 @@ interface ImportMetaEnv {
   readonly BASE_URL: string;
   readonly DEV: boolean;
   readonly PROD: boolean;
-  readonly VITE_REACT_BASE_URL: string;
+  readonly VITE_APP_VERSION: string;
+  readonly VITE_AUTH_TOKEN: string;
+  readonly VITE_MPH_DEV_URL: string;
+  readonly VITE_MPH_STG_URL: string;
+  readonly VITE_MPH_PROD_URL: string;
+  readonly VITE_PETPLACE_SERVER_DEV_URL: string;
+  readonly VITE_PETPLACE_SERVER_STG_URL: string;
+  readonly VITE_PETPLACE_SERVER_PROD_URL: string;
+  readonly VITE_GOOGLE_ANALYTICS_ID_DEV: string;
+  readonly VITE_GOOGLE_ANALYTICS_ID_PROD: string;
+  readonly VITE_ENABLE_MOCK: string;
+  readonly VITE_R_A_T: string;
+  readonly VITE_R_A_T2: string;
+  readonly VITE_R_A_T3: string;
 }
 
 interface ImportMeta {

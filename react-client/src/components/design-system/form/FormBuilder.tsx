@@ -1,19 +1,16 @@
-import { isEqual } from "lodash";
-import {
-  Fragment,
-  useRef,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from "react";
-import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
+import { Fragment, useState, type FormEvent, type ReactNode } from "react";
+import { logWarning } from "~/infrastructure/telemetry/logUtils";
 import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
+import { Text } from "../text/Text";
 import { Title } from "../text/Title";
+import { FormRepeater } from "./FormRepeater";
 import Input from "./Input";
-import { InputBoolean } from "./InputBoolean";
 import { InputCheckboxGroup } from "./InputCheckboxGroup";
+import { InputHidden } from "./InputHidden";
+import { InputPhone } from "./InputPhone";
 import { InputRadio } from "./InputRadio";
+import { InputSwitch } from "./InputSwitch";
 import { InputTextarea } from "./InputTextarea";
 import Select from "./Select";
 import {
@@ -24,7 +21,13 @@ import {
   type FormSchema,
   type FormValues,
   type InputsUnion,
+  type InputValue,
 } from "./types/formTypes";
+import {
+  idWithRepeaterMetadata,
+  textWithRepeaterMetadata,
+} from "./utils/formRepeaterUtils";
+import { isEmailValid } from "./utils/formValidationUtils";
 
 const isDevEnvironment = window.location.hostname === "localhost";
 
@@ -41,41 +44,38 @@ type RenderedInput = Omit<
   required: boolean;
 };
 
+export type OnChangeFn = (values: FormValues) => void;
+export type OnSubmitFn = (props: OnSubmitProps) => void;
+
 export type FormBuilderProps = {
+  isDirty?: boolean;
+  isSubmitting?: boolean;
+  onChange: OnChangeFn;
+  onReset?: () => void;
+  onSubmit: OnSubmitFn;
   schema: FormSchema;
-  onChange?: (values: FormValues) => void;
-  onSubmit?: (props: OnSubmitProps) => void;
-  values?: FormValues;
+  values: FormValues;
 };
 
 export const FormBuilder = ({
-  schema,
-  onChange,
+  isDirty,
+  isSubmitting,
+  onChange: onChangeFormValues,
+  onReset,
   onSubmit,
-  values: defaultValues,
+  schema,
+  values,
 }: FormBuilderProps) => {
-  const defaultValuesRef = useRef<FormValues>(defaultValues || {});
-
-  const [values, setValues] = useState(defaultValuesRef.current);
   const [didSubmit, setDidSubmit] = useState(false);
 
-  // Object to store the rendered fields, can't use a ref because we want a clean object on each render
-  const renderedFields: RenderedInput[] = [];
-
-  // Check if any of the rendered fields has an error message
-  const hasValidationError = renderedFields.some((f) => !!f.errorMessage);
-
-  useDeepCompareEffect(() => {
-    // Notify onChange callback only if the values have changed
-    if (!!onChange && !isEqual(defaultValuesRef.current, values)) {
-      onChange(values);
-    }
-  }, [onChange, values]);
+  // Array to store the rendered inputs, can't use a ref because we want a clean array on each render
+  const renderedInputs: RenderedInput[] = [];
 
   return (
     <form
       className="space-y-large"
       id={schema.id}
+      role="form"
       noValidate
       onSubmit={onSubmitHandler}
     >
@@ -84,18 +84,16 @@ export const FormBuilder = ({
   );
 
   function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
-    if (hasValidationError) {
-      event.preventDefault();
-      setDidSubmit(true);
+    event.preventDefault();
+    if (!didSubmit) setDidSubmit(true);
 
-      return null;
-    }
+    // Check if any of the rendered fields has an error message
+    const hasValidationError = renderedInputs.some((f) => !!f.errorMessage);
 
-    setDidSubmit(true);
+    // Prevent form submission if there are validation errors
+    if (hasValidationError) return;
 
-    if (onSubmit) onSubmit({ event, values });
-
-    return values;
+    onSubmit({ event, values });
   }
 
   function renderElement(element: ElementUnion, index: number) {
@@ -106,12 +104,24 @@ export const FormBuilder = ({
     if (elementType === "input") {
       return <Fragment key={element.id}>{renderInput(element)}</Fragment>;
     } else if (elementType === "button") {
+      const disabled = (() => {
+        if (matchConditionExpression(element.enabledCondition ?? false))
+          return !isDirty;
+
+        return matchConditionExpression(element.disabledCondition ?? false);
+      })();
+
+      const isSubmitButton = element.type === "submit";
+      const isResetButton = element.type === "reset";
       return (
         <Button
           className={element.className}
+          disabled={disabled}
+          isLoading={isSubmitButton && isSubmitting}
+          onClick={isResetButton ? onReset : undefined}
           key={element.id}
           type={element.type}
-          variant={element.type === "submit" ? "primary" : "secondary"}
+          variant={isSubmitButton ? "primary" : "secondary"}
         >
           {element.label}
         </Button>
@@ -120,6 +130,18 @@ export const FormBuilder = ({
 
     const elementKey = `${elementType}-${index}`;
     switch (elementType) {
+      case "repeater":
+        return (
+          <FormRepeater
+            key={elementKey}
+            {...element}
+            onChange={(newValues) => {
+              onChangeFormValues({ ...values, [element.id]: newValues });
+            }}
+            renderElement={renderElement}
+            values={values}
+          />
+        );
       case "section":
         return <Fragment key={elementKey}>{renderSection(element)}</Fragment>;
       case "html":
@@ -134,7 +156,12 @@ export const FormBuilder = ({
             key={elementKey}
             id={element.id}
           >
-            {element.children.map(renderElement)}
+            {element.children.map((e, i) =>
+              renderElement(
+                { ...e, repeaterMetadata: element.repeaterMetadata },
+                i
+              )
+            )}
           </div>
         );
       default:
@@ -147,42 +174,55 @@ export const FormBuilder = ({
   }
 
   function renderInput({
+    id: inputId,
     disabledCondition,
+    label: inputLabel,
     requiredCondition,
-    shouldDisplay,
     ...inputProps
   }: InputsUnion): ReactNode {
-    if (!matchConditionExpression(shouldDisplay ?? true)) return null;
-
     const disabled = matchConditionExpression(disabledCondition ?? false);
     const required = matchConditionExpression(requiredCondition ?? false);
 
-    const { id, type } = inputProps;
+    const { type } = inputProps;
+
+    const { repeaterMetadata } = inputProps;
+    const id = idWithRepeaterMetadata(inputId, repeaterMetadata);
+    const label = inputLabel
+      ? textWithRepeaterMetadata(inputLabel, repeaterMetadata)
+      : "";
 
     const commonProps = {
+      id,
       disabled,
+      label,
       required,
       ...inputProps,
     };
 
-    // Validate the input and add the error message to the props if necessary
-    const errorMessage = didSubmit ? validateInput(commonProps) : null;
-    commonProps["errorMessage"] = errorMessage || undefined;
+    // Validate the input
+    const errorMessage = validateInput(commonProps);
 
-    renderedFields.push({
+    // We always need the error message in the rendered fields
+    renderedInputs.push({
       ...commonProps,
+      errorMessage,
     });
+
+    // Display the error message only if the form has been submitted
+    commonProps.errorMessage = didSubmit ? errorMessage : undefined;
+
+    if (type === "hidden") {
+      return <InputHidden id={id} value={getStringValue()} />;
+    }
 
     if (type === "select") {
       const { options } = inputProps;
       return (
         <Select
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           options={options as string[]}
-          value={(values?.[id] as string) || ""}
+          value={getStringValue()}
         />
       );
     }
@@ -191,11 +231,9 @@ export const FormBuilder = ({
       return (
         <InputRadio
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           options={(inputProps.options as string[]) || []}
-          value={(values?.[id] as string) || ""}
+          value={getStringValue()}
         />
       );
     }
@@ -203,24 +241,18 @@ export const FormBuilder = ({
       return (
         <InputCheckboxGroup
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           options={(inputProps.options as string[]) || []}
-          value={(values?.[id] as string[]) || []}
+          value={getStringArrayValue()}
         />
       );
     }
-    if (type === "boolean") {
+    if (type === "switch") {
       return (
-        <InputBoolean
+        <InputSwitch
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
-          value={
-            typeof values?.[id] !== "undefined" ? !!values?.[id] : undefined
-          }
+          onChange={handleInputChange}
+          value={getBooleanValue()}
         />
       );
     }
@@ -229,11 +261,23 @@ export const FormBuilder = ({
       return (
         <InputTextarea
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
+          onChange={handleInputChange}
           rows={inputProps.rows}
-          value={(values?.[id] as string) || ""}
+          value={getStringValue()}
+        />
+      );
+    }
+
+    if (type === "phone") {
+      return (
+        <InputPhone
+          {...commonProps}
+          disabledType={matchConditionExpression(
+            inputProps.disabledType ?? false
+          )}
+          hideType={matchConditionExpression(inputProps.hideType ?? false)}
+          onChange={handleInputChange}
+          value={getStringValue()}
         />
       );
     }
@@ -247,10 +291,8 @@ export const FormBuilder = ({
       return (
         <Input
           {...commonProps}
-          onChange={(newValue) => {
-            setValues((prev) => ({ ...prev, [id]: newValue }));
-          }}
-          value={(values?.[id] as string) || ""}
+          onChange={handleInputChange}
+          value={getStringValue()}
           type={type}
         />
       );
@@ -259,6 +301,46 @@ export const FormBuilder = ({
     if (isDevEnvironment) throw new Error(`Unsupported input type: ${type}`);
 
     return null;
+
+    function handleInputChange(newValue: InputValue) {
+      const inputId = getInputId(commonProps);
+
+      if (!repeaterMetadata) {
+        onChangeFormValues({ ...values, [inputId]: newValue });
+        return;
+      }
+
+      const { repeaterId, index } = repeaterMetadata;
+      const repeaterValues = (() => {
+        const current = values[repeaterId];
+        if (current && Array.isArray(current)) {
+          return (current as FormValues[]).map((item, i) => {
+            if (index !== i) return item;
+
+            return {
+              ...item,
+              [inputId]: newValue,
+            };
+          });
+        }
+
+        return [];
+      })();
+
+      onChangeFormValues({ ...values, [repeaterId]: repeaterValues });
+    }
+
+    function getStringValue() {
+      return (getInputValue(commonProps) as string) || "";
+    }
+
+    function getBooleanValue() {
+      return !!getInputValue(commonProps);
+    }
+
+    function getStringArrayValue() {
+      return (getInputValue(commonProps) as string[]) || [];
+    }
   }
 
   function renderSection({
@@ -266,22 +348,45 @@ export const FormBuilder = ({
     className,
     description,
     id,
-    shouldDisplay,
+    repeaterMetadata,
     title,
   }: ElementSection) {
-    if (!matchConditionExpression(shouldDisplay || true)) return;
+    const titleElement = (() => {
+      if (title.hideLabel) return null;
+
+      const { label, level, size, ...rest } = title;
+      return (
+        <Title level={level ?? "h2"} size={size ?? "18"} {...rest}>
+          {textWithRepeaterMetadata(label, repeaterMetadata)}
+        </Title>
+      );
+    })();
+
+    const descriptionElement = (() => {
+      if (!description) return null;
+
+      const { label, ...rest } = description;
+      return (
+        <Text {...rest}>
+          {textWithRepeaterMetadata(label, repeaterMetadata)}
+        </Text>
+      );
+    })();
+
     return (
-      <section className={classNames("my-small", className)} id={id}>
-        {!!title && <Title level="h2">{title}</Title>}
-        {!!description && (
-          <p className="text-lg text-muted-foreground">{description}</p>
-        )}
+      <section
+        aria-label={title.hideLabel ? title.label : undefined}
+        className={classNames("my-small", className)}
+        id={id}
+      >
+        {titleElement}
+        {descriptionElement}
         <div
           className={classNames("space-y-base", {
             "mt-base": !!title || !!description,
           })}
         >
-          {children.map(renderElement)}
+          {children.map((e, i) => renderElement({ ...e, repeaterMetadata }, i))}
         </div>
       </section>
     );
@@ -306,12 +411,23 @@ export const FormBuilder = ({
     value,
     type,
   }: ConditionCriteria): boolean {
-    // Get the current value from form values
-    const currentValue = values?.[inputId];
+    // Get the current value from form value
+    const targetInput = getInputSchemaFromFormSchema(inputId);
+
+    const currentValue: InputValue = (() => {
+      const curr = values[inputId];
+      if (!targetInput) return curr;
+
+      if (targetInput.type === "phone" && typeof curr === "string") {
+        return curr.split("|")[0];
+      }
+
+      return curr;
+    })();
 
     if (type === "contains") {
       if (typeof currentValue !== "string") {
-        console.warn('"contains" condition can only be used for strings');
+        logWarning('"contains" condition can only be used for strings');
         return false;
       }
 
@@ -320,7 +436,7 @@ export const FormBuilder = ({
 
     if (type === "regex") {
       if (typeof currentValue !== "string" || typeof value !== "string") {
-        console.warn('"regex" condition can only be used for strings');
+        logWarning('"regex" condition can only be used for strings');
         return false;
       }
 
@@ -328,7 +444,7 @@ export const FormBuilder = ({
         const regex = new RegExp(value);
         return regex.test(currentValue);
       } catch (error) {
-        console.warn('Invalid regex pattern for "regex" condition');
+        logWarning('Invalid regex pattern for "regex" condition');
         return false;
       }
     }
@@ -365,7 +481,7 @@ export const FormBuilder = ({
         return numericalComparison(currentValue.getTime(), value.getTime());
       }
 
-      console.warn(
+      logWarning(
         "Cannot compare non-numeric/non-date values for numeric/date operation"
       );
     }
@@ -386,23 +502,78 @@ export const FormBuilder = ({
       }
 
       if (type === "checkboxGroup") return "Select at least one option";
-      if (type === "boolean") return "Answer yes or no";
 
-      return "Fill this field";
+      return "This field should not be empty";
+    }
+
+    if (input.type === "email" && !isEmailValid(values[input.id] as string)) {
+      if (input.repeaterMetadata) {
+        const inputMetadata = input.id.split("_repeater_");
+        if (
+          !isEmailValid(
+            // @ts-expect-error this value is too deep for ts to understand
+            values[input.repeaterMetadata.repeaterId][inputMetadata[1]][
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              inputMetadata[0]
+            ] as string
+          )
+        ) {
+          return "Please enter a valid email address.";
+        }
+      } else {
+        return "Please enter a valid email address.";
+      }
     }
 
     return null;
   }
 
-  function inputValueExist({ id }: RenderedInput): boolean {
-    const value = values?.[id];
+  function inputValueExist(input: RenderedInput): boolean {
+    const value = getInputValue(input);
 
     if (typeof value === "undefined") return false;
 
+    if (input.type === "phone" && typeof value === "string") {
+      return !!value.split("|")[0];
+    }
+
     if (Array.isArray(value)) return !!value.length;
 
-    if (typeof value === "string") return !!value.length;
+    return !!value;
+  }
 
-    return true;
+  function getInputValue(input: RenderedInput): InputValue {
+    const inputId = getInputId(input);
+
+    const { repeaterMetadata } = input;
+    if (!repeaterMetadata) return values?.[inputId];
+
+    const { repeaterId, index } = repeaterMetadata;
+    // @ts-expect-error this value goes too deep for ts to understand
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+    return values?.[repeaterId]?.[index]?.[inputId];
+  }
+
+  function getInputId({ id, repeaterMetadata }: RenderedInput) {
+    if (!repeaterMetadata) return id;
+    return id.split("_repeater_")[0];
+  }
+
+  function getInputSchemaFromFormSchema(id: string): InputsUnion | null {
+    let targetInput: InputsUnion | null = null;
+
+    const findInput = (element: ElementUnion): boolean => {
+      if (element.elementType === "input" && element.id === id) {
+        targetInput = element;
+      } else if ("children" in element) {
+        element.children.some(findInput);
+      }
+
+      return !!targetInput;
+    };
+
+    schema.children.some(findInput);
+
+    return targetInput;
   }
 };

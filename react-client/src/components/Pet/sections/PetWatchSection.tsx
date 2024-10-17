@@ -1,56 +1,72 @@
-import { ASSET_IMAGES } from "~/assets";
 import { useDrawerContentState } from "~/hooks/useDrawerContentState";
-import { PetServiceTypes } from "~/routes/my-pets/petId/types/PetServicesTypes";
-import {
-  PET_WATCH_OFFERS,
-  PET_WATCH_TAGS,
-} from "~/routes/my-pets/petId/utils/petServiceConstants";
-import { Button, Card, Drawer, Tag, Text } from "../../design-system";
+import { Button, Card, Drawer, Tag, Text, Title } from "../../design-system";
 import { PetWatchDrawerServiceContent } from "../PetWatchDrawerServiceContent";
+import { usePetProfileContext } from "~/routes/my-pets/petId/usePetProfileLayoutViewModel";
+import { SuspenseAwait } from "~/components/await/SuspenseAwait";
+import { useWindowWidth } from "~/hooks/useWindowWidth";
 
 type PetWatchSectionProp = {
-  petServiceStatus: PetServiceTypes;
+  route?: string;
 };
 
-export const PetWatchSection = ({ petServiceStatus }: PetWatchSectionProp) => {
+export const PetWatchSection = ({ route }: PetWatchSectionProp) => {
+  const { petWatchInfo } = usePetProfileContext();
+
   const { isDrawerOpen, onOpenDrawer, onCloseDrawer } =
     useDrawerContentState("pet-watch");
-
-  const { buttonLabel, icon, message } = PET_WATCH_OFFERS[petServiceStatus];
-  const { label, tagStatus } = PET_WATCH_TAGS[petServiceStatus];
+  const windowWidth = useWindowWidth();
+  const isMobileScreen = windowWidth < 768;
 
   return (
     <>
-      <Card>
-        <div className="grid gap-large p-large">
-          <div className="flex items-center justify-between">
-            <img
-              className="max-h-[20px]"
-              alt="24 Pet Watch logo"
-              src={ASSET_IMAGES.petWatchLogo}
-            />
-            <Tag label={label} tagStatus={tagStatus} />
-          </div>
-          <Text size="base">{message}</Text>
-          <Button
-            className="text-orange-300-contrast"
-            iconLeft={icon}
-            variant="secondary"
-            onClick={() => onOpenDrawer()}
-          >
-            {buttonLabel}
-          </Button>
-        </div>
-      </Card>
-      <Drawer
-        ariaLabel="24 Pet Watch benefits"
-        id="24PetWatchDrawer"
-        isOpen={isDrawerOpen}
-        onClose={onCloseDrawer}
-        width={440}
-      >
-        <PetWatchDrawerServiceContent />
-      </Drawer>
+      <Text fontFamily="raleway" fontWeight="bold" size="18">
+        Active Pet Services
+      </Text>
+      <SuspenseAwait resolve={petWatchInfo}>
+        {({ petWatchOffersAndTags, membershipStatus, isAnnualPlanExpired }) => {
+          if (!petWatchOffersAndTags) return null;
+          const { buttonLabel, icon, message, label, tagStatus } =
+            petWatchOffersAndTags;
+          return (
+            <Card>
+              <div className="grid gap-large p-large">
+                <div className="flex flex-col gap-base md:flex-row md:items-center md:justify-between">
+                  <Title level="h4">Lost Pet Protection</Title>
+                  <Tag
+                    label={label}
+                    tagStatus={tagStatus}
+                    fullWidth={isMobileScreen}
+                  />
+                </div>
+                <Text size="14">{message}</Text>
+                <Drawer
+                  ariaLabel="24 Pet Watch benefits"
+                  id="24PetWatchDrawer"
+                  isOpen={isDrawerOpen}
+                  onClose={onCloseDrawer}
+                  width={480}
+                  trigger={
+                    <Button
+                      className="text-orange-300-contrast"
+                      iconLeft={icon}
+                      variant="secondary"
+                      onClick={() => onOpenDrawer()}
+                    >
+                      {buttonLabel}
+                    </Button>
+                  }
+                >
+                  <PetWatchDrawerServiceContent
+                    isAnnualPlanExpired={isAnnualPlanExpired}
+                    route={route}
+                    serviceStatus={membershipStatus}
+                  />
+                </Drawer>
+              </div>
+            </Card>
+          );
+        }}
+      </SuspenseAwait>
     </>
   );
 };

@@ -6,17 +6,23 @@ import {
   IconKeys,
   Table,
   Text,
-  TextProps,
   TextSpan,
   Title,
 } from "~/components/design-system";
 import { TableColumn } from "~/components/design-system/table/TableTypes";
 import {
-  LostPetUpdate,
+  LostAndFountNotification,
   MissingStatus,
-  PetInfo,
-} from "~/mocks/MockRestApiServer";
+} from "~/domain/models/pet/PetModel";
+import { parseDate } from "~/util/dateUtils";
+import { redirectToLostPet } from "~/util/forceRedirectUtil";
 import { classNames } from "~/util/styleUtil";
+
+type PetLostUpdatesSectionProps = {
+  lostPetHistory: LostAndFountNotification[];
+  missingStatus: MissingStatus;
+  onClickReportPetFound: () => void;
+};
 
 const columns: TableColumn[] = [
   { key: "id", minWidth: "100px", label: "Case ID" },
@@ -31,10 +37,10 @@ const ITEMS_PER_PAGE = 5;
 export const PetLostUpdatesSection = ({
   lostPetHistory,
   missingStatus,
-}: PetInfo) => {
-  const dataSource = (() => {
-    return lostPetHistory ? lostPetHistory.map(convertUpdateToRow) : [];
-  })();
+  onClickReportPetFound,
+}: PetLostUpdatesSectionProps) => {
+  const dataSource = lostPetHistory.map(convertUpdateToRow);
+  console.log("dataSource", dataSource);
 
   const isMissing = missingStatus === "missing";
   const [isOpen, setIsOpen] = useState(isMissing);
@@ -49,6 +55,7 @@ export const PetLostUpdatesSection = ({
       onOpenChange={setIsOpen}
       title={<Title level="h4">Lost Pets Status Update</Title>}
       isLocked={isMissing}
+      padding="large"
     >
       {renderDescriptionMessage()}
       <Table
@@ -68,7 +75,7 @@ export const PetLostUpdatesSection = ({
   function renderDescriptionMessage() {
     return (
       <div className="mb-large">
-        <Text size="base">
+        <Text size="16">
           {currentRows.length
             ? "Track your pet's status."
             : "Report Your pet as lost in case i goes missing."}
@@ -77,43 +84,48 @@ export const PetLostUpdatesSection = ({
     );
   }
 
-  function convertUpdateToRow({
-    date,
-    update,
-    status,
-    id,
-    note,
-  }: LostPetUpdate) {
+  function convertUpdateToRow(notification: LostAndFountNotification) {
+    const { date, update, id, note } = notification;
+
     return {
       data: {
-        date: new Date(date).toLocaleString(),
-        update: new Date(update).toLocaleString(),
-        status: convertStatus(status),
+        date: parseDate(date),
+        update: parseDate(update),
+        status: convertStatus(notification),
         id,
         note: note || "-",
       },
-      key: `${id}-${date}`,
+      key: `${id}_${update}`,
       isSelectable: false,
     };
   }
 
-  function convertStatus(status: LostPetUpdate["status"]) {
-    const { message, textColor, bgColor } = convertStatusVariable(status);
+  function convertStatus({
+    status,
+    statusMessage,
+  }: Pick<LostAndFountNotification, "status" | "statusMessage">) {
+    const isMissing = status === "missing";
+
+    const bgColor = isMissing ? "bg-yellow-100" : "bg-green-100";
+    const textColor = isMissing ? "yellow-500" : "green-500";
+
     return (
       <div
-        className={classNames("flex w-full justify-center rounded-md", bgColor)}
+        className={classNames(
+          "flex w-full justify-center rounded-md p-xsmall",
+          bgColor
+        )}
       >
-        <TextSpan color={textColor}>{message}</TextSpan>
+        <TextSpan color={textColor}>{statusMessage}</TextSpan>
       </div>
     );
   }
 
   function renderReportButton() {
-    const { icon, iconColor, message } = reportingVariables(
-      missingStatus ?? "found"
-    );
+    const { icon, iconColor, message, onClick } =
+      reportingVariables(missingStatus);
     return (
-      <Button variant="secondary" fullWidth>
+      <Button variant="secondary" onClick={onClick} fullWidth>
         <Icon display={icon} className={`mr-base ${iconColor}`} /> {message}
       </Button>
     );
@@ -125,48 +137,27 @@ export const PetLostUpdatesSection = ({
     const offsetFinishIndex = offsetStartIndex + itemsPerPage;
     setCurrentRows(dataSource.slice(offsetStartIndex, offsetFinishIndex));
   }
-};
 
-function reportingVariables(status: MissingStatus) {
-  type ReportVariable = Record<
-    MissingStatus,
-    { icon: IconKeys; iconColor: string; message: string }
-  >;
-
-  return (
-    {
-      missing: {
+  function reportingVariables(status: MissingStatus): {
+    icon: IconKeys;
+    iconColor: string;
+    message: string;
+    onClick: () => void;
+  } {
+    if (status === "missing") {
+      return {
         icon: "checkCircle",
         iconColor: "text-brand-main",
         message: "Report pet as found",
-      },
-      found: {
-        icon: "warning",
-        iconColor: "text-yellow-300",
-        message: "Report pet as missing",
-      },
-    } satisfies ReportVariable
-  )[status];
-}
+        onClick: onClickReportPetFound,
+      };
+    }
 
-function convertStatusVariable(status: MissingStatus) {
-  type ConvertVariable = Record<
-    MissingStatus,
-    { textColor: TextProps["color"]; bgColor: string; message: string }
-  >;
-
-  return (
-    {
-      missing: {
-        bgColor: "bg-yellow-100",
-        textColor: "yellow-500",
-        message: "Reported missing",
-      },
-      found: {
-        bgColor: "bg-green-100",
-        textColor: "green-500",
-        message: "I found my pet",
-      },
-    } satisfies ConvertVariable
-  )[status];
-}
+    return {
+      icon: "warning",
+      iconColor: "text-yellow-300",
+      message: "Report pet as missing",
+      onClick: redirectToLostPet,
+    };
+  }
+};

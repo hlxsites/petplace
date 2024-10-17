@@ -3,9 +3,10 @@ import { IconButton, IconKeys, Text } from "../design-system";
 
 type CartItemQuantityManagerProps = {
   id: string;
+  isAdditionalService?: boolean;
+  onUpdateQuantity: (id: string, quantity: number) => void;
   purchaseLimit?: number;
   quantity: number;
-  onUpdateQuantity: (id: string, quantity: number) => void;
 };
 
 type AddRemoveButtonVariation = "add" | "remove";
@@ -23,15 +24,16 @@ type ButtonVariables = Record<
 
 export const CartItemQuantityManager = ({
   id,
+  isAdditionalService,
+  onUpdateQuantity,
   purchaseLimit,
   quantity,
-  onUpdateQuantity,
 }: CartItemQuantityManagerProps) => {
   return (
     <div className="flex w-full justify-end">
       <div className="flex items-center">
         {renderIconButton("remove")}
-        <Text fontWeight="bold" size="base">
+        <Text fontWeight="bold" size="16">
           {quantity}
         </Text>
         {renderIconButton("add")}
@@ -77,7 +79,10 @@ export const CartItemQuantityManager = ({
           disabled: removeLimit,
         },
         add: {
-          className: addLimit ? "text-neutral-600" : "text-orange-300-contrast",
+          className:
+            isAdditionalService || addLimit
+              ? "text-neutral-600"
+              : "text-orange-300-contrast",
           icon: "addCircle",
           label: "Add one",
           onClick: addOne,

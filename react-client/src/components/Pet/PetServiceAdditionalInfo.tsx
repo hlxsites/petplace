@@ -6,7 +6,7 @@ export const PetServiceAdditionalInfo = ({ info }: { info: ReactNode }) => {
 
   return (
     <div className="flex flex-col gap-base p-large">
-      {isLabelString ? <Text>{info}</Text> : info}
+      {isLabelString ? <Text size="14">{info}</Text> : info}
     </div>
   );
 };

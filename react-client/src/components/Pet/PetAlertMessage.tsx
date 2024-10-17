@@ -1,24 +1,25 @@
+import { ReactNode } from "react";
 import {
-  Button,
   ButtonProps,
   Card,
   Icon,
   IconKeys,
+  LinkButton,
   Text,
   Title,
 } from "../design-system";
 
 type AlertMessageProps = {
   icon?: IconKeys;
-  message: string;
-  onClick?: () => void;
+  message: ReactNode;
+  route: string;
   title: string;
 };
 
 export const PetAlertMessage = ({
   icon,
   message,
-  onClick,
+  route,
   title,
 }: AlertMessageProps) => {
   return (
@@ -38,7 +39,7 @@ export const PetAlertMessage = ({
           {renderGetQuoteButton({ className: "hidden h-[30px] lg:flex" })}
         </div>
         <div className="pl-xxlarge">
-          <Text color="blue-500" size="base">
+          <Text color="blue-500" size="14">
             {message}
           </Text>
         </div>
@@ -51,9 +52,9 @@ export const PetAlertMessage = ({
 
   function renderGetQuoteButton(props: Pick<ButtonProps, "className">) {
     return (
-      <Button {...props} onClick={onClick}>
-        Get Quote Now
-      </Button>
+      <LinkButton {...props} variant="primary" to={route}>
+        Protect my Pet
+      </LinkButton>
     );
   }
 };

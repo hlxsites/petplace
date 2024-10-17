@@ -10,24 +10,12 @@ header .header {
 .meganav-bg {
   background-color: #fff;
   width: 100%;
-  height: 160%;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 3;
   border-bottom: 1px solid black;
-}
-
-@media (min-width: 414px) {
-  .meganav-bg {
-    height: 120%;
-  }
-}
-
-@media (min-width: 800px) {
-  .meganav-bg {
-    height: 100%;
-  }
+  overflow: hidden;
 }
 
 .body-locked {
@@ -365,6 +353,8 @@ header .header {
   border-radius: 0 0 10px 10px;
   border: 1px solid #e4e4eb;
   box-shadow: 0 34px 21px 0 #0000000d;
+  cursor: pointer;
+  pointer-events: auto;
   position: absolute;
   left: 0;
   width: 100%;
@@ -1264,4 +1254,64 @@ body.gen-ai #search-main .genai-search-container .default-content-wrapper {
 .header-search:hover .tooltip {
   visibility: visible;
   opacity: 1;
+}
+
+
+#nav .account-options a,
+#nav .account-options button {
+  align-items: center;
+  color: var(--text-color-supporting);
+  display: flex;
+  font-family: 'Libre Franklin', 'Libre Franklin Fallback', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  gap: var(--small);
+  letter-spacing: -0.32px;
+  line-height: 100%;
+}
+
+#nav .account-options a::before,
+#nav .account-options button::before {
+  content: '';
+  background-color: var(--text-color-supporting);
+  padding: 0.5rem;
+  display: inline-block;
+  height: 16;
+}
+
+#nav .account-options a:hover,
+#nav .account-options button:hover {
+  color: var(--purple-500);
+  cursor: pointer;
+  background-color: var(--purple-100);
+}
+
+#nav .my-account-link::before {
+  -webkit-mask: url("../../icons/my-account-icon.svg") center / 100% 100%;
+  mask: url("../../icons/my-account-icon.svg") center / 100% 100%;
+}
+
+#nav .my-pets-link::before {
+  -webkit-mask: url("../../icons/my-pets-icon.svg") center / 100% 100%;
+  mask: url("../../icons/my-pets-icon.svg") center / 100% 100%;
+}
+
+#nav .pet-adoption-link::before {
+  -webkit-mask: url("../../icons/pet-adoption-icon.svg") center / 100% 100%;
+  mask: url("../../icons/pet-adoption-icon.svg") center / 100% 100%;
+}
+
+#nav .logout-link::before {
+  -webkit-mask: url("../../icons/logout-icon.svg") center / 100% 100%;
+  mask: url("../../icons/logout-icon.svg") center / 100% 100%;
+}
+
+#nav .my-pets-link.hidden {
+  display: none;
+}
+
+#nav .account-options a:hover::before,
+#nav .account-options button:hover::before {
+  background-color: var(--purple-500);
 }

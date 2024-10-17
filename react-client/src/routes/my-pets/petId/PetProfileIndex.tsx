@@ -1,51 +1,90 @@
 import { Outlet, useSearchParams } from "react-router-dom";
 import { Header } from "~/components/design-system/header/Header";
+import { DefaultLoading } from "~/components/design-system/loading/DefaultLoading";
+import { CheckoutConclusionModal } from "~/components/Membership/CheckoutConclusionModal";
 import { AdvertisingSection } from "~/components/Pet/sections/AdvertisingSection";
 import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
-import { PetInsuranceSection } from "~/components/Pet/sections/PetInsurancecSection";
+import { PetInsuranceSection } from "~/components/Pet/sections/PetInsuranceSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
+import {
+  CHECKOUT_FULL_ROUTE,
+  MY_PETS_FULL_ROUTE,
+} from "~/routes/AppRoutePaths";
+import { invariant } from "~/util/invariant";
+import { CONTENT_PARAM_KEY } from "~/util/searchParamsKeys";
 import { PetActionsDropdownMenu } from "./components/PetActionsDropdownMenu";
-import { ReportLostPetButton } from "./components/ReportLostPetButton";
-import { OnboardingDialog } from "./onboarding/OnboardingDialog";
+import { ReportPetButton } from "./components/ReportPetButton";
+import { TransferPetDialog } from "./components/TransferPetDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
-  const { petInfo, petServiceStatus } = viewModel;
+  const { isLoading, pet, lostPetHistory, onClickReportPetFound } = viewModel;
 
-  const displayOnboarding = !!searchParams.get("onboarding");
+  if (isLoading) return <DefaultLoading minHeight="80dvh" />;
+
+  invariant(pet, "Pet not found");
+
+  const displayCheckoutSuccessModal = (() => {
+    const contentParam = searchParams.get(CONTENT_PARAM_KEY);
+    if (!contentParam) return false;
+
+    return contentParam === "pet-watch-purchase-success";
+  })();
+
+  const { id, membershipStatus, policyInsurance } = pet;
+
+  const checkoutPath = CHECKOUT_FULL_ROUTE(id);
+
+  const petInsuranceSectionElement = (() => {
+    if (!policyInsurance?.length) return null;
+    return <PetInsuranceSection petId={id} />;
+  })();
+
+  const shouldRenderAlert =
+    membershipStatus === "Not a member" || !membershipStatus;
 
   return (
     <>
-      <PetAlertSection />
+      {shouldRenderAlert && <PetAlertSection route={checkoutPath} />}
       <Header
-        backButtonTo={`/${AppRoutePaths.myPets}`}
+        backButtonTo={MY_PETS_FULL_ROUTE}
         pageTitle="Pet Profile"
         primaryElement={renderActionsButton()}
       />
-      <div className="flex flex-col gap-large">
-        <PetCardSection petInfo={petInfo} />
-        <AdvertisingSection />
-        {petServiceStatus && (
-          <PetWatchSection petServiceStatus={petServiceStatus} />
-        )}
-        <PetInsuranceSection />
-        <PetLostUpdatesSection {...petInfo} />
+      <div className="flex flex-col gap-xlarge">
+        <PetCardSection pet={pet} />
+        <AdvertisingSection linkTo={pet.insuranceUrl} />
+        <PetWatchSection route={checkoutPath} />
+        {petInsuranceSectionElement}
+        <PetLostUpdatesSection
+          lostPetHistory={lostPetHistory}
+          onClickReportPetFound={onClickReportPetFound}
+          missingStatus={pet.missingStatus}
+        />
       </div>
       <Outlet context={viewModel} />
-      {displayOnboarding && <OnboardingDialog />}
+      {displayCheckoutSuccessModal && <CheckoutConclusionModal petId={id} />}
+      <TransferPetDialog />
     </>
   );
 
   function renderActionsButton() {
+    if (!pet) return null;
+
+    const isFromMyPetHealth = pet?.sourceType === "MyPetHealth";
+
     return (
       <>
         <PetActionsDropdownMenu className="hidden lg:flex" />
-        <ReportLostPetButton className="flex lg:hidden" />
+        <ReportPetButton
+          className="flex lg:hidden"
+          disabled={!isFromMyPetHealth}
+          missingStatus={pet.missingStatus}
+        />
       </>
     );
   }

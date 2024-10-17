@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, ReactNode } from "react";
+import { ComponentProps, CSSProperties, ReactElement, ReactNode } from "react";
 import { IconProps } from "../icon/Icon";
 import { Title } from "../text/Title";
 
@@ -11,7 +11,8 @@ export type DialogIconProps = {
 };
 
 export type DialogTitleProps = {
-  titleLevel?: ComponentProps<typeof Title>["level"];
+  isTitleResponsive?: ComponentProps<typeof Title>["isResponsive"];
+  titleSize?: ComponentProps<typeof Title>["size"];
 } & (
   | {
       ariaLabel?: string;
@@ -22,6 +23,8 @@ export type DialogTitleProps = {
       title?: undefined;
     }
 );
+
+export type DialogTrigger = ReactElement | undefined;
 
 export type DialogBaseProps = DialogIconProps &
   DialogTitleProps & {
@@ -37,7 +40,8 @@ export type DialogBaseProps = DialogIconProps &
     id: string;
     isOpen: boolean;
     onClose?: () => void;
-    padding?: "p-0" | "p-large" | "p-xlarge";
+    padding?: "p-0" | "p-large" | "p-xlarge" | "p-xxlarge" | "p-xxxlarge";
+    trigger: DialogTrigger;
     width?: CSSProperties["width"];
   };
 

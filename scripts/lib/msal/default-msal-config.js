@@ -8,6 +8,8 @@
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/working-with-b2c.md
  */
 
+import { isProdEnvironment, isStagingEnvironment } from '../../../variables/envVariables.js';
+
 const stageConfigs = {
   clientId: '680fcf6c-4c38-4d11-8963-d65de9aec0d9',
   scopes: ['https://petplacepoc.onmicrosoft.com/api/adopt.all', 'openid'],
@@ -66,12 +68,16 @@ let b2cPolicies = {
 };
 
 // if URL contains "www.petplace.com", merge prodConfigs into b2cPolicies
-if (window.location.href.includes('www.petplace.com') || window.location.href.includes('main--petplace--hlxsites')) {
+if (isProdEnvironment) {
   b2cPolicies = { ...b2cPolicies, ...prodConfigs };
-} else if (window.location.href.includes('adopt-test--petplace--hlxsites')) {
+} else if (isStagingEnvironment) {
   b2cPolicies = { ...b2cPolicies, ...stageAltConfigs };
 } else {
   b2cPolicies = { ...b2cPolicies, ...stageConfigs };
+
+  // Using "release" as the default stage for the phase 2 release
+  // TODO: Remove this line after the phase 2 release
+  b2cPolicies = { ...b2cPolicies, ...stageAltConfigs };
 }
 
 export function getB2CPolicies() {

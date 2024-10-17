@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { ASSET_IMAGES } from "~/assets";
 import { classNames as cx } from "~/util/styleUtil";
 import { Card, CardProps, Icon } from "../design-system";
 
@@ -12,6 +13,7 @@ type PetCardProps = CardProps & {
   };
   img?: string;
   name: string;
+  speciesId?: number | null;
   variant?: "sm" | "md" | "lg";
 };
 
@@ -22,8 +24,18 @@ export const PetCard = ({
   img,
   name,
   variant,
+  speciesId,
   ...props
 }: PetCardProps) => {
+  const petImage = (() => {
+    if (img) return img;
+
+    if (speciesId === 2) {
+      return ASSET_IMAGES.squareCatAvatar;
+    }
+    return ASSET_IMAGES.squareDogAvatar;
+  })();
+
   return (
     <Card {...props} radius="sm">
       <div className={classNames?.root}>
@@ -35,7 +47,7 @@ export const PetCard = ({
           })}
         >
           <img
-            src={img}
+            src={petImage}
             alt={`Image of ${name}`}
             className="h-full w-full object-cover"
           />

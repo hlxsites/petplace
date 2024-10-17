@@ -1,79 +1,108 @@
+import { createRef, useRef } from "react";
+
+import { ProductDescription } from "~/domain/models/products/ProductModel";
 import { classNames } from "~/util/styleUtil";
 import { Button, Text } from "../design-system";
-import { useButtonSelection } from "~/hooks/useButtonSelection";
-import { useRef, createRef } from "react";
-
-type Colors = "black";
-type Sizes = "L" | "M/S" | "One Size";
 
 type CheckoutProductColorSizeProps = {
-  productColors?: Colors[];
-  productSizes?: Sizes[];
+  availableColors: ProductDescription["availableColors"];
+  availableSizes: ProductDescription["availableSizes"];
+  onChange: (props: { color: string; size: string }) => void;
+  selectedColor: string;
+  selectedSize: string;
 };
 
 export const CheckoutProductColorSize = ({
-  productColors,
-  productSizes,
+  availableColors,
+  availableSizes,
+  onChange,
+  selectedColor,
+  selectedSize,
 }: CheckoutProductColorSizeProps) => {
-  const { handleSelect: handleColorSelect, isSelected: isColorSelected } =
-    useButtonSelection();
-
-  const { handleSelect: handleSizeSelect, isSelected: isSizeSelected } =
-    useButtonSelection();
-
   const colorRefs = useRef<React.RefObject<HTMLButtonElement>[]>(
-    productColors?.map(() => createRef()) || []
+    availableColors?.map(() => createRef()) || []
   );
 
   const sizeRefs = useRef<React.RefObject<HTMLButtonElement>[]>(
-    productSizes?.map(() => createRef()) || []
+    availableSizes?.map(() => createRef()) || []
   );
+
+  const handleOnChangeColor = (newColor: string) => {
+    return () => {
+      if (selectedColor === newColor) return; // Do nothing if the color is the same
+      onChange({ color: newColor, size: selectedSize });
+    };
+  };
+
+  const handleOnChangeSize = (newSize: string) => {
+    return () => {
+      if (selectedSize === newSize) return; // Do nothing if the size is the same
+      onChange({ color: selectedColor, size: newSize });
+    };
+  };
 
   return (
     <div className="flex h-fit w-full gap-large">
-      {productColors && (
+      {!!availableColors?.length && (
         <div className="grid gap-small">
-          <Text>Color choice:</Text>
+          <Text color="background-color-tertiary" size="14">
+            Color choice:
+          </Text>
           <div className="flex gap-xsmall">
-            {productColors.map((productColor, index) => (
-              <Button
-                aria-label={`color: ${productColor}`}
-                className={classNames(
-                  "h-[30px] w-[30px] border-2 border-solid !px-0 lg:!px-0",
-                  {
-                    "border-orange-300-main": isColorSelected(
-                      colorRefs.current[index]
-                    ),
-                    "bg-black hover:!bg-black focus:bg-black":
-                      productColor === "black",
-                  }
-                )}
-                key={productColor}
-                onClick={() => handleColorSelect(colorRefs.current[index])}
-                ref={colorRefs.current[index]}
-              />
-            ))}
+            {availableColors.map((productColor, index) => {
+              const isSelected = productColor === selectedColor;
+              const ariaLabelStart = isSelected ? "selected color" : "color";
+
+              return (
+                <Button
+                  aria-label={`${ariaLabelStart}: ${productColor}`}
+                  className={classNames(
+                    "h-[30px] w-[30px] border-2 border-solid !px-0 lg:!px-0",
+                    {
+                      "border-orange-300-main": isSelected,
+                      "bg-black hover:!bg-black focus:bg-black":
+                        productColor === "black",
+                      "border-neutral-500 bg-white hover:!bg-white focus:bg-white":
+                        productColor === "white",
+                      "border-2 border-solid border-orange-300-main bg-white":
+                        productColor === "white" && isSelected,
+                    }
+                  )}
+                  key={`${productColor} - ${index}`}
+                  onClick={handleOnChangeColor(productColor)}
+                  ref={colorRefs.current[index]}
+                />
+              );
+            })}
           </div>
         </div>
       )}
-      {productSizes && (
+      {!!availableSizes?.length && (
         <div className="grid gap-small">
-          <Text>Select a size:</Text>
+          <Text color="background-color-tertiary" size="14">
+            Select a size:
+          </Text>
           <div className="flex h-[30px] gap-medium">
-            {productSizes.map((productSize, index) => (
-              <Button
-                className={classNames({
-                  "border-2 border-orange-300-contrast text-orange-300-contrast":
-                    isSizeSelected(sizeRefs.current[index]),
-                })}
-                key={productSize}
-                onClick={() => handleSizeSelect(sizeRefs.current[index])}
-                variant="secondary"
-                ref={sizeRefs.current[index]}
-              >
-                {productSize}
-              </Button>
-            ))}
+            {availableSizes.map((productSize, index) => {
+              const isSelected = productSize === selectedSize;
+              const ariaLabelStart = isSelected ? "selected size" : "size";
+
+              return (
+                <Button
+                  aria-label={`${ariaLabelStart}: ${productSize}`}
+                  className={classNames({
+                    "border-2 border-orange-300-contrast text-orange-300-contrast":
+                      isSelected,
+                  })}
+                  key={productSize}
+                  onClick={handleOnChangeSize(productSize)}
+                  variant="secondary"
+                  ref={sizeRefs.current[index]}
+                >
+                  {productSize}
+                </Button>
+              );
+            })}
           </div>
         </div>
       )}

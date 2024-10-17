@@ -5,13 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "sed -i '' \"/styles.css/d\" \"./src/index.css\"",
     "build": "tsc && vite build -l error",
-    "postbuild": "echo '@import \"../../styles/styles.css\";' > temp_file && cat ./src/index.css >> temp_file && mv temp_file ./src/index.css",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "VITE_MPH_DEV_URL=https://mph-qay.pethealthinc.com jest",
+    "test:watch": "VITE_MPH_DEV_URL=https://mph-qay.pethealthinc.com jest --watch"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -19,16 +17,22 @@
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@rollbar/react": "^0.12.0-beta",
     "@tanstack/react-virtual": "3.2.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "downshift": "^8.3.3",
     "focus-trap-react": "^10.2.3",
     "lodash.isequal": "^4.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-ga4": "^2.1.0",
     "react-router-dom": "^6.23.1",
+    "react-router-typesafe": "^1.5.0",
     "react-spring": "^9.7.4",
-    "tailwind-merge": "^2.3.0"
+    "rollbar": "^2.26.4",
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
@@ -42,7 +46,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitejs/plugin-react-swc": "^3.7.1",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -63,7 +67,7 @@
     "ts-jest-mock-import-meta": "^1.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "vite": "^5.2.13",
+    "vite": "^5.4.8",
     "vite-plugin-svgr": "^4.2.0"
   }
 }

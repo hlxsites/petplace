@@ -14,7 +14,7 @@ export const CheckoutFooter = () => {
   ];
 
   return (
-    <footer className="h-[261px] w-full bg-background-dark lg:h-[224px]">
+    <footer className="bg-background-dark h-[261px] w-full lg:h-[224px]">
       <div className="flex h-[138px] w-full items-center bg-white px-base lg:h-[159px] lg:px-xxlarge">
         <img
           className="max-h-[31px] max-w-[375px] lg:max-h-[56px] lg:max-w-[207px]"
@@ -34,7 +34,7 @@ export const CheckoutFooter = () => {
             </LinkButton>
           ))}
         </div>
-        <Text color="neutral-white">
+        <Text color="neutral-white" size="14">
           ©Copyright 1999 - 2023. Independence American Holdings Corp. All
           Rights Reserved
         </Text>

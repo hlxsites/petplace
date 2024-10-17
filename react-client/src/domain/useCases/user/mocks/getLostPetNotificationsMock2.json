@@ -1,0 +1,26 @@
+[
+  {
+    "FinderName": "Test",
+    "FinderOrgName": "AlaskaSummer.ltda",
+    "FinderContactNo": "123-456-7890",
+    "Type": "FoundPet",
+    "NotificationRequestId": "99ff6bba-66f0-4bc0-b5a6-3cee7ad39b20",
+    "NotificationCategoryId": 1,
+    "RequestDate": "2024-07-17T10:08:41.857",
+    "PetName": "No_chip",
+    "OwnerName": "Ellen Cao",
+    "Description": "Pet No_chip is found by Test.",
+    "ChipNumber": "AUN19623526",
+    "AnimalId": "AUN19623526",
+    "Status": "A",
+    "IsRead": false,
+    "StatusOn": "2024-07-17T10:08:41.857",
+    "StatusReason": null,
+    "CommunicationGroupId": "dba9ae21-764f-43cb-90a1-b020bbfea796",
+    "CommunicationDate": "2024-07-17T10:08:47.89",
+    "Communications": null,
+    "ReportedPetId": "AUN19623526",
+    "ReportedPetIdType": "24PetwatchID",
+    "Error": null
+  }
+]

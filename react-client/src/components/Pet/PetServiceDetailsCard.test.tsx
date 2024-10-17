@@ -36,9 +36,10 @@ describe("PetServiceDetailsCard", () => {
     }
   );
 
-  it("should render primary button when primaryAction is determined", () => {
+  it("should render primary button when primaryAction  and confirmButtonLabel are determined", () => {
     const primaryAction = {
-      label: "primary action label",
+      buttonLabel: "primary action label",
+      confirmButtonLabel: "yes",
     };
     getRenderer({ primaryAction });
     expect(
@@ -54,7 +55,7 @@ describe("PetServiceDetailsCard", () => {
   it("should render secondary button when secondaryActions are determined", () => {
     const secondaryActions = {
       icon: "apps" as IconKeys,
-      label: "secondary action label",
+      buttonLabel: "secondary action label",
     };
     getRenderer({ secondaryActions: [secondaryActions] });
     expect(
@@ -69,24 +70,29 @@ describe("PetServiceDetailsCard", () => {
 
   it("should call primary action callback", async () => {
     const primaryAction = {
-      label: "action label",
+      buttonLabel: "action label",
+      confirmButtonLabel: "yes",
       onClick: jest.fn(),
     };
     getRenderer({ primaryAction });
 
-    await userEvent.click(getByRole("button", { name: primaryAction.label }));
+    await userEvent.click(
+      getByRole("button", { name: primaryAction.buttonLabel })
+    );
     expect(primaryAction.onClick).toHaveBeenCalled();
   });
 
   it("should call secondary action callback", async () => {
     const secondaryAction = {
       icon: "alert" as IconKeys,
-      label: "action label",
+      buttonLabel: "action label",
       onClick: jest.fn(),
     };
     getRenderer({ secondaryActions: [secondaryAction] });
 
-    await userEvent.click(getByRole("button", { name: secondaryAction.label }));
+    await userEvent.click(
+      getByRole("button", { name: secondaryAction.buttonLabel })
+    );
     expect(secondaryAction.onClick).toHaveBeenCalled();
   });
 
@@ -95,7 +101,7 @@ describe("PetServiceDetailsCard", () => {
       "Alert",
       {
         icon: "alert" as IconKeys,
-        label: "action label",
+        buttonLabel: "action label",
         onClick: jest.fn(),
       },
     ],
@@ -103,7 +109,7 @@ describe("PetServiceDetailsCard", () => {
       "Search",
       {
         icon: "search" as IconKeys,
-        label: "action label",
+        buttonLabel: "action label",
         onClick: jest.fn(),
       },
     ],
@@ -113,9 +119,9 @@ describe("PetServiceDetailsCard", () => {
       getRenderer({ secondaryActions: [secondaryAction] });
 
       expect(
-        getByRole("button", { name: secondaryAction.label }).querySelector(
-          "svg"
-        )
+        getByRole("button", {
+          name: secondaryAction.buttonLabel,
+        }).querySelector("svg")
       ).toHaveAttribute("data-file-name", `Svg${expected}Icon`);
     }
   );
@@ -123,7 +129,18 @@ describe("PetServiceDetailsCard", () => {
 
 function getRenderer({
   description = "Test description",
+  isModalOpen = false,
+  onCloseModal = jest.fn(),
+  onConfirmModal = jest.fn(),
   ...props
 }: Partial<ComponentProps<typeof PetServiceDetailsCard>> = {}) {
-  return render(<PetServiceDetailsCard description={description} {...props} />);
+  return render(
+    <PetServiceDetailsCard
+      description={description}
+      isModalOpen={isModalOpen}
+      onCloseModal={onCloseModal}
+      onConfirmModal={onConfirmModal}
+      {...props}
+    />
+  );
 }

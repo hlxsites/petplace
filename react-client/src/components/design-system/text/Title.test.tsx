@@ -24,24 +24,54 @@ describe("<Title />", () => {
     }
   );
 
+  it.each(["40", "28", "12"] as ComponentProps<typeof Title>["size"][])(
+    "should render size as priority over level",
+    (size) => {
+      getRenderer({ level: "h1", size });
+      expect(getByRole("heading")).toHaveClass(`text-${size}`);
+    }
+  );
+
   it.each([
-    ["lg:text-[44px] text-[32px]/[36px]", "h1"],
-    ["lg:text-[32px]/[36px] text-[24px]/[28px]", "h2"],
-    ["lg:text-[24px]/[28px] text-[18px]/[20px]", "h3"],
-    ["lg:text-[18px]/[20px] text-[16px]/[20px]", "h4"],
-    ["lg:text-[16px]/[20px] text-[14px]/[16px]", "h5"],
-  ])(`should manage classes and levels accordingly`, (classes, level) => {
-    getRenderer({ level: level as Props["level"] });
-    expect(getByRole("heading")).toHaveClass(
-      `font-bold text-neutral-950 ${classes}`
-    );
-  });
+    ["h1", "44"],
+    ["h2", "32"],
+    ["h3", "24"],
+    ["h4", "18"],
+    ["h5", "16"],
+  ])(
+    "should render title with expected default level sizes",
+    (level, expectedSize) => {
+      // @ts-expect-error - ignoring for test purposes only
+      getRenderer({ level });
+      expect(getByRole("heading")).toHaveClass(`text-${expectedSize}`);
+    }
+  );
 
-  it("should match snapshot to assure that the component is being rendered correctly", () => {
-    const { container } = getRenderer();
+  it.each(["12", "14", "16", "18", "20", "24", "28", "32", "36", "40", "44"])(
+    "should render size=%s",
+    (size) => {
+      // @ts-expect-error - ignoring for test purposes only
+      getRenderer({ size });
+      expect(getByRole("heading")).toHaveClass(`text-${size}`);
+    }
+  );
 
-    expect(container).toMatchSnapshot();
-  });
+  it.each([
+    ["16", "14"],
+    ["24", "18"],
+    ["32", "24"],
+    ["36", "24"],
+    ["44", "24"],
+  ])(
+    "should render correct classes for size=%p when it's responsive",
+    (size, mobileSize) => {
+      // @ts-expect-error - ignoring for test purposes only
+      getRenderer({ isResponsive: true, size });
+      expect(getByRole("heading")).toHaveClass(
+        `lg:text-${size} text-${mobileSize}`
+      );
+    }
+  );
 
   it.each(["blue-500", "neutral-950"] satisfies ComponentProps<
     typeof Title
@@ -55,6 +85,16 @@ describe("<Title />", () => {
     getRenderer();
 
     expect(getByRole("heading")).toHaveClass("text-neutral-950");
+  });
+
+  it("should render component with leading of 110% by default", () => {
+    getRenderer();
+    expect(getByRole("heading")).toHaveClass("leading-[1.1]");
+  });
+
+  it("should render component with bold by default", () => {
+    getRenderer();
+    expect(getByRole("heading")).toHaveClass("font-bold");
   });
 });
 

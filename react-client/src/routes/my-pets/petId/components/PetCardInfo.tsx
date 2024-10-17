@@ -4,19 +4,23 @@ import {
   Text,
   Title,
 } from "~/components/design-system";
-import { PetInfo } from "~/mocks/MockRestApiServer";
-import { AppRoutePaths } from "~/routes/AppRoutePaths";
+import { PetModel } from "~/domain/models/pet/PetModel";
+import { AppRoutePaths, PET_PROFILE_FULL_ROUTE } from "~/routes/AppRoutePaths";
+import { getRouteFor } from "~/routes/util/getRouteFor";
 import { PetActionsDropdownMenu } from "./PetActionsDropdownMenu";
 import { PetDocumentsTabContent } from "./PetDocumentsTabContent";
 import { PetInfoTabContent } from "./PetInfoTabContent";
-import { ReportLostPetButton } from "./ReportLostPetButton";
+import { ReportPetButton } from "./ReportPetButton";
 
-export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
+type PetCardInfoProps = Omit<PetModel, "locale">;
+
+export const PetCardInfo = ({ ...petInfo }: PetCardInfoProps) => {
   const {
     age,
     breed,
     dateOfBirth,
-    microchipNumber,
+    missingStatus,
+    microchip,
     name,
     mixedBreed,
     sex,
@@ -39,22 +43,29 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
       exactRoute: true,
       icon: "paw",
       label: "Pet info",
-      route: getRouteFor(""),
+      route: getRouteFor(PET_PROFILE_FULL_ROUTE(petInfo.id), ""),
     },
     {
       content: () => <PetDocumentsTabContent />,
       icon: "file",
-      label: "Pet documents",
-      route: getRouteFor(AppRoutePaths.petProfileDocuments),
+      label: "Documents",
+      route: getRouteFor(
+        PET_PROFILE_FULL_ROUTE(petInfo.id),
+        AppRoutePaths.petProfileDocuments
+      ),
     },
   ];
 
   return (
     <div className="w-full p-large lg:p-xxlarge">
       <div className="max-h-xxxlarge mb-small flex w-full items-center justify-between">
-        <Title level="h1">{name}</Title>
+        <Title isResponsive>{name}</Title>
 
-        <ReportLostPetButton className="hidden lg:flex" />
+        <ReportPetButton
+          missingStatus={missingStatus}
+          className="hidden lg:flex"
+          disabled={petInfo.sourceType !== "MyPetHealth"}
+        />
         <PetActionsDropdownMenu className="flex lg:hidden" />
       </div>
       {renderSubInfo()}
@@ -62,19 +73,12 @@ export const PetCardInfo = ({ ...petInfo }: PetInfo) => {
   );
 
   function renderSubInfo() {
-    const getMicrochipNumber = microchipNumber ?? "";
+    const getmicrochip = microchip ?? "";
     return (
       <>
-        <Text size="base">{`Microchip#: ${getMicrochipNumber}`}</Text>
-
-        <div className="mt-base">
-          <RouteBasedTabs tabs={tabOptions} />
-        </div>
+        <Text size="16">{`Microchip#: ${getmicrochip}`}</Text>
+        <RouteBasedTabs tabs={tabOptions} />
       </>
     );
-  }
-
-  function getRouteFor(type: string) {
-    return `/${AppRoutePaths.myPets}/${petInfo.id}/${type}`;
   }
 };

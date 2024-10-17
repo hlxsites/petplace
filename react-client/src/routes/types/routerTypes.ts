@@ -3,11 +3,10 @@ import { RouteObject } from "react-router-dom";
 import { AppRoutePaths, AppRoutePathsIndexes } from "~/routes/AppRoutePaths";
 import { Modify } from "~/types/misc";
 
-type AppRoutePathIds = keyof typeof AppRoutePaths;
+export type AppRoutePathIds = keyof typeof AppRoutePaths;
 type AppRouteIndexPathIds = keyof typeof AppRoutePathsIndexes;
 
-type RouteHandle = {
-  ignorePageLayout?: boolean;
+export type RouteHandle = {
   title?: (data?: unknown) => string;
 };
 

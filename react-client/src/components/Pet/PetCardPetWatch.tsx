@@ -1,40 +1,43 @@
 import { classNames } from "~/util/styleUtil";
-import { Button, Icon, IconButton, Text } from "../design-system";
+import { Icon, IconButton, IconKeys, Tag, Text } from "../design-system";
 import { PetCardOption } from "./PetCardOption";
 
 export type PetCardPetWatchProps = {
+  icon?: IconKeys;
   id?: string;
-  label: string;
-  labelStatus?: string;
   imgBrand?: string;
   imgLabel?: string;
   isDisabled?: boolean;
+  isExpired?: boolean;
+  label: string;
   onClick?: () => void;
 };
 
 export const PetCardPetWatch = ({
-  label,
-  labelStatus,
+  icon,
   imgBrand,
   imgLabel,
   isDisabled,
+  isExpired,
+  label,
   onClick,
 }: PetCardPetWatchProps) => {
   return (
     <PetCardOption
       actionButton={getActionButton()}
       iconLeft={getIconLeft()}
+      isDisabled={isDisabled}
       text={
-        <div className={"flex flex-col pl-base"}>
+        <div className={"flex items-center justify-between gap-large pl-base"}>
           <Text
             color={isDisabled ? "neutral-500" : "secondary-700"}
             fontFamily="raleway"
             fontWeight="bold"
-            size="base"
+            size="14"
           >
             {label}
           </Text>
-          <Text color="neutral-500">{labelStatus}</Text>
+          {isExpired && <Tag label="Expired" tagStatus="warning" />}
         </div>
       }
     />
@@ -53,25 +56,25 @@ export const PetCardPetWatch = ({
           }
         )}
       >
-        <Icon className={"relative left-2 top-1"} display={"phone"} size={16} />
+        <Icon
+          className={"relative left-2 top-1"}
+          display={icon ?? "phone"}
+          size={16}
+        />
       </div>
     );
   }
 
   function getActionButton() {
-    if (isDisabled) {
-      return (
-        <Button className="p-0 text-orange-300-contrast" variant="link">
-          Renew
-        </Button>
-      );
-    }
     return (
       <IconButton
+        disabled={isDisabled}
         label="chevron right"
         icon="chevronRight"
         iconProps={{
-          className: "text-orange-300-contrast",
+          className: isDisabled
+            ? "text-neutral-500"
+            : "text-orange-300-contrast",
           size: 16,
         }}
         variant="link"

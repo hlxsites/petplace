@@ -21,12 +21,12 @@ describe.skip("PetCardInfo", () => {
     ).toBeInTheDocument();
   });
 
-  it.each([333, 98234263])(
+  it.each(["333", "ab98234263"])(
     "should render microchip info with given value",
-    (microchipNumber) => {
-      getRenderer({ microchipNumber });
+    (microchip) => {
+      getRenderer({ microchip });
 
-      expect(getByText(`Microchip#: ${microchipNumber}`)).toBeInTheDocument();
+      expect(getByText(`Microchip#: ${microchip}`)).toBeInTheDocument();
     }
   );
 
@@ -38,12 +38,18 @@ describe.skip("PetCardInfo", () => {
 
 function getRenderer({
   id = "testId",
+  missingStatus = "found",
   name = "Test pet card info",
   ...rest
 }: Partial<ComponentProps<typeof PetCardInfo>> = {}) {
   return render(
     <MemoryRouter initialEntries={["/test"]}>
-      <PetCardInfo id={id} name={name} {...rest} />
+      <PetCardInfo
+        id={id}
+        missingStatus={missingStatus}
+        name={name}
+        {...rest}
+      />
     </MemoryRouter>
   );
 }
