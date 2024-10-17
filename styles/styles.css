@@ -59,6 +59,7 @@
   --color-blue-dark-alt: #5d73a4;
   --color-purple: #6f69a8;
   --color-purple-alt: #6e6aa4;
+  --color-purple-lighter: #EBE8FC;
   --color-purple-light: #978ce0;
   --color-purple-gray: #736aa4;
   --color-purple-light-alt: #8e8199;
@@ -849,6 +850,11 @@ main .section.highlight.purple {
   background-color: var(--color-purple-dark);
   color: var(--text-color-inverted);
 }
+
+main .section.highlight.purple-lighter {
+  background-color: var(--color-purple-lighter);
+}
+
 
 /* Accessibility styles */
 
