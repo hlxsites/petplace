@@ -1,9 +1,11 @@
 import { ReactNode } from "react";
 import {
   Button,
+  ButtonProps,
   Card,
   Icon,
   IconKeys,
+  LinkButton,
   Text,
   TextSpan,
   Title,
@@ -90,23 +92,32 @@ export const PetServiceDetailsCard = ({
     onClick,
     href,
   }: ServiceAction) {
-    const button = (
-      <Button variant="secondary" key={label} onClick={onClick} fullWidth>
-        {icon && (
+    const children = (
+      <>
+        {!!icon && (
           <Icon display={icon} className="mr-small text-orange-300-contrast" />
         )}
         {label}
-      </Button>
+      </>
     );
 
-    if (!href) {
-      return button;
+    const commonProps: Pick<ButtonProps, "fullWidth" | "variant"> = {
+      fullWidth: true,
+      variant: "secondary",
+    };
+
+    if (href) {
+      return (
+        <LinkButton to={href} {...commonProps}>
+          {children}
+        </LinkButton>
+      );
     }
 
     return (
-      <a href={href} key={label} style={{ width: "100%" }}>
-        {button}
-      </a>
+      <Button onClick={onClick} {...commonProps}>
+        {children}
+      </Button>
     );
   }
 };
