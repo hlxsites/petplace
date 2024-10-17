@@ -10,13 +10,15 @@ jest.mock("../PetPlaceHttpClientUseCase", () => {});
 describe("PetDocumentsUseCase", () => {
   it("should return an empty array when no documents are found", async () => {
     const sut = makeSut();
-    expect(await sut.query("pet-id", "medical")).toStrictEqual([]);
+    expect(await sut.query({ petId: "pet-id", type: "medical" })).toStrictEqual(
+      []
+    );
   });
 
   it("should return the correct pet documents list", async () => {
     const httpClient = new MockHttpClient({ data: getPetDocumentsMock });
     const sut = makeSut(httpClient);
-    const result = await sut.query("pet-id", "vaccines");
+    const result = await sut.query({ petId: "pet-id", type: "vaccines" });
     expect(result).toStrictEqual([
       {
         downloadPath: "doc-1",
@@ -31,7 +33,7 @@ describe("PetDocumentsUseCase", () => {
   it("should return the correct pet documents list for type other", async () => {
     const httpClient = new MockHttpClient({ data: getPetDocumentsMock2 });
     const sut = makeSut(httpClient);
-    const result = await sut.query("pet-id2", "other");
+    const result = await sut.query({ petId: "pet-id2", type: "other" });
     expect(result).toStrictEqual([
       {
         downloadPath: "doc-2",
@@ -46,7 +48,7 @@ describe("PetDocumentsUseCase", () => {
   it("should return the correct pet documents list for type medical", async () => {
     const httpClient = new MockHttpClient({ data: getPetDocumentsMock2 });
     const sut = makeSut(httpClient);
-    const result = await sut.query("pet-id2", "medical");
+    const result = await sut.query({ petId: "pet-id2", type: "medical" });
     expect(result).toStrictEqual([
       {
         downloadPath: "doc-3",
@@ -63,7 +65,7 @@ describe("PetDocumentsUseCase", () => {
       error: new Error("Error"),
     });
     const sut = makeSut(httpClient);
-    const result = await sut.query("pet-id", "medical");
+    const result = await sut.query({ petId: "pet-id", type: "medical" });
     expect(result).toStrictEqual([]);
   });
 });
