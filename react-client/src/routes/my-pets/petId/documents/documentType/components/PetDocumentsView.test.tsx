@@ -46,13 +46,20 @@ describe("PetDocumentsView", () => {
     ).toHaveAttribute("data-file-name", "SvgUploadCloudIcon");
   });
 
-  it("should render the message indicating how to upload file and its accepted types and size", () => {
+  it("should render the message indicating how to upload file and its accepted types", () => {
     getRenderer();
 
     expect(getByText("Click to upload or drag and drop")).toBeInTheDocument();
     expect(
-      getByText(/^PNG, JPG, JPEG, PDF, TXT, DOC, DOCX \(max 10Mb\)$/i)
+      getByText(/^PNG, JPG, JPEG, PDF, TXT, DOC, DOCX/i)
     ).toBeInTheDocument();
+  });
+
+  it("should render the message indicating how to upload file and the accepted size", () => {
+    getRenderer();
+
+    expect(getByText("Click to upload or drag and drop")).toBeInTheDocument();
+    expect(getByText(/^\(max 10Mb\)$/i)).toBeInTheDocument();
   });
 
   it("should NOT render record file with loading view when isUploading=false", () => {

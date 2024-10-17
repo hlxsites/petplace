@@ -30,9 +30,6 @@ export const Tag = ({ fullWidth, label, tagStatus }: TagProps) => {
       <Text color={textColorClass} fontWeight="medium" size="16">
         {label}
       </Text>
-      {!["success", "info"].includes(tagStatus) && (
-        <Icon display="information" size={16} />
-      )}
     </div>
   );
 };

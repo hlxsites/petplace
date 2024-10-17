@@ -1,10 +1,8 @@
-import { LinkButton, Text, TextSpan } from "~/components/design-system";
+import { Button, Text, TextSpan } from "~/components/design-system";
 import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
-import {
-  acrobatReaderUrl,
-  copyTextToClipboard,
-} from "~/routes/my-pets/petId/utils/servicesUtils";
+import { copyTextToClipboard } from "~/routes/my-pets/petId/utils/servicesUtils";
+import { downloadFile } from "~/util/downloadFunctions";
 
 export type PetWatchServiceProps = Omit<
   PetServiceDetailsCardProps,
@@ -26,11 +24,9 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       {
         icon: "copyRegular",
         buttonLabel: "Copy number",
-        onClick: () => {
-          void copyTextToClipboard("1-866-597-2424");
-        },
+        onClick: () => copyTextToClipboard("1-866-597-2424"),
       },
-      { icon: "forwardedCall", buttonLabel: "Call" },
+      { icon: "forwardedCall", buttonLabel: "Call", href: "tel:+18665972424" },
     ],
     subtitle: "Find your pet 24/7",
     title: "MyPetHealth Portal",
@@ -45,11 +41,9 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       {
         icon: "copyRegular",
         buttonLabel: "Copy number",
-        onClick: () => {
-          void copyTextToClipboard("1-866-597-2424");
-        },
+        onClick: () => copyTextToClipboard("1-866-597-2424"),
       },
-      { icon: "forwardedCall", buttonLabel: "Call" },
+      { icon: "forwardedCall", buttonLabel: "Call", href: "tel:+18665972424" },
     ],
     title: "Lost Pet Recovery Specialists",
   },
@@ -98,15 +92,19 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
             </Text>
             <Text size="14">
               Note: this form requires Adobe Reader,
-              <LinkButton
-                className="m-0 inline"
-                openInNewTab
-                to={acrobatReaderUrl}
+              <Button
+                className="inline font-bold"
+                onClick={() =>
+                  downloadFile({
+                    url: "https://drive.google.com/uc?export=download&id=164zo5X6eA3vDCSZw87BifbGvmaLNRi4p",
+                    fileName: "form.pdf",
+                  })
+                }
+                variant="link"
+                style={{ fontSize: 14 }}
               >
-                <TextSpan fontWeight="bold" size="14">
-                  click here
-                </TextSpan>
-              </LinkButton>{" "}
+                click here
+              </Button>
               to download.
             </Text>
           </>
@@ -132,9 +130,7 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       {
         buttonLabel: "Copy email",
         icon: "copyRegular",
-        onClick: () => {
-          void copyTextToClipboard("24PetMedAlert@24petwatch.com");
-        },
+        onClick: () => copyTextToClipboard("24PetMedAlert@24petwatch.com"),
       },
     ],
     title: "24PetMedAlert",

@@ -37,20 +37,16 @@ describe("Tag", () => {
     }
   );
 
-  it("should render info icon for tagStatus=%s", () => {
-    const { container } = getRenderer({ tagStatus: "warning" });
+  it("should render with full width when fullWidth is true", () => {
+    const { container } = getRenderer({ fullWidth: true });
 
-    expect(
-      container.querySelector("svg[data-file-name='SvgInformationIcon']")
-    ).toBeInTheDocument();
+    expect(container.firstChild).toHaveClass("w-full");
   });
 
-  it("should NOT render info icon for tagStatus='success'", () => {
-    const { container } = getRenderer({ tagStatus: "success" });
+  it("should NOT have w-full class when fullWidth is false", () => {
+    const { container } = getRenderer({ fullWidth: false });
 
-    expect(
-      container.querySelector("svg[data-file-name='SvgInformationIcon']")
-    ).not.toBeInTheDocument();
+    expect(container.firstChild).not.toHaveClass("w-full");
   });
 
   it("should render with full width when fullWidth is true", () => {

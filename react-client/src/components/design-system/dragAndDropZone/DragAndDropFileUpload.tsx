@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import { useWindowWidth } from "~/hooks/useWindowWidth";
+import { classNames } from "~/util/styleUtil";
 import { Button } from "../button/Button";
 import { Icon } from "../icon/Icon";
 import { Text } from "../text/Text";
@@ -27,6 +29,7 @@ export const DragAndDropFileUpload = ({
   ...rest
 }: DragAndDropFileUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const flexCol = useWindowWidth() < 370;
 
   const messageText = message || "Click to upload or drag and drop";
 
@@ -62,16 +65,21 @@ export const DragAndDropFileUpload = ({
         onClick={handleUploadClick}
         variant="link"
       >
-        <div className="grid place-items-center px-large py-base">
+        <div className="flex flex-col items-center px-large py-base">
           <div className="pb-small">
             <Icon display="uploadCloud" className="text-brand-main" size={32} />
           </div>
           <Text fontFamily="raleway" fontWeight="bold" size="14">
             {messageText}
           </Text>
-          <Text color="tertiary-600">
-            {allowedExtensionsText} (max {allowedFileSizeLimitInMb}Mb)
-          </Text>
+          <div
+            className={classNames("flex", {
+              "flex-col": flexCol,
+            })}
+          >
+            <Text color="tertiary-600">{allowedExtensionsText}</Text>
+            <Text color="tertiary-600">(max {allowedFileSizeLimitInMb}Mb)</Text>
+          </div>
         </div>
       </Button>
     </DragAndDropZone>
