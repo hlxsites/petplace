@@ -56,7 +56,7 @@ export const useAccountNotificationsIndexViewModel = () => {
   }, []);
 
   const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
-  const isExternalLogin = !!accountRootData?.isExternalLogin;
+  const isSsoEnabledLogin = !!accountRootData?.isSsoEnabledLogin;
 
   const asyncSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
@@ -74,7 +74,7 @@ export const useAccountNotificationsIndexViewModel = () => {
 
   return {
     formValues,
-    isExternalLogin,
+    isSsoEnabledLogin,
     isDirty,
     isLoading,
     isSubmitting,

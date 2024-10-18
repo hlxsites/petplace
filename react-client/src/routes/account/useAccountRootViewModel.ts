@@ -2,9 +2,9 @@ import { LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { checkIsSsoEnabledLogin } from "~/util/authUtil";
 
 export const loader = (() => {
-  const isExternalLogin = checkIsSsoEnabledLogin();
+  const isSsoEnabledLogin = checkIsSsoEnabledLogin();
 
-  return { isExternalLogin };
+  return { isSsoEnabledLogin };
 }) satisfies LoaderFunction;
 
 export type AccountRootLoaderData = ReturnType<typeof loader>;

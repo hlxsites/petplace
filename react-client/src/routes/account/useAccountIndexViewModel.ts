@@ -45,12 +45,12 @@ export const useAccountIndexViewModel = () => {
   } = useLoaderData<typeof loader>();
   const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
 
-  const isExternalLogin = !!accountRootData?.isExternalLogin;
+  const isSsoEnabledLogin = !!accountRootData?.isSsoEnabledLogin;
 
   const accountForm = useAccountFormViewModel({
     accountDetailsQuery,
     countries,
-    isExternalLogin,
+    isSsoEnabledLogin,
     mutateAccountDetails,
     statesQuery,
   });
@@ -64,6 +64,6 @@ export const useAccountIndexViewModel = () => {
   return {
     accountForm,
     emergencyContactsForm,
-    isExternalLogin,
+    isSsoEnabledLogin,
   };
 };

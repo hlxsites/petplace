@@ -24,7 +24,7 @@ import {
 type UseAccountFormViewModelProps = {
   accountDetailsQuery: Promise<AccountDetailsModel | null>;
   countries: CountryModel[];
-  isExternalLogin: boolean;
+  isSsoEnabledLogin: boolean;
   mutateAccountDetails: (data: AccountDetailsModel) => Promise<boolean>;
   statesQuery: (countryId: string) => Promise<CountryStateModel[]>;
 };
@@ -32,7 +32,7 @@ type UseAccountFormViewModelProps = {
 export const useAccountFormViewModel = ({
   accountDetailsQuery,
   countries,
-  isExternalLogin,
+  isSsoEnabledLogin,
   mutateAccountDetails,
   statesQuery,
 }: UseAccountFormViewModelProps) => {
@@ -66,7 +66,7 @@ export const useAccountFormViewModel = ({
 
     const initialValues = getAccountDetailsInitialFormValue(
       response,
-      isExternalLogin
+      isSsoEnabledLogin
     );
 
     // Set the country
@@ -90,7 +90,7 @@ export const useAccountFormViewModel = ({
 
     setAccountFormValues(initialValues);
     setIsLoadingAccount(false);
-  }, [accountDetailsQuery, countries, isExternalLogin, statesQuery]);
+  }, [accountDetailsQuery, countries, isSsoEnabledLogin, statesQuery]);
 
   useEffect(() => {
     void fetchAccountForm();
@@ -129,7 +129,7 @@ export const useAccountFormViewModel = ({
 
     const accountDetails = convertFormValuesToAccountDetails(
       values,
-      isExternalLogin,
+      isSsoEnabledLogin,
       countries,
       countryStateList
     );
@@ -149,7 +149,7 @@ export const useAccountFormViewModel = ({
     void asyncSubmitAccountDetails(values);
   };
 
-  const accountFormSchema = isExternalLogin
+  const accountFormSchema = isSsoEnabledLogin
     ? externalAccountDetailsFormSchema(hasPolicy)
     : internalAccountDetailsFormSchema;
 
@@ -170,13 +170,13 @@ export const useAccountFormViewModel = ({
 
 function getAccountDetailsInitialFormValue(
   accountDetails: AccountDetailsModel | null,
-  isExternalLogin: boolean
+  isSsoEnabledLogin: boolean
 ): FormValues {
   if (!accountDetails) return {};
   const baseAccountDetails = getInternalAccountDetailsData(
     accountDetails as InternalAccountDetailsModel
   );
-  if (!isExternalLogin) return baseAccountDetails;
+  if (!isSsoEnabledLogin) return baseAccountDetails;
 
   return getExternalAccountDetailsData(
     accountDetails as ExternalAccountDetailsModel,
@@ -237,7 +237,7 @@ function validateNameOrSurname(value: string) {
 
 function convertFormValuesToAccountDetails(
   values: FormValues,
-  isExternalLogin: boolean,
+  isSsoEnabledLogin: boolean,
   countriesList: CountryModel[],
   statesList: CountryStateModel[]
 ): AccountDetailsModel | null {
@@ -249,7 +249,7 @@ function convertFormValuesToAccountDetails(
     zipCode: values[baseAccountDetailsIds.zipCode] as string,
   };
 
-  if (!isExternalLogin) return accountDetails;
+  if (!isSsoEnabledLogin) return accountDetails;
 
   const country = (() => {
     const c = values[accountAddressIds.country] as string;
