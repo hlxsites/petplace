@@ -42,12 +42,13 @@ function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
 
   const serverResponseSchema = z.object({
     AnimalId: z.string().nullish(),
+    ChipNumber: z.string().nullish(),
     CommunicationDate: z.string().nullish(),
+    CommunicationGroupId: z.string().nullish(),
     Description: z.string().nullish(),
     FinderContactNo: z.string().nullish(),
     FinderName: z.string().nullish(),
     FinderOrgName: z.string().nullish(),
-    CommunicationGroupId: z.string().nullish(),
     NotificationRequestId: z.string().nullish(),
     PetName: z.string().nullish(),
     RequestDate: z.string().nullish(),
@@ -62,6 +63,7 @@ function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
 
     const {
       AnimalId,
+      ChipNumber,
       CommunicationDate,
       CommunicationGroupId,
       Description,
@@ -86,6 +88,7 @@ function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
       id: NotificationRequestId ?? "",
       note: Description ?? "",
       petId: AnimalId ?? "",
+      petMicrochip: ChipNumber ?? "",
       petName: PetName ?? "",
       status: Type === "FoundPet" ? "found" : "missing",
       update: CommunicationDate ?? "",
