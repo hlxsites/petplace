@@ -26,6 +26,7 @@ export type LostPetUpdateModel = {
   communicationId: string;
   note?: string;
   petId: string;
+  petMicrochip: string;
   petName: string;
   status: MissingStatus;
   update: string;

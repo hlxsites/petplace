@@ -22,7 +22,7 @@ export const AccountNotificationId = () => {
     if (!notification) return null;
 
     return (
-      <NotificationsDialogContent onClose={onClose} viewData={notification} />
+      <NotificationsDialogContent onClose={onClose} viewData={notification} microchip={baseNotification.petMicrochip} />
     );
   })();
 

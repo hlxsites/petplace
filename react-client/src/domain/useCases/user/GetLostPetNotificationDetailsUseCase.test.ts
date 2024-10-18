@@ -15,6 +15,7 @@ const DEFAULT_NOTIFICATION: LostPetUpdateModel = {
   date: "2024-07-17T10:08:41.857",
   id: "",
   petId: "",
+  petMicrochip: "",
   petName: "",
   status: "found",
   update: "",
@@ -49,6 +50,7 @@ describe("GetLostPetNotificationDetailsUseCase", () => {
       id: "",
       petId: "",
       petName: "",
+      petMicrochip: "",
       status: "found",
       update: "",
     });
