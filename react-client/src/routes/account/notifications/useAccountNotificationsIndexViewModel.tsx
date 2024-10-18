@@ -64,20 +64,6 @@ export const useAccountNotificationsIndexViewModel = () => {
     void onFetchAccountNotifications();
   }, [query]);
 
-  // useEffect(() => {
-  //   const onFetchLostPetsHistory = async () => {
-  //     const list = await lostPetsHistoryQuery();
-  //     setLostPetsHistory(list);
-  //     setIsLoadingLostPetsHistory(false);
-  //   };
-
-  //   // only fetch lost pets history if SSO is enabled
-  //   if (isSsoEnabledLogin && !isLoadingLostPetsHistory) {
-  //     setIsLoadingLostPetsHistory(true);
-  //     void onFetchLostPetsHistory();
-  //   }
-  // }, [isLoadingLostPetsHistory, isSsoEnabledLogin, lostPetsHistoryQuery]);
-
   const asyncSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
 
