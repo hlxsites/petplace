@@ -1,12 +1,11 @@
 import { isEqual } from "lodash";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FormValues } from "~/components/design-system";
 import {
   OnChangeFn,
   OnSubmitFn,
 } from "~/components/design-system/form/FormBuilder";
 import { AccountEmergencyContactModel } from "~/domain/models/user/UserModels";
-import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import {
   emergencyContactFormSchema,
   emergencyContactIds,
@@ -16,7 +15,8 @@ type UseAccountEmergencyContactViewModelProps = {
   deleteEmergencyContactMutation: (
     data: AccountEmergencyContactModel
   ) => Promise<boolean>;
-  emergencyContactsQuery: Promise<AccountEmergencyContactModel[]>;
+  emergencyContactsQuery: () => Promise<AccountEmergencyContactModel[]>;
+  isSsoEnabledLogin: boolean;
   submitEmergencyContactsMutation: (
     data: AccountEmergencyContactModel[]
   ) => Promise<boolean>;
@@ -25,6 +25,7 @@ type UseAccountEmergencyContactViewModelProps = {
 export const useAccountEmergencyContactViewModel = ({
   deleteEmergencyContactMutation,
   emergencyContactsQuery,
+  isSsoEnabledLogin,
   submitEmergencyContactsMutation,
 }: UseAccountEmergencyContactViewModelProps) => {
   const originalEmergencyContactsRef = useRef<AccountEmergencyContactModel[]>(
@@ -36,7 +37,7 @@ export const useAccountEmergencyContactViewModel = ({
   const [emergencyContactsFormValues, setEmergencyContactsFormValues] =
     useState<FormValues>({});
   const [isLoadingEmergencyContacts, setIsLoadingEmergencyContacts] =
-    useState(true);
+    useState(false);
   const [isSubmittingEmergencyContacts, setIsSubmittingEmergencyContacts] =
     useState(false);
 
@@ -46,14 +47,18 @@ export const useAccountEmergencyContactViewModel = ({
   );
 
   const fetchEmergencyContacts = useCallback(async () => {
-    const list = await emergencyContactsQuery;
+    // If SSO is not enabled, do not fetch emergency contacts
+    if (!isSsoEnabledLogin) return;
+    setIsLoadingEmergencyContacts(true);
+
+    const list = await emergencyContactsQuery();
     originalEmergencyContactsRef.current = list;
 
     setEmergencyContactsFormValues(getEmergencyContactsInitialFormValue(list));
     setIsLoadingEmergencyContacts(false);
-  }, [emergencyContactsQuery]);
+  }, [emergencyContactsQuery, isSsoEnabledLogin]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     void fetchEmergencyContacts();
   }, [fetchEmergencyContacts]);
 

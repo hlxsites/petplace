@@ -25,7 +25,7 @@ export const loader = (() => {
   return defer({
     accountDetailsQuery: accountDetailsUseCase.query(),
     deleteEmergencyContactMutation: accountEmergencyContactsUseCase.delete,
-    emergencyContactsQuery: accountEmergencyContactsUseCase.query(),
+    emergencyContactsQuery: accountEmergencyContactsUseCase.query,
     countries: getCountriesUseCase.query(),
     mutateAccountDetails: accountDetailsUseCase.mutate,
     submitEmergencyContactsMutation: accountEmergencyContactsUseCase.mutate,
@@ -58,6 +58,7 @@ export const useAccountIndexViewModel = () => {
   const emergencyContactsForm = useAccountEmergencyContactViewModel({
     deleteEmergencyContactMutation,
     emergencyContactsQuery,
+    isSsoEnabledLogin,
     submitEmergencyContactsMutation,
   });
 
