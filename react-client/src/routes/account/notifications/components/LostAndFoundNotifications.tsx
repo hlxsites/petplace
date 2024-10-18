@@ -7,10 +7,10 @@ import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { useAccountNotificationsIndexViewModel } from "../useAccountNotificationsIndexViewModel";
 
 export const LostAndFoundNotifications = () => {
-  const { isExternalLogin, lostPetsHistory } =
+  const { isSsoEnabledLogin, lostPetsHistory } =
     useAccountNotificationsIndexViewModel();
 
-  if (!isExternalLogin) return null;
+  if (!isSsoEnabledLogin) return null;
 
   return (
     <SuspenseAwait resolve={lostPetsHistory}>

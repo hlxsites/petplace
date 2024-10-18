@@ -6,7 +6,7 @@ import { DefaultLoading } from "~/components/design-system/loading/DefaultLoadin
 import { useAccountIndexViewModel } from "./useAccountIndexViewModel";
 
 export const AccountIndex = () => {
-  const { accountForm, emergencyContactsForm, isExternalLogin } =
+  const { accountForm, emergencyContactsForm, isSsoEnabledLogin } =
     useAccountIndexViewModel();
 
   return (
@@ -30,7 +30,7 @@ export const AccountIndex = () => {
   }
 
   function renderEmergencyContactForm() {
-    if (!isExternalLogin) return null;
+    if (!isSsoEnabledLogin) return null;
 
     const children = (() => {
       if (emergencyContactsForm.isLoading) {

@@ -7,7 +7,7 @@ const rollbar = new Rollbar(ROLLBAR_CONFIG);
 export const logError = (message: string, error?: unknown) => {
   const newError = errorHandler(error);
   if (IS_DEV_ENV) {
-    console.error(message, newError);
+    console.log(message, newError);
   }
   rollbar?.error(message, newError);
 };
@@ -15,7 +15,7 @@ export const logError = (message: string, error?: unknown) => {
 export const logWarning = (message: string, error?: unknown) => {
   const newError = errorHandler(error);
   if (IS_DEV_ENV) {
-    console.error(message, newError);
+    console.log(message, newError);
   }
   rollbar?.warning(message, newError);
 };

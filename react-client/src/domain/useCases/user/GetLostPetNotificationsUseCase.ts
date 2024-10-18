@@ -6,12 +6,13 @@ import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
+// Hardcoded category id for lost pet notifications
+const CATEGORY_ID = 1;
+
 export class GetLostPetNotificationsUseCase
   implements GetLostPetNotificationsRepository
 {
   private httpClient: HttpClientRepository;
-  private categoryId: number = 1;
-  private endpoint: string = `/api/Alert/category/${this.categoryId}`;
 
   constructor(authToken: string, httpClient?: HttpClientRepository) {
     if (httpClient) {
@@ -21,17 +22,18 @@ export class GetLostPetNotificationsUseCase
     }
   }
 
-  async query(): Promise<LostPetUpdateModel[]> {
+  query = async (): Promise<LostPetUpdateModel[]> => {
     try {
-      const result = await this.httpClient.get(this.endpoint);
-      if (result.data) return convertToLostPetHistoryModel(result.data);
+      const result = await this.httpClient.get(
+        `/api/Alert/category/${CATEGORY_ID}`
+      );
 
-      return [];
+      if (result.data) return convertToLostPetHistoryModel(result.data);
     } catch (error) {
       logError("GetUserUseCase query error", error);
-      return [];
     }
-  }
+    return [];
+  };
 }
 
 function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {

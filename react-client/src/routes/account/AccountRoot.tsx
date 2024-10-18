@@ -47,7 +47,7 @@ export const AccountRoot = () => {
       },
     ];
 
-    if (viewModel.isExternalLogin) {
+    if (viewModel.isSsoEnabledLogin) {
       tabs.push({
         content: () => children,
         icon: "paymentCard",

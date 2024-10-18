@@ -1,6 +1,7 @@
 import { ComponentProps } from "react";
 import { Link, LinkProps } from "react-router-dom";
 import { classNames } from "~/util/styleUtil";
+import ExternalLink from "../anchor/ExternalLink";
 import { Button } from "./Button";
 
 type ButtonProps = Omit<ComponentProps<typeof Button>, "onClick">;
@@ -25,7 +26,6 @@ export const LinkButton = ({
     className: classNames("no-underline", {
       "w-full": buttonProps.fullWidth,
     }),
-    tabIndex: -1,
   };
 
   const buttonElement = <Button variant="link" {...buttonProps} />;
@@ -33,12 +33,17 @@ export const LinkButton = ({
   const isExternalLink = typeof to === "string" && to.startsWith("http");
   if (isExternalLink) {
     return (
-      <a
-        href={to}
-        {...commonProps}
-        rel="noopener noreferrer"
-        target={openInNewTab ? "_blank" : undefined}
-      >
+      <ExternalLink href={to} openInNewTab={openInNewTab} {...commonProps}>
+        {buttonElement}
+      </ExternalLink>
+    );
+  }
+
+  const isMailOrTelLink =
+    typeof to === "string" && (to.startsWith("mailto") || to.startsWith("tel"));
+  if (isMailOrTelLink) {
+    return (
+      <a href={to} {...commonProps}>
         {buttonElement}
       </a>
     );

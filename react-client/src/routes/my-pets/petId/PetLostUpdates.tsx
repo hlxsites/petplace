@@ -40,7 +40,6 @@ export const PetLostUpdatesSection = ({
   onClickReportPetFound,
 }: PetLostUpdatesSectionProps) => {
   const dataSource = lostPetHistory.map(convertUpdateToRow);
-  console.log("dataSource", dataSource);
 
   const isMissing = missingStatus === "missing";
   const [isOpen, setIsOpen] = useState(isMissing);

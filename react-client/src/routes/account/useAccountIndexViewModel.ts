@@ -25,7 +25,7 @@ export const loader = (() => {
   return defer({
     accountDetailsQuery: accountDetailsUseCase.query(),
     deleteEmergencyContactMutation: accountEmergencyContactsUseCase.delete,
-    emergencyContactsQuery: accountEmergencyContactsUseCase.query(),
+    emergencyContactsQuery: accountEmergencyContactsUseCase.query,
     countries: getCountriesUseCase.query(),
     mutateAccountDetails: accountDetailsUseCase.mutate,
     submitEmergencyContactsMutation: accountEmergencyContactsUseCase.mutate,
@@ -45,12 +45,12 @@ export const useAccountIndexViewModel = () => {
   } = useLoaderData<typeof loader>();
   const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
 
-  const isExternalLogin = !!accountRootData?.isExternalLogin;
+  const isSsoEnabledLogin = !!accountRootData?.isSsoEnabledLogin;
 
   const accountForm = useAccountFormViewModel({
     accountDetailsQuery,
     countries,
-    isExternalLogin,
+    isSsoEnabledLogin,
     mutateAccountDetails,
     statesQuery,
   });
@@ -58,12 +58,13 @@ export const useAccountIndexViewModel = () => {
   const emergencyContactsForm = useAccountEmergencyContactViewModel({
     deleteEmergencyContactMutation,
     emergencyContactsQuery,
+    isSsoEnabledLogin,
     submitEmergencyContactsMutation,
   });
 
   return {
     accountForm,
     emergencyContactsForm,
-    isExternalLogin,
+    isSsoEnabledLogin,
   };
 };
