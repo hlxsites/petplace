@@ -1,7 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { ComponentProps } from "react";
-import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { AccountNotificationsIndex } from "./AccountNotificationsIndex";
 
 // TODO: This shouldn't be needed after refactoring how to handle account form
@@ -57,53 +55,30 @@ describe.skip("NotificationsTabContent", () => {
   });
 
   it("should render Lost and Found notifications when login is external", () => {
-    getRenderer({ isExternalLogin: true });
+    getRenderer();
     expect(
       getByRole("heading", { name: /Lost & Found notifications/i })
     ).toBeInTheDocument();
   });
 
   it("should NOT render Lost and Found notifications when login is local", () => {
-    getRenderer({ isExternalLogin: false });
+    getRenderer();
     expect(
       queryByRole("heading", { name: /Lost & Found notifications/i })
     ).not.toBeInTheDocument();
   });
 
   it("should render the given lost notifications", async () => {
-    getRenderer({
-      isExternalLogin: true,
-      lostPetsHistory: Promise.resolve(MOCK_PET_HISTORY),
-    });
+    getRenderer();
     expect(await findByRole("button", { name: /view/i })).toBeInTheDocument();
   });
 
   it("should NOT render the lost notifications when it's not provided", () => {
-    getRenderer({
-      isExternalLogin: true,
-      lostPetsHistory: undefined,
-    });
+    getRenderer();
     expect(queryByRole("button", { name: /view/i })).not.toBeInTheDocument();
   });
 });
 
-function getRenderer({
-  ...props
-}: Partial<ComponentProps<typeof AccountNotificationsIndex>> = {}) {
-  return render(<AccountNotificationsIndex {...props} />);
+function getRenderer() {
+  return render(<AccountNotificationsIndex />);
 }
-
-const MOCK_PET_HISTORY: LostPetUpdateModel[] = [
-  {
-    communicationId: "sample-id",
-    date: "2024-07-17T10:08:41.857",
-    foundedBy: {
-      finderName: "Mrs Smart",
-    },
-    id: "0",
-    petId: "AUN19623620",
-    petName: "Mag",
-    status: "missing",
-    update: "2024-07-19T00:03:07.17",
-  },
-];

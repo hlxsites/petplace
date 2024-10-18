@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ComponentProps } from "react";
 import { AccountIndex } from "./AccountIndex";
 
 const { getByRole, queryByRole } = screen;
@@ -27,7 +26,7 @@ describe.skip("AccountIndex", () => {
   });
 
   it("should render 'emergency-contact-form' if login is external", () => {
-    const { container } = getRenderer({ isExternalLogin: true });
+    const { container } = getRenderer();
     expect(
       container.querySelector("form[id='emergency-contact-form']")
     ).toBeInTheDocument();
@@ -54,7 +53,7 @@ describe.skip("AccountIndex", () => {
   it.each([/^address$/i, /^emergency contact info$/i])(
     "should render %s section title when is external login",
     (expected) => {
-      getRenderer({ isExternalLogin: true });
+      getRenderer();
       expect(getByRole("heading", { name: expected })).toBeInTheDocument();
     }
   );
@@ -68,8 +67,6 @@ describe.skip("AccountIndex", () => {
   });
 });
 
-function getRenderer({
-  ...props
-}: Partial<ComponentProps<typeof AccountIndex>> = {}) {
-  return render(<AccountIndex {...props} />);
+function getRenderer() {
+  return render(<AccountIndex />);
 }
