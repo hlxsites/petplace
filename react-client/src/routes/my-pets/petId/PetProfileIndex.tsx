@@ -18,6 +18,7 @@ import { ReportPetButton } from "./components/ReportPetButton";
 import { TransferPetDialog } from "./components/TransferPetDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
+import { ScrollTop } from "~/components/design-system";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
@@ -56,6 +57,7 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
       />
       <div className="flex flex-col gap-xlarge">
+        <ScrollTop />
         <PetCardSection pet={pet} />
         <AdvertisingSection linkTo={pet.insuranceUrl} />
         <PetWatchSection route={checkoutPath} />
