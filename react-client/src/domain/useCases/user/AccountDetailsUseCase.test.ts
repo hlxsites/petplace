@@ -5,9 +5,12 @@ import { AccountDetailsUseCase } from "./AccountDetailsUseCase";
 import getAccountDetailsMock from "./mocks/getAccountDetailsMock.json";
 
 jest.mock("~/util/authUtil", () => ({
-  checkIsExternalLogin: jest.fn(),
+  checkIsSsoEnabledLogin: jest.fn(),
   readJwtClaim: jest.fn(),
 }));
+
+const mockedCheckIsSsoEnabledLogin =
+  authUtil.checkIsSsoEnabledLogin as jest.Mock;
 
 // We don't care about the implementation while running those tests
 jest.mock("../PetPlaceHttpClientUseCase", () => {});
@@ -21,12 +24,12 @@ jest.mock("@rollbar/react", () => ({
 
 describe("AccountDetailsUseCase", () => {
   beforeEach(() => {
-    (authUtil.checkIsExternalLogin as jest.Mock).mockReset();
+    mockedCheckIsSsoEnabledLogin.mockReset();
   });
 
-  describe("GET", () => {
+  describe("query()", () => {
     it("should return null whenever it finds no data", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
+      mockedCheckIsSsoEnabledLogin.mockReturnValue(false);
       const httpClient = new MockHttpClient({ data: null });
       const sut = makeSut(httpClient);
       const result = await sut.query();
@@ -34,7 +37,7 @@ describe("AccountDetailsUseCase", () => {
     });
 
     it("should return internal account details", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(false);
+      mockedCheckIsSsoEnabledLogin.mockReturnValue(false);
       const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
       const sut = makeSut(httpClient);
       const result = await sut.query();
@@ -49,7 +52,7 @@ describe("AccountDetailsUseCase", () => {
     });
 
     it("should return external account details", async () => {
-      (authUtil.checkIsExternalLogin as jest.Mock).mockReturnValue(true);
+      mockedCheckIsSsoEnabledLogin.mockReturnValue(true);
       const httpClient = new MockHttpClient({ data: getAccountDetailsMock });
       const sut = makeSut(httpClient);
       const result = await sut.query();
@@ -95,7 +98,7 @@ describe("AccountDetailsUseCase", () => {
     });
   });
 
-  describe("PUT", () => {
+  describe("mutate()", () => {
     const validAccountDetails = {
       name: "Jane",
       surname: "Doe",

@@ -5,7 +5,7 @@ import {
   InternalAccountDetailsModel,
 } from "~/domain/models/user/UserModels";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { checkIsExternalLogin } from "~/util/authUtil";
+import { checkIsSsoEnabledLogin } from "~/util/authUtil";
 
 import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
@@ -19,7 +19,7 @@ import {
 
 export class AccountDetailsUseCase implements AccountDetailsRepository {
   private httpClient: HttpClientRepository;
-  private isInternalLogin = !checkIsExternalLogin();
+  private isInternalLogin = !checkIsSsoEnabledLogin();
   private internalLoginEndPoint = "adopt/api/User";
   private externalLoginEndPoint = "adopt/api/UserProfile";
 

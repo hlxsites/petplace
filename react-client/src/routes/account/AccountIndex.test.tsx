@@ -6,7 +6,7 @@ import { AccountIndex } from "./AccountIndex";
 const { getByRole, queryByRole } = screen;
 
 jest.mock("~/util/authUtil", () => ({
-  checkIsExternalLogin: jest.fn().mockReturnValue(false),
+  checkIsSsoEnabledLogin: jest.fn().mockReturnValue(false),
   readJwtClaim: jest.fn(),
 }));
 

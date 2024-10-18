@@ -1,8 +1,8 @@
 import { LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { checkIsExternalLogin } from "~/util/authUtil";
+import { checkIsSsoEnabledLogin } from "~/util/authUtil";
 
 export const loader = (() => {
-  const isExternalLogin = checkIsExternalLogin();
+  const isExternalLogin = checkIsSsoEnabledLogin();
 
   return { isExternalLogin };
 }) satisfies LoaderFunction;

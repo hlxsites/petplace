@@ -4,17 +4,13 @@ import { ComponentProps } from "react";
 import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { AccountNotificationsIndex } from "./AccountNotificationsIndex";
 
+// TODO: This shouldn't be needed after refactoring how to handle account form
 jest.mock("~/util/authUtil", () => ({
   readJwtClaim: jest.fn(),
-  checkIsExternalLogin: jest.fn(),
+  checkIsSsoEnabledLogin: jest.fn().mockReturnValue(false),
 }));
 
 const { getByRole, queryByRole, findByRole } = screen;
-
-// TODO: This shouldn't be needed after refactoring how to handle account form
-jest.mock("~/util/authUtil", () => ({
-  checkIsExternalLogin: jest.fn().mockReturnValue(false),
-}));
 
 // TODO: mock the useAccountContext hook
 describe.skip("NotificationsTabContent", () => {
