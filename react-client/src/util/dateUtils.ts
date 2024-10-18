@@ -14,3 +14,9 @@ export function parseDateTime(date?: string) {
   }
   return "";
 }
+
+export function sortMostRecentFirst(list: any[]){
+  return list.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  })
+}
