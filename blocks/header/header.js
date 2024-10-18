@@ -44,11 +44,11 @@ async function setupMyPetsLink() {
   const claim = parseJwt(authToken);
   if (!claim) return;
 
-  const hasRelationId = claim.extension_CustRelationId !== '0';
-  const hasAdoptionId = !!claim.extension_AdoptionId;
+  const hasRelationId = claim.extension_CustRelationId && claim.extension_CustRelationId !== '0';
+  const hasAdoptionId = claim.extension_AdoptionId && claim.extension_AdoptionId !== '0';
 
   // if the user have the required claims, include the link
-  if (hasRelationId && hasAdoptionId) {
+  if (hasRelationId || hasAdoptionId) {
     document.getElementById(USER_NAV_MY_PETS_ID)?.classList.remove('hidden');
   }
 }
