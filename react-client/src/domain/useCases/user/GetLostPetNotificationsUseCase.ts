@@ -5,7 +5,6 @@ import { GetLostPetNotificationsRepository } from "~/domain/repository/user/GetL
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
-import { sortMostRecentFirst } from "~/util/dateUtils";
 
 // Hardcoded category id for lost pet notifications
 const CATEGORY_ID = 1;
@@ -95,5 +94,8 @@ function convertToLostPetHistoryModel(data: unknown): LostPetUpdateModel[] {
     });
   });
 
-  return sortMostRecentFirst(notifications);
+  // the server does not return sorted
+  return notifications.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
 }
