@@ -62,7 +62,9 @@ export const DialogBase = ({
 
     return () => {
       if (isOpen) {
-        bodyStyle.overflow = originalOverflow;
+        // Sometimes the dialog is rendered once more before closing definitively getting the hidden value of the body
+        // and setting it to the originalOverflow which makes the modal set the body overflow to hidden on closing
+        bodyStyle.overflow = originalOverflow !== "hidden" ? originalOverflow : "visible";
       }
     };
   }, [isOpen]);
