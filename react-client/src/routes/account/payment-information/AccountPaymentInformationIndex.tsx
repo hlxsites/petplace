@@ -1,7 +1,6 @@
 import { SuspenseAwait } from "~/components/await/SuspenseAwait";
 import { Title } from "~/components/design-system";
 import { BasicActionCard } from "~/components/design-system/card/BasicActionCard";
-import { ExternalAccountDetailsModel } from "~/domain/models/user/UserModels";
 import { redirectToMph } from "~/util/mphRedirectUtil";
 import { useAccountPaymentInformationIndexViewModel } from "./useAccountPaymentInformationIndexViewModel";
 
@@ -16,9 +15,17 @@ export const AccountPaymentInformationIndex = () => {
       {
         <SuspenseAwait resolve={accountDetailsQuery}>
           {(accountDetailsQuery) => {
-            return actionsSections(
-              (accountDetailsQuery as ExternalAccountDetailsModel).insuranceUrl
-            ).map((props) => (
+            const insuranceUrl = (() => {
+              if (
+                accountDetailsQuery &&
+                "insuranceUrl" in accountDetailsQuery
+              ) {
+                return accountDetailsQuery.insuranceUrl;
+              }
+              return null;
+            })();
+
+            return actionsSections(insuranceUrl).map((props) => (
               <BasicActionCard key={props.buttonLabel} {...props} />
             ));
           }}
@@ -27,11 +34,11 @@ export const AccountPaymentInformationIndex = () => {
     </div>
   );
 
-  function actionsSections(insuranceUrl?: string) {
+  function actionsSections(insuranceUrl?: string | null) {
     const actions = [
       {
         buttonLabel: "Manage payment settings",
-        buttonLink:redirectToMph("petplace/payment-setting"),
+        buttonLink: redirectToMph("petplace/payment-setting"),
         message: "Verify, update, or change your payment settings.",
         title: "Payment settings",
       },
