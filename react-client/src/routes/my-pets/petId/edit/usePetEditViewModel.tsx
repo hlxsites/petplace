@@ -181,6 +181,7 @@ export const usePetEditViewModel = () => {
     onRemoveImage,
     onSelectImage,
     onDiscard,
+    petId,
     petInfoQuery,
     setIsLeaving,
   };
