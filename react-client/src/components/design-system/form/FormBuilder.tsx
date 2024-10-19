@@ -32,6 +32,7 @@ import { isEmailValid } from "./utils/formValidationUtils";
 const isDevEnvironment = window.location.hostname === "localhost";
 
 type OnSubmitProps = {
+  formId: string;
   event: FormEvent<HTMLFormElement>;
   values: FormValues;
 };
@@ -93,7 +94,7 @@ export const FormBuilder = ({
     // Prevent form submission if there are validation errors
     if (hasValidationError) return;
 
-    onSubmit({ event, values });
+    onSubmit({ formId: schema.id, event, values });
   }
 
   function renderElement(element: ElementUnion, index: number) {
