@@ -41,7 +41,7 @@ function convertToPetModelList(data: unknown): PetInAdoptionList[] {
     ImageUrl: z.string().nullish(),
     MembershipStatus: z.string().nullish(),
     Microchip: z.string().nullish(),
-    Name: z.string(),
+    Name: z.string().nullish(),
     PetProfileUrl: z.string().nullish(),
   });
 
@@ -62,7 +62,7 @@ function convertToPetModelList(data: unknown): PetInAdoptionList[] {
       isProfileAvailable: !!pet.PetProfileUrl,
       isProtected,
       microchip: pet.Microchip,
-      name: pet.Name,
+      name: pet.Name ?? "",
       img: pet.ImageUrl ?? undefined,
     });
   });

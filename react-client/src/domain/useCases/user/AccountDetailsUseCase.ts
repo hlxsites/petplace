@@ -5,7 +5,7 @@ import {
   InternalAccountDetailsModel,
 } from "~/domain/models/user/UserModels";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
-import { checkIsExternalLogin } from "~/util/authUtil";
+import { checkIsSsoEnabledLogin } from "~/util/authUtil";
 
 import { AccountDetailsRepository } from "~/domain/repository/user/AccountDetailsRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
@@ -19,7 +19,7 @@ import {
 
 export class AccountDetailsUseCase implements AccountDetailsRepository {
   private httpClient: HttpClientRepository;
-  private isInternalLogin = !checkIsExternalLogin();
+  private isSsoEnabledLogin = checkIsSsoEnabledLogin();
   private internalLoginEndPoint = "adopt/api/User";
   private externalLoginEndPoint = "adopt/api/UserProfile";
 
@@ -33,16 +33,16 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
   async query(): Promise<AccountDetailsModel | null> {
     try {
-      if (this.isInternalLogin) {
-        const result = await this.httpClient.get(this.internalLoginEndPoint);
+      if (this.isSsoEnabledLogin) {
+        const result = await this.httpClient.get(this.externalLoginEndPoint);
         if (result.data) {
-          return convertToAccountDetailsModel(result.data);
+          return convertToExternalAccountDetailsModel(result.data);
         }
       }
 
-      const result = await this.httpClient.get(this.externalLoginEndPoint);
+      const result = await this.httpClient.get(this.internalLoginEndPoint);
       if (result.data) {
-        return convertToExternalAccountDetailsModel(result.data);
+        return convertToAccountDetailsModel(result.data);
       }
     } catch (error) {
       logError("AccountDetailsUseCase query error", error);
@@ -52,21 +52,21 @@ export class AccountDetailsUseCase implements AccountDetailsRepository {
 
   mutate = async (data: AccountDetailsModel): Promise<boolean> => {
     try {
-      if (this.isInternalLogin) {
-        const accountBody = convertToServerInternalAccountDetails(
-          data as InternalAccountDetailsModel
+      if (this.isSsoEnabledLogin) {
+        const accountBody = convertToServerExternalAccountDetails(
+          data as ExternalAccountDetailsModel
         );
-        const result = await this.httpClient.put(this.internalLoginEndPoint, {
+        const result = await this.httpClient.put(this.externalLoginEndPoint, {
           body: JSON.stringify(accountBody),
         });
 
         return !!result.success;
       }
 
-      const accountBody = convertToServerExternalAccountDetails(
-        data as ExternalAccountDetailsModel
+      const accountBody = convertToServerInternalAccountDetails(
+        data as InternalAccountDetailsModel
       );
-      const result = await this.httpClient.put(this.externalLoginEndPoint, {
+      const result = await this.httpClient.put(this.internalLoginEndPoint, {
         body: JSON.stringify(accountBody),
       });
 

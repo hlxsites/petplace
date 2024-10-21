@@ -1,29 +1,37 @@
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
-import { requireAuthToken } from "~/util/authUtil";
+import { checkIsSsoEnabledLogin, requireAuthToken } from "~/util/authUtil";
 
 import { isEqual } from "lodash";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { FormValues } from "~/components/design-system";
 import { OnSubmitFn } from "~/components/design-system/form/FormBuilder";
+import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { AccountNotificationPreferencesModel } from "~/domain/models/user/UserModels";
 import accountNotificationPreferencesUseCaseFactory from "~/domain/useCases/user/accountNotificationPreferencesUseCaseFactory";
 import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
-import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
-import { useRouteMatchesData } from "~/hooks/useRouteMatchesData";
 import { accountNotificationIds } from "../form/notificationForm";
-import { AccountRootLoaderData } from "../useAccountRootViewModel";
 
 export const loader = (() => {
   const authToken = requireAuthToken();
+
+  const isSsoEnabledLogin = checkIsSsoEnabledLogin();
 
   const notificationPreferencesUseCase =
     accountNotificationPreferencesUseCaseFactory(authToken);
   const lostPetNotificationsUseCase =
     lostPetNotificationsUseCaseFactory(authToken);
 
+  const lostPetsHistory: Promise<LostPetUpdateModel[]> = (() => {
+    if (isSsoEnabledLogin) {
+      return lostPetNotificationsUseCase.query();
+    }
+    return Promise.resolve([]);
+  })();
+
   return defer({
-    lostPetsHistory: lostPetNotificationsUseCase.query(),
+    isSsoEnabledLogin,
+    lostPetsHistory,
     mutation: notificationPreferencesUseCase.mutate,
     query: notificationPreferencesUseCase.query,
   });
@@ -34,7 +42,8 @@ export type AccountNotificationsIndexLoaderData = ReturnType<typeof loader>;
 export const useAccountNotificationsIndexViewModel = () => {
   const initialFormValues = useRef<FormValues>({});
 
-  const { lostPetsHistory, mutation, query } = useLoaderData<typeof loader>();
+  const { isSsoEnabledLogin, lostPetsHistory, mutation, query } =
+    useLoaderData<typeof loader>();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,7 +51,7 @@ export const useAccountNotificationsIndexViewModel = () => {
 
   const isDirty = !isEqual(formValues, initialFormValues.current);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     const onFetchAccountNotifications = async () => {
       const model = await query();
       const initial = getFormInitialDataFroModel(model);
@@ -53,10 +62,7 @@ export const useAccountNotificationsIndexViewModel = () => {
     };
 
     void onFetchAccountNotifications();
-  }, []);
-
-  const accountRootData = useRouteMatchesData<AccountRootLoaderData>("account");
-  const isExternalLogin = !!accountRootData?.isExternalLogin;
+  }, [query]);
 
   const asyncSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
@@ -74,7 +80,7 @@ export const useAccountNotificationsIndexViewModel = () => {
 
   return {
     formValues,
-    isExternalLogin,
+    isSsoEnabledLogin,
     isDirty,
     isLoading,
     isSubmitting,

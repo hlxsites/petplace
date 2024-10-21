@@ -39,11 +39,15 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     primaryAction: { buttonLabel: "Report this pet as lost" },
     secondaryActions: [
       {
-        icon: "copyRegular",
         buttonLabel: "Copy number",
+        icon: "copyRegular",
         onClick: () => copyTextToClipboard("1-866-597-2424"),
       },
-      { icon: "forwardedCall", buttonLabel: "Call", href: "tel:+18665972424" },
+      {
+        buttonLabel: "Call",
+        icon: "forwardedCall",
+        href: "tel:+18665972424",
+      },
     ],
     title: "Lost Pet Recovery Specialists",
   },

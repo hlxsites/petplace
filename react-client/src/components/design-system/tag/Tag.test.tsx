@@ -48,6 +48,18 @@ describe("Tag", () => {
 
     expect(container.firstChild).not.toHaveClass("w-full");
   });
+
+  it("should render with full width when fullWidth is true", () => {
+    const { container } = getRenderer({ fullWidth: true });
+
+    expect(container.firstChild).toHaveClass("w-full");
+  });
+
+  it("should NOT have w-full class when fullWidth is false", () => {
+    const { container } = getRenderer({ fullWidth: false });
+
+    expect(container.firstChild).not.toHaveClass("w-full");
+  });
 });
 
 // Test utils

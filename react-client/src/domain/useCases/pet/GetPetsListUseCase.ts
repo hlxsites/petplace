@@ -2,7 +2,7 @@ import { z } from "zod";
 import { PetCommon } from "~/domain/models/pet/PetModel";
 import { HttpClientRepository } from "~/domain/repository/HttpClientRepository";
 import { GetPetsListRepository } from "~/domain/repository/pet/GetPetsListRepository";
-import { logError } from "~/infrastructure/telemetry/logUtils";
+import { logError, logWarning } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
 
@@ -40,7 +40,7 @@ function convertToPetModelList(data: unknown): PetCommon[] {
     ImageUrl: z.string().nullish(),
     MembershipStatus: z.string().nullish(),
     Microchip: z.string().nullish(),
-    Name: z.string(),
+    Name: z.string().nullish(),
     SpeciesId: z.number().nullish(),
   });
 
@@ -49,7 +49,11 @@ function convertToPetModelList(data: unknown): PetCommon[] {
   data.forEach((petData) => {
     const pet = parseData(serverResponseSchema, petData);
 
-    if (!pet) return;
+    // If the pet doesn't have a name, it's not a valid pet
+    if (!pet?.Name) {
+      logWarning("Invalid pet data", petData);
+      return;
+    }
 
     const isProtected = pet?.MembershipStatus
       ? pet.MembershipStatus !== "Not a member"

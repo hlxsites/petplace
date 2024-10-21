@@ -30,7 +30,8 @@ export const loader = (({ params }) => {
 
 export const useNotificationsIdViewModel = () => {
   const { notificationId, query } = useLoaderData<typeof loader>();
-  const { lostPetsHistory } = useAccountNotificationsIndexContext();
+  const { isSsoEnabledLogin, lostPetsHistory } =
+    useAccountNotificationsIndexContext();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -58,8 +59,11 @@ export const useNotificationsIdViewModel = () => {
       }
     };
 
-    void onFetchBaseNotification();
-  }, [baseNotification, lostPetsHistory, notificationId]);
+    // only fetch notification if SSO is enabled
+    if (isSsoEnabledLogin) {
+      void onFetchBaseNotification();
+    }
+  }, [baseNotification, isSsoEnabledLogin, lostPetsHistory, notificationId]);
 
   const onClose = () => {
     navigate("..", {
