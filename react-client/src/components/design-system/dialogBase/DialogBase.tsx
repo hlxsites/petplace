@@ -176,7 +176,7 @@ export const DialogBase = ({
 
           <div
             className="overflow-y-auto"
-            style={{ maxHeight: "calc(100vh - 100px)" }}
+            style={{ maxHeight: "calc(90vh - 200px)" }}
           >
             {renderChildren}
           </div>
