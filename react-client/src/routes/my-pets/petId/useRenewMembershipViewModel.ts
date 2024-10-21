@@ -182,8 +182,10 @@ export const useRenewMembershipViewModel = ({
       (benefit) => benefit.id === selectedContent
     );
     if (selectedBenefit && selectedBenefit.isExpired && contentDetails) {
+      const { secondaryActions, ...rest } = contentDetails;
+
       contentDetails = {
-        ...contentDetails,
+        ...rest,
         primaryAction: {
           buttonLabel: "Renew service",
           confirmButtonLabel: "Confirm Renewal",

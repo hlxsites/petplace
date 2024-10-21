@@ -25,6 +25,7 @@ export const Drawer = ({
         ),
       }}
       element="drawer"
+      isDesktopScreen={isDesktopScreen}
       width={isDesktopScreen ? width : "100%"}
     >
       {({ onCloseWithAnimation }) => (
