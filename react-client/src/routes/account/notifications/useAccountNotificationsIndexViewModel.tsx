@@ -1,15 +1,13 @@
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import { checkIsSsoEnabledLogin, requireAuthToken } from "~/util/authUtil";
 
-import { isEqual } from "lodash";
-import { useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { FormValues } from "~/components/design-system";
-import { OnSubmitFn } from "~/components/design-system/form/FormBuilder";
 import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { AccountNotificationPreferencesModel } from "~/domain/models/user/UserModels";
 import accountNotificationPreferencesUseCaseFactory from "~/domain/useCases/user/accountNotificationPreferencesUseCaseFactory";
 import lostPetNotificationsUseCaseFactory from "~/domain/useCases/user/lostPetNotificationsUseCaseFactory";
+import { useFormValuesWithQueryAndMutate } from "~/hooks/useFormValuesWithQueryAndMutate";
 import { accountNotificationIds } from "../form/notificationForm";
 
 export const loader = (() => {
@@ -33,50 +31,37 @@ export const loader = (() => {
     isSsoEnabledLogin,
     lostPetsHistory,
     mutation: notificationPreferencesUseCase.mutate,
-    query: notificationPreferencesUseCase.query,
+    queryPreferences: notificationPreferencesUseCase.query,
   });
 }) satisfies LoaderFunction;
 
 export type AccountNotificationsIndexLoaderData = ReturnType<typeof loader>;
 
 export const useAccountNotificationsIndexViewModel = () => {
-  const initialFormValues = useRef<FormValues>({});
-
-  const { isSsoEnabledLogin, lostPetsHistory, mutation, query } =
+  const { isSsoEnabledLogin, lostPetsHistory, mutation, queryPreferences } =
     useLoaderData<typeof loader>();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formValues, setFormValues] = useState<FormValues>({});
-
-  const isDirty = !isEqual(formValues, initialFormValues.current);
-
-  useEffect(() => {
-    const onFetchAccountNotifications = async () => {
-      const model = await query();
-      const initial = getFormInitialDataFroModel(model);
-
-      initialFormValues.current = initial;
-      setFormValues(initial);
-      setIsLoading(false);
-    };
-
-    void onFetchAccountNotifications();
-  }, [query]);
-
-  const asyncSubmit = async (values: FormValues) => {
-    setIsSubmitting(true);
-
+  const mutateFn = (values: FormValues) => {
     const data = convertFormValuesToModel(values);
-    await mutation(data);
-
-    initialFormValues.current = values;
-    setIsSubmitting(false);
+    return mutation(data);
   };
 
-  const onSubmit: OnSubmitFn = ({ values }) => {
-    void asyncSubmit(values);
-  };
+  const {
+    formValues,
+    isDirty,
+    isLoading,
+    isSubmitting,
+    onChangeForm,
+    onSubmitForm,
+  } =
+    useFormValuesWithQueryAndMutate<AccountNotificationPreferencesModel | null>(
+      {
+        convertQueryDataToFormValues: getFormInitialDataFromModel,
+        queryFn: queryPreferences,
+        key: "accountNotificationsPreferences",
+        mutateFn,
+      }
+    );
 
   return {
     formValues,
@@ -85,15 +70,15 @@ export const useAccountNotificationsIndexViewModel = () => {
     isLoading,
     isSubmitting,
     lostPetsHistory,
-    onChangeForm: setFormValues,
-    onSubmit,
+    onChangeForm,
+    onSubmit: onSubmitForm,
   };
 };
 
 export const useAccountNotificationsIndexContext = () =>
   useOutletContext<ReturnType<typeof useAccountNotificationsIndexViewModel>>();
 
-function getFormInitialDataFroModel(
+function getFormInitialDataFromModel(
   accountNotifications?: AccountNotificationPreferencesModel | null
 ): FormValues {
   const newsLetter = [];
