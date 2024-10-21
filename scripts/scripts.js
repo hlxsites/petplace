@@ -766,8 +766,18 @@ function fixLinks() {
   });
 }
 
+/**
+ * Returns the true location of the current page in the browser.
+ * If the page is running in a iframe with srcdoc, the ancestor location is returned.
+ * @returns {String} The true location of the current page
+ */
+export function getLocation() {
+  const { location } = window;
+  return location.href === 'about:srcdoc' ? window.parent.location : window.location;
+}
+
 function setLocale() {
-  const [, lang = 'en', region = 'US'] = window.location.pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
+  const [, lang = 'en', region = 'US'] = getLocation().pathname.split('/')[1].match(/^(\w{2})-(\w{2})$/i) || [];
   const locale = `${lang.toLowerCase()}-${region.toUpperCase()}`;
   document.documentElement.lang = locale;
   window.hlx.contentBasePath = locale === DEFAULT_REGION ? '' : `/${locale.toLowerCase()}`;
