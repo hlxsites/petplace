@@ -9,10 +9,13 @@ import { Button, Icon, LinkButton } from "~/components/design-system";
 import { Layout } from "~/components/design-system/layout/Layout";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { logError } from "~/infrastructure/telemetry/logUtils";
+import { IS_DEV_ENV } from "~/util/envUtil";
 
 export const RootErrorPage = () => {
   const error = useRouteError();
   const navigate = useNavigate();
+
+  const rootLocation = IS_DEV_ENV ? "/account" : window.location.origin;
 
   useDeepCompareEffect(() => {
     if (error) {
@@ -28,7 +31,7 @@ export const RootErrorPage = () => {
       }
     }
   }, [error]);
-
+  console.log("rootLocation", rootLocation);
   return (
     <ErrorBoundary level={LEVEL_ERROR}>
       <Layout>
@@ -50,7 +53,7 @@ export const RootErrorPage = () => {
           <div className="mt-[16px] flex max-w-[366px] gap-small">
             <LinkButton
               children="Back Home"
-              to="/"
+              to={rootLocation}
               fullWidth={true}
               variant="secondary"
             />
