@@ -66,7 +66,7 @@ export const PetServiceDetailsCard = ({
           {secondaryActions.map(renderAction)}
         </div>
       )}
-      {primaryAction?.confirmButtonLabel && (
+      {primaryAction?.buttonLabel && (
         <ConfirmDialog
           icon="info"
           isOpen={isModalOpen}
