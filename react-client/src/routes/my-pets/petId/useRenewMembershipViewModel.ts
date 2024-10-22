@@ -182,6 +182,8 @@ export const useRenewMembershipViewModel = ({
       (benefit) => benefit.id === selectedContent
     );
     if (selectedBenefit && selectedBenefit.isExpired && contentDetails) {
+      // Ignoring secondaryActions if the benefit is expired
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { secondaryActions, ...rest } = contentDetails;
 
       contentDetails = {
