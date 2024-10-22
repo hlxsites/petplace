@@ -110,6 +110,10 @@ export const DragAndDropFileUpload = ({
     });
 
     handleFiles(files);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
 };
 
