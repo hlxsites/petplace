@@ -1,16 +1,22 @@
 import { ErrorBoundary, LEVEL_ERROR } from "@rollbar/react";
-import { ComponentProps } from "react";
-import { isRouteErrorResponse, Link, useRouteError } from "react-router-dom";
+import {
+  isRouteErrorResponse,
+  useNavigate,
+  useRouteError,
+} from "react-router-dom";
 
-import { ButtonProps, Icon, LinkButton } from "~/components/design-system";
+import { Button, Icon, LinkButton } from "~/components/design-system";
 import { Layout } from "~/components/design-system/layout/Layout";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { logError } from "~/infrastructure/telemetry/logUtils";
-
-type ErrorButtons = ButtonProps & ComponentProps<typeof Link>;
+import { IS_DEV_ENV } from "~/util/envUtil";
+import { ACCOUNT_FULL_ROUTE } from "./AppRoutePaths";
 
 export const RootErrorPage = () => {
   const error = useRouteError();
+  const navigate = useNavigate();
+
+  const rootLocation = IS_DEV_ENV ? ACCOUNT_FULL_ROUTE : window.location.origin;
 
   useDeepCompareEffect(() => {
     if (error) {
@@ -26,20 +32,6 @@ export const RootErrorPage = () => {
       }
     }
   }, [error]);
-
-  const errorButtons: ErrorButtons[] = [
-    {
-      name: "Back Home",
-      to: "https://www.petplace.com/",
-      variant: "secondary",
-    },
-    {
-      name: "Reload Page",
-      relative: "path",
-      to: "..",
-      variant: "primary",
-    },
-  ];
 
   return (
     <ErrorBoundary level={LEVEL_ERROR}>
@@ -60,19 +52,33 @@ export const RootErrorPage = () => {
           </p>
 
           <div className="mt-[16px] flex max-w-[366px] gap-small">
-            {errorButtons.map((button) => (
-              <LinkButton
-                key={button.name}
-                to={button.to}
-                fullWidth={true}
-                variant={button.variant}
-              >
-                {button.name}
-              </LinkButton>
-            ))}
+            <LinkButton
+              children="Back Home"
+              to={rootLocation}
+              fullWidth={true}
+              variant="secondary"
+            />
+            <Button
+              fullWidth={true}
+              variant="primary"
+              children="Reload Page"
+              onClick={onHandleReload}
+            />
           </div>
         </div>
       </Layout>
     </ErrorBoundary>
   );
+
+  function onHandleReload() {
+    const pathSegments = location.pathname.split("/").filter(Boolean);
+
+    if (isRouteErrorResponse(error)) {
+      const parentPath = pathSegments.slice(0, -1).join("/");
+      navigate(`/${parentPath}`);
+    } else {
+      const currentPath = location.pathname;
+      navigate(currentPath);
+    }
+  }
 };

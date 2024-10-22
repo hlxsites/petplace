@@ -137,6 +137,7 @@ export const usePetProfileLayoutViewModel = () => {
     lostPetHistory,
     onEditPet,
     pet: selectedPet,
+    petId,
     ...lostAndFoundViewModel,
     ...renewMembershipViewModel,
   };

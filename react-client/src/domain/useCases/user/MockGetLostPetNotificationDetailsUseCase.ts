@@ -15,6 +15,7 @@ export class MockGetLostPetNotificationDetailsUseCase
       note: "Lost report from submitted",
       status: "missing",
       petId: "AUN19623620",
+      petMicrochip: "8734834833",
       petName: "Billy",
       update: "2024-07-19T00:03:07.17",
       foundedBy: {

@@ -27,6 +27,7 @@ export const DialogBase = ({
   icon,
   iconProps,
   id,
+  isDesktopScreen,
   isOpen,
   isTitleResponsive,
   titleSize,
@@ -62,7 +63,9 @@ export const DialogBase = ({
 
     return () => {
       if (isOpen) {
-        bodyStyle.overflow = originalOverflow;
+        // Sometimes the dialog is rendered once more before closing definitively getting the hidden value of the body
+        // and setting it to the originalOverflow which makes the modal set the body overflow to hidden on closing
+        bodyStyle.overflow = originalOverflow !== "hidden" ? originalOverflow : "visible";
       }
     };
   }, [isOpen]);
@@ -102,6 +105,8 @@ export const DialogBase = ({
     }
     return children;
   })();
+
+  const maxHeight = isDesktopScreen ? "100vh" : "calc(90dvh - 200px)";
 
   const portalContent = (
     <>
@@ -173,11 +178,7 @@ export const DialogBase = ({
               variant="link"
             />
           )}
-
-          <div
-            className="overflow-y-auto"
-            style={{ maxHeight: "calc(100vh - 100px)" }}
-          >
+          <div className="overflow-y-auto" style={{ maxHeight }}>
             {renderChildren}
           </div>
         </div>
