@@ -29,7 +29,7 @@ export const ButtonWithBadge = ({
           one: "1 item",
           other: `${badge} items`,
         })}
-        className="font-['Libre Franklin'] absolute -right-1 -top-1 inline-flex h-6 w-6 items-center justify-center rounded-[100px] bg-orange-300-contrast text-xs text-white"
+        className="font-['Libre Franklin'] text-xs translate-x-1/2 translate-y-1/2 absolute right-[-5%] top-[-5%] inline-flex h-6 w-6 items-center justify-center rounded-full bg-orange-300-contrast text-white"
         role="status"
       >
         {badge}

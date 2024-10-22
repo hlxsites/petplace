@@ -38,6 +38,7 @@ export type DialogBaseProps = DialogIconProps &
     };
     element: "dialog" | "drawer";
     id: string;
+    isDesktopScreen?: boolean;
     isOpen: boolean;
     onClose?: () => void;
     padding?: "p-0" | "p-large" | "p-xlarge" | "p-xxlarge" | "p-xxxlarge";

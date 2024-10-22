@@ -7,6 +7,7 @@ import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsuranceSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
+import { useScroll } from "~/hooks/useScroll";
 import {
   CHECKOUT_FULL_ROUTE,
   MY_PETS_FULL_ROUTE,
@@ -22,6 +23,8 @@ import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
+  useScroll({ autoScrollToTop: true });
+
   const { isLoading, pet, lostPetHistory, onClickReportPetFound } = viewModel;
 
   if (isLoading) return <DefaultLoading minHeight="80dvh" />;

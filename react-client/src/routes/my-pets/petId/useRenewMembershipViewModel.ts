@@ -127,7 +127,7 @@ export const useRenewMembershipViewModel = ({
     // If annual member with no products, return only direct-connect and recovery-specialists
 
     if (!products?.length || hasAnnualProduct)
-      return petWatchAvailableBenefits.filter(
+      return petWatchAvailableBenefits?.filter(
         (benefit) =>
           benefit.id === "direct-connect" ||
           benefit.id === "recovery-specialists"
@@ -182,8 +182,12 @@ export const useRenewMembershipViewModel = ({
       (benefit) => benefit.id === selectedContent
     );
     if (selectedBenefit && selectedBenefit.isExpired && contentDetails) {
+      // Ignoring secondaryActions if the benefit is expired
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { secondaryActions, ...rest } = contentDetails;
+
       contentDetails = {
-        ...contentDetails,
+        ...rest,
         primaryAction: {
           buttonLabel: "Renew service",
           confirmButtonLabel: "Confirm Renewal",
