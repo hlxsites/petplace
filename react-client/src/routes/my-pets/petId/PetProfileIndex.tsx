@@ -29,7 +29,7 @@ export const PetProfileIndex = () => {
 
   if (isLoading) return <DefaultLoading minHeight="80dvh" />;
 
-  invariant(pet, "Pet not found");
+  invariant(pet, `Pet not found: id=${viewModel.petId}`);
 
   const displayCheckoutSuccessModal = (() => {
     const contentParam = searchParams.get(CONTENT_PARAM_KEY);

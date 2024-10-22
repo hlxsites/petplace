@@ -5,6 +5,7 @@ export const petInfoIds = {
   age: "age",
   breed: "breed",
   dateOfBirth: "dob",
+  displayDateOfBirth: "display-dob",
   insurance: "insurance",
   microchip: "microchip",
   mixedBreed: "mixedBreed",
@@ -73,6 +74,12 @@ const ageInput: InputsUnion = {
 const dobInput: InputsUnion = {
   elementType: "input",
   id: petInfoIds.dateOfBirth,
+  type: "hidden",
+};
+
+const displayDobInput: InputsUnion = {
+  elementType: "input",
+  id: petInfoIds.displayDateOfBirth,
   label: "Date of birth",
   requiredCondition: true,
   type: "text",
@@ -244,7 +251,8 @@ export const editPetProfileFormSchema: (hasPolicy: boolean) => FormSchema = (
     {
       elementType: "row",
       children: [
-        { ...dobInput, disabledCondition: true },
+        dobInput,
+        { ...displayDobInput, disabledCondition: true },
         { ...ageInput, disabledCondition: true },
       ],
     },

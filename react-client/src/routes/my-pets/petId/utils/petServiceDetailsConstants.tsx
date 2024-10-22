@@ -1,4 +1,4 @@
-import { Button, Text, TextSpan } from "~/components/design-system";
+import { LinkButton, Text, TextSpan } from "~/components/design-system";
 import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
 import { copyTextToClipboard } from "~/routes/my-pets/petId/utils/servicesUtils";
@@ -96,19 +96,14 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
             </Text>
             <Text size="14">
               Note: this form requires Adobe Reader,
-              <Button
+              <LinkButton
                 className="inline font-bold"
-                onClick={() =>
-                  downloadFile({
-                    url: "https://drive.google.com/uc?export=download&id=164zo5X6eA3vDCSZw87BifbGvmaLNRi4p",
-                    fileName: "form.pdf",
-                  })
-                }
-                variant="link"
+                openInNewTab={true}
                 style={{ fontSize: 14 }}
+                to="https://get.adobe.com/reader/"
               >
                 click here
-              </Button>
+              </LinkButton>
               to download.
             </Text>
           </>
@@ -128,7 +123,12 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
     ),
     id: "PetMedInfo Fees",
     primaryAction: {
-      buttonLabel: "Download form",
+      buttonLabel: "Download Form",
+      onClick: () =>
+        downloadFile({
+          url: "https://drive.google.com/uc?export=download&id=164zo5X6eA3vDCSZw87BifbGvmaLNRi4p",
+          fileName: "form.pdf",
+        }),
     },
     secondaryActions: [
       {
