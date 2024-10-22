@@ -45,7 +45,7 @@ type RenderedInput = Omit<
   required: boolean;
 };
 
-export type OnChangeFn = (values: FormValues) => void;
+export type OnChangeFn = (values: FormValues, formId: string) => void;
 export type OnSubmitFn = (props: OnSubmitProps) => void;
 
 export type FormBuilderProps = {
@@ -137,7 +137,10 @@ export const FormBuilder = ({
             key={elementKey}
             {...element}
             onChange={(newValues) => {
-              onChangeFormValues({ ...values, [element.id]: newValues });
+              onChangeFormValues(
+                { ...values, [element.id]: newValues },
+                schema.id
+              );
             }}
             renderElement={renderElement}
             values={values}
@@ -307,7 +310,7 @@ export const FormBuilder = ({
       const inputId = getInputId(commonProps);
 
       if (!repeaterMetadata) {
-        onChangeFormValues({ ...values, [inputId]: newValue });
+        onChangeFormValues({ ...values, [inputId]: newValue }, schema.id);
         return;
       }
 
@@ -328,7 +331,10 @@ export const FormBuilder = ({
         return [];
       })();
 
-      onChangeFormValues({ ...values, [repeaterId]: repeaterValues });
+      onChangeFormValues(
+        { ...values, [repeaterId]: repeaterValues },
+        schema.id
+      );
     }
 
     function getStringValue() {
