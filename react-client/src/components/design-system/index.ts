@@ -25,7 +25,6 @@ export * from "./layout/LayoutBasic";
 export * from "./loading/Loading";
 export * from "./menu/DropdownMenu";
 export * from "./progress/StepProgress";
-export * from "./scrollTop/ScrollTop";
 export * from "./switch/Switch";
 export * from "./tab/RouteBasedTabs";
 export * from "./tab/Tabs";

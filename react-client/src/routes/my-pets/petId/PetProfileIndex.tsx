@@ -7,6 +7,7 @@ import { PetAlertSection } from "~/components/Pet/sections/PetAlertSection";
 import { PetCardSection } from "~/components/Pet/sections/PetCardSection";
 import { PetInsuranceSection } from "~/components/Pet/sections/PetInsuranceSection";
 import { PetWatchSection } from "~/components/Pet/sections/PetWatchSection";
+import { useScroll } from "~/hooks/useScroll";
 import {
   CHECKOUT_FULL_ROUTE,
   MY_PETS_FULL_ROUTE,
@@ -18,11 +19,12 @@ import { ReportPetButton } from "./components/ReportPetButton";
 import { TransferPetDialog } from "./components/TransferPetDialog";
 import { PetLostUpdatesSection } from "./PetLostUpdates";
 import { usePetProfileContext } from "./usePetProfileLayoutViewModel";
-import { ScrollTop } from "~/components/design-system";
 
 export const PetProfileIndex = () => {
   const [searchParams] = useSearchParams();
   const viewModel = usePetProfileContext();
+  useScroll({ autoScrollToTop: true });
+
   const { isLoading, pet, lostPetHistory, onClickReportPetFound } = viewModel;
 
   if (isLoading) return <DefaultLoading minHeight="80dvh" />;
@@ -57,7 +59,6 @@ export const PetProfileIndex = () => {
         primaryElement={renderActionsButton()}
       />
       <div className="flex flex-col gap-xlarge">
-        <ScrollTop />
         <PetCardSection pet={pet} />
         <AdvertisingSection linkTo={pet.insuranceUrl} />
         <PetWatchSection route={checkoutPath} />
