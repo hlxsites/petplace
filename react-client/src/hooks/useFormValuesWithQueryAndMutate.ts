@@ -86,10 +86,27 @@ export function useFormValuesWithQueryAndMutate<TData>({
     void asyncSubmit(formId, values);
   };
 
-  const onChangeForm: OnChangeFn = (values) => {
+  const onChangeForm: OnChangeFn = (values, formId) => {
     // Allow the consumer to modify the values before setting them
-    const newValues = onChangeMiddleware?.(values) ?? values;
+    const newValues = (() => {
+      if (onChangeMiddleware) {
+        try {
+          return onChangeMiddleware(values);
+        } catch (error) {
+          logError(
+            `Error applying onChangeMiddleware on form ${formId}`,
+            error
+          );
+        }
+      }
+      return values;
+    })();
+
     setFormValues(newValues);
+  };
+
+  const resetForm = () => {
+    setFormValues(initialFormValues.current);
   };
 
   return {
@@ -99,5 +116,6 @@ export function useFormValuesWithQueryAndMutate<TData>({
     isSubmitting,
     onChangeForm,
     onSubmitForm,
+    resetForm,
   };
 }

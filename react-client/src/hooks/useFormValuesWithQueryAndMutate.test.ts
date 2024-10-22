@@ -43,7 +43,7 @@ describe("useFormValuesWithQueryAndMutate", () => {
     const { result } = getHookRenderer();
 
     act(() => {
-      result.current.onChangeForm(newValues);
+      result.current.onChangeForm(newValues, "test-form");
     });
 
     expect(result.current.formValues).toStrictEqual(newValues);
@@ -56,7 +56,7 @@ describe("useFormValuesWithQueryAndMutate", () => {
       const { result } = getHookRenderer();
 
       act(() => {
-        result.current.onChangeForm({ field: "new" });
+        result.current.onChangeForm({ field: "new" }, "test-form");
       });
 
       expect(result.current.isDirty).toBe(true);
@@ -70,10 +70,10 @@ describe("useFormValuesWithQueryAndMutate", () => {
       await waitFor(() => expect(result.current.isSubmitting).toBe(false));
 
       // Change the form value
-      result.current.onChangeForm({ field: "new" });
+      result.current.onChangeForm({ field: "new" }, "test-form");
 
       // Revert back to the original form value
-      result.current.onChangeForm(data);
+      result.current.onChangeForm(data, "test-form");
       expect(result.current.isDirty).toBe(false);
     });
   });
@@ -149,7 +149,7 @@ describe("useFormValuesWithQueryAndMutate", () => {
       const submittedFormValues = { field: "updated value" };
       // Change and submit the form
       act(() => {
-        result.current.onChangeForm(submittedFormValues);
+        result.current.onChangeForm(submittedFormValues, "test-form");
 
         result.current.onSubmitForm({
           ...FORM_SUBMIT_OBJECT,
@@ -222,7 +222,7 @@ describe("useFormValuesWithQueryAndMutate", () => {
 
       // Change the form value
       act(() => {
-        result.current.onChangeForm({ field: "updated" });
+        result.current.onChangeForm({ field: "updated" }, "test-form");
       });
       expect(result.current.isDirty).toBe(true);
 
@@ -244,7 +244,7 @@ describe("useFormValuesWithQueryAndMutate", () => {
       const { result } = getHookRenderer({ onChangeMiddleware });
 
       act(() => {
-        result.current.onChangeForm(newValues);
+        result.current.onChangeForm(newValues, "test-form");
       });
 
       expect(onChangeMiddleware).toHaveBeenCalledWith(newValues);
@@ -258,11 +258,44 @@ describe("useFormValuesWithQueryAndMutate", () => {
       const { result } = getHookRenderer({ onChangeMiddleware });
 
       act(() => {
-        result.current.onChangeForm(newValues);
+        result.current.onChangeForm(newValues, "test-form");
       });
 
       expect(result.current.formValues).toStrictEqual(middlewareValues);
       expect(onChangeMiddleware).toHaveBeenCalledWith(newValues);
+    });
+  });
+  describe("resetForm", () => {
+    it("should reset form values to initial values", () => {
+      const initialData = { field: "initial" };
+      useQueryMock.mockReturnValue({ data: initialData, loading: false });
+      const { result } = getHookRenderer();
+
+      act(() => {
+        result.current.onChangeForm({ field: "updated" }, "test-form");
+      });
+      expect(result.current.formValues).toStrictEqual({ field: "updated" });
+
+      act(() => {
+        result.current.resetForm();
+      });
+      expect(result.current.formValues).toStrictEqual(initialData);
+    });
+
+    it("should set isDirty to false after resetting the form", () => {
+      const initialData = { field: "initial" };
+      useQueryMock.mockReturnValue({ data: initialData, loading: false });
+      const { result } = getHookRenderer();
+
+      act(() => {
+        result.current.onChangeForm({ field: "updated" }, "test-form");
+      });
+      expect(result.current.isDirty).toBe(true);
+
+      act(() => {
+        result.current.resetForm();
+      });
+      expect(result.current.isDirty).toBe(false);
     });
   });
 });
