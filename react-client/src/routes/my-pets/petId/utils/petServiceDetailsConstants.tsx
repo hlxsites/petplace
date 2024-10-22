@@ -1,8 +1,13 @@
+// Form is hosted on SharePoint on the following folder:
+// https://adobe.sharepoint.com/:b:/r/sites/HelixProjects/Shared%20Documents/sites/petplace/account/PDF/medical-information.pdf?csf=1&web=1&e=zsUfvg
+
 import { LinkButton, Text, TextSpan } from "~/components/design-system";
 import { PetServiceAdditionalInfo } from "~/components/Pet/PetServiceAdditionalInfo";
 import { PetServiceDetailsCardProps } from "~/components/Pet/PetServiceDetailsCard";
 import { copyTextToClipboard } from "~/routes/my-pets/petId/utils/servicesUtils";
 import { downloadFile } from "~/util/downloadFunctions";
+
+const URL_FORM = "https://www.petplace.com/account/pdf/medical-information.pdf";
 
 export type PetWatchServiceProps = Omit<
   PetServiceDetailsCardProps,
@@ -126,8 +131,8 @@ export const PET_WATCH_SERVICES_DETAILS: PetWatchServiceProps[] = [
       buttonLabel: "Download Form",
       onClick: () =>
         downloadFile({
-          url: "https://drive.google.com/uc?export=download&id=164zo5X6eA3vDCSZw87BifbGvmaLNRi4p",
-          fileName: "form.pdf",
+          url: URL_FORM,
+          fileName: "medical-information.pdf",
         }),
     },
     secondaryActions: [
