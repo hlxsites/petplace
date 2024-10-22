@@ -10,12 +10,13 @@ import { Layout } from "~/components/design-system/layout/Layout";
 import { useDeepCompareEffect } from "~/hooks/useDeepCompareEffect";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import { IS_DEV_ENV } from "~/util/envUtil";
+import { ACCOUNT_FULL_ROUTE } from "./AppRoutePaths";
 
 export const RootErrorPage = () => {
   const error = useRouteError();
   const navigate = useNavigate();
 
-  const rootLocation = IS_DEV_ENV ? "/account" : window.location.origin;
+  const rootLocation = IS_DEV_ENV ? ACCOUNT_FULL_ROUTE : window.location.origin;
 
   useDeepCompareEffect(() => {
     if (error) {
@@ -31,7 +32,7 @@ export const RootErrorPage = () => {
       }
     }
   }, [error]);
-  console.log("rootLocation", rootLocation);
+
   return (
     <ErrorBoundary level={LEVEL_ERROR}>
       <Layout>
