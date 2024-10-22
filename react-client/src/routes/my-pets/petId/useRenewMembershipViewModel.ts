@@ -127,7 +127,7 @@ export const useRenewMembershipViewModel = ({
     // If annual member with no products, return only direct-connect and recovery-specialists
 
     if (!products?.length || hasAnnualProduct)
-      return petWatchAvailableBenefits.filter(
+      return petWatchAvailableBenefits?.filter(
         (benefit) =>
           benefit.id === "direct-connect" ||
           benefit.id === "recovery-specialists"

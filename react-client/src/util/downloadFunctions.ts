@@ -16,25 +16,26 @@ export function downloadFile({
   if (!blob && !url) return;
 
   try {
-    let downloadUrl = url;
+    if (url) {
+      window.open(url, "_blank");
+      return;
+    }
 
     if (blob) {
       if (!fileType) return;
-      downloadUrl = URL.createObjectURL(blob);
-    }
+      const downloadUrl = URL.createObjectURL(blob);
 
-    const downloadLink = document.createElement("a");
-    downloadLink.style.display = "none";
-    downloadLink.href = downloadUrl!;
-    downloadLink.download = fileName;
+      const downloadLink = document.createElement("a");
+      downloadLink.style.display = "none";
+      downloadLink.href = downloadUrl;
+      downloadLink.download = fileName;
 
-    // for firefox browsers
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+      // for Firefox browsers
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
 
-    // Clean up the object URL if it was created
-    if (blob && downloadUrl) {
+      // Clean up the object URL if it was created
       URL.revokeObjectURL(downloadUrl);
     }
   } catch (error) {
