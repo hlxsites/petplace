@@ -104,9 +104,7 @@ export const DialogBase = ({
     return children;
   })();
 
-  const dialogMaxHeight = isDesktopScreen
-    ? "calc(100vh - 00px)"
-    : "calc(90vh - 200px)";
+  const maxHeight = isDesktopScreen ? "100vh" : "calc(90dvh - 200px)";
 
   const portalContent = (
     <>
@@ -178,11 +176,7 @@ export const DialogBase = ({
               variant="link"
             />
           )}
-
-          <div
-            className="overflow-y-auto"
-            style={{ maxHeight: dialogMaxHeight }}
-          >
+          <div className="overflow-y-auto" style={{ maxHeight }}>
             {renderChildren}
           </div>
         </div>
