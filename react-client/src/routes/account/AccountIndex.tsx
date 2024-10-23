@@ -3,11 +3,13 @@ import { ChangePasswordSection } from "~/components/MyAccount/sections/ChangePas
 
 import { DefaultLoading } from "~/components/design-system/loading/DefaultLoading";
 
+import { useWindowWidth } from "~/hooks/useWindowWidth";
 import { useAccountIndexViewModel } from "./useAccountIndexViewModel";
 
 export const AccountIndex = () => {
   const { accountForm, emergencyContactsForm, isSsoEnabledLogin } =
     useAccountIndexViewModel();
+  const shouldReducePadding = useWindowWidth() < 380
 
   return (
     <div className="grid gap-xxxlarge pt-xlarge" role="region">
@@ -26,7 +28,7 @@ export const AccountIndex = () => {
       return <DisplayForm {...accountForm} />;
     })();
 
-    return <Card padding="xlarge">{children}</Card>;
+    return <Card padding={shouldReducePadding ? "large" : "xlarge"}>{children}</Card>;
   }
 
   function renderEmergencyContactForm() {

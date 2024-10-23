@@ -77,7 +77,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
           return (
             <div className="flex gap-medium">
               {!hideType && (
-                <Select
+                  <Select
                   autoComplete="off"
                   disabled={disabledType}
                   hideLabel
@@ -87,6 +87,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
                   options={phoneTypeOptions}
                   onChange={handleOnChangeType}
                   value={selectedType}
+                  className="max-w-[160px]"
                 />
               )}
               <div
