@@ -8,13 +8,13 @@ import { FormSection } from "./components/FormSection";
 import { usePetEditViewModel } from "./usePetEditViewModel";
 
 export const PetEditIndex = () => {
-  const { form, handleClose, onDiscard, petInfoQuery, ...formUtility } =
+  const { form, handleClose, onDiscard, petId, petInfoQuery, ...formUtility } =
     usePetEditViewModel();
 
   return <SuspenseAwait resolve={petInfoQuery}>{renderMain}</SuspenseAwait>;
 
   function renderMain(pet: PetModel | null) {
-    invariant(pet, "Pet not found");
+    invariant(pet, `Pet not found: id=${petId}`);
 
     const { isDiscarding, ...rest } = form;
 

@@ -62,7 +62,13 @@ export const useAccountFormViewModel = ({
   const fetchAccountForm = useCallback(async () => {
     const response = await accountDetailsQuery;
 
-    setHasPolicy(!!(response as ExternalAccountDetailsModel).insuranceUrl);
+    const hasPolicy = (() => {
+      if (response && "insuranceUrl" in response) {
+        return !!response.insuranceUrl;
+      }
+      return false;
+    })();
+    setHasPolicy(hasPolicy);
 
     const initialValues = getAccountDetailsInitialFormValue(
       response,

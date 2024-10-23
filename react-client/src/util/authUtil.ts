@@ -33,7 +33,9 @@ export function requireAuthToken() {
   return authToken;
 }
 
-function parseJwt(token: string) {
+function parseJwt(token: string | null) {
+  if (!token) return null;
+
   try {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -50,6 +52,7 @@ function parseJwt(token: string) {
   } catch (error) {
     logError("Error parsing token", error);
   }
+  return null;
 }
 
 /**
@@ -59,14 +62,19 @@ function parseJwt(token: string) {
  */
 export function readJwtClaim() {
   const schema = z.object({
-    extension_CustRelationId: z.string().nullish(),
-    given_name: z.string().optional().nullish(),
-    family_name: z.string().nullish(),
     emails: z.array(z.string()),
+    extension_AdoptionId: z.string().nullish(),
+    extension_CustRelationId: z.string().nullish(),
+    family_name: z.string().nullish(),
+    given_name: z.string().optional().nullish(),
+    // User's unique identifier
+    // https://learn.microsoft.com/en-us/entra/identity-platform/id-token-claims-reference
+    oid: z.string().nullish(),
     postalCode: z.string().nullish(),
   });
 
-  const parsedJwt = parseJwt(requireAuthToken());
+  const token = getAuthToken();
+  const parsedJwt = parseJwt(token);
   if (!parsedJwt) return null;
 
   try {

@@ -3,21 +3,23 @@ import { LostPetUpdateModel } from "~/domain/models/pet/PetModel";
 import { parseDateTime } from "~/util/dateUtils";
 
 type NotificationsDialogContentProps = {
+  microchip: string;
   onClose?: () => void;
   viewData: LostPetUpdateModel;
 };
 
 export const NotificationsDialogContent = ({
+  microchip,
   onClose,
   viewData,
 }: NotificationsDialogContentProps) => {
-  const { foundedBy, id, petName } = viewData;
+  const { foundedBy, petName } = viewData;
   const finderName = foundedBy?.finderName ?? "Unknown Finder";
 
   return (
     <div className="grid max-w-[640px] gap-large pt-large md:min-h-[350px]">
       <Text size="16" isResponsive>
-        {`${petName} with identifier ${id} has been found. Contact the
+        {`${petName} with identifier ${microchip} has been found. Contact the
           finder listed below to coordinate a pickup. Once you've been reunited
           with ${petName}, be sure to turn off the found pet alerts by clicking the
           button below.`}

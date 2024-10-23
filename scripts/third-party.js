@@ -5,7 +5,7 @@ import { isMobile, onPageActivation } from './scripts.js';
 async function loadAccessibeWidget() {
   await loadScript('https://acsbapp.com/apps/app/dist/js/app.js', { async: true });
   const HIGHLIGHT_COLOR = '#FF7D5A';
-  window.acsbJS.init({
+  window.acsbJS?.init({
     statementLink: '',
     footerHtml: '',
     hideMobile: false,
