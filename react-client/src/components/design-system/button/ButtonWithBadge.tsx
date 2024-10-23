@@ -13,7 +13,7 @@ export const ButtonWithBadge = ({
   ...buttonProps
 }: ButtonWithBadgeProps) => {
   return (
-    <span className="relative">
+    <span className="relative inline-flex">
       <Button fullWidth variant="secondary" {...buttonProps} />
 
       {renderBadge()}
