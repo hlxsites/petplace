@@ -87,6 +87,7 @@ export const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
                   options={phoneTypeOptions}
                   onChange={handleOnChangeType}
                   value={selectedType}
+                  className="max-w-[160px]"
                 />
               )}
               <div

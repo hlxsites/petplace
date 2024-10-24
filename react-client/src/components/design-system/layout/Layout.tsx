@@ -5,5 +5,5 @@ type LayoutProps = {
 };
 
 export const Layout = ({ children }: LayoutProps) => {
-  return <div className="px-base">{children}</div>;
+  return <div className="md:px-base">{children}</div>;
 };
