@@ -9,6 +9,7 @@ import { PetInfoRepository } from "~/domain/repository/pet/PetInfoRepository";
 import { logError } from "~/infrastructure/telemetry/logUtils";
 import { PetPlaceHttpClientUseCase } from "../PetPlaceHttpClientUseCase";
 import { parseData } from "../util/parseData";
+import { getPetProducts } from "./utils/useCaseFunctionsUtils";
 
 export class PetInfoUseCase implements PetInfoRepository {
   private httpClient: HttpClientRepository;
@@ -57,17 +58,20 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
   if (!data || typeof data !== "object") return null;
 
   const serverResponseSchema = z.object({
-    Age: z.string(),
-    Breed: z.string(),
+    Age: z.string().nullish(),
+    Breed: z.string().nullish(),
     CountryCode: z.union([z.literal("US"), z.literal("CA")]).nullish(),
-    DateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
-      message: "Invalid date format",
-    }),
+    DateOfBirth: z
+      .string()
+      .refine((date) => !isNaN(Date.parse(date)), {
+        message: "Invalid date format",
+      })
+      .nullish(),
     Id: z.string(),
     ImageUrl: z.string().nullish(),
     InsuranceAggregatorUrl: z.string().nullish(),
     IsMissing: z.boolean().nullish(),
-    MembershipStatus: z.string(),
+    MembershipStatus: z.string().nullish(),
     Microchip: z.string().nullish(),
     MixedBreed: z.boolean().nullish(),
     Name: z.string(),
@@ -80,7 +84,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
         Name: z.string(),
       })
     ),
-    Sex: z.string(),
+    Sex: z.string().nullish(),
     Source: z.number().nullish(),
     Species: z.string().nullish(),
     SpeciesId: z.number().nullish(),
@@ -90,13 +94,7 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
 
   if (!info) return null;
 
-  const products = info.Products.map(
-    (product: { Id: string; IsExpired: boolean; Name: string }) => ({
-      id: product.Id,
-      isExpired: product.IsExpired,
-      name: product.Name,
-    })
-  );
+  const products = getPetProducts(info.Products);
 
   const missingStatus: MissingStatus = (() => {
     if (typeof info.IsMissing === "boolean") {
@@ -106,21 +104,21 @@ function convertToPetModelInfo(data: unknown): PetModel | null {
   })();
 
   return {
-    age: info.Age,
-    breed: info.Breed,
-    dateOfBirth: info.DateOfBirth,
+    age: info.Age ?? undefined,
+    breed: info.Breed ?? undefined,
+    dateOfBirth: info.DateOfBirth ?? undefined,
     id: info.Id,
     img: info.ImageUrl ?? undefined,
     insuranceUrl: info.InsuranceAggregatorUrl ?? "",
     locale: info.CountryCode,
-    membershipStatus: info.MembershipStatus,
+    membershipStatus: info.MembershipStatus ?? undefined,
     microchip: info.Microchip,
     missingStatus,
     mixedBreed: !!info.MixedBreed,
     name: info.Name,
     policyInsurance: info.PolicyNumbers ?? [],
     products,
-    sex: info.Sex,
+    sex: info.Sex ?? "",
     sourceType: info.Source === 1 ? "PetPoint" : "MyPetHealth",
     spayedNeutered: !!info.Neutered,
     species: info.Species ?? undefined,
