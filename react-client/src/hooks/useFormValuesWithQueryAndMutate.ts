@@ -18,7 +18,7 @@ type UseFormValuesWithQueryAndMutateProps<TData> = UseQueryProps<TData> & {
   /**
    * Callback to converts the query data to the FormValues type once the query is resolved.
    */
-  convertQueryDataToFormValues: (data: TData) => FormValues;
+  convertQueryDataToFormValues: (data: TData) => Promise<FormValues>;
   /**
    * Callback to (optionally) modify the form values before setting them.
    */
@@ -57,10 +57,15 @@ export function useFormValuesWithQueryAndMutate<TData>({
       // We don't expect this effect to run more than once
       // after the initial data is fetched;
       // That's why we call it the initial values
-      const initial = convertQueryDataToFormValues(data);
+      const initializeFormValues = async () => {
+        const initial = await convertQueryDataToFormValues(data);
+        initialFormValues.current = initial;
+        setFormValues(initial);
+      };
 
-      initialFormValues.current = initial;
-      setFormValues(initial);
+      initializeFormValues().catch((error) => {
+        logError("Error initializing form values", error);
+      });
     }
   }, [data]);
 

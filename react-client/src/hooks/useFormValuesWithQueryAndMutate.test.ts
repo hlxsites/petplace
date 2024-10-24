@@ -97,29 +97,41 @@ describe("useFormValuesWithQueryAndMutate", () => {
       ["Duda", 4],
     ])(
       "should set form values received from the query name=%p and age=%p",
-      (name, age) => {
+      async (name, age) => {
         useQueryMock.mockReturnValue({ data: { age, name }, loading: false });
-        // @ts-expect-error - Mock test data
-        const convertQueryDataToFormValues = (formValues) => formValues;
+        const convertQueryDataToFormValues = jest.fn((data) =>
+          Promise.resolve(data)
+        );
         const { result } = getHookRenderer({ convertQueryDataToFormValues });
+
+        await act(async () => {
+          await waitFor(() => {
+            expect(result.current.isLoading).toBe(false);
+          });
+        });
 
         expect(result.current.isLoading).toBe(false);
         expect(result.current.formValues).toStrictEqual({ age, name });
       }
     );
 
-    it("should set form values returned by the callback when data is fetched", () => {
+    it("should set form values returned by the callback when data is fetched", async () => {
       const data = { test: "data" };
       const formValues = { field: "value" };
       useQueryMock.mockReturnValue({ data, loading: false });
 
       const convertQueryDataToFormValues = jest
         .fn()
-        .mockReturnValue(formValues);
+        .mockResolvedValue(formValues);
 
       const { result } = getHookRenderer({ convertQueryDataToFormValues });
 
-      expect(result.current.isLoading).toBe(false);
+      await act(async () => {
+        await waitFor(() => {
+          expect(result.current.isLoading).toBe(false);
+        });
+      });
+
       expect(result.current.formValues).toStrictEqual(formValues);
     });
   });
