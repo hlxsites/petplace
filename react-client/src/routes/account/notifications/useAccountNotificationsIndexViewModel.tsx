@@ -80,7 +80,7 @@ export const useAccountNotificationsIndexContext = () =>
 
 function getFormInitialDataFromModel(
   accountNotifications?: AccountNotificationPreferencesModel | null
-): FormValues {
+): Promise<FormValues> {
   const newsLetter = [];
   if (accountNotifications?.signedCatNewsletter) newsLetter.push("Cat");
   if (accountNotifications?.signedDogNewsletter) newsLetter.push("Dog");
@@ -89,12 +89,13 @@ function getFormInitialDataFromModel(
   if (accountNotifications?.smsAlert) alerts.push("SMS");
   if (accountNotifications?.emailAlert) alerts.push("Email");
 
-  return {
+  const formValues: FormValues = {
     newsletter: newsLetter,
     "pet-place-offers": accountNotifications?.petPlaceOffer ?? "",
     "partner-offers": accountNotifications?.partnerOffer ?? "",
     "pet-place-adopt-alerts": alerts,
-  } satisfies FormValues;
+  };
+  return Promise.resolve(formValues)
 }
 
 function convertFormValuesToModel(
