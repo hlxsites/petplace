@@ -110,7 +110,6 @@
         flex-direction: column;
         gap: 32px;
         justify-content: center;
-        margin: 0;
         width: 100%;
       }
       .panel-pet-single-image {
@@ -191,7 +190,7 @@
         padding-top: 24px;
       }
 
-      .agreement-message {
+      #agreement-message {
         font-size: 12px;
         font-weight: 400;
         line-height: 16px;
@@ -209,15 +208,6 @@
       .footer-container {
         background-color: #FFFFFF;
         padding: 48px 80px;
-      }
-
-      .footer-container p {
-        color: #28061E;
-        font-family: "Libre Franklin", sans-serif;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: normal;
-        margin: 0;
       }
 
       .password-message {
@@ -378,6 +368,10 @@
        }
       }
 
+      .remove-margin {
+        margin: 0;
+      }
+
     </style>
 
     <script src="account-activation.js" async></script>
@@ -397,10 +391,9 @@
                 <!-- images will be injected here dynamically  -->
               </div>
               <div class="panel-greeting-message">
-                <div>
-                  <span role="img" aria-label="waving-hand-emoji">👋</span>
-                  <span role="text"> Say hello to <span class="pet-name" id="pet-name" role="text">your pet</span>!</span>
-                </div>
+                <p class="remove-margin">
+                  <span role="img" aria-label="waving-hand-emoji">👋</span> Say hello to <span class="pet-name" id="pet-name">your pet</span>!
+                </p>
               </div>
             </div>
           </div>
@@ -412,34 +405,30 @@
                   <!-- owner name will be injected dynamically here -->
                 </span>
               </div>
-              <div class="panel-form-message">
-                <span role="text">
-                  Access all the important
-                  <strong id="pets-names" role="text">
-                    <!-- pets names will be injected dynamically here -->
-                    pet
-                  </strong><strong role="text">'s</strong> documents and information by creating a password, and activating your PetPlace account.
-                </span>
-              </div>
+              <p class="panel-form-message remove-margin">
+                Access
+                <strong id="pets-names">
+                  <!-- pets names will be injected dynamically here -->
+                  pet
+                </strong><strong>'s</strong> important documents and information by <span id="greeting-context-message">creating a password, and activating</span> your PetPlace account.
+              </p>
 
               <!-- Azure Form starts here -->
               <div id="api">
               </div>
               <!-- Azure Form ends here -->
 
-                <div class="agreement-message">
-                  <span>
-                    By clicking Sign Up you're confirming that you agree with our
-                    <a
-                      class="terms-and-conditions"
-                      href="https://www.petplace.com/terms-of-use"
-                      rel="license noopener noreferrer"
-                      target="_blank"
-                    >
-                      Terms and Conditions.
-                    </a>
-                  </span>
-                </div>
+                <p id="agreement-message" class="remove-margin">
+                  By clicking Sign Up you're confirming that you agree with our
+                  <a
+                    class="terms-and-conditions"
+                    href="https://www.petplace.com/terms-of-use"
+                    rel="license noopener noreferrer"
+                    target="_blank"
+                  >
+                    Terms and Conditions.
+                  </a>
+                </p>
               </div>
             </div>
           </div>
@@ -452,9 +441,7 @@
     <footer>
       <div class="footer-container">
         <img alt="Pet Place Logo" src="https://www.petplace.com/images/auth-page-images/logo.svg" />
-        <p>By Vets. For Pets.</p>
       </div>
-
     </footer>
   </div>
   </body>
