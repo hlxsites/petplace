@@ -1,6 +1,6 @@
 (function () {
     const searchParams = new URLSearchParams(window.location.search);
-    const token = searchParams.get('token');
+    const token = searchParams.get("token");
     const claim = parseJwt(token);
 
     renderOwnerName(claim);
@@ -45,6 +45,20 @@
         .catch((error) => console.log("There was a problem on network: ", error));
 
     return response;
+})();
+
+(function () {
+    const submitButton = document.querySelector('button[type="submit"]')
+    if (!submitButton) return;
+
+    const submitButtonText = submitButton.innerText.toLowerCase().replace(/\s/g, "");
+
+    // Check if the button text contains "Sign In" or "Login" to display the correct UI
+    const isSignIn = submitButtonText.includes("signin") || submitButtonText.includes("login");
+    if (isSignIn) {
+        document.getElementById("agreement-message").style.display = "none";
+        document.getElementById("greeting-context-message").innerHTML = "logging into";
+    }
 })();
 
 function renderPageInfo(petsList) {
@@ -106,7 +120,7 @@ function getPetsPictures(petsPictures, petsNames) {
 }
 
 function getImagePlaceholder(animalType) {
-    const imagesBaseUrl = 'https://www.petplace.com/images/auth-page-images'
+    const imagesBaseUrl = "https://www.petplace.com/images/auth-page-images"
     const AnimalType = {
         cat: "cat-placeholder.svg",
         default: "dog-placeholder.svg",
@@ -142,9 +156,9 @@ function parseJwt(token) {
     if (!token) return null;
 
     try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''));
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        const jsonPayload = decodeURIComponent(window.atob(base64).split("").map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(""));
 
         return JSON.parse(jsonPayload);
     } catch (_) {
