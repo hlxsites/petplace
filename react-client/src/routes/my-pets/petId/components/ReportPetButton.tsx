@@ -7,7 +7,7 @@ import { redirectToLostPet } from "~/util/forceRedirectUtil";
 type ReportPetButtonProps = {
   className?: string;
   disabled: boolean;
-  missingStatus: MissingStatus;
+  missingStatus?: MissingStatus;
 };
 
 export const ReportPetButton = ({

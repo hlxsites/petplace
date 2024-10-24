@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import {
@@ -20,6 +20,8 @@ import { useLostAndFoundReportViewModel } from "./useLostAndFoundReportViewModel
 import { PET_DOCUMENT_TYPES_LIST } from "./utils/petDocumentConstants";
 
 import { useRenewMembershipViewModel } from "./useRenewMembershipViewModel";
+import { useMyPetsContext } from "../useMyPetsIndexViewModel";
+import { logError } from "~/infrastructure/telemetry/logUtils";
 
 export const loader = (({ params }) => {
   const { petId } = params;
@@ -66,6 +68,28 @@ export const usePetProfileLayoutViewModel = () => {
   const [lostPetHistory, setLostPetHistory] = useState<
     LostAndFountNotification[]
   >([]);
+
+  const { petsPromise } = useMyPetsContext();
+
+  useEffect(() => {
+    const getPetPointSelectedPet = () =>
+      petsPromise
+        .then((pets) => pets.find((pet) => pet.id === petId))
+        .catch((error) => logError("Failed to get PetPoint info", error));
+
+    const fetchPetInfo = async () => {
+      if (petInfo?.sourceType === "PetPoint") {
+        try {
+          const petPointPetInfo = (await getPetPointSelectedPet()) ?? null;
+          setPetInfo(petPointPetInfo);
+        } catch (error) {
+          logError("Failed to set PetPoint info", error);
+        }
+      }
+    };
+
+    void fetchPetInfo();
+  }, [petInfo?.sourceType, petId, petsPromise]);
 
   const isLoading = isLoadingPetInfo || isLoadingLostPetHistory;
 
