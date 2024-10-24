@@ -64,7 +64,7 @@ export const usePetEditViewModel = () => {
   const [petFormValues, setPetFormValues] = useState<FormValues>({});
   const [isLoadingPet, setIsLoadingPet] = useState(true);
   const [isSubmittingPet, setIsSubmittingPet] = useState(false);
-  const [isLeaving, setIsLeaving] = useState(false);
+  const [isDiscarding, setIsDiscarding] = useState(false);
 
   const selectedSpecies = speciesList.find(
     (species) => species.name === petFormValues.species
@@ -75,7 +75,7 @@ export const usePetEditViewModel = () => {
     initialPetFormValuesRef.current
   );
 
-  const isDiscardingPetForm = isDirtyPetForm && isLeaving;
+  const isDiscardingPetForm = isDirtyPetForm && isDiscarding;
 
   const fetchPetForm = useCallback(async () => {
     const response = await petInfoQuery;
@@ -163,7 +163,7 @@ export const usePetEditViewModel = () => {
     void asyncSubmitPetInfo(values);
   };
 
-  const petFormSchema = editPetProfileFormSchema(hasPolicy);
+  const petFormSchema = editPetProfileFormSchema(hasPolicy, isDirtyPetForm);
 
   return {
     form: {
@@ -183,20 +183,20 @@ export const usePetEditViewModel = () => {
     onDiscard,
     petId,
     petInfoQuery,
-    setIsLeaving,
   };
 
   function onDiscard() {
-    navigate(PET_PROFILE_FULL_ROUTE(petId));
+    setPetFormValues(initialPetFormValuesRef.current)
+    setIsDiscarding(false)
   }
 
   function handleClose() {
-    setIsLeaving(false);
+    setIsDiscarding(false);
   }
 
   function handleReset() {
     if (!isDirtyPetForm) onDiscard();
-    setIsLeaving(true);
+    setIsDiscarding(true);
   }
 
   function convertToServerPetInfo(data: EditPetModel): PetMutateInput | null {

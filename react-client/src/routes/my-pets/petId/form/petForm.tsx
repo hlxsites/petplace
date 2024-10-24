@@ -223,8 +223,8 @@ export const addPetProfileFormSchema: FormSchema = {
   version: 0,
 };
 
-export const editPetProfileFormSchema: (hasPolicy: boolean) => FormSchema = (
-  hasPolicy
+export const editPetProfileFormSchema: (hasPolicy: boolean, isDirty: boolean) => FormSchema = (
+  hasPolicy, isDirty
 ) => ({
   id: "edit-pet-profile-form",
   children: [
@@ -279,6 +279,7 @@ export const editPetProfileFormSchema: (hasPolicy: boolean) => FormSchema = (
           id: "discard-button",
           label: "Discard changes",
           type: "reset",
+          disabledCondition: !isDirty,
         },
         {
           elementType: "button",
