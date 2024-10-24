@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import { defer, LoaderFunction, useLoaderData } from "react-router-typesafe";
 import {
   DocumentationStatus,
@@ -96,3 +96,6 @@ export const useMyPetsIndexViewModel = () => {
     shouldDisplayOnboarding,
   };
 };
+
+export const useMyPetsContext = () =>
+  useOutletContext<ReturnType<typeof useMyPetsIndexViewModel>>();

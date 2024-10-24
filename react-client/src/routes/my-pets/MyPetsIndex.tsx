@@ -13,9 +13,11 @@ import { IS_DEV_ENV } from "~/util/envUtil";
 import { redirectToLostPet } from "~/util/forceRedirectUtil";
 import { AppRoutePaths } from "../AppRoutePaths";
 import { OnboardingDialog } from "./components/onboarding/OnboardingDialog";
-import { useMyPetsIndexViewModel } from "./useMyPetsIndexViewModel";
+import { useMyPetsContext } from "./useMyPetsIndexViewModel";
 
 export const MyPetsIndex = () => {
+  const viewModel = useMyPetsContext();
+
   const {
     documentStatus,
     onCloseOnboarding,
@@ -23,7 +25,7 @@ export const MyPetsIndex = () => {
     petsPromise,
     selectedAdoptionPet,
     shouldDisplayOnboarding,
-  } = useMyPetsIndexViewModel();
+  } = viewModel;
 
   return (
     <>

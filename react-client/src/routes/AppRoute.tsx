@@ -96,14 +96,15 @@ const routes: PetPlaceRouteObject[] = [
       {
         element: <MyPetsLayout />,
         id: "myPets",
+        loader: MyPetsIndexLoader,
         // @ts-expect-error - this is a valid path but TS doesn't know it
         path: `${AppRoutePaths.account}/${AppRoutePaths.myPets}`,
+
         children: [
           {
             handle: { title: () => "My Pets" },
             id: "myPetsIndex",
             index: true,
-            loader: MyPetsIndexLoader,
             element: <MyPetsIndex />,
           },
           {
