@@ -20,7 +20,7 @@ import { classNames } from "~/util/styleUtil";
 
 type PetLostUpdatesSectionProps = {
   lostPetHistory: LostAndFountNotification[];
-  missingStatus: MissingStatus;
+  missingStatus?: MissingStatus;
   onClickReportPetFound: () => void;
 };
 
@@ -137,7 +137,7 @@ export const PetLostUpdatesSection = ({
     setCurrentRows(dataSource.slice(offsetStartIndex, offsetFinishIndex));
   }
 
-  function reportingVariables(status: MissingStatus): {
+  function reportingVariables(status?: MissingStatus): {
     icon: IconKeys;
     iconColor: string;
     message: string;
